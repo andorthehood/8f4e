@@ -3,28 +3,33 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import { compileProject } from './compileProject';
+import parse8f4eToProject from './shared/parse8f4e';
 import traceInstructionFlow from './traceInstructionFlow';
 
 import type { ProjectInput } from './shared/types';
 
 function printUsage(): void {
-	console.log('Usage: cli <input.json> -o <output.json> [--trace-output <trace.json>]');
+	console.log('Usage: cli <input.8f4e> [--wasm-output <output.wasm>] [--trace-output <trace.json>]');
 }
 
-function parseArgs(args: string[]): { inputPath?: string; outputPath?: string; traceOutputPath?: string } {
+function parseArgs(args: string[]): {
+	inputPath?: string;
+	traceOutputPath?: string;
+	wasmOutputPath?: string;
+} {
 	let inputPath: string | undefined;
-	let outputPath: string | undefined;
 	let traceOutputPath: string | undefined;
+	let wasmOutputPath: string | undefined;
 
 	for (let i = 0; i < args.length; i += 1) {
 		const arg = args[i];
-		if (arg === '-o' || arg === '--output') {
-			outputPath = args[i + 1];
+		if (arg === '--trace-output') {
+			traceOutputPath = args[i + 1];
 			i += 1;
 			continue;
 		}
-		if (arg === '--trace-output') {
-			traceOutputPath = args[i + 1];
+		if (arg === '--wasm-output') {
+			wasmOutputPath = args[i + 1];
 			i += 1;
 			continue;
 		}
@@ -37,32 +42,43 @@ function parseArgs(args: string[]): { inputPath?: string; outputPath?: string; t
 		}
 	}
 
-	return { inputPath, outputPath, traceOutputPath };
+	return { inputPath, traceOutputPath, wasmOutputPath };
 }
 
 async function run(): Promise<void> {
-	const { inputPath, outputPath, traceOutputPath } = parseArgs(process.argv.slice(2));
+	const { inputPath, traceOutputPath, wasmOutputPath } = parseArgs(process.argv.slice(2));
 
-	if (!inputPath || !outputPath) {
+	if (!inputPath) {
+		printUsage();
+		process.exit(1);
+	}
+
+	if (!traceOutputPath && !wasmOutputPath) {
 		printUsage();
 		process.exit(1);
 	}
 
 	const resolvedInput = path.resolve(process.cwd(), inputPath);
-	const resolvedOutput = path.resolve(process.cwd(), outputPath);
 	const resolvedTraceOutput = traceOutputPath ? path.resolve(process.cwd(), traceOutputPath) : undefined;
+	const resolvedWasmOutput = wasmOutputPath ? path.resolve(process.cwd(), wasmOutputPath) : undefined;
 
-	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
-	const project = JSON.parse(inputRaw) as ProjectInput;
-
-	if (!project || !Array.isArray(project.codeBlocks)) {
-		throw new Error('Invalid project JSON: expected a top-level "codeBlocks" array');
+	if (path.extname(resolvedInput) !== '.8f4e') {
+		throw new Error('Invalid input file: expected a .8f4e project file');
 	}
 
-	const { outputProject, compilerOptions } = compileProject(project);
+	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
+	const project = parse8f4eToProject(inputRaw) as ProjectInput;
 
-	await fs.mkdir(path.dirname(resolvedOutput), { recursive: true });
-	await fs.writeFile(resolvedOutput, JSON.stringify(outputProject, null, 2));
+	const { compilerOptions, compiledWasm } = compileProject(project);
+
+	if (resolvedWasmOutput) {
+		if (compiledWasm === undefined) {
+			throw new Error('Unable to write WASM output: compiledWasm is missing from compiler output.');
+		}
+
+		await fs.mkdir(path.dirname(resolvedWasmOutput), { recursive: true });
+		await fs.writeFile(resolvedWasmOutput, Buffer.from(compiledWasm, 'base64'));
+	}
 
 	if (resolvedTraceOutput) {
 		if (!compilerOptions) {
