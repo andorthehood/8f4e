@@ -105,6 +105,24 @@ Apply code-block visual position offset from an integer memory value.
 Where:
 - `axis` is `x` or `y`.
 
+### `@color`
+
+Override a color in the editor color scheme.
+
+```txt
+; @color <path> <value>
+```
+
+Examples:
+
+```txt
+; @color text.code #cccccc
+; @color fill.moduleBackground rgba(0,0,0,0.9)
+; @color icons.feedbackScale3 #660099
+```
+
+See [Color Paths](./color-paths.md) for the full list of configurable color paths.
+
 ### `@defAsset`
 
 Define a named binary asset URL for later loading.
