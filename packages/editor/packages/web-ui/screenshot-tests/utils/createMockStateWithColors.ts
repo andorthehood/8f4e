@@ -20,6 +20,7 @@ function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
 const defaultColorScheme = {
 	text: {
 		lineNumber: 'rgba(51,51,51,255)',
+		debugInfo: 'rgba(51,51,51,255)',
 		instruction: 'rgba(136,126,203,255)',
 		codeComment: 'rgba(102,102,102,255)',
 		code: 'rgba(255,255,255,255)',
@@ -38,6 +39,7 @@ const defaultColorScheme = {
 		background: '#000000',
 		backgroundDots: '#333333',
 		backgroundDots2: '#444444',
+		debugInfoBackground: '#000000',
 		moduleBackground: '#000000',
 		moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 		moduleBackgroundDisabled: 'rgba(0,0,0,0)',
