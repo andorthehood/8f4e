@@ -1,7 +1,6 @@
 8f4e/v1
 
 module cgaColors
-; @pos -289 67
 ; @color fill.moduleBackground #0000aa
 ; @color fill.background #00aaaa
 ; @color fill.backgroundDots #0000aa
@@ -18,8 +17,16 @@ module cgaColors
 ; @color fill.menuItemBackground #0000aa
 ; @color fill.menuItemBackgroundHighlighted #ffffff
 ; @color fill.errorMessageBackground #aa0000
-; @color fill.dialogBackground: #0000aa
-; @color fill.dialogDimmer: #000000
-; @color icons.outputConnectorBackground: #ffffff
-; @color icons.inputConnectorBackground: #ffffff
+; @color fill.dialogBackground #0000aa
+; @color fill.dialogDimmer #000000
+; @color fill.codeBlockHighlightLevel1 #000099
+; @color fill.codeBlockHighlightLevel2 #000088
+; @color fill.codeBlockHighlightLevel3 #000077
+; @color fill.plotterBackground #000000
+; @color fill.plotterTrace #55ff55
+; @color fill.scanLine #55ffff
+; @color icons.outputConnectorBackground #0000aa
+; @color icons.outputConnector #ffff55
+; @color icons.inputConnectorBackground #0000aa
+; @color icons.inputConnector #55ffff
 moduleEnd
