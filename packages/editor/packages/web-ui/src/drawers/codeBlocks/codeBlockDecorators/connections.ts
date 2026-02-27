@@ -14,8 +14,13 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 
 	for (const codeBlock of state.graphicHelper.codeBlocks) {
 		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
+
+		if (!codeBlock.moduleId) {
+			continue;
+		}
+
 		for (const { x, y, id } of codeBlock.extras.inputs) {
-			const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[id];
+			const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[id];
 
 			if (!memory || memoryViews.int32[memory.wordAlignedAddress] === 0) {
 				continue;

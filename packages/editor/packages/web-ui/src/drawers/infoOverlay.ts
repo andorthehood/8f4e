@@ -32,9 +32,10 @@ export default function drawInfoOverlay(
 
 	const debugText: string[] = [];
 
-	const selectedModule = state.graphicHelper.selectedCodeBlock
-		? state.compiler.compiledModules[state.graphicHelper.selectedCodeBlock.id]
-		: undefined;
+	const selectedModule =
+		state.graphicHelper.selectedCodeBlock && state.graphicHelper.selectedCodeBlock.moduleId
+			? state.compiler.compiledModules[state.graphicHelper.selectedCodeBlock.moduleId]
+			: undefined;
 
 	if (selectedModule) {
 		debugText.push('Selected module: ' + selectedModule.id);
