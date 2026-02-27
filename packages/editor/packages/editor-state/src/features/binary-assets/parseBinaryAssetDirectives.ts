@@ -8,7 +8,7 @@ export interface BinaryAssetDefinition {
 export interface BinaryAssetLoadDirective {
 	assetId: string;
 	memoryRef: string;
-	codeBlockId: string;
+	moduleId?: string;
 }
 
 export interface ParsedBinaryAssetDirectives {
@@ -54,7 +54,7 @@ export default function parseBinaryAssetDirectives(codeBlocks: CodeBlockGraphicD
 					continue;
 				}
 
-				loadDirectives.push({ assetId, memoryRef, codeBlockId: codeBlock.id });
+				loadDirectives.push({ assetId, memoryRef, moduleId: codeBlock.moduleId });
 			}
 		}
 	}
@@ -69,7 +69,8 @@ if (import.meta.vitest) {
 		it('parses definitions and load directives', () => {
 			const codeBlocks = [
 				{
-					id: 'foo',
+					id: 'module_foo',
+					moduleId: 'foo',
 					code: [
 						'module foo',
 						'; @defAsset kick https://example.com/kick.pcm',
@@ -82,7 +83,7 @@ if (import.meta.vitest) {
 			const result = parseBinaryAssetDirectives(codeBlocks);
 
 			expect([...result.definitionsById.values()]).toEqual([{ id: 'kick', url: 'https://example.com/kick.pcm' }]);
-			expect(result.loadDirectives).toEqual([{ assetId: 'kick', memoryRef: '&buffer', codeBlockId: 'foo' }]);
+			expect(result.loadDirectives).toEqual([{ assetId: 'kick', memoryRef: '&buffer', moduleId: 'foo' }]);
 		});
 
 		it('uses last definition for duplicate ids', () => {

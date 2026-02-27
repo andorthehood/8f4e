@@ -10,7 +10,7 @@ import resolveBinaryAssetTarget from '~/pureHelpers/resolveBinaryAssetTarget';
 export default function binaryAssets(store: StateManager<State>, events: EventDispatcher): () => void {
 	let lastLoadSignature = '';
 
-	function resolveMemoryId(memoryRef: string, codeBlockId: string): string | undefined {
+	function resolveMemoryId(memoryRef: string, moduleId?: string): string | undefined {
 		if (!memoryRef.startsWith('&')) {
 			return undefined;
 		}
@@ -24,7 +24,11 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 			return withoutPrefix;
 		}
 
-		return `${codeBlockId}.${withoutPrefix}`;
+		if (!moduleId) {
+			return undefined;
+		}
+
+		return `${moduleId}.${withoutPrefix}`;
 	}
 
 	async function fetchAssetsFromDirectives(): Promise<void> {
@@ -44,9 +48,12 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 					return null;
 				}
 
-				const memoryId = resolveMemoryId(loadDirective.memoryRef, loadDirective.codeBlockId);
+				const memoryId = resolveMemoryId(loadDirective.memoryRef, loadDirective.moduleId);
 				if (!memoryId) {
-					console.warn('Invalid @loadAsset memoryRef (must use &memoryRef):', loadDirective.memoryRef);
+					console.warn(
+						'Invalid @loadAsset memoryRef (must use &memoryRef in module/constants blocks):',
+						loadDirective.memoryRef
+					);
 					return null;
 				}
 

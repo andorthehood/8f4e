@@ -38,4 +38,13 @@ exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
 ]
 `;
 
-exports[`updateInputsGraphicData > should position inputs at correct y coordinate based on line number 1`] = `{}`;
+exports[`updateInputsGraphicData > should position inputs at correct y coordinate based on line number 1`] = `
+{
+  "height": 16,
+  "id": "input1",
+  "width": 16,
+  "wordAlignedAddress": 5,
+  "x": 0,
+  "y": 32,
+}
+`;
