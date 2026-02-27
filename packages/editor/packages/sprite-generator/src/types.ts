@@ -22,6 +22,7 @@ export type DrawingCommand =
 export interface ColorScheme {
 	text: {
 		lineNumber: string;
+		debugInfo: string;
 		instruction: string;
 		codeComment: string;
 		code: string;
@@ -41,6 +42,7 @@ export interface ColorScheme {
 		backgroundDots: string;
 		backgroundDots2: string;
 		moduleBackground: string;
+		debugInfoBackground: string;
 		moduleBackgroundDragged: string;
 		moduleBackgroundDisabled: string;
 		wire: string;

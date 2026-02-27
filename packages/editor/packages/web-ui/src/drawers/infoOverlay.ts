@@ -121,12 +121,12 @@ export default function drawInfoOverlay(
 		engine.drawSprite(
 			0,
 			i * state.viewport.hGrid,
-			'moduleBackground',
+			'debugInfoBackground',
 			(debugText[i].length + 2) * state.viewport.vGrid,
 			state.viewport.hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontLineNumber);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontDebugInfo);
 		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, debugText[i]);
 	}
 
