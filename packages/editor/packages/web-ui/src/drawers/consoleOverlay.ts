@@ -1,20 +1,9 @@
 import { Engine } from 'glugglug';
 
-import type { State, LogMessage } from '@8f4e/editor-state';
+import type { State } from '@8f4e/editor-state';
 
 const PADDING_CHARS = 1;
 const ELLIPSIS = '...';
-
-function getBackgroundSprite(level: LogMessage['level']): string {
-	switch (level) {
-		case 'error':
-			return 'booleanFalse';
-		case 'warn':
-			return 'outputFill';
-		default:
-			return 'moduleBackground';
-	}
-}
 
 export default function drawConsoleOverlay(engine: Engine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
@@ -52,18 +41,16 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 		const messageWithTimestamp =
 			message + ' ' + (logEntry.category ? `${logEntry.category} ` : '') + logEntry.timestamp;
 
-		const backgroundSprite = getBackgroundSprite(logEntry.level);
-
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(
 			(panelWidthChars - messageWithTimestamp.length) * vGrid,
 			i * hGrid,
-			backgroundSprite,
+			'debugInfoBackground',
 			panelWidthPixels,
 			hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontLineNumber);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontDebugInfo);
 		engine.drawText((panelWidthChars - messageWithTimestamp.length) * vGrid, i * hGrid, messageWithTimestamp);
 	}
 

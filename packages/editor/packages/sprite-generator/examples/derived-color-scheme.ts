@@ -14,6 +14,7 @@ export const derivedColorScheme: ColorScheme = {
 	text: {
 		// Darker shade for line numbers (less prominent)
 		lineNumber: darken(baseColor, 0.5),
+		debugInfo: darken(baseColor, 0.5),
 
 		// Lighter shade for instructions (more prominent)
 		instruction: lighten(baseColor, 0.3),
@@ -51,6 +52,7 @@ export const derivedColorScheme: ColorScheme = {
 		background: '#000000',
 		backgroundDots: darken(baseColor, 0.7),
 		backgroundDots2: darken(baseColor, 0.6),
+		debugInfoBackground: alpha('#000000', 0.85),
 
 		// Module backgrounds with varying transparency
 		moduleBackground: alpha('#000000', 0.85),

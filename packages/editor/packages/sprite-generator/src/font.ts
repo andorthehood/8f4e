@@ -146,6 +146,7 @@ const asciiChars = [
 
 const colorNames: Array<keyof ColorScheme['text']> = [
 	'lineNumber',
+	'debugInfo',
 	'instruction',
 	'codeComment',
 	'code',
