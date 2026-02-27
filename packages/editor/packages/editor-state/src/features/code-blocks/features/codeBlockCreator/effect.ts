@@ -6,6 +6,7 @@ import { getConstantsId } from '@8f4e/compiler/syntax';
 import { insertDependencies } from './insertDependencies';
 import parseModuleSource from './parseModuleSource';
 import { pasteMultipleBlocks } from './pasteMultipleBlocks';
+import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import getCodeBlockId from '../../utils/getCodeBlockId';
@@ -58,17 +59,6 @@ function getRandomCodeBlockId() {
 	return nameList[Math.floor(Math.random() * nameList.length)];
 }
 
-function checkIfCodeBlockIdIsTaken(state: State, id: string) {
-	const parseRawId = (value: string): string => {
-		const match = value.match(/^(module|function|constants|config)_(.+)$/);
-		return match ? match[2] : value;
-	};
-
-	return state.graphicHelper.codeBlocks.some(codeBlock => {
-		return codeBlock.id === id || parseRawId(codeBlock.id) === id;
-	});
-}
-
 function changeCodeBlockIdInCode(code: string[], instruction: string, id: string) {
 	return code.map(line => {
 		const match = line.match(instructionParser) as RegExpMatchArray | null;
@@ -96,8 +86,8 @@ function incrementCodeBlockId(id: string) {
 	}
 }
 
-function incrementCodeBlockIdUntilUnique(state: State, blockId: string) {
-	while (checkIfCodeBlockIdIsTaken(state, blockId)) {
+function incrementCodeBlockIdUntilUnique(state: State, blockType: 'module' | 'function', blockId: string) {
+	while (checkIfCodeBlockIdIsTaken(state, blockType, blockId)) {
 		blockId = incrementCodeBlockId(blockId);
 	}
 	return blockId;
@@ -163,9 +153,9 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		const functionId = getFunctionId(code);
 
 		if (functionId) {
-			code = changeCodeBlockIdInCode(code, 'function', incrementCodeBlockIdUntilUnique(state, functionId));
+			code = changeCodeBlockIdInCode(code, 'function', incrementCodeBlockIdUntilUnique(state, 'function', functionId));
 		} else if (moduleId) {
-			code = changeCodeBlockIdInCode(code, 'module', incrementCodeBlockIdUntilUnique(state, moduleId));
+			code = changeCodeBlockIdInCode(code, 'module', incrementCodeBlockIdUntilUnique(state, 'module', moduleId));
 		}
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
