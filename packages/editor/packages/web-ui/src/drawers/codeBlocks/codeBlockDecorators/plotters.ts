@@ -15,7 +15,7 @@ export default function drawer(
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.plotter);
 
-	const maxPlotterWidth = codeBlock.width;
+	const maxPlotterWidth = codeBlock.width - state.viewport.hGrid * 2;
 
 	for (const { x, y, buffer, bufferLength, maxValue, minValue } of codeBlock.extras.bufferPlotters) {
 		engine.startGroup(x, y);
