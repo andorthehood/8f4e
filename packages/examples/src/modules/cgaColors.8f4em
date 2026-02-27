@@ -3,7 +3,7 @@
 module cgaColors
 ; @color fill.moduleBackground #0000aa
 ; @color fill.background #00aaaa
-; @color fill.backgroundDots #0000aa
+; @color fill.backgroundDots #aa00aa
 ; @color fill.backgroundDots2 #0000aa
 ; @color fill.highlightedCodeLine #aa00aa
 ; @color fill.moduleBackgroundDragged #000aa
