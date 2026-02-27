@@ -105,6 +105,7 @@ export const moduleManifest: Record<string, () => Promise<string>> = {
 	triangleSignedFloat: () => import('@8f4e/examples/modules/triangleSignedFloat.8f4em?raw').then(m => m.default),
 	triggerPatternSequencer: () =>
 		import('@8f4e/examples/modules/triggerPatternSequencer.8f4em?raw').then(m => m.default),
+	cgaColors: () => import('@8f4e/examples/modules/cgaColors.8f4em?raw').then(m => m.default),
 };
 
 /**
@@ -235,6 +236,7 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'switchGatesInt', title: 'Switchable Gates (8x Int)', category: 'Controllers' },
 	{ slug: 'triangleSignedFloat', title: 'Triangle (Signed, Float)', category: 'Oscillators' },
 	{ slug: 'triggerPatternSequencer', title: 'Trigger Pattern Sequencer', category: 'Sequencers' },
+	{ slug: 'cgaColors', title: 'CGA Colors', category: 'Color Schemes' },
 ];
 
 // For backwards compatibility, export a default object that matches the old API

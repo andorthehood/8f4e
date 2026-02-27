@@ -1,0 +1,25 @@
+8f4e/v1
+
+module cgaColors
+; @pos -289 67
+; @color fill.moduleBackground #0000aa
+; @color fill.background #00aaaa
+; @color fill.backgroundDots #0000aa
+; @color fill.backgroundDots2 #0000aa
+; @color fill.highlightedCodeLine #aa00aa
+; @color fill.moduleBackgroundDragged #000aa
+; @color text.instruction #ffff55
+; @color text.code #ffffff
+; @color text.lineNumber #555555
+; @color text.codeComment #aaaaaa
+; @color text.numbers #ffffff
+; @color fill.wire rgba(255,255,255,0.6)
+; @color fill.wireHighlighted #ffffff
+; @color fill.menuItemBackground #0000aa
+; @color fill.menuItemBackgroundHighlighted #ffffff
+; @color fill.errorMessageBackground #aa0000
+; @color fill.dialogBackground: #0000aa
+; @color fill.dialogDimmer: #000000
+; @color icons.outputConnectorBackground: #ffffff
+; @color icons.inputConnectorBackground: #ffffff
+moduleEnd
