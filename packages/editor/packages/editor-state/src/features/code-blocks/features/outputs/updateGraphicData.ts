@@ -1,5 +1,3 @@
-import { getModuleId } from '@8f4e/compiler/syntax';
-
 import parseOutputs from './codeParser';
 
 import type { CodeBlockGraphicData, Output, State } from '~/types';
@@ -8,8 +6,13 @@ import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.outputs = [];
+	const moduleId = graphicData.moduleId;
+	if (!moduleId) {
+		return;
+	}
+
 	parseOutputs(graphicData.code).forEach(output => {
-		const memory = state.compiler.compiledModules[getModuleId(graphicData.code) || '']?.memoryMap[output.id];
+		const memory = state.compiler.compiledModules[moduleId]?.memoryMap[output.id];
 
 		if (!memory) {
 			return;
