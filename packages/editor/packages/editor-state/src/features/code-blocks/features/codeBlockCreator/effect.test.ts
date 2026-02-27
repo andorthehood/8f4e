@@ -385,15 +385,15 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify main was added and sine function was also added (not skipped)
 			// because the existing 'sine' is a module, not a function
-			// Note: The sine function's ID will be auto-incremented to 'sine2' by the
-			// existing ID uniqueness logic in onAddCodeBlock
+			// Note: IDs are now type-scoped, so existing `module_sine` does not force
+			// incrementing `function_sine`.
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
 			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_sine'); // Existing module
 			expect(mockState.graphicHelper.codeBlocks[0].blockType).toBe('module');
 			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_main'); // New module
-			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('function_sine2'); // New function (ID incremented)
+			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('function_sine'); // New function
 			// Check the code contains function markers
-			expect(mockState.graphicHelper.codeBlocks[2].code.join('\n')).toContain('function sine2');
+			expect(mockState.graphicHelper.codeBlocks[2].code.join('\n')).toContain('function sine');
 		});
 	});
 });

@@ -1,5 +1,7 @@
 import { getModuleId, getFunctionId } from '@8f4e/compiler/syntax';
 
+import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
+
 import { type ClipboardCodeBlock } from '../clipboard/clipboardUtils';
 import { extractGroupName } from '../group/extractGroupName';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
@@ -49,20 +51,6 @@ export function updateInterModuleReferences(code: string[], idMapping: Map<strin
 		}
 
 		return updatedLine;
-	});
-}
-
-/**
- * Helper function to check if a code block ID is already taken
- */
-function checkIfCodeBlockIdIsTaken(state: State, id: string): boolean {
-	const parseRawId = (value: string): string => {
-		const match = value.match(/^(module|function|constants|config)_(.+)$/);
-		return match ? match[2] : value;
-	};
-
-	return state.graphicHelper.codeBlocks.some(codeBlock => {
-		return codeBlock.id === id || parseRawId(codeBlock.id) === id;
 	});
 }
 
@@ -144,8 +132,8 @@ export function pasteMultipleBlocks(
 
 	// First pass: determine ID mappings for all pasted blocks
 	// We need to handle cases where multiple pasted blocks have the same original ID
-	const idMapping = new Map<string, string[]>(); // Maps original ID to array of new IDs (one per occurrence)
-	const processedIds = new Set<string>(); // Track which IDs we've already assigned
+	const idMapping = new Map<string, string[]>(); // Maps `<type>:<originalId>` to array of new IDs (one per occurrence)
+	const processedIds = new Set<string>(); // Track `<type>:<newId>` already assigned
 
 	// Build list of all original IDs in order
 	const originalIds: Array<{ type: 'module' | 'function'; id: string; index: number }> = [];
@@ -161,17 +149,18 @@ export function pasteMultipleBlocks(
 	});
 
 	// Assign new unique IDs for each occurrence
-	for (const { id: originalId } of originalIds) {
+	for (const { type, id: originalId } of originalIds) {
 		let newId = originalId;
-		while (checkIfCodeBlockIdIsTaken(state, newId) || processedIds.has(newId)) {
+		while (checkIfCodeBlockIdIsTaken(state, type, newId) || processedIds.has(`${type}:${newId}`)) {
 			newId = incrementCodeBlockId(newId);
 		}
 
-		if (!idMapping.has(originalId)) {
-			idMapping.set(originalId, []);
+		const key = `${type}:${originalId}`;
+		if (!idMapping.has(key)) {
+			idMapping.set(key, []);
 		}
-		idMapping.get(originalId)!.push(newId);
-		processedIds.add(newId);
+		idMapping.get(key)!.push(newId);
+		processedIds.add(`${type}:${newId}`);
 	}
 
 	// Second pass: create blocks with updated IDs and inter-module references
@@ -190,13 +179,15 @@ export function pasteMultipleBlocks(
 		const moduleId = getModuleId(code);
 		const functionId = getFunctionId(code);
 		const originalId = functionId || moduleId;
+		const originalType = functionId ? 'function' : moduleId ? 'module' : undefined;
 
-		if (originalId) {
+		if (originalId && originalType) {
 			// Get the next new ID for this original ID
-			const occurrenceIndex = occurrenceCounters.get(originalId) || 0;
-			occurrenceCounters.set(originalId, occurrenceIndex + 1);
+			const key = `${originalType}:${originalId}`;
+			const occurrenceIndex = occurrenceCounters.get(key) || 0;
+			occurrenceCounters.set(key, occurrenceIndex + 1);
 
-			const newIds = idMapping.get(originalId) || [];
+			const newIds = idMapping.get(key) || [];
 			const newId = newIds[occurrenceIndex] || originalId;
 
 			if (functionId) {
@@ -209,7 +200,8 @@ export function pasteMultipleBlocks(
 		// Update inter-module references in the code
 		// Build a simple ID mapping from first occurrence of each original ID to its new ID
 		const simpleIdMapping = new Map<string, string>();
-		for (const [origId, newIdArray] of idMapping.entries()) {
+		for (const [mappingKey, newIdArray] of idMapping.entries()) {
+			const [, origId] = mappingKey.split(':');
 			if (newIdArray.length > 0) {
 				simpleIdMapping.set(origId, newIdArray[0]);
 			}
