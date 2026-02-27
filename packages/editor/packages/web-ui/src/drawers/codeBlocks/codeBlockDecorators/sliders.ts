@@ -14,7 +14,11 @@ export default function drawer(
 	}
 
 	for (const { x, y, width, height, id, min, max } of codeBlock.extras.sliders) {
-		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[id];
+		if (!codeBlock.moduleId) {
+			continue;
+		}
+
+		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[id];
 
 		if (!memory) {
 			continue;
