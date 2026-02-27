@@ -6,6 +6,7 @@ import type { Config, ColorScheme } from '../../src/types';
 export const minimalColorScheme: ColorScheme = {
 	text: {
 		lineNumber: '#333333',
+		debugInfo: '#333333',
 		instruction: '#887ecb',
 		codeComment: '#666666',
 		code: '#ffffff',
@@ -24,6 +25,7 @@ export const minimalColorScheme: ColorScheme = {
 		background: '#000000',
 		backgroundDots: '#999999',
 		backgroundDots2: '#333333',
+		debugInfoBackground: '#000000',
 		moduleBackground: '#000000',
 		moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 		moduleBackgroundDisabled: 'rgba(0,0,0,0)',

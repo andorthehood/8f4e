@@ -12,6 +12,8 @@ module cgaColors
 ; @color text.lineNumber #555555
 ; @color text.codeComment #aaaaaa
 ; @color text.numbers #ffffff
+; @color text.debugInfo #aaaaaa
+; @color fill.debugInfoBackground #005555
 ; @color fill.wire rgba(255,255,255,0.6)
 ; @color fill.wireHighlighted #ffffff
 ; @color fill.menuItemBackground #0000aa

@@ -10,6 +10,7 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'menuItemBackgroundHighlighted',
 	'background',
 	'backgroundDots',
+	'debugInfoBackground',
 	'moduleBackground',
 	'moduleBackgroundDragged',
 	'moduleBackgroundDisabled',
