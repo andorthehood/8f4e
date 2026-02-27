@@ -15,7 +15,11 @@ export default function drawSwitches(
 	}
 
 	for (const { x, y, id: debuggerId, onValue, offValue } of codeBlock.extras.switches) {
-		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[debuggerId];
+		if (!codeBlock.moduleId) {
+			continue;
+		}
+
+		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[debuggerId];
 
 		if (!memory) {
 			continue;
