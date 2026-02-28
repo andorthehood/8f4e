@@ -58,12 +58,28 @@ export function createSingleFunctionWASMProgram(functionBody: FunctionBody): Uin
 }
 
 export function setInitialMemory(memory: DataView, module: CompiledModule): void {
-	const initialMemory = getInitialMemory(module);
-	for (let i = 0; i < initialMemory.length; i++) {
-		if (Number.isInteger(initialMemory[i])) {
-			memory.setInt32(i * 4, initialMemory[i], true);
+	for (const memoryItem of Object.values(module.memoryMap)) {
+		const isFloat64Memory = memoryItem.isFloat64 || (!memoryItem.isInteger && memoryItem.elementWordSize === 8);
+		if (typeof memoryItem.default === 'object') {
+			Object.entries(memoryItem.default).forEach(([relativeElementIndex, value]) => {
+				const byteOffset = memoryItem.byteAddress + parseInt(relativeElementIndex, 10) * memoryItem.elementWordSize;
+				if (memoryItem.elementWordSize === 8) {
+					memory.setFloat64(byteOffset, value, true);
+				} else if (memoryItem.isInteger) {
+					memory.setInt32(byteOffset, value, true);
+				} else {
+					memory.setFloat32(byteOffset, value, true);
+				}
+			});
 		} else {
-			memory.setFloat32(i * 4, initialMemory[i], true);
+			const def = memoryItem.default || 0;
+			if (memoryItem.isInteger) {
+				memory.setInt32(memoryItem.byteAddress, def, true);
+			} else if (isFloat64Memory) {
+				memory.setFloat64(memoryItem.byteAddress, def, true);
+			} else {
+				memory.setFloat32(memoryItem.byteAddress, def, true);
+			}
 		}
 	}
 }
