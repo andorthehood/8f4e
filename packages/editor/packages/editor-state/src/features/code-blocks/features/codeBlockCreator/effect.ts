@@ -193,6 +193,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			gaps: new Map(),
 			gridX,
 			gridY,
+			gridWidth: 0,
+			gridHeight: 0,
 			x: state.viewport.x + x,
 			y: state.viewport.y + y,
 			lineNumberColumnWidth: 2,
