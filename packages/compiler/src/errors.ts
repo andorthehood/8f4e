@@ -34,6 +34,8 @@ export enum ErrorCode {
 	COMPILER_DIRECTIVE_INVALID_CONTEXT,
 	MIXED_FLOAT_WIDTH,
 	INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+	SPLIT_HEX_TOO_MANY_BYTES,
+	SPLIT_HEX_MIXED_TOKENS,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -274,6 +276,21 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'This instruction is not allowed inside this block type. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.SPLIT_HEX_TOO_MANY_BYTES:
+			return {
+				code,
+				message: 'Too many split hexadecimal bytes for this declaration type. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.SPLIT_HEX_MIXED_TOKENS:
+			return {
+				code,
+				message:
+					'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF). (' + code + ')',
 				line,
 				context,
 			};
