@@ -236,6 +236,14 @@ describe('parseMemoryInstructionArguments', () => {
 			];
 			expect(() => parseMemoryInstructionArguments(args, 26, 'int', createMockContext())).toThrow();
 		});
+
+		it('should throw when anonymous hex-byte is followed by a non-hex literal (mixed form)', () => {
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 27, 'int', createMockContext())).toThrow();
+		});
 	});
 
 	describe('edge cases', () => {
