@@ -1,14 +1,40 @@
+import { resolveConstantValueOrExpressionOrThrow, tryResolveConstantValueOrExpression } from './resolveConstantValue';
+
 import { parseMemoryInstructionArgumentsShape } from '../syntax/memoryInstructionParser';
-import { SyntaxRulesError } from '../syntax/syntaxError';
+import { SyntaxRulesError, SyntaxErrorCode } from '../syntax/syntaxError';
 import { ArgumentType } from '../syntax/parseArgument';
 import { ErrorCode, getError } from '../errors';
 import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
-import {
-	resolveConstantValueOrExpressionOrThrow,
-	tryResolveConstantValueOrExpression,
-} from './resolveConstantValue';
 
 import type { CompilationContext, Argument } from '../types';
+
+/**
+ * Returns the maximum number of bytes allowed for a split-hex default value
+ * based on the declaration instruction (e.g. 'int' → 4, 'float64' → 8).
+ */
+function getMaxBytesForInstruction(instruction: string): number {
+	if (instruction.startsWith('float64')) {
+		return 8;
+	}
+	return 4;
+}
+
+/**
+ * Combines an array of byte values (most-significant first) into a single integer,
+ * right-padding with 0x00 bytes up to `maxBytes`.
+ *
+ * Example: combineSplitHexBytes([0xA8, 0xFF], 4) === 0xA8FF0000
+ */
+function combineSplitHexBytes(bytes: number[], maxBytes: number): number {
+	let result = 0;
+	for (let i = 0; i < bytes.length; i++) {
+		result = result * 256 + bytes[i];
+	}
+	for (let i = bytes.length; i < maxBytes; i++) {
+		result = result * 256;
+	}
+	return result;
+}
 
 export default function parseMemoryInstructionArguments(
 	args: Array<Argument>,
@@ -25,18 +51,28 @@ export default function parseMemoryInstructionArguments(
 		parsedArgs = parseMemoryInstructionArgumentsShape(args);
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
+			if (error.code === SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS) {
+				throw getError(ErrorCode.SPLIT_HEX_MIXED_TOKENS, lineForError, context);
+			}
 			// Wrap syntax error as compiler error
 			throw getError(ErrorCode.MISSING_ARGUMENT, lineForError, context);
 		}
 		throw error;
 	}
 
+	const maxBytes = getMaxBytesForInstruction(instruction);
 	let defaultValue = 0;
 	let id = '';
 
 	// Process first argument
 	if (parsedArgs.firstArg.type === 'literal') {
 		defaultValue = parsedArgs.firstArg.value;
+		id = '__anonymous__' + lineNumber;
+	} else if (parsedArgs.firstArg.type === 'split-hex-literal') {
+		if (parsedArgs.firstArg.bytes.length > maxBytes) {
+			throw getError(ErrorCode.SPLIT_HEX_TOO_MANY_BYTES, lineForError, context);
+		}
+		defaultValue = combineSplitHexBytes(parsedArgs.firstArg.bytes, maxBytes);
 		id = '__anonymous__' + lineNumber;
 	} else if (parsedArgs.firstArg.type === 'identifier') {
 		const constant = tryResolveConstantValueOrExpression(context.namespace.consts, parsedArgs.firstArg.value);
@@ -53,6 +89,11 @@ export default function parseMemoryInstructionArguments(
 	if (parsedArgs.secondArg) {
 		if (parsedArgs.secondArg.type === 'literal') {
 			defaultValue = parsedArgs.secondArg.value;
+		} else if (parsedArgs.secondArg.type === 'split-hex-literal') {
+			if (parsedArgs.secondArg.bytes.length > maxBytes) {
+				throw getError(ErrorCode.SPLIT_HEX_TOO_MANY_BYTES, lineForError, context);
+			}
+			defaultValue = combineSplitHexBytes(parsedArgs.secondArg.bytes, maxBytes);
 		} else if (parsedArgs.secondArg.type === 'intermodular-reference') {
 			// Intermodular references are resolved later
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-count') {
@@ -151,6 +192,61 @@ if (import.meta.vitest) {
 			const result = parseMemoryInstructionArguments(args, 50, 'int', mockContext);
 			expect(result.id).toBe('myVar');
 			expect(result.defaultValue).toBe(42);
+		});
+
+		it('combines named split hex bytes into one integer default (2 bytes, right-padded)', () => {
+			const args: Argument[] = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 60, 'int', mockContext);
+			expect(result.id).toBe('myVar');
+			expect(result.defaultValue).toBe(0xa8ff0000);
+		});
+
+		it('combines named split hex bytes into one integer default (4 bytes)', () => {
+			const args: Argument[] = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 70, 'int', mockContext);
+			expect(result.id).toBe('myVar');
+			expect(result.defaultValue).toBe(0xa8ff0000);
+		});
+
+		it('combines anonymous split hex bytes into one integer default', () => {
+			const args: Argument[] = [
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 80, 'int', mockContext);
+			expect(result.id).toBe('__anonymous__80');
+			expect(result.defaultValue).toBe(0xa8ff0000);
+		});
+
+		it('throws SPLIT_HEX_TOO_MANY_BYTES when byte count exceeds type width', () => {
+			const args: Argument[] = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x01, isInteger: true, isHex: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 90, 'int', mockContext)).toThrow();
+		});
+
+		it('throws SPLIT_HEX_MIXED_TOKENS when hex-byte is mixed with non-hex token', () => {
+			const args: Argument[] = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 100, 'int', mockContext)).toThrow();
 		});
 	});
 }

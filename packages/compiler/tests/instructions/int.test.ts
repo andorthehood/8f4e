@@ -90,3 +90,42 @@ moduleEnd
 `,
 	[[{}, { output: -42 }]]
 );
+
+moduleTester(
+	'int: named split hex default (2 bytes, right-padded)',
+	`module test
+int foo 0xA8 0xFF
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	[[{}, { output: 0xa8ff0000 | 0 }]]
+);
+
+moduleTester(
+	'int: named split hex default (4 bytes)',
+	`module test
+int foo 0xA8 0xFF 0x00 0x00
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	[[{}, { output: 0xa8ff0000 | 0 }]]
+);
+
+moduleTester(
+	'int: anonymous split hex default (2 bytes, right-padded)',
+	`module test
+int 0xA8 0xFF
+int output
+push &output
+push __anonymous__1
+store
+moduleEnd
+`,
+	[[{}, { output: 0xa8ff0000 | 0 }]]
+);
