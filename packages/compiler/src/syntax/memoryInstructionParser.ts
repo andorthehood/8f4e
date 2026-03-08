@@ -104,7 +104,11 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 			result.firstArg = { type: 'split-hex-literal', bytes };
 			return result;
 		} else {
-			// args[1] exists but is not a hex-byte literal — fall through to normal secondArg handling
+			// Mixed tokens: a leading hex-byte literal followed by a non-hex-byte argument
+			throw new SyntaxRulesError(
+				SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
+				'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF)'
+			);
 		}
 	}
 
