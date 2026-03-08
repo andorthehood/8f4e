@@ -9,13 +9,11 @@ import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixSta
 import type { CompilationContext, Argument } from '../types';
 
 /**
- * Returns the maximum number of bytes allowed for a split-hex default value
- * based on the declaration instruction (e.g. 'int' → 4, 'float64' → 8).
+ * Returns the maximum number of bytes allowed for a split-hex default value.
+ * Split-hex is restricted to 4 bytes (32-bit) for all declaration types to avoid
+ * exceeding JavaScript's Number.MAX_SAFE_INTEGER on 8-byte paths.
  */
-function getMaxBytesForInstruction(instruction: string): number {
-	if (instruction.startsWith('float64')) {
-		return 8;
-	}
+function getMaxBytesForInstruction(): number {
 	return 4;
 }
 
@@ -60,7 +58,7 @@ export default function parseMemoryInstructionArguments(
 		throw error;
 	}
 
-	const maxBytes = getMaxBytesForInstruction(instruction);
+	const maxBytes = getMaxBytesForInstruction();
 	let defaultValue = 0;
 	let id = '';
 
