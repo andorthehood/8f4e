@@ -1,0 +1,17 @@
+8f4e/v1
+
+function extractByte
+; Extracts one byte from a 32-bit integer.
+; byteIndex is 0..3, where 0 is the least-significant byte.
+param int word
+param int byteIndex
+
+localGet word
+localGet byteIndex
+push 3
+shiftLeft
+shiftRightUnsigned
+push 0xFF
+and
+
+functionEnd int
