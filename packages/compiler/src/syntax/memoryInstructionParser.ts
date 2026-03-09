@@ -17,7 +17,7 @@ import extractIntermodularElementMinBase from './extractIntermodularElementMinBa
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
 	| { type: 'identifier'; value: string }
-	| { type: 'split-hex-literal'; bytes: number[] }
+	| { type: 'split-byte-literal'; bytes: number[] }
 	| { type: 'memory-reference'; base: string; pattern: string }
 	| { type: 'element-count'; base: string }
 	| { type: 'intermodular-reference'; pattern: string }
@@ -32,10 +32,11 @@ export interface ParsedMemoryInstructionArguments {
 }
 
 /**
- * Returns true when the argument is a hexadecimal byte literal (0x00–0xFF written in hex form).
+ * Returns true when the argument is a byte-sized integer literal (0–255) in any numeric form
+ * (decimal, hexadecimal, or binary).
  */
-function isHexByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: ArgumentType.LITERAL; isHex: true } {
-	return arg.type === ArgumentType.LITERAL && arg.isHex === true && arg.value >= 0 && arg.value <= 255;
+function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: ArgumentType.LITERAL; isInteger: true } {
+	return arg.type === ArgumentType.LITERAL && arg.isInteger === true && arg.value >= 0 && arg.value <= 255;
 }
 
 /**
@@ -55,28 +56,28 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 		firstArg: classifyArgument(args[0]),
 	};
 
-	// For named declarations (firstArg is identifier), check args[1..] for split hex
+	// For named declarations (firstArg is identifier), check args[1..] for split bytes
 	if (result.firstArg.type === 'identifier' && args[1]) {
-		if (isHexByteLiteral(args[1])) {
-			// Check if there are more hex-byte literals (making this a split-hex sequence)
+		if (isByteLiteral(args[1])) {
+			// Check if there are more byte literals (making this a split-byte sequence)
 			const bytes: number[] = [args[1].value];
 			let i = 2;
 			while (args[i]) {
-				if (isHexByteLiteral(args[i])) {
+				if (isByteLiteral(args[i])) {
 					bytes.push((args[i] as ArgumentLiteral).value);
 					i++;
 				} else {
-					// Mixed tokens: a hex-byte followed by a non-hex-byte argument
+					// Non-byte token after byte(s): invalid in split-byte context
 					throw new SyntaxRulesError(
 						SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
-						'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF)'
+						'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
 					);
 				}
 			}
 			if (bytes.length >= 2) {
-				result.secondArg = { type: 'split-hex-literal', bytes };
+				result.secondArg = { type: 'split-byte-literal', bytes };
 			} else {
-				// Single hex-byte literal — keep as regular literal (existing behaviour)
+				// Single byte literal — keep as regular literal (existing behaviour)
 				result.secondArg = classifyArgument(args[1]);
 			}
 		} else {
@@ -85,29 +86,29 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 		return result;
 	}
 
-	// For anonymous declarations (firstArg is literal), check if it starts a split-hex sequence
-	if (result.firstArg.type === 'literal' && isHexByteLiteral(args[0]) && args[1]) {
-		if (isHexByteLiteral(args[1])) {
+	// For anonymous declarations (firstArg is literal), check if it starts a split-byte sequence
+	if (result.firstArg.type === 'literal' && isByteLiteral(args[0]) && args[1]) {
+		if (isByteLiteral(args[1])) {
 			const bytes: number[] = [(args[0] as ArgumentLiteral).value, args[1].value];
 			let i = 2;
 			while (args[i]) {
-				if (isHexByteLiteral(args[i])) {
+				if (isByteLiteral(args[i])) {
 					bytes.push((args[i] as ArgumentLiteral).value);
 					i++;
 				} else {
 					throw new SyntaxRulesError(
 						SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
-						'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF)'
+						'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
 					);
 				}
 			}
-			result.firstArg = { type: 'split-hex-literal', bytes };
+			result.firstArg = { type: 'split-byte-literal', bytes };
 			return result;
 		} else {
-			// Mixed tokens: a leading hex-byte literal followed by a non-hex-byte argument
+			// Non-byte token after a leading byte literal: invalid in split-byte context
 			throw new SyntaxRulesError(
 				SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
-				'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF)'
+				'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
 			);
 		}
 	}
