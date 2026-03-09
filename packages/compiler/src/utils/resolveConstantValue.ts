@@ -1,8 +1,6 @@
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { parseArgument, ArgumentType, type ArgumentLiteral } from '../syntax/parseArgument';
-import parseConstantMulDivExpression, {
-	type ConstantMulDivExpression,
-} from '../syntax/parseConstantMulDivExpression';
+import parseConstantMulDivExpression, { type ConstantMulDivExpression } from '../syntax/parseConstantMulDivExpression';
 
 import type { AST, CompilationContext, Const, Consts } from '../types';
 

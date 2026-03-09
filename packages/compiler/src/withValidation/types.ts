@@ -17,7 +17,7 @@ export interface ValidationSpec {
 		minOperands?: number;
 		operandTypes?: OperandRule[] | OperandRule;
 	};
-	onInvalidScope?: import('../errors').ErrorCode;
+	onInvalidScope?: import('../compilerError').ErrorCode;
 	allowedInConstantsBlocks?: boolean;
 	allowedInMapBlocks?: boolean;
 }

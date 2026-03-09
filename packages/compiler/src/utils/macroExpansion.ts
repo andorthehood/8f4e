@@ -1,7 +1,7 @@
 import instructionParser from '../syntax/instructionParser';
 import isComment from '../syntax/isComment';
 import isValidInstruction from '../syntax/isValidInstruction';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 
 import type { Module } from '../types';
 import type { AST } from '../types';

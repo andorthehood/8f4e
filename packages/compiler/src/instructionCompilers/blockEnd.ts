@@ -1,4 +1,4 @@
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';

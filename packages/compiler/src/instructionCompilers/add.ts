@@ -2,7 +2,7 @@ import createInstructionCompilerTestContext from '../utils/testUtils';
 import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { AST, InstructionCompiler } from '../types';
