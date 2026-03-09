@@ -32,9 +32,12 @@ The int instruction declares a 32-bit integer in module memory. Use `int*` or `i
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
 Constant mul/div expressions are also supported with the same one-operator rule (`CONST*number` or `CONST/number`).
 
-A default value may also be expressed as a sequence of two to four adjacent hexadecimal byte literals (split hex form).
+A default value may also be expressed as a split-byte sequence: two to four adjacent byte literals combined into a single 32-bit integer.
 Bytes are combined left-to-right as most-significant to least-significant.
-Missing trailing bytes are padded with `0x00` on the right to fill the 32-bit width.
+Missing trailing bytes are padded with `0` on the right to fill the 32-bit width.
+
+Split-byte tokens may be written in any numeric form (decimal `32`, hexadecimal `0x20`, etc.) as long as each resolves to an integer in the range `0–255`.
+A single byte literal does **not** trigger split-byte mode; only two or more consecutive byte literals are treated as a split-byte sequence.
 
 #### Examples
 
@@ -47,6 +50,9 @@ int* endPtr count&
 int colorARGB 0xA8 0xFF 0x00 0x00
 int colorAR   0xA8 0xFF
 int 0xA8 0xFF
+int colorDecimal 32 64
+int 32 64
+int 32
 ```
 
 ### float
