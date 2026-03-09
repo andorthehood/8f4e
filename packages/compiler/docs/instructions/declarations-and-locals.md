@@ -32,17 +32,29 @@ The int instruction declares a 32-bit integer in module memory. Use `int*` or `i
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
 Constant mul/div expressions are also supported with the same one-operator rule (`CONST*number` or `CONST/number`).
 
-A default value may also be expressed as a split-byte sequence: two to four adjacent byte literals combined into a single 32-bit integer.
+A default value may also be expressed as a split-byte sequence: two to four adjacent byte-resolving tokens combined into a single 32-bit integer.
 Bytes are combined left-to-right as most-significant to least-significant.
 Missing trailing bytes are padded with `0` on the right to fill the 32-bit width.
 
-Split-byte tokens may be written in any numeric form (decimal `32`, hexadecimal `0x20`, etc.) as long as each resolves to an integer in the range `0–255`.
-A single byte literal does **not** trigger split-byte mode; only two or more consecutive byte literals are treated as a split-byte sequence.
+Split-byte tokens may be:
+- Integer literals in any numeric form (decimal `32`, hexadecimal `0x20`, etc.) as long as each resolves to an integer in the range `0–255`.
+- Constants that resolve at compile time to an integer in the range `0–255`.
+- Mixed sequences of byte literals and byte-valued constants are also accepted.
+
+A single byte literal or a single byte-valued constant does **not** trigger split-byte mode; only two or more consecutive byte-resolving tokens are treated as a split-byte sequence.
+
+#### Reserved identifier rule
+
+Memory allocation identifiers must **not** match constant-style naming conventions (all-uppercase, no lowercase letters). Constant-style names like `HI`, `MY_VALUE`, or `THRESHOLD` are reserved for `const` declarations. Attempting to use them as memory names is a compiler error.
+
+This rule also disambiguates anonymous declarations: when the first argument is a constant-style identifier, it is always treated as a constant reference (anonymous allocation), never as a memory name.
 
 #### Examples
 
 ```
 const MAX 8
+const HI 0xA8
+const LO 0xFF
 int count 4
 int halfCount MAX/2
 int* ptr &count
@@ -53,6 +65,8 @@ int 0xA8 0xFF
 int colorDecimal 32 64
 int 32 64
 int 32
+int colorFromConst HI LO
+int HI LO
 ```
 
 ### float

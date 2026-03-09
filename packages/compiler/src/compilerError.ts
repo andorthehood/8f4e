@@ -55,6 +55,8 @@ export enum ErrorCode {
 	INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
 	SPLIT_HEX_TOO_MANY_BYTES,
 	SPLIT_HEX_MIXED_TOKENS,
+	CONSTANT_NAME_AS_MEMORY_IDENTIFIER,
+	SPLIT_BYTE_CONSTANT_OUT_OF_RANGE,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -310,6 +312,23 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 				code,
 				message:
 					'Split-byte default values must consist entirely of byte literals (integer values 0–255). (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER:
+			return {
+				code,
+				message:
+					'Constant-style identifiers (all-uppercase) are reserved for constants and cannot be used as memory allocation names. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE:
+			return {
+				code,
+				message: 'Constants used in split-byte mode must resolve to an integer in the range 0–255. (' + code + ')',
 				line,
 				context,
 			};
