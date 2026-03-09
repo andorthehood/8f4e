@@ -312,6 +312,25 @@ describe('parseMemoryInstructionArguments', () => {
 			];
 			expect(() => parseMemoryInstructionArguments(args, 34, 'int', createMockContext())).toThrow();
 		});
+
+		it('should throw when named non-byte second arg is followed by extra tokens', () => {
+			// int foo 256 1 — 256 is not a valid byte, 1 would be silently ignored without the fix
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 35, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when anonymous out-of-range first literal is followed by another literal', () => {
+			// int 256 1 — 256 is out of byte range so the 1 would otherwise silently become the default
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 36, 'int', createMockContext())).toThrow();
+		});
 	});
 
 	describe('edge cases', () => {
