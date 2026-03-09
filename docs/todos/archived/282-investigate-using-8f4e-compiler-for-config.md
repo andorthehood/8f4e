@@ -3,7 +3,7 @@ title: 'TODO: Investigate Using 8f4e Compiler for Config'
 priority: Medium
 effort: 1-2d
 created: 2026-02-25
-status: Open
+status: Cancelled
 completed: null
 ---
 
