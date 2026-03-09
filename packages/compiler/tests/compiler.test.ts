@@ -10,7 +10,6 @@ describe('parseArgument', () => {
 		['0b1', ArgumentType.LITERAL, 1, true],
 		['0b01', ArgumentType.LITERAL, 1, true],
 		['0b001', ArgumentType.LITERAL, 1, true],
-		['0xff', ArgumentType.LITERAL, 255, true],
 		['100', ArgumentType.LITERAL, 100, true],
 		['0.0', ArgumentType.LITERAL, 0, false],
 		['1.00', ArgumentType.LITERAL, 1, false],
@@ -27,6 +26,15 @@ describe('parseArgument', () => {
 
 	test.each(literals)('given %p as input the output is %p', (argument, type, value, isInteger) => {
 		expect(parseArgument(argument)).toStrictEqual({ type, value, isInteger });
+	});
+
+	test('parses hex literal with isHex flag', () => {
+		expect(parseArgument('0xff')).toStrictEqual({
+			type: ArgumentType.LITERAL,
+			value: 255,
+			isInteger: true,
+			isHex: true,
+		});
 	});
 
 	test.each(identifiers)('given %p as input the output is %p', (argument, type, value) => {
@@ -64,6 +72,7 @@ describe('parseLine', () => {
 						type: ArgumentType.LITERAL,
 						value: 255,
 						isInteger: true,
+						isHex: true,
 					},
 				],
 				instruction: 'push',
