@@ -38,7 +38,7 @@ const SyntaxErrorMessages: Record<SyntaxErrorCode, string> = {
 	[SyntaxErrorCode.DIVISION_BY_ZERO]: 'Division by zero in literal expression.',
 	[SyntaxErrorCode.INVALID_STRING_LITERAL]: 'Invalid string literal.',
 	[SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS]:
-		'Split-byte default values must consist entirely of byte literals (integer values 0–255).',
+		'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255) or constant-style identifiers. Memory references and other expression forms are not allowed in split-byte sequences.',
 };
 
 export class SyntaxRulesError extends Error {

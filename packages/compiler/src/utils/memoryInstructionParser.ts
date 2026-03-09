@@ -39,6 +39,10 @@ function combineSplitHexBytes(bytes: number[], maxBytes: number): number {
  * Resolves a split-byte token sequence into a single combined integer default value.
  * Literal tokens are used directly; identifier tokens are resolved as compile-time constants
  * and validated to be integers in the range 0–255.
+ *
+ * If an identifier token does not resolve to a declared constant, throws
+ * CONSTANT_NAME_AS_MEMORY_IDENTIFIER — constant-style names in split-byte position must be
+ * declared constants (they cannot be memory names).
  */
 function resolveSplitByteTokens(
 	tokens: SplitByteToken[],
@@ -56,8 +60,13 @@ function resolveSplitByteTokens(
 			// Already validated as byte literal (0–255) at the syntax level
 			bytes.push(token.value);
 		} else {
-			// Resolve identifier as a compile-time constant
-			const constant = resolveConstantValueOrExpressionOrThrow(token.value, lineForError, context);
+			// Identifier token must resolve to a declared compile-time constant.
+			// Use tryResolve so we can provide a clearer error than UNDECLARED_IDENTIFIER when the
+			// constant-style name was never declared (user likely intended it as a memory name).
+			const constant = tryResolveConstantValueOrExpression(context.namespace.consts, token.value);
+			if (!constant) {
+				throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
+			}
 			if (!constant.isInteger || constant.value < 0 || constant.value > 255) {
 				throw getError(ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE, lineForError, context);
 			}
