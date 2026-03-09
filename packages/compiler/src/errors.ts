@@ -282,7 +282,7 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 		case ErrorCode.SPLIT_HEX_TOO_MANY_BYTES:
 			return {
 				code,
-				message: 'Too many split hexadecimal bytes for this declaration type. (' + code + ')',
+				message: 'Too many split-byte values for this declaration type. (' + code + ')',
 				line,
 				context,
 			};
@@ -290,7 +290,7 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message:
-					'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF). (' + code + ')',
+					'Split-byte default values must consist entirely of byte literals (integer values 0–255). (' + code + ')',
 				line,
 				context,
 			};
