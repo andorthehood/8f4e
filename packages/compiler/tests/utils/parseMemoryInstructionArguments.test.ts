@@ -278,7 +278,8 @@ describe('parseMemoryInstructionArguments', () => {
 			expect(() => parseMemoryInstructionArguments(args, 24, 'int', createMockContext())).toThrow();
 		});
 
-		it('should throw when a byte literal is followed by an identifier', () => {
+		it('should throw when a constant identifier in split-byte mode is not in scope', () => {
+			// CONST is not defined in the context, so resolution fails
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
@@ -330,6 +331,128 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 			];
 			expect(() => parseMemoryInstructionArguments(args, 36, 'int', createMockContext())).toThrow();
+		});
+	});
+
+	describe('constant split-byte default values', () => {
+		it('should combine named constant split-byte (HI LO) into a 32-bit default', () => {
+			const context = createMockContext({}, { HI: { value: 32, isInteger: true }, LO: { value: 64, isInteger: true } });
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+			];
+			const result = parseMemoryInstructionArguments(args, 40, 'int', context);
+			// HI=32=0x20, LO=64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0x20400000 });
+		});
+
+		it('should combine anonymous constant split-byte (HI LO) into a 32-bit default', () => {
+			const context = createMockContext({}, { HI: { value: 32, isInteger: true }, LO: { value: 64, isInteger: true } });
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+			];
+			const result = parseMemoryInstructionArguments(args, 41, 'int', context);
+			expect(result).toEqual({ id: '__anonymous__41', defaultValue: 0x20400000 });
+		});
+
+		it('should combine named mixed byte literal and constant into a 32-bit default', () => {
+			const context = createMockContext({}, { LO: { value: 64, isInteger: true } });
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+			];
+			const result = parseMemoryInstructionArguments(args, 42, 'int', context);
+			// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8400000 });
+		});
+
+		it('should combine anonymous byte literal and constant split-byte', () => {
+			const context = createMockContext({}, { LO: { value: 64, isInteger: true } });
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+			];
+			const result = parseMemoryInstructionArguments(args, 43, 'int', context);
+			// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
+			expect(result).toEqual({ id: '__anonymous__43', defaultValue: 0xa8400000 });
+		});
+
+		it('should throw when a constant in split-byte resolves to a value greater than 255', () => {
+			const context = createMockContext(
+				{},
+				{ HI: { value: 32, isInteger: true }, BIG: { value: 300, isInteger: true } }
+			);
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				{ type: ArgumentType.IDENTIFIER, value: 'BIG' },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 44, 'int', context)).toThrow();
+		});
+
+		it('should throw when a constant in split-byte resolves to a negative value', () => {
+			const context = createMockContext(
+				{},
+				{ HI: { value: 32, isInteger: true }, NEG: { value: -1, isInteger: true } }
+			);
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				{ type: ArgumentType.IDENTIFIER, value: 'NEG' },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 45, 'int', context)).toThrow();
+		});
+
+		it('should throw when a constant in split-byte is a non-integer (float)', () => {
+			const context = createMockContext(
+				{},
+				{ HI: { value: 32, isInteger: true }, FRAC: { value: 0.5, isInteger: false } }
+			);
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				{ type: ArgumentType.IDENTIFIER, value: 'FRAC' },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 46, 'int', context)).toThrow();
+		});
+
+		it('should throw when constant-style name is used as memory identifier', () => {
+			// MY_VAR matches isConstantName — constant-style names are reserved for constants only
+			const args = [{ type: ArgumentType.IDENTIFIER, value: 'MY_VAR' }];
+			expect(() => parseMemoryInstructionArguments(args, 47, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when constant-style name as memory identifier has a default value', () => {
+			// COUNTER is constant-style and cannot be a memory identifier
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'COUNTER' },
+				{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 48, 'int', createMockContext())).toThrow();
+		});
+
+		it('should resolve 4-constant split-byte sequence (4 tokens)', () => {
+			const context = createMockContext(
+				{},
+				{
+					A: { value: 0xa8, isInteger: true },
+					B: { value: 0xff, isInteger: true },
+					C: { value: 0, isInteger: true },
+					D: { value: 0, isInteger: true },
+				}
+			);
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.IDENTIFIER, value: 'A' },
+				{ type: ArgumentType.IDENTIFIER, value: 'B' },
+				{ type: ArgumentType.IDENTIFIER, value: 'C' },
+				{ type: ArgumentType.IDENTIFIER, value: 'D' },
+			];
+			const result = parseMemoryInstructionArguments(args, 49, 'int', context);
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
 		});
 	});
 

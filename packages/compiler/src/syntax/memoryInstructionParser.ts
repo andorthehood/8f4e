@@ -13,11 +13,18 @@ import isIntermodularElementMaxReference from './isIntermodularElementMaxReferen
 import extractIntermodularElementMaxBase from './extractIntermodularElementMaxBase';
 import isIntermodularElementMinReference from './isIntermodularElementMinReference';
 import extractIntermodularElementMinBase from './extractIntermodularElementMinBase';
+import isConstantName from './isConstantName';
+
+/**
+ * A single token within a split-byte sequence.
+ * May be a resolved byte literal or an identifier to be resolved as a compile-time constant.
+ */
+export type SplitByteToken = { type: 'literal'; value: number } | { type: 'identifier'; value: string };
 
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
 	| { type: 'identifier'; value: string }
-	| { type: 'split-byte-literal'; bytes: number[] }
+	| { type: 'split-byte-tokens'; tokens: SplitByteToken[] }
 	| { type: 'memory-reference'; base: string; pattern: string }
 	| { type: 'element-count'; base: string }
 	| { type: 'intermodular-reference'; pattern: string }
@@ -40,12 +47,69 @@ function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: Argument
 }
 
 /**
+ * Returns true when the argument can participate in a split-byte sequence:
+ * either a byte-sized integer literal (0–255) or a plain identifier (not a special reference).
+ * Plain identifiers are expected to be resolved as compile-time constants in the semantic phase.
+ */
+function isSplitByteCandidate(arg: Argument): boolean {
+	if (isByteLiteral(arg)) return true;
+	if (arg.type !== ArgumentType.IDENTIFIER) return false;
+	// Must be a plain identifier, not a special reference prefix
+	const v = arg.value;
+	return (
+		!isIntermodularReference(v) &&
+		!isIntermodularElementCountReference(v) &&
+		!isIntermodularElementWordSizeReference(v) &&
+		!isIntermodularElementMaxReference(v) &&
+		!isIntermodularElementMinReference(v) &&
+		!hasMemoryReferencePrefix(v) &&
+		!hasElementCountPrefix(v)
+	);
+}
+
+/**
+ * Converts an argument known to be a valid split-byte candidate into a SplitByteToken.
+ */
+function toSplitByteToken(arg: Argument): SplitByteToken {
+	if (arg.type === ArgumentType.LITERAL) {
+		return { type: 'literal', value: (arg as ArgumentLiteral).value };
+	}
+	return { type: 'identifier', value: (arg as { value: string }).value };
+}
+
+/**
+ * Collects all arguments from position `start` onward as split-byte tokens.
+ * Throws SPLIT_HEX_MIXED_TOKENS if any argument is not a valid split-byte candidate.
+ */
+function collectSplitByteTokens(args: Array<Argument>, start: number): SplitByteToken[] {
+	const tokens: SplitByteToken[] = [];
+	for (let i = start; i < args.length; i++) {
+		if (!isSplitByteCandidate(args[i])) {
+			throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
+		}
+		tokens.push(toSplitByteToken(args[i]));
+	}
+	return tokens;
+}
+
+/**
  * Parses memory instruction arguments at the syntax level.
- * This function classifies argument shapes without touching compiler state or performing semantic validation.
+ * This function classifies argument shapes without touching compiler state or performing semantic validation
+ * (e.g., it does not look up constants or memory names). The one exception is the constant-style identifier
+ * check (`isConstantName`), which is a pure naming-convention rule applied to token text alone and requires
+ * no compiler state — it disambiguates anonymous declarations at the syntax level so that `int HI LO` is
+ * always treated as an anonymous split-byte declaration and never as a named allocation.
+ *
+ * Split-byte detection rules:
+ * - Two or more tokens that are byte literals or plain identifiers form a split-byte sequence (split-byte-tokens).
+ * - Constant-style identifiers (all-uppercase, matching isConstantName) are treated as anonymous starts and
+ *   cannot be used as memory names. When followed by more tokens, they start a split-byte sequence.
+ * - Named declarations (non-constant-style identifier as first arg) collect 2+ following tokens as split-byte-tokens.
+ * - A single token in any position is not treated as split-byte.
  *
  * @param args - Array of parsed arguments
  * @returns Parsed memory instruction arguments with shape information
- * @throws {SyntaxRulesError} If required arguments are missing
+ * @throws {SyntaxRulesError} If required arguments are missing or the token sequence is invalid
  */
 export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): ParsedMemoryInstructionArguments {
 	if (!args[0]) {
@@ -56,63 +120,60 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 		firstArg: classifyArgument(args[0]),
 	};
 
-	// For named declarations (firstArg is identifier), check args[1..] for split bytes
-	if (result.firstArg.type === 'identifier' && args[1]) {
-		if (isByteLiteral(args[1])) {
-			// Check if there are more byte literals (making this a split-byte sequence)
-			const bytes: number[] = [args[1].value];
-			let i = 2;
-			while (args[i]) {
-				if (isByteLiteral(args[i])) {
-					bytes.push((args[i] as ArgumentLiteral).value);
-					i++;
-				} else {
-					// Non-byte token after byte(s): invalid in split-byte context
-					throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
-				}
-			}
-			if (bytes.length >= 2) {
-				result.secondArg = { type: 'split-byte-literal', bytes };
-			} else {
-				// Single byte literal — keep as regular literal (existing behaviour)
-				result.secondArg = classifyArgument(args[1]);
-			}
-		} else {
-			result.secondArg = classifyArgument(args[1]);
-			// Reject unexpected extra arguments after a non-byte second arg
-			if (args[2]) {
+	// Case A: Anonymous path — starts with a byte-sized integer literal (0–255)
+	if (result.firstArg.type === 'literal' && isByteLiteral(args[0])) {
+		if (args[1]) {
+			if (!isSplitByteCandidate(args[1])) {
 				throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
 			}
+			// Two or more tokens: collect all as split-byte-tokens
+			const tokens: SplitByteToken[] = [
+				{ type: 'literal', value: (args[0] as ArgumentLiteral).value },
+				...collectSplitByteTokens(args, 1),
+			];
+			result.firstArg = { type: 'split-byte-tokens', tokens };
 		}
 		return result;
 	}
 
-	// For anonymous declarations (firstArg is literal), check if it starts a split-byte sequence
+	// Case B: Anonymous path — out-of-range literal followed by extra args (reject to prevent silent miscompilation)
 	if (result.firstArg.type === 'literal' && args[1]) {
-		if (isByteLiteral(args[0])) {
-			if (isByteLiteral(args[1])) {
-				const bytes: number[] = [(args[0] as ArgumentLiteral).value, args[1].value];
-				let i = 2;
-				while (args[i]) {
-					if (isByteLiteral(args[i])) {
-						bytes.push((args[i] as ArgumentLiteral).value);
-						i++;
-					} else {
-						throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
-					}
-				}
-				result.firstArg = { type: 'split-byte-literal', bytes };
-				return result;
-			} else {
-				// Non-byte token after a leading byte literal: invalid in split-byte context
-				throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
-			}
-		} else {
-			// args[0] is out-of-byte-range literal with extra arguments: reject to avoid silent miscompilation
-			throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
-		}
+		throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
 	}
 
+	// Case C: Anonymous path — starts with a constant-style identifier.
+	// Constant-style names (all-uppercase) cannot be memory allocation names; treat as anonymous.
+	// When followed by additional tokens they form a split-byte sequence.
+	if (result.firstArg.type === 'identifier' && isConstantName(result.firstArg.value)) {
+		if (args[1]) {
+			if (!isSplitByteCandidate(args[1])) {
+				throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
+			}
+			// Two or more tokens: collect all as split-byte-tokens
+			const tokens: SplitByteToken[] = [
+				{ type: 'identifier', value: result.firstArg.value },
+				...collectSplitByteTokens(args, 1),
+			];
+			result.firstArg = { type: 'split-byte-tokens', tokens };
+		}
+		// Single constant-style identifier: keep as identifier (resolved to constant value in semantic phase)
+		return result;
+	}
+
+	// Case D: Named declaration — non-constant-style identifier as first arg.
+	if (result.firstArg.type === 'identifier') {
+		if (args[2]) {
+			// Two or more default tokens: all must be split-byte candidates
+			const tokens = collectSplitByteTokens(args, 1);
+			result.secondArg = { type: 'split-byte-tokens', tokens };
+		} else if (args[1]) {
+			// Single default token: classify normally
+			result.secondArg = classifyArgument(args[1]);
+		}
+		return result;
+	}
+
+	// Case E: Non-identifier first arg (special references, etc.) — classify second arg if present
 	if (args[1]) {
 		result.secondArg = classifyArgument(args[1]);
 	}
@@ -283,6 +344,67 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.LITERAL, value: 7, isInteger: true },
 			]);
 			expect(result.secondArg).toEqual({ type: 'literal', value: 7 });
+		});
+
+		it('parses constant-style identifier as anonymous (no second arg)', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' }]);
+			expect(result.firstArg).toEqual({ type: 'identifier', value: 'MY_CONST' });
+			expect(result.secondArg).toBeUndefined();
+		});
+
+		it('parses two constant-style identifiers as anonymous split-byte-tokens', () => {
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+			]);
+			expect(result.firstArg).toEqual({
+				type: 'split-byte-tokens',
+				tokens: [
+					{ type: 'identifier', value: 'HI' },
+					{ type: 'identifier', value: 'LO' },
+				],
+			});
+			expect(result.secondArg).toBeUndefined();
+		});
+
+		it('parses named declaration with two constant identifiers as split-byte-tokens in secondArg', () => {
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'foo' },
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+			]);
+			expect(result.firstArg).toEqual({ type: 'identifier', value: 'foo' });
+			expect(result.secondArg).toEqual({
+				type: 'split-byte-tokens',
+				tokens: [
+					{ type: 'identifier', value: 'HI' },
+					{ type: 'identifier', value: 'LO' },
+				],
+			});
+		});
+
+		it('parses named declaration with mixed byte literal and constant identifier as split-byte-tokens', () => {
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'foo' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+			]);
+			expect(result.secondArg).toEqual({
+				type: 'split-byte-tokens',
+				tokens: [
+					{ type: 'literal', value: 0xa8 },
+					{ type: 'identifier', value: 'HI' },
+				],
+			});
+		});
+
+		it('throws when constant-style identifier is followed by a special reference', () => {
+			expect(() =>
+				parseMemoryInstructionArgumentsShape([
+					{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+					{ type: ArgumentType.IDENTIFIER, value: '&buf' },
+				])
+			).toThrow(SyntaxRulesError);
 		});
 	});
 }
