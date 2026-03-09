@@ -47,7 +47,13 @@ A single byte literal or a single byte-valued constant does **not** trigger spli
 
 Memory allocation identifiers must **not** match constant-style naming conventions (all-uppercase, no lowercase letters). Constant-style names like `HI`, `MY_VALUE`, or `THRESHOLD` are reserved for `const` declarations. Attempting to use them as memory names is a compiler error.
 
-This rule also disambiguates anonymous declarations: when the first argument is a constant-style identifier, it is always treated as a constant reference (anonymous allocation), never as a memory name.
+This rule applies consistently regardless of how many arguments follow:
+- `int MY_VAR` → error: constant-style name not declared as a constant
+- `int MY_VAR 0` → error: constant-style name used in split-byte position is not a declared constant
+
+When a constant-style identifier appears as the first argument and is declared as a constant, it is treated as an anonymous allocation:
+- `int HI` → anonymous allocation, default = constant `HI`
+- `int HI LO` → anonymous split-byte allocation, default = `HI` and `LO` packed left-to-right
 
 #### Examples
 

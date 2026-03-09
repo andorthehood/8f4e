@@ -311,7 +311,9 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message:
-					'Split-byte default values must consist entirely of byte literals (integer values 0–255). (' + code + ')',
+					'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255) or constant-style identifiers. Memory references and other expression forms are not allowed in split-byte sequences. (' +
+					code +
+					')',
 				line,
 				context,
 			};
