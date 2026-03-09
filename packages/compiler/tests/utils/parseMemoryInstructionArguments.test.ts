@@ -166,7 +166,7 @@ describe('parseMemoryInstructionArguments', () => {
 		});
 	});
 
-	describe('split hexadecimal default values', () => {
+	describe('split-byte default values (decimal and hex)', () => {
 		it('should combine 2 named hex-byte literals into a right-padded 32-bit default', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
@@ -198,7 +198,7 @@ describe('parseMemoryInstructionArguments', () => {
 			expect(result).toEqual({ id: '__anonymous__22', defaultValue: 0xa8ff0000 });
 		});
 
-		it('should treat single hex-byte literal as a regular literal (no split hex)', () => {
+		it('should treat single hex-byte literal as a regular literal (no split)', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
@@ -207,7 +207,66 @@ describe('parseMemoryInstructionArguments', () => {
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8 });
 		});
 
-		it('should throw when split hex byte count exceeds 4 for int', () => {
+		it('should combine 2 named decimal byte literals into a right-padded 32-bit default', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 28, 'int', createMockContext());
+			// 32 = 0x20, 64 = 0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0x20400000 });
+		});
+
+		it('should combine 4 named decimal byte literals into a 32-bit default', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 29, 'int', createMockContext());
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0x20400000 });
+		});
+
+		it('should combine anonymous decimal byte literals', () => {
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 30, 'int', createMockContext());
+			expect(result).toEqual({ id: '__anonymous__30', defaultValue: 0x20400000 });
+		});
+
+		it('should treat single decimal byte literal as a regular literal (no split)', () => {
+			const args = [{ type: ArgumentType.LITERAL, value: 32, isInteger: true }];
+			const result = parseMemoryInstructionArguments(args, 31, 'int', createMockContext());
+			expect(result).toEqual({ id: '__anonymous__31', defaultValue: 32 });
+		});
+
+		it('should allow mixed hex and decimal byte literals in a split-byte sequence', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 32, 'int', createMockContext());
+			// 0xA8=168, 255=0xFF → [168, 255, 0, 0] = 0xA8FF0000
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
+		});
+
+		it('should allow mixed decimal and hex byte literals in anonymous split-byte', () => {
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 33, 'int', createMockContext());
+			// 255=0xFF, 0xA8=168 → [255, 168, 0, 0] = 0xFFA80000
+			expect(result).toEqual({ id: '__anonymous__33', defaultValue: 0xffa80000 });
+		});
+
+		it('should throw when split-byte count exceeds 4 for int', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
@@ -219,30 +278,58 @@ describe('parseMemoryInstructionArguments', () => {
 			expect(() => parseMemoryInstructionArguments(args, 24, 'int', createMockContext())).toThrow();
 		});
 
-		it('should throw when hex-byte is followed by a non-hex literal (mixed form)', () => {
-			const args = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
-				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
-				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
-			];
-			expect(() => parseMemoryInstructionArguments(args, 25, 'int', createMockContext())).toThrow();
-		});
-
-		it('should throw when hex-byte is followed by an identifier (mixed form)', () => {
+		it('should throw when a byte literal is followed by an identifier', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.IDENTIFIER, value: 'CONST' },
 			];
+			expect(() => parseMemoryInstructionArguments(args, 25, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when a byte literal is followed by a value greater than 255', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
+			];
 			expect(() => parseMemoryInstructionArguments(args, 26, 'int', createMockContext())).toThrow();
 		});
 
-		it('should throw when anonymous hex-byte is followed by a non-hex literal (mixed form)', () => {
+		it('should throw when a byte literal is followed by a negative integer', () => {
 			const args = [
-				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
-				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: -5, isInteger: true },
 			];
 			expect(() => parseMemoryInstructionArguments(args, 27, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when anonymous byte literal is followed by a non-byte', () => {
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 34, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when named non-byte second arg is followed by extra tokens', () => {
+			// int foo 256 1 — 256 is not a valid byte, 1 would be silently ignored without the fix
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 35, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when anonymous out-of-range first literal is followed by another literal', () => {
+			// int 256 1 — 256 is out of byte range so the 1 would otherwise silently become the default
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 36, 'int', createMockContext())).toThrow();
 		});
 	});
 

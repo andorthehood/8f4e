@@ -66,7 +66,7 @@ export default function parseMemoryInstructionArguments(
 	if (parsedArgs.firstArg.type === 'literal') {
 		defaultValue = parsedArgs.firstArg.value;
 		id = '__anonymous__' + lineNumber;
-	} else if (parsedArgs.firstArg.type === 'split-hex-literal') {
+	} else if (parsedArgs.firstArg.type === 'split-byte-literal') {
 		if (parsedArgs.firstArg.bytes.length > maxBytes) {
 			throw getError(ErrorCode.SPLIT_HEX_TOO_MANY_BYTES, lineForError, context);
 		}
@@ -87,7 +87,7 @@ export default function parseMemoryInstructionArguments(
 	if (parsedArgs.secondArg) {
 		if (parsedArgs.secondArg.type === 'literal') {
 			defaultValue = parsedArgs.secondArg.value;
-		} else if (parsedArgs.secondArg.type === 'split-hex-literal') {
+		} else if (parsedArgs.secondArg.type === 'split-byte-literal') {
 			if (parsedArgs.secondArg.bytes.length > maxBytes) {
 				throw getError(ErrorCode.SPLIT_HEX_TOO_MANY_BYTES, lineForError, context);
 			}
@@ -238,11 +238,11 @@ if (import.meta.vitest) {
 			expect(() => parseMemoryInstructionArguments(args, 90, 'int', mockContext)).toThrow();
 		});
 
-		it('throws SPLIT_HEX_MIXED_TOKENS when hex-byte is mixed with non-hex token', () => {
+		it('throws SPLIT_HEX_MIXED_TOKENS when a byte literal is followed by a non-byte token', () => {
 			const args: Argument[] = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
-				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+				{ type: ArgumentType.IDENTIFIER, value: 'CONST' },
 			];
 			expect(() => parseMemoryInstructionArguments(args, 100, 'int', mockContext)).toThrow();
 		});
