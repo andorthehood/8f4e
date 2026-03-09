@@ -1,21 +1,41 @@
-export function parseTabStops(code: string[]): number[] {
+function parseTabDirectiveStops(line: string): number[] | undefined {
+	const match = line.match(/^\s*;\s*@tab\s+(.+?)\s*$/);
+	if (!match) {
+		return undefined;
+	}
+
+	const tokens = match[1].trim().split(/\s+/);
+	if (tokens.length === 0) {
+		return undefined;
+	}
+
 	const positions = new Set<number>();
-
-	for (const line of code) {
-		const match = line.match(/^\s*;\s*@tab\s+(.+?)\s*$/);
-		if (!match) {
-			continue;
-		}
-
-		const value = Number.parseInt(match[1], 10);
-		if (!Number.isInteger(value) || value <= 0 || match[1].trim() !== value.toString()) {
-			continue;
+	for (const token of tokens) {
+		const value = Number.parseInt(token, 10);
+		if (!Number.isInteger(value) || value <= 0 || token !== value.toString()) {
+			return undefined;
 		}
 
 		positions.add(value);
 	}
 
 	return [...positions].sort((a, b) => a - b);
+}
+
+export function getTabStopsByLine(code: string[]): number[][] {
+	const tabStopsByLine: number[][] = [];
+	let activeTabStops: number[] = [];
+
+	for (const line of code) {
+		const parsedStops = parseTabDirectiveStops(line);
+		if (parsedStops) {
+			activeTabStops = parsedStops;
+		}
+
+		tabStopsByLine.push(activeTabStops);
+	}
+
+	return tabStopsByLine;
 }
 
 function getTabAdvance(currentVisualColumn: number, tabStops: number[]): number {
@@ -109,13 +129,34 @@ export function expandLineColorsToCells<T>(
 if (import.meta.vitest) {
 	const { describe, expect, it } = import.meta.vitest;
 
-	describe('parseTabStops', () => {
-		it('parses sorted unique positive integer stops', () => {
-			expect(parseTabStops(['; @tab 8', '; @tab 4', '; @tab 8'])).toEqual([4, 8]);
+	describe('getTabStopsByLine', () => {
+		it('parses multiple stops from a single directive', () => {
+			expect(getTabStopsByLine(['; @tab 8 16 24', '\tfoo'])).toEqual([
+				[8, 16, 24],
+				[8, 16, 24],
+			]);
 		});
 
-		it('ignores malformed and non-positive directives', () => {
-			expect(parseTabStops(['; @tab', '; @tab foo', '; @tab 0', '; @tab -1', '; @tab 4.5', '; note'])).toEqual([]);
+		it('uses the most recent valid directive from that line onward', () => {
+			expect(getTabStopsByLine(['; @tab 4 8', '\tfoo', '; @tab 12 20', '\tbar'])).toEqual([
+				[4, 8],
+				[4, 8],
+				[12, 20],
+				[12, 20],
+			]);
+		});
+
+		it('ignores malformed directives and keeps the previous active stops', () => {
+			expect(getTabStopsByLine(['; @tab 4 8', '\tfoo', '; @tab nope', '\tbar'])).toEqual([
+				[4, 8],
+				[4, 8],
+				[4, 8],
+				[4, 8],
+			]);
+		});
+
+		it('starts with fallback width 1 before any valid directive appears', () => {
+			expect(getTabStopsByLine(['\tfoo', '; @tab 6 12', '\tbar'])).toEqual([[], [6, 12], [6, 12]]);
 		});
 	});
 

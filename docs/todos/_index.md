@@ -161,6 +161,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 296 | Change tab directive to single multi-stop form | 🟡 | 2-4h | 2026-03-09 | Replaced repeated single-stop `; @tab` accumulation with one multi-stop form like `; @tab 12 34 54`, where each valid directive becomes active from that line onward until a later valid directive overrides it |
 | 294 | Add editor tab-stop directive support | 🟡 | 1-2d | 2026-03-09 | Added `; @tab <position>` support with literal tab insertion, visual-column mapping, width/caret/render updates, minimum tab advance `1`, fallback advance `1`, and syntax-highlighting alignment across expanded tab cells |
 | 284 | Lazy-load optional runtimes | 🟡 | 4-8h | 2026-02-25 | Converted `MainThreadLogicRuntime`, `AudioWorkletRuntime`, and `WebWorkerMIDIRuntime` registry entries to lazy-loaded wrappers using cached Promise singletons; inlined `defaults`/`schema` for UI; default `WebWorkerLogicRuntime` remains eager |
 | 285 | Lazy-load sprite font payloads | 🟡 | 4-8h | 2026-02-25 | Removed eager 6x10 font imports; introduced `loadFont` async cache helper; 8x16 stays eagerly decoded at module init; 6x10 loaded via dynamic import on first use; `generateSprite` is now async; all callers updated |
