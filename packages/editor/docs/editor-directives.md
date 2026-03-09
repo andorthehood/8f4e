@@ -123,6 +123,33 @@ Examples:
 
 See [Color Paths](./color-paths.md) for the full list of configurable color paths.
 
+### `@tab`
+
+Define a visual tab stop for literal tab characters within the code block.
+
+```txt
+; @tab <position>
+```
+
+Notes:
+- `position` must be a positive integer visual column.
+- Multiple `@tab` directives are allowed; valid positions are collected and used in ascending order.
+- A tab advances to the first declared stop strictly greater than the current visual column.
+- The minimum tab advance is `1`.
+- If no later declared stop exists, the tab falls back to advance `1`.
+- Tabs remain literal `\t` characters in source code; the extra spacing is editor-rendered only.
+
+Example:
+
+```txt
+module main
+; @tab 4
+; @tab 8
+int foo
+int\tbar
+moduleEnd
+```
+
 ### `@defAsset`
 
 Define a named binary asset URL for later loading.

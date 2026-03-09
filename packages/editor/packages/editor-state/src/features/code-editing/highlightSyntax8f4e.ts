@@ -317,6 +317,13 @@ if (import.meta.vitest) {
 			expect(result[0][16]).not.toBe(spriteLookups.fontCodeComment);
 		});
 
+		it('treats tabs as whitespace for instruction and number highlighting boundaries', () => {
+			const result = highlightSyntax8f4e(['push\t123'], spriteLookups);
+			expect(result[0][0]).toBe(spriteLookups.fontInstruction);
+			expect(result[0][4]).toBe(spriteLookups.fontCode);
+			expect(result[0][5]).toBe(spriteLookups.fontNumbers);
+		});
+
 		it('highlights float64-related instructions', () => {
 			const result = highlightSyntax8f4e(['float64**[] OUT', 'castToFloat64'], spriteLookups);
 			expect(result[0][0]).toBe(spriteLookups.fontInstruction);
