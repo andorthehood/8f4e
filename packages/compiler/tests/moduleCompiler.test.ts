@@ -6,8 +6,8 @@ const fixture = `
 module abs
 
 ; memory
-int DEFAULT_VALUE -1
-int* in:1 &DEFAULT_VALUE
+int defaultValue -1
+int* in:1 &defaultValue
 int out 0
 int[] arr 32 -1
 
