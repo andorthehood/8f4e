@@ -1,5 +1,5 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import br from '../wasmUtils/controlFlow/br';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';

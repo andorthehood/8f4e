@@ -1,6 +1,6 @@
 import isConstantName from '../syntax/isConstantName';
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';

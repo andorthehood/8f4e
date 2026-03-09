@@ -1,4 +1,4 @@
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { ArgumentType } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import wasmCall from '../wasmUtils/call/call';

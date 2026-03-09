@@ -80,7 +80,7 @@ export {
 	type MacroDefinition,
 	type ExpandedLine,
 } from './utils/macroExpansion';
-export { ErrorCode, getError } from './errors';
+export { ErrorCode, getError } from './compilerError';
 
 export function compileModules(
 	modules: AST[],
