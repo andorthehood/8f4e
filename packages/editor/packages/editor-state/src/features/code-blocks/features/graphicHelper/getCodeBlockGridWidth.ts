@@ -1,5 +1,5 @@
 import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
-import { getVisualLineWidth, parseTabStops } from '../../../code-editing/tabLayout';
+import { getTabStopsByLine, getVisualLineWidth } from '../../../code-editing/tabLayout';
 
 /**
  * Computes the grid width required for a code block.
@@ -12,12 +12,12 @@ import { getVisualLineWidth, parseTabStops } from '../../../code-editing/tabLayo
 export default function getCodeBlockGridWidth(code: string[], minGridWidth = CODE_BLOCK_MIN_GRID_WIDTH): number {
 	// Calculate line number column width
 	const lineNumberColumnWidth = code.length.toString().length;
-	const tabStops = parseTabStops(code);
+	const tabStopsByLine = getTabStopsByLine(code);
 
 	// Prepare code with line numbers (matching graphicHelper logic)
 	const codeWithLineNumbers = code.map((line, index) => {
 		const prefix = `${index}`.padStart(lineNumberColumnWidth, '0') + ' ';
-		return prefix.length + getVisualLineWidth(line, tabStops);
+		return prefix.length + getVisualLineWidth(line, tabStopsByLine[index] || []);
 	});
 
 	// Calculate width: max(minGridWidth, longestLine + 4 padding)
@@ -79,7 +79,12 @@ if (import.meta.vitest) {
 		});
 
 		it('uses tab-expanded visual width instead of raw string length', () => {
-			const code = ['; @tab 20', '\tb'];
+			const code = ['; @tab 20 24', '\tb'];
+			expect(getCodeBlockGridWidth(code, 1)).toBe(27);
+		});
+
+		it('uses the most recent tab directive for each line', () => {
+			const code = ['; @tab 4 8', '\tb', '; @tab 20 24', '\tb'];
 			expect(getCodeBlockGridWidth(code, 1)).toBe(27);
 		});
 	});
