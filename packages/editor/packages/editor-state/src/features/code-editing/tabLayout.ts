@@ -84,14 +84,14 @@ export function getVisualLineWidth(line: string, tabStops: number[]): number {
 	return getVisualColumnForRawIndex(line, line.length, tabStops);
 }
 
-export function expandLineToCells(line: string, tabStops: number[]): number[] {
-	const cells: number[] = [];
+export function expandLineToCells(line: string, tabStops: number[]): Array<number | string> {
+	const cells: Array<number | string> = [];
 	let visualColumn = 0;
 
 	for (let i = 0; i < line.length; i += 1) {
 		if (line[i] === '\t') {
 			const advance = getTabAdvance(visualColumn, tabStops);
-			cells.push(...new Array(advance).fill(32));
+			cells.push('\t', ...new Array(Math.max(advance - 1, 0)).fill(32));
 			visualColumn += advance;
 			continue;
 		}
@@ -183,7 +183,7 @@ if (import.meta.vitest) {
 		});
 
 		it('expands tabs into space cells for rendering', () => {
-			expect(expandLineToCells('a\tb', [4, 8])).toEqual([97, 32, 32, 32, 98]);
+			expect(expandLineToCells('a\tb', [4, 8])).toEqual([97, '\t', 32, 32, 98]);
 		});
 
 		it('expands colors alongside cells', () => {
