@@ -1,4 +1,4 @@
-import { ErrorCode, type ErrorCode as ErrorCodeType } from '../errors';
+import { ErrorCode, type ErrorCode as ErrorCodeType } from '../compilerError';
 
 import type { OperandRule } from './types';
 

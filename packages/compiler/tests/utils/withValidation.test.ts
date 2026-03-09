@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
 import { withValidation } from '../../src/withValidation';
-import { ErrorCode } from '../../src/errors';
+import { ErrorCode } from '../../src/compilerError';
 import { ArgumentType, BLOCK_TYPE } from '../../src/types';
 
 import type { AST, CompilationContext, InstructionCompiler } from '../../src/types';
