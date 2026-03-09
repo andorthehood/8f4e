@@ -1,5 +1,5 @@
 import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import {
 	isInstructionInsideFunction,
 	isInstructionInsideModuleOrFunction,

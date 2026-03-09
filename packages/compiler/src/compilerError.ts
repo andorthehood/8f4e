@@ -1,3 +1,22 @@
+/**
+ * Compiler (semantic) errors — raised after syntax is already valid.
+ *
+ * Use this module for errors that require semantic analysis or compiler state:
+ *   - undeclared or duplicate identifiers
+ *   - type mismatches
+ *   - invalid instruction in the current scope
+ *   - stack mismatches or overflows
+ *   - illegal memory access in pure functions
+ *   - constant resolution failures
+ *   - any error that cannot be detected from token/argument shape alone
+ *
+ * Boundary rule:
+ *   If detecting the error requires symbol resolution, scope validation, stack
+ *   state, type checking, or runtime-model knowledge → it belongs here.
+ *   If the error can be detected from the raw token or argument structure alone,
+ *   before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
+ */
+
 import type { AST, CompilationContext, Error } from './types';
 
 export enum ErrorCode {

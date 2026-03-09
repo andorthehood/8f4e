@@ -1,5 +1,5 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';

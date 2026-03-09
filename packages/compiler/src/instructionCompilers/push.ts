@@ -12,7 +12,7 @@ import pushStringLiteral from './push/handlers/pushStringLiteral';
 import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { ArgumentType } from '../types';
 import { withValidation } from '../withValidation';
 

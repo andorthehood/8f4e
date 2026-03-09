@@ -1,6 +1,6 @@
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { areAllOperandsFloats, areAllOperandsIntegers } from '../utils/operandTypes';
 
 import type { CompilationContext, InstructionCompiler, StackItem } from '../types';

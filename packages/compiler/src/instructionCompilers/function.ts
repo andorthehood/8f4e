@@ -1,4 +1,4 @@
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils/blockStack';
 import { BLOCK_TYPE, ArgumentType } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
