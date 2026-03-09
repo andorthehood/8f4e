@@ -139,6 +139,13 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 			return;
 		}
 
+		// Tab
+		if (key === 'Tab') {
+			event.preventDefault();
+			events.dispatch<InsertTextEvent>('insertText', { text: '\t' });
+			return;
+		}
+
 		// Single character text input
 		// Only handle printable characters, excluding control keys and modifiers
 		if (

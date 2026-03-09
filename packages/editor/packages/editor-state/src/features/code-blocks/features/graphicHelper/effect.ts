@@ -23,6 +23,13 @@ import highlightSyntax8f4e from '../../../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
 import { moveCaret } from '../../../code-editing/moveCaret';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
+import {
+	expandLineColorsToCells,
+	expandLineToCells,
+	getRawIndexForVisualColumn,
+	getVisualColumnForRawIndex,
+	parseTabStops,
+} from '../../../code-editing/tabLayout';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
@@ -41,14 +48,17 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const [row, col] = moveCaret(
-			codeBlock.code,
-			reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps),
-			Math.floor(relativeX / state.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2),
-			'jump'
+		const row = reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps);
+		const visualCol = Math.max(Math.floor(relativeX / state.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2), 0);
+		const tabStops = parseTabStops(codeBlock.code);
+		const col = getRawIndexForVisualColumn(
+			codeBlock.code[Math.min(row, codeBlock.code.length - 1)] || '',
+			visualCol,
+			tabStops
 		);
-		codeBlock.cursor.row = row;
-		codeBlock.cursor.col = col;
+		const [boundedRow, boundedCol] = moveCaret(codeBlock.code, row, col, 'jump');
+		codeBlock.cursor.row = boundedRow;
+		codeBlock.cursor.col = boundedCol;
 	};
 
 	const updateGraphics = function (graphicData: CodeBlockGraphicData) {
@@ -57,14 +67,14 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		const spriteLookups = state.graphicHelper.spriteLookups;
+		const tabStops = parseTabStops(graphicData.code);
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
-		const codeWithLineNumbers = graphicData.code.map(
-			(line, index) => `${index}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ' + line
-		);
-
-		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
+		graphicData.codeToRender = graphicData.code.map((line, index) => {
+			const prefix = `${index}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
+			return [...prefix].map(char => char.charCodeAt(0)).concat(expandLineToCells(line, tabStops));
+		});
 		graphicData.id = getCodeBlockId(graphicData.code);
 		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
 
@@ -79,7 +89,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// Merge raw code colors into color matrix aligned with codeWithLineNumbers
 		// by offsetting indices to account for line number prefix
 		const lineNumberPrefixLength = graphicData.lineNumberColumnWidth + 1; // +1 for space
-		graphicData.codeColors = codeWithLineNumbers.map((line, lineIndex) => {
+		graphicData.codeColors = graphicData.codeToRender.map((line, lineIndex) => {
 			const lineColors = new Array(line.length).fill(undefined);
 
 			// Apply line number color at the first column (color persists until changed)
@@ -89,7 +99,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			lineColors[graphicData.lineNumberColumnWidth] = spriteLookups.fontCode;
 
 			// Merge syntax colors from raw code, offset by prefix length
-			const rawColors = rawCodeColors[lineIndex] || [];
+			const rawColors = expandLineColorsToCells(
+				graphicData.code[lineIndex] || '',
+				rawCodeColors[lineIndex] || [],
+				tabStops
+			);
 			rawColors.forEach((color, i) => {
 				if (color !== undefined) {
 					lineColors[i + lineNumberPrefixLength] = color;
@@ -116,7 +130,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		blockHighlights(graphicData, state);
 
 		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
-		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
+		graphicData.cursor.x =
+			(getVisualColumnForRawIndex(graphicData.code[graphicData.cursor.row] || '', graphicData.cursor.col, tabStops) +
+				(graphicData.lineNumberColumnWidth + 2)) *
+			state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
 		const groupResult = parseGroup(graphicData.code);
 		graphicData.groupName = groupResult?.groupName;

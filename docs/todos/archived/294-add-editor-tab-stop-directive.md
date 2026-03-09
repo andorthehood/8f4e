@@ -4,7 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-03-09
 status: Open
-completed: null
+completed: 2026-03-09
+status: Completed
 ---
 
 # TODO: Add editor tab-stop directive support
