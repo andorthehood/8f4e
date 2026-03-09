@@ -32,17 +32,35 @@ The int instruction declares a 32-bit integer in module memory. Use `int*` or `i
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
 Constant mul/div expressions are also supported with the same one-operator rule (`CONST*number` or `CONST/number`).
 
-A default value may also be expressed as a split-byte sequence: two to four adjacent byte literals combined into a single 32-bit integer.
+A default value may also be expressed as a split-byte sequence: two to four adjacent byte-resolving tokens combined into a single 32-bit integer.
 Bytes are combined left-to-right as most-significant to least-significant.
 Missing trailing bytes are padded with `0` on the right to fill the 32-bit width.
 
-Split-byte tokens may be written in any numeric form (decimal `32`, hexadecimal `0x20`, etc.) as long as each resolves to an integer in the range `0–255`.
-A single byte literal does **not** trigger split-byte mode; only two or more consecutive byte literals are treated as a split-byte sequence.
+Split-byte tokens may be:
+- Integer literals in any numeric form (decimal `32`, hexadecimal `0x20`, etc.) as long as each resolves to an integer in the range `0–255`.
+- Constants that resolve at compile time to an integer in the range `0–255`.
+- Mixed sequences of byte literals and byte-valued constants are also accepted.
+
+A single byte literal or a single byte-valued constant does **not** trigger split-byte mode; only two or more consecutive byte-resolving tokens are treated as a split-byte sequence.
+
+#### Reserved identifier rule
+
+Memory allocation identifiers must **not** match constant-style naming conventions (all-uppercase, no lowercase letters). Constant-style names like `HI`, `MY_VALUE`, or `THRESHOLD` are reserved for `const` declarations. Attempting to use them as memory names is a compiler error.
+
+This rule applies consistently regardless of how many arguments follow:
+- `int MY_VAR` → error: constant-style name not declared as a constant
+- `int MY_VAR 0` → error: constant-style name used in split-byte position is not a declared constant
+
+When a constant-style identifier appears as the first argument and is declared as a constant, it is treated as an anonymous allocation:
+- `int HI` → anonymous allocation, default = constant `HI`
+- `int HI LO` → anonymous split-byte allocation, default = `HI` and `LO` packed left-to-right
 
 #### Examples
 
 ```
 const MAX 8
+const HI 0xA8
+const LO 0xFF
 int count 4
 int halfCount MAX/2
 int* ptr &count
@@ -53,6 +71,8 @@ int 0xA8 0xFF
 int colorDecimal 32 64
 int 32 64
 int 32
+int colorFromConst HI LO
+int HI LO
 ```
 
 ### float

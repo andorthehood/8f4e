@@ -18,7 +18,7 @@ exports[`compiler > compileModules 1`] = `
         "arguments": [
           {
             "type": "identifier",
-            "value": "DEFAULT_VALUE",
+            "value": "defaultValue",
           },
           {
             "isInteger": true,
@@ -37,7 +37,7 @@ exports[`compiler > compileModules 1`] = `
           },
           {
             "type": "identifier",
-            "value": "&DEFAULT_VALUE",
+            "value": "&defaultValue",
           },
         ],
         "instruction": "int*",
@@ -246,11 +246,11 @@ exports[`compiler > compileModules 1`] = `
     "initFunctionBody": [],
     "initOnlyExecution": undefined,
     "memoryMap": {
-      "DEFAULT_VALUE": {
+      "defaultValue": {
         "byteAddress": 0,
         "default": 0,
         "elementWordSize": 4,
-        "id": "DEFAULT_VALUE",
+        "id": "defaultValue",
         "isInteger": true,
         "isPointer": false,
         "isPointingToInteger": false,

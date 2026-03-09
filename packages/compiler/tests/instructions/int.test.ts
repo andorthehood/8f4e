@@ -196,3 +196,65 @@ moduleEnd
 	// 0xA8=168, 255=0xFF → [168, 255, 0, 0] = 0xA8FF0000
 	[[{}, { output: 0xa8ff0000 | 0 }]]
 );
+
+moduleTester(
+	'int: named constant split-byte default (2 constants)',
+	`module test
+const HI 32
+const LO 64
+int foo HI LO
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	// HI=32=0x20, LO=64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
+	[[{}, { output: 0x20400000 | 0 }]]
+);
+
+moduleTester(
+	'int: anonymous constant split-byte default (2 constants)',
+	`module test
+const HI 32
+const LO 64
+int HI LO
+int output
+push &output
+push __anonymous__3
+store
+moduleEnd
+`,
+	// HI=32=0x20, LO=64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
+	[[{}, { output: 0x20400000 | 0 }]]
+);
+
+moduleTester(
+	'int: named mixed byte literal and constant split-byte',
+	`module test
+const LO 64
+int foo 0xA8 LO
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
+	[[{}, { output: 0xa8400000 | 0 }]]
+);
+
+moduleTester(
+	'int: anonymous byte literal and constant split-byte',
+	`module test
+const LO 64
+int 0xA8 LO
+int output
+push &output
+push __anonymous__2
+store
+moduleEnd
+`,
+	// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
+	[[{}, { output: 0xa8400000 | 0 }]]
+);
