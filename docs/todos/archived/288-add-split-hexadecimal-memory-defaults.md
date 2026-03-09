@@ -3,8 +3,8 @@ title: 'TODO: Add Split Hexadecimal Memory Defaults'
 priority: Medium
 effort: 4-8h
 created: 2026-03-08
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-08
 ---
 
 # TODO: Add Split Hexadecimal Memory Defaults

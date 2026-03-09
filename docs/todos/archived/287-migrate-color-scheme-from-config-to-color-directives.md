@@ -3,8 +3,8 @@ title: 'TODO: Migrate Color Scheme from Config to Color Directives'
 priority: Medium
 effort: 1-2d
 created: 2026-02-26
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-26
 ---
 
 # TODO: Migrate Color Scheme from Config to Color Directives
