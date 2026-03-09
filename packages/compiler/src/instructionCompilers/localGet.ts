@@ -1,5 +1,5 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import localGet from '../wasmUtils/local/localGet';
 import { withValidation } from '../withValidation';

@@ -3,7 +3,7 @@ import { resolveConstantValueOrExpressionOrThrow, tryResolveConstantValueOrExpre
 import { parseMemoryInstructionArgumentsShape } from '../syntax/memoryInstructionParser';
 import { SyntaxRulesError, SyntaxErrorCode } from '../syntax/syntaxError';
 import { ArgumentType } from '../syntax/parseArgument';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
 
 import type { CompilationContext, Argument } from '../types';

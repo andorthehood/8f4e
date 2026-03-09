@@ -1,4 +1,4 @@
-import { ErrorCode, getError } from '../../../errors';
+import { ErrorCode, getError } from '../../../compilerError';
 import extractMemoryPointerBase from '../../../syntax/extractMemoryPointerBase';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
