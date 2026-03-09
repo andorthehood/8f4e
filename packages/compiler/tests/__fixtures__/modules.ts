@@ -4,8 +4,8 @@ export default [
             module abs
         
             ; memory
-            int DEFAULT_VALUE 0
-            int* in &DEFAULT_VALUE
+            int defaultValue 0
+            int* in &defaultValue
             int out 0
             int test 1
         
