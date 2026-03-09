@@ -82,30 +82,45 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 			}
 		} else {
 			result.secondArg = classifyArgument(args[1]);
+			// Reject unexpected extra arguments after a non-byte second arg
+			if (args[2]) {
+				throw new SyntaxRulesError(
+					SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
+					'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
+				);
+			}
 		}
 		return result;
 	}
 
 	// For anonymous declarations (firstArg is literal), check if it starts a split-byte sequence
-	if (result.firstArg.type === 'literal' && isByteLiteral(args[0]) && args[1]) {
-		if (isByteLiteral(args[1])) {
-			const bytes: number[] = [(args[0] as ArgumentLiteral).value, args[1].value];
-			let i = 2;
-			while (args[i]) {
-				if (isByteLiteral(args[i])) {
-					bytes.push((args[i] as ArgumentLiteral).value);
-					i++;
-				} else {
-					throw new SyntaxRulesError(
-						SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
-						'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
-					);
+	if (result.firstArg.type === 'literal' && args[1]) {
+		if (isByteLiteral(args[0])) {
+			if (isByteLiteral(args[1])) {
+				const bytes: number[] = [(args[0] as ArgumentLiteral).value, args[1].value];
+				let i = 2;
+				while (args[i]) {
+					if (isByteLiteral(args[i])) {
+						bytes.push((args[i] as ArgumentLiteral).value);
+						i++;
+					} else {
+						throw new SyntaxRulesError(
+							SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
+							'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
+						);
+					}
 				}
+				result.firstArg = { type: 'split-byte-literal', bytes };
+				return result;
+			} else {
+				// Non-byte token after a leading byte literal: invalid in split-byte context
+				throw new SyntaxRulesError(
+					SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
+					'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
+				);
 			}
-			result.firstArg = { type: 'split-byte-literal', bytes };
-			return result;
 		} else {
-			// Non-byte token after a leading byte literal: invalid in split-byte context
+			// args[0] is out-of-byte-range literal with extra arguments: reject to avoid silent miscompilation
 			throw new SyntaxRulesError(
 				SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
 				'Split-byte default values must consist entirely of byte literals (integer values 0–255)'
