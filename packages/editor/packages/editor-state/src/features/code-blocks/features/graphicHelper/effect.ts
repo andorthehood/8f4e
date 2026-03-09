@@ -73,7 +73,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.codeToRender = graphicData.code.map((line, index) => {
 			const prefix = `${index}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
-			return [...prefix].map(char => char.charCodeAt(0)).concat(expandLineToCells(line, tabStopsByLine[index] || []));
+			return [...prefix]
+				.map(char => char.charCodeAt(0) as number | string)
+				.concat(expandLineToCells(line, tabStopsByLine[index] || []));
 		});
 		graphicData.id = getCodeBlockId(graphicData.code);
 		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;

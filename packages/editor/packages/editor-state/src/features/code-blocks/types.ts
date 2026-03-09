@@ -143,7 +143,7 @@ export interface CodeBlockGraphicData {
 	height: number;
 	code: string[];
 	lineNumberColumnWidth: number;
-	codeToRender: number[][];
+	codeToRender: Array<Array<number | string>>;
 	codeColors: Array<Array<SpriteLookup | undefined>>;
 	/** The gaps between lines */
 	gaps: Map<number, { size: number }>;
