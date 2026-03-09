@@ -16,7 +16,7 @@ import {
 	Namespace,
 	Namespaces,
 } from './types';
-import { ErrorCode, getError } from './errors';
+import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';

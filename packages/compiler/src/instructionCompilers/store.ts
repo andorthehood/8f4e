@@ -1,4 +1,4 @@
-import { ErrorCode } from '../errors';
+import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import f32store from '../wasmUtils/store/f32store';
 import f64store from '../wasmUtils/store/f64store';

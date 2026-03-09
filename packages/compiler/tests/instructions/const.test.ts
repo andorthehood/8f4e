@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { moduleTester } from './testUtils';
 
 import compile from '../../src';
-import { ErrorCode } from '../../src/errors';
+import { ErrorCode } from '../../src/compilerError';
 
 import type { Module } from '../../src/types';
 
