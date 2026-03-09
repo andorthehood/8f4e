@@ -1,5 +1,5 @@
-import getLongestLineLength from '../../utils/codeParsers/getLongestLineLength';
 import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
+import { getVisualLineWidth, parseTabStops } from '../../../code-editing/tabLayout';
 
 /**
  * Computes the grid width required for a code block.
@@ -12,12 +12,16 @@ import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 export default function getCodeBlockGridWidth(code: string[], minGridWidth = CODE_BLOCK_MIN_GRID_WIDTH): number {
 	// Calculate line number column width
 	const lineNumberColumnWidth = code.length.toString().length;
+	const tabStops = parseTabStops(code);
 
 	// Prepare code with line numbers (matching graphicHelper logic)
-	const codeWithLineNumbers = code.map((line, index) => `${index}`.padStart(lineNumberColumnWidth, '0') + ' ' + line);
+	const codeWithLineNumbers = code.map((line, index) => {
+		const prefix = `${index}`.padStart(lineNumberColumnWidth, '0') + ' ';
+		return prefix.length + getVisualLineWidth(line, tabStops);
+	});
 
 	// Calculate width: max(minGridWidth, longestLine + 4 padding)
-	return Math.max(minGridWidth, getLongestLineLength(codeWithLineNumbers) + 4);
+	return Math.max(minGridWidth, Math.max(...codeWithLineNumbers, 0) + 4);
 }
 
 if (import.meta.vitest) {
@@ -72,6 +76,11 @@ if (import.meta.vitest) {
 			// Test with longer line
 			const longCode = ['module test', 'this is a very long line that exceeds the minimum grid width value'];
 			expect(getCodeBlockGridWidth(longCode)).toBe(72); // "0 this is a very long line that exceeds the minimum grid width value" = 68 + 4 = 72
+		});
+
+		it('uses tab-expanded visual width instead of raw string length', () => {
+			const code = ['; @tab 20', '\tb'];
+			expect(getCodeBlockGridWidth(code, 1)).toBe(27);
 		});
 	});
 }

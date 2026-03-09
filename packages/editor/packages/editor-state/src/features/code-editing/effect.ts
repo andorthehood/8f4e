@@ -3,6 +3,7 @@ import { StateManager } from '@8f4e/state-manager';
 import backSpace from './backSpace';
 import enter from './enter';
 import { moveCaret } from './moveCaret';
+import { getRawIndexForVisualColumn, getVisualColumnForRawIndex, parseTabStops } from './tabLayout';
 import type from './type';
 
 import { EventDispatcher, MoveCaretEvent, InsertTextEvent, State } from '~/types';
@@ -20,13 +21,24 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		}
 
 		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const tabStops = parseTabStops(codeBlock.code);
 
-		const newPosition: [number, number] = moveCaret(
-			codeBlock.code,
-			codeBlock.cursor.row,
-			codeBlock.cursor.col,
-			event.direction
-		);
+		let newPosition: [number, number];
+		if (event.direction === 'up' || event.direction === 'down') {
+			const nextRow =
+				event.direction === 'up'
+					? Math.max(codeBlock.cursor.row - 1, 0)
+					: Math.min(codeBlock.cursor.row + 1, codeBlock.code.length - 1);
+			const visualCol = getVisualColumnForRawIndex(
+				codeBlock.code[codeBlock.cursor.row] || '',
+				codeBlock.cursor.col,
+				tabStops
+			);
+			const nextCol = getRawIndexForVisualColumn(codeBlock.code[nextRow] || '', visualCol, tabStops);
+			newPosition = [nextRow, nextCol];
+		} else {
+			newPosition = moveCaret(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.direction);
+		}
 		store.set('graphicHelper.selectedCodeBlock.cursor.row', newPosition[0]);
 		store.set('graphicHelper.selectedCodeBlock.cursor.col', newPosition[1]);
 	};
