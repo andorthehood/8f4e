@@ -1,4 +1,4 @@
-import { ArgumentType, type Argument } from './parseArgument';
+import { ArgumentType, type Argument, type ArgumentLiteral } from './parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 import hasMemoryReferencePrefix from './hasMemoryReferencePrefix';
 import hasElementCountPrefix from './hasElementCountPrefix';
@@ -17,6 +17,7 @@ import extractIntermodularElementMinBase from './extractIntermodularElementMinBa
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
 	| { type: 'identifier'; value: string }
+	| { type: 'split-hex-literal'; bytes: number[] }
 	| { type: 'memory-reference'; base: string; pattern: string }
 	| { type: 'element-count'; base: string }
 	| { type: 'intermodular-reference'; pattern: string }
@@ -28,6 +29,13 @@ export type MemoryArgumentShape =
 export interface ParsedMemoryInstructionArguments {
 	firstArg: MemoryArgumentShape;
 	secondArg?: MemoryArgumentShape;
+}
+
+/**
+ * Returns true when the argument is a hexadecimal byte literal (0x00–0xFF written in hex form).
+ */
+function isHexByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: ArgumentType.LITERAL; isHex: true } {
+	return arg.type === ArgumentType.LITERAL && arg.isHex === true && arg.value >= 0 && arg.value <= 255;
 }
 
 /**
@@ -46,6 +54,63 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 	const result: ParsedMemoryInstructionArguments = {
 		firstArg: classifyArgument(args[0]),
 	};
+
+	// For named declarations (firstArg is identifier), check args[1..] for split hex
+	if (result.firstArg.type === 'identifier' && args[1]) {
+		if (isHexByteLiteral(args[1])) {
+			// Check if there are more hex-byte literals (making this a split-hex sequence)
+			const bytes: number[] = [args[1].value];
+			let i = 2;
+			while (args[i]) {
+				if (isHexByteLiteral(args[i])) {
+					bytes.push((args[i] as ArgumentLiteral).value);
+					i++;
+				} else {
+					// Mixed tokens: a hex-byte followed by a non-hex-byte argument
+					throw new SyntaxRulesError(
+						SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
+						'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF)'
+					);
+				}
+			}
+			if (bytes.length >= 2) {
+				result.secondArg = { type: 'split-hex-literal', bytes };
+			} else {
+				// Single hex-byte literal — keep as regular literal (existing behaviour)
+				result.secondArg = classifyArgument(args[1]);
+			}
+		} else {
+			result.secondArg = classifyArgument(args[1]);
+		}
+		return result;
+	}
+
+	// For anonymous declarations (firstArg is literal), check if it starts a split-hex sequence
+	if (result.firstArg.type === 'literal' && isHexByteLiteral(args[0]) && args[1]) {
+		if (isHexByteLiteral(args[1])) {
+			const bytes: number[] = [(args[0] as ArgumentLiteral).value, args[1].value];
+			let i = 2;
+			while (args[i]) {
+				if (isHexByteLiteral(args[i])) {
+					bytes.push((args[i] as ArgumentLiteral).value);
+					i++;
+				} else {
+					throw new SyntaxRulesError(
+						SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
+						'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF)'
+					);
+				}
+			}
+			result.firstArg = { type: 'split-hex-literal', bytes };
+			return result;
+		} else {
+			// Mixed tokens: a leading hex-byte literal followed by a non-hex-byte argument
+			throw new SyntaxRulesError(
+				SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS,
+				'Split hexadecimal default values must consist entirely of hex-byte literals (0x00–0xFF)'
+			);
+		}
+	}
 
 	if (args[1]) {
 		result.secondArg = classifyArgument(args[1]);

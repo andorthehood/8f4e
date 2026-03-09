@@ -166,6 +166,86 @@ describe('parseMemoryInstructionArguments', () => {
 		});
 	});
 
+	describe('split hexadecimal default values', () => {
+		it('should combine 2 named hex-byte literals into a right-padded 32-bit default', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 20, 'int', createMockContext());
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
+		});
+
+		it('should combine 4 named hex-byte literals into a 32-bit default', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 21, 'int', createMockContext());
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
+		});
+
+		it('should combine anonymous split hex bytes', () => {
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 22, 'int', createMockContext());
+			expect(result).toEqual({ id: '__anonymous__22', defaultValue: 0xa8ff0000 });
+		});
+
+		it('should treat single hex-byte literal as a regular literal (no split hex)', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+			];
+			const result = parseMemoryInstructionArguments(args, 23, 'int', createMockContext());
+			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8 });
+		});
+
+		it('should throw when split hex byte count exceeds 4 for int', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 0x01, isInteger: true, isHex: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 24, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when hex-byte is followed by a non-hex literal (mixed form)', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 25, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when hex-byte is followed by an identifier (mixed form)', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.IDENTIFIER, value: 'CONST' },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 26, 'int', createMockContext())).toThrow();
+		});
+
+		it('should throw when anonymous hex-byte is followed by a non-hex literal (mixed form)', () => {
+			const args = [
+				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
+			];
+			expect(() => parseMemoryInstructionArguments(args, 27, 'int', createMockContext())).toThrow();
+		});
+	});
+
 	describe('edge cases', () => {
 		it('should handle only first argument provided', () => {
 			const args = [{ type: ArgumentType.IDENTIFIER, value: 'solo' }];
