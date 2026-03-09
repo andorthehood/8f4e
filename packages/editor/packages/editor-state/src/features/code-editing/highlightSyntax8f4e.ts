@@ -204,6 +204,11 @@ export default function highlightSyntax8f4e<T>(
 		for (let i = 0; i < line.length; i += 1) {
 			if (line[i] === '\t') {
 				codeColors[i] = spriteLookups.fontCodeComment;
+
+				const nextIndex = i + 1;
+				if (nextIndex < line.length) {
+					codeColors[nextIndex] = getDefaultColorAtIndex(line, nextIndex, commentIndex);
+				}
 			}
 		}
 
@@ -324,6 +329,7 @@ if (import.meta.vitest) {
 				'; Tab-separated numeric arguments',
 				'int foo\t1\t2\t3',
 				'push\t123',
+				'int\tCONST',
 				'',
 				'; Numbers inside brackets',
 				'init foo[0]',
