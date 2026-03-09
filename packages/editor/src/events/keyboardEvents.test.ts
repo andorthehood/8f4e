@@ -160,4 +160,16 @@ describe('keyboardEvents mode switching', () => {
 		expect(set).not.toHaveBeenCalledWith('featureFlags.codeLineSelection', false);
 		cleanup();
 	});
+
+	it('dispatches literal tab insertion when Tab is pressed', () => {
+		featureFlags.editing = true;
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('Tab');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('insertText', { text: '\t' });
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
 });
