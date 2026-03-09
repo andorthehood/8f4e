@@ -27,8 +27,8 @@ import {
 	expandLineColorsToCells,
 	expandLineToCells,
 	getRawIndexForVisualColumn,
+	getTabStopsByLine,
 	getVisualColumnForRawIndex,
-	parseTabStops,
 } from '../../../code-editing/tabLayout';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
@@ -50,11 +50,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		const row = reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps);
 		const visualCol = Math.max(Math.floor(relativeX / state.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2), 0);
-		const tabStops = parseTabStops(codeBlock.code);
+		const tabStopsByLine = getTabStopsByLine(codeBlock.code);
 		const col = getRawIndexForVisualColumn(
 			codeBlock.code[Math.min(row, codeBlock.code.length - 1)] || '',
 			visualCol,
-			tabStops
+			tabStopsByLine[Math.min(row, codeBlock.code.length - 1)] || []
 		);
 		const [boundedRow, boundedCol] = moveCaret(codeBlock.code, row, col, 'jump');
 		codeBlock.cursor.row = boundedRow;
@@ -67,13 +67,13 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		const spriteLookups = state.graphicHelper.spriteLookups;
-		const tabStops = parseTabStops(graphicData.code);
+		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
 		graphicData.codeToRender = graphicData.code.map((line, index) => {
 			const prefix = `${index}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
-			return [...prefix].map(char => char.charCodeAt(0)).concat(expandLineToCells(line, tabStops));
+			return [...prefix].map(char => char.charCodeAt(0)).concat(expandLineToCells(line, tabStopsByLine[index] || []));
 		});
 		graphicData.id = getCodeBlockId(graphicData.code);
 		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
@@ -102,7 +102,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			const rawColors = expandLineColorsToCells(
 				graphicData.code[lineIndex] || '',
 				rawCodeColors[lineIndex] || [],
-				tabStops
+				tabStopsByLine[lineIndex] || []
 			);
 			rawColors.forEach((color, i) => {
 				if (color !== undefined) {
@@ -131,7 +131,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
 		graphicData.cursor.x =
-			(getVisualColumnForRawIndex(graphicData.code[graphicData.cursor.row] || '', graphicData.cursor.col, tabStops) +
+			(getVisualColumnForRawIndex(
+				graphicData.code[graphicData.cursor.row] || '',
+				graphicData.cursor.col,
+				tabStopsByLine[graphicData.cursor.row] || []
+			) +
 				(graphicData.lineNumberColumnWidth + 2)) *
 			state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
