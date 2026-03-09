@@ -169,16 +169,20 @@ export default function highlightSyntax8f4e<T>(
 		return Math.min(semicolonIndex, hashCommentIndex);
 	};
 
+	const getDefaultColorAtIndex = (line: string, index: number, commentIndex: number | undefined): T => {
+		if (line[index] === '\t' || commentIndex === index) {
+			return spriteLookups.fontCodeComment;
+		}
+
+		return spriteLookups.fontCode;
+	};
+
 	return code.map(line => {
 		const commentIndex = getCommentIndex(line);
 		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
-		const { index: numberIndex } = /-?\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
-		const binaryNumberMatch = /0b([01]+)/.exec(line);
-		const { index: binaryNumberIndex } = binaryNumberMatch || { index: undefined };
-		const binaryNumber = binaryNumberMatch?.[1] || '';
-		const binaryZeros = binaryNumber.matchAll(/(0+)/g);
-		const binaryOnes = binaryNumber.matchAll(/(1+)/g);
+		const numberMatches = line.matchAll(/(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi);
+		const binaryNumberMatches = line.matchAll(/0b([01]+)/g);
 
 		const codeColors = new Array(line.length).fill(undefined);
 		const isBeforeComment = (index: number) => typeof commentIndex === 'undefined' || index < commentIndex;
@@ -197,11 +201,33 @@ export default function highlightSyntax8f4e<T>(
 			codeColors[commentIndex] = spriteLookups.fontCodeComment;
 		}
 
-		if (typeof numberIndex === 'number' && isBeforeComment(numberIndex)) {
-			codeColors[numberIndex] = spriteLookups.fontNumbers;
+		for (let i = 0; i < line.length; i += 1) {
+			if (line[i] === '\t') {
+				codeColors[i] = spriteLookups.fontCodeComment;
+			}
 		}
 
-		if (typeof binaryNumberIndex === 'number' && isBeforeComment(binaryNumberIndex)) {
+		for (const match of numberMatches) {
+			if (typeof match.index === 'number' && isBeforeComment(match.index)) {
+				codeColors[match.index] = spriteLookups.fontNumbers;
+
+				const endIndex = match.index + match[0].length;
+				if (endIndex < line.length) {
+					codeColors[endIndex] = getDefaultColorAtIndex(line, endIndex, commentIndex);
+				}
+			}
+		}
+
+		for (const binaryNumberMatch of binaryNumberMatches) {
+			if (typeof binaryNumberMatch.index !== 'number' || !isBeforeComment(binaryNumberMatch.index)) {
+				continue;
+			}
+
+			const binaryNumberIndex = binaryNumberMatch.index;
+			const binaryNumber = binaryNumberMatch[1] || '';
+			const binaryZeros = binaryNumber.matchAll(/(0+)/g);
+			const binaryOnes = binaryNumber.matchAll(/(1+)/g);
+
 			for (const match of binaryZeros) {
 				if (typeof match.index === 'number') {
 					codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryZero;
@@ -295,39 +321,31 @@ if (import.meta.vitest) {
 				'int16[] buffer3 30',
 				'int16u[] buffer4 40',
 				'',
+				'; Tab-separated numeric arguments',
+				'int foo\t1\t2\t3',
+				'push\t123',
+				'',
+				'; Numbers inside brackets',
+				'init foo[0]',
+				'',
+				'; Constant names with # digits',
+				'const C#7',
+				'const GB7',
+				'',
+				'; Hash comment edge cases',
+				'const A#0 22',
+				'  # comment',
+				'const FOOBAR 42 # comment',
+				'',
+				'; Float64 instructions',
+				'float64**[] OUT',
+				'castToFloat64',
+				'',
 				'moduleEnd',
 			];
 
 			const result = highlightSyntax8f4e(code8f4e, spriteLookups);
 			expect(result).toMatchSnapshot();
-		});
-
-		it('does not treat # in constant names as comment start', () => {
-			const result = highlightSyntax8f4e(['const A#0 22'], spriteLookups);
-			expect(result[0][7]).not.toBe(spriteLookups.fontCodeComment);
-		});
-
-		it('treats line-start # as comment start', () => {
-			const result = highlightSyntax8f4e(['  # comment'], spriteLookups);
-			expect(result[0][2]).toBe(spriteLookups.fontCodeComment);
-		});
-
-		it('does not treat inline # as comment start', () => {
-			const result = highlightSyntax8f4e(['const FOOBAR 42 # comment'], spriteLookups);
-			expect(result[0][16]).not.toBe(spriteLookups.fontCodeComment);
-		});
-
-		it('treats tabs as whitespace for instruction and number highlighting boundaries', () => {
-			const result = highlightSyntax8f4e(['push\t123'], spriteLookups);
-			expect(result[0][0]).toBe(spriteLookups.fontInstruction);
-			expect(result[0][4]).toBe(spriteLookups.fontCode);
-			expect(result[0][5]).toBe(spriteLookups.fontNumbers);
-		});
-
-		it('highlights float64-related instructions', () => {
-			const result = highlightSyntax8f4e(['float64**[] OUT', 'castToFloat64'], spriteLookups);
-			expect(result[0][0]).toBe(spriteLookups.fontInstruction);
-			expect(result[1][0]).toBe(spriteLookups.fontInstruction);
 		});
 	});
 }
