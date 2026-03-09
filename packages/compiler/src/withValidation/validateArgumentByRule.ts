@@ -1,5 +1,5 @@
 import { ArgumentType, type CompilationContext, type InstructionCompiler } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 
 import type { ArgumentRule } from './types';
 

@@ -1,4 +1,4 @@
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { BLOCK_TYPE, ArgumentType } from '../types';
 import Type from '../wasmUtils/type';
 import createFunctionType from '../wasmUtils/typeFunction/createFunctionType';

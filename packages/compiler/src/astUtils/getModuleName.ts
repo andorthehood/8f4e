@@ -1,5 +1,5 @@
 import { ArgumentType, type AST } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 
 /**
  * Extracts the module name from an AST.
