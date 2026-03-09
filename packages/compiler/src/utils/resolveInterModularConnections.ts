@@ -9,7 +9,7 @@ import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMa
 import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
 import isIntermodularElementMinReference from '../syntax/isIntermodularElementMinReference';
 import extractIntermodularElementMinBase from '../syntax/extractIntermodularElementMinBase';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { ArgumentType, CompiledModuleLookup } from '../types';
 
 /**

@@ -1,4 +1,4 @@
-import { ErrorCode, getError } from '../../../errors';
+import { ErrorCode, getError } from '../../../compilerError';
 import extractElementMaxBase from '../../../syntax/extractElementMaxBase';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
