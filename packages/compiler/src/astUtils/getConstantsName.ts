@@ -1,5 +1,5 @@
 import { ArgumentType, type AST } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 
 /**
  * Extracts the constants block name from an AST.
