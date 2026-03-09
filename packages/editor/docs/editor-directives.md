@@ -128,12 +128,13 @@ See [Color Paths](./color-paths.md) for the full list of configurable color path
 Define a visual tab stop for literal tab characters within the code block.
 
 ```txt
-; @tab <position>
+; @tab <position1> <position2> ...
 ```
 
 Notes:
-- `position` must be a positive integer visual column.
-- Multiple `@tab` directives are allowed; valid positions are collected and used in ascending order.
+- Each position must be a positive integer visual column.
+- One `@tab` directive defines the full active stop list at that point in the block.
+- If another valid `@tab` directive appears later, it replaces the active stop list from that line onward.
 - A tab advances to the first declared stop strictly greater than the current visual column.
 - The minimum tab advance is `1`.
 - If no later declared stop exists, the tab falls back to advance `1`.
@@ -143,10 +144,11 @@ Example:
 
 ```txt
 module main
-; @tab 4
-; @tab 8
+; @tab 4 8
 int foo
 int\tbar
+; @tab 12 34 54
+\tbaz
 moduleEnd
 ```
 
