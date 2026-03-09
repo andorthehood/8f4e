@@ -129,3 +129,70 @@ moduleEnd
 `,
 	[[{}, { output: 0xa8ff0000 | 0 }]]
 );
+
+moduleTester(
+	'int: named split decimal default (2 bytes, right-padded)',
+	`module test
+int foo 32 64
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	// 32=0x20, 64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
+	[[{}, { output: 0x20400000 | 0 }]]
+);
+
+moduleTester(
+	'int: named split decimal default (4 bytes)',
+	`module test
+int foo 32 64 0 0
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	[[{}, { output: 0x20400000 | 0 }]]
+);
+
+moduleTester(
+	'int: anonymous split decimal default (2 bytes, right-padded)',
+	`module test
+int 32 64
+int output
+push &output
+push __anonymous__1
+store
+moduleEnd
+`,
+	[[{}, { output: 0x20400000 | 0 }]]
+);
+
+moduleTester(
+	'int: single decimal literal remains anonymous int with that value',
+	`module test
+int 32
+int output
+push &output
+push __anonymous__1
+store
+moduleEnd
+`,
+	[[{}, { output: 32 }]]
+);
+
+moduleTester(
+	'int: mixed hex and decimal bytes in split-byte default',
+	`module test
+int foo 0xA8 255
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	// 0xA8=168, 255=0xFF → [168, 255, 0, 0] = 0xA8FF0000
+	[[{}, { output: 0xa8ff0000 | 0 }]]
+);
