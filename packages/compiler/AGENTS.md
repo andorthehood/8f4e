@@ -182,6 +182,21 @@ function divMod int int
 functionEnd int int
 ```
 
+## Error Domains
+
+The compiler uses two separate error modules. **Always choose based on detection phase**:
+
+| Phase | Module | Class / Function | When to use |
+|-------|--------|-----------------|-------------|
+| Syntax | `src/syntax/syntaxError.ts` | `SyntaxRulesError` / `SyntaxErrorCode` | Error detectable from token/argument shape alone, before semantic context |
+| Semantic | `src/compilerError.ts` | `getError` / `ErrorCode` | Error requires symbol resolution, scope, stack state, type checking, or compiler state |
+
+**Syntax error examples**: malformed literal, missing required argument, invalid pointer-depth, invalid string encoding, mixed byte-literal tokens.
+
+**Compiler error examples**: undeclared identifier, type mismatch, stack mismatch, illegal memory access in pure function, duplicate declarations.
+
+**Default messages** are centrally defined in each module's registry. Throw sites should omit the `message` argument unless dynamic context adds value (e.g. `INVALID_STRING_LITERAL` includes the bad escape sequence).
+
 ## Commits & PRs
 - Commits: `compiler: <scope> <change>` (e.g., `compiler: parser fix for arrays`).
 - PRs: include rationale, test coverage notes, and linked issues.

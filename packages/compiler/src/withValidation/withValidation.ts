@@ -4,7 +4,7 @@ import { validateOperandTypes } from './validateOperandTypes';
 import { validateScope } from './validateScope';
 
 import { ArgumentType, BLOCK_TYPE, type InstructionCompiler } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode, getError } from '../compilerError';
 import { isInstructionIsInsideBlock } from '../utils/blockStack';
 
 import type { ValidationSpec } from './types';
