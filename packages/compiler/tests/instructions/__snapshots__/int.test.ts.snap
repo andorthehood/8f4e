@@ -114,6 +114,287 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
 }
 `;
 
+exports[`int: anonymous byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 64,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "isHex": true,
+        "isInteger": true,
+        "type": "literal",
+        "value": 168,
+      },
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "__anonymous__2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 7,
+  },
+]
+`;
+
+exports[`int: anonymous byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`int: anonymous byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__anonymous__2": {
+    "byteAddress": 0,
+    "default": 2822766592,
+    "elementWordSize": 4,
+    "id": "__anonymous__2",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`int: anonymous constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "HI",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 32,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 64,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "HI",
+      },
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "__anonymous__3",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 8,
+  },
+]
+`;
+
+exports[`int: anonymous constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`int: anonymous constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__anonymous__3": {
+    "byteAddress": 0,
+    "default": 541065216,
+    "elementWordSize": 4,
+    "id": "__anonymous__3",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
 exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
@@ -881,6 +1162,295 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 3,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`int: named constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "HI",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 32,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 64,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+      {
+        "type": "identifier",
+        "value": "HI",
+      },
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 8,
+  },
+]
+`;
+
+exports[`int: named constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`int: named constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "foo": {
+    "byteAddress": 0,
+    "default": 541065216,
+    "elementWordSize": 4,
+    "id": "foo",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`int: named mixed byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 64,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+      {
+        "isHex": true,
+        "isInteger": true,
+        "type": "literal",
+        "value": 168,
+      },
+      {
+        "type": "identifier",
+        "value": "LO",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 7,
+  },
+]
+`;
+
+exports[`int: named mixed byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`int: named mixed byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "foo": {
+    "byteAddress": 0,
+    "default": 2822766592,
+    "elementWordSize": 4,
+    "id": "foo",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
 }
