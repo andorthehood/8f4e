@@ -39,9 +39,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p upload/example-projects
-          find packages/examples/src/projects -maxdepth 1 -type f -name '*.8f4e' -exec cp {} upload/example-projects/ \;
-          find packages/examples/src/projects -maxdepth 1 -type f -name '*.wasm' -exec cp {} upload/example-projects/ \;
-          ls -la upload/example-projects
+          find packages/examples/src/projects -type f \( -name '*.8f4e' -o -name '*.wasm' \) \
+            -exec cp --parents {} upload/example-projects/ \;
+          rm -rf upload/example-projects/packages/examples/src/projects
+          find upload/example-projects -type f | sort
 
       - name: DigitalOcean Spaces Upload Action
         uses: BetaHuhn/do-spaces-action@v2.0.146
