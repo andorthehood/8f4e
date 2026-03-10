@@ -1,0 +1,20 @@
+8f4e/v1
+
+function triangle
+; Triangle function for
+; the input range [-PI, PI]
+; Output range: [-1, 1]
+param float x
+
+use math
+
+push 1.0
+localGet x
+abs
+push INV_PI
+mul
+push 2.0
+mul
+sub
+
+functionEnd float
