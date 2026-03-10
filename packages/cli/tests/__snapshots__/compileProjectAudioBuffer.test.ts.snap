@@ -47,7 +47,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
         "module audioout",
         "use env",
         "",
-        "float* in &phaseAccumulator.out",
+        "float* in &phaseAccumulator:out",
         "",
         "; Audio buffer",
         "float[] buffer AUDIO_BUFFER_SIZE",
