@@ -44,7 +44,7 @@
         "module audioout",
         "use env",
         "",
-        "float* in &phaseAccumulator.out",
+        "float* in &phaseAccumulator:out",
         "",
         "; Audio buffer",
         "float[] buffer AUDIO_BUFFER_SIZE",

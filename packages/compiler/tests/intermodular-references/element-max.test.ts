@@ -269,7 +269,7 @@ describe('inter-module references - element max', () => {
 			{
 				code: [
 					'module targetModule',
-					'int* ptr &sourceModule.buffer',
+					'int* ptr &sourceModule:buffer',
 					'int size $sourceModule.buffer',
 					'int maxValue ^sourceModule.buffer',
 					'moduleEnd',

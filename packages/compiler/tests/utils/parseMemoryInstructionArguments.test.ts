@@ -57,7 +57,7 @@ describe('parseMemoryInstructionArguments', () => {
 		it('should handle intermodular reference without error', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'bufferIn' },
-				{ type: ArgumentType.IDENTIFIER, value: '&notesMux2.out' },
+				{ type: ArgumentType.IDENTIFIER, value: '&notesMux2:out' },
 			];
 			const result = parseMemoryInstructionArguments(args, 5, 'float*', createMockContext());
 			// Intermodular references are resolved later, so defaultValue stays 0
@@ -67,7 +67,25 @@ describe('parseMemoryInstructionArguments', () => {
 		it('should handle another intermodular reference pattern', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
-				{ type: ArgumentType.IDENTIFIER, value: '&module.identifier' },
+				{ type: ArgumentType.IDENTIFIER, value: '&module:identifier' },
+			];
+			const result = parseMemoryInstructionArguments(args, 6, 'int*', createMockContext());
+			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
+		});
+
+		it('should handle intermodular module-base start reference without error', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
+				{ type: ArgumentType.IDENTIFIER, value: '&module:' },
+			];
+			const result = parseMemoryInstructionArguments(args, 6, 'int*', createMockContext());
+			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
+		});
+
+		it('should handle intermodular module-base end reference without error', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
+				{ type: ArgumentType.IDENTIFIER, value: 'module:&' },
 			];
 			const result = parseMemoryInstructionArguments(args, 6, 'int*', createMockContext());
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
@@ -467,11 +485,11 @@ describe('parseMemoryInstructionArguments', () => {
 			// Even if a memory item exists with name matching the pattern,
 			// intermodular references should be detected first
 			const memory = {
-				'module.identifier': { byteAddress: 123, wordAlignedSize: 1, isInteger: false, isPointer: false },
+				'module:identifier': { byteAddress: 123, wordAlignedSize: 1, isInteger: false, isPointer: false },
 			};
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'test' },
-				{ type: ArgumentType.IDENTIFIER, value: '&module.identifier' },
+				{ type: ArgumentType.IDENTIFIER, value: '&module:identifier' },
 			];
 			const result = parseMemoryInstructionArguments(args, 15, 'float*', createMockContext(memory));
 			// Should be treated as intermodular, not memory reference

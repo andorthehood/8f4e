@@ -3,6 +3,7 @@ import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 import { INTERMODULAR_REFERENCE_PATTERN } from '../syntax/isIntermodularReferencePattern';
+import isIntermodularModuleReference from '../syntax/isIntermodularModuleReference';
 import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
 import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
 import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
@@ -40,6 +41,12 @@ const init: InstructionCompiler = withValidation(
 		) {
 			// Do nothing
 			// Intermodular references are resolved later
+		} else if (
+			line.arguments[1].type === ArgumentType.IDENTIFIER &&
+			isIntermodularModuleReference(line.arguments[1].value)
+		) {
+			// Do nothing
+			// Intermodular module-base references are resolved later
 		} else if (
 			line.arguments[1].type === ArgumentType.IDENTIFIER &&
 			isIntermodularElementCountReference(line.arguments[1].value)

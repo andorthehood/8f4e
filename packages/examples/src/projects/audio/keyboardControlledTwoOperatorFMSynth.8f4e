@@ -50,7 +50,7 @@ module arEnv
 float dAttack 0.01
 float dRelease 0.0001
 
-int* trigger &keyboard.keyPressed
+int* trigger &keyboard:keyPressed
 
 float* attackRate &dAttack
 float* releaseRate &dRelease
@@ -107,7 +107,7 @@ module audioout
 ; @pos 536 38
 use env
 
-float* in &reverb.out
+float* in &reverb:out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE
@@ -170,7 +170,7 @@ module janko
 ;'--------+---+---+---+---+---+---+---+---+---+---+---+-------------'
 ;
 ; @group janko
-int* in &keyboard.keyCode; Keycode
+int* in &keyboard:keyCode; Keycode
 int out ; MIDI note number
 push &out
 push *in
@@ -226,7 +226,7 @@ moduleEnd
 
 module limiter
 ; @pos 422 43
-float* in &operator2.out
+float* in &operator2:out
 float out
 
 push &out
@@ -566,9 +566,9 @@ moduleEnd
 module midiNote2Freq
 ; @pos 286 36
 
-int* in &janko.out
+int* in &janko:out
 float out
-float* notes &midiLUT.notes
+float* notes &midiLUT:notes
 
 ; @debug out
 
@@ -588,7 +588,7 @@ module operator1
 use env
 use math
 
-float* frequency &midiNote2Freq.out
+float* frequency &midiNote2Freq:out
 float phase 0.2
 float out
 float octave 2.0
@@ -632,8 +632,8 @@ module operator2
 ; @pos 376 38
 use env
 
-float* frequency &midiNote2Freq.out
-float* phaseMod &operator1.out
+float* frequency &midiNote2Freq:out
+float* phaseMod &operator1:out
 float modIndex 1/2
 float phase 0.1
 float out
@@ -682,7 +682,7 @@ moduleEnd
 module reverb
 ; @pos 497 38
 
-float* in &vca.out
+float* in &vca:out
 float out
 
 const FEEDBACK 0.5
@@ -796,8 +796,8 @@ functionEnd float
 module vca
 ; @pos 459 43
 
-float* in &limiter.out
-float* volume &arEnv.out
+float* in &limiter:out
+float* volume &arEnv:out
 float out
 
 push &out
