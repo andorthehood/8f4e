@@ -1,0 +1,18 @@
+8f4e/v1
+
+function square
+; Square function for
+; the input range [-PI, PI]
+; Output range: [-1, 1]
+param float x
+
+localGet x
+push 0.0
+greaterThan
+if float
+push 1.0
+else
+push -1.0
+ifEnd
+
+functionEnd float
