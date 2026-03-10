@@ -39,9 +39,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p upload/example-projects
-          find packages/examples/src/projects -type f \( -name '*.8f4e' -o -name '*.wasm' \) \
-            -exec cp --parents {} upload/example-projects/ \;
-          rm -rf upload/example-projects/packages/examples/src/projects
+          cd packages/examples/src/projects
+          find . -type f \( -name '*.8f4e' -o -name '*.wasm' \) \
+            -exec cp --parents {} "$GITHUB_WORKSPACE/upload/example-projects/" \;
           find upload/example-projects -type f | sort
 
       - name: DigitalOcean Spaces Upload Action
