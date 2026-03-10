@@ -2,11 +2,14 @@ import { EventDispatcher } from '.';
 
 import type { State, InternalMouseEvent } from '@8f4e/editor-state';
 
-export default function pointerEvents(element: HTMLElement, events: EventDispatcher, state: State) {
+const WHEEL_SCROLL_END_DELAY_MS = 120;
+
+export default function pointerEvents(element: HTMLElement, events: EventDispatcher, state: State): () => void {
 	let prevEvent = {
 		offsetX: 0,
 		offsetY: 0,
 	};
+	let wheelScrollEndTimeout: ReturnType<typeof setTimeout> | undefined;
 
 	function onMouseEvents(event: MouseEvent) {
 		const movementX = event.offsetX - prevEvent.offsetX;
@@ -46,6 +49,15 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 			canvasHeight: element.clientHeight,
 			altKey: event.altKey,
 		});
+
+		if (wheelScrollEndTimeout) {
+			clearTimeout(wheelScrollEndTimeout);
+		}
+
+		wheelScrollEndTimeout = setTimeout(() => {
+			wheelScrollEndTimeout = undefined;
+			events.dispatch('mouseup');
+		}, WHEEL_SCROLL_END_DELAY_MS);
 	}
 
 	if (state.featureFlags.viewportDragging) {
@@ -55,4 +67,18 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 	element.addEventListener('mousedown', onMouseEvents);
 	element.addEventListener('mousemove', onMouseEvents);
 	element.addEventListener('contextmenu', onMouseEvents);
+
+	return () => {
+		if (wheelScrollEndTimeout) {
+			clearTimeout(wheelScrollEndTimeout);
+		}
+
+		if (state.featureFlags.viewportDragging) {
+			window.removeEventListener('wheel', onWheelEvents);
+		}
+		element.removeEventListener('mouseup', onMouseEvents);
+		element.removeEventListener('mousedown', onMouseEvents);
+		element.removeEventListener('mousemove', onMouseEvents);
+		element.removeEventListener('contextmenu', onMouseEvents);
+	};
 }

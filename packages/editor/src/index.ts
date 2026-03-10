@@ -83,7 +83,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 	});
 	const state = store.getState();
-	pointerEvents(canvas, events, state);
+	const cleanupPointer = pointerEvents(canvas, events, state);
 	const cleanupKeyboard = keyboardEvents(events, store);
 	const cleanupKeyboardMemory = keyboardMemoryEvents(store);
 
@@ -117,6 +117,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		updateMemoryViews,
 		getMemoryViews: () => memoryViews,
 		dispose: () => {
+			cleanupPointer();
 			cleanupKeyboard();
 			cleanupKeyboardMemory();
 		},
