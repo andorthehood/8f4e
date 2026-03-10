@@ -1,0 +1,15 @@
+8f4e/v1
+
+function saw
+; Sawtooth function for
+; the input range [-PI, PI]
+; Output range: [-1, 1]
+param float x
+
+use math
+
+localGet x
+push INV_PI
+mul
+
+functionEnd float
