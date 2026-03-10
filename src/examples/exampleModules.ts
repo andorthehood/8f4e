@@ -1,267 +1,102 @@
 import type { ModuleMetadata } from '@8f4e/editor-state';
 
+const moduleLoaders = import.meta.glob('../../packages/examples/src/modules/**/*.8f4em', {
+	query: '?raw',
+	import: 'default',
+}) as Record<string, () => Promise<string>>;
+
+const modulePathPrefix = '../../packages/examples/src/modules/';
+
+const upperCaseWords = new Set(['lsb', 'msb', 'midi', 'pcm', 'cga', 'xor']);
+const preserveCaseWords = new Set(['8bit', '16bit', '32bit']);
+
+function toTitleCase(value: string): string {
+	return value
+		.split('-')
+		.map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
+		.join(' ');
+}
+
+function humanizeSlug(slug: string): string {
+	const normalized = slug
+		.replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+		.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+		.replace(/[-_]/g, ' ')
+		.trim();
+
+	return normalized
+		.split(/\s+/)
+		.map(word => {
+			const lower = word.toLowerCase();
+
+			if (upperCaseWords.has(lower)) {
+				return lower.toUpperCase();
+			}
+
+			if (preserveCaseWords.has(lower)) {
+				return lower;
+			}
+
+			return word.charAt(0).toUpperCase() + word.slice(1);
+		})
+		.join(' ');
+}
+
+function getRelativeModulePath(filePath: string): string {
+	return filePath.replace(modulePathPrefix, '');
+}
+
+function getSlug(relativePath: string): string {
+	const fileName = relativePath.split('/').pop();
+
+	if (!fileName) {
+		throw new Error(`Invalid module path: ${relativePath}`);
+	}
+
+	return fileName.replace(/\.8f4em$/, '');
+}
+
+function getCategory(relativePath: string): string {
+	const segments = relativePath.split('/');
+	const categorySegments = segments.slice(0, -1);
+
+	return categorySegments.map(toTitleCase).join('/');
+}
+
+type ModuleEntry = {
+	slug: string;
+	path: string;
+	loader: () => Promise<string>;
+};
+
+const moduleEntries: ModuleEntry[] = Object.entries(moduleLoaders)
+	.map(([path, loader]) => {
+		const relativePath = getRelativeModulePath(path);
+
+		return {
+			slug: getSlug(relativePath),
+			path: relativePath,
+			loader,
+		};
+	})
+	.sort((left, right) => left.slug.localeCompare(right.slug));
+
 /**
  * Manifest of available modules with their lazy loaders.
  * Maps slug -> loader function.
  */
-export const moduleManifest: Record<string, () => Promise<string>> = {
-	XORShift: () => import('@8f4e/examples/modules/random/XORShift.8f4em?raw').then(m => m.default),
-	amenBreak64Step: () => import('@8f4e/examples/modules/break-beats/amenBreak64Step.8f4em?raw').then(m => m.default),
-	arEnvelope: () => import('@8f4e/examples/modules/envelopes/arEnvelope.8f4em?raw').then(m => m.default),
-	asEnvelope: () => import('@8f4e/examples/modules/envelopes/asEnvelope.8f4em?raw').then(m => m.default),
-	audioBufferOut: () => import('@8f4e/examples/modules/audio-buffer/audioBufferOut.8f4em?raw').then(m => m.default),
-	backgroundPlasmaShader: () =>
-		import('@8f4e/examples/modules/shaders/backgroundPlasmaShader.8f4em?raw').then(m => m.default),
-	binSwitchesLSb: () => import('@8f4e/examples/modules/controllers/binSwitchesLSb.8f4em?raw').then(m => m.default),
-	binSwitchesMSb: () => import('@8f4e/examples/modules/controllers/binSwitchesMSb.8f4em?raw').then(m => m.default),
-	binaryGateSequencer: () =>
-		import('@8f4e/examples/modules/sequencers/binaryGateSequencer.8f4em?raw').then(m => m.default),
-	binaryShiftRegister: () =>
-		import('@8f4e/examples/modules/bitwise/binaryShiftRegister.8f4em?raw').then(m => m.default),
-	bitcrusher: () => import('@8f4e/examples/modules/effects/bitcrusher.8f4em?raw').then(m => m.default),
-	bitwiseAnd: () => import('@8f4e/examples/modules/bitwise/bitwiseAnd.8f4em?raw').then(m => m.default),
-	bitwiseOr: () => import('@8f4e/examples/modules/bitwise/bitwiseOr.8f4em?raw').then(m => m.default),
-	bitwiseXor: () => import('@8f4e/examples/modules/bitwise/bitwiseXor.8f4em?raw').then(m => m.default),
-	bpmClock: () => import('@8f4e/examples/modules/clock/bpmClock.8f4em?raw').then(m => m.default),
-	break16Step1: () => import('@8f4e/examples/modules/break-beats/break16Step1.8f4em?raw').then(m => m.default),
-	break16Step2: () => import('@8f4e/examples/modules/break-beats/break16Step2.8f4em?raw').then(m => m.default),
-	bufferCombinerInt: () => import('@8f4e/examples/modules/buffer/bufferCombinerInt.8f4em?raw').then(m => m.default),
-	bufferCombinerIntFloat: () =>
-		import('@8f4e/examples/modules/buffer/bufferCombinerIntFloat.8f4em?raw').then(m => m.default),
-	bufferCopierFloat: () => import('@8f4e/examples/modules/buffer/bufferCopierFloat.8f4em?raw').then(m => m.default),
-	bufferCopierInt: () => import('@8f4e/examples/modules/buffer/bufferCopierInt.8f4em?raw').then(m => m.default),
-	bufferFloatToInt: () => import('@8f4e/examples/modules/buffer/bufferFloatToInt.8f4em?raw').then(m => m.default),
-	bufferIntToFloat: () => import('@8f4e/examples/modules/buffer/bufferIntToFloat.8f4em?raw').then(m => m.default),
-	bufferReplicatorWithOffsetInt: () =>
-		import('@8f4e/examples/modules/buffer/bufferReplicatorWithOffsetInt.8f4em?raw').then(m => m.default),
-	bufferReplicatorWithOffsetIntFloat: () =>
-		import('@8f4e/examples/modules/buffer/bufferReplicatorWithOffsetIntFloat.8f4em?raw').then(m => m.default),
-	bufferReverserFloat: () => import('@8f4e/examples/modules/buffer/bufferReverserFloat.8f4em?raw').then(m => m.default),
-	bufferReverserInt: () => import('@8f4e/examples/modules/buffer/bufferReverserInt.8f4em?raw').then(m => m.default),
-	changeDetectorInt: () => import('@8f4e/examples/modules/trigger/changeDetectorInt.8f4em?raw').then(m => m.default),
-	clockDivider: () => import('@8f4e/examples/modules/clock/clockDivider.8f4em?raw').then(m => m.default),
-	decToBin8bitMSb: () => import('@8f4e/examples/modules/bitwise/decToBin8bitMSb.8f4em?raw').then(m => m.default),
-	delay: () => import('@8f4e/examples/modules/effects/delay.8f4em?raw').then(m => m.default),
-	euclideanRhythm: () => import('@8f4e/examples/modules/sequencers/euclideanRhythm.8f4em?raw').then(m => m.default),
-	extractByte: () => import('@8f4e/examples/modules/functions/bitwise/extractByte.8f4em?raw').then(m => m.default),
-	expLookupTable: () => import('@8f4e/examples/modules/lookup-tables/expLookupTable.8f4em?raw').then(m => m.default),
-	generalMIDIDrumCodes: () =>
-		import('@8f4e/examples/modules/constants/generalMIDIDrumCodes.8f4em?raw').then(m => m.default),
-	highPassFilter: () => import('@8f4e/examples/modules/filters/highPassFilter.8f4em?raw').then(m => m.default),
-	integerLimits: () => import('@8f4e/examples/modules/constants/integerLimits.8f4em?raw').then(m => m.default),
-	linearCongruentialGenerator: () =>
-		import('@8f4e/examples/modules/random/linearCongruentialGenerator.8f4em?raw').then(m => m.default),
-	lowPassFilter: () => import('@8f4e/examples/modules/filters/lowPassFilter.8f4em?raw').then(m => m.default),
-	mapToRangeFloat: () => import('@8f4e/examples/modules/utils/mapToRangeFloat.8f4em?raw').then(m => m.default),
-	mapToRangeFloatToInt: () =>
-		import('@8f4e/examples/modules/utils/mapToRangeFloatToInt.8f4em?raw').then(m => m.default),
-	mapToRangeInt: () => import('@8f4e/examples/modules/utils/mapToRangeInt.8f4em?raw').then(m => m.default),
-	mapToVariableRangeFloat: () =>
-		import('@8f4e/examples/modules/utils/mapToVariableRangeFloat.8f4em?raw').then(m => m.default),
-	masterClock: () => import('@8f4e/examples/modules/clock/masterClock.8f4em?raw').then(m => m.default),
-	math: () => import('@8f4e/examples/modules/constants/math.8f4em?raw').then(m => m.default),
-	midiCCOut: () => import('@8f4e/examples/modules/midi/midiCCOut.8f4em?raw').then(m => m.default),
-	midiCodes: () => import('@8f4e/examples/modules/constants/midiCodes.8f4em?raw').then(m => m.default),
-	midiFrequenciesLookupTable: () =>
-		import('@8f4e/examples/modules/lookup-tables/midiFreqLUT_12TET.8f4em?raw').then(m => m.default),
-	midiPianoKeyboardC3: () => import('@8f4e/examples/modules/midi/midiPianoKeyboardC3.8f4em?raw').then(m => m.default),
-	morse: () => import('@8f4e/examples/modules/constants/morse.8f4em?raw').then(m => m.default),
-	morseHex: () => import('@8f4e/examples/modules/constants/morseHex.8f4em?raw').then(m => m.default),
-	multipleFloat: () => import('@8f4e/examples/modules/utilities/multipleFloat.8f4em?raw').then(m => m.default),
-	multipleInt: () => import('@8f4e/examples/modules/utilities/multipleInt.8f4em?raw').then(m => m.default),
-	pcmLooper8bitUnsigned: () =>
-		import('@8f4e/examples/modules/pcm/pcmLooper8bitUnsigned.8f4em?raw').then(m => m.default),
-	pcmLooper8bitUnsignedWithReset: () =>
-		import('@8f4e/examples/modules/pcm/pcmLooper8bitUnsignedWithReset.8f4em?raw').then(m => m.default),
-	pcmLooperV16bitSigned: () =>
-		import('@8f4e/examples/modules/pcm/pcmLooperV16bitSigned.8f4em?raw').then(m => m.default),
-	pcmLooperVR16bitSigned: () =>
-		import('@8f4e/examples/modules/pcm/pcmLooperVR16bitSigned.8f4em?raw').then(m => m.default),
-	pcmLooperVRP16bitSigned: () =>
-		import('@8f4e/examples/modules/pcm/pcmLooperVRP16bitSigned.8f4em?raw').then(m => m.default),
-	peakHolderNegativeFloat: () =>
-		import('@8f4e/examples/modules/debug-tools/peakHolderNegativeFloat.8f4em?raw').then(m => m.default),
-	peakHolderPositiveFloat: () =>
-		import('@8f4e/examples/modules/debug-tools/peakHolderPositiveFloat.8f4em?raw').then(m => m.default),
-	phaseAccumulator: () => import('@8f4e/examples/modules/oscillators/phaseAccumulator.8f4em?raw').then(m => m.default),
-	postProcessRippleShader: () =>
-		import('@8f4e/examples/modules/shaders/postProcessRippleShader.8f4em?raw').then(m => m.default),
-	quantizer: () => import('@8f4e/examples/modules/quantizers/quantizer.8f4em?raw').then(m => m.default),
-	reverb: () => import('@8f4e/examples/modules/effects/reverb.8f4em?raw').then(m => m.default),
-	ringModulator: () => import('@8f4e/examples/modules/modulation/ringModulator.8f4em?raw').then(m => m.default),
-	sampleAndHoldFloat: () => import('@8f4e/examples/modules/utils/sampleAndHoldFloat.8f4em?raw').then(m => m.default),
-	sampleAndHoldInt: () => import('@8f4e/examples/modules/utils/sampleAndHoldInt.8f4em?raw').then(m => m.default),
-	saw: () => import('@8f4e/examples/modules/functions/math/saw.8f4em?raw').then(m => m.default),
-	sawSignedFloat: () => import('@8f4e/examples/modules/oscillators/sawSignedFloat.8f4em?raw').then(m => m.default),
-	sawUnsigned8bitInt: () =>
-		import('@8f4e/examples/modules/oscillators/sawUnsigned8bitInt.8f4em?raw').then(m => m.default),
-	scopeSignedFloat: () => import('@8f4e/examples/modules/debug-tools/scopeSignedFloat.8f4em?raw').then(m => m.default),
-	scopeUnsignedInt: () => import('@8f4e/examples/modules/debug-tools/scopeUnsignedInt.8f4em?raw').then(m => m.default),
-	sequencerFloat: () => import('@8f4e/examples/modules/sequencers/sequencerFloat.8f4em?raw').then(m => m.default),
-	sequencerInt: () => import('@8f4e/examples/modules/sequencers/sequencerInt.8f4em?raw').then(m => m.default),
-	sequentialDemuxFloat: () =>
-		import('@8f4e/examples/modules/sequencers/sequentialDemuxFloat.8f4em?raw').then(m => m.default),
-	sequentialDemuxInt: () =>
-		import('@8f4e/examples/modules/sequencers/sequentialDemuxInt.8f4em?raw').then(m => m.default),
-	sequentialMuxFloat: () =>
-		import('@8f4e/examples/modules/sequencers/sequentialMuxFloat.8f4em?raw').then(m => m.default),
-	sequentialMuxInt: () => import('@8f4e/examples/modules/sequencers/sequentialMuxInt.8f4em?raw').then(m => m.default),
-	shiftRegisterFloat: () =>
-		import('@8f4e/examples/modules/utilities/shiftRegisterFloat.8f4em?raw').then(m => m.default),
-	shiftRegisterInt: () => import('@8f4e/examples/modules/utilities/shiftRegisterInt.8f4em?raw').then(m => m.default),
-	sigmoid: () => import('@8f4e/examples/modules/functions/math/sigmoid.8f4em?raw').then(m => m.default),
-	sigmoidPolynomialApproximation: () =>
-		import('@8f4e/examples/modules/machine-learning/sigmoidPolynomialApproximation.8f4em?raw').then(m => m.default),
-	sine: () => import('@8f4e/examples/modules/functions/math/sine.8f4em?raw').then(m => m.default),
-	sineLookupTable: () => import('@8f4e/examples/modules/lookup-tables/sineLookupTable.8f4em?raw').then(m => m.default),
-	square: () => import('@8f4e/examples/modules/functions/math/square.8f4em?raw').then(m => m.default),
-	squareSignedFloat: () =>
-		import('@8f4e/examples/modules/oscillators/squareSignedFloat.8f4em?raw').then(m => m.default),
-	strumFloat: () => import('@8f4e/examples/modules/sequencers/strumFloat.8f4em?raw').then(m => m.default),
-	switchGatesFloat: () => import('@8f4e/examples/modules/controllers/switchGatesFloat.8f4em?raw').then(m => m.default),
-	switchGatesInt: () => import('@8f4e/examples/modules/controllers/switchGatesInt.8f4em?raw').then(m => m.default),
-	triangle: () => import('@8f4e/examples/modules/functions/math/triangle.8f4em?raw').then(m => m.default),
-	triangleSignedFloat: () =>
-		import('@8f4e/examples/modules/oscillators/triangleSignedFloat.8f4em?raw').then(m => m.default),
-	triggerPatternSequencer: () =>
-		import('@8f4e/examples/modules/sequencers/triggerPatternSequencer.8f4em?raw').then(m => m.default),
-	cgaColors: () => import('@8f4e/examples/modules/color-schemes/cgaColors.8f4em?raw').then(m => m.default),
-};
+export const moduleManifest: Record<string, () => Promise<string>> = Object.fromEntries(
+	moduleEntries.map(({ slug, loader }) => [slug, loader])
+);
 
 /**
- * Hardcoded metadata for all modules.
- * This allows listing modules without loading their heavy code payloads.
- * Metadata is kept in sync with actual module files.
+ * Metadata is derived from the module file paths.
+ * Category comes from the directory structure and title comes from the file name.
  */
-export const moduleMetadata: ModuleMetadata[] = [
-	{ slug: 'XORShift', title: 'XORShift (Signed, Float, -1 - 1)', category: 'Random' },
-	{ slug: 'amenBreak64Step', title: 'Amen Break 64 Step', category: 'Break Beats' },
-	{ slug: 'arEnvelope', title: 'Attack-Release Envelope', category: 'Envelopes' },
-	{ slug: 'asEnvelope', title: 'Attack-Sustain Envelope', category: 'Envelopes' },
-	{ slug: 'audioBufferOut', title: 'Audio Buffer Out', category: 'Audio Buffer' },
-	{ slug: 'backgroundPlasmaShader', title: 'Background Plasma Shader', category: 'Shaders' },
-	{ slug: 'binSwitchesLSb', title: 'Binary Switches (LSb first)', category: 'Controllers' },
-	{ slug: 'binSwitchesMSb', title: 'Binary Switches (MSb first)', category: 'Controllers' },
-	{ slug: 'binaryGateSequencer', title: 'Binary Gate Sequencer', category: 'Sequencers' },
-	{ slug: 'binaryShiftRegister', title: 'Binary Shift Register', category: 'Bitwise' },
-	{ slug: 'bitcrusher', title: 'Bitcrusher', category: 'Effects' },
-	{ slug: 'bitwiseAnd', title: 'Bitwise AND', category: 'Bitwise' },
-	{ slug: 'bitwiseOr', title: 'Bitwise OR', category: 'Bitwise' },
-	{ slug: 'bitwiseXor', title: 'Bitwise XOR', category: 'Bitwise' },
-	{ slug: 'bpmClock', title: 'BPM Clock', category: 'Clock' },
-	{ slug: 'break16Step1', title: '16 Step Break 1', category: 'Break Beats' },
-	{ slug: 'break16Step2', title: '16 Step Break 2', category: 'Break Beats' },
-	{ slug: 'bufferCombinerInt', title: 'Buffer Combiner (Int)', category: 'Buffer' },
-	{ slug: 'bufferCombinerIntFloat', title: 'Buffer Combiner (Float)', category: 'Buffer' },
-	{ slug: 'bufferCopierFloat', title: 'Buffer Copier (Float)', category: 'Buffer' },
-	{ slug: 'bufferCopierInt', title: 'Buffer Copier (Int)', category: 'Buffer' },
-	{ slug: 'bufferFloatToInt', title: 'Float Buffer to Int Buffer Converter', category: 'Buffer' },
-	{ slug: 'bufferIntToFloat', title: 'Int Buffer to Float Buffer Converter', category: 'Buffer' },
-	{
-		slug: 'bufferReplicatorWithOffsetInt',
-		title: 'Buffer Replicator with Offset (Int)',
-		category: 'Buffer',
-	},
-	{
-		slug: 'bufferReplicatorWithOffsetIntFloat',
-		title: 'Buffer Replicator with Offset (Int)',
-		category: 'Buffer',
-	},
-	{ slug: 'bufferReverserFloat', title: 'Buffer Reverser (Float)', category: 'Buffer' },
-	{ slug: 'bufferReverserInt', title: 'Buffer Reverser (Int)', category: 'Buffer' },
-	{ slug: 'changeDetectorInt', title: 'Change Detector (Int)', category: 'Trigger' },
-	{ slug: 'clockDivider', title: 'Clock Divider', category: 'Clock' },
-	{ slug: 'decToBin8bitMSb', title: 'Decimal to Binary Converter (8bit, MSb)', category: 'Bitwise' },
-	{ slug: 'delay', title: 'Delay', category: 'Effects' },
-	{ slug: 'euclideanRhythm', title: 'Euclidean Rhythm', category: 'Sequencers' },
-	{ slug: 'extractByte', title: 'Extract Byte (32-bit Int)', category: 'Functions/Bitwise' },
-	{ slug: 'expLookupTable', title: 'Exponent Function Lookup Table (-1...1)', category: 'Lookup Tables' },
-	{ slug: 'generalMIDIDrumCodes', title: 'General MIDI Drum Codes', category: 'Constants' },
-	{ slug: 'highPassFilter', title: 'High-pass Filter', category: 'Filters' },
-	{ slug: 'integerLimits', title: 'Integer Limits', category: 'Constants' },
-	{
-		slug: 'linearCongruentialGenerator',
-		title: 'Linear Congruential Generator (Signed, Float, 16bit, -1 - 1)',
-		category: 'Random',
-	},
-	{ slug: 'lowPassFilter', title: 'Low-pass Filter', category: 'Filters' },
-	{ slug: 'mapToRangeFloat', title: 'Map Signal to Range (Float)', category: 'Utils' },
-	{ slug: 'mapToRangeFloatToInt', title: 'Map Signal to Range (Float to Int)', category: 'Utils' },
-	{ slug: 'mapToRangeInt', title: 'Map Signal to Range (Int)', category: 'Utils' },
-	{ slug: 'mapToVariableRangeFloat', title: 'Map Signal to Variable Range (Float)', category: 'Utils' },
-	{ slug: 'masterClock', title: 'Master Clock', category: 'Clock' },
-	{ slug: 'math', title: 'Math Constants', category: 'Constants' },
-	{ slug: 'midiCCOut', title: 'MIDI CC Out', category: 'MIDI' },
-	{ slug: 'midiCodes', title: 'MIDI Codes', category: 'Constants' },
-	{ slug: 'midiFrequenciesLookupTable', title: 'MIDI Frequencies Lookup Table', category: 'Lookup Tables' },
-	{ slug: 'midiPianoKeyboardC3', title: 'MIDI Piano Keyboard (First key: C3)', category: 'MIDI' },
-	{ slug: 'morse', title: 'Morse Code', category: 'Constants' },
-	{ slug: 'morseHex', title: 'Morse Code (Hex)', category: 'Constants' },
-	{ slug: 'multipleFloat', title: 'Multiple (8x Float)', category: 'Utilities' },
-	{ slug: 'multipleInt', title: 'Multiple (8x Int)', category: 'Utilities' },
-	{ slug: 'pcmLooper8bitUnsigned', title: 'PCM Looper (8bit unsigned)', category: 'PCM' },
-	{ slug: 'pcmLooper8bitUnsignedWithReset', title: 'PCM Looper with Reset (8bit unsigned)', category: 'PCM' },
-	{ slug: 'pcmLooperV16bitSigned', title: 'Variable Speed PCM Looper (16bit signed)', category: 'PCM' },
-	{
-		slug: 'pcmLooperVR16bitSigned',
-		title: 'Variable Speed and Retriggerable PCM Looper (16bit signed)',
-		category: 'PCM',
-	},
-	{
-		slug: 'pcmLooperVRP16bitSigned',
-		title: 'Retriggerable PCM Looper with Variable Speed and Start Position (16bit signed)',
-		category: 'PCM',
-	},
-	{ slug: 'peakHolderNegativeFloat', title: 'Peak Holder (Negative, Float)', category: 'Debug Tools' },
-	{ slug: 'peakHolderPositiveFloat', title: 'Peak Holder (Positive, Float)', category: 'Debug Tools' },
-	{
-		slug: 'phaseAccumulator',
-		title: 'Phase Accumulator (Periodic, Float)',
-		description: 'Phase accumulator that can drive any periodic function (defaults to sine).',
-		category: 'Oscillators',
-	},
-	{ slug: 'postProcessRippleShader', title: 'Post-process Ripple Shader', category: 'Shaders' },
-	{ slug: 'quantizer', title: 'Quantizer', category: 'Quantizers' },
-	{ slug: 'reverb', title: 'Reverb', category: 'Effects' },
-	{ slug: 'ringModulator', title: 'Ring Modulator', category: 'Modulation' },
-	{ slug: 'sampleAndHoldFloat', title: 'Sample & Hold (Float)', category: 'Utils' },
-	{ slug: 'sampleAndHoldInt', title: 'Sample & Hold (Int)', category: 'Utils' },
-	{ slug: 'saw', title: 'Saw [-PI, PI]', category: 'Functions/Math' },
-	{ slug: 'sawSignedFloat', title: 'Saw (Signed, Float)', category: 'Oscillators' },
-	{ slug: 'sawUnsigned8bitInt', title: 'Saw (Unsigned, Int, 8bit)', category: 'Oscillators' },
-	{ slug: 'scopeSignedFloat', title: 'Scope (Signed, Float, -1-1)', category: 'Debug Tools' },
-	{ slug: 'scopeUnsignedInt', title: 'Scope (Unsigned, Int, 0-255)', category: 'Debug Tools' },
-	{ slug: 'sequencerFloat', title: 'Sequencer (Float)', category: 'Sequencers' },
-	{ slug: 'sequencerInt', title: 'Sequencer (Int)', category: 'Sequencers' },
-	{ slug: 'sequentialDemuxFloat', title: 'Sequential Demultiplexer (8 output, Float)', category: 'Sequencers' },
-	{ slug: 'sequentialDemuxInt', title: 'Sequential Demultiplexer (8 output, Int)', category: 'Sequencers' },
-	{ slug: 'sequentialMuxFloat', title: 'Sequential Multiplexer (8 input, Float)', category: 'Sequencers' },
-	{ slug: 'sequentialMuxInt', title: 'Sequential Multiplexer (8 input, Int)', category: 'Sequencers' },
-	{ slug: 'shiftRegisterFloat', title: 'Shift Register (8 outs, Float)', category: 'Utilities' },
-	{ slug: 'shiftRegisterInt', title: 'Shift Register (8 outs, Int)', category: 'Utilities' },
-	{ slug: 'sigmoid', title: 'Sigmoid (Polynomial Approximation)', category: 'Functions/Math' },
-	{
-		slug: 'sigmoidPolynomialApproximation',
-		title: 'Sigmoid Function (Polynomial Approximation)',
-		category: 'Machine Learning',
-	},
-	{
-		slug: 'sine',
-		title: 'Sine [-PI, PI] (Polynomial Approximation)',
-		category: 'Functions/Math',
-	},
-	{ slug: 'sineLookupTable', title: 'Sine Lookup Table', category: 'Lookup Tables' },
-	{ slug: 'square', title: 'Square [-PI, PI]', category: 'Functions/Math' },
-	{ slug: 'squareSignedFloat', title: 'Square (Signed, Float)', category: 'Oscillators' },
-	{ slug: 'strumFloat', title: 'Strum (Float)', category: 'Sequencers' },
-	{ slug: 'switchGatesFloat', title: 'Switchable Gates (8x Float)', category: 'Controllers' },
-	{ slug: 'switchGatesInt', title: 'Switchable Gates (8x Int)', category: 'Controllers' },
-	{ slug: 'triangle', title: 'Triangle [-PI, PI]', category: 'Functions/Math' },
-	{ slug: 'triangleSignedFloat', title: 'Triangle (Signed, Float)', category: 'Oscillators' },
-	{ slug: 'triggerPatternSequencer', title: 'Trigger Pattern Sequencer', category: 'Sequencers' },
-	{ slug: 'cgaColors', title: 'CGA Colors', category: 'Color Schemes' },
-];
+export const moduleMetadata: ModuleMetadata[] = moduleEntries.map(({ slug, path }) => ({
+	slug,
+	title: humanizeSlug(slug),
+	category: getCategory(path),
+}));
 
-// For backwards compatibility, export a default object that matches the old API
-// but note: accessing properties will not trigger loading - use the registry functions instead
 export default moduleManifest;
