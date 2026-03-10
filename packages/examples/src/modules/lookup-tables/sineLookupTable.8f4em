@@ -1,7 +1,7 @@
 8f4e/v1
 
 module sineLUT
-@tab 8
+; @tab 8
 float	0.0000
 float	0.0246
 float	0.0493
