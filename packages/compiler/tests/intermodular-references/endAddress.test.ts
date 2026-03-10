@@ -3,10 +3,10 @@ import { describe, test, expect } from 'vitest';
 import compile from '../../src';
 
 describe('inter-module references - end address', () => {
-	test('resolves end-address inter-module reference (module.memory&)', () => {
+	test('resolves end-address inter-module reference (module:memory&)', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int* ptr sourceModule.buffer&', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int* ptr sourceModule:buffer&', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -30,7 +30,7 @@ describe('inter-module references - end address', () => {
 	test('end-address reference with scalar resolves to start address', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int scalar 42', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int* ptr sourceModule.scalar&', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int* ptr sourceModule:scalar&', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -52,7 +52,7 @@ describe('inter-module references - end address', () => {
 	test('resolves end-address reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'float[] buffer 5 0.0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'float* ptr', 'init ptr sourceModule.buffer&', 'moduleEnd'] },
+			{ code: ['module targetModule', 'float* ptr', 'init ptr sourceModule:buffer&', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -74,7 +74,7 @@ describe('inter-module references - end address', () => {
 
 	test('module dependency sorting works with end-address references', () => {
 		const modules = [
-			{ code: ['module dependentModule', 'int* ptr baseModule.buffer&', 'moduleEnd'] },
+			{ code: ['module dependentModule', 'int* ptr baseModule:buffer&', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
@@ -96,10 +96,10 @@ describe('inter-module references - end address', () => {
 		expect(dependentModule.memoryMap['ptr'].default).toBe(expectedEndAddress);
 	});
 
-	test('rejects old end-address syntax (&module.memory&)', () => {
+	test('rejects old end-address syntax (&module:memory&)', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int* ptr &sourceModule.buffer&', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int* ptr &sourceModule:buffer&', 'moduleEnd'] },
 		];
 
 		// Should throw because old syntax is no longer supported
@@ -109,5 +109,24 @@ describe('inter-module references - end address', () => {
 				memorySizeBytes: 65536,
 			});
 		}).toThrow();
+	});
+
+	test('resolves module end-address reference (module:&)', () => {
+		const modules = [
+			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int* ptr sourceModule:&', 'moduleEnd'] },
+		];
+
+		const result = compile(modules, {
+			startingMemoryWordAddress: 0,
+			memorySizeBytes: 65536,
+		});
+
+		const sourceModule = result.compiledModules['sourceModule'];
+		const targetModule = result.compiledModules['targetModule'];
+
+		expect(targetModule.memoryMap['ptr'].default).toBe(
+			sourceModule.byteAddress + (sourceModule.wordAlignedSize - 1) * 4
+		);
 	});
 });

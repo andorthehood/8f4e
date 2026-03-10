@@ -14,7 +14,7 @@ int defStartPos 0
 int* reset
 int* length &defLength
 float* speed &defSpeed
-int* startPos &defStartPos.out
+int* startPos &defStartPos:out
 
 ; Reset playhead
 push *reset

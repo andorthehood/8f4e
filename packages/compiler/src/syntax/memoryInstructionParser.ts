@@ -5,6 +5,8 @@ import hasElementCountPrefix from './hasElementCountPrefix';
 import extractMemoryReferenceBase from './extractMemoryReferenceBase';
 import extractElementCountBase from './extractElementCountBase';
 import isIntermodularReference from './isIntermodularReference';
+import isIntermodularModuleReference from './isIntermodularModuleReference';
+import extractIntermodularModuleReferenceBase from './extractIntermodularModuleReferenceBase';
 import isIntermodularElementCountReference from './isIntermodularElementCountReference';
 import extractIntermodularElementCountBase from './extractIntermodularElementCountBase';
 import isIntermodularElementWordSizeReference from './isIntermodularElementWordSizeReference';
@@ -28,6 +30,7 @@ export type MemoryArgumentShape =
 	| { type: 'memory-reference'; base: string; pattern: string }
 	| { type: 'element-count'; base: string }
 	| { type: 'intermodular-reference'; pattern: string }
+	| { type: 'intermodular-module-reference'; module: string; pattern: string; isEndAddress: boolean }
 	| { type: 'intermodular-element-count'; module: string; memory: string; pattern: string }
 	| { type: 'intermodular-element-word-size'; module: string; memory: string; pattern: string }
 	| { type: 'intermodular-element-max'; module: string; memory: string; pattern: string }
@@ -58,6 +61,7 @@ function isSplitByteCandidate(arg: Argument): boolean {
 	const v = arg.value;
 	return (
 		!isIntermodularReference(v) &&
+		!isIntermodularModuleReference(v) &&
 		!isIntermodularElementCountReference(v) &&
 		!isIntermodularElementWordSizeReference(v) &&
 		!isIntermodularElementMaxReference(v) &&
@@ -189,11 +193,22 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
-	// Check for intermodular reference pattern (e.g., "&module.identifier")
+	// Check for intermodular reference pattern (e.g., "&module:identifier")
 	if (isIntermodularReference(arg.value)) {
 		return {
 			type: 'intermodular-reference',
 			pattern: arg.value,
+		};
+	}
+
+	// Check for intermodular module-base reference pattern (e.g., "&module:")
+	if (isIntermodularModuleReference(arg.value)) {
+		const { module, isEndAddress } = extractIntermodularModuleReferenceBase(arg.value);
+		return {
+			type: 'intermodular-module-reference',
+			module,
+			pattern: arg.value,
+			isEndAddress,
 		};
 	}
 
@@ -279,8 +294,28 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular reference argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&mod.id' }]);
-			expect(result.firstArg).toEqual({ type: 'intermodular-reference', pattern: '&mod.id' });
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&mod:id' }]);
+			expect(result.firstArg).toEqual({ type: 'intermodular-reference', pattern: '&mod:id' });
+		});
+
+		it('parses intermodular module-base reference argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&mod:' }]);
+			expect(result.firstArg).toEqual({
+				type: 'intermodular-module-reference',
+				module: 'mod',
+				pattern: '&mod:',
+				isEndAddress: false,
+			});
+		});
+
+		it('parses intermodular module-end reference argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'mod:&' }]);
+			expect(result.firstArg).toEqual({
+				type: 'intermodular-module-reference',
+				module: 'mod',
+				pattern: 'mod:&',
+				isEndAddress: true,
+			});
 		});
 
 		it('parses intermodular element count argument', () => {
