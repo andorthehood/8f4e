@@ -2,8 +2,8 @@
  * Integration tests that verify all example projects compile without errors -
  * both module code and config blocks.
  */
-import { readFileSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { readdirSync, readFileSync } from 'fs';
+import { resolve, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
 
 import { describe, it, expect } from 'vitest';
@@ -13,10 +13,37 @@ import { parse8f4eToProject } from '@8f4e/editor-state';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const projectsDir = resolve(__dirname, '../../packages/examples/src/projects');
+
+function collectProjectPaths(directory: string): string[] {
+	return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+		const entryPath = resolve(directory, entry.name);
+
+		if (entry.isDirectory()) {
+			if (entry.name === 'archived') {
+				return [];
+			}
+
+			return collectProjectPaths(entryPath);
+		}
+
+		return entry.name.endsWith('.8f4e') ? [entryPath] : [];
+	});
+}
+
+const projectPaths = new Map(
+	collectProjectPaths(resolve(__dirname, '../../packages/examples/src/projects')).map(
+		path => [basename(path, '.8f4e'), path] as const
+	)
+);
 
 function loadProject(name: string) {
-	return parse8f4eToProject(readFileSync(resolve(projectsDir, `${name}.8f4e`), 'utf-8'));
+	const projectPath = projectPaths.get(name);
+
+	if (!projectPath) {
+		throw new Error(`Project fixture not found: ${name}`);
+	}
+
+	return parse8f4eToProject(readFileSync(projectPath, 'utf-8'));
 }
 
 const projects = [
