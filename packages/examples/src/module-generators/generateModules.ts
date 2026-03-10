@@ -12,23 +12,25 @@ const FORMAT_HEADER = '8f4e/v1';
 
 const generatedModules = [
 	{
-		fileName: 'sineLookupTable.8f4em',
+		fileName: 'lookup-tables/sineLookupTable.8f4em',
 		code: sineLookupTable,
 	},
 	{
-		fileName: 'expLookupTable.8f4em',
+		fileName: 'lookup-tables/expLookupTable.8f4em',
 		code: expLookupTable,
 	},
 	{
-		fileName: 'midiFreqLUT_12TET.8f4em',
+		fileName: 'lookup-tables/midiFreqLUT_12TET.8f4em',
 		code: midiFrequenciesLookupTable,
 	},
 ] as const;
 
 await Promise.all(
-	generatedModules.map(({ fileName, code }) =>
-		fs.writeFile(path.join(modulesDir, fileName), `${FORMAT_HEADER}\n\n${code}\n`, 'utf8')
-	)
+	generatedModules.map(async ({ fileName, code }) => {
+		const outputPath = path.join(modulesDir, fileName);
+		await fs.mkdir(path.dirname(outputPath), { recursive: true });
+		return fs.writeFile(outputPath, `${FORMAT_HEADER}\n\n${code}\n`, 'utf8');
+	})
 );
 
 console.log(`Generated ${generatedModules.length} module files in ${modulesDir}`);
