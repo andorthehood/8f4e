@@ -118,7 +118,7 @@ module audiooutL
 ; @home
 use env
 
-float* in &audioin.out
+float* in &audioin:out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE
@@ -160,7 +160,7 @@ module audiooutR
 
 use env
 
-float* in &audioin.out
+float* in &audioin:out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE

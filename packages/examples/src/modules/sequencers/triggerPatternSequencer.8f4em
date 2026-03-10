@@ -3,8 +3,8 @@
 module triggerPatternSequencer
 
 int* trigger
-int* bufferIn    ; &module.buffer
-int* bufferEndIn ; module.buffer&
+int* bufferIn    ; &module:buffer
+int* bufferEndIn ; module:buffer&
 
 int _offset
 int out

@@ -269,7 +269,7 @@ describe('inter-module references - element min', () => {
 			{
 				code: [
 					'module targetModule',
-					'int* ptr &sourceModule.buffer',
+					'int* ptr &sourceModule:buffer',
 					'int size $sourceModule.buffer',
 					'int minValue !sourceModule.buffer',
 					'int maxValue ^sourceModule.buffer',

@@ -1,4 +1,6 @@
 import { INTERMODULAR_REFERENCE_PATTERN } from './syntax/isIntermodularReferencePattern';
+import isIntermodularModuleReference from './syntax/isIntermodularModuleReference';
+import extractIntermodularModuleReferenceBase from './syntax/extractIntermodularModuleReferenceBase';
 import isIntermodularElementCountReference from './syntax/isIntermodularElementCountReference';
 import extractIntermodularElementCountBase from './syntax/extractIntermodularElementCountBase';
 import isIntermodularElementWordSizeReference from './syntax/isIntermodularElementWordSizeReference';
@@ -57,6 +59,7 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
 						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
+							isIntermodularModuleReference(_arguments[1].value) ||
 							isIntermodularElementCountReference(_arguments[1].value) ||
 							isIntermodularElementWordSizeReference(_arguments[1].value) ||
 							isIntermodularElementMaxReference(_arguments[1].value) ||
@@ -85,14 +88,17 @@ export default function sortModules(modules: AST[]): AST[] {
 						const { module } = extractIntermodularElementMinBase(value);
 						return module;
 					}
-					// Handle address reference (&module.memory or module.memory&)
+					if (isIntermodularModuleReference(value)) {
+						return extractIntermodularModuleReferenceBase(value).module;
+					}
+					// Handle address reference (&module:memory or module:memory&)
 					// Parse reference based on form:
-					// - Start: &module.memory -> remove leading &
-					// - End: module.memory& -> remove trailing &
+					// - Start: &module:memory -> remove leading &
+					// - End: module:memory& -> remove trailing &
 					const cleanRef = value.endsWith('&')
 						? value.substring(0, value.length - 1) // Remove trailing &
 						: value.substring(1); // Remove leading &
-					return cleanRef.split('.')[0];
+					return cleanRef.split(':')[0];
 				});
 
 			const intermodulerConnectionsB = astB
@@ -106,6 +112,7 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
 						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
+							isIntermodularModuleReference(_arguments[1].value) ||
 							isIntermodularElementCountReference(_arguments[1].value) ||
 							isIntermodularElementWordSizeReference(_arguments[1].value) ||
 							isIntermodularElementMaxReference(_arguments[1].value) ||
@@ -134,14 +141,17 @@ export default function sortModules(modules: AST[]): AST[] {
 						const { module } = extractIntermodularElementMinBase(value);
 						return module;
 					}
-					// Handle address reference (&module.memory or module.memory&)
+					if (isIntermodularModuleReference(value)) {
+						return extractIntermodularModuleReferenceBase(value).module;
+					}
+					// Handle address reference (&module:memory or module:memory&)
 					// Parse reference based on form:
-					// - Start: &module.memory -> remove leading &
-					// - End: module.memory& -> remove trailing &
+					// - Start: &module:memory -> remove leading &
+					// - End: module:memory& -> remove trailing &
 					const cleanRef = value.endsWith('&')
 						? value.substring(0, value.length - 1) // Remove trailing &
 						: value.substring(1); // Remove leading &
-					return cleanRef.split('.')[0];
+					return cleanRef.split(':')[0];
 				});
 
 			if (intermodulerConnectionsB.includes(moduleIdA) && !intermodulerConnectionsA.includes(moduleIdB)) {
@@ -215,8 +225,10 @@ if (import.meta.vitest) {
 				'%alpha.value',
 				'^alpha.value',
 				'!alpha.value',
-				'&alpha.value',
-				'alpha.value&',
+				'&alpha:value',
+				'alpha:value&',
+				'&alpha:',
+				'alpha:&',
 			]);
 
 			const sorted = sortModules([beta, alpha]);
@@ -225,7 +237,7 @@ if (import.meta.vitest) {
 		});
 
 		it('orders module before another module that references it', () => {
-			const alpha = createModuleAst('alpha', ['&beta.value']);
+			const alpha = createModuleAst('alpha', ['&beta:value']);
 			const beta = createModuleAst('beta');
 
 			const sorted = sortModules([alpha, beta]);
