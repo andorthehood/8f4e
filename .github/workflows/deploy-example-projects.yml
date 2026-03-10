@@ -38,11 +38,11 @@ jobs:
       - name: Stage example project files
         run: |
           set -euo pipefail
-          mkdir -p upload/example-projects
+          mkdir -p "$GITHUB_WORKSPACE/upload/example-projects"
           cd packages/examples/src/projects
           find . -type f \( -name '*.8f4e' -o -name '*.wasm' \) \
             -exec cp --parents {} "$GITHUB_WORKSPACE/upload/example-projects/" \;
-          find upload/example-projects -type f | sort
+          find "$GITHUB_WORKSPACE/upload/example-projects" -type f | sort
 
       - name: DigitalOcean Spaces Upload Action
         uses: BetaHuhn/do-spaces-action@v2.0.146
