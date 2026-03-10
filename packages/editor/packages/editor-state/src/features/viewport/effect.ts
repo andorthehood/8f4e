@@ -1,6 +1,7 @@
 import move from './move';
 import resize from './resize';
 import snapToGrid from './snapToGrid';
+import snapToGridConsideringDirection from './snapToGridConsideringDirection';
 
 import type { State } from '~/types';
 
@@ -15,6 +16,11 @@ interface MouseMoveEvent {
 interface ResizeEvent {
 	canvasWidth: number;
 	canvasHeight: number;
+}
+
+interface ViewportScrollEndEvent {
+	movementX: number;
+	movementY: number;
 }
 
 export default function viewport(state: State, events: EventDispatcher): () => void {
@@ -34,13 +40,19 @@ export default function viewport(state: State, events: EventDispatcher): () => v
 		snapToGrid(state);
 	}
 
+	function onViewportScrollEnd(event: ViewportScrollEndEvent) {
+		snapToGridConsideringDirection(state, event);
+	}
+
 	events.on('mousemove', onMouseMove);
 	events.on('resize', onResize);
 	events.on('mouseup', onMouseUp);
+	events.on('viewportscrollend', onViewportScrollEnd);
 
 	return () => {
 		events.off('mousemove', onMouseMove);
 		events.off('resize', onResize);
 		events.off('mouseup', onMouseUp);
+		events.off('viewportscrollend', onViewportScrollEnd);
 	};
 }

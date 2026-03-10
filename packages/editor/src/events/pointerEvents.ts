@@ -4,12 +4,21 @@ import type { State, InternalMouseEvent } from '@8f4e/editor-state';
 
 const WHEEL_SCROLL_END_DELAY_MS = 120;
 
+interface ViewportScrollEndEvent {
+	movementX: number;
+	movementY: number;
+}
+
 export default function pointerEvents(element: HTMLElement, events: EventDispatcher, state: State): () => void {
 	let prevEvent = {
 		offsetX: 0,
 		offsetY: 0,
 	};
 	let wheelScrollEndTimeout: ReturnType<typeof setTimeout> | undefined;
+	let lastWheelMovement = {
+		movementX: 0,
+		movementY: 0,
+	};
 
 	function onMouseEvents(event: MouseEvent) {
 		const movementX = event.offsetX - prevEvent.offsetX;
@@ -37,12 +46,15 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 
 	function onWheelEvents(event: WheelEvent) {
 		event.preventDefault();
+		const movementX = event.deltaX * -1;
+		const movementY = event.deltaY * -1;
+		lastWheelMovement = { movementX, movementY };
 
 		events.dispatch<InternalMouseEvent>('mousemove', {
 			x: event.offsetX,
 			y: event.offsetY,
-			movementX: event.deltaX * -1,
-			movementY: event.deltaY * -1,
+			movementX,
+			movementY,
 			buttons: 1,
 			stopPropagation: false,
 			canvasWidth: element.clientWidth,
@@ -56,7 +68,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 
 		wheelScrollEndTimeout = setTimeout(() => {
 			wheelScrollEndTimeout = undefined;
-			events.dispatch('mouseup');
+			events.dispatch<ViewportScrollEndEvent>('viewportscrollend', lastWheelMovement);
 		}, WHEEL_SCROLL_END_DELAY_MS);
 	}
 

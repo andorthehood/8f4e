@@ -101,10 +101,13 @@ describe('pointerEvents', () => {
 		expect(events.dispatch).not.toHaveBeenCalledWith('mouseup');
 
 		vi.advanceTimersByTime(119);
-		expect(events.dispatch).not.toHaveBeenCalledWith('mouseup');
+		expect(events.dispatch).not.toHaveBeenCalledWith('viewportscrollend', expect.anything());
 
 		vi.advanceTimersByTime(1);
-		expect(events.dispatch).toHaveBeenCalledWith('mouseup');
+		expect(events.dispatch).toHaveBeenCalledWith('viewportscrollend', {
+			movementX: -3,
+			movementY: -5,
+		});
 
 		cleanup();
 	});
@@ -117,11 +120,14 @@ describe('pointerEvents', () => {
 		mockWindow.emit('wheel', createWheelEventLike({ deltaY: 7 }));
 
 		vi.advanceTimersByTime(119);
-		expect(events.dispatch).not.toHaveBeenCalledWith('mouseup');
+		expect(events.dispatch).not.toHaveBeenCalledWith('viewportscrollend', expect.anything());
 
 		vi.advanceTimersByTime(1);
 		expect(events.dispatch).toHaveBeenCalledTimes(3);
-		expect(events.dispatch).toHaveBeenLastCalledWith('mouseup');
+		expect(events.dispatch).toHaveBeenLastCalledWith('viewportscrollend', {
+			movementX: -3,
+			movementY: -7,
+		});
 
 		cleanup();
 	});
