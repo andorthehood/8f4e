@@ -1,6 +1,8 @@
 import { getElementMaxValue, getElementMinValue } from './memoryData';
 
 import { INTERMODULAR_REFERENCE_PATTERN } from '../syntax/isIntermodularReferencePattern';
+import isIntermodularModuleReference from '../syntax/isIntermodularModuleReference';
+import extractIntermodularModuleReferenceBase from '../syntax/extractIntermodularModuleReferenceBase';
 import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
 import extractIntermodularElementCountBase from '../syntax/extractIntermodularElementCountBase';
 import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
@@ -13,15 +15,18 @@ import { ErrorCode, getError } from '../compilerError';
 import { ArgumentType, CompiledModuleLookup } from '../types';
 
 /**
- * Resolves inter-modular connections by finding references like &module.memory,
- * module.memory&, $module.memory, %module.memory, ^module.memory, and !module.memory in compiled modules and setting the appropriate memory defaults.
+ * Resolves inter-modular connections by finding references like &module:memory,
+ * module:memory&, &module:, module:&, $module.memory, %module.memory, ^module.memory, and !module.memory in compiled modules and setting the appropriate memory defaults.
  *
  * This function:
  * - Identifies inter-module references in memory declarations and init instructions
  * - Validates that both the target module and memory exist
  * - Computes the appropriate value based on the reference syntax:
- *   - &module.memory: start address (byteAddress)
- *   - module.memory&: end address (byteAddress + (wordAlignedSize - 1) * 4)
+ *   - &module:memory: start address (byteAddress)
+ *   - module:memory&: end address (byteAddress + (wordAlignedSize - 1) * 4)
+ *   - `&module:` is the module-start syntax
+ *   - `&module:` resolves to module start address (byteAddress)
+ *   - module:&: module end address (byteAddress + (wordAlignedSize - 1) * 4)
  *   - $module.memory: element count (wordAlignedSize)
  *   - %module.memory: element word size (elementWordSize)
  *   - ^module.memory: element max value (computed based on target memory type)
@@ -43,17 +48,34 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 			) {
 				const refValue = _arguments[1].value;
 
-				// Handle inter-module address references (&module.memory or module.memory&)
-				if (INTERMODULAR_REFERENCE_PATTERN.test(refValue)) {
+				// Handle inter-module module-base references (&module: or module:&)
+				if (isIntermodularModuleReference(refValue)) {
+					const { module: targetModuleId, isEndAddress } = extractIntermodularModuleReferenceBase(refValue);
+
+					const targetModule = compiledModules[targetModuleId];
+
+					if (!targetModule) {
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+					}
+
+					const memory = memoryMap[_arguments[0].value];
+
+					if (memory) {
+						memory.default = isEndAddress
+							? targetModule.byteAddress + (targetModule.wordAlignedSize - 1) * 4
+							: targetModule.byteAddress;
+					}
+				} else if (INTERMODULAR_REFERENCE_PATTERN.test(refValue)) {
+					// Handle inter-module address references (&module:memory or module:memory&)
 					// Check if this is an end-address reference (ends with &)
 					const isEndAddress = refValue.endsWith('&');
 					// Parse reference based on form:
-					// - Start: &module.memory -> remove leading &
-					// - End: module.memory& -> remove trailing &
+					// - Start: &module:memory -> remove leading &
+					// - End: module:memory& -> remove trailing &
 					const cleanRef = isEndAddress
 						? refValue.substring(0, refValue.length - 1) // Remove trailing &
 						: refValue.substring(1); // Remove leading &
-					const [targetModuleId, targetMemoryId] = cleanRef.split('.');
+					const [targetModuleId, targetMemoryId] = cleanRef.split(':');
 
 					const targetModule = compiledModules[targetModuleId];
 
