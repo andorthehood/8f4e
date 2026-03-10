@@ -8,7 +8,7 @@ const sine = new Array(256).fill(0).map((value, index) => {
 });
 
 const sineLookupTable = `module sineLUT
-@tab 8
+; @tab 8
 ${sine
 	.map(value => {
 		return `float	${value.toFixed(4)}`;
