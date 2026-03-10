@@ -5,83 +5,76 @@ import type { ProjectMetadata } from '@8f4e/editor-state';
  */
 const DEFAULT_EXAMPLE_PROJECTS_BASE_URL = 'https://static.llllllllllll.com/8f4e/example-projects';
 const exampleProjectsBaseUrl = DEFAULT_EXAMPLE_PROJECTS_BASE_URL.replace(/\/$/, '');
+const projectPathPrefix = '../../packages/examples/src/projects/';
+
+const projectFiles = import.meta.glob('../../packages/examples/src/projects/**/*.8f4e', {
+	query: '?raw',
+	import: 'default',
+}) as Record<string, () => Promise<string>>;
 
 export type ExampleProjectMetadata = ProjectMetadata & { url: string };
 
-/**
- * Hardcoded metadata for all projects.
- * This allows listing projects without loading their code.
- * Metadata is kept in sync with actual project files.
- */
-export const projectMetadata: ExampleProjectMetadata[] = [
-	{
-		title: 'Audio Buffer',
-		category: 'Audio',
-		url: `${exampleProjectsBaseUrl}/audioBuffer.8f4e`,
-	},
-	{
-		title: 'Audio Loopback',
-		category: 'Audio',
-		url: `${exampleProjectsBaseUrl}/audioLoopback.8f4e`,
-	},
-	{
-		title: 'Background Plasma',
-		category: 'Visuals',
-		url: `${exampleProjectsBaseUrl}/backgroundPlasma.8f4e`,
-	},
-	{
-		title: 'Bistable Multivibrators',
-		category: 'Digital',
-		url: `${exampleProjectsBaseUrl}/bistableMultivibrators.8f4e`,
-	},
-	{
-		title: 'Dancing With The Sine LT',
-		category: 'Visuals',
-		url: `${exampleProjectsBaseUrl}/dancingWithTheSineLT.8f4e`,
-	},
-	{
-		title: 'XOR Problem',
-		category: 'Machine Learning',
-		url: `${exampleProjectsBaseUrl}/xorProblem.8f4e`,
-	},
-	{
-		title: 'Random Generators',
-		category: 'Misc',
-		url: `${exampleProjectsBaseUrl}/randomGenerators.8f4e`,
-	},
-	{
-		title: 'Ripple Effect Demo',
-		category: 'Visuals',
-		url: `${exampleProjectsBaseUrl}/rippleEffect.8f4e`,
-	},
-	{
-		title: 'Sample Player',
-		category: 'Audio',
-		url: `${exampleProjectsBaseUrl}/samplePlayer.8f4e`,
-	},
-	{
-		title: 'Simple Counter (Main Thread)',
-		category: 'Misc',
-		url: `${exampleProjectsBaseUrl}/simpleCounterMainThread.8f4e`,
-	},
-	{
-		title: 'Standalone Project Example',
-		category: 'Misc',
-		url: `${exampleProjectsBaseUrl}/standaloneProject.8f4e`,
-	},
-	{
-		title: 'Digit Classifier',
-		category: 'Machine Learning',
-		url: `${exampleProjectsBaseUrl}/digitClassifier.8f4e`,
-	},
-	{
-		title: 'Keyboard-Controlled Mono Synth',
-		category: 'Audio',
-		url: `${exampleProjectsBaseUrl}/keyboardControlledMonoSynth.8f4e`,
-	},
-	{
-		title: 'Keyboard-Controlled Two Operator FM Synth',
-		category: 'Audio',
-		url: `${exampleProjectsBaseUrl}/keyboardControlledTwoOperatorFMSynth.8f4e`,
-	},
-];
+function toTitleCase(value: string): string {
+	return value
+		.split('-')
+		.map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
+		.join(' ');
+}
+
+const upperCaseWords = new Set(['lt', 'fm', 'xor']);
+
+function humanizeSlug(slug: string): string {
+	const normalized = slug
+		.replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+		.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+		.replace(/[-_]/g, ' ')
+		.trim();
+
+	return normalized
+		.split(/\s+/)
+		.map(word => {
+			const lower = word.toLowerCase();
+
+			if (upperCaseWords.has(lower)) {
+				return lower.toUpperCase();
+			}
+
+			return word.charAt(0).toUpperCase() + word.slice(1);
+		})
+		.join(' ');
+}
+
+function getRelativeProjectPath(filePath: string): string {
+	return filePath.replace(projectPathPrefix, '');
+}
+
+function getSlug(relativePath: string): string {
+	const fileName = relativePath.split('/').pop();
+
+	if (!fileName) {
+		throw new Error(`Invalid project path: ${relativePath}`);
+	}
+
+	return fileName.replace(/\.8f4e$/, '');
+}
+
+function getCategory(relativePath: string): string {
+	const segments = relativePath.split('/');
+	const categorySegments = segments.slice(0, -1);
+
+	return categorySegments.map(toTitleCase).join('/');
+}
+
+export const projectMetadata: ExampleProjectMetadata[] = Object.keys(projectFiles)
+	.filter(path => !path.includes('/archived/'))
+	.map(path => {
+		const relativePath = getRelativeProjectPath(path);
+		const slug = getSlug(relativePath);
+
+		return {
+			title: humanizeSlug(slug),
+			category: getCategory(relativePath),
+			url: `${exampleProjectsBaseUrl}/${relativePath}`,
+		};
+	})
+	.sort((left, right) => left.title.localeCompare(right.title));
