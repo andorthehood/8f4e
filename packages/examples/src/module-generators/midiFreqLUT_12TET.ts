@@ -5,11 +5,10 @@ const midiFrequencies = new Array(128).fill(0).map((value, note) => {
 });
 
 const midiFrequenciesLookupTable = `module midiLUT
-
-float[] notes 128
+; @tab 8
 ${midiFrequencies
-	.map((value, note) => {
-		return `init notes[${note}] ${value.toFixed(4)}`;
+	.map(value => {
+		return `float	${value.toFixed(4)}`;
 	})
 	.join('\n')}
 
