@@ -68,7 +68,7 @@ module audioout
 ; @pos 130 -63
 use env
 
-float* in &pcmPlayer8bit.out
+float* in &pcmPlayer8bit:out
 
 float[] buffer AUDIO_BUFFER_SIZE
 int pointer &buffer

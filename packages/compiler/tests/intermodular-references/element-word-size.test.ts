@@ -185,7 +185,7 @@ describe('inter-module references - element word size', () => {
 			{
 				code: [
 					'module targetModule',
-					'int* ptr &sourceModule.buffer',
+					'int* ptr &sourceModule:buffer',
 					'int count $sourceModule.buffer',
 					'int elemSize %sourceModule.buffer',
 					'moduleEnd',

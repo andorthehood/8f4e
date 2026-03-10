@@ -3,7 +3,7 @@
 module ringModulator
 
 float defaultFreq 10
-float* in &osc.out
+float* in &osc:out
 float* freq &defaultFreq
 float out
 float phase

@@ -161,7 +161,7 @@ describe('inter-module references - element count', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 12 0', 'moduleEnd'] },
 			{
-				code: ['module targetModule', 'int* ptr &sourceModule.buffer', 'int size $sourceModule.buffer', 'moduleEnd'],
+				code: ['module targetModule', 'int* ptr &sourceModule:buffer', 'int size $sourceModule.buffer', 'moduleEnd'],
 			},
 		];
 
