@@ -6,7 +6,7 @@ PROJECTS_DIR="$SCRIPT_DIR/src/projects"
 CLI_PATH="$SCRIPT_DIR/../cli/bin/cli.js"
 
 count=0
-for project in "$PROJECTS_DIR"/*.8f4e; do
+while IFS= read -r -d '' project; do
 	if [[ ! -f "$project" ]]; then
 		continue
 	fi
@@ -14,6 +14,6 @@ for project in "$PROJECTS_DIR"/*.8f4e; do
 	wasm_output="${project%.8f4e}.wasm"
 	node "$CLI_PATH" "$project" --wasm-output "$wasm_output"
 	count=$((count + 1))
-done
+done < <(find "$PROJECTS_DIR" -type f -name '*.8f4e' -print0)
 
 echo "Generated ${count} wasm files in packages/examples/src/projects"

@@ -6,7 +6,7 @@
 	"type": "module",
 	"exports": {
 		"./modules/*": "./src/modules/*",
-		"./projects/*.8f4e": "./src/projects/*.8f4e"
+		"./projects/*": "./src/projects/*"
 	},
 	"sideEffects": false,
 	"repository": {
