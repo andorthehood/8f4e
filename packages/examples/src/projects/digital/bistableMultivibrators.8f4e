@@ -38,8 +38,8 @@ int out  ;   | AND |---
 int* in2 ; --+    .
          ;   '---'
 
-init in1 &orGate.out
-init in2 &negate.out
+init in1 &orGate:out
+init in2 &negate:out
 push &out
 push *in1
 push *in2
@@ -87,7 +87,7 @@ constantsEnd
 module negate
 ; @pos 207 33
 
-int* in &buttons.reset
+int* in &buttons:reset
 int out
 
 push &out
@@ -113,8 +113,8 @@ int* in2 ; --+    .
          ;   '---'
 ; @debug out
 
-init in1 &norGate2.out
-init in2 &resetButton.out
+init in1 &norGate2:out
+init in2 &resetButton:out
 
 push &out
 push *in1
@@ -142,8 +142,8 @@ int* in2 ; --+    .
 
 ; @debug out
 
-init in1 &norGate.out
-init in2 &setButton.out
+init in1 &norGate:out
+init in2 &setButton:out
 push &out
 push *in1
 push *in2
@@ -168,8 +168,8 @@ int out  ;   ) OR  |---
 int* in2 ; --+    .
          ;   '---'
 
-init in1 &andGate.out
-init in2 &buttons.set
+init in1 &andGate:out
+init in2 &buttons:set
 push &out
 push *in1
 push *in2
@@ -198,7 +198,7 @@ moduleEnd
 module scope
 ; @pos 131 26
 
-int* in &norGate.out
+int* in &norGate:out
 int[] buffer 64
 int bufferPointer &buffer
 
@@ -228,7 +228,7 @@ moduleEnd
 module scope2
 ; @pos 279 19
 
-int* in &andGate.out
+int* in &andGate:out
 int[] buffer 64
 int bufferPointer &buffer
 

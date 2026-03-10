@@ -21,9 +21,9 @@ module dancer1
 
 ; Can yor IDE do this?
 
-float* sin &sineLT.sin0
-float* last &sineLT.sin255
-float* first &sineLT.sin0
+float* sin &sineLT:sin0
+float* last &sineLT:sin255
+float* first &sineLT:sin0
 int offset 
 
 ; @offset y offset
@@ -54,9 +54,9 @@ moduleEnd
 
 module dancer2
 ; @pos 1 -9
-float* sin &sineLT.sin32
-float* last &sineLT.sin255
-float* first &sineLT.sin0
+float* sin &sineLT:sin32
+float* last &sineLT:sin255
+float* first &sineLT:sin0
 int offset 
 
 ; @offset y offset
@@ -88,9 +88,9 @@ moduleEnd
 module dancer3
 ; @pos 36 -9
 
-float* sin &sineLT.sin64
-float* last &sineLT.sin255
-float* first &sineLT.sin0
+float* sin &sineLT:sin64
+float* last &sineLT:sin255
+float* first &sineLT:sin0
 int offset 
 
 ; @offset y offset
@@ -122,10 +122,10 @@ moduleEnd
 module dancer4
 ; @pos 89 -12
 
-float* sin &sineLT.sin64
-float* last &sineLT.sin255
-float* first &sineLT.sin0
-float* offsetX &dancer1.offset
+float* sin &sineLT:sin64
+float* last &sineLT:sin255
+float* first &sineLT:sin0
+float* offsetX &dancer1:offset
 
 int offsetY
 

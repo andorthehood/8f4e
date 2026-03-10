@@ -135,6 +135,8 @@ export default function parseMemoryInstructionArguments(
 			defaultValue = resolveSplitByteTokens(parsedArgs.secondArg.tokens, maxBytes, lineForError, context);
 		} else if (parsedArgs.secondArg.type === 'intermodular-reference') {
 			// Intermodular references are resolved later
+		} else if (parsedArgs.secondArg.type === 'intermodular-module-reference') {
+			// Intermodular module-base references are resolved later
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-count') {
 			// Intermodular element count references are resolved later
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-word-size') {
