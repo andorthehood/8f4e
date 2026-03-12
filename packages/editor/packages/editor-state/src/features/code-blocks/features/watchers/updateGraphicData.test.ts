@@ -16,7 +16,7 @@ describe('updateDebuggersGraphicData', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			moduleId: 'test-block',
-			code: ['; @debug myVar'],
+			code: ['; @watch myVar'],
 			lineNumberColumnWidth: 2,
 			gaps: new Map(),
 		});
@@ -60,7 +60,7 @@ describe('updateDebuggersGraphicData', () => {
 	});
 
 	it('should not add debugger when memory is not found', () => {
-		mockGraphicData.code = ['; @debug nonExistentVar'];
+		mockGraphicData.code = ['; @watch nonExistentVar'];
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
@@ -87,7 +87,7 @@ describe('updateDebuggersGraphicData', () => {
 	});
 
 	it('should handle multiple debuggers', () => {
-		mockGraphicData.code = ['; @debug var1', '; @debug var2'];
+		mockGraphicData.code = ['; @watch var1', '; @watch var2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['var1'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,
@@ -124,7 +124,7 @@ describe('updateDebuggersGraphicData', () => {
 	});
 
 	it('should position debuggers at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'nop', '; @debug myVar'];
+		mockGraphicData.code = ['nop', 'nop', '; @watch myVar'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,

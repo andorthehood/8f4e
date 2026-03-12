@@ -176,7 +176,7 @@ module result
 ; 1 means the the two input numbers are different
 ; 0 means the two input numbers are the same
 
-; @debug *out
+; @watch *out
 
 int* out &activationFn3:out
 

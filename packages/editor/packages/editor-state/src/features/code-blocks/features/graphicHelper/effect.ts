@@ -9,7 +9,7 @@ import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 import bufferPlotters from '../bufferPlotters/updateGraphicData';
 import bufferScanners from '../bufferScanners/updateGraphicData';
 import buttons from '../buttons/updateGraphicData';
-import debuggers from '../debuggers/updateGraphicData';
+import debuggers from '../watchers/updateGraphicData';
 import inputs from '../inputs/updateGraphicData';
 import outputs from '../outputs/updateGraphicData';
 import pianoKeyboards from '../pianoKeyboard/updateGraphicData';

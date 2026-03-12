@@ -177,7 +177,7 @@ push &out
 push *in
 call jankoMap
 
-; @debug out
+; @watch out
 store
 moduleEnd
 
@@ -220,8 +220,8 @@ module keyboard
 int keyPressed
 int keyCode
 
-; @debug keyPressed
-; @debug keyCode
+; @watch keyPressed
+; @watch keyCode
 
 moduleEnd
 
@@ -546,7 +546,7 @@ int* in &janko:out
 float out
 float* notes &midiLUT:notes
 
-; @debug out
+; @watch out
 
 push &out
 push notes

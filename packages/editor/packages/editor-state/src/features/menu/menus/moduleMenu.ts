@@ -78,7 +78,7 @@ export const moduleMenu: MenuGenerator = state => {
 									close: true,
 								},
 								{
-									title: 'Clear debug probes',
+									title: 'Clear watch probes',
 									action: 'clearDebugProbes',
 									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 									close: true,

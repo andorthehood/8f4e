@@ -4441,16 +4441,16 @@ module outputs
 ; @pos -274 33
 
 ; Confidence scores:
-; @debug *confidence0
-; @debug *confidence1
-; @debug *confidence2
-; @debug *confidence3
-; @debug *confidence4
-; @debug *confidence5
-; @debug *confidence6
-; @debug *confidence7
-; @debug *confidence8
-; @debug *confidence9
+; @watch *confidence0
+; @watch *confidence1
+; @watch *confidence2
+; @watch *confidence3
+; @watch *confidence4
+; @watch *confidence5
+; @watch *confidence6
+; @watch *confidence7
+; @watch *confidence8
+; @watch *confidence9
 
 ; Routing the values of the output 
 ; neurons here into this module

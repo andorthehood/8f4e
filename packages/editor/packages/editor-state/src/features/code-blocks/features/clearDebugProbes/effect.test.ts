@@ -19,9 +19,9 @@ describe('clearDebugProbes', () => {
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
-	it('should remove single @debug directive', () => {
+	it('should remove single @watch directive', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @debug x', '', 'moduleEnd'],
+			code: ['module test', '; @watch x', '', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -39,9 +39,9 @@ describe('clearDebugProbes', () => {
 		expect(codeBlock.code).toEqual(['module test', '', 'moduleEnd']);
 	});
 
-	it('should remove multiple @debug directives', () => {
+	it('should remove multiple @watch directives', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @debug x', '', '; @debug y', '; @debug z', 'moduleEnd'],
+			code: ['module test', '; @watch x', '', '; @watch y', '; @watch z', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -58,7 +58,7 @@ describe('clearDebugProbes', () => {
 		expect(codeBlock.code).toEqual(['module test', '', 'moduleEnd']);
 	});
 
-	it('should be no-op when there are no @debug directives', () => {
+	it('should be no-op when there are no @watch directives', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '', 'moduleEnd'],
 			blockType: 'module',
@@ -79,7 +79,7 @@ describe('clearDebugProbes', () => {
 
 	it('should preserve other directive lines', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @group mygroup', '; @debug x', '; @favorite', '; @debug y', 'moduleEnd'],
+			code: ['module test', '; @group mygroup', '; @watch x', '; @favorite', '; @watch y', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -96,9 +96,9 @@ describe('clearDebugProbes', () => {
 		expect(codeBlock.code).toEqual(['module test', '; @group mygroup', '; @favorite', 'moduleEnd']);
 	});
 
-	it('should handle @debug directives with trailing whitespace', () => {
+	it('should handle @watch directives with trailing whitespace', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @debug x  ', '', 'moduleEnd'],
+			code: ['module test', '; @watch x  ', '', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -115,9 +115,9 @@ describe('clearDebugProbes', () => {
 		expect(codeBlock.code).toEqual(['module test', '', 'moduleEnd']);
 	});
 
-	it('should handle indented @debug directives', () => {
+	it('should handle indented @watch directives', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '  ; @debug x', '', 'moduleEnd'],
+			code: ['module test', '  ; @watch x', '', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -136,7 +136,7 @@ describe('clearDebugProbes', () => {
 
 	it('should update lastUpdated for cache invalidation', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @debug x', 'moduleEnd'],
+			code: ['module test', '; @watch x', 'moduleEnd'],
 			blockType: 'module',
 			lastUpdated: 1000,
 		});
@@ -156,7 +156,7 @@ describe('clearDebugProbes', () => {
 
 	it('should trigger store update', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @debug x', 'moduleEnd'],
+			code: ['module test', '; @watch x', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -177,7 +177,7 @@ describe('clearDebugProbes', () => {
 
 	it('should not clear when editing is disabled', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @debug x', 'moduleEnd'],
+			code: ['module test', '; @watch x', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -191,12 +191,12 @@ describe('clearDebugProbes', () => {
 
 		clearCallback({ codeBlock });
 
-		expect(codeBlock.code).toEqual(['module test', '; @debug x', 'moduleEnd']);
+		expect(codeBlock.code).toEqual(['module test', '; @watch x', 'moduleEnd']);
 	});
 
-	it('should preserve incomplete @debug directives without variable name', () => {
+	it('should preserve incomplete @watch directives without variable name', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module test', '; @debug', 'moduleEnd'],
+			code: ['module test', '; @watch', 'moduleEnd'],
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
@@ -210,6 +210,6 @@ describe('clearDebugProbes', () => {
 
 		clearCallback({ codeBlock });
 
-		expect(codeBlock.code).toEqual(['module test', '; @debug', 'moduleEnd']);
+		expect(codeBlock.code).toEqual(['module test', '; @watch', 'moduleEnd']);
 	});
 });

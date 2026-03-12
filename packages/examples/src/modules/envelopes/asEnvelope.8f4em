@@ -12,7 +12,7 @@ float out
 
 int attacking 0
 
-; @debug out
+; @watch out
 
 push *trigger
 risingEdge
