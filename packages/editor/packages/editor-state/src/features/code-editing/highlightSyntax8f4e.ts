@@ -274,7 +274,7 @@ if (import.meta.vitest) {
 				'float[] buffer AUDIO_BUFFER_SIZE',
 				'int pointer &buffer',
 				'',
-				'; @debug count',
+				'; @watch count',
 				'; @plot buffer -2 2',
 				'',
 				'; Store the input value',

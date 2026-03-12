@@ -8,7 +8,7 @@ float* in
 float out
 int pointer &buffer
 
-; @debug pointer
+; @watch pointer
 
 push &out
 push pointer
