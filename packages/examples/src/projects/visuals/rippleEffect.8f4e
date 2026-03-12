@@ -21,7 +21,7 @@ module counter
 ; @pos 25 19
 
 int count
-; @debug count
+; @watch count
 
 push &count
 push count

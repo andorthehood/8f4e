@@ -6,7 +6,7 @@ int* in
 int* trigger
 int out
 
-; @debug out
+; @watch out
 
 push *trigger
 risingEdge

@@ -191,7 +191,7 @@ if (import.meta.vitest) {
 				'precision mediump float;',
 				'; @pos 10 20',
 				'void main() {',
-				'; @debug enabled',
+				'; @watch enabled',
 				'  gl_FragColor = vec4(1.0);',
 				'}',
 				'fragmentShaderEnd',
