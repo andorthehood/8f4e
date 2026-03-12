@@ -7,7 +7,7 @@ float* frequency &default
 int out
 int8[] range8 1
 
-; @debug out
+; @watch out
 
 push &out
 push out

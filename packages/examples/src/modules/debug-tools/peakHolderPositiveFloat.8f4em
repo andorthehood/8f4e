@@ -5,7 +5,7 @@ module peakHolder
 float* in
 float out
 
-; @debug out
+; @watch out
 
 push *in
 push out

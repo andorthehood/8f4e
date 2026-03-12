@@ -22,7 +22,7 @@ module counter
 
 int value 0
 
-; @debug value
+; @watch value
 
 push &value
 push 1
