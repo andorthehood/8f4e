@@ -13,7 +13,7 @@ Editor directives use comment lines in this form:
 Examples:
 
 ```txt
-; @debug counter
+; @watch counter
 ; @plot audioBuffer -2 2 lengthMemory
 ; @button gate0 0 1
 ```
@@ -22,12 +22,33 @@ These directives are editor metadata only. They are not compiler instructions an
 
 ## Supported Directives
 
-### `@debug`
+### `@watch`
 
 Show a runtime debugger value for a memory id.
 
 ```txt
-; @debug <memoryId>
+; @watch <memoryId>
+```
+
+Supported `memoryId` forms:
+
+- `name` - Show the current value.
+- `0bname` - Show an integer value in binary.
+- `&name` - Show the start address.
+- `name&` - Show the end address.
+- `*name` - Dereference a pointer memory.
+- `module.name` - Resolve `name` from another module.
+- `name[3]` - Show a specific buffer element.
+
+These modifiers can be combined when they make sense. For example:
+
+```txt
+; @watch 0bcounter
+; @watch &buffer
+; @watch pointer&
+; @watch *out
+; @watch otherModule.value
+; @watch buffer[3]
 ```
 
 ### `@plot`

@@ -27,7 +27,7 @@ push &bitPointer
 push 0
 store
 
-; @debug out
+; @watch out
 
 ; Clear bits
 push &out

@@ -111,7 +111,7 @@ int* in1 ; --+    '
 int out  ;   ) NOR |O--- 
 int* in2 ; --+    .
          ;   '---'
-; @debug out
+; @watch out
 
 init in1 &norGate2:out
 init in2 &resetButton:out
@@ -140,7 +140,7 @@ int out  ;   ) NOR |O---
 int* in2 ; --+    .
          ;   '---'
 
-; @debug out
+; @watch out
 
 init in1 &norGate:out
 init in2 &setButton:out
