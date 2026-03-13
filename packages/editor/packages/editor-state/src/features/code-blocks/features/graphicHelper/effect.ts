@@ -198,7 +198,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		nextBlock: CodeBlockGraphicData | undefined
 	) {
 		[previousBlock, nextBlock].forEach(codeBlock => {
-			if (!codeBlock || !hasDirective(codeBlock.code, 'hide')) {
+			if (!codeBlock) {
 				return;
 			}
 
@@ -208,6 +208,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 	let previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 	const onSelectedCodeBlockChanged = function () {
+		console.log('previous:', previousSelectedCodeBlock);
+
 		updateHideSelectionTransition(previousSelectedCodeBlock, state.graphicHelper.selectedCodeBlock);
 		previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 	};
@@ -218,10 +220,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		state.graphicHelper.outputsByWordAddress.clear();
-		state.graphicHelper.selectedCodeBlock = undefined;
-		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 		state.graphicHelper.nextCodeBlockCreationIndex = 0;
+		store.set('graphicHelper.selectedCodeBlock', undefined);
+		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', undefined);
 
 		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
