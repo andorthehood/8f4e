@@ -1,6 +1,5 @@
 import parseModuleSource from './parseModuleSource';
 
-import buildDisplayModel from '../graphicHelper/buildDisplayModel';
 import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import getBlockType from '../../utils/codeParsers/getBlockType';
@@ -37,7 +36,7 @@ export async function insertDependencies({
 
 	// Calculate the grid width of the requested module
 	let currentGridX = Math.round((state.viewport.x + clickX) / vGrid);
-	const requestedModuleGridWidth = getCodeBlockGridWidth(buildDisplayModel(requestedModuleCode), requestedModuleCode);
+	const requestedModuleGridWidth = getCodeBlockGridWidth(requestedModuleCode);
 	currentGridX += requestedModuleGridWidth + gridGap;
 
 	// Insert dependencies from left to right
@@ -72,7 +71,7 @@ export async function insertDependencies({
 			onAddCodeBlock({ code: dependencyCode, x: dependencyX, y: dependencyY, isNew: false });
 
 			// Move position to the right for the next dependency
-			const dependencyGridWidth = getCodeBlockGridWidth(buildDisplayModel(dependencyCode), dependencyCode);
+			const dependencyGridWidth = getCodeBlockGridWidth(dependencyCode);
 			currentGridX += dependencyGridWidth + gridGap;
 		} catch (error) {
 			console.warn(`Failed to load dependency: ${dependencySlug}`, error);
