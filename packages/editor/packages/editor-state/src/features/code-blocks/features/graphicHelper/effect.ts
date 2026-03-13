@@ -32,7 +32,7 @@ import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parseGroup from '../group/codeParser';
-import parsePos from '../position/parsePos';
+import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
