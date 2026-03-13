@@ -10,6 +10,8 @@ The constants instruction begins a constants block with the provided name. Const
 constants math
 const PI 3.14159
 const TAU 6.28318
+const FLAGS 0b1011001
+const MASK 0xff
 constantsEnd
 ```
 
@@ -20,6 +22,11 @@ Constants blocks provide a way to organize related constants into named namespac
 - Can only contain `const` declarations
 - Must have a unique name
 - Can be imported into modules using `use`
+
+Constant values support the same literal forms as other numeric arguments, including:
+- Decimal: `const VALUE 42`
+- Binary: `const FLAGS 0b1011001`
+- Hexadecimal: `const MASK 0xff`
 
 ### Example Constants Block
 
