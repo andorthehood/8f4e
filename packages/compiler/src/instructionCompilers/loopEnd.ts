@@ -59,7 +59,15 @@ if (import.meta.vitest) {
 				],
 			});
 
-			loopEnd({ lineNumber: 1, instruction: 'loopEnd', arguments: [] } as AST[number], context);
+			loopEnd(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'loopEnd',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				blockStack: context.blockStack,
@@ -71,7 +79,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				loopEnd({ lineNumber: 1, instruction: 'loopEnd', arguments: [] } as AST[number], context);
+				loopEnd(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'loopEnd',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

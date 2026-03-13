@@ -33,8 +33,9 @@ const store: InstructionCompiler = withValidation(
 			context.stack.push(operand2Address);
 			context.stack.push(operand1Value);
 
-			const tempAddressVariableName = '__storeAddress_temp_' + line.lineNumber;
-			const tempValueVariableName = '__storeValue_temp_' + line.lineNumber;
+			const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+			const tempAddressVariableName = '__storeAddress_temp_' + lineNumberAfterMacroExpansion;
+			const tempValueVariableName = '__storeValue_temp_' + lineNumberAfterMacroExpansion;
 			const tempValueType = operand1Value.isInteger ? 'int' : operand1Value.isFloat64 ? 'float64' : 'float';
 			const storeOpcodes = operand1Value.isInteger ? i32store() : operand1Value.isFloat64 ? f64store() : f32store();
 			// Memory overflow protection.
@@ -83,7 +84,15 @@ if (import.meta.vitest) {
 				{ isInteger: true, isNonZero: false }
 			);
 
-			store({ lineNumber: 1, instruction: 'store', arguments: [] } as AST[number], context);
+			store(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'store',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -98,7 +107,15 @@ if (import.meta.vitest) {
 				{ isInteger: true, isNonZero: false }
 			);
 
-			store({ lineNumber: 2, instruction: 'store', arguments: [] } as AST[number], context);
+			store(
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'store',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -113,7 +130,15 @@ if (import.meta.vitest) {
 				{ isInteger: false, isFloat64: true, isNonZero: false }
 			);
 
-			store({ lineNumber: 3, instruction: 'store', arguments: [] } as AST[number], context);
+			store(
+				{
+					lineNumberBeforeMacroExpansion: 3,
+					lineNumberAfterMacroExpansion: 3,
+					instruction: 'store',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect(context.byteCode).toContain(57); // F64_STORE opcode
 			expect(context.byteCode).not.toContain(56); // no F32_STORE
@@ -128,7 +153,15 @@ if (import.meta.vitest) {
 				{ isInteger: false, isNonZero: false }
 			);
 
-			store({ lineNumber: 4, instruction: 'store', arguments: [] } as AST[number], context);
+			store(
+				{
+					lineNumberBeforeMacroExpansion: 4,
+					lineNumberAfterMacroExpansion: 4,
+					instruction: 'store',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect(context.byteCode).toContain(56); // F32_STORE opcode
 			expect(context.byteCode).not.toContain(57); // no F64_STORE
@@ -141,7 +174,15 @@ if (import.meta.vitest) {
 				{ isInteger: false, isFloat64: true, isNonZero: false }
 			);
 
-			store({ lineNumber: 5, instruction: 'store', arguments: [] } as AST[number], context);
+			store(
+				{
+					lineNumberBeforeMacroExpansion: 5,
+					lineNumberAfterMacroExpansion: 5,
+					instruction: 'store',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect(context.byteCode).toContain(57); // F64_STORE opcode
 			expect(context.byteCode).not.toContain(56); // no F32_STORE
@@ -155,7 +196,15 @@ if (import.meta.vitest) {
 				{ isInteger: false, isFloat64: true, isNonZero: false }
 			);
 
-			store({ lineNumber: 6, instruction: 'store', arguments: [] } as AST[number], context);
+			store(
+				{
+					lineNumberBeforeMacroExpansion: 6,
+					lineNumberAfterMacroExpansion: 6,
+					instruction: 'store',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			const valueLocal = Object.entries(context.namespace.locals).find(([name]) =>
 				name.startsWith('__storeValue_temp_')

@@ -18,8 +18,9 @@ const swap: InstructionCompiler = withValidation(
 		const operand1 = context.stack.pop()!;
 		const operand2 = context.stack.pop()!;
 
-		const tempAName = '__swapTempA' + line.lineNumber;
-		const tempBName = '__swapTempB' + line.lineNumber;
+		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+		const tempAName = '__swapTempA' + lineNumberAfterMacroExpansion;
+		const tempBName = '__swapTempB' + lineNumberAfterMacroExpansion;
 
 		context.stack.push(operand2);
 		context.stack.push(operand1);
@@ -48,7 +49,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: true });
 
-			swap({ lineNumber: 3, instruction: 'swap', arguments: [] } as AST[number], context);
+			swap(
+				{
+					lineNumberBeforeMacroExpansion: 3,
+					lineNumberAfterMacroExpansion: 3,
+					instruction: 'swap',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

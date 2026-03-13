@@ -77,14 +77,14 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			store.set('compiler.isCompiling', false);
 			const errorObject = error as Error & {
-				line?: { lineNumber: number };
+				line?: { lineNumberBeforeMacroExpansion: number };
 				context?: { namespace?: { moduleName: string } };
 				errorCode?: number;
 			};
 
 			store.set('codeErrors.compilationErrors', [
 				{
-					lineNumber: errorObject?.line?.lineNumber || 1,
+					lineNumber: errorObject?.line?.lineNumberBeforeMacroExpansion ?? 0,
 					codeBlockId: errorObject?.context?.namespace?.moduleName || '',
 					message: errorObject?.message || error?.toString() || 'Compilation failed',
 				},

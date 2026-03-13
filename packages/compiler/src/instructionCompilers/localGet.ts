@@ -59,7 +59,8 @@ if (import.meta.vitest) {
 
 			_localGet(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'localGet',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
 				} as AST[number],
@@ -78,7 +79,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				_localGet(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'localGet',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
 					} as AST[number],

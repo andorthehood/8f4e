@@ -267,7 +267,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true });
 
 			expect(() => {
-				mapEnd({ lineNumber: 1, instruction: 'mapEnd', arguments: [] } as AST[number], context);
+				mapEnd(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'mapEnd',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 
@@ -278,7 +286,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				mapEnd(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'mapEnd',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
 					} as AST[number],
@@ -307,7 +316,8 @@ if (import.meta.vitest) {
 
 			mapEnd(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapEnd',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
 				} as AST[number],

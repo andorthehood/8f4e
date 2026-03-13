@@ -10,7 +10,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -20,7 +21,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -30,7 +32,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -40,7 +43,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -50,7 +54,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -60,7 +65,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -76,7 +82,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "map",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -92,7 +99,8 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "map",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [
@@ -102,17 +110,20 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 13,
+    "lineNumberAfterMacroExpansion": 13,
+    "lineNumberBeforeMacroExpansion": 13,
   },
 ]
 `;
@@ -214,7 +225,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -224,7 +236,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -234,7 +247,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "float",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -244,7 +258,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -254,7 +269,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -264,7 +280,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -280,7 +297,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "map",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -296,7 +314,8 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "map",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [
@@ -306,17 +325,20 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 13,
+    "lineNumberAfterMacroExpansion": 13,
+    "lineNumberBeforeMacroExpansion": 13,
   },
 ]
 `;
@@ -418,7 +440,8 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -428,7 +451,8 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -438,7 +462,8 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -448,7 +473,8 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -458,7 +484,8 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -468,7 +495,8 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -484,7 +512,8 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "map",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -494,17 +523,20 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 12,
+    "lineNumberAfterMacroExpansion": 12,
+    "lineNumberBeforeMacroExpansion": 12,
   },
 ]
 `;
@@ -590,7 +622,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -600,7 +633,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -610,7 +644,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "float",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -620,7 +655,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -630,7 +666,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -640,7 +677,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -656,7 +694,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "map",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -672,7 +711,8 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "map",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [
@@ -682,17 +722,20 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 13,
+    "lineNumberAfterMacroExpansion": 13,
+    "lineNumberBeforeMacroExpansion": 13,
   },
 ]
 `;
@@ -794,7 +837,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -804,7 +848,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -814,7 +859,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -824,7 +870,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -834,7 +881,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -844,7 +892,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -860,7 +909,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "map",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -876,7 +926,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "map",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [
@@ -892,7 +943,8 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "map",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [
@@ -902,17 +954,20 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 12,
+    "lineNumberAfterMacroExpansion": 12,
+    "lineNumberBeforeMacroExpansion": 12,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 14,
+    "lineNumberAfterMacroExpansion": 14,
+    "lineNumberBeforeMacroExpansion": 14,
   },
 ]
 `;
@@ -1030,7 +1085,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -1040,7 +1096,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -1050,7 +1107,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -1060,7 +1118,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -1070,7 +1129,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -1080,7 +1140,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -1096,7 +1157,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "map",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -1107,7 +1169,8 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "default",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [
@@ -1117,17 +1180,20 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 13,
+    "lineNumberAfterMacroExpansion": 13,
+    "lineNumberBeforeMacroExpansion": 13,
   },
 ]
 `;
@@ -1213,7 +1279,8 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -1223,7 +1290,8 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -1233,7 +1301,8 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -1243,7 +1312,8 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -1253,7 +1323,8 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -1263,7 +1334,8 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -1277,7 +1349,8 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "map",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -1287,17 +1360,20 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 12,
+    "lineNumberAfterMacroExpansion": 12,
+    "lineNumberBeforeMacroExpansion": 12,
   },
 ]
 `;
@@ -1383,7 +1459,8 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -1393,7 +1470,8 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -1403,7 +1481,8 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -1413,7 +1492,8 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -1423,7 +1503,8 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -1433,7 +1514,8 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -1443,17 +1525,20 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
 ]
 `;
@@ -1518,7 +1603,8 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -1528,7 +1614,8 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -1538,7 +1625,8 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -1548,7 +1636,8 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -1558,7 +1647,8 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -1568,7 +1658,8 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "mapBegin",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -1579,7 +1670,8 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "default",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [
@@ -1589,17 +1681,20 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 12,
+    "lineNumberAfterMacroExpansion": 12,
+    "lineNumberBeforeMacroExpansion": 12,
   },
 ]
 `;
