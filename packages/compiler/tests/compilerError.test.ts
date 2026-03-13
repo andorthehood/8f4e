@@ -6,7 +6,8 @@ import { ArgumentType, type AST } from '../src/types';
 describe('getError', () => {
 	it('includes the undeclared identifier when provided', () => {
 		const line = {
-			lineNumber: 1,
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
 			instruction: 'localGet',
 			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missingLocal' }],
 		} as AST[number];
@@ -18,7 +19,8 @@ describe('getError', () => {
 
 	it('keeps the generic undeclared identifier message when no identifier is available', () => {
 		const line = {
-			lineNumber: 1,
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
 			instruction: 'use',
 			arguments: [],
 		} as AST[number];

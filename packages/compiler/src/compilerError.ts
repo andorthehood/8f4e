@@ -151,7 +151,7 @@ export function getError(
 			return {
 				code,
 				message:
-					line.lineNumber +
+					line.lineNumberBeforeMacroExpansion +
 					': Expected 0 elements on the stack, found ' +
 					context?.stack.length +
 					' [' +

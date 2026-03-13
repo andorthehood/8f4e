@@ -24,7 +24,7 @@ const loadFloat: InstructionCompiler = withValidation(
 			return saveByteCode(context, f32load());
 		} else {
 			context.stack.push(operand);
-			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
+			const tempVariableName = '__loadAddress_temp_' + line.lineNumberAfterMacroExpansion;
 			const ret = compileSegment(
 				[
 					`local int ${tempVariableName}`,
@@ -60,7 +60,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
 
-			loadFloat({ lineNumber: 1, instruction: 'loadFloat', arguments: [] } as AST[number], context);
+			loadFloat(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'loadFloat',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -72,7 +80,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext({ memoryByteSize: 16 });
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: false });
 
-			loadFloat({ lineNumber: 2, instruction: 'loadFloat', arguments: [] } as AST[number], context);
+			loadFloat(
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'loadFloat',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

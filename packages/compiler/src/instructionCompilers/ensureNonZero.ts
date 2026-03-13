@@ -36,7 +36,7 @@ const ensureNonZero: InstructionCompiler = withValidation(
 			defaultNonZeroValue = defaultNonZeroValue + 'f64';
 		}
 
-		const tempVariableName = '__ensureNonZero_temp_' + line.lineNumber;
+		const tempVariableName = '__ensureNonZero_temp_' + line.lineNumberAfterMacroExpansion;
 
 		if (operand.isInteger) {
 			const ret = compileSegment(
@@ -89,7 +89,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			ensureNonZero({ lineNumber: 1, instruction: 'ensureNonZero', arguments: [] } as AST[number], context);
+			ensureNonZero(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'ensureNonZero',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -104,7 +112,8 @@ if (import.meta.vitest) {
 
 			ensureNonZero(
 				{
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 					instruction: 'ensureNonZero',
 					arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false }],
 				} as AST[number],
@@ -124,7 +133,8 @@ if (import.meta.vitest) {
 
 			ensureNonZero(
 				{
-					lineNumber: 3,
+					lineNumberBeforeMacroExpansion: 3,
+					lineNumberAfterMacroExpansion: 3,
 					instruction: 'ensureNonZero',
 					arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false, isFloat64: true }],
 				} as AST[number],

@@ -98,7 +98,15 @@ if (import.meta.vitest) {
 		it('returns early without arguments', () => {
 			const context = createInstructionCompilerTestContext();
 
-			skip({ lineNumber: 1, instruction: 'skip', arguments: [] } as AST[number], context);
+			skip(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'skip',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				byteCode: context.byteCode,
@@ -110,7 +118,8 @@ if (import.meta.vitest) {
 
 			skip(
 				{
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 					instruction: 'skip',
 					arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],

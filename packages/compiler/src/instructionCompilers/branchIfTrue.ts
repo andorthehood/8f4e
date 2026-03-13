@@ -45,7 +45,8 @@ if (import.meta.vitest) {
 
 			branchIfTrue(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'branchIfTrue',
 					arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
 				} as AST[number],
@@ -63,7 +64,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true, isNonZero: true });
 
 			expect(() => {
-				branchIfTrue({ lineNumber: 1, instruction: 'branchIfTrue', arguments: [] } as AST[number], context);
+				branchIfTrue(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'branchIfTrue',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

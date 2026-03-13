@@ -45,7 +45,15 @@ if (import.meta.vitest) {
 				],
 			});
 
-			moduleEnd({ lineNumber: 1, instruction: 'moduleEnd', arguments: [] } as AST[number], context);
+			moduleEnd(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'moduleEnd',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({ blockStack: context.blockStack }).toMatchSnapshot();
 		});
