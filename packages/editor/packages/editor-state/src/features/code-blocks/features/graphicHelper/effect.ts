@@ -6,15 +6,12 @@ import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 
-import bufferPlotters from '../bufferPlotters/updateGraphicData';
-import bufferScanners from '../bufferScanners/updateGraphicData';
+import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../directives/registry';
 import buttons from '../buttons/updateGraphicData';
 import debuggers from '../watchers/updateGraphicData';
 import inputs from '../inputs/updateGraphicData';
 import outputs from '../outputs/updateGraphicData';
-import pianoKeyboards from '../pianoKeyboard/updateGraphicData';
 import switches from '../switches/updateGraphicData';
-import sliders from '../sliders/updateGraphicData';
 import blockHighlights from '../blockHighlights/updateGraphicData';
 import { CodeBlockClickEvent } from '../codeBlockDragger/effect';
 import wrapText from '../../utils/wrapText';
@@ -35,8 +32,6 @@ import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicDa
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parseGroup from '../group/codeParser';
 import parsePos from '../position/parsePos';
-import parseDisabled from '../disabled/parseDisabled';
-import parseHome from '../home/parseHome';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -48,7 +43,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const row = reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps);
+		const directiveState = deriveDirectiveState(codeBlock.code);
+		const displayModel = directiveState.displayModel;
+		const displayRow = reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps);
+		const row = displayModel.displayRowToRawRow[Math.min(displayRow, displayModel.displayRowToRawRow.length - 1)] ?? 0;
 		const visualCol = Math.max(Math.floor(relativeX / state.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2), 0);
 		const tabStopsByLine = getTabStopsByLine(codeBlock.code);
 		const col = getRawIndexForVisualColumn(
@@ -67,15 +65,17 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		const spriteLookups = state.graphicHelper.spriteLookups;
+		const directiveState = deriveDirectiveState(graphicData.code);
+		const displayModel = directiveState.displayModel;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
-		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
+		graphicData.lineNumberColumnWidth = displayModel.lines.length.toString().length;
 
-		graphicData.codeToRender = graphicData.code.map((line, index) => {
-			const prefix = `${index}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
+		graphicData.codeToRender = displayModel.lines.map(({ text, rawRow }, displayRow) => {
+			const prefix = `${displayRow}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
 			return [...prefix]
 				.map(char => char.charCodeAt(0) as number | string)
-				.concat(expandLineToCells(line, tabStopsByLine[index] || []));
+				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
 		});
 		graphicData.id = getCodeBlockId(graphicData.code);
 		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
@@ -91,8 +91,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// Merge raw code colors into color matrix aligned with codeWithLineNumbers
 		// by offsetting indices to account for line number prefix
 		const lineNumberPrefixLength = graphicData.lineNumberColumnWidth + 1; // +1 for space
-		graphicData.codeColors = graphicData.codeToRender.map((line, lineIndex) => {
+		graphicData.codeColors = graphicData.codeToRender.map((line, displayRow) => {
 			const lineColors = new Array(line.length).fill(undefined);
+			const rawRow = displayModel.displayRowToRawRow[displayRow] ?? 0;
 
 			// Apply line number color at the first column (color persists until changed)
 			lineColors[0] = spriteLookups.fontLineNumber;
@@ -102,9 +103,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 			// Merge syntax colors from raw code, offset by prefix length
 			const rawColors = expandLineColorsToCells(
-				graphicData.code[lineIndex] || '',
-				rawCodeColors[lineIndex] || [],
-				tabStopsByLine[lineIndex] || []
+				graphicData.code[rawRow] || '',
+				rawCodeColors[rawRow] || [],
+				tabStopsByLine[rawRow] || []
 			);
 			rawColors.forEach((color, i) => {
 				if (color !== undefined) {
@@ -115,19 +116,17 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return lineColors;
 		});
 
-		gaps(graphicData);
-		pianoKeyboards(graphicData, state);
+		gaps(graphicData, directiveState);
+		prepareDirectiveGraphicData(graphicData, state, directiveState);
 
 		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
 
-		bufferPlotters(graphicData, state);
-		bufferScanners(graphicData, state);
+		resolveDirectiveWidgets(graphicData, state, directiveState);
 		outputs(graphicData, state);
 		inputs(graphicData, state);
 		debuggers(graphicData, state);
 		switches(graphicData, state);
 		buttons(graphicData, state);
-		sliders(graphicData, state);
 		positionOffsetters(graphicData, state);
 		blockHighlights(graphicData, state);
 
@@ -140,7 +139,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			) +
 				(graphicData.lineNumberColumnWidth + 2)) *
 			state.viewport.vGrid;
-		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
+		const displayRow = displayModel.rawRowToDisplayRow[graphicData.cursor.row] ?? graphicData.cursor.row;
+		graphicData.cursor.y = gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid;
 		const groupResult = parseGroup(graphicData.code);
 		graphicData.groupName = groupResult?.groupName;
 		graphicData.groupNonstick = groupResult?.nonstick;
@@ -206,12 +206,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			const gridY = posResult?.y ?? 0;
 			const pixelX = gridX * state.viewport.vGrid;
 			const pixelY = gridY * state.viewport.hGrid;
-
-			// Parse @disabled directive from code
-			const disabled = parseDisabled(codeBlock.code);
-
-			// Parse @home directive from code
-			const isHome = parseHome(codeBlock.code);
+			const directiveState = deriveDirectiveState(codeBlock.code);
 
 			return createCodeBlockGraphicData({
 				width: 0,
@@ -226,8 +221,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				lineNumberColumnWidth: 1,
 				creationIndex,
 				blockType: getBlockType(codeBlock.code),
-				disabled,
-				isHome,
+				disabled: directiveState.blockState.disabled,
+				isHome: directiveState.blockState.isHome,
 			});
 		});
 
@@ -242,12 +237,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					const rawBlock = editorConfigBlocks[i];
 					const gridX = rawBlock.gridCoordinates?.x ?? 0;
 					const gridY = rawBlock.gridCoordinates?.y ?? 0;
-					// Parse @disabled directive from code
-					const disabled = parseDisabled(rawBlock.code);
+					const directiveState = deriveDirectiveState(rawBlock.code);
 					const block = createCodeBlockGraphicData({
 						id: getCodeBlockId(rawBlock.code),
 						code: rawBlock.code,
-						disabled,
+						disabled: directiveState.blockState.disabled,
+						isHome: directiveState.blockState.isHome,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
 						gridX,
@@ -326,7 +321,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		const codeBlock = state.graphicHelper.selectedCodeBlock;
-		codeBlock.isHome = parseHome(codeBlock.code);
+		const directiveState = deriveDirectiveState(codeBlock.code);
+		codeBlock.disabled = directiveState.blockState.disabled;
+		codeBlock.isHome = directiveState.blockState.isHome;
 	};
 
 	updateErrorMessages();

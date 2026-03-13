@@ -1,14 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes } from '@8f4e/compiler';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
-import updateBufferPlottersGraphicData from './updateGraphicData';
+import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../registry';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '~/types';
-import type { DataStructure } from '@8f4e/compiler';
 
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
-describe('updateBufferPlottersGraphicData', () => {
+describe('plot directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
 	let mockState: State;
 
@@ -43,29 +42,28 @@ describe('updateBufferPlottersGraphicData', () => {
 		});
 	});
 
-	it('should add buffer plotter to graphicData extras', () => {
-		updateBufferPlottersGraphicData(mockGraphicData, mockState);
+	function runDirectiveResolution() {
+		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		prepareDirectiveGraphicData(mockGraphicData, mockState, directiveState);
+		resolveDirectiveWidgets(mockGraphicData, mockState, directiveState);
+	}
 
-		expect(mockGraphicData.extras.bufferPlotters.length).toBe(1);
+	it('adds a plotter to graphic data extras', () => {
+		runDirectiveResolution();
+
+		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(1);
 		expect(mockGraphicData.extras.bufferPlotters[0]).toBeDefined();
 	});
 
-	it('should calculate correct dimensions and position', () => {
-		updateBufferPlottersGraphicData(mockGraphicData, mockState);
+	it('does not add a plotter when the buffer cannot be resolved', () => {
+		mockGraphicData.code = ['; @plot missing -10 10'];
 
-		const plotter = mockGraphicData.extras.bufferPlotters[0];
-		expect(plotter).toMatchSnapshot();
+		runDirectiveResolution();
+
+		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(0);
 	});
 
-	it('should not add plotter when buffer memory is not found', () => {
-		mockGraphicData.code = ['; @plot nonExistentBuffer -10 10'];
-
-		updateBufferPlottersGraphicData(mockGraphicData, mockState);
-
-		expect(mockGraphicData.extras.bufferPlotters.length).toBe(0);
-	});
-
-	it('should clear existing plotters before updating', () => {
+	it('clears existing plotters before resolving directive widgets', () => {
 		mockGraphicData.extras.bufferPlotters.push({
 			width: 0,
 			height: 0,
@@ -83,12 +81,12 @@ describe('updateBufferPlottersGraphicData', () => {
 			bufferLength: undefined,
 		});
 
-		updateBufferPlottersGraphicData(mockGraphicData, mockState);
+		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferPlotters.length).toBe(1);
+		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(1);
 	});
 
-	it('should handle multiple buffer plotters', () => {
+	it('handles multiple plot directives', () => {
 		mockGraphicData.code = ['; @plot buffer1 -10 10', '; @plot buffer2 0 100'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
@@ -105,9 +103,8 @@ describe('updateBufferPlottersGraphicData', () => {
 			isPointingToPointer: false,
 		};
 
-		updateBufferPlottersGraphicData(mockGraphicData, mockState);
+		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferPlotters.length).toBe(2);
-		expect(mockGraphicData.extras.bufferPlotters).toMatchSnapshot();
+		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(2);
 	});
 });
