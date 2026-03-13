@@ -5,9 +5,9 @@ import type { CodeBlockGraphicData, State } from '~/types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export default function updateButtonsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.buttons = [];
+	graphicData.widgets.buttons = [];
 	parseButtons(graphicData.code).forEach(_switch => {
-		graphicData.extras.buttons.push({
+		graphicData.widgets.buttons.push({
 			width: state.viewport.vGrid * 4,
 			height: state.viewport.hGrid,
 			x: graphicData.width - 4 * state.viewport.vGrid,

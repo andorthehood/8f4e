@@ -5,7 +5,7 @@ import type { CodeBlockGraphicData, State } from '~/types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export default function updateInputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.inputs = [];
+	graphicData.widgets.inputs = [];
 	const moduleId = graphicData.moduleId;
 	if (!moduleId) {
 		return;
@@ -18,7 +18,7 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 			return;
 		}
 
-		graphicData.extras.inputs.push({
+		graphicData.widgets.inputs.push({
 			width: state.viewport.vGrid * 2,
 			height: state.viewport.hGrid,
 			x: 0,

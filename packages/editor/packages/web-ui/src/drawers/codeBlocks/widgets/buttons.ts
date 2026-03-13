@@ -4,28 +4,19 @@ import { Icon } from '@8f4e/sprite-generator';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../../types';
 
-export default function drawSwitches(
+export default function drawButtons(
 	engine: Engine,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
-		return;
-	}
-
-	for (const { x, y, id: debuggerId, onValue, offValue } of codeBlock.extras.switches) {
-		if (!codeBlock.moduleId) {
+	for (const { x, y, id: debuggerId, onValue, offValue } of codeBlock.widgets.buttons) {
+		if (!state.graphicHelper.spriteLookups || !codeBlock.moduleId) {
 			continue;
 		}
 
 		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[debuggerId];
-
-		if (!memory) {
-			continue;
-		}
-
-		const { wordAlignedAddress } = memory;
+		const { wordAlignedAddress = 0 } = memory || {};
 		const value = memoryViews.int32[wordAlignedAddress] || 0;
 
 		if (value === onValue) {

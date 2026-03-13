@@ -13,7 +13,7 @@ export default createDirectivePlugin(
 	},
 	{
 		clearGraphicData: graphicData => {
-			graphicData.extras.bufferPlotters = [];
+			graphicData.widgets.bufferPlotters = [];
 		},
 	}
 );

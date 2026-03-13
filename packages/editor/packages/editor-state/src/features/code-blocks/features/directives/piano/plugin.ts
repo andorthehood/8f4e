@@ -15,7 +15,7 @@ export default createDirectivePlugin(
 	},
 	{
 		clearGraphicData: graphicData => {
-			graphicData.extras.pianoKeyboards = [];
+			graphicData.widgets.pianoKeyboards = [];
 			delete graphicData.minGridWidth;
 		},
 	}

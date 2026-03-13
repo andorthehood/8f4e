@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
-import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../registry';
+import {
+	deriveDirectiveState,
+	runAfterGraphicDataWidthCalculation,
+	runBeforeGraphicDataWidthCalculation,
+} from '../registry';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '~/types';
 
@@ -44,15 +48,15 @@ describe('plot directive widget resolution', () => {
 
 	function runDirectiveResolution() {
 		const directiveState = deriveDirectiveState(mockGraphicData.code);
-		prepareDirectiveGraphicData(mockGraphicData, mockState, directiveState);
-		resolveDirectiveWidgets(mockGraphicData, mockState, directiveState);
+		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
+		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
 
-	it('adds a plotter to graphic data extras', () => {
+	it('adds a plotter to graphic data widgets', () => {
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(1);
-		expect(mockGraphicData.extras.bufferPlotters[0]).toBeDefined();
+		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.bufferPlotters[0]).toBeDefined();
 	});
 
 	it('does not add a plotter when the buffer cannot be resolved', () => {
@@ -60,11 +64,11 @@ describe('plot directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(0);
+		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(0);
 	});
 
 	it('clears existing plotters before resolving directive widgets', () => {
-		mockGraphicData.extras.bufferPlotters.push({
+		mockGraphicData.widgets.bufferPlotters.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -83,7 +87,7 @@ describe('plot directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(1);
 	});
 
 	it('handles multiple plot directives', () => {
@@ -105,6 +109,6 @@ describe('plot directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferPlotters).toHaveLength(2);
+		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(2);
 	});
 });

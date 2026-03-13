@@ -6,7 +6,11 @@ import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 
-import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../directives/registry';
+import {
+	deriveDirectiveState,
+	runAfterGraphicDataWidthCalculation,
+	runBeforeGraphicDataWidthCalculation,
+} from '../directives/registry';
 import buttons from '../buttons/updateGraphicData';
 import debuggers from '../watchers/updateGraphicData';
 import inputs from '../inputs/updateGraphicData';
@@ -117,11 +121,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 
 		gaps(graphicData, directiveState);
-		prepareDirectiveGraphicData(graphicData, state, directiveState);
+		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
 
 		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
 
-		resolveDirectiveWidgets(graphicData, state, directiveState);
+		runAfterGraphicDataWidthCalculation(graphicData, state, directiveState);
 		outputs(graphicData, state);
 		inputs(graphicData, state);
 		debuggers(graphicData, state);
@@ -280,12 +284,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			...state.codeErrors.shaderErrors,
 		];
 		state.graphicHelper.codeBlocks.forEach(codeBlock => {
-			codeBlock.extras.errorMessages = [];
+			codeBlock.widgets.errorMessages = [];
 			codeErrors.forEach(codeError => {
 				if (codeBlock.creationIndex === codeError.codeBlockId || codeBlock.id === codeError.codeBlockId) {
 					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1);
 
-					codeBlock.extras.errorMessages.push({
+					codeBlock.widgets.errorMessages.push({
 						x: 0,
 						y: (gapCalculator(codeError.lineNumber, codeBlock.gaps) + 1) * state.viewport.hGrid,
 						message: ['Error:', ...message],

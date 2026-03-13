@@ -4,7 +4,7 @@ import updateSwitchesGraphicData from './updateGraphicData';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('updateSwitchesGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -28,22 +28,22 @@ describe('updateSwitchesGraphicData', () => {
 		});
 	});
 
-	it('should add switch to graphicData extras', () => {
+	it('should add switch to graphicData widgets', () => {
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.switches.length).toBe(1);
-		expect(findExtrasById(mockGraphicData.extras.switches, 'sw1')).toBeDefined();
+		expect(mockGraphicData.widgets.switches.length).toBe(1);
+		expect(findWidgetById(mockGraphicData.widgets.switches, 'sw1')).toBeDefined();
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw = findExtrasById(mockGraphicData.extras.switches, 'sw1');
+		const sw = findWidgetById(mockGraphicData.widgets.switches, 'sw1');
 		expect(sw).toMatchSnapshot();
 	});
 
 	it('should clear existing switches before updating', () => {
-		mockGraphicData.extras.switches.push({
+		mockGraphicData.widgets.switches.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -55,7 +55,7 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		expect(findExtrasById(mockGraphicData.extras.switches, 'oldSwitch')).toBeUndefined();
+		expect(findWidgetById(mockGraphicData.widgets.switches, 'oldSwitch')).toBeUndefined();
 	});
 
 	it('should handle multiple switches', () => {
@@ -63,8 +63,8 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.switches.length).toBe(2);
-		expect(mockGraphicData.extras.switches).toMatchSnapshot();
+		expect(mockGraphicData.widgets.switches.length).toBe(2);
+		expect(mockGraphicData.widgets.switches).toMatchSnapshot();
 	});
 
 	it('should position switches at correct y coordinate based on line number', () => {
@@ -72,7 +72,7 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw = findExtrasById(mockGraphicData.extras.switches, 'sw1');
+		const sw = findWidgetById(mockGraphicData.widgets.switches, 'sw1');
 		expect(sw).toMatchSnapshot();
 	});
 
@@ -81,7 +81,7 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw = findExtrasById(mockGraphicData.extras.switches, 'sw1');
+		const sw = findWidgetById(mockGraphicData.widgets.switches, 'sw1');
 		expect(sw).toMatchSnapshot();
 	});
 
@@ -91,8 +91,8 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw1 = findExtrasById(mockGraphicData.extras.switches, 'sw1');
-		const sw2 = findExtrasById(mockGraphicData.extras.switches, 'sw2');
+		const sw1 = findWidgetById(mockGraphicData.widgets.switches, 'sw1');
+		const sw2 = findWidgetById(mockGraphicData.widgets.switches, 'sw2');
 
 		expect(sw1?.y).toBe(0); // First switch at line 0
 		expect(sw2?.y).toBeGreaterThan(sw1!.y); // Second switch should be below

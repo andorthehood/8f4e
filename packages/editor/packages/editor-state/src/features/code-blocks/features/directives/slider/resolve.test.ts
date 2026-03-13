@@ -1,10 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../registry';
+import {
+	deriveDirectiveState,
+	runAfterGraphicDataWidthCalculation,
+	runBeforeGraphicDataWidthCalculation,
+} from '../registry';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('slider directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -44,20 +48,20 @@ describe('slider directive widget resolution', () => {
 
 	function runDirectiveResolution() {
 		const directiveState = deriveDirectiveState(mockGraphicData.code);
-		prepareDirectiveGraphicData(mockGraphicData, mockState, directiveState);
-		resolveDirectiveWidgets(mockGraphicData, mockState, directiveState);
+		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
+		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
 
-	it('adds a slider to graphic data extras', () => {
+	it('adds a slider to graphic data widgets', () => {
 		runDirectiveResolution();
 
-		expect(findExtrasById(mockGraphicData.extras.sliders, 'mySlider')).toBeDefined();
+		expect(findWidgetById(mockGraphicData.widgets.sliders, 'mySlider')).toBeDefined();
 	});
 
 	it('uses default integer range when min and max are not provided', () => {
 		runDirectiveResolution();
 
-		const slider = findExtrasById(mockGraphicData.extras.sliders, 'mySlider');
+		const slider = findWidgetById(mockGraphicData.widgets.sliders, 'mySlider');
 		expect(slider?.min).toBe(0);
 		expect(slider?.max).toBe(127);
 	});
@@ -67,14 +71,14 @@ describe('slider directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		const slider = findExtrasById(mockGraphicData.extras.sliders, 'mySlider');
+		const slider = findWidgetById(mockGraphicData.widgets.sliders, 'mySlider');
 		expect(slider?.min).toBe(0);
 		expect(slider?.max).toBe(100);
 		expect(slider?.step).toBe(5);
 	});
 
 	it('clears existing sliders before resolving directive widgets', () => {
-		mockGraphicData.extras.sliders.push({
+		mockGraphicData.widgets.sliders.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -86,6 +90,6 @@ describe('slider directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(findExtrasById(mockGraphicData.extras.sliders, 'oldSlider')).toBeUndefined();
+		expect(findWidgetById(mockGraphicData.widgets.sliders, 'oldSlider')).toBeUndefined();
 	});
 });

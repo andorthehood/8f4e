@@ -22,7 +22,7 @@ function mockCodeBlock(creationIndex: number, id: string, blockType: string, cod
 		offsetY: 0,
 		disabled: false,
 		lastUpdated: 0,
-		extras: {
+		widgets: {
 			blockHighlights: [],
 			inputs: [],
 			outputs: [],
