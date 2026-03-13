@@ -1,3 +1,5 @@
+import { parseDirectiveComment } from '../utils';
+
 /**
  * Inserts or removes @disabled directive from code block lines.
  *
@@ -21,26 +23,18 @@
  * ```
  */
 export default function upsertDisabled(code: string[], disabled: boolean): string[] {
-	// Remove all existing @disabled directives
-	const withoutDisabled = code.filter(line => {
-		const commentMatch = line.match(/^\s*;\s*@(\w+)/);
-		return !(commentMatch && commentMatch[1] === 'disabled');
-	});
+	const withoutDisabled = code.filter(line => parseDirectiveComment(line)?.name !== 'disabled');
 
-	// If disabled is false, just return the code without @disabled directives
 	if (!disabled) {
 		return withoutDisabled;
 	}
 
-	// Create canonical @disabled directive
 	const disabledDirective = '; @disabled';
 
-	// Insert after first line if it exists, otherwise at the beginning
 	if (withoutDisabled.length === 0) {
 		return [disabledDirective];
 	}
 
-	// Insert @disabled as second line (after block declaration)
 	return [withoutDisabled[0], disabledDirective, ...withoutDisabled.slice(1)];
 }
 
