@@ -1,9 +1,12 @@
+import buttonDirective from './button/plugin';
 import disabledDirective from './disabled/plugin';
 import homeDirective from './home/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
 import scanDirective from './scan/plugin';
 import sliderDirective from './slider/plugin';
+import switchDirective from './switch/plugin';
+import watchDirective from './watch/plugin';
 import { parseEditorDirectives } from './utils';
 
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
@@ -23,6 +26,9 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	scanDirective,
 	sliderDirective,
 	pianoDirective,
+	buttonDirective,
+	switchDirective,
+	watchDirective,
 	disabledDirective,
 	homeDirective,
 ];
