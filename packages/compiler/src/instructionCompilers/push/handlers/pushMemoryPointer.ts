@@ -18,7 +18,7 @@ export default function pushMemoryPointer(line: AST[number], context: Compilatio
 	const memoryItem = getDataStructure(memory, base);
 
 	if (!memoryItem) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: base });
 	}
 
 	const kind = resolvePointerTargetValueKind(memoryItem);

@@ -25,7 +25,7 @@ const _localGet: InstructionCompiler = withValidation(
 			const local = context.namespace.locals[line.arguments[0].value];
 
 			if (!local) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: line.arguments[0].value });
 			}
 
 			context.stack.push({
