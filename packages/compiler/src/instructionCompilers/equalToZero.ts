@@ -43,7 +43,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			equalToZero({ lineNumber: 1, instruction: 'equalToZero', arguments: [] } as AST[number], context);
+			equalToZero(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'equalToZero',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -55,7 +63,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false });
 
-			equalToZero({ lineNumber: 1, instruction: 'equalToZero', arguments: [] } as AST[number], context);
+			equalToZero(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'equalToZero',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -67,7 +83,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
 
-			equalToZero({ lineNumber: 1, instruction: 'equalToZero', arguments: [] } as AST[number], context);
+			equalToZero(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'equalToZero',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

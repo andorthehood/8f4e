@@ -42,7 +42,12 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
 			greaterOrEqualUnsigned(
-				{ lineNumber: 1, instruction: 'greaterOrEqualUnsigned', arguments: [] } as AST[number],
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'greaterOrEqualUnsigned',
+					arguments: [],
+				} as AST[number],
 				context
 			);
 
@@ -57,7 +62,12 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
 			greaterOrEqualUnsigned(
-				{ lineNumber: 1, instruction: 'greaterOrEqualUnsigned', arguments: [] } as AST[number],
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'greaterOrEqualUnsigned',
+					arguments: [],
+				} as AST[number],
 				context
 			);
 

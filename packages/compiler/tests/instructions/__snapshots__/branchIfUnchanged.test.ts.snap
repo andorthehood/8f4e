@@ -10,7 +10,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -20,7 +21,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -30,7 +32,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -40,7 +43,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -51,12 +55,14 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -66,7 +72,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "block",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [
@@ -76,7 +83,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "push",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [
@@ -87,7 +95,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "branchIfUnchanged",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
   {
     "arguments": [
@@ -97,7 +106,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "push",
-    "lineNumber": 12,
+    "lineNumberAfterMacroExpansion": 12,
+    "lineNumberBeforeMacroExpansion": 12,
   },
   {
     "arguments": [
@@ -108,22 +118,26 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
       },
     ],
     "instruction": "push",
-    "lineNumber": 13,
+    "lineNumberAfterMacroExpansion": 13,
+    "lineNumberBeforeMacroExpansion": 13,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 14,
+    "lineNumberAfterMacroExpansion": 14,
+    "lineNumberBeforeMacroExpansion": 14,
   },
   {
     "arguments": [],
     "instruction": "blockEnd",
-    "lineNumber": 15,
+    "lineNumberAfterMacroExpansion": 15,
+    "lineNumberBeforeMacroExpansion": 15,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 17,
+    "lineNumberAfterMacroExpansion": 17,
+    "lineNumberBeforeMacroExpansion": 17,
   },
 ]
 `;

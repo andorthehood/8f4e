@@ -111,7 +111,8 @@ if (import.meta.vitest) {
 
 	describe('resolveConstantValue', () => {
 		const mockLine = {
-			lineNumber: 1,
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
 			instruction: 'const',
 			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'A' }],
 		} as unknown as AST[number];

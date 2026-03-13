@@ -21,7 +21,7 @@ const abs: InstructionCompiler = withValidation(
 
 		if (operand.isInteger) {
 			context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
-			const valueName = '__absify_value' + line.lineNumber;
+			const valueName = '__absify_value' + line.lineNumberAfterMacroExpansion;
 
 			return compileSegment(
 				[
@@ -61,7 +61,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: true });
 
-			abs({ lineNumber: 1, instruction: 'abs', arguments: [] } as AST[number], context);
+			abs(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'abs',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -73,7 +81,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: true });
 
-			abs({ lineNumber: 3, instruction: 'abs', arguments: [] } as AST[number], context);
+			abs(
+				{
+					lineNumberBeforeMacroExpansion: 3,
+					lineNumberAfterMacroExpansion: 3,
+					instruction: 'abs',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -86,7 +102,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
 
-			abs({ lineNumber: 2, instruction: 'abs', arguments: [] } as AST[number], context);
+			abs(
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'abs',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

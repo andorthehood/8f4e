@@ -35,7 +35,8 @@ if (import.meta.vitest) {
 						{ type: ArgumentType.IDENTIFIER, value: 'MAX_VALUE' },
 						{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
 					],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 			];
 
@@ -53,7 +54,8 @@ if (import.meta.vitest) {
 						{ type: ArgumentType.IDENTIFIER, value: 'PI' },
 						{ type: ArgumentType.LITERAL, value: 3.14159, isInteger: false },
 					],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 			];
 
@@ -71,7 +73,8 @@ if (import.meta.vitest) {
 						{ type: ArgumentType.IDENTIFIER, value: 'PI64' },
 						{ type: ArgumentType.LITERAL, value: 3.141592653589793, isInteger: false, isFloat64: true },
 					],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 			];
 
@@ -89,7 +92,8 @@ if (import.meta.vitest) {
 						{ type: ArgumentType.IDENTIFIER, value: 'PI' },
 						{ type: ArgumentType.LITERAL, value: 3.14159, isInteger: false },
 					],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 				{
 					instruction: 'const',
@@ -97,7 +101,8 @@ if (import.meta.vitest) {
 						{ type: ArgumentType.IDENTIFIER, value: 'TAU' },
 						{ type: ArgumentType.LITERAL, value: 6.28318, isInteger: false },
 					],
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 				},
 			];
 
@@ -113,7 +118,8 @@ if (import.meta.vitest) {
 				{
 					instruction: 'module',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'test' }],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 				{
 					instruction: 'const',
@@ -121,7 +127,8 @@ if (import.meta.vitest) {
 						{ type: ArgumentType.IDENTIFIER, value: 'VALUE' },
 						{ type: ArgumentType.LITERAL, value: 42, isInteger: true },
 					],
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 				},
 			];
 
@@ -136,7 +143,8 @@ if (import.meta.vitest) {
 				{
 					instruction: 'module',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'test' }],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 			];
 

@@ -21,7 +21,7 @@ const int: InstructionCompiler = withValidation(
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 		const { id, defaultValue } = parseMemoryInstructionArguments(
 			line.arguments,
-			line.lineNumber,
+			line.lineNumberAfterMacroExpansion,
 			line.instruction,
 			context
 		);
@@ -58,7 +58,8 @@ if (import.meta.vitest) {
 
 			int(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'counter' }],
 				} as AST[number],

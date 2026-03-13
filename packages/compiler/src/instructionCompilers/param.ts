@@ -100,7 +100,8 @@ if (import.meta.vitest) {
 
 			param(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'param',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'int' },
@@ -135,7 +136,8 @@ if (import.meta.vitest) {
 
 			param(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'param',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'float64' },
@@ -171,7 +173,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				param(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'param',
 						arguments: [
 							{ type: ArgumentType.IDENTIFIER, value: 'int' },

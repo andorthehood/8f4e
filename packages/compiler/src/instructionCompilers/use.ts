@@ -45,7 +45,8 @@ if (import.meta.vitest) {
 
 			use(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'use',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'shared' }],
 				} as AST[number],
@@ -61,7 +62,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				use(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'use',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
 					} as AST[number],

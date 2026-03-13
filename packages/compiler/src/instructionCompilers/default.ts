@@ -70,7 +70,8 @@ if (import.meta.vitest) {
 
 			_default(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'default',
 					arguments: [{ type: ArgumentType.LITERAL, value: 99, isInteger: true }],
 				} as AST[number],
@@ -100,7 +101,15 @@ if (import.meta.vitest) {
 			});
 
 			expect(() => {
-				_default({ lineNumber: 1, instruction: 'default', arguments: [] } as AST[number], context);
+				_default(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'default',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 
@@ -110,7 +119,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				_default(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'default',
 						arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 					} as AST[number],

@@ -64,7 +64,8 @@ if (import.meta.vitest) {
 
 			_localSet(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'localSet',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
 				} as AST[number],
@@ -82,7 +83,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true, isNonZero: false });
 
 			expect(() => {
-				_localSet({ lineNumber: 1, instruction: 'localSet', arguments: [] } as AST[number], context);
+				_localSet(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'localSet',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

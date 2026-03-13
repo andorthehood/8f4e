@@ -17,8 +17,9 @@ const risingEdge: InstructionCompiler = withValidation(
 		// Non-null assertion is safe: withValidation with minOperands: 1 guarantees at least 1 operand exists on the stack
 		const operand = context.stack.pop()!;
 
-		const currentValueName = '__risingEdgeDetector_currentValue' + line.lineNumber;
-		const previousValueName = '__risingEdgeDetector_previousValue' + line.lineNumber;
+		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+		const currentValueName = '__risingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
+		const previousValueName = '__risingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
 		const loadInstruction = operand.isInteger ? 'load' : 'loadFloat';
 
@@ -58,7 +59,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			risingEdge({ lineNumber: 4, instruction: 'risingEdge', arguments: [] } as AST[number], context);
+			risingEdge(
+				{
+					lineNumberBeforeMacroExpansion: 4,
+					lineNumberAfterMacroExpansion: 4,
+					instruction: 'risingEdge',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -72,7 +81,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false });
 
-			risingEdge({ lineNumber: 4, instruction: 'risingEdge', arguments: [] } as AST[number], context);
+			risingEdge(
+				{
+					lineNumberBeforeMacroExpansion: 4,
+					lineNumberAfterMacroExpansion: 4,
+					instruction: 'risingEdge',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

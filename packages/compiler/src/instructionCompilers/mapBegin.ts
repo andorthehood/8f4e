@@ -52,7 +52,8 @@ if (import.meta.vitest) {
 
 			mapBegin(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapBegin',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
 				} as AST[number],
@@ -69,7 +70,8 @@ if (import.meta.vitest) {
 
 			mapBegin(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapBegin',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
 				} as AST[number],
@@ -86,7 +88,8 @@ if (import.meta.vitest) {
 
 			mapBegin(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapBegin',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float64' }],
 				} as AST[number],
@@ -102,7 +105,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				mapBegin({ lineNumber: 1, instruction: 'mapBegin', arguments: [] } as AST[number], context);
+				mapBegin(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'mapBegin',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 
@@ -112,7 +123,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				mapBegin(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'mapBegin',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'unknown' }],
 					} as AST[number],
