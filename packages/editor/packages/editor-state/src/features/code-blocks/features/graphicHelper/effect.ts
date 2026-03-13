@@ -11,11 +11,8 @@ import {
 	runAfterGraphicDataWidthCalculation,
 	runBeforeGraphicDataWidthCalculation,
 } from '../directives/registry';
-import buttons from '../buttons/updateGraphicData';
-import debuggers from '../watchers/updateGraphicData';
 import inputs from '../inputs/updateGraphicData';
 import outputs from '../outputs/updateGraphicData';
-import switches from '../switches/updateGraphicData';
 import blockHighlights from '../blockHighlights/updateGraphicData';
 import { CodeBlockClickEvent } from '../codeBlockDragger/effect';
 import wrapText from '../../utils/wrapText';
@@ -128,9 +125,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		runAfterGraphicDataWidthCalculation(graphicData, state, directiveState);
 		outputs(graphicData, state);
 		inputs(graphicData, state);
-		debuggers(graphicData, state);
-		switches(graphicData, state);
-		buttons(graphicData, state);
 		positionOffsetters(graphicData, state);
 		blockHighlights(graphicData, state);
 
