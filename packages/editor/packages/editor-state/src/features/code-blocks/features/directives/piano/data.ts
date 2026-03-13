@@ -9,7 +9,15 @@ export interface PianoDirectiveData {
 	startingNumber: number;
 }
 
-export function createPianoDirectiveData(code: string[], args: string[], lineNumber: number): PianoDirectiveData {
+export function createPianoDirectiveData(
+	code: string[],
+	args: string[],
+	lineNumber: number
+): PianoDirectiveData | undefined {
+	if (!args[0] || !args[1]) {
+		return undefined;
+	}
+
 	const startingNumber = parseInt(args[2] || '0', 10);
 	const pressedKeys = parsePressedKeys(code, args[0], startingNumber);
 

@@ -6,7 +6,11 @@ export interface SliderDirectiveData {
 	step: number | undefined;
 }
 
-export function createSliderDirectiveData(args: string[], lineNumber: number): SliderDirectiveData {
+export function createSliderDirectiveData(args: string[], lineNumber: number): SliderDirectiveData | undefined {
+	if (!args[0]) {
+		return undefined;
+	}
+
 	const parsedMin = args[1] !== undefined ? parseFloat(args[1]) : undefined;
 	const parsedMax = args[2] !== undefined ? parseFloat(args[2]) : undefined;
 	const parsedStep = args[3] !== undefined ? parseFloat(args[3]) : undefined;
