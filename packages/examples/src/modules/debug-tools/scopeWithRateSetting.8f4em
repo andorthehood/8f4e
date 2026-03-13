@@ -1,0 +1,52 @@
+module scope
+use env
+float* in
+float[] buffer 64
+int bufferPointer &buffer
+const RATE SAMPLE_RATE/4410
+int _counter
+
+; @plot buffer -1 2
+push _counter 
+push SAMPLE_RATE
+push RATE
+div
+greaterThan
+if void
+; Increment pointer
+push &bufferPointer
+push bufferPointer
+push %buffer
+add
+store
+
+; Wrap pointer
+push bufferPointer
+push buffer&
+greaterThan
+if void
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+; Load sample into buffer
+push bufferPointer
+push *in
+store
+
+; Reset counter
+push &_counter
+push 0
+store
+
+ifEnd
+
+; Increment counter
+push &_counter
+push _counter
+push 1
+add
+store
+
+moduleEnd
