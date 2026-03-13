@@ -59,7 +59,16 @@ export enum ErrorCode {
 	SPLIT_BYTE_CONSTANT_OUT_OF_RANGE,
 }
 
-export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
+interface ErrorDetails {
+	identifier?: string;
+}
+
+export function getError(
+	code: ErrorCode,
+	line: AST[number],
+	context?: CompilationContext,
+	details?: ErrorDetails
+): Error {
 	switch (code) {
 		case ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK:
 			return {
@@ -106,7 +115,7 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 		case ErrorCode.UNDECLARED_IDENTIFIER:
 			return {
 				code,
-				message: 'Undeclared identifier. (' + code + ')',
+				message: 'Undeclared identifier' + (details?.identifier ? `: ${details.identifier}` : '') + '. (' + code + ')',
 				line,
 				context,
 			};

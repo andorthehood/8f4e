@@ -88,13 +88,13 @@ export function resolveConstantValueOrExpressionOrThrow(
 	const expression = parseConstantMulDivExpression(value);
 
 	if (!expression) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: value });
 	}
 
 	const baseConst = context.namespace.consts[expression.baseIdentifier];
 
 	if (baseConst === undefined) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: expression.baseIdentifier });
 	}
 
 	const rhsLiteral = resolveExpressionRhsLiteral(expression, line, context);
