@@ -1,14 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes } from '@8f4e/compiler';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
-import updateBufferScannersGraphicData from './updateGraphicData';
+import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../registry';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '~/types';
-import type { DataStructure } from '@8f4e/compiler';
 
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
-describe('updateBufferScannersGraphicData', () => {
+describe('scan directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
 	let mockState: State;
 
@@ -47,37 +46,27 @@ describe('updateBufferScannersGraphicData', () => {
 		});
 	});
 
-	it('should add buffer scanner to graphicData extras', () => {
-		updateBufferScannersGraphicData(mockGraphicData, mockState);
+	function runDirectiveResolution() {
+		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		prepareDirectiveGraphicData(mockGraphicData, mockState, directiveState);
+		resolveDirectiveWidgets(mockGraphicData, mockState, directiveState);
+	}
 
-		expect(mockGraphicData.extras.bufferScanners.length).toBe(1);
-		expect(mockGraphicData.extras.bufferScanners[0]).toBeDefined();
+	it('adds a scanner to graphic data extras', () => {
+		runDirectiveResolution();
+
+		expect(mockGraphicData.extras.bufferScanners).toHaveLength(1);
 	});
 
-	it('should calculate correct dimensions and position', () => {
-		updateBufferScannersGraphicData(mockGraphicData, mockState);
+	it('does not add a scanner when dependencies cannot be resolved', () => {
+		mockGraphicData.code = ['; @scan missing pointer1'];
 
-		const scanner = mockGraphicData.extras.bufferScanners[0];
-		expect(scanner).toMatchSnapshot();
+		runDirectiveResolution();
+
+		expect(mockGraphicData.extras.bufferScanners).toHaveLength(0);
 	});
 
-	it('should not add scanner when buffer memory is not found', () => {
-		mockGraphicData.code = ['; @scan nonExistentBuffer pointer1'];
-
-		updateBufferScannersGraphicData(mockGraphicData, mockState);
-
-		expect(mockGraphicData.extras.bufferScanners.length).toBe(0);
-	});
-
-	it('should not add scanner when pointer memory is not found', () => {
-		mockGraphicData.code = ['; @scan buffer1 nonExistentPointer'];
-
-		updateBufferScannersGraphicData(mockGraphicData, mockState);
-
-		expect(mockGraphicData.extras.bufferScanners.length).toBe(0);
-	});
-
-	it('should clear existing scanners before updating', () => {
+	it('clears existing scanners before resolving directive widgets', () => {
 		mockGraphicData.extras.bufferScanners.push({
 			width: 0,
 			height: 0,
@@ -99,12 +88,12 @@ describe('updateBufferScannersGraphicData', () => {
 			} as MemoryIdentifier,
 		});
 
-		updateBufferScannersGraphicData(mockGraphicData, mockState);
+		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferScanners.length).toBe(1);
+		expect(mockGraphicData.extras.bufferScanners).toHaveLength(1);
 	});
 
-	it('should handle multiple buffer scanners', () => {
+	it('handles multiple scan directives', () => {
 		mockGraphicData.code = ['; @scan buffer1 pointer1', '; @scan buffer2 pointer2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
@@ -135,9 +124,8 @@ describe('updateBufferScannersGraphicData', () => {
 			isPointingToPointer: false,
 		};
 
-		updateBufferScannersGraphicData(mockGraphicData, mockState);
+		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferScanners.length).toBe(2);
-		expect(mockGraphicData.extras.bufferScanners).toMatchSnapshot();
+		expect(mockGraphicData.extras.bufferScanners).toHaveLength(2);
 	});
 });

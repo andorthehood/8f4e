@@ -1,11 +1,10 @@
 import { describe, it, expect } from 'vitest';
 
-import parseBufferScanners from './codeParser';
+import parseScanDirectives from './parse';
 
-describe('parseBufferScanners', () => {
+describe('parseScanDirectives', () => {
 	it('should parse scan instruction with buffer and pointer', () => {
-		const code = ['; @scan myBuffer myPointer'];
-		const result = parseBufferScanners(code);
+		const result = parseScanDirectives(['; @scan myBuffer myPointer']);
 
 		expect(result).toEqual([
 			{
@@ -17,8 +16,7 @@ describe('parseBufferScanners', () => {
 	});
 
 	it('should handle multiple scan instructions', () => {
-		const code = ['; @scan buffer1 ptr1', 'mov a b', '; @scan buffer2 ptr2'];
-		const result = parseBufferScanners(code);
+		const result = parseScanDirectives(['; @scan buffer1 ptr1', 'mov a b', '; @scan buffer2 ptr2']);
 
 		expect(result).toEqual([
 			{
@@ -35,22 +33,15 @@ describe('parseBufferScanners', () => {
 	});
 
 	it('should return empty array when no scan instructions found', () => {
-		const code = ['mov a b', 'add c d', 'sub e f'];
-		const result = parseBufferScanners(code);
-
-		expect(result).toEqual([]);
+		expect(parseScanDirectives(['mov a b', 'add c d', 'sub e f'])).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
-		const code: string[] = [];
-		const result = parseBufferScanners(code);
-
-		expect(result).toEqual([]);
+		expect(parseScanDirectives([])).toEqual([]);
 	});
 
 	it('should parse scan instruction at different line positions', () => {
-		const code = ['mov a b', '; @scan testBuffer testPointer', 'add c d'];
-		const result = parseBufferScanners(code);
+		const result = parseScanDirectives(['mov a b', '; @scan testBuffer testPointer', 'add c d']);
 
 		expect(result).toEqual([
 			{
