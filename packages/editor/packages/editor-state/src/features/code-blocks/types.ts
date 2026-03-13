@@ -205,6 +205,10 @@ export interface CodeBlockGraphicData {
 	 */
 	textureCacheKey: string;
 	/**
+	 * True when the block is currently rendered in a collapsed form.
+	 */
+	isCollapsed: boolean;
+	/**
 	 * Monotonically increasing index assigned when the code block is created.
 	 * Used to maintain stable ordering for compiler module list.
 	 * This is a runtime-only value and is NOT persisted.
