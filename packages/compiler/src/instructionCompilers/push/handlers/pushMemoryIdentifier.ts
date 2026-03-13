@@ -15,7 +15,7 @@ export default function pushMemoryIdentifier(line: AST[number], context: Compila
 	const memoryItem = getDataStructure(memory, argument.value);
 
 	if (!memoryItem) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
 	}
 
 	const kind = resolveMemoryValueKind(memoryItem);
