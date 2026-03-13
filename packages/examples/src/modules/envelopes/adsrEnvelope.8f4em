@@ -1,0 +1,173 @@
+module adsrEnv
+; @tab 8
+use env
+
+int*	trigger
+int	attackTime SAMPLE_RATE/100
+float	attacLevel 1.0
+int	decayTime SAMPLE_RATE/10
+float	sustainLevel 0.5
+int	releaseTime SAMPLE_RATE/2
+int _state RELEASE
+int _counter
+float	out
+
+const	ATTACK 1
+const	DECAY 2
+const	SUSTAIN 3
+const	RELEASE 4
+
+; Start ATTACK
+push	*trigger
+risingEdge
+if void
+push	&_state
+push	ATTACK
+store
+push	&_counter
+push	attackTime
+store
+ifEnd
+
+; ATTACK math
+push	_state
+push	ATTACK
+equal
+push	_counter
+push	0
+greaterThan
+and
+if	void
+push	&out
+push	1.0
+push	_counter
+castToFloat
+push	attackTime
+castToFloat
+ensureNonZero
+div
+sub
+store
+ifEnd
+
+; Transition from ATTACK to
+; DECAY
+push	_counter
+equalToZero
+push	_state
+push	ATTACK
+equal
+and
+if  void ; End of attack
+push	&_state
+push	DECAY
+store
+push	&_counter
+push	decayTime
+store
+ifEnd
+
+; DECAY math
+push	_state
+push	DECAY
+equal
+push	_counter
+push    0
+greaterThan
+and
+if	void
+push	&out
+push	sustainLevel
+push	_counter
+castToFloat
+push   decayTime
+castToFloat
+ensureNonZero
+div
+push	1.0
+push	sustainLevel
+sub
+mul
+add
+store
+ifEnd
+
+; Transition from DECAY
+; to SUSTAIN
+push	_state
+push	DECAY
+equal
+push	_counter
+equalToZero
+and
+if void
+push	&_state
+push	SUSTAIN
+store
+ifEnd
+
+; SUSTAIN math
+push	_state
+push	SUSTAIN
+equal
+push    *trigger
+push    0
+greaterThan
+and
+if  void
+push    &out
+push    sustainLevel
+store
+ifEnd
+
+; Transition from SUSTAIN to
+; RELEASE
+push	_state
+push	SUSTAIN
+equal
+push	*trigger
+equalToZero
+and
+if  void
+push	&_state
+push	RELEASE
+store
+push	&_counter
+push	releaseTime
+store
+ifEnd
+
+; RELEASE math
+push	_state
+push	RELEASE
+equal
+push	_counter
+push	0
+greaterThan
+and
+if void
+push	&out
+push	_counter
+castToFloat
+push	releaseTime
+castToFloat
+ensureNonZero
+div
+push	sustainLevel
+mul
+store
+ifEnd
+
+; Decrement and wrap counter 
+push	_counter
+push	0
+greaterThan
+if	    void
+push	&_counter
+push	_counter
+push	1
+sub
+store
+ifEnd
+
+moduleEnd
