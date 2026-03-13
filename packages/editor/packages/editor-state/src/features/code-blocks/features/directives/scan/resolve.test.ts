@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
-import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../registry';
+import {
+	deriveDirectiveState,
+	runAfterGraphicDataWidthCalculation,
+	runBeforeGraphicDataWidthCalculation,
+} from '../registry';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '~/types';
 
@@ -48,14 +52,14 @@ describe('scan directive widget resolution', () => {
 
 	function runDirectiveResolution() {
 		const directiveState = deriveDirectiveState(mockGraphicData.code);
-		prepareDirectiveGraphicData(mockGraphicData, mockState, directiveState);
-		resolveDirectiveWidgets(mockGraphicData, mockState, directiveState);
+		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
+		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
 
-	it('adds a scanner to graphic data extras', () => {
+	it('adds a scanner to graphic data widgets', () => {
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(1);
 	});
 
 	it('does not add a scanner when dependencies cannot be resolved', () => {
@@ -63,11 +67,11 @@ describe('scan directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferScanners).toHaveLength(0);
+		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(0);
 	});
 
 	it('clears existing scanners before resolving directive widgets', () => {
-		mockGraphicData.extras.bufferScanners.push({
+		mockGraphicData.widgets.bufferScanners.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -90,7 +94,7 @@ describe('scan directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(1);
 	});
 
 	it('handles multiple scan directives', () => {
@@ -126,6 +130,6 @@ describe('scan directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.bufferScanners).toHaveLength(2);
+		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(2);
 	});
 });

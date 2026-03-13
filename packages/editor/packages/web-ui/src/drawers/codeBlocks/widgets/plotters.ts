@@ -17,7 +17,7 @@ export default function drawer(
 
 	const maxPlotterWidth = codeBlock.width - state.viewport.hGrid * 2;
 
-	for (const { x, y, buffer, bufferLength, maxValue, minValue } of codeBlock.extras.bufferPlotters) {
+	for (const { x, y, buffer, bufferLength, maxValue, minValue } of codeBlock.widgets.bufferPlotters) {
 		engine.startGroup(x, y);
 
 		let width = 0;

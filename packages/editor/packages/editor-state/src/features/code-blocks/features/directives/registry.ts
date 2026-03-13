@@ -56,17 +56,17 @@ export function deriveDirectiveState(
 	};
 }
 
-export function resolveDirectiveWidgets(
+export function runAfterGraphicDataWidthCalculation(
 	graphicData: CodeBlockGraphicData,
 	state: State,
 	directiveState: DirectiveDerivedState
 ): void {
 	directiveState.widgets.forEach(widget => {
-		widget.resolve?.(graphicData, state, directiveState);
+		widget.afterGraphicDataWidthCalculation?.(graphicData, state, directiveState);
 	});
 }
 
-export function prepareDirectiveGraphicData(
+export function runBeforeGraphicDataWidthCalculation(
 	graphicData: CodeBlockGraphicData,
 	state: State,
 	directiveState: DirectiveDerivedState,
@@ -77,7 +77,7 @@ export function prepareDirectiveGraphicData(
 	});
 
 	directiveState.widgets.forEach(widget => {
-		widget.prepare?.(graphicData, state, directiveState);
+		widget.beforeGraphicDataWidthCalculation?.(graphicData, state, directiveState);
 	});
 }
 

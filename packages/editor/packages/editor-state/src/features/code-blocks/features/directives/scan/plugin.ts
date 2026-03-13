@@ -13,7 +13,7 @@ export default createDirectivePlugin(
 	},
 	{
 		clearGraphicData: graphicData => {
-			graphicData.extras.bufferScanners = [];
+			graphicData.widgets.bufferScanners = [];
 		},
 	}
 );

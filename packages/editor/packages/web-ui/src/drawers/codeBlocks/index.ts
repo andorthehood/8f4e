@@ -1,16 +1,16 @@
 import { Engine } from 'glugglug';
 
-import drawConnectors from './codeBlockDecorators/connectors';
-import drawPlotters from './codeBlockDecorators/plotters';
-import drawScanners from './codeBlockDecorators/scanners';
-import drawDebuggers from './codeBlockDecorators/debuggers';
-import drawSwitches from './codeBlockDecorators/switches';
-import drawButtons from './codeBlockDecorators/buttons';
-import drawSliders from './codeBlockDecorators/sliders';
-import drawErrorMessages from './codeBlockDecorators/errorMessages';
-import drawPianoKeyboards from './codeBlockDecorators/pianoKeyboards';
+import drawConnectors from './widgets/connectors';
+import drawPlotters from './widgets/plotters';
+import drawScanners from './widgets/scanners';
+import drawDebuggers from './widgets/debuggers';
+import drawSwitches from './widgets/switches';
+import drawButtons from './widgets/buttons';
+import drawSliders from './widgets/sliders';
+import drawErrorMessages from './widgets/errorMessages';
+import drawPianoKeyboards from './widgets/pianoKeyboards';
 import drawArrow from './drawArrow';
-import drawBlockHighlights from './codeBlockDecorators/blockHighlights';
+import drawBlockHighlights from './widgets/blockHighlights';
 
 import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../types';

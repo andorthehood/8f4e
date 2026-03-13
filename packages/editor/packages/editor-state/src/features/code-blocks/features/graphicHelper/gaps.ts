@@ -10,7 +10,7 @@ function getDisplayRow(rawRow: number, directiveState: DirectiveDerivedState): n
 export default function gaps(graphicData: CodeBlockGraphicData, directiveState: DirectiveDerivedState) {
 	graphicData.gaps.clear();
 
-	graphicData.extras.errorMessages.forEach(error => {
+	graphicData.widgets.errorMessages.forEach(error => {
 		const displayRow = getDisplayRow(error.lineNumber, directiveState);
 		if (displayRow !== undefined) {
 			graphicData.gaps.set(displayRow, { size: error.message.length });
@@ -84,7 +84,7 @@ if (import.meta.vitest) {
 				code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'],
 				codeToRender: [[1], [2]],
 				codeColors: [[undefined], [undefined]],
-				extras: {
+				widgets: {
 					blockHighlights: [],
 					inputs: [],
 					outputs: [],

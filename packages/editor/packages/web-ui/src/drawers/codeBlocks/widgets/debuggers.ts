@@ -17,7 +17,7 @@ export default function drawConnectors(
 		return;
 	}
 
-	for (const { x, y, memory, showAddress, showEndAddress, showBinary, bufferPointer } of codeBlock.extras.debuggers) {
+	for (const { x, y, memory, showAddress, showEndAddress, showBinary, bufferPointer } of codeBlock.widgets.debuggers) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
 		if (showAddress) {

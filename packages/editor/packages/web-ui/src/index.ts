@@ -2,7 +2,7 @@ import { type SpriteLookups } from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect, BackgroundEffect } from 'glugglug';
 
 import drawCodeBlocks from './drawers/codeBlocks';
-import drawConnections from './drawers/codeBlocks/codeBlockDecorators/connections';
+import drawConnections from './drawers/codeBlocks/widgets/connections';
 import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
 import drawInfoOverlay from './drawers/infoOverlay';

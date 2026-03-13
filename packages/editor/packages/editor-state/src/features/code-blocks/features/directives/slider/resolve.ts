@@ -3,7 +3,7 @@ import type { SliderDirectiveData } from './parse';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
-type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['resolve']>;
+type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
 function resolveSliderDirectiveWidget(
 	slider: SliderDirectiveData,
@@ -36,7 +36,7 @@ function resolveSliderDirectiveWidget(
 
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[slider.lineNumber] ?? slider.lineNumber;
 
-	graphicData.extras.sliders.push({
+	graphicData.widgets.sliders.push({
 		width: graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		height: state.viewport.hGrid * 2,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
@@ -50,7 +50,7 @@ function resolveSliderDirectiveWidget(
 
 export function createSliderDirectiveWidgetContribution(slider: SliderDirectiveData): DirectiveWidgetContribution {
 	return {
-		resolve: (graphicData, state, directiveState) => {
+		afterGraphicDataWidthCalculation: (graphicData, state, directiveState) => {
 			resolveSliderDirectiveWidget(slider, graphicData, state, directiveState);
 		},
 	};

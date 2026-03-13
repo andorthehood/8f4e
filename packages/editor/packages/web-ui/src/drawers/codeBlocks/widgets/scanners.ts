@@ -15,7 +15,7 @@ export default function drawer(
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
-	for (const { x, y, width, height, buffer, pointer } of codeBlock.extras.bufferScanners) {
+	for (const { x, y, width, height, buffer, pointer } of codeBlock.widgets.bufferScanners) {
 		engine.startGroup(x, y);
 
 		// Get the buffer length

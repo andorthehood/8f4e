@@ -174,7 +174,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			code,
 			codeColors: [],
 			codeToRender: [],
-			extras: {
+			widgets: {
 				blockHighlights: [],
 				inputs: [],
 				outputs: [],

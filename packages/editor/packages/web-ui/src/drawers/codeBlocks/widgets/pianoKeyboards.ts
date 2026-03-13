@@ -15,7 +15,7 @@ export default function drawer(
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.pianoKeys);
 
-	for (const { x, y, keyWidth, pressedKeysListMemory, pressedNumberOfKeysMemory, startingNumber } of codeBlock.extras
+	for (const { x, y, keyWidth, pressedKeysListMemory, pressedNumberOfKeysMemory, startingNumber } of codeBlock.widgets
 		.pianoKeyboards) {
 		engine.startGroup(x, y);
 
