@@ -31,7 +31,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: true });
 
-			clearStack({ lineNumber: 1, instruction: 'clearStack', arguments: [] } as AST[number], context);
+			clearStack(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'clearStack',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

@@ -7,7 +7,8 @@ import { ErrorCode, getError } from '../compilerError';
 import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
 import isConstantName from '../syntax/isConstantName';
 
-import type { CompilationContext, Argument } from '../types';
+import type { AST, CompilationContext, Argument } from '../types';
+import type { Instruction } from '../instructionCompilers';
 
 /**
  * Returns the maximum number of bytes allowed for a split-byte default value.
@@ -78,12 +79,16 @@ function resolveSplitByteTokens(
 
 export default function parseMemoryInstructionArguments(
 	args: Array<Argument>,
-	lineNumber: number,
-	instruction: string,
+	lineNumberAfterMacroExpansion: number,
+	instruction: Instruction,
 	context: CompilationContext
 ): { id: string; defaultValue: number } {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const lineForError = { lineNumber, instruction, arguments: args } as any;
+	const lineForError: AST[number] = {
+		lineNumberBeforeMacroExpansion: lineNumberAfterMacroExpansion,
+		lineNumberAfterMacroExpansion,
+		instruction,
+		arguments: args,
+	};
 
 	// Use syntax parser for syntax-level validation and classification
 	let parsedArgs;
@@ -107,16 +112,16 @@ export default function parseMemoryInstructionArguments(
 	// Process first argument
 	if (parsedArgs.firstArg.type === 'literal') {
 		defaultValue = parsedArgs.firstArg.value;
-		id = '__anonymous__' + lineNumber;
+		id = '__anonymous__' + lineNumberAfterMacroExpansion;
 	} else if (parsedArgs.firstArg.type === 'split-byte-tokens') {
 		defaultValue = resolveSplitByteTokens(parsedArgs.firstArg.tokens, maxBytes, lineForError, context);
-		id = '__anonymous__' + lineNumber;
+		id = '__anonymous__' + lineNumberAfterMacroExpansion;
 	} else if (parsedArgs.firstArg.type === 'identifier') {
 		const constant = tryResolveConstantValueOrExpression(context.namespace.consts, parsedArgs.firstArg.value);
 
 		if (constant) {
 			defaultValue = constant.value;
-			id = '__anonymous__' + lineNumber;
+			id = '__anonymous__' + lineNumberAfterMacroExpansion;
 		} else {
 			id = parsedArgs.firstArg.value;
 		}

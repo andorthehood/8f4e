@@ -41,7 +41,8 @@ if (import.meta.vitest) {
 
 			initOnly(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: '#initOnly',
 					arguments: [],
 				} as AST[number],
@@ -59,7 +60,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				initOnly(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: '#initOnly',
 						arguments: [],
 					} as AST[number],
@@ -81,7 +83,8 @@ if (import.meta.vitest) {
 
 			initOnly(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: '#initOnly',
 					arguments: [],
 				} as AST[number],
@@ -92,7 +95,8 @@ if (import.meta.vitest) {
 
 			initOnly(
 				{
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 					instruction: '#initOnly',
 					arguments: [],
 				} as AST[number],

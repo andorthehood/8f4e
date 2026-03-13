@@ -42,7 +42,8 @@ if (import.meta.vitest) {
 
 			skipExecution(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: '#skipExecution',
 					arguments: [],
 				} as AST[number],
@@ -60,7 +61,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				skipExecution(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: '#skipExecution',
 						arguments: [],
 					} as AST[number],
@@ -82,7 +84,8 @@ if (import.meta.vitest) {
 
 			skipExecution(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: '#skipExecution',
 					arguments: [],
 				} as AST[number],
@@ -93,7 +96,8 @@ if (import.meta.vitest) {
 
 			skipExecution(
 				{
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 					instruction: '#skipExecution',
 					arguments: [],
 				} as AST[number],

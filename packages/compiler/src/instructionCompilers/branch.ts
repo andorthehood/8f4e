@@ -39,7 +39,8 @@ if (import.meta.vitest) {
 
 			branch(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'branch',
 					arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 				} as AST[number],
@@ -55,7 +56,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				branch({ lineNumber: 1, instruction: 'branch', arguments: [] } as AST[number], context);
+				branch(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'branch',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

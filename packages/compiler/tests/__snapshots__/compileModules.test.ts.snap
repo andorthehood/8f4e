@@ -12,7 +12,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "module",
-        "lineNumber": 1,
+        "lineNumberAfterMacroExpansion": 1,
+        "lineNumberBeforeMacroExpansion": 1,
       },
       {
         "arguments": [
@@ -27,7 +28,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "int",
-        "lineNumber": 4,
+        "lineNumberAfterMacroExpansion": 4,
+        "lineNumberBeforeMacroExpansion": 4,
       },
       {
         "arguments": [
@@ -41,7 +43,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "int*",
-        "lineNumber": 5,
+        "lineNumberAfterMacroExpansion": 5,
+        "lineNumberBeforeMacroExpansion": 5,
       },
       {
         "arguments": [
@@ -56,7 +59,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "int",
-        "lineNumber": 6,
+        "lineNumberAfterMacroExpansion": 6,
+        "lineNumberBeforeMacroExpansion": 6,
       },
       {
         "arguments": [
@@ -71,7 +75,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "int",
-        "lineNumber": 7,
+        "lineNumberAfterMacroExpansion": 7,
+        "lineNumberBeforeMacroExpansion": 7,
       },
       {
         "arguments": [
@@ -85,7 +90,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "local",
-        "lineNumber": 10,
+        "lineNumberAfterMacroExpansion": 10,
+        "lineNumberBeforeMacroExpansion": 10,
       },
       {
         "arguments": [
@@ -95,7 +101,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "push",
-        "lineNumber": 13,
+        "lineNumberAfterMacroExpansion": 13,
+        "lineNumberBeforeMacroExpansion": 13,
       },
       {
         "arguments": [
@@ -105,7 +112,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "push",
-        "lineNumber": 14,
+        "lineNumberAfterMacroExpansion": 14,
+        "lineNumberBeforeMacroExpansion": 14,
       },
       {
         "arguments": [
@@ -115,7 +123,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "localSet",
-        "lineNumber": 15,
+        "lineNumberAfterMacroExpansion": 15,
+        "lineNumberBeforeMacroExpansion": 15,
       },
       {
         "arguments": [
@@ -125,7 +134,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "push",
-        "lineNumber": 16,
+        "lineNumberAfterMacroExpansion": 16,
+        "lineNumberBeforeMacroExpansion": 16,
       },
       {
         "arguments": [
@@ -136,17 +146,20 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "push",
-        "lineNumber": 17,
+        "lineNumberAfterMacroExpansion": 17,
+        "lineNumberBeforeMacroExpansion": 17,
       },
       {
         "arguments": [],
         "instruction": "lessThan",
-        "lineNumber": 18,
+        "lineNumberAfterMacroExpansion": 18,
+        "lineNumberBeforeMacroExpansion": 18,
       },
       {
         "arguments": [],
         "instruction": "if",
-        "lineNumber": 19,
+        "lineNumberAfterMacroExpansion": 19,
+        "lineNumberBeforeMacroExpansion": 19,
       },
       {
         "arguments": [
@@ -157,7 +170,8 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "push",
-        "lineNumber": 20,
+        "lineNumberAfterMacroExpansion": 20,
+        "lineNumberBeforeMacroExpansion": 20,
       },
       {
         "arguments": [
@@ -167,17 +181,20 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "push",
-        "lineNumber": 21,
+        "lineNumberAfterMacroExpansion": 21,
+        "lineNumberBeforeMacroExpansion": 21,
       },
       {
         "arguments": [],
         "instruction": "sub",
-        "lineNumber": 22,
+        "lineNumberAfterMacroExpansion": 22,
+        "lineNumberBeforeMacroExpansion": 22,
       },
       {
         "arguments": [],
         "instruction": "else",
-        "lineNumber": 23,
+        "lineNumberAfterMacroExpansion": 23,
+        "lineNumberBeforeMacroExpansion": 23,
       },
       {
         "arguments": [
@@ -187,22 +204,26 @@ exports[`compiler > compileModules 1`] = `
           },
         ],
         "instruction": "push",
-        "lineNumber": 24,
+        "lineNumberAfterMacroExpansion": 24,
+        "lineNumberBeforeMacroExpansion": 24,
       },
       {
         "arguments": [],
         "instruction": "ifEnd",
-        "lineNumber": 25,
+        "lineNumberAfterMacroExpansion": 25,
+        "lineNumberBeforeMacroExpansion": 25,
       },
       {
         "arguments": [],
         "instruction": "store",
-        "lineNumber": 26,
+        "lineNumberAfterMacroExpansion": 26,
+        "lineNumberBeforeMacroExpansion": 26,
       },
       {
         "arguments": [],
         "instruction": "moduleEnd",
-        "lineNumber": 27,
+        "lineNumberAfterMacroExpansion": 27,
+        "lineNumberBeforeMacroExpansion": 27,
       },
     ],
     "byteAddress": 0,

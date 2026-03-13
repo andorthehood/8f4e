@@ -59,7 +59,15 @@ if (import.meta.vitest) {
 			});
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			blockEnd({ lineNumber: 1, instruction: 'blockEnd', arguments: [] } as AST[number], context);
+			blockEnd(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'blockEnd',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

@@ -33,7 +33,8 @@ function createMockASTLeaf(instruction: string): AST[number] {
 	return {
 		instruction: instruction as never,
 		arguments: [],
-		lineNumber: 0,
+		lineNumberBeforeMacroExpansion: 0,
+		lineNumberAfterMacroExpansion: 0,
 	};
 }
 

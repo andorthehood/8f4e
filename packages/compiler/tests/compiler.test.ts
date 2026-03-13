@@ -60,7 +60,8 @@ describe('parseLine', () => {
 					},
 				],
 				instruction: 'int',
-				lineNumber: 1,
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
 			},
 		],
 		[
@@ -76,7 +77,8 @@ describe('parseLine', () => {
 					},
 				],
 				instruction: 'push',
-				lineNumber: 100,
+				lineNumberBeforeMacroExpansion: 100,
+				lineNumberAfterMacroExpansion: 100,
 			},
 		],
 	];
@@ -119,11 +121,14 @@ describe('compileToAST', () => {
 
 		const ast = compileToAST(code, lineMetadata);
 
-		// All AST entries should have lineNumber 5 (the call site)
+		// Call-site line numbers are preserved for diagnostics.
 		expect(ast).toHaveLength(3);
-		expect(ast[0].lineNumber).toBe(5);
-		expect(ast[1].lineNumber).toBe(5);
-		expect(ast[2].lineNumber).toBe(5);
+		expect(ast[0].lineNumberBeforeMacroExpansion).toBe(5);
+		expect(ast[1].lineNumberBeforeMacroExpansion).toBe(5);
+		expect(ast[2].lineNumberBeforeMacroExpansion).toBe(5);
+		expect(ast[0].lineNumberAfterMacroExpansion).toBe(0);
+		expect(ast[1].lineNumberAfterMacroExpansion).toBe(1);
+		expect(ast[2].lineNumberAfterMacroExpansion).toBe(2);
 	});
 
 	test('should use actual line numbers when lineMetadata is not provided', () => {
@@ -131,11 +136,14 @@ describe('compileToAST', () => {
 
 		const ast = compileToAST(code);
 
-		// Should use 0-indexed line numbers
+		// Both line number fields match when no macro expansion happened.
 		expect(ast).toHaveLength(3);
-		expect(ast[0].lineNumber).toBe(0);
-		expect(ast[1].lineNumber).toBe(1);
-		expect(ast[2].lineNumber).toBe(2);
+		expect(ast[0].lineNumberBeforeMacroExpansion).toBe(0);
+		expect(ast[1].lineNumberBeforeMacroExpansion).toBe(1);
+		expect(ast[2].lineNumberBeforeMacroExpansion).toBe(2);
+		expect(ast[0].lineNumberAfterMacroExpansion).toBe(0);
+		expect(ast[1].lineNumberAfterMacroExpansion).toBe(1);
+		expect(ast[2].lineNumberAfterMacroExpansion).toBe(2);
 	});
 });
 

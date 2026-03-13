@@ -61,7 +61,8 @@ if (import.meta.vitest) {
 
 			pushMemoryPointer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: '*ptr' }],
 				} as AST[number],
