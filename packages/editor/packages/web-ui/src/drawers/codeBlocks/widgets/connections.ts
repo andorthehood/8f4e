@@ -1,0 +1,47 @@
+import { Engine } from 'glugglug';
+
+import type { State } from '@8f4e/editor-state';
+import type { MemoryViews } from '../../../types';
+
+export default function drawConnections(engine: Engine, state: State, memoryViews: MemoryViews): void {
+	if (!state.graphicHelper.spriteLookups) {
+		return;
+	}
+
+	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+
+	engine.startGroup(-state.viewport.x, -state.viewport.y);
+
+	for (const codeBlock of state.graphicHelper.codeBlocks) {
+		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
+
+		if (!codeBlock.moduleId) {
+			continue;
+		}
+
+		for (const { x, y, id } of codeBlock.widgets.inputs) {
+			const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[id];
+
+			if (!memory || memoryViews.int32[memory.wordAlignedAddress] === 0) {
+				continue;
+			}
+
+			const output = state.graphicHelper.outputsByWordAddress.get(memoryViews.int32[memory.wordAlignedAddress]);
+
+			if (!output) {
+				continue;
+			}
+
+			engine.drawLine(
+				codeBlock.x + codeBlock.offsetX + x + state.viewport.vGrid,
+				codeBlock.y + codeBlock.offsetY + y + state.viewport.hGrid / 2,
+				output.codeBlock.x + output.codeBlock.offsetX + output.x + state.viewport.vGrid,
+				output.codeBlock.y + output.codeBlock.offsetY + output.y + state.viewport.vGrid,
+				isSelected ? 'wireHighlighted' : 'wire',
+				1
+			);
+		}
+	}
+
+	engine.endGroup();
+}

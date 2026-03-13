@@ -1,6 +1,6 @@
 import findCodeBlockAtViewportCoordinates from '../../utils/finders/findCodeBlockAtViewportCoordinates';
 import { getGroupBlocks } from '../group/getGroupBlocks';
-import upsertPos from '../position/upsertPos';
+import upsertPos from '../directives/pos/upsert';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '~/types';
