@@ -22,7 +22,7 @@ const loop: InstructionCompiler = withValidation(
 			blockType: BLOCK_TYPE.LOOP,
 		});
 
-		const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
+		const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumberAfterMacroExpansion;
 		const loopErrorSignalerName = '__loopErrorSignaler';
 
 		return compileSegment(
@@ -46,7 +46,7 @@ const loop: InstructionCompiler = withValidation(
 				'greaterOrEqual',
 				'if void',
 				` push &${loopErrorSignalerName}`,
-				` push ${line.lineNumber}`,
+				` push ${line.lineNumberBeforeMacroExpansion}`,
 				' store',
 				` branch 2`,
 				'ifEnd',
@@ -69,7 +69,15 @@ if (import.meta.vitest) {
 		it('compiles the loop segment', () => {
 			const context = createInstructionCompilerTestContext();
 
-			loop({ lineNumber: 2, instruction: 'loop', arguments: [] } as AST[number], context);
+			loop(
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'loop',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				blockStack: context.blockStack,

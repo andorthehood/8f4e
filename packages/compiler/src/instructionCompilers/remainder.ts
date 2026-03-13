@@ -40,7 +40,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
 
-			remainder({ lineNumber: 1, instruction: 'remainder', arguments: [] } as AST[number], context);
+			remainder(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'remainder',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -53,7 +61,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
 
 			expect(() => {
-				remainder({ lineNumber: 1, instruction: 'remainder', arguments: [] } as AST[number], context);
+				remainder(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'remainder',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

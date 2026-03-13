@@ -16,8 +16,9 @@ const hasChanged: InstructionCompiler = withValidation(
 	(line, context) => {
 		const operand = context.stack.pop()!;
 
-		const currentValueName = '__hasChangedDetector_currentValue' + line.lineNumber;
-		const previousValueName = '__hasChangedDetector_previousValue' + line.lineNumber;
+		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+		const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
+		const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
 
 		context.stack.push({ isInteger: operand.isInteger, isNonZero: false });
@@ -51,7 +52,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			hasChanged({ lineNumber: 3, instruction: 'hasChanged', arguments: [] } as AST[number], context);
+			hasChanged(
+				{
+					lineNumberBeforeMacroExpansion: 3,
+					lineNumberAfterMacroExpansion: 3,
+					instruction: 'hasChanged',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

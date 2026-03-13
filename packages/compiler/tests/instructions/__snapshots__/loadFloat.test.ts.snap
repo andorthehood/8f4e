@@ -10,7 +10,8 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -20,7 +21,8 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
       },
     ],
     "instruction": "float",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -30,7 +32,8 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -40,7 +43,8 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -50,22 +54,26 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "loadFloat",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
 ]
 `;

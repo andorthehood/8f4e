@@ -36,7 +36,8 @@ if (import.meta.vitest) {
 				{
 					instruction: 'module',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'testModule' }],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 			];
 
@@ -53,7 +54,8 @@ if (import.meta.vitest) {
 				{
 					instruction: 'module',
 					arguments: [],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 			];
 
@@ -65,7 +67,8 @@ if (import.meta.vitest) {
 				{
 					instruction: 'module',
 					arguments: [{ type: ArgumentType.LITERAL, value: 123, isInteger: true }],
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 				},
 			];
 

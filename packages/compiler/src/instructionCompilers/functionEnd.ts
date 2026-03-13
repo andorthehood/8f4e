@@ -107,7 +107,8 @@ if (import.meta.vitest) {
 
 			functionEnd(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'functionEnd',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
 				} as AST[number],
@@ -147,7 +148,8 @@ if (import.meta.vitest) {
 
 			functionEnd(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'functionEnd',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float64' }],
 				} as AST[number],
@@ -173,7 +175,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				functionEnd(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'functionEnd',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
 					} as AST[number],

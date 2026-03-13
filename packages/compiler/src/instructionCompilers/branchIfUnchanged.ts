@@ -31,8 +31,9 @@ const branchIfUnchanged: InstructionCompiler = withValidation(
 
 		const depth = line.arguments[0].value;
 		const type = operand.isInteger ? 'int' : 'float';
-		const previousValueMemoryName = '__branchIfUnchanged_previousValue' + line.lineNumber;
-		const currentValueMemoryName = '__branchIfUnchanged_currentValue' + line.lineNumber;
+		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+		const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
+		const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumberAfterMacroExpansion;
 
 		return compileSegment(
 			[
@@ -67,7 +68,8 @@ if (import.meta.vitest) {
 
 			branchIfUnchanged(
 				{
-					lineNumber: 4,
+					lineNumberBeforeMacroExpansion: 4,
+					lineNumberAfterMacroExpansion: 4,
 					instruction: 'branchIfUnchanged',
 					arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
 				} as AST[number],
@@ -87,7 +89,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: false, isNonZero: false });
 
 			expect(() => {
-				branchIfUnchanged({ lineNumber: 1, instruction: 'branchIfUnchanged', arguments: [] } as AST[number], context);
+				branchIfUnchanged(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'branchIfUnchanged',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

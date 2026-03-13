@@ -71,7 +71,8 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 			if (instruction === 'defineMacro') {
 				if (insideMacro) {
 					const astLine: AST[number] = {
-						lineNumber: lineIndex,
+						lineNumberBeforeMacroExpansion: lineIndex,
+						lineNumberAfterMacroExpansion: lineIndex,
 						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
 						arguments: [],
 					};
@@ -91,7 +92,8 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 
 				if (macroMap.has(macroName)) {
 					const astLine: AST[number] = {
-						lineNumber: lineIndex,
+						lineNumberBeforeMacroExpansion: lineIndex,
+						lineNumberAfterMacroExpansion: lineIndex,
 						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
 						arguments: [],
 					};
@@ -108,7 +110,8 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 			} else if (instruction === 'defineMacroEnd') {
 				if (!insideMacro || !currentMacro) {
 					const astLine: AST[number] = {
-						lineNumber: lineIndex,
+						lineNumberBeforeMacroExpansion: lineIndex,
+						lineNumberAfterMacroExpansion: lineIndex,
 						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
 						arguments: [],
 					};
@@ -122,7 +125,8 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				// Check for nested macro calls or definitions inside macro body
 				if (instruction === 'macro') {
 					const astLine: AST[number] = {
-						lineNumber: lineIndex,
+						lineNumberBeforeMacroExpansion: lineIndex,
+						lineNumberAfterMacroExpansion: lineIndex,
 						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
 						arguments: [],
 					};
@@ -138,7 +142,8 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 		if (insideMacro) {
 			const macro = currentMacro!;
 			const astLine: AST[number] = {
-				lineNumber: macro.definitionLineNumber,
+				lineNumberBeforeMacroExpansion: macro.definitionLineNumber,
+				lineNumberAfterMacroExpansion: macro.definitionLineNumber,
 				instruction: 'push' as Instruction, // Placeholder instruction for error reporting
 				arguments: [],
 			};
@@ -193,7 +198,8 @@ export function expandMacros(module: Module, macroDefinitions: Map<string, Macro
 			const macroDef = macroDefinitions.get(macroName);
 			if (!macroDef) {
 				const astLine: AST[number] = {
-					lineNumber: lineIndex,
+					lineNumberBeforeMacroExpansion: lineIndex,
+					lineNumberAfterMacroExpansion: lineIndex,
 					instruction: 'push' as Instruction, // Placeholder instruction for error reporting
 					arguments: [],
 				};

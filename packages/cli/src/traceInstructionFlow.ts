@@ -89,7 +89,7 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 		compiler(line, context);
 
 		entries.push({
-			lineNumber: line.lineNumber + 1,
+			lineNumber: line.lineNumberBeforeMacroExpansion + 1,
 			instruction: line.instruction,
 			arguments: serializeArguments(line),
 			stackBefore,

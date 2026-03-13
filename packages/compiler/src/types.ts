@@ -96,7 +96,14 @@ export interface Module {
 // Re-export types from syntax subpath for backward compatibility
 export { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier, type ArgumentStringLiteral };
 
-export type AST = Array<{ lineNumber: number; instruction: Instruction; arguments: Array<Argument> }>;
+export interface ASTLine {
+	lineNumberBeforeMacroExpansion: number;
+	lineNumberAfterMacroExpansion: number;
+	instruction: Instruction;
+	arguments: Array<Argument>;
+}
+
+export type AST = ASTLine[];
 
 export interface TestModule {
 	memory: MemoryBuffer & {

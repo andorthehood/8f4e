@@ -44,7 +44,8 @@ if (import.meta.vitest) {
 
 			local(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'local',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'int' },
@@ -61,7 +62,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				local({ lineNumber: 1, instruction: 'local', arguments: [] } as AST[number], context);
+				local(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'local',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

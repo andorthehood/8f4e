@@ -42,7 +42,7 @@ const load: InstructionCompiler = withValidation(
 			return saveByteCode(context, instructions);
 		} else {
 			context.stack.push({ isInteger: true, isNonZero: false });
-			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
+			const tempVariableName = '__loadAddress_temp_' + line.lineNumberAfterMacroExpansion;
 			const instructions = instructionToByteCodeMap[line.instruction];
 			if (!instructions) {
 				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
@@ -79,7 +79,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
 
-			load({ lineNumber: 1, instruction: 'load', arguments: [] } as AST[number], context);
+			load(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'load',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -91,7 +99,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext({ memoryByteSize: 32 });
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: false });
 
-			load({ lineNumber: 2, instruction: 'load8u', arguments: [] } as AST[number], context);
+			load(
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'load8u',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

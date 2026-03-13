@@ -25,9 +25,10 @@ const cycle: InstructionCompiler = withValidation(
 		context.stack.push({ isInteger: true, isNonZero: false });
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		const pointerName = '__pointerCycle_pointerToIncrement' + line.lineNumber;
-		const startPositionName = '__pointerCycle_startPosition' + line.lineNumber;
-		const endPositionName = '__pointerCycle_endPosition' + line.lineNumber;
+		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+		const pointerName = '__pointerCycle_pointerToIncrement' + lineNumberAfterMacroExpansion;
+		const startPositionName = '__pointerCycle_startPosition' + lineNumberAfterMacroExpansion;
+		const endPositionName = '__pointerCycle_endPosition' + lineNumberAfterMacroExpansion;
 
 		return compileSegment(
 			[
@@ -75,7 +76,15 @@ if (import.meta.vitest) {
 				{ isInteger: true, isNonZero: false }
 			);
 
-			cycle({ lineNumber: 2, instruction: 'cycle', arguments: [] } as AST[number], context);
+			cycle(
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'cycle',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

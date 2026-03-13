@@ -34,7 +34,8 @@ if (import.meta.vitest) {
 
 			pushLocal(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'temp' }],
 				} as AST[number],

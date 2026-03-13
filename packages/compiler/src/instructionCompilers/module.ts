@@ -43,7 +43,8 @@ if (import.meta.vitest) {
 
 			_module(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'module',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'demo' }],
 				} as AST[number],
@@ -60,7 +61,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext({ blockStack: [] });
 
 			expect(() => {
-				_module({ lineNumber: 1, instruction: 'module', arguments: [] } as AST[number], context);
+				_module(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'module',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

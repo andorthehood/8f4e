@@ -44,7 +44,8 @@ if (import.meta.vitest) {
 
 			pushElementWordSize(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: '%buffer' }],
 				} as AST[number],

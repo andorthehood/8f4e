@@ -35,7 +35,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: true });
 
-			castToFloat({ lineNumber: 1, instruction: 'castToFloat', arguments: [] } as AST[number], context);
+			castToFloat(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'castToFloat',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
