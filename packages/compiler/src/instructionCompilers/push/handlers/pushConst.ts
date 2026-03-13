@@ -32,7 +32,8 @@ if (import.meta.vitest) {
 
 			pushConst(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ANSWER' }],
 				} as AST[number],
@@ -55,7 +56,8 @@ if (import.meta.vitest) {
 
 			pushConst(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
 				} as AST[number],

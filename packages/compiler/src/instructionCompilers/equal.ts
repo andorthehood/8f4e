@@ -37,7 +37,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-			equal({ lineNumber: 1, instruction: 'equal', arguments: [] } as AST[number], context);
+			equal(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'equal',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -49,7 +57,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-			equal({ lineNumber: 1, instruction: 'equal', arguments: [] } as AST[number], context);
+			equal(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'equal',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

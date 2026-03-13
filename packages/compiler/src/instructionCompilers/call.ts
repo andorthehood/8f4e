@@ -87,7 +87,8 @@ if (import.meta.vitest) {
 
 			call(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'call',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo' }],
 				} as AST[number],
@@ -115,7 +116,8 @@ if (import.meta.vitest) {
 
 			call(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'call',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo64' }],
 				} as AST[number],
@@ -142,7 +144,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				call(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'call',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo64' }],
 					} as AST[number],
@@ -157,7 +160,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				call(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'call',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
 					} as AST[number],

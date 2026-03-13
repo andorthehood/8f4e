@@ -60,7 +60,8 @@ if (import.meta.vitest) {
 
 			block(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
 				} as AST[number],
@@ -78,7 +79,8 @@ if (import.meta.vitest) {
 
 			block(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
 				} as AST[number],
@@ -96,7 +98,8 @@ if (import.meta.vitest) {
 
 			block(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'void' }],
 				} as AST[number],
@@ -113,7 +116,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				block({ lineNumber: 1, instruction: 'block', arguments: [] } as AST[number], context);
+				block(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'block',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

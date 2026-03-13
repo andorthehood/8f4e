@@ -63,7 +63,8 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	const line: Parameters<InstructionCompiler>[0] = {
-		lineNumber: 1,
+		lineNumberBeforeMacroExpansion: 1,
+		lineNumberAfterMacroExpansion: 1,
 		instruction: 'test' as never,
 		arguments: [],
 	};

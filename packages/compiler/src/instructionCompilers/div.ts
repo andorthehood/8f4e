@@ -50,7 +50,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
 
-			div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+			div(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'div',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -62,7 +70,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isNonZero: true });
 
-			div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+			div(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'div',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -77,7 +93,15 @@ if (import.meta.vitest) {
 				{ isInteger: false, isFloat64: true, isNonZero: true }
 			);
 
-			div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+			div(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'div',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -90,7 +114,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isFloat64: true, isNonZero: true });
 
 			expect(() => {
-				div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+				div(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'div',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 
@@ -99,7 +131,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
 
 			expect(() => {
-				div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+				div(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'div',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

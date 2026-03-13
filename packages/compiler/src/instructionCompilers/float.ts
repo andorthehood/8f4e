@@ -21,7 +21,7 @@ const float: InstructionCompiler = withValidation(
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 		const { id, defaultValue } = parseMemoryInstructionArguments(
 			line.arguments,
-			line.lineNumber,
+			line.lineNumberAfterMacroExpansion,
 			line.instruction,
 			context
 		);
@@ -55,7 +55,8 @@ if (import.meta.vitest) {
 
 			float(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'temperature' }],
 				} as AST[number],
