@@ -1,11 +1,20 @@
 import { describe, it, expect } from 'vitest';
 
-import parseWatchDirectives from './parse';
+import { createWatchDirectiveData } from './data';
+import watchDirective from './plugin';
 
-describe('parseWatchDirectives', () => {
+import { parseEditorDirectives } from '../utils';
+
+function parseWatchDirectiveData(code: string[]) {
+	return parseEditorDirectives(code, [watchDirective]).map(directive =>
+		createWatchDirectiveData(directive.args, directive.rawRow)
+	);
+}
+
+describe('watch directive data', () => {
 	it('should parse debug instruction with id', () => {
 		const code = ['; @watch myVar'];
-		const result = parseWatchDirectives(code);
+		const result = parseWatchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -17,7 +26,7 @@ describe('parseWatchDirectives', () => {
 
 	it('should handle multiple debug instructions', () => {
 		const code = ['; @watch var1', 'mov a b', '; @watch var2', 'add c d', '; @watch var3'];
-		const result = parseWatchDirectives(code);
+		const result = parseWatchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -37,21 +46,21 @@ describe('parseWatchDirectives', () => {
 
 	it('should return empty array when no debug instructions found', () => {
 		const code = ['mov a b', 'add c d', 'sub e f'];
-		const result = parseWatchDirectives(code);
+		const result = parseWatchDirectiveData(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
 		const code: string[] = [];
-		const result = parseWatchDirectives(code);
+		const result = parseWatchDirectiveData(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should preserve correct line numbers', () => {
 		const code = ['nop', 'nop', '; @watch var1', 'nop', 'nop', '; @watch var2'];
-		const result = parseWatchDirectives(code);
+		const result = parseWatchDirectiveData(code);
 
 		expect(result).toEqual([
 			{

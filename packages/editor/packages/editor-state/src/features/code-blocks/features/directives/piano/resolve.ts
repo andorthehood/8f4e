@@ -1,7 +1,7 @@
 import { PIANO_KEYBOARD_MIN_GRID_WIDTH } from './constants';
 
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../types';
-import type { PianoDirectiveData } from './parse';
+import type { PianoDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';

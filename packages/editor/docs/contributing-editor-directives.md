@@ -33,13 +33,13 @@ directives/
   types.ts
   utils.ts
   plot/
-    parse.ts
+    data.ts
     plugin.ts
     resolve.ts
     parse.test.ts
     resolve.test.ts
   scan/
-    parse.ts
+    data.ts
     plugin.ts
     resolve.ts
     parse.test.ts
@@ -87,28 +87,42 @@ Create a new folder under `directives/`, for example:
 ```txt
 directives/
   hide/
-    parse.ts
+    data.ts
     plugin.ts
     parse.test.ts
 ```
 
 Then:
 
-1. Add parsing in `parse.ts`
-2. Add a directive plugin in `plugin.ts`
+1. Add a directive plugin in `plugin.ts`
+2. If needed, add argument-to-data helpers in `data.ts`
 3. Register the plugin in `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/registry.ts`
 4. Add tests in the same directive folder
 5. Update the user-facing docs in [editor-directives.md](./editor-directives.md)
 
 ## Parsing
 
-Each directive parses itself.
+Directive syntax parsing is centralized.
 
-Small directives can use the shared helper in:
+The shared parser in:
 
 - `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/utils.ts`
 
-If a directive needs more context than a single line, keep that logic inside the directive folder. Do not move it into the central registry.
+handles the common syntax:
+
+```txt
+; @directiveName argument1 argument2 ...
+```
+
+Directives should not re-parse their own comment syntax.
+
+Directive folders should only:
+
+- interpret `args`
+- derive typed directive data
+- contribute block state, layout, display changes, or widgets
+
+If a directive needs more context than a single line, keep that extra derivation logic inside the directive folder. Do not move it into the central registry.
 
 ## Block Contributions
 
@@ -156,7 +170,7 @@ Keep directive tests in the directive folder.
 
 Typical test split:
 
-- `parse.test.ts` for syntax and argument parsing
+- `parse.test.ts` for generic parse output plus argument-to-data derivation
 - `resolve.test.ts` for widget/layout behavior through the real directive pipeline
 
 Prefer testing through:
@@ -173,7 +187,8 @@ Good:
 
 - one folder per directive
 - generic shared directive engine
-- directive-owned parsing and widget logic
+- generic directive syntax parsing
+- directive-owned argument interpretation and widget logic
 - directive-owned tests
 
 Bad:
@@ -181,4 +196,5 @@ Bad:
 - central registry switches with directive-specific numbers or behavior
 - shared directive state with concrete buckets like `plotters`
 - directive logic split across unrelated feature folders
+- directive-specific comment parsers that duplicate the shared syntax parser
 - reintroducing directive-specific `updateGraphicData.ts` files outside `directives/`

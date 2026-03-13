@@ -1,4 +1,4 @@
-import { createPlotDirectiveData } from './parse';
+import { createPlotDirectiveData } from './data';
 import { createPlotDirectiveWidgetContribution } from './resolve';
 
 import { createDirectivePlugin } from '../utils';

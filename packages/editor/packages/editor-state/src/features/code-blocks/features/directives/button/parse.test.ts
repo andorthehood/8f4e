@@ -1,11 +1,20 @@
 import { describe, it, expect } from 'vitest';
 
-import parseButtonDirectives from './parse';
+import { createButtonDirectiveData } from './data';
+import buttonDirective from './plugin';
 
-describe('parseButtonDirectives', () => {
+import { parseEditorDirectives } from '../utils';
+
+function parseButtonDirectiveData(code: string[]) {
+	return parseEditorDirectives(code, [buttonDirective]).map(directive =>
+		createButtonDirectiveData(directive.args, directive.rawRow)
+	);
+}
+
+describe('button directive data', () => {
 	it('should parse button instruction with all arguments', () => {
 		const code = ['; @button myButton 0 1'];
-		const result = parseButtonDirectives(code);
+		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -19,7 +28,7 @@ describe('parseButtonDirectives', () => {
 
 	it('should parse button instruction with default off/on values', () => {
 		const code = ['; @button myButton'];
-		const result = parseButtonDirectives(code);
+		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -33,7 +42,7 @@ describe('parseButtonDirectives', () => {
 
 	it('should parse button instruction with custom values', () => {
 		const code = ['; @button myButton 10 100'];
-		const result = parseButtonDirectives(code);
+		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -47,7 +56,7 @@ describe('parseButtonDirectives', () => {
 
 	it('should handle multiple button instructions', () => {
 		const code = ['; @button btn1 0 1', 'mov a b', '; @button btn2 5 15'];
-		const result = parseButtonDirectives(code);
+		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -67,21 +76,21 @@ describe('parseButtonDirectives', () => {
 
 	it('should return empty array when no button instructions found', () => {
 		const code = ['mov a b', 'add c d', 'sub e f'];
-		const result = parseButtonDirectives(code);
+		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
 		const code: string[] = [];
-		const result = parseButtonDirectives(code);
+		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should use default values when off/on are invalid numbers', () => {
 		const code = ['; @button myButton invalid invalid'];
-		const result = parseButtonDirectives(code);
+		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
