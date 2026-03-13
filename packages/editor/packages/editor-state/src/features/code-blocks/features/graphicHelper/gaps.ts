@@ -1,33 +1,26 @@
+import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import { type DirectiveDerivedState } from '../directives/registry';
+
 import type { CodeBlockGraphicData } from '~/types';
 
-export default function gaps(graphicData: CodeBlockGraphicData) {
+function getDisplayRow(rawRow: number, directiveState: DirectiveDerivedState): number | undefined {
+	return directiveState.displayModel.rawRowToDisplayRow[rawRow];
+}
+
+export default function gaps(graphicData: CodeBlockGraphicData, directiveState: DirectiveDerivedState) {
 	graphicData.gaps.clear();
 
-	graphicData.extras.errorMessages.forEach(error => {
-		graphicData.gaps.set(error.lineNumber, { size: error.message.length });
+	graphicData.widgets.errorMessages.forEach(error => {
+		const displayRow = getDisplayRow(error.lineNumber, directiveState);
+		if (displayRow !== undefined) {
+			graphicData.gaps.set(displayRow, { size: error.message.length });
+		}
 	});
 
-	graphicData.code.forEach((line, lineNumber) => {
-		// Match semicolon comment lines with @ directives
-		const commentMatch = line.match(/^\s*;\s*@(\w+)/);
-		if (commentMatch) {
-			const directive = commentMatch[1];
-
-			if (directive === 'plot') {
-				graphicData.gaps.set(lineNumber, { size: 8 });
-			}
-
-			if (directive === 'scan') {
-				graphicData.gaps.set(lineNumber, { size: 2 });
-			}
-
-			if (directive === 'slider') {
-				graphicData.gaps.set(lineNumber, { size: 2 });
-			}
-
-			if (directive === 'piano') {
-				graphicData.gaps.set(lineNumber, { size: 6 });
-			}
+	directiveState.layoutContributions.forEach(contribution => {
+		const displayRow = getDisplayRow(contribution.rawRow, directiveState);
+		if (displayRow !== undefined) {
+			graphicData.gaps.set(displayRow, { size: contribution.rows });
 		}
 	});
 
@@ -38,5 +31,79 @@ export default function gaps(graphicData: CodeBlockGraphicData) {
 	gaps.forEach(([row, gap]) => {
 		graphicData.codeToRender.splice(row + 1, 0, ...new Array(gap.size).fill(' '));
 		graphicData.codeColors.splice(row + 1, 0, ...new Array(gap.size).fill([]));
+	});
+}
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('gaps', () => {
+		it('inserts directive gaps using display rows', async () => {
+			const directiveState: DirectiveDerivedState = {
+				blockState: { disabled: false, isHome: false },
+				displayModel: {
+					lines: [
+						{ rawRow: 0, text: 'module foo' },
+						{ rawRow: 1, text: '; @plot buffer' },
+						{ rawRow: 3, text: 'moduleEnd' },
+					],
+					displayRowToRawRow: [0, 1, 3],
+					rawRowToDisplayRow: [0, 1, undefined, 2],
+				},
+				layoutContributions: [{ rawRow: 1, rows: 8 }],
+				widgets: [],
+			};
+			const graphicData = createCodeBlockGraphicData({
+				code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'],
+				codeToRender: [[1], [2], [3]],
+				codeColors: [[undefined], [undefined], [undefined]],
+			});
+
+			gaps(graphicData, directiveState);
+
+			expect(graphicData.gaps.get(1)).toEqual({ size: 8 });
+			expect(graphicData.codeToRender).toHaveLength(11);
+			expect(graphicData.codeColors).toHaveLength(11);
+		});
+
+		it('skips gaps for raw rows hidden from the display model', async () => {
+			const directiveState: DirectiveDerivedState = {
+				blockState: { disabled: false, isHome: false },
+				displayModel: {
+					lines: [
+						{ rawRow: 0, text: 'module foo' },
+						{ rawRow: 3, text: 'moduleEnd' },
+					],
+					displayRowToRawRow: [0, 3],
+					rawRowToDisplayRow: [0, undefined, undefined, 1],
+				},
+				layoutContributions: [{ rawRow: 1, rows: 8 }],
+				widgets: [],
+			};
+			const graphicData = createCodeBlockGraphicData({
+				code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'],
+				codeToRender: [[1], [2]],
+				codeColors: [[undefined], [undefined]],
+				widgets: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					sliders: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					bufferScanners: [],
+					errorMessages: [{ message: ['Error'], x: 0, y: 0, lineNumber: 2 }],
+				},
+			});
+
+			gaps(graphicData, directiveState);
+
+			expect(graphicData.gaps.size).toBe(0);
+			expect(graphicData.codeToRender).toHaveLength(2);
+			expect(graphicData.codeColors).toHaveLength(2);
+		});
 	});
 }
