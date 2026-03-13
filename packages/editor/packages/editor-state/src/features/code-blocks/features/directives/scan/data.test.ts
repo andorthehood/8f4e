@@ -6,9 +6,9 @@ import scanDirective from './plugin';
 import { parseEditorDirectives } from '../utils';
 
 function parseScanDirectiveData(code: string[]) {
-	return parseEditorDirectives(code, [scanDirective]).map(directive =>
-		createScanDirectiveData(directive.args, directive.rawRow)
-	);
+	return parseEditorDirectives(code, [scanDirective])
+		.map(directive => createScanDirectiveData(directive.args, directive.rawRow))
+		.filter(result => result !== undefined);
 }
 
 describe('scan directive data', () => {
@@ -59,5 +59,10 @@ describe('scan directive data', () => {
 				lineNumber: 1,
 			},
 		]);
+	});
+
+	it('should ignore malformed scan directives without required arguments', () => {
+		expect(parseScanDirectiveData(['; @scan'])).toEqual([]);
+		expect(parseScanDirectiveData(['; @scan myBuffer'])).toEqual([]);
 	});
 });

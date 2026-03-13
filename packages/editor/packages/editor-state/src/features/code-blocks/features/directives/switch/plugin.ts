@@ -6,9 +6,12 @@ import { createDirectivePlugin } from '../utils';
 export default createDirectivePlugin(
 	'switch',
 	(directive, draft) => {
-		draft.widgets.push(
-			createSwitchDirectiveWidgetContribution(createSwitchDirectiveData(directive.args, directive.rawRow))
-		);
+		const _switch = createSwitchDirectiveData(directive.args, directive.rawRow);
+		if (!_switch) {
+			return;
+		}
+
+		draft.widgets.push(createSwitchDirectiveWidgetContribution(_switch));
 	},
 	{
 		clearGraphicData: graphicData => {

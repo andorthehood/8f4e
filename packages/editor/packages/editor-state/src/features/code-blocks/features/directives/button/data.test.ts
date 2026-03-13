@@ -6,9 +6,9 @@ import buttonDirective from './plugin';
 import { parseEditorDirectives } from '../utils';
 
 function parseButtonDirectiveData(code: string[]) {
-	return parseEditorDirectives(code, [buttonDirective]).map(directive =>
-		createButtonDirectiveData(directive.args, directive.rawRow)
-	);
+	return parseEditorDirectives(code, [buttonDirective])
+		.map(directive => createButtonDirectiveData(directive.args, directive.rawRow))
+		.filter(result => result !== undefined);
 }
 
 describe('button directive data', () => {
@@ -100,5 +100,9 @@ describe('button directive data', () => {
 				onValue: 1,
 			},
 		]);
+	});
+
+	it('should ignore malformed button directives without an id', () => {
+		expect(parseButtonDirectiveData(['; @button'])).toEqual([]);
 	});
 });
