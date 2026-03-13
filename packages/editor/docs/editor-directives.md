@@ -246,6 +246,20 @@ moduleEnd
 **Important:**
 - Use `@home` to define the starting view for your project.
 - Only one `@home` directive takes effect (the first block in project order).
+
+### `@hide`
+
+Hide everything after the directive line while the block is not selected.
+
+```txt
+; @hide
+```
+
+Notes:
+- Everything after the `@hide` line is hidden while the block is unselected.
+- Selecting the block expands the full source again for editing.
+- Directives with arguments are ignored.
+- If multiple valid `@hide` directives exist, the first one wins.
 - Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
 
 ### `@disabled`
