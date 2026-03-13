@@ -1,8 +1,24 @@
 import { navigateToCodeBlockInDirection } from '../code-blocks/features/codeBlockNavigation/effect';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
+import type { StateManager } from '@8f4e/state-manager';
 
 import type { State, EventDispatcher } from '~/types';
 import type { Direction } from '../code-blocks/utils/finders/findClosestCodeBlockInDirection';
+
+type StateSource = StateManager<State> | State;
+
+function getState(source: StateSource): State {
+	return 'getState' in source ? source.getState() : source;
+}
+
+function setSelectedCodeBlock(source: StateSource, codeBlock: State['graphicHelper']['selectedCodeBlock']): void {
+	if ('set' in source) {
+		source.set('graphicHelper.selectedCodeBlock', codeBlock);
+		return;
+	}
+
+	source.graphicHelper.selectedCodeBlock = codeBlock;
+}
 
 /**
  * Selects a random code block from the available code blocks.
@@ -10,7 +26,8 @@ import type { Direction } from '../code-blocks/utils/finders/findClosestCodeBloc
  * @param state - The editor state
  * @returns true if a block was selected, false otherwise
  */
-function selectRandomCodeBlock(state: State): boolean {
+function selectRandomCodeBlock(stateSource: StateSource): boolean {
+	const state = getState(stateSource);
 	const codeBlocks = state.graphicHelper.codeBlocks;
 
 	if (codeBlocks.length === 0) {
@@ -21,7 +38,7 @@ function selectRandomCodeBlock(state: State): boolean {
 	const randomIndex = Math.floor(Math.random() * codeBlocks.length);
 	const selectedBlock = codeBlocks[randomIndex];
 
-	state.graphicHelper.selectedCodeBlock = selectedBlock;
+	setSelectedCodeBlock(stateSource, selectedBlock);
 
 	centerViewportOnCodeBlock(state.viewport, selectedBlock);
 
@@ -40,7 +57,8 @@ function selectRandomCodeBlock(state: State): boolean {
  * @param events - The event dispatcher
  * @returns Cleanup function to clear interval and unregister event handler
  */
-export default function demoModeNavigation(state: State, events: EventDispatcher): () => void {
+export default function demoModeNavigation(store: StateManager<State> | State, events: EventDispatcher): () => void {
+	const state = getState(store);
 	if (!state.featureFlags.demoMode) {
 		return () => {}; // Return no-op cleanup function
 	}
@@ -57,7 +75,7 @@ export default function demoModeNavigation(state: State, events: EventDispatcher
 
 		// Select a random code block if none is selected
 		if (!state.graphicHelper.selectedCodeBlock) {
-			selectRandomCodeBlock(state);
+			selectRandomCodeBlock(store);
 		}
 
 		// Start the demo navigation interval
@@ -72,7 +90,7 @@ export default function demoModeNavigation(state: State, events: EventDispatcher
 			const randomDirection = directions[Math.floor(Math.random() * directions.length)];
 
 			// Navigate in that direction
-			navigateToCodeBlockInDirection(state, randomDirection);
+			navigateToCodeBlockInDirection(store, randomDirection);
 		}, 2000); // 2 second cadence
 	};
 
