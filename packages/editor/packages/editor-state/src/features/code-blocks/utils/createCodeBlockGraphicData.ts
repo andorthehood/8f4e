@@ -52,6 +52,7 @@ export function createCodeBlockGraphicData(
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),
 		textureCacheKey: '',
+		isCollapsed: false,
 		creationIndex: 0,
 		blockType: 'unknown',
 		disabled: false,
