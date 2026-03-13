@@ -80,6 +80,29 @@ describe('updateOutputsGraphicData', () => {
 		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(0);
 	});
 
+	it('should not render outputs for private entities', () => {
+		mockGraphicData.code = ['module test-block', 'int _privateOutput'];
+		mockState.compiler.compiledModules['test-block'].memoryMap['_privateOutput'] = {
+			wordAlignedAddress: 7,
+			byteAddress: 28,
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: '_privateOutput',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
+
+		updateOutputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.outputs.length).toBe(0);
+		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(0);
+	});
+
 	it('should clear existing outputs before updating', () => {
 		mockGraphicData.widgets.outputs.push({
 			codeBlock: mockGraphicData,
