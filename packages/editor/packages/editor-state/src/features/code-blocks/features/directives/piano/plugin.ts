@@ -6,12 +6,13 @@ import { createDirectivePlugin } from '../utils';
 export default createDirectivePlugin(
 	'piano',
 	(directive, draft) => {
+		const piano = createPianoDirectiveData(draft.sourceCode, directive.args, directive.rawRow);
+		if (!piano) {
+			return;
+		}
+
 		draft.layoutContributions.push({ rawRow: directive.rawRow, rows: 6 });
-		draft.widgets.push(
-			createPianoDirectiveWidgetContribution(
-				createPianoDirectiveData(draft.sourceCode, directive.args, directive.rawRow)
-			)
-		);
+		draft.widgets.push(createPianoDirectiveWidgetContribution(piano));
 	},
 	{
 		clearGraphicData: graphicData => {

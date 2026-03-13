@@ -6,9 +6,9 @@ import watchDirective from './plugin';
 import { parseEditorDirectives } from '../utils';
 
 function parseWatchDirectiveData(code: string[]) {
-	return parseEditorDirectives(code, [watchDirective]).map(directive =>
-		createWatchDirectiveData(directive.args, directive.rawRow)
-	);
+	return parseEditorDirectives(code, [watchDirective])
+		.map(directive => createWatchDirectiveData(directive.args, directive.rawRow))
+		.filter(result => result !== undefined);
 }
 
 describe('watch directive data', () => {
@@ -72,5 +72,9 @@ describe('watch directive data', () => {
 				lineNumber: 5,
 			},
 		]);
+	});
+
+	it('should ignore malformed watch directives without an id', () => {
+		expect(parseWatchDirectiveData(['; @watch'])).toEqual([]);
 	});
 });
