@@ -52,7 +52,7 @@ Each directive folder should contain its own logic. Avoid putting directive-spec
 
 The current directive pipeline is:
 
-1. `deriveDirectiveState(code)` scans the block once and parses all registered directives.
+1. `deriveDirectiveState(code, options)` scans the block once and parses all registered directives.
 2. Each directive plugin applies its own contributions to a shared draft.
 3. `graphicHelper` consumes the derived result.
 4. Directive-owned widget contributions optionally run `beforeGraphicDataWidthCalculation(...)` before width calculation.
@@ -74,6 +74,7 @@ The main shared types are in:
 The derived directive state currently includes:
 
 - `blockState`
+- `displayState`
 - `displayModel`
 - `layoutContributions`
 - `widgets`
@@ -130,7 +131,7 @@ Use `plugin.ts` to contribute block-level metadata such as:
 
 - `disabled`
 - `isHome`
-- future display transforms such as `@hide`
+- display transforms such as `@hide`
 
 If a directive changes how code should be displayed, that should be modeled as a directive-owned contribution to the display model, not as a renderer hack in `graphicHelper`.
 
