@@ -1,5 +1,6 @@
 import buttonDirective from './button/plugin';
 import disabledDirective from './disabled/plugin';
+import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
@@ -12,7 +13,7 @@ import { parseEditorDirectives } from './utils';
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
 
 import type { CodeBlockGraphicData, State } from '~/types';
-import type { DirectiveDerivedState, DirectiveDerivedStateDraft, EditorDirectivePlugin } from './types';
+import type { DirectiveDeriveOptions, DirectiveDerivedState, DirectiveDerivedStateDraft, EditorDirectivePlugin } from './types';
 
 export type {
 	ParsedEditorDirective,
@@ -31,10 +32,12 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	watchDirective,
 	disabledDirective,
 	homeDirective,
+	hideDirective,
 ];
 
 export function deriveDirectiveState(
 	code: string[],
+	options: DirectiveDeriveOptions = {},
 	plugins: EditorDirectivePlugin[] = directivePlugins
 ): DirectiveDerivedState {
 	const directives = parseEditorDirectives(code, plugins);
@@ -44,6 +47,7 @@ export function deriveDirectiveState(
 			disabled: false,
 			isHome: false,
 		},
+		displayState: {},
 		displayModel: buildDisplayModel(code),
 		layoutContributions: [],
 		widgets: [],
@@ -56,7 +60,11 @@ export function deriveDirectiveState(
 
 	return {
 		blockState: draft.blockState,
-		displayModel: draft.displayModel,
+		displayState: draft.displayState,
+		displayModel: buildDisplayModel(code, {
+			...draft.displayState,
+			isExpandedForEditing: options.isExpandedForEditing,
+		}),
 		layoutContributions: draft.layoutContributions,
 		widgets: draft.widgets,
 	};
@@ -121,6 +129,7 @@ if (import.meta.vitest) {
 				{ rawRow: 3, rows: 8 },
 				{ rawRow: 4, rows: 2 },
 			]);
+			expect(result.displayState).toEqual({});
 			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5]);
 		});
 
@@ -132,6 +141,23 @@ if (import.meta.vitest) {
 				isHome: true,
 			});
 			expect(result.layoutContributions).toEqual([{ rawRow: 2, rows: 8 }]);
+		});
+
+		it('collapses everything after @hide while unselected', () => {
+			const result = deriveDirectiveState(['module foo', '; @hide', 'push 1', 'moduleEnd']);
+
+			expect(result.displayState).toEqual({ hideAfterRawRow: 1 });
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1]);
+			expect(result.displayModel.isCollapsed).toBe(true);
+		});
+
+		it('expands hidden code while editing', () => {
+			const result = deriveDirectiveState(['module foo', '; @hide', 'push 1', 'moduleEnd'], {
+				isExpandedForEditing: true,
+			});
+
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3]);
+			expect(result.displayModel.isCollapsed).toBe(false);
 		});
 	});
 }
