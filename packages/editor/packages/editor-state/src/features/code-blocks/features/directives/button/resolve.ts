@@ -1,5 +1,5 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../types';
-import type { ButtonDirectiveData } from './parse';
+import type { ButtonDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 

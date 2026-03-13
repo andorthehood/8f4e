@@ -1,4 +1,4 @@
-import { createButtonDirectiveData } from './parse';
+import { createButtonDirectiveData } from './data';
 import { createButtonDirectiveWidgetContribution } from './resolve';
 
 import { createDirectivePlugin } from '../utils';

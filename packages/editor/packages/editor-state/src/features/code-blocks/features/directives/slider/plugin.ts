@@ -1,4 +1,4 @@
-import { createSliderDirectiveData } from './parse';
+import { createSliderDirectiveData } from './data';
 import { createSliderDirectiveWidgetContribution } from './resolve';
 
 import { createDirectivePlugin } from '../utils';

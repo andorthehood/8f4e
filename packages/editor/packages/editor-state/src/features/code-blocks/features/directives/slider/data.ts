@@ -19,15 +19,3 @@ export function createSliderDirectiveData(args: string[], lineNumber: number): S
 		step: parsedStep !== undefined && !isNaN(parsedStep) ? parsedStep : undefined,
 	};
 }
-
-export default function parseSliderDirectives(code: string[]): SliderDirectiveData[] {
-	return code.reduce((acc, line, index) => {
-		const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
-		if (commentMatch && commentMatch[1] === 'slider') {
-			const args = commentMatch[2].trim().split(/\s+/);
-
-			return [...acc, createSliderDirectiveData(args, index)];
-		}
-		return acc;
-	}, [] as SliderDirectiveData[]);
-}

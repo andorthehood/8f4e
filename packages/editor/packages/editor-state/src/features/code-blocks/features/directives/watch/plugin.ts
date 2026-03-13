@@ -1,4 +1,4 @@
-import { createWatchDirectiveData } from './parse';
+import { createWatchDirectiveData } from './data';
 import { createWatchDirectiveWidgetContribution } from './resolve';
 
 import { createDirectivePlugin } from '../utils';

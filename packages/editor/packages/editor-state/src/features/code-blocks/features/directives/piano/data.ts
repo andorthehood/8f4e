@@ -22,15 +22,3 @@ export function createPianoDirectiveData(code: string[], args: string[], lineNum
 		pressedKeys,
 	};
 }
-
-export default function parsePianoDirectives(code: string[]): PianoDirectiveData[] {
-	return code.reduce((acc, line, index) => {
-		const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
-		if (commentMatch && commentMatch[1] === 'piano') {
-			const args = commentMatch[2].trim().split(/\s+/);
-
-			return [...acc, createPianoDirectiveData(code, args, index)];
-		}
-		return acc;
-	}, [] as PianoDirectiveData[]);
-}

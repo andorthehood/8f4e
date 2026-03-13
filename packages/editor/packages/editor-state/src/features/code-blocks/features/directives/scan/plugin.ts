@@ -1,4 +1,4 @@
-import { createScanDirectiveData } from './parse';
+import { createScanDirectiveData } from './data';
 import { createScanDirectiveWidgetContribution } from './resolve';
 
 import { createDirectivePlugin } from '../utils';

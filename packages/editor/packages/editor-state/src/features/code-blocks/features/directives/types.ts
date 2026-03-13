@@ -43,7 +43,6 @@ export interface DirectiveDerivedStateDraft extends DirectiveDerivedState {
 
 export interface EditorDirectivePlugin {
 	name: string;
-	parse: (line: string, rawRow: number) => ParsedEditorDirective | undefined;
 	clearGraphicData?: (graphicData: CodeBlockGraphicData) => void;
 	apply?: (directive: ParsedEditorDirective, draft: DirectiveDerivedStateDraft) => void;
 }
