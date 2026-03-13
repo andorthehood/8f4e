@@ -25,6 +25,9 @@ export default function parseOutputs(code: string[]) {
 				if (!isNaN(Number(args[0])) || isConstantName(args[0])) {
 					id = '__anonymous__' + index;
 				} else {
+					if (args[0].startsWith('_')) {
+						return acc;
+					}
 					id = args[0];
 				}
 
