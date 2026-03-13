@@ -76,7 +76,9 @@ const init: InstructionCompiler = withValidation(
 			const memoryItem = memory[line.arguments[1].value.substring(1)];
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
+					identifier: line.arguments[1].value.substring(1),
+				});
 			}
 
 			defaultValue = memoryItem.byteAddress;
@@ -85,7 +87,9 @@ const init: InstructionCompiler = withValidation(
 			const memoryItem = memory[line.arguments[1].value.substring(1)];
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
+					identifier: line.arguments[1].value.substring(1),
+				});
 			}
 
 			defaultValue = memoryItem.wordAlignedSize;

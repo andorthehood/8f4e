@@ -11,7 +11,7 @@ export default function pushLocal(line: AST[number], context: CompilationContext
 	const local = context.namespace.locals[argument.value];
 
 	if (!local) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
 	}
 
 	context.stack.push({ isInteger: local.isInteger, isNonZero: false });

@@ -214,8 +214,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 	let previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 	const onSelectedCodeBlockChanged = function () {
-		console.log('previous:', previousSelectedCodeBlock);
-
 		updateHideSelectionTransition(previousSelectedCodeBlock, state.graphicHelper.selectedCodeBlock);
 		previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 	};

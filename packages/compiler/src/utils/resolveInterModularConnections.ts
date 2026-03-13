@@ -55,7 +55,7 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					const targetModule = compiledModules[targetModuleId];
 
 					if (!targetModule) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetModuleId });
 					}
 
 					const memory = memoryMap[_arguments[0].value];
@@ -80,13 +80,13 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					const targetModule = compiledModules[targetModuleId];
 
 					if (!targetModule) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetModuleId });
 					}
 
 					const targetMemory = targetModule.memoryMap[targetMemoryId];
 
 					if (!targetMemory) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetMemoryId });
 					}
 
 					const memory = memoryMap[_arguments[0].value];
@@ -108,13 +108,13 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					const targetModule = compiledModules[targetModuleId];
 
 					if (!targetModule) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetModuleId });
 					}
 
 					const targetMemory = targetModule.memoryMap[targetMemoryId];
 
 					if (!targetMemory) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetMemoryId });
 					}
 
 					const memory = memoryMap[_arguments[0].value];
@@ -130,13 +130,13 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					const targetModule = compiledModules[targetModuleId];
 
 					if (!targetModule) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetModuleId });
 					}
 
 					const targetMemory = targetModule.memoryMap[targetMemoryId];
 
 					if (!targetMemory) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetMemoryId });
 					}
 
 					const memory = memoryMap[_arguments[0].value];
@@ -152,13 +152,13 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					const targetModule = compiledModules[targetModuleId];
 
 					if (!targetModule) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetModuleId });
 					}
 
 					const targetMemory = targetModule.memoryMap[targetMemoryId];
 
 					if (!targetMemory) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetMemoryId });
 					}
 
 					const memory = memoryMap[_arguments[0].value];
@@ -174,13 +174,13 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					const targetModule = compiledModules[targetModuleId];
 
 					if (!targetModule) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetModuleId });
 					}
 
 					const targetMemory = targetModule.memoryMap[targetMemoryId];
 
 					if (!targetMemory) {
-						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: targetMemoryId });
 					}
 
 					const memory = memoryMap[_arguments[0].value];
