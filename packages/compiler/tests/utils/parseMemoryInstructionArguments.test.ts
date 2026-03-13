@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import parseMemoryInstructionArguments from '../../src/utils/memoryInstructionParser';
-import { ArgumentType, type CompilationContext } from '../../src/types';
+import { ArgumentType, type AST, type CompilationContext } from '../../src/types';
 
 describe('parseMemoryInstructionArguments', () => {
 	const createMockContext = (memory = {}, consts = {}): CompilationContext => ({
@@ -21,23 +21,30 @@ describe('parseMemoryInstructionArguments', () => {
 		mode: 'module',
 	});
 
+	const createLine = (lineNumber: number, instruction: AST[number]['instruction'], args: AST[number]['arguments']) => ({
+		lineNumberBeforeMacroExpansion: lineNumber,
+		lineNumberAfterMacroExpansion: lineNumber,
+		instruction,
+		arguments: args,
+	});
+
 	describe('first argument handling', () => {
 		it('should handle literal as first argument', () => {
 			const args = [{ type: ArgumentType.LITERAL, value: 42 }];
-			const result = parseMemoryInstructionArguments(args, 1, 'float', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(1, 'float', args), createMockContext());
 			expect(result).toEqual({ id: '__anonymous__1', defaultValue: 42 });
 		});
 
 		it('should handle identifier that is a constant as first argument', () => {
 			const context = createMockContext({}, { MY_CONST: { value: 100, isInteger: true } });
 			const args = [{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' }];
-			const result = parseMemoryInstructionArguments(args, 2, 'int', context);
+			const result = parseMemoryInstructionArguments(createLine(2, 'int', args), context);
 			expect(result).toEqual({ id: '__anonymous__2', defaultValue: 100 });
 		});
 
 		it('should use identifier as id when not a constant', () => {
 			const args = [{ type: ArgumentType.IDENTIFIER, value: 'myVar' }];
-			const result = parseMemoryInstructionArguments(args, 3, 'float', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(3, 'float', args), createMockContext());
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0 });
 		});
 	});
@@ -48,7 +55,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 50 },
 			];
-			const result = parseMemoryInstructionArguments(args, 4, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(4, 'int', args), createMockContext());
 			expect(result).toEqual({ id: 'myVar', defaultValue: 50 });
 		});
 	});
@@ -59,7 +66,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'bufferIn' },
 				{ type: ArgumentType.IDENTIFIER, value: '&notesMux2:out' },
 			];
-			const result = parseMemoryInstructionArguments(args, 5, 'float*', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(5, 'float*', args), createMockContext());
 			// Intermodular references are resolved later, so defaultValue stays 0
 			expect(result).toEqual({ id: 'bufferIn', defaultValue: 0 });
 		});
@@ -69,7 +76,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
 				{ type: ArgumentType.IDENTIFIER, value: '&module:identifier' },
 			];
-			const result = parseMemoryInstructionArguments(args, 6, 'int*', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext());
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
 		});
 
@@ -78,7 +85,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
 				{ type: ArgumentType.IDENTIFIER, value: '&module:' },
 			];
-			const result = parseMemoryInstructionArguments(args, 6, 'int*', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext());
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
 		});
 
@@ -87,7 +94,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
 				{ type: ArgumentType.IDENTIFIER, value: 'module:&' },
 			];
-			const result = parseMemoryInstructionArguments(args, 6, 'int*', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext());
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
 		});
 	});
@@ -101,7 +108,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
 				{ type: ArgumentType.IDENTIFIER, value: '&out1' },
 			];
-			const result = parseMemoryInstructionArguments(args, 7, 'float*', createMockContext(memory));
+			const result = parseMemoryInstructionArguments(createLine(7, 'float*', args), createMockContext(memory));
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 100 });
 		});
 
@@ -113,7 +120,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
 				{ type: ArgumentType.IDENTIFIER, value: 'buffer&' },
 			];
-			const result = parseMemoryInstructionArguments(args, 7, 'int*', createMockContext(memory));
+			const result = parseMemoryInstructionArguments(createLine(7, 'int*', args), createMockContext(memory));
 			// End address should be: byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY
 			// = 100 + (5 - 1) * 4 = 100 + 16 = 116
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 116 });
@@ -125,7 +132,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: '&nonExistent' },
 			];
 			expect(() => {
-				parseMemoryInstructionArguments(args, 8, 'float*', createMockContext());
+				parseMemoryInstructionArguments(createLine(8, 'float*', args), createMockContext());
 			}).toThrow();
 		});
 	});
@@ -139,7 +146,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'count' },
 				{ type: ArgumentType.IDENTIFIER, value: '$buffer' },
 			];
-			const result = parseMemoryInstructionArguments(args, 9, 'int', createMockContext(memory));
+			const result = parseMemoryInstructionArguments(createLine(9, 'int', args), createMockContext(memory));
 			expect(result).toEqual({ id: 'count', defaultValue: 10 });
 		});
 
@@ -149,7 +156,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: '$nonExistent' },
 			];
 			expect(() => {
-				parseMemoryInstructionArguments(args, 10, 'int', createMockContext());
+				parseMemoryInstructionArguments(createLine(10, 'int', args), createMockContext());
 			}).toThrow();
 		});
 	});
@@ -161,7 +168,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.IDENTIFIER, value: 'INIT_VALUE' },
 			];
-			const result = parseMemoryInstructionArguments(args, 11, 'int', context);
+			const result = parseMemoryInstructionArguments(createLine(11, 'int', args), context);
 			expect(result).toEqual({ id: 'myVar', defaultValue: 999 });
 		});
 
@@ -171,7 +178,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'UNKNOWN_CONST' },
 			];
 			expect(() => {
-				parseMemoryInstructionArguments(args, 12, 'int', createMockContext());
+				parseMemoryInstructionArguments(createLine(12, 'int', args), createMockContext());
 			}).toThrow();
 		});
 	});
@@ -179,7 +186,7 @@ describe('parseMemoryInstructionArguments', () => {
 	describe('error handling', () => {
 		it('should throw error when first argument is missing', () => {
 			expect(() => {
-				parseMemoryInstructionArguments([], 13, 'float', createMockContext());
+				parseMemoryInstructionArguments(createLine(13, 'float', []), createMockContext());
 			}).toThrow();
 		});
 	});
@@ -191,7 +198,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 20, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(20, 'int', args), createMockContext());
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
 		});
 
@@ -203,7 +210,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 21, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(21, 'int', args), createMockContext());
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
 		});
 
@@ -212,7 +219,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 22, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(22, 'int', args), createMockContext());
 			expect(result).toEqual({ id: '__anonymous__22', defaultValue: 0xa8ff0000 });
 		});
 
@@ -221,7 +228,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 23, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(23, 'int', args), createMockContext());
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8 });
 		});
 
@@ -231,7 +238,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 28, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(28, 'int', args), createMockContext());
 			// 32 = 0x20, 64 = 0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0x20400000 });
 		});
@@ -244,7 +251,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 29, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(29, 'int', args), createMockContext());
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0x20400000 });
 		});
 
@@ -253,13 +260,13 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 30, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(30, 'int', args), createMockContext());
 			expect(result).toEqual({ id: '__anonymous__30', defaultValue: 0x20400000 });
 		});
 
 		it('should treat single decimal byte literal as a regular literal (no split)', () => {
 			const args = [{ type: ArgumentType.LITERAL, value: 32, isInteger: true }];
-			const result = parseMemoryInstructionArguments(args, 31, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(31, 'int', args), createMockContext());
 			expect(result).toEqual({ id: '__anonymous__31', defaultValue: 32 });
 		});
 
@@ -269,7 +276,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 32, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(32, 'int', args), createMockContext());
 			// 0xA8=168, 255=0xFF → [168, 255, 0, 0] = 0xA8FF0000
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
 		});
@@ -279,7 +286,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 255, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 33, 'int', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(33, 'int', args), createMockContext());
 			// 255=0xFF, 0xA8=168 → [255, 168, 0, 0] = 0xFFA80000
 			expect(result).toEqual({ id: '__anonymous__33', defaultValue: 0xffa80000 });
 		});
@@ -293,7 +300,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0x01, isInteger: true, isHex: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 24, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(24, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should throw when a constant identifier in split-byte mode is not in scope', () => {
@@ -303,7 +310,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.IDENTIFIER, value: 'CONST' },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 25, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(25, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should throw when a byte literal is followed by a value greater than 255', () => {
@@ -312,7 +319,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 26, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(26, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should throw when a byte literal is followed by a negative integer', () => {
@@ -321,7 +328,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: -5, isInteger: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 27, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(27, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should throw when anonymous byte literal is followed by a non-byte', () => {
@@ -329,7 +336,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 32, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 34, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(34, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should throw when named non-byte second arg is followed by extra tokens', () => {
@@ -339,7 +346,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 35, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(35, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should throw when anonymous out-of-range first literal is followed by another literal', () => {
@@ -348,7 +355,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 256, isInteger: true },
 				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 36, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(36, 'int', args), createMockContext())).toThrow();
 		});
 	});
 
@@ -360,7 +367,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
 			];
-			const result = parseMemoryInstructionArguments(args, 40, 'int', context);
+			const result = parseMemoryInstructionArguments(createLine(40, 'int', args), context);
 			// HI=32=0x20, LO=64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0x20400000 });
 		});
@@ -371,7 +378,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
 			];
-			const result = parseMemoryInstructionArguments(args, 41, 'int', context);
+			const result = parseMemoryInstructionArguments(createLine(41, 'int', args), context);
 			expect(result).toEqual({ id: '__anonymous__41', defaultValue: 0x20400000 });
 		});
 
@@ -382,7 +389,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
 			];
-			const result = parseMemoryInstructionArguments(args, 42, 'int', context);
+			const result = parseMemoryInstructionArguments(createLine(42, 'int', args), context);
 			// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8400000 });
 		});
@@ -393,7 +400,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
 			];
-			const result = parseMemoryInstructionArguments(args, 43, 'int', context);
+			const result = parseMemoryInstructionArguments(createLine(43, 'int', args), context);
 			// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
 			expect(result).toEqual({ id: '__anonymous__43', defaultValue: 0xa8400000 });
 		});
@@ -408,7 +415,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'BIG' },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 44, 'int', context)).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(44, 'int', args), context)).toThrow();
 		});
 
 		it('should throw when a constant in split-byte resolves to a negative value', () => {
@@ -421,7 +428,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'NEG' },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 45, 'int', context)).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(45, 'int', args), context)).toThrow();
 		});
 
 		it('should throw when a constant in split-byte is a non-integer (float)', () => {
@@ -434,13 +441,13 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'FRAC' },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 46, 'int', context)).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(46, 'int', args), context)).toThrow();
 		});
 
 		it('should throw when constant-style name is used as memory identifier', () => {
 			// MY_VAR matches isConstantName — constant-style names are reserved for constants only
 			const args = [{ type: ArgumentType.IDENTIFIER, value: 'MY_VAR' }];
-			expect(() => parseMemoryInstructionArguments(args, 47, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(47, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should throw when constant-style name as memory identifier has a default value', () => {
@@ -449,7 +456,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'COUNTER' },
 				{ type: ArgumentType.LITERAL, value: 0, isInteger: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 48, 'int', createMockContext())).toThrow();
+			expect(() => parseMemoryInstructionArguments(createLine(48, 'int', args), createMockContext())).toThrow();
 		});
 
 		it('should resolve 4-constant split-byte sequence (4 tokens)', () => {
@@ -469,7 +476,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'C' },
 				{ type: ArgumentType.IDENTIFIER, value: 'D' },
 			];
-			const result = parseMemoryInstructionArguments(args, 49, 'int', context);
+			const result = parseMemoryInstructionArguments(createLine(49, 'int', args), context);
 			expect(result).toEqual({ id: 'myVar', defaultValue: 0xa8ff0000 });
 		});
 	});
@@ -477,7 +484,7 @@ describe('parseMemoryInstructionArguments', () => {
 	describe('edge cases', () => {
 		it('should handle only first argument provided', () => {
 			const args = [{ type: ArgumentType.IDENTIFIER, value: 'solo' }];
-			const result = parseMemoryInstructionArguments(args, 14, 'float', createMockContext());
+			const result = parseMemoryInstructionArguments(createLine(14, 'float', args), createMockContext());
 			expect(result).toEqual({ id: 'solo', defaultValue: 0 });
 		});
 
@@ -491,7 +498,7 @@ describe('parseMemoryInstructionArguments', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'test' },
 				{ type: ArgumentType.IDENTIFIER, value: '&module:identifier' },
 			];
-			const result = parseMemoryInstructionArguments(args, 15, 'float*', createMockContext(memory));
+			const result = parseMemoryInstructionArguments(createLine(15, 'float*', args), createMockContext(memory));
 			// Should be treated as intermodular, not memory reference
 			expect(result).toEqual({ id: 'test', defaultValue: 0 });
 		});
