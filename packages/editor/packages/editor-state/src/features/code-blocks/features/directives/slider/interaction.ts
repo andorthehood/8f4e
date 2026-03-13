@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import findSliderAtViewportCoordinates from './findWidgetAtViewportCoordinates';
+import findSliderWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '~/types';
 import type { DataStructure } from '@8f4e/compiler';
@@ -47,7 +47,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 	};
 
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
-		const slider = findSliderAtViewportCoordinates(state, codeBlock, x, y);
+		const slider = findSliderWidgetAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!slider) {
 			return;

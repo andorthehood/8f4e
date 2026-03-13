@@ -36,13 +36,13 @@ directives/
     data.ts
     plugin.ts
     resolve.ts
-    parse.test.ts
+    data.test.ts
     resolve.test.ts
   scan/
     data.ts
     plugin.ts
     resolve.ts
-    parse.test.ts
+    data.test.ts
     resolve.test.ts
 ```
 
@@ -89,7 +89,7 @@ directives/
   hide/
     data.ts
     plugin.ts
-    parse.test.ts
+    data.test.ts
 ```
 
 Then:
@@ -170,7 +170,7 @@ Keep directive tests in the directive folder.
 
 Typical test split:
 
-- `parse.test.ts` for generic parse output plus argument-to-data derivation
+- `data.test.ts` for generic parse output plus argument-to-data derivation
 - `resolve.test.ts` for widget/layout behavior through the real directive pipeline
 
 Prefer testing through:
