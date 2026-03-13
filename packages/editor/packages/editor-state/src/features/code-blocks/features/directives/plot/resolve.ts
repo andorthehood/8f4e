@@ -4,7 +4,7 @@ import type { PlotDirectiveData } from './parse';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
-type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['resolve']>;
+type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
 function resolvePlotDirectiveWidget(
 	plotter: PlotDirectiveData,
@@ -25,7 +25,7 @@ function resolvePlotDirectiveWidget(
 
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[plotter.lineNumber] ?? plotter.lineNumber;
 
-	graphicData.extras.bufferPlotters.push({
+	graphicData.widgets.bufferPlotters.push({
 		width: state.viewport.vGrid * 2,
 		height: state.viewport.hGrid,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
@@ -39,7 +39,7 @@ function resolvePlotDirectiveWidget(
 
 export function createPlotDirectiveWidgetContribution(plotter: PlotDirectiveData): DirectiveWidgetContribution {
 	return {
-		resolve: (graphicData, state, directiveState) => {
+		afterGraphicDataWidthCalculation: (graphicData, state, directiveState) => {
 			resolvePlotDirectiveWidget(plotter, graphicData, state, directiveState);
 		},
 	};

@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
-import { deriveDirectiveState, prepareDirectiveGraphicData, resolveDirectiveWidgets } from '../registry';
+import {
+	deriveDirectiveState,
+	runAfterGraphicDataWidthCalculation,
+	runBeforeGraphicDataWidthCalculation,
+} from '../registry';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
@@ -66,19 +70,19 @@ describe('piano directive widget resolution', () => {
 
 	function runDirectiveResolution() {
 		const directiveState = deriveDirectiveState(mockGraphicData.code);
-		prepareDirectiveGraphicData(mockGraphicData, mockState, directiveState);
-		resolveDirectiveWidgets(mockGraphicData, mockState, directiveState);
+		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
+		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
 
-	it('adds a piano keyboard to graphic data extras', () => {
+	it('adds a piano keyboard to graphic data widgets', () => {
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.pianoKeyboards).toHaveLength(1);
+		expect(mockGraphicData.widgets.pianoKeyboards).toHaveLength(1);
 	});
 
 	it('sets the minimum grid width during directive preparation', () => {
 		const directiveState = deriveDirectiveState(mockGraphicData.code);
-		prepareDirectiveGraphicData(mockGraphicData, mockState, directiveState);
+		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 
 		expect(mockGraphicData.minGridWidth).toBe(48);
 	});
@@ -88,11 +92,11 @@ describe('piano directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.pianoKeyboards).toHaveLength(0);
+		expect(mockGraphicData.widgets.pianoKeyboards).toHaveLength(0);
 	});
 
 	it('clears existing piano keyboards before resolving directive widgets', () => {
-		mockGraphicData.extras.pianoKeyboards[5] = {
+		mockGraphicData.widgets.pianoKeyboards[5] = {
 			x: 0,
 			y: 0,
 			width: 0,
@@ -106,7 +110,7 @@ describe('piano directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.extras.pianoKeyboards).toHaveLength(1);
-		expect(mockGraphicData.extras.pianoKeyboards[5]).toBeUndefined();
+		expect(mockGraphicData.widgets.pianoKeyboards).toHaveLength(1);
+		expect(mockGraphicData.widgets.pianoKeyboards[5]).toBeUndefined();
 	});
 });

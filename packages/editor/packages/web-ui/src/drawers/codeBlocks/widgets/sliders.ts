@@ -13,7 +13,7 @@ export default function drawer(
 		return;
 	}
 
-	for (const { x, y, width, height, id, min, max } of codeBlock.extras.sliders) {
+	for (const { x, y, width, height, id, min, max } of codeBlock.widgets.sliders) {
 		if (!codeBlock.moduleId) {
 			continue;
 		}

@@ -113,7 +113,7 @@ export function createMockCodeBlock(
 		blockType: 'unknown',
 		disabled: false,
 		isHome: false,
-		extras: {
+		widgets: {
 			blockHighlights: [],
 			inputs: [],
 			outputs: [],
@@ -132,18 +132,18 @@ export function createMockCodeBlock(
 }
 
 /**
- * Helper to find an item by id in an extras array
- * Useful for test assertions on array-based extras
+ * Helper to find an item by id in a widgets array
+ * Useful for test assertions on array-based widgets
  *
- * @param array - The extras array to search
+ * @param array - The widgets array to search
  * @param id - The id to find
  * @returns The item with the matching id, or undefined if not found
  *
  * @example
- * const button = findExtrasById(mockGraphicData.extras.buttons, 'btn1');
+ * const button = findWidgetById(mockGraphicData.widgets.buttons, 'btn1');
  * expect(button).toBeDefined();
  */
-export function findExtrasById<T extends { id: string }>(array: T[], id: string): T | undefined {
+export function findWidgetById<T extends { id: string }>(array: T[], id: string): T | undefined {
 	return array.find(item => item.id === id);
 }
 

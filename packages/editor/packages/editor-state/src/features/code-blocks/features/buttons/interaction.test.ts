@@ -78,7 +78,7 @@ describe('button interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
-		mockCodeBlock.extras.buttons = [
+		mockCodeBlock.widgets.buttons = [
 			{
 				id: 'testButton',
 				x: 50,
@@ -104,7 +104,7 @@ describe('button interaction', () => {
 		const mouseUpCallback = onCallbacks.get('mouseup');
 
 		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
-		mockCodeBlock.extras.buttons = [
+		mockCodeBlock.widgets.buttons = [
 			{
 				id: 'testButton',
 				x: 50,
