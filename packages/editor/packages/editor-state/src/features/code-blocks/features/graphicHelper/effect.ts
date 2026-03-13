@@ -31,7 +31,6 @@ import {
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
-import { hasDirective } from '../directives/utils';
 import parseGroup from '../group/codeParser';
 import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
