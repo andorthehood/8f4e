@@ -149,7 +149,9 @@ export default function parseMemoryInstructionArguments(
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
+					identifier: parsedArgs.secondArg.base,
+				});
 			}
 
 			// Use start or end address based on syntax: &buffer vs buffer&
@@ -163,7 +165,9 @@ export default function parseMemoryInstructionArguments(
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
+					identifier: parsedArgs.secondArg.base,
+				});
 			}
 
 			defaultValue = memoryItem.wordAlignedSize;

@@ -15,7 +15,7 @@ export default function pushElementMin(line: AST[number], context: CompilationCo
 	const memoryItem = getDataStructure(context.namespace.memory, base);
 
 	if (!memoryItem) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: base });
 	}
 
 	const kind = resolveMemoryValueKind(memoryItem);
