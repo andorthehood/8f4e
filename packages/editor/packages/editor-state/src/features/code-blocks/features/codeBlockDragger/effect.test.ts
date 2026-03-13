@@ -713,6 +713,44 @@ describe('codeBlockDragger', () => {
 			expect(state.graphicHelper.selectedCodeBlock).toBe(block1);
 		});
 
+		it('should not update block position metadata on click without drag', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				lastUpdated: 1234,
+				creationIndex: 0,
+				blockType: 'module',
+			});
+			const originalCode = [...block1.code];
+
+			state.graphicHelper.codeBlocks = [block1];
+
+			codeBlockDragger(store, events);
+
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			mouseupHandlers[0]();
+
+			expect(block1.lastUpdated).toBe(1234);
+			expect(block1.code).toEqual(originalCode);
+			expect(block1.gridX).toBe(5);
+			expect(block1.gridY).toBe(5);
+			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+		});
+
 		it('should clear selected code block when mousedown is on empty space', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', 'moduleEnd'],

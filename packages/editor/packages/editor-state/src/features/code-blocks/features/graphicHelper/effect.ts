@@ -142,6 +142,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const groupResult = parseGroup(graphicData.code);
 		graphicData.groupName = groupResult?.groupName;
 		graphicData.groupNonstick = groupResult?.nonstick;
+		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${state.graphicHelper.textureCacheEpoch}`;
 	};
 
 	const updateGraphicsAll = function () {
@@ -329,7 +330,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
-	events.on('spriteSheetRerendered', recomputePixelCoordinatesAndUpdateGraphics);
+	events.on('spriteSheetRerendered', () => {
+		state.graphicHelper.textureCacheEpoch += 1;
+		recomputePixelCoordinatesAndUpdateGraphics();
+	});
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);

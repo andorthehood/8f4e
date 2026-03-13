@@ -51,6 +51,7 @@ export function createCodeBlockGraphicData(
 		gaps: new Map(),
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),
+		textureCacheKey: '',
 		creationIndex: 0,
 		blockType: 'unknown',
 		disabled: false,
