@@ -176,6 +176,18 @@ describe('parseOutputs', () => {
 		]);
 	});
 
+	it('should ignore private outputs whose names start with underscore', () => {
+		const code = ['int _hiddenOutput', 'float visibleOutput'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'visibleOutput',
+				lineNumber: 1,
+			},
+		]);
+	});
+
 	it('should treat all-uppercase names as anonymous allocations', () => {
 		const code = ['int MY_CONSTANT', 'float ANOTHER_CONST'];
 		const result = parseOutputs(code);
