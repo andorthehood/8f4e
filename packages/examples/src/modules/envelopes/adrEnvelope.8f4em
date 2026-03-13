@@ -1,0 +1,144 @@
+module adrEnv
+; @tab 8
+use env
+
+int*	trigger
+int	attackTime SAMPLE_RATE 
+float	attacLevel 1.0
+int	decayTime SAMPLE_RATE/2
+float	decayLevel 0.5
+int	releaseTime SAMPLE_RATE*2
+int	_state RELEASE
+int	_counter
+float	out
+
+const	ATTACK 1
+const	DECAY 2
+const	RELEASE 3
+
+; Start ATTACK
+push	*trigger
+risingEdge
+if void
+push	&_state
+push	ATTACK
+store
+push	&_counter
+push	attackTime
+store
+ifEnd
+
+; ATTACK math
+push	_state
+push	ATTACK
+equal
+push	_counter
+push	0
+greaterThan
+and
+if	void
+push	&out
+push	1.0
+push	_counter
+castToFloat
+push	attackTime
+castToFloat
+ensureNonZero
+div
+sub
+store
+ifEnd
+
+; Transition from ATTACK to
+; DECAY
+push	_counter
+equalToZero
+push	_state
+push	ATTACK
+equal
+and
+if	void ; End of attack
+push	&_state
+push	DECAY
+store
+push	&_counter
+push	decayTime
+store
+ifEnd
+
+; DECAY math
+push	_state
+push	DECAY
+equal
+push	_counter
+push 0
+greaterThan
+and
+if	void
+push	&out
+push	decayLevel
+push	_counter
+castToFloat
+push   decayTime
+castToFloat
+ensureNonZero
+div
+push	1.0
+push	decayLevel
+sub
+mul
+add
+store
+ifEnd
+
+; Transition from DECAY
+; to RELEASE
+push	_state
+push	DECAY
+equal
+push	_counter
+equalToZero
+and
+if void
+push	&_state
+push	RELEASE
+store
+push	&_counter
+push	releaseTime
+store
+ifEnd
+
+; RELEASE math
+push	_state
+push	RELEASE
+equal
+push	_counter
+push	0
+greaterThan
+and
+if void
+push	&out
+push	_counter
+castToFloat
+push	releaseTime
+castToFloat
+ensureNonZero
+div
+push	decayLevel
+mul
+store
+ifEnd
+
+; Decrement and wrap counter 
+push	_counter
+push	0
+greaterThan
+if	void
+push	&_counter
+push	_counter
+push	1
+sub
+store
+ifEnd
+
+moduleEnd
