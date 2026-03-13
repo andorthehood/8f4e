@@ -41,6 +41,7 @@ if (import.meta.vitest) {
 		it('inserts directive gaps using display rows', async () => {
 			const directiveState: DirectiveDerivedState = {
 				blockState: { disabled: false, isHome: false },
+				displayState: {},
 				displayModel: {
 					lines: [
 						{ rawRow: 0, text: 'module foo' },
@@ -49,6 +50,7 @@ if (import.meta.vitest) {
 					],
 					displayRowToRawRow: [0, 1, 3],
 					rawRowToDisplayRow: [0, 1, undefined, 2],
+					isCollapsed: false,
 				},
 				layoutContributions: [{ rawRow: 1, rows: 8 }],
 				widgets: [],
@@ -69,6 +71,7 @@ if (import.meta.vitest) {
 		it('skips gaps for raw rows hidden from the display model', async () => {
 			const directiveState: DirectiveDerivedState = {
 				blockState: { disabled: false, isHome: false },
+				displayState: {},
 				displayModel: {
 					lines: [
 						{ rawRow: 0, text: 'module foo' },
@@ -76,6 +79,7 @@ if (import.meta.vitest) {
 					],
 					displayRowToRawRow: [0, 3],
 					rawRowToDisplayRow: [0, undefined, undefined, 1],
+					isCollapsed: true,
 				},
 				layoutContributions: [{ rawRow: 1, rows: 8 }],
 				widgets: [],

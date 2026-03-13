@@ -39,12 +39,17 @@ import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
+	const shouldExpandCodeBlockForEditing = (codeBlock: CodeBlockGraphicData): boolean =>
+		codeBlock === state.graphicHelper.selectedCodeBlock;
+
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
 		if (!state.featureFlags.codeLineSelection) {
 			return;
 		}
 
-		const directiveState = deriveDirectiveState(codeBlock.code);
+		const directiveState = deriveDirectiveState(codeBlock.code, {
+			isExpandedForEditing: !codeBlock.isCollapsed,
+		});
 		const displayModel = directiveState.displayModel;
 		const displayRow = reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps);
 		const row = displayModel.displayRowToRawRow[Math.min(displayRow, displayModel.displayRowToRawRow.length - 1)] ?? 0;
@@ -66,11 +71,13 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		const spriteLookups = state.graphicHelper.spriteLookups;
-		const directiveState = deriveDirectiveState(graphicData.code);
+		const directiveState = deriveDirectiveState(graphicData.code, {
+			isExpandedForEditing: shouldExpandCodeBlockForEditing(graphicData),
+		});
 		const displayModel = directiveState.displayModel;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
-		graphicData.lineNumberColumnWidth = displayModel.lines.length.toString().length;
+		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
 		graphicData.codeToRender = displayModel.lines.map(({ text, rawRow }, displayRow) => {
 			const prefix = `${displayRow}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
@@ -80,6 +87,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 		graphicData.id = getCodeBlockId(graphicData.code);
 		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
+		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
 		let rawCodeColors;
@@ -94,13 +102,20 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const lineNumberPrefixLength = graphicData.lineNumberColumnWidth + 1; // +1 for space
 		graphicData.codeColors = graphicData.codeToRender.map((line, displayRow) => {
 			const lineColors = new Array(line.length).fill(undefined);
+			const displayLine = displayModel.lines[displayRow];
 			const rawRow = displayModel.displayRowToRawRow[displayRow] ?? 0;
 
 			// Apply line number color at the first column (color persists until changed)
 			lineColors[0] = spriteLookups.fontLineNumber;
 
 			// Reset to code color after line number prefix (at the space separator)
-			lineColors[graphicData.lineNumberColumnWidth] = spriteLookups.fontCode;
+			lineColors[graphicData.lineNumberColumnWidth] = displayLine?.isPlaceholder
+				? spriteLookups.fontCodeComment
+				: spriteLookups.fontCode;
+
+			if (displayLine?.isPlaceholder) {
+				return lineColors;
+			}
 
 			// Merge syntax colors from raw code, offset by prefix length
 			const rawColors = expandLineColorsToCells(
@@ -142,7 +157,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const groupResult = parseGroup(graphicData.code);
 		graphicData.groupName = groupResult?.groupName;
 		graphicData.groupNonstick = groupResult?.nonstick;
-		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${state.graphicHelper.textureCacheEpoch}`;
+		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
 	};
 
 	const updateGraphicsAll = function () {
@@ -184,16 +199,37 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(block);
 	};
 
+	const updateHideSelectionTransition = function (
+		previousBlock: CodeBlockGraphicData | undefined,
+		nextBlock: CodeBlockGraphicData | undefined
+	) {
+		[previousBlock, nextBlock].forEach(codeBlock => {
+			if (!codeBlock) {
+				return;
+			}
+
+			updateGraphics(codeBlock);
+		});
+	};
+
+	let previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+	const onSelectedCodeBlockChanged = function () {
+		console.log('previous:', previousSelectedCodeBlock);
+
+		updateHideSelectionTransition(previousSelectedCodeBlock, state.graphicHelper.selectedCodeBlock);
+		previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+	};
+
 	const populateCodeBlocks = async function () {
 		if (!state.initialProjectState) {
 			return;
 		}
 
 		state.graphicHelper.outputsByWordAddress.clear();
-		state.graphicHelper.selectedCodeBlock = undefined;
-		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 		state.graphicHelper.nextCodeBlockCreationIndex = 0;
+		store.set('graphicHelper.selectedCodeBlock', undefined);
+		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', undefined);
 
 		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
@@ -320,7 +356,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		const codeBlock = state.graphicHelper.selectedCodeBlock;
-		const directiveState = deriveDirectiveState(codeBlock.code);
+		const directiveState = deriveDirectiveState(codeBlock.code, { isExpandedForEditing: true });
 		codeBlock.disabled = directiveState.blockState.disabled;
 		codeBlock.isHome = directiveState.blockState.isHome;
 	};
@@ -337,6 +373,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
+	store.subscribe('graphicHelper.selectedCodeBlock', onSelectedCodeBlockChanged);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyHomeFromCodeEdit);
