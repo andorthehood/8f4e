@@ -9,8 +9,11 @@ import type { CodeBlockGraphicData } from '~/types';
  * and setting lastUpdated to a fixed value
  */
 function normalizeBlock(block: CodeBlockGraphicData) {
+	const normalizedBlock = { ...block };
+	delete normalizedBlock.isCollapsed;
+
 	return {
-		...block,
+		...normalizedBlock,
 		lastUpdated: 0,
 		gaps: Array.from(block.gaps.entries()),
 		widgets: {
