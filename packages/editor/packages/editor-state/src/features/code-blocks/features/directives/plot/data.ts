@@ -6,7 +6,11 @@ export interface PlotDirectiveData {
 	bufferLengthMemoryId: string | undefined;
 }
 
-export function createPlotDirectiveData(args: string[], lineNumber: number): PlotDirectiveData {
+export function createPlotDirectiveData(args: string[], lineNumber: number): PlotDirectiveData | undefined {
+	if (!args[0]) {
+		return undefined;
+	}
+
 	const parsedMin = args[1] !== undefined ? parseInt(args[1], 10) : undefined;
 	const parsedMax = args[2] !== undefined ? parseInt(args[2], 10) : undefined;
 

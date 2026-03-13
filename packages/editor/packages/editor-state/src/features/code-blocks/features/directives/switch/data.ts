@@ -5,7 +5,11 @@ export interface SwitchDirectiveData {
 	offValue: number;
 }
 
-export function createSwitchDirectiveData(args: string[], lineNumber: number): SwitchDirectiveData {
+export function createSwitchDirectiveData(args: string[], lineNumber: number): SwitchDirectiveData | undefined {
+	if (!args[0]) {
+		return undefined;
+	}
+
 	return {
 		id: args[0],
 		lineNumber,

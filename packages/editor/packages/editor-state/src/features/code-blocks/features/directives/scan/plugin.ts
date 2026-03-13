@@ -6,10 +6,13 @@ import { createDirectivePlugin } from '../utils';
 export default createDirectivePlugin(
 	'scan',
 	(directive, draft) => {
+		const scan = createScanDirectiveData(directive.args, directive.rawRow);
+		if (!scan) {
+			return;
+		}
+
 		draft.layoutContributions.push({ rawRow: directive.rawRow, rows: 2 });
-		draft.widgets.push(
-			createScanDirectiveWidgetContribution(createScanDirectiveData(directive.args, directive.rawRow))
-		);
+		draft.widgets.push(createScanDirectiveWidgetContribution(scan));
 	},
 	{
 		clearGraphicData: graphicData => {

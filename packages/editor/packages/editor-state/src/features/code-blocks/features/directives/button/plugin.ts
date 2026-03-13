@@ -6,9 +6,12 @@ import { createDirectivePlugin } from '../utils';
 export default createDirectivePlugin(
 	'button',
 	(directive, draft) => {
-		draft.widgets.push(
-			createButtonDirectiveWidgetContribution(createButtonDirectiveData(directive.args, directive.rawRow))
-		);
+		const button = createButtonDirectiveData(directive.args, directive.rawRow);
+		if (!button) {
+			return;
+		}
+
+		draft.widgets.push(createButtonDirectiveWidgetContribution(button));
 	},
 	{
 		clearGraphicData: graphicData => {
