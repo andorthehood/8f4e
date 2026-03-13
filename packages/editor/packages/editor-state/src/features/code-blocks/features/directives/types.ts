@@ -17,6 +17,10 @@ export interface DirectiveBlockState {
 	isHome: boolean;
 }
 
+export interface DirectiveDisplayState {
+	hideAfterRawRow?: number;
+}
+
 export interface DirectiveWidgetContribution {
 	beforeGraphicDataWidthCalculation?: (
 		graphicData: CodeBlockGraphicData,
@@ -32,6 +36,7 @@ export interface DirectiveWidgetContribution {
 
 export interface DirectiveDerivedState {
 	blockState: DirectiveBlockState;
+	displayState: DirectiveDisplayState;
 	displayModel: CodeBlockDisplayModel;
 	layoutContributions: DirectiveLayoutContribution[];
 	widgets: DirectiveWidgetContribution[];
@@ -39,6 +44,10 @@ export interface DirectiveDerivedState {
 
 export interface DirectiveDerivedStateDraft extends DirectiveDerivedState {
 	sourceCode: string[];
+}
+
+export interface DirectiveDeriveOptions {
+	isExpandedForEditing?: boolean;
 }
 
 export interface EditorDirectivePlugin {
