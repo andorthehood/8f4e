@@ -109,6 +109,7 @@ export function createMockCodeBlock(
 		gaps: new Map(),
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),
+		textureCacheKey: '',
 		creationIndex: 0,
 		blockType: 'unknown',
 		disabled: false,
@@ -239,6 +240,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		defaultRuntimeId: 'WebWorkerLogicRuntime',
 		graphicHelper: {
 			codeBlocks: [],
+			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
 			contextMenu: {

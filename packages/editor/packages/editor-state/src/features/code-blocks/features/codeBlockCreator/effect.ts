@@ -12,6 +12,7 @@ import { parseClipboardData } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
 import getCodeBlockId from '../../utils/getCodeBlockId';
+import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -168,29 +169,13 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		// Add canonical @pos directive to code
 		code = upsertPos(code, gridX, gridY);
 
-		const codeBlock: CodeBlockGraphicData = {
+		const codeBlock: CodeBlockGraphicData = createCodeBlockGraphicData({
 			width: 0,
 			height: 0,
 			code,
-			codeColors: [],
-			codeToRender: [],
-			widgets: {
-				blockHighlights: [],
-				inputs: [],
-				outputs: [],
-				debuggers: [],
-				switches: [],
-				buttons: [],
-				sliders: [],
-				pianoKeyboards: [],
-				bufferPlotters: [],
-				bufferScanners: [],
-				errorMessages: [],
-			},
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
 			id: getCodeBlockId(code),
 			moduleId: getModuleId(code) || getConstantsId(code) || undefined,
-			gaps: new Map(),
 			gridX,
 			gridY,
 			x: state.viewport.x + x,
@@ -203,7 +188,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
 			disabled: false,
 			isHome: false,
-		};
+		});
 
 		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks, codeBlock]);
 	}
