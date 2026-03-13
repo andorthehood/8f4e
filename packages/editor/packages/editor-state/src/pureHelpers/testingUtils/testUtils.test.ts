@@ -13,8 +13,8 @@ function normalizeBlock(block: CodeBlockGraphicData) {
 		...block,
 		lastUpdated: 0,
 		gaps: Array.from(block.gaps.entries()),
-		extras: {
-			...block.extras,
+		widgets: {
+			...block.widgets,
 		},
 	};
 }

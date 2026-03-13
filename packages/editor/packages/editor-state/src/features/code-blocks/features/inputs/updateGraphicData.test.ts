@@ -5,7 +5,7 @@ import updateInputsGraphicData from './updateGraphicData';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('updateInputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -40,17 +40,17 @@ describe('updateInputsGraphicData', () => {
 		});
 	});
 
-	it('should add input to graphicData extras', () => {
+	it('should add input to graphicData widgets', () => {
 		updateInputsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.inputs.length).toBe(1);
-		expect(findExtrasById(mockGraphicData.extras.inputs, 'input1')).toBeDefined();
+		expect(mockGraphicData.widgets.inputs.length).toBe(1);
+		expect(findWidgetById(mockGraphicData.widgets.inputs, 'input1')).toBeDefined();
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updateInputsGraphicData(mockGraphicData, mockState);
 
-		const input = findExtrasById(mockGraphicData.extras.inputs, 'input1');
+		const input = findWidgetById(mockGraphicData.widgets.inputs, 'input1');
 		// Exclude codeBlock from snapshot as it creates circular reference
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
@@ -63,11 +63,11 @@ describe('updateInputsGraphicData', () => {
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.inputs.length).toBe(0);
+		expect(mockGraphicData.widgets.inputs.length).toBe(0);
 	});
 
 	it('should clear existing inputs before updating', () => {
-		mockGraphicData.extras.inputs.push({
+		mockGraphicData.widgets.inputs.push({
 			codeBlock: mockGraphicData,
 			width: 0,
 			height: 0,
@@ -79,7 +79,7 @@ describe('updateInputsGraphicData', () => {
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
-		expect(findExtrasById(mockGraphicData.extras.inputs, 'oldInput')).toBeUndefined();
+		expect(findWidgetById(mockGraphicData.widgets.inputs, 'oldInput')).toBeUndefined();
 	});
 
 	it('should handle multiple inputs', () => {
@@ -101,9 +101,9 @@ describe('updateInputsGraphicData', () => {
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.inputs.length).toBe(2);
+		expect(mockGraphicData.widgets.inputs.length).toBe(2);
 		// Exclude codeBlock references from snapshot
-		const entries = Object.entries(mockGraphicData.extras.inputs).map(([key, value]) => {
+		const entries = Object.entries(mockGraphicData.widgets.inputs).map(([key, value]) => {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { codeBlock: _codeBlock, ...rest } = value;
 			return [key, rest];
@@ -130,7 +130,7 @@ describe('updateInputsGraphicData', () => {
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
-		const input = findExtrasById(mockGraphicData.extras.inputs, 'input1');
+		const input = findWidgetById(mockGraphicData.widgets.inputs, 'input1');
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
