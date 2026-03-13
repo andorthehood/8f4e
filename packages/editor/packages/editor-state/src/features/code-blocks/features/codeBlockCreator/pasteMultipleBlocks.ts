@@ -6,9 +6,9 @@ import { type ClipboardCodeBlock } from '../clipboard/clipboardUtils';
 import { extractGroupName } from '../group/extractGroupName';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
+import upsertPos from '../directives/pos/upsert';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import upsertPos from '../position/upsertPos';
 import { hasDirective } from '../directives/utils';
 
 import type { StateManager } from '@8f4e/state-manager';
