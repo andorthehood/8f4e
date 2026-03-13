@@ -1,4 +1,4 @@
-import parsePos from '../position/parsePos';
+import parsePos from '../directives/pos/data';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';

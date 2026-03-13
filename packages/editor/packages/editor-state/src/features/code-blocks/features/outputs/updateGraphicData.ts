@@ -5,7 +5,7 @@ import type { CodeBlockGraphicData, Output, State } from '~/types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.outputs = [];
+	graphicData.widgets.outputs = [];
 	const moduleId = graphicData.moduleId;
 	if (!moduleId) {
 		return;
@@ -30,7 +30,7 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 			memory,
 		};
 
-		graphicData.extras.outputs.push(out);
+		graphicData.widgets.outputs.push(out);
 		state.graphicHelper.outputsByWordAddress.set(memory.byteAddress, out);
 	});
 }

@@ -174,7 +174,7 @@ export interface CodeBlockGraphicData {
 	y: number;
 	offsetX: number;
 	offsetY: number;
-	extras: {
+	widgets: {
 		blockHighlights: Array<{
 			x: number;
 			y: number;

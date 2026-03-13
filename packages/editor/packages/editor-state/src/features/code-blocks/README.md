@@ -10,7 +10,7 @@ Manages the lifecycle of code blocks in the editor: creation, selection, drag op
 - **Selection**: Tracks which block is currently selected for editing
 - **Drag Operations**: Handles repositioning blocks in the viewport
 - **Graphics Derivation**: Computes visual properties (position, size, color) from block data
-- **Block Extras**: Derives interactive elements from code annotations:
+- **Block Widgets**: Derives interactive elements from code annotations:
   - Inputs/Outputs for audio routing
   - Buttons and Switches for interactive controls
   - Piano keyboard for MIDI input
@@ -61,7 +61,7 @@ This feature contains several subfeatures under `features/` that handle specific
 
 - `state.graphicHelper.codeBlocks` - Array of all code blocks with their visual and code data
 - `state.graphicHelper.selectedCodeBlock` - Currently selected block reference
-- Block-specific properties: position, size, color, blockType, code, cursor, extras (inputs/outputs/buttons/switches)
+- Block-specific properties: position, size, color, blockType, code, cursor, widgets (inputs/outputs/buttons/switches)
 
 ## Integration Points
 

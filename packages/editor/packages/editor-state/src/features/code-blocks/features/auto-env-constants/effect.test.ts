@@ -101,7 +101,7 @@ describe('autoEnvConstants', () => {
 				height: 0,
 				codeColors: [],
 				codeToRender: [],
-				extras: {
+				widgets: {
 					blockHighlights: [],
 					inputs: [],
 					outputs: [],
@@ -195,7 +195,7 @@ describe('autoEnvConstants', () => {
 				height: 0,
 				codeColors: [],
 				codeToRender: [],
-				extras: {
+				widgets: {
 					blockHighlights: [],
 					inputs: [],
 					outputs: [],
@@ -251,7 +251,7 @@ describe('autoEnvConstants', () => {
 				height: 0,
 				codeColors: [],
 				codeToRender: [],
-				extras: {
+				widgets: {
 					blockHighlights: [],
 					inputs: [],
 					outputs: [],
@@ -300,7 +300,7 @@ describe('autoEnvConstants', () => {
 				height: 0,
 				codeColors: [],
 				codeToRender: [],
-				extras: {
+				widgets: {
 					blockHighlights: [],
 					inputs: [],
 					outputs: [],

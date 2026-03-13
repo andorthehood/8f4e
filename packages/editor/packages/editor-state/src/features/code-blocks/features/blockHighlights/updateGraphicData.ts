@@ -5,7 +5,7 @@ import type { CodeBlockGraphicData, State } from '~/types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.blockHighlights = [];
+	graphicData.widgets.blockHighlights = [];
 	parseCodeBlocks(graphicData.code).forEach(block => {
 		if (block.endLineNumber === undefined) {
 			return;
@@ -18,7 +18,7 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 			return;
 		}
 
-		graphicData.extras.blockHighlights.push({
+		graphicData.widgets.blockHighlights.push({
 			x: state.viewport.vGrid * (2 + graphicData.lineNumberColumnWidth),
 			y: gapCalculator(highlightStartLine, graphicData.gaps) * state.viewport.hGrid,
 			width: graphicData.width - state.viewport.vGrid * (2 + graphicData.lineNumberColumnWidth),

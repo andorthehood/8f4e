@@ -6,10 +6,10 @@ import { type ClipboardCodeBlock } from '../clipboard/clipboardUtils';
 import { extractGroupName } from '../group/extractGroupName';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
+import upsertPos from '../directives/pos/upsert';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import upsertPos from '../position/upsertPos';
-import parseDisabled from '../disabled/parseDisabled';
+import { hasDirective } from '../directives/utils';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State } from '~/types';
@@ -220,7 +220,7 @@ export function pasteMultipleBlocks(
 		code = upsertPos(code, gridX, gridY);
 
 		// Parse disabled state from @disabled directive in code
-		const disabled = parseDisabled(code);
+		const disabled = hasDirective(code, 'disabled');
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 		state.graphicHelper.nextCodeBlockCreationIndex++;
