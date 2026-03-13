@@ -36,7 +36,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: true });
 
-			or({ lineNumber: 1, instruction: 'or', arguments: [] } as AST[number], context);
+			or(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'or',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

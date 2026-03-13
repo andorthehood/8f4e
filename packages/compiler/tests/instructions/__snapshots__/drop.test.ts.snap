@@ -10,7 +10,8 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -21,17 +22,20 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
       },
     ],
     "instruction": "push",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [],
     "instruction": "drop",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
 ]
 `;

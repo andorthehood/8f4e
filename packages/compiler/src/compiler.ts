@@ -8,6 +8,7 @@ import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclarati
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
+	type ASTLine,
 	CompilationContext,
 	CompiledModule,
 	CompiledFunction,
@@ -76,12 +77,17 @@ function tokenizeInstruction(line: string): string[] {
 	return tokens;
 }
 
-export function parseLine(line: string, lineNumber: number): AST[number] {
+export function parseLine(
+	line: string,
+	lineNumberBeforeMacroExpansion: number,
+	lineNumberAfterMacroExpansion = lineNumberBeforeMacroExpansion
+): ASTLine {
 	const tokens = tokenizeInstruction(line);
 	const [instruction, ...args] = tokens as [Instruction, ...string[]];
 
 	return {
-		lineNumber,
+		lineNumberBeforeMacroExpansion,
+		lineNumberAfterMacroExpansion,
 		instruction,
 		arguments: args.map(parseArgument),
 	};
@@ -95,10 +101,10 @@ export function compileToAST(
 		.map((line, index) => [index, line] as [number, string])
 		.filter(([, line]) => !isComment(line))
 		.filter(([, line]) => isValidInstruction(line))
-		.map(([lineNumber, line]) => {
-			// Use callSiteLineNumber from metadata if available, otherwise use actual line number
-			const actualLineNumber = lineMetadata?.[lineNumber]?.callSiteLineNumber ?? lineNumber;
-			return parseLine(line, actualLineNumber);
+		.map(([lineNumberAfterMacroExpansion, line]) => {
+			const lineNumberBeforeMacroExpansion =
+				lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
+			return parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
 		});
 }
 
@@ -151,13 +157,17 @@ export function compileModule(
 	});
 
 	if (!context.namespace.moduleName) {
-		throw getError(ErrorCode.MISSING_MODULE_ID, { lineNumber: 0, instruction: 'module', arguments: [] }, context);
+		throw getError(
+			ErrorCode.MISSING_MODULE_ID,
+			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'module', arguments: [] },
+			context
+		);
 	}
 
 	if (context.stack.length > 0) {
 		throw getError(
 			ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS,
-			{ lineNumber: 0, instruction: 'module', arguments: [] },
+			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'module', arguments: [] },
 			context
 		);
 	}
@@ -212,13 +222,17 @@ export function compileFunction(
 	});
 
 	if (!context.currentFunctionId) {
-		throw getError(ErrorCode.MISSING_FUNCTION_ID, { lineNumber: 0, instruction: 'function', arguments: [] }, context);
+		throw getError(
+			ErrorCode.MISSING_FUNCTION_ID,
+			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
+			context
+		);
 	}
 
 	if (!context.currentFunctionSignature) {
 		throw getError(
 			ErrorCode.INVALID_FUNCTION_SIGNATURE,
-			{ lineNumber: 0, instruction: 'function', arguments: [] },
+			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
 			context
 		);
 	}

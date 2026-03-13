@@ -148,7 +148,8 @@ if (import.meta.vitest) {
 
 			init(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'init',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
@@ -165,7 +166,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				init({ lineNumber: 1, instruction: 'init', arguments: [] } as AST[number], context);
+				init(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'init',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

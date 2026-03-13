@@ -46,7 +46,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-			add({ lineNumber: 1, instruction: 'add', arguments: [] } as AST[number], context);
+			add(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'add',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -58,7 +66,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-			add({ lineNumber: 1, instruction: 'add', arguments: [] } as AST[number], context);
+			add(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'add',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -73,7 +89,15 @@ if (import.meta.vitest) {
 				{ isInteger: false, isFloat64: true, isNonZero: false }
 			);
 
-			add({ lineNumber: 1, instruction: 'add', arguments: [] } as AST[number], context);
+			add(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'add',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -89,7 +113,15 @@ if (import.meta.vitest) {
 			);
 
 			expect(() => {
-				add({ lineNumber: 1, instruction: 'add', arguments: [] } as AST[number], context);
+				add(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'add',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

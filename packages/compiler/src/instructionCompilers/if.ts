@@ -64,7 +64,8 @@ if (import.meta.vitest) {
 
 			_if(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'void' }],
 				} as AST[number],
@@ -83,7 +84,8 @@ if (import.meta.vitest) {
 
 			_if(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
 				} as AST[number],

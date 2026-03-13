@@ -32,7 +32,8 @@ if (import.meta.vitest) {
 
 			wasm(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'wasm',
 					arguments: [{ type: ArgumentType.LITERAL, value: 42, isInteger: true }],
 				} as AST[number],
@@ -48,7 +49,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				wasm({ lineNumber: 1, instruction: 'wasm', arguments: [] } as AST[number], context);
+				wasm(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'wasm',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

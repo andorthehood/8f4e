@@ -7,8 +7,7 @@ import { ErrorCode, getError } from '../compilerError';
 import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
 import isConstantName from '../syntax/isConstantName';
 
-import type { CompilationContext, Argument } from '../types';
-
+import type { AST, CompilationContext, Argument } from '../types';
 /**
  * Returns the maximum number of bytes allowed for a split-byte default value.
  * Split-byte is restricted to 4 bytes (32-bit) for all declaration types to avoid
@@ -77,13 +76,11 @@ function resolveSplitByteTokens(
 }
 
 export default function parseMemoryInstructionArguments(
-	args: Array<Argument>,
-	lineNumber: number,
-	instruction: string,
+	line: AST[number],
 	context: CompilationContext
 ): { id: string; defaultValue: number } {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const lineForError = { lineNumber, instruction, arguments: args } as any;
+	const { arguments: args, lineNumberAfterMacroExpansion } = line;
+	const lineForError = line;
 
 	// Use syntax parser for syntax-level validation and classification
 	let parsedArgs;
@@ -107,16 +104,16 @@ export default function parseMemoryInstructionArguments(
 	// Process first argument
 	if (parsedArgs.firstArg.type === 'literal') {
 		defaultValue = parsedArgs.firstArg.value;
-		id = '__anonymous__' + lineNumber;
+		id = '__anonymous__' + lineNumberAfterMacroExpansion;
 	} else if (parsedArgs.firstArg.type === 'split-byte-tokens') {
 		defaultValue = resolveSplitByteTokens(parsedArgs.firstArg.tokens, maxBytes, lineForError, context);
-		id = '__anonymous__' + lineNumber;
+		id = '__anonymous__' + lineNumberAfterMacroExpansion;
 	} else if (parsedArgs.firstArg.type === 'identifier') {
 		const constant = tryResolveConstantValueOrExpression(context.namespace.consts, parsedArgs.firstArg.value);
 
 		if (constant) {
 			defaultValue = constant.value;
-			id = '__anonymous__' + lineNumber;
+			id = '__anonymous__' + lineNumberAfterMacroExpansion;
 		} else {
 			id = parsedArgs.firstArg.value;
 		}
@@ -204,21 +201,45 @@ if (import.meta.vitest) {
 
 		it('parses literal argument as anonymous variable', () => {
 			const args: Argument[] = [{ type: ArgumentType.LITERAL, value: 123, isInteger: true }];
-			const result = parseMemoryInstructionArguments(args, 10, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 10,
+					lineNumberAfterMacroExpansion: 10,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('__anonymous__10');
 			expect(result.defaultValue).toBe(123);
 		});
 
 		it('parses identifier argument', () => {
 			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'myId' }];
-			const result = parseMemoryInstructionArguments(args, 20, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 20,
+					lineNumberAfterMacroExpansion: 20,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('myId');
 			expect(result.defaultValue).toBe(0);
 		});
 
 		it('parses constant as anonymous variable', () => {
 			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'myConst' }];
-			const result = parseMemoryInstructionArguments(args, 30, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 30,
+					lineNumberAfterMacroExpansion: 30,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('__anonymous__30');
 			expect(result.defaultValue).toBe(42);
 		});
@@ -228,7 +249,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.LITERAL, value: 99, isInteger: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 40, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 40,
+					lineNumberAfterMacroExpansion: 40,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('myVar');
 			expect(result.defaultValue).toBe(99);
 		});
@@ -238,7 +267,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.IDENTIFIER, value: 'myConst' },
 			];
-			const result = parseMemoryInstructionArguments(args, 50, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 50,
+					lineNumberAfterMacroExpansion: 50,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('myVar');
 			expect(result.defaultValue).toBe(42);
 		});
@@ -249,7 +286,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 60, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 60,
+					lineNumberAfterMacroExpansion: 60,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('myVar');
 			expect(result.defaultValue).toBe(0xa8ff0000);
 		});
@@ -262,7 +307,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 70, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 70,
+					lineNumberAfterMacroExpansion: 70,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('myVar');
 			expect(result.defaultValue).toBe(0xa8ff0000);
 		});
@@ -272,7 +325,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
 			];
-			const result = parseMemoryInstructionArguments(args, 80, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 80,
+					lineNumberAfterMacroExpansion: 80,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('__anonymous__80');
 			expect(result.defaultValue).toBe(0xa8ff0000);
 		});
@@ -286,7 +347,17 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0x01, isInteger: true, isHex: true },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 90, 'int', mockContext)).toThrow();
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 90,
+						lineNumberAfterMacroExpansion: 90,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 
 		it('resolves named constant split-byte sequence (HI LO) into combined default', () => {
@@ -295,7 +366,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
 			];
-			const result = parseMemoryInstructionArguments(args, 100, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 100,
+					lineNumberAfterMacroExpansion: 100,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('myVar');
 			// HI=32=0x20, LO=64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
 			expect(result.defaultValue).toBe(0x20400000);
@@ -306,7 +385,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
 			];
-			const result = parseMemoryInstructionArguments(args, 110, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 110,
+					lineNumberAfterMacroExpansion: 110,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('__anonymous__110');
 			expect(result.defaultValue).toBe(0x20400000);
 		});
@@ -317,7 +404,15 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
 			];
-			const result = parseMemoryInstructionArguments(args, 120, 'int', mockContext);
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 120,
+					lineNumberAfterMacroExpansion: 120,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
 			expect(result.id).toBe('myVar');
 			// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
 			expect(result.defaultValue).toBe(0xa8400000);
@@ -329,7 +424,17 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'BIG' },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 130, 'int', mockContext)).toThrow();
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 130,
+						lineNumberAfterMacroExpansion: 130,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 
 		it('throws when constant in split-byte sequence is a non-integer (float)', () => {
@@ -338,12 +443,32 @@ if (import.meta.vitest) {
 				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
 				{ type: ArgumentType.IDENTIFIER, value: 'FRAC' },
 			];
-			expect(() => parseMemoryInstructionArguments(args, 140, 'int', mockContext)).toThrow();
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 140,
+						lineNumberAfterMacroExpansion: 140,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 
 		it('throws when constant-style name is used as memory identifier', () => {
 			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'MY_VAR' }];
-			expect(() => parseMemoryInstructionArguments(args, 150, 'int', mockContext)).toThrow();
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 150,
+						lineNumberAfterMacroExpansion: 150,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 	});
 }

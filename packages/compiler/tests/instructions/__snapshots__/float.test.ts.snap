@@ -10,7 +10,8 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -21,7 +22,8 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
       },
     ],
     "instruction": "float",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -31,7 +33,8 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -41,7 +44,8 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -51,17 +55,20 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;
@@ -124,7 +131,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -139,7 +147,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
       },
     ],
     "instruction": "const",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -149,7 +158,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -159,7 +169,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
       },
     ],
     "instruction": "float",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -169,7 +180,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -179,17 +191,20 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
 ]
 `;
@@ -252,7 +267,8 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -263,7 +279,8 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
       },
     ],
     "instruction": "float",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -273,7 +290,8 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -283,7 +301,8 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -293,17 +312,20 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;

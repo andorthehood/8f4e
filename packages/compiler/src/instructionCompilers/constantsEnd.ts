@@ -41,7 +41,15 @@ if (import.meta.vitest) {
 				],
 			});
 
-			constantsEnd({ lineNumber: 1, instruction: 'constantsEnd', arguments: [] } as AST[number], context);
+			constantsEnd(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'constantsEnd',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({ blockStack: context.blockStack }).toMatchSnapshot();
 		});
@@ -50,7 +58,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext({ blockStack: [] });
 
 			expect(() => {
-				constantsEnd({ lineNumber: 1, instruction: 'constantsEnd', arguments: [] } as AST[number], context);
+				constantsEnd(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'constantsEnd',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});
