@@ -256,7 +256,6 @@ Hide everything after the directive line while the block is not selected.
 ```
 
 Notes:
-- Only valid in `module` blocks.
 - Everything after the `@hide` line is hidden while the block is unselected.
 - Selecting the block expands the full source again for editing.
 - Directives with arguments are ignored.
