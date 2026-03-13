@@ -59,7 +59,8 @@ if (import.meta.vitest) {
 
 			_const(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'const',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' },
@@ -78,7 +79,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				_const(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'const',
 						arguments: [
 							{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' },

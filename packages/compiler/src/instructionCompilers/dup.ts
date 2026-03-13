@@ -17,7 +17,7 @@ const dup: InstructionCompiler = withValidation(
 		// Non-null assertion is safe: withValidation ensures 1 operand exists
 		const operand = context.stack.pop()!;
 
-		const tempName = '__dupTemp' + line.lineNumber;
+		const tempName = '__dupTemp' + line.lineNumberAfterMacroExpansion;
 
 		context.stack.push(operand);
 		const localType = operand.isInteger ? 'int' : operand.isFloat64 ? 'float64' : 'float';
@@ -39,7 +39,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			dup({ lineNumber: 3, instruction: 'dup', arguments: [] } as AST[number], context);
+			dup(
+				{
+					lineNumberBeforeMacroExpansion: 3,
+					lineNumberAfterMacroExpansion: 3,
+					instruction: 'dup',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -52,7 +60,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
 
-			dup({ lineNumber: 4, instruction: 'dup', arguments: [] } as AST[number], context);
+			dup(
+				{
+					lineNumberBeforeMacroExpansion: 4,
+					lineNumberAfterMacroExpansion: 4,
+					instruction: 'dup',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

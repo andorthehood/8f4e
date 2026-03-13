@@ -41,7 +41,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-			greaterOrEqual({ lineNumber: 1, instruction: 'greaterOrEqual', arguments: [] } as AST[number], context);
+			greaterOrEqual(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'greaterOrEqual',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -53,7 +61,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-			greaterOrEqual({ lineNumber: 1, instruction: 'greaterOrEqual', arguments: [] } as AST[number], context);
+			greaterOrEqual(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'greaterOrEqual',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

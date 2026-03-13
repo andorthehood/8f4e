@@ -76,7 +76,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.LITERAL, value: 5, isInteger: true }],
 				} as AST[number],
@@ -101,7 +102,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ANSWER' }],
 				} as AST[number],
@@ -118,7 +120,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				push({ lineNumber: 1, instruction: 'push', arguments: [] } as AST[number], context);
+				push(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'push',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 
@@ -127,7 +137,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.STRING_LITERAL, value: 'hi' }],
 				} as AST[number],
@@ -145,7 +156,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.LITERAL, value: 3.14, isInteger: false, isFloat64: true }],
 				} as AST[number],
@@ -163,7 +175,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false, isFloat64: true }],
 				} as AST[number],
@@ -186,7 +199,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
 				} as AST[number],
@@ -211,7 +225,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
 				} as AST[number],
@@ -227,7 +242,8 @@ if (import.meta.vitest) {
 
 			push(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.LITERAL, value: 3.14, isInteger: false }],
 				} as AST[number],
@@ -255,7 +271,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt' }],
 					} as AST[number],
@@ -283,7 +300,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt16' }],
 					} as AST[number],
@@ -311,7 +329,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt8' }],
 					} as AST[number],
@@ -339,7 +358,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myFloat' }],
 					} as AST[number],
@@ -368,7 +388,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myF64' }],
 					} as AST[number],
@@ -398,7 +419,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt' }],
 					} as AST[number],
@@ -426,7 +448,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt16' }],
 					} as AST[number],
@@ -454,7 +477,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt8' }],
 					} as AST[number],
@@ -482,7 +506,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myFloat' }],
 					} as AST[number],
@@ -511,7 +536,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myF64' }],
 					} as AST[number],
@@ -543,7 +569,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
 					} as AST[number],
@@ -573,7 +600,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
 					} as AST[number],
@@ -601,7 +629,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF32' }],
 					} as AST[number],
@@ -629,7 +658,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
 					} as AST[number],
@@ -656,7 +686,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF32' }],
 					} as AST[number],
@@ -684,7 +715,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '*floatPointer' }],
 					} as AST[number],
@@ -712,7 +744,8 @@ if (import.meta.vitest) {
 
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '*floatPointerPointer' }],
 					} as AST[number],
@@ -751,7 +784,8 @@ if (import.meta.vitest) {
 				const contextInt = { ...context, stack: [] as typeof context.stack, byteCode: [] as typeof context.byteCode };
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myInt' }],
 					} as AST[number],
@@ -764,7 +798,8 @@ if (import.meta.vitest) {
 				const contextFloat = { ...context, stack: [] as typeof context.stack, byteCode: [] as typeof context.byteCode };
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myFloat' }],
 					} as AST[number],
@@ -777,7 +812,8 @@ if (import.meta.vitest) {
 				const contextF64 = { ...context, stack: [] as typeof context.stack, byteCode: [] as typeof context.byteCode };
 				push(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
 					} as AST[number],

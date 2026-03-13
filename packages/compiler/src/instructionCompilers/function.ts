@@ -57,7 +57,8 @@ if (import.meta.vitest) {
 
 			_function(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'function',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'doThing' }],
 				} as AST[number],
@@ -79,7 +80,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				_function(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'function',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'nested' }],
 					} as AST[number],

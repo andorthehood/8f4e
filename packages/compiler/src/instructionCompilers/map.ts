@@ -120,7 +120,8 @@ if (import.meta.vitest) {
 
 			map(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'map',
 					arguments: [
 						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
@@ -152,7 +153,8 @@ if (import.meta.vitest) {
 
 			map(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'map',
 					arguments: [
 						{ type: ArgumentType.STRING_LITERAL, value: 'A' },
@@ -187,7 +189,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				map(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'map',
 						arguments: [
 							{ type: ArgumentType.STRING_LITERAL, value: 'AB' },
@@ -219,7 +222,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				map(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'map',
 						arguments: [
 							{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
@@ -249,7 +253,15 @@ if (import.meta.vitest) {
 			});
 
 			expect(() => {
-				map({ lineNumber: 1, instruction: 'map', arguments: [] } as AST[number], context);
+				map(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'map',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 
@@ -259,7 +271,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				map(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'map',
 						arguments: [
 							{ type: ArgumentType.LITERAL, value: 1, isInteger: true },

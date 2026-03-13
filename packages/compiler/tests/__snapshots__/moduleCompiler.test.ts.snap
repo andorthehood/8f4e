@@ -10,7 +10,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "module",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -25,7 +26,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "int",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -39,7 +41,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "int*",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -54,7 +57,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "int",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -74,7 +78,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "int[]",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [
@@ -88,7 +93,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "local",
-    "lineNumber": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
   },
   {
     "arguments": [
@@ -98,7 +104,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "push",
-    "lineNumber": 13,
+    "lineNumberAfterMacroExpansion": 13,
+    "lineNumberBeforeMacroExpansion": 13,
   },
   {
     "arguments": [
@@ -108,17 +115,20 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "push",
-    "lineNumber": 14,
+    "lineNumberAfterMacroExpansion": 14,
+    "lineNumberBeforeMacroExpansion": 14,
   },
   {
     "arguments": [],
     "instruction": "load",
-    "lineNumber": 15,
+    "lineNumberAfterMacroExpansion": 15,
+    "lineNumberBeforeMacroExpansion": 15,
   },
   {
     "arguments": [],
     "instruction": "load",
-    "lineNumber": 16,
+    "lineNumberAfterMacroExpansion": 16,
+    "lineNumberBeforeMacroExpansion": 16,
   },
   {
     "arguments": [
@@ -128,7 +138,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "localSet",
-    "lineNumber": 17,
+    "lineNumberAfterMacroExpansion": 17,
+    "lineNumberBeforeMacroExpansion": 17,
   },
   {
     "arguments": [
@@ -138,7 +149,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "localGet",
-    "lineNumber": 18,
+    "lineNumberAfterMacroExpansion": 18,
+    "lineNumberBeforeMacroExpansion": 18,
   },
   {
     "arguments": [
@@ -149,17 +161,20 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "push",
-    "lineNumber": 19,
+    "lineNumberAfterMacroExpansion": 19,
+    "lineNumberBeforeMacroExpansion": 19,
   },
   {
     "arguments": [],
     "instruction": "lessThan",
-    "lineNumber": 20,
+    "lineNumberAfterMacroExpansion": 20,
+    "lineNumberBeforeMacroExpansion": 20,
   },
   {
     "arguments": [],
     "instruction": "if",
-    "lineNumber": 21,
+    "lineNumberAfterMacroExpansion": 21,
+    "lineNumberBeforeMacroExpansion": 21,
   },
   {
     "arguments": [
@@ -170,7 +185,8 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "push",
-    "lineNumber": 22,
+    "lineNumberAfterMacroExpansion": 22,
+    "lineNumberBeforeMacroExpansion": 22,
   },
   {
     "arguments": [
@@ -180,17 +196,20 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "localGet",
-    "lineNumber": 23,
+    "lineNumberAfterMacroExpansion": 23,
+    "lineNumberBeforeMacroExpansion": 23,
   },
   {
     "arguments": [],
     "instruction": "sub",
-    "lineNumber": 24,
+    "lineNumberAfterMacroExpansion": 24,
+    "lineNumberBeforeMacroExpansion": 24,
   },
   {
     "arguments": [],
     "instruction": "else",
-    "lineNumber": 25,
+    "lineNumberAfterMacroExpansion": 25,
+    "lineNumberBeforeMacroExpansion": 25,
   },
   {
     "arguments": [
@@ -200,22 +219,26 @@ exports[`moduleCompiler > ast 1`] = `
       },
     ],
     "instruction": "localGet",
-    "lineNumber": 26,
+    "lineNumberAfterMacroExpansion": 26,
+    "lineNumberBeforeMacroExpansion": 26,
   },
   {
     "arguments": [],
     "instruction": "ifEnd",
-    "lineNumber": 27,
+    "lineNumberAfterMacroExpansion": 27,
+    "lineNumberBeforeMacroExpansion": 27,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 28,
+    "lineNumberAfterMacroExpansion": 28,
+    "lineNumberBeforeMacroExpansion": 28,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 29,
+    "lineNumberAfterMacroExpansion": 29,
+    "lineNumberBeforeMacroExpansion": 29,
   },
 ]
 `;

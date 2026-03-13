@@ -178,13 +178,15 @@ if (import.meta.vitest) {
 	const createModuleAst = (moduleId: string, references: string[] = []): AST => {
 		return [
 			{
-				lineNumber: 1,
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
 				instruction: 'module',
 				arguments: [identifierArgument(moduleId)],
 			},
 			...references.map((reference, index) => {
 				return {
-					lineNumber: index + 2,
+					lineNumberBeforeMacroExpansion: index + 2,
+					lineNumberAfterMacroExpansion: index + 2,
 					instruction: 'int',
 					arguments: [identifierArgument(`value${index}`), identifierArgument(reference)],
 				};
@@ -195,7 +197,8 @@ if (import.meta.vitest) {
 	const createConstantsAst = (): AST => {
 		return [
 			{
-				lineNumber: 1,
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
 				instruction: 'constants',
 				arguments: [],
 			},

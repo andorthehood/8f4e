@@ -10,7 +10,8 @@ exports[`call constant function > if the generated AST, WAT and memory map match
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -20,12 +21,14 @@ exports[`call constant function > if the generated AST, WAT and memory map match
       },
     ],
     "instruction": "int",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [],
     "instruction": "loop",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -35,7 +38,8 @@ exports[`call constant function > if the generated AST, WAT and memory map match
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -45,22 +49,26 @@ exports[`call constant function > if the generated AST, WAT and memory map match
       },
     ],
     "instruction": "call",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "loopEnd",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
 ]
 `;
@@ -173,7 +181,8 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -183,12 +192,14 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
       },
     ],
     "instruction": "float64",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [],
     "instruction": "loop",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -198,7 +209,8 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -208,22 +220,26 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
       },
     ],
     "instruction": "call",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "loopEnd",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
 ]
 `;
@@ -339,7 +355,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -349,12 +366,14 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "int",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [],
     "instruction": "loop",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -364,7 +383,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -374,7 +394,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "call",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -384,27 +405,32 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "call",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "add",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [],
     "instruction": "loopEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
 ]
 `;
@@ -521,7 +547,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -531,7 +558,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "int",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -541,12 +569,14 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [],
     "instruction": "loop",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -556,7 +586,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -566,7 +597,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [
@@ -576,22 +608,26 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
       },
     ],
     "instruction": "call",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
   {
     "arguments": [],
     "instruction": "loopEnd",
-    "lineNumber": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 11,
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
   },
 ]
 `;
