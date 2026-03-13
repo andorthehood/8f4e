@@ -1,0 +1,54 @@
+8f4e/v1
+
+module linearToExponential
+
+const LUT_MAX_INDEX 511.0
+const LUT_WORD_SIZE 4
+const LUT_MIN 0.3679
+const LUT_RANGE 0.6301
+
+float* in
+float* lutFirst &expLUT:
+float clamped
+int lutAddress
+float out
+
+push &clamped
+push *in
+push 0.0
+lessThan
+if float
+push 0.0
+else
+push *in
+push 1.0
+greaterThan
+if float
+push 1.0
+else
+push *in
+ifEnd
+ifEnd
+store
+
+push &lutAddress
+push clamped
+push LUT_MAX_INDEX
+mul
+castToInt
+push LUT_WORD_SIZE
+mul
+push lutFirst
+add
+store
+
+push &out
+push lutAddress
+loadFloat
+push LUT_MIN
+sub
+push LUT_RANGE
+div
+store
+
+moduleEnd
