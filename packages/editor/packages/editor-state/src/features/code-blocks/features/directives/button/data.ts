@@ -5,7 +5,11 @@ export interface ButtonDirectiveData {
 	offValue: number;
 }
 
-export function createButtonDirectiveData(args: string[], lineNumber: number): ButtonDirectiveData {
+export function createButtonDirectiveData(args: string[], lineNumber: number): ButtonDirectiveData | undefined {
+	if (!args[0]) {
+		return undefined;
+	}
+
 	return {
 		id: args[0],
 		lineNumber,

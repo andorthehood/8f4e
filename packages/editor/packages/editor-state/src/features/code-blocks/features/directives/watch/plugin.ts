@@ -6,9 +6,12 @@ import { createDirectivePlugin } from '../utils';
 export default createDirectivePlugin(
 	'watch',
 	(directive, draft) => {
-		draft.widgets.push(
-			createWatchDirectiveWidgetContribution(createWatchDirectiveData(directive.args, directive.rawRow))
-		);
+		const watch = createWatchDirectiveData(directive.args, directive.rawRow);
+		if (!watch) {
+			return;
+		}
+
+		draft.widgets.push(createWatchDirectiveWidgetContribution(watch));
 	},
 	{
 		clearGraphicData: graphicData => {
