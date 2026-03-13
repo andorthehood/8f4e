@@ -1,4 +1,4 @@
-import parsePressedKeys from '../../pianoKeyboard/parsePressedKeys';
+import parsePressedKeys from './parsePressedKeys';
 
 export interface PianoDirectiveData {
 	id: string;
