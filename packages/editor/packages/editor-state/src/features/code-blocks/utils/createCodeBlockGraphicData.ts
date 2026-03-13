@@ -55,7 +55,7 @@ export function createCodeBlockGraphicData(
 		blockType: 'unknown',
 		disabled: false,
 		isHome: false,
-		extras: {
+		widgets: {
 			blockHighlights: [],
 			inputs: [],
 			outputs: [],

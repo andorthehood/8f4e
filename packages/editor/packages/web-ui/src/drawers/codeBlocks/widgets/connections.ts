@@ -19,7 +19,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 			continue;
 		}
 
-		for (const { x, y, id } of codeBlock.extras.inputs) {
+		for (const { x, y, id } of codeBlock.widgets.inputs) {
 			const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[id];
 
 			if (!memory || memoryViews.int32[memory.wordAlignedAddress] === 0) {

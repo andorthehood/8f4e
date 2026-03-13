@@ -13,7 +13,7 @@ export default createDirectivePlugin(
 	},
 	{
 		clearGraphicData: graphicData => {
-			graphicData.extras.sliders = [];
+			graphicData.widgets.sliders = [];
 		},
 	}
 );

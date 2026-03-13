@@ -18,8 +18,16 @@ export interface DirectiveBlockState {
 }
 
 export interface DirectiveWidgetContribution {
-	prepare?: (graphicData: CodeBlockGraphicData, state: State, directiveState: DirectiveDerivedState) => void;
-	resolve?: (graphicData: CodeBlockGraphicData, state: State, directiveState: DirectiveDerivedState) => void;
+	beforeGraphicDataWidthCalculation?: (
+		graphicData: CodeBlockGraphicData,
+		state: State,
+		directiveState: DirectiveDerivedState
+	) => void;
+	afterGraphicDataWidthCalculation?: (
+		graphicData: CodeBlockGraphicData,
+		state: State,
+		directiveState: DirectiveDerivedState
+	) => void;
 }
 
 export interface DirectiveDerivedState {

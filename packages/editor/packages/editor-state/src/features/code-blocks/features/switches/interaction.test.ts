@@ -75,7 +75,7 @@ describe('switch interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
-		mockCodeBlock.extras.switches = [
+		mockCodeBlock.widgets.switches = [
 			{
 				id: 'testSwitch',
 				x: 50,
@@ -112,7 +112,7 @@ describe('switch interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
-		mockCodeBlock.extras.switches = [
+		mockCodeBlock.widgets.switches = [
 			{
 				id: 'testSwitch',
 				x: 50,
@@ -140,7 +140,7 @@ describe('switch interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
-		mockCodeBlock.extras.switches = [
+		mockCodeBlock.widgets.switches = [
 			{
 				id: 'testSwitch',
 				x: 50,
