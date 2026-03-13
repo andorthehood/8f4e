@@ -9,11 +9,9 @@ const exp = new Array(512).fill(0).map((value, index) => {
 
 const expLookupTable = `module expLUT
 
-float[] lut 512
-
 ${exp
-	.map((value, index) => {
-		return `init lut[${index}] ${value.toFixed(4)}`;
+	.map(value => {
+		return `float ${value.toFixed(4)}`;
 	})
 	.join('\n')}
 
