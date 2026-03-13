@@ -18,15 +18,3 @@ export function createPlotDirectiveData(args: string[], lineNumber: number): Plo
 		bufferLengthMemoryId: args[3] || undefined,
 	};
 }
-
-export default function parsePlotDirectives(code: string[]): PlotDirectiveData[] {
-	return code.reduce((acc, line, index) => {
-		const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
-		if (commentMatch && commentMatch[1] === 'plot') {
-			const args = commentMatch[2].trim().split(/\s+/);
-			return [...acc, createPlotDirectiveData(args, index)];
-		}
-
-		return acc;
-	}, [] as PlotDirectiveData[]);
-}

@@ -1,11 +1,20 @@
 import { describe, it, expect } from 'vitest';
 
-import parsePlotDirectives from './parse';
+import { createPlotDirectiveData } from './data';
+import plotDirective from './plugin';
 
-describe('parsePlotDirectives', () => {
+import { parseEditorDirectives } from '../utils';
+
+function parsePlotDirectiveData(code: string[]) {
+	return parseEditorDirectives(code, [plotDirective]).map(directive =>
+		createPlotDirectiveData(directive.args, directive.rawRow)
+	);
+}
+
+describe('plot directive data', () => {
 	it('should parse plot instruction with all arguments', () => {
 		const code = ['; @plot myBuffer -10 10 bufferLength'];
-		const result = parsePlotDirectives(code);
+		const result = parsePlotDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -20,7 +29,7 @@ describe('parsePlotDirectives', () => {
 
 	it('should parse plot instruction with default min/max values', () => {
 		const code = ['; @plot myBuffer'];
-		const result = parsePlotDirectives(code);
+		const result = parsePlotDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -35,7 +44,7 @@ describe('parsePlotDirectives', () => {
 
 	it('should parse plot instruction without buffer length', () => {
 		const code = ['; @plot myBuffer -5 5'];
-		const result = parsePlotDirectives(code);
+		const result = parsePlotDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -50,7 +59,7 @@ describe('parsePlotDirectives', () => {
 
 	it('should handle multiple plot instructions', () => {
 		const code = ['; @plot buffer1 -10 10', 'mov a b', '; @plot buffer2 -8 100 len2'];
-		const result = parsePlotDirectives(code);
+		const result = parsePlotDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -71,17 +80,17 @@ describe('parsePlotDirectives', () => {
 	});
 
 	it('should return empty array when no plot instructions found', () => {
-		const result = parsePlotDirectives(['mov a b', 'add c d', 'sub e f']);
+		const result = parsePlotDirectiveData(['mov a b', 'add c d', 'sub e f']);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
-		expect(parsePlotDirectives([])).toEqual([]);
+		expect(parsePlotDirectiveData([])).toEqual([]);
 	});
 
 	it('should use default values when min/max are invalid numbers', () => {
-		const result = parsePlotDirectives(['; @plot myBuffer invalid invalid']);
+		const result = parsePlotDirectiveData(['; @plot myBuffer invalid invalid']);
 
 		expect(result).toEqual([
 			{
@@ -95,7 +104,7 @@ describe('parsePlotDirectives', () => {
 	});
 
 	it('should preserve 0 values for min/max', () => {
-		const result = parsePlotDirectives(['; @plot myBuffer 0 255']);
+		const result = parsePlotDirectiveData(['; @plot myBuffer 0 255']);
 
 		expect(result).toEqual([
 			{

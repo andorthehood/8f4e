@@ -1,10 +1,19 @@
 import { describe, it, expect } from 'vitest';
 
-import parseScanDirectives from './parse';
+import { createScanDirectiveData } from './data';
+import scanDirective from './plugin';
 
-describe('parseScanDirectives', () => {
+import { parseEditorDirectives } from '../utils';
+
+function parseScanDirectiveData(code: string[]) {
+	return parseEditorDirectives(code, [scanDirective]).map(directive =>
+		createScanDirectiveData(directive.args, directive.rawRow)
+	);
+}
+
+describe('scan directive data', () => {
 	it('should parse scan instruction with buffer and pointer', () => {
-		const result = parseScanDirectives(['; @scan myBuffer myPointer']);
+		const result = parseScanDirectiveData(['; @scan myBuffer myPointer']);
 
 		expect(result).toEqual([
 			{
@@ -16,7 +25,7 @@ describe('parseScanDirectives', () => {
 	});
 
 	it('should handle multiple scan instructions', () => {
-		const result = parseScanDirectives(['; @scan buffer1 ptr1', 'mov a b', '; @scan buffer2 ptr2']);
+		const result = parseScanDirectiveData(['; @scan buffer1 ptr1', 'mov a b', '; @scan buffer2 ptr2']);
 
 		expect(result).toEqual([
 			{
@@ -33,15 +42,15 @@ describe('parseScanDirectives', () => {
 	});
 
 	it('should return empty array when no scan instructions found', () => {
-		expect(parseScanDirectives(['mov a b', 'add c d', 'sub e f'])).toEqual([]);
+		expect(parseScanDirectiveData(['mov a b', 'add c d', 'sub e f'])).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
-		expect(parseScanDirectives([])).toEqual([]);
+		expect(parseScanDirectiveData([])).toEqual([]);
 	});
 
 	it('should parse scan instruction at different line positions', () => {
-		const result = parseScanDirectives(['mov a b', '; @scan testBuffer testPointer', 'add c d']);
+		const result = parseScanDirectiveData(['mov a b', '; @scan testBuffer testPointer', 'add c d']);
 
 		expect(result).toEqual([
 			{

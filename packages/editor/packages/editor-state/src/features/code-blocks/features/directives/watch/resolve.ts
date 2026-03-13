@@ -1,5 +1,5 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../types';
-import type { WatchDirectiveData } from './parse';
+import type { WatchDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
