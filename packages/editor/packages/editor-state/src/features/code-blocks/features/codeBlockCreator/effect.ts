@@ -9,9 +9,9 @@ import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 
 import { parseClipboardData } from '../clipboard/clipboardUtils';
+import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
 import getCodeBlockId from '../../utils/getCodeBlockId';
-import upsertDisabled from '../disabled/upsertDisabled';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
