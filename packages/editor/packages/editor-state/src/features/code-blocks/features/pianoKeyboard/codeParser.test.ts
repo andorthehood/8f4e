@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import parsePianoKeyboards from './codeParser';
+import parsePianoDirectives from '../directives/piano/parse';
 
 // Mock parsePressedKeys
 vi.mock('./parsePressedKeys', () => ({
@@ -15,10 +15,10 @@ vi.mock('./parsePressedKeys', () => ({
 	}),
 }));
 
-describe('parsePianoKeyboards', () => {
+describe('parsePianoDirectives', () => {
 	it('should parse piano instruction with all arguments', () => {
 		const code = ['; @piano keys1 numKeys 60'];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -34,7 +34,7 @@ describe('parsePianoKeyboards', () => {
 
 	it('should parse piano instruction with default starting number', () => {
 		const code = ['; @piano keys1 numKeys'];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -50,7 +50,7 @@ describe('parsePianoKeyboards', () => {
 
 	it('should handle multiple piano instructions', () => {
 		const code = ['; @piano keys1 numKeys1 60', 'mov a b', '; @piano keys2 numKeys2 48'];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result).toHaveLength(2);
 		expect(result[0].id).toBe('keys1');
@@ -63,35 +63,35 @@ describe('parsePianoKeyboards', () => {
 
 	it('should return empty array when no piano instructions found', () => {
 		const code = ['mov a b', 'add c d', 'sub e f'];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
 		const code: string[] = [];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should parse starting number as integer', () => {
 		const code = ['; @piano keys1 numKeys 60.5'];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result[0].startingNumber).toBe(60); // parseInt should truncate
 	});
 
 	it('should return NaN for invalid starting number', () => {
 		const code = ['; @piano keys1 numKeys invalid'];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result[0].startingNumber).toBe(NaN);
 	});
 
 	it('should preserve correct line numbers', () => {
 		const code = ['nop', 'nop', '; @piano keys1 numKeys 60', 'nop', 'nop', '; @piano keys2 numKeys2 48'];
-		const result = parsePianoKeyboards(code);
+		const result = parsePianoDirectives(code);
 
 		expect(result[0].lineNumber).toBe(2);
 		expect(result[1].lineNumber).toBe(5);

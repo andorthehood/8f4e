@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 
-import parseSliders from './codeParser';
+import parseSliderDirectives from '../directives/slider/parse';
 
-describe('parseSliders', () => {
+describe('parseSliderDirectives', () => {
 	it('should parse slider instruction with memory id only', () => {
 		const code = ['; @slider mySlider'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -20,7 +20,7 @@ describe('parseSliders', () => {
 
 	it('should parse slider instruction with min and max', () => {
 		const code = ['; @slider mySlider 0 100'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -35,7 +35,7 @@ describe('parseSliders', () => {
 
 	it('should parse slider instruction with min, max, and step', () => {
 		const code = ['; @slider mySlider 0 100 10'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -50,7 +50,7 @@ describe('parseSliders', () => {
 
 	it('should parse slider instruction with float values', () => {
 		const code = ['; @slider mySlider 0.0 1.0 0.01'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -65,7 +65,7 @@ describe('parseSliders', () => {
 
 	it('should handle multiple slider instructions', () => {
 		const code = ['; @slider slider1 0 100', 'mov a b', '; @slider slider2 0.0 1.0'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -87,21 +87,21 @@ describe('parseSliders', () => {
 
 	it('should return empty array when no slider instructions found', () => {
 		const code = ['mov a b', 'add c d', 'sub e f'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
 		const code: string[] = [];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should preserve correct line numbers', () => {
 		const code = ['nop', 'nop', '; @slider slider1 0 100', 'nop', 'nop', '; @slider slider2 0.0 1.0'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([
 			{
@@ -123,7 +123,7 @@ describe('parseSliders', () => {
 
 	it('should handle negative values', () => {
 		const code = ['; @slider mySlider -100 100 5'];
-		const result = parseSliders(code);
+		const result = parseSliderDirectives(code);
 
 		expect(result).toEqual([
 			{
