@@ -84,7 +84,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			store.set('codeErrors.compilationErrors', [
 				{
-					lineNumber: errorObject?.line?.lineNumberBeforeMacroExpansion || 1,
+					lineNumber: errorObject?.line?.lineNumberBeforeMacroExpansion ?? 0,
 					codeBlockId: errorObject?.context?.namespace?.moduleName || '',
 					message: errorObject?.message || error?.toString() || 'Compilation failed',
 				},
