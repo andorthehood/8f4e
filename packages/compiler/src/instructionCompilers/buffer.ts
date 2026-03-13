@@ -87,7 +87,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'values' },
@@ -105,7 +106,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'bytes' },
@@ -128,7 +130,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'bytes' },
@@ -151,7 +154,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'shorts' },
@@ -174,7 +178,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'shorts' },
@@ -197,7 +202,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int32[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'ints' },
@@ -219,7 +225,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			expect(() => {
-				buffer({ lineNumber: 1, instruction: 'int[]', arguments: [] } as AST[number], context);
+				buffer(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'int[]',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 
@@ -228,7 +242,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8u[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'unsignedBytes' },
@@ -250,7 +265,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16u[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'unsignedShorts' },
@@ -272,7 +288,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'signedBytes' },
@@ -291,7 +308,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },
@@ -315,7 +333,8 @@ if (import.meta.vitest) {
 			// Three int32 variables to force an odd word offset
 			buffer(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'ints' },
@@ -327,7 +346,8 @@ if (import.meta.vitest) {
 
 			buffer(
 				{
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 					instruction: 'float64[]',
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },

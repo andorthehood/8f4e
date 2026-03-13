@@ -10,7 +10,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -25,7 +26,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
       },
     ],
     "instruction": "const",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -39,7 +41,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
       },
     ],
     "instruction": "const",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -49,7 +52,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -59,7 +63,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -69,17 +74,20 @@ exports[`const: expression from another constant > if the generated AST, WAT and
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
 ]
 `;
@@ -126,7 +134,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -141,7 +150,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "const",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -151,7 +161,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -165,7 +176,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "init",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -175,7 +187,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "int",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -185,7 +198,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [
@@ -195,17 +209,20 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 8,
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
   },
 ]
 `;
@@ -268,7 +285,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -283,7 +301,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
       },
     ],
     "instruction": "const",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -297,7 +316,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
       },
     ],
     "instruction": "int[]",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -307,7 +327,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -317,7 +338,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -327,17 +349,20 @@ exports[`int[]: buffer size from constant division expression > if the generated
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
 ]
 `;
@@ -399,7 +424,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -414,7 +440,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
       },
     ],
     "instruction": "const",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -428,7 +455,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
       },
     ],
     "instruction": "int[]",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -438,7 +466,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
       },
     ],
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -448,7 +477,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [
@@ -458,17 +488,20 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
   },
 ]
 `;
@@ -530,7 +563,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -545,7 +579,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "const",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -555,7 +590,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -565,7 +601,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -575,17 +612,20 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;
