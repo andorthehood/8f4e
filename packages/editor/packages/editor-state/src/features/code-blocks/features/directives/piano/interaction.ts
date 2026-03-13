@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import findPianoKeyAtViewportCoordinates from './findWidgetAtViewportCoordinates';
+import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
 import insertCodeAfterLine from '../../../utils/codeParsers/insertCodeAfterLine';
@@ -31,7 +31,7 @@ function removeCode(code: string[], pressedKeysListMemoryId: string) {
 export default function pianoKeyboard(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	const onCodeBlockClick = function ({ x, y, codeBlock }: CodeBlockClickEvent) {
-		const keyboard = findPianoKeyAtViewportCoordinates(state, codeBlock, x, y);
+		const keyboard = findPianoKeyboardWidgetAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!keyboard) {
 			return;
