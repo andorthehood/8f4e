@@ -200,6 +200,11 @@ export interface CodeBlockGraphicData {
 	};
 	lastUpdated: number;
 	/**
+	 * Derived cache key for the block's rendered texture.
+	 * Updated automatically whenever graphic data is recomputed.
+	 */
+	textureCacheKey: string;
+	/**
 	 * Monotonically increasing index assigned when the code block is created.
 	 * Used to maintain stable ordering for compiler module list.
 	 * This is a runtime-only value and is NOT persisted.
@@ -243,6 +248,11 @@ export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
 	codeBlocks: CodeBlockGraphicData[];
+	/**
+	 * Monotonic render invalidation counter for code block texture caches.
+	 * Increment when render-wide assets change without an individual block edit.
+	 */
+	textureCacheEpoch: number;
 	/**
 	 * Monotonically increasing counter for assigning creationIndex to new code blocks.
 	 * Incremented each time a new code block is created.

@@ -18,6 +18,7 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 	// dragSet holds the blocks being dragged together. It's computed fresh on each mousedown
 	// and cleared on mouseup, so concurrent drags are not a concern (only one drag at a time).
 	let dragSet: CodeBlockGraphicData[] = [];
+	let didDrag = false;
 
 	function onMouseDown(event: InternalMouseEvent) {
 		const { x, y, altKey } = event;
@@ -31,9 +32,11 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		if (!draggedCodeBlock) {
 			state.graphicHelper.selectedCodeBlock = undefined;
 			dragSet = [];
+			didDrag = false;
 			return;
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
+		didDrag = false;
 
 		// Compute drag set based on nonstick flag and modifier
 		// 1. If block is in a nonstick group and modifier is NOT held: single-block drag
@@ -83,6 +86,10 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 	function onMouseMove(event: InternalMouseEvent) {
 		const { movementX, movementY } = event;
 		if (state.graphicHelper.draggedCodeBlock && dragSet.length > 0) {
+			if (movementX !== 0 || movementY !== 0) {
+				didDrag = true;
+			}
+
 			// Apply movement to all blocks in drag set
 			for (const block of dragSet) {
 				block.x += movementX;
@@ -94,6 +101,12 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 
 	function onMouseUp() {
 		if (!state.graphicHelper.draggedCodeBlock || dragSet.length === 0) {
+			return;
+		}
+
+		if (!didDrag) {
+			state.graphicHelper.draggedCodeBlock = undefined;
+			dragSet = [];
 			return;
 		}
 
@@ -127,6 +140,7 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 
 		state.graphicHelper.draggedCodeBlock = undefined;
 		dragSet = [];
+		didDrag = false;
 	}
 
 	events.on('mousedown', onMouseDown);

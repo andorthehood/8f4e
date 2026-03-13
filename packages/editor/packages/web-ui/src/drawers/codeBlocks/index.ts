@@ -53,7 +53,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 			engine.cacheGroup(
-				`codeBlock${codeBlock.creationIndex}${codeBlock.lastUpdated}`,
+				codeBlock.textureCacheKey,
 				codeBlock.width,
 				codeBlock.height,
 				() => {
