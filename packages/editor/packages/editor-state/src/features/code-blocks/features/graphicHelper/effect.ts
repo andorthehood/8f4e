@@ -41,9 +41,7 @@ import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
 	const shouldExpandCodeBlockForEditing = (codeBlock: CodeBlockGraphicData): boolean =>
-		codeBlock === state.graphicHelper.selectedCodeBlock ||
-		codeBlock === state.graphicHelper.selectedCodeBlockForProgrammaticEdit ||
-		codeBlock === state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
+		codeBlock === state.graphicHelper.selectedCodeBlock;
 
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
 		if (!state.featureFlags.codeLineSelection) {
@@ -214,26 +212,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 	};
 
-	let previousProgrammaticSelectedCodeBlock = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
-	const onProgrammaticSelectedCodeBlockChanged = function () {
-		updateHideSelectionTransition(
-			previousProgrammaticSelectedCodeBlock,
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit
-		);
-		previousProgrammaticSelectedCodeBlock = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
-	};
-
-	let previousProgrammaticSelectedCodeBlockWithoutCompilerTrigger =
-		state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
-	const onProgrammaticSelectedCodeBlockWithoutCompilerTriggerChanged = function () {
-		updateHideSelectionTransition(
-			previousProgrammaticSelectedCodeBlockWithoutCompilerTrigger,
-			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
-		);
-		previousProgrammaticSelectedCodeBlockWithoutCompilerTrigger =
-			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
-	};
-
 	const populateCodeBlocks = async function () {
 		if (!state.initialProjectState) {
 			return;
@@ -388,11 +366,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock', onSelectedCodeBlockChanged);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit', onProgrammaticSelectedCodeBlockChanged);
-	store.subscribe(
-		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger',
-		onProgrammaticSelectedCodeBlockWithoutCompilerTriggerChanged
-	);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyHomeFromCodeEdit);
