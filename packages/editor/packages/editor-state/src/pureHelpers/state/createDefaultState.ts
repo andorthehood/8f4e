@@ -22,6 +22,7 @@ export default function createDefaultState() {
 		},
 		graphicHelper: {
 			codeBlocks: [],
+			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
 			contextMenu: {
