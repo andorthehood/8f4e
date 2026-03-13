@@ -1,4 +1,4 @@
-import findButtonAtViewportCoordinates from './findWidgetAtViewportCoordinates';
+import findButtonWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import type { State, Switch, CodeBlockGraphicData } from '~/types';
 import type { DataStructure } from '@8f4e/compiler';
@@ -10,7 +10,7 @@ export default function button(state: State, events: EventDispatcher): () => voi
 	let lastPushedButtonMemory: DataStructure | undefined;
 
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
-		lastPushedButton = findButtonAtViewportCoordinates(state, codeBlock, x, y);
+		lastPushedButton = findButtonWidgetAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!lastPushedButton) {
 			return;
