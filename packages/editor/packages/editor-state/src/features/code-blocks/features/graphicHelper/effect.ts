@@ -102,13 +102,20 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const lineNumberPrefixLength = graphicData.lineNumberColumnWidth + 1; // +1 for space
 		graphicData.codeColors = graphicData.codeToRender.map((line, displayRow) => {
 			const lineColors = new Array(line.length).fill(undefined);
+			const displayLine = displayModel.lines[displayRow];
 			const rawRow = displayModel.displayRowToRawRow[displayRow] ?? 0;
 
 			// Apply line number color at the first column (color persists until changed)
 			lineColors[0] = spriteLookups.fontLineNumber;
 
 			// Reset to code color after line number prefix (at the space separator)
-			lineColors[graphicData.lineNumberColumnWidth] = spriteLookups.fontCode;
+			lineColors[graphicData.lineNumberColumnWidth] = displayLine?.isPlaceholder
+				? spriteLookups.fontCodeComment
+				: spriteLookups.fontCode;
+
+			if (displayLine?.isPlaceholder) {
+				return lineColors;
+			}
 
 			// Merge syntax colors from raw code, offset by prefix length
 			const rawColors = expandLineColorsToCells(

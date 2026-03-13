@@ -1,6 +1,7 @@
 export interface DisplayLine {
 	rawRow: number;
 	text: string;
+	isPlaceholder?: boolean;
 }
 
 export interface CodeBlockDisplayModel {
@@ -29,15 +30,35 @@ function getVisibleRawRows(code: string[], hideAfterRawRow: number | undefined, 
 	});
 }
 
+function shouldShowCollapsedPlaceholder(
+	code: string[],
+	hideAfterRawRow: number | undefined,
+	isExpandedForEditing: boolean
+): hideAfterRawRow is number {
+	return (
+		hideAfterRawRow !== undefined &&
+		!isExpandedForEditing &&
+		hideAfterRawRow < code.length - 1
+	);
+}
+
 export default function buildDisplayModel(
 	code: string[],
 	{ hideAfterRawRow, isExpandedForEditing = false }: BuildDisplayModelOptions = {}
 ): CodeBlockDisplayModel {
 	const visibleRawRows = getVisibleRawRows(code, hideAfterRawRow, isExpandedForEditing);
-	const lines = visibleRawRows.map(rawRow => ({
+	const lines: DisplayLine[] = visibleRawRows.map(rawRow => ({
 		rawRow,
 		text: code[rawRow] || '',
 	}));
+
+	if (shouldShowCollapsedPlaceholder(code, hideAfterRawRow, isExpandedForEditing)) {
+		lines.push({
+			rawRow: hideAfterRawRow,
+			text: '...',
+			isPlaceholder: true,
+		});
+	}
 
 	const displayRowToRawRow = lines.map(line => line.rawRow);
 	const rawRowToDisplayRow = code.map(() => undefined as number | undefined);
@@ -89,10 +110,23 @@ if (import.meta.vitest) {
 			expect(result.lines).toEqual([
 				{ rawRow: 0, text: 'module foo' },
 				{ rawRow: 1, text: '; @hide' },
+				{ rawRow: 1, text: '...', isPlaceholder: true },
+			]);
+			expect(result.displayRowToRawRow).toEqual([0, 1, 1]);
+			expect(result.rawRowToDisplayRow).toEqual([0, 2, undefined, undefined, undefined]);
+			expect(result.isCollapsed).toBe(true);
+		});
+
+		it('does not add a placeholder when @hide is already the last line', () => {
+			const code = ['module foo', '; @hide'];
+
+			const result = buildDisplayModel(code, { hideAfterRawRow: 1 });
+
+			expect(result.lines).toEqual([
+				{ rawRow: 0, text: 'module foo' },
+				{ rawRow: 1, text: '; @hide' },
 			]);
 			expect(result.displayRowToRawRow).toEqual([0, 1]);
-			expect(result.rawRowToDisplayRow).toEqual([0, 1, undefined, undefined, undefined]);
-			expect(result.isCollapsed).toBe(true);
 		});
 
 		it('shows the full block while expanded for editing', () => {
