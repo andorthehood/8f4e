@@ -147,7 +147,8 @@ if (import.meta.vitest) {
 			const result = deriveDirectiveState(['module foo', '; @hide', 'push 1', 'moduleEnd']);
 
 			expect(result.displayState).toEqual({ hideAfterRawRow: 1 });
-			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1]);
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 1]);
+			expect(result.displayModel.lines[2]).toEqual({ rawRow: 1, text: '...', isPlaceholder: true });
 			expect(result.displayModel.isCollapsed).toBe(true);
 		});
 
