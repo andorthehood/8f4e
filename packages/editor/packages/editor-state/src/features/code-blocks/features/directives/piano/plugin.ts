@@ -1,4 +1,4 @@
-import { createPianoDirectiveData } from './parse';
+import { createPianoDirectiveData } from './data';
 import { createPianoDirectiveWidgetContribution } from './resolve';
 
 import { createDirectivePlugin } from '../utils';

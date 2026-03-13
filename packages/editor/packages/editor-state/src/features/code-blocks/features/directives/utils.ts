@@ -21,26 +21,29 @@ export function createDirectivePlugin(
 	return {
 		name,
 		...options,
-		parse: (line, rawRow) => {
-			const parsed = parseDirectiveComment(line);
-			if (!parsed || parsed.name !== name) {
-				return undefined;
-			}
-
-			return {
-				name,
-				rawRow,
-				args: parsed.args,
-			};
-		},
 		apply,
 	};
 }
 
 export function parseEditorDirectives(code: string[], plugins: EditorDirectivePlugin[]): ParsedEditorDirective[] {
-	return code.flatMap((line, rawRow) =>
-		plugins
-			.map(plugin => plugin.parse(line, rawRow))
-			.filter((directive): directive is ParsedEditorDirective => directive !== undefined)
-	);
+	const pluginNames = new Set(plugins.map(plugin => plugin.name));
+
+	return code.flatMap((line, rawRow) => {
+		const parsed = parseDirectiveComment(line);
+		if (!parsed || !pluginNames.has(parsed.name)) {
+			return [];
+		}
+
+		return [
+			{
+				name: parsed.name,
+				rawRow,
+				args: parsed.args,
+			},
+		];
+	});
+}
+
+export function hasDirective(code: string[], name: string): boolean {
+	return code.some(line => parseDirectiveComment(line)?.name === name);
 }

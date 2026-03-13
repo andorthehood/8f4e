@@ -1,5 +1,5 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../types';
-import type { SliderDirectiveData } from './parse';
+import type { SliderDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 

@@ -1,11 +1,20 @@
 import { describe, it, expect } from 'vitest';
 
-import parseSwitchDirectives from './parse';
+import { createSwitchDirectiveData } from './data';
+import switchDirective from './plugin';
 
-describe('parseSwitchDirectives', () => {
+import { parseEditorDirectives } from '../utils';
+
+function parseSwitchDirectiveData(code: string[]) {
+	return parseEditorDirectives(code, [switchDirective]).map(directive =>
+		createSwitchDirectiveData(directive.args, directive.rawRow)
+	);
+}
+
+describe('switch directive data', () => {
 	it('should parse switch instruction with all arguments', () => {
 		const code = ['; @switch mySwitch 0 1'];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -19,7 +28,7 @@ describe('parseSwitchDirectives', () => {
 
 	it('should parse switch instruction with default off/on values', () => {
 		const code = ['; @switch mySwitch'];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -33,7 +42,7 @@ describe('parseSwitchDirectives', () => {
 
 	it('should parse switch instruction with custom values', () => {
 		const code = ['; @switch mySwitch 10 100'];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -47,7 +56,7 @@ describe('parseSwitchDirectives', () => {
 
 	it('should handle multiple switch instructions', () => {
 		const code = ['; @switch sw1 0 1', 'mov a b', '; @switch sw2 5 15'];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -67,21 +76,21 @@ describe('parseSwitchDirectives', () => {
 
 	it('should return empty array when no switch instructions found', () => {
 		const code = ['mov a b', 'add c d', 'sub e f'];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should handle empty code array', () => {
 		const code: string[] = [];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([]);
 	});
 
 	it('should use default values when off/on are invalid numbers', () => {
 		const code = ['; @switch mySwitch invalid invalid'];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
@@ -95,7 +104,7 @@ describe('parseSwitchDirectives', () => {
 
 	it('should preserve correct line numbers', () => {
 		const code = ['nop', 'nop', '; @switch sw1 0 1', 'nop', 'nop', '; @switch sw2 5 10'];
-		const result = parseSwitchDirectives(code);
+		const result = parseSwitchDirectiveData(code);
 
 		expect(result).toEqual([
 			{
