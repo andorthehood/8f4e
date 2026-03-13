@@ -19,12 +19,7 @@ const int: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
-		const { id, defaultValue } = parseMemoryInstructionArguments(
-			line.arguments,
-			line.lineNumberAfterMacroExpansion,
-			line.instruction,
-			context
-		);
+		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
 		const pointerDepth = getPointerDepth(line.instruction);
 		const flags = getMemoryFlags('int', pointerDepth);
 
