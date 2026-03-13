@@ -78,7 +78,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const displayModel = directiveState.displayModel;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
-		graphicData.lineNumberColumnWidth = displayModel.lines.length.toString().length;
+		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
 		graphicData.codeToRender = displayModel.lines.map(({ text, rawRow }, displayRow) => {
 			const prefix = `${displayRow}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
@@ -129,7 +129,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		gaps(graphicData, directiveState);
 		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
 
-		graphicData.width = getCodeBlockGridWidth(displayModel, graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
+		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
 
 		runAfterGraphicDataWidthCalculation(graphicData, state, directiveState);
 		outputs(graphicData, state);
