@@ -7,7 +7,7 @@ export default function drawBlockHighlights(engine: Engine, state: State, codeBl
 		return;
 	}
 
-	for (const { x, y, width, height, color } of codeBlock.extras.blockHighlights) {
+	for (const { x, y, width, height, color } of codeBlock.widgets.blockHighlights) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
 		engine.drawSprite(x, y, color, width, height);

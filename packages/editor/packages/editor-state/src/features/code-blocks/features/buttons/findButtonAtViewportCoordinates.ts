@@ -16,7 +16,7 @@ export default function findButtonAtViewportCoordinates(
 	x: number,
 	y: number
 ): Switch | undefined {
-	return codeBlock.extras.buttons.find(button => {
+	return codeBlock.widgets.buttons.find(button => {
 		return (
 			x >= codeBlock.x + codeBlock.offsetX + button.x - state.viewport.x &&
 			x <= codeBlock.x + codeBlock.offsetX + button.width + button.x - state.viewport.x &&

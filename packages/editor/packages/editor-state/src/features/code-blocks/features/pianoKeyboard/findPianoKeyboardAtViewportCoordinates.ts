@@ -14,7 +14,7 @@ export default function findPianoKeyboardAtViewportCoordinates(
 	x: number,
 	y: number
 ): PianoKeyboard | undefined {
-	return codeBlock.extras.pianoKeyboards.find(pianoKeyboard => {
+	return codeBlock.widgets.pianoKeyboards.find(pianoKeyboard => {
 		return (
 			x >= codeBlock.x + codeBlock.offsetX + pianoKeyboard.x - state.viewport.x &&
 			x <= codeBlock.x + codeBlock.offsetX + pianoKeyboard.width + pianoKeyboard.x - state.viewport.x &&

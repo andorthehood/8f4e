@@ -6,7 +6,7 @@ import type { PianoDirectiveData } from './parse';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
-type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['resolve']>;
+type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
 function resolvePianoDirectiveWidget(
 	pianoKeyboard: PianoDirectiveData,
@@ -32,7 +32,7 @@ function resolvePianoDirectiveWidget(
 	const displayRow =
 		directiveState.displayModel.rawRowToDisplayRow[pianoKeyboard.lineNumber] ?? pianoKeyboard.lineNumber;
 
-	graphicData.extras.pianoKeyboards.push({
+	graphicData.widgets.pianoKeyboards.push({
 		x: 0,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
 		width: 24 * (state.viewport.vGrid * 2),
@@ -47,10 +47,10 @@ function resolvePianoDirectiveWidget(
 
 export function createPianoDirectiveWidgetContribution(pianoKeyboard: PianoDirectiveData): DirectiveWidgetContribution {
 	return {
-		prepare: graphicData => {
+		beforeGraphicDataWidthCalculation: graphicData => {
 			graphicData.minGridWidth = PIANO_KEYBOARD_MIN_GRID_WIDTH;
 		},
-		resolve: (graphicData, state, directiveState) => {
+		afterGraphicDataWidthCalculation: (graphicData, state, directiveState) => {
 			resolvePianoDirectiveWidget(pianoKeyboard, graphicData, state, directiveState);
 		},
 	};

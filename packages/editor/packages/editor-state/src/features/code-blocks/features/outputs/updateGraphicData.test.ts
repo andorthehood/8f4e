@@ -6,7 +6,7 @@ import updateOutputsGraphicData from './updateGraphicData';
 import type { CodeBlockGraphicData, State } from '~/types';
 import type { DataStructure } from '@8f4e/compiler';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('updateOutputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -43,17 +43,17 @@ describe('updateOutputsGraphicData', () => {
 		});
 	});
 
-	it('should add output to graphicData extras', () => {
+	it('should add output to graphicData widgets', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.outputs.length).toBe(1);
-		expect(findExtrasById(mockGraphicData.extras.outputs, 'output1')).toBeDefined();
+		expect(mockGraphicData.widgets.outputs.length).toBe(1);
+		expect(findWidgetById(mockGraphicData.widgets.outputs, 'output1')).toBeDefined();
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
-		const output = findExtrasById(mockGraphicData.extras.outputs, 'output1');
+		const output = findWidgetById(mockGraphicData.widgets.outputs, 'output1');
 		// Exclude codeBlock and memory from snapshot as they create circular references
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
@@ -76,12 +76,12 @@ describe('updateOutputsGraphicData', () => {
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.outputs.length).toBe(0);
+		expect(mockGraphicData.widgets.outputs.length).toBe(0);
 		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(0);
 	});
 
 	it('should clear existing outputs before updating', () => {
-		mockGraphicData.extras.outputs.push({
+		mockGraphicData.widgets.outputs.push({
 			codeBlock: mockGraphicData,
 			width: 0,
 			height: 0,
@@ -95,7 +95,7 @@ describe('updateOutputsGraphicData', () => {
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
-		expect(findExtrasById(mockGraphicData.extras.outputs, 'oldOutput')).toBeUndefined();
+		expect(findWidgetById(mockGraphicData.widgets.outputs, 'oldOutput')).toBeUndefined();
 	});
 
 	it('should handle multiple outputs', () => {
@@ -117,11 +117,11 @@ describe('updateOutputsGraphicData', () => {
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.outputs.length).toBe(2);
+		expect(mockGraphicData.widgets.outputs.length).toBe(2);
 		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(2);
 
 		// Exclude codeBlock and memory references from snapshot
-		const entries = Object.entries(mockGraphicData.extras.outputs).map(([key, value]) => {
+		const entries = Object.entries(mockGraphicData.widgets.outputs).map(([key, value]) => {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { codeBlock: _codeBlock, memory: _memory, ...rest } = value;
 			return [key, rest];
@@ -148,7 +148,7 @@ describe('updateOutputsGraphicData', () => {
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
-		const output = findExtrasById(mockGraphicData.extras.outputs, 'output1');
+		const output = findWidgetById(mockGraphicData.widgets.outputs, 'output1');
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();

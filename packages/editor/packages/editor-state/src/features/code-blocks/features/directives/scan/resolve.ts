@@ -4,7 +4,7 @@ import type { ScanDirectiveData } from './parse';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
-type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['resolve']>;
+type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
 function resolveScanDirectiveWidget(
 	scanner: ScanDirectiveData,
@@ -25,7 +25,7 @@ function resolveScanDirectiveWidget(
 
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[scanner.lineNumber] ?? scanner.lineNumber;
 
-	graphicData.extras.bufferScanners.push({
+	graphicData.widgets.bufferScanners.push({
 		width: graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		height: state.viewport.hGrid * 2,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
@@ -37,7 +37,7 @@ function resolveScanDirectiveWidget(
 
 export function createScanDirectiveWidgetContribution(scanner: ScanDirectiveData): DirectiveWidgetContribution {
 	return {
-		resolve: (graphicData, state, directiveState) => {
+		afterGraphicDataWidthCalculation: (graphicData, state, directiveState) => {
 			resolveScanDirectiveWidget(scanner, graphicData, state, directiveState);
 		},
 	};

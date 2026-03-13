@@ -6,7 +6,7 @@ import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.debuggers = [];
+	graphicData.widgets.debuggers = [];
 	parseDebuggers(graphicData.code).forEach(_debugger => {
 		if (!graphicData.moduleId) {
 			return;
@@ -18,7 +18,7 @@ export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphic
 			return;
 		}
 
-		graphicData.extras.debuggers.push({
+		graphicData.widgets.debuggers.push({
 			width: state.viewport.vGrid * 2,
 			height: state.viewport.hGrid,
 			x:

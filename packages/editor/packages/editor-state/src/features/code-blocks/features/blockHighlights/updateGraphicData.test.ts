@@ -21,7 +21,7 @@ describe('updateBlockHighlightsGraphicData', () => {
 
 		updateBlockHighlightsGraphicData(graphicData, state);
 
-		expect(graphicData.extras.blockHighlights).toEqual([
+		expect(graphicData.widgets.blockHighlights).toEqual([
 			{
 				x: 30,
 				y: 20,
@@ -40,6 +40,6 @@ describe('updateBlockHighlightsGraphicData', () => {
 
 		updateBlockHighlightsGraphicData(graphicData, state);
 
-		expect(graphicData.extras.blockHighlights).toEqual([]);
+		expect(graphicData.widgets.blockHighlights).toEqual([]);
 	});
 });
