@@ -1,7 +1,23 @@
 import findClosestCodeBlockInDirection, { Direction } from '../../utils/finders/findClosestCodeBlockInDirection';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
+import type { StateManager } from '@8f4e/state-manager';
 
 import type { State, EventDispatcher, NavigateCodeBlockEvent } from '~/types';
+
+type StateSource = StateManager<State> | State;
+
+function getState(source: StateSource): State {
+	return 'getState' in source ? source.getState() : source;
+}
+
+function setSelectedCodeBlock(source: StateSource, codeBlock: State['graphicHelper']['selectedCodeBlock']): void {
+	if ('set' in source) {
+		source.set('graphicHelper.selectedCodeBlock', codeBlock);
+		return;
+	}
+
+	source.graphicHelper.selectedCodeBlock = codeBlock;
+}
 
 /**
  * Event payload for jumping to a favorite code block.
@@ -21,7 +37,8 @@ interface JumpToFavoriteCodeBlockEvent {
  * @param direction - The direction to navigate
  * @returns {boolean} true if navigation to a different block occurred, false if no block is selected or the target is the same as the current block
  */
-export function navigateToCodeBlockInDirection(state: State, direction: Direction): boolean {
+export function navigateToCodeBlockInDirection(stateSource: StateSource, direction: Direction): boolean {
+	const state = getState(stateSource);
 	// Only proceed if a code block is currently selected
 	if (!state.graphicHelper.selectedCodeBlock) {
 		return false;
@@ -36,7 +53,7 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
 
 	// If we found a different block, select it and center viewport on it
 	if (targetBlock !== currentBlock) {
-		state.graphicHelper.selectedCodeBlock = targetBlock;
+		setSelectedCodeBlock(stateSource, targetBlock);
 		// Enable animation for this programmatic viewport change, but restore original value after
 		const originalViewportAnimations = state.featureFlags.viewportAnimations;
 		state.featureFlags.viewportAnimations = true;
@@ -59,7 +76,8 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
  * @param id - The source code ID of the target block (fallback)
  * @returns {boolean} true if the block was found and jumped to, false otherwise
  */
-export function jumpToCodeBlock(state: State, creationIndex: number, id: string): boolean {
+export function jumpToCodeBlock(stateSource: StateSource, creationIndex: number, id: string): boolean {
+	const state = getState(stateSource);
 	const codeBlocks = state.graphicHelper.codeBlocks;
 
 	// Try to resolve by creationIndex first (primary identifier)
@@ -72,7 +90,7 @@ export function jumpToCodeBlock(state: State, creationIndex: number, id: string)
 
 	// If we found a block, select it and center viewport on it
 	if (targetBlock) {
-		state.graphicHelper.selectedCodeBlock = targetBlock;
+		setSelectedCodeBlock(stateSource, targetBlock);
 		// Enable animation for this programmatic viewport change, but restore original value after
 		const originalViewportAnimations = state.featureFlags.viewportAnimations;
 		state.featureFlags.viewportAnimations = true;
@@ -95,13 +113,14 @@ export function jumpToCodeBlock(state: State, creationIndex: number, id: string)
  *
  * @param state - The editor state
  */
-export function goHome(state: State): void {
+export function goHome(stateSource: StateSource): void {
+	const state = getState(stateSource);
 	const homeBlock = state.graphicHelper.codeBlocks.find(block => block.isHome);
 	const originalViewportAnimations = state.featureFlags.viewportAnimations;
 	state.featureFlags.viewportAnimations = true;
 
 	if (homeBlock) {
-		state.graphicHelper.selectedCodeBlock = homeBlock;
+		setSelectedCodeBlock(stateSource, homeBlock);
 		centerViewportOnCodeBlock(state.viewport, homeBlock);
 	} else {
 		state.viewport.x = 0;
@@ -133,17 +152,17 @@ export function goHome(state: State): void {
  * @param state - The editor state
  * @param events - The event dispatcher
  */
-export default function codeBlockNavigation(state: State, events: EventDispatcher): void {
+export default function codeBlockNavigation(store: StateManager<State>, events: EventDispatcher): void {
 	const onNavigateCodeBlock = (event: NavigateCodeBlockEvent) => {
-		navigateToCodeBlockInDirection(state, event.direction);
+		navigateToCodeBlockInDirection(store, event.direction);
 	};
 
 	const onJumpToFavoriteCodeBlock = (event: JumpToFavoriteCodeBlockEvent) => {
-		jumpToCodeBlock(state, event.creationIndex, event.id);
+		jumpToCodeBlock(store, event.creationIndex, event.id);
 	};
 
 	const onGoHome = () => {
-		goHome(state);
+		goHome(store);
 	};
 
 	// Register the abstract navigation event handler

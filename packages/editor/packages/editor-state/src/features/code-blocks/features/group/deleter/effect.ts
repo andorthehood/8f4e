@@ -33,7 +33,7 @@ export default function groupDeleter(store: StateManager<State>, events: EventDi
 
 		// Clear selected/dragged references if they point to deleted blocks
 		if (state.graphicHelper.selectedCodeBlock && blocksToDelete.has(state.graphicHelper.selectedCodeBlock)) {
-			state.graphicHelper.selectedCodeBlock = undefined;
+			store.set('graphicHelper.selectedCodeBlock', undefined);
 		}
 
 		if (state.graphicHelper.draggedCodeBlock && blocksToDelete.has(state.graphicHelper.draggedCodeBlock)) {
