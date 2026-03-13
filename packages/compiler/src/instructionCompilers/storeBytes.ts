@@ -29,8 +29,9 @@ const storeBytes: InstructionCompiler = withValidation(
 	(line, context) => {
 		const count = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>).value;
 
-		const tempAddrVar = `__storeBytesAddr_${line.lineNumber}`;
-		const tempByteVar = `__storeBytesByte_${line.lineNumber}`;
+		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+		const tempAddrVar = `__storeBytesAddr_${lineNumberAfterMacroExpansion}`;
+		const tempByteVar = `__storeBytesByte_${lineNumberAfterMacroExpansion}`;
 
 		const lines = [`local int ${tempAddrVar}`, `local int ${tempByteVar}`, `localSet ${tempAddrVar}`];
 		for (let i = 0; i < count; i++) {
@@ -64,7 +65,15 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
 
 			expect(() => {
-				storeBytes({ lineNumber: 1, instruction: 'storeBytes', arguments: [] } as AST[number], context);
+				storeBytes(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'storeBytes',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrow();
 		});
 
@@ -75,7 +84,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				storeBytes(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'storeBytes',
 						arguments: [{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false }],
 					} as AST[number],
@@ -91,7 +101,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				storeBytes(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'storeBytes',
 						arguments: [{ type: ArgumentType.LITERAL, value: -1, isInteger: true }],
 					} as AST[number],
@@ -108,7 +119,8 @@ if (import.meta.vitest) {
 			expect(() => {
 				storeBytes(
 					{
-						lineNumber: 1,
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
 						instruction: 'storeBytes',
 						arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 					} as AST[number],
@@ -129,7 +141,8 @@ if (import.meta.vitest) {
 
 			storeBytes(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'storeBytes',
 					arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
@@ -150,7 +163,8 @@ if (import.meta.vitest) {
 
 			storeBytes(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'storeBytes',
 					arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
 				} as AST[number],
@@ -166,7 +180,8 @@ if (import.meta.vitest) {
 
 			storeBytes(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'storeBytes',
 					arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 				} as AST[number],

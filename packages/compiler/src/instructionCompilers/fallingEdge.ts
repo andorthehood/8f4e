@@ -17,8 +17,9 @@ const fallingEdge: InstructionCompiler = withValidation(
 		// Non-null assertion is safe: withValidation with minOperands: 1 guarantees at least 1 operand exists on the stack
 		const operand = context.stack.pop()!;
 
-		const currentValueName = '__fallingEdgeDetector_currentValue' + line.lineNumber;
-		const previousValueName = '__fallingEdgeDetector_previousValue' + line.lineNumber;
+		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+		const currentValueName = '__fallingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
+		const previousValueName = '__fallingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
 		const loadInstruction = operand.isInteger ? 'load' : 'loadFloat';
 
@@ -58,7 +59,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			fallingEdge({ lineNumber: 5, instruction: 'fallingEdge', arguments: [] } as AST[number], context);
+			fallingEdge(
+				{
+					lineNumberBeforeMacroExpansion: 5,
+					lineNumberAfterMacroExpansion: 5,
+					instruction: 'fallingEdge',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

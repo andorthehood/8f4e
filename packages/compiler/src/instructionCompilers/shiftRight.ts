@@ -35,7 +35,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-			shiftRight({ lineNumber: 1, instruction: 'shiftRight', arguments: [] } as AST[number], context);
+			shiftRight(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'shiftRight',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,

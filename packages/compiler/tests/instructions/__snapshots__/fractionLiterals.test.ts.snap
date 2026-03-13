@@ -10,7 +10,8 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -25,7 +26,8 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "const",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -35,7 +37,8 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -45,7 +48,8 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -55,17 +59,20 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;
@@ -112,7 +119,8 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -127,7 +135,8 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
       },
     ],
     "instruction": "float",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -137,7 +146,8 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -147,7 +157,8 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -157,17 +168,20 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;
@@ -230,7 +244,8 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -245,7 +260,8 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
       },
     ],
     "instruction": "float",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -255,7 +271,8 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
       },
     ],
     "instruction": "float",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -265,7 +282,8 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -275,17 +293,20 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;
@@ -348,7 +369,8 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -363,7 +385,8 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
       },
     ],
     "instruction": "int",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -373,7 +396,8 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -383,7 +407,8 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -393,17 +418,20 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;
@@ -466,7 +494,8 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -481,7 +510,8 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
       },
     ],
     "instruction": "int",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -491,7 +521,8 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
       },
     ],
     "instruction": "int",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -501,7 +532,8 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [
@@ -511,17 +543,20 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
       },
     ],
     "instruction": "push",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 6,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
   },
 ]
 `;
@@ -584,7 +619,8 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "module",
-    "lineNumber": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
   },
   {
     "arguments": [
@@ -599,7 +635,8 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "float",
-    "lineNumber": 1,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
   },
   {
     "arguments": [
@@ -609,7 +646,8 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "push",
-    "lineNumber": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   {
     "arguments": [
@@ -620,17 +658,20 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
   },
   {
     "arguments": [],
     "instruction": "store",
-    "lineNumber": 4,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
   },
   {
     "arguments": [],
     "instruction": "moduleEnd",
-    "lineNumber": 5,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
   },
 ]
 `;

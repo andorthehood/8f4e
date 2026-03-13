@@ -63,7 +63,15 @@ if (import.meta.vitest) {
 			});
 			context.stack.push({ isInteger: true, isNonZero: false });
 
-			_else({ lineNumber: 1, instruction: 'else', arguments: [] } as AST[number], context);
+			_else(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'else',
+					arguments: [],
+				} as AST[number],
+				context
+			);
 
 			expect({
 				stack: context.stack,
@@ -76,7 +84,15 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext({ blockStack: [] });
 
 			expect(() => {
-				_else({ lineNumber: 1, instruction: 'else', arguments: [] } as AST[number], context);
+				_else(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'else',
+						arguments: [],
+					} as AST[number],
+					context
+				);
 			}).toThrowError();
 		});
 	});

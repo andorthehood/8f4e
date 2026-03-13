@@ -32,7 +32,7 @@ const float64: InstructionCompiler = withValidation(
 		const localWordOffset = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 		const { id, defaultValue } = parseMemoryInstructionArguments(
 			line.arguments,
-			line.lineNumber,
+			line.lineNumberAfterMacroExpansion,
 			line.instruction,
 			context
 		);
@@ -91,7 +91,8 @@ if (import.meta.vitest) {
 
 			float64(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
 				} as AST[number],
@@ -106,7 +107,8 @@ if (import.meta.vitest) {
 
 			float64(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
 				} as AST[number],
@@ -121,7 +123,8 @@ if (import.meta.vitest) {
 
 			float64(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
 				} as AST[number],
@@ -137,7 +140,8 @@ if (import.meta.vitest) {
 			// First float64 (starts at word 0, even)
 			float64(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'a' }],
 				} as AST[number],
@@ -147,7 +151,8 @@ if (import.meta.vitest) {
 			// Three int32 variables (odd count) push the offset to an odd word boundary
 			int(
 				{
-					lineNumber: 2,
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
 					instruction: 'int',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'x' }],
 				} as AST[number],
@@ -155,7 +160,8 @@ if (import.meta.vitest) {
 			);
 			int(
 				{
-					lineNumber: 3,
+					lineNumberBeforeMacroExpansion: 3,
+					lineNumberAfterMacroExpansion: 3,
 					instruction: 'int',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'y' }],
 				} as AST[number],
@@ -163,7 +169,8 @@ if (import.meta.vitest) {
 			);
 			int(
 				{
-					lineNumber: 4,
+					lineNumberBeforeMacroExpansion: 4,
+					lineNumberAfterMacroExpansion: 4,
 					instruction: 'int',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'z' }],
 				} as AST[number],
@@ -173,7 +180,8 @@ if (import.meta.vitest) {
 			// Second float64 must still be 8-byte aligned despite odd preceding offset
 			float64(
 				{
-					lineNumber: 5,
+					lineNumberBeforeMacroExpansion: 5,
+					lineNumberAfterMacroExpansion: 5,
 					instruction: 'float64',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'b' }],
 				} as AST[number],
@@ -190,7 +198,8 @@ if (import.meta.vitest) {
 
 			float64(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64*',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ptr' }],
 				} as AST[number],
@@ -209,7 +218,8 @@ if (import.meta.vitest) {
 
 			float64(
 				{
-					lineNumber: 1,
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64**',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'pptr' }],
 				} as AST[number],
