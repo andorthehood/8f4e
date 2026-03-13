@@ -30,12 +30,12 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		const draggedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
 		if (!draggedCodeBlock) {
-			state.graphicHelper.selectedCodeBlock = undefined;
+			store.set('graphicHelper.selectedCodeBlock', undefined);
 			dragSet = [];
 			didDrag = false;
 			return;
 		}
-		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
+		store.set('graphicHelper.selectedCodeBlock', state.graphicHelper.draggedCodeBlock);
 		didDrag = false;
 
 		// Compute drag set based on nonstick flag and modifier

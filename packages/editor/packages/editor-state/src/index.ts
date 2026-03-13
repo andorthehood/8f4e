@@ -71,8 +71,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	runtime(store, events);
 	projectImport(store, events);
 	codeBlockDragger(store, events);
-	codeBlockNavigation(state, events);
-	demoModeNavigation(state, events);
+	codeBlockNavigation(store, events);
+	demoModeNavigation(store, events);
 	_switch(state, events);
 	button(state, events);
 	slider(store, events);
