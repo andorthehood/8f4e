@@ -315,16 +315,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		state.graphicHelper.codeBlocks.forEach(codeBlock => {
 			codeBlock.widgets.errorMessages = [];
 			codeErrors.forEach(codeError => {
-				const prefixedCodeBlockId =
+				const matchesCodeBlock =
 					typeof codeError.codeBlockId === 'string' && codeError.codeBlockType
-						? `${codeError.codeBlockType}_${codeError.codeBlockId}`
-						: undefined;
+						? codeBlock.id === `${codeError.codeBlockType}_${codeError.codeBlockId}`
+						: codeBlock.creationIndex === codeError.codeBlockId || codeBlock.id === codeError.codeBlockId;
 
-				if (
-					codeBlock.creationIndex === codeError.codeBlockId ||
-					codeBlock.id === codeError.codeBlockId ||
-					(prefixedCodeBlockId !== undefined && codeBlock.id === prefixedCodeBlockId)
-				) {
+				if (matchesCodeBlock) {
 					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1);
 
 					codeBlock.widgets.errorMessages.push({
