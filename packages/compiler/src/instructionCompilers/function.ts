@@ -28,6 +28,8 @@ const _function: InstructionCompiler = function (line, context) {
 	const functionId = nameArg.value;
 
 	context.currentFunctionId = functionId;
+	context.codeBlockId = functionId;
+	context.codeBlockType = 'function';
 	context.currentFunctionSignature = {
 		parameters: [],
 		returns: [],
