@@ -251,6 +251,7 @@ export interface CodeError {
 	lineNumber: number;
 	message: string;
 	codeBlockId: string | number;
+	codeBlockType?: 'module' | 'function' | 'constants';
 }
 
 // State interface - complete editor state tree (top-level public API)

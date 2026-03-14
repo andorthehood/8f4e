@@ -28,6 +28,8 @@ const _module: InstructionCompiler = function (line, context) {
 	});
 
 	context.namespace.moduleName = line.arguments[0].value;
+	context.codeBlockId = line.arguments[0].value;
+	context.codeBlockType = 'module';
 
 	return context;
 };
