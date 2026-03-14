@@ -31,4 +31,4 @@ export interface CompileProjectResult {
 	configSource: string;
 }
 
-export type BlockType = 'config' | 'module' | 'function' | 'constants' | 'unknown';
+export type BlockType = 'config' | 'module' | 'function' | 'constants' | 'macro' | 'unknown';
