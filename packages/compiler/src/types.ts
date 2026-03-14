@@ -144,6 +144,8 @@ export interface CompilationContext {
 	memoryByteSize: number;
 	byteCode: Array<WASMInstruction | Type | number>;
 	mode?: CompilationMode;
+	codeBlockId?: string;
+	codeBlockType?: 'module' | 'function' | 'constants';
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
 	functionTypeRegistry?: FunctionTypeRegistry;

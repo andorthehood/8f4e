@@ -24,6 +24,8 @@ export default function createInstructionCompilerTestContext(
 		startingByteAddress: 0,
 		memoryByteSize: 0,
 		byteCode: [],
+		codeBlockId: 'test',
+		codeBlockType: 'module',
 	};
 
 	return {
