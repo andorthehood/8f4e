@@ -3,8 +3,8 @@ title: 'TODO: Refactor unit tests into __tests__ folders'
 priority: Medium
 effort: 0.5–1 day
 created: 2025-09-04
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-03-14
 ---
 
 # TODO: Refactor unit tests into __tests__ folders

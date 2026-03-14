@@ -3,8 +3,8 @@ title: 'TODO: Add Macro Support to Stack Config Language'
 priority: Medium
 effort: 2-3d
 created: 2026-02-08
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-03-14
 ---
 
 # TODO: Add Macro Support to Stack Config Language

@@ -3,8 +3,8 @@ title: 'TODO: Load project from query param URL'
 priority: Medium
 effort: 4-8h
 created: 2026-02-18
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-14
 ---
 
 # TODO: Load project from query param URL
