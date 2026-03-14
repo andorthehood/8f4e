@@ -3,8 +3,8 @@ title: 'TODO: Add Constants to Split-Byte Memory Defaults and Reserve Constant-S
 priority: Medium
 effort: 1-2d
 created: 2026-03-09
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-14
 ---
 
 # TODO: Add Constants to Split-Byte Memory Defaults and Reserve Constant-Style Identifiers

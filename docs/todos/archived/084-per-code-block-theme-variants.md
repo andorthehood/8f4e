@@ -3,8 +3,8 @@ title: 'TODO: Add per-code-block theme variants'
 priority: Medium
 effort: 2-3d
 created: 2025-11-05
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-03-14
 ---
 
 # TODO: Add per-code-block theme variants
