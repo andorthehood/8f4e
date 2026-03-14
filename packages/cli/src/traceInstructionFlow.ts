@@ -116,9 +116,14 @@ function collectNamespaces(moduleAsts: AST[]): Namespaces {
 	);
 }
 
-function pickProjectBlocks(project: ProjectInput): { moduleBlocks: Module[]; functionBlocks: Module[] } {
+function pickProjectBlocks(project: ProjectInput): {
+	moduleBlocks: Module[];
+	functionBlocks: Module[];
+	macroBlocks: Module[];
+} {
 	const moduleBlocks: Module[] = [];
 	const functionBlocks: Module[] = [];
+	const macroBlocks: Module[] = [];
 
 	for (const block of project.codeBlocks) {
 		if (block.disabled) {
@@ -133,17 +138,22 @@ function pickProjectBlocks(project: ProjectInput): { moduleBlocks: Module[]; fun
 
 		if (blockType === 'function') {
 			functionBlocks.push({ code: block.code });
+			continue;
+		}
+
+		if (blockType === 'macro') {
+			macroBlocks.push({ code: block.code });
 		}
 	}
 
-	return { moduleBlocks, functionBlocks };
+	return { moduleBlocks, functionBlocks, macroBlocks };
 }
 
 export default function traceInstructionFlow(
 	project: ProjectInput,
 	compilerOptions: CompileOptions
 ): InstructionFlowTrace {
-	const { moduleBlocks, functionBlocks } = pickProjectBlocks(project);
+	const { moduleBlocks, functionBlocks, macroBlocks } = pickProjectBlocks(project);
 
 	if (moduleBlocks.length === 0) {
 		return {
@@ -158,7 +168,8 @@ export default function traceInstructionFlow(
 			...compilerOptions,
 			includeAST: true,
 		},
-		functionBlocks.length > 0 ? functionBlocks : undefined
+		functionBlocks.length > 0 ? functionBlocks : undefined,
+		macroBlocks.length > 0 ? macroBlocks : undefined
 	);
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);

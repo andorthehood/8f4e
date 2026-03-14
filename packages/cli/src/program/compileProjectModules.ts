@@ -25,6 +25,7 @@ export default function compileProjectModules(
 
 	const moduleBlocks: Module[] = [];
 	const functionBlocks: Module[] = [];
+	const macroBlocks: Module[] = [];
 
 	for (const block of blocks) {
 		if (block.disabled) {
@@ -38,6 +39,10 @@ export default function compileProjectModules(
 		}
 		if (blockType === 'function') {
 			functionBlocks.push({ code: block.code });
+			continue;
+		}
+		if (blockType === 'macro') {
+			macroBlocks.push({ code: block.code });
 		}
 	}
 
@@ -49,7 +54,12 @@ export default function compileProjectModules(
 		};
 	}
 
-	const result = compile(moduleBlocks, options.compilerOptions, functionBlocks.length > 0 ? functionBlocks : undefined);
+	const result = compile(
+		moduleBlocks,
+		options.compilerOptions,
+		functionBlocks.length > 0 ? functionBlocks : undefined,
+		macroBlocks.length > 0 ? macroBlocks : undefined
+	);
 
 	return {
 		compiledModules: includeModules ? result.compiledModules : undefined,

@@ -10,6 +10,7 @@ export default function getBlockType(code: string[]): BlockType {
 		if (/^module\s+/.test(trimmed)) return 'module';
 		if (/^function\s+/.test(trimmed)) return 'function';
 		if (/^constants\s+/.test(trimmed)) return 'constants';
+		if (/^defineMacro\s+/.test(trimmed)) return 'macro';
 		break;
 	}
 	return 'unknown';
