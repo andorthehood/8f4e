@@ -21,8 +21,6 @@ describe('program compiler effect', () => {
 			context: {
 				codeBlockId: 'helper',
 				codeBlockType: 'function',
-				currentFunctionId: 'helper',
-				mode: 'function',
 			},
 		});
 
