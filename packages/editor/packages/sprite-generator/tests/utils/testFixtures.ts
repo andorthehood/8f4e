@@ -10,6 +10,7 @@ export const minimalColorScheme: ColorScheme = {
 		instruction: '#887ecb',
 		codeComment: '#666666',
 		code: '#ffffff',
+		errorMessage: '#ffffff',
 		disabledCode: 'rgba(0,0,0,0.5)',
 		numbers: '#c9d487',
 		menuItemText: '#ffffff',

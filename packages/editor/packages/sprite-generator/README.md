@@ -44,6 +44,7 @@ const myColorScheme: ColorScheme = {
     lineNumber: darken(baseColor, 0.5),
     instruction: lighten(baseColor, 0.3),
     code: baseColor,
+    errorMessage: '#ffffff',
     disabledCode: alpha(baseColor, 0.5),
     // ... other text colors
   },

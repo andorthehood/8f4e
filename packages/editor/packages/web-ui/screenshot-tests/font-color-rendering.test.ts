@@ -32,6 +32,7 @@ test('font color rendering', async () => {
 		'fontBinaryZero',
 		'fontCode',
 		'fontCodeComment',
+		'fontErrorMessage',
 		'fontDialogText',
 		'fontDialogTitle',
 		'fontInstruction',
