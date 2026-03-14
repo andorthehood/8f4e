@@ -150,6 +150,7 @@ const colorNames: Array<keyof ColorScheme['text']> = [
 	'instruction',
 	'codeComment',
 	'code',
+	'errorMessage',
 	'disabledCode',
 	'numbers',
 	'menuItemText',

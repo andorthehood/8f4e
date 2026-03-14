@@ -18,6 +18,7 @@ Example:
 - `text.instruction`
 - `text.codeComment`
 - `text.code`
+- `text.errorMessage`
 - `text.disabledCode`
 - `text.numbers`
 - `text.menuItemText`

@@ -25,6 +25,9 @@ export const derivedColorScheme: ColorScheme = {
 		// Base color for main code
 		code: baseColor,
 
+		// High-contrast text for error messages
+		errorMessage: '#ffffff',
+
 		// Semi-transparent for disabled code
 		disabledCode: alpha(baseColor, 0.5),
 
