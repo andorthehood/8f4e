@@ -3,8 +3,8 @@ title: 'TODO: Add map block instruction family to 8f4e'
 priority: High
 effort: 1-2d
 created: 2026-02-21
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-14
 ---
 
 # TODO: Add map block instruction family to 8f4e

@@ -3,8 +3,8 @@ title: 'TODO: Add Decimal Split-Byte Memory Defaults'
 priority: Medium
 effort: 4-8h
 created: 2026-03-09
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-14
 ---
 
 # TODO: Add Decimal Split-Byte Memory Defaults
