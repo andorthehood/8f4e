@@ -46,25 +46,14 @@ function loadProject(name: string) {
 	return parse8f4eToProject(readFileSync(projectPath, 'utf-8'));
 }
 
-const projects = [
-	'audioBuffer',
-	'audioLoopback',
-	'bistableMultivibrators',
-	'dancingWithTheSineLT',
-	'xorProblem',
-	'randomGenerators',
-	'rippleEffect',
-	'samplePlayer',
-	'simpleCounterMainThread',
-	'standaloneProject',
-].map(loadProject);
+const projects = Array.from(projectPaths.keys()).sort().map(loadProject);
 
 const COMPILER_OPTIONS = {
 	memorySizeBytes: 65536,
 	startingMemoryWordAddress: 0,
 };
 
-function getBlockType(code: string[]): 'module' | 'config' | 'function' | 'constants' | 'unknown' {
+function getBlockType(code: string[]): 'module' | 'config' | 'function' | 'constants' | 'macro' | 'unknown' {
 	for (const line of code) {
 		const trimmed = line.trim();
 		if (trimmed === '') continue;
@@ -72,6 +61,7 @@ function getBlockType(code: string[]): 'module' | 'config' | 'function' | 'const
 		if (trimmed.startsWith('module ')) return 'module';
 		if (trimmed.startsWith('function ')) return 'function';
 		if (trimmed.startsWith('constants ')) return 'constants';
+		if (trimmed.startsWith('defineMacro ')) return 'macro';
 		break;
 	}
 	return 'unknown';
@@ -89,7 +79,16 @@ describe('Example Projects Compilation', () => {
 					.filter(block => getBlockType(block.code) === 'function')
 					.map(block => ({ code: block.code }));
 
-				const result = compile(moduleBlocks, COMPILER_OPTIONS, functionBlocks.length > 0 ? functionBlocks : undefined);
+				const macroBlocks = project.codeBlocks
+					.filter(block => getBlockType(block.code) === 'macro')
+					.map(block => ({ code: block.code }));
+
+				const result = compile(
+					moduleBlocks,
+					COMPILER_OPTIONS,
+					functionBlocks.length > 0 ? functionBlocks : undefined,
+					macroBlocks.length > 0 ? macroBlocks : undefined
+				);
 
 				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
 				expect(result.codeBuffer.length).toBeGreaterThan(0);
