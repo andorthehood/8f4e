@@ -1,0 +1,1056 @@
+8f4e/v1
+
+config project
+; @pos -242 -1
+
+rescope "memorySizeBytes"
+set 65536
+popScope
+
+scope "runtimeSettings"
+scope "sampleRate"
+set 44100
+
+rescopeTop "runtime"
+set "AudioWorkletRuntime"
+
+rescopeTop "audioOutputBuffers[0]"
+
+scope "memoryId"
+set "audioout.buffer"
+
+rescopeTop "channel"
+set 0
+
+rescopeTop "output"
+set 0
+
+rescope "exportFileName"
+set "risen"
+
+configEnd
+
+constants env
+; @pos -242 -38
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 2/19/2026, 1:23:48 PM
+; @tab 24
+const SAMPLE_RATE	44100
+const INV_SAMPLE_RATE	0.000022675736961451248
+const AUDIO_BUFFER_SIZE	128
+
+constantsEnd
+
+constants math
+; @pos -242 -24
+; @tab 14
+const PI	 3.141592653589793
+const NEG_PI	-3.141592653589793
+const TAU	 6.283185307179586
+const HALF_PI	 1.570796326794896
+const INV_PI	 0.318309886183790
+const INV_TAU	 0.159154943091895
+const PHI	 1.618033988749895
+const DEG2RAD	 0.017453292519943
+const RAD2DEG	 57.29577951308232
+const SQRT2	 1.414213562373095
+const SQRT1_2	 0.707106781186547
+const LN2	 0.693147180559945
+const LN10	 2.302585092994046
+const LOG2E	 1.442695040888963
+const LOG10E	 0.434294481903251
+const E	 2.718281828459045
+
+constantsEnd
+
+constants midiCodes
+; @pos -110 -56
+; @tab 12
+const A0	21
+const A#0	22
+const BB0	22
+const B0	23
+const C1	24
+const C#1	25
+const DB1	25
+const D1	26
+const D#1	27
+const EB1	27
+const E1	28
+const F1	29
+const F#1	30
+const GB1	30
+const G1	31
+const G#1	32
+const AB1	32
+const A1	33
+const A#1	34
+const BB1	34
+const B1	35
+const C2	36
+const C#2	37
+const DB2	37
+const D2	38
+const D#2	39
+const EB2	39
+const E2	40
+const F2	41
+const F#2	42
+const GB2	42
+const G2	43
+const G#2	44
+const AB2	44
+const A2	45
+const A#2	46
+const BB2	46
+const B2	47
+const C3	48
+const C#3	49
+const DB3	49
+const D3	50
+const D#3	51
+const EB3	51
+const E3	52
+const F3	53
+const F#3	54
+const GB3	54
+const G3	55
+const G#3	56
+const AB3	56
+const A3	57
+const A#3	58
+const BB3	58
+const B3	59
+const C4	60
+const C#4	61
+const DB4	61
+const D4	62
+const D#4	63
+const EB4	63
+const E4	64
+const F4	65
+const F#4	66
+const GB4	66
+const G4	67
+const G#4	68
+const AB4	68
+const A4	69
+const A#4	70
+const BB4	70
+const B4	71
+const C5	72
+const C#5	73
+const DB5	73
+const D5	74
+const D#5	75
+const EB5	75
+const E5	76
+const F5	77
+const F#5	78
+const GB5	78
+const G5	79
+const G#5	80
+const AB5	80
+const A5	81
+const A#5	82
+const BB5	82
+const B5	83
+const C6	84
+const C#6	85
+const DB6	85
+const D6	86
+const D#6	87
+const EB6	87
+const E6	88
+const F6	89
+const F#6	90
+const GB6	90
+const G6	91
+const G#6	92
+const AB6	92
+const A6	93
+const A#6	94
+const BB6	94
+const B6	95
+const C7	96
+const C#7	97
+const DB7	97
+const D7	98
+const D#7	99
+const EB7	99
+const E7	100
+const F7	101
+const F#7	102
+const GB7	102
+const G7	103
+const G#7	104
+const AB7	104
+const A7	105
+const A#7	106
+const BB7	106
+const B7	107
+const C8	108
+const C#8	109
+const DB8	109
+const D8	110
+const D#8	111
+const EB8	111
+const E8	112
+const F8	113
+const F#8	114
+const GB8	114
+const G8	115
+const G#8	116
+const AB8	116
+const A8	117
+const A#8	118
+const AB8	118
+const B8	119
+const C9	120
+const C#9	121
+const DB9	121
+const D9	122
+const D#9	123
+const EB9	123
+const E9	124
+const F9	125
+const F#9	126
+const GB9	126
+const G9	127
+
+constantsEnd
+
+function sine
+; @pos 3 -8
+; Polynomial approximation 
+; of the sine function with
+; Taylor series (7th order)
+; Only works in the range of
+; [-PI, PI]
+param float x
+
+use math
+
+; Fold to [-pi/2, pi/2]
+localGet x
+push HALF_PI
+greaterThan
+if void
+push PI
+localGet x
+sub
+localSet x
+ifEnd
+
+localGet x
+push HALF_PI
+push -1.0
+mul
+lessThan
+if void
+push PI
+push -1.0
+mul
+localGet x
+sub
+localSet x
+ifEnd
+
+local float x2
+localGet x
+dup
+mul
+localSet x2
+
+; Taylor coefficients
+const T1 -0.1666666666
+const T2 0.0083333333
+const T3 -0.000198412
+
+localGet x2
+push T3
+mul
+push T2
+add
+localGet x2
+mul
+push T1
+add
+localGet x2
+mul
+push 1.0
+add
+localGet x
+mul
+
+functionEnd float
+
+module adsrEnv
+; @pos 43 -13
+; @tab 8
+use env
+
+int*	trigger &sequencer:noteOn
+int	attackTime SAMPLE_RATE/1000
+float	attacLevel 1.0
+int	decayTime SAMPLE_RATE/1000
+float	sustainLevel 0.8
+int	releaseTime SAMPLE_RATE/200
+float	out
+
+const	ATTACK 1
+const	DECAY 2
+const	SUSTAIN 3
+const	RELEASE 4
+
+int	_state RELEASE
+int	_counter
+
+; Start ATTACK
+push	*trigger
+risingEdge
+if void
+push	&_state
+push	ATTACK
+store
+push	&_counter
+push	attackTime
+store
+ifEnd
+
+; ATTACK math
+push	_state
+push	ATTACK
+equal
+push	_counter
+push	0
+greaterThan
+and
+if	void
+push	&out
+push	1.0
+push	_counter
+castToFloat
+push	attackTime
+castToFloat
+ensureNonZero
+div
+sub
+store
+ifEnd
+
+; Transition from ATTACK to
+; DECAY
+push	_counter
+equalToZero
+push	_state
+push	ATTACK
+equal
+and
+if  void ; End of attack
+push	&_state
+push	DECAY
+store
+push	&_counter
+push	decayTime
+store
+ifEnd
+
+; DECAY math
+push	_state
+push	DECAY
+equal
+push	_counter
+push    0
+greaterThan
+and
+if	void
+push	&out
+push	sustainLevel
+push	_counter
+castToFloat
+push   decayTime
+castToFloat
+ensureNonZero
+div
+push	1.0
+push	sustainLevel
+sub
+mul
+add
+store
+ifEnd
+
+; Transition from DECAY
+; to SUSTAIN
+push	_state
+push	DECAY
+equal
+push	_counter
+equalToZero
+and
+if void
+push	&_state
+push	SUSTAIN
+store
+ifEnd
+
+; SUSTAIN math
+push	_state
+push	SUSTAIN
+equal
+push    *trigger
+push    0
+greaterThan
+and
+if  void
+push    &out
+push    sustainLevel
+store
+ifEnd
+
+; Transition from SUSTAIN to
+; RELEASE
+push	_state
+push	SUSTAIN
+equal
+push	*trigger
+equalToZero
+and
+if  void
+push	&_state
+push	RELEASE
+store
+push	&_counter
+push	releaseTime
+store
+ifEnd
+
+; RELEASE math
+push	_state
+push	RELEASE
+equal
+push	_counter
+push	0
+greaterThan
+and
+if void
+push	&out
+push	_counter
+castToFloat
+push	releaseTime
+castToFloat
+ensureNonZero
+div
+push	sustainLevel
+mul
+store
+ifEnd
+
+; Decrement and wrap counter 
+push	_counter
+push	0
+greaterThan
+if	    void
+push	&_counter
+push	_counter
+push	1
+sub
+store
+ifEnd
+
+moduleEnd
+
+module audioout
+; @pos 241 -22
+; @home
+use env
+
+float* in &reverb:out
+
+; Audio buffer
+float[] buffer AUDIO_BUFFER_SIZE
+int pointer &buffer
+
+; @plot buffer -2 2
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the
+; buffer word size
+push &pointer
+push pointer
+push %buffer
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if void
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module carrier
+; @pos 133 -22
+use env
+
+float* frequency &midiToFreq:out
+float* phaseMod &modulator:out
+float phase 0.0
+float out
+float ratio 2.0
+float* ampMod &adsrEnv:out 
+
+; @slider modIndex 0 10.0
+
+use math
+
+; Advance phase by
+; TAU * frequency / SAMPLE_RATE
+push &phase
+push phase
+push TAU
+push *frequency
+mul
+push ratio
+mul
+push SAMPLE_RATE
+castToFloat
+ensureNonZero
+div
+add
+store 
+
+; Wrap phase when it exceeds PI
+push phase
+push PI
+greaterThan
+if void
+push &phase
+push NEG_PI
+store
+ifEnd
+
+push &out
+push phase
+push *phaseMod
+add
+; You can swap this call 
+; with any periodic function
+call sine
+push *ampMod
+mul
+store
+
+moduleEnd
+
+module midiLUT
+; @pos -148 16
+; @tab 8
+float	8.1758
+float	8.6620
+float	9.1770
+float	9.7227
+float	10.3009
+float	10.9134
+float	11.5623
+float	12.2499
+float	12.9783
+float	13.7500
+float	14.5676
+float	15.4339
+float	16.3516
+float	17.3239
+float	18.3540
+float	19.4454
+float	20.6017
+float	21.8268
+float	23.1247
+float	24.4997
+float	25.9565
+float	27.5000
+float	29.1352
+float	30.8677
+float	32.7032
+float	34.6478
+float	36.7081
+float	38.8909
+float	41.2034
+float	43.6535
+float	46.2493
+float	48.9994
+float	51.9131
+float	55.0000
+float	58.2705
+float	61.7354
+float	65.4064
+float	69.2957
+float	73.4162
+float	77.7817
+float	82.4069
+float	87.3071
+float	92.4986
+float	97.9989
+float	103.8262
+float	110.0000
+float	116.5409
+float	123.4708
+float	130.8128
+float	138.5913
+float	146.8324
+float	155.5635
+float	164.8138
+float	174.6141
+float	184.9972
+float	195.9977
+float	207.6523
+float	220.0000
+float	233.0819
+float	246.9417
+float	261.6256
+float	277.1826
+float	293.6648
+float	311.1270
+float	329.6276
+float	349.2282
+float	369.9944
+float	391.9954
+float	415.3047
+float	440.0000
+float	466.1638
+float	493.8833
+float	523.2511
+float	554.3653
+float	587.3295
+float	622.2540
+float	659.2551
+float	698.4565
+float	739.9888
+float	783.9909
+float	830.6094
+float	880.0000
+float	932.3275
+float	987.7666
+float	1046.5023
+float	1108.7305
+float	1174.6591
+float	1244.5079
+float	1318.5102
+float	1396.9129
+float	1479.9777
+float	1567.9817
+float	1661.2188
+float	1760.0000
+float	1864.6550
+float	1975.5332
+float	2093.0045
+float	2217.4610
+float	2349.3181
+float	2489.0159
+float	2637.0205
+float	2793.8259
+float	2959.9554
+float	3135.9635
+float	3322.4376
+float	3520.0000
+float	3729.3101
+float	3951.0664
+float	4186.0090
+float	4434.9221
+float	4698.6363
+float	4978.0317
+float	5274.0409
+float	5587.6517
+float	5919.9108
+float	6271.9270
+float	6644.8752
+float	7040.0000
+float	7458.6202
+float	7902.1328
+float	8372.0181
+float	8869.8442
+float	9397.2726
+float	9956.0635
+float	10548.0818
+float	11175.3034
+float	11839.8215
+float	12543.8540
+
+moduleEnd
+
+module midiToFreq
+; @pos 7 -33
+
+float* start &midiLUT:
+float* note &midiLUT:
+int* in &sequencer:note
+float out
+
+; @debug out
+
+push &note
+push start
+push *in
+push 4
+mul
+add
+store 
+
+push &out
+push *note
+store 
+
+moduleEnd
+
+module modulator
+; @pos 92 -22
+use env
+use math
+
+float* frequency &midiToFreq:out
+float phase 0.0
+float out
+float ratio 4.0
+float* ampMod &adsrEnv:out
+
+; Advance phase by
+; TAU * frequency / SAMPLE_RATE
+push &phase
+push phase
+push TAU
+push *frequency
+mul
+push ratio
+mul
+push SAMPLE_RATE
+castToFloat
+ensureNonZero
+div
+add
+store 
+
+; Wrap phase when it exceeds PI
+push phase
+push PI
+greaterThan
+if void
+push &phase
+push NEG_PI
+store
+ifEnd
+
+push &out
+push phase
+; You can swap this call 
+; with any periodic function
+call sine
+push *ampMod
+mul
+store
+
+moduleEnd
+
+module reverb
+; @pos 203 -22
+
+float* in &carrier:out
+float out
+
+const FEEDBACK 0.3
+const SIZE 10000
+
+float[] buffer SIZE
+int bufferPointer &buffer
+
+
+; Compute reverb output
+push &out
+push bufferPointer
+loadFloat
+push FEEDBACK
+mul
+push *in
+add
+store
+
+; Store the new sample 
+; in the buffer
+push bufferPointer
+push &out
+loadFloat
+store
+
+; Advance buffer pointer
+push &bufferPointer
+push bufferPointer
+push %bufferPointer
+add
+store
+
+; Wrap buffer pointer back
+; to start when reaches end
+push bufferPointer
+push buffer&
+greaterThan
+if void
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module risen
+; @pos -74 -24
+use midiCodes
+; @tab 8 14 18
+;	note	on	off
+int	D4	0	21
+int	E4	3	21
+int 	F4	3	45
+int  	F4	3	45
+int   	E4	3	13
+int   	E4	3	13
+int  	F4	1	15
+int 	D4	3	41 
+int	C4	7	21
+int	D4	7	21
+int 	D4	7	21
+int  	E4	7	21
+int   	C4	7	13
+int   	G4	3	13
+int  	F4	3	13
+int 	D4	3	21
+int	E4	3	21
+int	F4	3	45
+int 	F4	3	45
+int  	E4	3	13
+int   	E4	3	13
+int   	F4	1	15
+int  	D4	3	41
+int 	C4	7	21
+int	D4	3	21
+int	D4	3	21
+int 	E4	3	21
+int  	C4	3	13
+int   	G4	3	13
+int   	F4	3	13
+int  	D4	3	21
+int 	C4	3	21
+int	D4	3	45
+int	E4	3	45
+int 	A3	3	21
+int  	A3	3	21
+int   	E4	3	14
+int   	E4	2	14
+int  	F4	2	14
+int 	E4	2	14
+int	D4	2	14
+int	G4	2	14
+int 	B3	2	14
+int  	D4	2	14
+int   	C4	2	14
+int   	F4	2	46
+int  	D4	2	21
+int 	C4	3	21
+int	D4	3	45
+int	E4	3	45
+int 	A3	3	21
+int  	A3	3	21
+int   	E4	3	14
+int   	E4	2	14
+int  	F4	2	14
+int 	E4	2	14
+int	D4	2	14
+int	G4	2	14
+int 	B3	2	14
+int  	D4	2	14
+int   	C4	2	14
+int   	F4	2	46
+
+moduleEnd
+
+module sequencer
+; @pos -34 -24
+
+int* start &risen:
+int* end risen:&
+int* pointer &risen:
+int* tick &tick:out
+int note
+int noteStart
+int noteEnd
+int noteOn
+
+; @debug note
+; @debug noteStart
+; @debug noteEnd
+; @debug noteOn
+
+push pointer
+hasChanged
+if void
+; Load note
+push &note
+push *pointer
+push 0xff000000
+and
+push 24
+shiftRight
+store
+
+; Load note start delta t
+push &noteStart
+push *pointer
+push 0x00ff0000
+and
+push 16
+shiftRight
+store
+
+; Load note end delta t
+push &noteEnd
+push *pointer
+push 0x0000ff00
+and 
+push 8
+shiftRight
+store
+ifEnd
+
+; Decrement the counters
+push *tick
+risingEdge
+if void
+push &noteStart
+push noteStart
+push 1
+sub
+store
+push &noteEnd
+push noteEnd
+push 1
+sub
+store
+ifEnd
+
+; Set noteOn based on
+; noteStart
+push &noteOn
+push noteStart
+push -1
+lessOrEqual
+store
+
+; Increment the pointer
+; if the note ended
+push noteEnd
+push -1
+lessOrEqual
+if void
+push &pointer
+push pointer
+push 4
+add
+store
+ifEnd
+
+; Wrap the pointer
+push pointer
+push end
+greaterThan
+if void
+push &pointer
+push start
+store
+ifEnd
+
+moduleEnd
+
+module templeOS
+; @pos -41 76
+; @tab 46
+; @color fill.moduleBackground	#ffffff
+; @color fill.background	#55ffff
+; @color fill.backgroundDots	#99cccc
+; @color fill.backgroundDots2	#669999
+; @color fill.highlightedCodeLine	#ffff55
+; @color fill.moduleBackgroundDragged	#ffffff
+; @color text.instruction	#0000cc
+; @color text.code	#000000
+; @color text.lineNumber	#555555
+; @color text.codeComment	#aaaaaa
+; @color text.numbers	#990099
+; @color text.debugInfo	#aaaaaa
+; @color fill.debugInfoBackground	#ffff55
+; @color fill.wire	rgba(0,0,0,0.6)
+; @color fill.wireHighlighted	#000000
+; @color fill.menuItemBackground	#0000aa
+; @color fill.menuItemBackgroundHighlighted	#ffffff
+; @color fill.dialogBackground	#0000aa
+; @color fill.dialogDimmer	#000000
+; @color fill.codeBlockHighlightLevel1	#eeeeee
+; @color fill.codeBlockHighlightLevel2	#dddddd
+; @color fill.codeBlockHighlightLevel3	#cccccc
+; @color fill.plotterBackground	#000000
+; @color fill.plotterTrace	#55ff55
+; @color fill.scanLine	#55ffff
+; @color icons.outputConnectorBackground	#ffff55
+; @color icons.outputConnector	#000000
+; @color icons.inputConnectorBackground	#ffff55
+; @color icons.inputConnector	#000000
+moduleEnd
+
+module tick
+; @pos -148 -24
+use env
+
+int bpm 6000
+int out
+int counter 
+
+; @debug counter
+
+push &out
+push 0
+store
+
+push counter
+push SAMPLE_RATE
+push 60
+mul
+push bpm
+ensureNonZero
+div
+greaterThan
+if void
+push &counter
+push 0
+store
+push &out
+push 1
+store
+ifEnd
+
+push &counter
+push counter
+push 1
+add
+store
+
+moduleEnd
