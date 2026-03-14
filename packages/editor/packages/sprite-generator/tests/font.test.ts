@@ -250,6 +250,7 @@ describe('font module', () => {
 			expect(lookups.fontLineNumber).toBeDefined();
 			expect(lookups.fontInstruction).toBeDefined();
 			expect(lookups.fontCode).toBeDefined();
+			expect(lookups.fontErrorMessage).toBeDefined();
 			expect(lookups.fontNumbers).toBeDefined();
 			expect(lookups.fontMenuItemText).toBeDefined();
 			expect(lookups.fontMenuItemTextHighlighted).toBeDefined();

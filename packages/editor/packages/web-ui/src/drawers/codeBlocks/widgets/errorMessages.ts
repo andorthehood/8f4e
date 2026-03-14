@@ -11,7 +11,7 @@ export default function drawErrorMessages(engine: Engine, state: State, codeBloc
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(x, y, 'errorMessageBackground', codeBlock.width, message.length * state.viewport.hGrid);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontErrorMessage);
 		for (let i = 0; i < message.length; i++) {
 			engine.drawText(x, y + i * state.viewport.hGrid, ' ' + message[i]);
 		}

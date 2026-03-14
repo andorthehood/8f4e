@@ -7,6 +7,7 @@ export function generateColorMapWithAllColors(spriteLookups: SpriteLookups) {
 		[spriteLookups.fontBinaryZero],
 		[spriteLookups.fontCode],
 		[spriteLookups.fontCodeComment],
+		[spriteLookups.fontErrorMessage],
 		[spriteLookups.fontDialogText],
 		[spriteLookups.fontDialogTitle],
 		[spriteLookups.fontInstruction],
