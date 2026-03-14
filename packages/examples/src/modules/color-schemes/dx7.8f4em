@@ -1,0 +1,8 @@
+8f4e/v1
+
+module dx7colors
+; @pos 2 51
+; @color text.instruction #33ffcc
+; @color icons.inputConnector #ff9999
+; @color icons.outputConnector #9999cc
+moduleEnd
