@@ -32,6 +32,8 @@ const constants: InstructionCompiler = withValidation(
 		});
 
 		context.namespace.moduleName = line.arguments[0].value;
+		context.codeBlockId = line.arguments[0].value;
+		context.codeBlockType = 'constants';
 
 		return context;
 	}
