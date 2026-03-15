@@ -15,6 +15,7 @@ export interface DirectiveLayoutContribution {
 export interface DirectiveBlockState {
 	disabled: boolean;
 	isHome: boolean;
+	isFavorite: boolean;
 }
 
 export interface DirectiveDisplayState {

@@ -115,6 +115,7 @@ export function createMockCodeBlock(
 		blockType: 'unknown',
 		disabled: false,
 		isHome: false,
+		isFavorite: false,
 		widgets: {
 			blockHighlights: [],
 			inputs: [],
