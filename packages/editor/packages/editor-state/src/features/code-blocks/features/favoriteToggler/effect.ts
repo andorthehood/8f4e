@@ -1,5 +1,5 @@
 import parseFavorite from '../favorites/codeParser';
-import removeDirective from '../../utils/removeDirective';
+import { removeDirective } from '../directiveEditing';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';

@@ -255,4 +255,25 @@ describe('groupNonstickToggler', () => {
 		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', block1);
 		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', block2);
 	});
+
+	it('should skip blocks with a bare ; @group directive (no group name)', () => {
+		const block1 = createMockCodeBlock({
+			code: ['module test1', '; @group', '', 'moduleEnd'],
+			blockType: 'module',
+			groupName: 'audio-chain',
+		});
+		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.featureFlags.editing = true;
+
+		groupNonstickToggler(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
+		const toggleCallback = toggleCall![1];
+
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
+
+		// Malformed ; @group (no group name) must not produce '; @group undefined nonstick'
+		expect(block1.code).toEqual(['module test1', '; @group', '', 'moduleEnd']);
+	});
 });
