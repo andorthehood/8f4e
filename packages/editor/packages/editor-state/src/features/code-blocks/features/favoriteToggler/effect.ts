@@ -1,4 +1,3 @@
-import parseFavorite from '../favorites/codeParser';
 import { removeDirective } from '../directiveEditing';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -20,7 +19,7 @@ export default function favoriteToggler(store: StateManager<State>, events: Even
 		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock;
 
 		// Check if code block has ; @favorite directive
-		const hasFavorite = parseFavorite(codeBlock.code);
+		const hasFavorite = codeBlock.isFavorite;
 
 		if (hasFavorite) {
 			// Remove all ; @favorite directive lines
