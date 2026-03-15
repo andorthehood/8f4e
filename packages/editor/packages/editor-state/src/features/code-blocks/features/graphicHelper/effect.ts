@@ -256,6 +256,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				blockType: getBlockType(codeBlock.code),
 				disabled: directiveState.blockState.disabled,
 				isHome: directiveState.blockState.isHome,
+				isFavorite: directiveState.blockState.isFavorite,
 			});
 		});
 
@@ -276,6 +277,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						code: rawBlock.code,
 						disabled: directiveState.blockState.disabled,
 						isHome: directiveState.blockState.isHome,
+						isFavorite: directiveState.blockState.isFavorite,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
 						gridX,
@@ -362,6 +364,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const directiveState = deriveDirectiveState(codeBlock.code, { isExpandedForEditing: true });
 		codeBlock.disabled = directiveState.blockState.disabled;
 		codeBlock.isHome = directiveState.blockState.isHome;
+		codeBlock.isFavorite = directiveState.blockState.isFavorite;
 	};
 
 	updateErrorMessages();
