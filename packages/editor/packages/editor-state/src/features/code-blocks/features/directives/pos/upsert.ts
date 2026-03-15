@@ -1,4 +1,4 @@
-import { parseDirectiveComment } from '../utils';
+import { upsertDirective } from '../../directiveEditing';
 
 /**
  * Upserts a canonical @pos directive into code block lines.
@@ -24,19 +24,7 @@ import { parseDirectiveComment } from '../utils';
  * ```
  */
 export default function upsertPos(code: string[], gridX: number, gridY: number): string[] {
-	// Remove all existing @pos directives
-	const withoutPos = code.filter(line => parseDirectiveComment(line)?.name !== 'pos');
-
-	// Create canonical @pos directive
-	const posDirective = `; @pos ${gridX} ${gridY}`;
-
-	// Insert after first line if it exists, otherwise at the beginning
-	if (withoutPos.length === 0) {
-		return [posDirective];
-	}
-
-	// Insert @pos as second line (after block declaration)
-	return [withoutPos[0], posDirective, ...withoutPos.slice(1)];
+	return upsertDirective(code, 'pos', [String(gridX), String(gridY)]);
 }
 
 if (import.meta.vitest) {

@@ -1,14 +1,7 @@
+import { removeDirective } from '../directiveEditing';
+
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
-
-/**
- * Checks if a line is a @watch directive.
- * Pattern: ; @watch <variable-name>
- */
-function isDebugDirective(line: string): boolean {
-	const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.+)/);
-	return !!(commentMatch && commentMatch[1] === 'watch');
-}
 
 /**
  * Effect that handles clearing all @watch directives from a code block.
@@ -26,7 +19,7 @@ export default function clearDebugProbes(store: StateManager<State>, events: Eve
 		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock;
 
 		// Remove all @watch directive lines
-		codeBlock.code = codeBlock.code.filter(line => !isDebugDirective(line));
+		codeBlock.code = removeDirective(codeBlock.code, 'watch');
 
 		// Update lastUpdated to invalidate cache
 		codeBlock.lastUpdated = Date.now();

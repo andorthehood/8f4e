@@ -1,3 +1,5 @@
+import { updateDirectiveArgs } from '../../directiveEditing';
+import { parseDirectiveComment } from '../../directives/utils';
 import { getGroupBlocks } from '../getGroupBlocks';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -35,41 +37,24 @@ export default function groupNonstickToggler(store: StateManager<State>, events:
 
 		// Apply the nonstick change to all group blocks
 		for (const block of groupBlocks) {
+			// Check current nonstick state before applying the change
+			const groupLine = block.code.find(line => parseDirectiveComment(line)?.name === 'group');
+			if (!groupLine) continue;
+
+			const parsed = parseDirectiveComment(groupLine)!;
+			const [, ...flags] = parsed.args;
+			const currentlyHasNonstick = flags.includes('nonstick');
+
+			// Skip if already in target state
+			if (makeNonstick === currentlyHasNonstick) continue;
+
 			// Set target code block for programmatic edit
 			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = block;
 
-			// Update the @group directive line
-			const groupLineIndex = block.code.findIndex(line => {
-				const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
-				return commentMatch && commentMatch[1] === 'group';
-			});
-
-			if (groupLineIndex !== -1) {
-				const groupLine = block.code[groupLineIndex];
-				const commentMatch = groupLine.match(/^\s*;\s*@(\w+)\s+(.*)/);
-
-				if (commentMatch) {
-					const args = commentMatch[2].trim();
-					const tokens = args.split(/\s+/);
-					const groupName = tokens[0];
-					const currentlyHasNonstick = tokens.length > 1 && tokens[1] === 'nonstick';
-
-					// Update the line based on target nonstick state
-					let newLine: string;
-					if (makeNonstick && !currentlyHasNonstick) {
-						// Add nonstick
-						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+/, () => `; @group ${groupName} nonstick`);
-					} else if (!makeNonstick && currentlyHasNonstick) {
-						// Remove nonstick
-						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+\s+nonstick/, () => `; @group ${groupName}`);
-					} else {
-						// No change needed for this block
-						continue;
-					}
-
-					block.code[groupLineIndex] = newLine;
-				}
-			}
+			// Update the @group directive args using the shared editing primitive
+			block.code = updateDirectiveArgs(block.code, 'group', ([groupName]) =>
+				makeNonstick ? [groupName, 'nonstick'] : [groupName]
+			);
 
 			// Update lastUpdated to invalidate cache
 			block.lastUpdated = Date.now();

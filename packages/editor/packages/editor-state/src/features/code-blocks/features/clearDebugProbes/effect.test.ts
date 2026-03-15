@@ -194,7 +194,7 @@ describe('clearDebugProbes', () => {
 		expect(codeBlock.code).toEqual(['module test', '; @watch x', 'moduleEnd']);
 	});
 
-	it('should preserve incomplete @watch directives without variable name', () => {
+	it('should remove incomplete @watch directives without variable name', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @watch', 'moduleEnd'],
 			blockType: 'module',
@@ -210,6 +210,6 @@ describe('clearDebugProbes', () => {
 
 		clearCallback({ codeBlock });
 
-		expect(codeBlock.code).toEqual(['module test', '; @watch', 'moduleEnd']);
+		expect(codeBlock.code).toEqual(['module test', 'moduleEnd']);
 	});
 });
