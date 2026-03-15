@@ -1,4 +1,4 @@
-import { parseDirectiveComment } from '../utils';
+import { upsertDirective, removeDirective } from '../../directiveEditing';
 
 /**
  * Inserts or removes @disabled directive from code block lines.
@@ -23,19 +23,7 @@ import { parseDirectiveComment } from '../utils';
  * ```
  */
 export default function upsertDisabled(code: string[], disabled: boolean): string[] {
-	const withoutDisabled = code.filter(line => parseDirectiveComment(line)?.name !== 'disabled');
-
-	if (!disabled) {
-		return withoutDisabled;
-	}
-
-	const disabledDirective = '; @disabled';
-
-	if (withoutDisabled.length === 0) {
-		return [disabledDirective];
-	}
-
-	return [withoutDisabled[0], disabledDirective, ...withoutDisabled.slice(1)];
+	return disabled ? upsertDirective(code, 'disabled') : removeDirective(code, 'disabled');
 }
 
 if (import.meta.vitest) {
