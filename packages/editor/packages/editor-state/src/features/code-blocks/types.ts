@@ -243,6 +243,12 @@ export interface CodeBlockGraphicData {
 	 * Defaults to false.
 	 */
 	isHome: boolean;
+	/**
+	 * When true, marks this block as a favorite for quick navigation.
+	 * Derived from ; @favorite directive.
+	 * Defaults to false.
+	 */
+	isFavorite: boolean;
 }
 
 /**

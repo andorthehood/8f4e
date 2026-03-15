@@ -5,12 +5,18 @@ import deriveFavorites from './deriveFavorites';
 import type { CodeBlockGraphicData } from '../../types';
 
 // Helper to create a minimal mock code block
-function mockCodeBlock(creationIndex: number, id: string, blockType: string, code: string[]): CodeBlockGraphicData {
+function mockCodeBlock(
+	creationIndex: number,
+	id: string,
+	blockType: string,
+	isFavorite: boolean
+): CodeBlockGraphicData {
 	return {
 		creationIndex,
 		id,
 		blockType,
-		code,
+		isFavorite,
+		code: [],
 		// Minimal required properties
 		gridX: 0,
 		gridY: 0,
@@ -21,6 +27,7 @@ function mockCodeBlock(creationIndex: number, id: string, blockType: string, cod
 		offsetX: 0,
 		offsetY: 0,
 		disabled: false,
+		isHome: false,
 		lastUpdated: 0,
 		widgets: {
 			blockHighlights: [],
@@ -44,24 +51,21 @@ describe('deriveFavorites', () => {
 	});
 
 	it('should return empty array when no blocks have @favorite', () => {
-		const blocks = [
-			mockCodeBlock(0, 'module1', 'module', ['module module1', 'moduleEnd']),
-			mockCodeBlock(1, 'func1', 'function', ['function func1', 'functionEnd']),
-		];
+		const blocks = [mockCodeBlock(0, 'module1', 'module', false), mockCodeBlock(1, 'func1', 'function', false)];
 		expect(deriveFavorites(blocks)).toEqual([]);
 	});
 
 	it('should return single favorite', () => {
-		const blocks = [mockCodeBlock(0, 'osc', 'module', ['module osc', '; @favorite', 'output out 1', 'moduleEnd'])];
+		const blocks = [mockCodeBlock(0, 'osc', 'module', true)];
 		const result = deriveFavorites(blocks);
 		expect(result).toEqual([{ creationIndex: 0, id: 'osc', blockType: 'module' }]);
 	});
 
 	it('should return multiple favorites', () => {
 		const blocks = [
-			mockCodeBlock(0, 'osc', 'module', ['module osc', '; @favorite', 'moduleEnd']),
-			mockCodeBlock(1, 'filter', 'module', ['module filter', 'moduleEnd']),
-			mockCodeBlock(2, 'mix', 'function', ['function mix', '; @favorite', 'functionEnd']),
+			mockCodeBlock(0, 'osc', 'module', true),
+			mockCodeBlock(1, 'filter', 'module', false),
+			mockCodeBlock(2, 'mix', 'function', true),
 		];
 		const result = deriveFavorites(blocks);
 		expect(result).toEqual([
@@ -72,9 +76,9 @@ describe('deriveFavorites', () => {
 
 	it('should sort favorites by creationIndex', () => {
 		const blocks = [
-			mockCodeBlock(5, 'c', 'module', ['module c', '; @favorite', 'moduleEnd']),
-			mockCodeBlock(1, 'a', 'module', ['module a', '; @favorite', 'moduleEnd']),
-			mockCodeBlock(3, 'b', 'function', ['function b', '; @favorite', 'functionEnd']),
+			mockCodeBlock(5, 'c', 'module', true),
+			mockCodeBlock(1, 'a', 'module', true),
+			mockCodeBlock(3, 'b', 'function', true),
 		];
 		const result = deriveFavorites(blocks);
 		expect(result).toEqual([
@@ -86,19 +90,13 @@ describe('deriveFavorites', () => {
 
 	it('should deduplicate by creationIndex', () => {
 		// This shouldn't happen in practice, but handles edge case
-		const blocks = [
-			mockCodeBlock(0, 'osc', 'module', ['module osc', '; @favorite', 'moduleEnd']),
-			mockCodeBlock(0, 'osc', 'module', ['module osc', '; @favorite', 'moduleEnd']),
-		];
+		const blocks = [mockCodeBlock(0, 'osc', 'module', true), mockCodeBlock(0, 'osc', 'module', true)];
 		const result = deriveFavorites(blocks);
 		expect(result).toEqual([{ creationIndex: 0, id: 'osc', blockType: 'module' }]);
 	});
 
 	it('should handle duplicate ids with different creationIndices', () => {
-		const blocks = [
-			mockCodeBlock(0, 'osc', 'module', ['module osc', '; @favorite', 'moduleEnd']),
-			mockCodeBlock(1, 'osc', 'module', ['module osc', '; @favorite', 'moduleEnd']),
-		];
+		const blocks = [mockCodeBlock(0, 'osc', 'module', true), mockCodeBlock(1, 'osc', 'module', true)];
 		const result = deriveFavorites(blocks);
 		expect(result).toEqual([
 			{ creationIndex: 0, id: 'osc', blockType: 'module' },
@@ -108,11 +106,11 @@ describe('deriveFavorites', () => {
 
 	it('should handle all block types', () => {
 		const blocks = [
-			mockCodeBlock(0, 'mod', 'module', ['module mod', '; @favorite', 'moduleEnd']),
-			mockCodeBlock(1, 'fn', 'function', ['function fn', '; @favorite', 'functionEnd']),
-			mockCodeBlock(2, 'vs', 'vertexShader', ['vertexShader vs', '; @favorite', 'vertexShaderEnd']),
-			mockCodeBlock(3, 'fs', 'fragmentShader', ['fragmentShader fs', '; @favorite', 'fragmentShaderEnd']),
-			mockCodeBlock(4, 'cfg', 'config', ['config project', '; @favorite', 'configEnd']),
+			mockCodeBlock(0, 'mod', 'module', true),
+			mockCodeBlock(1, 'fn', 'function', true),
+			mockCodeBlock(2, 'vs', 'vertexShader', true),
+			mockCodeBlock(3, 'fs', 'fragmentShader', true),
+			mockCodeBlock(4, 'cfg', 'config', true),
 		];
 		const result = deriveFavorites(blocks);
 		expect(result).toEqual([
@@ -124,21 +122,13 @@ describe('deriveFavorites', () => {
 		]);
 	});
 
-	it('should handle @favorite at different positions in code', () => {
+	it('should not count non-favorite blocks', () => {
 		const blocks = [
-			mockCodeBlock(0, 'a', 'module', ['; @favorite', 'module a', 'moduleEnd']),
-			mockCodeBlock(1, 'b', 'module', ['module b', 'moduleEnd', '; @favorite']),
-			mockCodeBlock(2, 'c', 'module', ['module c', 'output out 1', '; @favorite', 'moduleEnd']),
+			mockCodeBlock(0, 'a', 'module', false),
+			mockCodeBlock(1, 'b', 'module', true),
+			mockCodeBlock(2, 'c', 'module', false),
 		];
 		const result = deriveFavorites(blocks);
-		expect(result.length).toBe(3);
-	});
-
-	it('should not count multiple @favorite directives in same block multiple times', () => {
-		const blocks = [
-			mockCodeBlock(0, 'osc', 'module', ['module osc', '; @favorite', 'output out 1', '; @favorite', 'moduleEnd']),
-		];
-		const result = deriveFavorites(blocks);
-		expect(result).toEqual([{ creationIndex: 0, id: 'osc', blockType: 'module' }]);
+		expect(result).toEqual([{ creationIndex: 1, id: 'b', blockType: 'module' }]);
 	});
 });

@@ -75,6 +75,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			isExpandedForEditing: shouldExpandCodeBlockForEditing(graphicData),
 		});
 		const displayModel = directiveState.displayModel;
+
+		graphicData.disabled = directiveState.blockState.disabled;
+		graphicData.isHome = directiveState.blockState.isHome;
+		graphicData.isFavorite = directiveState.blockState.isFavorite;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
@@ -256,6 +260,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				blockType: getBlockType(codeBlock.code),
 				disabled: directiveState.blockState.disabled,
 				isHome: directiveState.blockState.isHome,
+				isFavorite: directiveState.blockState.isFavorite,
 			});
 		});
 
@@ -276,6 +281,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						code: rawBlock.code,
 						disabled: directiveState.blockState.disabled,
 						isHome: directiveState.blockState.isHome,
+						isFavorite: directiveState.blockState.isFavorite,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
 						gridX,
@@ -353,17 +359,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
-	// When user edits code, parse @home and update isHome flag
-	const applyHomeFromCodeEdit = function () {
-		if (!state.graphicHelper.selectedCodeBlock) {
-			return;
-		}
-		const codeBlock = state.graphicHelper.selectedCodeBlock;
-		const directiveState = deriveDirectiveState(codeBlock.code, { isExpandedForEditing: true });
-		codeBlock.disabled = directiveState.blockState.disabled;
-		codeBlock.isHome = directiveState.blockState.isHome;
-	};
-
 	updateErrorMessages();
 
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
@@ -379,7 +374,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('graphicHelper.selectedCodeBlock', onSelectedCodeBlockChanged);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', applyHomeFromCodeEdit);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);
