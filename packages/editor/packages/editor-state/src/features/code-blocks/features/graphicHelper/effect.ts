@@ -31,7 +31,6 @@ import {
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
-import parseGroup from '../group/codeParser';
 import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 
@@ -158,9 +157,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			state.viewport.vGrid;
 		const displayRow = displayModel.rawRowToDisplayRow[graphicData.cursor.row] ?? graphicData.cursor.row;
 		graphicData.cursor.y = gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid;
-		const groupResult = parseGroup(graphicData.code);
-		graphicData.groupName = groupResult?.groupName;
-		graphicData.groupNonstick = groupResult?.nonstick;
+		graphicData.groupName = directiveState.blockState.groupName;
+		graphicData.groupNonstick = directiveState.blockState.groupNonstick;
 		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
 	};
 

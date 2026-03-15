@@ -16,6 +16,10 @@ export interface DirectiveBlockState {
 	disabled: boolean;
 	isHome: boolean;
 	isFavorite: boolean;
+	/** Group identifier set by `; @group <name> [nonstick]`. Undefined when no valid @group directive is present. */
+	groupName?: string;
+	/** When true the block may be dragged independently within its group (nonstick mode). */
+	groupNonstick?: boolean;
 }
 
 export interface DirectiveDisplayState {
