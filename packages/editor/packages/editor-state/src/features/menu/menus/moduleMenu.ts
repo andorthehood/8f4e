@@ -1,7 +1,6 @@
 import { isSkipExecutionDirective } from '@8f4e/compiler/syntax';
 
 import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
-import parseFavorite from '../../code-blocks/features/favorites/codeParser';
 
 import type { CodeBlockGraphicData, MenuGenerator } from '~/types';
 
@@ -29,8 +28,7 @@ export const moduleMenu: MenuGenerator = state => {
 		state.graphicHelper.selectedCodeBlock?.code.some((line: string) => isSkipExecutionDirective(line));
 
 	// Check if code block has ; @favorite directive
-	const hasFavoriteDirective =
-		state.graphicHelper.selectedCodeBlock && parseFavorite(state.graphicHelper.selectedCodeBlock.code);
+	const hasFavoriteDirective = state.graphicHelper.selectedCodeBlock?.isFavorite ?? false;
 
 	// Check if code block has a group name and compute group skip/nonstick status
 	const groupName = state.graphicHelper.selectedCodeBlock?.groupName;

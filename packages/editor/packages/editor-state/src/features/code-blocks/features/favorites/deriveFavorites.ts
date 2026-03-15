@@ -1,5 +1,3 @@
-import parseFavorite from './codeParser';
-
 import type { CodeBlockGraphicData } from '../../types';
 
 /**
@@ -17,8 +15,8 @@ export interface Favorite {
 /**
  * Derives favorite code blocks from the given code blocks array.
  *
- * This function scans all code blocks for the ; @favorite directive and
- * returns an array of favorite metadata. Favorites are deduplicated by
+ * This function collects all code blocks marked as favorites via the ; @favorite directive
+ * and returns an array of favorite metadata. Favorites are deduplicated by
  * creationIndex to ensure each block appears at most once.
  *
  * @param codeBlocks - Array of code blocks to scan for favorites
@@ -41,7 +39,7 @@ export default function deriveFavorites(codeBlocks: CodeBlockGraphicData[]): Fav
 		}
 
 		// Check if this block has the @favorite directive
-		if (parseFavorite(block.code)) {
+		if (block.isFavorite) {
 			favorites.push({
 				creationIndex: block.creationIndex,
 				id: block.id,
