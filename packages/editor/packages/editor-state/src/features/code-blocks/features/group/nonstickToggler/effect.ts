@@ -1,5 +1,4 @@
 import { updateDirectiveArgs } from '../../directiveEditing';
-import { parseDirectiveComment } from '../../directives/utils';
 import { getGroupBlocks } from '../getGroupBlocks';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -37,24 +36,20 @@ export default function groupNonstickToggler(store: StateManager<State>, events:
 
 		// Apply the nonstick change to all group blocks
 		for (const block of groupBlocks) {
-			// Check current nonstick state before applying the change
-			const groupLine = block.code.find(line => parseDirectiveComment(line)?.name === 'group');
-			if (!groupLine) continue;
+			// Compute updated code; updater returns args unchanged for a malformed ; @group with no group name
+			const updatedCode = updateDirectiveArgs(block.code, 'group', args => {
+				const [groupName] = args;
+				if (!groupName) return args;
+				return makeNonstick ? [groupName, 'nonstick'] : [groupName];
+			});
 
-			const parsed = parseDirectiveComment(groupLine)!;
-			const [, ...flags] = parsed.args;
-			const currentlyHasNonstick = flags.includes('nonstick');
-
-			// Skip if already in target state
-			if (makeNonstick === currentlyHasNonstick) continue;
+			// Only apply and emit an update if any directive line actually changed
+			if (updatedCode.every((line, i) => line === block.code[i])) continue;
 
 			// Set target code block for programmatic edit
 			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = block;
 
-			// Update the @group directive args using the shared editing primitive
-			block.code = updateDirectiveArgs(block.code, 'group', ([groupName]) =>
-				makeNonstick ? [groupName, 'nonstick'] : [groupName]
-			);
+			block.code = updatedCode;
 
 			// Update lastUpdated to invalidate cache
 			block.lastUpdated = Date.now();
