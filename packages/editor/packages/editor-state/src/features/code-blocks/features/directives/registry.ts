@@ -1,5 +1,6 @@
 import buttonDirective from './button/plugin';
 import disabledDirective from './disabled/plugin';
+import favoriteDirective from './favorite/plugin';
 import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
 import pianoDirective from './piano/plugin';
@@ -13,7 +14,12 @@ import { parseEditorDirectives } from './utils';
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
 
 import type { CodeBlockGraphicData, State } from '~/types';
-import type { DirectiveDeriveOptions, DirectiveDerivedState, DirectiveDerivedStateDraft, EditorDirectivePlugin } from './types';
+import type {
+	DirectiveDeriveOptions,
+	DirectiveDerivedState,
+	DirectiveDerivedStateDraft,
+	EditorDirectivePlugin,
+} from './types';
 
 export type {
 	ParsedEditorDirective,
@@ -32,6 +38,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	watchDirective,
 	disabledDirective,
 	homeDirective,
+	favoriteDirective,
 	hideDirective,
 ];
 
@@ -46,6 +53,7 @@ export function deriveDirectiveState(
 		blockState: {
 			disabled: false,
 			isHome: false,
+			isFavorite: false,
 		},
 		displayState: {},
 		displayModel: buildDisplayModel(code),
@@ -116,6 +124,7 @@ if (import.meta.vitest) {
 				'module foo',
 				'; @disabled',
 				'; @home',
+				'; @favorite',
 				'; @plot buffer',
 				'; @scan buffer pointer',
 				'moduleEnd',
@@ -124,21 +133,23 @@ if (import.meta.vitest) {
 			expect(result.blockState).toEqual({
 				disabled: true,
 				isHome: true,
+				isFavorite: true,
 			});
 			expect(result.layoutContributions).toEqual([
-				{ rawRow: 3, rows: 8 },
-				{ rawRow: 4, rows: 2 },
+				{ rawRow: 4, rows: 8 },
+				{ rawRow: 5, rows: 2 },
 			]);
 			expect(result.displayState).toEqual({});
-			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5]);
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6]);
 		});
 
 		it('ignores unregistered directives', () => {
-			const result = deriveDirectiveState(['; @favorite', '; @home', '; @plot buffer']);
+			const result = deriveDirectiveState(['; @unknown', '; @home', '; @plot buffer']);
 
 			expect(result.blockState).toEqual({
 				disabled: false,
 				isHome: true,
+				isFavorite: false,
 			});
 			expect(result.layoutContributions).toEqual([{ rawRow: 2, rows: 8 }]);
 		});
