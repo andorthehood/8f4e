@@ -19,11 +19,29 @@ in one place under the directives feature area.
 
 The shared directive engine should stay generic. It should coordinate directive parsing and application, but it should not hardcode directive-specific behavior such as plotter buckets, scanner rules, or layout switches.
 
+## Architecture Overview
+
+There are two distinct concerns that must stay separate:
+
+**Directive semantics** — what a directive means:
+- parsing directive arguments
+- deriving block state, layout, and widget contributions
+- owned by each directive folder under `directives/`
+
+**Directive editing** — how directive source lines are rewritten:
+- inserting, removing, or updating directive lines in code
+- canonicalizing directive placement
+- owned by the shared `directiveEditing/` feature
+
 ## Directory Layout
 
-Directive code lives under:
+Directive semantic code lives under:
 
 `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/`
+
+Shared directive editing primitives live under:
+
+`packages/editor/packages/editor-state/src/features/code-blocks/features/directiveEditing/`
 
 Typical structure:
 
@@ -44,9 +62,15 @@ directives/
     resolve.ts
     data.test.ts
     resolve.test.ts
+
+directiveEditing/
+  index.ts
+  removeDirective.ts
+  upsertDirective.ts
+  updateDirectiveArgs.ts
 ```
 
-Each directive folder should contain its own logic. Avoid putting directive-specific logic back into `registry.ts`.
+Each directive folder should contain its own semantic logic. Avoid putting directive-specific logic back into `registry.ts`. Source rewriting belongs in `directiveEditing/`.
 
 ## Directive Flow
 
@@ -63,6 +87,46 @@ The important boundary is:
 - directives contribute data and behavior
 - the engine coordinates
 - the renderer consumes derived state
+
+## Shared Directive Editing Primitives
+
+Use the helpers in `directiveEditing/` whenever you need to rewrite directive source lines:
+
+```ts
+import { removeDirective, upsertDirective, updateDirectiveArgs } from '../directiveEditing';
+```
+
+### `removeDirective(code, name)`
+
+Removes all lines containing a directive with the given name.
+
+```ts
+// Remove all ; @group lines
+code = removeDirective(code, 'group');
+```
+
+### `upsertDirective(code, name, args?)`
+
+Ensures exactly one directive line with the given name exists, placed after the first line (block declaration). If the directive already exists, it is replaced.
+
+```ts
+// Insert or update ; @pos 10 20
+code = upsertDirective(code, 'pos', ['10', '20']);
+
+// Insert ; @disabled (no args)
+code = upsertDirective(code, 'disabled');
+```
+
+### `updateDirectiveArgs(code, name, updater)`
+
+Updates the arguments of all existing directive lines with the given name. Useful when you need to modify args without changing line placement.
+
+```ts
+// Toggle nonstick flag on ; @group directive
+code = updateDirectiveArgs(code, 'group', ([groupName]) =>
+  makeNonstick ? [groupName, 'nonstick'] : [groupName]
+);
+```
 
 ## Shared Types
 
@@ -100,6 +164,8 @@ Then:
 3. Register the plugin in `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/registry.ts`
 4. Add tests in the same directive folder
 5. Update the user-facing docs in [editor-directives.md](./editor-directives.md)
+
+If you need to insert or update the directive in source code (e.g., from an effect or action), use the `directiveEditing/` helpers rather than writing inline regex logic.
 
 ## Parsing
 
@@ -186,11 +252,13 @@ instead of reviving old directive-specific update entry points.
 
 Good:
 
-- one folder per directive
+- one folder per directive for semantics
+- `directiveEditing/` for all source rewriting mechanics
 - generic shared directive engine
 - generic directive syntax parsing
 - directive-owned argument interpretation and widget logic
 - directive-owned tests
+- action features remain separate (e.g., `clearDebugProbes`, group togglers) but delegate source edits to `directiveEditing/`
 
 Bad:
 
@@ -199,3 +267,4 @@ Bad:
 - directive logic split across unrelated feature folders
 - directive-specific comment parsers that duplicate the shared syntax parser
 - reintroducing directive-specific `updateGraphicData.ts` files outside `directives/`
+- inline regex-based directive line manipulation in effect/action files (use `directiveEditing/` instead)
