@@ -3,8 +3,8 @@ title: 'TODO: Extract directive editing into shared feature'
 priority: Medium
 effort: 4-8h
 created: 2026-03-13
-status: Open
-completed: null
+completed: 2026-03-16
+status: Completed
 ---
 
 # TODO: Extract directive editing into shared feature

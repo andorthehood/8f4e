@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 79
+Active todo files: 74
 
 ## Active TODOs
 
@@ -58,9 +58,6 @@ Active todo files: 79
 | 292 | Refactor error systems and document syntax vs compiler error boundaries | 🟡 | 1-2d | 2026-03-09 | The compiler currently has two different error systems: |
 | 293 | Add separate color for non-decimal literal base prefixes | 🟡 | 4-8h | 2026-03-09 | The editor currently highlights non-decimal numeric literals such as binary and hexadecimal values as a single token. That means the base prefix and the digits share the same color: |
 | 297 | Add url editor directive for clickable links | 🟡 | 4-8h | 2026-03-12 | The editor currently has no directive for attaching a clickable external link to a code block. |
-| 298 | Move group directive under central directive system | 🟡 | 4-8h | 2026-03-13 | The editor directive refactor moved most editor-only directives under packages/editor/packages/editor-state/src/features/code-blocks/features/directives/, with: |
-| 299 | Move favorite directive under central directive system | 🟡 | 2-4h | 2026-03-13 | Most editor-only directives now live under packages/editor/packages/editor-state/src/features/code-blocks/features/directives/ and use: |
-| 300 | Extract directive editing into shared feature | 🟡 | 4-8h | 2026-03-13 | The editor now has a clearer separation for directive parsing and meaning under features/directives/, but directive source editing is still split across multiple places. |
 | 302 | Add jump editor directive for code block navigation | 🟡 | 4-8h | 2026-03-14 | The editor currently supports code block navigation through the context-menu jump flow, but there is no in-code directive for linking one code block to another. |
 | 303 | Dedupe font atlas rows for identical text colors | 🟡 | 1-2h | 2026-03-14 | The sprite generator currently renders one full ASCII font row for every text color role, even when multiple roles resolve to the same color value. |
 | 304 | Remove sprite-generator color helper APIs | 🟡 | 0.5-1h | 2026-03-14 | The @8f4e/sprite-generator package currently exposes a small set of color derivation helpers: |
@@ -70,8 +67,6 @@ Active todo files: 79
 | 309 | Extract shared module memory identifier parser | 🟡 | 2-4h | 2026-03-14 | The codebase currently parses `module.memory` identifiers in multiple places with slightly different local logic. |
 | 310 | Simplify compiler project flattening and compilable block checks | 🟡 | 1-3h | 2026-03-14 | The editor compiler effect currently does more array work and duplicated block-type checks than necessary during project flattening and recompile triggering. |
 | 311 | Derive memory size from compiled program footprint | 🟡 | 1-2d | 2026-03-16 | Projects currently author `memorySizeBytes` manually in project config even though the compiler already computes the actual static memory footprint required by the program. |
-| 312 | Add runtime sampleRate directive and begin config block replacement | 🟡 | 1-2d | 2026-03-16 | Project runtime configuration currently depends on legacy stack-config `config project` blocks, including `runtimeSettings.sampleRate`. |
-| 313 | Add centralized parsed-directive pass to code-block derivation | 🟡 | 1-2d | 2026-03-16 | Directive-related features currently parse code comments independently by rescanning raw code block lines in separate feature paths. |
 | 314 | Migrate editor directive consumers to centralized parsed directives | 🟡 | 1-2d | 2026-03-16 | The editor-state now has a centralized parsed-directive pass that stores `parsedDirectives` on each `CodeBlockGraphicData`. |
 
 ### 🟢 Low Priority

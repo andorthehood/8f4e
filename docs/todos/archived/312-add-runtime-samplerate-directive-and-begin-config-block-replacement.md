@@ -3,8 +3,8 @@ title: 'TODO: Add runtime sampleRate directive and begin config block replacemen
 priority: Medium
 effort: 1-2d
 created: 2026-03-16
-status: Open
-completed: null
+completed: 2026-03-16
+status: Completed
 ---
 
 # TODO: Add runtime sampleRate directive and begin config block replacement
