@@ -1,8 +1,11 @@
 import { defaultColorScheme } from '@8f4e/sprite-generator';
 import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
 
+import type { DirectiveDeriveOptions, DirectiveDerivedState } from '~/features/code-blocks/features/directives/types';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
+import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
+import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
 import { Viewport } from '~/features/viewport/types';
 import { defaultProjectConfig } from '~/features/project-config/defaults';
 
@@ -116,7 +119,7 @@ export function createMockCodeBlock(
 		disabled: false,
 		isHome: false,
 		isFavorite: false,
-		parsedDirectives: [],
+		parsedDirectives: parseBlockDirectives(code),
 		widgets: {
 			blockHighlights: [],
 			inputs: [],
@@ -133,6 +136,27 @@ export function createMockCodeBlock(
 	};
 
 	return { ...defaults, ...overrides };
+}
+
+export function setMockCodeBlockCode(codeBlock: CodeBlockGraphicData, code: string[]): void {
+	codeBlock.code = code;
+	codeBlock.parsedDirectives = parseBlockDirectives(code);
+}
+
+export function deriveDirectiveStateForMockCodeBlock(
+	codeBlock: CodeBlockGraphicData,
+	options?: DirectiveDeriveOptions
+): DirectiveDerivedState {
+	codeBlock.parsedDirectives = parseBlockDirectives(codeBlock.code);
+	return deriveDirectiveState(codeBlock.code, codeBlock.parsedDirectives, options);
+}
+
+export function deriveDirectiveStateForCode(
+	code: string[],
+	options?: DirectiveDeriveOptions,
+	overrides: Partial<CodeBlockGraphicData> = {}
+): DirectiveDerivedState {
+	return deriveDirectiveStateForMockCodeBlock(createMockCodeBlock({ code, ...overrides }), options);
 }
 
 /**

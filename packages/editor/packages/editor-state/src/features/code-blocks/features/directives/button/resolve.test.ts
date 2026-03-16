@@ -1,14 +1,16 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import {
-	deriveDirectiveState,
-	runAfterGraphicDataWidthCalculation,
-	runBeforeGraphicDataWidthCalculation,
-} from '../registry';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
-import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
+import {
+	createMockCodeBlock,
+	createMockState,
+	deriveDirectiveStateForMockCodeBlock,
+	findWidgetById,
+	setMockCodeBlockCode,
+} from '~/pureHelpers/testingUtils/testUtils';
 
 describe('button directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -33,7 +35,7 @@ describe('button directive widget resolution', () => {
 	});
 
 	function runDirectiveResolution() {
-		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		const directiveState = deriveDirectiveStateForMockCodeBlock(mockGraphicData);
 		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
@@ -69,7 +71,7 @@ describe('button directive widget resolution', () => {
 	});
 
 	it('should handle multiple buttons', () => {
-		mockGraphicData.code = ['; @button btn1 0 1', '; @button btn2 5 10'];
+		setMockCodeBlockCode(mockGraphicData, ['; @button btn1 0 1', '; @button btn2 5 10']);
 
 		runDirectiveResolution();
 
@@ -78,7 +80,7 @@ describe('button directive widget resolution', () => {
 	});
 
 	it('should position buttons at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'nop', '; @button btn1 0 1'];
+		setMockCodeBlockCode(mockGraphicData, ['nop', 'nop', '; @button btn1 0 1']);
 
 		runDirectiveResolution();
 

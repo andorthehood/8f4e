@@ -1,15 +1,16 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
-import {
-	deriveDirectiveState,
-	runAfterGraphicDataWidthCalculation,
-	runBeforeGraphicDataWidthCalculation,
-} from '../registry';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '~/types';
 
-import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import {
+	createMockCodeBlock,
+	createMockState,
+	deriveDirectiveStateForMockCodeBlock,
+	setMockCodeBlockCode,
+} from '~/pureHelpers/testingUtils/testUtils';
 
 describe('scan directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -51,7 +52,7 @@ describe('scan directive widget resolution', () => {
 	});
 
 	function runDirectiveResolution() {
-		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		const directiveState = deriveDirectiveStateForMockCodeBlock(mockGraphicData);
 		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
@@ -63,7 +64,7 @@ describe('scan directive widget resolution', () => {
 	});
 
 	it('does not add a scanner when dependencies cannot be resolved', () => {
-		mockGraphicData.code = ['; @scan missing pointer1'];
+		setMockCodeBlockCode(mockGraphicData, ['; @scan missing pointer1']);
 
 		runDirectiveResolution();
 
@@ -98,7 +99,7 @@ describe('scan directive widget resolution', () => {
 	});
 
 	it('handles multiple scan directives', () => {
-		mockGraphicData.code = ['; @scan buffer1 pointer1', '; @scan buffer2 pointer2'];
+		setMockCodeBlockCode(mockGraphicData, ['; @scan buffer1 pointer1', '; @scan buffer2 pointer2']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
