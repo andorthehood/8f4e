@@ -16,7 +16,7 @@ import type { State } from '~/types';
 export default function globalEditorDirectivesEffect(store: StateManager<State>): void {
 	function resolve(): void {
 		const state = store.getState();
-		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks);
+		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks, state.runtimeRegistry);
 
 		if (!deepEqual(resolved, state.globalEditorDirectives)) {
 			store.set('globalEditorDirectives', resolved);

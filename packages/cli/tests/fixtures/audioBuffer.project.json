@@ -3,14 +3,11 @@
     {
       "code": [
         "config project",
+        "; @runtime AudioWorkletRuntime",
         "",
         "scope \"runtimeSettings\"",
         "scope \"sampleRate\"",
         "push 44100",
-        "set",
-        "",
-        "rescopeTop \"runtime\"",
-        "push \"AudioWorkletRuntime\"",
         "set",
         "",
         "rescopeTop \"audioOutputBuffers[0]\"",

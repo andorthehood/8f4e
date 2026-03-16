@@ -477,4 +477,25 @@ Set the base file name used by editor export actions.
 
 This is a global editor directive. It replaces the legacy stack-config `rescope "exportFileName" / set "samplePlayer"` pattern.
 
+### `@runtime`
+
+Select the runtime host the editor should load for the project.
+
+```txt
+; @runtime <runtimeId>
+```
+
+- `runtimeId` must be a known runtime id such as `WebWorkerLogicRuntime`, `MainThreadLogicRuntime`, `AudioWorkletRuntime`, or `WebWorkerMIDIRuntime`
+- Duplicate declarations with the same value are allowed
+- Declarations with conflicting values produce an editor error
+- Unknown runtime ids produce an editor error and the editor falls back to the default runtime
+
+**Example**:
+
+```txt
+; @runtime AudioWorkletRuntime
+```
+
+This is a global editor directive. It replaces the legacy stack-config `scope "runtimeSettings" / scope "runtime" / set "AudioWorkletRuntime"` pattern.
+
 For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).

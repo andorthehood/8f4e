@@ -1,19 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`compileProject (audioBuffer example) > compiles modules, functions, and config into runtime-ready output 1`] = `
+exports[`compileProject (audioBuffer example) > compiles build artifacts without runtime-ready config packaging 1`] = `
 {
   "codeBlocks": [
     {
       "code": [
         "config project",
+        "; @runtime AudioWorkletRuntime",
         "",
         "scope "runtimeSettings"",
         "scope "sampleRate"",
         "push 44100",
-        "set",
-        "",
-        "rescopeTop "runtime"",
-        "push "AudioWorkletRuntime"",
         "set",
         "",
         "rescopeTop "audioOutputBuffers[0]"",
@@ -573,20 +570,6 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "skipExecutionInCycle": undefined,
       "wordAlignedAddress": 131,
       "wordAlignedSize": 4,
-    },
-  },
-  "compiledProjectConfig": {
-    "disableAutoCompilation": false,
-    "runtimeSettings": {
-      "audioOutputBuffers": [
-        {
-          "channel": 0,
-          "memoryId": "audioout.buffer",
-          "output": 0,
-        },
-      ],
-      "runtime": "AudioWorkletRuntime",
-      "sampleRate": 44100,
     },
   },
   "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDg0AAAAAAwAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMK8gINCgAQCRAKEAsQDAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAs3AEGIBCgCAEEEKAIAKgIAOAIAQYgEQYgEKAIAQQRqNgIAQYgEKAIAQYQESgRAQYgEQQg2AgALC2QBAX1BlARBlAQqAgBD2w/JQEGQBCgCACoCAJRBxNgCsiEAIABDAAAAAFsEQEMAAIA/IQALIACVkjgCAEGUBCoCAEPbD0lAXgRAQZQEQ9sPScA4AgALQZgEQZQEKgIAEAQ4AgALAgALAgALEgBBBEGYBDYCAEGIBEEINgIACxYAQYwEQwAA3EM4AgBBkARBjAQ2AgAL",
