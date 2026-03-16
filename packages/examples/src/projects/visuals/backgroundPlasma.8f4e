@@ -37,12 +37,8 @@ fragmentShaderEnd
 
 config project
 ; @pos -114 36
+; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
-
-
-scope "runtimeSettings"
-scope "runtime"
-set "WebWorkerLogicRuntime"
 
 configEnd
 
