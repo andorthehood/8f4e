@@ -6,9 +6,25 @@ import autoEnvConstants from './effect';
 import type { State, Project, CodeBlockGraphicData } from '~/types';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
+import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { EMPTY_DEFAULT_PROJECT } from '~/types';
 
 const AUTO_ENV_BLOCK_ID = 'constants_env';
+
+function createGraphicEnvBlock(code: string[], overrides: Partial<CodeBlockGraphicData> = {}): CodeBlockGraphicData {
+	return createMockCodeBlock({
+		id: AUTO_ENV_BLOCK_ID,
+		code,
+		creationIndex: 0,
+		blockType: 'constants',
+		width: 0,
+		height: 0,
+		gridX: 0,
+		gridY: 0,
+		lineNumberColumnWidth: 2,
+		...overrides,
+	});
+}
 
 describe('autoEnvConstants', () => {
 	let store: ReturnType<typeof createStateManager<State>>;
@@ -88,38 +104,7 @@ describe('autoEnvConstants', () => {
 		// Simulate graphicHelper populating codeBlocks from initialProjectState
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
-			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: AUTO_ENV_BLOCK_ID,
-				code: envCodeBlock.code,
-				creationIndex: 0,
-				blockType: 'constants',
-				width: 0,
-				height: 0,
-				codeColors: [],
-				codeToRender: [],
-				widgets: {
-					blockHighlights: [],
-					inputs: [],
-					outputs: [],
-					debuggers: [],
-					switches: [],
-					buttons: [],
-					pianoKeyboards: [],
-					bufferPlotters: [],
-					errorMessages: [],
-				},
-				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				gaps: new Map(),
-				gridX: 0,
-				gridY: 0,
-				x: 0,
-				y: 0,
-				lineNumberColumnWidth: 2,
-				offsetX: 0,
-				offsetY: 0,
-				lastUpdated: Date.now(),
-			};
-			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
 
 		// Change sample rate via runtime directive
@@ -179,37 +164,7 @@ describe('autoEnvConstants', () => {
 		// Simulate graphicHelper populating codeBlocks from initialProjectState
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
-			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: AUTO_ENV_BLOCK_ID,
-				code: envCodeBlock.code,
-				creationIndex: 0,
-				blockType: 'constants',
-				width: 0,
-				height: 0,
-				codeColors: [],
-				codeToRender: [],
-				widgets: {
-					blockHighlights: [],
-					inputs: [],
-					outputs: [],
-					debuggers: [],
-					switches: [],
-					buttons: [],
-					pianoKeyboards: [],
-					bufferPlotters: [],
-					errorMessages: [],
-				},
-				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				gaps: new Map(),
-				gridX: 0,
-				gridY: 0,
-				x: 0,
-				y: 0,
-				lineNumberColumnWidth: 2,
-				offsetX: 0,
-				offsetY: 0,
-			};
-			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
 
 		// Add binary asset
@@ -235,37 +190,7 @@ describe('autoEnvConstants', () => {
 		if (envCodeBlock) {
 			const codeWithCustomPos = [...envCodeBlock.code];
 			codeWithCustomPos[1] = '; @pos 12 -7';
-			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: AUTO_ENV_BLOCK_ID,
-				code: codeWithCustomPos,
-				creationIndex: 0,
-				blockType: 'constants',
-				width: 0,
-				height: 0,
-				codeColors: [],
-				codeToRender: [],
-				widgets: {
-					blockHighlights: [],
-					inputs: [],
-					outputs: [],
-					debuggers: [],
-					switches: [],
-					buttons: [],
-					pianoKeyboards: [],
-					bufferPlotters: [],
-					errorMessages: [],
-				},
-				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				gaps: new Map(),
-				gridX: 12,
-				gridY: -7,
-				x: 0,
-				y: 0,
-				lineNumberColumnWidth: 2,
-				offsetX: 0,
-				offsetY: 0,
-			};
-			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
 		}
 
 		store.set('runtimeDirectives', { sampleRate: 44100 });
@@ -281,37 +206,7 @@ describe('autoEnvConstants', () => {
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
 			const codeWithoutPos = envCodeBlock.code.filter(line => !line.includes('@pos'));
-			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: AUTO_ENV_BLOCK_ID,
-				code: codeWithoutPos,
-				creationIndex: 0,
-				blockType: 'constants',
-				width: 0,
-				height: 0,
-				codeColors: [],
-				codeToRender: [],
-				widgets: {
-					blockHighlights: [],
-					inputs: [],
-					outputs: [],
-					debuggers: [],
-					switches: [],
-					buttons: [],
-					pianoKeyboards: [],
-					bufferPlotters: [],
-					errorMessages: [],
-				},
-				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				gaps: new Map(),
-				gridX: 0,
-				gridY: 0,
-				x: 0,
-				y: 0,
-				lineNumberColumnWidth: 2,
-				offsetX: 0,
-				offsetY: 0,
-			};
-			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
 		}
 
 		store.set('runtimeDirectives', { sampleRate: 44100 });

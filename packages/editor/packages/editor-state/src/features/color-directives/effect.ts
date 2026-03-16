@@ -52,19 +52,17 @@ function compileColorSchemeFromDirectives(codeBlocks: CodeBlockGraphicData[]): C
 	const nextColorScheme = cloneDefaultColorScheme();
 
 	for (const codeBlock of codeBlocks) {
-		for (const line of codeBlock.code) {
-			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
-			if (!commentMatch || commentMatch[1] !== 'color') {
+		for (const directive of codeBlock.parsedDirectives) {
+			if (directive.prefix !== '@' || directive.name !== 'color') {
 				continue;
 			}
 
-			const args = commentMatch[2].trim().split(/\s+/);
-			if (args.length !== 2) {
-				console.warn('Invalid @color directive (expected: ; @color <path> <value>):', line);
+			if (directive.args.length !== 2) {
+				console.warn('Invalid @color directive (expected: ; @color <path> <value>):', directive);
 				continue;
 			}
 
-			const [path, value] = args;
+			const [path, value] = directive.args;
 			if (!isValidColorValue(value)) {
 				console.warn('Invalid @color value:', value);
 				continue;
@@ -100,10 +98,15 @@ if (import.meta.vitest) {
 
 	describe('compileColorSchemeFromDirectives', () => {
 		it('applies valid @color directives', () => {
+			const code = ['module colors', '; @color text.code #112233', '; @color fill.wire rgba(1,2,3,0.4)', 'moduleEnd'];
 			const codeBlocks = [
 				{
 					id: 'block',
-					code: ['module colors', '; @color text.code #112233', '; @color fill.wire rgba(1,2,3,0.4)', 'moduleEnd'],
+					code,
+					parsedDirectives: [
+						{ prefix: '@', name: 'color', args: ['text.code', '#112233'], rawRow: 1 },
+						{ prefix: '@', name: 'color', args: ['fill.wire', 'rgba(1,2,3,0.4)'], rawRow: 2 },
+					],
 				},
 			] as CodeBlockGraphicData[];
 
@@ -113,10 +116,15 @@ if (import.meta.vitest) {
 		});
 
 		it('uses last-write-wins for duplicate paths', () => {
+			const code = ['module colors', '; @color text.code #111111', '; @color text.code #222222', 'moduleEnd'];
 			const codeBlocks = [
 				{
 					id: 'block',
-					code: ['module colors', '; @color text.code #111111', '; @color text.code #222222', 'moduleEnd'],
+					code,
+					parsedDirectives: [
+						{ prefix: '@', name: 'color', args: ['text.code', '#111111'], rawRow: 1 },
+						{ prefix: '@', name: 'color', args: ['text.code', '#222222'], rawRow: 2 },
+					],
 				},
 			] as CodeBlockGraphicData[];
 
@@ -125,10 +133,15 @@ if (import.meta.vitest) {
 		});
 
 		it('ignores invalid paths and values', () => {
+			const code = ['module colors', '; @color bad.path #000000', '; @color text.code ???', 'moduleEnd'];
 			const codeBlocks = [
 				{
 					id: 'block',
-					code: ['module colors', '; @color bad.path #000000', '; @color text.code ???', 'moduleEnd'],
+					code,
+					parsedDirectives: [
+						{ prefix: '@', name: 'color', args: ['bad.path', '#000000'], rawRow: 1 },
+						{ prefix: '@', name: 'color', args: ['text.code', '???'], rawRow: 2 },
+					],
 				},
 			] as CodeBlockGraphicData[];
 
