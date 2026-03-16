@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 78
+Active todo files: 79
 
 ## Active TODOs
 
@@ -72,6 +72,7 @@ Active todo files: 78
 | 311 | Derive memory size from compiled program footprint | 🟡 | 1-2d | 2026-03-16 | Projects currently author `memorySizeBytes` manually in project config even though the compiler already computes the actual static memory footprint required by the program. |
 | 312 | Add runtime sampleRate directive and begin config block replacement | 🟡 | 1-2d | 2026-03-16 | Project runtime configuration currently depends on legacy stack-config `config project` blocks, including `runtimeSettings.sampleRate`. |
 | 313 | Add centralized parsed-directive pass to code-block derivation | 🟡 | 1-2d | 2026-03-16 | Directive-related features currently parse code comments independently by rescanning raw code block lines in separate feature paths. |
+| 314 | Migrate editor directive consumers to centralized parsed directives | 🟡 | 1-2d | 2026-03-16 | The editor-state now has a centralized parsed-directive pass that stores `parsedDirectives` on each `CodeBlockGraphicData`. |
 
 ### 🟢 Low Priority
 
