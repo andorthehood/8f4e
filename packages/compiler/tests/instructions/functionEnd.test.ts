@@ -70,7 +70,6 @@ functionEnd int`,
 
 const defaultOptions = {
 	startingMemoryWordAddress: 1,
-	memorySizeBytes: 65536,
 	includeAST: true,
 	disableSharedMemory: true,
 };

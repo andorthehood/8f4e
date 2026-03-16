@@ -12,8 +12,6 @@ describe('compiler', () => {
 		expect(
 			compileModules(astModules, {
 				startingMemoryWordAddress: 0,
-
-				memorySizeBytes: 65536,
 				includeAST: true,
 			})
 		).toMatchSnapshot();
@@ -22,8 +20,6 @@ describe('compiler', () => {
 	test('compile function excludes AST by default', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-
-			memorySizeBytes: 65536,
 		});
 
 		// Verify that none of the compiled modules have an ast property
@@ -35,8 +31,6 @@ describe('compiler', () => {
 	test('compile function includes AST when includeAST is true', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-
-			memorySizeBytes: 65536,
 			includeAST: true,
 		});
 

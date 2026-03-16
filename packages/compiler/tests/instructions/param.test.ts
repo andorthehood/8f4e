@@ -9,7 +9,6 @@ const defaultOptions = {
 	environmentExtensions: {
 		constants: {},
 	},
-	memorySizeBytes: 65536,
 	includeAST: true,
 };
 

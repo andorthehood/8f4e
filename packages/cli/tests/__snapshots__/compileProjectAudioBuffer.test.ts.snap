@@ -7,11 +7,6 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "code": [
         "config project",
         "",
-        "rescope "memorySizeBytes"",
-        "push 65536",
-        "set",
-        "popScope",
-        "",
         "scope "runtimeSettings"",
         "scope "sampleRate"",
         "push 44100",
@@ -260,7 +255,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
     "audioout": {
       "byteAddress": 4,
       "cycleFunction": [
-        81,
+        80,
         2,
         1,
         127,
@@ -289,8 +284,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
         65,
         252,
         255,
-        255,
-        7,
+        3,
         74,
         4,
         127,
@@ -608,7 +602,6 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
   },
   "compiledProjectConfig": {
     "disableAutoCompilation": false,
-    "memorySizeBytes": 65536,
     "runtimeSettings": {
       "audioOutputBuffers": [
         {
@@ -621,7 +614,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "sampleRate": 44100,
     },
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDg0AAAAAAwAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMKjAMNCgAQCRAKEAsQDAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAtRAgF/AX1BiAQoAgBBBCgCACoCACEBIQAgAEH8//8HSgR/QQAFIAALIAE4AgBBiARBiAQoAgBBBGo2AgBBiAQoAgBBhARKBEBBiARBCDYCAAsLZAEBfUGUBEGUBCoCAEPbD8lAQZAEKAIAKgIAlEHE2AKyIQAgAEMAAAAAWwRAQwAAgD8hAAsgAJWSOAIAQZQEKgIAQ9sPSUBeBEBBlARD2w9JwDgCAAtBmARBlAQqAgAQBDgCAAsCAAsCAAsSAEEEQZgENgIAQYgEQQg2AgALFgBBjARDAADcQzgCAEGQBEGMBDYCAAs=",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDg0AAAAAAwAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMKiwMNCgAQCRAKEAsQDAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAtQAgF/AX1BiAQoAgBBBCgCACoCACEBIQAgAEH8/wNKBH9BAAUgAAsgATgCAEGIBEGIBCgCAEEEajYCAEGIBCgCAEGEBEoEQEGIBEEINgIACwtkAQF9QZQEQZQEKgIAQ9sPyUBBkAQoAgAqAgCUQcTYArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBlAQqAgBD2w9JQF4EQEGUBEPbD0nAOAIAC0GYBEGUBCoCABAEOAIACwIACwIACxIAQQRBmAQ2AgBBiARBCDYCAAsWAEGMBEMAANxDOAIAQZAEQYwENgIACw==",
   "viewport": {
     "gridCoordinates": {
       "x": -44,
