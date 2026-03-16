@@ -1,6 +1,7 @@
 import buttonDirective from './button/plugin';
 import disabledDirective from './disabled/plugin';
 import favoriteDirective from './favorite/plugin';
+import groupDirective from './group/plugin';
 import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
 import pianoDirective from './piano/plugin';
@@ -40,6 +41,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	homeDirective,
 	favoriteDirective,
 	hideDirective,
+	groupDirective,
 ];
 
 export function deriveDirectiveState(
