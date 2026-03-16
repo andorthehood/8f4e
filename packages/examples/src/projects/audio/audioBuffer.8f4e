@@ -2,15 +2,13 @@
 
 config project
 ; @pos -94 1
+; ~sampleRate 44100
 
 rescope "memorySizeBytes"
 set 65536
 popScope
 
 scope "runtimeSettings"
-scope "sampleRate"
-set 44100
-
 rescopeTop "runtime"
 set "AudioWorkletRuntime"
 

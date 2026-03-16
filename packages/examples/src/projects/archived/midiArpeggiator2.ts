@@ -6,6 +6,7 @@ const midiArpeggiator2: Project = {
 			code: [
 				'config',
 				'; @pos -90 -12',
+				'; ~sampleRate 50',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -15,9 +16,6 @@ const midiArpeggiator2: Project = {
 				'scope "runtimeSettings"',
 				'scope "runtime"',
 				'push "WebWorkerMIDIRuntime"',
-				'set',
-				'rescopeTop "sampleRate"',
-				'push 50',
 				'set',
 				'popScope',
 				'',

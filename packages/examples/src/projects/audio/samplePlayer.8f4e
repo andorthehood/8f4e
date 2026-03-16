@@ -2,6 +2,7 @@
 
 config project
 ; @pos -53 -63
+; ~sampleRate 44100
 
 rescope "exportFileName"
 set "samplePlayer"
@@ -11,11 +12,6 @@ set 655360
 popScope
 
 scope "runtimeSettings"
-scope "sampleRate"
-push 44100
-; push 22050
-set
-
 rescopeTop "runtime"
 set "AudioWorkletRuntime"
 
