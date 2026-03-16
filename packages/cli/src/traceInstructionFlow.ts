@@ -195,7 +195,6 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [],
 			startingByteAddress: module.byteAddress,
-			memoryByteSize: compileResult.requiredMemoryBytes,
 			mode: 'module',
 		};
 
@@ -221,7 +220,6 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [],
 			startingByteAddress: 0,
-			memoryByteSize: compileResult.requiredMemoryBytes,
 			mode: 'function',
 		};
 

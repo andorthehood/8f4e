@@ -131,7 +131,6 @@ export function compileModule(
 	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	memoryByteSize: number,
 	index: number,
 	functions?: CompiledFunctionLookup
 ): CompiledModule {
@@ -148,7 +147,6 @@ export function compileModule(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		memoryByteSize,
 		mode: 'module',
 		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
 	};
@@ -213,7 +211,6 @@ export function compileFunction(
 		stack: [],
 		blockStack: [],
 		startingByteAddress: 0,
-		memoryByteSize: 0,
 		mode: 'function',
 		codeBlockType: 'function',
 		functionTypeRegistry: typeRegistry,
