@@ -284,6 +284,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			projectConfigErrors: [],
 			editorConfigErrors: [],
 			shaderErrors: [],
+			runtimeDirectiveErrors: [],
 		},
 		console: {
 			logs: [],
@@ -301,6 +302,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		compiledEditorConfig: {
 			font: '8x16',
 		},
+		runtimeDirectives: {},
 		dialog: {
 			show: false,
 			text: '',

@@ -6,6 +6,7 @@ const ericSaiteGenerator: Project = {
 			code: [
 				'config',
 				'; @pos -241 -15',
+				'; ~sampleRate 50',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -15,9 +16,6 @@ const ericSaiteGenerator: Project = {
 				'scope "runtimeSettings"',
 				'scope "runtime"',
 				'push "WebWorkerMIDIRuntime"',
-				'set',
-				'rescopeTop "sampleRate"',
-				'push 50',
 				'set',
 				'popScope',
 				'',

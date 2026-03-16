@@ -3,10 +3,10 @@ import parsePos from '../directives/pos/data';
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';
 
-const AUTO_ENV_CONSTANTS_BLOCK_ID = 'env';
+const AUTO_ENV_CONSTANTS_BLOCK_NAME = 'env';
+const AUTO_ENV_CONSTANTS_BLOCK_ID = `constants_${AUTO_ENV_CONSTANTS_BLOCK_NAME}`;
 
-const isEnvBlock = (block: CodeBlockGraphicData): boolean =>
-	block.blockType === 'constants' && block.id === AUTO_ENV_CONSTANTS_BLOCK_ID;
+const isEnvBlock = (block: CodeBlockGraphicData): boolean => block.id === AUTO_ENV_CONSTANTS_BLOCK_ID;
 
 /**
  * Generates the content for the auto-managed environment constants block.
@@ -22,7 +22,7 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	const pos = existingPos ?? { x: 0, y: 0 };
 
 	// Header with warning
-	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`);
+	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_NAME}`);
 	lines.push(`; @pos ${pos.x} ${pos.y}`);
 	lines.push('; @favorite');
 	lines.push('; Auto-generated environment constants');
@@ -30,8 +30,8 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	lines.push('; Last updated: ' + new Date().toLocaleString());
 	lines.push('');
 
-	// Sample rate from runtime config
-	const sampleRate = state.compiledProjectConfig.runtimeSettings?.sampleRate ?? 50;
+	// Sample rate from runtime directive (; ~sampleRate), falling back to default
+	const sampleRate = state.runtimeDirectives?.sampleRate ?? 50;
 	lines.push(`const SAMPLE_RATE ${sampleRate}`);
 	// Precomputed reciprocal avoids repeated divisions in DSP code.
 	lines.push(`const INV_SAMPLE_RATE ${1 / sampleRate}`);
@@ -87,13 +87,13 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		const state = store.getState();
 		const targetBlock = state.graphicHelper.codeBlocks.find(block => isEnvBlock(block));
 
+		console.log('belefut', JSON.stringify(state.runtimeDirectives), targetBlock);
+
 		if (!targetBlock) {
 			return;
 		}
 		const existingPos = parsePos(targetBlock.code);
 		const newCode = generateEnvConstantsBlock(state, existingPos);
-
-		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = targetBlock;
 
 		targetBlock.code = newCode;
 		targetBlock.lastUpdated = performance.now();
@@ -114,7 +114,7 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 
 		// Check if env block already exists
 		const hasEnvBlock = state.initialProjectState.codeBlocks.some(
-			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`)
+			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_NAME}`)
 		);
 
 		if (!hasEnvBlock) {
@@ -133,8 +133,8 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	// Ensure env block exists when project is loaded
 	store.subscribe('initialProjectState', ensureEnvBlockInProject);
 
-	// Update env block code in graphicHelper.codeBlocks when config or binary assets change
-	// This avoids the infinite loop caused by modifying initialProjectState
-	store.subscribe('compiledProjectConfig', updateEnvConstantsBlockInGraphicHelper);
+	// Update env block code in graphicHelper.codeBlocks when runtime directives or binary assets change.
+	// This avoids the infinite loop caused by modifying initialProjectState.
+	store.subscribe('runtimeDirectives', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
 }
