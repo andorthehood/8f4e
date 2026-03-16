@@ -8,6 +8,8 @@ import type { State, Project, CodeBlockGraphicData } from '~/types';
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
 import { EMPTY_DEFAULT_PROJECT } from '~/types';
 
+const AUTO_ENV_BLOCK_ID = 'constants_env';
+
 describe('autoEnvConstants', () => {
 	let store: ReturnType<typeof createStateManager<State>>;
 	let state: State;
@@ -87,7 +89,7 @@ describe('autoEnvConstants', () => {
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: 'env',
+				id: AUTO_ENV_BLOCK_ID,
 				code: envCodeBlock.code,
 				creationIndex: 0,
 				blockType: 'constants',
@@ -123,7 +125,7 @@ describe('autoEnvConstants', () => {
 		// Change sample rate via runtime directive
 		store.set('runtimeDirectives', { sampleRate: 44100 });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 44100');
 		const invSampleRateLine = envBlock?.code.find(line => line.includes('INV_SAMPLE_RATE'));
@@ -178,7 +180,7 @@ describe('autoEnvConstants', () => {
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: 'env',
+				id: AUTO_ENV_BLOCK_ID,
 				code: envCodeBlock.code,
 				creationIndex: 0,
 				blockType: 'constants',
@@ -220,7 +222,7 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 88200');
 	});
@@ -234,7 +236,7 @@ describe('autoEnvConstants', () => {
 			const codeWithCustomPos = [...envCodeBlock.code];
 			codeWithCustomPos[1] = '; @pos 12 -7';
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: 'env',
+				id: AUTO_ENV_BLOCK_ID,
 				code: codeWithCustomPos,
 				creationIndex: 0,
 				blockType: 'constants',
@@ -268,7 +270,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('runtimeDirectives', { sampleRate: 44100 });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
 	});
 
@@ -280,7 +282,7 @@ describe('autoEnvConstants', () => {
 		if (envCodeBlock) {
 			const codeWithoutPos = envCodeBlock.code.filter(line => !line.includes('@pos'));
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
-				id: 'env',
+				id: AUTO_ENV_BLOCK_ID,
 				code: codeWithoutPos,
 				creationIndex: 0,
 				blockType: 'constants',
@@ -314,7 +316,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('runtimeDirectives', { sampleRate: 44100 });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');
 	});
 

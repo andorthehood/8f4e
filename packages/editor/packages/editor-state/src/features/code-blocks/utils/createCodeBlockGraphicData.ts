@@ -1,5 +1,7 @@
 import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
 
+import { parseBlockDirectives } from './parseBlockDirectives';
+
 import type { CodeBlockGraphicData } from '~/types';
 
 export function createCodeBlockGraphicData(
@@ -58,6 +60,7 @@ export function createCodeBlockGraphicData(
 		disabled: false,
 		isHome: false,
 		isFavorite: false,
+		parsedDirectives: parseBlockDirectives(code),
 		widgets: {
 			blockHighlights: [],
 			inputs: [],

@@ -25,6 +25,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "lineNumberColumnWidth": 1,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -70,6 +71,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "lineNumberColumnWidth": 1,
   "offsetX": 10,
   "offsetY": 20,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -115,6 +117,7 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "lineNumberColumnWidth": 1,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -160,6 +163,7 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "lineNumberColumnWidth": 1,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -205,6 +209,7 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "lineNumberColumnWidth": 1,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -250,6 +255,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "lineNumberColumnWidth": 1,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -295,6 +301,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "lineNumberColumnWidth": 1,
   "offsetX": -20,
   "offsetY": -30,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -340,6 +347,7 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "lineNumberColumnWidth": 1,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -386,6 +394,7 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "minGridWidth": 64,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -434,6 +443,7 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
   "lineNumberColumnWidth": 3,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -479,6 +489,7 @@ exports[`createMockCodeBlock > override behavior > should override id and offset
   "lineNumberColumnWidth": 1,
   "offsetX": 10,
   "offsetY": 20,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],
@@ -524,6 +535,7 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "lineNumberColumnWidth": 1,
   "offsetX": 0,
   "offsetY": 0,
+  "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
     "blockHighlights": [],

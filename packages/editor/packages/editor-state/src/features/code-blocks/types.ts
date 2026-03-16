@@ -135,6 +135,21 @@ export interface Slider {
 }
 
 /**
+ * A single parsed directive comment found in a code block's raw lines.
+ * Covers both editor directives (`; @name`) and runtime directives (`; ~name`).
+ */
+export interface ParsedDirectiveRecord {
+	/** Directive prefix: '@' for editor directives, '~' for runtime directives */
+	prefix: '@' | '~';
+	/** Directive name (the word immediately after the prefix) */
+	name: string;
+	/** Whitespace-split arguments after the name */
+	args: string[];
+	/** Zero-based raw line index within the code block */
+	rawRow: number;
+}
+
+/**
  * Runtime graphic data for a code block.
  * Contains all information needed to render and interact with a code block.
  */
@@ -249,6 +264,12 @@ export interface CodeBlockGraphicData {
 	 * Defaults to false.
 	 */
 	isFavorite: boolean;
+	/**
+	 * Parsed directive records derived from this block's code lines during the central update pass.
+	 * Covers both editor directives (`; @name`) and runtime directives (`; ~name`).
+	 * Populated once per update; consumers should prefer these over rescanning raw code lines.
+	 */
+	parsedDirectives: ParsedDirectiveRecord[];
 }
 
 /**
