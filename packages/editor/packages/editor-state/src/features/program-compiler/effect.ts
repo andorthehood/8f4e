@@ -44,7 +44,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 		try {
 			const compilerOptions = {
-				memorySizeBytes: state.compiledProjectConfig?.memorySizeBytes || 1048576, // 1MB default
+				memorySizeBytes: state.compiledProjectConfig?.memorySizeBytes,
 				startingMemoryWordAddress: 0,
 			};
 

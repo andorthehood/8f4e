@@ -21,9 +21,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 	}
 
 	const memorySizeBytes =
-		options.compilerOptions?.memorySizeBytes ??
-		(compiledProjectConfig?.memorySizeBytes as number | undefined) ??
-		(defaultProjectConfig.memorySizeBytes as number);
+		options.compilerOptions?.memorySizeBytes ?? (compiledProjectConfig?.memorySizeBytes as number | undefined);
 
 	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,

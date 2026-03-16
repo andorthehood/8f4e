@@ -157,7 +157,7 @@ export default function traceInstructionFlow(
 
 	if (moduleBlocks.length === 0) {
 		return {
-			memorySizeBytes: compilerOptions.memorySizeBytes,
+			memorySizeBytes: compilerOptions.memorySizeBytes ?? 0,
 			blocks: [],
 		};
 	}
@@ -195,7 +195,7 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [],
 			startingByteAddress: module.byteAddress,
-			memoryByteSize: compilerOptions.memorySizeBytes,
+			memoryByteSize: compileResult.effectiveMemorySizeBytes,
 			mode: 'module',
 		};
 
@@ -221,7 +221,7 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [],
 			startingByteAddress: 0,
-			memoryByteSize: compilerOptions.memorySizeBytes,
+			memoryByteSize: compileResult.effectiveMemorySizeBytes,
 			mode: 'function',
 		};
 
@@ -229,7 +229,7 @@ export default function traceInstructionFlow(
 	}
 
 	return {
-		memorySizeBytes: compilerOptions.memorySizeBytes,
+		memorySizeBytes: compileResult.effectiveMemorySizeBytes,
 		blocks,
 	};
 }

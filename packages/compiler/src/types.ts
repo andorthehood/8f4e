@@ -210,8 +210,12 @@ export interface Error {
 
 export interface CompileOptions {
 	startingMemoryWordAddress: number;
-	/** Memory size in bytes. */
-	memorySizeBytes: number;
+	/**
+	 * Memory size in bytes (optional).
+	 * When omitted, the compiler derives the effective memory size from the program's static footprint.
+	 * When provided, acts as an upper bound for memory allocation.
+	 */
+	memorySizeBytes?: number;
 	globalDataStructures?: DataStructure[];
 	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
 	includeAST?: boolean;

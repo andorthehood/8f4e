@@ -5,7 +5,11 @@
 import type { Runtimes } from '../runtime/types';
 
 export interface ProjectConfig {
-	memorySizeBytes: number;
+	/**
+	 * Memory size in bytes (optional).
+	 * When omitted, memory size is automatically derived from the program's static footprint.
+	 */
+	memorySizeBytes?: number;
 	runtimeSettings: Runtimes;
 	disableAutoCompilation: boolean;
 	keyCodeMemoryId?: string;
