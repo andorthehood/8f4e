@@ -21,8 +21,8 @@ export type CompileAndUpdateMemoryResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
-	allocatedMemorySize: number;
-	effectiveMemorySizeBytes: number;
+	requiredMemoryBytes: number;
+	allocatedMemoryBytes: number;
 	memoryRef: WebAssembly.Memory;
 	hasWasmInstanceBeenReset: boolean;
 	memoryAction: MemoryAction;

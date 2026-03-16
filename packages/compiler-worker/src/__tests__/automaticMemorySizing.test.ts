@@ -10,22 +10,21 @@ describe('automatic memory sizing', () => {
 		({ default: compileAndUpdateMemory } = await import('../compileAndUpdateMemory'));
 	});
 
-	it('should automatically derive memory size when not provided', async () => {
+	it('should automatically derive required memory and allocate pages in the host', async () => {
 		const modules = [
 			{
 				code: ['module test', 'int x', 'int y', 'moduleEnd'],
 			},
 		];
 
-		// Compile without providing memorySizeBytes
 		const result = await compileAndUpdateMemory(modules, {
 			startingMemoryWordAddress: 0,
-			// memorySizeBytes is intentionally omitted
 		});
 
 		// Should have successfully compiled
 		expect(result.compiledModules).toBeDefined();
-		expect(result.allocatedMemorySize).toBeGreaterThan(0);
+		expect(result.requiredMemoryBytes).toBeGreaterThan(0);
+		expect(result.allocatedMemoryBytes).toBe(65536);
 		expect(result.memoryRef).toBeInstanceOf(WebAssembly.Memory);
 
 		// Memory should be at least 1 WASM page (64 KiB) and page-aligned
@@ -46,7 +45,8 @@ describe('automatic memory sizing', () => {
 
 		// Should allocate at least 64 KiB (1 page)
 		expect(result.memoryRef.buffer.byteLength).toBe(65536);
-		expect(result.allocatedMemorySize).toBeLessThan(65536); // Actual usage should be less than 1 page
-		expect(result.allocatedMemorySize).toBeGreaterThan(0);
+		expect(result.requiredMemoryBytes).toBeLessThan(65536); // Actual usage should be less than 1 page
+		expect(result.requiredMemoryBytes).toBeGreaterThan(0);
+		expect(result.allocatedMemoryBytes).toBe(65536);
 	});
 });

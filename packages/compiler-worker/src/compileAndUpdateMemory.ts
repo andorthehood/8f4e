@@ -1,4 +1,4 @@
-import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
+import compile, { CompileOptions, CompiledModuleLookup, Module, deriveEffectiveMemorySize } from '@8f4e/compiler';
 
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
@@ -36,19 +36,16 @@ export default async function compileAndUpdateMemory(
 	functions?: Module[],
 	macros?: Module[]
 ): Promise<CompileAndUpdateMemoryResult> {
-	const { codeBuffer, compiledModules, allocatedMemorySize, effectiveMemorySizeBytes, compiledFunctions } = compile(
+	const { codeBuffer, compiledModules, requiredMemoryBytes, compiledFunctions } = compile(
 		modules,
 		compilerOptions,
 		functions,
 		macros
 	);
+	const allocatedMemoryBytes = deriveEffectiveMemorySize(requiredMemoryBytes);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
-	const { memoryRef, memoryAction } = getOrCreateMemory(
-		effectiveMemorySizeBytes,
-		compiledModules,
-		previousCompiledModules
-	);
+	const { memoryRef, memoryAction } = getOrCreateMemory(allocatedMemoryBytes, compiledModules, previousCompiledModules);
 
 	const memoryWasRecreated = memoryAction.action === 'recreated';
 	const { wasmInstanceRef, hasWasmInstanceBeenReset } = await getOrCreateWasmInstanceRef(
@@ -121,8 +118,8 @@ export default async function compileAndUpdateMemory(
 		codeBuffer,
 		compiledModules,
 		compiledFunctions,
-		allocatedMemorySize,
-		effectiveMemorySizeBytes,
+		requiredMemoryBytes,
+		allocatedMemoryBytes,
 		memoryRef,
 		hasWasmInstanceBeenReset,
 		memoryAction,
