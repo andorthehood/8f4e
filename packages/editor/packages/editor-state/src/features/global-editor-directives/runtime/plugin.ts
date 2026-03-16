@@ -1,5 +1,28 @@
 import { createGlobalEditorDirectivePlugin } from '../utils';
 
+import type { RuntimeRegistry, Runtimes } from '../../runtime/types';
+
+export function resolveSelectedRuntimeId(
+	requestedRuntimeId: string | undefined,
+	runtimeRegistry: RuntimeRegistry,
+	defaultRuntimeId: string
+): string {
+	if (requestedRuntimeId && requestedRuntimeId in runtimeRegistry) {
+		return requestedRuntimeId;
+	}
+
+	return defaultRuntimeId;
+}
+
+export function getSelectedRuntimeDefaults(
+	requestedRuntimeId: string | undefined,
+	runtimeRegistry: RuntimeRegistry,
+	defaultRuntimeId: string
+): Runtimes {
+	const resolvedRuntimeId = resolveSelectedRuntimeId(requestedRuntimeId, runtimeRegistry, defaultRuntimeId);
+	return runtimeRegistry[resolvedRuntimeId].defaults as unknown as Runtimes;
+}
+
 export default createGlobalEditorDirectivePlugin('runtime', (directive, draft, context) => {
 	if (directive.args.length === 0) {
 		draft.errors.push({

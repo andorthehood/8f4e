@@ -1,10 +1,11 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { getProjectConfigSchema } from './schema';
-import { getDefaultProjectConfigForRuntime, getResolvedRuntimeId } from './runtimeSelection';
+import { createDefaultProjectConfig } from './defaults';
 
 import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
 import { isConfigBlockOfType } from '../config-compiler/utils/isConfigBlockOfType';
+import { getSelectedRuntimeDefaults, resolveSelectedRuntimeId } from '../global-editor-directives/runtime/plugin';
 import { log } from '../logger/logger';
 import deepEqual from '../config-compiler/utils/deepEqual';
 
@@ -23,15 +24,13 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 
 	async function rebuildProjectConfig(): Promise<void> {
 		const currentState = store.getState();
-		const selectedRuntimeId = getResolvedRuntimeId(
+		const selectedRuntimeId = resolveSelectedRuntimeId(
 			currentState.globalEditorDirectives.runtime,
 			currentState.runtimeRegistry,
 			currentState.defaultRuntimeId
 		);
-		const defaultProjectConfig = getDefaultProjectConfigForRuntime(
-			selectedRuntimeId,
-			currentState.runtimeRegistry,
-			currentState.defaultRuntimeId
+		const defaultProjectConfig = createDefaultProjectConfig(
+			getSelectedRuntimeDefaults(selectedRuntimeId, currentState.runtimeRegistry, currentState.defaultRuntimeId)
 		);
 
 		if (currentState.initialProjectState?.compiledProjectConfig && !currentState.callbacks.compileConfig) {
