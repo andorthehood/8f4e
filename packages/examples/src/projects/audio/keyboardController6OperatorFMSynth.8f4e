@@ -184,8 +184,7 @@ config project
 ; @exportFileName jankoSynth
 
 scope "runtimeSettings"
-
-rescopeTop "audioOutputBuffers[0]"
+scope "audioOutputBuffers[0]"
 scope "memoryId"
 set "audioout.buffer"
 rescopeTop "channel"
