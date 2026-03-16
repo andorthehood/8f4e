@@ -125,7 +125,10 @@ export function audioWorkletRuntimeFactory(
 		store.set('dialog', { ...state.dialog, show: false });
 
 		// @ts-expect-error - AudioContext not available in worker context during build
-		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'interactive' });
+		audioContext = new AudioContext({
+			sampleRate: state.runtimeDirectives?.sampleRate ?? runtime.sampleRate,
+			latencyHint: 'interactive',
+		});
 
 		await audioContext.audioWorklet.addModule(audioWorkletUrl);
 		// @ts-expect-error - AudioWorkletNode not available in worker context during build
