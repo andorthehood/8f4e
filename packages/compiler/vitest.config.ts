@@ -24,7 +24,6 @@ export default defineConfig(
 			'**/section.ts',
 			'**/syntaxError.ts',
 			'**/resolveInterModularConnections.ts',
-			'**/deriveEffectiveMemorySize.ts',
 		],
 		typecheckEnabled: true,
 	})
