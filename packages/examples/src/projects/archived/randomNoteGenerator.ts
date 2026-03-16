@@ -6,6 +6,7 @@ const project: Project = {
 			code: [
 				'config',
 				'; @pos -50 -6',
+				'; ~sampleRate 50',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -15,9 +16,6 @@ const project: Project = {
 				'scope "runtimeSettings"',
 				'scope "runtime"',
 				'push "WebWorkerMIDIRuntime"',
-				'set',
-				'rescopeTop "sampleRate"',
-				'push 50',
 				'set',
 				'popScope',
 				'popScope',

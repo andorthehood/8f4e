@@ -315,6 +315,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			...state.codeErrors.projectConfigErrors,
 			...state.codeErrors.editorConfigErrors,
 			...state.codeErrors.shaderErrors,
+			...state.codeErrors.runtimeDirectiveErrors,
 		];
 		state.graphicHelper.codeBlocks.forEach(codeBlock => {
 			codeBlock.widgets.errorMessages = [];
