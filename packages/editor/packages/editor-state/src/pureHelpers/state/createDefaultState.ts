@@ -2,10 +2,11 @@ import { defaultColorScheme } from '@8f4e/sprite-generator';
 
 import { defaultFeatureFlags } from './featureFlags';
 
-import { defaultEditorConfig } from '~/features/editor-config/defaults';
-import { defaultProjectConfig } from '~/features/project-config/defaults';
+import type { ProjectConfig } from '~/types';
 
-export default function createDefaultState() {
+import { defaultEditorConfig } from '~/features/editor-config/defaults';
+
+export default function createDefaultState(compiledProjectConfig: ProjectConfig) {
 	return {
 		compiler: {
 			compilationTime: 0,
@@ -57,7 +58,7 @@ export default function createDefaultState() {
 			logs: [],
 			maxLogs: 100,
 		},
-		compiledProjectConfig: defaultProjectConfig,
+		compiledProjectConfig,
 		compiledEditorConfig: defaultEditorConfig,
 		runtimeDirectives: {},
 		globalEditorDirectives: {},
