@@ -141,7 +141,6 @@ export interface CompilationContext {
 	stack: Stack;
 	blockStack: BlockStack;
 	startingByteAddress: number;
-	memoryByteSize: number;
 	byteCode: Array<WASMInstruction | Type | number>;
 	mode?: CompilationMode;
 	codeBlockId?: string;

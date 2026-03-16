@@ -88,8 +88,7 @@ export function compileModules(
 	options: CompileOptions,
 	builtInConsts?: Namespace['consts'],
 	namespaces?: Namespaces,
-	compiledFunctions?: CompiledFunctionLookup,
-	memoryByteSize?: number
+	compiledFunctions?: CompiledFunctionLookup
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress ?? 0;
 
@@ -107,38 +106,11 @@ export function compileModules(
 			})
 		);
 
-	const compileAllModules = (resolvedMemoryByteSize: number) => {
-		memoryAddress = options.startingMemoryWordAddress ?? 0;
-
-		return modules.map((ast, index) => {
-			const module = compileModule(
-				ast,
-				consts,
-				ns,
-				memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-				resolvedMemoryByteSize,
-				index,
-				compiledFunctions
-			);
-			memoryAddress += module.wordAlignedSize;
-			return module;
-		});
-	};
-
-	if (modules.length === 0) {
-		return [];
-	}
-
-	if (memoryByteSize !== undefined) {
-		return compileAllModules(memoryByteSize);
-	}
-
-	const provisionalModules = compileAllModules(Number.MAX_SAFE_INTEGER);
-	const provisionalRequiredMemoryBytes =
-		provisionalModules[provisionalModules.length - 1].byteAddress +
-		provisionalModules[provisionalModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
-
-	return compileAllModules(provisionalRequiredMemoryBytes);
+	return modules.map((ast, index) => {
+		const module = compileModule(ast, consts, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
+		memoryAddress += module.wordAlignedSize;
+		return module;
+	});
 }
 
 export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {

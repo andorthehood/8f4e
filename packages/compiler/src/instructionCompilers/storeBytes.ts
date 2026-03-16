@@ -130,7 +130,7 @@ if (import.meta.vitest) {
 		});
 
 		it('compiles storeBytes 3 and leaves an empty stack', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 256 });
+			const context = createInstructionCompilerTestContext();
 			// bytes pushed first, addr pushed last (on top)
 			context.stack.push(
 				{ isInteger: true, isNonZero: false },
@@ -153,7 +153,7 @@ if (import.meta.vitest) {
 		});
 
 		it('emits i32.store8 opcode (0x3a = 58) for each byte', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 256 });
+			const context = createInstructionCompilerTestContext();
 			// bytes pushed first, addr pushed last (on top)
 			context.stack.push(
 				{ isInteger: true, isNonZero: false },
@@ -175,7 +175,7 @@ if (import.meta.vitest) {
 		});
 
 		it('compiles storeBytes 0 (address-only pop) and leaves an empty stack', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 256 });
+			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
 
 			storeBytes(

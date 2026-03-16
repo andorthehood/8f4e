@@ -6,7 +6,6 @@ import i32load16s from '../wasmUtils/load/i32load16s';
 import i32load16u from '../wasmUtils/load/i32load16u';
 import i32load8s from '../wasmUtils/load/i32load8s';
 import i32load8u from '../wasmUtils/load/i32load8u';
-import { compileSegment } from '../compiler';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
@@ -30,42 +29,13 @@ const load: InstructionCompiler = withValidation(
 		operandTypes: 'int',
 	},
 	(line, context) => {
-		// Non-null assertion is safe: withValidation ensures 1 integer operand exists
-		const operand = context.stack.pop()!;
-
-		if (operand.isSafeMemoryAddress) {
-			context.stack.push({ isInteger: true, isNonZero: false });
-			const instructions = instructionToByteCodeMap[line.instruction];
-			if (!instructions) {
-				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-			}
-			return saveByteCode(context, instructions);
-		} else {
-			context.stack.push({ isInteger: true, isNonZero: false });
-			const tempVariableName = '__loadAddress_temp_' + line.lineNumberAfterMacroExpansion;
-			const instructions = instructionToByteCodeMap[line.instruction];
-			if (!instructions) {
-				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-			}
-			return compileSegment(
-				[
-					`local int ${tempVariableName}`,
-					`localSet ${tempVariableName}`,
-					`localGet ${tempVariableName}`,
-					`push ${context.memoryByteSize - 1}`,
-					'greaterThan',
-					'if int',
-					`push 0`,
-					'else',
-					`localGet ${tempVariableName}`,
-					'ifEnd',
-					...instructions.map((wasmInstruction: number) => {
-						return `wasm ${wasmInstruction}`;
-					}),
-				],
-				context
-			);
+		context.stack.pop();
+		context.stack.push({ isInteger: true, isNonZero: false });
+		const instructions = instructionToByteCodeMap[line.instruction];
+		if (!instructions) {
+			throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 		}
+		return saveByteCode(context, instructions);
 	}
 );
 
@@ -95,8 +65,8 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('wraps unsafe address with bounds check', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 32 });
+		it('loads from an unsafe memory address without extra bounds checks', () => {
+			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: false });
 
 			load(
