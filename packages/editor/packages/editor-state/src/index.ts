@@ -39,7 +39,8 @@ import groupUngroupper from './features/code-blocks/features/group/ungroupper/ef
 import groupDeleter from './features/code-blocks/features/group/deleter/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
-import { getDefaultProjectConfigForRuntime } from './features/project-config/runtimeSelection';
+import { createDefaultProjectConfig } from './features/project-config/defaults';
+import { getSelectedRuntimeDefaults } from './features/global-editor-directives/runtime/plugin';
 
 import type { Options, State, EventDispatcher } from './types';
 
@@ -51,18 +52,17 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		throw new Error(`Default runtime ID "${options.defaultRuntimeId}" not found in runtime registry`);
 	}
 
+	const defaultProjectConfig = createDefaultProjectConfig(
+		getSelectedRuntimeDefaults(options.defaultRuntimeId, options.runtimeRegistry, options.defaultRuntimeId)
+	);
+
 	// Create base state
 	const baseState = {
-		...createDefaultState(),
+		...createDefaultState(defaultProjectConfig),
 		callbacks: options.callbacks,
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
 		defaultRuntimeId: options.defaultRuntimeId,
-		compiledProjectConfig: getDefaultProjectConfigForRuntime(
-			options.defaultRuntimeId,
-			options.runtimeRegistry,
-			options.defaultRuntimeId
-		),
 	};
 
 	const store = createStateManager<State>(baseState);

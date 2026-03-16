@@ -7,7 +7,7 @@ import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
 import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
 import { Viewport } from '~/features/viewport/types';
-import { defaultProjectConfig } from '~/features/project-config/defaults';
+import { createDefaultProjectConfig } from '~/features/project-config/defaults';
 
 /**
  * Deep partial type that makes all properties and nested properties optional
@@ -242,6 +242,7 @@ export function createMockEventDispatcher(): EventDispatcher {
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const mockRuntimeFactory = () => () => {};
+	const defaultRuntimeSettings = { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 } as const;
 
 	const defaults: State = {
 		compiler: {
@@ -260,7 +261,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		runtimeRegistry: {
 			WebWorkerLogicRuntime: {
 				id: 'WebWorkerLogicRuntime',
-				defaults: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
+				defaults: defaultRuntimeSettings,
 				schema: { type: 'object', properties: {} },
 				factory: mockRuntimeFactory,
 			},
@@ -325,7 +326,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				timerExpectedIntervalTimeMs: 0,
 			},
 		},
-		compiledProjectConfig: { ...defaultProjectConfig },
+		compiledProjectConfig: createDefaultProjectConfig(defaultRuntimeSettings),
 		compiledEditorConfig: {
 			font: '8x16',
 		},

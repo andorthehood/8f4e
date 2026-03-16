@@ -8,6 +8,7 @@ import type { State, Project, CodeBlockGraphicData } from '~/types';
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { EMPTY_DEFAULT_PROJECT } from '~/types';
+import { createDefaultProjectConfig } from '~/features/project-config/defaults';
 
 const AUTO_ENV_BLOCK_ID = 'constants_env';
 
@@ -32,7 +33,7 @@ describe('autoEnvConstants', () => {
 
 	beforeEach(() => {
 		const baseState = {
-			...createDefaultState(),
+			...createDefaultState(createDefaultProjectConfig({ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 })),
 			runtimeDirectives: { sampleRate: 48000 },
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
