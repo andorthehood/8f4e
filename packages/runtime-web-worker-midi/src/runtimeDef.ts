@@ -143,16 +143,11 @@ export function createWebWorkerMIDIRuntimeDef(
 	return {
 		id: 'WebWorkerMIDIRuntime',
 		defaults: {
-			runtime: 'WebWorkerMIDIRuntime',
 			sampleRate: 50,
 		},
 		schema: {
 			type: 'object',
 			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['WebWorkerMIDIRuntime'],
-				},
 				sampleRate: { type: 'number' },
 				midiNoteOutputs: {
 					type: 'array',
@@ -211,7 +206,6 @@ export function createWebWorkerMIDIRuntimeDef(
 					},
 				},
 			},
-			required: ['runtime'],
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		factory: (store: StateManager<State>, events: EventDispatcher) => {

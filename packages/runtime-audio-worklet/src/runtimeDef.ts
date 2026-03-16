@@ -2,7 +2,7 @@
 // Note: audioWorkletUrl is imported at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
 
-import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
+import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike, AudioWorkletRuntime } from '@8f4e/editor';
 
 /**
  * Resolves a memory identifier into module and memory name components.
@@ -50,9 +50,9 @@ export function audioWorkletRuntimeFactory(
 	let mediaStreamSource: any | null = null;
 
 	function syncCodeAndSettingsWithRuntime() {
-		const runtime = state.compiledProjectConfig.runtimeSettings;
+		const runtime = state.compiledProjectConfig.runtimeSettings as AudioWorkletRuntime;
 
-		if (runtime.runtime !== 'AudioWorkletRuntime' || !audioWorklet || !audioContext) {
+		if (!audioWorklet || !audioContext) {
 			return;
 		}
 
@@ -116,9 +116,9 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	async function initAudioContext() {
-		const runtime = state.compiledProjectConfig.runtimeSettings;
+		const runtime = state.compiledProjectConfig.runtimeSettings as AudioWorkletRuntime;
 
-		if (audioContext || runtime.runtime !== 'AudioWorkletRuntime') {
+		if (audioContext) {
 			return;
 		}
 
@@ -197,7 +197,7 @@ export function audioWorkletRuntimeFactory(
 		if (!audioContext) {
 			return;
 		}
-		const runtime = state.compiledProjectConfig.runtimeSettings;
+		const runtime = state.compiledProjectConfig.runtimeSettings as AudioWorkletRuntime;
 		const desiredSampleRate = state.runtimeDirectives?.sampleRate ?? runtime.sampleRate;
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
@@ -244,16 +244,11 @@ export function createAudioWorkletRuntimeDef(
 	return {
 		id: 'AudioWorkletRuntime',
 		defaults: {
-			runtime: 'AudioWorkletRuntime',
 			sampleRate: 44100,
 		},
 		schema: {
 			type: 'object',
 			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['AudioWorkletRuntime'],
-				},
 				sampleRate: { type: 'number' },
 				audioInputBuffers: {
 					type: 'array',
@@ -280,7 +275,6 @@ export function createAudioWorkletRuntimeDef(
 					},
 				},
 			},
-			required: ['runtime'],
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		factory: (store: StateManager<State>, events: EventDispatcher) => {

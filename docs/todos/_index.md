@@ -69,8 +69,6 @@ Active todo files: 74
 | 311 | Derive memory size from compiled program footprint | 🟡 | 1-2d | 2026-03-16 | Projects currently author `memorySizeBytes` manually in project config even though the compiler already computes the actual static memory footprint required by the program. |
 | 314 | Migrate editor directive consumers to centralized parsed directives | 🟡 | 1-2d | 2026-03-16 | The editor-state now has a centralized parsed-directive pass that stores `parsedDirectives` on each `CodeBlockGraphicData`. |
 | 316 | Remove runtime packaging concerns from CLI | 🟡 | 1-2d | 2026-03-16 | The CLI currently compiles and packages runtime-facing project configuration even though its intended responsibility is to build program artifacts rather than prepare projects for execution. |
-| 317 | Migrate AudioWorklet buffer routing to runtime directives | 🟡 | 1-2d | 2026-03-16 | The AudioWorklet runtime still receives its input/output buffer routing from project config even though this runtime-specific behavior should be authored as runtime directives owned by the AudioWorklet runtime itself. |
-
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |
