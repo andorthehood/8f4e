@@ -116,6 +116,7 @@ export function createMockCodeBlock(
 		disabled: false,
 		isHome: false,
 		isFavorite: false,
+		parsedDirectives: [],
 		widgets: {
 			blockHighlights: [],
 			inputs: [],

@@ -58,6 +58,7 @@ export function createCodeBlockGraphicData(
 		disabled: false,
 		isHome: false,
 		isFavorite: false,
+		parsedDirectives: [],
 		widgets: {
 			blockHighlights: [],
 			inputs: [],
