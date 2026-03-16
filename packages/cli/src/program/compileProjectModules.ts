@@ -13,7 +13,7 @@ interface CompileProjectModulesOptions {
 interface CompileProjectModulesResult {
 	compiledModules?: CompiledModuleLookup;
 	compiledWasm?: string;
-	allocatedMemorySize?: number;
+	requiredMemoryBytes?: number;
 }
 
 export default function compileProjectModules(
@@ -50,7 +50,7 @@ export default function compileProjectModules(
 		return {
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
-			allocatedMemorySize: 0,
+			requiredMemoryBytes: 0,
 		};
 	}
 
@@ -64,6 +64,6 @@ export default function compileProjectModules(
 	return {
 		compiledModules: includeModules ? result.compiledModules : undefined,
 		compiledWasm: includeWasm ? Buffer.from(result.codeBuffer).toString('base64') : undefined,
-		allocatedMemorySize: result.allocatedMemorySize,
+		requiredMemoryBytes: result.requiredMemoryBytes,
 	};
 }

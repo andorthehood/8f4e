@@ -20,8 +20,8 @@ describe('disableAutoCompilation feature', () => {
 	beforeEach(() => {
 		mockCompileCode = vi.fn().mockResolvedValue({
 			compiledModules: {},
-			allocatedMemorySize: 1024,
-			effectiveMemorySizeBytes: 65536,
+			requiredMemoryBytes: 1024,
+			allocatedMemoryBytes: 65536,
 			memoryAction: { action: 'reused' },
 			byteCodeSize: 0,
 			hasWasmInstanceBeenReset: false,

@@ -245,7 +245,7 @@ describe('projectImport', () => {
 			vi.useRealTimers();
 
 			expect(consoleErrorSpy).not.toHaveBeenCalled();
-			expect(mockState.compiler.allocatedMemorySize).toBe(0);
+			expect(mockState.compiler.requiredMemoryBytes).toBe(0);
 
 			consoleErrorSpy.mockRestore();
 		});

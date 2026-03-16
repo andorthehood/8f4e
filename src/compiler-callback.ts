@@ -28,8 +28,8 @@ export async function compileCode(
 					resolve({
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,
-						allocatedMemorySize: data.payload.allocatedMemorySize,
-						effectiveMemorySizeBytes: data.payload.effectiveMemorySizeBytes,
+						requiredMemoryBytes: data.payload.requiredMemoryBytes,
+						allocatedMemoryBytes: data.payload.allocatedMemoryBytes,
 						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
 						memoryAction: data.payload.memoryAction,
 						compiledFunctions: data.payload.compiledFunctions,
