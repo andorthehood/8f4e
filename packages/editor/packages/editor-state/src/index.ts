@@ -25,6 +25,7 @@ import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/e
 import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import colorDirectivesEffect from './features/color-directives/effect';
+import globalEditorDirectivesEffect from './features/global-editor-directives/effect';
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
 import runtimeDirectivesEffect from './features/runtime-directives/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
@@ -97,6 +98,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	projectConfigEffect(store, events);
 	colorDirectivesEffect(store);
 	parsedDirectivesUpdater(store);
+	globalEditorDirectivesEffect(store);
 	runtimeDirectivesEffect(store);
 	compiler(store, events);
 	graphicHelper(store, events);
@@ -158,6 +160,7 @@ export type {
 	FeatureFlags,
 	FeatureFlagsConfig,
 	EventDispatcher,
+	ResolvedGlobalEditorDirectives,
 	InternalMouseEvent,
 	InternalKeyboardEvent,
 	NavigateCodeBlockEvent,

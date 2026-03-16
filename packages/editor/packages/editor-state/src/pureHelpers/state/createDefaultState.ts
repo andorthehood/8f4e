@@ -48,6 +48,7 @@ export default function createDefaultState() {
 			compilationErrors: [],
 			projectConfigErrors: [],
 			editorConfigErrors: [],
+			globalEditorDirectiveErrors: [],
 			shaderErrors: [],
 			runtimeDirectiveErrors: [],
 		},
@@ -58,6 +59,7 @@ export default function createDefaultState() {
 		compiledProjectConfig: defaultProjectConfig,
 		compiledEditorConfig: defaultEditorConfig,
 		runtimeDirectives: {},
+		globalEditorDirectives: {},
 		runtime: {
 			stats: {
 				timeToExecuteLoopMs: 0,

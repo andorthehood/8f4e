@@ -28,6 +28,7 @@ import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './
 import type { ConfigCompilationResult } from './features/config-compiler/types';
 import type { EditorConfig, EditorConfigBlock } from './features/editor-config/types';
 import type { ProjectConfig } from './features/project-config/types';
+import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
 import type { Compiler, CompilationResult } from './features/program-compiler/types';
@@ -89,6 +90,9 @@ export type { Compiler, CompilationResult };
 
 // Re-export config types
 export type { ConfigCompilationResult, ProjectConfig, EditorConfig, EditorConfigBlock };
+
+// Re-export global-editor-directives types
+export type { ResolvedGlobalEditorDirectives };
 
 // Re-export runtime types
 export type {
@@ -286,10 +290,13 @@ export interface State {
 	defaultRuntimeId: string;
 	/** Resolved project-global runtime directives from `; ~<name>` comments */
 	runtimeDirectives: ResolvedRuntimeDirectives;
+	/** Resolved global editor directives from `; @<name>` comments */
+	globalEditorDirectives: ResolvedGlobalEditorDirectives;
 	codeErrors: {
 		compilationErrors: CodeError[];
 		projectConfigErrors: CodeError[];
 		editorConfigErrors: CodeError[];
+		globalEditorDirectiveErrors: CodeError[];
 		shaderErrors: CodeError[];
 		runtimeDirectiveErrors: CodeError[];
 	};

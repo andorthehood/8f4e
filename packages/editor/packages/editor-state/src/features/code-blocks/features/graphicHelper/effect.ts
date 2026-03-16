@@ -319,6 +319,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			...state.codeErrors.compilationErrors,
 			...state.codeErrors.projectConfigErrors,
 			...state.codeErrors.editorConfigErrors,
+			...state.codeErrors.globalEditorDirectiveErrors,
 			...state.codeErrors.shaderErrors,
 			...state.codeErrors.runtimeDirectiveErrors,
 		];

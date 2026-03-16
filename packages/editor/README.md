@@ -18,6 +18,7 @@ renderers can replace it.
 ## Docs
 
 - `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.
+- `docs/runtime-directives.md` - Runtime directive syntax (`; ~...`) and supported directives.
 
 ## Color Config
 

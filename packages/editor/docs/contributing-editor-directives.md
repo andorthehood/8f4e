@@ -1,8 +1,9 @@
 # Contributing Editor Directives
 
-This document describes how to add or refactor editor directives in the editor codebase.
+This document describes how to add or refactor code-block-local editor directives in the editor codebase.
 
-For user-facing directive syntax and semantics, see [editor-directives.md](./editor-directives.md).
+For user-facing editor directive syntax and semantics, see [editor-directives.md](./editor-directives.md).
+For runtime directives, see [runtime-directives.md](./runtime-directives.md).
 
 ## Goal
 
@@ -18,6 +19,8 @@ That means each directive should keep its:
 in one place under the directives feature area.
 
 The shared directive engine should stay generic. It should coordinate directive parsing and application, but it should not hardcode directive-specific behavior such as plotter buckets, scanner rules, or layout switches.
+
+This document is specifically about the code-block directive system under `code-blocks/features/directives/`. Global editor directives are a separate feature area and should follow the same ownership principle, but they do not live in this pipeline.
 
 ## Architecture Overview
 
@@ -164,6 +167,8 @@ Then:
 3. Register the plugin in `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/registry.ts`
 4. Add tests in the same directive folder
 5. Update the user-facing docs in [editor-directives.md](./editor-directives.md)
+
+If you are adding a runtime directive instead of an editor directive, document it in [runtime-directives.md](./runtime-directives.md) instead.
 
 If you need to insert or update the directive in source code (e.g., from an effect or action), use the `directiveEditing/` helpers rather than writing inline regex logic.
 

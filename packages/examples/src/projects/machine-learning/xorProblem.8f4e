@@ -14,6 +14,7 @@ moduleEnd
 config project
 ; @pos -9 -73
 ; ~sampleRate 10
+; @exportFileName xorProblem
 
 scope "memorySizeBytes"
 set 128
@@ -22,9 +23,6 @@ rescope "runtimeSettings"
 
 rescopeTop "runtime"
 set "WebWorkerLogicRuntime"
-
-rescope "exportFileName"
-set "xorProblem"
 
 configEnd
 

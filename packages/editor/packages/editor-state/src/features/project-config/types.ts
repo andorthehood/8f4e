@@ -8,7 +8,6 @@ export interface ProjectConfig {
 	memorySizeBytes: number;
 	runtimeSettings: Runtimes;
 	disableAutoCompilation: boolean;
-	exportFileName?: string;
 	keyCodeMemoryId?: string;
 	keyPressedMemoryId?: string;
 }
