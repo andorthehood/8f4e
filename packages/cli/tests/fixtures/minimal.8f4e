@@ -1,10 +1,5 @@
 8f4e/v1
 
-config project
-rescope "memorySizeBytes"
-set 65536
-configEnd
-
 module main
 int output
 push &output

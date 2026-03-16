@@ -89,9 +89,9 @@ export function compileModules(
 	builtInConsts?: Namespace['consts'],
 	namespaces?: Namespaces,
 	compiledFunctions?: CompiledFunctionLookup,
-	memorySizeLimitBytes?: number
+	memoryByteSize?: number
 ): CompiledModule[] {
-	let memoryAddress = options.startingMemoryWordAddress;
+	let memoryAddress = options.startingMemoryWordAddress ?? 0;
 
 	// If builtInConsts not provided, use empty object - all constants come from env block
 	const consts = builtInConsts ?? {};
@@ -107,24 +107,39 @@ export function compileModules(
 			})
 		);
 
-	return modules.map((ast, index) => {
-		const module = compileModule(
-			ast,
-			consts,
-			ns,
-			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-			memorySizeLimitBytes ?? 16777216, // Default to 16MB (256 pages) for overflow protection when no limit specified
-			index,
-			compiledFunctions
-		);
-		memoryAddress += module.wordAlignedSize;
+	const compileAllModules = (resolvedMemoryByteSize: number) => {
+		memoryAddress = options.startingMemoryWordAddress ?? 0;
 
-		if (memorySizeLimitBytes !== undefined && memorySizeLimitBytes <= memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY) {
-			throw 'Memory limit exceeded';
-		}
+		return modules.map((ast, index) => {
+			const module = compileModule(
+				ast,
+				consts,
+				ns,
+				memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
+				resolvedMemoryByteSize,
+				index,
+				compiledFunctions
+			);
+			memoryAddress += module.wordAlignedSize;
+			return module;
+		});
+	};
 
-		return module;
-	});
+	if (modules.length === 0) {
+		return [];
+	}
+
+	if (memoryByteSize !== undefined) {
+		return compileAllModules(memoryByteSize);
+	}
+
+	const provisionalModules = compileAllModules(Number.MAX_SAFE_INTEGER);
+	const provisionalAllocatedMemorySize =
+		provisionalModules[provisionalModules.length - 1].byteAddress +
+		provisionalModules[provisionalModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+	const derivedMemoryByteSize = deriveEffectiveMemorySize(provisionalAllocatedMemorySize);
+
+	return compileAllModules(derivedMemoryByteSize);
 }
 
 export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {
@@ -247,8 +262,7 @@ export default function compile(
 		},
 		{}, // Empty builtInConsts - all constants come from env block
 		namespaces,
-		compiledFunctionsMap,
-		undefined // No memory limit - compiler determines required memory
+		compiledFunctionsMap
 	);
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
@@ -258,8 +272,10 @@ export default function compile(
 
 	// Calculate actual allocated memory size from the compiled program
 	const allocatedMemorySize =
-		compiledModules[compiledModules.length - 1].byteAddress +
-		compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+		compiledModules.length === 0
+			? 0
+			: compiledModules[compiledModules.length - 1].byteAddress +
+				compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 
 	// Derive effective memory size from actual footprint with page rounding and minimum 1 page
 	const effectiveMemorySizeBytes = deriveEffectiveMemorySize(allocatedMemorySize);

@@ -8,9 +8,9 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 - **Code Flattening**: Converts code blocks into separate modules and functions arrays, sorted by `creationIndex`
 - **Compiler Invocation**: Calls `compileCode` callback with source and options
-- **Compilation Options**: Configures memory size, environment constants, and ignored keywords
+- **Compilation Options**: Sets compiler entry-point options
 - **Error Mapping**: Maps compilation errors back to specific code blocks and line numbers
-- **Memory Management**: Tracks memory allocation and handles memory recreation events
+- **Memory Management**: Tracks compiler-derived memory usage and handles memory recreation events
 - **Performance Tracking**: Measures and logs compilation time
 - **Auto-Compile Control**: Supports precompiled mode and disable-auto-compile paths
 
@@ -18,18 +18,11 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 ```typescript
 {
-  memorySizeBytes: number,           // From compiledProjectConfig, default 1MB
   startingMemoryWordAddress: 0,
-  environmentExtensions: {
-    ignoredKeywords: [               // Annotation keywords not compiled
-      'debug', 'button', 'switch', 
-      'offset', 'plot', 'piano'
-    ]
-  }
 }
 ```
 
-**Note**: Environment constants (SAMPLE_RATE, AUDIO_BUFFER_SIZE, etc.) are no longer injected via compiler options. Instead, they are provided via an auto-managed `constants env` block that is automatically created and updated by the editor-state.
+**Note**: The compiler derives the required memory size from its allocation plan and returns the effective page-rounded size. Environment constants (SAMPLE_RATE, AUDIO_BUFFER_SIZE, etc.) are provided via an auto-managed `constants env` block.
 
 ## Block Type Handling
 
@@ -57,14 +50,15 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 - `state.compiler.compiledModules` - Compiled module bytecode
 - `state.compiler.compiledFunctions` - Compiled function bytecode
 - `state.compiler.byteCodeSize` - Total bytecode size in bytes
-- `state.compiler.allocatedMemorySize` - Memory allocation size
+- `state.compiler.allocatedMemorySize` - Actual bytes used by the compiled program
+- `state.compiler.effectiveMemorySizeBytes` - Allocated WebAssembly memory capacity in bytes
 - `state.compiler.compilationTime` - Compilation duration in ms
 - `state.compiler.lastCompilationStart` - Timestamp of compilation start
 - `state.codeErrors.compilationErrors` - Array of compilation errors
 
 ## Integration Points
 
-- **Project Config**: Memory size and sample rate come from compiled project config
+- **Project Config**: Runtime selection and sample rate come from compiled project config
 - **Binary Assets**: Triggers asset loading when memory is recreated
 - **Runtime**: Runtime selection affects environment constants
 - **Project Export**: Compiled modules are included in runtime-ready exports
@@ -93,5 +87,5 @@ When memory is recreated, binary assets must be reloaded.
 
 - Compilation is synchronous from the effect's perspective but callback may be async
 - Blocks are compiled in `creationIndex` order
-- Memory size changes require runtime restart
+- Memory capacity changes require runtime restart
 - Environment constants are provided via auto-managed `constants env` block

@@ -122,6 +122,7 @@ export default async function compileAndUpdateMemory(
 		compiledModules,
 		compiledFunctions,
 		allocatedMemorySize,
+		effectiveMemorySizeBytes,
 		memoryRef,
 		hasWasmInstanceBeenReset,
 		memoryAction,

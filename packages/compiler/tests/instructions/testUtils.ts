@@ -72,7 +72,6 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	const ast = compileToAST(sourceCode.split('\n'));
 	const module: CompiledModule = compileModules([ast], {
 		startingMemoryWordAddress: 0,
-		memorySizeBytes: 65536,
 		includeAST: true,
 	})[0];
 	const program = createSingleFunctionWASMProgram(module.cycleFunction);
@@ -223,7 +222,6 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 		modules,
 		{
 			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
 			includeAST: true,
 			disableSharedMemory: true,
 		},
