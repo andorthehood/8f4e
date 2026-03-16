@@ -23,6 +23,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @group myGroup', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -43,6 +44,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @group firstGroup', '', '; @group secondGroup', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'firstGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -62,6 +64,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @group myGroup  ', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -81,6 +84,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '  ; @group myGroup', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -100,6 +104,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', ';   @group   myGroup', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -119,6 +124,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @group myGroup', '; @favorite', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -159,6 +165,7 @@ describe('groupRemover', () => {
 			code: ['module test', '; @group myGroup', '', 'moduleEnd'],
 			blockType: 'module',
 			lastUpdated: 1000,
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -178,6 +185,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @group myGroup', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -218,6 +226,7 @@ describe('groupRemover', () => {
 		const functionBlock = createMockCodeBlock({
 			code: ['function test', '; @group funcGroup', 'functionEnd'],
 			blockType: 'function',
+			groupName: 'funcGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [functionBlock];
 		mockState.featureFlags.editing = true;
@@ -237,6 +246,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @group audio-chain_1', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'audio-chain_1',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;
@@ -256,6 +266,7 @@ describe('groupRemover', () => {
 		const codeBlock = createMockCodeBlock({
 			code: ['module test', '; @group myGroup extra text here', '', 'moduleEnd'],
 			blockType: 'module',
+			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = true;

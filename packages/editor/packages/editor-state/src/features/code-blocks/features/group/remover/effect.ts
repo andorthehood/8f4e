@@ -1,4 +1,3 @@
-import parseGroup from '../codeParser';
 import { removeDirective } from '../../directiveEditing';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -19,10 +18,8 @@ export default function groupRemover(store: StateManager<State>, events: EventDi
 		// Set target code block for programmatic edit to avoid re-rendering all code blocks
 		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock;
 
-		// Check if code block has ; @group directive
-		const hasGroup = parseGroup(codeBlock.code);
-
-		if (hasGroup) {
+		// Check if code block has a valid ; @group directive (reflected in derived groupName)
+		if (codeBlock.groupName) {
 			// Remove all ; @group directive lines
 			codeBlock.code = removeDirective(codeBlock.code, 'group');
 
