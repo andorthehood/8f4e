@@ -16,9 +16,8 @@ config project
 ; ~sampleRate 10
 ; @exportFileName xorProblem
 
-rescope "runtimeSettings"
-
-rescopeTop "runtime"
+scope "runtimeSettings"
+scope "runtime"
 set "WebWorkerLogicRuntime"
 
 configEnd

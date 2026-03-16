@@ -63,7 +63,7 @@ config project
 
 rescope "runtimeSettings"
 
-rescopeTop "runtime"
+scope "runtime"
 set "AudioWorkletRuntime"
 
 configEnd
