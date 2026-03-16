@@ -44,7 +44,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 		try {
 			const compilerOptions = {
-				memorySizeBytes: state.compiledProjectConfig?.memorySizeBytes,
 				startingMemoryWordAddress: 0,
 			};
 
@@ -58,6 +57,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
 			store.set('compiler.compiledModules', result.compiledModules);
 			store.set('compiler.allocatedMemorySize', result.allocatedMemorySize);
+			store.set('compiler.effectiveMemorySizeBytes', result.effectiveMemorySizeBytes);
 			store.set('compiler.isCompiling', false);
 			store.set('compiler.compilationTime', performance.now() - state.compiler.lastCompilationStart);
 			store.set('codeErrors.compilationErrors', []);
@@ -108,6 +108,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				log(state, 'Memory snapshot loaded and decoded successfully', 'Loader');
 			} catch (err) {
 				state.compiler.allocatedMemorySize = 0;
+				state.compiler.effectiveMemorySizeBytes = 0;
 				console.error('[Loader] Failed to decode memory snapshot:', err);
 				error(state, 'Failed to decode memory snapshot', 'Loader');
 			}

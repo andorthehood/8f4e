@@ -9,7 +9,6 @@ import type { Module } from '../../src/types';
 
 const defaultOptions = {
 	startingMemoryWordAddress: 1,
-	memorySizeBytes: 65536,
 	includeAST: true,
 };
 

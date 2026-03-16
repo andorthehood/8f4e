@@ -100,7 +100,6 @@ describe('call instruction (float64)', () => {
 			],
 			{
 				startingMemoryWordAddress: 0,
-				memorySizeBytes: 65536,
 				disableSharedMemory: true,
 			},
 			[

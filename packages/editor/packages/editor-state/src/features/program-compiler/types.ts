@@ -15,6 +15,7 @@ export interface Compiler {
 	byteCodeSize: number;
 	compiledModules: CompiledModuleLookup;
 	allocatedMemorySize: number;
+	effectiveMemorySizeBytes: number;
 	compiledFunctions?: CompiledFunctionLookup;
 	hasMemoryBeenReinitialized: boolean;
 }

@@ -29,6 +29,7 @@ export async function compileCode(
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,
 						allocatedMemorySize: data.payload.allocatedMemorySize,
+						effectiveMemorySizeBytes: data.payload.effectiveMemorySizeBytes,
 						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
 						memoryAction: data.payload.memoryAction,
 						compiledFunctions: data.payload.compiledFunctions,

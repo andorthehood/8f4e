@@ -21,6 +21,7 @@ describe('disableAutoCompilation feature', () => {
 		mockCompileCode = vi.fn().mockResolvedValue({
 			compiledModules: {},
 			allocatedMemorySize: 1024,
+			effectiveMemorySizeBytes: 65536,
 			memoryAction: { action: 'reused' },
 			byteCodeSize: 0,
 			hasWasmInstanceBeenReset: false,
@@ -29,7 +30,6 @@ describe('disableAutoCompilation feature', () => {
 
 		mockCompileConfig = vi.fn().mockResolvedValue({
 			config: {
-				memorySizeBytes: 1048576,
 				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
 				disableAutoCompilation: false,
 			},
@@ -45,7 +45,7 @@ describe('disableAutoCompilation feature', () => {
 
 		const configBlock = createMockCodeBlock({
 			id: 'config-block',
-			code: ['config project', 'memorySizeBytes 1048576', 'configEnd'],
+			code: ['config project', 'disableAutoCompilation false', 'configEnd'],
 			creationIndex: 1,
 			blockType: 'config',
 		});
@@ -151,7 +151,6 @@ describe('disableAutoCompilation feature', () => {
 		});
 	});
 
-
 	describe('applyConfigToState integration', () => {
 		it('should set disableAutoCompilation flag from config', async () => {
 			mockCompileConfig.mockResolvedValue({
@@ -171,7 +170,7 @@ describe('disableAutoCompilation feature', () => {
 			store.set('compiledProjectConfig.disableAutoCompilation', false);
 
 			mockCompileConfig.mockResolvedValue({
-				config: { memorySizeBytes: 2097152 },
+				config: {},
 				errors: [],
 			});
 

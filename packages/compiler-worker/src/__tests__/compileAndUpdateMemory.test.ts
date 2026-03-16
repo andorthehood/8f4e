@@ -4,7 +4,7 @@ import type { CompiledModuleLookup, Module } from '@8f4e/compiler';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
 describe('compileAndUpdateMemory init-only reruns', () => {
-	const compilerOptions = { memorySizeBytes: 1024, startingMemoryWordAddress: 1 };
+	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 
 	const createModules = (baseDefault: number): Module[] => [
@@ -85,7 +85,7 @@ moduleEnd
 });
 
 describe('compileAndUpdateMemory float64 incremental patching', () => {
-	const compilerOptions = { memorySizeBytes: 1024, startingMemoryWordAddress: 1 };
+	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 
 	beforeEach(async () => {

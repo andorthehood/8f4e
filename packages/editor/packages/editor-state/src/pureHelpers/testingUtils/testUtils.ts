@@ -249,6 +249,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			compilationTime: 0,
 			lastCompilationStart: 0,
 			allocatedMemorySize: 0,
+			effectiveMemorySizeBytes: 0,
 			compiledModules: {},
 			byteCodeSize: 0,
 			hasMemoryBeenReinitialized: false,
