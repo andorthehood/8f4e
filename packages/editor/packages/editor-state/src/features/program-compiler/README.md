@@ -50,8 +50,8 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 - `state.compiler.compiledModules` - Compiled module bytecode
 - `state.compiler.compiledFunctions` - Compiled function bytecode
 - `state.compiler.byteCodeSize` - Total bytecode size in bytes
-- `state.compiler.allocatedMemorySize` - Actual bytes used by the compiled program
-- `state.compiler.effectiveMemorySizeBytes` - Allocated WebAssembly memory capacity in bytes
+- `state.compiler.requiredMemoryBytes` - Bytes required by the compiler's static memory plan
+- `state.compiler.allocatedMemoryBytes` - Actual WebAssembly memory capacity allocated by the host
 - `state.compiler.compilationTime` - Compilation duration in ms
 - `state.compiler.lastCompilationStart` - Timestamp of compilation start
 - `state.codeErrors.compilationErrors` - Array of compilation errors

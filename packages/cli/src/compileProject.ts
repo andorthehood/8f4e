@@ -52,7 +52,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		compiledModules: moduleResult.compiledModules,
 		compiledFunctions: undefined,
 		compiledWasm: moduleResult.compiledWasm,
-		allocatedMemorySize: moduleResult.allocatedMemorySize,
+		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
 		configSource,
 	};
 }

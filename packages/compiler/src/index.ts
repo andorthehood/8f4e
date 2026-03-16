@@ -19,7 +19,6 @@ import getModuleName from './astUtils/getModuleName';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 import resolveInterModularConnections from './utils/resolveInterModularConnections';
-import { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 import {
 	AST,
 	CompileOptions,
@@ -74,6 +73,7 @@ export { default as collectConstants } from './astUtils/collectConstants';
 export { default as getConstantsName } from './astUtils/getConstantsName';
 export { default as getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
+export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {
 	parseMacroDefinitions,
 	expandMacros,
@@ -134,12 +134,11 @@ export function compileModules(
 	}
 
 	const provisionalModules = compileAllModules(Number.MAX_SAFE_INTEGER);
-	const provisionalAllocatedMemorySize =
+	const provisionalRequiredMemoryBytes =
 		provisionalModules[provisionalModules.length - 1].byteAddress +
 		provisionalModules[provisionalModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
-	const derivedMemoryByteSize = deriveEffectiveMemorySize(provisionalAllocatedMemorySize);
 
-	return compileAllModules(derivedMemoryByteSize);
+	return compileAllModules(provisionalRequiredMemoryBytes);
 }
 
 export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {
@@ -196,8 +195,7 @@ export default function compile(
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
-	allocatedMemorySize: number;
-	effectiveMemorySizeBytes: number;
+	requiredMemoryBytes: number;
 } {
 	// Parse and expand macros if provided
 	const macroDefinitions = macros ? parseMacroDefinitions(macros) : new Map();
@@ -270,18 +268,12 @@ export default function compile(
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
-	// Calculate actual allocated memory size from the compiled program
-	const allocatedMemorySize =
+	// Calculate the required memory footprint from the compiled program.
+	const requiredMemoryBytes =
 		compiledModules.length === 0
 			? 0
 			: compiledModules[compiledModules.length - 1].byteAddress +
 				compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
-
-	// Derive effective memory size from actual footprint with page rounding and minimum 1 page
-	const effectiveMemorySizeBytes = deriveEffectiveMemorySize(allocatedMemorySize);
-
-	// Use effective size for WASM memory import
-	const memorySizeBytesForWasm = effectiveMemorySizeBytes;
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
@@ -324,7 +316,7 @@ export default function compile(
 		: stripASTFromCompiledModules(compiledModulesMap);
 
 	// Round up to whole wasm pages (64 KiB each); memory cannot be imported with fractional pages.
-	const memorySizePages = Math.ceil(memorySizeBytesForWasm / WASM_MEMORY_PAGE_SIZE);
+	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -366,7 +358,6 @@ export default function compile(
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
-		allocatedMemorySize,
-		effectiveMemorySizeBytes,
+		requiredMemoryBytes,
 	};
 }
