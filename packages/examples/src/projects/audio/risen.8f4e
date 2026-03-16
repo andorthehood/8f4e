@@ -6,19 +6,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName risen
 
-scope "runtimeSettings"
-
-scope "audioOutputBuffers[0]"
-
-scope "memoryId"
-set "audioout.buffer"
-
-rescopeTop "channel"
-set 0
-
-rescopeTop "output"
-set 0
-
 configEnd
 
 constants env
@@ -455,6 +442,7 @@ ifEnd
 moduleEnd
 
 module audioout
+; ~audioOutput buffer 0 0
 ; @pos 241 -22
 ; @home
 use env

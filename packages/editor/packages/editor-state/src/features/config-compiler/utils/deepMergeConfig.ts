@@ -113,30 +113,13 @@ if (import.meta.vitest) {
 		it('should merge runtime settings object', () => {
 			const one = {
 				runtimeSettings: {
-					audioInputBuffers: [
-						{
-							memoryId: 'audioin.buffer',
-							channel: 0,
-							input: 0,
-						},
-					],
+					sampleRate: 44100,
 				},
 			};
 
 			const two = {
 				runtimeSettings: {
-					audioOutputBuffers: [
-						{
-							memoryId: 'audiooutL.buffer',
-							channel: 0,
-							output: 0,
-						},
-						{
-							memoryId: 'audiooutR.buffer',
-							channel: 1,
-							output: 0,
-						},
-					],
+					bufferSize: 128,
 				},
 			};
 
@@ -144,25 +127,8 @@ if (import.meta.vitest) {
 
 			expect(result).toEqual({
 				runtimeSettings: {
-					audioInputBuffers: [
-						{
-							memoryId: 'audioin.buffer',
-							channel: 0,
-							input: 0,
-						},
-					],
-					audioOutputBuffers: [
-						{
-							memoryId: 'audiooutL.buffer',
-							channel: 0,
-							output: 0,
-						},
-						{
-							memoryId: 'audiooutR.buffer',
-							channel: 1,
-							output: 0,
-						},
-					],
+					sampleRate: 44100,
+					bufferSize: 128,
 				},
 			});
 		});

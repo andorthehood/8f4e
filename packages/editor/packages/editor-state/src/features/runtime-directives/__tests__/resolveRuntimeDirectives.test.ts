@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { parseBlockDirectives } from '../../code-blocks/utils/parseBlockDirectives';
-import { resolveRuntimeDirectives } from '../resolveRuntimeDirectives';
+import { resolveRuntimeDirectives } from '../registry';
 
 function createParsedBlock(code: string[], id?: string) {
 	return {
