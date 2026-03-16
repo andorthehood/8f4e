@@ -67,14 +67,12 @@ configEnd
 config project
 ; @pos -141 19
 ; ~sampleRate 44100
+; @exportFileName audioLoopback
 
 rescope "runtimeSettings"
 
 rescopeTop "runtime"
 set "AudioWorkletRuntime"
-
-rescope "exportFileName"
-set "audioLoopback"
 
 configEnd
 

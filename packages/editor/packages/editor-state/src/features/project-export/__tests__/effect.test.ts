@@ -36,7 +36,6 @@ describe('projectExport', () => {
 			expect(exportProjectCall).toBeDefined();
 		});
 
-
 		it('should register saveSession event handler', () => {
 			projectExport(store, mockEvents);
 
@@ -115,10 +114,9 @@ describe('projectExport', () => {
 		});
 	});
 
-
 	describe('exportFileName', () => {
 		it('should use custom exportFileName as base for .8f4e export', async () => {
-			mockState.compiledProjectConfig.exportFileName = 'my-project';
+			mockState.globalEditorDirectives.exportFileName = 'my-project';
 
 			projectExport(store, mockEvents);
 
@@ -131,11 +129,10 @@ describe('projectExport', () => {
 			expect(fileName).toBe('my-project.8f4e');
 		});
 
-
 		it('should use custom exportFileName as base for WASM export', async () => {
 			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);
 			mockState.callbacks.exportBinaryCode = mockExportBinaryCode;
-			mockState.compiledProjectConfig.exportFileName = 'my-project';
+			mockState.globalEditorDirectives.exportFileName = 'my-project';
 
 			projectExport(store, mockEvents);
 
@@ -147,11 +144,10 @@ describe('projectExport', () => {
 			expect(mockExportBinaryCode).toHaveBeenCalledWith('my-project.wasm');
 		});
 
-
 		it('should strip .wasm suffix from exportFileName to prevent double extension', async () => {
 			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);
 			mockState.callbacks.exportBinaryCode = mockExportBinaryCode;
-			mockState.compiledProjectConfig.exportFileName = 'demo.wasm';
+			mockState.globalEditorDirectives.exportFileName = 'demo.wasm';
 
 			projectExport(store, mockEvents);
 
@@ -164,7 +160,7 @@ describe('projectExport', () => {
 		});
 
 		it('should fall back to "project" base when exportFileName is undefined', async () => {
-			mockState.compiledProjectConfig.exportFileName = undefined;
+			mockState.globalEditorDirectives.exportFileName = undefined;
 
 			projectExport(store, mockEvents);
 
@@ -178,7 +174,7 @@ describe('projectExport', () => {
 		});
 
 		it('should fall back to "project" base when exportFileName is empty string', async () => {
-			mockState.compiledProjectConfig.exportFileName = '';
+			mockState.globalEditorDirectives.exportFileName = '';
 
 			projectExport(store, mockEvents);
 

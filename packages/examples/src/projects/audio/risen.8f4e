@@ -3,6 +3,7 @@
 config project
 ; @pos -242 -1
 ; ~sampleRate 44100
+; @exportFileName risen
 
 rescope "memorySizeBytes"
 set 65536
@@ -22,9 +23,6 @@ set 0
 
 rescopeTop "output"
 set 0
-
-rescope "exportFileName"
-set "risen"
 
 configEnd
 

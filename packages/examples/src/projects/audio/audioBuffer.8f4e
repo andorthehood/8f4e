@@ -3,6 +3,7 @@
 config project
 ; @pos -94 1
 ; ~sampleRate 44100
+; @exportFileName audioBuffer
 
 rescope "memorySizeBytes"
 set 65536
@@ -22,9 +23,6 @@ set 0
 
 rescopeTop "output"
 set 0
-
-rescope "exportFileName"
-set "audioBuffer"
 
 configEnd
 
