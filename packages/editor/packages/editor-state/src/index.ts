@@ -25,6 +25,7 @@ import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/e
 import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import colorDirectivesEffect from './features/color-directives/effect';
+import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
 import runtimeDirectivesEffect from './features/runtime-directives/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
 import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
@@ -95,6 +96,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	projectConfigEffect(store, events);
 	colorDirectivesEffect(store);
+	parsedDirectivesUpdater(store);
 	runtimeDirectivesEffect(store);
 	compiler(store, events);
 	graphicHelper(store, events);
