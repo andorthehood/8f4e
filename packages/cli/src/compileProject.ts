@@ -1,25 +1,11 @@
-import compileProjectConfig from './config/compileProjectConfig';
 import compileProjectModules from './program/compileProjectModules';
 
 import type { CompileOptions } from '@8f4e/compiler';
 import type { CompileProjectOptions, CompileProjectResult, ProjectInput } from './shared/types';
 
 export function compileProject(project: ProjectInput, options: CompileProjectOptions = {}): CompileProjectResult {
-	const includeConfig = options.includeConfig ?? true;
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-	const configType = options.configType ?? 'project';
-
-	let compiledProjectConfig: Record<string, unknown> | undefined;
-	let configSource = '';
-	if (includeConfig) {
-		const configResult = compileProjectConfig(project.codeBlocks, {
-			configType,
-			...(options.defaultProjectConfig ? { defaultProjectConfig: options.defaultProjectConfig } : {}),
-		});
-		compiledProjectConfig = configResult.compiledProjectConfig;
-		configSource = configResult.configSource;
-	}
 
 	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
@@ -36,9 +22,6 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 	});
 
 	const outputProject: Record<string, unknown> = { ...project };
-	if (includeConfig && compiledProjectConfig) {
-		outputProject.compiledProjectConfig = compiledProjectConfig;
-	}
 	if (includeModules && moduleResult.compiledModules !== undefined) {
 		outputProject.compiledModules = moduleResult.compiledModules;
 	}
@@ -48,12 +31,10 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 
 	return {
 		outputProject,
-		compiledProjectConfig,
 		compilerOptions,
 		compiledModules: moduleResult.compiledModules,
 		compiledFunctions: undefined,
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
-		configSource,
 	};
 }

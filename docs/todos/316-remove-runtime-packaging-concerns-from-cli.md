@@ -3,8 +3,8 @@ title: 'TODO: Remove runtime packaging concerns from CLI'
 priority: Medium
 effort: 1-2d
 created: 2026-03-16
-status: Open
-completed: null
+status: Done
+completed: 2026-03-16
 ---
 
 # TODO: Remove runtime packaging concerns from CLI
@@ -66,10 +66,10 @@ This likely means removing or redesigning the current `compiledProjectConfig` ou
 
 ## Success Criteria
 
-- [ ] CLI no longer resolves editor-owned runtime selection such as `@runtime`.
-- [ ] CLI no longer packages runtime config as part of normal build output.
-- [ ] CLI tests and snapshots reflect a build-only output contract.
-- [ ] Runtime-ready export still works through the editor/export path.
+- [x] CLI no longer resolves editor-owned runtime selection such as `@runtime`.
+- [x] CLI no longer packages runtime config as part of normal build output.
+- [x] CLI tests and snapshots reflect a build-only output contract.
+- [x] Runtime-ready export still works through the editor/export path.
 
 ## Affected Components
 
