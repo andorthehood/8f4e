@@ -20,14 +20,8 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		configSource = configResult.configSource;
 	}
 
-	const memorySizeBytes =
-		options.compilerOptions?.memorySizeBytes ??
-		(compiledProjectConfig?.memorySizeBytes as number | undefined) ??
-		(defaultProjectConfig.memorySizeBytes as number);
-
 	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
-		memorySizeBytes,
 		includeAST: options.compilerOptions?.includeAST,
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 		bufferSize: options.compilerOptions?.bufferSize,
@@ -58,7 +52,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		compiledModules: moduleResult.compiledModules,
 		compiledFunctions: undefined,
 		compiledWasm: moduleResult.compiledWasm,
-		allocatedMemorySize: moduleResult.allocatedMemorySize,
+		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
 		configSource,
 	};
 }

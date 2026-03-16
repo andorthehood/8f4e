@@ -116,7 +116,6 @@ const modules = [
 
 const options = {
   startingMemoryWordAddress: 1,
-  memorySizeBytes: 65536,
   environmentExtensions: {
     constants: {},
     ignoredKeywords: []

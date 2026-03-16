@@ -5,7 +5,6 @@
 import type { Runtimes } from '../runtime/types';
 
 export interface ProjectConfig {
-	memorySizeBytes: number;
 	runtimeSettings: Runtimes;
 	disableAutoCompilation: boolean;
 	keyCodeMemoryId?: string;

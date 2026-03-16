@@ -27,7 +27,7 @@ export interface CompileProjectResult {
 	compiledModules?: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	compiledWasm?: string;
-	allocatedMemorySize?: number;
+	requiredMemoryBytes?: number;
 	configSource: string;
 }
 

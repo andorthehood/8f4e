@@ -141,7 +141,6 @@ export interface CompilationContext {
 	stack: Stack;
 	blockStack: BlockStack;
 	startingByteAddress: number;
-	memoryByteSize: number;
 	byteCode: Array<WASMInstruction | Type | number>;
 	mode?: CompilationMode;
 	codeBlockId?: string;
@@ -209,9 +208,7 @@ export interface Error {
 }
 
 export interface CompileOptions {
-	startingMemoryWordAddress: number;
-	/** Memory size in bytes. */
-	memorySizeBytes: number;
+	startingMemoryWordAddress?: number;
 	globalDataStructures?: DataStructure[];
 	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
 	includeAST?: boolean;
