@@ -3,10 +3,10 @@ import parsePos from '../directives/pos/data';
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';
 
-const AUTO_ENV_CONSTANTS_BLOCK_ID = 'env';
+const AUTO_ENV_CONSTANTS_BLOCK_NAME = 'env';
+const AUTO_ENV_CONSTANTS_BLOCK_ID = `constants_${AUTO_ENV_CONSTANTS_BLOCK_NAME}`;
 
-const isEnvBlock = (block: CodeBlockGraphicData): boolean =>
-	block.blockType === 'constants' && block.id === AUTO_ENV_CONSTANTS_BLOCK_ID;
+const isEnvBlock = (block: CodeBlockGraphicData): boolean => block.id === AUTO_ENV_CONSTANTS_BLOCK_ID;
 
 /**
  * Generates the content for the auto-managed environment constants block.
@@ -22,7 +22,7 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	const pos = existingPos ?? { x: 0, y: 0 };
 
 	// Header with warning
-	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`);
+	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_NAME}`);
 	lines.push(`; @pos ${pos.x} ${pos.y}`);
 	lines.push('; @favorite');
 	lines.push('; Auto-generated environment constants');
@@ -87,13 +87,13 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		const state = store.getState();
 		const targetBlock = state.graphicHelper.codeBlocks.find(block => isEnvBlock(block));
 
+		console.log('belefut', JSON.stringify(state.runtimeDirectives), targetBlock);
+
 		if (!targetBlock) {
 			return;
 		}
 		const existingPos = parsePos(targetBlock.code);
 		const newCode = generateEnvConstantsBlock(state, existingPos);
-
-		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = targetBlock;
 
 		targetBlock.code = newCode;
 		targetBlock.lastUpdated = performance.now();
@@ -114,7 +114,7 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 
 		// Check if env block already exists
 		const hasEnvBlock = state.initialProjectState.codeBlocks.some(
-			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`)
+			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_NAME}`)
 		);
 
 		if (!hasEnvBlock) {
