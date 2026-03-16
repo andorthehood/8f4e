@@ -209,4 +209,41 @@ describe('projectConfigEffect - diffing behavior', () => {
 		expect(setCallsForProjectConfig).toHaveLength(0);
 		expect(setCallsForErrors).toHaveLength(1);
 	});
+
+	it('should use @runtime to choose runtime-specific defaults', async () => {
+		mockState.globalEditorDirectives = { runtime: 'AudioWorkletRuntime' };
+		mockState.runtimeRegistry = {
+			WebWorkerLogicRuntime: {
+				id: 'WebWorkerLogicRuntime',
+				defaults: { sampleRate: 50 },
+				schema: { type: 'object', properties: {} },
+				factory: vi.fn(() => () => {}),
+			},
+			AudioWorkletRuntime: {
+				id: 'AudioWorkletRuntime',
+				defaults: { sampleRate: 44100 },
+				schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
+				factory: vi.fn(() => () => {}),
+			},
+		};
+
+		projectConfigEffect(mockStore, mockEvents);
+
+		const codeBlocksSubscribeCall = (mockStore.subscribe as Mock).mock.calls.find(
+			call => call[0] === 'graphicHelper.codeBlocks'
+		);
+		const rebuildProjectConfig = codeBlocksSubscribeCall![1];
+
+		await rebuildProjectConfig();
+
+		expect(mockCompileConfigWithDefaults).toHaveBeenCalledWith(
+			expect.objectContaining({
+				defaultConfig: expect.objectContaining({
+					runtimeSettings: expect.objectContaining({
+						sampleRate: 44100,
+					}),
+				}),
+			})
+		);
+	});
 });

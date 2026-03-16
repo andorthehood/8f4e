@@ -12,9 +12,6 @@ export interface ProjectInput {
 
 export interface CompileProjectOptions {
 	compilerOptions?: Partial<CompileOptions>;
-	configType?: string;
-	defaultProjectConfig?: Record<string, unknown>;
-	includeConfig?: boolean;
 	includeModules?: boolean;
 	includeWasm?: boolean;
 	includeFunctions?: boolean;
@@ -22,13 +19,11 @@ export interface CompileProjectOptions {
 
 export interface CompileProjectResult {
 	outputProject: Record<string, unknown>;
-	compiledProjectConfig?: Record<string, unknown>;
 	compilerOptions?: CompileOptions;
 	compiledModules?: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
-	configSource: string;
 }
 
 export type BlockType = 'config' | 'module' | 'function' | 'constants' | 'macro' | 'unknown';

@@ -28,8 +28,6 @@ function createLazyRuntimeEntry(
 	// are not rejected before the full schema arrives.
 	const stubSchema: JSONSchemaLike = {
 		type: 'object',
-		properties: { runtime: { type: 'string', enum: [id] } },
-		required: ['runtime'],
 	};
 
 	const entry: RuntimeRegistryEntry = {
@@ -78,36 +76,24 @@ function createLazyRuntimeEntry(
 export const runtimeRegistry: RuntimeRegistry = {
 	WebWorkerLogicRuntime: createWebWorkerLogicRuntimeDef(getCodeBuffer, getMemory, WebWorkerLogicRuntime),
 
-	MainThreadLogicRuntime: createLazyRuntimeEntry(
-		'MainThreadLogicRuntime',
-		{ runtime: 'MainThreadLogicRuntime', sampleRate: 50 },
-		async () => {
-			const { createMainThreadLogicRuntimeDef } = await import('@8f4e/runtime-main-thread-logic/runtime-def');
-			return createMainThreadLogicRuntimeDef(getCodeBuffer, getMemory);
-		}
-	),
+	MainThreadLogicRuntime: createLazyRuntimeEntry('MainThreadLogicRuntime', { sampleRate: 50 }, async () => {
+		const { createMainThreadLogicRuntimeDef } = await import('@8f4e/runtime-main-thread-logic/runtime-def');
+		return createMainThreadLogicRuntimeDef(getCodeBuffer, getMemory);
+	}),
 
-	AudioWorkletRuntime: createLazyRuntimeEntry(
-		'AudioWorkletRuntime',
-		{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
-		async () => {
-			const [{ createAudioWorkletRuntimeDef }, { default: audioWorkletUrl }] = await Promise.all([
-				import('@8f4e/runtime-audio-worklet/runtime-def'),
-				import('@8f4e/runtime-audio-worklet/worklet?url'),
-			]);
-			return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
-		}
-	),
+	AudioWorkletRuntime: createLazyRuntimeEntry('AudioWorkletRuntime', { sampleRate: 44100 }, async () => {
+		const [{ createAudioWorkletRuntimeDef }, { default: audioWorkletUrl }] = await Promise.all([
+			import('@8f4e/runtime-audio-worklet/runtime-def'),
+			import('@8f4e/runtime-audio-worklet/worklet?url'),
+		]);
+		return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
+	}),
 
-	WebWorkerMIDIRuntime: createLazyRuntimeEntry(
-		'WebWorkerMIDIRuntime',
-		{ runtime: 'WebWorkerMIDIRuntime', sampleRate: 50 },
-		async () => {
-			const [{ createWebWorkerMIDIRuntimeDef }, { default: WebWorkerMIDIRuntime }] = await Promise.all([
-				import('@8f4e/runtime-web-worker-midi/runtime-def'),
-				import('@8f4e/runtime-web-worker-midi?worker'),
-			]);
-			return createWebWorkerMIDIRuntimeDef(getCodeBuffer, getMemory, WebWorkerMIDIRuntime);
-		}
-	),
+	WebWorkerMIDIRuntime: createLazyRuntimeEntry('WebWorkerMIDIRuntime', { sampleRate: 50 }, async () => {
+		const [{ createWebWorkerMIDIRuntimeDef }, { default: WebWorkerMIDIRuntime }] = await Promise.all([
+			import('@8f4e/runtime-web-worker-midi/runtime-def'),
+			import('@8f4e/runtime-web-worker-midi?worker'),
+		]);
+		return createWebWorkerMIDIRuntimeDef(getCodeBuffer, getMemory, WebWorkerMIDIRuntime);
+	}),
 };

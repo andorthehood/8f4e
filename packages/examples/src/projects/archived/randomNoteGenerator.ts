@@ -3,21 +3,7 @@ import type { Project } from '@8f4e/editor-state';
 const project: Project = {
 	codeBlocks: [
 		{
-			code: [
-				'config',
-				'; @pos -50 -6',
-				'; ~sampleRate 50',
-				'',
-				'',
-				'scope "runtimeSettings"',
-				'scope "runtime"',
-				'push "WebWorkerMIDIRuntime"',
-				'set',
-				'popScope',
-				'popScope',
-				'',
-				'configEnd',
-			],
+			code: ['config', '; @pos -50 -6', '; @runtime WebWorkerMIDIRuntime', '; ~sampleRate 50', '', '', 'configEnd'],
 		},
 		{
 			code: [
