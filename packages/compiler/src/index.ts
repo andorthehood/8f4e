@@ -261,8 +261,9 @@ export default function compile(
 		compiledModules[compiledModules.length - 1].byteAddress +
 		compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 
-	// Derive effective memory size: round up to page boundary with minimum 1 page
-	const effectiveMemorySizeBytes = deriveEffectiveMemorySize(allocatedMemorySize);
+	// Derive effective memory size: when memorySizeBytes is explicitly provided, use it;
+	// otherwise derive from actual footprint with page rounding and minimum 1 page
+	const effectiveMemorySizeBytes = options.memorySizeBytes ?? deriveEffectiveMemorySize(allocatedMemorySize);
 
 	// Use effective size for WASM memory import
 	const memorySizeBytesForWasm = effectiveMemorySizeBytes;
