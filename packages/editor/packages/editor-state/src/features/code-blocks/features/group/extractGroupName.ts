@@ -1,10 +1,8 @@
-import parseGroup from './codeParser';
+import { parseDirectiveComment } from '../directives/utils';
 
 /**
  * Extracts group name from code block lines.
- * Returns undefined if no group directive is found.
- *
- * This is a convenience wrapper around parseGroup that returns only the group name.
+ * Returns undefined if no valid @group directive with a name argument is found.
  *
  * @param code - Array of code lines to parse
  * @returns The group name if found, undefined otherwise
@@ -16,6 +14,11 @@ import parseGroup from './codeParser';
  * ```
  */
 export function extractGroupName(code: string[]): string | undefined {
-	const groupInfo = parseGroup(code);
-	return groupInfo?.groupName;
+	for (const line of code) {
+		const parsed = parseDirectiveComment(line);
+		if (parsed?.name === 'group' && parsed.args[0]) {
+			return parsed.args[0];
+		}
+	}
+	return undefined;
 }
