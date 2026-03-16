@@ -7,7 +7,7 @@ config project
 
 
 scope "runtimeSettings"
-rescopeTop "runtime"
+scope "runtime"
 set "AudioWorkletRuntime"
 
 rescopeTop "audioOutputBuffers[0]"

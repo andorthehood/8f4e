@@ -5,8 +5,8 @@ config project
 ; ~sampleRate 50
 
 
-rescope "runtimeSettings"
-rescopeTop "runtime"
+scope "runtimeSettings"
+scope "runtime"
 set "WebWorkerLogicRuntime"
 
 configEnd
