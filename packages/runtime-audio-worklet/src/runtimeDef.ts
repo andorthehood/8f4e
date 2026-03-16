@@ -170,20 +170,7 @@ export function audioWorkletRuntimeFactory(
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
 	events.on('mousedown', initAudioContext);
 
-	if (!audioContext) {
-		store.set('dialog', {
-			...state.dialog,
-			show: true,
-			text: 'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.',
-			title: 'Audio Permission',
-			buttons: [{ title: 'OK', action: 'close' }],
-		});
-	}
-
-	return () => {
-		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		events.off('mousedown', initAudioContext);
-
+	function tearDownAudioContext() {
 		if (mediaStreamSource) {
 			mediaStreamSource.disconnect();
 			mediaStreamSource = null;
@@ -204,6 +191,44 @@ export function audioWorkletRuntimeFactory(
 			audioContext.close();
 			audioContext = null;
 		}
+	}
+
+	function onSampleRateChanged() {
+		if (!audioContext) {
+			return;
+		}
+		const runtime = state.compiledProjectConfig.runtimeSettings;
+		const desiredSampleRate = state.runtimeDirectives?.sampleRate ?? runtime.sampleRate;
+		if (audioContext.sampleRate !== desiredSampleRate) {
+			tearDownAudioContext();
+			store.set('dialog', {
+				...state.dialog,
+				show: true,
+				text: 'Sample rate changed. Click anywhere to restart audio playback at the new sample rate.',
+				title: 'Audio Permission',
+				buttons: [{ title: 'OK', action: 'close' }],
+			});
+		}
+	}
+
+	store.subscribe('runtimeDirectives', onSampleRateChanged);
+
+	if (!audioContext) {
+		store.set('dialog', {
+			...state.dialog,
+			show: true,
+			text: 'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.',
+			title: 'Audio Permission',
+			buttons: [{ title: 'OK', action: 'close' }],
+		});
+	}
+
+	return () => {
+		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('runtimeDirectives', onSampleRateChanged);
+		events.off('mousedown', initAudioContext);
+
+		tearDownAudioContext();
 	};
 }
 
