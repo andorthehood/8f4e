@@ -1,5 +1,4 @@
 import compileProjectConfig from './config/compileProjectConfig';
-import DEFAULT_PROJECT_CONFIG from './config/defaults';
 import compileProjectModules from './program/compileProjectModules';
 
 import type { CompileOptions } from '@8f4e/compiler';
@@ -10,12 +9,14 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
 	const configType = options.configType ?? 'project';
-	const defaultProjectConfig = options.defaultProjectConfig ?? DEFAULT_PROJECT_CONFIG;
 
 	let compiledProjectConfig: Record<string, unknown> | undefined;
 	let configSource = '';
 	if (includeConfig) {
-		const configResult = compileProjectConfig(project.codeBlocks, { configType, defaultProjectConfig });
+		const configResult = compileProjectConfig(project.codeBlocks, {
+			configType,
+			...(options.defaultProjectConfig ? { defaultProjectConfig: options.defaultProjectConfig } : {}),
+		});
 		compiledProjectConfig = configResult.compiledProjectConfig;
 		configSource = configResult.configSource;
 	}
