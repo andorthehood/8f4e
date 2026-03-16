@@ -2,15 +2,13 @@
 
 config project
 ; @pos -242 -1
+; @runtime AudioWorkletRuntime
 ; ~sampleRate 44100
 ; @exportFileName risen
 
-
 scope "runtimeSettings"
-scope "runtime"
-set "AudioWorkletRuntime"
 
-rescopeTop "audioOutputBuffers[0]"
+scope "audioOutputBuffers[0]"
 
 scope "memoryId"
 set "audioout.buffer"

@@ -12,13 +12,9 @@ moduleEnd
 
 config project
 ; @pos -67 16
+; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
 ; @exportFileName bistableMultivibrators
-
-scope "runtimeSettings"
-
-scope "runtime"
-set "WebWorkerLogicRuntime"
 
 configEnd
 

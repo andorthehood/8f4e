@@ -77,19 +77,13 @@ export function createMainThreadLogicRuntimeDef(
 	return {
 		id: 'MainThreadLogicRuntime',
 		defaults: {
-			runtime: 'MainThreadLogicRuntime',
 			sampleRate: 50,
 		},
 		schema: {
 			type: 'object',
 			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['MainThreadLogicRuntime'],
-				},
 				sampleRate: { type: 'number' },
 			},
-			required: ['runtime'],
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
