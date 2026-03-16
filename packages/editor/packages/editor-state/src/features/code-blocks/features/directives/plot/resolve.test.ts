@@ -1,15 +1,16 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
-import {
-	deriveDirectiveState,
-	runAfterGraphicDataWidthCalculation,
-	runBeforeGraphicDataWidthCalculation,
-} from '../registry';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '~/types';
 
-import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import {
+	createMockCodeBlock,
+	createMockState,
+	deriveDirectiveStateForMockCodeBlock,
+	setMockCodeBlockCode,
+} from '~/pureHelpers/testingUtils/testUtils';
 
 describe('plot directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -47,7 +48,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	function runDirectiveResolution() {
-		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		const directiveState = deriveDirectiveStateForMockCodeBlock(mockGraphicData);
 		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
@@ -60,7 +61,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('does not add a plotter when the buffer cannot be resolved', () => {
-		mockGraphicData.code = ['; @plot missing -10 10'];
+		setMockCodeBlockCode(mockGraphicData, ['; @plot missing -10 10']);
 
 		runDirectiveResolution();
 
@@ -91,7 +92,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('handles multiple plot directives', () => {
-		mockGraphicData.code = ['; @plot buffer1 -10 10', '; @plot buffer2 0 100'];
+		setMockCodeBlockCode(mockGraphicData, ['; @plot buffer1 -10 10', '; @plot buffer2 0 100']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,

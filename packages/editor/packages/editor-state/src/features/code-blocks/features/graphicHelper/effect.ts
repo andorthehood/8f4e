@@ -237,12 +237,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			state.graphicHelper.nextCodeBlockCreationIndex++;
 
 			// Parse @pos directive from code, default to (0,0) if missing or invalid
-			const posResult = parsePos(codeBlock.code);
+			const blockParsedDirectives = parseBlockDirectives(codeBlock.code);
+			const posResult = parsePos(blockParsedDirectives);
 			const gridX = posResult?.x ?? 0;
 			const gridY = posResult?.y ?? 0;
 			const pixelX = gridX * state.viewport.vGrid;
 			const pixelY = gridY * state.viewport.hGrid;
-			const blockParsedDirectives = parseBlockDirectives(codeBlock.code);
 			const directiveState = deriveDirectiveState(codeBlock.code, blockParsedDirectives);
 
 			return createCodeBlockGraphicData({
@@ -261,6 +261,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				disabled: directiveState.blockState.disabled,
 				isHome: directiveState.blockState.isHome,
 				isFavorite: directiveState.blockState.isFavorite,
+				parsedDirectives: blockParsedDirectives,
 			});
 		});
 
@@ -283,6 +284,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						disabled: directiveState.blockState.disabled,
 						isHome: directiveState.blockState.isHome,
 						isFavorite: directiveState.blockState.isFavorite,
+						parsedDirectives: rawBlockParsedDirectives,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
 						gridX,
@@ -350,7 +352,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		const codeBlock = state.graphicHelper.selectedCodeBlock;
-		const posResult = parsePos(codeBlock.code);
+		const posResult = parsePos(codeBlock.parsedDirectives);
 
 		// Only update position if @pos is valid
 		if (posResult !== undefined) {

@@ -90,7 +90,7 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		if (!targetBlock) {
 			return;
 		}
-		const existingPos = parsePos(targetBlock.code);
+		const existingPos = parsePos(targetBlock.parsedDirectives);
 		const newCode = generateEnvConstantsBlock(state, existingPos);
 
 		targetBlock.code = newCode;
