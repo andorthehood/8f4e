@@ -15,9 +15,9 @@ config project
 ; ~sampleRate 50
 ; @exportFileName bistableMultivibrators
 
-rescope "runtimeSettings"
+scope "runtimeSettings"
 
-rescopeTop "runtime"
+scope "runtime"
 set "WebWorkerLogicRuntime"
 
 configEnd
