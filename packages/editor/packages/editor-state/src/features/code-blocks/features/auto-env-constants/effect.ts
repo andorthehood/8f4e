@@ -87,8 +87,6 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		const state = store.getState();
 		const targetBlock = state.graphicHelper.codeBlocks.find(block => isEnvBlock(block));
 
-		console.log('belefut', JSON.stringify(state.runtimeDirectives), targetBlock);
-
 		if (!targetBlock) {
 			return;
 		}
