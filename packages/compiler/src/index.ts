@@ -248,7 +248,7 @@ export default function compile(
 		{}, // Empty builtInConsts - all constants come from env block
 		namespaces,
 		compiledFunctionsMap,
-		options.memorySizeBytes // Pass as limit if provided
+		undefined // No memory limit - compiler determines required memory
 	);
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
@@ -261,9 +261,8 @@ export default function compile(
 		compiledModules[compiledModules.length - 1].byteAddress +
 		compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 
-	// Derive effective memory size: when memorySizeBytes is explicitly provided, use it;
-	// otherwise derive from actual footprint with page rounding and minimum 1 page
-	const effectiveMemorySizeBytes = options.memorySizeBytes ?? deriveEffectiveMemorySize(allocatedMemorySize);
+	// Derive effective memory size from actual footprint with page rounding and minimum 1 page
+	const effectiveMemorySizeBytes = deriveEffectiveMemorySize(allocatedMemorySize);
 
 	// Use effective size for WASM memory import
 	const memorySizeBytesForWasm = effectiveMemorySizeBytes;

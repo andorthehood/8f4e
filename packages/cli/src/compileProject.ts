@@ -20,12 +20,8 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		configSource = configResult.configSource;
 	}
 
-	const memorySizeBytes =
-		options.compilerOptions?.memorySizeBytes ?? (compiledProjectConfig?.memorySizeBytes as number | undefined);
-
 	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
-		memorySizeBytes,
 		includeAST: options.compilerOptions?.includeAST,
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 		bufferSize: options.compilerOptions?.bufferSize,
