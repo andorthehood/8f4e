@@ -215,13 +215,13 @@ describe('projectConfigEffect - diffing behavior', () => {
 		mockState.runtimeRegistry = {
 			WebWorkerLogicRuntime: {
 				id: 'WebWorkerLogicRuntime',
-				defaults: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
+				defaults: { sampleRate: 50 },
 				schema: { type: 'object', properties: {} },
 				factory: vi.fn(() => () => {}),
 			},
 			AudioWorkletRuntime: {
 				id: 'AudioWorkletRuntime',
-				defaults: { runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
+				defaults: { sampleRate: 44100 },
 				schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
 				factory: vi.fn(() => () => {}),
 			},
@@ -240,7 +240,6 @@ describe('projectConfigEffect - diffing behavior', () => {
 			expect.objectContaining({
 				defaultConfig: expect.objectContaining({
 					runtimeSettings: expect.objectContaining({
-						runtime: 'AudioWorkletRuntime',
 						sampleRate: 44100,
 					}),
 				}),

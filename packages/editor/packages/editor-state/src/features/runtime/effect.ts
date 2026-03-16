@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
+import { resolveSelectedRuntimeId } from '../global-editor-directives/runtime/plugin';
 import { log, error } from '../logger/logger';
 
 import type { State, EventDispatcher } from '~/types';
@@ -20,9 +21,13 @@ export default async function runtime(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const runtime = state.compiledProjectConfig.runtimeSettings;
+		const selectedRuntimeId = resolveSelectedRuntimeId(
+			state.globalEditorDirectives.runtime,
+			state.runtimeRegistry,
+			state.defaultRuntimeId
+		);
 
-		if (onlineRuntime === runtime.runtime) {
+		if (onlineRuntime === selectedRuntimeId) {
 			return;
 		}
 
@@ -36,38 +41,51 @@ export default async function runtime(store: StateManager<State>, events: EventD
 				onlineRuntime = null;
 			}
 
-			log(state, `Requesting runtime: ${runtime.runtime}`, 'Runtime');
+			log(state, `Requesting runtime: ${selectedRuntimeId}`, 'Runtime');
 
 			// Get runtime from registry
 			let runtimeFactory;
-			if (runtime.runtime in state.runtimeRegistry) {
-				const registryEntry = state.runtimeRegistry[runtime.runtime];
+			if (selectedRuntimeId in state.runtimeRegistry) {
+				const registryEntry = state.runtimeRegistry[selectedRuntimeId];
 				runtimeFactory = registryEntry.factory;
-				log(state, `Loaded runtime from registry: ${runtime.runtime}`, 'Runtime');
+				log(state, `Loaded runtime from registry: ${selectedRuntimeId}`, 'Runtime');
 			} else {
 				// Fall back to default runtime ID if unknown runtime requested
 				const registryEntry = state.runtimeRegistry[state.defaultRuntimeId];
 				runtimeFactory = registryEntry.factory;
-				log(state, `Unknown runtime ${runtime.runtime}, falling back to default: ${state.defaultRuntimeId}`, 'Runtime');
+				log(
+					state,
+					`Unknown runtime ${selectedRuntimeId}, falling back to default: ${state.defaultRuntimeId}`,
+					'Runtime'
+				);
 			}
 
 			if (typeof runtimeFactory !== 'function') {
-				throw new Error(`Runtime ${runtime.runtime} did not return a valid factory function`);
+				throw new Error(`Runtime ${selectedRuntimeId} did not return a valid factory function`);
 			}
 
 			runtimeDestroyer = runtimeFactory(store, events);
-			onlineRuntime = runtime.runtime;
-			log(state, `Successfully initialized runtime: ${runtime.runtime}`, 'Runtime');
+			onlineRuntime = selectedRuntimeId;
+			log(state, `Successfully initialized runtime: ${selectedRuntimeId}`, 'Runtime');
 		} catch (err) {
 			console.error('Failed to initialize runtime:', err);
 			error(state, `Failed to initialize runtime: ${err instanceof Error ? err.message : 'Unknown error'}`);
 			throw new Error(
-				`Failed to load runtime ${runtime.runtime}: ${err instanceof Error ? err.message : 'Unknown error'}`
+				`Failed to load runtime ${selectedRuntimeId}: ${err instanceof Error ? err.message : 'Unknown error'}`
 			);
 		} finally {
 			isInitializing = false;
 		}
 	}
 
+	function onRuntimeSelectionChanged() {
+		if (state.compiler.isCompiling) {
+			return;
+		}
+
+		void initOrDestroyOrUpdateRuntime();
+	}
+
 	store.subscribeToValue('compiler.isCompiling', false, initOrDestroyOrUpdateRuntime);
+	store.subscribe('globalEditorDirectives.runtime', onRuntimeSelectionChanged);
 }
