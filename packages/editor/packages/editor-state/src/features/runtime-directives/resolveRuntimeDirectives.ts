@@ -1,5 +1,4 @@
-import { parseRuntimeDirective } from './parseRuntimeDirective';
-
+import type { ParsedDirectiveRecord } from '~/types';
 import type { ResolvedRuntimeDirectives } from './types';
 import type { CodeError } from '~/types';
 
@@ -11,6 +10,10 @@ export interface RuntimeDirectiveResolutionResult {
 /**
  * Scans all code blocks in project order for runtime directives.
  *
+ * When a block supplies `parsedDirectives` (populated by the central derivation pass),
+ * those records are consumed directly without rescanning raw code lines.
+ * Blocks that omit `parsedDirectives` fall back to inline scanning for backward compatibility.
+ *
  * Rules:
  * - Duplicate identical `~sampleRate` values are allowed.
  * - Conflicting `~sampleRate` values produce a structured error.
@@ -19,7 +22,7 @@ export interface RuntimeDirectiveResolutionResult {
  * @param codeBlocks - Array of code blocks to scan (in project order)
  */
 export function resolveRuntimeDirectives(
-	codeBlocks: { code: string[]; id?: string }[]
+	codeBlocks: { parsedDirectives?: ParsedDirectiveRecord[]; code?: string[]; id?: string }[]
 ): RuntimeDirectiveResolutionResult {
 	const errors: CodeError[] = [];
 
@@ -30,11 +33,19 @@ export function resolveRuntimeDirectives(
 		// Use the block's stable id when available, otherwise fall back to array index
 		const codeBlockId: string | number = block.id ?? blockIndex;
 
-		for (let lineIndex = 0; lineIndex < block.code.length; lineIndex++) {
-			const directive = parseRuntimeDirective(block.code[lineIndex]);
-			if (!directive) {
-				continue;
-			}
+		// Use pre-parsed directives when available; otherwise rescan raw code lines.
+		const runtimeDirectives: Array<{ name: string; args: string[]; rawRow: number }> =
+			block.parsedDirectives
+				? block.parsedDirectives.filter(d => d.prefix === '~')
+				: (block.code ?? []).flatMap((line, rawRow) => {
+						const match = line.match(/^\s*;\s*~(\w+)(?:\s+(.*))?$/);
+						if (!match) return [];
+						const [, name, rawArgs] = match;
+						return [{ name, args: rawArgs ? rawArgs.trim().split(/\s+/) : [], rawRow }];
+					});
+
+		for (const directive of runtimeDirectives) {
+			const lineIndex = directive.rawRow;
 
 			if (directive.name === 'sampleRate') {
 				if (directive.args.length === 0) {
