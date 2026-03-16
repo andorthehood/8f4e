@@ -25,7 +25,7 @@ import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 export type { MemoryTypes, MemoryMap } from './types';
 
 // Re-export for backward compatibility
-export { instructionParser, isComment, isValidInstruction, parseArgument };
+export { instructionParser, isValidInstruction, parseArgument };
 
 /**
  * Tokenizes an instruction line, treating quoted strings as single tokens.
@@ -108,7 +108,7 @@ export function compileToAST(
 		});
 }
 
-export function compileLine(line: AST[number], context: CompilationContext) {
+function compileLine(line: AST[number], context: CompilationContext) {
 	if (!instructions[line.instruction]) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}

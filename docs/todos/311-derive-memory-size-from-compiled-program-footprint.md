@@ -5,6 +5,7 @@ effort: 1-2d
 created: 2026-03-16
 status: Open
 completed: null
+github_issue: 'https://github.com/andorthehood/8f4e/issues/429'
 ---
 
 # TODO: Derive memory size from compiled program footprint

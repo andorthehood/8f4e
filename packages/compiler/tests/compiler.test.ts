@@ -1,7 +1,8 @@
 import { describe, test, expect } from 'vitest';
 
 import { ArgumentType } from '../src/types';
-import { isComment, isValidInstruction, parseArgument, parseLine, compileToAST } from '../src/compiler';
+import isComment from '../src/syntax/isComment';
+import { isValidInstruction, parseArgument, parseLine, compileToAST } from '../src/compiler';
 
 import type { AST } from '../src/types';
 
