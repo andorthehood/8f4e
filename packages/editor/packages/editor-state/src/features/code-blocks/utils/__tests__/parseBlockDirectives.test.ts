@@ -19,10 +19,24 @@ describe('parseBlockDirectives', () => {
 		]);
 	});
 
-	it('should parse directives with no arguments', () => {
-		expect(parseBlockDirectives(['; @disabled'])).toEqual([
-			{ prefix: '@', name: 'disabled', args: [], rawRow: 0 },
+	it('should parse runtime directives with leading whitespace', () => {
+		expect(parseBlockDirectives(['  ; ~sampleRate 44100'])).toEqual([
+			{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 0 },
 		]);
+	});
+
+	it('should parse unknown runtime directive names', () => {
+		expect(parseBlockDirectives(['; ~runtime WebWorker'])).toEqual([
+			{ prefix: '~', name: 'runtime', args: ['WebWorker'], rawRow: 0 },
+		]);
+	});
+
+	it('should parse directives with no arguments', () => {
+		expect(parseBlockDirectives(['; @disabled'])).toEqual([{ prefix: '@', name: 'disabled', args: [], rawRow: 0 }]);
+	});
+
+	it('should parse runtime directives with no arguments', () => {
+		expect(parseBlockDirectives(['; ~sampleRate'])).toEqual([{ prefix: '~', name: 'sampleRate', args: [], rawRow: 0 }]);
 	});
 
 	it('should record the correct rawRow for each directive', () => {
