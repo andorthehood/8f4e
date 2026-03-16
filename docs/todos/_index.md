@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 76
+Active todo files: 77
 
 ## Active TODOs
 
@@ -70,6 +70,7 @@ Active todo files: 76
 | 309 | Extract shared module memory identifier parser | 🟡 | 2-4h | 2026-03-14 | The codebase currently parses `module.memory` identifiers in multiple places with slightly different local logic. |
 | 310 | Simplify compiler project flattening and compilable block checks | 🟡 | 1-3h | 2026-03-14 | The editor compiler effect currently does more array work and duplicated block-type checks than necessary during project flattening and recompile triggering. |
 | 311 | Derive memory size from compiled program footprint | 🟡 | 1-2d | 2026-03-16 | Projects currently author `memorySizeBytes` manually in project config even though the compiler already computes the actual static memory footprint required by the program. |
+| 312 | Add runtime sampleRate directive and begin config block replacement | 🟡 | 1-2d | 2026-03-16 | Project runtime configuration currently depends on legacy stack-config `config project` blocks, including `runtimeSettings.sampleRate`. |
 
 ### 🟢 Low Priority
 
