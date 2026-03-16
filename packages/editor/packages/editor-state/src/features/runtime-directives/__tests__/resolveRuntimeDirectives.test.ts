@@ -133,10 +133,15 @@ describe('resolveRuntimeDirectives', () => {
 		expect(result.errors[0].message).toContain('invalid value');
 	});
 
-	it('should report error at the correct line number and block index', () => {
+	it('should report error at the correct line number and block index (no id)', () => {
 		const result = resolveRuntimeDirectives([{ code: ['module a', 'push 1', '; ~sampleRate -1', 'moduleEnd'] }]);
 		expect(result.errors[0].lineNumber).toBe(2);
 		expect(result.errors[0].codeBlockId).toBe(0);
+	});
+
+	it('should use block id as codeBlockId when id is provided', () => {
+		const result = resolveRuntimeDirectives([{ code: ['module a', '; ~sampleRate -1', 'moduleEnd'], id: 'module_a' }]);
+		expect(result.errors[0].codeBlockId).toBe('module_a');
 	});
 
 	it('should resolve ~sampleRate from any block type in project order', () => {

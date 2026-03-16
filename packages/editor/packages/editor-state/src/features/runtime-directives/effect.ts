@@ -28,4 +28,6 @@ export default function runtimeDirectivesEffect(store: StateManager<State>): voi
 	}
 
 	store.subscribe('graphicHelper.codeBlocks', resolve);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', resolve);
+	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', resolve);
 }
