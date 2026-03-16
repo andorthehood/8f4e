@@ -80,19 +80,13 @@ export function createWebWorkerLogicRuntimeDef(
 	return {
 		id: 'WebWorkerLogicRuntime',
 		defaults: {
-			runtime: 'WebWorkerLogicRuntime',
 			sampleRate: 50,
 		},
 		schema: {
 			type: 'object',
 			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['WebWorkerLogicRuntime'],
-				},
 				sampleRate: { type: 'number' },
 			},
-			required: ['runtime'],
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
