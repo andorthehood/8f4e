@@ -52,17 +52,9 @@ module notes
 ; that reads input audio from a 
 ; shared buffer and writes the same 
 ; signal into left and right output 
-; buffers using circular-buffer 
+; buffers using circular-buffer
 ; pointer logic.
 moduleEnd
-
-config project
-; @pos -141 4
-
-rescope "memorySizeBytes"
-set 65536
-
-configEnd
 
 config project
 ; @pos -141 19

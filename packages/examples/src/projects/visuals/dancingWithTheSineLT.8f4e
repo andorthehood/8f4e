@@ -4,9 +4,6 @@ config project
 ; @pos -122 -9
 ; ~sampleRate 50
 
-rescope "memorySizeBytes"
-set 65536
-popScope
 
 rescope "runtimeSettings"
 rescopeTop "runtime"
@@ -425,4 +422,3 @@ float sin253 -0.0493
 float sin254 -0.0246
 float sin255 -0.0000
 
-moduleEnd
