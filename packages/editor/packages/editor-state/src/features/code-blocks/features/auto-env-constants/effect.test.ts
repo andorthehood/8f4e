@@ -33,7 +33,7 @@ describe('autoEnvConstants', () => {
 
 	beforeEach(() => {
 		const baseState = {
-			...createDefaultState(createDefaultProjectConfig({ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 })),
+			...createDefaultState(createDefaultProjectConfig({ sampleRate: 50 })),
 			runtimeDirectives: { sampleRate: 48000 },
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,

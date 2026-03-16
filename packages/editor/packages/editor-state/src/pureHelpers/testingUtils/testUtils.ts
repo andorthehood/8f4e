@@ -242,7 +242,7 @@ export function createMockEventDispatcher(): EventDispatcher {
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const mockRuntimeFactory = () => () => {};
-	const defaultRuntimeSettings = { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 } as const;
+	const defaultRuntimeSettings = { sampleRate: 50 } as const;
 
 	const defaults: State = {
 		compiler: {

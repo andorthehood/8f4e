@@ -2,7 +2,7 @@ import { Engine } from 'glugglug';
 
 const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
-import type { State } from '@8f4e/editor-state';
+import type { State, AudioWorkletRuntime } from '@8f4e/editor-state';
 
 function formatBytes(bytes: number): string {
 	if (bytes < 1000) {
@@ -77,20 +77,27 @@ export default function drawInfoOverlay(
 	// Runtime stats
 
 	const runtime = state.compiledProjectConfig.runtimeSettings;
+	const selectedRuntimeId = state.globalEditorDirectives.runtime ?? state.defaultRuntimeId;
 
 	debugText.push('');
-	debugText.push('Runtime: ' + runtime.runtime);
+	debugText.push('Runtime: ' + selectedRuntimeId);
 
-	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioInputBuffers)) {
-		runtime.audioInputBuffers.forEach(({ memoryId, channel, input }) => {
-			debugText.push('Audio Input ' + input + ': Channel: ' + channel + ' Buffer: ' + memoryId);
-		});
+	if (selectedRuntimeId === 'AudioWorkletRuntime') {
+		const audioRuntime = runtime as AudioWorkletRuntime;
+		if (Array.isArray(audioRuntime.audioInputBuffers)) {
+			audioRuntime.audioInputBuffers?.forEach(({ memoryId, channel, input }) => {
+				debugText.push('Audio Input ' + input + ': Channel: ' + channel + ' Buffer: ' + memoryId);
+			});
+		}
 	}
 
-	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioOutputBuffers)) {
-		runtime.audioOutputBuffers.forEach(({ memoryId, channel, output }) => {
-			debugText.push('Audio Output ' + output + ': Channel: ' + channel + ' Buffer: ' + memoryId);
-		});
+	if (selectedRuntimeId === 'AudioWorkletRuntime') {
+		const audioRuntime = runtime as AudioWorkletRuntime;
+		if (Array.isArray(audioRuntime.audioOutputBuffers)) {
+			audioRuntime.audioOutputBuffers?.forEach(({ memoryId, channel, output }) => {
+				debugText.push('Audio Output ' + output + ': Channel: ' + channel + ' Buffer: ' + memoryId);
+			});
+		}
 	}
 
 	if (state.runtime.stats.timerExpectedIntervalTimeMs) {
