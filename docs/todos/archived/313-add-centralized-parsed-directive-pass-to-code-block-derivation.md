@@ -3,8 +3,8 @@ title: 'TODO: Add centralized parsed-directive pass to code-block derivation'
 priority: Medium
 effort: 1-2d
 created: 2026-03-16
-status: Open
-completed: null
+completed: 2026-03-16
+status: Completed
 ---
 
 # TODO: Add centralized parsed-directive pass to code-block derivation

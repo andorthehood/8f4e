@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – Outdated tests fixed via production fallback
-agent: Codex
-model: GPT-5.4
+agent: Codex App Version 26.309.31024 (962)
+model: gpt-5.4 (medium)
 date: 2026-03-16
 ---
 
