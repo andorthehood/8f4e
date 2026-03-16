@@ -1,10 +1,4 @@
-import type { CodeBlockGraphicData } from '@8f4e/editor';
-
-export interface AudioWorkletDirectiveError {
-	lineNumber: number;
-	message: string;
-	codeBlockId: string | number;
-}
+import type { CodeBlockGraphicData, CodeError } from '@8f4e/editor';
 
 export interface AudioWorkletInputRoute {
 	moduleId: string;
@@ -23,7 +17,7 @@ export interface AudioWorkletOutputRoute {
 export interface AudioWorkletDirectiveResolution {
 	audioInputs: AudioWorkletInputRoute[];
 	audioOutputs: AudioWorkletOutputRoute[];
-	errors: AudioWorkletDirectiveError[];
+	errors: CodeError[];
 }
 
 function parseIndexArg(
@@ -50,7 +44,7 @@ function parseIndexArg(
 export function resolveAudioWorkletRouting(codeBlocks: CodeBlockGraphicData[]): AudioWorkletDirectiveResolution {
 	const audioInputs: AudioWorkletInputRoute[] = [];
 	const audioOutputs: AudioWorkletOutputRoute[] = [];
-	const errors: AudioWorkletDirectiveError[] = [];
+	const errors: CodeError[] = [];
 
 	for (const block of codeBlocks) {
 		const runtimeDirectives = block.parsedDirectives.filter(
