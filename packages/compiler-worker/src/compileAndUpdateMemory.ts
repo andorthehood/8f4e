@@ -36,7 +36,7 @@ export default async function compileAndUpdateMemory(
 	functions?: Module[],
 	macros?: Module[]
 ): Promise<CompileAndUpdateMemoryResult> {
-	const { codeBuffer, compiledModules, allocatedMemorySize, compiledFunctions } = compile(
+	const { codeBuffer, compiledModules, allocatedMemorySize, effectiveMemorySizeBytes, compiledFunctions } = compile(
 		modules,
 		compilerOptions,
 		functions,
@@ -45,7 +45,7 @@ export default async function compileAndUpdateMemory(
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
 	const { memoryRef, memoryAction } = getOrCreateMemory(
-		compilerOptions.memorySizeBytes,
+		effectiveMemorySizeBytes,
 		compiledModules,
 		previousCompiledModules
 	);
