@@ -14,6 +14,7 @@ moduleEnd
 
 config project
 ; @pos -84 2
+; ~sampleRate 50
 
 scope "memorySizeBytes"
 set 65536
@@ -22,8 +23,7 @@ popScope
 scope "runtimeSettings"
 scope "runtime"
 set "WebWorkerLogicRuntime"
-rescopeTop "sampleRate"
-set 50
+popScope
 popScope
 
 rescope "exportFileName"
