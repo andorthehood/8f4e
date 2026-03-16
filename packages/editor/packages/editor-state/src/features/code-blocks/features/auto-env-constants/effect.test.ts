@@ -15,13 +15,7 @@ describe('autoEnvConstants', () => {
 	beforeEach(() => {
 		const baseState = {
 			...createDefaultState(),
-			compiledProjectConfig: {
-				...createDefaultState().compiledProjectConfig,
-				runtimeSettings: {
-					runtime: 'WebWorkerLogicRuntime' as const,
-					sampleRate: 48000,
-				},
-			},
+			runtimeDirectives: { sampleRate: 48000 },
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
 			},
@@ -126,11 +120,8 @@ describe('autoEnvConstants', () => {
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
 		}
 
-		// Change sample rate
-		store.set('compiledProjectConfig.runtimeSettings', {
-			runtime: 'WebWorkerLogicRuntime' as const,
-			sampleRate: 44100,
-		});
+		// Change sample rate via runtime directive
+		store.set('runtimeDirectives', { sampleRate: 44100 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -275,10 +266,7 @@ describe('autoEnvConstants', () => {
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
 		}
 
-		store.set('compiledProjectConfig.runtimeSettings', {
-			runtime: 'WebWorkerLogicRuntime' as const,
-			sampleRate: 44100,
-		});
+		store.set('runtimeDirectives', { sampleRate: 44100 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
 		expect(envBlock?.code).toContain('; @pos 12 -7');
@@ -324,10 +312,7 @@ describe('autoEnvConstants', () => {
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
 		}
 
-		store.set('compiledProjectConfig.runtimeSettings', {
-			runtime: 'WebWorkerLogicRuntime' as const,
-			sampleRate: 44100,
-		});
+		store.set('runtimeDirectives', { sampleRate: 44100 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
 		expect(envBlock?.code).toContain('; @pos 0 0');

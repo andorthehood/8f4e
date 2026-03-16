@@ -66,11 +66,9 @@ configEnd
 
 config project
 ; @pos -141 19
+; ~sampleRate 44100
 
 rescope "runtimeSettings"
-
-scope "sampleRate"
-set 44100
 
 rescopeTop "runtime"
 set "AudioWorkletRuntime"

@@ -49,6 +49,7 @@ export default function createDefaultState() {
 			projectConfigErrors: [],
 			editorConfigErrors: [],
 			shaderErrors: [],
+			runtimeDirectiveErrors: [],
 		},
 		console: {
 			logs: [],
@@ -56,6 +57,7 @@ export default function createDefaultState() {
 		},
 		compiledProjectConfig: defaultProjectConfig,
 		compiledEditorConfig: defaultEditorConfig,
+		runtimeDirectives: {},
 		runtime: {
 			stats: {
 				timeToExecuteLoopMs: 0,
