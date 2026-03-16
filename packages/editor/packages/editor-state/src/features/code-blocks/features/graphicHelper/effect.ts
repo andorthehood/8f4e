@@ -30,7 +30,6 @@ import {
 } from '../../../code-editing/tabLayout';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
@@ -160,7 +159,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.cursor.y = gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid;
 		graphicData.groupName = directiveState.blockState.groupName;
 		graphicData.groupNonstick = directiveState.blockState.groupNonstick;
-		graphicData.parsedDirectives = parseBlockDirectives(graphicData.code);
 		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
 	};
 
