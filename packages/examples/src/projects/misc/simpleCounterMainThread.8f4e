@@ -2,6 +2,7 @@
 
 config project
 ; @pos -5 3
+; ~sampleRate 10
 
 scope "memorySizeBytes"
 set 65536
@@ -10,8 +11,6 @@ popScope
 scope "runtimeSettings"
 scope "runtime"
 set "MainThreadLogicRuntime"
-rescopeTop "sampleRate"
-set 10
 popScope
 popScope
 

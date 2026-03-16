@@ -13,14 +13,12 @@ moduleEnd
 
 config project
 ; @pos -9 -73
+; ~sampleRate 10
 
 scope "memorySizeBytes"
 set 128
 
 rescope "runtimeSettings"
-
-scope "sampleRate"
-set 10
 
 rescopeTop "runtime"
 set "WebWorkerLogicRuntime"

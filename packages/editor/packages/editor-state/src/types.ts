@@ -43,6 +43,7 @@ import type {
 	Midi,
 	RuntimeStats,
 } from './features/runtime/types';
+import type { ResolvedRuntimeDirectives } from './features/runtime-directives/types';
 import type { ProjectViewport, Viewport } from './features/viewport/types';
 import type {
 	Size,
@@ -100,6 +101,9 @@ export type {
 	Midi,
 	RuntimeStats,
 };
+
+// Re-export runtime-directives types
+export type { ResolvedRuntimeDirectives };
 
 // Re-export logger types
 export type { LogMessage, ConsoleState };
@@ -278,11 +282,14 @@ export interface State {
 	runtimeRegistry: RuntimeRegistry;
 	/** Default runtime ID to use when no runtime is specified */
 	defaultRuntimeId: string;
+	/** Resolved project-global runtime directives from `; ~<name>` comments */
+	runtimeDirectives: ResolvedRuntimeDirectives;
 	codeErrors: {
 		compilationErrors: CodeError[];
 		projectConfigErrors: CodeError[];
 		editorConfigErrors: CodeError[];
 		shaderErrors: CodeError[];
+		runtimeDirectiveErrors: CodeError[];
 	};
 	dialog: {
 		show: boolean;

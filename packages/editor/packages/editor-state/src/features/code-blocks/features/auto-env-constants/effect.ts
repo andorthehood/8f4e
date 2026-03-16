@@ -30,8 +30,8 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	lines.push('; Last updated: ' + new Date().toLocaleString());
 	lines.push('');
 
-	// Sample rate from runtime config
-	const sampleRate = state.compiledProjectConfig.runtimeSettings?.sampleRate ?? 50;
+	// Sample rate from runtime directive (; ~sampleRate), falling back to default
+	const sampleRate = state.runtimeDirectives?.sampleRate ?? 50;
 	lines.push(`const SAMPLE_RATE ${sampleRate}`);
 	// Precomputed reciprocal avoids repeated divisions in DSP code.
 	lines.push(`const INV_SAMPLE_RATE ${1 / sampleRate}`);
@@ -133,8 +133,8 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	// Ensure env block exists when project is loaded
 	store.subscribe('initialProjectState', ensureEnvBlockInProject);
 
-	// Update env block code in graphicHelper.codeBlocks when config or binary assets change
-	// This avoids the infinite loop caused by modifying initialProjectState
-	store.subscribe('compiledProjectConfig', updateEnvConstantsBlockInGraphicHelper);
+	// Update env block code in graphicHelper.codeBlocks when runtime directives or binary assets change.
+	// This avoids the infinite loop caused by modifying initialProjectState.
+	store.subscribe('runtimeDirectives', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
 }

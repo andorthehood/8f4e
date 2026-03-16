@@ -12,6 +12,7 @@ moduleEnd
 
 config project
 ; @pos -67 16
+; ~sampleRate 50
 
 rescope "exportFileName"
 set "bistableMultivibrators"
@@ -20,9 +21,6 @@ rescope "memorySizeBytes"
 set 65536
 
 rescope "runtimeSettings"
-
-scope "sampleRate"
-set 50
 
 rescopeTop "runtime"
 set "WebWorkerLogicRuntime"
