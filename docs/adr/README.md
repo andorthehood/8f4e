@@ -21,4 +21,7 @@ Each ADR follows this structure:
 - [ADR-002: Self-Contained Package Configurations](002-self-contained-packages.md) - 2025-11-07
 - [ADR-003: Dual TypeScript Configuration for Build Isolation](003-dual-tsconfig-for-build-isolation.md) - 2025-11-07
 - [ADR-004: Prioritize Render Path Performance in Data Structure Selection](004-prioritize-render-path-performance.md) - 2025-11-22
-
+- [ADR-005: Separate Syntax and Semantic Compiler Errors](005-separate-syntax-and-semantic-compiler-errors.md) - 2026-03-16
+- [ADR-006: Lazy-Load Optional Runtime Implementations and Schemas](006-lazy-load-optional-runtime-implementations-and-schemas.md) - 2026-03-16
+- [ADR-007: Prefer Off-Main-Thread Runtime Execution](007-prefer-off-main-thread-runtime-execution.md) - 2026-03-16
+- [ADR-008: Provide a Syntax-Only Compiler Entry Point for Tooling](008-provide-a-syntax-only-compiler-entry-point-for-tooling.md) - 2026-03-16
