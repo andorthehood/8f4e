@@ -15,19 +15,20 @@ describe('Runtime System', () => {
 			const mainRuntimeFactory = vi.fn(() => mainDestroyer);
 
 			const state = createMockState({
+				globalEditorDirectives: { runtime: 'AudioWorkletRuntime' },
 				compiledProjectConfig: {
-					runtimeSettings: { runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
+					runtimeSettings: { sampleRate: 44100 },
 				},
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
 						id: 'AudioWorkletRuntime',
-						defaults: { runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
+						defaults: { sampleRate: 44100 },
 						schema: { type: 'object', properties: {} },
 						factory: audioRuntimeFactory,
 					},
 					MainThreadLogicRuntime: {
 						id: 'MainThreadLogicRuntime',
-						defaults: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
+						defaults: { sampleRate: 60 },
 						schema: { type: 'object', properties: {} },
 						factory: mainRuntimeFactory,
 					},
@@ -51,9 +52,9 @@ describe('Runtime System', () => {
 
 			store.set('compiledProjectConfig', {
 				...state.compiledProjectConfig,
-				runtimeSettings: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
+				runtimeSettings: { sampleRate: 60 },
 			});
-			store.set('compiler.isCompiling', false);
+			store.set('globalEditorDirectives', { runtime: 'MainThreadLogicRuntime' });
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -65,6 +66,58 @@ describe('Runtime System', () => {
 			const mainFactoryOrder = mainRuntimeFactory.mock.invocationCallOrder[0];
 
 			expect(destroyOrder).toBeLessThan(mainFactoryOrder);
+		});
+
+		it('should switch runtime immediately when runtime selection changes while compiler is idle', async () => {
+			const audioDestroyer = vi.fn();
+			const webWorkerDestroyer = vi.fn();
+			const audioRuntimeFactory = vi.fn(() => audioDestroyer);
+			const webWorkerRuntimeFactory = vi.fn(() => webWorkerDestroyer);
+
+			const state = createMockState({
+				globalEditorDirectives: { runtime: 'AudioWorkletRuntime' },
+				compiledProjectConfig: {
+					runtimeSettings: { sampleRate: 44100 },
+				},
+				runtimeRegistry: {
+					AudioWorkletRuntime: {
+						id: 'AudioWorkletRuntime',
+						defaults: { sampleRate: 44100 },
+						schema: { type: 'object', properties: {} },
+						factory: audioRuntimeFactory,
+					},
+					WebWorkerLogicRuntime: {
+						id: 'WebWorkerLogicRuntime',
+						defaults: { sampleRate: 50 },
+						schema: { type: 'object', properties: {} },
+						factory: webWorkerRuntimeFactory,
+					},
+				},
+				defaultRuntimeId: 'AudioWorkletRuntime',
+			});
+
+			const store = createStateManager(state);
+			const events = createMockEventDispatcherWithVitest();
+
+			await runtimeEffect(store, events);
+
+			store.set('compiler.isCompiling', true);
+			store.set('compiler.isCompiling', false);
+			await new Promise(resolve => setTimeout(resolve, 10));
+
+			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
+			expect(audioDestroyer).not.toHaveBeenCalled();
+
+			store.set('compiledProjectConfig', {
+				...state.compiledProjectConfig,
+				runtimeSettings: { sampleRate: 50 },
+			});
+			store.set('globalEditorDirectives', { runtime: 'WebWorkerLogicRuntime' });
+
+			await new Promise(resolve => setTimeout(resolve, 10));
+
+			expect(audioDestroyer).toHaveBeenCalledTimes(1);
+			expect(webWorkerRuntimeFactory).toHaveBeenCalledTimes(1);
 		});
 	});
 });

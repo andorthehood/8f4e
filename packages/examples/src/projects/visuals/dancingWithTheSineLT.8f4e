@@ -2,12 +2,8 @@
 
 config project
 ; @pos -122 -9
+; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
-
-
-scope "runtimeSettings"
-scope "runtime"
-set "WebWorkerLogicRuntime"
 
 configEnd
 

@@ -39,7 +39,6 @@ export type RuntimeRegistry = Record<string, RuntimeRegistryEntry>;
  * WebWorker-based logic runtime configuration.
  */
 export interface WebWorkerLogicRuntime {
-	runtime: 'WebWorkerLogicRuntime';
 	sampleRate: number;
 }
 
@@ -47,7 +46,6 @@ export interface WebWorkerLogicRuntime {
  * Main thread logic runtime configuration.
  */
 export interface MainThreadLogicRuntime {
-	runtime: 'MainThreadLogicRuntime';
 	sampleRate: number;
 }
 
@@ -58,7 +56,6 @@ export interface MainThreadLogicRuntime {
  * This aligns with the `module.memory` syntax used elsewhere in the editor.
  */
 export interface AudioWorkletRuntime {
-	runtime: 'AudioWorkletRuntime';
 	sampleRate: number;
 	audioInputBuffers?: {
 		/**
@@ -98,7 +95,6 @@ interface MidiCCIO {
  * WebWorker-based MIDI runtime configuration.
  */
 export interface WebWorkerMIDIRuntime {
-	runtime: 'WebWorkerMIDIRuntime';
 	sampleRate: number;
 	midiNoteOutputs?: MidiNoteIO[];
 	midiNoteInputs?: MidiNoteIO[];

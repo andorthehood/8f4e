@@ -3,20 +3,7 @@ import type { Project } from '@8f4e/editor-state';
 const ericSaiteGenerator: Project = {
 	codeBlocks: [
 		{
-			code: [
-				'config',
-				'; @pos -241 -15',
-				'; ~sampleRate 50',
-				'',
-				'',
-				'scope "runtimeSettings"',
-				'scope "runtime"',
-				'push "WebWorkerMIDIRuntime"',
-				'set',
-				'popScope',
-				'',
-				'configEnd',
-			],
+			code: ['config', '; @pos -241 -15', '; @runtime WebWorkerMIDIRuntime', '; ~sampleRate 50', '', '', 'configEnd'],
 		},
 		{
 			code: [

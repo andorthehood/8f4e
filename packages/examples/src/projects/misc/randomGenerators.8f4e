@@ -14,15 +14,9 @@ moduleEnd
 
 config project
 ; @pos -84 2
+; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
 ; @exportFileName randomGenerators
-
-
-scope "runtimeSettings"
-scope "runtime"
-set "WebWorkerLogicRuntime"
-popScope
-popScope
 
 configEnd
 

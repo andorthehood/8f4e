@@ -1,9 +1,9 @@
 import type { ProjectConfig } from './types';
+import type { Runtimes } from '../runtime/types';
 
-export const defaultProjectConfig: ProjectConfig = {
-	runtimeSettings: {
-		runtime: 'WebWorkerLogicRuntime',
-		sampleRate: 50,
-	},
-	disableAutoCompilation: false,
-};
+export function createDefaultProjectConfig(runtimeSettings: Runtimes): ProjectConfig {
+	return {
+		runtimeSettings,
+		disableAutoCompilation: false,
+	};
+}
