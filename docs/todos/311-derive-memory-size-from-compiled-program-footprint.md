@@ -22,6 +22,8 @@ That creates a few unnecessary problems:
 
 In this codebase, binary assets are loaded into already-declared memory regions, so they do not introduce hidden memory allocation requirements beyond the compiler-visible declarations. That means the program's required memory is derivable from the compiled memory layout.
 
+The compiler already produces the memory allocation plan that determines the final static layout. In 8f4e, that plan is not dynamic at runtime; only a later successful recompilation can produce a different one.
+
 ## Proposed Solution
 
 Make program memory sizing automatic by default.
@@ -29,23 +31,25 @@ Make program memory sizing automatic by default.
 High-level approach:
 
 - Stop treating authored `memorySizeBytes` as required project input.
-- Let the compiler determine the required static memory footprint from declarations and compiled module layout.
-- Derive the effective runtime memory size from that footprint.
-- Round the result up to a WebAssembly page boundary and add a small fixed headroom to avoid unnecessary memory recreation while editing.
+- Let the compiler determine the required static memory footprint from the generated memory allocation plan.
+- Derive the effective runtime memory size directly from that footprint.
+- Round the result up to a WebAssembly page boundary with a minimum allocation of one page.
 
 The current `memorySizeBytes` option effectively plays two roles:
 
 - compile-time memory limit / addressable memory ceiling
 - actual allocated `WebAssembly.Memory` size
 
-This TODO should separate those roles clearly so the compiler is not forced to depend on manually-authored memory config when it can derive the required size itself.
+This TODO should remove the authored project-config role entirely so runtime allocation follows the compiler-generated plan instead of user-maintained config.
 
 Recommended behavior:
 
-- compiler computes `allocatedMemorySize`
+- compiler computes the required memory footprint from the allocation plan
 - shared compile pipeline derives `effectiveMemorySizeBytes`
+- `effectiveMemorySizeBytes = max(WASM_PAGE_SIZE, roundUpToPage(requiredBytes))`
 - runtime memory creation uses `effectiveMemorySizeBytes`
-- manual memory override remains optional for tests or unusual runtime constraints
+- failed recompilation keeps the last valid compiled program and memory instance
+- successful recompilation may replace memory if the newly derived size changes
 
 ## Anti-Patterns
 
@@ -54,37 +58,38 @@ Recommended behavior:
 - Do not use exact-fit memory without page rounding.
 - Do not implement editor-only auto-sizing while leaving CLI/compiler-worker on different logic.
 - Do not let binary asset loading implicitly alter memory sizing; assets must continue loading into declared memory only.
+- Do not add a fixed headroom policy unless a separate design decision explicitly introduces one.
+- Do not change memory sizing on failed recompilation; the live editor must retain the last valid memory.
 
 ## Implementation Plan
 
-### Step 1: Separate required footprint from configured limit
+### Step 1: Make compiler footprint the source of truth
 - Audit all places where `memorySizeBytes` is used in `@8f4e/compiler`, `compiler-worker`, editor-state, and CLI.
-- Split the current concept into:
-  - required compiled memory footprint
-  - effective runtime memory size
-- Update naming and types so this distinction is explicit.
+- Define the compiler-produced memory allocation plan / required footprint as the source of truth.
+- Update naming and types so the distinction between required bytes and allocated bytes is explicit.
 
 ### Step 2: Derive effective memory size from compilation output
-- Use compiler-reported `allocatedMemorySize` as the base requirement.
+- Use the compiler-reported required memory footprint as the base requirement.
 - Add a shared helper that:
-  - adds a small fixed safety margin
   - rounds up to 64 KiB WebAssembly pages
+  - guarantees a minimum of one page
 - Reuse the same derivation logic in editor, CLI, and compiler-worker paths.
 
-### Step 3: Remove required project-config dependence
+### Step 3: Remove project-config dependence
 - Make project compilation work without authored `memorySizeBytes` in project config.
-- Keep backward compatibility for existing projects during migration.
-- Treat manual memory size as an optional override instead of a required field.
+- Remove `memorySizeBytes` from active project config authoring and examples.
+- Decide how to treat legacy saved compiled config fields, but do not keep them as active source-of-truth input.
 
 ### Step 4: Update runtime memory creation and recreation rules
 - Feed derived effective memory size into `WebAssembly.Memory` creation.
-- Ensure memory recreation reasons remain accurate when required size changes after edits.
+- Ensure memory recreation reasons remain accurate when required size changes after successful edits.
+- Keep the last valid program and memory when recompilation fails.
 - Preserve existing behavior for memory-structure changes and page-granular allocation.
 
 ### Step 5: Add tests and docs
 - Add compiler, compiler-worker, CLI, and editor-state coverage for automatic sizing.
 - Add regression tests showing that projects compile successfully without authored `memorySizeBytes`.
-- Update docs and examples to stop recommending manual memory sizing except for explicit overrides.
+- Update docs and examples to stop recommending manual memory sizing.
 
 ## Validation Checkpoints
 
@@ -95,11 +100,11 @@ Recommended behavior:
 ## Success Criteria
 
 - [ ] Projects can compile and run without authored `memorySizeBytes` in project config.
-- [ ] Effective runtime memory size is derived from compiled program footprint.
-- [ ] Derived memory size is rounded to WebAssembly page boundaries and includes a small safety margin.
+- [ ] Effective runtime memory size is derived from the compiler memory allocation plan.
+- [ ] Derived memory size is rounded to WebAssembly page boundaries with a minimum of one page.
 - [ ] Editor, CLI, and compiler-worker use the same memory-sizing logic.
-- [ ] Existing projects with explicit `memorySizeBytes` remain supported as overrides during migration.
-- [ ] Tests cover both auto-sized and manual-override paths.
+- [ ] Failed recompilation keeps the last valid compiled program and memory.
+- [ ] Tests cover both successful size changes and failed recompilation retention.
 
 ## Affected Components
 
@@ -108,15 +113,15 @@ Recommended behavior:
 - `packages/cli/src/` - shared compile pipeline and project compilation defaults
 - `packages/editor/packages/editor-state/src/features/program-compiler/` - effective compiler options in editor
 - `packages/editor/packages/editor-state/src/features/project-config/` - remove required dependence on authored `memorySizeBytes`
+- `packages/editor/packages/web-ui/src/drawers/infoOverlay.ts` - show allocated pages and actual used memory separately
 - `docs/usage.md` - project config and memory sizing documentation
 - `packages/examples/src/projects/` - examples that currently hard-code `memorySizeBytes`
 
 ## Risks & Considerations
 
-- **Two-role config field**: current code uses `memorySizeBytes` both as a compile-time ceiling and runtime allocation size, so refactoring must avoid semantic drift.
 - **Compile pipeline ordering**: if compile-time checks currently require a memory limit before layout is finalized, the pipeline may need a staged or refactored derivation flow.
-- **Memory churn**: exact-fit auto-sizing would recreate memory too often while editing; use fixed headroom.
-- **Compatibility**: existing configs and tests may assume `memorySizeBytes` is always present.
+- **Failed compile retention**: live-editor behavior depends on keeping the last valid compiled program and memory after temporary compiler errors.
+- **Compatibility**: existing configs, fixtures, and tests may assume `memorySizeBytes` is always present.
 
 ## Related Items
 
@@ -127,4 +132,9 @@ Recommended behavior:
 ## Notes
 
 - Current discussion conclusion: binary assets are not a blocker because they only load into already-allocated declared memory spaces.
-- Preferred default sizing policy is minimum required size plus a small fixed buffer, then rounded to full Wasm pages.
+- Current policy:
+  - compiler memory allocation plan is the source of truth
+  - derive required bytes from that plan
+  - allocate `max(1 page, roundUpToPage(requiredBytes))`
+  - retain last valid memory on failed recompilation
+  - show allocated pages and actual used memory separately in the info overlay
