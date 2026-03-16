@@ -1,3 +1,5 @@
+import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
+
 import type { ParsedDirectiveRecord } from '~/types';
 import type { ResolvedRuntimeDirectives } from './types';
 import type { CodeError } from '~/types';
@@ -12,7 +14,7 @@ export interface RuntimeDirectiveResolutionResult {
  *
  * When a block supplies `parsedDirectives` (populated by the central derivation pass),
  * those records are consumed directly without rescanning raw code lines.
- * Blocks that omit `parsedDirectives` fall back to inline scanning for backward compatibility.
+ * Blocks that omit `parsedDirectives` fall back to parsing via `parseBlockDirectives`.
  *
  * Rules:
  * - Duplicate identical `~sampleRate` values are allowed.
@@ -33,16 +35,10 @@ export function resolveRuntimeDirectives(
 		// Use the block's stable id when available, otherwise fall back to array index
 		const codeBlockId: string | number = block.id ?? blockIndex;
 
-		// Use pre-parsed directives when available; otherwise rescan raw code lines.
-		const runtimeDirectives: Array<{ name: string; args: string[]; rawRow: number }> =
-			block.parsedDirectives
-				? block.parsedDirectives.filter(d => d.prefix === '~')
-				: (block.code ?? []).flatMap((line, rawRow) => {
-						const match = line.match(/^\s*;\s*~(\w+)(?:\s+(.*))?$/);
-						if (!match) return [];
-						const [, name, rawArgs] = match;
-						return [{ name, args: rawArgs ? rawArgs.trim().split(/\s+/) : [], rawRow }];
-					});
+		// Use pre-parsed directives when available; otherwise parse via the shared utility.
+		const runtimeDirectives: ParsedDirectiveRecord[] = block.parsedDirectives
+			? block.parsedDirectives.filter(d => d.prefix === '~')
+			: parseBlockDirectives(block.code ?? []).filter(d => d.prefix === '~');
 
 		for (const directive of runtimeDirectives) {
 			const lineIndex = directive.rawRow;
