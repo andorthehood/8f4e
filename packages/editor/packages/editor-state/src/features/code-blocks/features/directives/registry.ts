@@ -13,13 +13,15 @@ import watchDirective from './watch/plugin';
 import { parseEditorDirectives } from './utils';
 
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
+import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 
-import type { CodeBlockGraphicData, State } from '~/types';
+import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '~/types';
 import type {
 	DirectiveDeriveOptions,
 	DirectiveDerivedState,
 	DirectiveDerivedStateDraft,
 	EditorDirectivePlugin,
+	ParsedEditorDirective,
 } from './types';
 
 export type {
@@ -46,10 +48,12 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 
 export function deriveDirectiveState(
 	code: string[],
+	parsedDirectives: ParsedDirectiveRecord[] = parseBlockDirectives(code),
 	options: DirectiveDeriveOptions = {},
 	plugins: EditorDirectivePlugin[] = directivePlugins
 ): DirectiveDerivedState {
-	const directives = parseEditorDirectives(code, plugins);
+	const pluginNames = new Set(plugins.map(p => p.name));
+	const directives: ParsedEditorDirective[] = parsedDirectives.filter(d => d.prefix === '@' && pluginNames.has(d.name));
 	const draft: DirectiveDerivedStateDraft = {
 		sourceCode: code,
 		blockState: {
@@ -122,7 +126,7 @@ if (import.meta.vitest) {
 		});
 
 		it('derives block state and layout in a single pass', () => {
-			const result = deriveDirectiveState([
+			const code = [
 				'module foo',
 				'; @disabled',
 				'; @home',
@@ -130,7 +134,8 @@ if (import.meta.vitest) {
 				'; @plot buffer',
 				'; @scan buffer pointer',
 				'moduleEnd',
-			]);
+			];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
 
 			expect(result.blockState).toEqual({
 				disabled: true,
@@ -146,7 +151,8 @@ if (import.meta.vitest) {
 		});
 
 		it('ignores unregistered directives', () => {
-			const result = deriveDirectiveState(['; @unknown', '; @home', '; @plot buffer']);
+			const code = ['; @unknown', '; @home', '; @plot buffer'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
 
 			expect(result.blockState).toEqual({
 				disabled: false,
@@ -157,7 +163,8 @@ if (import.meta.vitest) {
 		});
 
 		it('collapses everything after @hide while unselected', () => {
-			const result = deriveDirectiveState(['module foo', '; @hide', 'push 1', 'moduleEnd']);
+			const code = ['module foo', '; @hide', 'push 1', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
 
 			expect(result.displayState).toEqual({ hideAfterRawRow: 1 });
 			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 1]);
@@ -166,7 +173,8 @@ if (import.meta.vitest) {
 		});
 
 		it('expands hidden code while editing', () => {
-			const result = deriveDirectiveState(['module foo', '; @hide', 'push 1', 'moduleEnd'], {
+			const code = ['module foo', '; @hide', 'push 1', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code), {
 				isExpandedForEditing: true,
 			});
 
