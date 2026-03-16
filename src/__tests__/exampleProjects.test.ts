@@ -49,7 +49,6 @@ function loadProject(name: string) {
 const projects = Array.from(projectPaths.keys()).sort().map(loadProject);
 
 const COMPILER_OPTIONS = {
-	memorySizeBytes: 65536,
 	startingMemoryWordAddress: 0,
 };
 

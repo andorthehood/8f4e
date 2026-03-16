@@ -157,7 +157,7 @@ export default function traceInstructionFlow(
 
 	if (moduleBlocks.length === 0) {
 		return {
-			memorySizeBytes: compilerOptions.memorySizeBytes ?? 0,
+			memorySizeBytes: 0, // No modules means no memory needed
 			blocks: [],
 		};
 	}
