@@ -3,7 +3,7 @@ import { compileConfig, CompileError } from '@8f4e/stack-config-compiler';
 import { extractConfigBody, extractConfigType } from './blockParsing';
 import isPlainObject from './isPlainObject';
 import deepMergeConfig from './mergeConfig';
-import DEFAULT_PROJECT_CONFIG from './defaults';
+import { createDefaultProjectConfig, DEFAULT_RUNTIME_ID, RUNTIME_DEFAULTS } from './defaults';
 
 import getBlockType from '../shared/getBlockType';
 
@@ -17,6 +17,48 @@ interface CompileProjectConfigOptions {
 interface CompileProjectConfigResult {
 	compiledProjectConfig: Record<string, unknown>;
 	configSource: string;
+}
+
+function resolveRuntimeIdFromGlobalEditorDirectives(blocks: ProjectCodeBlock[]): string {
+	let resolvedRuntimeId: string | undefined;
+
+	for (let blockIndex = 0; blockIndex < blocks.length; blockIndex += 1) {
+		const block = blocks[blockIndex];
+		if (block.disabled) {
+			continue;
+		}
+
+		for (let lineIndex = 0; lineIndex < block.code.length; lineIndex += 1) {
+			const trimmed = block.code[lineIndex].trim();
+			const match = trimmed.match(/^;\s*@runtime(?:\s+(\S+))?\s*$/);
+			if (!match) {
+				continue;
+			}
+
+			const runtimeId = match[1];
+			if (!runtimeId) {
+				throw new Error(
+					`Global editor directive error: block ${blockIndex + 1}, line ${lineIndex + 1}: @runtime requires a runtime id argument`
+				);
+			}
+
+			if (!(runtimeId in RUNTIME_DEFAULTS)) {
+				throw new Error(
+					`Global editor directive error: block ${blockIndex + 1}, line ${lineIndex + 1}: @runtime: unknown runtime '${runtimeId}'`
+				);
+			}
+
+			if (resolvedRuntimeId === undefined) {
+				resolvedRuntimeId = runtimeId;
+			} else if (resolvedRuntimeId !== runtimeId) {
+				throw new Error(
+					`Global editor directive error: block ${blockIndex + 1}, line ${lineIndex + 1}: @runtime: conflicting values '${resolvedRuntimeId}' and '${runtimeId}'`
+				);
+			}
+		}
+	}
+
+	return resolvedRuntimeId ?? DEFAULT_RUNTIME_ID;
 }
 
 function formatConfigErrors(errors: CompileError[]): string {
@@ -33,7 +75,8 @@ export default function compileProjectConfig(
 	options: CompileProjectConfigOptions = {}
 ): CompileProjectConfigResult {
 	const configType = options.configType ?? 'project';
-	const defaultProjectConfig = options.defaultProjectConfig ?? DEFAULT_PROJECT_CONFIG;
+	const selectedRuntimeId = resolveRuntimeIdFromGlobalEditorDirectives(blocks);
+	const defaultProjectConfig = options.defaultProjectConfig ?? createDefaultProjectConfig(selectedRuntimeId);
 
 	const configSources: string[] = [];
 

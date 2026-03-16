@@ -2,6 +2,7 @@
 
 config project
 ; @pos -106 13
+; @runtime AudioWorkletRuntime
 
 rescope "runtimeSettings"
 scope "audioOutputBuffers[0]"
@@ -60,11 +61,6 @@ config project
 ; @pos -141 19
 ; ~sampleRate 44100
 ; @exportFileName audioLoopback
-
-rescope "runtimeSettings"
-
-scope "runtime"
-set "AudioWorkletRuntime"
 
 configEnd
 

@@ -2,14 +2,8 @@
 
 config project
 ; @pos -5 3
+; @runtime MainThreadLogicRuntime
 ; ~sampleRate 10
-
-
-scope "runtimeSettings"
-scope "runtime"
-set "MainThreadLogicRuntime"
-popScope
-popScope
 
 configEnd
 

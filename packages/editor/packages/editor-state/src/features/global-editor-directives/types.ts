@@ -3,6 +3,7 @@
  * Editor directives use `; @<name> <args...>` syntax.
  */
 import type { CodeError } from '~/types';
+import type { RuntimeRegistry } from '../runtime/types';
 
 export interface ParsedGlobalEditorDirective {
 	name: string;
@@ -13,6 +14,13 @@ export interface ParsedGlobalEditorDirective {
 export interface ResolvedGlobalEditorDirectives {
 	/** Export file base name from `; @exportFileName <value>` directives */
 	exportFileName?: string;
+	/** Selected runtime host from `; @runtime <id>` directives */
+	runtime?: string;
+}
+
+export interface GlobalEditorDirectiveContext {
+	codeBlockId: string | number;
+	runtimeRegistry: RuntimeRegistry;
 }
 
 export interface GlobalEditorDirectivePlugin {
@@ -20,7 +28,7 @@ export interface GlobalEditorDirectivePlugin {
 	apply?: (
 		directive: ParsedGlobalEditorDirective,
 		draft: GlobalEditorDirectiveResolutionResult,
-		context: { codeBlockId: string | number }
+		context: GlobalEditorDirectiveContext
 	) => void;
 }
 

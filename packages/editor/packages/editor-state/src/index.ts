@@ -39,16 +39,15 @@ import groupUngroupper from './features/code-blocks/features/group/ungroupper/ef
 import groupDeleter from './features/code-blocks/features/group/deleter/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
+import { getDefaultProjectConfigForRuntime } from './features/project-config/runtimeSelection';
 
-import type { Options, State, EventDispatcher, Runtimes } from './types';
+import type { Options, State, EventDispatcher } from './types';
 
 // Function to create default state
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	// Get default runtime settings from registry
-	const registryEntry = options.runtimeRegistry[options.defaultRuntimeId];
-	if (!registryEntry) {
+	if (!options.runtimeRegistry[options.defaultRuntimeId]) {
 		throw new Error(`Default runtime ID "${options.defaultRuntimeId}" not found in runtime registry`);
 	}
 
@@ -59,10 +58,11 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
 		defaultRuntimeId: options.defaultRuntimeId,
-		compiledProjectConfig: {
-			...createDefaultState().compiledProjectConfig,
-			runtimeSettings: registryEntry.defaults as unknown as Runtimes,
-		},
+		compiledProjectConfig: getDefaultProjectConfigForRuntime(
+			options.defaultRuntimeId,
+			options.runtimeRegistry,
+			options.defaultRuntimeId
+		),
 	};
 
 	const store = createStateManager<State>(baseState);
@@ -95,10 +95,10 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
-	projectConfigEffect(store, events);
 	colorDirectivesEffect(store);
 	parsedDirectivesUpdater(store);
 	globalEditorDirectivesEffect(store);
+	projectConfigEffect(store, events);
 	runtimeDirectivesEffect(store);
 	compiler(store, events);
 	graphicHelper(store, events);

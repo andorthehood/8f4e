@@ -2,13 +2,11 @@
 
 config project
 ; @pos -94 1
+; @runtime AudioWorkletRuntime
 ; ~sampleRate 44100
 ; @exportFileName audioBuffer
 
-
 scope "runtimeSettings"
-scope "runtime"
-set "AudioWorkletRuntime"
 
 rescopeTop "audioOutputBuffers[0]"
 

@@ -2,39 +2,29 @@ import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { RuntimeRegistry } from '~/types';
 
 /**
- * Generates a runtime settings schema from a runtime registry.
- * Creates a discriminated union using oneOf based on the runtime field.
+ * Removes the authored `runtime` discriminator from runtime settings config.
+ * Runtime selection now comes from the global editor directive `; @runtime <id>`.
  */
-function generateRuntimeSettingsSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
-	const oneOfBranches = Object.values(runtimeRegistry).map(entry => {
-		// Ensure the schema has the runtime discriminator without mutating the original schema
-		const schema = { ...entry.schema };
-		if (schema.type === 'object' && schema.properties) {
-			return {
-				...schema,
-				properties: {
-					...schema.properties,
-					runtime: {
-						type: 'string' as const,
-						enum: [entry.id] as const,
-					},
-				},
-			};
-		}
+function stripRuntimeDiscriminator(schema: JSONSchemaLike): JSONSchemaLike {
+	if (schema.type !== 'object' || !schema.properties) {
 		return schema;
-	});
+	}
+
+	const properties = Object.fromEntries(Object.entries(schema.properties).filter(([key]) => key !== 'runtime'));
+	const required = Array.isArray(schema.required) ? schema.required.filter(key => key !== 'runtime') : undefined;
 
 	return {
-		type: 'object',
-		oneOf: oneOfBranches,
+		...schema,
+		properties,
+		...(required ? { required } : {}),
 	};
 }
 
 /**
  * Generates the config schema.
  */
-export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
-	const runtimeSettingsSchema = generateRuntimeSettingsSchema(runtimeRegistry);
+export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry, runtimeId: string): JSONSchemaLike {
+	const runtimeSettingsSchema = stripRuntimeDiscriminator(runtimeRegistry[runtimeId]?.schema ?? { type: 'object' });
 
 	return {
 		type: 'object',
