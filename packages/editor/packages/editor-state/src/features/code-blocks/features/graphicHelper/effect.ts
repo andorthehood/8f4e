@@ -33,6 +33,7 @@ import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicDa
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
+import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -46,7 +47,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const directiveState = deriveDirectiveState(codeBlock.code, {
+		const directiveState = deriveDirectiveState(codeBlock.code, codeBlock.parsedDirectives, {
 			isExpandedForEditing: !codeBlock.isCollapsed,
 		});
 		const displayModel = directiveState.displayModel;
@@ -70,7 +71,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		const spriteLookups = state.graphicHelper.spriteLookups;
-		const directiveState = deriveDirectiveState(graphicData.code, {
+		const directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, {
 			isExpandedForEditing: shouldExpandCodeBlockForEditing(graphicData),
 		});
 		const displayModel = directiveState.displayModel;
@@ -241,7 +242,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			const gridY = posResult?.y ?? 0;
 			const pixelX = gridX * state.viewport.vGrid;
 			const pixelY = gridY * state.viewport.hGrid;
-			const directiveState = deriveDirectiveState(codeBlock.code);
+			const blockParsedDirectives = parseBlockDirectives(codeBlock.code);
+			const directiveState = deriveDirectiveState(codeBlock.code, blockParsedDirectives);
 
 			return createCodeBlockGraphicData({
 				width: 0,
@@ -273,7 +275,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					const rawBlock = editorConfigBlocks[i];
 					const gridX = rawBlock.gridCoordinates?.x ?? 0;
 					const gridY = rawBlock.gridCoordinates?.y ?? 0;
-					const directiveState = deriveDirectiveState(rawBlock.code);
+					const rawBlockParsedDirectives = parseBlockDirectives(rawBlock.code);
+					const directiveState = deriveDirectiveState(rawBlock.code, rawBlockParsedDirectives);
 					const block = createCodeBlockGraphicData({
 						id: getCodeBlockId(rawBlock.code),
 						code: rawBlock.code,
