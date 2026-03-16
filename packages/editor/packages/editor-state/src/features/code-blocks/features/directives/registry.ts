@@ -48,7 +48,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 
 export function deriveDirectiveState(
 	code: string[],
-	parsedDirectives: ParsedDirectiveRecord[] = parseBlockDirectives(code),
+	parsedDirectives: ParsedDirectiveRecord[],
 	options: DirectiveDeriveOptions = {},
 	plugins: EditorDirectivePlugin[] = directivePlugins
 ): DirectiveDerivedState {

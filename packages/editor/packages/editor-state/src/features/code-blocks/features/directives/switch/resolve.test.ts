@@ -1,14 +1,16 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import {
-	deriveDirectiveState,
-	runAfterGraphicDataWidthCalculation,
-	runBeforeGraphicDataWidthCalculation,
-} from '../registry';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
-import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
+import {
+	createMockCodeBlock,
+	createMockState,
+	deriveDirectiveStateForMockCodeBlock,
+	findWidgetById,
+	setMockCodeBlockCode,
+} from '~/pureHelpers/testingUtils/testUtils';
 
 describe('switch directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -33,7 +35,7 @@ describe('switch directive widget resolution', () => {
 	});
 
 	function runDirectiveResolution() {
-		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		const directiveState = deriveDirectiveStateForMockCodeBlock(mockGraphicData);
 		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
@@ -69,7 +71,7 @@ describe('switch directive widget resolution', () => {
 	});
 
 	it('should handle multiple switches', () => {
-		mockGraphicData.code = ['; @switch sw1 0 1', '; @switch sw2 5 10'];
+		setMockCodeBlockCode(mockGraphicData, ['; @switch sw1 0 1', '; @switch sw2 5 10']);
 
 		runDirectiveResolution();
 
@@ -78,7 +80,7 @@ describe('switch directive widget resolution', () => {
 	});
 
 	it('should position switches at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'nop', '; @switch sw1 0 1'];
+		setMockCodeBlockCode(mockGraphicData, ['nop', 'nop', '; @switch sw1 0 1']);
 
 		runDirectiveResolution();
 
@@ -87,7 +89,7 @@ describe('switch directive widget resolution', () => {
 	});
 
 	it('should handle switches with custom values', () => {
-		mockGraphicData.code = ['; @switch sw1 -5 100'];
+		setMockCodeBlockCode(mockGraphicData, ['; @switch sw1 -5 100']);
 
 		runDirectiveResolution();
 
@@ -97,7 +99,7 @@ describe('switch directive widget resolution', () => {
 
 	it('should position switches correctly with gaps', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 1 }]]); // Gap at line 1
-		mockGraphicData.code = ['; @switch sw1 0 1', 'nop', '; @switch sw2 0 1'];
+		setMockCodeBlockCode(mockGraphicData, ['; @switch sw1 0 1', 'nop', '; @switch sw2 0 1']);
 
 		runDirectiveResolution();
 
