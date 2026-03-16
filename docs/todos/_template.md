@@ -5,6 +5,7 @@ effort: X hours/days
 created: YYYY-MM-DD
 status: Open/Completed
 completed: null
+github_issue: null
 ---
 
 # TODO: [Brief Title]
