@@ -213,7 +213,6 @@ export interface CompileOptions {
 	/**
 	 * Memory size in bytes (optional).
 	 * When omitted, the compiler derives the effective memory size from the program's static footprint.
-	 * When provided, acts as an upper bound for memory allocation.
 	 */
 	memorySizeBytes?: number;
 	globalDataStructures?: DataStructure[];
