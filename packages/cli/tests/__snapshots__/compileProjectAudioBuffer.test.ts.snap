@@ -7,11 +7,6 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "code": [
         "config project",
         "",
-        "rescope "memorySizeBytes"",
-        "push 65536",
-        "set",
-        "popScope",
-        "",
         "scope "runtimeSettings"",
         "scope "sampleRate"",
         "push 44100",
@@ -260,12 +255,8 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
     "audioout": {
       "byteAddress": 4,
       "cycleFunction": [
-        80,
-        2,
-        1,
-        127,
-        1,
-        125,
+        55,
+        0,
         65,
         136,
         4,
@@ -280,27 +271,6 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
         42,
         2,
         0,
-        33,
-        1,
-        33,
-        0,
-        32,
-        0,
-        65,
-        252,
-        255,
-        3,
-        74,
-        4,
-        127,
-        65,
-        0,
-        5,
-        32,
-        0,
-        11,
-        32,
-        1,
         56,
         2,
         0,
@@ -607,7 +577,6 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
   },
   "compiledProjectConfig": {
     "disableAutoCompilation": false,
-    "memorySizeBytes": 65536,
     "runtimeSettings": {
       "audioOutputBuffers": [
         {
@@ -620,7 +589,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "sampleRate": 44100,
     },
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDg0AAAAAAwAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMKiwMNCgAQCRAKEAsQDAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAtQAgF/AX1BiAQoAgBBBCgCACoCACEBIQAgAEH8/wNKBH9BAAUgAAsgATgCAEGIBEGIBCgCAEEEajYCAEGIBCgCAEGEBEoEQEGIBEEINgIACwtkAQF9QZQEQZQEKgIAQ9sPyUBBkAQoAgAqAgCUQcTYArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBlAQqAgBD2w9JQF4EQEGUBEPbD0nAOAIAC0GYBEGUBCoCABAEOAIACwIACwIACxIAQQRBmAQ2AgBBiARBCDYCAAsWAEGMBEMAANxDOAIAQZAEQYwENgIACw==",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDg0AAAAAAwAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMK8gINCgAQCRAKEAsQDAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAs3AEGIBCgCAEEEKAIAKgIAOAIAQYgEQYgEKAIAQQRqNgIAQYgEKAIAQYQESgRAQYgEQQg2AgALC2QBAX1BlARBlAQqAgBD2w/JQEGQBCgCACoCAJRBxNgCsiEAIABDAAAAAFsEQEMAAIA/IQALIACVkjgCAEGUBCoCAEPbD0lAXgRAQZQEQ9sPScA4AgALQZgEQZQEKgIAEAQ4AgALAgALAgALEgBBBEGYBDYCAEGIBEEINgIACxYAQYwEQwAA3EM4AgBBkARBjAQ2AgAL",
   "viewport": {
     "gridCoordinates": {
       "x": -44,

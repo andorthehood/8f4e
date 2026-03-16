@@ -5,9 +5,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName risen
 
-rescope "memorySizeBytes"
-set 65536
-popScope
 
 scope "runtimeSettings"
 rescopeTop "runtime"

@@ -28,9 +28,9 @@ describe('cli', () => {
 		);
 
 		const raw = await fs.readFile(tracePath, 'utf8');
-		const trace = JSON.parse(raw) as { memorySizeBytes: number; blocks: Array<{ entries: unknown[] }> };
+		const trace = JSON.parse(raw) as { requiredMemoryBytes: number; blocks: Array<{ entries: unknown[] }> };
 
-		expect(trace.memorySizeBytes).toBeTypeOf('number');
+		expect(trace.requiredMemoryBytes).toBeTypeOf('number');
 		expect(Array.isArray(trace.blocks)).toBe(true);
 		expect(trace.blocks.length).toBeGreaterThan(0);
 		expect(trace.blocks.some(block => block.entries.length > 0)).toBe(true);

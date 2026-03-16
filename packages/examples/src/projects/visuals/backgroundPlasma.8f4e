@@ -39,9 +39,6 @@ config project
 ; @pos -114 36
 ; ~sampleRate 50
 
-scope "memorySizeBytes"
-set 65536
-popScope
 
 scope "runtimeSettings"
 scope "runtime"

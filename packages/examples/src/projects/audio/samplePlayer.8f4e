@@ -5,9 +5,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName samplePlayer
 
-rescope "memorySizeBytes"
-set 655360
-popScope
 
 scope "runtimeSettings"
 rescopeTop "runtime"

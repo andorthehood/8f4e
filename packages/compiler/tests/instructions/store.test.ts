@@ -28,7 +28,6 @@ moduleEnd
 		const ast = compileToAST(sourceCode.split('\n'));
 		testModule = compileModules([ast], {
 			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
 			includeAST: true,
 		})[0];
 
@@ -78,7 +77,7 @@ push src
 store
 moduleEnd`.split('\n')
 		);
-		const mod = compileModules([ast], { startingMemoryWordAddress: 0, memorySizeBytes: 65536 })[0];
+		const mod = compileModules([ast], { startingMemoryWordAddress: 0 })[0];
 		const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 
 		const memory = new WebAssembly.Memory({ initial: 1 });
@@ -101,7 +100,7 @@ push src
 store
 moduleEnd`.split('\n')
 		);
-		const mod = compileModules([ast], { startingMemoryWordAddress: 0, memorySizeBytes: 65536 })[0];
+		const mod = compileModules([ast], { startingMemoryWordAddress: 0 })[0];
 		const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 
 		const memory = new WebAssembly.Memory({ initial: 1 });

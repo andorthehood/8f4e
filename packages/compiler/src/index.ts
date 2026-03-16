@@ -73,6 +73,7 @@ export { default as collectConstants } from './astUtils/collectConstants';
 export { default as getConstantsName } from './astUtils/getConstantsName';
 export { default as getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
+export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {
 	parseMacroDefinitions,
 	expandMacros,
@@ -89,7 +90,7 @@ export function compileModules(
 	namespaces?: Namespaces,
 	compiledFunctions?: CompiledFunctionLookup
 ): CompiledModule[] {
-	let memoryAddress = options.startingMemoryWordAddress;
+	let memoryAddress = options.startingMemoryWordAddress ?? 0;
 
 	// If builtInConsts not provided, use empty object - all constants come from env block
 	const consts = builtInConsts ?? {};
@@ -106,21 +107,8 @@ export function compileModules(
 		);
 
 	return modules.map((ast, index) => {
-		const module = compileModule(
-			ast,
-			consts,
-			ns,
-			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-			options.memorySizeBytes,
-			index,
-			compiledFunctions
-		);
+		const module = compileModule(ast, consts, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
 		memoryAddress += module.wordAlignedSize;
-
-		if (options.memorySizeBytes <= memoryAddress) {
-			throw 'Memory limit exceeded';
-		}
-
 		return module;
 	});
 }
@@ -179,7 +167,7 @@ export default function compile(
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
-	allocatedMemorySize: number;
+	requiredMemoryBytes: number;
 } {
 	// Parse and expand macros if provided
 	const macroDefinitions = macros ? parseMacroDefinitions(macros) : new Map();
@@ -252,6 +240,13 @@ export default function compile(
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
+	// Calculate the required memory footprint from the compiled program.
+	const requiredMemoryBytes =
+		compiledModules.length === 0
+			? 0
+			: compiledModules[compiledModules.length - 1].byteAddress +
+				compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
 	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle or initOnlyExecution flags
@@ -293,7 +288,7 @@ export default function compile(
 		: stripASTFromCompiledModules(compiledModulesMap);
 
 	// Round up to whole wasm pages (64 KiB each); memory cannot be imported with fractional pages.
-	const memorySizePages = Math.ceil(options.memorySizeBytes / WASM_MEMORY_PAGE_SIZE);
+	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -335,8 +330,6 @@ export default function compile(
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
-		allocatedMemorySize:
-			compiledModules[compiledModules.length - 1].byteAddress +
-			compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
+		requiredMemoryBytes,
 	};
 }

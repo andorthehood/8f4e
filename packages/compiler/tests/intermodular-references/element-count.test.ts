@@ -11,7 +11,6 @@ describe('inter-module references - element count', () => {
 
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
 		});
 
 		const sourceModule = result.compiledModules['sourceModule'];
@@ -33,7 +32,6 @@ describe('inter-module references - element count', () => {
 
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
 		});
 
 		const sourceModule = result.compiledModules['sourceModule'];
@@ -57,7 +55,6 @@ describe('inter-module references - element count', () => {
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,
-				memorySizeBytes: 65536,
 			});
 		}).toThrow();
 	});
@@ -72,7 +69,6 @@ describe('inter-module references - element count', () => {
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,
-				memorySizeBytes: 65536,
 			});
 		}).toThrow();
 	});
@@ -86,7 +82,6 @@ describe('inter-module references - element count', () => {
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,
-				memorySizeBytes: 65536,
 			});
 		}).toThrow();
 	});
@@ -100,7 +95,6 @@ describe('inter-module references - element count', () => {
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,
-				memorySizeBytes: 65536,
 			});
 		}).toThrow();
 	});
@@ -113,7 +107,6 @@ describe('inter-module references - element count', () => {
 
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
 		});
 
 		const baseModule = result.compiledModules['baseModule'];
@@ -139,7 +132,6 @@ describe('inter-module references - element count', () => {
 
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
 		});
 
 		const moduleA = result.compiledModules['moduleA'];
@@ -167,7 +159,6 @@ describe('inter-module references - element count', () => {
 
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
 		});
 
 		const sourceModule = result.compiledModules['sourceModule'];

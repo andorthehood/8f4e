@@ -11,28 +11,9 @@ exports[`store instruction compiler > stores to a safe memory address 1`] = `
 }
 `;
 
-exports[`store instruction compiler > wraps unsafe address with bounds check 1`] = `
+exports[`store instruction compiler > stores to an unsafe memory address without extra bounds checks 1`] = `
 {
   "byteCode": [
-    33,
-    1,
-    33,
-    0,
-    32,
-    0,
-    65,
-    12,
-    74,
-    4,
-    127,
-    65,
-    0,
-    5,
-    32,
-    0,
-    11,
-    32,
-    1,
     54,
     2,
     0,

@@ -17,7 +17,6 @@ describe('parseMemoryInstructionArguments', () => {
 		stack: [],
 		blockStack: [],
 		startingByteAddress: 0,
-		memoryByteSize: 0,
 		mode: 'module',
 	});
 

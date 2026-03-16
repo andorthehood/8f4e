@@ -4,11 +4,6 @@
       "code": [
         "config project",
         "",
-        "rescope \"memorySizeBytes\"",
-        "push 65536",
-        "set",
-        "popScope",
-        "",
         "scope \"runtimeSettings\"",
         "scope \"sampleRate\"",
         "push 44100",

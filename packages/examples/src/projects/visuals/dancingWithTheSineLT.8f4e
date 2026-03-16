@@ -4,9 +4,6 @@ config project
 ; @pos -122 -9
 ; ~sampleRate 50
 
-rescope "memorySizeBytes"
-set 65536
-popScope
 
 rescope "runtimeSettings"
 rescopeTop "runtime"

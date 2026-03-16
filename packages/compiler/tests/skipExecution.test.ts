@@ -34,7 +34,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024 });
+		const result = compile(modules, {});
 
 		// Verify both modules are compiled
 		expect(result.compiledModules.normalModule).toBeDefined();
@@ -77,7 +77,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024 });
+		const result = compile(modules, {});
 
 		expect(result.compiledModules.testModule).toBeDefined();
 		expect(result.compiledModules.testModule.skipExecutionInCycle).toBe(true);
@@ -96,7 +96,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile(modules, { memorySizeBytes: 1024 });
+			compile(modules, {});
 		}).toThrow();
 	});
 
@@ -124,7 +124,7 @@ functionEnd
 		];
 
 		expect(() => {
-			compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 }, functions);
+			compile(modules, { startingMemoryWordAddress: 1 }, functions);
 		}).toThrow();
 	});
 
@@ -147,7 +147,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024 });
+		const result = compile(modules, {});
 
 		// Both modules should have memory initialized with defaults
 		expect(result.compiledModules.normalModule.memoryMap.normalCounter.default).toBe(5);
@@ -173,7 +173,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 });
+		const result = compile(modules, { startingMemoryWordAddress: 1 });
 
 		// Verify both modules are compiled with separate memory maps
 		expect(result.compiledModules.normalModule).toBeDefined();

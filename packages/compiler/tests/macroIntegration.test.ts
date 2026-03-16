@@ -7,7 +7,6 @@ import type { Module } from '../src/types';
 describe('Macro expansion integration', () => {
 	const options = {
 		startingMemoryWordAddress: 0,
-		memorySizeBytes: 1024,
 		disableSharedMemory: true,
 	};
 

@@ -39,7 +39,6 @@ export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSc
 	return {
 		type: 'object',
 		properties: {
-			memorySizeBytes: { type: 'number' },
 			runtimeSettings: runtimeSettingsSchema,
 			disableAutoCompilation: { type: 'boolean' },
 			keyCodeMemoryId: { type: 'string' },

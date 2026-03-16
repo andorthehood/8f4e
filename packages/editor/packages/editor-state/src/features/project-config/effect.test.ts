@@ -25,10 +25,7 @@ describe('projectConfigEffect - diffing behavior', () => {
 		mockCompileConfigWithDefaults = compileConfigWithDefaults as Mock;
 
 		mockState = createMockState({
-			compiledProjectConfig: {
-				...createMockState().compiledProjectConfig,
-				memorySizeBytes: 1048576,
-			},
+			compiledProjectConfig: createMockState().compiledProjectConfig,
 			codeErrors: {
 				projectConfigErrors: [],
 				editorConfigErrors: [],
@@ -45,7 +42,7 @@ describe('projectConfigEffect - diffing behavior', () => {
 			},
 			callbacks: {
 				compileConfig: vi.fn().mockResolvedValue({
-					result: { ...createMockState().compiledProjectConfig, memorySizeBytes: 1048576 },
+					result: createMockState().compiledProjectConfig,
 					errors: [],
 				}),
 			},
@@ -105,8 +102,8 @@ describe('projectConfigEffect - diffing behavior', () => {
 	it('should call store.set for compiledProjectConfig when config changes', async () => {
 		// Change the compiled config result
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 2097152 }, // Different value
-			mergedConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 2097152 },
+			compiledConfig: { ...createMockState().compiledProjectConfig, disableAutoCompilation: true },
+			mergedConfig: { ...createMockState().compiledProjectConfig, disableAutoCompilation: true },
 			errors: [],
 			hasSource: true,
 		});
@@ -129,14 +126,14 @@ describe('projectConfigEffect - diffing behavior', () => {
 		expect(setCallsForProjectConfig).toHaveLength(1);
 		expect(setCallsForProjectConfig[0][1]).toEqual({
 			...createMockState().compiledProjectConfig,
-			memorySizeBytes: 2097152,
+			disableAutoCompilation: true,
 		});
 	});
 
 	it('should not call store.set for projectConfigErrors when errors are unchanged', async () => {
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 1048576 },
-			mergedConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 1048576 },
+			compiledConfig: createMockState().compiledProjectConfig,
+			mergedConfig: createMockState().compiledProjectConfig,
 			errors: [], // Same as initial state
 			hasSource: true,
 		});
@@ -160,8 +157,8 @@ describe('projectConfigEffect - diffing behavior', () => {
 	it('should call store.set for projectConfigErrors when errors change', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 1048576 },
-			mergedConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 1048576 },
+			compiledConfig: createMockState().compiledProjectConfig,
+			mergedConfig: createMockState().compiledProjectConfig,
 			errors: newErrors,
 			hasSource: true,
 		});
@@ -186,8 +183,8 @@ describe('projectConfigEffect - diffing behavior', () => {
 	it('should update errors but keep last valid config when errors are present', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 2097152 },
-			mergedConfig: { ...createMockState().compiledProjectConfig, memorySizeBytes: 2097152 },
+			compiledConfig: { ...createMockState().compiledProjectConfig, disableAutoCompilation: true },
+			mergedConfig: { ...createMockState().compiledProjectConfig, disableAutoCompilation: true },
 			errors: newErrors,
 			hasSource: true,
 		});

@@ -6,8 +6,6 @@ import type { Module } from '../../src/types';
 
 const defaultOptions = {
 	startingMemoryWordAddress: 0,
-
-	memorySizeBytes: 65536,
 };
 
 describe('constants instruction', () => {

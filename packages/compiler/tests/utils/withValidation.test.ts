@@ -25,7 +25,6 @@ function createMockContext(): CompilationContext {
 			},
 		],
 		startingByteAddress: 0,
-		memoryByteSize: 0,
 	};
 }
 

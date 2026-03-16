@@ -9,26 +9,26 @@ let currentMemorySize = 0;
 const WASM_PAGE_SIZE = 65536;
 
 export default function getOrCreateMemory(
-	memorySizeBytes: number,
+	allocatedMemoryBytes: number,
 	compiledModules: CompiledModuleLookup,
 	previousCompiledModules?: CompiledModuleLookup
 ): GetOrCreateMemoryResult {
 	const memoryStructureChanged = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
-	const memorySizeChange = currentMemorySize !== memorySizeBytes;
+	const memorySizeChange = currentMemorySize !== allocatedMemoryBytes;
 	const shouldRecreate = !memoryRefCache || memoryStructureChanged || memorySizeChange;
 	let memoryAction: MemoryAction;
 
 	if (shouldRecreate) {
 		const prevBytes = currentMemorySize;
 		// Round up requested bytes to whole wasm pages (64 KiB); WebAssembly.Memory is page-granular.
-		const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
+		const pages = Math.ceil(allocatedMemoryBytes / WASM_PAGE_SIZE);
 
 		memoryRefCache = new WebAssembly.Memory({
 			initial: pages,
 			maximum: pages,
 			shared: true,
 		});
-		currentMemorySize = memorySizeBytes;
+		currentMemorySize = allocatedMemoryBytes;
 
 		// Determine the reason for recreation
 		if (prevBytes === 0) {
@@ -36,7 +36,7 @@ export default function getOrCreateMemory(
 		} else if (memorySizeChange) {
 			memoryAction = {
 				action: 'recreated',
-				reason: { kind: 'memory-size-changed', prevBytes, nextBytes: memorySizeBytes },
+				reason: { kind: 'memory-size-changed', prevBytes, nextBytes: allocatedMemoryBytes },
 			};
 		} else {
 			// memoryStructureChanged must be true

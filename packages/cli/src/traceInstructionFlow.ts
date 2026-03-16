@@ -35,7 +35,7 @@ export interface BlockTrace {
 }
 
 export interface InstructionFlowTrace {
-	memorySizeBytes: number;
+	requiredMemoryBytes: number;
 	blocks: BlockTrace[];
 }
 
@@ -157,7 +157,7 @@ export default function traceInstructionFlow(
 
 	if (moduleBlocks.length === 0) {
 		return {
-			memorySizeBytes: compilerOptions.memorySizeBytes,
+			requiredMemoryBytes: 0, // No modules means no memory needed
 			blocks: [],
 		};
 	}
@@ -195,7 +195,6 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [],
 			startingByteAddress: module.byteAddress,
-			memoryByteSize: compilerOptions.memorySizeBytes,
 			mode: 'module',
 		};
 
@@ -221,7 +220,6 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [],
 			startingByteAddress: 0,
-			memoryByteSize: compilerOptions.memorySizeBytes,
 			mode: 'function',
 		};
 
@@ -229,7 +227,7 @@ export default function traceInstructionFlow(
 	}
 
 	return {
-		memorySizeBytes: compilerOptions.memorySizeBytes,
+		requiredMemoryBytes: compileResult.requiredMemoryBytes,
 		blocks,
 	};
 }

@@ -7,8 +7,6 @@ import compile from '../src';
 describe('buffer options integration tests', () => {
 	const baseOptions = {
 		startingMemoryWordAddress: 0,
-
-		memorySizeBytes: 65536,
 		disableSharedMemory: true,
 	};
 
