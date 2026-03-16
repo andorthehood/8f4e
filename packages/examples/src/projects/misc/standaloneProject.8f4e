@@ -2,12 +2,8 @@
 
 config project
 ; @pos -14 8
+; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 1
-
-
-scope "runtimeSettings"
-scope "runtime"
-set "WebWorkerLogicRuntime"
 
 rescope disableAutoCompilation
 set true 

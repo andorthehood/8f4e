@@ -13,12 +13,9 @@ moduleEnd
 
 config project
 ; @pos -9 -73
+; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 10
 ; @exportFileName xorProblem
-
-scope "runtimeSettings"
-scope "runtime"
-set "WebWorkerLogicRuntime"
 
 configEnd
 

@@ -30,7 +30,7 @@ describe('disableAutoCompilation feature', () => {
 
 		mockCompileConfig = vi.fn().mockResolvedValue({
 			config: {
-				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
+				runtimeSettings: { sampleRate: 50 },
 				disableAutoCompilation: false,
 			},
 			errors: [],

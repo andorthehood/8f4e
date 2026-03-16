@@ -1,10 +1,11 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { getProjectConfigSchema } from './schema';
-import { defaultProjectConfig } from './defaults';
+import { createDefaultProjectConfig } from './defaults';
 
 import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
 import { isConfigBlockOfType } from '../config-compiler/utils/isConfigBlockOfType';
+import { getSelectedRuntimeDefaults, resolveSelectedRuntimeId } from '../global-editor-directives/runtime/plugin';
 import { log } from '../logger/logger';
 import deepEqual from '../config-compiler/utils/deepEqual';
 
@@ -23,6 +24,14 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 
 	async function rebuildProjectConfig(): Promise<void> {
 		const currentState = store.getState();
+		const selectedRuntimeId = resolveSelectedRuntimeId(
+			currentState.globalEditorDirectives.runtime,
+			currentState.runtimeRegistry,
+			currentState.defaultRuntimeId
+		);
+		const defaultProjectConfig = createDefaultProjectConfig(
+			getSelectedRuntimeDefaults(selectedRuntimeId, currentState.runtimeRegistry, currentState.defaultRuntimeId)
+		);
 
 		if (currentState.initialProjectState?.compiledProjectConfig && !currentState.callbacks.compileConfig) {
 			store.set('compiledProjectConfig', currentState.initialProjectState.compiledProjectConfig);
@@ -35,7 +44,7 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 			return;
 		}
 
-		const schema = getProjectConfigSchema(currentState.runtimeRegistry);
+		const schema = getProjectConfigSchema(currentState.runtimeRegistry, selectedRuntimeId);
 		const { compiledConfig, mergedConfig, errors, hasSource } = await compileConfigWithDefaults({
 			codeBlocks: currentState.graphicHelper.codeBlocks,
 			configType: 'project',
@@ -67,6 +76,7 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 
 	events.on('compileConfig', rebuildProjectConfig);
 	store.subscribe('graphicHelper.codeBlocks', rebuildProjectConfig);
+	store.subscribe('globalEditorDirectives', rebuildProjectConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (!isProjectConfigBlock(state)) {
 			return;
