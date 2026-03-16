@@ -1,7 +1,6 @@
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import f32load from '../wasmUtils/load/f32load';
-import { compileSegment } from '../compiler';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
@@ -17,36 +16,9 @@ const loadFloat: InstructionCompiler = withValidation(
 		operandTypes: 'int',
 	},
 	(line, context) => {
-		const operand = context.stack.pop()!;
-
-		if (operand.isSafeMemoryAddress) {
-			context.stack.push({ isInteger: false, isNonZero: false });
-			return saveByteCode(context, f32load());
-		} else {
-			context.stack.push(operand);
-			const tempVariableName = '__loadAddress_temp_' + line.lineNumberAfterMacroExpansion;
-			const ret = compileSegment(
-				[
-					`local int ${tempVariableName}`,
-					`localSet ${tempVariableName}`,
-					`localGet ${tempVariableName}`,
-					`push ${context.memoryByteSize - 1}`,
-					'greaterThan',
-					'if int',
-					`push 0`,
-					'else',
-					`localGet ${tempVariableName}`,
-					'ifEnd',
-					...f32load().map(wasmInstruction => {
-						return `wasm ${wasmInstruction}`;
-					}),
-				],
-				context
-			);
-			context.stack.pop();
-			context.stack.push({ isInteger: false, isNonZero: false });
-			return ret;
-		}
+		context.stack.pop();
+		context.stack.push({ isInteger: false, isNonZero: false });
+		return saveByteCode(context, f32load());
 	}
 );
 
@@ -76,8 +48,8 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('wraps unsafe address with bounds check', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 16 });
+		it('loads from an unsafe memory address without extra bounds checks', () => {
+			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: false });
 
 			loadFloat(

@@ -133,7 +133,7 @@ describe('projectImport', () => {
 		});
 
 		it('should reset compiled config when loading new project without config blocks', async () => {
-			mockState.compiledProjectConfig = { ...mockState.compiledProjectConfig, memorySizeBytes: 500 * 65536 };
+			mockState.compiledProjectConfig = { ...mockState.compiledProjectConfig, disableAutoCompilation: true };
 
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
@@ -245,7 +245,7 @@ describe('projectImport', () => {
 			vi.useRealTimers();
 
 			expect(consoleErrorSpy).not.toHaveBeenCalled();
-			expect(mockState.compiler.allocatedMemorySize).toBe(0);
+			expect(mockState.compiler.requiredMemoryBytes).toBe(0);
 
 			consoleErrorSpy.mockRestore();
 		});
@@ -374,7 +374,6 @@ describe('projectImport', () => {
 			const runtimeReadyProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
 				compiledProjectConfig: {
-					memorySizeBytes: 2097152,
 					disableAutoCompilation: true,
 				},
 				compiledWasm: 'base64encodedwasm',
@@ -395,7 +394,6 @@ describe('projectImport', () => {
 			await compileConfigCall![1]();
 
 			expect(mockState.compiledProjectConfig).toEqual({
-				memorySizeBytes: 2097152,
 				disableAutoCompilation: true,
 			});
 		});

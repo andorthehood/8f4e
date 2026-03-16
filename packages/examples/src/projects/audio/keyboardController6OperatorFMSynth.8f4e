@@ -182,9 +182,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName jankoSynth
 
-rescope "memorySizeBytes"
-set 65536
-popScope
 
 scope "runtimeSettings"
 rescopeTop "runtime"

@@ -15,9 +15,6 @@ config project
 ; ~sampleRate 50
 ; @exportFileName bistableMultivibrators
 
-rescope "memorySizeBytes"
-set 65536
-
 rescope "runtimeSettings"
 
 rescopeTop "runtime"

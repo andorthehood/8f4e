@@ -3,7 +3,6 @@ import { saveByteCode } from '../utils/compilation';
 import f32store from '../wasmUtils/store/f32store';
 import f64store from '../wasmUtils/store/f64store';
 import i32store from '../wasmUtils/store/i32store';
-import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -23,51 +22,12 @@ const store: InstructionCompiler = withValidation(
 	(line, context) => {
 		const operand1Value = context.stack.pop()!;
 		const operand2Address = context.stack.pop()!;
+		void operand2Address;
 
-		if (operand2Address.isSafeMemoryAddress) {
-			return saveByteCode(
-				context,
-				operand1Value.isInteger ? i32store() : operand1Value.isFloat64 ? f64store() : f32store()
-			);
-		} else {
-			context.stack.push(operand2Address);
-			context.stack.push(operand1Value);
-
-			const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-			const tempAddressVariableName = '__storeAddress_temp_' + lineNumberAfterMacroExpansion;
-			const tempValueVariableName = '__storeValue_temp_' + lineNumberAfterMacroExpansion;
-			const tempValueType = operand1Value.isInteger ? 'int' : operand1Value.isFloat64 ? 'float64' : 'float';
-			const storeOpcodes = operand1Value.isInteger ? i32store() : operand1Value.isFloat64 ? f64store() : f32store();
-			// Memory overflow protection.
-			const ret = compileSegment(
-				[
-					`local int ${tempAddressVariableName}`,
-					`local ${tempValueType} ${tempValueVariableName}`,
-
-					`localSet ${tempValueVariableName}`,
-					`localSet ${tempAddressVariableName}`,
-
-					`localGet ${tempAddressVariableName}`,
-					`push ${context.memoryByteSize - (operand1Value.isFloat64 ? 8 : 4)}`,
-					'greaterThan',
-					'if int',
-					`push 0`,
-					'else',
-					`localGet ${tempAddressVariableName}`,
-					'ifEnd',
-					`localGet ${tempValueVariableName}`,
-					...storeOpcodes.map(wasmInstruction => {
-						return `wasm ${wasmInstruction}`;
-					}),
-				],
-				context
-			);
-
-			context.stack.pop();
-			context.stack.pop();
-
-			return ret;
-		}
+		return saveByteCode(
+			context,
+			operand1Value.isInteger ? i32store() : operand1Value.isFloat64 ? f64store() : f32store()
+		);
 	}
 );
 
@@ -100,8 +60,8 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('wraps unsafe address with bounds check', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 16 });
+		it('stores to an unsafe memory address without extra bounds checks', () => {
+			const context = createInstructionCompilerTestContext();
 			context.stack.push(
 				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: false },
 				{ isInteger: true, isNonZero: false }
@@ -167,8 +127,8 @@ if (import.meta.vitest) {
 			expect(context.byteCode).not.toContain(57); // no F64_STORE
 		});
 
-		it('emits f64.store for float64 value at unsafe address with bounds check', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 16 });
+		it('emits f64.store for float64 value at unsafe address', () => {
+			const context = createInstructionCompilerTestContext();
 			context.stack.push(
 				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: false },
 				{ isInteger: false, isFloat64: true, isNonZero: false }
@@ -187,31 +147,6 @@ if (import.meta.vitest) {
 			expect(context.byteCode).toContain(57); // F64_STORE opcode
 			expect(context.byteCode).not.toContain(56); // no F32_STORE
 			expect(context.stack).toHaveLength(0);
-		});
-
-		it('uses float64 local type for temp value when storing float64 at unsafe address', () => {
-			const context = createInstructionCompilerTestContext({ memoryByteSize: 16 });
-			context.stack.push(
-				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: false },
-				{ isInteger: false, isFloat64: true, isNonZero: false }
-			);
-
-			store(
-				{
-					lineNumberBeforeMacroExpansion: 6,
-					lineNumberAfterMacroExpansion: 6,
-					instruction: 'store',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			const valueLocal = Object.entries(context.namespace.locals).find(([name]) =>
-				name.startsWith('__storeValue_temp_')
-			);
-			expect(valueLocal).toBeDefined();
-			expect(valueLocal![1].isFloat64).toBe(true);
-			expect(valueLocal![1].isInteger).toBe(false);
 		});
 	});
 }

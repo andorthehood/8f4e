@@ -16,9 +16,6 @@ config project
 ; ~sampleRate 10
 ; @exportFileName xorProblem
 
-scope "memorySizeBytes"
-set 128
-
 rescope "runtimeSettings"
 
 rescopeTop "runtime"

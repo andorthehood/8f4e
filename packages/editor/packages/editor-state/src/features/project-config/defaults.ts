@@ -5,6 +5,5 @@ export const defaultProjectConfig: ProjectConfig = {
 		runtime: 'WebWorkerLogicRuntime',
 		sampleRate: 50,
 	},
-	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
 };

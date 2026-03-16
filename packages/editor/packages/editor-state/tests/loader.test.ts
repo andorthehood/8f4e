@@ -10,7 +10,7 @@ import { EMPTY_DEFAULT_PROJECT } from '../src/types';
 
 import type { State, Project } from '../src/types';
 
-describe('Loader - Project-specific memory configuration', () => {
+describe('Loader - Project configuration reset', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
@@ -50,7 +50,7 @@ describe('Loader - Project-specific memory configuration', () => {
 	});
 
 	it('should reset compiled config when loading new project without config blocks', async () => {
-		mockState.compiledProjectConfig = { memorySizeBytes: 500 * 65536 };
+		mockState.compiledProjectConfig = { ...mockState.compiledProjectConfig, disableAutoCompilation: true };
 
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);

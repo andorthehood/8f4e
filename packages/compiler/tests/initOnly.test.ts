@@ -36,7 +36,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1, disableSharedMemory: true });
+		const result = compile(modules, { startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Verify both modules are compiled
 		expect(result.compiledModules.initOnlyModule).toBeDefined();
@@ -96,7 +96,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 });
+		const result = compile(modules, { startingMemoryWordAddress: 1 });
 
 		expect(result.compiledModules.testModule).toBeDefined();
 		expect(result.compiledModules.testModule.initOnlyExecution).toBe(true);
@@ -115,7 +115,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 });
+			compile(modules, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
@@ -143,7 +143,7 @@ functionEnd
 		];
 
 		expect(() => {
-			compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 }, functions);
+			compile(modules, { startingMemoryWordAddress: 1 }, functions);
 		}).toThrow();
 	});
 
@@ -166,7 +166,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 });
+		const result = compile(modules, { startingMemoryWordAddress: 1 });
 
 		// Both modules should have memory initialized with defaults
 		expect(result.compiledModules.normalModule.memoryMap.normalCounter.default).toBe(5);
@@ -192,7 +192,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1, disableSharedMemory: true });
+		const result = compile(modules, { startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Both flags should be set in metadata
 		expect(result.compiledModules.bothDirectivesModule.skipExecutionInCycle).toBe(true);
@@ -249,7 +249,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1, disableSharedMemory: true });
+		const result = compile(modules, { startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Instantiate WASM and test runtime behavior
 		const { init, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
@@ -318,7 +318,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1, disableSharedMemory: true });
+		const result = compile(modules, { startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Instantiate WASM and test runtime behavior
 		const { init, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
