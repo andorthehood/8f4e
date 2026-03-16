@@ -15,6 +15,7 @@ moduleEnd
 config project
 ; @pos -84 2
 ; ~sampleRate 50
+; @exportFileName randomGenerators
 
 scope "memorySizeBytes"
 set 65536
@@ -25,9 +26,6 @@ scope "runtime"
 set "WebWorkerLogicRuntime"
 popScope
 popScope
-
-rescope "exportFileName"
-set "randomGenerators"
 
 configEnd
 

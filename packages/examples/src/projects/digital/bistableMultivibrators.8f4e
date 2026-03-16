@@ -13,9 +13,7 @@ moduleEnd
 config project
 ; @pos -67 16
 ; ~sampleRate 50
-
-rescope "exportFileName"
-set "bistableMultivibrators"
+; @exportFileName bistableMultivibrators
 
 rescope "memorySizeBytes"
 set 65536

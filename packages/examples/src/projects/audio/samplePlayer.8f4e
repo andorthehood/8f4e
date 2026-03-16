@@ -3,9 +3,7 @@
 config project
 ; @pos -53 -63
 ; ~sampleRate 44100
-
-rescope "exportFileName"
-set "samplePlayer"
+; @exportFileName samplePlayer
 
 rescope "memorySizeBytes"
 set 655360

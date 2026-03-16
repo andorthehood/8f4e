@@ -11,7 +11,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	const state = store.getState();
 
 	function getExportBaseName(): string {
-		const exportFileName = state.compiledProjectConfig.exportFileName;
+		const exportFileName = state.globalEditorDirectives.exportFileName;
 		if (!exportFileName) {
 			return 'project';
 		}

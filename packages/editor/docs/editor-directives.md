@@ -456,39 +456,25 @@ Invalid clipboard content falls back to single-block paste behavior:
 - Directive parsing should be strict: plain comments like `; note` are not directives.
 - Unknown directives should be ignored by editor sub-parsers unless explicitly supported by that feature.
 
----
+### `@exportFileName`
 
-# Runtime Directives
-
-Runtime directives configure project-level runtime behaviour from within source code. They use a different prefix (`~`) to distinguish them from editor-only (`@`) directives.
-
-## Directive Syntax
+Set the base file name used by editor export actions.
 
 ```txt
-; ~<name> <args...>
+; @exportFileName <value>
 ```
 
-Runtime directives are valid in **any code block type** (module, function, constants, config, etc.) and always apply **project-globally** regardless of where they appear.
+- `value` must be a non-empty single token (for example `samplePlayer` or `demo.wasm`)
+- Duplicate declarations with the same value are allowed
+- Declarations with conflicting values produce an editor error
+- The editor strips `.json`, `.wasm`, and `.8f4e` suffixes before appending the export format extension
 
-## Supported Runtime Directives
-
-### `~sampleRate`
-
-Set the project sample rate used for generated environment constants.
+**Example**:
 
 ```txt
-; ~sampleRate <value>
+; @exportFileName samplePlayer
 ```
 
-- `value` must be a positive number (e.g. `44100`, `48000`, `50`)
-- Duplicate declarations with the **same** value are allowed
-- Declarations with **conflicting** values produce a compile error
-- The resolved value drives the `SAMPLE_RATE` and `INV_SAMPLE_RATE` constants in the auto-managed `env` constants block
+This is a global editor directive. It replaces the legacy stack-config `rescope "exportFileName" / set "samplePlayer"` pattern.
 
-**Example** — place in any code block:
-
-```txt
-; ~sampleRate 44100
-```
-
-This replaces the legacy stack-config `scope "runtimeSettings" / scope "sampleRate" / set 44100` pattern. The stack-config `sampleRate` field is now considered legacy and should no longer be used for new projects.
+For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).
