@@ -1,16 +1,18 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryTypes } from '@8f4e/compiler';
 
-import {
-	deriveDirectiveState,
-	runAfterGraphicDataWidthCalculation,
-	runBeforeGraphicDataWidthCalculation,
-} from '../registry';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 import type { DataStructure } from '@8f4e/compiler';
 
-import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
+import {
+	createMockCodeBlock,
+	createMockState,
+	deriveDirectiveStateForMockCodeBlock,
+	findWidgetById,
+	setMockCodeBlockCode,
+} from '~/pureHelpers/testingUtils/testUtils';
 
 describe('watch directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -48,7 +50,7 @@ describe('watch directive widget resolution', () => {
 	});
 
 	function runDirectiveResolution() {
-		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		const directiveState = deriveDirectiveStateForMockCodeBlock(mockGraphicData);
 		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
@@ -70,7 +72,7 @@ describe('watch directive widget resolution', () => {
 	});
 
 	it('should not add debugger when memory is not found', () => {
-		mockGraphicData.code = ['; @watch nonExistentVar'];
+		setMockCodeBlockCode(mockGraphicData, ['; @watch nonExistentVar']);
 
 		runDirectiveResolution();
 
@@ -97,7 +99,7 @@ describe('watch directive widget resolution', () => {
 	});
 
 	it('should handle multiple debuggers', () => {
-		mockGraphicData.code = ['; @watch var1', '; @watch var2'];
+		setMockCodeBlockCode(mockGraphicData, ['; @watch var1', '; @watch var2']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['var1'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,

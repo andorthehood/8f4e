@@ -1,14 +1,16 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import {
-	deriveDirectiveState,
-	runAfterGraphicDataWidthCalculation,
-	runBeforeGraphicDataWidthCalculation,
-} from '../registry';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
-import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
+import {
+	createMockCodeBlock,
+	createMockState,
+	deriveDirectiveStateForMockCodeBlock,
+	findWidgetById,
+	setMockCodeBlockCode,
+} from '~/pureHelpers/testingUtils/testUtils';
 
 describe('slider directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -47,7 +49,7 @@ describe('slider directive widget resolution', () => {
 	});
 
 	function runDirectiveResolution() {
-		const directiveState = deriveDirectiveState(mockGraphicData.code);
+		const directiveState = deriveDirectiveStateForMockCodeBlock(mockGraphicData);
 		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
@@ -67,7 +69,7 @@ describe('slider directive widget resolution', () => {
 	});
 
 	it('uses custom min, max, and step when provided', () => {
-		mockGraphicData.code = ['int mySlider 50', '; @slider mySlider 0 100 5'];
+		setMockCodeBlockCode(mockGraphicData, ['int mySlider 50', '; @slider mySlider 0 100 5']);
 
 		runDirectiveResolution();
 
