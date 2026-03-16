@@ -14,7 +14,7 @@ async function loadAudioBufferProject() {
 }
 
 describe('compileProject (audioBuffer example)', () => {
-	it('compiles modules, functions, and config into runtime-ready output', async () => {
+	it('compiles build artifacts without runtime-ready config packaging', async () => {
 		const project = await loadAudioBufferProject();
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
 		const { outputProject } = cliModule.compileProject(project);
