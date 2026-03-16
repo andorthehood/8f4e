@@ -153,4 +153,39 @@ describe('resolveRuntimeDirectives', () => {
 		expect(result.resolved.sampleRate).toBe(44100);
 		expect(result.errors).toEqual([]);
 	});
+
+	it('should resolve ~sampleRate from parsedDirectives when provided', () => {
+		const result = resolveRuntimeDirectives([
+			{
+				id: 'module_a',
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 }],
+			},
+		]);
+		expect(result.resolved.sampleRate).toBe(44100);
+		expect(result.errors).toEqual([]);
+	});
+
+	it('should report correct lineNumber from parsedDirectives rawRow', () => {
+		const result = resolveRuntimeDirectives([
+			{
+				id: 'module_a',
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['-1'], rawRow: 5 }],
+			},
+		]);
+		expect(result.errors[0].lineNumber).toBe(5);
+		expect(result.errors[0].codeBlockId).toBe('module_a');
+	});
+
+	it('should ignore editor directives (@) in parsedDirectives', () => {
+		const result = resolveRuntimeDirectives([
+			{
+				parsedDirectives: [
+					{ prefix: '@', name: 'pos', args: ['0', '0'], rawRow: 0 },
+					{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 },
+				],
+			},
+		]);
+		expect(result.resolved.sampleRate).toBe(44100);
+		expect(result.errors).toEqual([]);
+	});
 });
