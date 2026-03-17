@@ -16,6 +16,8 @@ export interface ParsedGlobalEditorDirective {
 export interface ResolvedGlobalEditorDirectives {
 	/** Selected editor font from `; @font <font>` directives */
 	font?: '8x16' | '6x10';
+	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
+	infoOverlay?: boolean;
 	/** Export file base name from `; @exportFileName <value>` directives */
 	exportFileName?: string;
 	/** Selected runtime host from `; @runtime <id>` directives */
