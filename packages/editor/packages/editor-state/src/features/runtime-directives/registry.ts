@@ -1,24 +1,11 @@
-import type { ParsedDirectiveRecord } from '~/types';
+import type { ParsedDirectiveRecord, CodeError } from '~/types';
 import type { ResolvedRuntimeDirectives } from './types';
-import type { CodeError } from '~/types';
 
 export interface RuntimeDirectiveResolutionResult {
 	resolved: ResolvedRuntimeDirectives;
 	errors: CodeError[];
 }
 
-/**
- * Scans all code blocks in project order for runtime directives.
- *
- * Expects `parsedDirectives` to be populated by the central derivation pass.
- *
- * Rules:
- * - Duplicate identical `~sampleRate` values are allowed.
- * - Conflicting `~sampleRate` values produce a structured error.
- * - Invalid or missing arguments produce structured errors.
- *
- * @param codeBlocks - Array of code blocks to scan (in project order)
- */
 export function resolveRuntimeDirectives(
 	codeBlocks: { parsedDirectives: ParsedDirectiveRecord[]; id?: string }[]
 ): RuntimeDirectiveResolutionResult {
@@ -28,7 +15,6 @@ export function resolveRuntimeDirectives(
 
 	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex++) {
 		const block = codeBlocks[blockIndex];
-		// Use the block's stable id when available, otherwise fall back to array index
 		const codeBlockId: string | number = block.id ?? blockIndex;
 
 		const runtimeDirectives = block.parsedDirectives.filter(d => d.prefix === '~');
@@ -65,7 +51,6 @@ export function resolveRuntimeDirectives(
 						codeBlockId,
 					});
 				}
-				// Duplicate identical values are allowed — no error
 			}
 		}
 	}

@@ -2,33 +2,9 @@
 // Note: audioWorkletUrl is imported at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
 
+import { resolveAudioWorkletRouting } from './audioRouting';
+
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike, AudioWorkletRuntime } from '@8f4e/editor';
-
-/**
- * Resolves a memory identifier into module and memory name components.
- * Parses the unified format ('module.memory').
- * Parsing logic mirrors the approach used in resolveMemoryIdentifier for consistency.
- *
- * @param memoryId - Memory identifier in unified format 'module.memory'
- * @returns Object with moduleId and memoryName, or undefined if parsing fails
- */
-function resolveAudioBufferMemory(memoryId: string): { moduleId: string; memoryName: string } | undefined {
-	// Check if memoryId contains a dot (unified format: 'module.memory')
-	// Use the same regex pattern as resolveMemoryIdentifier for consistency
-	if (/(\S+)\.(\S+)/.test(memoryId)) {
-		const moduleIdPart = memoryId.split('.')[0];
-		const memoryNamePart = memoryId.split('.')[1];
-
-		if (moduleIdPart && memoryNamePart) {
-			return {
-				moduleId: moduleIdPart,
-				memoryName: memoryNamePart,
-			};
-		}
-	}
-
-	return undefined;
-}
 
 // AudioWorklet Runtime Factory
 export function audioWorkletRuntimeFactory(
@@ -50,7 +26,7 @@ export function audioWorkletRuntimeFactory(
 	let mediaStreamSource: any | null = null;
 
 	function syncCodeAndSettingsWithRuntime() {
-		const runtime = state.compiledProjectConfig.runtimeSettings as AudioWorkletRuntime;
+		const audioRoutes = resolveAudioWorkletRouting(state.graphicHelper.codeBlocks);
 
 		if (!audioWorklet || !audioContext) {
 			return;
@@ -62,16 +38,10 @@ export function audioWorkletRuntimeFactory(
 			return;
 		}
 
-		const audioOutputBuffers = (runtime.audioOutputBuffers || [])
-			.map(({ memoryId, output, channel }: { memoryId: string; output: number; channel: number }) => {
-				const resolved = resolveAudioBufferMemory(memoryId);
-				if (!resolved) {
-					return { audioBufferWordAddress: undefined, output, channel };
-				}
-
-				const audioModule = state.compiler.compiledModules[resolved.moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[resolved.memoryName]?.wordAlignedAddress;
-
+		const audioOutputBuffers = audioRoutes.audioOutputs
+			.map(({ moduleId, memoryId, output, channel }) => {
+				const audioModule = state.compiler.compiledModules[moduleId];
+				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
 				return {
 					audioBufferWordAddress,
 					output,
@@ -83,16 +53,10 @@ export function audioWorkletRuntimeFactory(
 					typeof audioBufferWordAddress !== 'undefined'
 			);
 
-		const audioInputBuffers = (runtime.audioInputBuffers || [])
-			.map(({ memoryId, input, channel }: { memoryId: string; input: number; channel: number }) => {
-				const resolved = resolveAudioBufferMemory(memoryId);
-				if (!resolved) {
-					return { audioBufferWordAddress: undefined, input, channel };
-				}
-
-				const audioModule = state.compiler.compiledModules[resolved.moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[resolved.memoryName]?.wordAlignedAddress;
-
+		const audioInputBuffers = audioRoutes.audioInputs
+			.map(({ moduleId, memoryId, input, channel }) => {
+				const audioModule = state.compiler.compiledModules[moduleId];
+				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
 				return {
 					audioBufferWordAddress,
 					input,
@@ -151,7 +115,7 @@ export function audioWorkletRuntimeFactory(
 			}
 		};
 
-		if (runtime.audioInputBuffers) {
+		if (resolveAudioWorkletRouting(state.graphicHelper.codeBlocks).audioInputs.length > 0) {
 			try {
 				// @ts-expect-error - navigator.mediaDevices not available in worker context during build
 				mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -193,7 +157,7 @@ export function audioWorkletRuntimeFactory(
 		}
 	}
 
-	function onSampleRateChanged() {
+	function onRuntimeDirectivesChanged() {
 		if (!audioContext) {
 			return;
 		}
@@ -208,10 +172,13 @@ export function audioWorkletRuntimeFactory(
 				title: 'Audio Permission',
 				buttons: [{ title: 'OK', action: 'close' }],
 			});
+			return;
 		}
+
+		syncCodeAndSettingsWithRuntime();
 	}
 
-	store.subscribe('runtimeDirectives', onSampleRateChanged);
+	store.subscribe('runtimeDirectives', onRuntimeDirectivesChanged);
 
 	if (!audioContext) {
 		store.set('dialog', {
@@ -225,7 +192,7 @@ export function audioWorkletRuntimeFactory(
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		store.unsubscribe('runtimeDirectives', onSampleRateChanged);
+		store.unsubscribe('runtimeDirectives', onRuntimeDirectivesChanged);
 		events.off('mousedown', initAudioContext);
 
 		tearDownAudioContext();
@@ -250,30 +217,6 @@ export function createAudioWorkletRuntimeDef(
 			type: 'object',
 			properties: {
 				sampleRate: { type: 'number' },
-				audioInputBuffers: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							memoryId: { type: 'string' },
-							channel: { type: 'number' },
-							input: { type: 'number' },
-						},
-						additionalProperties: false,
-					},
-				},
-				audioOutputBuffers: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							memoryId: { type: 'string' },
-							channel: { type: 'number' },
-							output: { type: 'number' },
-						},
-						additionalProperties: false,
-					},
-				},
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,

@@ -18,6 +18,7 @@ export type {
 	Project,
 	Options,
 	State,
+	CodeError,
 	CompilationResult,
 	CodeBlockGraphicData,
 	RuntimeFactory,
