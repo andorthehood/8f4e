@@ -12,13 +12,13 @@ module notes
 ; implemented in 8f4e.
 moduleEnd
 
-config project
+module projectConfig
 ; @pos -84 2
 ; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
 ; @exportFileName randomGenerators
 
-configEnd
+moduleEnd
 
 module XORShift
 ; @pos 102 1

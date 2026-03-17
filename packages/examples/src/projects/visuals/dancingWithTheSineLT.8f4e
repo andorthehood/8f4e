@@ -1,11 +1,11 @@
 8f4e/v1
 
-config project
+module projectConfig
 ; @pos -122 -9
 ; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
 
-configEnd
+moduleEnd
 
 module dancer1
 ; @pos -34 -9

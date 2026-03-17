@@ -1,12 +1,12 @@
 8f4e/v1
 
-config project
+module projectConfig
 ; @pos -14 8
 ; @runtime WebWorkerLogicRuntime
 ; @disableAutoCompilation
 ; ~sampleRate 1
 
-configEnd
+moduleEnd
 
 module counter
 ; @pos 25 8

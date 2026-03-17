@@ -11,13 +11,13 @@ module notes
 ; binary classification result.
 moduleEnd
 
-config project
+module projectConfig
 ; @pos -9 -73
 ; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 10
 ; @exportFileName xorProblem
 
-configEnd
+moduleEnd
 
 module activationFn
 ; @pos 152 -82
