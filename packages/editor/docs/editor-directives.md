@@ -498,4 +498,25 @@ Select the runtime host the editor should load for the project.
 
 This is a global editor directive. It replaces the legacy stack-config `scope "runtimeSettings" / scope "runtime" / set "AudioWorkletRuntime"` pattern.
 
+### `@disableAutoCompilation`
+
+Disable automatic program recompilation for the project.
+
+```txt
+; @disableAutoCompilation
+```
+
+- This directive takes no arguments
+- Duplicate declarations are allowed
+- The editor skips auto-compilation while this directive is present
+- Manual compilation and precompiled/runtime-ready loading paths still work
+
+**Example**:
+
+```txt
+; @disableAutoCompilation
+```
+
+This is a global editor directive. It replaces the legacy stack-config `rescope "disableAutoCompilation" / set true` pattern.
+
 For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).

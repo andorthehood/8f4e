@@ -6,5 +6,4 @@ import type { Runtimes } from '../runtime/types';
 
 export interface ProjectConfig {
 	runtimeSettings: Runtimes;
-	disableAutoCompilation: boolean;
 }
