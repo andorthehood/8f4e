@@ -4,46 +4,10 @@ config project
 ; @pos -106 13
 ; @runtime AudioWorkletRuntime
 
-rescope "runtimeSettings"
-scope "audioOutputBuffers[0]"
-
-scope "memoryId"
-set "audiooutL.buffer"
-
-rescopeTop "channel"
-set 0
-
-rescopeTop "output"
-set 0
-
-rescope "runtimeSettings"
-scope "audioOutputBuffers[1]"
-
-scope "memoryId"
-set "audiooutR.buffer"
-
-rescopeTop "channel"
-set 1
-
-rescopeTop "output"
-set 0
-
 configEnd
 
 config project
 ; @pos -106 -10
-
-rescope "runtimeSettings"
-scope "audioInputBuffers[0]"
-
-scope "memoryId"
-set "audioin.buffer"
-
-rescopeTop "channel"
-set 0
-
-rescopeTop "input"
-set 0
 
 configEnd
 
@@ -66,6 +30,7 @@ configEnd
 
 module audioin
 ; @pos 5 1
+; ~audioInput buffer 0 0
 use env
 
 ; Audio buffer
@@ -100,6 +65,7 @@ moduleEnd
 module audiooutL
 ; @pos 48 1
 ; @home
+; ~audioOutput buffer 0 0
 use env
 
 float* in &audioin:out
@@ -141,6 +107,7 @@ moduleEnd
 
 module audiooutR
 ; @pos 89 1
+; ~audioOutput buffer 0 1
 
 use env
 

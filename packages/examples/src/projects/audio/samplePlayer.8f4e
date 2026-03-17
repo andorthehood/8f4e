@@ -6,36 +6,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName samplePlayer
 
-scope "runtimeSettings"
-
-scope "audioOutputBuffers[0]"
-
-scope "memoryId"
-set "audioout.buffer"
-
-rescopeTop "channel"
-set 0
-
-rescopeTop "output"
-set 0
-
-rescope "runtimeSettings"
-scope "audioOutputBuffers[1]"
-
-scope "memoryId"
-set "audioout.buffer"
-
-rescopeTop "channel"
-set 1
-
-rescopeTop "output"
-set 0
-
-popScope
-popScope
-popScope
-popScope
-
 configEnd
 
 module notes
@@ -55,6 +25,8 @@ moduleEnd
 
 module audioout
 ; @pos 130 -63
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
 use env
 
 float* in &pcmPlayer8bit:out

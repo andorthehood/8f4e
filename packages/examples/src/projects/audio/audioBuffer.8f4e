@@ -6,19 +6,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName audioBuffer
 
-scope "runtimeSettings"
-
-scope "audioOutputBuffers[0]"
-
-scope "memoryId"
-set "audioout.buffer"
-
-rescopeTop "channel"
-set 0
-
-rescopeTop "output"
-set 0
-
 configEnd
 
 module notes
@@ -34,6 +21,7 @@ moduleEnd
 module audioout
 ; @pos 88 1
 ; @home
+; ~audioOutput buffer 0 0
 use env
 
 float* in &phaseAccumulator:out

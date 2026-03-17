@@ -6,19 +6,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName risen
 
-scope "runtimeSettings"
-
-scope "audioOutputBuffers[0]"
-
-scope "memoryId"
-set "audioout.buffer"
-
-rescopeTop "channel"
-set 0
-
-rescopeTop "output"
-set 0
-
 configEnd
 
 constants env
@@ -463,6 +450,8 @@ float* in &reverb:out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
 int pointer &buffer
 
 ; @plot buffer -2 2
