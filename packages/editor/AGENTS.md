@@ -5,7 +5,7 @@
 - Alias: `@8f4e/editor`. Consumed by the root Vite app.
 
 ## Build, Bundle, Dev
-- From root: `npx nx run editor:build|bundle|test|typecheck`.
+- From root: `npx nx run editor:build|test|typecheck`.
 - From package directory: use `npx nx run editor:<target>` (e.g., `npx nx run editor:dev`).
 - Ensure `dist/` exists before root `vite build` after API changes.
 

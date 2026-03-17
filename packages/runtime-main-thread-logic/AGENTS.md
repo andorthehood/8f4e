@@ -5,7 +5,7 @@
 - Alias: `@8f4e/runtime-main-thread-logic`.
 
 ## Build, Test, Dev
-- From root: `npx nx run runtime-main-thread-logic:build|bundle|test|typecheck`.
+- From root: `npx nx run runtime-main-thread-logic:build|test|typecheck`.
 - From package directory: use `npx nx run runtime-main-thread-logic:<target>` (e.g., `npx nx run runtime-main-thread-logic:dev`).
 
 ## Coding Style
