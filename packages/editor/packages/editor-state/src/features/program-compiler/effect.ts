@@ -101,7 +101,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 		if (
 			state.initialProjectState?.memorySnapshot &&
-			(state.compiledProjectConfig.disableAutoCompilation || !state.callbacks.compileCode)
+			(state.globalEditorDirectives.disableAutoCompilation === true || !state.callbacks.compileCode)
 		) {
 			try {
 				// state.compiler.allocatedMemoryBytes = state.compiler.memoryBuffer.byteLength;
@@ -120,7 +120,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		if (
 			state.initialProjectState?.compiledWasm &&
 			state.initialProjectState.compiledModules &&
-			(state.compiledProjectConfig.disableAutoCompilation || !state.callbacks.compileCode)
+			(state.globalEditorDirectives.disableAutoCompilation === true || !state.callbacks.compileCode)
 		) {
 			try {
 				state.compiler.compiledModules = state.initialProjectState.compiledModules;
@@ -135,7 +135,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 
 		// Check if compilation is disabled by config
-		if (state.compiledProjectConfig.disableAutoCompilation || !state.callbacks.compileCode) {
+		if (state.globalEditorDirectives.disableAutoCompilation === true || !state.callbacks.compileCode) {
 			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
 			return;
 		}
@@ -145,6 +145,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 	events.on('compileCode', onForceCompile);
 	store.subscribe('compiledProjectConfig', scheduleRecompile);
+	store.subscribe('globalEditorDirectives.disableAutoCompilation', scheduleRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.disabled) {
 			return;
