@@ -13,6 +13,8 @@ export interface ParsedGlobalEditorDirective {
 }
 
 export interface ResolvedGlobalEditorDirectives {
+	/** Selected editor font from `; @font <font>` directives */
+	font?: '8x16' | '6x10';
 	/** Export file base name from `; @exportFileName <value>` directives */
 	exportFileName?: string;
 	/** Selected runtime host from `; @runtime <id>` directives */

@@ -30,7 +30,7 @@ import {
 } from '../../../code-editing/tabLayout';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
+import { isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
@@ -269,7 +269,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			try {
 				const loadedBlocks = (await state.callbacks.loadEditorConfigBlocks()) ?? [];
 				const validBlocks = loadedBlocks.filter(block => isEditorConfigCode(block.code));
-				const editorConfigBlocks = validBlocks.length > 0 ? validBlocks : [DEFAULT_EDITOR_CONFIG_BLOCK];
+				const editorConfigBlocks = validBlocks;
 
 				let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 				for (let i = 0; i < editorConfigBlocks.length; i += 1) {

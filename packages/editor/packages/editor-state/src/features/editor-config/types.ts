@@ -2,9 +2,7 @@
  * Types for editor-config feature.
  */
 
-export interface EditorConfig {
-	font: '8x16' | '6x10';
-}
+export type EditorConfig = Record<never, never>;
 
 export interface EditorConfigBlock {
 	code: string[];

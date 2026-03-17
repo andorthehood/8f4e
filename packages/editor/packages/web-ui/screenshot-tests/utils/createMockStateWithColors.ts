@@ -114,7 +114,7 @@ export default async function createMockStateWithColors(overrides: Partial<State
 
 	// Generate sprite data and populate state
 	const spriteData = await generateSprite({
-		font: state.compiledEditorConfig.font || '8x16',
+		font: state.globalEditorDirectives.font ?? '8x16',
 		colorScheme: state.colorScheme,
 	});
 

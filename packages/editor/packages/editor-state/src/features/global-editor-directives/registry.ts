@@ -1,5 +1,6 @@
 import disableAutoCompilationDirective from './disableAutoCompilation/plugin';
 import exportFileNameDirective from './exportFileName/plugin';
+import fontDirective from './font/plugin';
 import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
 import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import runtimeDirective from './runtime/plugin';
@@ -16,6 +17,7 @@ import type {
 import type { RuntimeRegistry } from '../runtime/types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
+	fontDirective,
 	exportFileNameDirective,
 	runtimeDirective,
 	disableAutoCompilationDirective,
