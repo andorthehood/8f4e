@@ -61,3 +61,13 @@ export interface InternalKeyboardEvent {
 	key: string;
 	metaKey: boolean;
 }
+
+/**
+ * Shared code error shape used across compiler, directive, and config validation flows.
+ */
+export interface CodeError {
+	lineNumber: number;
+	message: string;
+	codeBlockId: string | number;
+	codeBlockType?: 'module' | 'function' | 'constants';
+}

@@ -3,6 +3,10 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { resolveMidiRouting, resolveMidiNoteRoutesToAddresses, resolveMidiCCRoutesToAddresses } from './midiRouting';
+import {
+	resolveWebWorkerMIDIRuntimeDirectives,
+	resolveWebWorkerMIDIRuntimeDirectivesFromBlocks,
+} from './runtimeDirectives';
 
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
@@ -94,13 +98,17 @@ export function webWorkerMIDIRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
+		const sampleRate = resolveWebWorkerMIDIRuntimeDirectives(state).sampleRate;
+		if (sampleRate === undefined) {
+			return;
+		}
 		const memoryBuffer = new Int32Array(memory.buffer);
 		const midiRouting = resolveMidiRouting(state.graphicHelper.codeBlocks);
 		worker.postMessage({
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				sampleRate: state.runtimeDirectives?.sampleRate ?? state.compiledProjectConfig.runtimeSettings.sampleRate,
+				sampleRate,
 				codeBuffer: getCodeBuffer(),
 				midiNoteOutputs: resolveMidiNoteRoutesToAddresses(
 					midiRouting.noteOutputs,
@@ -175,6 +183,7 @@ export function createWebWorkerMIDIRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
+		resolveRuntimeDirectives: (codeBlocks, state) => resolveWebWorkerMIDIRuntimeDirectivesFromBlocks(codeBlocks, state),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerMIDIRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},

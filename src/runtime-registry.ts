@@ -47,7 +47,9 @@ function createLazyRuntimeEntry(
 				// any subsequent call to getProjectConfigSchema picks it up,
 				// even if this runtime instance has already been destroyed.
 				entry.schema = loadedEntry.schema;
+				entry.resolveRuntimeDirectives = loadedEntry.resolveRuntimeDirectives;
 				// Trigger config revalidation against the newly loaded schema.
+				store.set('runtimeRegistry', { ...store.getState().runtimeRegistry });
 				events.dispatch('compileConfig');
 				if (!destroyed) {
 					destroy = loadedEntry.factory(store, events);

@@ -11,6 +11,10 @@ import { EMPTY_DEFAULT_PROJECT } from '~/types';
 import { createDefaultProjectConfig } from '~/features/project-config/defaults';
 
 const AUTO_ENV_BLOCK_ID = 'constants_env';
+const PROJECT_WITH_SAMPLE_RATE_DIRECTIVE: Project = {
+	...EMPTY_DEFAULT_PROJECT,
+	codeBlocks: [{ code: ['module rate', '; ~sampleRate 48000', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+};
 
 function createGraphicEnvBlock(code: string[], overrides: Partial<CodeBlockGraphicData> = {}): CodeBlockGraphicData {
 	return createMockCodeBlock({
@@ -34,7 +38,6 @@ describe('autoEnvConstants', () => {
 	beforeEach(() => {
 		const baseState = {
 			...createDefaultState(createDefaultProjectConfig({ sampleRate: 50 })),
-			runtimeDirectives: { sampleRate: 48000 },
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
 			},
@@ -72,7 +75,7 @@ describe('autoEnvConstants', () => {
 
 	test('should include SAMPLE_RATE from runtime config', () => {
 		autoEnvConstants(store);
-		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -83,7 +86,7 @@ describe('autoEnvConstants', () => {
 
 	test('should include standard environment constants', () => {
 		autoEnvConstants(store);
-		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		expect(envBlock?.code).toContain('const AUDIO_BUFFER_SIZE 128');
@@ -108,8 +111,17 @@ describe('autoEnvConstants', () => {
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
 
-		// Change sample rate via runtime directive
-		store.set('runtimeDirectives', { sampleRate: 44100 });
+		store.set('graphicHelper.codeBlocks', [
+			...(state.graphicHelper.codeBlocks.filter(block => block.id !== AUTO_ENV_BLOCK_ID) ?? []),
+			createMockCodeBlock({
+				id: 'module_rate',
+				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 }],
+				moduleId: 'rate',
+				blockType: 'module',
+			}),
+			createGraphicEnvBlock(envCodeBlock?.code ?? []),
+		]);
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -160,7 +172,7 @@ describe('autoEnvConstants', () => {
 
 	test('should update when binary assets change', () => {
 		autoEnvConstants(store);
-		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
 
 		// Simulate graphicHelper populating codeBlocks from initialProjectState
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
@@ -188,13 +200,23 @@ describe('autoEnvConstants', () => {
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		let codeWithCustomPos: string[] = [];
 		if (envCodeBlock) {
-			const codeWithCustomPos = [...envCodeBlock.code];
+			codeWithCustomPos = [...envCodeBlock.code];
 			codeWithCustomPos[1] = '; @pos 12 -7';
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
 		}
 
-		store.set('runtimeDirectives', { sampleRate: 44100 });
+		store.set('graphicHelper.codeBlocks', [
+			createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 }),
+			createMockCodeBlock({
+				id: 'module_rate',
+				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 }],
+				moduleId: 'rate',
+				blockType: 'module',
+			}),
+		]);
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
@@ -205,12 +227,22 @@ describe('autoEnvConstants', () => {
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		let codeWithoutPos: string[] = [];
 		if (envCodeBlock) {
-			const codeWithoutPos = envCodeBlock.code.filter(line => !line.includes('@pos'));
+			codeWithoutPos = envCodeBlock.code.filter(line => !line.includes('@pos'));
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
 		}
 
-		store.set('runtimeDirectives', { sampleRate: 44100 });
+		store.set('graphicHelper.codeBlocks', [
+			createGraphicEnvBlock(codeWithoutPos),
+			createMockCodeBlock({
+				id: 'module_rate',
+				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 }],
+				moduleId: 'rate',
+				blockType: 'module',
+			}),
+		]);
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');
