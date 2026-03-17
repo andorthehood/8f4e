@@ -113,6 +113,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	});
 
 	events.dispatch('init');
+	events.dispatch('resize', { canvasWidth: canvas.width, canvasHeight: canvas.height });
+	view.resize(canvas.width, canvas.height);
 	events.dispatch('loadSession');
 
 	return {
