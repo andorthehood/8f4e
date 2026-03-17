@@ -2,12 +2,12 @@
 
 ## Purpose
 
-Manages the lifecycle of runtime instances that execute compiled 8f4e programs. Handles runtime selection from compiled config, initialization, destruction, and recreation when configuration changes.
+Manages the lifecycle of runtime instances that execute compiled 8f4e programs. Handles runtime selection from global editor directives, initialization, destruction, and recreation when configuration changes.
 
 ## Key Behaviors
 
 - **Runtime Registry**: Looks up runtime factories from `state.runtimeRegistry` at project root
-- **Runtime Selection**: Determines which runtime to use from `compiledProjectConfig.selectedRuntime`
+- **Runtime Selection**: Determines which runtime to use from `state.globalEditorDirectives.runtime`
 - **Lifecycle Management**: Creates and destroys runtime instances as needed
 - **Runtime Switching**: Recreates runtime when configuration changes (e.g., switching from audio to MIDI runtime)
 - **Fallback Handling**: Falls back to default runtime ID if unknown runtime is requested
@@ -48,12 +48,12 @@ Each entry contains a `factory` function that creates and returns a destroyer fu
 
 - `state.runtimeRegistry` - Registry of available runtime factories
 - `state.defaultRuntimeId` - Fallback runtime identifier
-- `state.compiledProjectConfig.selectedRuntime` - Index of selected runtime
-- `state.compiledProjectConfig.runtimeSettings` - Array of runtime configurations
+- `state.globalEditorDirectives.runtime` - Selected runtime id
+- `state.compiledProjectConfig` - Runtime configuration object compiled from project config blocks
 
 ## Integration Points
 
-- **Config Compiler**: Runtime selection comes from compiled configuration
+- **Global Editor Directives**: Runtime selection comes from `; @runtime <id>`
 - **Program Compiler**: Runtime initialization waits for compilation to complete
 - **Runtime Factories**: External runtime implementations register themselves in the registry
 

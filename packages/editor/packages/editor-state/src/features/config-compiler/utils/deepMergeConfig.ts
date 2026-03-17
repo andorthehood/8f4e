@@ -110,26 +110,20 @@ if (import.meta.vitest) {
 			expect(result).toEqual({ nested: { items: [{ value: 2 }, { value: 3 }] } });
 		});
 
-		it('should merge runtime settings object', () => {
+		it('should merge runtime config object', () => {
 			const one = {
-				runtimeSettings: {
-					sampleRate: 44100,
-				},
+				sampleRate: 44100,
 			};
 
 			const two = {
-				runtimeSettings: {
-					bufferSize: 128,
-				},
+				bufferSize: 128,
 			};
 
 			const result = deepMergeConfig(one, two);
 
 			expect(result).toEqual({
-				runtimeSettings: {
-					sampleRate: 44100,
-					bufferSize: 128,
-				},
+				sampleRate: 44100,
+				bufferSize: 128,
 			});
 		});
 

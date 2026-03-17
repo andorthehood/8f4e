@@ -76,7 +76,7 @@ export default function drawInfoOverlay(
 
 	// Runtime stats
 
-	const runtime = state.compiledProjectConfig.runtimeSettings;
+	const runtime = state.compiledProjectConfig;
 	const selectedRuntimeId = state.globalEditorDirectives.runtime ?? state.defaultRuntimeId;
 
 	debugText.push('');

@@ -5,13 +5,5 @@ import type { RuntimeRegistry } from '~/types';
  * Generates the config schema.
  */
 export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry, runtimeId: string): JSONSchemaLike {
-	const runtimeSettingsSchema = runtimeRegistry[runtimeId]?.schema ?? { type: 'object' };
-
-	return {
-		type: 'object',
-		properties: {
-			runtimeSettings: runtimeSettingsSchema,
-		},
-		additionalProperties: false,
-	};
+	return runtimeRegistry[runtimeId]?.schema ?? { type: 'object' };
 }

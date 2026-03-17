@@ -329,8 +329,7 @@ Both viewport and code block positions use explicit `gridCoordinates` objects:
     }
   ],
   "viewport": { "gridCoordinates": { "x": 0, "y": 0 } },
-  "selectedRuntime": 0,
-  "runtimeSettings": [...]
+  "compiledProjectConfig": { ... }
 }
 ```
 
@@ -350,18 +349,7 @@ WebAssembly memory is sized automatically from the compiler's static allocation 
 
 #### Example: Audio Processing Project
 
-```json
-{
-  "title": "Audio DSP Project",
-  "runtimeSettings": [
-    {
-      "runtime": "AudioWorkletRuntime",
-      "sampleRate": 44100,
-      "audioOutputBuffers": [...]
-    }
-  ]
-}
-```
+Audio runtime selection and routing are now authored with directives inside `.8f4e` source, not with a `runtimeSettings` config object.
 
 ## Performance Considerations
 
