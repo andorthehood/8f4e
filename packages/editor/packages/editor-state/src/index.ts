@@ -27,7 +27,6 @@ import autoEnvConstants from './features/code-blocks/features/auto-env-constants
 import colorDirectivesEffect from './features/color-directives/effect';
 import globalEditorDirectivesEffect from './features/global-editor-directives/effect';
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
-import runtimeDirectivesEffect from './features/runtime-directives/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
 import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
 import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
@@ -41,6 +40,7 @@ import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
 import { createDefaultProjectConfig } from './features/project-config/defaults';
 import { getSelectedRuntimeDefaults } from './features/global-editor-directives/runtime/plugin';
+import runtimeDirectiveErrorsEffect from './features/runtime/directiveErrorsEffect';
 
 import type { Options, State, EventDispatcher } from './types';
 
@@ -99,7 +99,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	parsedDirectivesUpdater(store);
 	globalEditorDirectivesEffect(store);
 	projectConfigEffect(store, events);
-	runtimeDirectivesEffect(store);
+	runtimeDirectiveErrorsEffect(store);
 	compiler(store, events);
 	graphicHelper(store, events);
 	codeEditing(store, events);
@@ -120,6 +120,7 @@ export type {
 	State,
 	CodeBlockGraphicData,
 	CodeBlockType,
+	ParsedDirectiveRecord,
 	Project,
 	Options,
 	CompilationResult,
@@ -170,7 +171,6 @@ export type {
 	ConsoleState,
 	CodeError,
 	MemoryAction,
-	ResolvedRuntimeDirectives,
 } from './types';
 
 // Re-export JSONSchemaLike from stack-config-compiler for convenience

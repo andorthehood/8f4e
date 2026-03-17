@@ -3,8 +3,12 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { resolveAudioWorkletRouting } from './audioRouting';
+import {
+	resolveAudioWorkletRuntimeDirectives,
+	resolveAudioWorkletRuntimeDirectivesFromBlocks,
+} from './runtimeDirectives';
 
-import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike, AudioWorkletRuntime } from '@8f4e/editor';
+import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
 // AudioWorklet Runtime Factory
 export function audioWorkletRuntimeFactory(
@@ -80,9 +84,11 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	async function initAudioContext() {
-		const runtime = state.compiledProjectConfig.runtimeSettings as AudioWorkletRuntime;
-
 		if (audioContext) {
+			return;
+		}
+		const sampleRate = resolveAudioWorkletRuntimeDirectives(state).sampleRate;
+		if (sampleRate === undefined) {
 			return;
 		}
 
@@ -90,7 +96,7 @@ export function audioWorkletRuntimeFactory(
 
 		// @ts-expect-error - AudioContext not available in worker context during build
 		audioContext = new AudioContext({
-			sampleRate: state.runtimeDirectives?.sampleRate ?? runtime.sampleRate,
+			sampleRate,
 			latencyHint: 'interactive',
 		});
 
@@ -161,8 +167,11 @@ export function audioWorkletRuntimeFactory(
 		if (!audioContext) {
 			return;
 		}
-		const runtime = state.compiledProjectConfig.runtimeSettings as AudioWorkletRuntime;
-		const desiredSampleRate = state.runtimeDirectives?.sampleRate ?? runtime.sampleRate;
+		const desiredSampleRate = resolveAudioWorkletRuntimeDirectives(state).sampleRate;
+		if (desiredSampleRate === undefined) {
+			tearDownAudioContext();
+			return;
+		}
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
 			store.set('dialog', {
@@ -178,7 +187,7 @@ export function audioWorkletRuntimeFactory(
 		syncCodeAndSettingsWithRuntime();
 	}
 
-	store.subscribe('runtimeDirectives', onRuntimeDirectivesChanged);
+	store.subscribe('graphicHelper.codeBlocks', onRuntimeDirectivesChanged);
 
 	if (!audioContext) {
 		store.set('dialog', {
@@ -192,7 +201,7 @@ export function audioWorkletRuntimeFactory(
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		store.unsubscribe('runtimeDirectives', onRuntimeDirectivesChanged);
+		store.unsubscribe('graphicHelper.codeBlocks', onRuntimeDirectivesChanged);
 		events.off('mousedown', initAudioContext);
 
 		tearDownAudioContext();
@@ -220,6 +229,7 @@ export function createAudioWorkletRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
+		resolveRuntimeDirectives: (codeBlocks, state) => resolveAudioWorkletRuntimeDirectivesFromBlocks(codeBlocks, state),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
 		},

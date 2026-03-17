@@ -44,13 +44,14 @@ import type {
 	Runtimes,
 	Midi,
 	RuntimeStats,
+	RuntimeDirectiveResolver,
 } from './features/runtime/types';
-import type { ResolvedRuntimeDirectives } from './features/runtime-directives/types';
 import type { ProjectViewport, Viewport } from './features/viewport/types';
 import type {
 	Size,
 	Position,
 	GridCoordinates,
+	CodeError,
 	EventDispatcher,
 	InternalMouseEvent,
 	InternalKeyboardEvent,
@@ -60,7 +61,7 @@ import type {
 export type { CompilerMemoryAction as MemoryAction };
 
 // Re-export shared types
-export type { Size, Position, GridCoordinates, EventDispatcher, InternalMouseEvent, InternalKeyboardEvent };
+export type { Size, Position, GridCoordinates, CodeError, EventDispatcher, InternalMouseEvent, InternalKeyboardEvent };
 
 // Re-export viewport types
 export type { ProjectViewport };
@@ -106,10 +107,8 @@ export type {
 	Runtimes,
 	Midi,
 	RuntimeStats,
+	RuntimeDirectiveResolver,
 };
-
-// Re-export runtime-directives types
-export type { ResolvedRuntimeDirectives };
 
 // Re-export logger types
 export type { LogMessage, ConsoleState };
@@ -256,14 +255,6 @@ export interface Options {
 	defaultRuntimeId: string;
 }
 
-// CodeError type for error reporting (top-level public API)
-export interface CodeError {
-	lineNumber: number;
-	message: string;
-	codeBlockId: string | number;
-	codeBlockType?: 'module' | 'function' | 'constants';
-}
-
 // State interface - complete editor state tree (top-level public API)
 export interface State {
 	compiler: Compiler;
@@ -288,8 +279,6 @@ export interface State {
 	runtimeRegistry: RuntimeRegistry;
 	/** Default runtime ID to use when no runtime is specified */
 	defaultRuntimeId: string;
-	/** Resolved project-global runtime directives from `; ~<name>` comments */
-	runtimeDirectives: ResolvedRuntimeDirectives;
 	/** Resolved global editor directives from `; @<name>` comments */
 	globalEditorDirectives: ResolvedGlobalEditorDirectives;
 	codeErrors: {
