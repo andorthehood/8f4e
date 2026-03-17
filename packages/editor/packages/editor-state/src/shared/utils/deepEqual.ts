@@ -6,17 +6,14 @@ import isPlainObject from './isPlainObject';
  * Compares null/undefined correctly.
  */
 export default function deepEqual(a: unknown, b: unknown): boolean {
-	// Same reference or both primitives with same value
 	if (a === b) {
 		return true;
 	}
 
-	// Handle null/undefined - they're only equal if both are null or both are undefined
 	if (a === null || b === null || a === undefined || b === undefined) {
 		return a === b;
 	}
 
-	// Handle arrays
 	if (Array.isArray(a) && Array.isArray(b)) {
 		if (a.length !== b.length) {
 			return false;
@@ -29,7 +26,6 @@ export default function deepEqual(a: unknown, b: unknown): boolean {
 		return true;
 	}
 
-	// Handle plain objects
 	if (isPlainObject(a) && isPlainObject(b)) {
 		const keysA = Object.keys(a);
 		const keysB = Object.keys(b);
@@ -50,6 +46,5 @@ export default function deepEqual(a: unknown, b: unknown): boolean {
 		return true;
 	}
 
-	// Different types or non-comparable types
 	return false;
 }

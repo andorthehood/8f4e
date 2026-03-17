@@ -34,7 +34,7 @@ describe('resolveMidiRouting', () => {
 		const result = resolveMidiRouting([
 			{
 				id: 'project',
-				blockType: 'config',
+				blockType: 'function',
 				parsedDirectives: [{ prefix: '~', name: 'midiCCInput', args: ['cc', 'value'], rawRow: 2 }],
 			} as CodeBlockGraphicData,
 		]);

@@ -5,12 +5,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
   "codeBlocks": [
     {
       "code": [
-        "config project",
+        "module projectConfig",
         "; @runtime AudioWorkletRuntime",
         "; ~sampleRate 44100",
         "; @exportFileName audioBuffer",
         "",
-        "configEnd",
+        "moduleEnd",
       ],
       "gridCoordinates": {
         "x": -87,
@@ -555,8 +555,24 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedAddress": 131,
       "wordAlignedSize": 4,
     },
+    "projectConfig": {
+      "byteAddress": 540,
+      "cycleFunction": [
+        2,
+        0,
+        11,
+      ],
+      "id": "projectConfig",
+      "index": 4,
+      "initFunctionBody": [],
+      "initOnlyExecution": undefined,
+      "memoryMap": {},
+      "skipExecutionInCycle": undefined,
+      "wordAlignedAddress": 135,
+      "wordAlignedSize": 0,
+    },
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDg0AAAAAAwAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMK8gINCgAQCRAKEAsQDAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAs3AEGIBCgCAEEEKAIAKgIAOAIAQYgEQYgEKAIAQQRqNgIAQYgEKAIAQYQESgRAQYgEQQg2AgALC2QBAX1BlARBlAQqAgBD2w/JQEGQBCgCACoCAJRBxNgCsiEAIABDAAAAAFsEQEMAAIA/IQALIACVkjgCAEGUBCoCAEPbD0lAXgRAQZQEQ9sPScA4AgALQZgEQZQEKgIAEAQ4AgALAgALAgALEgBBBEGYBDYCAEGIBEEINgIACxYAQYwEQwAA3EM4AgBBkARBjAQ2AgAL",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDEA8AAAAAAwAAAAAAAAAAAAAHJAQEaW5pdAAABWN5Y2xlAAEIaW5pdE9ubHkAAgZidWZmZXIAAwr8Ag8MABAKEAsQDBANEA4LDAAQBRAGEAcQCBAJCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAs3AEGIBCgCAEEEKAIAKgIAOAIAQYgEQYgEKAIAQQRqNgIAQYgEKAIAQYQESgRAQYgEQQg2AgALC2QBAX1BlARBlAQqAgBD2w/JQEGQBCgCACoCAJRBxNgCsiEAIABDAAAAAFsEQEMAAIA/IQALIACVkjgCAEGUBCoCAEPbD0lAXgRAQZQEQ9sPScA4AgALQZgEQZQEKgIAEAQ4AgALAgALAgALAgALEgBBBEGYBDYCAEGIBEEINgIACxYAQYwEQwAA3EM4AgBBkARBjAQ2AgALAgAL",
   "viewport": {
     "gridCoordinates": {
       "x": -44,

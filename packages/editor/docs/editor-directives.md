@@ -488,8 +488,6 @@ Set the base file name used by editor export actions.
 ; @exportFileName samplePlayer
 ```
 
-This is a global editor directive. It replaces the legacy stack-config `rescope "exportFileName" / set "samplePlayer"` pattern.
-
 ### `@runtime`
 
 Select the runtime host the editor should load for the project.
@@ -509,8 +507,6 @@ Select the runtime host the editor should load for the project.
 ; @runtime AudioWorkletRuntime
 ```
 
-This is a global editor directive. It replaces the legacy stack-config `scope "runtimeSettings" / scope "runtime" / set "AudioWorkletRuntime"` pattern.
-
 ### `@disableAutoCompilation`
 
 Disable automatic program recompilation for the project.
@@ -529,7 +525,5 @@ Disable automatic program recompilation for the project.
 ```txt
 ; @disableAutoCompilation
 ```
-
-This is a global editor directive. It replaces the legacy stack-config `rescope "disableAutoCompilation" / set true` pattern.
 
 For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).

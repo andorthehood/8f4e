@@ -1,4 +1,4 @@
-import { isConfigBlockOfType } from '../config-compiler/utils/isConfigBlockOfType';
+import { isEditorConfigBlock } from '../code-blocks/features/graphicHelper/editorConfigModule';
 
 import type { CodeBlock, CodeBlockGraphicData } from '~/types';
 
@@ -18,7 +18,7 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 	return codeBlocksCopy
 		.filter(codeBlock => {
 			// Exclude editor config blocks from project export
-			if (isConfigBlockOfType(codeBlock, 'editor')) {
+			if (isEditorConfigBlock(codeBlock)) {
 				return false;
 			}
 			return true;

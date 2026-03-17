@@ -2,20 +2,11 @@ import type { ProjectInput } from './types';
 
 const FORMAT_HEADER = '8f4e/v1';
 
-const OPENERS = [
-	'module',
-	'function',
-	'config',
-	'constants',
-	'defineMacro',
-	'vertexShader',
-	'fragmentShader',
-] as const;
+const OPENERS = ['module', 'function', 'constants', 'defineMacro', 'vertexShader', 'fragmentShader'] as const;
 
 const CLOSERS = [
 	'moduleEnd',
 	'functionEnd',
-	'configEnd',
 	'constantsEnd',
 	'defineMacroEnd',
 	'vertexShaderEnd',

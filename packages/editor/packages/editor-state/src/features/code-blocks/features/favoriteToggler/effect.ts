@@ -37,7 +37,6 @@ export default function favoriteToggler(store: StateManager<State>, events: Even
 				/^\s*vertexShader\s+/,
 				/^\s*fragmentShader\s+/,
 				/^\s*constants\s*$/,
-				/^\s*config\s*$/,
 			];
 
 			for (let i = 0; i < codeBlock.code.length; i++) {

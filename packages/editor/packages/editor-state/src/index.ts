@@ -13,7 +13,6 @@ import demoModeNavigation from './features/demo-mode/demoModeNavigation';
 import compiler from './features/program-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
-import editorConfigEffect from './features/editor-config/effect';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
 import projectExport from './features/project-export/effect';
@@ -61,8 +60,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	const store = createStateManager<State>(baseState);
 
 	const state = store.getState();
-
-	editorConfigEffect(store, events);
 
 	runtime(store, events);
 	projectImport(store, events);
@@ -116,9 +113,7 @@ export type {
 	Project,
 	Options,
 	CompilationResult,
-	ConfigCompilationResult,
-	EditorConfig,
-	EditorConfigBlock,
+	EditorConfigStorageBlock,
 	CodeBlock,
 	ProjectViewport,
 	GridCoordinates,
@@ -149,6 +144,7 @@ export type {
 	RuntimeFactory,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
+	JSONSchemaLike,
 	FeatureFlags,
 	FeatureFlagsConfig,
 	EventDispatcher,
@@ -163,9 +159,6 @@ export type {
 	CodeError,
 	MemoryAction,
 } from './types';
-
-// Re-export JSONSchemaLike from stack-config-compiler for convenience
-export type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 // Export EMPTY_DEFAULT_PROJECT as a value
 export { EMPTY_DEFAULT_PROJECT } from './types';

@@ -43,14 +43,9 @@ function createLazyRuntimeEntry(
 			}
 
 			loadPromise.then(loadedEntry => {
-				// Replace the stub schema with the real schema in-place so that
-				// any subsequent call to getProjectConfigSchema picks it up,
-				// even if this runtime instance has already been destroyed.
 				entry.schema = loadedEntry.schema;
 				entry.resolveRuntimeDirectives = loadedEntry.resolveRuntimeDirectives;
-				// Trigger config revalidation against the newly loaded schema.
 				store.set('runtimeRegistry', { ...store.getState().runtimeRegistry });
-				events.dispatch('compileConfig');
 				if (!destroyed) {
 					destroy = loadedEntry.factory(store, events);
 				}
@@ -73,7 +68,7 @@ function createLazyRuntimeEntry(
  * Maps runtime IDs to their configuration entries including defaults, schemas, and factory functions.
  * The default runtime (WebWorkerLogicRuntime) is loaded eagerly; optional runtimes are lazy-loaded
  * on first selection. Each optional runtime starts with a minimal stub schema and replaces it with
- * the full schema after loading, then triggers config revalidation.
+ * the full schema after loading.
  */
 export const runtimeRegistry: RuntimeRegistry = {
 	WebWorkerLogicRuntime: createWebWorkerLogicRuntimeDef(getCodeBuffer, getMemory, WebWorkerLogicRuntime),

@@ -5,6 +5,7 @@ import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
+import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from './editorConfigModule';
 
 import {
 	deriveDirectiveState,
@@ -30,7 +31,6 @@ import {
 } from '../../../code-editing/tabLayout';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
@@ -245,6 +245,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			const pixelY = gridY * state.viewport.hGrid;
 			const directiveState = deriveDirectiveState(codeBlock.code, blockParsedDirectives);
 
+			const blockType = getBlockType(codeBlock.code) as CodeBlockGraphicData['blockType'];
+
 			return createCodeBlockGraphicData({
 				width: 0,
 				height: 0,
@@ -257,7 +259,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				y: pixelY,
 				lineNumberColumnWidth: 1,
 				creationIndex,
-				blockType: getBlockType(codeBlock.code),
+				blockType,
 				disabled: directiveState.blockState.disabled,
 				isHome: directiveState.blockState.isHome,
 				isFavorite: directiveState.blockState.isFavorite,
@@ -278,6 +280,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					const gridY = rawBlock.gridCoordinates?.y ?? 0;
 					const rawBlockParsedDirectives = parseBlockDirectives(rawBlock.code);
 					const directiveState = deriveDirectiveState(rawBlock.code, rawBlockParsedDirectives);
+					const blockType = getBlockType(rawBlock.code) as CodeBlockGraphicData['blockType'];
+
 					const block = createCodeBlockGraphicData({
 						id: getCodeBlockId(rawBlock.code),
 						code: rawBlock.code,
@@ -286,7 +290,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						isFavorite: directiveState.blockState.isFavorite,
 						parsedDirectives: rawBlockParsedDirectives,
 						creationIndex,
-						blockType: getBlockType(rawBlock.code),
+						blockType,
 						gridX,
 						gridY,
 						x: gridX * state.viewport.vGrid,
@@ -317,7 +321,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	function updateErrorMessages() {
 		const codeErrors = [
 			...state.codeErrors.compilationErrors,
-			...state.codeErrors.editorConfigErrors,
 			...state.codeErrors.globalEditorDirectiveErrors,
 			...state.codeErrors.shaderErrors,
 			...state.codeErrors.runtimeDirectiveErrors,

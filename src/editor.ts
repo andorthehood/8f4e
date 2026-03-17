@@ -1,5 +1,4 @@
 import initEditor from '@8f4e/editor';
-import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import {
@@ -39,7 +38,6 @@ async function init() {
 			getProject: (url: string) => getProjectRegistry().then(r => r.getProject(url)),
 			compileCode: (modules, compilerOptions, functions, macros) =>
 				compileCode(modules, compilerOptions, functions, editor, macros),
-			compileConfig: async (sourceBlocks: string[], schema: JSONSchemaLike) => compileConfig(sourceBlocks, { schema }),
 			loadSession,
 			saveSession,
 			loadEditorConfigBlocks,

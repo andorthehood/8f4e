@@ -1,6 +1,15 @@
 import { getModuleId } from '@8f4e/compiler/syntax';
 
-import type { CodeBlockGraphicData, EditorConfigBlock } from '~/types';
+import type { CodeBlockGraphicData } from '~/types';
+
+export interface EditorConfigStorageBlock {
+	code: string[];
+	disabled?: boolean;
+	gridCoordinates?: {
+		x: number;
+		y: number;
+	};
+}
 
 const EDITOR_CONFIG_MODULE_ID = 'editorConfig';
 
@@ -16,7 +25,7 @@ export function isEditorConfigCode(code: string[]): boolean {
 	return getModuleId(code) === EDITOR_CONFIG_MODULE_ID;
 }
 
-export function serializeEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]): EditorConfigBlock[] {
+export function serializeEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]): EditorConfigStorageBlock[] {
 	return codeBlocks
 		.filter(block => isEditorConfigBlock(block))
 		.map(block => ({
@@ -29,7 +38,7 @@ export function serializeEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]):
 		}));
 }
 
-export const DEFAULT_EDITOR_CONFIG_BLOCK: EditorConfigBlock = {
+export const DEFAULT_EDITOR_CONFIG_BLOCK: EditorConfigStorageBlock = {
 	code: [
 		'module editorConfig',
 		'; @favorite',

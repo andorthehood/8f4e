@@ -8,7 +8,7 @@ Serializes editor state to exportable project formats. Provides two export modes
 
 - **Project Serialization**: Converts editor state to JSON-compatible project format
 - **Coordinate Conversion**: Transforms pixel coordinates to grid coordinates for persistence
-- **Runtime-Ready Export**: Includes compiled modules, config, and memory snapshots
+- **Runtime-Ready Export**: Includes compiled modules and memory snapshots
 - **Session Saving**: Supports saving current session state
 - **WASM Export**: Enables export of compiled WASM modules
 
@@ -26,7 +26,6 @@ Creates a minimal project file for saving:
 
 Creates a complete export with compiled data:
 - Everything from basic serialization
-- Compiled configuration
 - Compiled modules and functions
 - Memory snapshot
 - Ready for immediate execution
@@ -38,13 +37,11 @@ Serializes from:
 - `state.graphicHelper.viewport` - Viewport position and grid settings
 - `state.binaryAssets` - Binary asset references
 - `state.compiler.compiledModules` - Compiled WASM bytecode
-- `state.compiledProjectConfig` - Compiled configuration object
 
 ## Integration Points
 
 - **Edit History**: Uses basic serialization for undo/redo snapshots
 - **Project Import**: Exported projects are loaded through project import feature
-- **Project Config**: Includes compiled project config in runtime-ready exports
 - **Program Compiler**: Includes compiled modules in runtime-ready exports
 
 ## Project Schema
@@ -59,7 +56,6 @@ The project structure is defined by the serialization functions:
   },
   binaryAssets: Array<BinaryAsset>,
   compiledModules?: Array<Module>,  // Optional in basic mode
-  compiledProjectConfig?: Config,   // Runtime-ready only
   // postProcessEffects are derived, not persisted
 }
 ```

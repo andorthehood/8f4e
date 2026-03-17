@@ -22,8 +22,8 @@ describe('resolveAudioWorkletRouting', () => {
 	it('rejects audio input directives outside module blocks', () => {
 		const result = resolveAudioWorkletRouting([
 			{
-				id: 'config',
-				blockType: 'config',
+				id: 'helper',
+				blockType: 'function',
 				parsedDirectives: [{ prefix: '~', name: 'audioInput', args: ['buffer', '0', '0'], rawRow: 1 }],
 			} as CodeBlockGraphicData,
 		]);

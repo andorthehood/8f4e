@@ -1,5 +1,3 @@
-import { CONFIG_WITH_TYPE_REGEX } from '../../../config-compiler/utils/extractConfigBody';
-
 import type { CodeBlockType } from '~/types';
 
 /**
@@ -10,8 +8,6 @@ import type { CodeBlockType } from '~/types';
 export default function getBlockType(code: string[]): CodeBlockType {
 	const hasModule = code.some(line => /^\s*module(\s|$)/.test(line));
 	const hasModuleEnd = code.some(line => /^\s*moduleEnd(\s|$)/.test(line));
-	const hasConfig = code.some(line => CONFIG_WITH_TYPE_REGEX.test(line));
-	const hasConfigEnd = code.some(line => /^\s*configEnd(\s|$)/.test(line));
 	const hasFunction = code.some(line => /^\s*function(\s|$)/.test(line));
 	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
 	const hasConstants = code.some(line => /^\s*constants(\s|$)/.test(line));
@@ -26,8 +22,6 @@ export default function getBlockType(code: string[]): CodeBlockType {
 	if (
 		hasModule &&
 		hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -43,31 +37,10 @@ export default function getBlockType(code: string[]): CodeBlockType {
 	}
 
 	if (
-		hasConfig &&
-		hasConfigEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasConstants &&
-		!hasConstantsEnd &&
-		!hasDefineMacro &&
-		!hasDefineMacroEnd &&
-		!hasVertexShader &&
-		!hasVertexShaderEnd &&
-		!hasFragmentShader &&
-		!hasFragmentShaderEnd
-	) {
-		return 'config';
-	}
-
-	if (
 		hasFunction &&
 		hasFunctionEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
 		!hasConstants &&
 		!hasConstantsEnd &&
 		!hasDefineMacro &&
@@ -85,8 +58,6 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasConstantsEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasDefineMacro &&
@@ -104,8 +75,6 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasDefineMacroEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -123,8 +92,6 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasVertexShaderEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -142,8 +109,6 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasFragmentShaderEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -165,14 +130,6 @@ if (import.meta.vitest) {
 	describe('getBlockType', () => {
 		it('detects module blocks', () => {
 			expect(getBlockType(['module foo', 'moduleEnd'])).toBe('module');
-		});
-
-		it('detects config blocks', () => {
-			expect(getBlockType(['config project', 'configEnd'])).toBe('config');
-		});
-
-		it('rejects config blocks without type', () => {
-			expect(getBlockType(['config', 'configEnd'])).toBe('unknown');
 		});
 
 		it('detects function blocks', () => {

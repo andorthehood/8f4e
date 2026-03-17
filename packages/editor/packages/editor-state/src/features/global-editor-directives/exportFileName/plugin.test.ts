@@ -13,9 +13,9 @@ function createParsedBlock(code: string[], id?: string) {
 const runtimeRegistry = {};
 
 describe('@exportFileName directive', () => {
-	it('resolves from a config block', () => {
+	it('resolves from a helper module', () => {
 		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['config project', '; @exportFileName xorProblem', 'configEnd'])],
+			[createParsedBlock(['module projectConfig', '; @exportFileName xorProblem', 'moduleEnd'])],
 			runtimeRegistry
 		);
 		expect(result.resolved.exportFileName).toBe('xorProblem');

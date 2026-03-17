@@ -99,12 +99,6 @@ export const mainMenu: MenuGenerator = state => [
 	},
 	{ divider: true },
 	{
-		title: 'Compile Config',
-		action: 'compileConfig',
-		close: true,
-		disabled: !state.callbacks.compileConfig,
-	},
-	{
 		title: 'Compile Code',
 		action: 'compileCode',
 		close: true,

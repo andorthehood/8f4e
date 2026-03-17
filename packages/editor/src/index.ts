@@ -32,7 +32,7 @@ export type {
 	FeatureFlags,
 	FeatureFlagsConfig,
 	JSONSchemaLike,
-	EditorConfigBlock,
+	EditorConfigStorageBlock,
 } from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';

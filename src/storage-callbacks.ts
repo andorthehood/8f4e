@@ -2,7 +2,7 @@ import { parse8f4eToProject } from '@8f4e/editor-state';
 
 import { getCodeBuffer } from './compiler-callback';
 
-import type { Project, EditorConfigBlock } from '@8f4e/editor';
+import type { Project, EditorConfigStorageBlock } from '@8f4e/editor';
 
 // Storage key constants
 const STORAGE_KEYS = {
@@ -58,7 +58,7 @@ export async function saveSession(project: Project): Promise<void> {
 	}
 }
 
-export async function loadEditorConfigBlocks(): Promise<EditorConfigBlock[] | null> {
+export async function loadEditorConfigBlocks(): Promise<EditorConfigStorageBlock[] | null> {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS);
 		return stored ? JSON.parse(stored) : null;
@@ -68,7 +68,7 @@ export async function loadEditorConfigBlocks(): Promise<EditorConfigBlock[] | nu
 	}
 }
 
-export async function saveEditorConfigBlocks(blocks: EditorConfigBlock[]): Promise<void> {
+export async function saveEditorConfigBlocks(blocks: EditorConfigStorageBlock[]): Promise<void> {
 	try {
 		localStorage.setItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS, JSON.stringify(blocks));
 	} catch (error) {
