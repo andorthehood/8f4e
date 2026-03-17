@@ -367,6 +367,38 @@ describe('codeBlockCreator - group copy/paste', () => {
 			expect(mockState.graphicHelper.codeBlocks[1].id).not.toBe(mockState.graphicHelper.codeBlocks[2].id);
 		});
 
+		it('should update inter-module references when pasted module ids are renamed', async () => {
+			const existingBlock = createMockCodeBlock({
+				id: 'module_foo',
+				code: ['module foo', 'moduleEnd'],
+			});
+			mockState.graphicHelper.codeBlocks = [existingBlock];
+
+			const clipboardData = JSON.stringify([
+				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
+				{
+					code: ['module consumer', 'int* source &foo:memoryItem', 'int count $foo.buffer', 'moduleEnd'],
+					gridCoordinates: { x: 5, y: 0 },
+				},
+			]);
+
+			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
+			mockState.callbacks.readClipboardText = mockReadClipboard;
+			mockState.featureFlags.editing = true;
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
+			const addCodeBlockCallback = addCodeBlockCall![1];
+
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
+
+			expect(mockState.graphicHelper.codeBlocks[1].code[0]).toBe('module foo2');
+			expect(mockState.graphicHelper.codeBlocks[2].code[2]).toBe('int* source &foo2:memoryItem');
+			expect(mockState.graphicHelper.codeBlocks[2].code[3]).toBe('int count $foo2.buffer');
+		});
+
 		it('should preserve nonstick flag in group directive', async () => {
 			const clipboardData = JSON.stringify([
 				{ code: ['module foo', '; @group audio nonstick', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
