@@ -6,12 +6,7 @@ import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 export function getEditorConfigSchema(): JSONSchemaLike {
 	return {
 		type: 'object',
-		properties: {
-			font: {
-				type: 'string',
-				enum: ['8x16', '6x10'],
-			},
-		},
+		properties: {},
 		additionalProperties: false,
 	};
 }
