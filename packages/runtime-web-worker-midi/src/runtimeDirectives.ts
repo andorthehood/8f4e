@@ -66,3 +66,11 @@ export function resolveWebWorkerMIDIRuntimeDirectivesFromBlocks(
 ) {
 	return resolveSampleRateDirective(codeBlocks);
 }
+
+export function getWebWorkerMIDIRuntimeEnvConstantsFromBlocks(
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
+): string[] {
+	const { sampleRate } = resolveSampleRateDirective(codeBlocks);
+
+	return [`const SAMPLE_RATE ${sampleRate}`, `const INV_SAMPLE_RATE ${1 / sampleRate}`];
+}

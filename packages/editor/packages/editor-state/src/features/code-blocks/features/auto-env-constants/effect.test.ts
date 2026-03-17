@@ -33,6 +33,17 @@ function resolveSampleRateFromDirectives(
 	return { sampleRate, errors: [] };
 }
 
+function getRuntimeEnvConstants(
+	codeBlocks: Array<{
+		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number }>;
+		id?: string | number;
+	}>
+) {
+	const { sampleRate } = resolveSampleRateFromDirectives(codeBlocks);
+
+	return [`const SAMPLE_RATE ${sampleRate}`, `const INV_SAMPLE_RATE ${1 / sampleRate}`];
+}
+
 function createGraphicEnvBlock(code: string[], overrides: Partial<CodeBlockGraphicData> = {}): CodeBlockGraphicData {
 	return createMockCodeBlock({
 		id: AUTO_ENV_BLOCK_ID,
@@ -61,6 +72,7 @@ describe('autoEnvConstants', () => {
 					defaults: { sampleRate: 50 },
 					schema: { type: 'object', properties: {} },
 					resolveRuntimeDirectives: codeBlocks => resolveSampleRateFromDirectives(codeBlocks),
+					getEnvConstants: codeBlocks => getRuntimeEnvConstants(codeBlocks),
 					factory: () => () => {},
 				},
 			},
@@ -111,12 +123,31 @@ describe('autoEnvConstants', () => {
 		expect(invSampleRateLine).toBe('const INV_SAMPLE_RATE 0.000020833333333333333');
 	});
 
-	test('should include standard environment constants', () => {
+	test('should only include AUDIO_BUFFER_SIZE when the selected runtime contributes it', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-		expect(envBlock?.code).toContain('const AUDIO_BUFFER_SIZE 128');
+		expect(envBlock?.code).not.toContain('const AUDIO_BUFFER_SIZE 128');
+
+		store.set('runtimeRegistry', {
+			AudioWorkletRuntime: {
+				id: 'AudioWorkletRuntime',
+				defaults: { sampleRate: 44100 },
+				schema: { type: 'object', properties: {} },
+				resolveRuntimeDirectives: codeBlocks => resolveSampleRateFromDirectives(codeBlocks),
+				getEnvConstants: codeBlocks => [...getRuntimeEnvConstants(codeBlocks), 'const AUDIO_BUFFER_SIZE 128'],
+				factory: () => () => {},
+			},
+		});
+		store.set('defaultRuntimeId', 'AudioWorkletRuntime');
+		store.set('globalEditorDirectives.runtime', 'AudioWorkletRuntime');
+		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
+
+		const audioWorkletEnvBlock = state.initialProjectState?.codeBlocks.find(block =>
+			block.code[0]?.includes('constants env')
+		);
+		expect(audioWorkletEnvBlock?.code).toContain('const AUDIO_BUFFER_SIZE 128');
 	});
 
 	test('should include warning comment', () => {

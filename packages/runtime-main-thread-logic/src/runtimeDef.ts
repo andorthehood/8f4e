@@ -3,6 +3,7 @@ import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
 import { StateManager } from '@8f4e/state-manager';
 
 import {
+	getMainThreadLogicRuntimeEnvConstantsFromBlocks,
 	resolveMainThreadLogicRuntimeDirectives,
 	resolveMainThreadLogicRuntimeDirectivesFromBlocks,
 } from './runtimeDirectives';
@@ -92,6 +93,7 @@ export function createMainThreadLogicRuntimeDef(
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		resolveRuntimeDirectives: codeBlocks => resolveMainThreadLogicRuntimeDirectivesFromBlocks(codeBlocks),
+		getEnvConstants: codeBlocks => getMainThreadLogicRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return mainThreadLogicRuntimeFactory(store, events, getCodeBuffer, getMemory);
 		},
