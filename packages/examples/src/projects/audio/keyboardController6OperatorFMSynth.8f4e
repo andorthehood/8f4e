@@ -183,12 +183,6 @@ config project
 ; ~sampleRate 44100
 ; @exportFileName jankoSynth
 
-rescope "keyPressedMemoryId"
-set "keyboard.keyPressed"
-
-rescope "keyCodeMemoryId"
-set "keyboard.keyCode"
-
 configEnd
 
 constants env
@@ -1050,6 +1044,8 @@ moduleEnd
 
 module keyboard
 ; @pos 113 46
+; @keyPressedMemory keyPressed
+; @keyCodeMemory keyCode
 
 int keyPressed
 int keyCode

@@ -53,10 +53,10 @@ export default function keyboardMemoryEvents(store: StateManager<State>): () => 
 		upsertPressedKeyCode(hidUsageId);
 
 		const state = store.getState();
-		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.compiledProjectConfig.keyCodeMemoryId);
+		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.globalEditorDirectives.keyCodeMemoryId);
 		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
 			state,
-			state.compiledProjectConfig.keyPressedMemoryId
+			state.globalEditorDirectives.keyPressedMemoryId
 		);
 
 		writeIntegerToMemory(state, keyCodeWordAlignedAddress, hidUsageId);
@@ -68,10 +68,10 @@ export default function keyboardMemoryEvents(store: StateManager<State>): () => 
 		removePressedKeyCode(hidUsageId);
 
 		const state = store.getState();
-		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.compiledProjectConfig.keyCodeMemoryId);
+		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.globalEditorDirectives.keyCodeMemoryId);
 		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
 			state,
-			state.compiledProjectConfig.keyPressedMemoryId
+			state.globalEditorDirectives.keyPressedMemoryId
 		);
 
 		const latestPressedKeyCode = getLatestPressedKeyCode();
@@ -90,7 +90,7 @@ export default function keyboardMemoryEvents(store: StateManager<State>): () => 
 		const state = store.getState();
 		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
 			state,
-			state.compiledProjectConfig.keyPressedMemoryId
+			state.globalEditorDirectives.keyPressedMemoryId
 		);
 		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 0);
 	}

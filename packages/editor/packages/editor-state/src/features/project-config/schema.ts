@@ -12,8 +12,6 @@ export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry, runtime
 		properties: {
 			runtimeSettings: runtimeSettingsSchema,
 			disableAutoCompilation: { type: 'boolean' },
-			keyCodeMemoryId: { type: 'string' },
-			keyPressedMemoryId: { type: 'string' },
 		},
 		additionalProperties: false,
 	};
