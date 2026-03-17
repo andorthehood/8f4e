@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 69
+Active todo files: 68
 
 ## Active TODOs
 
@@ -48,7 +48,6 @@ Active todo files: 69
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Fragment shader compile failures in glugglug currently throw or log without a structured path back to the editor. When a post-process effect shader fails, the error is uncaught and the UI cannot surface a meaningful... |
 | 210 | Add WebMCP-based MCP server integration to the 8f4e editor | 🟡 | 2-4d | 2026-02-07 | The editor currently has no built-in MCP server integration path for browser-hosted workflows. That limits direct tool interoperability from within the 8f4e editor experience and makes experimentation with MCP-based... |
 | 211 | Add WASM memory to GLSL float uniform bindings via project config | 🟡 | 2-4d | 2026-02-08 | Post-process and background shader effects currently support engine-owned shared uniform buffers, but there is no declarative way to bind shader uniforms to values in WebAssembly memory through stack config. |
-| 225 | Add Free-Space Finder for Editor Config Block Placement | 🟡 | 4-8h | 2026-02-16 | Editor config blocks are loaded from local storage and appended to the runtime code-block list. Their saved coordinates can collide with project code blocks loaded from the project file, causing overlap and making both... |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
 | 254 | Fix max/min helpers for float64 memory | 🟡 | 2-4h | 2026-02-19 | float64, float64*, and float64** are being included in inter-module resolution paths, so ^module.memory and !module.memory can target float64-backed memory items. |
 | 261 | Update instruction test helpers for float64 and refactor call test | 🟡 | 2-4h | 2026-02-20 | packages/compiler/tests/instructions/testUtils.ts currently reads/writes all non-integer memory as float32 in shared helpers like moduleTesterWithFunctions. |

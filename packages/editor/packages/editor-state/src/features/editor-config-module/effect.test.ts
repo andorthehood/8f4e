@@ -46,7 +46,9 @@ describe('editor config block placement', () => {
 
 		editorConfigModule(store, events);
 
-		const populateEditorConfigBlocks = events.on.mock.calls.find(([eventName]) => eventName === 'projectCodeBlocksPopulated')?.[1];
+		const populateEditorConfigBlocks = events.on.mock.calls.find(
+			([eventName]) => eventName === 'projectCodeBlocksPopulated'
+		)?.[1];
 
 		expect(populateEditorConfigBlocks).toBeTypeOf('function');
 
@@ -88,7 +90,9 @@ describe('editor config block placement', () => {
 
 		editorConfigModule(store, events);
 
-		const populateEditorConfigBlocks = events.on.mock.calls.find(([eventName]) => eventName === 'projectCodeBlocksPopulated')?.[1];
+		const populateEditorConfigBlocks = events.on.mock.calls.find(
+			([eventName]) => eventName === 'projectCodeBlocksPopulated'
+		)?.[1];
 
 		expect(populateEditorConfigBlocks).toBeTypeOf('function');
 

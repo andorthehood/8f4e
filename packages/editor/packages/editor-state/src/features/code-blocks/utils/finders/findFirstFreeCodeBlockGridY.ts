@@ -39,9 +39,7 @@ export function getCodeBlockGridBounds(
 	};
 }
 
-export function getCodeBlockGridSizeFromCode(
-	codeBlock: Pick<CodeBlockGraphicData, 'code' | 'minGridWidth'>
-): GridSize {
+export function getCodeBlockGridSizeFromCode(codeBlock: Pick<CodeBlockGraphicData, 'code' | 'minGridWidth'>): GridSize {
 	return {
 		width: getCodeBlockGridWidth(codeBlock.code, codeBlock.minGridWidth),
 		height: Math.max(codeBlock.code.length, 1),
@@ -121,7 +119,11 @@ if (import.meta.vitest) {
 
 	describe('findFirstFreeCodeBlockGridY', () => {
 		it('returns the starting y when no horizontally overlapping block is in the way', () => {
-			const result = findFirstFreeCodeBlockGridY([{ x: 20, y: 0, width: 10, height: 8 }], { x: 0, width: 10, height: 4 });
+			const result = findFirstFreeCodeBlockGridY([{ x: 20, y: 0, width: 10, height: 8 }], {
+				x: 0,
+				width: 10,
+				height: 4,
+			});
 
 			expect(result).toBe(0);
 		});
