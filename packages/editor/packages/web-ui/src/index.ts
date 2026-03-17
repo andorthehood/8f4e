@@ -49,6 +49,7 @@ export default async function init(
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		const effectiveViewport = calculateAnimatedViewport(state, performance.now(), animationState, previousViewport);
+		const shouldDrawInfoOverlay = state.globalEditorDirectives.infoOverlay ?? state.featureFlags.infoOverlay;
 
 		const originalViewport = {
 			x: state.viewport.x,
@@ -62,7 +63,7 @@ export default async function init(
 		if (state.featureFlags.consoleOverlay && state.featureFlags.editing) {
 			drawConsoleOverlay(engine, state);
 		}
-		if (state.featureFlags.infoOverlay) {
+		if (shouldDrawInfoOverlay) {
 			drawInfoOverlay(engine, state, {
 				timeToRender,
 				fps,
