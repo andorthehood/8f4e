@@ -59,8 +59,6 @@ const instructionsToHighlight = [
 	'remainder',
 	'module',
 	'moduleEnd',
-	'config',
-	'configEnd',
 	'set',
 	'scope',
 	'rescope',

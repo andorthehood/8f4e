@@ -1,6 +1,6 @@
 import { resolveRuntimeDirectiveState } from './directives';
 
-import deepEqual from '../config-compiler/utils/deepEqual';
+import deepEqual from '../../shared/utils/deepEqual';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { State } from '~/types';

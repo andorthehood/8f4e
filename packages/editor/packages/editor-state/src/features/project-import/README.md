@@ -53,7 +53,6 @@ Handles loading projects into the editor from various sources: persistent storag
 ## Integration Points
 
 - **Project Export**: Imported projects match exported project schema
-- **Config Compiler**: Loaded config blocks trigger config compilation
 - **Program Compiler**: Loaded code blocks trigger program compilation if enabled
 - **Edit History**: Project loads reset history stacks
 

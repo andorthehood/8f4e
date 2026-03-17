@@ -28,6 +28,5 @@ When `--trace-output` is used, the CLI writes a separate JSON file containing pe
 
 ## Notes
 
-- Config blocks are compiled from `config project` blocks only.
 - No schema validation is performed.
 - At least one of `--wasm-output` or `--trace-output` is required.

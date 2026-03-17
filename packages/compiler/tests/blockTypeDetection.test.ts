@@ -15,11 +15,6 @@ describe('getBlockType', () => {
 		expect(getBlockType(code)).toBe('function');
 	});
 
-	test('detects config blocks', () => {
-		const code = ['config', 'some config', 'configEnd'];
-		expect(getBlockType(code)).toBe('config');
-	});
-
 	test('detects constants blocks', () => {
 		const code = ['constants math', 'const PI 3.14159', 'constantsEnd'];
 		expect(getBlockType(code)).toBe('constants');

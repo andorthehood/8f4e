@@ -40,7 +40,6 @@ const project = convertPmmlNeuralNetworkToProject(pmmlXml, { projectName: 'MyMod
 ## Output Structure
 
 The generated project includes:
-- A `config project` block with the model name.
 - A `function sigmoid` helper (when needed).
 - An `inputs` module with input fields.
 - One module per neuron (`module neuron_<id>`).

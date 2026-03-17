@@ -1,7 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 import { defaultColorScheme } from '@8f4e/sprite-generator';
 
-import deepEqual from '../config-compiler/utils/deepEqual';
+import deepEqual from '../../shared/utils/deepEqual';
 
 import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { State } from '~/types';

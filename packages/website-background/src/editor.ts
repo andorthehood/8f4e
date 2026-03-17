@@ -3,7 +3,6 @@ import initEditor from '@8f4e/editor';
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import { loadSession, loadEditorConfigBlocks } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
-import compileConfig from './config-callback';
 
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -18,7 +17,6 @@ async function init() {
 		callbacks: {
 			compileCode: (modules, compilerOptions, functions, macros) =>
 				compileCode(modules, compilerOptions, functions, editor, macros),
-			compileConfig,
 			loadSession,
 			loadEditorConfigBlocks,
 		},

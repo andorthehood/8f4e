@@ -3,10 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { parseBlockDirectives } from '../../../code-blocks/utils/parseBlockDirectives';
 import { resolveGlobalEditorDirectives } from '../../registry';
 
-function createParsedBlock(
-	code: string[],
-	overrides: { id?: string; moduleId?: string; blockType?: 'module' | 'config' } = {}
-) {
+function createParsedBlock(code: string[], overrides: { id?: string; moduleId?: string; blockType?: 'module' } = {}) {
 	return {
 		id: overrides.id,
 		moduleId: overrides.moduleId,
@@ -19,9 +16,8 @@ describe('@keyPressedMemory directive', () => {
 	it('reports usage outside module blocks', () => {
 		const result = resolveGlobalEditorDirectives(
 			[
-				createParsedBlock(['config project', '; @keyPressedMemory keyPressed', 'configEnd'], {
+				createParsedBlock(['function helper', '; @keyPressedMemory keyPressed', 'functionEnd'], {
 					id: 'project_config',
-					blockType: 'config',
 				}),
 			],
 			{}

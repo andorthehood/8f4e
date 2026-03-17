@@ -26,4 +26,4 @@ export interface CompileProjectResult {
 	requiredMemoryBytes?: number;
 }
 
-export type BlockType = 'config' | 'module' | 'function' | 'constants' | 'macro' | 'unknown';
+export type BlockType = 'module' | 'function' | 'constants' | 'macro' | 'unknown';

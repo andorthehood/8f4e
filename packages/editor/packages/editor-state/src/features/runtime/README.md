@@ -49,7 +49,6 @@ Each entry contains a `factory` function that creates and returns a destroyer fu
 - `state.runtimeRegistry` - Registry of available runtime factories
 - `state.defaultRuntimeId` - Fallback runtime identifier
 - `state.globalEditorDirectives.runtime` - Selected runtime id
-- `state.compiledProjectConfig` - Runtime configuration object compiled from project config blocks
 
 ## Integration Points
 
@@ -78,7 +77,6 @@ Runtime lifecycle events are logged:
 ## References
 
 - Runtime registry is defined at project root initialization
-- Runtime settings schema: See project config schema
 
 ## Notes & Limitations
 

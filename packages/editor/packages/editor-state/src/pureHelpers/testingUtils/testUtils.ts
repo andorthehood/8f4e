@@ -307,7 +307,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		binaryAssets: [],
 		codeErrors: {
 			compilationErrors: [],
-			editorConfigErrors: [],
 			globalEditorDirectiveErrors: [],
 			shaderErrors: [],
 			runtimeDirectiveErrors: [],
@@ -324,7 +323,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				timerExpectedIntervalTimeMs: 0,
 			},
 		},
-		compiledEditorConfig: {},
 		globalEditorDirectives: {},
 		dialog: {
 			show: false,

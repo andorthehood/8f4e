@@ -3,10 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { parseBlockDirectives } from '../../code-blocks/utils/parseBlockDirectives';
 import { resolveGlobalEditorDirectives } from '../registry';
 
-function createParsedBlock(
-	code: string[],
-	overrides: { id?: string; moduleId?: string; blockType?: 'module' | 'config' } = {}
-) {
+function createParsedBlock(code: string[], overrides: { id?: string; moduleId?: string; blockType?: 'module' } = {}) {
 	return {
 		id: overrides.id,
 		moduleId: overrides.moduleId,
@@ -21,9 +18,9 @@ const runtimeRegistry = {
 };
 
 describe('@runtime directive', () => {
-	it('resolves from a config block', () => {
+	it('resolves from a helper module', () => {
 		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['config project', '; @runtime AudioWorkletRuntime', 'configEnd'])],
+			[createParsedBlock(['module projectConfig', '; @runtime AudioWorkletRuntime', 'moduleEnd'])],
 			runtimeRegistry
 		);
 

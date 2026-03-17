@@ -3,10 +3,20 @@
  */
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { ParsedDirectiveRecord } from '../code-blocks/types';
 import type { EventDispatcher } from '../../shared/types';
 import type { CodeError } from '../../shared/types';
+
+export interface JSONSchemaLike {
+	type?: 'object' | 'array' | 'string' | 'number' | 'integer' | 'boolean' | 'null';
+	properties?: Record<string, JSONSchemaLike>;
+	required?: readonly string[];
+	items?: JSONSchemaLike;
+	additionalProperties?: boolean | JSONSchemaLike;
+	enum?: readonly unknown[];
+	oneOf?: readonly JSONSchemaLike[];
+	anyOf?: readonly JSONSchemaLike[];
+}
 
 /**
  * Type for runtime factory function.

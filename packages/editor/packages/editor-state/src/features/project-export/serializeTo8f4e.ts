@@ -2,20 +2,11 @@ import type { Project } from '~/types';
 
 const FORMAT_HEADER = '8f4e/v1';
 
-const OPENERS = [
-	'module',
-	'function',
-	'config',
-	'constants',
-	'defineMacro',
-	'vertexShader',
-	'fragmentShader',
-] as const;
+const OPENERS = ['module', 'function', 'constants', 'defineMacro', 'vertexShader', 'fragmentShader'] as const;
 
 const CLOSERS = [
 	'moduleEnd',
 	'functionEnd',
-	'configEnd',
 	'constantsEnd',
 	'defineMacroEnd',
 	'vertexShaderEnd',
@@ -117,7 +108,6 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	const validBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
-	const validConfigBlock = ['config project', 'push 65536', 'configEnd'];
 	const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
 
 	describe('serializeProjectTo8f4e', () => {
@@ -129,7 +119,7 @@ if (import.meta.vitest) {
 
 		it('serializes multiple code blocks separated by blank lines', () => {
 			const project = {
-				codeBlocks: [{ code: validBlock }, { code: validConfigBlock }],
+				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }],
 			};
 			const result = serializeProjectTo8f4e(project);
 			expect(result).toContain('\n\n');
@@ -157,7 +147,7 @@ if (import.meta.vitest) {
 		});
 
 		it('throws on opener/closer mismatch', () => {
-			const project = { codeBlocks: [{ code: ['module foo', 'configEnd'] }] };
+			const project = { codeBlocks: [{ code: ['module foo', 'functionEnd'] }] };
 			expect(() => serializeProjectTo8f4e(project)).toThrow('opener/closer mismatch');
 		});
 
