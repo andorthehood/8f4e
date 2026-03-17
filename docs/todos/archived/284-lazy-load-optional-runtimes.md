@@ -80,10 +80,10 @@ High-level approach:
 
 ## References
 
-- [runtime-registry.ts](/Users/andorpolgar/git/8f4e/src/runtime-registry.ts)
-- [editor.ts](/Users/andorpolgar/git/8f4e/src/editor.ts)
-- [runtime-audio-worklet](/Users/andorpolgar/git/8f4e/packages/runtime-audio-worklet)
-- [runtime-web-worker-midi](/Users/andorpolgar/git/8f4e/packages/runtime-web-worker-midi)
+- [runtime-registry.ts](src/runtime-registry.ts)
+- [editor.ts](src/editor.ts)
+- [runtime-audio-worklet](packages/runtime-audio-worklet)
+- [runtime-web-worker-midi](packages/runtime-web-worker-midi)
 
 ## Notes
 

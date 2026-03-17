@@ -13,8 +13,8 @@ completed: null
 
 The compiler currently has two separate paths that parse and validate `const` declarations:
 
-- [packages/compiler/src/astUtils/collectConstants.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/astUtils/collectConstants.ts)
-- [packages/compiler/src/instructionCompilers/const.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/const.ts)
+- [packages/compiler/src/astUtils/collectConstants.ts](packages/compiler/src/astUtils/collectConstants.ts)
+- [packages/compiler/src/instructionCompilers/const.ts](packages/compiler/src/instructionCompilers/const.ts)
 
 These two paths do not behave the same way.
 
@@ -48,12 +48,12 @@ The immediate symptom is poor diagnostics, but the deeper issue is duplicated co
 
 `collectConstants(...)` is not dead code left over from the old globally scoped constants model.
 
-It is still actively used to build namespace data in [packages/compiler/src/index.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/index.ts):
+It is still actively used to build namespace data in [packages/compiler/src/index.ts](packages/compiler/src/index.ts):
 
 - during `compileModules(...)`
 - during top-level namespace construction before modules and functions are compiled
 
-That namespace registry is then consumed by [packages/compiler/src/instructionCompilers/use.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/use.ts), which imports constants from:
+That namespace registry is then consumed by [packages/compiler/src/instructionCompilers/use.ts](packages/compiler/src/instructionCompilers/use.ts), which imports constants from:
 
 - constants blocks
 - modules
@@ -178,7 +178,7 @@ Expected outcome:
 
 ### Step 2: Replace `collectConstants(...)`
 
-- Remove the direct argument indexing logic from [packages/compiler/src/astUtils/collectConstants.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/astUtils/collectConstants.ts)
+- Remove the direct argument indexing logic from [packages/compiler/src/astUtils/collectConstants.ts](packages/compiler/src/astUtils/collectConstants.ts)
 - Either:
   - replace it with a new `collectNamespaceConstants(...)`, or
   - remove it entirely in favor of `collectNamespaces(...)`
@@ -188,7 +188,7 @@ Expected outcome:
 
 ### Step 3: Build namespaces through validated declarations
 
-- Update [packages/compiler/src/index.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/index.ts) to build `namespaces` from the new collector
+- Update [packages/compiler/src/index.ts](packages/compiler/src/index.ts) to build `namespaces` from the new collector
 - Ensure `use` still reads from the same namespace model
 - Keep current behavior for constants blocks and modules unless intentionally changed
 
@@ -198,7 +198,7 @@ Expected outcome:
 
 ### Step 4: Delegate `const.ts` to the shared helper
 
-- Update [packages/compiler/src/instructionCompilers/const.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/const.ts)
+- Update [packages/compiler/src/instructionCompilers/const.ts](packages/compiler/src/instructionCompilers/const.ts)
 - Remove duplicated parsing/validation logic there
 
 Expected outcome:
@@ -238,12 +238,12 @@ Additional specific checks:
 
 ## Affected Components
 
-- [packages/compiler/src/index.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/index.ts) - Namespace construction should move to a validated declaration collector.
-- [packages/compiler/src/astUtils/collectConstants.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/astUtils/collectConstants.ts) - Replace or remove the current loose extractor.
-- [packages/compiler/src/instructionCompilers/const.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/const.ts) - Delegate to shared parsing logic.
-- [packages/compiler/src/instructionCompilers/use.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/use.ts) - Must keep consuming the namespace registry correctly.
-- [packages/compiler/src/types.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts) - May need a declaration result type or collector result type.
-- [packages/compiler/tests](/Users/andorpolgar/git/8f4e/packages/compiler/tests) - Add malformed-declaration regressions and update any tests touching namespace collection.
+- [packages/compiler/src/index.ts](packages/compiler/src/index.ts) - Namespace construction should move to a validated declaration collector.
+- [packages/compiler/src/astUtils/collectConstants.ts](packages/compiler/src/astUtils/collectConstants.ts) - Replace or remove the current loose extractor.
+- [packages/compiler/src/instructionCompilers/const.ts](packages/compiler/src/instructionCompilers/const.ts) - Delegate to shared parsing logic.
+- [packages/compiler/src/instructionCompilers/use.ts](packages/compiler/src/instructionCompilers/use.ts) - Must keep consuming the namespace registry correctly.
+- [packages/compiler/src/types.ts](packages/compiler/src/types.ts) - May need a declaration result type or collector result type.
+- [packages/compiler/tests](packages/compiler/tests) - Add malformed-declaration regressions and update any tests touching namespace collection.
 
 ## Risks & Considerations
 
@@ -254,8 +254,8 @@ Additional specific checks:
 
 ## Related Items
 
-- **Related**: [docs/todos/292-refactor-error-systems-and-document-syntax-vs-compiler-error-boundaries.md](/Users/andorpolgar/git/8f4e/docs/todos/292-refactor-error-systems-and-document-syntax-vs-compiler-error-boundaries.md)
-- **Related**: `use` namespace behavior in [packages/compiler/docs/instructions/program-structure-and-functions.md](/Users/andorpolgar/git/8f4e/packages/compiler/docs/instructions/program-structure-and-functions.md)
+- **Related**: [docs/todos/292-refactor-error-systems-and-document-syntax-vs-compiler-error-boundaries.md](docs/todos/292-refactor-error-systems-and-document-syntax-vs-compiler-error-boundaries.md)
+- **Related**: `use` namespace behavior in [packages/compiler/docs/instructions/program-structure-and-functions.md](packages/compiler/docs/instructions/program-structure-and-functions.md)
 
 ## Notes
 

@@ -14,7 +14,7 @@ completed: null
 The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed.
 
 Current behavior:
-- [packages/compiler-worker/src/compileAndUpdateMemory.ts](/Users/andorpolgar/git/8f4e/packages/compiler-worker/src/compileAndUpdateMemory.ts) has a reuse helper, `getOrCreateWasmInstanceRef(...)`
+- [packages/compiler-worker/src/compileAndUpdateMemory.ts](packages/compiler-worker/src/compileAndUpdateMemory.ts) has a reuse helper, `getOrCreateWasmInstanceRef(...)`
 - the call site passes `memoryWasRecreated || true`
 - that makes the non-reset path unreachable
 - the worker always reinstantiates the module even when only default values or compatible source changes occurred

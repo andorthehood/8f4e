@@ -3,8 +3,8 @@ title: 'TODO: Derive memory size from compiled program footprint'
 priority: Medium
 effort: 1-2d
 created: 2026-03-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-17
 ---
 
 # TODO: Derive memory size from compiled program footprint

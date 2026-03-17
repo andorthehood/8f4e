@@ -11,7 +11,7 @@ completed: null
 
 ## Problem Description
 
-[packages/compiler/src/graphOptimizer.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/graphOptimizer.ts) currently recomputes module ids and intermodular dependencies inside sort comparators.
+[packages/compiler/src/graphOptimizer.ts](packages/compiler/src/graphOptimizer.ts) currently recomputes module ids and intermodular dependencies inside sort comparators.
 
 Current behavior:
 - the file separates constants blocks from regular modules

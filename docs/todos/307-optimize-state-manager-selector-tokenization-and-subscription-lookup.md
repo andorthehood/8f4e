@@ -14,9 +14,9 @@ completed: null
 The state manager currently does repeated string splitting and repeated path traversal during every `set(...)` call.
 
 Current behavior:
-- [packages/editor/packages/state-manager/src/subscribe.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/state-manager/src/subscribe.ts) tokenizes selectors when subscriptions are created
-- [packages/editor/packages/state-manager/src/subscribeToValue.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/state-manager/src/subscribeToValue.ts) duplicates the same tokenization flow
-- [packages/editor/packages/state-manager/src/set.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/state-manager/src/set.ts) splits the selector again on every update
+- [packages/editor/packages/state-manager/src/subscribe.ts](packages/editor/packages/state-manager/src/subscribe.ts) tokenizes selectors when subscriptions are created
+- [packages/editor/packages/state-manager/src/subscribeToValue.ts](packages/editor/packages/state-manager/src/subscribeToValue.ts) duplicates the same tokenization flow
+- [packages/editor/packages/state-manager/src/set.ts](packages/editor/packages/state-manager/src/set.ts) splits the selector again on every update
 - `set(...)` then calls `getValueByPath(...)`, which splits the selector yet again for every matching subscription
 
 Why this is a problem:
