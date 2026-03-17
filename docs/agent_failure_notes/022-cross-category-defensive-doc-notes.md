@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – Cross-Category Defensive Doc Notes
-agent: Codex
-model: GPT-5
+agent: Codex App Version 26.309.31024 (962)
+model: gpt-5.4 (medium)
 date: 2026-03-16
 ---
 
