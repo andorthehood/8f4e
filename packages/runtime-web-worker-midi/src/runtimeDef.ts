@@ -2,6 +2,8 @@
 // Note: Worker import is done at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
 
+import { resolveMidiRouting, resolveMidiNoteRoutesToAddresses, resolveMidiCCRoutesToAddresses } from './midiRouting';
+
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
 // Type definitions for Web MIDI API (since they're not available in worker context during build)
@@ -92,13 +94,34 @@ export function webWorkerMIDIRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
+		const memoryBuffer = new Int32Array(memory.buffer);
+		const midiRouting = resolveMidiRouting(state.graphicHelper.codeBlocks);
 		worker.postMessage({
 			type: 'init',
 			payload: {
 				memoryRef: memory,
 				sampleRate: state.runtimeDirectives?.sampleRate ?? state.compiledProjectConfig.runtimeSettings.sampleRate,
 				codeBuffer: getCodeBuffer(),
-				compiledModules: state.compiler.compiledModules,
+				midiNoteOutputs: resolveMidiNoteRoutesToAddresses(
+					midiRouting.noteOutputs,
+					state.compiler.compiledModules,
+					memoryBuffer
+				),
+				midiNoteInputs: resolveMidiNoteRoutesToAddresses(
+					midiRouting.noteInputs,
+					state.compiler.compiledModules,
+					memoryBuffer
+				),
+				midiCCOutputs: resolveMidiCCRoutesToAddresses(
+					midiRouting.ccOutputs,
+					state.compiler.compiledModules,
+					memoryBuffer
+				),
+				midiCCInputs: resolveMidiCCRoutesToAddresses(
+					midiRouting.ccInputs,
+					state.compiler.compiledModules,
+					memoryBuffer
+				),
 			},
 		});
 	}
@@ -149,62 +172,6 @@ export function createWebWorkerMIDIRuntimeDef(
 			type: 'object',
 			properties: {
 				sampleRate: { type: 'number' },
-				midiNoteOutputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							portMemoryId: { type: 'string' },
-							velocityMemoryId: { type: 'string' },
-							noteOnOffMemoryId: { type: 'string' },
-							noteMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
-				midiNoteInputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							portMemoryId: { type: 'string' },
-							velocityMemoryId: { type: 'string' },
-							noteOnOffMemoryId: { type: 'string' },
-							noteMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
-				midiControlChangeOutputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							selectedCCMemoryId: { type: 'string' },
-							valueMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
-				midiControlChangeInputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							selectedCCMemoryId: { type: 'string' },
-							valueMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,

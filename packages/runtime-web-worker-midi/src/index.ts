@@ -1,18 +1,16 @@
 import resetMidi from './resetMidi';
-import findMidiNoteOutModules from './findMidiNoteOutModules';
 import broadcastMidiMessages from './broadcastMidiMessages';
-import findMidiCCOutputModules from './findMidiCCOutputModules';
 import broadcastMidiCCMessages from './broadcastMidiCCMessages';
-import findMidiCCInputModules from './findMidiCCInputModules';
+import { createMidiCCInputLookup } from './midiRouting';
 import createModule from './createModule';
 
-import type { CompiledModuleLookup } from '@8f4e/compiler';
-import type { MidiCCModuleAddresses } from './types';
+import type { MidiCCModuleAddresses, MidiModuleAddresses } from './types';
 
 let interval: ReturnType<typeof setInterval>;
 let statsInterval: ReturnType<typeof setInterval>;
 let memoryBuffer: Int32Array;
 let midiCCInputModules: Map<string, MidiCCModuleAddresses> = new Map();
+let midiNoteInputModules: MidiModuleAddresses[] = [];
 let timeToExecuteLoopMs: number;
 let lastIntervalTime: number;
 let timerDriftMs: number;
@@ -21,15 +19,17 @@ async function init(
 	memoryRef: WebAssembly.Memory,
 	sampleRate: number,
 	codeBuffer: Uint8Array,
-	compiledModules: CompiledModuleLookup
+	midiNoteOutputs: MidiModuleAddresses[],
+	midiNoteInputs: MidiModuleAddresses[],
+	midiCCOutputs: MidiCCModuleAddresses[],
+	midiCCInputs: MidiCCModuleAddresses[]
 ) {
 	try {
 		const wasmApp = await createModule(memoryRef, codeBuffer);
 		memoryBuffer = wasmApp.memoryBuffer;
 
-		const midiNoteModules = findMidiNoteOutModules(compiledModules, memoryBuffer);
-		const midiCCOutputModules = findMidiCCOutputModules(compiledModules, memoryBuffer);
-		midiCCInputModules = findMidiCCInputModules(compiledModules, memoryBuffer);
+		midiNoteInputModules = midiNoteInputs;
+		midiCCInputModules = createMidiCCInputLookup(midiCCInputs, memoryBuffer);
 
 		resetMidi();
 
@@ -44,8 +44,8 @@ async function init(
 			wasmApp.cycle();
 			const endTime = performance.now();
 			timeToExecuteLoopMs = endTime - startTime;
-			broadcastMidiCCMessages(midiCCOutputModules, memoryBuffer);
-			broadcastMidiMessages(midiNoteModules, memoryBuffer);
+			broadcastMidiCCMessages(midiCCOutputs, memoryBuffer);
+			broadcastMidiMessages(midiNoteOutputs, memoryBuffer);
 		}, intervalTime);
 
 		clearInterval(statsInterval);
@@ -75,12 +75,62 @@ async function init(
 }
 
 function onMidiMessage(message: Uint8Array) {
-	if (!memoryBuffer || midiCCInputModules.size < 1) {
+	if (!memoryBuffer) {
+		return;
+	}
+
+	if (message[0] >= 144 && message[0] <= 159) {
+		const channel = message[0] - 143;
+		for (const module of midiNoteInputModules) {
+			const expectedChannel =
+				typeof module.channelWordAddress !== 'undefined' ? memoryBuffer[module.channelWordAddress] || 1 : 1;
+			const expectedPort =
+				typeof module.portWordAddress !== 'undefined' ? memoryBuffer[module.portWordAddress] || 1 : 1;
+
+			if (expectedChannel !== channel || expectedPort !== 1) {
+				continue;
+			}
+
+			if (typeof module.noteWordAddress !== 'undefined') {
+				memoryBuffer[module.noteWordAddress] = message[1];
+			}
+			if (typeof module.velocityWordAddress !== 'undefined') {
+				memoryBuffer[module.velocityWordAddress] = message[2];
+			}
+			if (typeof module.noteOnOffWordAddress !== 'undefined') {
+				memoryBuffer[module.noteOnOffWordAddress] = message[2] > 0 ? 1 : 0;
+			}
+		}
+		return;
+	}
+
+	if (message[0] >= 128 && message[0] <= 143) {
+		const channel = message[0] - 127;
+		for (const module of midiNoteInputModules) {
+			const expectedChannel =
+				typeof module.channelWordAddress !== 'undefined' ? memoryBuffer[module.channelWordAddress] || 1 : 1;
+			const expectedPort =
+				typeof module.portWordAddress !== 'undefined' ? memoryBuffer[module.portWordAddress] || 1 : 1;
+
+			if (expectedChannel !== channel || expectedPort !== 1) {
+				continue;
+			}
+
+			if (typeof module.noteWordAddress !== 'undefined') {
+				memoryBuffer[module.noteWordAddress] = message[1];
+			}
+			if (typeof module.velocityWordAddress !== 'undefined') {
+				memoryBuffer[module.velocityWordAddress] = message[2];
+			}
+			if (typeof module.noteOnOffWordAddress !== 'undefined') {
+				memoryBuffer[module.noteOnOffWordAddress] = 0;
+			}
+		}
 		return;
 	}
 
 	if (message[0] >= 176 && message[0] <= 191) {
-		const valueWordAddress = midiCCInputModules.get(message[0] - 175 + '' + message[1])?.valueWordAddress;
+		const valueWordAddress = midiCCInputModules.get(`${message[0] - 175}:${message[1]}`)?.valueWordAddress;
 
 		if (valueWordAddress) {
 			memoryBuffer[valueWordAddress] = message[2];
@@ -98,7 +148,10 @@ self.onmessage = function (event) {
 				event.data.payload.memoryRef,
 				event.data.payload.sampleRate,
 				event.data.payload.codeBuffer,
-				event.data.payload.compiledModules
+				event.data.payload.midiNoteOutputs,
+				event.data.payload.midiNoteInputs,
+				event.data.payload.midiCCOutputs,
+				event.data.payload.midiCCInputs
 			);
 			break;
 	}

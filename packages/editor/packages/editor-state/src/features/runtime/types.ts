@@ -59,31 +59,11 @@ export interface AudioWorkletRuntime {
 	sampleRate: number;
 }
 
-interface MidiNoteIO {
-	moduleId: string;
-	channelMemoryId?: string;
-	portMemoryId?: string;
-	velocityMemoryId?: string;
-	noteOnOffMemoryId?: string;
-	noteMemoryId?: string;
-}
-
-interface MidiCCIO {
-	moduleId: string;
-	channelMemoryId?: string;
-	selectedCCMemoryId?: string;
-	valueMemoryId?: string;
-}
-
 /**
  * WebWorker-based MIDI runtime configuration.
  */
 export interface WebWorkerMIDIRuntime {
 	sampleRate: number;
-	midiNoteOutputs?: MidiNoteIO[];
-	midiNoteInputs?: MidiNoteIO[];
-	midiControlChangeOutputs?: MidiCCIO[];
-	midiControlChangeInputs?: MidiCCIO[];
 }
 
 /**
