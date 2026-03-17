@@ -1,8 +1,10 @@
 import exportFileNameDirective from './exportFileName/plugin';
+import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
+import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import runtimeDirective from './runtime/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
-import type { CodeError, ParsedDirectiveRecord } from '~/types';
+import type { CodeError, ParsedDirectiveRecord, CodeBlockType } from '~/types';
 import type {
 	GlobalEditorDirectiveContext,
 	GlobalEditorDirectiveResolutionResult,
@@ -12,10 +14,20 @@ import type {
 } from './types';
 import type { RuntimeRegistry } from '../runtime/types';
 
-export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [exportFileNameDirective, runtimeDirective];
+export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
+	exportFileNameDirective,
+	runtimeDirective,
+	keyCodeMemoryDirective,
+	keyPressedMemoryDirective,
+];
 
 export function resolveGlobalEditorDirectives(
-	codeBlocks: { parsedDirectives: ParsedDirectiveRecord[]; id?: string }[],
+	codeBlocks: {
+		parsedDirectives: ParsedDirectiveRecord[];
+		id?: string;
+		moduleId?: string;
+		blockType?: CodeBlockType;
+	}[],
 	runtimeRegistry: RuntimeRegistry,
 	plugins: GlobalEditorDirectivePlugin[] = globalEditorDirectivePlugins
 ): GlobalEditorDirectiveResolutionResult {
@@ -29,7 +41,12 @@ export function resolveGlobalEditorDirectives(
 		const block = codeBlocks[blockIndex];
 		const directives: ParsedGlobalEditorDirective[] = parseGlobalEditorDirectives(block.parsedDirectives, plugins);
 		const codeBlockId: string | number = block.id ?? blockIndex;
-		const context: GlobalEditorDirectiveContext = { codeBlockId, runtimeRegistry };
+		const context: GlobalEditorDirectiveContext = {
+			codeBlockId,
+			moduleId: block.moduleId,
+			blockType: block.blockType,
+			runtimeRegistry,
+		};
 
 		for (const directive of directives) {
 			pluginMap.get(directive.name)?.apply?.(directive, draft, context);
