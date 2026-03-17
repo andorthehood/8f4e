@@ -1,15 +1,12 @@
 8f4e/v1
 
-config project
+module projectConfig
 ; @pos -106 13
 ; @runtime AudioWorkletRuntime
+; ~sampleRate 44100
+; @exportFileName audioLoopback
 
-configEnd
-
-config project
-; @pos -106 -10
-
-configEnd
+moduleEnd
 
 module notes
 ; @pos 130 12
@@ -20,13 +17,6 @@ module notes
 ; buffers using circular-buffer
 ; pointer logic.
 moduleEnd
-
-config project
-; @pos -141 19
-; ~sampleRate 44100
-; @exportFileName audioLoopback
-
-configEnd
 
 module audioin
 ; @pos 5 1

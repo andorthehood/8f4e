@@ -35,12 +35,12 @@ void main() {
 }
 fragmentShaderEnd
 
-config project
+module projectConfig
 ; @pos -114 36
 ; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
 
-configEnd
+moduleEnd
 
 module colors
 ; @pos -166 22

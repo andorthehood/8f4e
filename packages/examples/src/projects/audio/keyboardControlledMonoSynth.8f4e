@@ -1,12 +1,12 @@
 8f4e/v1
 
-config project
+module projectConfig
 ; @pos -94 1
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 44100
 ; @exportFileName jankoSynth
 
-configEnd
+moduleEnd
 
 module arEnv
 ; @pos 286 57

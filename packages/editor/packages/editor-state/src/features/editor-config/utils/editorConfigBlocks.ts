@@ -1,13 +1,19 @@
-import { isConfigBlockOfType, isConfigTypeInCode } from '../../config-compiler/utils/isConfigBlockOfType';
+import { getModuleId } from '@8f4e/compiler/syntax';
 
 import type { CodeBlockGraphicData, EditorConfigBlock } from '~/types';
 
+const EDITOR_CONFIG_MODULE_ID = 'editorConfig';
+
 export function isEditorConfigBlock(block: CodeBlockGraphicData | null | undefined): boolean {
-	return isConfigBlockOfType(block, 'editor');
+	if (!block) {
+		return false;
+	}
+
+	return getModuleId(block.code) === EDITOR_CONFIG_MODULE_ID;
 }
 
 export function isEditorConfigCode(code: string[]): boolean {
-	return isConfigTypeInCode(code, 'editor');
+	return getModuleId(code) === EDITOR_CONFIG_MODULE_ID;
 }
 
 export function serializeEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]): EditorConfigBlock[] {
@@ -22,3 +28,21 @@ export function serializeEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]):
 			},
 		}));
 }
+
+export const DEFAULT_EDITOR_CONFIG_BLOCK: EditorConfigBlock = {
+	code: [
+		'module editorConfig',
+		'; @favorite',
+		"; This is a special block that doesn't",
+		'; get saved with the project.',
+		'',
+		'; Default editor font:',
+		'; @font 8x16',
+		'moduleEnd',
+	],
+	disabled: false,
+	gridCoordinates: {
+		x: 0,
+		y: 0,
+	},
+};

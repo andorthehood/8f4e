@@ -34,9 +34,8 @@ describe('editorConfigEffect - diffing behavior', () => {
 				codeBlocks: [
 					createMockCodeBlock({
 						id: 'editor-config',
-						code: ['config editor', 'configEnd'],
-						blockType: 'config',
-						configType: 'editor',
+						code: ['module editorConfig', 'moduleEnd'],
+						blockType: 'module',
 					}),
 				],
 			},
