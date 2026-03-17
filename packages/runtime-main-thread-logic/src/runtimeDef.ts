@@ -91,8 +91,7 @@ export function createMainThreadLogicRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
-		resolveRuntimeDirectives: (codeBlocks, state) =>
-			resolveMainThreadLogicRuntimeDirectivesFromBlocks(codeBlocks, state),
+		resolveRuntimeDirectives: codeBlocks => resolveMainThreadLogicRuntimeDirectivesFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return mainThreadLogicRuntimeFactory(store, events, getCodeBuffer, getMemory);
 		},

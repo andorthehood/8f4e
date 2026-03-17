@@ -5,7 +5,6 @@
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlock } from '../code-blocks/types';
-import type { ProjectConfig } from '../project-config/types';
 
 /**
  * Complete project structure for serialization and loading.
@@ -16,8 +15,6 @@ export interface Project {
 	compiledWasm?: string;
 	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
-	/** Compiled configuration from config blocks for runtime-only execution */
-	compiledProjectConfig?: ProjectConfig;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
 }

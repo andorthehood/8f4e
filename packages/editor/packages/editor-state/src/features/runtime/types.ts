@@ -16,10 +16,8 @@ import type { CodeError } from '../../shared/types';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RuntimeFactory<S = any> = (store: StateManager<S>, events: EventDispatcher) => () => void;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type RuntimeDirectiveResolver<S = any> = (
-	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>,
-	state: S
+export type RuntimeDirectiveResolver = (
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) => {
 	sampleRate?: number;
 	errors: CodeError[];

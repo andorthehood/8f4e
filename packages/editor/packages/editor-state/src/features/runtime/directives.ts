@@ -43,5 +43,5 @@ export function resolveRuntimeDirectiveState(state: State) {
 		};
 	}
 
-	return runtimeEntry.resolveRuntimeDirectives(getDirectiveBlocks(state), state);
+	return runtimeEntry.resolveRuntimeDirectives(getDirectiveBlocks(state));
 }

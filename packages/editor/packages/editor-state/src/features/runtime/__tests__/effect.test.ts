@@ -16,7 +16,6 @@ describe('Runtime System', () => {
 
 			const state = createMockState({
 				globalEditorDirectives: { runtime: 'AudioWorkletRuntime' },
-				compiledProjectConfig: { sampleRate: 44100 },
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
 						id: 'AudioWorkletRuntime',
@@ -48,7 +47,6 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('compiledProjectConfig', { ...state.compiledProjectConfig, sampleRate: 60 });
 			store.set('globalEditorDirectives', { runtime: 'MainThreadLogicRuntime' });
 
 			// Give the subscription callback time to execute
@@ -71,7 +69,6 @@ describe('Runtime System', () => {
 
 			const state = createMockState({
 				globalEditorDirectives: { runtime: 'AudioWorkletRuntime' },
-				compiledProjectConfig: { sampleRate: 44100 },
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
 						id: 'AudioWorkletRuntime',
@@ -101,7 +98,6 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('compiledProjectConfig', { ...state.compiledProjectConfig, sampleRate: 50 });
 			store.set('globalEditorDirectives', { runtime: 'WebWorkerLogicRuntime' });
 
 			await new Promise(resolve => setTimeout(resolve, 10));
