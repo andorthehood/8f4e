@@ -3,6 +3,7 @@ title: 'TODO: Use CodeBlock id instead of recomputing from code'
 priority: Low
 effort: 2-4 days
 created: 2026-01-22
+issue: https://github.com/andorthehood/8f4e/issues/403
 status: Open
 completed: null
 ---

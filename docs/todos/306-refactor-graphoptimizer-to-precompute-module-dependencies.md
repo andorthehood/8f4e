@@ -3,6 +3,7 @@ title: 'TODO: Refactor graphOptimizer to precompute module dependencies'
 priority: Medium
 effort: 4-8h
 created: 2026-03-14
+issue: https://github.com/andorthehood/8f4e/issues/421
 status: Open
 completed: null
 ---

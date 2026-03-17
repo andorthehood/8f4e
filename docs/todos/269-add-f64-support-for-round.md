@@ -3,6 +3,7 @@ title: 'TODO: Add float64 support for round instruction'
 priority: High
 effort: 1-3h
 created: 2026-02-20
+issue: https://github.com/andorthehood/8f4e/issues/415
 status: Open
 completed: null
 ---
