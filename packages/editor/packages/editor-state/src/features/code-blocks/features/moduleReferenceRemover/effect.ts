@@ -27,9 +27,21 @@ function collectModuleIdsByCreationIndex(state: State): Map<number, string> {
 export default function moduleReferenceRemover(store: StateManager<State>): void {
 	const state = store.getState();
 	let previousModuleIdsByCreationIndex = collectModuleIdsByCreationIndex(state);
+	let isRefreshingProjectCodeBlocks = false;
 
 	function onCodeBlocksChanged(): void {
 		const nextModuleIdsByCreationIndex = collectModuleIdsByCreationIndex(state);
+
+		if (isRefreshingProjectCodeBlocks) {
+			previousModuleIdsByCreationIndex = nextModuleIdsByCreationIndex;
+
+			if (state.graphicHelper.codeBlocks.length >= (state.initialProjectState?.codeBlocks.length ?? 0)) {
+				isRefreshingProjectCodeBlocks = false;
+			}
+
+			return;
+		}
+
 		const removedModuleIds = new Set<string>();
 
 		for (const [creationIndex, moduleId] of previousModuleIdsByCreationIndex.entries()) {
@@ -58,5 +70,10 @@ export default function moduleReferenceRemover(store: StateManager<State>): void
 		}
 	}
 
+	function onInitialProjectStateChanged(): void {
+		isRefreshingProjectCodeBlocks = true;
+	}
+
+	store.subscribe('initialProjectState', onInitialProjectStateChanged);
 	store.subscribe('graphicHelper.codeBlocks', onCodeBlocksChanged);
 }
