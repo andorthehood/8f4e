@@ -3,7 +3,7 @@ title: 'TODO: Remove runtime packaging concerns from CLI'
 priority: Medium
 effort: 1-2d
 created: 2026-03-16
-status: Done
+status: Completed
 completed: 2026-03-16
 ---
 

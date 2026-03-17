@@ -14,9 +14,9 @@ completed: null
 The codebase currently parses `module.memory` identifiers in multiple places with slightly different local logic.
 
 Current behavior:
-- [packages/runtime-audio-worklet/src/runtimeDef.ts](/Users/andorpolgar/git/8f4e/packages/runtime-audio-worklet/src/runtimeDef.ts) parses audio buffer bindings using a local helper and repeated `split('.')` calls
-- [packages/editor/packages/editor-state/src/pureHelpers/resolveMemoryIdentifier.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/pureHelpers/resolveMemoryIdentifier.ts) reparses inter-module identifiers inline
-- [packages/editor/packages/editor-state/src/pureHelpers/resolveBinaryAssetTarget.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/pureHelpers/resolveBinaryAssetTarget.ts) performs another local split
+- [packages/runtime-audio-worklet/src/runtimeDef.ts](packages/runtime-audio-worklet/src/runtimeDef.ts) parses audio buffer bindings using a local helper and repeated `split('.')` calls
+- [packages/editor/packages/editor-state/src/pureHelpers/resolveMemoryIdentifier.ts](packages/editor/packages/editor-state/src/pureHelpers/resolveMemoryIdentifier.ts) reparses inter-module identifiers inline
+- [packages/editor/packages/editor-state/src/pureHelpers/resolveBinaryAssetTarget.ts](packages/editor/packages/editor-state/src/pureHelpers/resolveBinaryAssetTarget.ts) performs another local split
 - compiler syntax helpers such as `extractIntermodularElement*Base.ts` also repeat the same structural parsing pattern
 
 Why this is a problem:

@@ -14,8 +14,8 @@ completed: null
 Memory instruction argument handling is now split between a syntax-phase classifier and a semantic-phase resolver, but the semantic side still carries a long branch ladder with repeated lookup logic and several no-op cases.
 
 Current behavior:
-- [packages/compiler/src/syntax/memoryInstructionParser.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/syntax/memoryInstructionParser.ts) classifies argument shapes in detail
-- [packages/compiler/src/utils/memoryInstructionParser.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryInstructionParser.ts) then:
+- [packages/compiler/src/syntax/memoryInstructionParser.ts](packages/compiler/src/syntax/memoryInstructionParser.ts) classifies argument shapes in detail
+- [packages/compiler/src/utils/memoryInstructionParser.ts](packages/compiler/src/utils/memoryInstructionParser.ts) then:
   - resolves anonymous ids
   - resolves split-byte defaults
   - performs repeated memory lookups for `memory-reference` and `element-count`

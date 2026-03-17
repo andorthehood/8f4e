@@ -91,9 +91,9 @@ The investigation should compare correctness, complexity, performance, and bundl
 
 ## References
 
-- [src/editor.ts](/Users/andorpolgar/git/8f4e/src/editor.ts)
-- [packages/stack-config-compiler](/Users/andorpolgar/git/8f4e/packages/stack-config-compiler)
-- [packages/compiler](/Users/andorpolgar/git/8f4e/packages/compiler)
+- [src/editor.ts](src/editor.ts)
+- [packages/stack-config-compiler](packages/stack-config-compiler)
+- [packages/compiler](packages/compiler)
 
 ## Notes
 

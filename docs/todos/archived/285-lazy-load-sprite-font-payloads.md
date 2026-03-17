@@ -77,9 +77,9 @@ High-level approach:
 
 ## References
 
-- [sprite generator index](/Users/andorpolgar/git/8f4e/packages/editor/packages/sprite-generator/src/index.ts)
-- [8x16 ascii payload](/Users/andorpolgar/git/8f4e/packages/editor/packages/sprite-generator/src/fonts/8x16/generated/ascii.ts)
-- [6x10 ascii payload](/Users/andorpolgar/git/8f4e/packages/editor/packages/sprite-generator/src/fonts/6x10/generated/ascii.ts)
+- [sprite generator index](packages/editor/packages/sprite-generator/src/index.ts)
+- [8x16 ascii payload](packages/editor/packages/sprite-generator/src/fonts/8x16/generated/ascii.ts)
+- [6x10 ascii payload](packages/editor/packages/sprite-generator/src/fonts/6x10/generated/ascii.ts)
 
 ## Notes
 

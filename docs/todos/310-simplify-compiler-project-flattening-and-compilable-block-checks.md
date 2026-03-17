@@ -14,7 +14,7 @@ completed: null
 The editor compiler effect currently does more array work and duplicated block-type checks than necessary during project flattening and recompile triggering.
 
 Current behavior:
-- [packages/editor/packages/editor-state/src/features/program-compiler/effect.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/features/program-compiler/effect.ts) builds `allBlocks` with one `filter` and one `sort`
+- [packages/editor/packages/editor-state/src/features/program-compiler/effect.ts](packages/editor/packages/editor-state/src/features/program-compiler/effect.ts) builds `allBlocks` with one `filter` and one `sort`
 - `flattenProjectForCompiler(...)` then runs three more `filter` passes to derive `modules`, `functions`, and `macros`
 - the effect repeats the same “is this a compilable block type?” ladder in two separate subscriptions
 
