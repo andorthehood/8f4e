@@ -1,4 +1,4 @@
-import { resolveRuntimeDirectives } from './resolveRuntimeDirectives';
+import { resolveRuntimeDirectives } from './registry';
 
 import deepEqual from '../config-compiler/utils/deepEqual';
 

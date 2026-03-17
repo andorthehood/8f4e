@@ -57,22 +57,6 @@ export interface MainThreadLogicRuntime {
  */
 export interface AudioWorkletRuntime {
 	sampleRate: number;
-	audioInputBuffers?: {
-		/**
-		 * Memory identifier in unified format `'module.memory'` (e.g., 'audioin.buffer').
-		 */
-		memoryId: string;
-		channel: number;
-		input: number;
-	}[];
-	audioOutputBuffers?: {
-		/**
-		 * Memory identifier in unified format `'module.memory'` (e.g., 'audiooutL.buffer').
-		 */
-		memoryId: string;
-		channel: number;
-		output: number;
-	}[];
 }
 
 interface MidiNoteIO {
