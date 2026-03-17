@@ -18,7 +18,7 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.contextMenu).toBe(false);
 		expect(featureFlags.moduleDragging).toBe(false);
 		// Other flags should remain at defaults
-		expect(featureFlags.infoOverlay).toBe(true);
+		expect(featureFlags.infoOverlay).toBe(false);
 		expect(featureFlags.viewportDragging).toBe(true);
 	});
 
@@ -52,7 +52,7 @@ describe('Feature Flags Integration', () => {
 
 		// Should merge correctly
 		expect(result.contextMenu).toBe(false);
-		expect(result.infoOverlay).toBe(true);
+		expect(result.infoOverlay).toBe(false);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
@@ -72,7 +72,7 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.editing).toBe(false);
 		// Other flags should remain at defaults
 		expect(featureFlags.contextMenu).toBe(true);
-		expect(featureFlags.infoOverlay).toBe(true);
+		expect(featureFlags.infoOverlay).toBe(false);
 		expect(featureFlags.moduleDragging).toBe(true);
 		expect(featureFlags.codeLineSelection).toBe(false);
 		expect(featureFlags.viewportDragging).toBe(true);
@@ -95,8 +95,8 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.moduleDragging).toBe(false);
 		expect(featureFlags.codeLineSelection).toBe(false);
 		expect(featureFlags.modeToggling).toBe(true);
-		// Navigation and info should remain enabled
+		// Navigation should remain enabled while info overlay stays at its default
 		expect(featureFlags.viewportDragging).toBe(true);
-		expect(featureFlags.infoOverlay).toBe(true);
+		expect(featureFlags.infoOverlay).toBe(false);
 	});
 });

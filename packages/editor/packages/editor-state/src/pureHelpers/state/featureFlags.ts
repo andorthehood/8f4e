@@ -6,7 +6,7 @@ import type { FeatureFlags, FeatureFlagsConfig } from '~/types';
  */
 export const defaultFeatureFlags: FeatureFlags = {
 	contextMenu: true,
-	infoOverlay: true,
+	infoOverlay: false,
 	moduleDragging: true,
 	codeLineSelection: false,
 	viewportDragging: true,

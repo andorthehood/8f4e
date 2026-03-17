@@ -15,7 +15,7 @@ export type { FeatureFlags, FeatureFlagsConfig } from '@8f4e/editor-state';
  */
 export const defaultFeatureFlags = {
 	contextMenu: true,
-	infoOverlay: true, // Default to true, can be overridden
+	infoOverlay: false, // Hidden by default unless enabled explicitly
 	moduleDragging: true,
 	codeLineSelection: false,
 	viewportDragging: true,
