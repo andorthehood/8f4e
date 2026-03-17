@@ -1,4 +1,4 @@
-import { isEditorConfigBlock } from '../code-blocks/features/graphicHelper/editorConfigModule';
+import { isEditorConfigBlock } from '../editor-config-module/editorConfigModule';
 
 import type { CodeBlock, CodeBlockGraphicData } from '~/types';
 

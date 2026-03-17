@@ -13,6 +13,7 @@ import demoModeNavigation from './features/demo-mode/demoModeNavigation';
 import compiler from './features/program-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
+import editorConfigModule from './features/editor-config-module/effect';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
 import projectExport from './features/project-export/effect';
@@ -91,6 +92,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	runtimeDirectiveErrorsEffect(store);
 	compiler(store, events);
 	graphicHelper(store, events);
+	editorConfigModule(store, events);
 	codeEditing(store, events);
 	projectExport(store, events);
 	binaryAsset(store, events);

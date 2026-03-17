@@ -24,7 +24,7 @@ import type {
 	GraphicHelper,
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
-import type { EditorConfigStorageBlock } from './features/code-blocks/features/graphicHelper/editorConfigModule';
+import type { EditorConfigStorageBlock } from './features/editor-config-module/editorConfigModule';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
