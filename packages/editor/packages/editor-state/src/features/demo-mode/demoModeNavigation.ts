@@ -1,9 +1,9 @@
 import { navigateToCodeBlockInDirection } from '../code-blocks/features/codeBlockNavigation/effect';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
-import type { StateManager } from '@8f4e/state-manager';
 
+import type { StateManager } from '@8f4e/state-manager';
 import type { State, EventDispatcher } from '~/types';
-import type { Direction } from '../code-blocks/utils/finders/findClosestCodeBlockInDirection';
+import type { Direction } from '../code-blocks/utils/types';
 
 type StateSource = StateManager<State> | State;
 

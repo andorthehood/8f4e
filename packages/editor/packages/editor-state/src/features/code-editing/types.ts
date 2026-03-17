@@ -2,7 +2,7 @@
  * Types for code-editing feature - text editing, cursor movement, and keyboard events.
  */
 
-import type { Direction } from '../code-blocks/utils/finders/findClosestCodeBlockInDirection';
+import type { Direction } from '../code-blocks/utils/types';
 
 /**
  * High-level event payload for navigating between code blocks.

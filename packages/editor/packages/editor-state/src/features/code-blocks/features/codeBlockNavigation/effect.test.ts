@@ -118,6 +118,26 @@ describe('codeBlockNavigation', () => {
 		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
 	});
 
+	it('should align the target highlighted line during horizontal navigation', () => {
+		selectedBlock.code = ['zero', 'one', 'two', 'three'];
+		selectedBlock.cursor.row = 2;
+		selectedBlock.cursor.col = 3;
+		selectedBlock.cursor.y = 2 * state.viewport.hGrid;
+
+		rightBlock.code = ['a', 'bb', 'ccc', 'dddd', 'eeeee'];
+		rightBlock.cursor.row = 0;
+		rightBlock.cursor.col = 0;
+
+		codeBlockNavigation(state, events);
+
+		onNavigateCodeBlockHandler({ direction: 'right' });
+
+		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
+		expect(rightBlock.cursor.row).toBe(2);
+		expect(rightBlock.cursor.col).toBe(3);
+		expect(rightBlock.cursor.y).toBe(2 * state.viewport.hGrid);
+	});
+
 	it('should navigate up when navigateCodeBlock event with up direction is dispatched', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
@@ -134,19 +154,16 @@ describe('codeBlockNavigation', () => {
 		expect(state.graphicHelper.selectedCodeBlock).toBe(downBlock);
 	});
 
-	it('should center viewport on the newly selected code block', () => {
+	it('should center viewport on the newly selected highlighted line', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		const initialViewportX = state.viewport.x;
-		const initialViewportY = state.viewport.y;
+		selectedBlock.cursor.y = state.viewport.hGrid;
+		rightBlock.cursor.y = 5 * state.viewport.hGrid;
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 
-		// Verify viewport has changed
-		const viewportChanged = state.viewport.x !== initialViewportX || state.viewport.y !== initialViewportY;
-
-		expect(viewportChanged).toBe(true);
+		expect(state.viewport.y).toBe(rightBlock.y + rightBlock.offsetY + rightBlock.cursor.y - state.viewport.height / 2);
 	});
 
 	it('should not change selection if no block found in direction', () => {
@@ -189,14 +206,11 @@ describe('codeBlockNavigation', () => {
 		});
 
 		it('should center viewport on the jumped-to code block', () => {
-			const initialViewportX = state.viewport.x;
-			const initialViewportY = state.viewport.y;
+			downBlock.cursor.y = 3 * state.viewport.hGrid;
 
 			jumpToCodeBlock(state, 4, 'down');
 
-			// Verify viewport has changed
-			const viewportChanged = state.viewport.x !== initialViewportX || state.viewport.y !== initialViewportY;
-			expect(viewportChanged).toBe(true);
+			expect(state.viewport.y).toBe(downBlock.y + downBlock.offsetY + downBlock.cursor.y - state.viewport.height / 2);
 		});
 	});
 
@@ -221,7 +235,7 @@ describe('codeBlockNavigation', () => {
 
 	describe('goHome', () => {
 		it('should center viewport on the first home block and select it', () => {
-			const firstHome = createMockCodeBlock({ id: 'home-1', x: 100, y: 100, isHome: true });
+			const firstHome = createMockCodeBlock({ id: 'home-1', x: 100, y: 100, isHome: true, cursorY: 32 });
 			const secondHome = createMockCodeBlock({ id: 'home-2', x: 400, y: 400, isHome: true });
 
 			state = createMockState({
@@ -233,7 +247,7 @@ describe('codeBlockNavigation', () => {
 
 			expect(state.graphicHelper.selectedCodeBlock).toBe(firstHome);
 			expect(state.viewport.x).toBe(50);
-			expect(state.viewport.y).toBe(50);
+			expect(state.viewport.y).toBe(32);
 		});
 
 		it('should use a disabled home block if it is first', () => {
