@@ -22,7 +22,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 }
 ```
 
-**Note**: The compiler derives the required memory size from its allocation plan and returns the effective page-rounded size. Environment constants (SAMPLE_RATE, AUDIO_BUFFER_SIZE, etc.) are provided via an auto-managed `constants env` block.
+**Note**: The compiler derives the required memory size from its allocation plan and returns the effective page-rounded size. Environment constants are provided via an auto-managed `constants env` block, with runtime-owned lines contributed by the selected runtime.
 
 ## Block Type Handling
 
