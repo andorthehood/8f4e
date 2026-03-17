@@ -183,7 +183,7 @@ export function createWebWorkerMIDIRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
-		resolveRuntimeDirectives: (codeBlocks, state) => resolveWebWorkerMIDIRuntimeDirectivesFromBlocks(codeBlocks, state),
+		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerMIDIRuntimeDirectivesFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerMIDIRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},

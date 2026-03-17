@@ -44,13 +44,11 @@ describe('program compiler effect', () => {
 	});
 
 	it('stores code block type for compiler errors', async () => {
-		vi.useFakeTimers();
-
 		compilerEffect(store, mockEvents);
-
-		store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig });
-		await vi.runAllTimersAsync();
-		vi.useRealTimers();
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const compileCodeCall = onCalls.find(call => call[0] === 'compileCode');
+		expect(compileCodeCall).toBeDefined();
+		await compileCodeCall![1]();
 
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{

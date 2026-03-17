@@ -229,7 +229,7 @@ export function createAudioWorkletRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
-		resolveRuntimeDirectives: (codeBlocks, state) => resolveAudioWorkletRuntimeDirectivesFromBlocks(codeBlocks, state),
+		resolveRuntimeDirectives: codeBlocks => resolveAudioWorkletRuntimeDirectivesFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
 		},

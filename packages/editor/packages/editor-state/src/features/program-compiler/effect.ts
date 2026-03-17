@@ -144,7 +144,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 	}
 
 	events.on('compileCode', onForceCompile);
-	store.subscribe('compiledProjectConfig', scheduleRecompile);
 	store.subscribe('globalEditorDirectives.disableAutoCompilation', scheduleRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.disabled) {
