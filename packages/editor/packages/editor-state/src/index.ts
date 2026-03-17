@@ -173,7 +173,7 @@ export { parse8f4eToProject } from './features/project-import/parse8f4e';
 
 // Export helper functions
 export { default as findClosestCodeBlockInDirection } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';
-export type { Direction } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';
+export type { Direction } from './features/code-blocks/utils/types';
 export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';

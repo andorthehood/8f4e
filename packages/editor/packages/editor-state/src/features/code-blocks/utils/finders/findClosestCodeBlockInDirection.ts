@@ -1,9 +1,5 @@
 import type { CodeBlockGraphicData } from '~/types';
-
-/**
- * Direction types for navigation
- */
-export type Direction = 'left' | 'right' | 'up' | 'down';
+import type { Direction } from '../types';
 
 /**
  * Weight factor for alignment preference in distance calculation.
@@ -63,16 +59,12 @@ function calculatePrimaryDistance(
 
 /**
  * Calculate the perpendicular offset between blocks (for alignment scoring).
- * For vertical movement: measures horizontal offset between block centers
- * For horizontal movement: measures vertical offset from cursor to candidate block,
- * prioritizing blocks that overlap with the cursor's Y position.
- * This helps prefer blocks that are better aligned on the perpendicular axis.
+ * For vertical movement: measures horizontal offset between block centers.
  */
 function calculateSecondaryDistance(
-	selectedBlock: CodeBlockGraphicData,
 	selectedBounds: ReturnType<typeof getBlockBounds>,
 	candidateBounds: ReturnType<typeof getBlockBounds>,
-	direction: Direction
+	direction: 'up' | 'down'
 ): number {
 	switch (direction) {
 		case 'up':
@@ -81,26 +73,33 @@ function calculateSecondaryDistance(
 			const candidateCenterX = (candidateBounds.left + candidateBounds.right) / 2;
 			return Math.abs(candidateCenterX - selectedCenterX);
 		}
-		case 'left':
-		case 'right': {
-			const cursorY = selectedBlock.cursor.y;
+	}
+}
 
-			if (cursorY >= candidateBounds.top && cursorY <= candidateBounds.bottom) {
-				return 0;
-			}
+function findClosestCodeBlockHorizontally(
+	candidates: CodeBlockGraphicData[],
+	selectedBlock: CodeBlockGraphicData,
+	selectedBounds: ReturnType<typeof getBlockBounds>,
+	direction: 'left' | 'right'
+): CodeBlockGraphicData {
+	const absoluteCursorY = selectedBounds.top + selectedBlock.cursor.y;
+	let closestBlock = selectedBlock;
+	let minDistance = Infinity;
 
-			if (cursorY < candidateBounds.top) {
-				return candidateBounds.top - cursorY;
-			} else {
-				return cursorY - candidateBounds.bottom;
-			}
+	for (const candidate of candidates) {
+		const candidateBounds = getBlockBounds(candidate);
+		if (absoluteCursorY < candidateBounds.top || absoluteCursorY > candidateBounds.bottom) {
+			continue;
 		}
-		default: {
-			// Exhaustiveness check: if we get here, TypeScript will error if a direction is missing
-			const exhaustiveCheck: never = direction;
-			throw new Error(`Unhandled direction: ${exhaustiveCheck}`);
+
+		const distance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
+		if (distance < minDistance) {
+			minDistance = distance;
+			closestBlock = candidate;
 		}
 	}
+
+	return closestBlock;
 }
 
 /**
@@ -109,7 +108,7 @@ function calculateSecondaryDistance(
  * This function uses an edge-based spatial navigation algorithm that:
  * - Filters code blocks based on edge-to-edge directional criteria
  * - Calculates edge-to-edge distance along the primary axis of movement
- * - Weights alignment on the perpendicular axis to prefer visually aligned blocks
+ * - Uses the highlighted line for horizontal navigation and alignment weighting for vertical navigation
  * - Returns the selected block if no other blocks exist in that direction
  *
  * Edge-based distance means:
@@ -164,45 +163,23 @@ export default function findClosestCodeBlockInDirection(
 		return selectedBlock;
 	}
 
-	let closestBlock = candidates[0];
+	if (direction === 'left' || direction === 'right') {
+		return findClosestCodeBlockHorizontally(candidates, selectedBlock, selectedBounds, direction);
+	}
+
+	let closestBlock = selectedBlock;
 	let minDistance = Infinity;
 
 	for (const candidate of candidates) {
 		const candidateBounds = getBlockBounds(candidate);
-
-		let distance: number;
-
-		switch (direction) {
-			case 'left':
-			case 'right': {
-				const absoluteCursorY = selectedBounds.top + selectedBlock.cursor.y;
-				const candidateTop = candidateBounds.top;
-				const candidateBottom = candidateBounds.bottom;
-
-				if (absoluteCursorY >= candidateTop && absoluteCursorY <= candidateBottom) {
-					distance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
-				} else {
-					distance = Infinity;
-				}
-				break;
-			}
-			case 'up':
-			case 'down': {
-				const primaryDistance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
-				const secondaryDistance = calculateSecondaryDistance(selectedBlock, selectedBounds, candidateBounds, direction);
-				distance = primaryDistance + secondaryDistance * ALIGNMENT_WEIGHT;
-				break;
-			}
-		}
+		const primaryDistance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
+		const secondaryDistance = calculateSecondaryDistance(selectedBounds, candidateBounds, direction);
+		const distance = primaryDistance + secondaryDistance * ALIGNMENT_WEIGHT;
 
 		if (distance < minDistance) {
 			minDistance = distance;
 			closestBlock = candidate;
 		}
-	}
-
-	if ((direction === 'left' || direction === 'right') && minDistance === Infinity) {
-		return selectedBlock;
 	}
 
 	return closestBlock;
