@@ -5,7 +5,6 @@ import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
-import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from './editorConfigModule';
 
 import {
 	deriveDirectiveState,
@@ -267,45 +266,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			});
 		});
 
-		if (state.callbacks.loadEditorConfigBlocks) {
-			try {
-				const loadedBlocks = (await state.callbacks.loadEditorConfigBlocks()) ?? [];
-				const validBlocks = loadedBlocks.filter(block => isEditorConfigCode(block.code));
-				const editorConfigBlocks = validBlocks.length > 0 ? validBlocks : [DEFAULT_EDITOR_CONFIG_BLOCK];
-
-				let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
-				for (let i = 0; i < editorConfigBlocks.length; i += 1) {
-					const rawBlock = editorConfigBlocks[i];
-					const gridX = rawBlock.gridCoordinates?.x ?? 0;
-					const gridY = rawBlock.gridCoordinates?.y ?? 0;
-					const rawBlockParsedDirectives = parseBlockDirectives(rawBlock.code);
-					const directiveState = deriveDirectiveState(rawBlock.code, rawBlockParsedDirectives);
-					const blockType = getBlockType(rawBlock.code) as CodeBlockGraphicData['blockType'];
-
-					const block = createCodeBlockGraphicData({
-						id: getCodeBlockId(rawBlock.code),
-						code: rawBlock.code,
-						disabled: directiveState.blockState.disabled,
-						isHome: directiveState.blockState.isHome,
-						isFavorite: directiveState.blockState.isFavorite,
-						parsedDirectives: rawBlockParsedDirectives,
-						creationIndex,
-						blockType,
-						gridX,
-						gridY,
-						x: gridX * state.viewport.vGrid,
-						y: gridY * state.viewport.hGrid,
-					});
-
-					codeBlocks.push(block);
-					creationIndex += 1;
-					state.graphicHelper.nextCodeBlockCreationIndex = creationIndex;
-				}
-			} catch (err) {
-				console.warn('Failed to load editor config blocks from storage:', err);
-			}
-		}
-
 		store.set('graphicHelper.codeBlocks', codeBlocks);
 
 		// Center viewport on first @home block, or default to (0,0)
@@ -316,6 +276,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			state.viewport.x = 0;
 			state.viewport.y = 0;
 		}
+
+		events.dispatch('projectCodeBlocksPopulated');
 	};
 
 	function updateErrorMessages() {
