@@ -3,7 +3,7 @@ import type { CodeError, State, ParsedDirectiveRecord } from '@8f4e/editor';
 const DEFAULT_SAMPLE_RATE = 44100;
 const AUDIO_BUFFER_SIZE = 128;
 
-function resolveSampleRateDirective(
+function resolveAudioWorkletRuntimeSettingsFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
 	const errors: CodeError[] = [];
@@ -52,30 +52,35 @@ function resolveSampleRateDirective(
 		}
 	}
 
+	const sampleRate = resolvedSampleRate ?? DEFAULT_SAMPLE_RATE;
+
 	return {
-		sampleRate: resolvedSampleRate ?? DEFAULT_SAMPLE_RATE,
+		sampleRate,
+		envConstants: [
+			`const SAMPLE_RATE ${sampleRate}`,
+			`const INV_SAMPLE_RATE ${1 / sampleRate}`,
+			`const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`,
+		],
 		errors,
 	};
 }
 
 export function resolveAudioWorkletRuntimeDirectives(state: State) {
-	return resolveSampleRateDirective(state.graphicHelper.codeBlocks);
+	const { sampleRate, errors } = resolveAudioWorkletRuntimeSettingsFromBlocks(state.graphicHelper.codeBlocks);
+
+	return { sampleRate, errors };
 }
 
 export function resolveAudioWorkletRuntimeDirectivesFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
-	return resolveSampleRateDirective(codeBlocks);
+	const { sampleRate, errors } = resolveAudioWorkletRuntimeSettingsFromBlocks(codeBlocks);
+
+	return { sampleRate, errors };
 }
 
 export function getAudioWorkletRuntimeEnvConstantsFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ): string[] {
-	const { sampleRate } = resolveSampleRateDirective(codeBlocks);
-
-	return [
-		`const SAMPLE_RATE ${sampleRate}`,
-		`const INV_SAMPLE_RATE ${1 / sampleRate}`,
-		`const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`,
-	];
+	return resolveAudioWorkletRuntimeSettingsFromBlocks(codeBlocks).envConstants;
 }
