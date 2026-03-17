@@ -442,7 +442,6 @@ ifEnd
 moduleEnd
 
 module audioout
-; ~audioOutput buffer 0 0
 ; @pos 241 -22
 ; @home
 use env
@@ -451,6 +450,8 @@ float* in &reverb:out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
 int pointer &buffer
 
 ; @plot buffer -2 2
