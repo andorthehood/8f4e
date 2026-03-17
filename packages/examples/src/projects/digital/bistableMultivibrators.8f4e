@@ -10,13 +10,13 @@ module notes
 ; derived gate output over time.
 moduleEnd
 
-config project
+module projectConfig
 ; @pos -67 16
 ; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
 ; @exportFileName bistableMultivibrators
 
-configEnd
+moduleEnd
 
 module andGate
 ; @pos 243 32

@@ -177,13 +177,13 @@ ifEnd
 
 defineMacroEnd
 
-config project
+module projectConfig
 ; @pos -94 1
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 44100
 ; @exportFileName jankoSynth
 
-configEnd
+moduleEnd
 
 constants env
 ; @pos 2 60

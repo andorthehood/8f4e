@@ -1,12 +1,12 @@
 8f4e/v1
 
-config project
+module projectConfig
 ; @pos -53 -63
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 44100
 ; @exportFileName samplePlayer
 
-configEnd
+moduleEnd
 
 module notes
 ; @pos 33 -45
