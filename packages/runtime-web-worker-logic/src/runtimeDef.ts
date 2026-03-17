@@ -3,6 +3,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import {
+	getWebWorkerLogicRuntimeEnvConstantsFromBlocks,
 	resolveWebWorkerLogicRuntimeDirectives,
 	resolveWebWorkerLogicRuntimeDirectivesFromBlocks,
 } from './runtimeDirectives';
@@ -99,6 +100,7 @@ export function createWebWorkerLogicRuntimeDef(
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerLogicRuntimeDirectivesFromBlocks(codeBlocks),
+		getEnvConstants: codeBlocks => getWebWorkerLogicRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerLogicRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},

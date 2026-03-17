@@ -25,6 +25,9 @@ export interface JSONSchemaLike {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RuntimeFactory<S = any> = (store: StateManager<S>, events: EventDispatcher) => () => void;
+export type RuntimeEnvConstantsContributor = (
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
+) => string[];
 
 export type RuntimeDirectiveResolver = (
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
@@ -46,6 +49,8 @@ export interface RuntimeRegistryEntry {
 	schema: JSONSchemaLike;
 	/** Runtime-owned resolver for `; ~...` directives relevant to this runtime */
 	resolveRuntimeDirectives?: RuntimeDirectiveResolver;
+	/** Runtime-owned contribution to the auto-generated `constants env` block */
+	getEnvConstants?: RuntimeEnvConstantsContributor;
 	/** Factory function that creates the runtime instance */
 	factory: RuntimeFactory;
 }
