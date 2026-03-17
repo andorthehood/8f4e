@@ -35,6 +35,22 @@ Supported fonts:
 - `8x16`
 - `6x10`
 
+### `@infoOverlay`
+
+Enable or disable the editor info overlay for the project.
+
+```txt
+; @infoOverlay <on|off>
+```
+
+Accepted values:
+- `on`
+- `off`
+
+Aliases:
+- `true` -> `on`
+- `false` -> `off`
+
 ### `@watch`
 
 Show a runtime debugger value for a memory id.
