@@ -3,6 +3,7 @@
  * Editor directives use `; @<name> <args...>` syntax.
  */
 import type { CodeError } from '~/types';
+import type { CodeBlockType } from '../code-blocks/types';
 import type { RuntimeRegistry } from '../runtime/types';
 
 export interface ParsedGlobalEditorDirective {
@@ -16,10 +17,16 @@ export interface ResolvedGlobalEditorDirectives {
 	exportFileName?: string;
 	/** Selected runtime host from `; @runtime <id>` directives */
 	runtime?: string;
+	/** Target memory for keyboard HID usage codes */
+	keyCodeMemoryId?: string;
+	/** Target memory for keyboard pressed-state flag */
+	keyPressedMemoryId?: string;
 }
 
 export interface GlobalEditorDirectiveContext {
 	codeBlockId: string | number;
+	moduleId?: string;
+	blockType?: CodeBlockType;
 	runtimeRegistry: RuntimeRegistry;
 }
 

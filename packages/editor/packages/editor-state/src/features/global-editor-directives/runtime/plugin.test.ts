@@ -3,9 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { parseBlockDirectives } from '../../code-blocks/utils/parseBlockDirectives';
 import { resolveGlobalEditorDirectives } from '../registry';
 
-function createParsedBlock(code: string[], id?: string) {
+function createParsedBlock(
+	code: string[],
+	overrides: { id?: string; moduleId?: string; blockType?: 'module' | 'config' } = {}
+) {
 	return {
-		id,
+		id: overrides.id,
+		moduleId: overrides.moduleId,
+		blockType: overrides.blockType,
 		parsedDirectives: parseBlockDirectives(code),
 	};
 }
@@ -66,7 +71,13 @@ describe('@runtime directive', () => {
 
 	it('uses block id in errors when available', () => {
 		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['module a', '; @runtime UnknownRuntime', 'moduleEnd'], 'module_a')],
+			[
+				createParsedBlock(['module a', '; @runtime UnknownRuntime', 'moduleEnd'], {
+					id: 'module_a',
+					moduleId: 'a',
+					blockType: 'module',
+				}),
+			],
 			runtimeRegistry
 		);
 

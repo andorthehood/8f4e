@@ -58,7 +58,7 @@ describe('keyboardMemoryEvents', () => {
 	it('writes keyCode and keyPressed values and tracks latest still-pressed key', () => {
 		const setWordInMemory = vi.fn();
 		const state = {
-			compiledProjectConfig: {
+			globalEditorDirectives: {
 				keyCodeMemoryId: 'keys.code',
 				keyPressedMemoryId: 'keys.pressed',
 			},
@@ -100,7 +100,7 @@ describe('keyboardMemoryEvents', () => {
 	it('clears pressed flag on blur and skips unresolved memory ids silently', () => {
 		const setWordInMemory = vi.fn();
 		const state = {
-			compiledProjectConfig: {
+			globalEditorDirectives: {
 				keyCodeMemoryId: 'missing.code',
 				keyPressedMemoryId: 'keys.pressed',
 			},
