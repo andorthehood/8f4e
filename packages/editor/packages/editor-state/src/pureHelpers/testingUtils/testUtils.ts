@@ -7,7 +7,6 @@ import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
 import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
 import { Viewport } from '~/features/viewport/types';
-import { createDefaultProjectConfig } from '~/features/project-config/defaults';
 
 /**
  * Deep partial type that makes all properties and nested properties optional
@@ -308,7 +307,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		binaryAssets: [],
 		codeErrors: {
 			compilationErrors: [],
-			projectConfigErrors: [],
 			editorConfigErrors: [],
 			globalEditorDirectiveErrors: [],
 			shaderErrors: [],
@@ -326,7 +324,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				timerExpectedIntervalTimeMs: 0,
 			},
 		},
-		compiledProjectConfig: createDefaultProjectConfig(defaultRuntimeSettings),
 		compiledEditorConfig: {},
 		globalEditorDirectives: {},
 		dialog: {

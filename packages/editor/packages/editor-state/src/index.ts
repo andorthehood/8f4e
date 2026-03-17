@@ -11,7 +11,6 @@ import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/e
 import codeBlockNavigation from './features/code-blocks/features/codeBlockNavigation/effect';
 import demoModeNavigation from './features/demo-mode/demoModeNavigation';
 import compiler from './features/program-compiler/effect';
-import projectConfigEffect from './features/project-config/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
 import editorConfigEffect from './features/editor-config/effect';
@@ -38,8 +37,6 @@ import groupUngroupper from './features/code-blocks/features/group/ungroupper/ef
 import groupDeleter from './features/code-blocks/features/group/deleter/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
-import { createDefaultProjectConfig } from './features/project-config/defaults';
-import { getSelectedRuntimeDefaults } from './features/global-editor-directives/runtime/plugin';
 import runtimeDirectiveErrorsEffect from './features/runtime/directiveErrorsEffect';
 
 import type { Options, State, EventDispatcher } from './types';
@@ -52,13 +49,9 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		throw new Error(`Default runtime ID "${options.defaultRuntimeId}" not found in runtime registry`);
 	}
 
-	const defaultProjectConfig = createDefaultProjectConfig(
-		getSelectedRuntimeDefaults(options.defaultRuntimeId, options.runtimeRegistry, options.defaultRuntimeId)
-	);
-
 	// Create base state
 	const baseState = {
-		...createDefaultState(defaultProjectConfig),
+		...createDefaultState(),
 		callbacks: options.callbacks,
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
@@ -98,7 +91,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	colorDirectivesEffect(store);
 	parsedDirectivesUpdater(store);
 	globalEditorDirectivesEffect(store);
-	projectConfigEffect(store, events);
 	runtimeDirectiveErrorsEffect(store);
 	compiler(store, events);
 	graphicHelper(store, events);
@@ -125,7 +117,6 @@ export type {
 	Options,
 	CompilationResult,
 	ConfigCompilationResult,
-	ProjectConfig,
 	EditorConfig,
 	EditorConfigBlock,
 	CodeBlock,

@@ -62,9 +62,7 @@ export function resolveWebWorkerMIDIRuntimeDirectives(state: State) {
 }
 
 export function resolveWebWorkerMIDIRuntimeDirectivesFromBlocks(
-	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>,
-	state: Pick<State, 'compiledProjectConfig'>
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
-	void state;
 	return resolveSampleRateDirective(codeBlocks);
 }

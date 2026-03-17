@@ -8,7 +8,6 @@ import type { State, Project, CodeBlockGraphicData } from '~/types';
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { EMPTY_DEFAULT_PROJECT } from '~/types';
-import { createDefaultProjectConfig } from '~/features/project-config/defaults';
 
 const AUTO_ENV_BLOCK_ID = 'constants_env';
 const PROJECT_WITH_SAMPLE_RATE_DIRECTIVE: Project = {
@@ -55,7 +54,7 @@ describe('autoEnvConstants', () => {
 
 	beforeEach(() => {
 		const baseState = {
-			...createDefaultState(createDefaultProjectConfig({ sampleRate: 50 })),
+			...createDefaultState(),
 			runtimeRegistry: {
 				WebWorkerLogicRuntime: {
 					id: 'WebWorkerLogicRuntime',

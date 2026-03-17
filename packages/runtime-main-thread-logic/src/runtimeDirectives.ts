@@ -62,9 +62,7 @@ export function resolveMainThreadLogicRuntimeDirectives(state: State) {
 }
 
 export function resolveMainThreadLogicRuntimeDirectivesFromBlocks(
-	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>,
-	state: Pick<State, 'compiledProjectConfig'>
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
-	void state;
 	return resolveSampleRateDirective(codeBlocks);
 }

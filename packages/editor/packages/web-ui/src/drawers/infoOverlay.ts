@@ -76,16 +76,13 @@ export default function drawInfoOverlay(
 
 	// Runtime stats
 
-	const runtime = state.compiledProjectConfig;
 	const selectedRuntimeId = state.globalEditorDirectives.runtime ?? state.defaultRuntimeId;
 
 	debugText.push('');
 	debugText.push('Runtime: ' + selectedRuntimeId);
 
 	if (state.runtime.stats.timerExpectedIntervalTimeMs) {
-		debugText.push(
-			'Sample rate: ' + runtime.sampleRate + ' Hz (' + state.runtime.stats.timerExpectedIntervalTimeMs + ' ms interval)'
-		);
+		debugText.push('Loop interval: ' + state.runtime.stats.timerExpectedIntervalTimeMs + ' ms');
 		debugText.push('Loop time: ' + state.runtime.stats.timeToExecuteLoopMs.toFixed(2) + 'ms');
 		debugText.push('Timer accuracy: ' + state.runtime.stats.timerPrecisionPercentage.toFixed(2) + '%');
 		debugText.push('Timer drift: ' + state.runtime.stats.timerDriftMs.toFixed(2) + 'ms');

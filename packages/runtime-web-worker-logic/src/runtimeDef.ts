@@ -98,8 +98,7 @@ export function createWebWorkerLogicRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
-		resolveRuntimeDirectives: (codeBlocks, state) =>
-			resolveWebWorkerLogicRuntimeDirectivesFromBlocks(codeBlocks, state),
+		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerLogicRuntimeDirectivesFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerLogicRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},

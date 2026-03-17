@@ -62,9 +62,7 @@ export function resolveAudioWorkletRuntimeDirectives(state: State) {
 }
 
 export function resolveAudioWorkletRuntimeDirectivesFromBlocks(
-	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>,
-	state: Pick<State, 'compiledProjectConfig'>
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
-	void state;
 	return resolveSampleRateDirective(codeBlocks);
 }

@@ -27,7 +27,6 @@ describe('editorConfigEffect - diffing behavior', () => {
 		mockState = createMockState({
 			compiledEditorConfig: {},
 			codeErrors: {
-				projectConfigErrors: [],
 				editorConfigErrors: [],
 			},
 			graphicHelper: {

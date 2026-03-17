@@ -27,7 +27,6 @@ import type {
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
 import type { ConfigCompilationResult } from './features/config-compiler/types';
 import type { EditorConfig, EditorConfigBlock } from './features/editor-config/types';
-import type { ProjectConfig } from './features/project-config/types';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
@@ -90,7 +89,7 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 export type { Compiler, CompilationResult };
 
 // Re-export config types
-export type { ConfigCompilationResult, ProjectConfig, EditorConfig, EditorConfigBlock };
+export type { ConfigCompilationResult, EditorConfig, EditorConfigBlock };
 
 // Re-export global-editor-directives types
 export type { ResolvedGlobalEditorDirectives };
@@ -265,7 +264,6 @@ export interface State {
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	initialProjectState?: Project;
-	compiledProjectConfig: ProjectConfig;
 	compiledEditorConfig: EditorConfig;
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
@@ -283,7 +281,6 @@ export interface State {
 	globalEditorDirectives: ResolvedGlobalEditorDirectives;
 	codeErrors: {
 		compilationErrors: CodeError[];
-		projectConfigErrors: CodeError[];
 		editorConfigErrors: CodeError[];
 		globalEditorDirectiveErrors: CodeError[];
 		shaderErrors: CodeError[];

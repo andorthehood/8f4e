@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import compiler from '../src/features/program-compiler/effect';
-import projectConfigEffect from '../src/features/project-config/effect';
 import projectImport from '../src/features/project-import/effect';
 import { createMockState } from '../src/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
@@ -10,7 +9,7 @@ import { EMPTY_DEFAULT_PROJECT } from '../src/types';
 
 import type { State, Project } from '../src/types';
 
-describe('Loader - Project configuration reset', () => {
+describe('Loader - Project loading', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
@@ -21,10 +20,9 @@ describe('Loader - Project configuration reset', () => {
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
-	it('should clear compiled config when loading project without config blocks', async () => {
+	it('should load project without config reset plumbing', async () => {
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);
-		projectConfigEffect(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -33,28 +31,17 @@ describe('Loader - Project configuration reset', () => {
 
 		const loadProjectCallback = loadProjectCall![1];
 
-		// Create a project (memory config now comes from config blocks)
 		const project: Project = {
 			...EMPTY_DEFAULT_PROJECT,
 		};
 
-		// Load the project
 		loadProjectCallback({ project });
-
-		const compileConfigCall = onCalls.find(call => call[0] === 'compileConfig');
-		expect(compileConfigCall).toBeDefined();
-		await compileConfigCall![1]();
-
-		const expectedDefaultConfig = createMockState().compiledProjectConfig;
-		expect(mockState.compiledProjectConfig).toEqual(expectedDefaultConfig);
+		expect(mockState.initialProjectState).toEqual(project);
 	});
 
-	it('should reset compiled config when loading new project without config blocks', async () => {
-		mockState.compiledProjectConfig = { sampleRate: 123 };
-
+	it('should load new project without config state', async () => {
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);
-		projectConfigEffect(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -63,19 +50,11 @@ describe('Loader - Project configuration reset', () => {
 
 		const loadProjectCallback = loadProjectCall![1];
 
-		// Create a project (memory config now comes from config blocks)
 		const project: Project = {
 			...EMPTY_DEFAULT_PROJECT,
 		};
 
-		// Load the project
 		loadProjectCallback({ project });
-
-		const compileConfigCall = onCalls.find(call => call[0] === 'compileConfig');
-		expect(compileConfigCall).toBeDefined();
-		await compileConfigCall![1]();
-
-		const expectedDefaultConfig = createMockState().compiledProjectConfig;
-		expect(mockState.compiledProjectConfig).toEqual(expectedDefaultConfig);
+		expect(mockState.initialProjectState).toEqual(project);
 	});
 });
