@@ -11,7 +11,6 @@ export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry, runtime
 		type: 'object',
 		properties: {
 			runtimeSettings: runtimeSettingsSchema,
-			disableAutoCompilation: { type: 'boolean' },
 		},
 		additionalProperties: false,
 	};

@@ -133,7 +133,7 @@ describe('projectImport', () => {
 		});
 
 		it('should reset compiled config when loading new project without config blocks', async () => {
-			mockState.compiledProjectConfig = { ...mockState.compiledProjectConfig, disableAutoCompilation: true };
+			mockState.compiledProjectConfig = { runtimeSettings: { sampleRate: 123 } };
 
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
@@ -374,7 +374,9 @@ describe('projectImport', () => {
 			const runtimeReadyProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
 				compiledProjectConfig: {
-					disableAutoCompilation: true,
+					runtimeSettings: {
+						sampleRate: 123,
+					},
 				},
 				compiledWasm: 'base64encodedwasm',
 				memorySnapshot: 'base64encodedmemory',
@@ -394,7 +396,9 @@ describe('projectImport', () => {
 			await compileConfigCall![1]();
 
 			expect(mockState.compiledProjectConfig).toEqual({
-				disableAutoCompilation: true,
+				runtimeSettings: {
+					sampleRate: 123,
+				},
 			});
 		});
 

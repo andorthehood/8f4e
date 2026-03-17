@@ -16,6 +16,24 @@ const PROJECT_WITH_SAMPLE_RATE_DIRECTIVE: Project = {
 	codeBlocks: [{ code: ['module rate', '; ~sampleRate 48000', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
 };
 
+function resolveSampleRateFromDirectives(
+	codeBlocks: Array<{
+		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number }>;
+		id?: string | number;
+	}>
+) {
+	let sampleRate = 50;
+	for (const block of codeBlocks) {
+		for (const directive of block.parsedDirectives) {
+			if (directive.prefix === '~' && directive.name === 'sampleRate' && directive.args[0]) {
+				sampleRate = Number(directive.args[0]);
+			}
+		}
+	}
+
+	return { sampleRate, errors: [] };
+}
+
 function createGraphicEnvBlock(code: string[], overrides: Partial<CodeBlockGraphicData> = {}): CodeBlockGraphicData {
 	return createMockCodeBlock({
 		id: AUTO_ENV_BLOCK_ID,
@@ -38,6 +56,16 @@ describe('autoEnvConstants', () => {
 	beforeEach(() => {
 		const baseState = {
 			...createDefaultState(createDefaultProjectConfig({ sampleRate: 50 })),
+			runtimeRegistry: {
+				WebWorkerLogicRuntime: {
+					id: 'WebWorkerLogicRuntime',
+					defaults: { sampleRate: 50 },
+					schema: { type: 'object', properties: {} },
+					resolveRuntimeDirectives: codeBlocks => resolveSampleRateFromDirectives(codeBlocks),
+					factory: () => () => {},
+				},
+			},
+			defaultRuntimeId: 'WebWorkerLogicRuntime',
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
 			},
@@ -122,6 +150,7 @@ describe('autoEnvConstants', () => {
 			}),
 			createGraphicEnvBlock(envCodeBlock?.code ?? []),
 		]);
+		store.set('globalEditorDirectives.runtime', 'WebWorkerLogicRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -217,6 +246,7 @@ describe('autoEnvConstants', () => {
 				blockType: 'module',
 			}),
 		]);
+		store.set('globalEditorDirectives.runtime', 'WebWorkerLogicRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
@@ -243,6 +273,7 @@ describe('autoEnvConstants', () => {
 				blockType: 'module',
 			}),
 		]);
+		store.set('globalEditorDirectives.runtime', 'WebWorkerLogicRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');

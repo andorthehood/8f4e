@@ -3,10 +3,8 @@
 config project
 ; @pos -14 8
 ; @runtime WebWorkerLogicRuntime
+; @disableAutoCompilation
 ; ~sampleRate 1
-
-rescope disableAutoCompilation
-set true 
 
 configEnd
 

@@ -3,8 +3,6 @@ import createStateManager from '@8f4e/state-manager';
 
 import compiler from './effect';
 
-import projectConfigEffect from '../project-config/effect';
-
 import type { State } from '~/types';
 
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
@@ -31,7 +29,6 @@ describe('disableAutoCompilation feature', () => {
 		mockCompileConfig = vi.fn().mockResolvedValue({
 			config: {
 				runtimeSettings: { sampleRate: 50 },
-				disableAutoCompilation: false,
 			},
 			errors: [],
 		});
@@ -45,7 +42,7 @@ describe('disableAutoCompilation feature', () => {
 
 		const configBlock = createMockCodeBlock({
 			id: 'config-block',
-			code: ['config project', 'disableAutoCompilation false', 'configEnd'],
+			code: ['config project', 'configEnd'],
 			creationIndex: 1,
 			blockType: 'config',
 		});
@@ -67,11 +64,9 @@ describe('disableAutoCompilation feature', () => {
 	describe('Project compilation', () => {
 		it('should skip compilation when disableAutoCompilation is true', async () => {
 			vi.useFakeTimers();
-			store.set('compiledProjectConfig.disableAutoCompilation', true);
-
 			compiler(store, mockEvents);
+			store.set('globalEditorDirectives.disableAutoCompilation', true);
 
-			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig, disableAutoCompilation: true });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -89,11 +84,9 @@ describe('disableAutoCompilation feature', () => {
 
 		it('should compile normally when disableAutoCompilation is false', async () => {
 			vi.useFakeTimers();
-			store.set('compiledProjectConfig.disableAutoCompilation', false);
-
 			compiler(store, mockEvents);
+			store.set('globalEditorDirectives.disableAutoCompilation', false);
 
-			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig, disableAutoCompilation: false });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -104,7 +97,6 @@ describe('disableAutoCompilation feature', () => {
 			vi.useFakeTimers();
 			mockState.callbacks.compileCode = undefined;
 			const compiledModules = { mod: {} };
-			store.set('compiledProjectConfig.disableAutoCompilation', true);
 			mockState.initialProjectState = {
 				...mockState.initialProjectState,
 				compiledWasm: 'AQIDBA==',
@@ -112,8 +104,8 @@ describe('disableAutoCompilation feature', () => {
 			};
 
 			compiler(store, mockEvents);
+			store.set('globalEditorDirectives.disableAutoCompilation', true);
 
-			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig, disableAutoCompilation: true });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -127,59 +119,16 @@ describe('disableAutoCompilation feature', () => {
 		});
 	});
 
-	describe('Config compilation', () => {
-		it('should compile config even when disableAutoCompilation is true', async () => {
-			store.set('compiledProjectConfig.disableAutoCompilation', true);
+	describe('@disableAutoCompilation integration', () => {
+		it('should skip compilation when the global editor directive is enabled', async () => {
+			vi.useFakeTimers();
+			compiler(store, mockEvents);
 
-			projectConfigEffect(store, mockEvents);
+			store.set('globalEditorDirectives.disableAutoCompilation', true);
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
-			await new Promise(resolve => setTimeout(resolve, 0));
-
-			expect(mockCompileConfig).toHaveBeenCalled();
-		});
-
-		it('should compile config normally when disableAutoCompilation is false', async () => {
-			store.set('compiledProjectConfig.disableAutoCompilation', false);
-
-			projectConfigEffect(store, mockEvents);
-
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
-			await new Promise(resolve => setTimeout(resolve, 0));
-
-			expect(mockCompileConfig).toHaveBeenCalled();
-		});
-	});
-
-	describe('applyConfigToState integration', () => {
-		it('should set disableAutoCompilation flag from config', async () => {
-			mockCompileConfig.mockResolvedValue({
-				config: { disableAutoCompilation: true },
-				errors: [],
-			});
-
-			projectConfigEffect(store, mockEvents);
-
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
-			await new Promise(resolve => setTimeout(resolve, 0));
-
-			expect(mockState.compiledProjectConfig.disableAutoCompilation).toBe(true);
-		});
-
-		it('should not change disableAutoCompilation flag when not in config', async () => {
-			store.set('compiledProjectConfig.disableAutoCompilation', false);
-
-			mockCompileConfig.mockResolvedValue({
-				config: {},
-				errors: [],
-			});
-
-			projectConfigEffect(store, mockEvents);
-
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
-			await new Promise(resolve => setTimeout(resolve, 0));
-
-			expect(mockState.compiledProjectConfig.disableAutoCompilation).toBe(false);
+			expect(mockCompileCode).not.toHaveBeenCalled();
 		});
 	});
 });
