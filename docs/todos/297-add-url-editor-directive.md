@@ -3,6 +3,7 @@ title: 'TODO: Add url editor directive for clickable links'
 priority: Medium
 effort: 4-8h
 created: 2026-03-12
+issue: https://github.com/andorthehood/8f4e/issues/413
 status: Open
 completed: null
 ---
