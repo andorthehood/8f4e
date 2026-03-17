@@ -1,7 +1,11 @@
-import findClosestCodeBlockInDirection, { Direction } from '../../utils/finders/findClosestCodeBlockInDirection';
-import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
-import type { StateManager } from '@8f4e/state-manager';
+import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCodeBlockInDirection';
+import { deriveDirectiveState } from '../directives/registry';
+import centerViewportOnCodeBlockCursor from '../../../viewport/centerViewportOnCodeBlockCursor';
+import gapCalculator from '../../../code-editing/gapCalculator';
+import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 
+import type { Direction } from '../../utils/types';
+import type { StateManager } from '@8f4e/state-manager';
 import type { State, EventDispatcher, NavigateCodeBlockEvent } from '~/types';
 
 type StateSource = StateManager<State> | State;
@@ -17,6 +21,33 @@ function setSelectedCodeBlock(source: StateSource, codeBlock: State['graphicHelp
 	}
 
 	source.graphicHelper.selectedCodeBlock = codeBlock;
+}
+
+function alignTargetBlockCursorForHorizontalNavigation(
+	state: State,
+	sourceBlock: State['graphicHelper']['selectedCodeBlock'],
+	targetBlock: State['graphicHelper']['selectedCodeBlock']
+): void {
+	if (!sourceBlock || !targetBlock) {
+		return;
+	}
+
+	const sourceAbsoluteCursorY = sourceBlock.y + sourceBlock.offsetY + sourceBlock.cursor.y;
+	const targetRelativeCursorY = sourceAbsoluteCursorY - (targetBlock.y + targetBlock.offsetY);
+	const targetPhysicalRow = Math.max(Math.floor(targetRelativeCursorY / state.viewport.hGrid), 0);
+	const targetDirectiveState = deriveDirectiveState(targetBlock.code, targetBlock.parsedDirectives, {
+		isExpandedForEditing: true,
+	});
+	const targetDisplayRow = reverseGapCalculator(targetPhysicalRow, targetBlock.gaps);
+	const boundedDisplayRow = Math.min(
+		Math.max(targetDisplayRow, 0),
+		Math.max(targetDirectiveState.displayModel.displayRowToRawRow.length - 1, 0)
+	);
+	const targetRawRow = targetDirectiveState.displayModel.displayRowToRawRow[boundedDisplayRow] ?? 0;
+
+	targetBlock.cursor.row = targetRawRow;
+	targetBlock.cursor.col = Math.min(sourceBlock.cursor.col, targetBlock.code[targetRawRow]?.length ?? 0);
+	targetBlock.cursor.y = gapCalculator(boundedDisplayRow, targetBlock.gaps) * state.viewport.hGrid;
 }
 
 /**
@@ -53,11 +84,15 @@ export function navigateToCodeBlockInDirection(stateSource: StateSource, directi
 
 	// If we found a different block, select it and center viewport on it
 	if (targetBlock !== currentBlock) {
+		if (direction === 'left' || direction === 'right') {
+			alignTargetBlockCursorForHorizontalNavigation(state, currentBlock, targetBlock);
+		}
+
 		setSelectedCodeBlock(stateSource, targetBlock);
 		// Enable animation for this programmatic viewport change, but restore original value after
 		const originalViewportAnimations = state.featureFlags.viewportAnimations;
 		state.featureFlags.viewportAnimations = true;
-		centerViewportOnCodeBlock(state.viewport, targetBlock);
+		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
 		state.featureFlags.viewportAnimations = originalViewportAnimations;
 		return true;
 	}
@@ -94,7 +129,7 @@ export function jumpToCodeBlock(stateSource: StateSource, creationIndex: number,
 		// Enable animation for this programmatic viewport change, but restore original value after
 		const originalViewportAnimations = state.featureFlags.viewportAnimations;
 		state.featureFlags.viewportAnimations = true;
-		centerViewportOnCodeBlock(state.viewport, targetBlock);
+		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
 		state.featureFlags.viewportAnimations = originalViewportAnimations;
 		return true;
 	}
@@ -121,7 +156,7 @@ export function goHome(stateSource: StateSource): void {
 
 	if (homeBlock) {
 		setSelectedCodeBlock(stateSource, homeBlock);
-		centerViewportOnCodeBlock(state.viewport, homeBlock);
+		centerViewportOnCodeBlockCursor(state.viewport, homeBlock);
 	} else {
 		state.viewport.x = 0;
 		state.viewport.y = 0;
