@@ -2,7 +2,7 @@ import type { CodeError, State, ParsedDirectiveRecord } from '@8f4e/editor';
 
 const DEFAULT_SAMPLE_RATE = 50;
 
-function resolveSampleRateDirective(
+function resolveWebWorkerLogicRuntimeSettingsFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
 	const errors: CodeError[] = [];
@@ -51,26 +51,31 @@ function resolveSampleRateDirective(
 		}
 	}
 
+	const sampleRate = resolvedSampleRate ?? DEFAULT_SAMPLE_RATE;
+
 	return {
-		sampleRate: resolvedSampleRate ?? DEFAULT_SAMPLE_RATE,
+		sampleRate,
+		envConstants: [`const SAMPLE_RATE ${sampleRate}`, `const INV_SAMPLE_RATE ${1 / sampleRate}`],
 		errors,
 	};
 }
 
 export function resolveWebWorkerLogicRuntimeDirectives(state: State) {
-	return resolveSampleRateDirective(state.graphicHelper.codeBlocks);
+	const { sampleRate, errors } = resolveWebWorkerLogicRuntimeSettingsFromBlocks(state.graphicHelper.codeBlocks);
+
+	return { sampleRate, errors };
 }
 
 export function resolveWebWorkerLogicRuntimeDirectivesFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
-	return resolveSampleRateDirective(codeBlocks);
+	const { sampleRate, errors } = resolveWebWorkerLogicRuntimeSettingsFromBlocks(codeBlocks);
+
+	return { sampleRate, errors };
 }
 
 export function getWebWorkerLogicRuntimeEnvConstantsFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ): string[] {
-	const { sampleRate } = resolveSampleRateDirective(codeBlocks);
-
-	return [`const SAMPLE_RATE ${sampleRate}`, `const INV_SAMPLE_RATE ${1 / sampleRate}`];
+	return resolveWebWorkerLogicRuntimeSettingsFromBlocks(codeBlocks).envConstants;
 }
