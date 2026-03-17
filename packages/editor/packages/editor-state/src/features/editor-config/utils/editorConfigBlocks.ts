@@ -22,26 +22,3 @@ export function serializeEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]):
 			},
 		}));
 }
-
-export const DEFAULT_EDITOR_CONFIG_BLOCK: EditorConfigBlock = {
-	code: [
-		'config editor',
-		'; @favorite',
-		"; This is a special block that doesn't",
-		'; get saved with the project.',
-		'',
-		'; Available fonts:',
-		'; - 8x16',
-		'; - 6x10',
-		'rescope "font"',
-		'push "8x16"',
-		'set',
-		'',
-		'configEnd',
-	],
-	disabled: false,
-	gridCoordinates: {
-		x: 0,
-		y: 0,
-	},
-};

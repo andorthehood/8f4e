@@ -327,9 +327,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			},
 		},
 		compiledProjectConfig: createDefaultProjectConfig(defaultRuntimeSettings),
-		compiledEditorConfig: {
-			font: '8x16',
-		},
+		compiledEditorConfig: {},
 		globalEditorDirectives: {},
 		dialog: {
 			show: false,

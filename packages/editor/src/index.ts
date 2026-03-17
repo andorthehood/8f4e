@@ -95,7 +95,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = await generateSprite({
-		font: state.compiledEditorConfig.font || '8x16',
+		font: state.globalEditorDirectives.font ?? '8x16',
 		colorScheme: state.colorScheme,
 	});
 

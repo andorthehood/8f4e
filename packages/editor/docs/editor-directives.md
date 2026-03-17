@@ -16,11 +16,24 @@ Examples:
 ; @watch counter
 ; @plot audioBuffer -2 2 lengthMemory
 ; @button gate0 0 1
+; @font 8x16
 ```
 
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
 
 ## Supported Directives
+
+### `@font`
+
+Select the editor font used for rendering code blocks and UI text.
+
+```txt
+; @font <font>
+```
+
+Supported fonts:
+- `8x16`
+- `6x10`
 
 ### `@watch`
 

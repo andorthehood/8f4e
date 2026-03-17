@@ -25,7 +25,7 @@ renderers can replace it.
 Configure colors with editor directives using `; @color <path> <value>`.
 
 - `config project` no longer owns `colorScheme`.
-- `config editor` controls editor presentation settings like `font`.
+- Global editor directives control editor presentation settings like `font`.
 - Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).
 - Main groups are `text`, `fill`, and `icons`.
 
@@ -43,3 +43,11 @@ Example color overrides:
 ; @color icons.feedbackScale5 #0000ff
 ```
 - `docs/color-paths.md` - Configurable color paths for `; @color <path> <value>`.
+
+## Font
+
+Select the editor font with a global editor directive:
+
+```txt
+; @font 8x16
+```

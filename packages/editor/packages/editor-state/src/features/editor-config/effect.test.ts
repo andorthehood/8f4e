@@ -25,9 +25,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 		mockCompileConfigWithDefaults = compileConfigWithDefaults as Mock;
 
 		mockState = createMockState({
-			compiledEditorConfig: {
-				font: '8x16',
-			},
+			compiledEditorConfig: {},
 			codeErrors: {
 				projectConfigErrors: [],
 				editorConfigErrors: [],
@@ -36,7 +34,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 				codeBlocks: [
 					createMockCodeBlock({
 						id: 'editor-config',
-						code: ['# config editor'],
+						code: ['config editor', 'configEnd'],
 						blockType: 'config',
 						configType: 'editor',
 					}),
@@ -44,7 +42,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 			},
 			callbacks: {
 				compileConfig: vi.fn().mockResolvedValue({
-					result: { font: '8x16' },
+					result: {},
 					errors: [],
 				}),
 			},
@@ -104,8 +102,8 @@ describe('editorConfigEffect - diffing behavior', () => {
 	it('should call store.set for compiledEditorConfig when config changes', async () => {
 		// Change the compiled config result
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { font: '6x10' }, // Different value
-			mergedConfig: { font: '6x10' },
+			compiledConfig: { changed: true },
+			mergedConfig: { changed: true },
 			errors: [],
 			hasSource: true,
 		});
@@ -126,13 +124,13 @@ describe('editorConfigEffect - diffing behavior', () => {
 			call => call[0] === 'compiledEditorConfig'
 		);
 		expect(setCallsForEditorConfig).toHaveLength(1);
-		expect(setCallsForEditorConfig[0][1]).toEqual({ font: '6x10' });
+		expect(setCallsForEditorConfig[0][1]).toEqual({ changed: true });
 	});
 
 	it('should not call store.set for editorConfigErrors when errors are unchanged', async () => {
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { font: '8x16' },
-			mergedConfig: { font: '8x16' },
+			compiledConfig: {},
+			mergedConfig: {},
 			errors: [], // Same as initial state
 			hasSource: true,
 		});
@@ -156,8 +154,8 @@ describe('editorConfigEffect - diffing behavior', () => {
 	it('should call store.set for editorConfigErrors when errors change', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { font: '8x16' },
-			mergedConfig: { font: '8x16' },
+			compiledConfig: {},
+			mergedConfig: {},
 			errors: newErrors,
 			hasSource: true,
 		});
@@ -182,8 +180,8 @@ describe('editorConfigEffect - diffing behavior', () => {
 	it('should update errors but keep last valid config when errors are present', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { font: '6x10' },
-			mergedConfig: { font: '6x10' },
+			compiledConfig: { changed: true },
+			mergedConfig: { changed: true },
 			errors: newErrors,
 			hasSource: true,
 		});
