@@ -17,8 +17,8 @@ The global editor directives effect currently rescans every code block whenever:
 - `graphicHelper.selectedCodeBlockForProgrammaticEdit.code` changes
 
 Current behavior:
-- [packages/editor/packages/editor-state/src/features/global-editor-directives/effect.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/features/global-editor-directives/effect.ts) always calls the global resolver over the full project
-- [packages/editor/packages/editor-state/src/features/global-editor-directives/registry.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/features/global-editor-directives/registry.ts) loops through every code block to rebuild the resolved state and error list
+- [packages/editor/packages/editor-state/src/features/global-editor-directives/effect.ts](packages/editor/packages/editor-state/src/features/global-editor-directives/effect.ts) always calls the global resolver over the full project
+- [packages/editor/packages/editor-state/src/features/global-editor-directives/registry.ts](packages/editor/packages/editor-state/src/features/global-editor-directives/registry.ts) loops through every code block to rebuild the resolved state and error list
 
 Why this is a problem:
 - the selected-block subscriptions are frequent while editing

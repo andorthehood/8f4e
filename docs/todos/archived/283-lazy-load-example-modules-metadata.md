@@ -79,9 +79,9 @@ Candidate approaches:
 
 ## References
 
-- [editor.ts](/Users/andorpolgar/git/8f4e/src/editor.ts)
-- [registry.ts](/Users/andorpolgar/git/8f4e/src/examples/registry.ts)
-- [exampleModules.ts](/Users/andorpolgar/git/8f4e/src/examples/exampleModules.ts)
+- [editor.ts](src/editor.ts)
+- [registry.ts](src/examples/registry.ts)
+- [exampleModules.ts](src/examples/exampleModules.ts)
 
 ## Notes
 

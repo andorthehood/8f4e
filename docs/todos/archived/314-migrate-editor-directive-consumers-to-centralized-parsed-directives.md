@@ -3,8 +3,8 @@ title: 'TODO: Migrate editor directive consumers to centralized parsed directive
 priority: Medium
 effort: 1-2d
 created: 2026-03-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-17
 ---
 
 # TODO: Migrate editor directive consumers to centralized parsed directives

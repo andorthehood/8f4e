@@ -3,6 +3,8 @@ title: 'TODO: Move runtime env constants to runtime contributors'
 priority: medium
 effort: 4-8h
 created: 2026-03-17
+completed: 2026-03-17
+status: Completed
 owner: core
 ---
 
@@ -11,7 +13,7 @@ owner: core
 ## Context
 
 The auto-generated `constants env` block is currently assembled in editor-state by
-[auto-env-constants/effect.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/features/code-blocks/features/auto-env-constants/effect.ts).
+[auto-env-constants/effect.ts](packages/editor/packages/editor-state/src/features/code-blocks/features/auto-env-constants/effect.ts).
 
 That effect still owns runtime-specific values such as:
 

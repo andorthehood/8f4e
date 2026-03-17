@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 74
+Active todo files: 69
 
 ## Active TODOs
 
@@ -66,10 +66,6 @@ Active todo files: 74
 | 308 | Simplify memory instruction default value resolution | 🟡 | 4-8h | 2026-03-14 | Memory instruction argument handling is now split between a syntax-phase classifier and a semantic-phase resolver, but the semantic side still carries a long branch ladder with repeated lookup logic and several no-op... |
 | 309 | Extract shared module memory identifier parser | 🟡 | 2-4h | 2026-03-14 | The codebase currently parses `module.memory` identifiers in multiple places with slightly different local logic. |
 | 310 | Simplify compiler project flattening and compilable block checks | 🟡 | 1-3h | 2026-03-14 | The editor compiler effect currently does more array work and duplicated block-type checks than necessary during project flattening and recompile triggering. |
-| 311 | Derive memory size from compiled program footprint | 🟡 | 1-2d | 2026-03-16 | Projects currently author `memorySizeBytes` manually in project config even though the compiler already computes the actual static memory footprint required by the program. |
-| 314 | Migrate editor directive consumers to centralized parsed directives | 🟡 | 1-2d | 2026-03-16 | The editor-state now has a centralized parsed-directive pass that stores `parsedDirectives` on each `CodeBlockGraphicData`. |
-| 316 | Remove runtime packaging concerns from CLI | 🟡 | 1-2d | 2026-03-16 | The CLI currently compiles and packages runtime-facing project configuration even though its intended responsibility is to build program artifacts rather than prepare projects for execution. |
-| 318 | Move runtime env constants to runtime contributors | 🟡 | 4-8h | 2026-03-17 | The auto-generated `constants env` block currently hardcodes runtime-specific values such as sample rate and audio buffer size inside editor-state, even though those values are owned by the selected runtime. |
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |
