@@ -9,49 +9,28 @@ import { replaceGroupName } from '../group/replaceGroupName';
 import upsertPos from '../directives/pos/upsert';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import { renameInterModuleReferences } from '../../utils/renameInterModuleReferences';
 import { hasDirective } from '../directives/utils';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State } from '~/types';
 
 /**
- * Escapes special regex characters in a string
- */
-function escapeRegex(str: string): string {
-	return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-/**
  * Updates inter-module references in code when pasting multiple blocks.
  * Replaces old module/function IDs with new ones based on the ID mapping.
- * Handles references like &module.memory, module.memory&, $module.memory, %module.memory
+ * Handles current inter-module reference forms such as &module:memory, module:memory&, module:&, and $module.memory.
  */
 export function updateInterModuleReferences(code: string[], idMapping: Map<string, string>): string[] {
 	if (idMapping.size === 0) {
 		return code;
 	}
 
-	return code.map(line => {
-		let updatedLine = line;
+	let updatedCode = code;
+	for (const [oldId, newId] of idMapping.entries()) {
+		updatedCode = renameInterModuleReferences(updatedCode, oldId, newId);
+	}
 
-		// Update each old ID to new ID in the line
-		for (const [oldId, newId] of idMapping.entries()) {
-			// Use word boundaries to match complete module/function names
-			// Matches patterns like: &oldId.memory, oldId.memory&, $oldId.memory, %oldId.memory
-			const patterns = [
-				new RegExp(`\\b${escapeRegex(oldId)}\\.`, 'g'), // oldId. (covers &oldId., $oldId., %oldId.)
-				new RegExp(`\\.${escapeRegex(oldId)}\\b`, 'g'), // .oldId (for things like memory.oldId)
-			];
-
-			for (const pattern of patterns) {
-				updatedLine = updatedLine.replace(pattern, match => {
-					return match.replace(oldId, newId);
-				});
-			}
-		}
-
-		return updatedLine;
-	});
+	return updatedCode;
 }
 
 /**
