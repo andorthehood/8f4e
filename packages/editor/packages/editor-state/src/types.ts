@@ -149,7 +149,7 @@ export interface FeatureFlags {
 	/** Enable/disable all editing functionality (create, edit, delete, save) */
 	editing: boolean;
 
-	/** Enable/disable keyboard toggling between view/edit modes (i/Escape) */
+	/** Enable/disable keyboard toggling between view/edit modes (e/Escape) */
 	modeToggling: boolean;
 
 	/** Enable/disable automatic demo mode with periodic code block navigation */

@@ -25,9 +25,6 @@ async function init() {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	const editor = await initEditor(canvas, {
-		featureFlags: {
-			infoOverlay: true,
-		},
 		runtimeRegistry,
 		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {

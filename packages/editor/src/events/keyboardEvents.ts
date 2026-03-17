@@ -47,9 +47,9 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 		const { key, metaKey, ctrlKey } = event;
 		const state = store.getState();
 
-		// Modal switching: i enters edit mode from view mode, Esc returns to view mode.
+		// Modal switching: e enters edit mode from view mode, Esc returns to view mode.
 		if (state.featureFlags.modeToggling) {
-			if (!state.featureFlags.editing && key === 'i' && !event.altKey && !event.ctrlKey && !event.metaKey) {
+			if (!state.featureFlags.editing && key === 'e' && !event.altKey && !event.ctrlKey && !event.metaKey) {
 				event.preventDefault();
 				store.set('featureFlags.editing', true);
 				store.set('featureFlags.codeLineSelection', true);

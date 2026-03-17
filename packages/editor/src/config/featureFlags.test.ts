@@ -29,7 +29,7 @@ describe('Feature Flags Configuration', () => {
 
 	test('defaultFeatureFlags should default to view mode with editing disabled', () => {
 		expect(defaultFeatureFlags.contextMenu).toBe(true);
-		expect(defaultFeatureFlags.infoOverlay).toBe(true);
+		expect(defaultFeatureFlags.infoOverlay).toBe(false);
 		expect(defaultFeatureFlags.moduleDragging).toBe(true);
 		expect(defaultFeatureFlags.codeLineSelection).toBe(false);
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
@@ -45,7 +45,7 @@ describe('Feature Flags Configuration', () => {
 		const result = validateFeatureFlags(config);
 
 		expect(result.contextMenu).toBe(false);
-		expect(result.infoOverlay).toBe(true);
+		expect(result.infoOverlay).toBe(false);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
@@ -62,7 +62,7 @@ describe('Feature Flags Configuration', () => {
 
 		expect(result.editing).toBe(false);
 		expect(result.contextMenu).toBe(true);
-		expect(result.infoOverlay).toBe(true);
+		expect(result.infoOverlay).toBe(false);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
 	});
@@ -78,7 +78,7 @@ describe('Feature Flags Configuration', () => {
 		expect(result.editing).toBe(false);
 		expect(result.contextMenu).toBe(false);
 		expect(result.moduleDragging).toBe(false);
-		expect(result.infoOverlay).toBe(true);
+		expect(result.infoOverlay).toBe(false);
 		expect(result.viewportDragging).toBe(true);
 	});
 
@@ -90,7 +90,7 @@ describe('Feature Flags Configuration', () => {
 
 		expect(result.demoMode).toBe(true);
 		expect(result.contextMenu).toBe(true);
-		expect(result.infoOverlay).toBe(true);
+		expect(result.infoOverlay).toBe(false);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);

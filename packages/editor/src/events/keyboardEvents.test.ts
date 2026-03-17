@@ -104,9 +104,9 @@ describe('keyboardEvents mode switching', () => {
 		Object.assign(globalThis, { window: originalWindow });
 	});
 
-	it('enters edit mode when i is pressed in view mode', () => {
+	it('enters edit mode when e is pressed in view mode', () => {
 		const cleanup = keyboardEvents(events, store);
-		const event = createKeyboardEventLike('i');
+		const event = createKeyboardEventLike('e');
 
 		mockWindow.emit('keydown', event);
 
@@ -145,7 +145,7 @@ describe('keyboardEvents mode switching', () => {
 	it('does not toggle modes when modeToggling is disabled', () => {
 		featureFlags.modeToggling = false;
 		const cleanup = keyboardEvents(events, store);
-		const enterEditEvent = createKeyboardEventLike('i');
+		const enterEditEvent = createKeyboardEventLike('e');
 
 		mockWindow.emit('keydown', enterEditEvent);
 
