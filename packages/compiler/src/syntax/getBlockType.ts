@@ -1,69 +1,27 @@
-export type CodeBlockType = 'module' | 'config' | 'function' | 'constants' | 'unknown';
+export type CodeBlockType = 'module' | 'function' | 'constants' | 'unknown';
 
 /**
- * Detects whether a block of code represents a module, config, function, or unknown block by scanning for marker pairs.
+ * Detects whether a block of code represents a module, function, constants, or unknown block by scanning for marker pairs.
  * @param code - Code block represented as an array of lines.
  * @returns The inferred code block type.
  */
 export function getBlockType(code: string[]): CodeBlockType {
 	const hasModule = code.some(line => /^\s*module(\s|$)/.test(line));
 	const hasModuleEnd = code.some(line => /^\s*moduleEnd(\s|$)/.test(line));
-	const hasConfig = code.some(line => /^\s*config(\s|$)/.test(line));
-	const hasConfigEnd = code.some(line => /^\s*configEnd(\s|$)/.test(line));
 	const hasFunction = code.some(line => /^\s*function(\s|$)/.test(line));
 	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
 	const hasConstants = code.some(line => /^\s*constants(\s|$)/.test(line));
 	const hasConstantsEnd = code.some(line => /^\s*constantsEnd(\s|$)/.test(line));
 
-	if (
-		hasModule &&
-		hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasConstants &&
-		!hasConstantsEnd
-	) {
+	if (hasModule && hasModuleEnd && !hasFunction && !hasFunctionEnd && !hasConstants && !hasConstantsEnd) {
 		return 'module';
 	}
 
-	if (
-		hasConfig &&
-		hasConfigEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasConstants &&
-		!hasConstantsEnd
-	) {
-		return 'config';
-	}
-
-	if (
-		hasFunction &&
-		hasFunctionEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
-		!hasConstants &&
-		!hasConstantsEnd
-	) {
+	if (hasFunction && hasFunctionEnd && !hasModule && !hasModuleEnd && !hasConstants && !hasConstantsEnd) {
 		return 'function';
 	}
 
-	if (
-		hasConstants &&
-		hasConstantsEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
-		!hasFunction &&
-		!hasFunctionEnd
-	) {
+	if (hasConstants && hasConstantsEnd && !hasModule && !hasModuleEnd && !hasFunction && !hasFunctionEnd) {
 		return 'constants';
 	}
 
@@ -76,10 +34,6 @@ if (import.meta.vitest) {
 	describe('getBlockType', () => {
 		it('detects module blocks', () => {
 			expect(getBlockType(['module foo', 'moduleEnd'])).toBe('module');
-		});
-
-		it('detects config blocks', () => {
-			expect(getBlockType(['config', 'configEnd'])).toBe('config');
 		});
 
 		it('detects function blocks', () => {

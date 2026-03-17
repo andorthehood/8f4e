@@ -1,9 +1,8 @@
 import { getModuleId, getFunctionId, getConstantsId } from '@8f4e/compiler/syntax';
-import { extractConfigType } from '../../config-compiler/utils/extractConfigBody';
 
 /**
  * Retrieves the ID from a code block based on its type.
- * Tries to identify the code block as a module, function, constants, or config block.
+ * Tries to identify the code block as a module, function, or constants block.
  * Shader blocks (vertexShader / fragmentShader) do not carry IDs.
  *
  * @param code - Code block represented as an array of lines
@@ -23,11 +22,6 @@ export default function getCodeBlockId(code: string[]): string {
 	const constantsId = getConstantsId(code);
 	if (constantsId) {
 		return `constants_${constantsId}`;
-	}
-
-	const configType = extractConfigType(code);
-	if (configType) {
-		return `config_${configType}`;
 	}
 
 	return '';
@@ -50,11 +44,6 @@ if (import.meta.vitest) {
 		it('returns constants ID for constants blocks', () => {
 			const code = ['constants env', '', 'constantsEnd'];
 			expect(getCodeBlockId(code)).toBe('constants_env');
-		});
-
-		it('returns config ID for config blocks', () => {
-			const code = ['config project', '', 'configEnd'];
-			expect(getCodeBlockId(code)).toBe('config_project');
 		});
 
 		it('returns empty string for shader blocks', () => {

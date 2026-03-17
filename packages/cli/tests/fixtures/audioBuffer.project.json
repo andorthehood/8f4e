@@ -2,12 +2,12 @@
   "codeBlocks": [
     {
       "code": [
-        "config project",
+        "module projectConfig",
         "; @runtime AudioWorkletRuntime",
         "; ~sampleRate 44100",
         "; @exportFileName audioBuffer",
         "",
-        "configEnd"
+        "moduleEnd"
       ],
       "gridCoordinates": {
         "x": -87,

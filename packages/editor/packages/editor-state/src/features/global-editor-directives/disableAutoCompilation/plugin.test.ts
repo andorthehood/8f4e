@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { parseBlockDirectives } from '../../code-blocks/utils/parseBlockDirectives';
 import { resolveGlobalEditorDirectives } from '../registry';
 
-function createParsedBlock(code: string[], overrides: { id?: string; blockType?: 'module' | 'config' } = {}) {
+function createParsedBlock(code: string[], overrides: { id?: string; blockType?: 'module' } = {}) {
 	return {
 		id: overrides.id,
 		blockType: overrides.blockType,
@@ -14,7 +14,7 @@ function createParsedBlock(code: string[], overrides: { id?: string; blockType?:
 describe('@disableAutoCompilation directive', () => {
 	it('resolves to true without arguments', () => {
 		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['config project', '; @disableAutoCompilation', 'configEnd'])],
+			[createParsedBlock(['module projectConfig', '; @disableAutoCompilation', 'moduleEnd'])],
 			{}
 		);
 

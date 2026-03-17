@@ -8,7 +8,7 @@ Runtime directives configure project-level runtime behaviour from within source 
 ; ~<name> <args...>
 ```
 
-Runtime directives are valid in **any code block type** (module, function, constants, config, etc.) and always apply project-globally regardless of where they appear.
+Runtime directives are valid in **any code block type** and always apply project-globally regardless of where they appear.
 
 ## Supported Runtime Directives
 
@@ -30,5 +30,3 @@ Set the project sample rate used for generated environment constants.
 ```txt
 ; ~sampleRate 44100
 ```
-
-This replaces the legacy stack-config `scope "runtimeSettings" / scope "sampleRate" / set 44100` pattern. The stack-config `sampleRate` field is now considered legacy and should no longer be used for new projects.

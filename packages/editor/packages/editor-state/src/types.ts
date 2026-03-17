@@ -7,7 +7,6 @@
 import type { Module, CompileOptions } from '@8f4e/compiler';
 import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
 import type { ColorScheme } from '@8f4e/sprite-generator';
-import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	CodeBlock,
@@ -25,8 +24,7 @@ import type {
 	GraphicHelper,
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
-import type { ConfigCompilationResult } from './features/config-compiler/types';
-import type { EditorConfig, EditorConfigBlock } from './features/editor-config/types';
+import type { EditorConfigStorageBlock } from './features/code-blocks/features/graphicHelper/editorConfigModule';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
@@ -44,6 +42,7 @@ import type {
 	Midi,
 	RuntimeStats,
 	RuntimeDirectiveResolver,
+	JSONSchemaLike,
 } from './features/runtime/types';
 import type { ProjectViewport, Viewport } from './features/viewport/types';
 import type {
@@ -88,8 +87,8 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 // Re-export program-compiler types
 export type { Compiler, CompilationResult };
 
-// Re-export config types
-export type { ConfigCompilationResult, EditorConfig, EditorConfigBlock };
+// Re-export helper-module storage types
+export type { EditorConfigStorageBlock };
 
 // Re-export global-editor-directives types
 export type { ResolvedGlobalEditorDirectives };
@@ -99,6 +98,7 @@ export type {
 	RuntimeFactory,
 	RuntimeRegistryEntry,
 	RuntimeRegistry,
+	JSONSchemaLike,
 	WebWorkerLogicRuntime,
 	MainThreadLogicRuntime,
 	AudioWorkletRuntime,
@@ -189,8 +189,8 @@ export interface Callbacks {
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;
 	saveSession?: (project: Project) => Promise<void>;
-	loadEditorConfigBlocks?: () => Promise<EditorConfigBlock[] | null>;
-	saveEditorConfigBlocks?: (blocks: EditorConfigBlock[]) => Promise<void>;
+	loadEditorConfigBlocks?: () => Promise<EditorConfigStorageBlock[] | null>;
+	saveEditorConfigBlocks?: (blocks: EditorConfigStorageBlock[]) => Promise<void>;
 
 	// File handling callbacks
 	importProject?: () => Promise<Project>;
@@ -200,17 +200,6 @@ export interface Callbacks {
 	loadBinaryAssetIntoMemory?: (asset: BinaryAsset) => Promise<void>;
 	clearBinaryAssetCache?: () => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
-
-	// Config compilation callback
-	/**
-	 * Compiles a stack-config program source into a JSON configuration object.
-	 * Used by config blocks to generate runtime configuration.
-	 *
-	 * @param sourceBlocks - Config block source codes in execution order
-	 * @param schema - JSON Schema describing the expected config structure
-	 * @returns Promise containing the compiled config object and any errors
-	 */
-	compileConfig?: (sourceBlocks: string[], schema: JSONSchemaLike) => Promise<ConfigCompilationResult>;
 
 	// Memory manipulation callback
 	setWordInMemory?: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
@@ -264,7 +253,6 @@ export interface State {
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	initialProjectState?: Project;
-	compiledEditorConfig: EditorConfig;
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
@@ -281,7 +269,6 @@ export interface State {
 	globalEditorDirectives: ResolvedGlobalEditorDirectives;
 	codeErrors: {
 		compilationErrors: CodeError[];
-		editorConfigErrors: CodeError[];
 		globalEditorDirectiveErrors: CodeError[];
 		shaderErrors: CodeError[];
 		runtimeDirectiveErrors: CodeError[];

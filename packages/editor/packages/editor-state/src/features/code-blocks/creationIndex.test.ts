@@ -199,19 +199,20 @@ describe('creationIndex', () => {
 				code: ['function testFunc', 'functionEnd'],
 				blockType: 'function',
 			});
-			const configBlock = createMockCodeBlock({
-				id: 'testConfig',
+			const secondModuleBlock = createMockCodeBlock({
+				id: 'testModuleTwo',
 				creationIndex: 2,
-				code: ['config project', 'configEnd'],
-				blockType: 'config',
+				code: ['module testModuleTwo', 'moduleEnd'],
+				blockType: 'module',
 			});
 
-			const codeBlocksArray = [moduleBlock, functionBlock, configBlock];
+			const codeBlocksArray = [moduleBlock, functionBlock, secondModuleBlock];
 
 			const { modules, functions } = flattenProjectForCompiler(codeBlocksArray);
 
-			expect(modules.length).toBe(1);
+			expect(modules.length).toBe(2);
 			expect(modules[0].code).toEqual(['module testModule', 'moduleEnd']);
+			expect(modules[1].code).toEqual(['module testModuleTwo', 'moduleEnd']);
 			expect(functions.length).toBe(1);
 			expect(functions[0].code).toEqual(['function testFunc', 'functionEnd']);
 		});

@@ -48,7 +48,6 @@ info(state: State, message: string, category?: string): void
 
 - **Compiler**: Logs compilation success/failure messages
 - **Runtime**: Logs runtime initialization and destruction
-- **Config Compiler**: Logs configuration compilation status
 - Used throughout editor features for diagnostic output
 
 ## Notes & Limitations

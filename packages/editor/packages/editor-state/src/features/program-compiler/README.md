@@ -28,7 +28,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 - **Modules**: Includes `module` and `constants` block types
 - **Functions**: Includes `function` block types
-- **Excluded**: `config`, `vertexShader`, `fragmentShader`, and `unknown` blocks are not passed to WASM compiler
+- **Excluded**: `vertexShader`, `fragmentShader`, and `unknown` blocks are not passed to WASM compiler
 
 ## Events & Callbacks
 
@@ -58,7 +58,6 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 ## Integration Points
 
-- **Project Config**: Runtime selection and sample rate come from compiled project config
 - **Binary Assets**: Triggers asset loading when memory is recreated
 - **Runtime**: Runtime selection affects environment constants
 - **Project Export**: Compiled modules are included in runtime-ready exports
@@ -80,7 +79,6 @@ When memory is recreated, binary assets must be reloaded.
 
 ## References
 
-- Error mapping utilities: Similar to config compiler error mapping
 - Compiler callback contract: Defined in state types
 
 ## Notes & Limitations

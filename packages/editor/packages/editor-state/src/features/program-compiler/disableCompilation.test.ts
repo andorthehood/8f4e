@@ -13,7 +13,6 @@ describe('disableAutoCompilation feature', () => {
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let mockCompileCode: MockInstance;
-	let mockCompileConfig: MockInstance;
 
 	beforeEach(() => {
 		mockCompileCode = vi.fn().mockResolvedValue({
@@ -26,13 +25,6 @@ describe('disableAutoCompilation feature', () => {
 			codeBuffer: new Uint8Array(),
 		});
 
-		mockCompileConfig = vi.fn().mockResolvedValue({
-			config: {
-				sampleRate: 50,
-			},
-			errors: [],
-		});
-
 		const moduleBlock = createMockCodeBlock({
 			id: 'test-module',
 			code: ['module testModule', 'moduleEnd'],
@@ -40,22 +32,21 @@ describe('disableAutoCompilation feature', () => {
 			blockType: 'module',
 		});
 
-		const configBlock = createMockCodeBlock({
-			id: 'config-block',
-			code: ['config project', 'configEnd'],
+		const helperModuleBlock = createMockCodeBlock({
+			id: 'editor-config',
+			code: ['module editorConfig', '; @font 8x16', 'moduleEnd'],
 			creationIndex: 1,
-			blockType: 'config',
+			blockType: 'module',
 		});
 
 		mockState = createMockState({
 			callbacks: {
 				compileCode: mockCompileCode,
-				compileConfig: mockCompileConfig,
 			},
 		});
 
 		mockState.graphicHelper.codeBlocks.push(moduleBlock);
-		mockState.graphicHelper.codeBlocks.push(configBlock);
+		mockState.graphicHelper.codeBlocks.push(helperModuleBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
 		store = createStateManager(mockState);
