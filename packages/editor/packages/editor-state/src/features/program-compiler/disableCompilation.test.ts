@@ -28,7 +28,7 @@ describe('disableAutoCompilation feature', () => {
 
 		mockCompileConfig = vi.fn().mockResolvedValue({
 			config: {
-				runtimeSettings: { sampleRate: 50 },
+				sampleRate: 50,
 			},
 			errors: [],
 		});
