@@ -12,6 +12,11 @@ import { deriveDirectiveState } from '../code-blocks/features/directives/registr
 import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
 import { createCodeBlockGraphicData } from '../code-blocks/utils/createCodeBlockGraphicData';
 import getCodeBlockId from '../code-blocks/utils/getCodeBlockId';
+import {
+	getCodeBlockGridBounds,
+	getCodeBlockGridSizeFromCode,
+	placeCodeBlockAtFirstFreeGridY,
+} from '../code-blocks/utils/finders/findFirstFreeCodeBlockGridY';
 
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
@@ -33,28 +38,43 @@ export default function editorConfigModule(store: StateManager<State>, events: E
 			let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 
 			for (const rawBlock of editorConfigBlocks) {
-				const gridX = rawBlock.gridCoordinates?.x ?? 0;
-				const gridY = rawBlock.gridCoordinates?.y ?? 0;
+				const preferredGridX = rawBlock.gridCoordinates?.x ?? 0;
+				const preferredGridY = rawBlock.gridCoordinates?.y ?? 0;
 				const parsedDirectives = parseBlockDirectives(rawBlock.code);
 				const directiveState = deriveDirectiveState(rawBlock.code, parsedDirectives);
 				const blockType = getBlockType(rawBlock.code) as CodeBlockGraphicData['blockType'];
-
-				nextCodeBlocks.push(
-					createCodeBlockGraphicData({
-						id: getCodeBlockId(rawBlock.code),
-						code: rawBlock.code,
-						disabled: directiveState.blockState.disabled,
-						isHome: directiveState.blockState.isHome,
-						isFavorite: directiveState.blockState.isFavorite,
-						parsedDirectives,
-						creationIndex,
-						blockType,
-						gridX,
-						gridY,
-						x: gridX * state.viewport.vGrid,
-						y: gridY * state.viewport.hGrid,
-					})
+				const codeBlock = createCodeBlockGraphicData({
+					id: getCodeBlockId(rawBlock.code),
+					code: rawBlock.code,
+					disabled: directiveState.blockState.disabled,
+					isHome: directiveState.blockState.isHome,
+					isFavorite: directiveState.blockState.isFavorite,
+					parsedDirectives,
+					creationIndex,
+					blockType,
+					gridX: preferredGridX,
+					gridY: preferredGridY,
+					x: preferredGridX * state.viewport.vGrid,
+					y: preferredGridY * state.viewport.hGrid,
+				});
+				const targetSize = getCodeBlockGridSizeFromCode(codeBlock);
+				const existingBounds = nextCodeBlocks.map(existingCodeBlock => getCodeBlockGridBounds(existingCodeBlock, state.viewport));
+				const placement = placeCodeBlockAtFirstFreeGridY(
+					{
+						x: codeBlock.gridX,
+						y: codeBlock.gridY,
+						width: targetSize.width,
+						height: targetSize.height,
+					},
+					existingBounds
 				);
+
+				codeBlock.gridX = placement.gridX;
+				codeBlock.gridY = placement.gridY;
+				codeBlock.x = placement.gridX * state.viewport.vGrid;
+				codeBlock.y = placement.gridY * state.viewport.hGrid;
+
+				nextCodeBlocks.push(codeBlock);
 
 				creationIndex += 1;
 			}
