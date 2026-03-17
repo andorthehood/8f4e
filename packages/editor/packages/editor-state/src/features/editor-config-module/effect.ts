@@ -58,7 +58,9 @@ export default function editorConfigModule(store: StateManager<State>, events: E
 					y: preferredGridY * state.viewport.hGrid,
 				});
 				const targetSize = getCodeBlockGridSizeFromCode(codeBlock);
-				const existingBounds = nextCodeBlocks.map(existingCodeBlock => getCodeBlockGridBounds(existingCodeBlock, state.viewport));
+				const existingBounds = nextCodeBlocks.map(existingCodeBlock =>
+					getCodeBlockGridBounds(existingCodeBlock, state.viewport)
+				);
 				const placement = placeCodeBlockAtFirstFreeGridY(
 					{
 						x: codeBlock.gridX,
