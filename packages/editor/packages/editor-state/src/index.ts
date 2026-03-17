@@ -82,10 +82,10 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	groupRemover(store, events);
 	groupUngroupper(store, events);
 	groupDeleter(store, events);
+	parsedDirectivesUpdater(store);
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
-	parsedDirectivesUpdater(store);
 	globalEditorDirectivesEffect(store);
 	runtimeDirectiveErrorsEffect(store);
 	compiler(store, events);
