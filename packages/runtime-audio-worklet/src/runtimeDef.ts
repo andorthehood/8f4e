@@ -4,6 +4,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { resolveAudioWorkletRouting } from './audioRouting';
 import {
+	getAudioWorkletRuntimeEnvConstantsFromBlocks,
 	resolveAudioWorkletRuntimeDirectives,
 	resolveAudioWorkletRuntimeDirectivesFromBlocks,
 } from './runtimeDirectives';
@@ -230,6 +231,7 @@ export function createAudioWorkletRuntimeDef(
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		resolveRuntimeDirectives: codeBlocks => resolveAudioWorkletRuntimeDirectivesFromBlocks(codeBlocks),
+		getEnvConstants: codeBlocks => getAudioWorkletRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
 		},

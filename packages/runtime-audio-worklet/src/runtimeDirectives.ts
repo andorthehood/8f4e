@@ -1,6 +1,7 @@
 import type { CodeError, State, ParsedDirectiveRecord } from '@8f4e/editor';
 
 const DEFAULT_SAMPLE_RATE = 44100;
+const AUDIO_BUFFER_SIZE = 128;
 
 function resolveSampleRateDirective(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
@@ -65,4 +66,16 @@ export function resolveAudioWorkletRuntimeDirectivesFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
 	return resolveSampleRateDirective(codeBlocks);
+}
+
+export function getAudioWorkletRuntimeEnvConstantsFromBlocks(
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
+): string[] {
+	const { sampleRate } = resolveSampleRateDirective(codeBlocks);
+
+	return [
+		`const SAMPLE_RATE ${sampleRate}`,
+		`const INV_SAMPLE_RATE ${1 / sampleRate}`,
+		`const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`,
+	];
 }
