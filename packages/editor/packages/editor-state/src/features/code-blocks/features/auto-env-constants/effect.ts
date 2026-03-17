@@ -1,5 +1,5 @@
 import parsePos from '../directives/pos/data';
-import { resolveRuntimeDirectiveState } from '../../../runtime/directives';
+import { resolveRuntimeEnvConstants } from '../../../runtime/directives';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';
@@ -31,15 +31,7 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	lines.push('; Last updated: ' + new Date().toLocaleString());
 	lines.push('');
 
-	const sampleRate = resolveRuntimeDirectiveState(state).sampleRate;
-	if (sampleRate !== undefined) {
-		lines.push(`const SAMPLE_RATE ${sampleRate}`);
-		// Precomputed reciprocal avoids repeated divisions in DSP code.
-		lines.push(`const INV_SAMPLE_RATE ${1 / sampleRate}`);
-	}
-
-	// Audio buffer size (hardcoded for now, matching current behavior)
-	lines.push('const AUDIO_BUFFER_SIZE 128');
+	lines.push(...resolveRuntimeEnvConstants(state));
 
 	// Binary asset sizes
 	const binaryAssets = state.binaryAssets || [];

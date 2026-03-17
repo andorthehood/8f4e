@@ -42,6 +42,7 @@ import type {
 	Midi,
 	RuntimeStats,
 	RuntimeDirectiveResolver,
+	RuntimeEnvConstantsContributor,
 	JSONSchemaLike,
 } from './features/runtime/types';
 import type { ProjectViewport, Viewport } from './features/viewport/types';
@@ -107,6 +108,7 @@ export type {
 	Midi,
 	RuntimeStats,
 	RuntimeDirectiveResolver,
+	RuntimeEnvConstantsContributor,
 };
 
 // Re-export logger types

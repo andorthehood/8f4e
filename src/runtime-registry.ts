@@ -45,6 +45,7 @@ function createLazyRuntimeEntry(
 			loadPromise.then(loadedEntry => {
 				entry.schema = loadedEntry.schema;
 				entry.resolveRuntimeDirectives = loadedEntry.resolveRuntimeDirectives;
+				entry.getEnvConstants = loadedEntry.getEnvConstants;
 				store.set('runtimeRegistry', { ...store.getState().runtimeRegistry });
 				if (!destroyed) {
 					destroy = loadedEntry.factory(store, events);

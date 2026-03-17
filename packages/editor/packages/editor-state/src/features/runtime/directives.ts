@@ -45,3 +45,13 @@ export function resolveRuntimeDirectiveState(state: State) {
 
 	return runtimeEntry.resolveRuntimeDirectives(getDirectiveBlocks(state));
 }
+
+export function resolveRuntimeEnvConstants(state: State): string[] {
+	const runtimeEntry = getSelectedRuntimeEntry(state);
+
+	if (!runtimeEntry?.getEnvConstants) {
+		return [];
+	}
+
+	return runtimeEntry.getEnvConstants(getDirectiveBlocks(state));
+}
