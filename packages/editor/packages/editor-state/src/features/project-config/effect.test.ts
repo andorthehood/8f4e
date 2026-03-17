@@ -102,8 +102,8 @@ describe('projectConfigEffect - diffing behavior', () => {
 	it('should call store.set for compiledProjectConfig when config changes', async () => {
 		// Change the compiled config result
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { runtimeSettings: { sampleRate: 123 } },
-			mergedConfig: { runtimeSettings: { sampleRate: 123 } },
+			compiledConfig: { sampleRate: 123 },
+			mergedConfig: { sampleRate: 123 },
 			errors: [],
 			hasSource: true,
 		});
@@ -124,7 +124,7 @@ describe('projectConfigEffect - diffing behavior', () => {
 			call => call[0] === 'compiledProjectConfig'
 		);
 		expect(setCallsForProjectConfig).toHaveLength(1);
-		expect(setCallsForProjectConfig[0][1]).toEqual({ runtimeSettings: { sampleRate: 123 } });
+		expect(setCallsForProjectConfig[0][1]).toEqual({ sampleRate: 123 });
 	});
 
 	it('should not call store.set for projectConfigErrors when errors are unchanged', async () => {
@@ -180,8 +180,8 @@ describe('projectConfigEffect - diffing behavior', () => {
 	it('should update errors but keep last valid config when errors are present', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { runtimeSettings: { sampleRate: 123 } },
-			mergedConfig: { runtimeSettings: { sampleRate: 123 } },
+			compiledConfig: { sampleRate: 123 },
+			mergedConfig: { sampleRate: 123 },
 			errors: newErrors,
 			hasSource: true,
 		});
@@ -236,9 +236,7 @@ describe('projectConfigEffect - diffing behavior', () => {
 		expect(mockCompileConfigWithDefaults).toHaveBeenCalledWith(
 			expect.objectContaining({
 				defaultConfig: expect.objectContaining({
-					runtimeSettings: expect.objectContaining({
-						sampleRate: 44100,
-					}),
+					sampleRate: 44100,
 				}),
 			})
 		);

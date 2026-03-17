@@ -50,7 +50,7 @@ describe('Loader - Project configuration reset', () => {
 	});
 
 	it('should reset compiled config when loading new project without config blocks', async () => {
-		mockState.compiledProjectConfig = { runtimeSettings: { sampleRate: 123 } };
+		mockState.compiledProjectConfig = { sampleRate: 123 };
 
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);
