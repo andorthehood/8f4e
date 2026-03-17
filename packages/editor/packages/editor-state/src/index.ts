@@ -23,7 +23,6 @@ import runtime from './features/runtime/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
-import colorDirectivesEffect from './features/color-directives/effect';
 import globalEditorDirectivesEffect from './features/global-editor-directives/effect';
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
@@ -86,7 +85,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
-	colorDirectivesEffect(store);
 	parsedDirectivesUpdater(store);
 	globalEditorDirectivesEffect(store);
 	runtimeDirectiveErrorsEffect(store);

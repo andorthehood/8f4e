@@ -1,3 +1,5 @@
+import { defaultColorScheme } from '@8f4e/sprite-generator';
+
 import { resolveGlobalEditorDirectives } from './registry';
 
 import deepEqual from '../../shared/utils/deepEqual';
@@ -17,9 +19,14 @@ export default function globalEditorDirectivesEffect(store: StateManager<State>)
 	function resolve(): void {
 		const state = store.getState();
 		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks, state.runtimeRegistry);
+		const nextColorScheme = resolved.colorScheme ?? defaultColorScheme;
 
 		if (!deepEqual(resolved, state.globalEditorDirectives)) {
 			store.set('globalEditorDirectives', resolved);
+		}
+
+		if (!deepEqual(nextColorScheme, state.colorScheme)) {
+			store.set('colorScheme', nextColorScheme);
 		}
 
 		if (!deepEqual(errors, state.codeErrors.globalEditorDirectiveErrors)) {

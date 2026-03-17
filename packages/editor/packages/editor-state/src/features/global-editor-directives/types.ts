@@ -2,6 +2,7 @@
  * Types for global editor directives.
  * Editor directives use `; @<name> <args...>` syntax.
  */
+import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { CodeError } from '~/types';
 import type { CodeBlockType } from '../code-blocks/types';
 import type { RuntimeRegistry } from '../runtime/types';
@@ -25,6 +26,8 @@ export interface ResolvedGlobalEditorDirectives {
 	keyCodeMemoryId?: string;
 	/** Target memory for keyboard pressed-state flag */
 	keyPressedMemoryId?: string;
+	/** Resolved editor color overrides merged on top of the default color scheme */
+	colorScheme?: ColorScheme;
 }
 
 export interface GlobalEditorDirectiveContext {

@@ -1,3 +1,4 @@
+import colorDirective from './color/plugin';
 import disableAutoCompilationDirective from './disableAutoCompilation/plugin';
 import exportFileNameDirective from './exportFileName/plugin';
 import fontDirective from './font/plugin';
@@ -17,6 +18,7 @@ import type {
 import type { RuntimeRegistry } from '../runtime/types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
+	colorDirective,
 	fontDirective,
 	exportFileNameDirective,
 	runtimeDirective,
