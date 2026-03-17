@@ -47,6 +47,7 @@ interface ViewportAnimationResult {
  * Pure helper that calculates the next effective viewport and updated animation state.
  * This function has no side effects and is exported for unit testing.
  */
+// Removed export as it's only used internally and in tests
 export function calculateAnimatedViewportState(input: ViewportAnimationInput): ViewportAnimationResult {
 	const { actualViewport, viewportAnimationsEnabled, currentTime } = input;
 	let { previousViewport, animationState } = input;
