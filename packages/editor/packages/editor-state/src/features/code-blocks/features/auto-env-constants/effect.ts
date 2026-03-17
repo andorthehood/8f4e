@@ -1,4 +1,5 @@
 import parsePos from '../directives/pos/data';
+import { resolveRuntimeDirectiveState } from '../../../runtime/directives';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';
@@ -30,11 +31,12 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	lines.push('; Last updated: ' + new Date().toLocaleString());
 	lines.push('');
 
-	// Sample rate from runtime directive (; ~sampleRate), falling back to default
-	const sampleRate = state.runtimeDirectives?.sampleRate ?? 50;
-	lines.push(`const SAMPLE_RATE ${sampleRate}`);
-	// Precomputed reciprocal avoids repeated divisions in DSP code.
-	lines.push(`const INV_SAMPLE_RATE ${1 / sampleRate}`);
+	const sampleRate = resolveRuntimeDirectiveState(state).sampleRate;
+	if (sampleRate !== undefined) {
+		lines.push(`const SAMPLE_RATE ${sampleRate}`);
+		// Precomputed reciprocal avoids repeated divisions in DSP code.
+		lines.push(`const INV_SAMPLE_RATE ${1 / sampleRate}`);
+	}
 
 	// Audio buffer size (hardcoded for now, matching current behavior)
 	lines.push('const AUDIO_BUFFER_SIZE 128');
@@ -133,6 +135,8 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 
 	// Update env block code in graphicHelper.codeBlocks when runtime directives or binary assets change.
 	// This avoids the infinite loop caused by modifying initialProjectState.
-	store.subscribe('runtimeDirectives', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('globalEditorDirectives.runtime', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('runtimeRegistry', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
 }

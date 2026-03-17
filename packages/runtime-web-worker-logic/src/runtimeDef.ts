@@ -2,6 +2,11 @@
 // Note: Worker import is done at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
 
+import {
+	resolveWebWorkerLogicRuntimeDirectives,
+	resolveWebWorkerLogicRuntimeDirectivesFromBlocks,
+} from './runtimeDirectives';
+
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
 // WebWorker Logic Runtime Factory
@@ -40,11 +45,15 @@ export function webWorkerLogicRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
+		const sampleRate = resolveWebWorkerLogicRuntimeDirectives(state).sampleRate;
+		if (sampleRate === undefined) {
+			return;
+		}
 		worker.postMessage({
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				sampleRate: state.runtimeDirectives?.sampleRate ?? state.compiledProjectConfig.runtimeSettings.sampleRate,
+				sampleRate,
 				codeBuffer: getCodeBuffer(),
 				compiledModules: state.compiler.compiledModules,
 			},
@@ -89,6 +98,8 @@ export function createWebWorkerLogicRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
+		resolveRuntimeDirectives: (codeBlocks, state) =>
+			resolveWebWorkerLogicRuntimeDirectivesFromBlocks(codeBlocks, state),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerLogicRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},

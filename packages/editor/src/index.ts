@@ -21,6 +21,7 @@ export type {
 	CodeError,
 	CompilationResult,
 	CodeBlockGraphicData,
+	ParsedDirectiveRecord,
 	RuntimeFactory,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,

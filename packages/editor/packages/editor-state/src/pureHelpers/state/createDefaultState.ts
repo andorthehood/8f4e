@@ -60,7 +60,6 @@ export default function createDefaultState(compiledProjectConfig: ProjectConfig)
 		},
 		compiledProjectConfig,
 		compiledEditorConfig: defaultEditorConfig,
-		runtimeDirectives: {},
 		globalEditorDirectives: {},
 		runtime: {
 			stats: {

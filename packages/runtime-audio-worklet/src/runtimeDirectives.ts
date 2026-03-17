@@ -1,0 +1,70 @@
+import type { CodeError, State, ParsedDirectiveRecord } from '@8f4e/editor';
+
+const DEFAULT_SAMPLE_RATE = 44100;
+
+function resolveSampleRateDirective(
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
+) {
+	const errors: CodeError[] = [];
+	let resolvedSampleRate: number | undefined;
+
+	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex++) {
+		const block = codeBlocks[blockIndex];
+		const codeBlockId: string | number = block.id ?? blockIndex;
+
+		for (const directive of block.parsedDirectives) {
+			if (directive.prefix !== '~' || directive.name !== 'sampleRate') {
+				continue;
+			}
+
+			if (directive.args.length === 0) {
+				errors.push({
+					lineNumber: directive.rawRow,
+					message: '~sampleRate requires a numeric argument',
+					codeBlockId,
+				});
+				continue;
+			}
+
+			const value = Number(directive.args[0]);
+			if (!Number.isFinite(value) || value <= 0) {
+				errors.push({
+					lineNumber: directive.rawRow,
+					message: `~sampleRate: invalid value '${directive.args[0]}' (must be a positive number)`,
+					codeBlockId,
+				});
+				continue;
+			}
+
+			if (resolvedSampleRate === undefined) {
+				resolvedSampleRate = value;
+				continue;
+			}
+
+			if (resolvedSampleRate !== value) {
+				errors.push({
+					lineNumber: directive.rawRow,
+					message: `~sampleRate: conflicting values ${resolvedSampleRate} and ${value}`,
+					codeBlockId,
+				});
+			}
+		}
+	}
+
+	return {
+		sampleRate: resolvedSampleRate ?? DEFAULT_SAMPLE_RATE,
+		errors,
+	};
+}
+
+export function resolveAudioWorkletRuntimeDirectives(state: State) {
+	return resolveSampleRateDirective(state.graphicHelper.codeBlocks);
+}
+
+export function resolveAudioWorkletRuntimeDirectivesFromBlocks(
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>,
+	state: Pick<State, 'compiledProjectConfig'>
+) {
+	void state;
+	return resolveSampleRateDirective(codeBlocks);
+}

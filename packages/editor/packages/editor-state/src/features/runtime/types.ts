@@ -4,7 +4,9 @@
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
+import type { ParsedDirectiveRecord } from '../code-blocks/types';
 import type { EventDispatcher } from '../../shared/types';
+import type { CodeError } from '../../shared/types';
 
 /**
  * Type for runtime factory function.
@@ -13,6 +15,15 @@ import type { EventDispatcher } from '../../shared/types';
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RuntimeFactory<S = any> = (store: StateManager<S>, events: EventDispatcher) => () => void;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RuntimeDirectiveResolver<S = any> = (
+	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>,
+	state: S
+) => {
+	sampleRate?: number;
+	errors: CodeError[];
+};
 
 /**
  * Runtime registry entry describing a runtime configuration.
@@ -25,6 +36,8 @@ export interface RuntimeRegistryEntry {
 	defaults: Record<string, unknown>;
 	/** JSON Schema describing the configuration shape for this runtime */
 	schema: JSONSchemaLike;
+	/** Runtime-owned resolver for `; ~...` directives relevant to this runtime */
+	resolveRuntimeDirectives?: RuntimeDirectiveResolver;
 	/** Factory function that creates the runtime instance */
 	factory: RuntimeFactory;
 }

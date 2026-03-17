@@ -330,7 +330,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		compiledEditorConfig: {
 			font: '8x16',
 		},
-		runtimeDirectives: {},
 		globalEditorDirectives: {},
 		dialog: {
 			show: false,

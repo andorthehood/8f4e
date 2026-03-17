@@ -2,6 +2,11 @@
 import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
 import { StateManager } from '@8f4e/state-manager';
 
+import {
+	resolveMainThreadLogicRuntimeDirectives,
+	resolveMainThreadLogicRuntimeDirectivesFromBlocks,
+} from './runtimeDirectives';
+
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
 // Main Thread Logic Runtime Factory
@@ -45,11 +50,11 @@ export function mainThreadLogicRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
-		runtime.init(
-			memory,
-			state.runtimeDirectives?.sampleRate ?? state.compiledProjectConfig.runtimeSettings.sampleRate,
-			getCodeBuffer()
-		);
+		const sampleRate = resolveMainThreadLogicRuntimeDirectives(state).sampleRate;
+		if (sampleRate === undefined) {
+			return;
+		}
+		runtime.init(memory, sampleRate, getCodeBuffer());
 	}
 
 	runtime = createMainThreadLogicRuntime(onInitialized, onStats, onError);
@@ -86,6 +91,8 @@ export function createMainThreadLogicRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
+		resolveRuntimeDirectives: (codeBlocks, state) =>
+			resolveMainThreadLogicRuntimeDirectivesFromBlocks(codeBlocks, state),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return mainThreadLogicRuntimeFactory(store, events, getCodeBuffer, getMemory);
 		},
