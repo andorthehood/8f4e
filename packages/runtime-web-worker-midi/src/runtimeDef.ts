@@ -4,6 +4,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { resolveMidiRouting, resolveMidiNoteRoutesToAddresses, resolveMidiCCRoutesToAddresses } from './midiRouting';
 import {
+	getWebWorkerMIDIRuntimeEnvConstantsFromBlocks,
 	resolveWebWorkerMIDIRuntimeDirectives,
 	resolveWebWorkerMIDIRuntimeDirectivesFromBlocks,
 } from './runtimeDirectives';
@@ -184,6 +185,7 @@ export function createWebWorkerMIDIRuntimeDef(
 			additionalProperties: false,
 		} as JSONSchemaLike,
 		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerMIDIRuntimeDirectivesFromBlocks(codeBlocks),
+		getEnvConstants: codeBlocks => getWebWorkerMIDIRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerMIDIRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},
