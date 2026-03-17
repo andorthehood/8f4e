@@ -1,15 +1,16 @@
 function isReferenceToDeletedModule(token: string, removedModuleIds: Set<string>): boolean {
 	for (const moduleId of removedModuleIds) {
+		if (token === `&${moduleId}:` || token === `${moduleId}:&`) {
+			return true;
+		}
+
 		if (
-			token === `&${moduleId}:` ||
-			token === `${moduleId}:&` ||
 			token.startsWith(`&${moduleId}:`) ||
+			token.startsWith(`${moduleId}:`) ||
 			token.startsWith(`$${moduleId}.`) ||
 			token.startsWith(`%${moduleId}.`) ||
 			token.startsWith(`^${moduleId}.`) ||
-			token.startsWith(`!${moduleId}.`) ||
-			token.startsWith(`${moduleId}:`) ||
-			token === `${moduleId}:&`
+			token.startsWith(`!${moduleId}.`)
 		) {
 			return true;
 		}
