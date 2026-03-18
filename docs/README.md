@@ -67,7 +67,7 @@ Programs in 8f4e run inside an endless loop. This reflects how real time audio s
 
 ## Memory Layout and Allocation
 
-In 8f4e, variables declared sequentially in the code are allocated in adjacent memory locations.
+8f4e programs run inside a sandboxed, contiguous memory space. All variables are laid out sequentially within this space, so variables declared one after another occupy adjacent memory locations.
 
 ```
 int a 1
@@ -77,7 +77,9 @@ int c 1
 ; Memory address of c is b + word size
 ```
 
-Runtime memory allocation is not supported. Developers must pre plan their software’s memory needs during coding.
+Memory addresses are determined entirely at compile time — dynamic memory allocation is not supported. Developers must plan their program's memory needs up front during coding.
+
+Because all addresses are known at compile time, the compiler can inline them directly into memory operation instructions, avoiding any runtime address resolution overhead.
 
 ## Modules and Execution Order
 
@@ -102,9 +104,9 @@ moduleEnd
 
 ## Live Variable Editing
 
-```
-8f4e supports real time manual modification of variable values while the program is running, without requiring recompilation.
+8f4e supports real time manual modification of variable values while the program is running, without requiring recompilation. This is made possible by the deterministic allocation strategy: because memory addresses are fixed at compile time, the compiler can provide the exact address of every memory item, allowing the editor to locate and update any variable directly in memory without restarting or recompiling the program.
 
+```
 int foo 10
 ; You can change these values in the editor
 ; while the program is running
@@ -118,14 +120,14 @@ int bar 20
 
 All variables in 8f4e are public. There is no concept of variable visibility.
 
-The language is not memory safe. Pointers can reference any location within the program’s memory space, but the visual wires help developers see where pointers are pointing.
+The language is not memory safe. Pointers can reference any location within the program’s memory space, but the visual wires help developers see where pointers are pointing. Memory items are allocated on a 32-bit grid — every memory item starts at an address that is a multiple of 4 bytes.
 
 ```
 int* pointer
 
 push &pointer
 push pointer
-push WORD_SIZE
+push 4
 add
 store
 
