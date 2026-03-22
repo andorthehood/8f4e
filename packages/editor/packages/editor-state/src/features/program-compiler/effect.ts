@@ -8,6 +8,14 @@ import type { CodeBlockGraphicData, State } from '~/types';
 import { EventDispatcher } from '~/types';
 
 /**
+ * Returns true if the given block type participates in WASM compilation.
+ * Constants blocks are treated as modules by the compiler.
+ */
+export function isCompilableBlockType(blockType: CodeBlockGraphicData['blockType'] | undefined): boolean {
+	return blockType === 'module' || blockType === 'function' || blockType === 'constants' || blockType === 'macro';
+}
+
+/**
  * Converts code blocks into separate arrays for modules, functions, and macros, sorted by creationIndex.
  *
  * @param codeBlocks - List of code blocks to filter and sort
@@ -20,13 +28,25 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	functions: { code: string[] }[];
 	macros: { code: string[] }[];
 } {
-	const allBlocks = [...codeBlocks].filter(block => !block.disabled).sort((a, b) => a.creationIndex - b.creationIndex);
+	const modules: { code: string[] }[] = [];
+	const functions: { code: string[] }[] = [];
+	const macros: { code: string[] }[] = [];
 
-	return {
-		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),
-		functions: allBlocks.filter(block => block.blockType === 'function'),
-		macros: allBlocks.filter(block => block.blockType === 'macro'),
-	};
+	const sortedEnabled = [...codeBlocks]
+		.filter(block => !block.disabled)
+		.sort((a, b) => a.creationIndex - b.creationIndex);
+
+	for (const block of sortedEnabled) {
+		if (block.blockType === 'module' || block.blockType === 'constants') {
+			modules.push(block);
+		} else if (block.blockType === 'function') {
+			functions.push(block);
+		} else if (block.blockType === 'macro') {
+			macros.push(block);
+		}
+	}
+
+	return { modules, functions, macros };
 }
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
@@ -150,23 +170,13 @@ export default async function compiler(store: StateManager<State>, events: Event
 			return;
 		}
 
-		if (
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'function' &&
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'constants' &&
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'macro'
-		) {
+		if (!isCompilableBlockType(state.graphicHelper.selectedCodeBlock?.blockType)) {
 			return;
 		}
 		scheduleRecompile();
 	});
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
-		if (
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'module' &&
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'function' &&
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'constants' &&
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'macro'
-		) {
+		if (!isCompilableBlockType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType)) {
 			return;
 		}
 		scheduleRecompile();
