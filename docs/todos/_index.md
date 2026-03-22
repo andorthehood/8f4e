@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 68
+Active todo files are listed below.
 
 ## Active TODOs
 
@@ -59,7 +59,6 @@ Active todo files: 68
 | 297 | Add url editor directive for clickable links | 🟡 | 4-8h | 2026-03-12 | The editor currently has no directive for attaching a clickable external link to a code block. |
 | 302 | Add jump editor directive for code block navigation | 🟡 | 4-8h | 2026-03-14 | The editor currently supports code block navigation through the context-menu jump flow, but there is no in-code directive for linking one code block to another. |
 | 303 | Dedupe font atlas rows for identical text colors | 🟡 | 1-2h | 2026-03-14 | The sprite generator currently renders one full ASCII font row for every text color role, even when multiple roles resolve to the same color value. |
-| 304 | Remove sprite-generator color helper APIs | 🟡 | 0.5-1h | 2026-03-14 | The @8f4e/sprite-generator package currently exposes a small set of color derivation helpers: |
 | 306 | Refactor graphOptimizer to precompute module dependencies | 🟡 | 4-8h | 2026-03-14 | packages/compiler/src/graphOptimizer.ts currently recomputes module ids and intermodular dependencies inside sort comparators. |
 | 307 | Optimize state-manager selector tokenization and subscription lookup | 🟡 | 3-6h | 2026-03-14 | The state manager currently does repeated string splitting and repeated path traversal during every set(...) call. |
 | 308 | Simplify memory instruction default value resolution | 🟡 | 4-8h | 2026-03-14 | Memory instruction argument handling is now split between a syntax-phase classifier and a semantic-phase resolver, but the semantic side still carries a long branch ladder with repeated lookup logic and several no-op... |

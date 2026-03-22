@@ -17,7 +17,6 @@ export { Icon } from './icons';
 export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
-export { lighten, darken, alpha, mix } from './color-helpers';
 
 type FontData = { asciiBitmap: number[]; glyphsBitmap: number[]; characterWidth: number; characterHeight: number };
 

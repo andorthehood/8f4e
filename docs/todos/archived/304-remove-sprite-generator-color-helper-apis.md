@@ -4,8 +4,8 @@ priority: Medium
 effort: 0.5-1h
 created: 2026-03-14
 issue: https://github.com/andorthehood/8f4e/issues/420
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-21
 ---
 
 # TODO: Remove sprite-generator color helper APIs
