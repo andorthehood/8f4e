@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 67
+Active todo files are listed below.
 
 ## Active TODOs
 
