@@ -1,8 +1,24 @@
 import { describe, it, expect } from 'vitest';
 
-import { flattenProjectForCompiler } from './effect';
+import { flattenProjectForCompiler, isCompilableBlockType } from './effect';
 
 import type { CodeBlockGraphicData } from '~/types';
+
+describe('isCompilableBlockType', () => {
+	it('should return true for compilable block types', () => {
+		expect(isCompilableBlockType('module')).toBe(true);
+		expect(isCompilableBlockType('function')).toBe(true);
+		expect(isCompilableBlockType('constants')).toBe(true);
+		expect(isCompilableBlockType('macro')).toBe(true);
+	});
+
+	it('should return false for non-compilable block types', () => {
+		expect(isCompilableBlockType('vertexShader')).toBe(false);
+		expect(isCompilableBlockType('fragmentShader')).toBe(false);
+		expect(isCompilableBlockType('unknown')).toBe(false);
+		expect(isCompilableBlockType(undefined)).toBe(false);
+	});
+});
 
 describe('flattenProjectForCompiler', () => {
 	it('should exclude unknown blocks from compilation', () => {
@@ -137,5 +153,31 @@ describe('flattenProjectForCompiler', () => {
 
 		expect(result.modules).toHaveLength(1);
 		expect(result.modules[0].code).toEqual(['constants enabled', 'constantsEnd']);
+	});
+
+	it('should preserve creationIndex order across mixed block types', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['macro third', 'macroEnd'],
+				blockType: 'macro',
+				creationIndex: 2,
+			} as CodeBlockGraphicData,
+			{
+				code: ['module first', 'moduleEnd'],
+				blockType: 'module',
+				creationIndex: 0,
+			} as CodeBlockGraphicData,
+			{
+				code: ['function second', 'functionEnd'],
+				blockType: 'function',
+				creationIndex: 1,
+			} as CodeBlockGraphicData,
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks);
+
+		expect(result.modules[0].code).toEqual(['module first', 'moduleEnd']);
+		expect(result.functions[0].code).toEqual(['function second', 'functionEnd']);
+		expect(result.macros[0].code).toEqual(['macro third', 'macroEnd']);
 	});
 });
