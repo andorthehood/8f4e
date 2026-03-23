@@ -138,4 +138,30 @@ describe('flattenProjectForCompiler', () => {
 		expect(result.modules).toHaveLength(1);
 		expect(result.modules[0].code).toEqual(['constants enabled', 'constantsEnd']);
 	});
+
+	it('should preserve creationIndex order across mixed block types', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['macro third', 'macroEnd'],
+				blockType: 'macro',
+				creationIndex: 2,
+			} as CodeBlockGraphicData,
+			{
+				code: ['module first', 'moduleEnd'],
+				blockType: 'module',
+				creationIndex: 0,
+			} as CodeBlockGraphicData,
+			{
+				code: ['function second', 'functionEnd'],
+				blockType: 'function',
+				creationIndex: 1,
+			} as CodeBlockGraphicData,
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks);
+
+		expect(result.modules[0].code).toEqual(['module first', 'moduleEnd']);
+		expect(result.functions[0].code).toEqual(['function second', 'functionEnd']);
+		expect(result.macros[0].code).toEqual(['macro third', 'macroEnd']);
+	});
 });

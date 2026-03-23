@@ -1,4 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
+import { isCompilableBlockType } from '@8f4e/compiler/syntax';
 
 import { error, log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
@@ -20,13 +21,25 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	functions: { code: string[] }[];
 	macros: { code: string[] }[];
 } {
-	const allBlocks = [...codeBlocks].filter(block => !block.disabled).sort((a, b) => a.creationIndex - b.creationIndex);
+	const modules: { code: string[] }[] = [];
+	const functions: { code: string[] }[] = [];
+	const macros: { code: string[] }[] = [];
 
-	return {
-		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),
-		functions: allBlocks.filter(block => block.blockType === 'function'),
-		macros: allBlocks.filter(block => block.blockType === 'macro'),
-	};
+	const sortedEnabled = [...codeBlocks]
+		.filter(block => !block.disabled)
+		.sort((a, b) => a.creationIndex - b.creationIndex);
+
+	for (const block of sortedEnabled) {
+		if (block.blockType === 'module' || block.blockType === 'constants') {
+			modules.push(block);
+		} else if (block.blockType === 'function') {
+			functions.push(block);
+		} else if (block.blockType === 'macro') {
+			macros.push(block);
+		}
+	}
+
+	return { modules, functions, macros };
 }
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
@@ -150,23 +163,13 @@ export default async function compiler(store: StateManager<State>, events: Event
 			return;
 		}
 
-		if (
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'function' &&
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'constants' &&
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'macro'
-		) {
+		if (!isCompilableBlockType(state.graphicHelper.selectedCodeBlock?.blockType)) {
 			return;
 		}
 		scheduleRecompile();
 	});
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
-		if (
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'module' &&
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'function' &&
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'constants' &&
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'macro'
-		) {
+		if (!isCompilableBlockType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType)) {
 			return;
 		}
 		scheduleRecompile();
