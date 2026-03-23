@@ -1,25 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { isCompilableBlockType } from '@8f4e/compiler/syntax';
 
 import { flattenProjectForCompiler } from './effect';
 
 import type { CodeBlockGraphicData } from '~/types';
-
-describe('isCompilableBlockType', () => {
-	it('should return true for compilable block types', () => {
-		expect(isCompilableBlockType('module')).toBe(true);
-		expect(isCompilableBlockType('function')).toBe(true);
-		expect(isCompilableBlockType('constants')).toBe(true);
-		expect(isCompilableBlockType('macro')).toBe(true);
-	});
-
-	it('should return false for non-compilable block types', () => {
-		expect(isCompilableBlockType('vertexShader')).toBe(false);
-		expect(isCompilableBlockType('fragmentShader')).toBe(false);
-		expect(isCompilableBlockType('unknown')).toBe(false);
-		expect(isCompilableBlockType(undefined)).toBe(false);
-	});
-});
 
 describe('flattenProjectForCompiler', () => {
 	it('should exclude unknown blocks from compilation', () => {
