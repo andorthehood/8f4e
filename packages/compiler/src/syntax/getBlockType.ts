@@ -28,6 +28,18 @@ export function getBlockType(code: string[]): CodeBlockType {
 	return 'unknown';
 }
 
+/**
+ * Returns true if the given block type is accepted as a direct input to the compiler
+ * (modules, functions, constants, and macros).
+ * Constants blocks are treated as modules by the compiler.
+ * Accepts undefined for safe use with optional chaining.
+ */
+export function isCompilableBlockType(
+	blockType: string | undefined
+): blockType is 'module' | 'function' | 'constants' | 'macro' {
+	return blockType === 'module' || blockType === 'function' || blockType === 'constants' || blockType === 'macro';
+}
+
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
@@ -46,6 +58,21 @@ if (import.meta.vitest) {
 
 		it('returns unknown for mixed markers', () => {
 			expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
+		});
+	});
+
+	describe('isCompilableBlockType', () => {
+		it('returns true for compilable block types', () => {
+			expect(isCompilableBlockType('module')).toBe(true);
+			expect(isCompilableBlockType('function')).toBe(true);
+			expect(isCompilableBlockType('constants')).toBe(true);
+			expect(isCompilableBlockType('macro')).toBe(true);
+		});
+
+		it('returns false for non-compilable block types', () => {
+			expect(isCompilableBlockType('unknown')).toBe(false);
+			expect(isCompilableBlockType('vertexShader')).toBe(false);
+			expect(isCompilableBlockType(undefined)).toBe(false);
 		});
 	});
 }

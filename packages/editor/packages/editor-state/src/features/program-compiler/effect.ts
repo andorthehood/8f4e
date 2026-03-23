@@ -1,4 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
+import { isCompilableBlockType } from '@8f4e/compiler/syntax';
 
 import { error, log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
@@ -6,14 +7,6 @@ import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import type { CodeBlockGraphicData, State } from '~/types';
 
 import { EventDispatcher } from '~/types';
-
-/**
- * Returns true if the given block type participates in WASM compilation.
- * Constants blocks are treated as modules by the compiler.
- */
-export function isCompilableBlockType(blockType: CodeBlockGraphicData['blockType'] | undefined): boolean {
-	return blockType === 'module' || blockType === 'function' || blockType === 'constants' || blockType === 'macro';
-}
 
 /**
  * Converts code blocks into separate arrays for modules, functions, and macros, sorted by creationIndex.

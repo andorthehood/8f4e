@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { isCompilableBlockType } from '@8f4e/compiler/syntax';
 
-import { flattenProjectForCompiler, isCompilableBlockType } from './effect';
+import { flattenProjectForCompiler } from './effect';
 
 import type { CodeBlockGraphicData } from '~/types';
 
