@@ -1,6 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
 import { getBlockType } from '@8f4e/compiler/syntax';
-import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
 
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
@@ -88,8 +87,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				.map(char => char.charCodeAt(0) as number | string)
 				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
 		});
-		graphicData.id = getCodeBlockId(graphicData.code);
-		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
 		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
