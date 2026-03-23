@@ -12,7 +12,7 @@ export {
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
 } from './parseArgument';
-export { getBlockType, type CodeBlockType } from './getBlockType';
+export { getBlockType, isCompilableBlockType, type CodeBlockType } from './getBlockType';
 export { default as getModuleId } from './getModuleId';
 export { default as getFunctionId } from './getFunctionId';
 export { default as getConstantsId } from './getConstantsId';
