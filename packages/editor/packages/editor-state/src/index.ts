@@ -21,7 +21,6 @@ import viewport from './features/viewport/effect';
 import binaryAsset from './features/binary-assets/effect';
 import runtime from './features/runtime/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
-import codeBlockIdUpdater from './features/code-blocks/features/codeBlockIdUpdater/effect';
 import moduleReferenceRenamer from './features/code-blocks/features/moduleReferenceRenamer/effect';
 import moduleReferenceRemover from './features/code-blocks/features/moduleReferenceRemover/effect';
 import shaderEffectsDeriver from './features/shader-effects/effect';
@@ -88,7 +87,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	parsedDirectivesUpdater(store);
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
-	codeBlockIdUpdater(store); // Must run before compiler to keep id/moduleId in sync
 	moduleReferenceRenamer(store);
 	moduleReferenceRemover(store);
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
