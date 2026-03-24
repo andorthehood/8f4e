@@ -89,7 +89,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
 		});
 		graphicData.id = getCodeBlockId(graphicData.code);
-		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
 		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
@@ -328,6 +327,24 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
+	const updateCodeBlockModuleId = function (graphicData: CodeBlockGraphicData): void {
+		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
+	};
+
+	const updateSelectedCodeBlockModuleId = function () {
+		if (state.graphicHelper.selectedCodeBlock) updateCodeBlockModuleId(state.graphicHelper.selectedCodeBlock);
+	};
+
+	const updateProgrammaticSelectedCodeBlockModuleId = function () {
+		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
+		if (block) updateCodeBlockModuleId(block);
+	};
+
+	const updateProgrammaticSelectedCodeBlockWithoutCompilerTriggerModuleId = function () {
+		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
+		if (block) updateCodeBlockModuleId(block);
+	};
+
 	updateErrorMessages();
 
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
@@ -343,11 +360,20 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('graphicHelper.selectedCodeBlock', onSelectedCodeBlockChanged);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlockModuleId);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
+	store.subscribe(
+		'graphicHelper.selectedCodeBlockForProgrammaticEdit.code',
+		updateProgrammaticSelectedCodeBlockModuleId
+	);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);
 	store.subscribe(
 		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
 		updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger
+	);
+	store.subscribe(
+		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		updateProgrammaticSelectedCodeBlockWithoutCompilerTriggerModuleId
 	);
 }
