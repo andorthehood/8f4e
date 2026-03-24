@@ -1,4 +1,3 @@
-import { getModuleId } from '@8f4e/compiler/syntax';
 import { StateManager } from '@8f4e/state-manager';
 
 import { removeInterModuleReferences } from '../../utils/removeInterModuleReferences';
@@ -13,7 +12,7 @@ function collectModuleIdsByCreationIndex(state: State): Map<number, string> {
 			continue;
 		}
 
-		const moduleId = getModuleId(codeBlock.code);
+		const moduleId = codeBlock.moduleId;
 		if (!moduleId) {
 			continue;
 		}
