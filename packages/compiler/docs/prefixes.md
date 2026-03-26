@@ -107,6 +107,32 @@ int8u[] unsignedBuffer 10 0
 push ^unsignedBuffer
 ```
 
+## Pointee element max value
+
+- `^*name` pushes the maximum finite value for the type pointed to by a pointer-typed memory item.
+- Only valid for pointer identifiers (`int*`, `int16*`, `float*`, `float64*`, etc.).
+- Using `^*name` on a non-pointer identifier produces a compiler error.
+- `^name` keeps its existing meaning (max of the memory item's own element type).
+
+Examples:
+
+| Declaration         | `^name` | `^*name` |
+|---------------------|---------|----------|
+| `int* ptr`          | 2,147,483,647 | 2,147,483,647 |
+| `int16* ptr`        | 2,147,483,647 | 32,767 |
+| `float* ptr`        | 3.4028234663852886e+38 | 3.4028234663852886e+38 |
+| `float64* ptr`      | 3.4028234663852886e+38 | 1.7976931348623157e+308 |
+
+```
+int* ptr &someInt
+push ^ptr    ; 2,147,483,647  — max of the pointer slot type (int)
+push ^*ptr   ; 2,147,483,647  — max of the int it points to
+
+float64* fptr &someFloat64
+push ^fptr   ; 3.4028234663852886e+38  — max of the pointer slot type (float)
+push ^*fptr  ; 1.7976931348623157e+308  — max of the float64 it points to
+```
+
 ## Element min value
 
 - `!name` pushes the lowest finite value (most negative) for the element type of a memory item.
