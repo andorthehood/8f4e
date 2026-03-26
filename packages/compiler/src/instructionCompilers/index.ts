@@ -33,6 +33,7 @@ import remainder from './remainder';
 import _module from './module';
 import moduleEnd from './moduleEnd';
 import int from './int';
+import int16 from './int16';
 import float from './float';
 import castToInt from './castToInt';
 import castToFloat from './castToFloat';
@@ -118,6 +119,8 @@ const instructions = {
 	float: float,
 	'int*': int,
 	'int**': int,
+	'int16*': int16,
+	'int16**': int16,
 	'float*': float,
 	'float**': float,
 	float64: float64,

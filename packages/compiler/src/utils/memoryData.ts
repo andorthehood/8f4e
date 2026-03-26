@@ -31,6 +31,7 @@ export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): num
 	if (!memoryItem || !memoryItem.isPointer) return 0;
 	if (memoryItem.isPointingToPointer) return 4;
 	if (String(memoryItem.type) === 'float64*') return 8;
+	if (memoryItem.isPointingToInt16) return 2;
 	return 4;
 }
 
@@ -197,6 +198,19 @@ if (import.meta.vitest) {
 					} as unknown as MemoryMap[string],
 				};
 				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(8);
+			});
+
+			it('returns 2 for int16* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToPointer: false,
+						isPointingToInt16: true,
+						type: 'int16*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(2);
 			});
 
 			it('returns 4 for int** double pointer (pointee is a pointer)', () => {

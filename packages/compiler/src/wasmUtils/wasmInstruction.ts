@@ -159,6 +159,12 @@ enum WASMInstruction {
 	I32_STORE8 = 0x3a,
 
 	/**
+	 * Store the low 16 bits of an i32 to memory.
+	 * Type signature: (param i32 i32) (result)
+	 */
+	I32_STORE16 = 0x3b,
+
+	/**
 	 * Store a 32-bit float to memory.
 	 * Type signature: (param i32 f32) (result)
 	 */
