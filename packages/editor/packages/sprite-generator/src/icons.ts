@@ -4,8 +4,8 @@ import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
 import Glyph from './fonts/types';
 
-const offsetX = 0;
-const offsetY = 150;
+const offsetX = 540;
+const offsetY = 540;
 
 const icons = (
 	characterWidth: number,

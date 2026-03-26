@@ -104,7 +104,7 @@ const orderedKeys = [
 ];
 
 const offsetX = 0;
-const offsetY = 200;
+const offsetY = 240;
 
 function stringToCharCodeArray(str: string): number[] {
 	const arr: number[] = [];

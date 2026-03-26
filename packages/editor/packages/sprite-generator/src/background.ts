@@ -5,7 +5,7 @@ import Glyph from './fonts/types';
 import { ColorScheme, Command, DrawingCommand } from './types';
 
 const offsetX = 0;
-const offsetY = 300;
+const offsetY = 340;
 
 export default function generate(
 	glyphs: number[],
