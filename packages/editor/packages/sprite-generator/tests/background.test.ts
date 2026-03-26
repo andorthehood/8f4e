@@ -30,7 +30,7 @@ describe('background module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 300]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 340]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -132,7 +132,7 @@ describe('background module', () => {
 
 			// Should have initial positioning translate
 			const initialTranslate = translateCommands[0];
-			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [0, 300]);
+			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [0, 340]);
 
 			// Should have horizontal movement translates (character width, 0)
 			const horizontalTranslates = translateCommands.filter(
@@ -257,7 +257,7 @@ describe('background module', () => {
 			validateSpriteCoordinates(
 				backgroundCoordinate,
 				0, // offsetX
-				300, // offsetY
+				340, // offsetY
 				characterDimensions8x16.width * 64, // spriteWidth
 				characterDimensions8x16.height * 32 // spriteHeight
 			);
@@ -271,7 +271,7 @@ describe('background module', () => {
 			validateSpriteCoordinates(
 				backgroundCoordinate,
 				0, // offsetX
-				300, // offsetY
+				340, // offsetY
 				characterDimensions6x10.width * 64, // spriteWidth
 				characterDimensions6x10.height * 32 // spriteHeight
 			);
@@ -283,9 +283,9 @@ describe('background module', () => {
 
 			// Both should have same offset position
 			expect(lookup8x16[0].x).toBe(0);
-			expect(lookup8x16[0].y).toBe(300);
+			expect(lookup8x16[0].y).toBe(340);
 			expect(lookup6x10[0].x).toBe(0);
-			expect(lookup6x10[0].y).toBe(300);
+			expect(lookup6x10[0].y).toBe(340);
 
 			// But different dimensions
 			expect(lookup8x16[0].spriteWidth).toBe(8 * 64);

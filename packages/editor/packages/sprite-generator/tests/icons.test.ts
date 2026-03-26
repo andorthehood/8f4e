@@ -47,7 +47,7 @@ describe('icons module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 150]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [540, 540]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -194,8 +194,8 @@ describe('icons module', () => {
 
 			validateSpriteCoordinates(
 				inputCoordinate,
-				0, // offsetX for first icon
-				150, // offsetY
+				540, // offsetX for first icon
+				540, // offsetY
 				characterDimensions8x16.width * 3, // INPUT icon spans 3 characters
 				characterDimensions8x16.height
 			);
@@ -257,7 +257,7 @@ describe('icons module', () => {
 
 			// All icons should be on the same row
 			expect(new Set(yValues).size).toBe(1);
-			expect(yValues[0]).toBe(150); // offsetY
+			expect(yValues[0]).toBe(540); // offsetY
 		});
 
 		it('should have non-overlapping X coordinates', () => {

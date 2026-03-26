@@ -30,7 +30,7 @@ describe('feedbackScale module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 130]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [540, 480]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -141,7 +141,7 @@ describe('feedbackScale module', () => {
 
 			// Should have initial positioning translate
 			const initialTranslate = translateCommands[0];
-			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [0, 130]);
+			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [540, 480]);
 
 			// Should have character positioning translates
 			const characterTranslates = translateCommands.filter(
@@ -200,7 +200,7 @@ describe('feedbackScale module', () => {
 
 			// Should still have basic structure
 			expect(commands[0]).toEqual([Command.RESET_TRANSFORM]);
-			expect(commands[1]).toEqual([Command.TRANSLATE, 0, 130]);
+			expect(commands[1]).toEqual([Command.TRANSLATE, 540, 480]);
 
 			// Should not have any feedback scale specific rectangles
 			const rectangleCommands = findAllCommands(commands, Command.RECTANGLE);
@@ -269,8 +269,8 @@ describe('feedbackScale module', () => {
 
 			validateSpriteCoordinates(
 				firstItem,
-				0, // offsetX
-				130, // offsetY
+				540, // offsetX
+				480, // offsetY
 				characterDimensions8x16.width * 3, // spriteWidth (3 characters)
 				characterDimensions8x16.height // spriteHeight
 			);
@@ -291,8 +291,8 @@ describe('feedbackScale module', () => {
 
 				validateSpriteCoordinates(
 					item,
-					i * itemWidth, // x position increases by item width
-					130, // offsetY (constant)
+					540 + i * itemWidth, // x position increases by item width
+					480, // offsetY (constant)
 					itemWidth, // spriteWidth (3 characters)
 					characterDimensions8x16.height // spriteHeight
 				);
@@ -310,8 +310,8 @@ describe('feedbackScale module', () => {
 
 			validateSpriteCoordinates(
 				firstItem,
-				0, // offsetX
-				130, // offsetY
+				540, // offsetX
+				480, // offsetY
 				characterDimensions6x10.width * 3, // spriteWidth (3 characters)
 				characterDimensions6x10.height // spriteHeight
 			);
@@ -366,7 +366,7 @@ describe('feedbackScale module', () => {
 
 			// All coordinates should have same Y, width, and height
 			coordinates.forEach(coord => {
-				expect(coord.y).toBe(130); // offsetY
+				expect(coord.y).toBe(480); // offsetY
 				expect(coord.spriteWidth).toBe(characterDimensions8x16.width * 3);
 				expect(coord.spriteHeight).toBe(characterDimensions8x16.height);
 			});
