@@ -3,8 +3,8 @@ import { SpriteCoordinates } from 'glugglug';
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
 
-const offsetX = 0;
-const offsetY = 130;
+const offsetX = 540;
+const offsetY = 480;
 
 export function getFeedbackScaleColors(colors: ColorScheme['icons']): string[] {
 	return [

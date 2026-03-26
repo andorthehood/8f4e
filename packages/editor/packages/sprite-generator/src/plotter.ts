@@ -3,7 +3,7 @@ import { SpriteCoordinates } from 'glugglug';
 import { ColorScheme, Command, DrawingCommand } from './types';
 
 const offsetX = 600;
-const offsetY = 300;
+const offsetY = 340;
 
 export default function generate(
 	characterWidth: number,
