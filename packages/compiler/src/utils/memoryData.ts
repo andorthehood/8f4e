@@ -69,8 +69,8 @@ export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): num
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem || !memoryItem.isPointer) return 0;
 
-	// double pointers: pointee is a pointer slot (float32 max)
-	if (memoryItem.isPointingToPointer) return 3.4028234663852886e38;
+	// double pointers: pointee is a pointer slot (stored as i32)
+	if (memoryItem.isPointingToPointer) return 2147483647;
 
 	// float64*: max float64
 	if (String(memoryItem.type).startsWith('float64')) return 1.7976931348623157e308;
@@ -465,7 +465,7 @@ if (import.meta.vitest) {
 				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(1.7976931348623157e308);
 			});
 
-			it('returns max float32 value for float64** pointer (pointee is a pointer slot)', () => {
+			it('returns max int32 value for float64** pointer (pointee is a pointer slot stored as i32)', () => {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
@@ -475,7 +475,7 @@ if (import.meta.vitest) {
 						type: 'float64**',
 					} as unknown as MemoryMap[string],
 				};
-				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(3.4028234663852886e38);
+				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(2147483647);
 			});
 
 			it('returns 0 for non-pointer identifier', () => {

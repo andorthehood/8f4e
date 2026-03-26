@@ -120,16 +120,16 @@ Examples:
 |---------------------|---------|----------|
 | `int* ptr`          | 2,147,483,647 | 2,147,483,647 |
 | `int16* ptr`        | 2,147,483,647 | 32,767 |
-| `float* ptr`        | 3.4028234663852886e+38 | 3.4028234663852886e+38 |
-| `float64* ptr`      | 3.4028234663852886e+38 | 1.7976931348623157e+308 |
+| `float* ptr`        | 2,147,483,647 | 3.4028234663852886e+38 |
+| `float64* ptr`      | 2,147,483,647 | 1.7976931348623157e+308 |
 
 ```
 int* ptr &someInt
-push ^ptr    ; 2,147,483,647  — max of the pointer slot type (int)
+push ^ptr    ; 2,147,483,647  — max of the pointer slot type (i32)
 push ^*ptr   ; 2,147,483,647  — max of the int it points to
 
 float64* fptr &someFloat64
-push ^fptr   ; 3.4028234663852886e+38  — max of the pointer slot type (float)
+push ^fptr   ; 2,147,483,647  — max of the pointer slot type (i32)
 push ^*fptr  ; 1.7976931348623157e+308  — max of the float64 it points to
 ```
 

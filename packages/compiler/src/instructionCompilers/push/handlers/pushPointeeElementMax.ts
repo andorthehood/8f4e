@@ -16,11 +16,15 @@ export default function pushPointeeElementMax(line: AST[number], context: Compil
 	const base = extractPointeeElementMaxBase(argument.value);
 	const memoryItem = getDataStructure(context.namespace.memory, base);
 
-	if (!memoryItem?.isPointer) {
+	if (!memoryItem) {
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: base });
+	}
+
+	if (!memoryItem.isPointer) {
 		throw getError(ErrorCode.POINTEE_ELEMENT_MAX_ON_NON_POINTER, line, context, { identifier: base });
 	}
 
-	const kind = memoryItem.isPointingToPointer ? 'float32' : resolvePointerTargetValueKind(memoryItem);
+	const kind = memoryItem.isPointingToPointer ? 'int32' : resolvePointerTargetValueKind(memoryItem);
 	const maxValue = getPointeeElementMaxValue(context.namespace.memory, base);
 	context.stack.push(kindToStackItem(kind, { isNonZero: maxValue !== 0 }));
 	return saveByteCode(context, constOpcode[kind](maxValue));
@@ -183,7 +187,7 @@ if (import.meta.vitest) {
 			expect(context.stack).toEqual([{ isInteger: false, isFloat64: true, isNonZero: true }]);
 		});
 
-		it('pushes max float32 value for float64** pointer (pointee is a pointer slot)', () => {
+		it('pushes max int32 value for float64** pointer (pointee is a pointer slot stored as i32)', () => {
 			const context = createInstructionCompilerTestContext({
 				namespace: {
 					...createInstructionCompilerTestContext().namespace,
@@ -196,7 +200,7 @@ if (import.meta.vitest) {
 							wordAlignedSize: 1,
 							byteAddress: 0,
 							default: 0,
-							isInteger: false,
+							isInteger: true,
 							isPointer: true,
 							isPointingToInteger: false,
 							isPointingToPointer: true,
@@ -217,8 +221,24 @@ if (import.meta.vitest) {
 				context
 			);
 
-			expect(context.byteCode).toEqual(f32const(3.4028234663852886e38));
-			expect(context.stack).toEqual([{ isInteger: false, isNonZero: true }]);
+			expect(context.byteCode).toEqual(i32const(2147483647));
+			expect(context.stack).toEqual([{ isInteger: true, isNonZero: true }]);
+		});
+
+		it('throws UNDECLARED_IDENTIFIER for undeclared identifier', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				pushPointeeElementMax(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^*undeclared' }],
+					} as AST[number],
+					context
+				);
+			}).toThrow();
 		});
 
 		it('throws POINTEE_ELEMENT_MAX_ON_NON_POINTER for non-pointer identifier', () => {
