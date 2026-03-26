@@ -57,6 +57,7 @@ export enum ErrorCode {
 	SPLIT_HEX_MIXED_TOKENS,
 	CONSTANT_NAME_AS_MEMORY_IDENTIFIER,
 	SPLIT_BYTE_CONSTANT_OUT_OF_RANGE,
+	POINTEE_WORD_SIZE_ON_NON_POINTER,
 }
 
 interface ErrorDetails {
@@ -340,6 +341,18 @@ export function getError(
 			return {
 				code,
 				message: 'Constants used in split-byte mode must resolve to an integer in the range 0–255. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.POINTEE_WORD_SIZE_ON_NON_POINTER:
+			return {
+				code,
+				message:
+					'%*name can only be used with pointer-typed memory identifiers. ' +
+					(details?.identifier ? `"${details.identifier}" is not a pointer. ` : '') +
+					'(' +
+					code +
+					')',
 				line,
 				context,
 			};
