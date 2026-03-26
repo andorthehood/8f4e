@@ -4,6 +4,7 @@ import pushElementMax from './push/handlers/pushElementMax';
 import pushElementMin from './push/handlers/pushElementMin';
 import pushElementWordSize from './push/handlers/pushElementWordSize';
 import pushPointeeElementWordSize from './push/handlers/pushPointeeElementWordSize';
+import pushPointeeElementMax from './push/handlers/pushPointeeElementMax';
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
 import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
@@ -54,6 +55,8 @@ const push: InstructionCompiler = withValidation(
 					return pushPointeeElementWordSize(line, context);
 				case IdentifierPushKind.ELEMENT_MAX:
 					return pushElementMax(line, context);
+				case IdentifierPushKind.POINTEE_ELEMENT_MAX:
+					return pushPointeeElementMax(line, context);
 				case IdentifierPushKind.ELEMENT_MIN:
 					return pushElementMin(line, context);
 				case IdentifierPushKind.CONST:
