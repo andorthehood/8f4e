@@ -21,7 +21,7 @@ describe('fillColors module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 180]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [540, 500]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -140,8 +140,8 @@ describe('fillColors module', () => {
 
 			validateSpriteCoordinates(
 				firstCoordinate,
-				0, // offsetX
-				180, // offsetY
+				540, // offsetX
+				500, // offsetY
 				characterDimensions8x16.width,
 				characterDimensions8x16.height
 			);
@@ -158,7 +158,7 @@ describe('fillColors module', () => {
 				const secondCoordinate = lookup[keys[1] as keyof typeof lookup];
 
 				// Second color should be offset by character width
-				validateSpriteCoordinates(secondCoordinate, width, 180, width, height);
+				validateSpriteCoordinates(secondCoordinate, 540 + width, 500, width, height);
 				expect(secondCoordinate.x).toBe(firstCoordinate.x + width);
 			}
 		});
@@ -172,8 +172,8 @@ describe('fillColors module', () => {
 
 				validateSpriteCoordinates(
 					firstCoordinate,
-					0,
-					180,
+					540,
+					500,
 					characterDimensions6x10.width,
 					characterDimensions6x10.height
 				);

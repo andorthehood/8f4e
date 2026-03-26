@@ -21,7 +21,7 @@ describe('plotter module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [600, 300]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [600, 340]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -219,7 +219,7 @@ describe('plotter module', () => {
 			validateSpriteCoordinates(
 				firstPoint,
 				600, // offsetX
-				300, // offsetY
+				340, // offsetY
 				1, // spriteWidth (1 pixel)
 				characterDimensions8x16.height * 8 // spriteHeight (full plot height)
 			);
@@ -232,7 +232,7 @@ describe('plotter module', () => {
 			for (let i = 0; i < 10; i++) {
 				const point = lookup[i];
 				expect(point.x).toBe(600 + i); // offsetX + i
-				expect(point.y).toBe(300); // offsetY (constant)
+				expect(point.y).toBe(340); // offsetY (constant)
 				expect(point.spriteWidth).toBe(1);
 				expect(point.spriteHeight).toBe(characterDimensions8x16.height * 8);
 			}
@@ -245,7 +245,7 @@ describe('plotter module', () => {
 
 			// All coordinates should have same Y, width, and height
 			coordinates.forEach(coord => {
-				expect(coord.y).toBe(300);
+				expect(coord.y).toBe(340);
 				expect(coord.spriteWidth).toBe(1);
 				expect(coord.spriteHeight).toBe(characterDimensions8x16.height * 8);
 			});
