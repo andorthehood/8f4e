@@ -2,7 +2,7 @@
 
 This index is derived from the active files currently present in `docs/todos/`.
 
-Active todo files: 68
+Active todo files: 74
 
 ## Active TODOs
 
@@ -65,6 +65,12 @@ Active todo files: 68
 | 308 | Simplify memory instruction default value resolution | 🟡 | 4-8h | 2026-03-14 | Memory instruction argument handling is now split between a syntax-phase classifier and a semantic-phase resolver, but the semantic side still carries a long branch ladder with repeated lookup logic and several no-op... |
 | 309 | Extract shared module memory identifier parser | 🟡 | 2-4h | 2026-03-14 | The codebase currently parses `module.memory` identifiers in multiple places with slightly different local logic. |
 | 310 | Simplify compiler project flattening and compilable block checks | 🟡 | 1-3h | 2026-03-14 | The editor compiler effect currently does more array work and duplicated block-type checks than necessary during project flattening and recompile triggering. |
+| 319 | Add `%*name` pointee element word size prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `%name` for element word size, but pointer-typed memory items still lack a direct way to ask for the pointed-to element width without overloading the existing pointer-slot semantics. |
+| 320 | Add `&*name` pointee start address prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `&name` for a memory item's own start address, but pointer-typed memory still lacks a direct identifier form for the start address stored in the pointer. |
+| 321 | Add `*name&` pointee end address suffix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `name&` for a memory item's own end-address form, but pointer-typed memory still lacks a direct identifier form for the end-address form of the pointee allocation. |
+| 322 | Add `^*name` pointee max value prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `^name` for the memory item's own element-type maximum, but pointer-typed memory still lacks a direct identifier form for the maximum value of the pointee type. |
+| 323 | Add `!*name` pointee min value prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `!name` for the memory item's own element-type minimum, but pointer-typed memory still lacks a direct identifier form for the minimum value of the pointee type. |
+| 324 | Add `int16*` pointer types to compiler and runtime | 🟡 | 1-2d | 2026-03-26 | The compiler currently only has coarse pointer base types such as `int*`, `float*`, and `float64*`, so pointer-aware metadata cannot represent 16-bit integer pointee semantics directly. |
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |
