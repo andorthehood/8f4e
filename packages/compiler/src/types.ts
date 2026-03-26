@@ -13,6 +13,8 @@ export enum MemoryTypes {
 	'int',
 	'int*',
 	'int**',
+	'int16*',
+	'int16**',
 	'float',
 	'float*',
 	'float**',
@@ -32,6 +34,7 @@ export interface DataStructure {
 	// lineNumber: number;
 	isInteger: boolean;
 	isFloat64?: boolean;
+	isPointingToInt16?: boolean;
 	id: string;
 	isPointer: boolean;
 	isPointingToInteger: boolean;
