@@ -78,8 +78,8 @@ export interface MainThreadLogicRuntime {
 /**
  * AudioWorklet runtime configuration.
  *
- * Audio buffers use a unified `memoryId` format in the form `'module.memory'` (e.g., 'audiooutL.buffer').
- * This aligns with the `module.memory` syntax used elsewhere in the editor.
+ * Audio buffers use a unified `memoryId` format in the form `'module:memory'` (e.g., 'audiooutL:buffer').
+ * This aligns with the `module:memory` syntax used elsewhere in the editor.
  */
 export interface AudioWorkletRuntime {
 	sampleRate: number;
