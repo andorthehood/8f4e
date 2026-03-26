@@ -26,6 +26,15 @@ export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 	return memoryItem ? memoryItem.elementWordSize : 0;
 }
 
+export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
+	const memoryItem = getDataStructure(memoryMap, id);
+	if (!memoryItem || !memoryItem.isPointer) return 0;
+	if (memoryItem.isPointingToPointer) return 4;
+	const memoryType = String(memoryItem.type);
+	if (memoryType.startsWith('float64')) return 8;
+	return 4;
+}
+
 export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem) return 0;
@@ -151,6 +160,79 @@ if (import.meta.vitest) {
 
 			it('returns 0 for non-existing identifier', () => {
 				expect(getElementWordSize(mockMemory, 'nonExisting')).toBe(0);
+			});
+		});
+
+		describe('getPointeeElementWordSize', () => {
+			it('returns 4 for int* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToPointer: false,
+						type: 'int*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
+			});
+
+			it('returns 4 for float* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToPointer: false,
+						type: 'float*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
+			});
+
+			it('returns 8 for float64* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToPointer: false,
+						type: 'float64*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(8);
+			});
+
+			it('returns 4 for int** double pointer (pointee is a pointer)', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToPointer: true,
+						type: 'int**',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
+			});
+
+			it('returns 4 for float64** double pointer (pointee is a pointer)', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToPointer: true,
+						type: 'float64**',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
+			});
+
+			it('returns 0 for non-pointer identifier', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 4, isPointer: false } as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'val')).toBe(0);
+			});
+
+			it('returns 0 for non-existing identifier', () => {
+				expect(getPointeeElementWordSize(mockMemory, 'nonExisting')).toBe(0);
 			});
 		});
 
