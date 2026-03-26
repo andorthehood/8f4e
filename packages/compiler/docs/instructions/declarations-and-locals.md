@@ -85,8 +85,6 @@ Dereferencing with `push *name` emits a signed 16-bit load (`i32.load16_s`), whi
 
 Pointer-aware metadata reflects the 2-byte pointee width:
 - `%*name` returns `2` for `int16*` (pointee element word size)
-- `^*name` returns `32767` (max value for signed int16)
-- `!*name` returns `-32768` (min value for signed int16)
 
 #### Examples
 
