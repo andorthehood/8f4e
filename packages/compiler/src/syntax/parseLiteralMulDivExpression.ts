@@ -24,9 +24,13 @@ function parseSingleNumericLiteral(s: string): LiteralMulDivResult | null {
 	if (/^-?0b[0-1]+$/.test(s)) {
 		return { value: parseInt(s.replace('0b', ''), 2), isInteger: true };
 	}
-	// decimal float or integer
-	if (/^-?[0-9.]+$/.test(s)) {
-		return { value: parseFloat(s), isInteger: /^-?[0-9]+$/.test(s) };
+	// decimal float or integer (no suffix)
+	if (/^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?$/.test(s)) {
+		const value = parseFloat(s);
+		if (!Number.isFinite(value)) {
+			return null;
+		}
+		return { value, isInteger: /^-?[0-9]+$/.test(s) };
 	}
 	return null;
 }
@@ -77,7 +81,7 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 
 	return {
 		value,
-		isInteger: !isFloat64 && Number.isInteger(value),
+		isInteger: !isFloat64 && lhs.isInteger && rhs.isInteger && Number.isInteger(value),
 		...(isFloat64 && { isFloat64: true }),
 	};
 }
@@ -91,8 +95,8 @@ if (import.meta.vitest) {
 			expect(parseLiteralMulDivExpression('3*4')).toEqual({ value: 12, isInteger: true });
 		});
 
-		it('folds float * integer with integer result', () => {
-			expect(parseLiteralMulDivExpression('3.5*4')).toEqual({ value: 14, isInteger: true });
+		it('folds float * integer: result is float-typed even when mathematically integer', () => {
+			expect(parseLiteralMulDivExpression('3.5*4')).toEqual({ value: 14, isInteger: false });
 		});
 
 		it('folds float * float with float result', () => {

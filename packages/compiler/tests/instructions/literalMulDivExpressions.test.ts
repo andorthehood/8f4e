@@ -93,10 +93,10 @@ moduleEnd
 );
 
 moduleTester(
-	'push: float literal multiplication with integer result',
+	'push: float literal multiplication with float-typed result',
 	`module test
 
-int output
+float output
 
 push &output
 push 3.5*4

@@ -172,7 +172,7 @@ if (import.meta.vitest) {
 
 		it('folds literal-only multiplication', () => {
 			expect(parseArgument('16*2')).toEqual({ value: 32, type: ArgumentType.LITERAL, isInteger: true });
-			expect(parseArgument('3.5*4')).toEqual({ value: 14, type: ArgumentType.LITERAL, isInteger: true });
+			expect(parseArgument('3.5*4')).toEqual({ value: 14, type: ArgumentType.LITERAL, isInteger: false });
 			expect(parseArgument('3.5*0.5')).toEqual({ value: 1.75, type: ArgumentType.LITERAL, isInteger: false });
 		});
 
