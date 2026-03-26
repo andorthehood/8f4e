@@ -65,6 +65,26 @@ export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
 	}
 }
 
+export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
+	const memoryItem = getDataStructure(memoryMap, id);
+	if (!memoryItem || !memoryItem.isPointer) return 0;
+
+	// double pointers: pointee is a pointer slot (stored as i32)
+	if (memoryItem.isPointingToPointer) return 2147483647;
+
+	// float64*: max float64
+	if (String(memoryItem.type).startsWith('float64')) return 1.7976931348623157e308;
+
+	// int16*: max signed int16
+	if (memoryItem.isPointingToInt16) return 32767;
+
+	// int*: max signed int32
+	if (memoryItem.isPointingToInteger) return 2147483647;
+
+	// float*: max float32
+	return 3.4028234663852886e38;
+}
+
 export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem) return 0;
@@ -388,6 +408,85 @@ if (import.meta.vitest) {
 					val: { elementWordSize: 4, isInteger: true, isUnsigned: true } as unknown as MemoryMap[string],
 				};
 				expect(getElementMinValue(memory, 'val')).toBe(0);
+			});
+		});
+
+		describe('getPointeeElementMaxValue', () => {
+			it('returns max int32 value for int* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToInteger: true,
+						isPointingToPointer: false,
+						type: 'int*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(2147483647);
+			});
+
+			it('returns max int16 value for int16* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToInteger: true,
+						isPointingToInt16: true,
+						isPointingToPointer: false,
+						type: 'int16*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(32767);
+			});
+
+			it('returns max float32 value for float* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToInteger: false,
+						isPointingToPointer: false,
+						type: 'float*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(3.4028234663852886e38);
+			});
+
+			it('returns max float64 value for float64* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToInteger: false,
+						isPointingToPointer: false,
+						type: 'float64*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(1.7976931348623157e308);
+			});
+
+			it('returns max int32 value for float64** pointer (pointee is a pointer slot stored as i32)', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToInteger: false,
+						isPointingToPointer: true,
+						type: 'float64**',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(2147483647);
+			});
+
+			it('returns 0 for non-pointer identifier', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 4, isPointer: false } as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementMaxValue(memory, 'val')).toBe(0);
+			});
+
+			it('returns 0 for non-existing identifier', () => {
+				expect(getPointeeElementMaxValue(mockMemory, 'nonExisting')).toBe(0);
 			});
 		});
 	});

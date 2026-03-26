@@ -58,6 +58,7 @@ export enum ErrorCode {
 	CONSTANT_NAME_AS_MEMORY_IDENTIFIER,
 	SPLIT_BYTE_CONSTANT_OUT_OF_RANGE,
 	POINTEE_WORD_SIZE_ON_NON_POINTER,
+	POINTEE_ELEMENT_MAX_ON_NON_POINTER,
 }
 
 interface ErrorDetails {
@@ -349,6 +350,18 @@ export function getError(
 				code,
 				message:
 					'%*name can only be used with pointer-typed memory identifiers. ' +
+					(details?.identifier ? `"${details.identifier}" is not a pointer. ` : '') +
+					'(' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.POINTEE_ELEMENT_MAX_ON_NON_POINTER:
+			return {
+				code,
+				message:
+					'^*name can only be used with pointer-typed memory identifiers. ' +
 					(details?.identifier ? `"${details.identifier}" is not a pointer. ` : '') +
 					'(' +
 					code +

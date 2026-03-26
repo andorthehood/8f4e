@@ -4,12 +4,14 @@ import extractPointeeElementWordSizeBase from '../syntax/extractPointeeElementWo
 import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
 import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
 import extractElementMaxBase from '../syntax/extractElementMaxBase';
+import extractPointeeElementMaxBase from '../syntax/extractPointeeElementMaxBase';
 import extractElementMinBase from '../syntax/extractElementMinBase';
 import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
 import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
 import hasPointeeElementWordSizePrefix from '../syntax/hasPointeeElementWordSizePrefix';
 import hasMemoryReferencePrefix from '../syntax/hasMemoryReferencePrefix';
 import hasElementMaxPrefix from '../syntax/hasElementMaxPrefix';
+import hasPointeeElementMaxPrefix from '../syntax/hasPointeeElementMaxPrefix';
 import hasElementMinPrefix from '../syntax/hasElementMinPrefix';
 import isMemoryPointerSyntax from '../syntax/isMemoryPointerIdentifier';
 
@@ -45,6 +47,10 @@ export function isElementMinIdentifier(memoryMap: MemoryMap, name: string): bool
 
 export function isPointeeElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return hasPointeeElementWordSizePrefix(name) && Object.hasOwn(memoryMap, extractPointeeElementWordSizeBase(name));
+}
+
+export function isPointeeElementMaxIdentifier(memoryMap: MemoryMap, name: string): boolean {
+	return hasPointeeElementMaxPrefix(name) && Object.hasOwn(memoryMap, extractPointeeElementMaxBase(name));
 }
 
 if (import.meta.vitest) {
@@ -180,6 +186,25 @@ if (import.meta.vitest) {
 
 			it('returns false for plain identifiers', () => {
 				expect(isPointeeElementWordSizeIdentifier(mockMemory, 'foo')).toBe(false);
+			});
+		});
+
+		describe('isPointeeElementMaxIdentifier', () => {
+			it('returns true for pointee element max with ^* prefix', () => {
+				expect(isPointeeElementMaxIdentifier(mockMemory, '^*foo')).toBe(true);
+				expect(isPointeeElementMaxIdentifier(mockMemory, '^*bar')).toBe(true);
+			});
+
+			it('returns false for non-existing pointee element max', () => {
+				expect(isPointeeElementMaxIdentifier(mockMemory, '^*baz')).toBe(false);
+			});
+
+			it('returns false for plain ^ prefix', () => {
+				expect(isPointeeElementMaxIdentifier(mockMemory, '^foo')).toBe(false);
+			});
+
+			it('returns false for plain identifiers', () => {
+				expect(isPointeeElementMaxIdentifier(mockMemory, 'foo')).toBe(false);
 			});
 		});
 	});
