@@ -58,7 +58,7 @@ push %samples
 ## Pointee element word size
 
 - `%*name` pushes the element word size (in bytes) of the value pointed to by a pointer-typed memory item.
-- Only valid for pointer identifiers (`int*`, `float*`, `float64*`, etc.).
+- Only valid for pointer identifiers (`int*`, `int16*`, `float*`, `float64*`, etc.).
 - Using `%*name` on a non-pointer identifier produces a compiler error.
 
 Examples:
@@ -66,6 +66,7 @@ Examples:
 | Declaration         | `%name` | `%*name` |
 |---------------------|---------|----------|
 | `int* ptr`          | 4       | 4        |
+| `int16* ptr`        | 4       | 2        |
 | `float* ptr`        | 4       | 4        |
 | `float64* ptr`      | 4       | 8        |
 | `int** ptr`         | 4       | 4        |
