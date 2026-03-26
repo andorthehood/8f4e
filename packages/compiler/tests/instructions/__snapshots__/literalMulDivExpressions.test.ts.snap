@@ -1,0 +1,949 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`const: literal-only division expression with integer result > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "RESULT",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
+      },
+    ],
+    "instruction": "const",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "RESULT",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
+  },
+]
+`;
+
+exports[`const: literal-only division expression with integer result > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    i32.const 4
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`const: literal-only division expression with integer result > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`const: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "RESULT",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 32,
+      },
+    ],
+    "instruction": "const",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "RESULT",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
+  },
+]
+`;
+
+exports[`const: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    i32.const 32
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`const: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`init: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 12,
+      },
+    ],
+    "instruction": "init",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
+  },
+]
+`;
+
+exports[`init: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`init: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "foo": {
+    "byteAddress": 0,
+    "default": 12,
+    "elementWordSize": 4,
+    "id": "foo",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`int[]: buffer size from literal multiplication expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "buffer",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
+      },
+    ],
+    "instruction": "int[]",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "$buffer",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
+  },
+]
+`;
+
+exports[`int[]: buffer size from literal multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 32
+    i32.const 8
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`int[]: buffer size from literal multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "buffer": {
+    "byteAddress": 0,
+    "default": {},
+    "elementWordSize": 4,
+    "id": "buffer",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 8,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 8,
+  },
+  "output": {
+    "byteAddress": 32,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 8,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`push: float literal multiplication with integer result > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 14,
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
+  },
+]
+`;
+
+exports[`push: float literal multiplication with integer result > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    i32.const 14
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: float literal multiplication with integer result > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`push: hex literal in division expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
+  },
+]
+`;
+
+exports[`push: hex literal in division expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    i32.const 8
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: hex literal in division expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`push: hex literal in multiplication expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 32,
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
+  },
+]
+`;
+
+exports[`push: hex literal in multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    i32.const 32
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: hex literal in multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`push: literal-only division expression with float result > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.5,
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
+  },
+]
+`;
+
+exports[`push: literal-only division expression with float result > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    f32.const 0x1p-1 (;=0.5;)
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: literal-only division expression with float result > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`push: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 32,
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumberAfterMacroExpansion": 8,
+    "lineNumberBeforeMacroExpansion": 8,
+  },
+]
+`;
+
+exports[`push: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    i32.const 32
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
