@@ -75,6 +75,30 @@ int colorFromConst HI LO
 int HI LO
 ```
 
+### int16*
+
+The `int16*` and `int16**` instructions declare pointer types whose pointee is a signed 16-bit integer.
+
+The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allocation width. The pointee width is 2 bytes.
+
+Dereferencing with `push *name` emits a signed 16-bit load (`i32.load16_s`), which sign-extends the 16-bit value to a 32-bit integer on the stack.
+
+Pointer-aware metadata reflects the 2-byte pointee width:
+- `%*name` returns `2` for `int16*` (pointee element word size)
+
+#### Examples
+
+```
+int16[] samples 64 0
+int16* ptr &samples
+push *ptr        ; loads a signed 16-bit value, sign-extended to i32
+
+int16** pptr &ptr
+push *pptr       ; fully dereferences the double pointer
+
+push %*ptr       ; 2 — pointee element word size
+```
+
 ### float
 
 The float instruction declares a 32-bit floating-point value in module memory. Use `float*` or `float**` to declare pointer types.
