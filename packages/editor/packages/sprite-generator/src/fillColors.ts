@@ -2,8 +2,8 @@ import { SpriteCoordinates } from 'glugglug';
 
 import { ColorScheme, Command, DrawingCommand } from './types';
 
-const offsetX = 0;
-const offsetY = 180;
+const offsetX = 540;
+const offsetY = 500;
 
 const fillColors: Array<keyof ColorScheme['fill']> = [
 	'menuItemBackground',
