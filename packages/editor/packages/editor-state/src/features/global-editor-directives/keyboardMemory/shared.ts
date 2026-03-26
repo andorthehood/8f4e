@@ -33,7 +33,7 @@ function createKeyboardMemoryDirectivePlugin(
 			return;
 		}
 
-		const value = `${context.moduleId}.${memoryName}`;
+		const value = `${context.moduleId}:${memoryName}`;
 		const currentValue = draft.resolved[targetField];
 		if (currentValue === undefined) {
 			draft.resolved[targetField] = value;

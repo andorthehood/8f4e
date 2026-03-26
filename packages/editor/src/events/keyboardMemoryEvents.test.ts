@@ -59,8 +59,8 @@ describe('keyboardMemoryEvents', () => {
 		const setWordInMemory = vi.fn();
 		const state = {
 			globalEditorDirectives: {
-				keyCodeMemoryId: 'keys.code',
-				keyPressedMemoryId: 'keys.pressed',
+				keyCodeMemoryId: 'keys:code',
+				keyPressedMemoryId: 'keys:pressed',
 			},
 			compiler: {
 				compiledModules: {
@@ -101,8 +101,8 @@ describe('keyboardMemoryEvents', () => {
 		const setWordInMemory = vi.fn();
 		const state = {
 			globalEditorDirectives: {
-				keyCodeMemoryId: 'missing.code',
-				keyPressedMemoryId: 'keys.pressed',
+				keyCodeMemoryId: 'missing:code',
+				keyPressedMemoryId: 'keys:pressed',
 			},
 			compiler: {
 				compiledModules: {

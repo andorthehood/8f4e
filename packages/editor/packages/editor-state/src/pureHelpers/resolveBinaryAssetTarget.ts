@@ -4,7 +4,7 @@ export default function resolveBinaryAssetTarget(
 	state: State,
 	memoryId: string
 ): { memoryId: string; byteAddress: number; memoryByteLength: number } | null {
-	const [moduleId, memoryName] = memoryId.split('.');
+	const [moduleId, memoryName] = memoryId.split(':');
 	if (!moduleId || !memoryName) {
 		return null;
 	}
