@@ -44,7 +44,7 @@ describe('@keyPressedMemory directive', () => {
 			{}
 		);
 
-		expect(result.resolved.keyPressedMemoryId).toBe('keyboard.keyPressed');
+		expect(result.resolved.keyPressedMemoryId).toBe('keyboard:keyPressed');
 		expect(result.errors).toEqual([]);
 	});
 });

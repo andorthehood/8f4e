@@ -20,7 +20,7 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 			return undefined;
 		}
 
-		if (withoutPrefix.includes('.')) {
+		if (withoutPrefix.includes(':')) {
 			return withoutPrefix;
 		}
 
@@ -28,7 +28,7 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 			return undefined;
 		}
 
-		return `${moduleId}.${withoutPrefix}`;
+		return `${moduleId}:${withoutPrefix}`;
 	}
 
 	async function fetchAssetsFromDirectives(): Promise<void> {
