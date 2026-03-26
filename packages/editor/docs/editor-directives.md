@@ -66,7 +66,7 @@ Supported `memoryId` forms:
 - `&name` - Show the start address.
 - `name&` - Show the end address.
 - `*name` - Dereference a pointer memory.
-- `module.name` - Resolve `name` from another module.
+- `module:name` - Resolve `name` from another module.
 - `name[3]` - Show a specific buffer element.
 
 These modifiers can be combined when they make sense. For example:
@@ -76,7 +76,7 @@ These modifiers can be combined when they make sense. For example:
 ; @watch &buffer
 ; @watch pointer&
 ; @watch *out
-; @watch otherModule.value
+; @watch otherModule:value
 ; @watch buffer[3]
 ```
 

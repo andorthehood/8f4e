@@ -19,7 +19,7 @@ export interface BinaryAsset {
 	assetByteLength?: number;
 	/** Whether the asset has been loaded into WASM memory */
 	loadedIntoMemory: boolean;
-	/** Resolved runtime memory identifier in the form module.memory */
+	/** Resolved runtime memory identifier in the form module:memory */
 	memoryId?: string;
 	/** Resolved byte address for the asset target */
 	byteAddress?: number;
