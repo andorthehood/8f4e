@@ -3,6 +3,7 @@ import pushElementCount from './push/handlers/pushElementCount';
 import pushElementMax from './push/handlers/pushElementMax';
 import pushElementMin from './push/handlers/pushElementMin';
 import pushElementWordSize from './push/handlers/pushElementWordSize';
+import pushPointeeElementWordSize from './push/handlers/pushPointeeElementWordSize';
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
 import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
@@ -49,6 +50,8 @@ const push: InstructionCompiler = withValidation(
 					return pushElementCount(line, context);
 				case IdentifierPushKind.ELEMENT_WORD_SIZE:
 					return pushElementWordSize(line, context);
+				case IdentifierPushKind.POINTEE_ELEMENT_WORD_SIZE:
+					return pushPointeeElementWordSize(line, context);
 				case IdentifierPushKind.ELEMENT_MAX:
 					return pushElementMax(line, context);
 				case IdentifierPushKind.ELEMENT_MIN:

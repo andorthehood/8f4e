@@ -1,11 +1,13 @@
 import extractElementCountBase from '../syntax/extractElementCountBase';
 import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
+import extractPointeeElementWordSizeBase from '../syntax/extractPointeeElementWordSizeBase';
 import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
 import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
 import extractElementMaxBase from '../syntax/extractElementMaxBase';
 import extractElementMinBase from '../syntax/extractElementMinBase';
 import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
 import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
+import hasPointeeElementWordSizePrefix from '../syntax/hasPointeeElementWordSizePrefix';
 import hasMemoryReferencePrefix from '../syntax/hasMemoryReferencePrefix';
 import hasElementMaxPrefix from '../syntax/hasElementMaxPrefix';
 import hasElementMinPrefix from '../syntax/hasElementMinPrefix';
@@ -39,6 +41,10 @@ export function isElementMaxIdentifier(memoryMap: MemoryMap, name: string): bool
 
 export function isElementMinIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return hasElementMinPrefix(name) && Object.hasOwn(memoryMap, extractElementMinBase(name));
+}
+
+export function isPointeeElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
+	return hasPointeeElementWordSizePrefix(name) && Object.hasOwn(memoryMap, extractPointeeElementWordSizeBase(name));
 }
 
 if (import.meta.vitest) {
@@ -155,6 +161,25 @@ if (import.meta.vitest) {
 
 			it('returns false for plain identifiers', () => {
 				expect(isElementMinIdentifier(mockMemory, 'foo')).toBe(false);
+			});
+		});
+
+		describe('isPointeeElementWordSizeIdentifier', () => {
+			it('returns true for pointee element word size with %* prefix', () => {
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%*foo')).toBe(true);
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%*bar')).toBe(true);
+			});
+
+			it('returns false for non-existing pointee element word size', () => {
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%*baz')).toBe(false);
+			});
+
+			it('returns false for plain % prefix', () => {
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%foo')).toBe(false);
+			});
+
+			it('returns false for plain identifiers', () => {
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, 'foo')).toBe(false);
 			});
 		});
 	});
