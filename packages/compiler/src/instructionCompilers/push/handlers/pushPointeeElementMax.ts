@@ -20,7 +20,7 @@ export default function pushPointeeElementMax(line: AST[number], context: Compil
 		throw getError(ErrorCode.POINTEE_ELEMENT_MAX_ON_NON_POINTER, line, context, { identifier: base });
 	}
 
-	const kind = resolvePointerTargetValueKind(memoryItem);
+	const kind = memoryItem.isPointingToPointer ? 'float32' : resolvePointerTargetValueKind(memoryItem);
 	const maxValue = getPointeeElementMaxValue(context.namespace.memory, base);
 	context.stack.push(kindToStackItem(kind, { isNonZero: maxValue !== 0 }));
 	return saveByteCode(context, constOpcode[kind](maxValue));
@@ -181,6 +181,44 @@ if (import.meta.vitest) {
 
 			expect(context.byteCode).toEqual(f64const(1.7976931348623157e308));
 			expect(context.stack).toEqual([{ isInteger: false, isFloat64: true, isNonZero: true }]);
+		});
+
+		it('pushes max float32 value for float64** pointer (pointee is a pointer slot)', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					memory: {
+						buffer: {
+							id: 'buffer',
+							numberOfElements: 1,
+							elementWordSize: 4,
+							wordAlignedAddress: 0,
+							wordAlignedSize: 1,
+							byteAddress: 0,
+							default: 0,
+							isInteger: false,
+							isPointer: true,
+							isPointingToInteger: false,
+							isPointingToPointer: true,
+							isUnsigned: false,
+							type: 'float64**',
+						} as never,
+					},
+				},
+			});
+
+			pushPointeeElementMax(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: '^*buffer' }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.byteCode).toEqual(f32const(3.4028234663852886e38));
+			expect(context.stack).toEqual([{ isInteger: false, isNonZero: true }]);
 		});
 
 		it('throws POINTEE_ELEMENT_MAX_ON_NON_POINTER for non-pointer identifier', () => {

@@ -80,6 +80,7 @@ if (import.meta.vitest) {
 			expect(resolveIdentifierPushKind(namespace, '%buffer')).toBe(IdentifierPushKind.ELEMENT_WORD_SIZE);
 			expect(resolveIdentifierPushKind(namespace, '%*buffer')).toBe(IdentifierPushKind.POINTEE_ELEMENT_WORD_SIZE);
 			expect(resolveIdentifierPushKind(namespace, '^buffer')).toBe(IdentifierPushKind.ELEMENT_MAX);
+			expect(resolveIdentifierPushKind(namespace, '^*buffer')).toBe(IdentifierPushKind.POINTEE_ELEMENT_MAX);
 			expect(resolveIdentifierPushKind(namespace, '!buffer')).toBe(IdentifierPushKind.ELEMENT_MIN);
 			expect(resolveIdentifierPushKind(namespace, 'ANSWER')).toBe(IdentifierPushKind.CONST);
 			expect(resolveIdentifierPushKind(namespace, 'localTemp')).toBe(IdentifierPushKind.LOCAL);
