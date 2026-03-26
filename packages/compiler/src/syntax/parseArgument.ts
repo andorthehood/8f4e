@@ -1,4 +1,5 @@
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
+import parseLiteralMulDivExpression from './parseLiteralMulDivExpression';
 
 export enum ArgumentType {
 	LITERAL = 'literal',
@@ -88,31 +89,22 @@ export function decodeStringLiteral(raw: string): string {
  * @returns Parsed argument with type information.
  */
 export function parseArgument(argument: string): Argument {
+	// Try to fold literal-only mul/div expressions (handles *, /, and integer/integer fractions)
+	const mulDivResult = parseLiteralMulDivExpression(argument);
+	if (mulDivResult !== null) {
+		return {
+			type: ArgumentType.LITERAL,
+			value: mulDivResult.value,
+			isInteger: mulDivResult.isInteger,
+			...(mulDivResult.isFloat64 && { isFloat64: true }),
+		};
+	}
+
 	switch (true) {
 		// Check for quoted string literals
 		case argument.startsWith('"') && argument.endsWith('"') && argument.length >= 2: {
 			const raw = argument.slice(1, -1);
 			return { type: ArgumentType.STRING_LITERAL, value: decodeStringLiteral(raw) };
-		}
-		case /^-?\d+\/\d+$/.test(argument): {
-			const [numeratorStr, denominatorStr] = argument.split('/');
-			const numerator = parseInt(numeratorStr, 10);
-			const denominator = parseInt(denominatorStr, 10);
-
-			if (denominator === 0) {
-				throw new SyntaxRulesError(
-					SyntaxErrorCode.DIVISION_BY_ZERO,
-					`Division by zero in fraction literal: ${argument}`,
-					{ argument }
-				);
-			}
-
-			const value = numerator / denominator;
-			return {
-				value,
-				type: ArgumentType.LITERAL,
-				isInteger: Number.isInteger(value),
-			};
 		}
 		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(argument): {
 			const numStr = argument.slice(0, -3);
@@ -174,10 +166,33 @@ if (import.meta.vitest) {
 			expect(() => parseArgument('1/0')).toThrow('Division by zero');
 		});
 
-		it('does not parse negative denominators as fractions', () => {
-			// These should be parsed as identifiers, not fractions
-			const result = parseArgument('1/-2');
-			expect(result.type).toBe(ArgumentType.IDENTIFIER);
+		it('parses negative denominators as literal expressions', () => {
+			expect(parseArgument('1/-2')).toEqual({ value: -0.5, type: ArgumentType.LITERAL, isInteger: false });
+		});
+
+		it('folds literal-only multiplication', () => {
+			expect(parseArgument('16*2')).toEqual({ value: 32, type: ArgumentType.LITERAL, isInteger: true });
+			expect(parseArgument('3.5*4')).toEqual({ value: 14, type: ArgumentType.LITERAL, isInteger: true });
+			expect(parseArgument('3.5*0.5')).toEqual({ value: 1.75, type: ArgumentType.LITERAL, isInteger: false });
+		});
+
+		it('folds hex literal in mul/div expression', () => {
+			expect(parseArgument('0x10/2')).toEqual({ value: 8, type: ArgumentType.LITERAL, isInteger: true });
+			expect(parseArgument('0x10*2')).toEqual({ value: 32, type: ArgumentType.LITERAL, isInteger: true });
+		});
+
+		it('folds f64-suffixed literal in mul/div expression', () => {
+			expect(parseArgument('3f64*2')).toEqual({
+				value: 6,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+		});
+
+		it('does not fold chained or mixed operators', () => {
+			expect(parseArgument('2*3*4').type).toBe(ArgumentType.IDENTIFIER);
+			expect(parseArgument('2*3/4').type).toBe(ArgumentType.IDENTIFIER);
 		});
 
 		it('parses f64-suffixed float literals', () => {
