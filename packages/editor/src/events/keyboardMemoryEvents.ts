@@ -8,7 +8,7 @@ function resolveWordAlignedAddress(state: State, memoryId?: string): number | un
 		return undefined;
 	}
 
-	const separatorIndex = memoryId.indexOf('.');
+	const separatorIndex = memoryId.indexOf(':');
 	if (separatorIndex <= 0 || separatorIndex >= memoryId.length - 1) {
 		return undefined;
 	}

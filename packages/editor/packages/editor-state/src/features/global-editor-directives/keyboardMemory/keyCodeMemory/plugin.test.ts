@@ -24,7 +24,7 @@ describe('@keyCodeMemory directive', () => {
 			{}
 		);
 
-		expect(result.resolved.keyCodeMemoryId).toBe('keyboard.keyCode');
+		expect(result.resolved.keyCodeMemoryId).toBe('keyboard:keyCode');
 		expect(result.errors).toEqual([]);
 	});
 
@@ -43,7 +43,7 @@ describe('@keyCodeMemory directive', () => {
 			{}
 		);
 
-		expect(result.resolved.keyCodeMemoryId).toBe('a.keyCode');
+		expect(result.resolved.keyCodeMemoryId).toBe('a:keyCode');
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].message).toContain('conflicting values');
 	});
