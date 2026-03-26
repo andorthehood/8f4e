@@ -30,8 +30,7 @@ export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): num
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem || !memoryItem.isPointer) return 0;
 	if (memoryItem.isPointingToPointer) return 4;
-	const memoryType = String(memoryItem.type);
-	if (memoryType.startsWith('float64')) return 8;
+	if (String(memoryItem.type) === 'float64*') return 8;
 	return 4;
 }
 
