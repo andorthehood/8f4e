@@ -55,6 +55,31 @@ int16[] samples 8 0
 push %samples
 ```
 
+## Pointee element word size
+
+- `%*name` pushes the element word size (in bytes) of the value pointed to by a pointer-typed memory item.
+- Only valid for pointer identifiers (`int*`, `float*`, `float64*`, etc.).
+- Using `%*name` on a non-pointer identifier produces a compiler error.
+
+Examples:
+
+| Declaration         | `%name` | `%*name` |
+|---------------------|---------|----------|
+| `int* ptr`          | 4       | 4        |
+| `float* ptr`        | 4       | 4        |
+| `float64* ptr`      | 4       | 8        |
+| `int** ptr`         | 4       | 4        |
+
+```
+int* ptr &someInt
+push %ptr    ; 4  — size of the pointer slot itself
+push %*ptr   ; 4  — size of the int it points to
+
+float64* fptr &someFloat64
+push %fptr   ; 4  — size of the pointer slot itself
+push %*fptr  ; 8  — size of the float64 it points to
+```
+
 ## Element max value
 
 - `^name` pushes the maximum finite value for the element type of a memory item.

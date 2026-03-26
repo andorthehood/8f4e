@@ -6,6 +6,7 @@ import {
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
+	isPointeeElementWordSizeIdentifier,
 } from '../../utils/memoryIdentifier';
 import { isConstantValueOrExpression } from '../../utils/resolveConstantValue';
 
@@ -17,6 +18,7 @@ export const enum IdentifierPushKind {
 	MEMORY_REFERENCE,
 	ELEMENT_COUNT,
 	ELEMENT_WORD_SIZE,
+	POINTEE_ELEMENT_WORD_SIZE,
 	ELEMENT_MAX,
 	ELEMENT_MIN,
 	CONST,
@@ -37,6 +39,8 @@ export default function resolveIdentifierPushKind(namespace: Namespace, value: s
 			return IdentifierPushKind.ELEMENT_COUNT;
 		case isElementWordSizeIdentifier(memory, value):
 			return IdentifierPushKind.ELEMENT_WORD_SIZE;
+		case isPointeeElementWordSizeIdentifier(memory, value):
+			return IdentifierPushKind.POINTEE_ELEMENT_WORD_SIZE;
 		case isElementMaxIdentifier(memory, value):
 			return IdentifierPushKind.ELEMENT_MAX;
 		case isElementMinIdentifier(memory, value):
@@ -70,6 +74,7 @@ if (import.meta.vitest) {
 			expect(resolveIdentifierPushKind(namespace, '&buffer')).toBe(IdentifierPushKind.MEMORY_REFERENCE);
 			expect(resolveIdentifierPushKind(namespace, '$buffer')).toBe(IdentifierPushKind.ELEMENT_COUNT);
 			expect(resolveIdentifierPushKind(namespace, '%buffer')).toBe(IdentifierPushKind.ELEMENT_WORD_SIZE);
+			expect(resolveIdentifierPushKind(namespace, '%*buffer')).toBe(IdentifierPushKind.POINTEE_ELEMENT_WORD_SIZE);
 			expect(resolveIdentifierPushKind(namespace, '^buffer')).toBe(IdentifierPushKind.ELEMENT_MAX);
 			expect(resolveIdentifierPushKind(namespace, '!buffer')).toBe(IdentifierPushKind.ELEMENT_MIN);
 			expect(resolveIdentifierPushKind(namespace, 'ANSWER')).toBe(IdentifierPushKind.CONST);
