@@ -47,7 +47,7 @@ describe('pianoKeyboard module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 200]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 240]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -161,7 +161,7 @@ describe('pianoKeyboard module', () => {
 
 			// Should have initial positioning translate
 			const initialTranslate = translateCommands[0];
-			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [0, 200]);
+			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [0, 240]);
 
 			// Should have multiple translate commands for positioning keyboard elements
 			expect(translateCommands.length).toBeGreaterThan(10);
@@ -270,7 +270,7 @@ describe('pianoKeyboard module', () => {
 			validateSpriteCoordinates(
 				firstKey,
 				0, // offsetX
-				200, // offsetY
+				240, // offsetY
 				characterDimensions8x16.width * 2, // spriteWidth (2 characters wide)
 				characterDimensions8x16.height * 5 // spriteHeight (5 characters tall)
 			);
@@ -288,7 +288,7 @@ describe('pianoKeyboard module', () => {
 				validateSpriteCoordinates(
 					key,
 					i * keyWidth, // x position increases by key width
-					200, // offsetY (constant)
+					240, // offsetY (constant)
 					keyWidth, // spriteWidth (2 characters)
 					characterDimensions8x16.height * 5 // spriteHeight (5 characters)
 				);
@@ -303,7 +303,7 @@ describe('pianoKeyboard module', () => {
 			validateSpriteCoordinates(
 				firstKey,
 				0, // offsetX
-				200, // offsetY
+				240, // offsetY
 				characterDimensions6x10.width * 2, // spriteWidth (2 characters wide)
 				characterDimensions6x10.height * 5 // spriteHeight (5 characters tall)
 			);
@@ -334,7 +334,7 @@ describe('pianoKeyboard module', () => {
 
 			// All coordinates should have same Y, width, and height
 			coordinates.forEach(coord => {
-				expect(coord.y).toBe(200); // offsetY
+				expect(coord.y).toBe(240); // offsetY
 				expect(coord.spriteWidth).toBe(characterDimensions8x16.width * 2);
 				expect(coord.spriteHeight).toBe(characterDimensions8x16.height * 5);
 			});
