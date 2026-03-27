@@ -110,8 +110,12 @@ export function parseArgument(argument: string): Argument {
 			const numStr = argument.slice(0, -3);
 			return { value: parseFloat(numStr), type: ArgumentType.LITERAL, isInteger: false, isFloat64: true };
 		}
-		case /^-?[0-9.]+$/.test(argument):
-			return { value: parseFloat(argument), type: ArgumentType.LITERAL, isInteger: /^-?[0-9]+$/.test(argument) };
+		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?$/.test(argument):
+			return {
+				value: parseFloat(argument),
+				type: ArgumentType.LITERAL,
+				isInteger: /^-?[0-9]+$/.test(argument),
+			};
 		case /^-?0x[0-9a-fA-F]+$/.test(argument):
 			return {
 				value: parseInt(argument.replace('0x', ''), 16),
@@ -122,6 +126,17 @@ export function parseArgument(argument: string): Argument {
 		case /^-?0b[0-1]+$/.test(argument):
 			return { value: parseInt(argument.replace('0b', ''), 2), type: ArgumentType.LITERAL, isInteger: true };
 		default:
+			// Reject numeric-looking tokens that failed literal parsing so they do not silently
+			// become identifiers. This keeps standalone and compound numeric syntax boundaries clear.
+			if (/^-?(?:\d|\.\d)/.test(argument)) {
+				throw new SyntaxRulesError(
+					SyntaxErrorCode.INVALID_IDENTIFIER,
+					`Identifiers cannot start with numbers: ${argument}`,
+					{
+						argument,
+					}
+				);
+			}
 			return { value: argument, type: ArgumentType.IDENTIFIER };
 	}
 }
@@ -139,6 +154,13 @@ if (import.meta.vitest) {
 			expect(parseArgument('3.14')).toEqual({ value: 3.14, type: ArgumentType.LITERAL, isInteger: false });
 		});
 
+		it('parses non-f64 scientific notation literals', () => {
+			// Scientific notation is treated as float-typed syntax even when the numeric value is integral.
+			expect(parseArgument('1e3')).toEqual({ value: 1000, type: ArgumentType.LITERAL, isInteger: false });
+			expect(parseArgument('1e-3')).toEqual({ value: 0.001, type: ArgumentType.LITERAL, isInteger: false });
+			expect(parseArgument('-2.5e4')).toEqual({ value: -25000, type: ArgumentType.LITERAL, isInteger: false });
+		});
+
 		it('parses hex integers', () => {
 			expect(parseArgument('0x10')).toEqual({ value: 16, type: ArgumentType.LITERAL, isInteger: true, isHex: true });
 		});
@@ -149,6 +171,12 @@ if (import.meta.vitest) {
 
 		it('parses identifiers', () => {
 			expect(parseArgument('value')).toEqual({ value: 'value', type: ArgumentType.IDENTIFIER });
+		});
+
+		it('rejects identifiers that start with numbers', () => {
+			expect(() => parseArgument('1abc')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('1e')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('1e+')).toThrow('Identifiers cannot start with numbers');
 		});
 
 		it('parses fraction literals with float result', () => {
@@ -190,9 +218,9 @@ if (import.meta.vitest) {
 			});
 		});
 
-		it('does not fold chained or mixed operators', () => {
-			expect(parseArgument('2*3*4').type).toBe(ArgumentType.IDENTIFIER);
-			expect(parseArgument('2*3/4').type).toBe(ArgumentType.IDENTIFIER);
+		it('rejects chained or mixed numeric-looking operators', () => {
+			expect(() => parseArgument('2*3*4')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('2*3/4')).toThrow('Identifiers cannot start with numbers');
 		});
 
 		it('parses f64-suffixed float literals', () => {
@@ -242,9 +270,9 @@ if (import.meta.vitest) {
 
 		it('does not parse malformed f64 suffix forms as f64 literals', () => {
 			// F64 (uppercase) is not valid
-			expect(parseArgument('3.14F64').type).toBe(ArgumentType.IDENTIFIER);
+			expect(() => parseArgument('3.14F64')).toThrow('Identifiers cannot start with numbers');
 			// double-f is not valid
-			expect(parseArgument('3.14ff64').type).toBe(ArgumentType.IDENTIFIER);
+			expect(() => parseArgument('3.14ff64')).toThrow('Identifiers cannot start with numbers');
 			// multiple dots are not valid
 			expect(parseArgument('..f64').type).toBe(ArgumentType.IDENTIFIER);
 		});

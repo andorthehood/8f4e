@@ -38,8 +38,13 @@ Missing trailing bytes are padded with `0` on the right to fill the 32-bit width
 
 Split-byte tokens may be:
 - Integer literals in any numeric form (decimal `32`, hexadecimal `0x20`, etc.) as long as each resolves to an integer in the range `0–255`.
+- Literal-only `*` or `/` expressions such as `16*2` or `0x40/2`, as long as each folds to an integer in the range `0–255`.
 - Constants that resolve at compile time to an integer in the range `0–255`.
 - Mixed sequences of byte literals and byte-valued constants are also accepted.
+
+Non-byte-resolving forms are rejected in split-byte mode. Examples:
+- `1/2` is rejected because it folds to a non-integer value.
+- `16*20` is rejected because it folds to `320`, which is outside the byte range.
 
 A single byte literal or a single byte-valued constant does **not** trigger split-byte mode; only two or more consecutive byte-resolving tokens are treated as a split-byte sequence.
 
@@ -69,6 +74,7 @@ int colorARGB 0xA8 0xFF 0x00 0x00
 int colorAR   0xA8 0xFF
 int 0xA8 0xFF
 int colorDecimal 32 64
+int colorExpr 16*2 0x40/2
 int 32 64
 int 32
 int colorFromConst HI LO

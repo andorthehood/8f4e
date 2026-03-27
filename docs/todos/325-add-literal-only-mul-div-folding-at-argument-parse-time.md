@@ -43,7 +43,7 @@ Supported forms in this TODO:
 Examples:
 - `16*2` -> literal `32`
 - `1/2` -> literal `0.5`
-- `3.5*4` -> literal `14`
+- `3.5*4` -> literal `14` with float-typed metadata (`isInteger: false`)
 - `0x10/2` -> literal `8` if hex literals are accepted in the expression parser
 
 Explicit non-goals for this TODO:
@@ -72,6 +72,7 @@ Explicit non-goals for this TODO:
 - Return `ArgumentType.LITERAL` with the computed value
 - Preserve `isInteger` only when the computed result is an integer and no operand forces float64
 - Preserve `isFloat64` when either operand is an `f64` literal
+- Keep float-typed expressions float-typed even when the numeric result is mathematically an integer
 - Throw the existing syntax error for division by zero
 
 ### Step 3: Keep semantic constant-expression handling unchanged

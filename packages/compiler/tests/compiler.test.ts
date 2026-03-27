@@ -19,7 +19,6 @@ describe('parseArgument', () => {
 
 	const identifiers: [string, ArgumentType, string][] = [
 		['foo', ArgumentType.IDENTIFIER, 'foo'],
-		['1foo', ArgumentType.IDENTIFIER, '1foo'],
 		['foo1', ArgumentType.IDENTIFIER, 'foo1'],
 		['f0o', ArgumentType.IDENTIFIER, 'f0o'],
 	];
@@ -39,6 +38,10 @@ describe('parseArgument', () => {
 
 	test.each(identifiers)('given %p as input the output is %p', (argument, type, value) => {
 		expect(parseArgument(argument)).toStrictEqual({ type, value });
+	});
+
+	test('rejects identifiers that start with numbers', () => {
+		expect(() => parseArgument('1foo')).toThrow('Identifiers cannot start with numbers');
 	});
 });
 
