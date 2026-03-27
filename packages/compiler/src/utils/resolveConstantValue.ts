@@ -7,7 +7,6 @@ import {
 	getElementMinValue,
 } from './memoryData';
 
-import { ErrorCode, getError } from '../compilerError';
 import { parseArgument, ArgumentType } from '../syntax/parseArgument';
 import parseConstantMulDivExpression, {
 	type CompileTimeMulDivExpression,
@@ -33,7 +32,7 @@ import extractIntermodularElementWordSizeBase from '../syntax/extractIntermodula
 import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
 import extractIntermodularElementMinBase from '../syntax/extractIntermodularElementMinBase';
 
-import type { AST, CompilationContext, Const, Consts, Namespace } from '../types';
+import type { Const, Namespace } from '../types';
 
 type MulDivOperator = CompileTimeMulDivExpression['operator'];
 
@@ -168,56 +167,6 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 	};
 }
 
-/**
- * Returns true if the value is a direct constant or a compile-time expression
- * resolvable from constants and literals alone (no memory map access).
- * Used for routing decisions where only the consts map is available.
- */
-export function isConstantValueOrExpression(consts: Consts, value: string): boolean {
-	if (typeof consts[value] !== 'undefined') {
-		return true;
-	}
-
-	const expression = parseConstantMulDivExpression(value);
-	if (!expression) {
-		return false;
-	}
-
-	// Check lhs: must be a literal or a known constant (no memory queries here)
-	const lhsArg = parseArgument(expression.lhs);
-	const lhsIsLiteralOrConst = lhsArg.type === ArgumentType.LITERAL || typeof consts[expression.lhs] !== 'undefined';
-
-	if (!lhsIsLiteralOrConst) {
-		return false;
-	}
-
-	// Check rhs: must be a literal or a known constant
-	const rhsArg = parseArgument(expression.rhs);
-	const rhsIsLiteralOrConst = rhsArg.type === ArgumentType.LITERAL || typeof consts[expression.rhs] !== 'undefined';
-
-	return rhsIsLiteralOrConst;
-}
-
-/**
- * Returns true if the value is resolvable as a compile-time value using the full namespace,
- * including metadata queries (sizeof, count, max, min) on both operands.
- */
-export function isCompileTimeValueOrExpression(namespace: Namespace, value: string): boolean {
-	if (resolveCompileTimeOperand(value, namespace) !== undefined) {
-		return true;
-	}
-
-	const expression = parseConstantMulDivExpression(value);
-	if (!expression) {
-		return false;
-	}
-
-	return (
-		resolveCompileTimeOperand(expression.lhs, namespace) !== undefined &&
-		resolveCompileTimeOperand(expression.rhs, namespace) !== undefined
-	);
-}
-
 export function tryResolveCompileTimeValueOrExpression(namespace: Namespace, value: string): Const | undefined {
 	const directResult = resolveCompileTimeOperand(value, namespace);
 
@@ -245,236 +194,128 @@ export function tryResolveCompileTimeValueOrExpression(namespace: Namespace, val
 	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
 }
 
-export function tryResolveConstantValueOrExpression(consts: Consts, value: string): Const | undefined {
-	const directConst = consts[value];
-
-	if (directConst !== undefined) {
-		return directConst;
-	}
-
-	const expression = parseConstantMulDivExpression(value);
-
-	if (!expression) {
-		return undefined;
-	}
-
-	// Resolve lhs: literal or constant only (no memory access)
-	let lhsConst: Const | undefined;
-	const lhsArg = parseArgument(expression.lhs);
-	if (lhsArg.type === ArgumentType.LITERAL) {
-		lhsConst = { value: lhsArg.value, isInteger: lhsArg.isInteger, ...(lhsArg.isFloat64 ? { isFloat64: true } : {}) };
-	} else {
-		lhsConst = consts[expression.lhs];
-	}
-
-	if (lhsConst === undefined) {
-		return undefined;
-	}
-
-	// Resolve rhs: literal or constant only (no memory access)
-	let rhsConst: Const | undefined;
-	const rhsArg = parseArgument(expression.rhs);
-	if (rhsArg.type === ArgumentType.LITERAL) {
-		rhsConst = { value: rhsArg.value, isInteger: rhsArg.isInteger, ...(rhsArg.isFloat64 ? { isFloat64: true } : {}) };
-	} else {
-		rhsConst = consts[expression.rhs];
-	}
-
-	if (rhsConst === undefined) {
-		return undefined;
-	}
-
-	if (expression.operator === '/' && rhsConst.value === 0) {
-		return undefined;
-	}
-
-	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
-}
-
-export function resolveConstantValueOrExpressionOrThrow(
-	value: string,
-	line: AST[number],
-	context: CompilationContext
-): Const {
-	// Try resolving as a direct compile-time operand (literal, const, or metadata query)
-	const directResult = resolveCompileTimeOperand(value, context.namespace);
-	if (directResult !== undefined) {
-		return directResult;
-	}
-
-	const expression = parseConstantMulDivExpression(value);
-
-	if (!expression) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: value });
-	}
-
-	const lhsConst = resolveCompileTimeOperand(expression.lhs, context.namespace);
-
-	if (lhsConst === undefined) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: expression.lhs });
-	}
-
-	const rhsConst = resolveCompileTimeOperand(expression.rhs, context.namespace);
-
-	if (rhsConst === undefined) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: expression.rhs });
-	}
-
-	if (expression.operator === '/' && rhsConst.value === 0) {
-		throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
-	}
-
-	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
-}
-
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('resolveConstantValue', () => {
-		const mockLine = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
-			instruction: 'const',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'A' }],
-		} as unknown as AST[number];
-		const mockContext = {
-			namespace: {
-				consts: {
-					SIZE: { value: 16, isInteger: true },
-					PI64: { value: 3.14159, isInteger: false, isFloat64: true },
+		const mockNamespace = {
+			consts: {
+				SIZE: { value: 16, isInteger: true },
+				PI64: { value: 3.14159, isInteger: false, isFloat64: true },
+			},
+			memory: {
+				samples: {
+					numberOfElements: 8,
+					elementWordSize: 2,
+					isInteger: true,
 				},
-				memory: {
-					samples: {
-						numberOfElements: 8,
-						elementWordSize: 2,
-						isInteger: true,
-					},
-					floatBuf: {
-						numberOfElements: 4,
-						elementWordSize: 4,
-						isInteger: false,
-					},
+				floatBuf: {
+					numberOfElements: 4,
+					elementWordSize: 4,
+					isInteger: false,
 				},
 			},
-		} as unknown as CompilationContext;
+			namespaces: {},
+		} as unknown as Namespace;
 
 		it('resolves direct constants', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('SIZE', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE')).toEqual({
 				value: 16,
 				isInteger: true,
 			});
 		});
 
 		it('resolves multiplication expression: constant * literal', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('SIZE*2', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE*2')).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves division expression: constant / literal', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('SIZE/2', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE/2')).toEqual({
 				value: 8,
 				isInteger: true,
 			});
 		});
 
 		it('resolves literal * constant', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('2*SIZE', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, '2*SIZE')).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves sizeof(name) * literal', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('sizeof(samples)*2', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'sizeof(samples)*2')).toEqual({
 				value: 4,
 				isInteger: true,
 			});
 		});
 
 		it('resolves literal * sizeof(name)', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('123*sizeof(samples)', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, '123*sizeof(samples)')).toEqual({
 				value: 246,
 				isInteger: true,
 			});
 		});
 
 		it('resolves constant * sizeof(name)', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('SIZE*sizeof(samples)', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE*sizeof(samples)')).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves sizeof(name) * constant', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('sizeof(samples)*SIZE', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'sizeof(samples)*SIZE')).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves count(name) * literal', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('count(samples)*2', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'count(samples)*2')).toEqual({
 				value: 16,
 				isInteger: true,
 			});
 		});
 
 		it('keeps float64 width for expression results', () => {
-			expect(resolveConstantValueOrExpressionOrThrow('PI64*2', mockLine, mockContext)).toEqual({
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'PI64*2')).toEqual({
 				value: 6.28318,
 				isInteger: false,
 				isFloat64: true,
 			});
 		});
 
-		it('rejects expressions with multiple operators', () => {
-			expect(tryResolveConstantValueOrExpression(mockContext.namespace.consts, 'SIZE/2/2')).toBeUndefined();
-			expect(tryResolveConstantValueOrExpression(mockContext.namespace.consts, 'SIZE*2/2')).toBeUndefined();
-		});
-
-		it('tryResolve handles literal * constant', () => {
-			expect(tryResolveConstantValueOrExpression(mockContext.namespace.consts, '2*SIZE')).toEqual({
-				value: 32,
-				isInteger: true,
-			});
-		});
-
-		it('isConstantValueOrExpression detects literal * constant', () => {
-			expect(isConstantValueOrExpression(mockContext.namespace.consts, '2*SIZE')).toBe(true);
-		});
-
-		it('isCompileTimeValueOrExpression detects sizeof expressions', () => {
-			expect(isCompileTimeValueOrExpression(mockContext.namespace, 'sizeof(samples)*2')).toBe(true);
-			expect(isCompileTimeValueOrExpression(mockContext.namespace, 'SIZE*sizeof(samples)')).toBe(true);
+		it('returns undefined for unresolved or chained expressions', () => {
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE/2/2')).toBeUndefined();
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE*2/2')).toBeUndefined();
+			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'MISSING')).toBeUndefined();
 		});
 
 		it('resolves intermodule sizeof expressions', () => {
-			const intermodularContext = {
-				namespace: {
-					...mockContext.namespace,
-					namespaces: {
-						source: {
-							consts: {},
-							memory: {
-								buffer: {
-									numberOfElements: 4,
-									elementWordSize: 2,
-									isInteger: true,
-								},
+			const intermodularNamespace = {
+				...mockNamespace,
+				namespaces: {
+					source: {
+						consts: {},
+						memory: {
+							buffer: {
+								numberOfElements: 4,
+								elementWordSize: 2,
+								isInteger: true,
 							},
 						},
 					},
 				},
-			} as unknown as CompilationContext;
+			} as unknown as Namespace;
 
-			expect(resolveConstantValueOrExpressionOrThrow('2*sizeof(source:buffer)', mockLine, intermodularContext)).toEqual(
-				{
-					value: 4,
-					isInteger: true,
-				}
-			);
+			expect(tryResolveCompileTimeValueOrExpression(intermodularNamespace, '2*sizeof(source:buffer)')).toEqual({
+				value: 4,
+				isInteger: true,
+			});
 		});
 	});
 }
