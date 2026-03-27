@@ -21,6 +21,7 @@ import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
+import normalizeCompileTimeArguments from './utils/normalizeCompileTimeArguments';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
@@ -127,6 +128,76 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 	instructions[line.instruction](line, context);
 }
 
+const namespacePrepassInstructions = new Set<Instruction>([
+	'module',
+	'moduleEnd',
+	'constants',
+	'constantsEnd',
+	'use',
+	'const',
+	'int',
+	'float',
+	'int*',
+	'int**',
+	'int16*',
+	'int16**',
+	'float*',
+	'float**',
+	'float64',
+	'float64*',
+	'float64**',
+	'float[]',
+	'int[]',
+	'int8[]',
+	'int8u[]',
+	'int16[]',
+	'int16u[]',
+	'int32[]',
+	'float*[]',
+	'float**[]',
+	'int*[]',
+	'int**[]',
+	'float64[]',
+	'float64*[]',
+	'float64**[]',
+]);
+
+export function prepassNamespace(
+	ast: AST,
+	builtInConsts: Namespace['consts'],
+	namespaces: Namespaces,
+	startingByteAddress = 0,
+	functions?: CompiledFunctionLookup
+): CompilationContext {
+	const context: CompilationContext = {
+		namespace: {
+			namespaces,
+			memory: {},
+			locals: {},
+			consts: { ...builtInConsts },
+			moduleName: undefined,
+			functions,
+		},
+		byteCode: [],
+		stack: [],
+		blockStack: [],
+		startingByteAddress,
+		mode: 'module',
+		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
+	};
+
+	ast.forEach(originalLine => {
+		if (!namespacePrepassInstructions.has(originalLine.instruction)) {
+			return;
+		}
+
+		const line = normalizeCompileTimeArguments(originalLine, context);
+		compileLine(line, context);
+	});
+
+	return context;
+}
+
 export function compileSegment(
 	code: string[],
 	context: CompilationContext,
@@ -163,8 +234,10 @@ export function compileModule(
 		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
 	};
 
-	ast.forEach(line => {
+	const normalizedAst = ast.map(originalLine => {
+		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
+		return line;
 	});
 
 	if (!context.namespace.moduleName) {
@@ -196,7 +269,7 @@ export function compileModule(
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
-		ast,
+		ast: normalizedAst,
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
 		initOnlyExecution: context.initOnlyExecution,
@@ -228,8 +301,10 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	};
 
-	ast.forEach(line => {
+	const normalizedAst = ast.map(originalLine => {
+		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
+		return line;
 	});
 
 	if (!context.currentFunctionId) {
@@ -282,6 +357,6 @@ export function compileFunction(
 		locals: localDeclarations,
 		wasmIndex,
 		typeIndex,
-		ast,
+		ast: normalizedAst,
 	};
 }

@@ -57,8 +57,9 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
         "value": "TOTAL",
       },
       {
-        "type": "identifier",
-        "value": "SIZE*sizeof(samples)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "const",
@@ -90,8 +91,9 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "TOTAL",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "push",
@@ -196,8 +198,9 @@ exports[`const: expression from another constant > if the generated AST, WAT and
         "value": "HALF",
       },
       {
-        "type": "identifier",
-        "value": "SIZE/2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "const",
@@ -229,8 +232,9 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "HALF",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -325,8 +329,9 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
         "value": "BYTE_SIZE",
       },
       {
-        "type": "identifier",
-        "value": "123*sizeof(samples)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 246,
       },
     ],
     "instruction": "const",
@@ -358,8 +363,9 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "BYTE_SIZE",
+        "isInteger": true,
+        "type": "literal",
+        "value": 246,
       },
     ],
     "instruction": "push",
@@ -469,8 +475,9 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
         "value": "BYTE_SIZE",
       },
       {
-        "type": "identifier",
-        "value": "sizeof(samples)*2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "const",
@@ -502,8 +509,9 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "BYTE_SIZE",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -619,8 +627,9 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
         "value": "foo",
       },
       {
-        "type": "identifier",
-        "value": "SIZE/2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "init",
@@ -759,8 +768,9 @@ exports[`int[]: buffer size from constant division expression > if the generated
         "value": "buffer",
       },
       {
-        "type": "identifier",
-        "value": "SIZE/2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "int[]",
@@ -792,8 +802,9 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "count(buffer)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -898,8 +909,9 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
         "value": "buffer",
       },
       {
-        "type": "identifier",
-        "value": "SIZE*2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "int[]",
@@ -931,8 +943,9 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "count(buffer)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "push",
@@ -1042,8 +1055,9 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
         "value": "dest",
       },
       {
-        "type": "identifier",
-        "value": "count(source)*2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "int[]",
@@ -1075,8 +1089,9 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "count(dest)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "push",
@@ -1201,8 +1216,9 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
         "value": "buffer",
       },
       {
-        "type": "identifier",
-        "value": "sizeof(samples)*2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "int[]",
@@ -1234,8 +1250,9 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "count(buffer)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -1394,8 +1411,9 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "SIZE*sizeof(samples)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "push",
@@ -1518,8 +1536,9 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "SIZE/2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -1627,8 +1646,9 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "2*SIZE",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "push",
@@ -1741,8 +1761,9 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "123*sizeof(samples)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 246,
       },
     ],
     "instruction": "push",
@@ -1870,8 +1891,9 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "sizeof(samples)*4",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",

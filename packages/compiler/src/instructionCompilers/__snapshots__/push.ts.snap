@@ -205,44 +205,6 @@ exports[`push instruction compiler > min() query > pushes min value for int32 1`
 }
 `;
 
-exports[`push instruction compiler > pushes a constant value 1`] = `
-{
-  "byteCode": [
-    65,
-    42,
-  ],
-  "stack": [
-    {
-      "isInteger": true,
-      "isNonZero": true,
-    },
-  ],
-}
-`;
-
-exports[`push instruction compiler > pushes a f64 constant emitting f64.const 1`] = `
-{
-  "byteCode": [
-    68,
-    24,
-    45,
-    68,
-    84,
-    251,
-    33,
-    9,
-    64,
-  ],
-  "stack": [
-    {
-      "isFloat64": true,
-      "isInteger": false,
-      "isNonZero": true,
-    },
-  ],
-}
-`;
-
 exports[`push instruction compiler > pushes a f64 literal value emitting f64.const 1`] = `
 {
   "byteCode": [
@@ -271,6 +233,44 @@ exports[`push instruction compiler > pushes a literal value 1`] = `
   "byteCode": [
     65,
     5,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > pushes a normalized f64 literal emitting f64.const 1`] = `
+{
+  "byteCode": [
+    68,
+    24,
+    45,
+    68,
+    84,
+    251,
+    33,
+    9,
+    64,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > pushes a normalized literal value 1`] = `
+{
+  "byteCode": [
+    65,
+    42,
   ],
   "stack": [
     {
