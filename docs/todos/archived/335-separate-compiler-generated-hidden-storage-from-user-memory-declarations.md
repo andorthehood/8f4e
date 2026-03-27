@@ -3,8 +3,8 @@ title: 'TODO: Separate compiler-generated hidden storage from user memory declar
 priority: Medium
 effort: 6-10 hours
 created: 2026-03-27
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-03-27
 ---
 
 # 335 - Separate compiler-generated hidden storage from user memory declarations
@@ -12,7 +12,7 @@ completed: null
 - Priority: 🟡 Medium
 - Effort: 6-10h
 - Created: 2026-03-27
-- Status: Active
+- Status: Cancelled
 
 ## Summary
 
@@ -83,4 +83,12 @@ This is a follow-up to:
 - 333 `Move memory declaration semantics into compiler semantic pass`
 - 334 `Move locals out of namespace and into codegen state`
 
-It targets one of the last remaining leaks in the semantic/codegen boundary: hidden implementation storage still masquerading as user declaration input.
+Cancelled on 2026-03-27.
+
+This TODO moved in the right direction, but it still assumed hidden storage would be
+integrated into normal module memory planning after separation. The newer design is
+stronger: compiler-generated hidden resources should live in a separate internal address
+space allocated after final module/user memory layout, so they do not affect module
+addresses or intermodule address calculations at all.
+
+That newer plan supersedes this TODO.

@@ -3,8 +3,8 @@ title: 'TODO: Move memory declaration semantics into compiler semantic pass'
 priority: High
 effort: 1-2 days
 created: 2026-03-27
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-03-27
 ---
 
 # 333 - Move memory declaration semantics into compiler semantic pass
@@ -12,7 +12,7 @@ completed: null
 - Priority: 🔴 High
 - Effort: 1-2d
 - Created: 2026-03-27
-- Status: Active
+- Status: Cancelled
 
 ## Summary
 
@@ -131,4 +131,11 @@ This is the main remaining step after:
 - 331 `Delete duplicate downstream compile-time resolution paths`
 - 332 `Extract syntax and AST parsing into a separate compiler package`
 
-Once this is done, the remaining work should be cleanup/refinement, not another architectural phase boundary change.
+Cancelled on 2026-03-27.
+
+This TODO assumed compiler-generated hidden storage would continue to participate in
+module memory layout, just through a cleaner semantic pass. The newer plan is to keep
+module/user memory fully determined by namespace collection and move compiler-generated
+hidden resources into a separate internal address space with its own allocator.
+
+That makes this TODO's proposed end state the wrong target rather than the next step.
