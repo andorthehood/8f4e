@@ -3,8 +3,8 @@ title: 'TODO: Delete duplicate downstream compile-time resolution paths'
 priority: High
 effort: 4-8 hours
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-27
 ---
 
 # TODO: Delete duplicate downstream compile-time resolution paths

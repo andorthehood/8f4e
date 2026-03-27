@@ -3,8 +3,8 @@ title: 'TODO: Extract source-to-AST parsing into a separate ast-parser package'
 priority: Medium
 effort: 1-2d
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-27
 ---
 
 # TODO: Extract source-to-AST parsing into a separate ast-parser package
