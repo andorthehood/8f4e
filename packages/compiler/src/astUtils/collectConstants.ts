@@ -11,8 +11,12 @@ export default function collectConstants(ast: AST): Namespace['consts'] {
 			.filter(({ instruction }) => instruction === 'const')
 			.map(({ arguments: _arguments }) => {
 				const lit = _arguments[1] as ArgumentLiteral;
+				const identifier = _arguments[0];
+				if (identifier.type !== ArgumentType.IDENTIFIER) {
+					throw new Error('Constant name must be an identifier.');
+				}
 				return [
-					_arguments[0].value,
+					identifier.value,
 					{
 						value: parseFloat(lit.value.toString()),
 						isInteger: lit.isInteger,

@@ -62,9 +62,13 @@ const push: InstructionCompiler = withValidation(
 				default:
 					return pushLocal(line, context);
 			}
-		} else {
+		}
+
+		if (argument.type === ArgumentType.LITERAL) {
 			return pushLiteral(argument, context);
 		}
+
+		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 );
 

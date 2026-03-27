@@ -18,7 +18,7 @@ export interface InstructionTraceEntry {
 	lineNumber: number;
 	instruction: string;
 	arguments: Array<{
-		type: 'literal' | 'identifier' | 'string_literal';
+		type: 'literal' | 'identifier' | 'string_literal' | 'compile_time_expression';
 		value: number | string;
 		isInteger?: boolean;
 		isFloat64?: boolean;
@@ -62,6 +62,13 @@ function serializeArguments(line: AST[number]): InstructionTraceEntry['arguments
 			return {
 				type: 'string_literal' as const,
 				value: argument.value,
+			};
+		}
+
+		if (argument.type === 'compile_time_expression') {
+			return {
+				type: 'compile_time_expression' as const,
+				value: `${argument.lhs}${argument.operator}${argument.rhs}`,
 			};
 		}
 

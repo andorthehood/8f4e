@@ -8,6 +8,7 @@ export {
 	parseArgument,
 	decodeStringLiteral,
 	type Argument,
+	type ArgumentCompileTimeExpression,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
