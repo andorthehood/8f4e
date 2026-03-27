@@ -13,8 +13,6 @@ import f32store from './wasmUtils/store/f32store';
 import f64store from './wasmUtils/store/f64store';
 import i32store from './wasmUtils/store/i32store';
 import { compileModule, compileToAST, compileFunction, prepassNamespace } from './compiler';
-import getConstantsName from './astUtils/getConstantsName';
-import getModuleName from './astUtils/getModuleName';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 import resolveInterModularConnections from './utils/resolveInterModularConnections';
@@ -69,8 +67,6 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { default as getConstantsName } from './astUtils/getConstantsName';
-export { default as getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
 export { prepassNamespace } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
@@ -246,13 +242,10 @@ export default function compile(
 	);
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
+	const compiledModulesBySourceAst = new Map(astModules.map((ast, index) => [ast, compiledModules[index]]));
 	resolveInterModularConnections(compiledModulesMap);
 	const runtimeOrderedModules = dependencyOrderedModules
-		.map(ast => {
-			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-			const id = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-			return compiledModulesMap[id];
-		})
+		.map(ast => compiledModulesBySourceAst.get(ast))
 		.filter((module): module is CompiledModule => typeof module !== 'undefined');
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
