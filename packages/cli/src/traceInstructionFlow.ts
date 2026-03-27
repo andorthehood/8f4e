@@ -1,13 +1,10 @@
 import compile, {
-	collectConstants,
-	getConstantsName,
-	getModuleName,
+	collectNamespacesFromASTs,
 	instructions,
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
 	type Module,
-	type Namespaces,
 } from '@8f4e/compiler';
 
 import getBlockType from './shared/getBlockType';
@@ -112,17 +109,6 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 	};
 }
 
-function collectNamespaces(moduleAsts: AST[]): Namespaces {
-	return Object.fromEntries(
-		moduleAsts.map(ast => {
-			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-
-			return [name, { consts: collectConstants(ast) }];
-		})
-	);
-}
-
 function pickProjectBlocks(project: ProjectInput): {
 	moduleBlocks: Module[];
 	functionBlocks: Module[];
@@ -181,7 +167,7 @@ export default function traceInstructionFlow(
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
 	const moduleAsts = compiledModules.map(module => module.ast).filter((ast): ast is AST => Array.isArray(ast));
-	const namespaces = collectNamespaces(moduleAsts);
+	const namespaces = collectNamespacesFromASTs(moduleAsts);
 	const blocks: BlockTrace[] = [];
 
 	for (const module of compiledModules) {

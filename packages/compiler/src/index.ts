@@ -69,10 +69,10 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { default as collectConstants } from './astUtils/collectConstants';
 export { default as getConstantsName } from './astUtils/getConstantsName';
 export { default as getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
+export { prepassNamespace } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {
 	parseMacroDefinitions,
@@ -82,6 +82,30 @@ export {
 	type ExpandedLine,
 } from './utils/macroExpansion';
 export { ErrorCode, getError } from './compilerError';
+
+export function collectNamespacesFromASTs(
+	asts: AST[],
+	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
+	builtInConsts: Namespace['consts'] = {},
+	compiledFunctions?: CompiledFunctionLookup
+): Namespaces {
+	const namespaces: Namespaces = {};
+	let nextStartingByteAddress = startingByteAddress;
+
+	for (const ast of asts) {
+		const context = prepassNamespace(ast, builtInConsts, namespaces, nextStartingByteAddress, compiledFunctions);
+		if (!context.namespace.moduleName) {
+			continue;
+		}
+		namespaces[context.namespace.moduleName] = {
+			consts: { ...context.namespace.consts },
+			memory: context.namespace.memory,
+		};
+		nextStartingByteAddress += calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
+	}
+
+	return namespaces;
+}
 
 export function compileModules(
 	modules: AST[],
@@ -94,22 +118,9 @@ export function compileModules(
 
 	// If builtInConsts not provided, use empty object - all constants come from env block
 	const consts = builtInConsts ?? {};
-
-	let nextStartingByteAddress = memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY;
-	const ns: Namespaces = namespaces ? { ...namespaces } : {};
-
-	if (!namespaces) {
-		for (const ast of modules) {
-			const context = prepassNamespace(ast, consts, ns, nextStartingByteAddress, compiledFunctions);
-			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-			ns[name] = {
-				consts: { ...context.namespace.consts },
-				memory: context.namespace.memory,
-			};
-			nextStartingByteAddress += calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
-		}
-	}
+	const ns: Namespaces =
+		namespaces ??
+		collectNamespacesFromASTs(modules, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, consts, compiledFunctions);
 
 	return modules.map((ast, index) => {
 		const module = compileModule(ast, consts, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
@@ -200,19 +211,7 @@ export default function compile(
 	const dependencyOrderedModules = sortModules(astModules);
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
-	const namespaces: Namespaces = {};
-	let prepassStartingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY;
-	for (const ast of dependencyOrderedModules) {
-		const context = prepassNamespace(ast, {}, namespaces, prepassStartingByteAddress);
-		const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-		const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-		namespaces[name] = {
-			consts: { ...context.namespace.consts },
-			memory: context.namespace.memory,
-		};
-		prepassStartingByteAddress +=
-			calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
-	}
+	const namespaces = collectNamespacesFromASTs(dependencyOrderedModules);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
