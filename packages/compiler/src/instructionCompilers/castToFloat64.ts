@@ -1,8 +1,9 @@
+import { parseLine } from '@8f4e/ast-parser';
+
 import createInstructionCompilerTestContext from '../utils/testUtils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { parseLine } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 

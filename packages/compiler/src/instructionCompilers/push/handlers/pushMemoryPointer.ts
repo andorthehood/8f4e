@@ -1,5 +1,6 @@
+import { extractMemoryPointerBase } from '@8f4e/ast-parser';
+
 import { ErrorCode, getError } from '../../../compilerError';
-import extractMemoryPointerBase from '../../../syntax/extractMemoryPointerBase';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';

@@ -1,8 +1,8 @@
+import { compileToAST } from '@8f4e/ast-parser';
 import { describe, test, expect } from 'vitest';
 
 import modules from './__fixtures__/modules';
 
-import { compileToAST } from '../src/compiler';
 import { compileModules, generateMemoryInitiatorFunctions } from '../src';
 
 describe('compiler', () => {

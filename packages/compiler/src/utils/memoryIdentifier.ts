@@ -1,19 +1,19 @@
-import extractElementCountBase from '../syntax/extractElementCountBase';
-import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
-import extractPointeeElementWordSizeBase from '../syntax/extractPointeeElementWordSizeBase';
-import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
-import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
-import extractElementMaxBase from '../syntax/extractElementMaxBase';
-import extractPointeeElementMaxBase from '../syntax/extractPointeeElementMaxBase';
-import extractElementMinBase from '../syntax/extractElementMinBase';
-import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
-import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
-import hasPointeeElementWordSizePrefix from '../syntax/hasPointeeElementWordSizePrefix';
-import hasMemoryReferencePrefix from '../syntax/hasMemoryReferencePrefix';
-import hasElementMaxPrefix from '../syntax/hasElementMaxPrefix';
-import hasPointeeElementMaxPrefix from '../syntax/hasPointeeElementMaxPrefix';
-import hasElementMinPrefix from '../syntax/hasElementMinPrefix';
-import isMemoryPointerSyntax from '../syntax/isMemoryPointerIdentifier';
+import { extractElementCountBase } from '@8f4e/ast-parser';
+import { extractElementWordSizeBase } from '@8f4e/ast-parser';
+import { extractPointeeElementWordSizeBase } from '@8f4e/ast-parser';
+import { extractMemoryPointerBase } from '@8f4e/ast-parser';
+import { extractMemoryReferenceBase } from '@8f4e/ast-parser';
+import { extractElementMaxBase } from '@8f4e/ast-parser';
+import { extractPointeeElementMaxBase } from '@8f4e/ast-parser';
+import { extractElementMinBase } from '@8f4e/ast-parser';
+import { hasElementCountPrefix } from '@8f4e/ast-parser';
+import { hasElementWordSizePrefix } from '@8f4e/ast-parser';
+import { hasPointeeElementWordSizePrefix } from '@8f4e/ast-parser';
+import { hasMemoryReferencePrefix } from '@8f4e/ast-parser';
+import { hasElementMaxPrefix } from '@8f4e/ast-parser';
+import { hasPointeeElementMaxPrefix } from '@8f4e/ast-parser';
+import { hasElementMinPrefix } from '@8f4e/ast-parser';
+import { isMemoryPointerSyntax } from '@8f4e/ast-parser';
 
 import type { MemoryMap } from '../types';
 

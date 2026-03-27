@@ -1,3 +1,5 @@
+import { compileToAST } from '@8f4e/ast-parser';
+
 import createCodeSection from './wasmUtils/codeSection/createCodeSection';
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createExportSection from './wasmUtils/export/createExportSection';
@@ -12,7 +14,7 @@ import call from './wasmUtils/call/call';
 import f32store from './wasmUtils/store/f32store';
 import f64store from './wasmUtils/store/f64store';
 import i32store from './wasmUtils/store/i32store';
-import { compileModule, compileToAST, compileFunction, prepassNamespace } from './compiler';
+import { compileModule, compileFunction, prepassNamespace } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 import resolveInterModularConnections from './utils/resolveInterModularConnections';
@@ -67,7 +69,6 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { instructionParser } from './compiler';
 export { prepassNamespace } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {

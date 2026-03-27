@@ -1,4 +1,4 @@
-import { getModuleId } from '@8f4e/compiler/syntax';
+import { getModuleId } from '@8f4e/ast-parser';
 import { StateManager } from '@8f4e/state-manager';
 
 import { removeInterModuleReferences } from '../../utils/removeInterModuleReferences';

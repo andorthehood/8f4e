@@ -1,6 +1,7 @@
+import { compileToAST } from '@8f4e/ast-parser';
 import { describe, test, expect } from 'vitest';
 
-import { compileModule, compileToAST } from '../src/compiler';
+import { compileModule } from '../src/compiler';
 
 const fixture = `
 module abs

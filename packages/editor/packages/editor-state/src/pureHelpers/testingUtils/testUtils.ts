@@ -1,5 +1,5 @@
 import { defaultColorScheme } from '@8f4e/sprite-generator';
-import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
+import { getModuleId, getConstantsId } from '@8f4e/ast-parser';
 
 import type { DirectiveDeriveOptions, DirectiveDerivedState } from '~/features/code-blocks/features/directives/types';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';

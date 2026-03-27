@@ -1,7 +1,7 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-import { getModuleId } from '@8f4e/compiler/syntax';
-import { getFunctionId } from '@8f4e/compiler/syntax';
-import { getConstantsId } from '@8f4e/compiler/syntax';
+import { instructionParser } from '@8f4e/ast-parser';
+import { getModuleId } from '@8f4e/ast-parser';
+import { getFunctionId } from '@8f4e/ast-parser';
+import { getConstantsId } from '@8f4e/ast-parser';
 
 import { insertDependencies } from './insertDependencies';
 import parseModuleSource from './parseModuleSource';

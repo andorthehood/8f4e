@@ -1,4 +1,5 @@
-import extractElementWordSizeBase from '../../../syntax/extractElementWordSizeBase';
+import { extractElementWordSizeBase } from '@8f4e/ast-parser';
+
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';

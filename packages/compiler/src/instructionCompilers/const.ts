@@ -1,4 +1,5 @@
-import isConstantName from '../syntax/isConstantName';
+import { isConstantName } from '@8f4e/ast-parser';
+
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
