@@ -24,6 +24,14 @@ import extractPointeeElementWordSizeBase from '../syntax/extractPointeeElementWo
 import extractElementMaxBase from '../syntax/extractElementMaxBase';
 import extractPointeeElementMaxBase from '../syntax/extractPointeeElementMaxBase';
 import extractElementMinBase from '../syntax/extractElementMinBase';
+import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
+import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
+import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
+import isIntermodularElementMinReference from '../syntax/isIntermodularElementMinReference';
+import extractIntermodularElementCountBase from '../syntax/extractIntermodularElementCountBase';
+import extractIntermodularElementWordSizeBase from '../syntax/extractIntermodularElementWordSizeBase';
+import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
+import extractIntermodularElementMinBase from '../syntax/extractIntermodularElementMinBase';
 
 import type { AST, CompilationContext, Const, Consts, Namespace } from '../types';
 
@@ -49,6 +57,44 @@ function resolveCompileTimeOperand(operand: string, namespace: Namespace): Const
 	}
 
 	const { memory } = namespace;
+
+	if (isIntermodularElementWordSizeReference(operand)) {
+		const { module, memory: memoryId } = extractIntermodularElementWordSizeBase(operand);
+		const targetMemory = namespace.namespaces[module]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
+			return { value: getElementWordSize(targetMemory, memoryId), isInteger: true };
+		}
+		return undefined;
+	}
+
+	if (isIntermodularElementCountReference(operand)) {
+		const { module, memory: memoryId } = extractIntermodularElementCountBase(operand);
+		const targetMemory = namespace.namespaces[module]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
+			return { value: getElementCount(targetMemory, memoryId), isInteger: true };
+		}
+		return undefined;
+	}
+
+	if (isIntermodularElementMaxReference(operand)) {
+		const { module, memory: memoryId } = extractIntermodularElementMaxBase(operand);
+		const targetMemory = namespace.namespaces[module]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
+			const memoryItem = targetMemory[memoryId];
+			return { value: getElementMaxValue(targetMemory, memoryId), isInteger: !!memoryItem?.isInteger };
+		}
+		return undefined;
+	}
+
+	if (isIntermodularElementMinReference(operand)) {
+		const { module, memory: memoryId } = extractIntermodularElementMinBase(operand);
+		const targetMemory = namespace.namespaces[module]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
+			const memoryItem = targetMemory[memoryId];
+			return { value: getElementMinValue(targetMemory, memoryId), isInteger: !!memoryItem?.isInteger };
+		}
+		return undefined;
+	}
 
 	// Try sizeof(*name) — pointee element word size
 	if (hasPointeeElementWordSizePrefix(operand)) {
@@ -170,6 +216,33 @@ export function isCompileTimeValueOrExpression(namespace: Namespace, value: stri
 		resolveCompileTimeOperand(expression.lhs, namespace) !== undefined &&
 		resolveCompileTimeOperand(expression.rhs, namespace) !== undefined
 	);
+}
+
+export function tryResolveCompileTimeValueOrExpression(namespace: Namespace, value: string): Const | undefined {
+	const directResult = resolveCompileTimeOperand(value, namespace);
+
+	if (directResult !== undefined) {
+		return directResult;
+	}
+
+	const expression = parseConstantMulDivExpression(value);
+
+	if (!expression) {
+		return undefined;
+	}
+
+	const lhsConst = resolveCompileTimeOperand(expression.lhs, namespace);
+	const rhsConst = resolveCompileTimeOperand(expression.rhs, namespace);
+
+	if (lhsConst === undefined || rhsConst === undefined) {
+		return undefined;
+	}
+
+	if (expression.operator === '/' && rhsConst.value === 0) {
+		return undefined;
+	}
+
+	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
 }
 
 export function tryResolveConstantValueOrExpression(consts: Consts, value: string): Const | undefined {
@@ -375,6 +448,33 @@ if (import.meta.vitest) {
 		it('isCompileTimeValueOrExpression detects sizeof expressions', () => {
 			expect(isCompileTimeValueOrExpression(mockContext.namespace, 'sizeof(samples)*2')).toBe(true);
 			expect(isCompileTimeValueOrExpression(mockContext.namespace, 'SIZE*sizeof(samples)')).toBe(true);
+		});
+
+		it('resolves intermodule sizeof expressions', () => {
+			const intermodularContext = {
+				namespace: {
+					...mockContext.namespace,
+					namespaces: {
+						source: {
+							consts: {},
+							memory: {
+								buffer: {
+									numberOfElements: 4,
+									elementWordSize: 2,
+									isInteger: true,
+								},
+							},
+						},
+					},
+				},
+			} as unknown as CompilationContext;
+
+			expect(resolveConstantValueOrExpressionOrThrow('2*sizeof(source:buffer)', mockLine, intermodularContext)).toEqual(
+				{
+					value: 4,
+					isInteger: true,
+				}
+			);
 		});
 	});
 }

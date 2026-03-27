@@ -3,6 +3,7 @@
 - [Comments](comments.md)
 - [Identifier prefixes](prefixes.md)
 - [Best practices](best-practices.md)
+- [Compiler design](compiler-design.md)
 
 - [Arithmetic instructions](instructions/arithmetic.md)
   - [add](instructions/arithmetic.md#add)

@@ -9,7 +9,6 @@ import {
 	isPointeeElementWordSizeIdentifier,
 	isPointeeElementMaxIdentifier,
 } from '../../utils/memoryIdentifier';
-import { isCompileTimeValueOrExpression } from '../../utils/resolveConstantValue';
 
 import type { Namespace } from '../../types';
 
@@ -23,7 +22,6 @@ export const enum IdentifierPushKind {
 	ELEMENT_MAX,
 	POINTEE_ELEMENT_MAX,
 	ELEMENT_MIN,
-	CONST,
 	LOCAL,
 }
 
@@ -49,8 +47,6 @@ export default function resolveIdentifierPushKind(namespace: Namespace, value: s
 			return IdentifierPushKind.ELEMENT_MAX;
 		case isElementMinIdentifier(memory, value):
 			return IdentifierPushKind.ELEMENT_MIN;
-		case isCompileTimeValueOrExpression(namespace, value):
-			return IdentifierPushKind.CONST;
 		default:
 			return IdentifierPushKind.LOCAL;
 	}
@@ -84,7 +80,7 @@ if (import.meta.vitest) {
 			expect(resolveIdentifierPushKind(namespace, 'max(buffer)')).toBe(IdentifierPushKind.ELEMENT_MAX);
 			expect(resolveIdentifierPushKind(namespace, 'max(*buffer)')).toBe(IdentifierPushKind.POINTEE_ELEMENT_MAX);
 			expect(resolveIdentifierPushKind(namespace, 'min(buffer)')).toBe(IdentifierPushKind.ELEMENT_MIN);
-			expect(resolveIdentifierPushKind(namespace, 'ANSWER')).toBe(IdentifierPushKind.CONST);
+			expect(resolveIdentifierPushKind(namespace, 'ANSWER')).toBe(IdentifierPushKind.LOCAL);
 			expect(resolveIdentifierPushKind(namespace, 'localTemp')).toBe(IdentifierPushKind.LOCAL);
 		});
 	});
