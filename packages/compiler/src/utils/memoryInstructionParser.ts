@@ -1,5 +1,3 @@
-import { resolveConstantValueOrExpressionOrThrow, tryResolveConstantValueOrExpression } from './resolveConstantValue';
-
 import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '../syntax/memoryInstructionParser';
 import { SyntaxRulesError, SyntaxErrorCode } from '../syntax/syntaxError';
 import { ArgumentType } from '../syntax/parseArgument';
@@ -59,10 +57,9 @@ function resolveSplitByteTokens(
 			// Already validated as byte literal (0–255) at the syntax level
 			bytes.push(token.value);
 		} else {
-			// Identifier token must resolve to a declared compile-time constant.
-			// Use tryResolve so we can provide a clearer error than UNDECLARED_IDENTIFIER when the
-			// constant-style name was never declared (user likely intended it as a memory name).
-			const constant = tryResolveConstantValueOrExpression(context.namespace.consts, token.value);
+			// Split-byte identifiers must be declared constants. General compile-time folding happens
+			// earlier during AST normalization, so only plain constant identifiers remain here.
+			const constant = context.namespace.consts[token.value];
 			if (!constant) {
 				throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
 			}
@@ -109,14 +106,7 @@ export default function parseMemoryInstructionArguments(
 		defaultValue = resolveSplitByteTokens(parsedArgs.firstArg.tokens, maxBytes, lineForError, context);
 		id = '__anonymous__' + lineNumberAfterMacroExpansion;
 	} else if (parsedArgs.firstArg.type === 'identifier') {
-		const constant = tryResolveConstantValueOrExpression(context.namespace.consts, parsedArgs.firstArg.value);
-
-		if (constant) {
-			defaultValue = constant.value;
-			id = '__anonymous__' + lineNumberAfterMacroExpansion;
-		} else {
-			id = parsedArgs.firstArg.value;
-		}
+		id = parsedArgs.firstArg.value;
 	}
 
 	// Reject constant-style names as memory allocation identifiers
@@ -169,8 +159,9 @@ export default function parseMemoryInstructionArguments(
 
 			defaultValue = memoryItem.wordAlignedSize;
 		} else if (parsedArgs.secondArg.type === 'identifier') {
-			const constant = resolveConstantValueOrExpressionOrThrow(parsedArgs.secondArg.value, lineForError, context);
-			defaultValue = constant.value;
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
+				identifier: parsedArgs.secondArg.value,
+			});
 		}
 	}
 
@@ -229,19 +220,19 @@ if (import.meta.vitest) {
 			expect(result.defaultValue).toBe(0);
 		});
 
-		it('parses constant as anonymous variable', () => {
-			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'myConst' }];
-			const result = parseMemoryInstructionArguments(
-				{
-					lineNumberBeforeMacroExpansion: 30,
-					lineNumberAfterMacroExpansion: 30,
-					instruction: 'int',
-					arguments: args,
-				},
-				mockContext
-			);
-			expect(result.id).toBe('__anonymous__30');
-			expect(result.defaultValue).toBe(42);
+		it('rejects unnormalized constant-style identifiers as memory names', () => {
+			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' }];
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 30,
+						lineNumberAfterMacroExpansion: 30,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 
 		it('parses identifier with literal default value', () => {
@@ -262,22 +253,22 @@ if (import.meta.vitest) {
 			expect(result.defaultValue).toBe(99);
 		});
 
-		it('parses identifier with constant default value', () => {
+		it('rejects unnormalized identifier defaults that were not folded earlier', () => {
 			const args: Argument[] = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.IDENTIFIER, value: 'myConst' },
 			];
-			const result = parseMemoryInstructionArguments(
-				{
-					lineNumberBeforeMacroExpansion: 50,
-					lineNumberAfterMacroExpansion: 50,
-					instruction: 'int',
-					arguments: args,
-				},
-				mockContext
-			);
-			expect(result.id).toBe('myVar');
-			expect(result.defaultValue).toBe(42);
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 50,
+						lineNumberAfterMacroExpansion: 50,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 
 		it('combines named split hex bytes into one integer default (2 bytes, right-padded)', () => {
