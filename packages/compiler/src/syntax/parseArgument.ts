@@ -1,5 +1,9 @@
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 import parseLiteralMulDivExpression from './parseLiteralMulDivExpression';
+import parseNumericLiteralToken, {
+	isNumericLikeInvalidToken,
+	startsWithNumericPrefix,
+} from './parseNumericLiteralToken';
 
 export enum ArgumentType {
 	LITERAL = 'literal',
@@ -18,21 +22,6 @@ export type ArgumentIdentifier = { type: ArgumentType.IDENTIFIER; value: string 
 export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral;
-
-function startsWithNumericPrefix(argument: string): boolean {
-	return /^-?(?:\d|\.\d)/.test(argument);
-}
-
-function isNumericLikeInvalidToken(argument: string): boolean {
-	return (
-		startsWithNumericPrefix(argument) &&
-		(/[*/]/.test(argument) ||
-			argument.includes('.') ||
-			/[eE]/.test(argument) ||
-			/^-?0[xXbB]/.test(argument) ||
-			/[fF]\d*$/.test(argument))
-	);
-}
 
 /**
  * Decodes escape sequences in a raw (unquoted) string literal body.
@@ -121,39 +110,18 @@ export function parseArgument(argument: string): Argument {
 			const raw = argument.slice(1, -1);
 			return { type: ArgumentType.STRING_LITERAL, value: decodeStringLiteral(raw) };
 		}
-		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(argument): {
-			const numStr = argument.slice(0, -3);
-			const value = parseFloat(numStr);
-			if (!Number.isFinite(value)) {
-				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`, {
-					argument,
-				});
+		default: {
+			const numericLiteral = parseNumericLiteralToken(argument);
+			if (numericLiteral) {
+				return {
+					value: numericLiteral.value,
+					type: ArgumentType.LITERAL,
+					isInteger: numericLiteral.isInteger,
+					...(numericLiteral.isFloat64 && { isFloat64: true }),
+					...(numericLiteral.isHex && { isHex: true }),
+				};
 			}
-			return { value, type: ArgumentType.LITERAL, isInteger: false, isFloat64: true };
-		}
-		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?$/.test(argument): {
-			const value = parseFloat(argument);
-			if (!Number.isFinite(value)) {
-				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`, {
-					argument,
-				});
-			}
-			return {
-				value,
-				type: ArgumentType.LITERAL,
-				isInteger: /^-?[0-9]+$/.test(argument),
-			};
-		}
-		case /^-?0x[0-9a-fA-F]+$/.test(argument):
-			return {
-				value: parseInt(argument.replace('0x', ''), 16),
-				type: ArgumentType.LITERAL,
-				isInteger: true,
-				isHex: true,
-			};
-		case /^-?0b[0-1]+$/.test(argument):
-			return { value: parseInt(argument.replace('0b', ''), 2), type: ArgumentType.LITERAL, isInteger: true };
-		default:
+
 			// Reject numeric-looking tokens that failed literal parsing so they do not silently
 			// become identifiers. This keeps standalone and compound numeric syntax boundaries clear.
 			if (isNumericLikeInvalidToken(argument)) {
@@ -175,6 +143,7 @@ export function parseArgument(argument: string): Argument {
 				);
 			}
 			return { value: argument, type: ArgumentType.IDENTIFIER };
+		}
 	}
 }
 
