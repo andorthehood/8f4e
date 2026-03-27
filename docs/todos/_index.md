@@ -28,6 +28,9 @@ Active todo files are listed below.
 | 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | 8f4e has dup, swap, drop, and clearStack, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for... |
 | 301 | Refactor constant namespace collection and remove duplicated const parsing | 🔴 | 1-2d | 2026-03-14 | The compiler currently has two separate paths that parse and validate const declarations: |
 | 305 | Reuse WASM instance across incremental compiles | 🔴 | 3-6h | 2026-03-14 | The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed. |
+| 329 | Replace literal-only const collection with semantic namespace prepass | 🔴 | 6-10h | 2026-03-27 | The compiler still builds namespaces through collectConstants(ast), which assumes every const RHS is already a literal. |
+| 330 | Centralize compile-time folding as an AST normalization pass | 🔴 | 6-10h | 2026-03-27 | Compile-time expressions are still recognized and resolved across multiple layers instead of one semantic normalization stage. |
+| 331 | Delete duplicate downstream compile-time resolution paths | 🔴 | 4-8h | 2026-03-27 | Even after prepass and normalization exist, the refactor is incomplete until the old compile-time resolution paths are deleted. |
 
 ### 🟡 Medium Priority
 
@@ -72,6 +75,7 @@ Active todo files are listed below.
 | 324 | Add `int16*` pointer types to compiler and runtime | 🟡 | 1-2d | 2026-03-26 | The compiler currently only has coarse pointer base types such as `int*`, `float*`, and `float64*`, so pointer-aware metadata cannot represent 16-bit integer pointee semantics directly. |
 | 325 | Add literal-only `*` and `/` folding at argument parse time | 🟡 | 4-8h | 2026-03-26 | 8f4e already folds fraction-style literals like `1/2` during argument parsing, but other literal-only arithmetic such as `16*2` and `3.5*4` still falls through as identifier-shaped input instead of becoming ordinary literals in the AST. |
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 🟡 | 4-8h | 2026-03-26 | Several editor/runtime paths still use dotted cross-module memory ids such as `module.memory`, while compiler address-style intermodule references already use `module:memory`, creating inconsistent source-level syntax. |
+| 332 | Extract syntax and AST parsing into a separate compiler package | 🟡 | 1-2d | 2026-03-27 | The compiler currently mixes syntax concerns and semantic/codegen concerns inside the same package, making the intended phase boundary harder to enforce. |
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |

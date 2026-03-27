@@ -135,7 +135,7 @@ export interface Namespace {
 	functions?: CompiledFunctionLookup;
 }
 
-export type Namespaces = Record<string, { consts: Consts }>;
+export type Namespaces = Record<string, { consts: Consts; memory?: MemoryMap }>;
 
 export type CompilationMode = 'module' | 'function';
 

@@ -4,7 +4,6 @@ import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
@@ -38,12 +37,10 @@ const buffer: InstructionCompiler = withValidation(
 		const elementWordSize = getElementWordSize(line.instruction);
 		const isUnsigned = line.instruction.endsWith('u[]');
 
-		if (line.arguments[1].type === ArgumentType.LITERAL) {
-			numberOfElements = line.arguments[1].value;
-		} else {
-			const constant = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
-			numberOfElements = constant.value;
+		if (line.arguments[1].type !== ArgumentType.LITERAL) {
+			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
+		numberOfElements = line.arguments[1].value;
 
 		// Apply 8-byte alignment for float64[] buffers: round up absolute word offset to even
 		// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.

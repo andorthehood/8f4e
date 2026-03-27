@@ -90,8 +90,9 @@ exports[`const instruction > const with valid constant names > if the generated 
         "value": "output3",
       },
       {
-        "type": "identifier",
-        "value": "TEST3",
+        "isInteger": true,
+        "type": "literal",
+        "value": 69,
       },
     ],
     "instruction": "int",
@@ -112,8 +113,9 @@ exports[`const instruction > const with valid constant names > if the generated 
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "TEST1",
+        "isInteger": true,
+        "type": "literal",
+        "value": 420,
       },
     ],
     "instruction": "push",
@@ -140,8 +142,9 @@ exports[`const instruction > const with valid constant names > if the generated 
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "TEST2",
+        "isInteger": false,
+        "type": "literal",
+        "value": 420.69,
       },
     ],
     "instruction": "push",

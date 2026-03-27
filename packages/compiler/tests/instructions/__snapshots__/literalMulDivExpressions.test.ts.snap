@@ -54,8 +54,9 @@ exports[`const: literal-only division expression with integer result > if the ge
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "RESULT",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -163,8 +164,9 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "RESULT",
+        "isInteger": true,
+        "type": "literal",
+        "value": 32,
       },
     ],
     "instruction": "push",
@@ -408,8 +410,9 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "count(buffer)",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",

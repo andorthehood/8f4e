@@ -153,8 +153,9 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "PI",
+        "isInteger": false,
+        "type": "literal",
+        "value": 3.14159,
       },
     ],
     "instruction": "float",

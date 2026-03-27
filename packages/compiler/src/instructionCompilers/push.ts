@@ -1,4 +1,3 @@
-import pushConst from './push/handlers/pushConst';
 import pushElementCount from './push/handlers/pushElementCount';
 import pushElementMax from './push/handlers/pushElementMax';
 import pushElementMin from './push/handlers/pushElementMin';
@@ -59,8 +58,6 @@ const push: InstructionCompiler = withValidation(
 					return pushPointeeElementMax(line, context);
 				case IdentifierPushKind.ELEMENT_MIN:
 					return pushElementMin(line, context);
-				case IdentifierPushKind.CONST:
-					return pushConst(line, context);
 				case IdentifierPushKind.LOCAL:
 				default:
 					return pushLocal(line, context);
@@ -96,22 +93,15 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('pushes a constant value', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					consts: {
-						ANSWER: { value: 42, isInteger: true },
-					},
-				},
-			});
+		it('pushes a normalized literal value', () => {
+			const context = createInstructionCompilerTestContext();
 
 			push(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ANSWER' }],
+					arguments: [{ type: ArgumentType.LITERAL, value: 42, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -193,22 +183,15 @@ if (import.meta.vitest) {
 			expect(context.stack[0].isInteger).toBe(false);
 		});
 
-		it('pushes a f64 constant emitting f64.const', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					consts: {
-						PI64: { value: 3.141592653589793, isInteger: false, isFloat64: true },
-					},
-				},
-			});
+		it('pushes a normalized f64 literal emitting f64.const', () => {
+			const context = createInstructionCompilerTestContext();
 
 			push(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
+					arguments: [{ type: ArgumentType.LITERAL, value: 3.141592653589793, isInteger: false, isFloat64: true }],
 				} as AST[number],
 				context
 			);
@@ -219,22 +202,15 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('tracks isFloat64 on the stack item for f64 constant', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					consts: {
-						PI64: { value: 3.141592653589793, isInteger: false, isFloat64: true },
-					},
-				},
-			});
+		it('tracks isFloat64 on the stack item for normalized f64 literal', () => {
+			const context = createInstructionCompilerTestContext();
 
 			push(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
+					arguments: [{ type: ArgumentType.LITERAL, value: 3.141592653589793, isInteger: false, isFloat64: true }],
 				} as AST[number],
 				context
 			);

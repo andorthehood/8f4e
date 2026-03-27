@@ -12,8 +12,7 @@ import call from './wasmUtils/call/call';
 import f32store from './wasmUtils/store/f32store';
 import f64store from './wasmUtils/store/f64store';
 import i32store from './wasmUtils/store/i32store';
-import { compileModule, compileToAST, compileFunction } from './compiler';
-import collectConstants from './astUtils/collectConstants';
+import { compileModule, compileToAST, compileFunction, prepassNamespace } from './compiler';
 import getConstantsName from './astUtils/getConstantsName';
 import getModuleName from './astUtils/getModuleName';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
@@ -33,6 +32,7 @@ import {
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import WASM_MEMORY_PAGE_SIZE from './wasmUtils/consts';
+import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 
 export {
 	MemoryTypes,
@@ -95,16 +95,21 @@ export function compileModules(
 	// If builtInConsts not provided, use empty object - all constants come from env block
 	const consts = builtInConsts ?? {};
 
-	// If namespaces not provided, collect from modules
-	const ns =
-		namespaces ??
-		Object.fromEntries(
-			modules.map(ast => {
-				const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-				const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-				return [name, { consts: collectConstants(ast) }];
-			})
-		);
+	let nextStartingByteAddress = memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY;
+	const ns: Namespaces = namespaces ? { ...namespaces } : {};
+
+	if (!namespaces) {
+		for (const ast of modules) {
+			const context = prepassNamespace(ast, consts, ns, nextStartingByteAddress, compiledFunctions);
+			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+			ns[name] = {
+				consts: { ...context.namespace.consts },
+				memory: context.namespace.memory,
+			};
+			nextStartingByteAddress += calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
+		}
+	}
 
 	return modules.map((ast, index) => {
 		const module = compileModule(ast, consts, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
@@ -194,14 +199,19 @@ export default function compile(
 	const sortedModules = sortModules(astModules);
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
-	const namespaces: Namespaces = Object.fromEntries(
-		sortedModules.map(ast => {
-			// Determine if this is a constants block or regular module
-			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-			return [name, { consts: collectConstants(ast) }];
-		})
-	);
+	const namespaces: Namespaces = {};
+	let prepassStartingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY;
+	for (const ast of sortedModules) {
+		const context = prepassNamespace(ast, {}, namespaces, prepassStartingByteAddress);
+		const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+		const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+		namespaces[name] = {
+			consts: { ...context.namespace.consts },
+			memory: context.namespace.memory,
+		};
+		prepassStartingByteAddress +=
+			calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
+	}
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));

@@ -3,7 +3,6 @@ import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -32,17 +31,11 @@ const _const: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 		}
 
-		let value = { value: 0, isInteger: true };
-
-		if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
-			value = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
-		} else if (line.arguments[1].type === ArgumentType.LITERAL) {
-			value = line.arguments[1];
-		} else {
+		if (line.arguments[1].type !== ArgumentType.LITERAL) {
 			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
-		context.namespace.consts[constantName] = value;
+		context.namespace.consts[constantName] = line.arguments[1];
 
 		return context;
 	}

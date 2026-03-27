@@ -54,8 +54,9 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
   {
     "arguments": [
       {
-        "type": "identifier",
-        "value": "MY_FRACTION",
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.125,
       },
     ],
     "instruction": "push",

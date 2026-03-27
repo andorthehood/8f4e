@@ -1,5 +1,6 @@
 import { withValidation } from '../withValidation';
 import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
+import { ErrorCode, getError } from '../compilerError';
 import i32const from '../wasmUtils/const/i32const';
 import br from '../wasmUtils/controlFlow/br';
 import i32load from '../wasmUtils/load/i32load';
@@ -9,7 +10,6 @@ import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -31,7 +31,7 @@ const skip: InstructionCompiler = withValidation(
 		if (line.arguments[0].type === ArgumentType.LITERAL) {
 			timesToSkip = line.arguments[0].value;
 		} else {
-			timesToSkip = resolveConstantValueOrExpressionOrThrow(line.arguments[0].value, line, context).value;
+			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
 		const memory = context.namespace.memory;

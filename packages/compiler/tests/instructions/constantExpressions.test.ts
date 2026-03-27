@@ -1,4 +1,8 @@
+import { test, expect } from 'vitest';
+
 import { moduleTester } from './testUtils';
+
+import compile from '../../src';
 
 moduleTester(
 	'int[]: buffer size from constant division expression',
@@ -193,3 +197,19 @@ moduleEnd
 `,
 	[[{}, { output: 16 }]]
 );
+
+test('constants block expressions are available through use', () => {
+	const result = compile(
+		[
+			{
+				code: ['constants env', 'const SIZE 8', 'const HALF SIZE/2', 'constantsEnd'],
+			},
+			{
+				code: ['module test', 'use env', 'int output HALF', 'moduleEnd'],
+			},
+		],
+		{ startingMemoryWordAddress: 0 }
+	);
+
+	expect(result.compiledModules.test.memoryMap.output.default).toBe(4);
+});

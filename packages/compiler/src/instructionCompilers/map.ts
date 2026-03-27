@@ -2,7 +2,6 @@ import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -38,10 +37,7 @@ const map: InstructionCompiler = withValidation(
 			keyValue = keyArg.value.charCodeAt(0);
 			keyIsInteger = true;
 		} else {
-			const c = resolveConstantValueOrExpressionOrThrow(keyArg.value, line, context);
-			keyValue = c.value;
-			keyIsInteger = c.isInteger;
-			keyIsFloat64 = !!c.isFloat64;
+			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
 		// Validate key type against the declared inputType
@@ -83,10 +79,7 @@ const map: InstructionCompiler = withValidation(
 			valueValue = valueArg.value.charCodeAt(0);
 			valueIsInteger = true;
 		} else {
-			const c = resolveConstantValueOrExpressionOrThrow(valueArg.value, line, context);
-			valueValue = c.value;
-			valueIsInteger = c.isInteger;
-			valueIsFloat64 = !!c.isFloat64;
+			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
 		mapState.rows.push({ keyValue, valueValue, valueIsInteger, valueIsFloat64 });
