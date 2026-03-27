@@ -1,5 +1,6 @@
-import extractMemoryReferenceBase from '../../../syntax/extractMemoryReferenceBase';
-import hasMemoryReferencePrefixStart from '../../../syntax/hasMemoryReferencePrefixStart';
+import { extractMemoryReferenceBase } from '@8f4e/ast-parser';
+import { hasMemoryReferencePrefixStart } from '@8f4e/ast-parser';
+
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';

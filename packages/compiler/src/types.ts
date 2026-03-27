@@ -1,12 +1,14 @@
 import {
+	type AST,
+	type ASTLine,
 	ArgumentType,
 	type Argument,
 	type ArgumentCompileTimeExpression,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
-} from './syntax/parseArgument';
-import { Instruction } from './instructionCompilers';
+} from '@8f4e/ast-parser';
+
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
 
@@ -99,6 +101,8 @@ export interface Module {
 
 // Re-export types from syntax subpath for backward compatibility
 export {
+	type AST,
+	type ASTLine,
 	ArgumentType,
 	type Argument,
 	type ArgumentCompileTimeExpression,
@@ -106,15 +110,6 @@ export {
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
 };
-
-export interface ASTLine {
-	lineNumberBeforeMacroExpansion: number;
-	lineNumberAfterMacroExpansion: number;
-	instruction: Instruction;
-	arguments: Array<Argument>;
-}
-
-export type AST = ASTLine[];
 
 export interface TestModule {
 	memory: MemoryBuffer & {

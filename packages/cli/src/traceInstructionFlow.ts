@@ -4,6 +4,7 @@ import compile, {
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
+	type Instruction,
 	type Module,
 } from '@8f4e/compiler';
 
@@ -82,7 +83,7 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 	const entries: InstructionTraceEntry[] = [];
 
 	for (const line of ast) {
-		const compiler = instructions[line.instruction];
+		const compiler = instructions[line.instruction as Instruction];
 		if (!compiler) {
 			continue;
 		}

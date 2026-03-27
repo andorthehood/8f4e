@@ -1,5 +1,6 @@
+import { extractElementMaxBase } from '@8f4e/ast-parser';
+
 import { ErrorCode, getError } from '../../../compilerError';
-import extractElementMaxBase from '../../../syntax/extractElementMaxBase';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';

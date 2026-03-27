@@ -1,14 +1,10 @@
-import instructionParser from './syntax/instructionParser';
-import isComment from './syntax/isComment';
-import isValidInstruction from './syntax/isValidInstruction';
-import { parseArgument } from './syntax/parseArgument';
-import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
+import { compileToAST } from '@8f4e/ast-parser';
+
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
-	type ASTLine,
 	CompilationContext,
 	CompiledModule,
 	CompiledFunction,
@@ -25,107 +21,13 @@ import normalizeCompileTimeArguments from './utils/normalizeCompileTimeArguments
 
 export type { MemoryTypes, MemoryMap } from './types';
 
-// Re-export for backward compatibility
-export { instructionParser, isComment, isValidInstruction, parseArgument };
-
-/**
- * Tokenizes an instruction line, treating quoted strings as single tokens.
- * Stops at an unquoted semicolon (comment delimiter).
- * Escape sequences inside quotes are preserved for parseArgument to decode.
- */
-function tokenizeInstruction(line: string): string[] {
-	const tokens: string[] = [];
-	let i = 0;
-	const len = line.length;
-
-	while (i < len) {
-		// Skip whitespace
-		if (/\s/.test(line[i])) {
-			i++;
-			continue;
-		}
-		// Semicolon starts a comment – stop
-		if (line[i] === ';') break;
-
-		// Quoted string token
-		if (line[i] === '"') {
-			let token = '"';
-			i++; // skip opening quote
-			while (i < len && line[i] !== '"') {
-				if (line[i] === '\\' && i + 1 < len) {
-					token += line[i] + line[i + 1];
-					i += 2;
-				} else {
-					token += line[i++];
-				}
-			}
-			if (i >= len) {
-				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, 'Unterminated string literal');
-			}
-			token += '"'; // closing quote
-			i++; // consume closing quote
-			tokens.push(token);
-		} else {
-			// Regular token: read until whitespace or semicolon
-			let token = '';
-			while (i < len && !/\s/.test(line[i]) && line[i] !== ';') {
-				token += line[i++];
-			}
-			if (token) tokens.push(token);
-		}
-	}
-
-	return tokens;
-}
-
-export function parseLine(
-	line: string,
-	lineNumberBeforeMacroExpansion: number,
-	lineNumberAfterMacroExpansion = lineNumberBeforeMacroExpansion
-): ASTLine {
-	try {
-		const tokens = tokenizeInstruction(line);
-		const [instruction, ...args] = tokens as [Instruction, ...string[]];
-
-		return {
-			lineNumberBeforeMacroExpansion,
-			lineNumberAfterMacroExpansion,
-			instruction,
-			arguments: args.map(parseArgument),
-		};
-	} catch (error) {
-		if (error instanceof SyntaxRulesError) {
-			throw new SyntaxRulesError(error.code, error.message, {
-				...error.details,
-				line,
-				lineNumberBeforeMacroExpansion,
-				lineNumberAfterMacroExpansion,
-			});
-		}
-		throw error;
-	}
-}
-
-export function compileToAST(
-	code: string[],
-	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
-): AST {
-	return code
-		.map((line, index) => [index, line] as [number, string])
-		.filter(([, line]) => !isComment(line))
-		.filter(([, line]) => isValidInstruction(line))
-		.map(([lineNumberAfterMacroExpansion, line]) => {
-			const lineNumberBeforeMacroExpansion =
-				lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
-			return parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
-		});
-}
-
 export function compileLine(line: AST[number], context: CompilationContext) {
-	if (!instructions[line.instruction]) {
+	const instruction = line.instruction as Instruction;
+
+	if (!instructions[instruction]) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
-	instructions[line.instruction](line, context);
+	instructions[instruction](line, context);
 }
 
 const namespacePrepassInstructions = new Set<Instruction>([
@@ -187,7 +89,7 @@ export function prepassNamespace(
 	};
 
 	ast.forEach(originalLine => {
-		if (!namespacePrepassInstructions.has(originalLine.instruction)) {
+		if (!namespacePrepassInstructions.has(originalLine.instruction as Instruction)) {
 			return;
 		}
 

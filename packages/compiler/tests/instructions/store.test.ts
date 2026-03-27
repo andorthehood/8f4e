@@ -1,9 +1,9 @@
+import { compileToAST } from '@8f4e/ast-parser';
 import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
 
 import { createSingleFunctionWASMProgram } from './testUtils';
 
 import { compileModules } from '../../src';
-import { compileToAST } from '../../src/compiler';
 
 import type { CompiledModule } from '../../src/types';
 

@@ -1,9 +1,10 @@
-import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '../syntax/memoryInstructionParser';
-import { SyntaxRulesError, SyntaxErrorCode } from '../syntax/syntaxError';
-import { ArgumentType } from '../syntax/parseArgument';
+import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '@8f4e/ast-parser';
+import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/ast-parser';
+import { ArgumentType } from '@8f4e/ast-parser';
+import { hasMemoryReferencePrefixStart } from '@8f4e/ast-parser';
+import { isConstantName } from '@8f4e/ast-parser';
+
 import { ErrorCode, getError } from '../compilerError';
-import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
-import isConstantName from '../syntax/isConstantName';
 
 import type { AST, CompilationContext, Argument } from '../types';
 /**

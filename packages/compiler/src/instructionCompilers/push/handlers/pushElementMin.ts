@@ -1,5 +1,6 @@
+import { extractElementMinBase } from '@8f4e/ast-parser';
+
 import { ErrorCode, getError } from '../../../compilerError';
-import extractElementMinBase from '../../../syntax/extractElementMinBase';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';

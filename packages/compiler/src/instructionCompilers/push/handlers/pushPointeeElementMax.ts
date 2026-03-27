@@ -1,5 +1,6 @@
+import { extractPointeeElementMaxBase } from '@8f4e/ast-parser';
+
 import { ErrorCode, getError } from '../../../compilerError';
-import extractPointeeElementMaxBase from '../../../syntax/extractPointeeElementMaxBase';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';

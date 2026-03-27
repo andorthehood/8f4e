@@ -1,0 +1,96 @@
+import instructionParser from './syntax/instructionParser';
+import isComment from './syntax/isComment';
+import isValidInstruction from './syntax/isValidInstruction';
+import { parseArgument } from './syntax/parseArgument';
+import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
+
+import type { AST, ASTLine, ParsedLineMetadata } from './types';
+
+/**
+ * Tokenizes an instruction line, treating quoted strings as single tokens.
+ * Stops at an unquoted semicolon (comment delimiter).
+ * Escape sequences inside quotes are preserved for parseArgument to decode.
+ */
+function tokenizeInstruction(line: string): string[] {
+	const tokens: string[] = [];
+	let i = 0;
+	const len = line.length;
+
+	while (i < len) {
+		if (/\s/.test(line[i])) {
+			i++;
+			continue;
+		}
+
+		if (line[i] === ';') break;
+
+		if (line[i] === '"') {
+			let token = '"';
+			i++;
+			while (i < len && line[i] !== '"') {
+				if (line[i] === '\\' && i + 1 < len) {
+					token += line[i] + line[i + 1];
+					i += 2;
+				} else {
+					token += line[i++];
+				}
+			}
+			if (i >= len) {
+				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, 'Unterminated string literal');
+			}
+			token += '"';
+			i++;
+			tokens.push(token);
+		} else {
+			let token = '';
+			while (i < len && !/\s/.test(line[i]) && line[i] !== ';') {
+				token += line[i++];
+			}
+			if (token) tokens.push(token);
+		}
+	}
+
+	return tokens;
+}
+
+export function parseLine(
+	line: string,
+	lineNumberBeforeMacroExpansion: number,
+	lineNumberAfterMacroExpansion = lineNumberBeforeMacroExpansion
+): ASTLine {
+	try {
+		const tokens = tokenizeInstruction(line);
+		const [instruction = '', ...args] = tokens;
+
+		return {
+			lineNumberBeforeMacroExpansion,
+			lineNumberAfterMacroExpansion,
+			instruction,
+			arguments: args.map(parseArgument),
+		};
+	} catch (error) {
+		if (error instanceof SyntaxRulesError) {
+			throw new SyntaxRulesError(error.code, error.message, {
+				...error.details,
+				line,
+				lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion,
+			});
+		}
+		throw error;
+	}
+}
+
+export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata): AST {
+	return code
+		.map((line, index) => [index, line] as [number, string])
+		.filter(([, line]) => !isComment(line))
+		.filter(([, line]) => isValidInstruction(line))
+		.map(([lineNumberAfterMacroExpansion, line]) => {
+			const lineNumberBeforeMacroExpansion =
+				lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
+			return parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
+		});
+}
+
+export { instructionParser };

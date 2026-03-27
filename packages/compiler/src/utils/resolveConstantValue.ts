@@ -1,3 +1,25 @@
+import { parseArgument, ArgumentType } from '@8f4e/ast-parser';
+import { hasElementCountPrefix } from '@8f4e/ast-parser';
+import { hasElementWordSizePrefix } from '@8f4e/ast-parser';
+import { hasPointeeElementWordSizePrefix } from '@8f4e/ast-parser';
+import { hasElementMaxPrefix } from '@8f4e/ast-parser';
+import { hasPointeeElementMaxPrefix } from '@8f4e/ast-parser';
+import { hasElementMinPrefix } from '@8f4e/ast-parser';
+import { extractElementCountBase } from '@8f4e/ast-parser';
+import { extractElementWordSizeBase } from '@8f4e/ast-parser';
+import { extractPointeeElementWordSizeBase } from '@8f4e/ast-parser';
+import { extractElementMaxBase } from '@8f4e/ast-parser';
+import { extractPointeeElementMaxBase } from '@8f4e/ast-parser';
+import { extractElementMinBase } from '@8f4e/ast-parser';
+import { isIntermodularElementCountReference } from '@8f4e/ast-parser';
+import { isIntermodularElementWordSizeReference } from '@8f4e/ast-parser';
+import { isIntermodularElementMaxReference } from '@8f4e/ast-parser';
+import { isIntermodularElementMinReference } from '@8f4e/ast-parser';
+import { extractIntermodularElementCountBase } from '@8f4e/ast-parser';
+import { extractIntermodularElementWordSizeBase } from '@8f4e/ast-parser';
+import { extractIntermodularElementMaxBase } from '@8f4e/ast-parser';
+import { extractIntermodularElementMinBase } from '@8f4e/ast-parser';
+
 import {
 	getElementCount,
 	getElementWordSize,
@@ -6,28 +28,6 @@ import {
 	getPointeeElementMaxValue,
 	getElementMinValue,
 } from './memoryData';
-
-import { parseArgument, ArgumentType } from '../syntax/parseArgument';
-import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
-import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
-import hasPointeeElementWordSizePrefix from '../syntax/hasPointeeElementWordSizePrefix';
-import hasElementMaxPrefix from '../syntax/hasElementMaxPrefix';
-import hasPointeeElementMaxPrefix from '../syntax/hasPointeeElementMaxPrefix';
-import hasElementMinPrefix from '../syntax/hasElementMinPrefix';
-import extractElementCountBase from '../syntax/extractElementCountBase';
-import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
-import extractPointeeElementWordSizeBase from '../syntax/extractPointeeElementWordSizeBase';
-import extractElementMaxBase from '../syntax/extractElementMaxBase';
-import extractPointeeElementMaxBase from '../syntax/extractPointeeElementMaxBase';
-import extractElementMinBase from '../syntax/extractElementMinBase';
-import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
-import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
-import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
-import isIntermodularElementMinReference from '../syntax/isIntermodularElementMinReference';
-import extractIntermodularElementCountBase from '../syntax/extractIntermodularElementCountBase';
-import extractIntermodularElementWordSizeBase from '../syntax/extractIntermodularElementWordSizeBase';
-import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
-import extractIntermodularElementMinBase from '../syntax/extractIntermodularElementMinBase';
 
 import type { Argument, Const, Namespace } from '../types';
 

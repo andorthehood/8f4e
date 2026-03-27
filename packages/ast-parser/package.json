@@ -1,8 +1,8 @@
 {
-	"name": "@8f4e/editor",
-	"version": "0.0.8",
+	"name": "@8f4e/ast-parser",
+	"version": "1.0.0",
 	"private": true,
-	"description": "8f4e editor package",
+	"description": "8f4e source-to-AST parser package",
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -10,6 +10,14 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
+		},
+		"./syntax": {
+			"types": "./dist/syntax/index.d.ts",
+			"default": "./dist/syntax/index.js"
+		},
+		"./syntax/*": {
+			"types": "./dist/syntax/*.d.ts",
+			"default": "./dist/syntax/*.js"
 		}
 	},
 	"sideEffects": false,
@@ -23,15 +31,7 @@
 		"url": "https://github.com/andorthehood/8f4e/issues"
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
-	"dependencies": {
-		"@8f4e/ast-parser": "*",
-		"glugglug": "*",
-		"@8f4e/sprite-generator": "*",
-		"@8f4e/state-manager": "*",
-		"@8f4e/web-ui": "*"
-	},
 	"devDependencies": {
-		"vite": "^7.1.11",
-		"@8f4e/compiler": "*"
+		"@types/node": "^24.3.0"
 	}
 }

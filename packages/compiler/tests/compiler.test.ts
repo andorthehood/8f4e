@@ -1,8 +1,8 @@
+import { compileToAST, parseLine } from '@8f4e/ast-parser';
 import { describe, test, expect } from 'vitest';
+import { isComment, isValidInstruction, parseArgument, SyntaxErrorCode, SyntaxRulesError } from '@8f4e/ast-parser';
 
 import { ArgumentType } from '../src/types';
-import { isComment, isValidInstruction, parseArgument, parseLine, compileToAST } from '../src/compiler';
-import { SyntaxErrorCode, SyntaxRulesError } from '../src/syntax/syntaxError';
 
 import type { AST } from '../src/types';
 

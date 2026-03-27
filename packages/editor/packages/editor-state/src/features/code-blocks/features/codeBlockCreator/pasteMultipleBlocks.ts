@@ -1,4 +1,4 @@
-import { getModuleId, getFunctionId } from '@8f4e/compiler/syntax';
+import { getModuleId, getFunctionId } from '@8f4e/ast-parser';
 
 import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 

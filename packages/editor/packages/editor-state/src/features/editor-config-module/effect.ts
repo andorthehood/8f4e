@@ -1,5 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
-import { getBlockType } from '@8f4e/compiler/syntax';
+import { getBlockType } from '@8f4e/ast-parser';
 
 import {
 	DEFAULT_EDITOR_CONFIG_BLOCK,
