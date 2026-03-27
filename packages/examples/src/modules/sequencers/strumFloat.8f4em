@@ -31,7 +31,7 @@ push &out
   ; Calculate address
 push bufferIn
 push counter
-push %bufferIn
+push sizeof(bufferIn)
 mul
 add
   

@@ -2,12 +2,12 @@
 
 Practical patterns for writing predictable, efficient 8f4e modules.
 
-## Derive Buffer Facts From Prefixes
+## Derive Buffer Facts From Metadata Queries
 
 Avoid duplicating buffer metadata in separate variables.
 
-- Use `$buffer` for element count.
-- Use `%buffer` for element word size.
+- Use `count(buffer)` for element count.
+- Use `sizeof(buffer)` for element word size.
 - Use `buffer&` (or inter-module `module.buffer&`) for end address.
 
 This keeps modules resilient when buffer declarations change.
@@ -22,30 +22,30 @@ int steps 16
 Good:
 ```text
 int[] rhythm 16
-; ...logic uses `$rhythm` for step count...
+; ...logic uses `count(rhythm)` for step count...
 ```
 
 ## Prefer Address-Based Walking
 
-When stepping through buffers, prefer a byte offset (or pointer-like state) instead of an element index that repeatedly needs address recomputation via `index * %buffer`.
+When stepping through buffers, prefer a byte offset (or pointer-like state) instead of an element index that repeatedly needs address recomputation via `index * sizeof(buffer)`.
 
 In other words, this replaces:
 - element-index walking (`_index` as element number)
-- repeated address math on every access/wrap check (`buffer + _index * %buffer`)
+- repeated address math on every access/wrap check (`buffer + _index * sizeof(buffer)`)
 
 With:
 - address/offset walking (`_offset` in bytes)
-- direct address math (`buffer + _offset`) and `_offset += %buffer`
+- direct address math (`buffer + _offset`) and `_offset += sizeof(buffer)`
 
 - Fewer operations in hot loops.
-- No repeated `index * %buffer` multiplications for wrap checks.
+- No repeated `index * sizeof(buffer)` multiplications for wrap checks.
 
 Bad:
 ```text
 int _index
 push bufferIn
 push _index
-push %bufferIn
+push sizeof(bufferIn)
 mul
 add
 load
@@ -184,7 +184,7 @@ if void
 
  push &_offset
  push _offset
- push %bufferIn
+ push sizeof(bufferIn)
  add
  store
 

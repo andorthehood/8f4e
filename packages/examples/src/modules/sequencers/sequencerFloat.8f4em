@@ -22,7 +22,7 @@ risingEdge
 if void
 push &stepPointer
 push stepPointer
-push %step1
+push sizeof(step1)
 add
 store
 ifEnd

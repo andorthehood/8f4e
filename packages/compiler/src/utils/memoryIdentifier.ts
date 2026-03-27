@@ -111,13 +111,13 @@ if (import.meta.vitest) {
 		});
 
 		describe('isElementCountIdentifier', () => {
-			it('returns true for element count with $ prefix', () => {
-				expect(isElementCountIdentifier(mockMemory, '$foo')).toBe(true);
-				expect(isElementCountIdentifier(mockMemory, '$bar')).toBe(true);
+			it('returns true for element count with count() syntax', () => {
+				expect(isElementCountIdentifier(mockMemory, 'count(foo)')).toBe(true);
+				expect(isElementCountIdentifier(mockMemory, 'count(bar)')).toBe(true);
 			});
 
 			it('returns false for non-existing element count', () => {
-				expect(isElementCountIdentifier(mockMemory, '$baz')).toBe(false);
+				expect(isElementCountIdentifier(mockMemory, 'count(baz)')).toBe(false);
 			});
 
 			it('returns false for plain identifiers', () => {
@@ -126,13 +126,13 @@ if (import.meta.vitest) {
 		});
 
 		describe('isElementWordSizeIdentifier', () => {
-			it('returns true for element word size with % prefix', () => {
-				expect(isElementWordSizeIdentifier(mockMemory, '%foo')).toBe(true);
-				expect(isElementWordSizeIdentifier(mockMemory, '%bar')).toBe(true);
+			it('returns true for element word size with sizeof() syntax', () => {
+				expect(isElementWordSizeIdentifier(mockMemory, 'sizeof(foo)')).toBe(true);
+				expect(isElementWordSizeIdentifier(mockMemory, 'sizeof(bar)')).toBe(true);
 			});
 
 			it('returns false for non-existing element word size', () => {
-				expect(isElementWordSizeIdentifier(mockMemory, '%baz')).toBe(false);
+				expect(isElementWordSizeIdentifier(mockMemory, 'sizeof(baz)')).toBe(false);
 			});
 
 			it('returns false for plain identifiers', () => {
@@ -141,13 +141,13 @@ if (import.meta.vitest) {
 		});
 
 		describe('isElementMaxIdentifier', () => {
-			it('returns true for element max with ^ prefix', () => {
-				expect(isElementMaxIdentifier(mockMemory, '^foo')).toBe(true);
-				expect(isElementMaxIdentifier(mockMemory, '^bar')).toBe(true);
+			it('returns true for element max with max() syntax', () => {
+				expect(isElementMaxIdentifier(mockMemory, 'max(foo)')).toBe(true);
+				expect(isElementMaxIdentifier(mockMemory, 'max(bar)')).toBe(true);
 			});
 
 			it('returns false for non-existing element max', () => {
-				expect(isElementMaxIdentifier(mockMemory, '^baz')).toBe(false);
+				expect(isElementMaxIdentifier(mockMemory, 'max(baz)')).toBe(false);
 			});
 
 			it('returns false for plain identifiers', () => {
@@ -156,13 +156,13 @@ if (import.meta.vitest) {
 		});
 
 		describe('isElementMinIdentifier', () => {
-			it('returns true for element min with ! prefix', () => {
-				expect(isElementMinIdentifier(mockMemory, '!foo')).toBe(true);
-				expect(isElementMinIdentifier(mockMemory, '!bar')).toBe(true);
+			it('returns true for element min with min() syntax', () => {
+				expect(isElementMinIdentifier(mockMemory, 'min(foo)')).toBe(true);
+				expect(isElementMinIdentifier(mockMemory, 'min(bar)')).toBe(true);
 			});
 
 			it('returns false for non-existing element min', () => {
-				expect(isElementMinIdentifier(mockMemory, '!baz')).toBe(false);
+				expect(isElementMinIdentifier(mockMemory, 'min(baz)')).toBe(false);
 			});
 
 			it('returns false for plain identifiers', () => {
@@ -171,17 +171,17 @@ if (import.meta.vitest) {
 		});
 
 		describe('isPointeeElementWordSizeIdentifier', () => {
-			it('returns true for pointee element word size with %* prefix', () => {
-				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%*foo')).toBe(true);
-				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%*bar')).toBe(true);
+			it('returns true for pointee element word size with sizeof(*) syntax', () => {
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, 'sizeof(*foo)')).toBe(true);
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, 'sizeof(*bar)')).toBe(true);
 			});
 
 			it('returns false for non-existing pointee element word size', () => {
-				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%*baz')).toBe(false);
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, 'sizeof(*baz)')).toBe(false);
 			});
 
-			it('returns false for plain % prefix', () => {
-				expect(isPointeeElementWordSizeIdentifier(mockMemory, '%foo')).toBe(false);
+			it('returns false for plain sizeof() form', () => {
+				expect(isPointeeElementWordSizeIdentifier(mockMemory, 'sizeof(foo)')).toBe(false);
 			});
 
 			it('returns false for plain identifiers', () => {
@@ -190,17 +190,17 @@ if (import.meta.vitest) {
 		});
 
 		describe('isPointeeElementMaxIdentifier', () => {
-			it('returns true for pointee element max with ^* prefix', () => {
-				expect(isPointeeElementMaxIdentifier(mockMemory, '^*foo')).toBe(true);
-				expect(isPointeeElementMaxIdentifier(mockMemory, '^*bar')).toBe(true);
+			it('returns true for pointee element max with max(*) syntax', () => {
+				expect(isPointeeElementMaxIdentifier(mockMemory, 'max(*foo)')).toBe(true);
+				expect(isPointeeElementMaxIdentifier(mockMemory, 'max(*bar)')).toBe(true);
 			});
 
 			it('returns false for non-existing pointee element max', () => {
-				expect(isPointeeElementMaxIdentifier(mockMemory, '^*baz')).toBe(false);
+				expect(isPointeeElementMaxIdentifier(mockMemory, 'max(*baz)')).toBe(false);
 			});
 
-			it('returns false for plain ^ prefix', () => {
-				expect(isPointeeElementMaxIdentifier(mockMemory, '^foo')).toBe(false);
+			it('returns false for plain max() form', () => {
+				expect(isPointeeElementMaxIdentifier(mockMemory, 'max(foo)')).toBe(false);
 			});
 
 			it('returns false for plain identifiers', () => {

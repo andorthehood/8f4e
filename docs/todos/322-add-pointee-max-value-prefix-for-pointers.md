@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Add `^*name` pointee max value prefix for pointers'
+title: 'TODO: Add `max(*name)` pointee max value prefix for pointers'
 priority: Medium
 effort: 2-4h
 created: 2026-03-26
@@ -7,47 +7,47 @@ status: Open
 completed: null
 ---
 
-# TODO: Add `^*name` pointee max value prefix for pointers
+# TODO: Add `max(*name)` pointee max value prefix for pointers
 
 ## Problem Description
 
-8f4e already supports `^name` to push the maximum finite value for the element type of a memory item. For pointer-typed memory items, that currently describes the pointer storage type rather than the pointed-to value type.
+8f4e already supports `max(name)` to push the maximum finite value for the element type of a memory item. For pointer-typed memory items, that currently describes the pointer storage type rather than the pointed-to value type.
 
 Current state:
-- `^buffer` returns the max value for the memory item `buffer` itself
+- `max(buffer)` returns the max value for the memory item `buffer` itself
 - for pointers, that means the pointer slot behaves like an integer-typed memory item
 - there is no direct syntax to ask for the maximum value of the pointee type
 
 Why this is a problem:
 - pointer-aware generic code cannot ask for pointee numeric limits directly
 - the metadata prefix family is asymmetric once pointers are involved
-- users may reasonably expect a dereference-shaped form alongside the proposed `%*name`
+- users may reasonably expect a dereference-shaped form alongside the proposed `sizeof(*name)`
 
 ## Proposed Solution
 
-Add support for `^*name` as a compile-time identifier form meaning "maximum finite value of the type pointed to by `name`".
+Add support for `max(*name)` as a compile-time identifier form meaning "maximum finite value of the type pointed to by `name`".
 
 High-level approach:
-- extend identifier parsing/classification to recognize `^*name`
+- extend identifier parsing/classification to recognize `max(*name)`
 - resolve it only for pointer-typed memory identifiers
-- preserve current `^name` behavior for the memory item itself
+- preserve current `max(name)` behavior for the memory item itself
 
 Expected semantics with current type system:
-- `^buffer` where `buffer` is `int*` keeps describing the pointer slot type
-- `^*buffer` where `buffer` is `int*` returns the max finite value for `int`
-- `^*buffer` where `buffer` is `float64*` returns the max finite value for `float64`
+- `max(buffer)` where `buffer` is `int*` keeps describing the pointer slot type
+- `max(*buffer)` where `buffer` is `int*` returns the max finite value for `int`
+- `max(*buffer)` where `buffer` is `float64*` returns the max finite value for `float64`
 
 ## Anti-Patterns
 
-- Do not silently redefine `^name` for pointers.
-- Do not implement `^*name` as a runtime dereference.
-- Do not allow `^*name` on non-pointer identifiers without an explicit error path.
+- Do not silently redefine `max(name)` for pointers.
+- Do not implement `max(*name)` as a runtime dereference.
+- Do not allow `max(*name)` on non-pointer identifiers without an explicit error path.
 
 ## Implementation Plan
 
-### Step 1: Add syntax support for `^*name`
+### Step 1: Add syntax support for `max(*name)`
 - Introduce a dedicated parser/helper for pointee max-value identifiers
-- Ensure it is classified separately from `^name`
+- Ensure it is classified separately from `max(name)`
 
 ### Step 2: Resolve pointee numeric limits
 - Derive pointee type limits from pointer metadata
@@ -59,7 +59,7 @@ Expected semantics with current type system:
 - Cover `push ^*name` and declaration initializer cases if supported
 
 ### Step 4: Update docs
-- Document `^*name` beside `^name`
+- Document `max(*name)` beside `max(name)`
 - Clarify the distinction between pointer-slot and pointee-type max values
 
 ## Validation Checkpoints
@@ -70,15 +70,15 @@ Expected semantics with current type system:
 
 ## Success Criteria
 
-- [ ] `^*name` is accepted for pointer memory identifiers.
-- [ ] `^name` keeps its existing meaning.
-- [ ] `^*name` resolves to the correct max value for the pointee type.
+- [ ] `max(*name)` is accepted for pointer memory identifiers.
+- [ ] `max(name)` keeps its existing meaning.
+- [ ] `max(*name)` resolves to the correct max value for the pointee type.
 - [ ] Invalid usage produces a clear error.
-- [ ] Compiler docs explain the difference between `^name` and `^*name`.
+- [ ] Compiler docs explain the difference between `max(name)` and `max(*name)`.
 
 ## Affected Components
 
-- `packages/compiler/src/syntax/` - identifier parsing and classification for `^*name`
+- `packages/compiler/src/syntax/` - identifier parsing and classification for `max(*name)`
 - `packages/compiler/src/utils/memoryIdentifier.ts` - prefix-aware identifier checks
 - `packages/compiler/src/utils/memoryData.ts` - pointee max-value lookup
 - `packages/compiler/src/instructionCompilers/push/` - compile-time max-value push handling
@@ -87,7 +87,7 @@ Expected semantics with current type system:
 ## Risks & Considerations
 
 - **Type-system limits**: coarse pointer base types bound how precise pointee max values can be.
-- **Parser overlap**: `^*name` must not be misclassified as `^name` or `*name`.
+- **Parser overlap**: `max(*name)` must not be misclassified as `max(name)` or `*name`.
 - **Error boundary**: invalid usage should follow the repo's syntax-vs-compiler error guidance.
 
 ## Related Items
@@ -98,4 +98,4 @@ Expected semantics with current type system:
 ## Notes
 
 - This TODO assumes pointee numeric-range metadata can be derived entirely from the declared pointer type.
-- If typed narrow pointers are added later, `^*name` should follow the narrowed pointee type.
+- If typed narrow pointers are added later, `max(*name)` should follow the narrowed pointee type.

@@ -3,10 +3,10 @@ import { describe, test, expect } from 'vitest';
 import compile from '../../src';
 
 describe('inter-module references - element max', () => {
-	test('resolves element max reference for signed int32 in declaration default (^module.memory)', () => {
+	test('resolves element max reference for signed int32 in declaration default (max(module.memory))', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -26,7 +26,7 @@ describe('inter-module references - element max', () => {
 	test('resolves element max reference for signed int32', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int32[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -44,7 +44,7 @@ describe('inter-module references - element max', () => {
 	test('resolves element max reference for float32', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'float[] data 7 0.0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'float maxValue ^sourceModule.data', 'moduleEnd'] },
+			{ code: ['module targetModule', 'float maxValue max(sourceModule.data)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -62,7 +62,7 @@ describe('inter-module references - element max', () => {
 	test('resolves element max reference for signed int16', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int16[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -80,7 +80,7 @@ describe('inter-module references - element max', () => {
 	test('resolves element max reference for unsigned int16', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int16u[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -98,7 +98,7 @@ describe('inter-module references - element max', () => {
 	test('resolves element max reference for signed int8', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int8[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -116,7 +116,7 @@ describe('inter-module references - element max', () => {
 	test('resolves element max reference for unsigned int8', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int8u[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -134,7 +134,7 @@ describe('inter-module references - element max', () => {
 	test('resolves element max reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue', 'init maxValue ^sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue', 'init maxValue max(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -152,7 +152,7 @@ describe('inter-module references - element max', () => {
 	test('rejects multi-dot element max reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer.extra', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected
@@ -166,7 +166,7 @@ describe('inter-module references - element max', () => {
 	test('rejects multi-dot element max reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue', 'init maxValue ^sourceModule.buffer.extra', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue', 'init maxValue max(sourceModule.buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected in init as well
@@ -180,7 +180,7 @@ describe('inter-module references - element max', () => {
 	test('throws error for unknown module in element max reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^unknownModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(unknownModule.buffer)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -193,7 +193,7 @@ describe('inter-module references - element max', () => {
 	test('throws error for unknown memory in element max reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue ^sourceModule.unknownMemory', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule.unknownMemory)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -205,7 +205,7 @@ describe('inter-module references - element max', () => {
 
 	test('module dependency sorting works with element max references', () => {
 		const modules = [
-			{ code: ['module dependentModule', 'int maxValue ^baseModule.buffer', 'moduleEnd'] },
+			{ code: ['module dependentModule', 'int maxValue max(baseModule.buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
@@ -229,7 +229,7 @@ describe('inter-module references - element max', () => {
 			{ code: ['module moduleA', 'int[] bufferA 10 0', 'moduleEnd'] },
 			{ code: ['module moduleB', 'float[] bufferB 5 0.0', 'moduleEnd'] },
 			{
-				code: ['module moduleC', 'int maxA ^moduleA.bufferA', 'float maxB ^moduleB.bufferB', 'moduleEnd'],
+				code: ['module moduleC', 'int maxA max(moduleA.bufferA)', 'float maxB max(moduleB.bufferB)', 'moduleEnd'],
 			},
 		];
 
@@ -256,8 +256,8 @@ describe('inter-module references - element max', () => {
 				code: [
 					'module targetModule',
 					'int* ptr &sourceModule:buffer',
-					'int size $sourceModule.buffer',
-					'int maxValue ^sourceModule.buffer',
+					'int size count(sourceModule.buffer)',
+					'int maxValue max(sourceModule.buffer)',
 					'moduleEnd',
 				],
 			},

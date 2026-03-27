@@ -132,7 +132,7 @@ int[] buffer 4*2
 int output
 
 push &output
-push $buffer
+push count(buffer)
 store
 
 moduleEnd

@@ -31,7 +31,7 @@ push 1
 sub
 push pointer
 sub
-push %buffer
+push sizeof(buffer)
 mul
 add
 
@@ -39,7 +39,7 @@ add
 ; address
 push bufferIn
 push pointer
-push %bufferIn
+push sizeof(bufferIn)
 mul
 add
  

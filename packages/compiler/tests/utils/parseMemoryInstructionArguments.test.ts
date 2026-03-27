@@ -137,13 +137,13 @@ describe('parseMemoryInstructionArguments', () => {
 	});
 
 	describe('second argument handling - element count', () => {
-		it('should resolve element count with $ prefix', () => {
+		it('should resolve element count with count() syntax', () => {
 			const memory = {
 				buffer: { byteAddress: 200, wordAlignedSize: 10, isInteger: true, isPointer: false },
 			};
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'count' },
-				{ type: ArgumentType.IDENTIFIER, value: '$buffer' },
+				{ type: ArgumentType.IDENTIFIER, value: 'count(buffer)' },
 			];
 			const result = parseMemoryInstructionArguments(createLine(9, 'int', args), createMockContext(memory));
 			expect(result).toEqual({ id: 'count', defaultValue: 10 });
@@ -152,7 +152,7 @@ describe('parseMemoryInstructionArguments', () => {
 		it('should throw error when element count reference does not exist', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'count' },
-				{ type: ArgumentType.IDENTIFIER, value: '$nonExistent' },
+				{ type: ArgumentType.IDENTIFIER, value: 'count(nonExistent)' },
 			];
 			expect(() => {
 				parseMemoryInstructionArguments(createLine(10, 'int', args), createMockContext());

@@ -32,7 +32,7 @@ branchIfTrue 1
  ; Increment pointer
 push &_pointer
 push _pointer
-push %out0
+push sizeof(out0)
 add
 store
 loopEnd

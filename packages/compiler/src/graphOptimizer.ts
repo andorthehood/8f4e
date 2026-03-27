@@ -68,22 +68,22 @@ export default function sortModules(modules: AST[]): AST[] {
 				})
 				.map(({ arguments: _arguments }) => {
 					const value = _arguments[1].value as string;
-					// Handle element count reference ($module.memory)
+					// Handle element count reference (count(module.memory))
 					if (isIntermodularElementCountReference(value)) {
 						const { module } = extractIntermodularElementCountBase(value);
 						return module;
 					}
-					// Handle element word size reference (%module.memory)
+					// Handle element word size reference (sizeof(module.memory))
 					if (isIntermodularElementWordSizeReference(value)) {
 						const { module } = extractIntermodularElementWordSizeBase(value);
 						return module;
 					}
-					// Handle element max reference (^module.memory)
+					// Handle element max reference (max(module.memory))
 					if (isIntermodularElementMaxReference(value)) {
 						const { module } = extractIntermodularElementMaxBase(value);
 						return module;
 					}
-					// Handle element min reference (!module.memory)
+					// Handle element min reference (min(module.memory))
 					if (isIntermodularElementMinReference(value)) {
 						const { module } = extractIntermodularElementMinBase(value);
 						return module;
@@ -121,22 +121,22 @@ export default function sortModules(modules: AST[]): AST[] {
 				})
 				.map(({ arguments: _arguments }) => {
 					const value = _arguments[1].value as string;
-					// Handle element count reference ($module.memory)
+					// Handle element count reference (count(module.memory))
 					if (isIntermodularElementCountReference(value)) {
 						const { module } = extractIntermodularElementCountBase(value);
 						return module;
 					}
-					// Handle element word size reference (%module.memory)
+					// Handle element word size reference (sizeof(module.memory))
 					if (isIntermodularElementWordSizeReference(value)) {
 						const { module } = extractIntermodularElementWordSizeBase(value);
 						return module;
 					}
-					// Handle element max reference (^module.memory)
+					// Handle element max reference (max(module.memory))
 					if (isIntermodularElementMaxReference(value)) {
 						const { module } = extractIntermodularElementMaxBase(value);
 						return module;
 					}
-					// Handle element min reference (!module.memory)
+					// Handle element min reference (min(module.memory))
 					if (isIntermodularElementMinReference(value)) {
 						const { module } = extractIntermodularElementMinBase(value);
 						return module;
@@ -224,10 +224,10 @@ if (import.meta.vitest) {
 		it('handles all supported intermodular reference syntaxes', () => {
 			const alpha = createModuleAst('alpha');
 			const beta = createModuleAst('beta', [
-				'$alpha.value',
-				'%alpha.value',
-				'^alpha.value',
-				'!alpha.value',
+				'count(alpha.value)',
+				'sizeof(alpha.value)',
+				'max(alpha.value)',
+				'min(alpha.value)',
 				'&alpha:value',
 				'alpha:value&',
 				'&alpha:',

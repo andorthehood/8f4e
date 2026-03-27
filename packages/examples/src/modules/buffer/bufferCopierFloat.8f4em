@@ -27,7 +27,7 @@ branchIfTrue 1
 ; address
 push &buffer
 push pointer
-push %buffer
+push sizeof(buffer)
 mul
 add
 
@@ -35,7 +35,7 @@ add
 ; address
 push bufferIn
 push pointer
-push %bufferIn
+push sizeof(bufferIn)
 mul
 add
  

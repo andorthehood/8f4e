@@ -32,7 +32,7 @@ ifEnd
  ; Advance by element size
 push &_offset
 push _offset
-push %bufferIn
+push sizeof(bufferIn)
 add
 store
 
