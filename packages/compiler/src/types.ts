@@ -138,7 +138,10 @@ export interface Namespace {
 	functions?: CompiledFunctionLookup;
 }
 
-export type Namespaces = Record<string, { consts: Consts; memory?: MemoryMap }>;
+export type Namespaces = Record<
+	string,
+	{ consts: Consts; memory?: MemoryMap; byteAddress?: number; wordAlignedSize?: number }
+>;
 
 export type CompilationMode = 'module' | 'function';
 
