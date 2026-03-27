@@ -1,4 +1,4 @@
-const semanticOnlyInstructions = new Set(['module', 'moduleEnd', 'constants', 'constantsEnd', 'const', 'use']);
+const semanticOnlyInstructions = new Set(['module', 'moduleEnd', 'constants', 'constantsEnd', 'const', 'use', 'init']);
 
 export default function isSemanticOnlyInstruction(instruction: string): boolean {
 	return semanticOnlyInstructions.has(instruction);
@@ -12,6 +12,7 @@ if (import.meta.vitest) {
 			expect(isSemanticOnlyInstruction('module')).toBe(true);
 			expect(isSemanticOnlyInstruction('const')).toBe(true);
 			expect(isSemanticOnlyInstruction('use')).toBe(true);
+			expect(isSemanticOnlyInstruction('init')).toBe(true);
 		});
 
 		it('returns false for runtime/codegen instructions', () => {

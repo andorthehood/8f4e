@@ -20,12 +20,15 @@ const hasChanged: InstructionCompiler = withValidation(
 		const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
 		const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
+		const previousValueDeclaration = Object.hasOwn(context.namespace.memory, previousValueName)
+			? ''
+			: `${memoryType} ${previousValueName} 0`;
 
 		context.stack.push({ isInteger: operand.isInteger, isNonZero: false });
 
 		return compileSegment(
 			[
-				`${memoryType} ${previousValueName} 0`,
+				previousValueDeclaration,
 				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
 				`localGet ${currentValueName}`,

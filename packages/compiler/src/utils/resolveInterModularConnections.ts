@@ -34,8 +34,30 @@ import { ArgumentType, CompiledModuleLookup } from '../types';
  *   - min(module:memory): element min value (computed based on target memory type)
  * - Updates the local memory's default value with the resolved value
  */
-export default function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
-	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
+function cloneCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
+	return Object.fromEntries(
+		Object.entries(compiledModules).map(([id, module]) => [
+			id,
+			{
+				...module,
+				memoryMap: Object.fromEntries(
+					Object.entries(module.memoryMap).map(([memoryId, memory]) => [
+						memoryId,
+						{
+							...memory,
+							default: typeof memory.default === 'object' ? { ...memory.default } : memory.default,
+						},
+					])
+				),
+			},
+		])
+	);
+}
+
+export default function resolveInterModularConnections(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
+	const resolvedModules = cloneCompiledModules(compiledModules);
+
+	Object.values(resolvedModules).forEach(({ ast, memoryMap }) => {
 		ast!.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
@@ -194,4 +216,6 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 			}
 		});
 	});
+
+	return resolvedModules;
 }
