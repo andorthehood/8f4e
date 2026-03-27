@@ -3,6 +3,7 @@ title: 'TODO: Add `%*name` pointee element word size prefix for pointers'
 priority: Medium
 effort: 2-4h
 created: 2026-03-26
+issue: https://github.com/andorthehood/8f4e/issues/448
 status: Open
 completed: null
 ---

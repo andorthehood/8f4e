@@ -3,6 +3,7 @@ title: 'TODO: Add `int16*` pointer types to compiler and runtime'
 priority: Medium
 effort: 1-2d
 created: 2026-03-26
+issue: https://github.com/andorthehood/8f4e/issues/453
 status: Open
 completed: null
 ---
