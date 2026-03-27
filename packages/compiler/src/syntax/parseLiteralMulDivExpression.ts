@@ -1,3 +1,4 @@
+import parseNumericLiteralToken, { isNumericLikeInvalidToken } from './parseNumericLiteralToken';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
 export type LiteralMulDivResult = {
@@ -7,44 +8,12 @@ export type LiteralMulDivResult = {
 };
 
 /**
- * Parses a single atomic numeric literal token (no compound operators).
- * Recognises decimal, hex, binary, and f64-suffixed forms.
- * Returns a parsed value with type info, or null if not a numeric literal.
- */
-function parseSingleNumericLiteral(s: string): LiteralMulDivResult | null {
-	// f64-suffixed literal
-	if (/^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(s)) {
-		const value = parseFloat(s.slice(0, -3));
-		if (!Number.isFinite(value)) {
-			return null;
-		}
-		return { value, isInteger: false, isFloat64: true };
-	}
-	// hex literal
-	if (/^-?0x[0-9a-fA-F]+$/.test(s)) {
-		return { value: parseInt(s.replace('0x', ''), 16), isInteger: true };
-	}
-	// binary literal
-	if (/^-?0b[0-1]+$/.test(s)) {
-		return { value: parseInt(s.replace('0b', ''), 2), isInteger: true };
-	}
-	// decimal float or integer (no suffix)
-	if (/^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?$/.test(s)) {
-		const value = parseFloat(s);
-		if (!Number.isFinite(value)) {
-			return null;
-		}
-		return { value, isInteger: /^-?[0-9]+$/.test(s) };
-	}
-	return null;
-}
-
-/**
  * Tries to parse a literal-only `*` or `/` expression with exactly one operator
  * and numeric-literal operands on both sides.
  *
  * Returns the folded result, or `null` if the argument is not a literal mul/div expression.
- * Throws `SyntaxRulesError(DIVISION_BY_ZERO)` when a literal division by zero is detected.
+ * Throws `SyntaxRulesError` when a literal-only numeric expression contains an invalid
+ * numeric operand or divides by zero.
  */
 export default function parseLiteralMulDivExpression(argument: string): LiteralMulDivResult | null {
 	// Require exactly one * or / across the whole string
@@ -63,10 +32,40 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 	const lhsStr = argument.slice(0, opIndex);
 	const rhsStr = argument.slice(opIndex + 1);
 
-	const lhs = parseSingleNumericLiteral(lhsStr);
-	const rhs = parseSingleNumericLiteral(rhsStr);
+	let lhs: ReturnType<typeof parseNumericLiteralToken>;
+	let rhs: ReturnType<typeof parseNumericLiteralToken>;
+
+	try {
+		lhs = parseNumericLiteralToken(lhsStr);
+		rhs = parseNumericLiteralToken(rhsStr);
+	} catch (error) {
+		if (error instanceof SyntaxRulesError && error.code === SyntaxErrorCode.INVALID_NUMERIC_LITERAL) {
+			throw new SyntaxRulesError(
+				SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
+				`Invalid numeric literal or expression: ${argument}`,
+				{
+					...error.details,
+					argument,
+					lhs: lhsStr,
+					rhs: rhsStr,
+				}
+			);
+		}
+		throw error;
+	}
 
 	if (!lhs || !rhs) {
+		if (isNumericLikeInvalidToken(lhsStr) || isNumericLikeInvalidToken(rhsStr)) {
+			throw new SyntaxRulesError(
+				SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
+				`Invalid numeric literal or expression: ${argument}`,
+				{
+					argument,
+					lhs: lhsStr,
+					rhs: rhsStr,
+				}
+			);
+		}
 		return null;
 	}
 
@@ -137,10 +136,10 @@ if (import.meta.vitest) {
 			expect(parseLiteralMulDivExpression('3f64*2f64')).toEqual({ value: 6, isInteger: false, isFloat64: true });
 		});
 
-		it('returns null for non-finite operands', () => {
-			expect(parseLiteralMulDivExpression('1e309*2')).toBeNull();
-			expect(parseLiteralMulDivExpression('1e309f64*2')).toBeNull();
-			expect(parseLiteralMulDivExpression('2*1e309f64')).toBeNull();
+		it('throws for invalid numeric operands', () => {
+			expect(() => parseLiteralMulDivExpression('1e309*2')).toThrow('Invalid numeric literal');
+			expect(() => parseLiteralMulDivExpression('1e309f64*2')).toThrow('Invalid numeric literal');
+			expect(() => parseLiteralMulDivExpression('2*1e309f64')).toThrow('Invalid numeric literal');
 		});
 
 		it('throws on division by zero', () => {
