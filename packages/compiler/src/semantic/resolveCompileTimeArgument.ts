@@ -27,7 +27,7 @@ import {
 	getElementMaxValue,
 	getPointeeElementMaxValue,
 	getElementMinValue,
-} from './memoryData';
+} from '../utils/memoryData';
 
 import type { Argument, Const, Namespace } from '../types';
 
@@ -180,6 +180,11 @@ export function tryResolveCompileTimeArgument(namespace: Namespace, argument: Ar
 
 	if (argument.type !== ArgumentType.IDENTIFIER) {
 		return undefined;
+	}
+
+	const parsedArgument = parseArgument(argument.value);
+	if (parsedArgument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		return tryResolveCompileTimeArgument(namespace, parsedArgument);
 	}
 
 	return resolveCompileTimeOperand(argument.value, namespace);

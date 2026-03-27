@@ -1,4 +1,4 @@
-import { tryResolveCompileTimeArgument } from './resolveConstantValue';
+import { tryResolveCompileTimeArgument } from './resolveCompileTimeArgument';
 
 import { ArgumentType, type AST, type Argument, type CompilationContext } from '../types';
 import { ErrorCode, getError } from '../compilerError';

@@ -14,10 +14,11 @@ import call from './wasmUtils/call/call';
 import f32store from './wasmUtils/store/f32store';
 import f64store from './wasmUtils/store/f64store';
 import i32store from './wasmUtils/store/i32store';
-import { compileModule, compileFunction, prepassNamespace } from './compiler';
+import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 import resolveInterModularConnections from './utils/resolveInterModularConnections';
+import { collectNamespacesFromASTs } from './semantic/buildNamespace';
 import {
 	AST,
 	CompileOptions,
@@ -32,7 +33,6 @@ import {
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import WASM_MEMORY_PAGE_SIZE from './wasmUtils/consts';
-import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 
 export {
 	MemoryTypes,
@@ -69,7 +69,7 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { prepassNamespace } from './compiler';
+export { prepassNamespace, collectNamespacesFromASTs } from './semantic/buildNamespace';
 export { compileLine } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {
@@ -80,30 +80,6 @@ export {
 	type ExpandedLine,
 } from './utils/macroExpansion';
 export { ErrorCode, getError } from './compilerError';
-
-export function collectNamespacesFromASTs(
-	asts: AST[],
-	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
-	builtInConsts: Namespace['consts'] = {},
-	compiledFunctions?: CompiledFunctionLookup
-): Namespaces {
-	const namespaces: Namespaces = {};
-	let nextStartingByteAddress = startingByteAddress;
-
-	for (const ast of asts) {
-		const context = prepassNamespace(ast, builtInConsts, namespaces, nextStartingByteAddress, compiledFunctions);
-		if (!context.namespace.moduleName) {
-			continue;
-		}
-		namespaces[context.namespace.moduleName] = {
-			consts: { ...context.namespace.consts },
-			memory: context.namespace.memory,
-		};
-		nextStartingByteAddress += calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
-	}
-
-	return namespaces;
-}
 
 export function compileModules(
 	modules: AST[],
