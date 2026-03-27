@@ -37,7 +37,7 @@ store
 
 push &pointer 
 push pointer
-push %buffer
+push sizeof(buffer)
 add
 store
 
@@ -77,7 +77,7 @@ store
 ; buffer word size
 push &pointer
 push pointer
-push %buffer
+push sizeof(buffer)
 add
 store
 
@@ -120,7 +120,7 @@ store
 ; buffer word size
 push &pointer
 push pointer
-push %buffer
+push sizeof(buffer)
 add
 store
 

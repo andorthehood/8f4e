@@ -1,15 +1,15 @@
 /**
  * Extracts the module and memory identifiers from an inter-modular element count reference.
- * Input: $module.memory
+ * Input: count(module.memory)
  * Output: { module: 'module', memory: 'memory' }
  */
 export default function extractIntermodularElementCountBase(value: string): {
 	module: string;
 	memory: string;
 } {
-	// Remove leading $
-	const cleaned = value.substring(1);
-	const [module, memory] = cleaned.split('.');
+	// Remove leading "count(" and trailing ")"
+	const inner = value.slice(6, -1);
+	const [module, memory] = inner.split('.');
 	return { module, memory };
 }
 
@@ -18,11 +18,11 @@ if (import.meta.vitest) {
 
 	describe('extractIntermodularElementCountBase', () => {
 		it('extracts module and memory from element count reference', () => {
-			expect(extractIntermodularElementCountBase('$module.buffer')).toEqual({
+			expect(extractIntermodularElementCountBase('count(module.buffer)')).toEqual({
 				module: 'module',
 				memory: 'buffer',
 			});
-			expect(extractIntermodularElementCountBase('$sourceModule.data')).toEqual({
+			expect(extractIntermodularElementCountBase('count(sourceModule.data)')).toEqual({
 				module: 'sourceModule',
 				memory: 'data',
 			});

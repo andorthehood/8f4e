@@ -409,7 +409,7 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
     "arguments": [
       {
         "type": "identifier",
-        "value": "$buffer",
+        "value": "count(buffer)",
       },
     ],
     "instruction": "push",

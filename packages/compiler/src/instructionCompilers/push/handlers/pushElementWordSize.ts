@@ -18,7 +18,7 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('pushElementWordSize', () => {
-		it('pushes element word size from %identifier', () => {
+		it('pushes element word size from sizeof(identifier)', () => {
 			const context = createInstructionCompilerTestContext({
 				namespace: {
 					...createInstructionCompilerTestContext().namespace,
@@ -47,7 +47,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: '%buffer' }],
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'sizeof(buffer)' }],
 				} as AST[number],
 				context
 			);

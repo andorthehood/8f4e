@@ -1,16 +1,21 @@
 /**
- * Extracts the base identifier from an element count identifier by removing the $ prefix.
+ * Extracts the base identifier from a count() expression.
+ * Input:  count(value)
+ * Output: value
  */
 export default function extractElementCountBase(name: string): string {
-	return name.startsWith('$') ? name.substring(1) : name;
+	if (name.startsWith('count(') && name.endsWith(')')) {
+		return name.slice(6, -1);
+	}
+	return name;
 }
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('extractElementCountBase', () => {
-		it('removes element count prefix', () => {
-			expect(extractElementCountBase('$value')).toBe('value');
+		it('removes count() wrapper', () => {
+			expect(extractElementCountBase('count(value)')).toBe('value');
 		});
 
 		it('leaves plain identifiers unchanged', () => {

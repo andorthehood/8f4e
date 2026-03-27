@@ -18,7 +18,7 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('pushElementCount', () => {
-		it('pushes element count from $identifier', () => {
+		it('pushes element count from count(identifier)', () => {
 			const context = createInstructionCompilerTestContext({
 				namespace: {
 					...createInstructionCompilerTestContext().namespace,
@@ -47,7 +47,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: '$buffer' }],
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'count(buffer)' }],
 				} as AST[number],
 				context
 			);

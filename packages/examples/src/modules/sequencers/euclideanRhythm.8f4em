@@ -21,7 +21,7 @@ store
 ; Generate rhythm into buffer
 loop
 push _index
-push $rhythm
+push count(rhythm)
 greaterOrEqual
 branchIfTrue 1
 
@@ -36,12 +36,12 @@ push 0
 store
 
 push _bucket
-push $rhythm
+push count(rhythm)
 greaterOrEqual
 if void
 push &_bucket
 push _bucket
-push $rhythm
+push count(rhythm)
 sub
 store
 
@@ -52,7 +52,7 @@ ifEnd
 
 push &rhythm
 push _index
-push %rhythm
+push sizeof(rhythm)
 mul
 add
 push _beat

@@ -467,7 +467,7 @@ store
 ; buffer word size
 push &pointer
 push pointer
-push %buffer
+push sizeof(buffer)
 add
 store
 
@@ -778,7 +778,7 @@ store
 ; Advance buffer pointer
 push &bufferPointer
 push bufferPointer
-push %bufferPointer
+push sizeof(bufferPointer)
 add
 store
 

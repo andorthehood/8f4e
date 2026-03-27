@@ -11,7 +11,7 @@ completed: null
 
 ## Problem Description
 
-`float64`, `float64*`, and `float64**` are being included in inter-module resolution paths, so `^module.memory` and `!module.memory` can target float64-backed memory items.
+`float64`, `float64*`, and `float64**` are being included in inter-module resolution paths, so `max(module.memory)` and `min(module.memory)` can target float64-backed memory items.
 
 Today, `getElementMaxValue` / `getElementMinValue` return float32 finite limits for all non-integer memory items, regardless of element width.
 
@@ -51,7 +51,7 @@ Keep integer and unsigned integer behavior unchanged.
   - integer paths unchanged
 
 ### Step 3: Validate inter-module usage assumptions
-- Run compiler tests covering `^module.memory` / `!module.memory` flows to ensure no regressions.
+- Run compiler tests covering `max(module.memory)` / `min(module.memory)` flows to ensure no regressions.
 
 ## Validation Checkpoints
 

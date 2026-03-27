@@ -35,7 +35,7 @@ branchIfTrue 1
   ; register to the curr
 push pointer 
 push pointer
-push %out0
+push sizeof(out0)
 sub
 load
 store
@@ -43,7 +43,7 @@ store
   ; Increment pointer
 push &pointer
 push pointer
-push %out0
+push sizeof(out0)
 sub
 store
 
