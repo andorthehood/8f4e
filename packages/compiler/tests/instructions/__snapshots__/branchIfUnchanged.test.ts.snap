@@ -187,21 +187,6 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
 
 exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
-  "__branchIfUnchanged_previousValue11": {
-    "byteAddress": 8,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "__branchIfUnchanged_previousValue11",
-    "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "isUnsigned": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
-  },
   "input": {
     "byteAddress": 0,
     "default": 0,

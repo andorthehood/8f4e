@@ -172,21 +172,6 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
 
 exports[`risingEdge (float) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
-  "__risingEdgeDetector_previousValue7": {
-    "byteAddress": 8,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "__risingEdgeDetector_previousValue7",
-    "isInteger": false,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "isUnsigned": false,
-    "numberOfElements": 1,
-    "type": "float",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
-  },
   "input": {
     "byteAddress": 0,
     "default": 0,
@@ -392,21 +377,6 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
 
 exports[`risingEdge > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
-  "__risingEdgeDetector_previousValue7": {
-    "byteAddress": 8,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "__risingEdgeDetector_previousValue7",
-    "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "isUnsigned": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
-  },
   "input": {
     "byteAddress": 0,
     "default": 0,

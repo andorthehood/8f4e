@@ -84,14 +84,29 @@ export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
 	namespaces?: Namespaces,
-	compiledFunctions?: CompiledFunctionLookup
+	compiledFunctions?: CompiledFunctionLookup,
+	internalAllocator?: { nextByteAddress: number }
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress ?? 0;
 	const ns: Namespaces =
 		namespaces ?? collectNamespacesFromASTs(modules, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, compiledFunctions);
+	const allocator = internalAllocator ?? {
+		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
+			const byteAddress = namespace.byteAddress ?? 0;
+			const wordAlignedSize = namespace.wordAlignedSize ?? 0;
+			return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
+		}, 0),
+	};
 
 	return modules.map((ast, index) => {
-		const module = compileModule(ast, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
+		const module = compileModule(
+			ast,
+			ns,
+			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
+			index,
+			compiledFunctions,
+			allocator
+		);
 		memoryAddress += module.wordAlignedSize;
 		return module;
 	});
@@ -177,9 +192,7 @@ export default function compile(
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
 	const dependencyOrderedModules = sortModules(astModules);
 
-	// First collect names and declaration metadata so functions can compile against the semantic namespace.
-	// A second pass below enriches the namespaces with final planned layout once user functions are known.
-	const discoveryNamespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);
+	const namespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
@@ -193,16 +206,15 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, discoveryNamespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
+		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
-
-	// Rebuild namespaces with final planned layout once function references can resolve during module planning.
-	const namespaces = collectNamespacesFromASTs(
-		dependencyOrderedModules,
-		GLOBAL_ALIGNMENT_BOUNDARY,
-		compiledFunctionsMap
-	);
+	const totalModuleBytes = Object.values(namespaces).reduce((max, namespace) => {
+		const byteAddress = namespace.byteAddress ?? 0;
+		const wordAlignedSize = namespace.wordAlignedSize ?? 0;
+		return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
+	}, 0);
+	const internalAllocator = { nextByteAddress: totalModuleBytes };
 
 	// Extract the unique function types and type indices from the registry
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
@@ -216,7 +228,8 @@ export default function compile(
 			startingMemoryWordAddress: 1,
 		},
 		namespaces,
-		compiledFunctionsMap
+		compiledFunctionsMap,
+		internalAllocator
 	);
 
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
@@ -225,9 +238,12 @@ export default function compile(
 	// Calculate the required memory footprint from the compiled program.
 	const requiredMemoryBytes =
 		compiledModules.length === 0
-			? 0
-			: compiledModules[compiledModules.length - 1].byteAddress +
-				compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+			? internalAllocator.nextByteAddress
+			: Math.max(
+					compiledModules[compiledModules.length - 1].byteAddress +
+						compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
+					internalAllocator.nextByteAddress
+				);
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;

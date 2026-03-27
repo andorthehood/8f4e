@@ -2,6 +2,9 @@ import { compileToAST } from '@8f4e/ast-parser';
 
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
+import f32store from './wasmUtils/store/f32store';
+import f64store from './wasmUtils/store/f64store';
+import i32store from './wasmUtils/store/i32store';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
@@ -19,7 +22,7 @@ import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
-import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './semantic/declarations';
+import { isMemoryDeclarationInstruction } from './semantic/declarations';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
@@ -38,13 +41,8 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 		return;
 	}
 
-	if (isMemoryDeclarationInstruction(line.instruction)) {
-		// This generic declaration path still exists partly because some instruction helpers
-		// synthesize hidden storage as declaration-shaped source snippets. The intended
-		// end state is to plan compiler-generated storage separately so declarations remain
-		// semantic-only and do not need to flow through generic compileLine(...) routing.
-		applyMemoryDeclarationLine(line, context);
-		return;
+	if (isMemoryDeclarationInstruction(line.instruction) && context.mode === 'function') {
+		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
 	}
 
 	compileCodegenLine(line, context);
@@ -67,41 +65,10 @@ export function compileModule(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
-	functions?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup,
+	internalAllocator = { nextByteAddress: 0 }
 ): CompiledModule {
 	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
-	const planningContext: CompilationContext = {
-		namespace: {
-			namespaces,
-			memory: prepassContext.namespace.memory,
-			locals: {},
-			consts: { ...prepassContext.namespace.consts },
-			moduleName: prepassContext.namespace.moduleName,
-			functions,
-		},
-		byteCode: [],
-		stack: [],
-		blockStack: [
-			{
-				hasExpectedResult: false,
-				expectedResultIsInteger: false,
-				blockType: ast[0]?.instruction === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE,
-			},
-		],
-		startingByteAddress,
-		mode: 'module',
-		codeBlockId: prepassContext.namespace.moduleName,
-		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
-		skipExecutionInCycle: prepassContext.skipExecutionInCycle,
-		initOnlyExecution: prepassContext.initOnlyExecution,
-	};
-	ast.forEach(originalLine => {
-		const line = normalizeCompileTimeArguments(originalLine, planningContext);
-		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
-			compileCodegenLine(line, planningContext);
-		}
-	});
-
 	const moduleBlockType = ast[0]?.instruction === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE;
 	const context: CompilationContext = {
 		namespace: {
@@ -112,6 +79,8 @@ export function compileModule(
 			moduleName: prepassContext.namespace.moduleName,
 			functions,
 		},
+		internalResources: {},
+		internalAllocator,
 		byteCode: [],
 		stack: [],
 		blockStack: [
@@ -153,6 +122,20 @@ export function compileModule(
 		);
 	}
 
+	const internalResourceInitBody = Object.values(context.internalResources).flatMap(resource => {
+		if (resource.default === 0) {
+			return [];
+		}
+
+		if (resource.storageType === 'float64') {
+			return f64store(resource.byteAddress, resource.default);
+		}
+
+		return resource.storageType === 'int'
+			? i32store(resource.byteAddress, resource.default)
+			: f32store(resource.byteAddress, resource.default);
+	});
+
 	return {
 		id: context.namespace.moduleName,
 		cycleFunction: createFunction(
@@ -161,7 +144,7 @@ export function compileModule(
 			}),
 			context.byteCode
 		),
-		initFunctionBody: [],
+		initFunctionBody: internalResourceInitBody,
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
@@ -187,6 +170,10 @@ export function compileFunction(
 			consts: {},
 			moduleName: undefined,
 			functions: {},
+		},
+		internalResources: {},
+		internalAllocator: {
+			nextByteAddress: 0,
 		},
 		byteCode: [],
 		stack: [],
