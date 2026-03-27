@@ -82,7 +82,7 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 				memory: context.namespace.memory,
-				locals: context.namespace.locals,
+				locals: context.locals,
 			}).toMatchSnapshot();
 		});
 

@@ -23,10 +23,10 @@ const local: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 		}
 
-		context.namespace.locals[line.arguments[1].value] = {
+		context.locals[line.arguments[1].value] = {
 			isInteger: line.arguments[0].value === 'int',
 			...(line.arguments[0].value === 'float64' ? { isFloat64: true } : {}),
-			index: Object.keys(context.namespace.locals).length,
+			index: Object.keys(context.locals).length,
 		};
 
 		return context;
@@ -55,7 +55,7 @@ if (import.meta.vitest) {
 				context
 			);
 
-			expect(context.namespace.locals).toMatchSnapshot();
+			expect(context.locals).toMatchSnapshot();
 		});
 
 		it('throws on missing arguments', () => {

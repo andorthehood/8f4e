@@ -81,7 +81,7 @@ if (import.meta.vitest) {
 			expect({
 				blockStack: context.blockStack,
 				memory: context.namespace.memory,
-				locals: context.namespace.locals,
+				locals: context.locals,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
