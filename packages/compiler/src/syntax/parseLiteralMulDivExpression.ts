@@ -14,7 +14,11 @@ export type LiteralMulDivResult = {
 function parseSingleNumericLiteral(s: string): LiteralMulDivResult | null {
 	// f64-suffixed literal
 	if (/^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(s)) {
-		return { value: parseFloat(s.slice(0, -3)), isInteger: false, isFloat64: true };
+		const value = parseFloat(s.slice(0, -3));
+		if (!Number.isFinite(value)) {
+			return null;
+		}
+		return { value, isInteger: false, isFloat64: true };
 	}
 	// hex literal
 	if (/^-?0x[0-9a-fA-F]+$/.test(s)) {
@@ -131,6 +135,12 @@ if (import.meta.vitest) {
 
 		it('propagates isFloat64 when both operands are f64', () => {
 			expect(parseLiteralMulDivExpression('3f64*2f64')).toEqual({ value: 6, isInteger: false, isFloat64: true });
+		});
+
+		it('returns null for non-finite operands', () => {
+			expect(parseLiteralMulDivExpression('1e309*2')).toBeNull();
+			expect(parseLiteralMulDivExpression('1e309f64*2')).toBeNull();
+			expect(parseLiteralMulDivExpression('2*1e309f64')).toBeNull();
 		});
 
 		it('throws on division by zero', () => {
