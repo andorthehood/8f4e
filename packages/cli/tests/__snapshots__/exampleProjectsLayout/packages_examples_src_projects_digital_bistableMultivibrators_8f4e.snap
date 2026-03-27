@@ -1,0 +1,136 @@
+{
+  "sourceModuleOrder": [
+    "notes",
+    "projectConfig",
+    "andGate",
+    "buttons",
+    "env",
+    "negate",
+    "norGate",
+    "norGate2",
+    "orGate",
+    "resetButton",
+    "scope",
+    "scope2",
+    "setButton"
+  ],
+  "compiledModuleLayout": [
+    {
+      "id": "env",
+      "index": 0,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "andGate",
+      "index": 1,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "negate",
+      "index": 2,
+      "byteAddress": 16,
+      "wordAlignedAddress": 4,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "buttons",
+      "index": 3,
+      "byteAddress": 24,
+      "wordAlignedAddress": 6,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "norGate",
+      "index": 4,
+      "byteAddress": 32,
+      "wordAlignedAddress": 8,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "norGate2",
+      "index": 5,
+      "byteAddress": 44,
+      "wordAlignedAddress": 11,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "notes",
+      "index": 6,
+      "byteAddress": 56,
+      "wordAlignedAddress": 14,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "orGate",
+      "index": 7,
+      "byteAddress": 56,
+      "wordAlignedAddress": 14,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "projectConfig",
+      "index": 8,
+      "byteAddress": 68,
+      "wordAlignedAddress": 17,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "resetButton",
+      "index": 9,
+      "byteAddress": 68,
+      "wordAlignedAddress": 17,
+      "wordAlignedSize": 1,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "scope",
+      "index": 10,
+      "byteAddress": 72,
+      "wordAlignedAddress": 18,
+      "wordAlignedSize": 66,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "scope2",
+      "index": 11,
+      "byteAddress": 336,
+      "wordAlignedAddress": 84,
+      "wordAlignedSize": 66,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "setButton",
+      "index": 12,
+      "byteAddress": 600,
+      "wordAlignedAddress": 150,
+      "wordAlignedSize": 1,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    }
+  ]
+}
