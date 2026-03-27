@@ -194,14 +194,15 @@ export default function compile(
 				})
 			: (functions?.map(func => ({ code: func.code, lineMetadata: undefined })) ?? []);
 
-	// Compile to AST with line metadata for error mapping
+	// Compile to AST with line metadata for error mapping.
+	// Keep source order for layout/addresses and use dependency order only where semantic/runtime scheduling needs it.
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
-	const sortedModules = sortModules(astModules);
+	const dependencyOrderedModules = sortModules(astModules);
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
 	const namespaces: Namespaces = {};
 	let prepassStartingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY;
-	for (const ast of sortedModules) {
+	for (const ast of dependencyOrderedModules) {
 		const context = prepassNamespace(ast, {}, namespaces, prepassStartingByteAddress);
 		const isConstantsBlock = ast.some(line => line.instruction === 'constants');
 		const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
@@ -233,9 +234,9 @@ export default function compile(
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Compile all modules (constants blocks are already sorted first by sortModules)
+	// Compile all modules in source order so layout and addresses remain stable.
 	const compiledModules = compileModules(
-		sortedModules,
+		astModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -247,6 +248,13 @@ export default function compile(
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
+	const runtimeOrderedModules = dependencyOrderedModules
+		.map(ast => {
+			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+			const id = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+			return compiledModulesMap[id];
+		})
+		.filter((module): module is CompiledModule => typeof module !== 'undefined');
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
@@ -260,17 +268,17 @@ export default function compile(
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
 	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle or initOnlyExecution flags
-	const cycleFunction = compiledModules.flatMap((module, index) =>
+	const cycleFunction = runtimeOrderedModules.flatMap(module =>
 		module.skipExecutionInCycle || module.initOnlyExecution
 			? []
-			: call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
+			: call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 	);
 
 	// Generate init-only module calls (run after memory initialization)
 	// Skip if skipExecutionInCycle is true (precedence rule)
-	const initOnlyModuleCalls = compiledModules.flatMap((module, index) =>
+	const initOnlyModuleCalls = runtimeOrderedModules.flatMap(module =>
 		module.initOnlyExecution && !module.skipExecutionInCycle
-			? call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
+			? call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 			: []
 	);
 	const initOnlyFunction = createFunction([], initOnlyModuleCalls);

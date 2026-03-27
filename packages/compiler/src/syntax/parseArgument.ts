@@ -4,12 +4,13 @@ import parseNumericLiteralToken, {
 	isNumericLikeInvalidToken,
 	startsWithNumericPrefix,
 } from './parseNumericLiteralToken';
-import parseConstantMulDivExpression from './parseConstantMulDivExpression';
+import parseConstantMulDivExpression, { type CompileTimeMulDivExpression } from './parseConstantMulDivExpression';
 
 export enum ArgumentType {
 	LITERAL = 'literal',
 	IDENTIFIER = 'identifier',
 	STRING_LITERAL = 'string_literal',
+	COMPILE_TIME_EXPRESSION = 'compile_time_expression',
 }
 
 export type ArgumentLiteral = {
@@ -21,8 +22,11 @@ export type ArgumentLiteral = {
 };
 export type ArgumentIdentifier = { type: ArgumentType.IDENTIFIER; value: string };
 export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
+export type ArgumentCompileTimeExpression = CompileTimeMulDivExpression & {
+	type: ArgumentType.COMPILE_TIME_EXPRESSION;
+};
 
-export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral;
+export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;
 
 /**
  * Decodes escape sequences in a raw (unquoted) string literal body.
@@ -123,14 +127,17 @@ export function parseArgument(argument: string): Argument {
 				};
 			}
 
+			const compileTimeExpression = parseConstantMulDivExpression(argument);
+			if (compileTimeExpression !== null) {
+				return {
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					...compileTimeExpression,
+				};
+			}
+
 			// Reject numeric-looking tokens that failed literal parsing so they do not silently
 			// become identifiers. This keeps standalone and compound numeric syntax boundaries clear.
-			// Exception: if the token is a valid single-operator compile-time expression with a
-			// non-literal operand (e.g. 123*sizeof(name)), allow it through as an identifier.
 			if (isNumericLikeInvalidToken(argument)) {
-				if (parseConstantMulDivExpression(argument) !== null) {
-					return { value: argument, type: ArgumentType.IDENTIFIER };
-				}
 				throw new SyntaxRulesError(
 					SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
 					`Invalid numeric literal or expression: ${argument}`,
@@ -140,9 +147,6 @@ export function parseArgument(argument: string): Argument {
 				);
 			}
 			if (startsWithNumericPrefix(argument)) {
-				if (parseConstantMulDivExpression(argument) !== null) {
-					return { value: argument, type: ArgumentType.IDENTIFIER };
-				}
 				throw new SyntaxRulesError(
 					SyntaxErrorCode.INVALID_IDENTIFIER,
 					`Identifiers cannot start with numbers: ${argument}`,
@@ -243,16 +247,24 @@ if (import.meta.vitest) {
 			expect(() => parseArgument('2*3/4')).toThrow('Invalid numeric literal or expression');
 		});
 
-		it('allows numeric-prefixed mixed compile-time expressions through as identifiers', () => {
-			// These start with a numeric literal but have a non-literal RHS — pass through as identifier
-			// for later resolution by the compile-time evaluator.
+		it('parses compile-time expressions as dedicated AST nodes', () => {
 			expect(parseArgument('123*sizeof(name)')).toEqual({
-				value: '123*sizeof(name)',
-				type: ArgumentType.IDENTIFIER,
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				lhs: '123',
+				operator: '*',
+				rhs: 'sizeof(name)',
 			});
 			expect(parseArgument('2*SIZE')).toEqual({
-				value: '2*SIZE',
-				type: ArgumentType.IDENTIFIER,
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				lhs: '2',
+				operator: '*',
+				rhs: 'SIZE',
+			});
+			expect(parseArgument('SIZE*sizeof(name)')).toEqual({
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				lhs: 'SIZE',
+				operator: '*',
+				rhs: 'sizeof(name)',
 			});
 		});
 

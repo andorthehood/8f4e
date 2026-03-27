@@ -32,7 +32,7 @@ import extractIntermodularElementWordSizeBase from '../syntax/extractIntermodula
 import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
 import extractIntermodularElementMinBase from '../syntax/extractIntermodularElementMinBase';
 
-import type { Const, Namespace } from '../types';
+import type { ArgumentCompileTimeExpression, Const, Namespace } from '../types';
 
 type MulDivOperator = CompileTimeMulDivExpression['operator'];
 
@@ -194,6 +194,24 @@ export function tryResolveCompileTimeValueOrExpression(namespace: Namespace, val
 	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
 }
 
+export function tryResolveCompileTimeValueOrExpressionNode(
+	namespace: Namespace,
+	expression: ArgumentCompileTimeExpression
+): Const | undefined {
+	const lhsConst = resolveCompileTimeOperand(expression.lhs, namespace);
+	const rhsConst = resolveCompileTimeOperand(expression.rhs, namespace);
+
+	if (lhsConst === undefined || rhsConst === undefined) {
+		return undefined;
+	}
+
+	if (expression.operator === '/' && rhsConst.value === 0) {
+		return undefined;
+	}
+
+	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
+}
+
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
@@ -314,6 +332,20 @@ if (import.meta.vitest) {
 
 			expect(tryResolveCompileTimeValueOrExpression(intermodularNamespace, '2*sizeof(source:buffer)')).toEqual({
 				value: 4,
+				isInteger: true,
+			});
+		});
+
+		it('resolves explicit compile-time expression nodes', () => {
+			expect(
+				tryResolveCompileTimeValueOrExpressionNode(mockNamespace, {
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: '2',
+					operator: '*',
+					rhs: 'SIZE',
+				})
+			).toEqual({
+				value: 32,
 				isInteger: true,
 			});
 		});

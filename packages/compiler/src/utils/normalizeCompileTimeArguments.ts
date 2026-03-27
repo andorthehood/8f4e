@@ -1,6 +1,10 @@
-import { tryResolveCompileTimeValueOrExpression } from './resolveConstantValue';
+import {
+	tryResolveCompileTimeValueOrExpression,
+	tryResolveCompileTimeValueOrExpressionNode,
+} from './resolveConstantValue';
 
 import { ArgumentType, type AST, type Argument, type CompilationContext } from '../types';
+import { ErrorCode, getError } from '../compilerError';
 
 import type { Instruction } from '../instructionCompilers';
 
@@ -33,11 +37,14 @@ const declarationInstructions = new Set<Instruction>([
 ]);
 
 function normalizeArgument(argument: Argument, context: CompilationContext): Argument {
-	if (argument.type !== ArgumentType.IDENTIFIER) {
+	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
 		return argument;
 	}
 
-	const resolved = tryResolveCompileTimeValueOrExpression(context.namespace, argument.value);
+	const resolved =
+		argument.type === ArgumentType.IDENTIFIER
+			? tryResolveCompileTimeValueOrExpression(context.namespace, argument.value)
+			: tryResolveCompileTimeValueOrExpressionNode(context.namespace, argument);
 
 	if (!resolved) {
 		return argument;
@@ -95,6 +102,15 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 		return normalized;
 	});
 
+	for (const index of argumentIndexesToNormalize) {
+		const argument = nextArguments[index];
+		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
+				identifier: `${argument.lhs}${argument.operator}${argument.rhs}`,
+			});
+		}
+	}
+
 	return changed ? { ...line, arguments: nextArguments } : line;
 }
 
@@ -107,7 +123,7 @@ if (import.meta.vitest) {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
-				arguments: [{ type: ArgumentType.IDENTIFIER, value: '2*SIZE' }],
+				arguments: [{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'SIZE' }],
 			};
 			const context = {
 				namespace: {
@@ -151,8 +167,8 @@ if (import.meta.vitest) {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'map',
 				arguments: [
-					{ type: ArgumentType.IDENTIFIER, value: 'SIZE/2' },
-					{ type: ArgumentType.IDENTIFIER, value: '2*SIZE' },
+					{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: 'SIZE', operator: '/', rhs: '2' },
+					{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'SIZE' },
 				],
 			};
 			const context = {
@@ -172,6 +188,26 @@ if (import.meta.vitest) {
 					{ type: ArgumentType.LITERAL, value: 16, isInteger: true },
 				],
 			});
+		});
+
+		it('throws when a targeted compile-time expression cannot be resolved', () => {
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'push',
+				arguments: [{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' }],
+			};
+			const context = {
+				namespace: {
+					memory: {},
+					locals: {},
+					consts: {},
+					moduleName: 'test',
+					namespaces: {},
+				},
+			} as unknown as CompilationContext;
+
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
 		});
 	});
 }
