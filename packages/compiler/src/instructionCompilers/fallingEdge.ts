@@ -22,13 +22,16 @@ const fallingEdge: InstructionCompiler = withValidation(
 		const previousValueName = '__fallingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
 		const loadInstruction = operand.isInteger ? 'load' : 'loadFloat';
+		const previousValueDeclaration = Object.hasOwn(context.namespace.memory, previousValueName)
+			? ''
+			: `${memoryType} ${previousValueName} 0`;
 
 		// Restore the operand for the segment so type checks apply to the original value.
 		context.stack.push(operand);
 
 		return compileSegment(
 			[
-				`${memoryType} ${previousValueName} 0`,
+				previousValueDeclaration,
 				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
 				`localGet ${currentValueName}`,

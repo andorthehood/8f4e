@@ -1,11 +1,11 @@
-import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
-import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
-import { withValidation } from '../withValidation';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import { ArgumentType } from '../../types';
+import { ErrorCode, getError } from '../../compilerError';
+import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
+import { withValidation } from '../../withValidation';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
+import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { AST, InstructionCompiler, MemoryTypes } from '../types';
+import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
 
 function getElementWordSize(instruction: string): number {
 	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;

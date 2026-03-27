@@ -1,37 +1,8 @@
 import { tryResolveCompileTimeArgument } from './resolveCompileTimeArgument';
+import { isMemoryDeclarationInstruction } from './declarations';
 
 import { ArgumentType, type AST, type Argument, type CompilationContext } from '../types';
 import { ErrorCode, getError } from '../compilerError';
-
-import type { Instruction } from '../instructionCompilers';
-
-const declarationInstructions = new Set<Instruction>([
-	'int',
-	'float',
-	'int*',
-	'int**',
-	'int16*',
-	'int16**',
-	'float*',
-	'float**',
-	'float64',
-	'float64*',
-	'float64**',
-	'float[]',
-	'int[]',
-	'int8[]',
-	'int8u[]',
-	'int16[]',
-	'int16u[]',
-	'int32[]',
-	'float*[]',
-	'float**[]',
-	'int*[]',
-	'int**[]',
-	'float64[]',
-	'float64*[]',
-	'float64**[]',
-]);
 
 function normalizeArgument(argument: Argument, context: CompilationContext): Argument {
 	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
@@ -65,7 +36,6 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 		case 'push':
 			argumentIndexesToNormalize = [0];
 			break;
-		case 'skip':
 		case 'default':
 			argumentIndexesToNormalize = [0];
 			break;
@@ -76,7 +46,7 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 			argumentIndexesToNormalize = [0, 1];
 			break;
 		default:
-			if (declarationInstructions.has(line.instruction as Instruction)) {
+			if (isMemoryDeclarationInstruction(line.instruction)) {
 				argumentIndexesToNormalize = [0, 1];
 			}
 			break;

@@ -42,6 +42,6 @@ describe('moduleCompiler', () => {
 	});
 
 	test('compiled code', () => {
-		expect(compileModule(ast, {}, {}, 0, 1, 0).cycleFunction).toMatchSnapshot();
+		expect(compileModule(ast, {}, 0, 1, 0).cycleFunction).toMatchSnapshot();
 	});
 });

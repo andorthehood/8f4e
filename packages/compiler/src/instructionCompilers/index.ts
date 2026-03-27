@@ -29,14 +29,9 @@ import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
-import int from './int';
-import int16 from './int16';
-import float from './float';
 import castToInt from './castToInt';
 import castToFloat from './castToFloat';
 import castToFloat64 from './castToFloat64';
-import skip from './skip';
-import buffer from './buffer';
 import drop from './drop';
 import clearStack from './clearStack';
 import risingEdge from './risingEdge';
@@ -56,7 +51,6 @@ import sqrt from './sqrt';
 import loadFloat from './loadFloat';
 import round from './round';
 import ensureNonZero from './ensureNonZero';
-import float64 from './float64';
 import _function from './function';
 import functionEnd from './functionEnd';
 import param from './param';
@@ -106,35 +100,9 @@ const instructions = {
 	shiftRight,
 	shiftRightUnsigned,
 	remainder,
-	int: int,
-	float: float,
-	'int*': int,
-	'int**': int,
-	'int16*': int16,
-	'int16**': int16,
-	'float*': float,
-	'float**': float,
-	float64: float64,
-	'float64*': float64,
-	'float64**': float64,
-	'float[]': buffer,
-	'int[]': buffer,
-	'int8[]': buffer,
-	'int8u[]': buffer,
-	'int16[]': buffer,
-	'int16u[]': buffer,
-	'int32[]': buffer,
-	'float*[]': buffer,
-	'float**[]': buffer,
-	'int*[]': buffer,
-	'int**[]': buffer,
-	'float64[]': buffer,
-	'float64*[]': buffer,
-	'float64**[]': buffer,
 	castToInt,
 	castToFloat,
 	castToFloat64,
-	skip,
 	drop,
 	clearStack,
 	risingEdge,

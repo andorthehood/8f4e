@@ -105,6 +105,7 @@ if (import.meta.vitest) {
 			expect(parseLine('const SIZE 16', 0).isSemanticOnly).toBe(true);
 			expect(parseLine('use math', 0).isSemanticOnly).toBe(true);
 			expect(parseLine('module demo', 0).isSemanticOnly).toBe(true);
+			expect(parseLine('init value 1', 0).isSemanticOnly).toBe(true);
 		});
 
 		it('leaves runtime/codegen instructions unflagged', () => {

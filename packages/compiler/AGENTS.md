@@ -63,7 +63,7 @@ moduleEnd
 - **Logic**: `and`, `or`, `xor`, `equal`, `equalToZero`, `greaterThan`, `lessThan`, `greaterOrEqual`, `lessOrEqual`
 - **Stack**: `push`, `dup`, `drop`, `swap`, `clearStack`
 - **Locals**: `local`, `localGet`, `localSet`
-- **Control flow**: `if`, `ifEnd`, `else`, `loop`, `loopEnd`, `block`, `blockEnd`, `branch`, `branchIfTrue`, `branchIfUnchanged`, `skip`
+- **Control flow**: `if`, `ifEnd`, `else`, `loop`, `loopEnd`, `block`, `blockEnd`, `branch`, `branchIfTrue`, `branchIfUnchanged`
 - **Type conversion**: `castToInt`, `castToFloat`
 - **Bitwise**: `shiftLeft`, `shiftRight`, `shiftRightUnsigned`
 - **Constants**: `const` (can be defined at top level or in function body)
