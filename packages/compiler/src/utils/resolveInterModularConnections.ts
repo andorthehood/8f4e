@@ -16,7 +16,7 @@ import { ArgumentType, CompiledModuleLookup } from '../types';
 
 /**
  * Resolves inter-modular connections by finding references like &module:memory,
- * module:memory&, &module:, module:&, count(module.memory), sizeof(module.memory), max(module.memory), and min(module.memory) in compiled modules and setting the appropriate memory defaults.
+ * module:memory&, &module:, module:&, count(module:memory), sizeof(module:memory), max(module:memory), and min(module:memory) in compiled modules and setting the appropriate memory defaults.
  *
  * This function:
  * - Identifies inter-module references in memory declarations and init instructions
@@ -27,10 +27,10 @@ import { ArgumentType, CompiledModuleLookup } from '../types';
  *   - `&module:` is the module-start syntax
  *   - `&module:` resolves to module start address (byteAddress)
  *   - module:&: module end address (byteAddress + (wordAlignedSize - 1) * 4)
- *   - count(module.memory): element count (wordAlignedSize)
- *   - sizeof(module.memory): element word size (elementWordSize)
- *   - max(module.memory): element max value (computed based on target memory type)
- *   - min(module.memory): element min value (computed based on target memory type)
+ *   - count(module:memory): element count (wordAlignedSize)
+ *   - sizeof(module:memory): element word size (elementWordSize)
+ *   - max(module:memory): element max value (computed based on target memory type)
+ *   - min(module:memory): element min value (computed based on target memory type)
  * - Updates the local memory's default value with the resolved value
  */
 export default function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
@@ -102,7 +102,7 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 						}
 					}
 				} else if (isIntermodularElementCountReference(refValue)) {
-					// Handle inter-module element count references (count(module.memory))
+					// Handle inter-module element count references (count(module:memory))
 					const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(refValue);
 
 					const targetModule = compiledModules[targetModuleId];
@@ -124,7 +124,7 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 						memory.default = targetMemory.wordAlignedSize;
 					}
 				} else if (isIntermodularElementWordSizeReference(refValue)) {
-					// Handle inter-module element word size references (sizeof(module.memory))
+					// Handle inter-module element word size references (sizeof(module:memory))
 					const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementWordSizeBase(refValue);
 
 					const targetModule = compiledModules[targetModuleId];
@@ -146,7 +146,7 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 						memory.default = targetMemory.elementWordSize;
 					}
 				} else if (isIntermodularElementMaxReference(refValue)) {
-					// Handle inter-module element max references (max(module.memory))
+					// Handle inter-module element max references (max(module:memory))
 					const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(refValue);
 
 					const targetModule = compiledModules[targetModuleId];
@@ -168,7 +168,7 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 						memory.default = getElementMaxValue(targetModule.memoryMap, targetMemoryId);
 					}
 				} else if (isIntermodularElementMinReference(refValue)) {
-					// Handle inter-module element min references (min(module.memory))
+					// Handle inter-module element min references (min(module:memory))
 					const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(refValue);
 
 					const targetModule = compiledModules[targetModuleId];
