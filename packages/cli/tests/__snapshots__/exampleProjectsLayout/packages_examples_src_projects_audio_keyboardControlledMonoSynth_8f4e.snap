@@ -1,0 +1,126 @@
+{
+  "sourceModuleOrder": [
+    "projectConfig",
+    "arEnv",
+    "audioout",
+    "env",
+    "janko",
+    "keyboard",
+    "math",
+    "midiCodes",
+    "midiLUT",
+    "midiNote2Freq",
+    "phaseAccumulator",
+    "vca"
+  ],
+  "compiledModuleLayout": [
+    {
+      "id": "env",
+      "index": 0,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "math",
+      "index": 1,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "midiCodes",
+      "index": 2,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "arEnv",
+      "index": 3,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 8,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "audioout",
+      "index": 4,
+      "byteAddress": 36,
+      "wordAlignedAddress": 9,
+      "wordAlignedSize": 130,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "midiNote2Freq",
+      "index": 5,
+      "byteAddress": 556,
+      "wordAlignedAddress": 139,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "janko",
+      "index": 6,
+      "byteAddress": 568,
+      "wordAlignedAddress": 142,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "keyboard",
+      "index": 7,
+      "byteAddress": 576,
+      "wordAlignedAddress": 144,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "midiLUT",
+      "index": 8,
+      "byteAddress": 584,
+      "wordAlignedAddress": 146,
+      "wordAlignedSize": 128,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "vca",
+      "index": 9,
+      "byteAddress": 1096,
+      "wordAlignedAddress": 274,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "phaseAccumulator",
+      "index": 10,
+      "byteAddress": 1108,
+      "wordAlignedAddress": 277,
+      "wordAlignedSize": 4,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "projectConfig",
+      "index": 11,
+      "byteAddress": 1124,
+      "wordAlignedAddress": 281,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    }
+  ]
+}
