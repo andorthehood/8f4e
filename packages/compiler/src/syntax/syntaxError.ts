@@ -19,6 +19,8 @@
 
 export enum SyntaxErrorCode {
 	INVALID_MEMORY_IDENTIFIER_PREFIX = 'INVALID_MEMORY_IDENTIFIER_PREFIX',
+	INVALID_IDENTIFIER = 'INVALID_IDENTIFIER',
+	INVALID_NUMERIC_LITERAL = 'INVALID_NUMERIC_LITERAL',
 	INVALID_POINTER_DEPTH = 'INVALID_POINTER_DEPTH',
 	MISSING_ARGUMENT = 'MISSING_ARGUMENT',
 	DIVISION_BY_ZERO = 'DIVISION_BY_ZERO',
@@ -33,12 +35,14 @@ export enum SyntaxErrorCode {
  */
 const SyntaxErrorMessages: Record<SyntaxErrorCode, string> = {
 	[SyntaxErrorCode.INVALID_MEMORY_IDENTIFIER_PREFIX]: 'Invalid memory identifier prefix.',
+	[SyntaxErrorCode.INVALID_IDENTIFIER]: 'Invalid identifier.',
+	[SyntaxErrorCode.INVALID_NUMERIC_LITERAL]: 'Invalid numeric literal or expression.',
 	[SyntaxErrorCode.INVALID_POINTER_DEPTH]: 'Invalid pointer depth.',
 	[SyntaxErrorCode.MISSING_ARGUMENT]: 'Missing required argument.',
 	[SyntaxErrorCode.DIVISION_BY_ZERO]: 'Division by zero in literal expression.',
 	[SyntaxErrorCode.INVALID_STRING_LITERAL]: 'Invalid string literal.',
 	[SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS]:
-		'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255) or constant-style identifiers. Memory references and other expression forms are not allowed in split-byte sequences.',
+		'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255), literal-only * or / expressions that fold to an integer in that range, or constant-style identifiers. Memory references and non-byte-resolving forms are not allowed in split-byte sequences.',
 };
 
 export class SyntaxRulesError extends Error {

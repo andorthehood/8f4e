@@ -4,6 +4,7 @@ import { moduleTester } from './testUtils';
 
 import compile from '../../src';
 import { ErrorCode } from '../../src/compilerError';
+import { SyntaxErrorCode, SyntaxRulesError } from '../../src/syntax/syntaxError';
 
 import type { Module } from '../../src/types';
 
@@ -55,7 +56,13 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow(`${ErrorCode.EXPECTED_IDENTIFIER}`);
+		try {
+			compile(modules, defaultOptions);
+			throw new Error('Expected compile to throw');
+		} catch (error) {
+			expect(error).toBeInstanceOf(SyntaxRulesError);
+			expect((error as SyntaxRulesError).code).toBe(SyntaxErrorCode.INVALID_IDENTIFIER);
+		}
 	});
 
 	it('should reject constant names starting with special characters', () => {

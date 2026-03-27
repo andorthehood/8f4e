@@ -1,4 +1,9 @@
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
+import parseLiteralMulDivExpression from './parseLiteralMulDivExpression';
+import parseNumericLiteralToken, {
+	isNumericLikeInvalidToken,
+	startsWithNumericPrefix,
+} from './parseNumericLiteralToken';
 
 export enum ArgumentType {
 	LITERAL = 'literal',
@@ -88,49 +93,57 @@ export function decodeStringLiteral(raw: string): string {
  * @returns Parsed argument with type information.
  */
 export function parseArgument(argument: string): Argument {
+	// Try to fold literal-only mul/div expressions (handles *, /, and integer/integer fractions)
+	const mulDivResult = parseLiteralMulDivExpression(argument);
+	if (mulDivResult !== null) {
+		return {
+			type: ArgumentType.LITERAL,
+			value: mulDivResult.value,
+			isInteger: mulDivResult.isInteger,
+			...(mulDivResult.isFloat64 && { isFloat64: true }),
+		};
+	}
+
 	switch (true) {
 		// Check for quoted string literals
 		case argument.startsWith('"') && argument.endsWith('"') && argument.length >= 2: {
 			const raw = argument.slice(1, -1);
 			return { type: ArgumentType.STRING_LITERAL, value: decodeStringLiteral(raw) };
 		}
-		case /^-?\d+\/\d+$/.test(argument): {
-			const [numeratorStr, denominatorStr] = argument.split('/');
-			const numerator = parseInt(numeratorStr, 10);
-			const denominator = parseInt(denominatorStr, 10);
-
-			if (denominator === 0) {
-				throw new SyntaxRulesError(
-					SyntaxErrorCode.DIVISION_BY_ZERO,
-					`Division by zero in fraction literal: ${argument}`,
-					{ argument }
-				);
+		default: {
+			const numericLiteral = parseNumericLiteralToken(argument);
+			if (numericLiteral) {
+				return {
+					value: numericLiteral.value,
+					type: ArgumentType.LITERAL,
+					isInteger: numericLiteral.isInteger,
+					...(numericLiteral.isFloat64 && { isFloat64: true }),
+					...(numericLiteral.isHex && { isHex: true }),
+				};
 			}
 
-			const value = numerator / denominator;
-			return {
-				value,
-				type: ArgumentType.LITERAL,
-				isInteger: Number.isInteger(value),
-			};
-		}
-		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(argument): {
-			const numStr = argument.slice(0, -3);
-			return { value: parseFloat(numStr), type: ArgumentType.LITERAL, isInteger: false, isFloat64: true };
-		}
-		case /^-?[0-9.]+$/.test(argument):
-			return { value: parseFloat(argument), type: ArgumentType.LITERAL, isInteger: /^-?[0-9]+$/.test(argument) };
-		case /^-?0x[0-9a-fA-F]+$/.test(argument):
-			return {
-				value: parseInt(argument.replace('0x', ''), 16),
-				type: ArgumentType.LITERAL,
-				isInteger: true,
-				isHex: true,
-			};
-		case /^-?0b[0-1]+$/.test(argument):
-			return { value: parseInt(argument.replace('0b', ''), 2), type: ArgumentType.LITERAL, isInteger: true };
-		default:
+			// Reject numeric-looking tokens that failed literal parsing so they do not silently
+			// become identifiers. This keeps standalone and compound numeric syntax boundaries clear.
+			if (isNumericLikeInvalidToken(argument)) {
+				throw new SyntaxRulesError(
+					SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
+					`Invalid numeric literal or expression: ${argument}`,
+					{
+						argument,
+					}
+				);
+			}
+			if (startsWithNumericPrefix(argument)) {
+				throw new SyntaxRulesError(
+					SyntaxErrorCode.INVALID_IDENTIFIER,
+					`Identifiers cannot start with numbers: ${argument}`,
+					{
+						argument,
+					}
+				);
+			}
 			return { value: argument, type: ArgumentType.IDENTIFIER };
+		}
 	}
 }
 
@@ -147,6 +160,13 @@ if (import.meta.vitest) {
 			expect(parseArgument('3.14')).toEqual({ value: 3.14, type: ArgumentType.LITERAL, isInteger: false });
 		});
 
+		it('parses non-f64 scientific notation literals', () => {
+			// Scientific notation is treated as float-typed syntax even when the numeric value is integral.
+			expect(parseArgument('1e3')).toEqual({ value: 1000, type: ArgumentType.LITERAL, isInteger: false });
+			expect(parseArgument('1e-3')).toEqual({ value: 0.001, type: ArgumentType.LITERAL, isInteger: false });
+			expect(parseArgument('-2.5e4')).toEqual({ value: -25000, type: ArgumentType.LITERAL, isInteger: false });
+		});
+
 		it('parses hex integers', () => {
 			expect(parseArgument('0x10')).toEqual({ value: 16, type: ArgumentType.LITERAL, isInteger: true, isHex: true });
 		});
@@ -157,6 +177,17 @@ if (import.meta.vitest) {
 
 		it('parses identifiers', () => {
 			expect(parseArgument('value')).toEqual({ value: 'value', type: ArgumentType.IDENTIFIER });
+		});
+
+		it('rejects identifiers that start with numbers', () => {
+			expect(() => parseArgument('1abc')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('123ABC')).toThrow('Identifiers cannot start with numbers');
+		});
+
+		it('rejects invalid numeric literals or expressions', () => {
+			expect(() => parseArgument('1e')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('1e+')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('0xZZ')).toThrow('Invalid numeric literal or expression');
 		});
 
 		it('parses fraction literals with float result', () => {
@@ -174,10 +205,33 @@ if (import.meta.vitest) {
 			expect(() => parseArgument('1/0')).toThrow('Division by zero');
 		});
 
-		it('does not parse negative denominators as fractions', () => {
-			// These should be parsed as identifiers, not fractions
-			const result = parseArgument('1/-2');
-			expect(result.type).toBe(ArgumentType.IDENTIFIER);
+		it('parses negative denominators as literal expressions', () => {
+			expect(parseArgument('1/-2')).toEqual({ value: -0.5, type: ArgumentType.LITERAL, isInteger: false });
+		});
+
+		it('folds literal-only multiplication', () => {
+			expect(parseArgument('16*2')).toEqual({ value: 32, type: ArgumentType.LITERAL, isInteger: true });
+			expect(parseArgument('3.5*4')).toEqual({ value: 14, type: ArgumentType.LITERAL, isInteger: false });
+			expect(parseArgument('3.5*0.5')).toEqual({ value: 1.75, type: ArgumentType.LITERAL, isInteger: false });
+		});
+
+		it('folds hex literal in mul/div expression', () => {
+			expect(parseArgument('0x10/2')).toEqual({ value: 8, type: ArgumentType.LITERAL, isInteger: true });
+			expect(parseArgument('0x10*2')).toEqual({ value: 32, type: ArgumentType.LITERAL, isInteger: true });
+		});
+
+		it('folds f64-suffixed literal in mul/div expression', () => {
+			expect(parseArgument('3f64*2')).toEqual({
+				value: 6,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+		});
+
+		it('rejects chained or mixed numeric-looking operators', () => {
+			expect(() => parseArgument('2*3*4')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('2*3/4')).toThrow('Invalid numeric literal or expression');
 		});
 
 		it('parses f64-suffixed float literals', () => {
@@ -225,11 +279,18 @@ if (import.meta.vitest) {
 			});
 		});
 
+		it('rejects non-finite scientific notation literals', () => {
+			expect(() => parseArgument('1e309')).toThrow('Invalid numeric literal');
+			expect(() => parseArgument('1e309f64')).toThrow('Invalid numeric literal');
+			expect(() => parseArgument('1e309*2')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('1e309f64*2')).toThrow('Invalid numeric literal or expression');
+		});
+
 		it('does not parse malformed f64 suffix forms as f64 literals', () => {
 			// F64 (uppercase) is not valid
-			expect(parseArgument('3.14F64').type).toBe(ArgumentType.IDENTIFIER);
+			expect(() => parseArgument('3.14F64')).toThrow('Invalid numeric literal or expression');
 			// double-f is not valid
-			expect(parseArgument('3.14ff64').type).toBe(ArgumentType.IDENTIFIER);
+			expect(() => parseArgument('3.14ff64')).toThrow('Invalid numeric literal or expression');
 			// multiple dots are not valid
 			expect(parseArgument('..f64').type).toBe(ArgumentType.IDENTIFIER);
 		});

@@ -21,6 +21,7 @@ export {
 	default as parseConstantMulDivExpression,
 	type ConstantMulDivExpression,
 } from './parseConstantMulDivExpression';
+export { default as parseLiteralMulDivExpression, type LiteralMulDivResult } from './parseLiteralMulDivExpression';
 export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 export { default as hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
 export { default as hasMemoryReferencePrefixStart } from './hasMemoryReferencePrefixStart';
