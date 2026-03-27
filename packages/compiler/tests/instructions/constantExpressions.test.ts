@@ -7,7 +7,7 @@ const SIZE 8
 int[] buffer SIZE/2
 int output
 push &output
-push $buffer
+push count(buffer)
 store
 moduleEnd
 `,
@@ -21,7 +21,7 @@ const SIZE 8
 int[] buffer SIZE*2
 int output
 push &output
-push $buffer
+push count(buffer)
 store
 moduleEnd
 `,

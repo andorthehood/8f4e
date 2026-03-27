@@ -10,7 +10,7 @@ int bufferPointer &buffer
 
 push &bufferPointer
 push bufferPointer
-push %buffer
+push sizeof(buffer)
 add
 store
 

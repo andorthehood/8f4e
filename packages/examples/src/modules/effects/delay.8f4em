@@ -21,7 +21,7 @@ store
 
 push &pointer
 push pointer
-push %pointer
+push sizeof(pointer)
 add
 store
 

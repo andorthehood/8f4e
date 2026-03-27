@@ -319,42 +319,42 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular element count argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '$mod.buffer' }]);
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'count(mod.buffer)' }]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-count',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: '$mod.buffer',
+				pattern: 'count(mod.buffer)',
 			});
 		});
 
 		it('parses intermodular element word size argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '%mod.buffer' }]);
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'sizeof(mod.buffer)' }]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-word-size',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: '%mod.buffer',
+				pattern: 'sizeof(mod.buffer)',
 			});
 		});
 
 		it('parses intermodular element max argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '^mod.buffer' }]);
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'max(mod.buffer)' }]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-max',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: '^mod.buffer',
+				pattern: 'max(mod.buffer)',
 			});
 		});
 
 		it('parses intermodular element min argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '!mod.buffer' }]);
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'min(mod.buffer)' }]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-min',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: '!mod.buffer',
+				pattern: 'min(mod.buffer)',
 			});
 		});
 
@@ -364,7 +364,7 @@ if (import.meta.vitest) {
 		});
 
 		it('parses element count argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '$foo' }]);
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'count(foo)' }]);
 			expect(result.firstArg).toEqual({ type: 'element-count', base: 'foo' });
 		});
 

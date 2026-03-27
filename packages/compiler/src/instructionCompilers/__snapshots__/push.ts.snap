@@ -1,6 +1,25 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`push instruction compiler > element max prefix (^) > pushes max finite value for float32 1`] = `
+exports[`push instruction compiler > float64 memory push > pushes a float64 memory identifier using f64.load 1`] = `
+{
+  "byteCode": [
+    65,
+    0,
+    43,
+    3,
+    0,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > max() query > pushes max finite value for float32 1`] = `
 {
   "byteCode": [
     67,
@@ -18,7 +37,7 @@ exports[`push instruction compiler > element max prefix (^) > pushes max finite 
 }
 `;
 
-exports[`push instruction compiler > element max prefix (^) > pushes max finite value for float64 1`] = `
+exports[`push instruction compiler > max() query > pushes max finite value for float64 1`] = `
 {
   "byteCode": [
     68,
@@ -41,7 +60,7 @@ exports[`push instruction compiler > element max prefix (^) > pushes max finite 
 }
 `;
 
-exports[`push instruction compiler > element max prefix (^) > pushes max value for int8 1`] = `
+exports[`push instruction compiler > max() query > pushes max value for int8 1`] = `
 {
   "byteCode": [
     65,
@@ -57,7 +76,7 @@ exports[`push instruction compiler > element max prefix (^) > pushes max value f
 }
 `;
 
-exports[`push instruction compiler > element max prefix (^) > pushes max value for int16 1`] = `
+exports[`push instruction compiler > max() query > pushes max value for int16 1`] = `
 {
   "byteCode": [
     65,
@@ -74,7 +93,7 @@ exports[`push instruction compiler > element max prefix (^) > pushes max value f
 }
 `;
 
-exports[`push instruction compiler > element max prefix (^) > pushes max value for int32 1`] = `
+exports[`push instruction compiler > max() query > pushes max value for int32 1`] = `
 {
   "byteCode": [
     65,
@@ -93,7 +112,7 @@ exports[`push instruction compiler > element max prefix (^) > pushes max value f
 }
 `;
 
-exports[`push instruction compiler > element min prefix (!) > pushes lowest finite value for float32 1`] = `
+exports[`push instruction compiler > min() query > pushes lowest finite value for float32 1`] = `
 {
   "byteCode": [
     67,
@@ -111,7 +130,7 @@ exports[`push instruction compiler > element min prefix (!) > pushes lowest fini
 }
 `;
 
-exports[`push instruction compiler > element min prefix (!) > pushes lowest finite value for float64 1`] = `
+exports[`push instruction compiler > min() query > pushes lowest finite value for float64 1`] = `
 {
   "byteCode": [
     68,
@@ -134,7 +153,7 @@ exports[`push instruction compiler > element min prefix (!) > pushes lowest fini
 }
 `;
 
-exports[`push instruction compiler > element min prefix (!) > pushes min value for int8 1`] = `
+exports[`push instruction compiler > min() query > pushes min value for int8 1`] = `
 {
   "byteCode": [
     65,
@@ -150,7 +169,7 @@ exports[`push instruction compiler > element min prefix (!) > pushes min value f
 }
 `;
 
-exports[`push instruction compiler > element min prefix (!) > pushes min value for int16 1`] = `
+exports[`push instruction compiler > min() query > pushes min value for int16 1`] = `
 {
   "byteCode": [
     65,
@@ -167,7 +186,7 @@ exports[`push instruction compiler > element min prefix (!) > pushes min value f
 }
 `;
 
-exports[`push instruction compiler > element min prefix (!) > pushes min value for int32 1`] = `
+exports[`push instruction compiler > min() query > pushes min value for int32 1`] = `
 {
   "byteCode": [
     65,
@@ -181,25 +200,6 @@ exports[`push instruction compiler > element min prefix (!) > pushes min value f
     {
       "isInteger": true,
       "isNonZero": true,
-    },
-  ],
-}
-`;
-
-exports[`push instruction compiler > float64 memory push > pushes a float64 memory identifier using f64.load 1`] = `
-{
-  "byteCode": [
-    65,
-    0,
-    43,
-    3,
-    0,
-  ],
-  "stack": [
-    {
-      "isFloat64": true,
-      "isInteger": false,
-      "isNonZero": false,
     },
   ],
 }

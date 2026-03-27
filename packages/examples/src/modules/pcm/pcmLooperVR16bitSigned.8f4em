@@ -8,7 +8,7 @@ int16[] buffer 914066
 float playhead 0
 float out 1.0
 float defSpeed 1
-int defLength $buffer
+int defLength count(buffer)
 int* reset
 int* length &defLength
 float* speed &defSpeed
@@ -45,14 +45,14 @@ ifEnd
 push &out
 push playhead
 castToInt
-push %buffer
+push sizeof(buffer)
 mul
 push &buffer
 add
 load16s
  ; Normalize value
 castToFloat
-push ^buffer
+push max(buffer)
 castToFloat
 div
 store

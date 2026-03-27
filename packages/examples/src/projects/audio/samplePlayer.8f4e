@@ -47,7 +47,7 @@ store
 ; which is 4 bytes
 push &pointer ; address
 push pointer
-push %buffer  ; word size
+push sizeof(buffer)  ; word size
 add
 store
 
@@ -102,7 +102,7 @@ push &out
 push playhead
 load8u
 castToFloat
-push ^buffer ; max value
+push max(buffer) ; max value
 castToFloat
 div
 push 2.0
@@ -114,7 +114,7 @@ store
 ; Advance the playhead
 push &playhead
 push playhead
-push %buffer ; word size
+push sizeof(buffer) ; word size
 add
 store
 

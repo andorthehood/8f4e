@@ -3,10 +3,10 @@ import { describe, test, expect } from 'vitest';
 import compile from '../../src';
 
 describe('inter-module references - element count', () => {
-	test('resolves element count reference in declaration default ($module.memory)', () => {
+	test('resolves element count reference in declaration default (count(module.memory))', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size $sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size count(sourceModule.buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -27,7 +27,7 @@ describe('inter-module references - element count', () => {
 	test('resolves element count reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'float[] data 7 0.0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int count', 'init count $sourceModule.data', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int count', 'init count count(sourceModule.data)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -48,7 +48,7 @@ describe('inter-module references - element count', () => {
 	test('rejects multi-dot element count reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size $sourceModule.buffer.extra', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size count(sourceModule.buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected
@@ -62,7 +62,7 @@ describe('inter-module references - element count', () => {
 	test('rejects multi-dot element count reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int count', 'init count $sourceModule.buffer.extra', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int count', 'init count count(sourceModule.buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected in init as well
@@ -76,7 +76,7 @@ describe('inter-module references - element count', () => {
 	test('throws error for unknown module in element count reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size $unknownModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size count(unknownModule.buffer)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -89,7 +89,7 @@ describe('inter-module references - element count', () => {
 	test('throws error for unknown memory in element count reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size $sourceModule.unknownMemory', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size count(sourceModule.unknownMemory)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -101,7 +101,7 @@ describe('inter-module references - element count', () => {
 
 	test('module dependency sorting works with element count references', () => {
 		const modules = [
-			{ code: ['module dependentModule', 'int size $baseModule.buffer', 'moduleEnd'] },
+			{ code: ['module dependentModule', 'int size count(baseModule.buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
@@ -126,7 +126,7 @@ describe('inter-module references - element count', () => {
 			{ code: ['module moduleA', 'int[] bufferA 10 0', 'moduleEnd'] },
 			{ code: ['module moduleB', 'float[] bufferB 5 0.0', 'moduleEnd'] },
 			{
-				code: ['module moduleC', 'int sizeA $moduleA.bufferA', 'int sizeB $moduleB.bufferB', 'moduleEnd'],
+				code: ['module moduleC', 'int sizeA count(moduleA.bufferA)', 'int sizeB count(moduleB.bufferB)', 'moduleEnd'],
 			},
 		];
 
@@ -153,7 +153,7 @@ describe('inter-module references - element count', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 12 0', 'moduleEnd'] },
 			{
-				code: ['module targetModule', 'int* ptr &sourceModule:buffer', 'int size $sourceModule.buffer', 'moduleEnd'],
+				code: ['module targetModule', 'int* ptr &sourceModule:buffer', 'int size count(sourceModule.buffer)', 'moduleEnd'],
 			},
 		];
 

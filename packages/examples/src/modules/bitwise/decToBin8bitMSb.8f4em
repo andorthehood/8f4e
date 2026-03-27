@@ -33,7 +33,7 @@ branchIfTrue 1
  ; Calculate output address
 push &bit0
 push bitPointer
-push %bit0
+push sizeof(bit0)
 mul
 add
 

@@ -345,7 +345,7 @@ exports[`int[]: buffer size from constant division expression > if the generated
     "arguments": [
       {
         "type": "identifier",
-        "value": "$buffer",
+        "value": "count(buffer)",
       },
     ],
     "instruction": "push",
@@ -484,7 +484,7 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
     "arguments": [
       {
         "type": "identifier",
-        "value": "$buffer",
+        "value": "count(buffer)",
       },
     ],
     "instruction": "push",

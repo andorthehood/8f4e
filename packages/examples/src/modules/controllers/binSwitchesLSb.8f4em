@@ -45,7 +45,7 @@ branchIfTrue 1
 ; Load switch state
 push &bit0
 push bitPointer
-push %bit0
+push sizeof(bit0)
 mul
 add
 load

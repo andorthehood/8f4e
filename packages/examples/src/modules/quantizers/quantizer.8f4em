@@ -53,7 +53,7 @@ push buffer
 push *length
 push 1
 sub
-push %buffer
+push sizeof(buffer)
 mul
 add
 greaterOrEqual
@@ -62,7 +62,7 @@ branchIfTrue 1
  ; Increment level pointer
 push &_levelPointer
 push _levelPointer
-push %buffer
+push sizeof(buffer)
 add
 store
 loopEnd

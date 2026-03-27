@@ -14,8 +14,8 @@ push &out
 push playhead
 load8u
 castToFloat
-push ^buffer
-push !buffer
+push max(buffer)
+push min(buffer)
 sub
 castToFloat
 div
@@ -26,7 +26,7 @@ store
 ; Advance the playhead
 push &playhead
 push playhead
-push %buffer
+push sizeof(buffer)
 add
 store
 
