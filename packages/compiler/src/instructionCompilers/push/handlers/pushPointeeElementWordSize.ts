@@ -1,5 +1,6 @@
+import { extractPointeeElementWordSizeBase } from '@8f4e/ast-parser';
+
 import { ErrorCode, getError } from '../../../compilerError';
-import extractPointeeElementWordSizeBase from '../../../syntax/extractPointeeElementWordSizeBase';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';

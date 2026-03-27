@@ -1,9 +1,10 @@
+import { getPointerDepth } from '@8f4e/ast-parser';
+
 import int from './int';
 
 import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import getMemoryFlags from '../utils/memoryFlags';
-import getPointerDepth from '../syntax/getPointerDepth';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import createInstructionCompilerTestContext from '../utils/testUtils';

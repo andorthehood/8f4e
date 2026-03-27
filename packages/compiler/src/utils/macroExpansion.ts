@@ -1,6 +1,7 @@
-import instructionParser from '../syntax/instructionParser';
-import isComment from '../syntax/isComment';
-import isValidInstruction from '../syntax/isValidInstruction';
+import { instructionParser } from '@8f4e/ast-parser';
+import { isComment } from '@8f4e/ast-parser';
+import { isValidInstruction } from '@8f4e/ast-parser';
+
 import { ErrorCode, getError } from '../compilerError';
 
 import type { Module } from '../types';

@@ -76,7 +76,7 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 			argumentIndexesToNormalize = [0, 1];
 			break;
 		default:
-			if (declarationInstructions.has(line.instruction)) {
+			if (declarationInstructions.has(line.instruction as Instruction)) {
 				argumentIndexesToNormalize = [0, 1];
 			}
 			break;

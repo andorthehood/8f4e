@@ -11,7 +11,6 @@ export default defineConfig(
 			'src/wasmBuilders/**/*.ts',
 			'src/utils/**/*.ts',
 			'src/instructionCompilers/**/*.ts',
-			'src/syntax/**/*.ts',
 		],
 		additionalExclude: [
 			'**/testUtils.ts',

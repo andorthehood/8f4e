@@ -1,13 +1,14 @@
-import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
-import { withValidation } from '../withValidation';
+import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/ast-parser';
+import { isIntermodularModuleReference } from '@8f4e/ast-parser';
+import { isIntermodularElementCountReference } from '@8f4e/ast-parser';
+import { isIntermodularElementWordSizeReference } from '@8f4e/ast-parser';
+import { isIntermodularElementMaxReference } from '@8f4e/ast-parser';
+import { isIntermodularElementMinReference } from '@8f4e/ast-parser';
+
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { INTERMODULAR_REFERENCE_PATTERN } from '../syntax/isIntermodularReferencePattern';
-import isIntermodularModuleReference from '../syntax/isIntermodularModuleReference';
-import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
-import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
-import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
-import isIntermodularElementMinReference from '../syntax/isIntermodularElementMinReference';
+import { withValidation } from '../withValidation';
+import { ErrorCode, getError } from '../compilerError';
+import { ArgumentType } from '../types';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 

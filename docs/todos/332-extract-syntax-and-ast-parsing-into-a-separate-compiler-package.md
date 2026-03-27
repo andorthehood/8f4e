@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Extract syntax and AST parsing into a separate compiler package'
+title: 'TODO: Extract source-to-AST parsing into a separate ast-parser package'
 priority: Medium
 effort: 1-2d
 created: 2026-03-27
@@ -7,11 +7,11 @@ status: Open
 completed: null
 ---
 
-# TODO: Extract syntax and AST parsing into a separate compiler package
+# TODO: Extract source-to-AST parsing into a separate ast-parser package
 
 ## Problem Description
 
-The compiler currently mixes syntax concerns and semantic/codegen concerns inside the same package. `packages/compiler/src/syntax/` is already a partial boundary, but the rest of the compiler still imports syntax helpers directly and the package structure does not make the ownership line obvious.
+The compiler currently mixes source-to-AST parsing concerns and semantic/codegen concerns inside the same package. `packages/compiler/src/syntax/` is already a partial boundary, but the rest of the compiler still imports syntax helpers directly and the package structure does not make the ownership line obvious.
 
 That makes it easier for semantic logic to leak back into syntax-layer code and harder to preserve the intended phase boundary:
 
@@ -20,11 +20,11 @@ That makes it easier for semantic logic to leak back into syntax-layer code and 
 - compile-time normalization
 - codegen
 
-Separating AST parsing into its own compiler package would make the boundary explicit and reduce accidental coupling.
+Extracting source-to-AST parsing into its own sibling package under `packages/` would make the boundary explicit and reduce accidental coupling.
 
 ## Proposed Solution
 
-Create a dedicated syntax/AST package within the compiler workspace that owns:
+Create a dedicated sibling package under `packages/`, for example `packages/ast-parser`, that owns:
 
 - tokenization
 - line parsing
@@ -40,6 +40,7 @@ This should happen only after the compile-time refactor todos are complete, so t
 
 - Extracting syntax code before the compile-time refactor is complete, which would likely preserve current semantic leakage in a new package.
 - Moving semantic compile-time folding helpers into the syntax package just because they currently live near parser code.
+- Nesting the new parser under `packages/compiler` so the package boundary remains informal.
 - Creating a new package that still exports half-semantic convenience helpers.
 
 ## Implementation Plan
@@ -49,7 +50,7 @@ This should happen only after the compile-time refactor todos are complete, so t
 - Confirm which helpers are truly syntax-only.
 
 ### Step 2: Define the new package surface
-- Decide what the syntax package exports:
+- Create the new sibling package and decide what it exports:
   - AST types
   - parser entry points
   - syntax-only helper predicates/extractors
@@ -57,8 +58,8 @@ This should happen only after the compile-time refactor todos are complete, so t
 - Keep semantic and codegen helpers out of that surface.
 
 ### Step 3: Move code and update imports
-- Extract `src/syntax/` and related AST-construction code into the new package.
-- Update compiler imports to consume the new package through a clear public API.
+- Extract `source -> AST` code from `packages/compiler` into the new `ast-parser` package.
+- Update `packages/compiler` to consume that package through a clear public API.
 - Keep tests with the owning package or move them intentionally with the syntax code.
 
 ## Validation Checkpoints
@@ -69,22 +70,23 @@ This should happen only after the compile-time refactor todos are complete, so t
 
 ## Success Criteria
 
-- [ ] Syntax/AST parsing lives in a dedicated compiler package
+- [ ] Source-to-AST parsing lives in a dedicated sibling package under `packages/`
 - [ ] The main compiler package depends on parsed AST input instead of syntax internals
 - [ ] Semantic compile-time folding does not live in the syntax package
 - [ ] Tests and docs reflect the new package boundary
 
 ## Affected Components
 
+- `packages/ast-parser/` (new)
 - `packages/compiler/src/syntax/`
 - `packages/compiler/src/compiler.ts`
 - `packages/compiler/src/index.ts`
-- workspace package configuration for the new syntax package
+- workspace package configuration for the new parser package
 
 ## Risks & Considerations
 
 - **Risk**: Extracting too early will preserve the wrong boundary and force a second refactor later.
-- **Risk**: AST type ownership may need to move with the syntax package, which can touch many imports.
+- **Risk**: AST type ownership may need to move with the parser package, which can touch many imports.
 - **Dependency**: Should follow 329, 330, and 331.
 
 ## Related Items
@@ -95,4 +97,4 @@ This should happen only after the compile-time refactor todos are complete, so t
 ## Notes
 
 - This is a package-boundary cleanup, not a language feature.
-- The goal is to make the syntax/semantic separation obvious in the codebase, not just in the docs.
+- The goal is to make `source -> AST` a separate package-level responsibility, not just a folder inside the compiler.

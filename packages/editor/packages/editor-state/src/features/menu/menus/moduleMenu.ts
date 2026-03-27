@@ -1,4 +1,4 @@
-import { isSkipExecutionDirective } from '@8f4e/compiler/syntax';
+import { isSkipExecutionDirective } from '@8f4e/ast-parser';
 
 import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
 

@@ -1,14 +1,15 @@
-import { INTERMODULAR_REFERENCE_PATTERN } from './syntax/isIntermodularReferencePattern';
-import isIntermodularModuleReference from './syntax/isIntermodularModuleReference';
-import extractIntermodularModuleReferenceBase from './syntax/extractIntermodularModuleReferenceBase';
-import isIntermodularElementCountReference from './syntax/isIntermodularElementCountReference';
-import extractIntermodularElementCountBase from './syntax/extractIntermodularElementCountBase';
-import isIntermodularElementWordSizeReference from './syntax/isIntermodularElementWordSizeReference';
-import extractIntermodularElementWordSizeBase from './syntax/extractIntermodularElementWordSizeBase';
-import isIntermodularElementMaxReference from './syntax/isIntermodularElementMaxReference';
-import extractIntermodularElementMaxBase from './syntax/extractIntermodularElementMaxBase';
-import isIntermodularElementMinReference from './syntax/isIntermodularElementMinReference';
-import extractIntermodularElementMinBase from './syntax/extractIntermodularElementMinBase';
+import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/ast-parser';
+import { isIntermodularModuleReference } from '@8f4e/ast-parser';
+import { extractIntermodularModuleReferenceBase } from '@8f4e/ast-parser';
+import { isIntermodularElementCountReference } from '@8f4e/ast-parser';
+import { extractIntermodularElementCountBase } from '@8f4e/ast-parser';
+import { isIntermodularElementWordSizeReference } from '@8f4e/ast-parser';
+import { extractIntermodularElementWordSizeBase } from '@8f4e/ast-parser';
+import { isIntermodularElementMaxReference } from '@8f4e/ast-parser';
+import { extractIntermodularElementMaxBase } from '@8f4e/ast-parser';
+import { isIntermodularElementMinReference } from '@8f4e/ast-parser';
+import { extractIntermodularElementMinBase } from '@8f4e/ast-parser';
+
 import { ArgumentType } from './types';
 
 import type { AST, Argument } from './types';

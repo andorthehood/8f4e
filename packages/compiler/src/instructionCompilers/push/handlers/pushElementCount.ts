@@ -1,4 +1,5 @@
-import extractElementCountBase from '../../../syntax/extractElementCountBase';
+import { extractElementCountBase } from '@8f4e/ast-parser';
+
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';
