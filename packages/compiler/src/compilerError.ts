@@ -322,7 +322,7 @@ export function getError(
 			return {
 				code,
 				message:
-					'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255) or constant-style identifiers. Memory references and other expression forms are not allowed in split-byte sequences. (' +
+					'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255), literal-only * or / expressions that fold to an integer in that range, or constant-style identifiers. Memory references and non-byte-resolving forms are not allowed in split-byte sequences. (' +
 					code +
 					')',
 				line,
