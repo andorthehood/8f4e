@@ -21,6 +21,7 @@ export interface ASTLine {
 	lineNumberAfterMacroExpansion: number;
 	instruction: string;
 	arguments: Array<Argument>;
+	isSemanticOnly?: boolean;
 }
 
 export type AST = ASTLine[];

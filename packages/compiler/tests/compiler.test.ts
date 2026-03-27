@@ -71,6 +71,7 @@ describe('parseLine', () => {
 				instruction: 'int',
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
+				isSemanticOnly: false,
 			},
 		],
 		[
@@ -88,6 +89,7 @@ describe('parseLine', () => {
 				instruction: 'push',
 				lineNumberBeforeMacroExpansion: 100,
 				lineNumberAfterMacroExpansion: 100,
+				isSemanticOnly: false,
 			},
 		],
 	];
