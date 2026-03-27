@@ -1,3 +1,18 @@
+import {
+	ArgumentType,
+	extractIntermodularElementCountBase,
+	extractIntermodularElementMaxBase,
+	extractIntermodularElementMinBase,
+	extractIntermodularElementWordSizeBase,
+	extractIntermodularModuleReferenceBase,
+	INTERMODULAR_REFERENCE_PATTERN,
+	isIntermodularElementCountReference,
+	isIntermodularElementMaxReference,
+	isIntermodularElementMinReference,
+	isIntermodularElementWordSizeReference,
+	isIntermodularModuleReference,
+} from '@8f4e/ast-parser';
+
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './declarations';
 import applySemanticInstruction from './instructions';
@@ -5,7 +20,13 @@ import applySemanticInstruction from './instructions';
 import { ErrorCode, getError } from '../compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
-import { type AST, type CompilationContext, type CompiledFunctionLookup, type Namespaces } from '../types';
+import {
+	type AST,
+	type CompilationContext,
+	type CompiledFunctionLookup,
+	type Namespaces,
+	type Argument,
+} from '../types';
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
 	applySemanticInstruction(line, context);
@@ -60,6 +81,96 @@ export function prepassNamespace(
 	return context;
 }
 
+function getReferencedNamespaceIdsFromValue(value: string): string[] {
+	if (isIntermodularElementCountReference(value)) {
+		return [extractIntermodularElementCountBase(value).module];
+	}
+	if (isIntermodularElementWordSizeReference(value)) {
+		return [extractIntermodularElementWordSizeBase(value).module];
+	}
+	if (isIntermodularElementMaxReference(value)) {
+		return [extractIntermodularElementMaxBase(value).module];
+	}
+	if (isIntermodularElementMinReference(value)) {
+		return [extractIntermodularElementMinBase(value).module];
+	}
+	if (isIntermodularModuleReference(value)) {
+		return [extractIntermodularModuleReferenceBase(value).module];
+	}
+	if (INTERMODULAR_REFERENCE_PATTERN.test(value)) {
+		const cleanRef = value.endsWith('&') ? value.slice(0, -1) : value.slice(1);
+		return [cleanRef.split(':')[0]];
+	}
+
+	return [];
+}
+
+function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {
+	if (!argument) {
+		return [];
+	}
+
+	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		return [argument.lhs, argument.rhs].flatMap(value =>
+			typeof value === 'string' ? getReferencedNamespaceIdsFromValue(value) : []
+		);
+	}
+
+	if (argument.type !== ArgumentType.IDENTIFIER) {
+		return [];
+	}
+
+	return getReferencedNamespaceIdsFromValue(argument.value);
+}
+
+function getDeferredNamespaceIds(line: AST[number]): string[] {
+	if (line.instruction === 'use' && line.arguments[0]?.type === ArgumentType.IDENTIFIER) {
+		return [line.arguments[0].value];
+	}
+
+	return line.arguments.flatMap(argument => getReferencedNamespaceIdsFromArgument(argument));
+}
+
+function shouldDeferNamespaceCollection(
+	error: unknown,
+	line: AST[number] | undefined,
+	namespaces: Namespaces
+): boolean {
+	if (!line || typeof error !== 'object' || error === null || !('code' in error)) {
+		return false;
+	}
+
+	if (error.code !== ErrorCode.UNDECLARED_IDENTIFIER) {
+		return false;
+	}
+
+	const referencedNamespaceIds = getDeferredNamespaceIds(line);
+	return referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
+}
+
+function toNamespaceDiscoveryAst(ast: AST): AST {
+	return ast.flatMap(line => {
+		if (line.instruction === 'init') {
+			return [];
+		}
+
+		if (
+			isMemoryDeclarationInstruction(line.instruction) &&
+			!line.instruction.endsWith('[]') &&
+			line.arguments[0]?.type === ArgumentType.IDENTIFIER
+		) {
+			return [
+				{
+					...line,
+					arguments: [line.arguments[0]],
+				},
+			];
+		}
+
+		return [line];
+	});
+}
+
 export function collectNamespacesFromASTs(
 	asts: AST[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
@@ -68,15 +179,45 @@ export function collectNamespacesFromASTs(
 ): Namespaces {
 	const namespaces: Namespaces = {};
 
-	for (const ast of asts) {
-		const context = prepassNamespace(ast, namespaces, startingByteAddress, compiledFunctions);
-		if (!context.namespace.moduleName) {
-			continue;
+	let pendingAsts = [...asts];
+	let madeProgress = true;
+
+	while (pendingAsts.length > 0 && madeProgress) {
+		madeProgress = false;
+		const deferredAsts: AST[] = [];
+
+		for (const ast of pendingAsts) {
+			try {
+				const context = prepassNamespace(
+					toNamespaceDiscoveryAst(ast),
+					namespaces,
+					startingByteAddress,
+					compiledFunctions
+				);
+				if (!context.namespace.moduleName) {
+					continue;
+				}
+				namespaces[context.namespace.moduleName] = {
+					consts: { ...context.namespace.consts },
+					memory: context.namespace.memory,
+				};
+				madeProgress = true;
+			} catch (error) {
+				const failingLine =
+					typeof error === 'object' && error !== null && 'line' in error ? (error.line as AST[number]) : undefined;
+				if (shouldDeferNamespaceCollection(error, failingLine, namespaces)) {
+					deferredAsts.push(ast);
+					continue;
+				}
+				throw error;
+			}
 		}
-		namespaces[context.namespace.moduleName] = {
-			consts: { ...context.namespace.consts },
-			memory: context.namespace.memory,
-		};
+
+		pendingAsts = deferredAsts;
+	}
+
+	if (pendingAsts.length > 0) {
+		prepassNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions);
 	}
 
 	let nextStartingByteAddress = startingByteAddress;

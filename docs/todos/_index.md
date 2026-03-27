@@ -79,6 +79,10 @@ Active todo files are listed below.
 | 332 | Extract syntax and AST parsing into a separate compiler package | 🟡 | 1-2d | 2026-03-27 | The compiler currently mixes syntax concerns and semantic/codegen concerns inside the same package, making the intended phase boundary harder to enforce. |
 | 334 | Move locals out of namespace and into codegen state | 🟡 | 4-8h | 2026-03-27 | The compiler still stores mutable local-variable state under `context.namespace.locals`, even though locals are really per-function codegen state rather than semantic namespace data. |
 | 335 | Separate compiler-generated hidden storage from user memory declarations | 🟡 | 6-10h | 2026-03-27 | Several instructions still rely on hidden compiler storage modeled as declaration-shaped input, which keeps synthetic declarations leaking into the generic compile path. |
+| 336 | Move identifier reference classification into ast-parser | 🟡 | 6-10h | 2026-03-27 | The compiler still re-parses identifier-shaped argument strings to determine whether they are memory, constant, address, module-address, pointer-dereference, or metadata-query references instead of receiving that classification directly from the AST parser. |
+| 337 | Add structured address and query extraction to ast-parser | 🟡 | 4-8h | 2026-03-27 | The compiler still reconstructs address/query syntax details such as module ids, memory ids, start/end address markers, and pointee flags from raw identifier strings instead of receiving those extracted fields directly from the AST parser. |
+| 338 | Add richer compile-time expression AST nodes | 🟡 | 4-8h | 2026-03-27 | Compile-time expression nodes still rely on partially string-shaped operands instead of carrying fully parsed AST operands such as classified identifiers and structured metadata queries. |
+| 339 | Add instruction classification metadata to AST lines | 🟡 | 4-8h | 2026-03-27 | The compiler still uses repeated instruction-name checks and local string sets for syntax-level routing instead of receiving richer instruction classification metadata directly from AST lines. |
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |

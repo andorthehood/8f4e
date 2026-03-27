@@ -92,7 +92,12 @@ async function run(): Promise<void> {
 }
 
 run().catch(error => {
-	const message = error instanceof Error ? error.message : String(error);
+	const message =
+		error instanceof Error
+			? error.message
+			: typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string'
+				? error.message
+				: String(error);
 	console.error(message);
 	process.exit(1);
 });

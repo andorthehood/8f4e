@@ -1,0 +1,5544 @@
+[
+  {
+    "lineNumberBeforeMacroExpansion": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "instruction": "8f4e/v1",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "projectConfig",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 7,
+    "lineNumberAfterMacroExpansion": 7,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 9,
+    "lineNumberAfterMacroExpansion": 9,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "dancer1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 14,
+    "lineNumberAfterMacroExpansion": 14,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin0",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 15,
+    "lineNumberAfterMacroExpansion": 15,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin255",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 16,
+    "lineNumberAfterMacroExpansion": 16,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin0",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 17,
+    "lineNumberAfterMacroExpansion": 17,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "offset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 21,
+    "lineNumberAfterMacroExpansion": 21,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 22,
+    "lineNumberAfterMacroExpansion": 22,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 23,
+    "lineNumberAfterMacroExpansion": 23,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 4,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 24,
+    "lineNumberAfterMacroExpansion": 24,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 25,
+    "lineNumberAfterMacroExpansion": 25,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 27,
+    "lineNumberAfterMacroExpansion": 27,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 28,
+    "lineNumberAfterMacroExpansion": 28,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 29,
+    "lineNumberAfterMacroExpansion": 29,
+    "instruction": "equal",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 30,
+    "lineNumberAfterMacroExpansion": 30,
+    "instruction": "if",
+    "arguments": [
+      {
+        "value": "void",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 31,
+    "lineNumberAfterMacroExpansion": 31,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 32,
+    "lineNumberAfterMacroExpansion": 32,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 33,
+    "lineNumberAfterMacroExpansion": 33,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 34,
+    "lineNumberAfterMacroExpansion": 34,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 36,
+    "lineNumberAfterMacroExpansion": 36,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&offset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 37,
+    "lineNumberAfterMacroExpansion": 37,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 38,
+    "lineNumberAfterMacroExpansion": 38,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 100,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 39,
+    "lineNumberAfterMacroExpansion": 39,
+    "instruction": "mul",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 40,
+    "lineNumberAfterMacroExpansion": 40,
+    "instruction": "castToInt",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 41,
+    "lineNumberAfterMacroExpansion": 41,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 43,
+    "lineNumberAfterMacroExpansion": 43,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 45,
+    "lineNumberAfterMacroExpansion": 45,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "dancer2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 47,
+    "lineNumberAfterMacroExpansion": 47,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin32",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 48,
+    "lineNumberAfterMacroExpansion": 48,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin255",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 49,
+    "lineNumberAfterMacroExpansion": 49,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin0",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 50,
+    "lineNumberAfterMacroExpansion": 50,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "offset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 54,
+    "lineNumberAfterMacroExpansion": 54,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 55,
+    "lineNumberAfterMacroExpansion": 55,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 56,
+    "lineNumberAfterMacroExpansion": 56,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 4,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 57,
+    "lineNumberAfterMacroExpansion": 57,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 58,
+    "lineNumberAfterMacroExpansion": 58,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 60,
+    "lineNumberAfterMacroExpansion": 60,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 61,
+    "lineNumberAfterMacroExpansion": 61,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 62,
+    "lineNumberAfterMacroExpansion": 62,
+    "instruction": "equal",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 63,
+    "lineNumberAfterMacroExpansion": 63,
+    "instruction": "if",
+    "arguments": [
+      {
+        "value": "void",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 64,
+    "lineNumberAfterMacroExpansion": 64,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 65,
+    "lineNumberAfterMacroExpansion": 65,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 66,
+    "lineNumberAfterMacroExpansion": 66,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 67,
+    "lineNumberAfterMacroExpansion": 67,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 69,
+    "lineNumberAfterMacroExpansion": 69,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&offset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 70,
+    "lineNumberAfterMacroExpansion": 70,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 71,
+    "lineNumberAfterMacroExpansion": 71,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 100,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 72,
+    "lineNumberAfterMacroExpansion": 72,
+    "instruction": "mul",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 73,
+    "lineNumberAfterMacroExpansion": 73,
+    "instruction": "castToInt",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 74,
+    "lineNumberAfterMacroExpansion": 74,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 76,
+    "lineNumberAfterMacroExpansion": 76,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 78,
+    "lineNumberAfterMacroExpansion": 78,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "dancer3",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 81,
+    "lineNumberAfterMacroExpansion": 81,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin64",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 82,
+    "lineNumberAfterMacroExpansion": 82,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin255",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 83,
+    "lineNumberAfterMacroExpansion": 83,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin0",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 84,
+    "lineNumberAfterMacroExpansion": 84,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "offset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 88,
+    "lineNumberAfterMacroExpansion": 88,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 89,
+    "lineNumberAfterMacroExpansion": 89,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 90,
+    "lineNumberAfterMacroExpansion": 90,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 4,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 91,
+    "lineNumberAfterMacroExpansion": 91,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 92,
+    "lineNumberAfterMacroExpansion": 92,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 94,
+    "lineNumberAfterMacroExpansion": 94,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 95,
+    "lineNumberAfterMacroExpansion": 95,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 96,
+    "lineNumberAfterMacroExpansion": 96,
+    "instruction": "equal",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 97,
+    "lineNumberAfterMacroExpansion": 97,
+    "instruction": "if",
+    "arguments": [
+      {
+        "value": "void",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 98,
+    "lineNumberAfterMacroExpansion": 98,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 99,
+    "lineNumberAfterMacroExpansion": 99,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 100,
+    "lineNumberAfterMacroExpansion": 100,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 101,
+    "lineNumberAfterMacroExpansion": 101,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 103,
+    "lineNumberAfterMacroExpansion": 103,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&offset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 104,
+    "lineNumberAfterMacroExpansion": 104,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 105,
+    "lineNumberAfterMacroExpansion": 105,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 100,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 106,
+    "lineNumberAfterMacroExpansion": 106,
+    "instruction": "mul",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 107,
+    "lineNumberAfterMacroExpansion": 107,
+    "instruction": "castToInt",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 108,
+    "lineNumberAfterMacroExpansion": 108,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 110,
+    "lineNumberAfterMacroExpansion": 110,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 112,
+    "lineNumberAfterMacroExpansion": 112,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "dancer4",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 115,
+    "lineNumberAfterMacroExpansion": 115,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin64",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 116,
+    "lineNumberAfterMacroExpansion": 116,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin255",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 117,
+    "lineNumberAfterMacroExpansion": 117,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      },
+      {
+        "value": "&sineLT:sin0",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 118,
+    "lineNumberAfterMacroExpansion": 118,
+    "instruction": "float*",
+    "arguments": [
+      {
+        "value": "offsetX",
+        "type": "identifier"
+      },
+      {
+        "value": "&dancer1:offset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 120,
+    "lineNumberAfterMacroExpansion": 120,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "offsetY",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 125,
+    "lineNumberAfterMacroExpansion": 125,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 126,
+    "lineNumberAfterMacroExpansion": 126,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 127,
+    "lineNumberAfterMacroExpansion": 127,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 4,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 128,
+    "lineNumberAfterMacroExpansion": 128,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 129,
+    "lineNumberAfterMacroExpansion": 129,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 131,
+    "lineNumberAfterMacroExpansion": 131,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 132,
+    "lineNumberAfterMacroExpansion": 132,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "last",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 133,
+    "lineNumberAfterMacroExpansion": 133,
+    "instruction": "equal",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 134,
+    "lineNumberAfterMacroExpansion": 134,
+    "instruction": "if",
+    "arguments": [
+      {
+        "value": "void",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 135,
+    "lineNumberAfterMacroExpansion": 135,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 136,
+    "lineNumberAfterMacroExpansion": 136,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "first",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 137,
+    "lineNumberAfterMacroExpansion": 137,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 138,
+    "lineNumberAfterMacroExpansion": 138,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 140,
+    "lineNumberAfterMacroExpansion": 140,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&offsetY",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 141,
+    "lineNumberAfterMacroExpansion": 141,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*sin",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 142,
+    "lineNumberAfterMacroExpansion": 142,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 100,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 143,
+    "lineNumberAfterMacroExpansion": 143,
+    "instruction": "mul",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 144,
+    "lineNumberAfterMacroExpansion": 144,
+    "instruction": "castToInt",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 145,
+    "lineNumberAfterMacroExpansion": 145,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 147,
+    "lineNumberAfterMacroExpansion": 147,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 149,
+    "lineNumberAfterMacroExpansion": 149,
+    "instruction": "constants",
+    "arguments": [
+      {
+        "value": "env",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 155,
+    "lineNumberAfterMacroExpansion": 155,
+    "instruction": "const",
+    "arguments": [
+      {
+        "value": "SAMPLE_RATE",
+        "type": "identifier"
+      },
+      {
+        "value": 50,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 156,
+    "lineNumberAfterMacroExpansion": 156,
+    "instruction": "const",
+    "arguments": [
+      {
+        "value": "AUDIO_BUFFER_SIZE",
+        "type": "identifier"
+      },
+      {
+        "value": 128,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 158,
+    "lineNumberAfterMacroExpansion": 158,
+    "instruction": "constantsEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 160,
+    "lineNumberAfterMacroExpansion": 160,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "sineLT",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 163,
+    "lineNumberAfterMacroExpansion": 163,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin0",
+        "type": "identifier"
+      },
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 164,
+    "lineNumberAfterMacroExpansion": 164,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin1",
+        "type": "identifier"
+      },
+      {
+        "value": 0.0246,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 165,
+    "lineNumberAfterMacroExpansion": 165,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin2",
+        "type": "identifier"
+      },
+      {
+        "value": 0.0493,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 166,
+    "lineNumberAfterMacroExpansion": 166,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin3",
+        "type": "identifier"
+      },
+      {
+        "value": 0.0739,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 167,
+    "lineNumberAfterMacroExpansion": 167,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin4",
+        "type": "identifier"
+      },
+      {
+        "value": 0.0984,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 168,
+    "lineNumberAfterMacroExpansion": 168,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin5",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1229,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 169,
+    "lineNumberAfterMacroExpansion": 169,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin6",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1473,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 170,
+    "lineNumberAfterMacroExpansion": 170,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin7",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1716,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 171,
+    "lineNumberAfterMacroExpansion": 171,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin8",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1958,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 172,
+    "lineNumberAfterMacroExpansion": 172,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin9",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2199,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 173,
+    "lineNumberAfterMacroExpansion": 173,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin10",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2439,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 174,
+    "lineNumberAfterMacroExpansion": 174,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin11",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2677,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 175,
+    "lineNumberAfterMacroExpansion": 175,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin12",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2914,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 176,
+    "lineNumberAfterMacroExpansion": 176,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin13",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3149,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 177,
+    "lineNumberAfterMacroExpansion": 177,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin14",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3382,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 178,
+    "lineNumberAfterMacroExpansion": 178,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin15",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3612,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 179,
+    "lineNumberAfterMacroExpansion": 179,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin16",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3841,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 180,
+    "lineNumberAfterMacroExpansion": 180,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin17",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4067,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 181,
+    "lineNumberAfterMacroExpansion": 181,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin18",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4291,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 182,
+    "lineNumberAfterMacroExpansion": 182,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin19",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4512,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 183,
+    "lineNumberAfterMacroExpansion": 183,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin20",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4731,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 184,
+    "lineNumberAfterMacroExpansion": 184,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin21",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4947,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 185,
+    "lineNumberAfterMacroExpansion": 185,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin22",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5159,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 186,
+    "lineNumberAfterMacroExpansion": 186,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin23",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5369,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 187,
+    "lineNumberAfterMacroExpansion": 187,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin24",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5575,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 188,
+    "lineNumberAfterMacroExpansion": 188,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin25",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5778,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 189,
+    "lineNumberAfterMacroExpansion": 189,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin26",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5977,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 190,
+    "lineNumberAfterMacroExpansion": 190,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin27",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6173,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 191,
+    "lineNumberAfterMacroExpansion": 191,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin28",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6365,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 192,
+    "lineNumberAfterMacroExpansion": 192,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin29",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6553,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 193,
+    "lineNumberAfterMacroExpansion": 193,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin30",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6737,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 194,
+    "lineNumberAfterMacroExpansion": 194,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin31",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6917,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 195,
+    "lineNumberAfterMacroExpansion": 195,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin32",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7093,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 196,
+    "lineNumberAfterMacroExpansion": 196,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin33",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7264,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 197,
+    "lineNumberAfterMacroExpansion": 197,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin34",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7431,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 198,
+    "lineNumberAfterMacroExpansion": 198,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin35",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7594,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 199,
+    "lineNumberAfterMacroExpansion": 199,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin36",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7752,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 200,
+    "lineNumberAfterMacroExpansion": 200,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin37",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7905,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 201,
+    "lineNumberAfterMacroExpansion": 201,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin38",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8054,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 202,
+    "lineNumberAfterMacroExpansion": 202,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin39",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8197,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 203,
+    "lineNumberAfterMacroExpansion": 203,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin40",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8336,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 204,
+    "lineNumberAfterMacroExpansion": 204,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin41",
+        "type": "identifier"
+      },
+      {
+        "value": 0.847,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 205,
+    "lineNumberAfterMacroExpansion": 205,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin42",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8598,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 206,
+    "lineNumberAfterMacroExpansion": 206,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin43",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8721,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 207,
+    "lineNumberAfterMacroExpansion": 207,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin44",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8839,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 208,
+    "lineNumberAfterMacroExpansion": 208,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin45",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8952,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 209,
+    "lineNumberAfterMacroExpansion": 209,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin46",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9059,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 210,
+    "lineNumberAfterMacroExpansion": 210,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin47",
+        "type": "identifier"
+      },
+      {
+        "value": 0.916,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 211,
+    "lineNumberAfterMacroExpansion": 211,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin48",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9256,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 212,
+    "lineNumberAfterMacroExpansion": 212,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin49",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9347,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 213,
+    "lineNumberAfterMacroExpansion": 213,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin50",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9432,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 214,
+    "lineNumberAfterMacroExpansion": 214,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin51",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9511,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 215,
+    "lineNumberAfterMacroExpansion": 215,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin52",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9584,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 216,
+    "lineNumberAfterMacroExpansion": 216,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin53",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9651,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 217,
+    "lineNumberAfterMacroExpansion": 217,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin54",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9713,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 218,
+    "lineNumberAfterMacroExpansion": 218,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin55",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9768,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 219,
+    "lineNumberAfterMacroExpansion": 219,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin56",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9818,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 220,
+    "lineNumberAfterMacroExpansion": 220,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin57",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9862,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 221,
+    "lineNumberAfterMacroExpansion": 221,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin58",
+        "type": "identifier"
+      },
+      {
+        "value": 0.99,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 222,
+    "lineNumberAfterMacroExpansion": 222,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin59",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9932,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 223,
+    "lineNumberAfterMacroExpansion": 223,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin60",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9957,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 224,
+    "lineNumberAfterMacroExpansion": 224,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin61",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9977,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 225,
+    "lineNumberAfterMacroExpansion": 225,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin62",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9991,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 226,
+    "lineNumberAfterMacroExpansion": 226,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin63",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9998,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 227,
+    "lineNumberAfterMacroExpansion": 227,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin64",
+        "type": "identifier"
+      },
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 228,
+    "lineNumberAfterMacroExpansion": 228,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin65",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9995,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 229,
+    "lineNumberAfterMacroExpansion": 229,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin66",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9985,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 230,
+    "lineNumberAfterMacroExpansion": 230,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin67",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9968,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 231,
+    "lineNumberAfterMacroExpansion": 231,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin68",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9945,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 232,
+    "lineNumberAfterMacroExpansion": 232,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin69",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9916,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 233,
+    "lineNumberAfterMacroExpansion": 233,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin70",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9882,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 234,
+    "lineNumberAfterMacroExpansion": 234,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin71",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9841,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 235,
+    "lineNumberAfterMacroExpansion": 235,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin72",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9794,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 236,
+    "lineNumberAfterMacroExpansion": 236,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin73",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9741,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 237,
+    "lineNumberAfterMacroExpansion": 237,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin74",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9683,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 238,
+    "lineNumberAfterMacroExpansion": 238,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin75",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9618,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 239,
+    "lineNumberAfterMacroExpansion": 239,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin76",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9548,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 240,
+    "lineNumberAfterMacroExpansion": 240,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin77",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9472,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 241,
+    "lineNumberAfterMacroExpansion": 241,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin78",
+        "type": "identifier"
+      },
+      {
+        "value": 0.939,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 242,
+    "lineNumberAfterMacroExpansion": 242,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin79",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9302,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 243,
+    "lineNumberAfterMacroExpansion": 243,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin80",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9209,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 244,
+    "lineNumberAfterMacroExpansion": 244,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin81",
+        "type": "identifier"
+      },
+      {
+        "value": 0.911,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 245,
+    "lineNumberAfterMacroExpansion": 245,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin82",
+        "type": "identifier"
+      },
+      {
+        "value": 0.9006,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 246,
+    "lineNumberAfterMacroExpansion": 246,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin83",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8896,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 247,
+    "lineNumberAfterMacroExpansion": 247,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin84",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8781,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 248,
+    "lineNumberAfterMacroExpansion": 248,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin85",
+        "type": "identifier"
+      },
+      {
+        "value": 0.866,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 249,
+    "lineNumberAfterMacroExpansion": 249,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin86",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8534,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 250,
+    "lineNumberAfterMacroExpansion": 250,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin87",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8403,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 251,
+    "lineNumberAfterMacroExpansion": 251,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin88",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8267,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 252,
+    "lineNumberAfterMacroExpansion": 252,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin89",
+        "type": "identifier"
+      },
+      {
+        "value": 0.8126,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 253,
+    "lineNumberAfterMacroExpansion": 253,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin90",
+        "type": "identifier"
+      },
+      {
+        "value": 0.798,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 254,
+    "lineNumberAfterMacroExpansion": 254,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin91",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7829,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 255,
+    "lineNumberAfterMacroExpansion": 255,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin92",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7674,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 256,
+    "lineNumberAfterMacroExpansion": 256,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin93",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7513,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 257,
+    "lineNumberAfterMacroExpansion": 257,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin94",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7348,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 258,
+    "lineNumberAfterMacroExpansion": 258,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin95",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7179,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 259,
+    "lineNumberAfterMacroExpansion": 259,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin96",
+        "type": "identifier"
+      },
+      {
+        "value": 0.7005,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 260,
+    "lineNumberAfterMacroExpansion": 260,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin97",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6827,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 261,
+    "lineNumberAfterMacroExpansion": 261,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin98",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6645,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 262,
+    "lineNumberAfterMacroExpansion": 262,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin99",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6459,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 263,
+    "lineNumberAfterMacroExpansion": 263,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin100",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6269,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 264,
+    "lineNumberAfterMacroExpansion": 264,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin101",
+        "type": "identifier"
+      },
+      {
+        "value": 0.6075,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 265,
+    "lineNumberAfterMacroExpansion": 265,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin102",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5878,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 266,
+    "lineNumberAfterMacroExpansion": 266,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin103",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5677,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 267,
+    "lineNumberAfterMacroExpansion": 267,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin104",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5472,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 268,
+    "lineNumberAfterMacroExpansion": 268,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin105",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5264,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 269,
+    "lineNumberAfterMacroExpansion": 269,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin106",
+        "type": "identifier"
+      },
+      {
+        "value": 0.5053,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 270,
+    "lineNumberAfterMacroExpansion": 270,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin107",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4839,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 271,
+    "lineNumberAfterMacroExpansion": 271,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin108",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4622,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 272,
+    "lineNumberAfterMacroExpansion": 272,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin109",
+        "type": "identifier"
+      },
+      {
+        "value": 0.4402,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 273,
+    "lineNumberAfterMacroExpansion": 273,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin110",
+        "type": "identifier"
+      },
+      {
+        "value": 0.418,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 274,
+    "lineNumberAfterMacroExpansion": 274,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin111",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3955,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 275,
+    "lineNumberAfterMacroExpansion": 275,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin112",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3727,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 276,
+    "lineNumberAfterMacroExpansion": 276,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin113",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3497,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 277,
+    "lineNumberAfterMacroExpansion": 277,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin114",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3265,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 278,
+    "lineNumberAfterMacroExpansion": 278,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin115",
+        "type": "identifier"
+      },
+      {
+        "value": 0.3032,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 279,
+    "lineNumberAfterMacroExpansion": 279,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin116",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2796,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 280,
+    "lineNumberAfterMacroExpansion": 280,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin117",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2558,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 281,
+    "lineNumberAfterMacroExpansion": 281,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin118",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2319,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 282,
+    "lineNumberAfterMacroExpansion": 282,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin119",
+        "type": "identifier"
+      },
+      {
+        "value": 0.2079,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 283,
+    "lineNumberAfterMacroExpansion": 283,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin120",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1837,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 284,
+    "lineNumberAfterMacroExpansion": 284,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin121",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1595,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 285,
+    "lineNumberAfterMacroExpansion": 285,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin122",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1351,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 286,
+    "lineNumberAfterMacroExpansion": 286,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin123",
+        "type": "identifier"
+      },
+      {
+        "value": 0.1107,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 287,
+    "lineNumberAfterMacroExpansion": 287,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin124",
+        "type": "identifier"
+      },
+      {
+        "value": 0.0861,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 288,
+    "lineNumberAfterMacroExpansion": 288,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin125",
+        "type": "identifier"
+      },
+      {
+        "value": 0.0616,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 289,
+    "lineNumberAfterMacroExpansion": 289,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin126",
+        "type": "identifier"
+      },
+      {
+        "value": 0.037,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 290,
+    "lineNumberAfterMacroExpansion": 290,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin127",
+        "type": "identifier"
+      },
+      {
+        "value": 0.0123,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 291,
+    "lineNumberAfterMacroExpansion": 291,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin128",
+        "type": "identifier"
+      },
+      {
+        "value": -0.0123,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 292,
+    "lineNumberAfterMacroExpansion": 292,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin129",
+        "type": "identifier"
+      },
+      {
+        "value": -0.037,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 293,
+    "lineNumberAfterMacroExpansion": 293,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin130",
+        "type": "identifier"
+      },
+      {
+        "value": -0.0616,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 294,
+    "lineNumberAfterMacroExpansion": 294,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin131",
+        "type": "identifier"
+      },
+      {
+        "value": -0.0861,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 295,
+    "lineNumberAfterMacroExpansion": 295,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin132",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1107,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 296,
+    "lineNumberAfterMacroExpansion": 296,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin133",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1351,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 297,
+    "lineNumberAfterMacroExpansion": 297,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin134",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1595,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 298,
+    "lineNumberAfterMacroExpansion": 298,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin135",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1837,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 299,
+    "lineNumberAfterMacroExpansion": 299,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin136",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2079,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 300,
+    "lineNumberAfterMacroExpansion": 300,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin137",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2319,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 301,
+    "lineNumberAfterMacroExpansion": 301,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin138",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2558,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 302,
+    "lineNumberAfterMacroExpansion": 302,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin139",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2796,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 303,
+    "lineNumberAfterMacroExpansion": 303,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin140",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3032,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 304,
+    "lineNumberAfterMacroExpansion": 304,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin141",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3265,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 305,
+    "lineNumberAfterMacroExpansion": 305,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin142",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3497,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 306,
+    "lineNumberAfterMacroExpansion": 306,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin143",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3727,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 307,
+    "lineNumberAfterMacroExpansion": 307,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin144",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3955,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 308,
+    "lineNumberAfterMacroExpansion": 308,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin145",
+        "type": "identifier"
+      },
+      {
+        "value": -0.418,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 309,
+    "lineNumberAfterMacroExpansion": 309,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin146",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4402,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 310,
+    "lineNumberAfterMacroExpansion": 310,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin147",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4622,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 311,
+    "lineNumberAfterMacroExpansion": 311,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin148",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4839,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 312,
+    "lineNumberAfterMacroExpansion": 312,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin149",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5053,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 313,
+    "lineNumberAfterMacroExpansion": 313,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin150",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5264,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 314,
+    "lineNumberAfterMacroExpansion": 314,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin151",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5472,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 315,
+    "lineNumberAfterMacroExpansion": 315,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin152",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5677,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 316,
+    "lineNumberAfterMacroExpansion": 316,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin153",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5878,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 317,
+    "lineNumberAfterMacroExpansion": 317,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin154",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6075,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 318,
+    "lineNumberAfterMacroExpansion": 318,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin155",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6269,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 319,
+    "lineNumberAfterMacroExpansion": 319,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin156",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6459,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 320,
+    "lineNumberAfterMacroExpansion": 320,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin157",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6645,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 321,
+    "lineNumberAfterMacroExpansion": 321,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin158",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6827,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 322,
+    "lineNumberAfterMacroExpansion": 322,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin159",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7005,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 323,
+    "lineNumberAfterMacroExpansion": 323,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin160",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7179,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 324,
+    "lineNumberAfterMacroExpansion": 324,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin161",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7348,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 325,
+    "lineNumberAfterMacroExpansion": 325,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin162",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7513,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 326,
+    "lineNumberAfterMacroExpansion": 326,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin163",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7674,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 327,
+    "lineNumberAfterMacroExpansion": 327,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin164",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7829,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 328,
+    "lineNumberAfterMacroExpansion": 328,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin165",
+        "type": "identifier"
+      },
+      {
+        "value": -0.798,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 329,
+    "lineNumberAfterMacroExpansion": 329,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin166",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8126,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 330,
+    "lineNumberAfterMacroExpansion": 330,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin167",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8267,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 331,
+    "lineNumberAfterMacroExpansion": 331,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin168",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8403,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 332,
+    "lineNumberAfterMacroExpansion": 332,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin169",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8534,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 333,
+    "lineNumberAfterMacroExpansion": 333,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin170",
+        "type": "identifier"
+      },
+      {
+        "value": -0.866,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 334,
+    "lineNumberAfterMacroExpansion": 334,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin171",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8781,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 335,
+    "lineNumberAfterMacroExpansion": 335,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin172",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8896,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 336,
+    "lineNumberAfterMacroExpansion": 336,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin173",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9006,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 337,
+    "lineNumberAfterMacroExpansion": 337,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin174",
+        "type": "identifier"
+      },
+      {
+        "value": -0.911,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 338,
+    "lineNumberAfterMacroExpansion": 338,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin175",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9209,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 339,
+    "lineNumberAfterMacroExpansion": 339,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin176",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9302,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 340,
+    "lineNumberAfterMacroExpansion": 340,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin177",
+        "type": "identifier"
+      },
+      {
+        "value": -0.939,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 341,
+    "lineNumberAfterMacroExpansion": 341,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin178",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9472,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 342,
+    "lineNumberAfterMacroExpansion": 342,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin179",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9548,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 343,
+    "lineNumberAfterMacroExpansion": 343,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin180",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9618,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 344,
+    "lineNumberAfterMacroExpansion": 344,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin181",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9683,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 345,
+    "lineNumberAfterMacroExpansion": 345,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin182",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9741,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 346,
+    "lineNumberAfterMacroExpansion": 346,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin183",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9794,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 347,
+    "lineNumberAfterMacroExpansion": 347,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin184",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9841,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 348,
+    "lineNumberAfterMacroExpansion": 348,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin185",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9882,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 349,
+    "lineNumberAfterMacroExpansion": 349,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin186",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9916,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 350,
+    "lineNumberAfterMacroExpansion": 350,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin187",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9945,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 351,
+    "lineNumberAfterMacroExpansion": 351,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin188",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9968,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 352,
+    "lineNumberAfterMacroExpansion": 352,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin189",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9985,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 353,
+    "lineNumberAfterMacroExpansion": 353,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin190",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9995,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 354,
+    "lineNumberAfterMacroExpansion": 354,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin191",
+        "type": "identifier"
+      },
+      {
+        "value": -1,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 355,
+    "lineNumberAfterMacroExpansion": 355,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin192",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9998,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 356,
+    "lineNumberAfterMacroExpansion": 356,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin193",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9991,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 357,
+    "lineNumberAfterMacroExpansion": 357,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin194",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9977,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 358,
+    "lineNumberAfterMacroExpansion": 358,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin195",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9957,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 359,
+    "lineNumberAfterMacroExpansion": 359,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin196",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9932,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 360,
+    "lineNumberAfterMacroExpansion": 360,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin197",
+        "type": "identifier"
+      },
+      {
+        "value": -0.99,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 361,
+    "lineNumberAfterMacroExpansion": 361,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin198",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9862,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 362,
+    "lineNumberAfterMacroExpansion": 362,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin199",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9818,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 363,
+    "lineNumberAfterMacroExpansion": 363,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin200",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9768,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 364,
+    "lineNumberAfterMacroExpansion": 364,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin201",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9713,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 365,
+    "lineNumberAfterMacroExpansion": 365,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin202",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9651,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 366,
+    "lineNumberAfterMacroExpansion": 366,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin203",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9584,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 367,
+    "lineNumberAfterMacroExpansion": 367,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin204",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9511,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 368,
+    "lineNumberAfterMacroExpansion": 368,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin205",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9432,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 369,
+    "lineNumberAfterMacroExpansion": 369,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin206",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9347,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 370,
+    "lineNumberAfterMacroExpansion": 370,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin207",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9256,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 371,
+    "lineNumberAfterMacroExpansion": 371,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin208",
+        "type": "identifier"
+      },
+      {
+        "value": -0.916,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 372,
+    "lineNumberAfterMacroExpansion": 372,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin209",
+        "type": "identifier"
+      },
+      {
+        "value": -0.9059,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 373,
+    "lineNumberAfterMacroExpansion": 373,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin210",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8952,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 374,
+    "lineNumberAfterMacroExpansion": 374,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin211",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8839,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 375,
+    "lineNumberAfterMacroExpansion": 375,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin212",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8721,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 376,
+    "lineNumberAfterMacroExpansion": 376,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin213",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8598,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 377,
+    "lineNumberAfterMacroExpansion": 377,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin214",
+        "type": "identifier"
+      },
+      {
+        "value": -0.847,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 378,
+    "lineNumberAfterMacroExpansion": 378,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin215",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8336,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 379,
+    "lineNumberAfterMacroExpansion": 379,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin216",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8197,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 380,
+    "lineNumberAfterMacroExpansion": 380,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin217",
+        "type": "identifier"
+      },
+      {
+        "value": -0.8054,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 381,
+    "lineNumberAfterMacroExpansion": 381,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin218",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7905,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 382,
+    "lineNumberAfterMacroExpansion": 382,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin219",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7752,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 383,
+    "lineNumberAfterMacroExpansion": 383,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin220",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7594,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 384,
+    "lineNumberAfterMacroExpansion": 384,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin221",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7431,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 385,
+    "lineNumberAfterMacroExpansion": 385,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin222",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7264,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 386,
+    "lineNumberAfterMacroExpansion": 386,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin223",
+        "type": "identifier"
+      },
+      {
+        "value": -0.7093,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 387,
+    "lineNumberAfterMacroExpansion": 387,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin224",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6917,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 388,
+    "lineNumberAfterMacroExpansion": 388,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin225",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6737,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 389,
+    "lineNumberAfterMacroExpansion": 389,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin226",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6553,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 390,
+    "lineNumberAfterMacroExpansion": 390,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin227",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6365,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 391,
+    "lineNumberAfterMacroExpansion": 391,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin228",
+        "type": "identifier"
+      },
+      {
+        "value": -0.6173,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 392,
+    "lineNumberAfterMacroExpansion": 392,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin229",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5977,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 393,
+    "lineNumberAfterMacroExpansion": 393,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin230",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5778,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 394,
+    "lineNumberAfterMacroExpansion": 394,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin231",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5575,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 395,
+    "lineNumberAfterMacroExpansion": 395,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin232",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5369,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 396,
+    "lineNumberAfterMacroExpansion": 396,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin233",
+        "type": "identifier"
+      },
+      {
+        "value": -0.5159,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 397,
+    "lineNumberAfterMacroExpansion": 397,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin234",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4947,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 398,
+    "lineNumberAfterMacroExpansion": 398,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin235",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4731,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 399,
+    "lineNumberAfterMacroExpansion": 399,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin236",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4512,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 400,
+    "lineNumberAfterMacroExpansion": 400,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin237",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4291,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 401,
+    "lineNumberAfterMacroExpansion": 401,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin238",
+        "type": "identifier"
+      },
+      {
+        "value": -0.4067,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 402,
+    "lineNumberAfterMacroExpansion": 402,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin239",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3841,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 403,
+    "lineNumberAfterMacroExpansion": 403,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin240",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3612,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 404,
+    "lineNumberAfterMacroExpansion": 404,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin241",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3382,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 405,
+    "lineNumberAfterMacroExpansion": 405,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin242",
+        "type": "identifier"
+      },
+      {
+        "value": -0.3149,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 406,
+    "lineNumberAfterMacroExpansion": 406,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin243",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2914,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 407,
+    "lineNumberAfterMacroExpansion": 407,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin244",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2677,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 408,
+    "lineNumberAfterMacroExpansion": 408,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin245",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2439,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 409,
+    "lineNumberAfterMacroExpansion": 409,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin246",
+        "type": "identifier"
+      },
+      {
+        "value": -0.2199,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 410,
+    "lineNumberAfterMacroExpansion": 410,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin247",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1958,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 411,
+    "lineNumberAfterMacroExpansion": 411,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin248",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1716,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 412,
+    "lineNumberAfterMacroExpansion": 412,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin249",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1473,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 413,
+    "lineNumberAfterMacroExpansion": 413,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin250",
+        "type": "identifier"
+      },
+      {
+        "value": -0.1229,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 414,
+    "lineNumberAfterMacroExpansion": 414,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin251",
+        "type": "identifier"
+      },
+      {
+        "value": -0.0984,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 415,
+    "lineNumberAfterMacroExpansion": 415,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin252",
+        "type": "identifier"
+      },
+      {
+        "value": -0.0739,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 416,
+    "lineNumberAfterMacroExpansion": 416,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin253",
+        "type": "identifier"
+      },
+      {
+        "value": -0.0493,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 417,
+    "lineNumberAfterMacroExpansion": 417,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin254",
+        "type": "identifier"
+      },
+      {
+        "value": -0.0246,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 418,
+    "lineNumberAfterMacroExpansion": 418,
+    "instruction": "float",
+    "arguments": [
+      {
+        "value": "sin255",
+        "type": "identifier"
+      },
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 420,
+    "lineNumberAfterMacroExpansion": 420,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  }
+]

@@ -1,3 +1,12 @@
+---
+title: 'TODO: Separate compiler-generated hidden storage from user memory declarations'
+priority: Medium
+effort: 6-10 hours
+created: 2026-03-27
+status: Open
+completed: null
+---
+
 # 335 - Separate compiler-generated hidden storage from user memory declarations
 
 - Priority: 🟡 Medium
