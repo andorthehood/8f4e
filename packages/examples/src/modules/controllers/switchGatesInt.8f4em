@@ -48,7 +48,7 @@ branchIfTrue 1
  ; Read switch
 push &gate0
 push pointer
-push %gate0
+push sizeof(gate0)
 mul
 add
 load
@@ -58,14 +58,14 @@ if void
   ; Prepare out address
 push &out0
 push pointer
-push %out0
+push sizeof(out0)
 mul
 add
 
   ; Read input
 push &in0
 push pointer
-push %in0
+push sizeof(in0)
 mul
 add
 load
@@ -76,7 +76,7 @@ else
   ; Prepare out address
 push &out0
 push pointer
-push %out0
+push sizeof(out0)
 mul
 add
   

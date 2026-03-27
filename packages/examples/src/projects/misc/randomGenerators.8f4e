@@ -47,7 +47,7 @@ store
 push &out
 push seed
 castToFloat
-push ^seed
+push max(seed)
 castToFloat
 div
 store
@@ -110,7 +110,7 @@ int bufferPointer &buffer
 
 push &bufferPointer
 push bufferPointer
-push %buffer
+push sizeof(buffer)
 add
 store
 
@@ -140,7 +140,7 @@ int bufferPointer &buffer
 
 push &bufferPointer
 push bufferPointer
-push %buffer
+push sizeof(buffer)
 add
 store
 

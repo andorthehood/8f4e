@@ -57,7 +57,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: '^buffer' }],
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(buffer)' }],
 				} as AST[number],
 				context
 			);

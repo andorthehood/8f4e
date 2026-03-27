@@ -35,7 +35,7 @@ branchIfTrue 1
 ; buffer address
 push &buffer
 push bufferPointer
-push %buffer
+push sizeof(buffer)
 mul
 add
  
@@ -47,7 +47,7 @@ lessThan
 if int
 push bufferA  
 push bufferPointer
-push %bufferA
+push sizeof(bufferA)
 mul
 add
 else
@@ -55,7 +55,7 @@ push bufferB
 push bufferPointer
 push *lengthA
 sub
-push %bufferB
+push sizeof(bufferB)
 mul
 add
 ifEnd

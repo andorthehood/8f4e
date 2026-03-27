@@ -3,10 +3,10 @@ import { describe, test, expect } from 'vitest';
 import compile from '../../src';
 
 describe('inter-module references - element word size', () => {
-	test('resolves element word size reference in declaration default (%module.memory)', () => {
+	test('resolves element word size reference in declaration default (sizeof(module:memory))', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int wordSize %sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int wordSize sizeof(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -27,7 +27,7 @@ describe('inter-module references - element word size', () => {
 	test('resolves element word size reference for float array', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'float[] data 7 0.0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size %sourceModule.data', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size sizeof(sourceModule:data)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -48,7 +48,7 @@ describe('inter-module references - element word size', () => {
 	test('resolves element word size reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int elemSize', 'init elemSize %sourceModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int elemSize', 'init elemSize sizeof(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -69,7 +69,7 @@ describe('inter-module references - element word size', () => {
 	test('rejects multi-dot element word size reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size %sourceModule.buffer.extra', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size sizeof(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected
@@ -83,7 +83,7 @@ describe('inter-module references - element word size', () => {
 	test('rejects multi-dot element word size reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size', 'init size %sourceModule.buffer.extra', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size', 'init size sizeof(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected in init as well
@@ -97,7 +97,7 @@ describe('inter-module references - element word size', () => {
 	test('throws error for unknown module in element word size reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size %unknownModule.buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size sizeof(unknownModule:buffer)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -110,7 +110,7 @@ describe('inter-module references - element word size', () => {
 	test('throws error for unknown memory in element word size reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size %sourceModule.unknownMemory', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size sizeof(sourceModule:unknownMemory)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -122,7 +122,7 @@ describe('inter-module references - element word size', () => {
 
 	test('module dependency sorting works with element word size references', () => {
 		const modules = [
-			{ code: ['module dependentModule', 'int size %baseModule.buffer', 'moduleEnd'] },
+			{ code: ['module dependentModule', 'int size sizeof(baseModule:buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
@@ -147,7 +147,7 @@ describe('inter-module references - element word size', () => {
 			{ code: ['module moduleA', 'int[] bufferA 10 0', 'moduleEnd'] },
 			{ code: ['module moduleB', 'float[] bufferB 5 0.0', 'moduleEnd'] },
 			{
-				code: ['module moduleC', 'int sizeA %moduleA.bufferA', 'int sizeB %moduleB.bufferB', 'moduleEnd'],
+				code: ['module moduleC', 'int sizeA sizeof(moduleA:bufferA)', 'int sizeB sizeof(moduleB:bufferB)', 'moduleEnd'],
 			},
 		];
 
@@ -177,8 +177,8 @@ describe('inter-module references - element word size', () => {
 				code: [
 					'module targetModule',
 					'int* ptr &sourceModule:buffer',
-					'int count $sourceModule.buffer',
-					'int elemSize %sourceModule.buffer',
+					'int count count(sourceModule:buffer)',
+					'int elemSize sizeof(sourceModule:buffer)',
 					'moduleEnd',
 				],
 			},
@@ -209,7 +209,7 @@ describe('inter-module references - element word size', () => {
 	test('works with pointer types', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int* ptr', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size %sourceModule.ptr', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size sizeof(sourceModule:ptr)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
