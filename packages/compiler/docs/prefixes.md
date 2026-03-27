@@ -1,6 +1,6 @@
-# Identifier prefixes
+# Identifier prefixes and metadata queries
 
-8f4e supports a small set of identifier prefixes and suffixes that expand memory identifiers into derived values.
+8f4e supports a small set of identifier prefixes/suffixes that expand memory identifiers into derived values, and function-style metadata queries.
 
 ## Memory reference
 
@@ -35,55 +35,55 @@ push *ptr
 
 ## Element count
 
-- `$name` pushes the element count for a buffer (or 1 for scalars).
+- `count(name)` pushes the element count for a buffer (or 1 for scalars).
 
 Example:
 
 ```
 int[] buffer 4 0
-push $buffer
+push count(buffer)
 ```
 
 ## Element word size
 
-- `%name` pushes the element word size (in bytes) for a buffer (or 4 for scalars).
+- `sizeof(name)` pushes the element word size (in bytes) for a buffer (or 4 for scalars).
 
 Example:
 
 ```
 int16[] samples 8 0
-push %samples
+push sizeof(samples)
 ```
 
 ## Pointee element word size
 
-- `%*name` pushes the element word size (in bytes) of the value pointed to by a pointer-typed memory item.
+- `sizeof(*name)` pushes the element word size (in bytes) of the value pointed to by a pointer-typed memory item.
 - Only valid for pointer identifiers (`int*`, `int16*`, `float*`, `float64*`, etc.).
-- Using `%*name` on a non-pointer identifier produces a compiler error.
+- Using `sizeof(*name)` on a non-pointer identifier produces a compiler error.
 
 Examples:
 
-| Declaration         | `%name` | `%*name` |
-|---------------------|---------|----------|
-| `int* ptr`          | 4       | 4        |
-| `int16* ptr`        | 4       | 2        |
-| `float* ptr`        | 4       | 4        |
-| `float64* ptr`      | 4       | 8        |
-| `int** ptr`         | 4       | 4        |
+| Declaration         | `sizeof(name)` | `sizeof(*name)` |
+|---------------------|----------------|-----------------|
+| `int* ptr`          | 4              | 4               |
+| `int16* ptr`        | 4              | 2               |
+| `float* ptr`        | 4              | 4               |
+| `float64* ptr`      | 4              | 8               |
+| `int** ptr`         | 4              | 4               |
 
 ```
 int* ptr &someInt
-push %ptr    ; 4  — size of the pointer slot itself
-push %*ptr   ; 4  — size of the int it points to
+push sizeof(ptr)    ; 4  — size of the pointer slot itself
+push sizeof(*ptr)   ; 4  — size of the int it points to
 
 float64* fptr &someFloat64
-push %fptr   ; 4  — size of the pointer slot itself
-push %*fptr  ; 8  — size of the float64 it points to
+push sizeof(fptr)   ; 4  — size of the pointer slot itself
+push sizeof(*fptr)  ; 8  — size of the float64 it points to
 ```
 
 ## Element max value
 
-- `^name` pushes the maximum finite value for the element type of a memory item.
+- `max(name)` pushes the maximum finite value for the element type of a memory item.
 
 For signed integers:
 - `int32` / `int` / `int[]`: 2,147,483,647
@@ -101,41 +101,41 @@ Example:
 
 ```
 int16 value 0
-push ^value
+push max(value)
 
 int8u[] unsignedBuffer 10 0
-push ^unsignedBuffer
+push max(unsignedBuffer)
 ```
 
 ## Pointee element max value
 
-- `^*name` pushes the maximum finite value for the type pointed to by a pointer-typed memory item.
+- `max(*name)` pushes the maximum finite value for the type pointed to by a pointer-typed memory item.
 - Only valid for pointer identifiers (`int*`, `int16*`, `float*`, `float64*`, etc.).
-- Using `^*name` on a non-pointer identifier produces a compiler error.
-- `^name` keeps its existing meaning (max of the memory item's own element type).
+- Using `max(*name)` on a non-pointer identifier produces a compiler error.
+- `max(name)` keeps its existing meaning (max of the memory item's own element type).
 
 Examples:
 
-| Declaration         | `^name` | `^*name` |
-|---------------------|---------|----------|
-| `int* ptr`          | 2,147,483,647 | 2,147,483,647 |
-| `int16* ptr`        | 2,147,483,647 | 32,767 |
-| `float* ptr`        | 2,147,483,647 | 3.4028234663852886e+38 |
-| `float64* ptr`      | 2,147,483,647 | 1.7976931348623157e+308 |
+| Declaration         | `max(name)`         | `max(*name)`                       |
+|---------------------|---------------------|------------------------------------|
+| `int* ptr`          | 2,147,483,647       | 2,147,483,647                      |
+| `int16* ptr`        | 2,147,483,647       | 32,767                             |
+| `float* ptr`        | 2,147,483,647       | 3.4028234663852886e+38             |
+| `float64* ptr`      | 2,147,483,647       | 1.7976931348623157e+308            |
 
 ```
 int* ptr &someInt
-push ^ptr    ; 2,147,483,647  — max of the pointer slot type (i32)
-push ^*ptr   ; 2,147,483,647  — max of the int it points to
+push max(ptr)    ; 2,147,483,647  — max of the pointer slot type (i32)
+push max(*ptr)   ; 2,147,483,647  — max of the int it points to
 
 float64* fptr &someFloat64
-push ^fptr   ; 2,147,483,647  — max of the pointer slot type (i32)
-push ^*fptr  ; 1.7976931348623157e+308  — max of the float64 it points to
+push max(fptr)   ; 2,147,483,647  — max of the pointer slot type (i32)
+push max(*fptr)  ; 1.7976931348623157e+308  — max of the float64 it points to
 ```
 
 ## Element min value
 
-- `!name` pushes the lowest finite value (most negative) for the element type of a memory item.
+- `min(name)` pushes the lowest finite value (most negative) for the element type of a memory item.
 
 For signed integers:
 - `int32` / `int` / `int[]`: -2,147,483,648
@@ -153,8 +153,8 @@ Example:
 
 ```
 int8[] buffer 10 0
-push !buffer
+push min(buffer)
 
 int8u[] unsignedBuffer 10 0
-push !unsignedBuffer
+push min(unsignedBuffer)
 ```

@@ -76,12 +76,12 @@ if (import.meta.vitest) {
 			expect(resolveIdentifierPushKind(namespace, 'buffer')).toBe(IdentifierPushKind.MEMORY_IDENTIFIER);
 			expect(resolveIdentifierPushKind(namespace, '*buffer')).toBe(IdentifierPushKind.MEMORY_POINTER);
 			expect(resolveIdentifierPushKind(namespace, '&buffer')).toBe(IdentifierPushKind.MEMORY_REFERENCE);
-			expect(resolveIdentifierPushKind(namespace, '$buffer')).toBe(IdentifierPushKind.ELEMENT_COUNT);
-			expect(resolveIdentifierPushKind(namespace, '%buffer')).toBe(IdentifierPushKind.ELEMENT_WORD_SIZE);
-			expect(resolveIdentifierPushKind(namespace, '%*buffer')).toBe(IdentifierPushKind.POINTEE_ELEMENT_WORD_SIZE);
-			expect(resolveIdentifierPushKind(namespace, '^buffer')).toBe(IdentifierPushKind.ELEMENT_MAX);
-			expect(resolveIdentifierPushKind(namespace, '^*buffer')).toBe(IdentifierPushKind.POINTEE_ELEMENT_MAX);
-			expect(resolveIdentifierPushKind(namespace, '!buffer')).toBe(IdentifierPushKind.ELEMENT_MIN);
+			expect(resolveIdentifierPushKind(namespace, 'count(buffer)')).toBe(IdentifierPushKind.ELEMENT_COUNT);
+			expect(resolveIdentifierPushKind(namespace, 'sizeof(buffer)')).toBe(IdentifierPushKind.ELEMENT_WORD_SIZE);
+			expect(resolveIdentifierPushKind(namespace, 'sizeof(*buffer)')).toBe(IdentifierPushKind.POINTEE_ELEMENT_WORD_SIZE);
+			expect(resolveIdentifierPushKind(namespace, 'max(buffer)')).toBe(IdentifierPushKind.ELEMENT_MAX);
+			expect(resolveIdentifierPushKind(namespace, 'max(*buffer)')).toBe(IdentifierPushKind.POINTEE_ELEMENT_MAX);
+			expect(resolveIdentifierPushKind(namespace, 'min(buffer)')).toBe(IdentifierPushKind.ELEMENT_MIN);
 			expect(resolveIdentifierPushKind(namespace, 'ANSWER')).toBe(IdentifierPushKind.CONST);
 			expect(resolveIdentifierPushKind(namespace, 'localTemp')).toBe(IdentifierPushKind.LOCAL);
 		});

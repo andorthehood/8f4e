@@ -19,7 +19,7 @@ store
 ; pointer by the word size
 push &pointer
 push pointer
-push %buffer
+push sizeof(buffer)
 add
 store
 

@@ -261,7 +261,7 @@ if (import.meta.vitest) {
 			expect(context.byteCode[0]).toBe(67);
 		});
 
-		describe('element max prefix (^)', () => {
+		describe('max() query', () => {
 			it('pushes max value for int32', () => {
 				const context = createInstructionCompilerTestContext({
 					namespace: {
@@ -280,7 +280,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myInt)' }],
 					} as AST[number],
 					context
 				);
@@ -309,7 +309,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt16' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myInt16)' }],
 					} as AST[number],
 					context
 				);
@@ -338,7 +338,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt8' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myInt8)' }],
 					} as AST[number],
 					context
 				);
@@ -367,7 +367,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myFloat' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myFloat)' }],
 					} as AST[number],
 					context
 				);
@@ -397,7 +397,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myF64' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myF64)' }],
 					} as AST[number],
 					context
 				);
@@ -409,7 +409,7 @@ if (import.meta.vitest) {
 			});
 		});
 
-		describe('element min prefix (!)', () => {
+		describe('min() query', () => {
 			it('pushes min value for int32', () => {
 				const context = createInstructionCompilerTestContext({
 					namespace: {
@@ -428,7 +428,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myInt)' }],
 					} as AST[number],
 					context
 				);
@@ -457,7 +457,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt16' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myInt16)' }],
 					} as AST[number],
 					context
 				);
@@ -486,7 +486,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt8' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myInt8)' }],
 					} as AST[number],
 					context
 				);
@@ -515,7 +515,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myFloat' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myFloat)' }],
 					} as AST[number],
 					context
 				);
@@ -545,7 +545,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myF64' }],
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myF64)' }],
 					} as AST[number],
 					context
 				);

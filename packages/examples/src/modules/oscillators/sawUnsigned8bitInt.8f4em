@@ -16,8 +16,8 @@ push *frequency
 push SAMPLE_RATE
 castToFloat
 div
-push ^range8
-push !range8
+push max(range8)
+push min(range8)
 sub
 castToFloat
 mul
@@ -26,8 +26,8 @@ castToInt
 store
 
 push out
-push ^range8
-push !range8
+push max(range8)
+push min(range8)
 sub
 greaterThan
 if void
