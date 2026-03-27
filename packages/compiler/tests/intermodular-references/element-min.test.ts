@@ -3,10 +3,10 @@ import { describe, test, expect } from 'vitest';
 import compile from '../../src';
 
 describe('inter-module references - element min', () => {
-	test('resolves element min reference for signed int32 in declaration default (min(module.memory))', () => {
+	test('resolves element min reference for signed int32 in declaration default (min(module:memory))', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -26,7 +26,7 @@ describe('inter-module references - element min', () => {
 	test('resolves element min reference for signed int32', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int32[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -44,7 +44,7 @@ describe('inter-module references - element min', () => {
 	test('resolves element min reference for float32', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'float[] data 7 0.0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'float minValue min(sourceModule.data)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'float minValue min(sourceModule:data)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -62,7 +62,7 @@ describe('inter-module references - element min', () => {
 	test('resolves element min reference for signed int16', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int16[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -80,7 +80,7 @@ describe('inter-module references - element min', () => {
 	test('resolves element min reference for unsigned int16', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int16u[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -98,7 +98,7 @@ describe('inter-module references - element min', () => {
 	test('resolves element min reference for signed int8', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int8[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -116,7 +116,7 @@ describe('inter-module references - element min', () => {
 	test('resolves element min reference for unsigned int8', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int8u[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -134,7 +134,7 @@ describe('inter-module references - element min', () => {
 	test('resolves element min reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue', 'init minValue min(sourceModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue', 'init minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -152,7 +152,7 @@ describe('inter-module references - element min', () => {
 	test('rejects multi-dot element min reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.buffer.extra)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected
@@ -166,7 +166,7 @@ describe('inter-module references - element min', () => {
 	test('rejects multi-dot element min reference in init instruction', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue', 'init minValue min(sourceModule.buffer.extra)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue', 'init minValue min(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
 		// Should throw because multi-dot references are rejected in init as well
@@ -180,7 +180,7 @@ describe('inter-module references - element min', () => {
 	test('throws error for unknown module in element min reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(unknownModule.buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(unknownModule:buffer)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -193,7 +193,7 @@ describe('inter-module references - element min', () => {
 	test('throws error for unknown memory in element min reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue min(sourceModule.unknownMemory)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:unknownMemory)', 'moduleEnd'] },
 		];
 
 		expect(() => {
@@ -205,7 +205,7 @@ describe('inter-module references - element min', () => {
 
 	test('module dependency sorting works with element min references', () => {
 		const modules = [
-			{ code: ['module dependentModule', 'int minValue min(baseModule.buffer)', 'moduleEnd'] },
+			{ code: ['module dependentModule', 'int minValue min(baseModule:buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
@@ -229,7 +229,7 @@ describe('inter-module references - element min', () => {
 			{ code: ['module moduleA', 'int[] bufferA 10 0', 'moduleEnd'] },
 			{ code: ['module moduleB', 'float[] bufferB 5 0.0', 'moduleEnd'] },
 			{
-				code: ['module moduleC', 'int minA min(moduleA.bufferA)', 'float minB min(moduleB.bufferB)', 'moduleEnd'],
+				code: ['module moduleC', 'int minA min(moduleA:bufferA)', 'float minB min(moduleB:bufferB)', 'moduleEnd'],
 			},
 		];
 
@@ -256,9 +256,9 @@ describe('inter-module references - element min', () => {
 				code: [
 					'module targetModule',
 					'int* ptr &sourceModule:buffer',
-					'int size count(sourceModule.buffer)',
-					'int minValue min(sourceModule.buffer)',
-					'int maxValue max(sourceModule.buffer)',
+					'int size count(sourceModule:buffer)',
+					'int minValue min(sourceModule:buffer)',
+					'int maxValue max(sourceModule:buffer)',
 					'moduleEnd',
 				],
 			},
