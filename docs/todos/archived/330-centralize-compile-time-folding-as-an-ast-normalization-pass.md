@@ -3,8 +3,8 @@ title: 'TODO: Centralize compile-time folding as an AST normalization pass'
 priority: High
 effort: 6-10 hours
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-27
 ---
 
 # TODO: Centralize compile-time folding as an AST normalization pass

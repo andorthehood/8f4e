@@ -3,8 +3,8 @@ title: 'TODO: Move locals out of namespace and into codegen state'
 priority: Medium
 effort: 4-8 hours
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-27
 ---
 
 # 334 - Move locals out of namespace and into codegen state

@@ -44,7 +44,6 @@ import abs from './abs';
 import equal from './equal';
 import wasm from './wasm';
 import branchIfUnchanged from './branchIfUnchanged';
-import init from './init';
 import shiftLeft from './shiftLeft';
 import pow2 from './pow2';
 import sqrt from './sqrt';
@@ -115,7 +114,6 @@ const instructions = {
 	equal,
 	wasm,
 	branchIfUnchanged,
-	init,
 	pow2,
 	sqrt,
 	loadFloat,
