@@ -4,6 +4,8 @@ import { ArgumentType } from '@8f4e/ast-parser';
 import { hasMemoryReferencePrefixStart } from '@8f4e/ast-parser';
 import { isConstantName } from '@8f4e/ast-parser';
 
+import resolveIntermodularReferenceValue from './resolveIntermodularReferenceValue';
+
 import { ErrorCode, getError } from '../compilerError';
 
 import type { AST, CompilationContext, Argument } from '../types';
@@ -117,22 +119,36 @@ export default function parseMemoryInstructionArguments(
 
 	// Process second argument if present
 	if (parsedArgs.secondArg) {
+		const secondArgValue = line.arguments[1]?.type === ArgumentType.IDENTIFIER ? line.arguments[1].value : undefined;
+
 		if (parsedArgs.secondArg.type === 'literal') {
 			defaultValue = parsedArgs.secondArg.value;
 		} else if (parsedArgs.secondArg.type === 'split-byte-tokens') {
 			defaultValue = resolveSplitByteTokens(parsedArgs.secondArg.tokens, maxBytes, lineForError, context);
 		} else if (parsedArgs.secondArg.type === 'intermodular-reference') {
-			// Intermodular references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-module-reference') {
-			// Intermodular module-base references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-count') {
-			// Intermodular element count references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-word-size') {
-			// Intermodular element word size references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-max') {
-			// Intermodular element max references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-min') {
-			// Intermodular element min references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'memory-reference') {
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
 

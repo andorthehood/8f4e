@@ -63,13 +63,13 @@ export function prepassNamespace(
 export function collectNamespacesFromASTs(
 	asts: AST[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
-	compiledFunctions?: CompiledFunctionLookup
+	compiledFunctions?: CompiledFunctionLookup,
+	layoutAsts: AST[] = asts
 ): Namespaces {
 	const namespaces: Namespaces = {};
-	let nextStartingByteAddress = startingByteAddress;
 
 	for (const ast of asts) {
-		const context = prepassNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions);
+		const context = prepassNamespace(ast, namespaces, startingByteAddress, compiledFunctions);
 		if (!context.namespace.moduleName) {
 			continue;
 		}
@@ -77,6 +77,22 @@ export function collectNamespacesFromASTs(
 			consts: { ...context.namespace.consts },
 			memory: context.namespace.memory,
 		};
+	}
+
+	let nextStartingByteAddress = startingByteAddress;
+	for (const ast of layoutAsts) {
+		const context = prepassNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions);
+		if (!context.namespace.moduleName) {
+			continue;
+		}
+
+		namespaces[context.namespace.moduleName] = {
+			consts: { ...context.namespace.consts },
+			memory: context.namespace.memory,
+			byteAddress: nextStartingByteAddress,
+			wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
+		};
+
 		nextStartingByteAddress += calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
 	}
 
