@@ -17,7 +17,7 @@ const _module: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 	}
 
-	if (line.arguments[0].type === ArgumentType.LITERAL) {
+	if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 

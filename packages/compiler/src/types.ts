@@ -1,6 +1,7 @@
 import {
 	ArgumentType,
 	type Argument,
+	type ArgumentCompileTimeExpression,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
@@ -97,7 +98,14 @@ export interface Module {
 }
 
 // Re-export types from syntax subpath for backward compatibility
-export { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier, type ArgumentStringLiteral };
+export {
+	ArgumentType,
+	type Argument,
+	type ArgumentCompileTimeExpression,
+	type ArgumentLiteral,
+	type ArgumentIdentifier,
+	type ArgumentStringLiteral,
+};
 
 export interface ASTLine {
 	lineNumberBeforeMacroExpansion: number;

@@ -11,7 +11,48 @@ import isIntermodularElementMinReference from './syntax/isIntermodularElementMin
 import extractIntermodularElementMinBase from './syntax/extractIntermodularElementMinBase';
 import { ArgumentType } from './types';
 
-import type { AST } from './types';
+import type { AST, Argument } from './types';
+
+function getIntermodularReferenceModules(argument: Argument | undefined): string[] {
+	if (!argument) {
+		return [];
+	}
+
+	const values =
+		argument.type === ArgumentType.COMPILE_TIME_EXPRESSION ? [argument.lhs, argument.rhs] : [argument.value as string];
+
+	return values.flatMap(value => {
+		if (typeof value !== 'string') {
+			return [];
+		}
+
+		if (isIntermodularElementCountReference(value)) {
+			return [extractIntermodularElementCountBase(value).module];
+		}
+		if (isIntermodularElementWordSizeReference(value)) {
+			return [extractIntermodularElementWordSizeBase(value).module];
+		}
+		if (isIntermodularElementMaxReference(value)) {
+			return [extractIntermodularElementMaxBase(value).module];
+		}
+		if (isIntermodularElementMinReference(value)) {
+			return [extractIntermodularElementMinBase(value).module];
+		}
+		if (isIntermodularModuleReference(value)) {
+			return [extractIntermodularModuleReferenceBase(value).module];
+		}
+		if (INTERMODULAR_REFERENCE_PATTERN.test(value)) {
+			const cleanRef = value.endsWith('&') ? value.substring(0, value.length - 1) : value.substring(1);
+			return [cleanRef.split(':')[0]];
+		}
+
+		return [];
+	});
+}
+
+function getIdentifierValue(argument: Argument | undefined): string {
+	return argument?.type === ArgumentType.IDENTIFIER ? argument.value : '';
+}
 
 export default function sortModules(modules: AST[]): AST[] {
 	// First, separate constants blocks from regular modules
@@ -21,14 +62,16 @@ export default function sortModules(modules: AST[]): AST[] {
 	// Sort regular modules by ID and dependencies
 	const sortedRegularModules = regularModules
 		.sort((astA, astB) => {
-			const moduleIdA =
-				(astA.find(({ instruction }) => {
+			const moduleIdA = getIdentifierValue(
+				astA.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
-			const moduleIdB =
-				(astB.find(({ instruction }) => {
+				})?.arguments[0]
+			);
+			const moduleIdB = getIdentifierValue(
+				astB.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
+				})?.arguments[0]
+			);
 
 			if (moduleIdA < moduleIdB) {
 				return -1;
@@ -39,14 +82,16 @@ export default function sortModules(modules: AST[]): AST[] {
 			return 0;
 		})
 		.sort((astA, astB) => {
-			const moduleIdA =
-				(astA.find(({ instruction }) => {
+			const moduleIdA = getIdentifierValue(
+				astA.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
-			const moduleIdB =
-				(astB.find(({ instruction }) => {
+				})?.arguments[0]
+			);
+			const moduleIdB = getIdentifierValue(
+				astB.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
+				})?.arguments[0]
+			);
 
 			const intermodulerConnectionsA = astA
 				.filter(({ instruction, arguments: _arguments }) => {
@@ -57,49 +102,10 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
-						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
-							isIntermodularModuleReference(_arguments[1].value) ||
-							isIntermodularElementCountReference(_arguments[1].value) ||
-							isIntermodularElementWordSizeReference(_arguments[1].value) ||
-							isIntermodularElementMaxReference(_arguments[1].value) ||
-							isIntermodularElementMinReference(_arguments[1].value))
+						getIntermodularReferenceModules(_arguments[1]).length > 0
 					);
 				})
-				.map(({ arguments: _arguments }) => {
-					const value = _arguments[1].value as string;
-					// Handle element count reference (count(module:memory))
-					if (isIntermodularElementCountReference(value)) {
-						const { module } = extractIntermodularElementCountBase(value);
-						return module;
-					}
-					// Handle element word size reference (sizeof(module:memory))
-					if (isIntermodularElementWordSizeReference(value)) {
-						const { module } = extractIntermodularElementWordSizeBase(value);
-						return module;
-					}
-					// Handle element max reference (max(module:memory))
-					if (isIntermodularElementMaxReference(value)) {
-						const { module } = extractIntermodularElementMaxBase(value);
-						return module;
-					}
-					// Handle element min reference (min(module:memory))
-					if (isIntermodularElementMinReference(value)) {
-						const { module } = extractIntermodularElementMinBase(value);
-						return module;
-					}
-					if (isIntermodularModuleReference(value)) {
-						return extractIntermodularModuleReferenceBase(value).module;
-					}
-					// Handle address reference (&module:memory or module:memory&)
-					// Parse reference based on form:
-					// - Start: &module:memory -> remove leading &
-					// - End: module:memory& -> remove trailing &
-					const cleanRef = value.endsWith('&')
-						? value.substring(0, value.length - 1) // Remove trailing &
-						: value.substring(1); // Remove leading &
-					return cleanRef.split(':')[0];
-				});
+				.flatMap(({ arguments: _arguments }) => getIntermodularReferenceModules(_arguments[1]));
 
 			const intermodulerConnectionsB = astB
 				.filter(({ instruction, arguments: _arguments }) => {
@@ -110,54 +116,15 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
-						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
-							isIntermodularModuleReference(_arguments[1].value) ||
-							isIntermodularElementCountReference(_arguments[1].value) ||
-							isIntermodularElementWordSizeReference(_arguments[1].value) ||
-							isIntermodularElementMaxReference(_arguments[1].value) ||
-							isIntermodularElementMinReference(_arguments[1].value))
+						getIntermodularReferenceModules(_arguments[1]).length > 0
 					);
 				})
-				.map(({ arguments: _arguments }) => {
-					const value = _arguments[1].value as string;
-					// Handle element count reference (count(module:memory))
-					if (isIntermodularElementCountReference(value)) {
-						const { module } = extractIntermodularElementCountBase(value);
-						return module;
-					}
-					// Handle element word size reference (sizeof(module:memory))
-					if (isIntermodularElementWordSizeReference(value)) {
-						const { module } = extractIntermodularElementWordSizeBase(value);
-						return module;
-					}
-					// Handle element max reference (max(module:memory))
-					if (isIntermodularElementMaxReference(value)) {
-						const { module } = extractIntermodularElementMaxBase(value);
-						return module;
-					}
-					// Handle element min reference (min(module:memory))
-					if (isIntermodularElementMinReference(value)) {
-						const { module } = extractIntermodularElementMinBase(value);
-						return module;
-					}
-					if (isIntermodularModuleReference(value)) {
-						return extractIntermodularModuleReferenceBase(value).module;
-					}
-					// Handle address reference (&module:memory or module:memory&)
-					// Parse reference based on form:
-					// - Start: &module:memory -> remove leading &
-					// - End: module:memory& -> remove trailing &
-					const cleanRef = value.endsWith('&')
-						? value.substring(0, value.length - 1) // Remove trailing &
-						: value.substring(1); // Remove leading &
-					return cleanRef.split(':')[0];
-				});
+				.flatMap(({ arguments: _arguments }) => getIntermodularReferenceModules(_arguments[1]));
 
 			if (intermodulerConnectionsB.includes(moduleIdA) && !intermodulerConnectionsA.includes(moduleIdB)) {
-				return 1;
-			} else if (!intermodulerConnectionsB.includes(moduleIdA) && intermodulerConnectionsA.includes(moduleIdB)) {
 				return -1;
+			} else if (!intermodulerConnectionsB.includes(moduleIdA) && intermodulerConnectionsA.includes(moduleIdB)) {
+				return 1;
 			} else {
 				return 0;
 			}
@@ -173,6 +140,13 @@ if (import.meta.vitest) {
 	const identifierArgument = (value: string) => ({
 		type: ArgumentType.IDENTIFIER,
 		value,
+	});
+
+	const compileTimeExpressionArgument = (lhs: string, operator: '*' | '/', rhs: string) => ({
+		type: ArgumentType.COMPILE_TIME_EXPRESSION,
+		lhs,
+		operator,
+		rhs,
 	});
 
 	const createModuleAst = (moduleId: string, references: string[] = []): AST => {
@@ -207,7 +181,7 @@ if (import.meta.vitest) {
 
 	const getModuleId = (ast: AST): string => {
 		const moduleLine = ast.find(line => line.instruction === 'module');
-		return (moduleLine?.arguments[0]?.value as string) || 'constants';
+		return getIdentifierValue(moduleLine?.arguments[0]) || 'constants';
 	};
 
 	describe('sortModules', () => {
@@ -236,7 +210,7 @@ if (import.meta.vitest) {
 
 			const sorted = sortModules([beta, alpha]);
 
-			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
+			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
 		});
 
 		it('orders module before another module that references it', () => {
@@ -245,7 +219,29 @@ if (import.meta.vitest) {
 
 			const sorted = sortModules([alpha, beta]);
 
-			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
+			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
+		});
+
+		it('orders module before another module that references it inside a compile-time expression', () => {
+			const alpha: AST = [
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'module',
+					arguments: [identifierArgument('alpha')],
+				},
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'int',
+					arguments: [identifierArgument('size'), compileTimeExpressionArgument('2', '*', 'sizeof(beta:value)')],
+				},
+			] as AST;
+			const beta = createModuleAst('beta');
+
+			const sorted = sortModules([alpha, beta]);
+
+			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
 		});
 
 		it('handles duplicate module ids deterministically', () => {

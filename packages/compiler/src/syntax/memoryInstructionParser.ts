@@ -193,6 +193,10 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
+	if (arg.type !== ArgumentType.IDENTIFIER) {
+		throw new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT);
+	}
+
 	// Check for intermodular reference pattern (e.g., "&module:identifier")
 	if (isIntermodularReference(arg.value)) {
 		return {
