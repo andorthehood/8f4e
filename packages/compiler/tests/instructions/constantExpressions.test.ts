@@ -70,3 +70,126 @@ moduleEnd
 	[[{}, { output: 4, foo: 4 }]]
 );
 
+moduleTester(
+	'const: literal * sizeof(name)',
+	`module test
+int16[] samples 4 0
+const BYTE_SIZE 123*sizeof(samples)
+int output
+push &output
+push BYTE_SIZE
+store
+moduleEnd
+`,
+	[[{}, { output: 246 }]]
+);
+
+moduleTester(
+	'const: sizeof(name) * literal',
+	`module test
+int16[] samples 4 0
+const BYTE_SIZE sizeof(samples)*2
+int output
+push &output
+push BYTE_SIZE
+store
+moduleEnd
+`,
+	[[{}, { output: 4 }]]
+);
+
+moduleTester(
+	'const: constant * sizeof(name)',
+	`module test
+int16[] samples 4 0
+const SIZE 8
+const TOTAL SIZE*sizeof(samples)
+int output
+push &output
+push TOTAL
+store
+moduleEnd
+`,
+	[[{}, { output: 16 }]]
+);
+
+moduleTester(
+	'push: sizeof(name) * literal',
+	`module test
+int16[] samples 4 0
+int output
+push &output
+push sizeof(samples)*4
+store
+moduleEnd
+`,
+	[[{}, { output: 8 }]]
+);
+
+moduleTester(
+	'push: constant * sizeof(name)',
+	`module test
+int16[] samples 4 0
+const SIZE 8
+int output
+push &output
+push SIZE*sizeof(samples)
+store
+moduleEnd
+`,
+	[[{}, { output: 16 }]]
+);
+
+moduleTester(
+	'push: literal * sizeof(name)',
+	`module test
+int16[] samples 4 0
+int output
+push &output
+push 123*sizeof(samples)
+store
+moduleEnd
+`,
+	[[{}, { output: 246 }]]
+);
+
+moduleTester(
+	'push: literal * constant (literal on lhs)',
+	`module test
+const SIZE 8
+int output
+push &output
+push 2*SIZE
+store
+moduleEnd
+`,
+	[[{}, { output: 16 }]]
+);
+
+moduleTester(
+	'int[]: buffer size from sizeof expression',
+	`module test
+int16[] samples 4 0
+int[] buffer sizeof(samples)*2
+int output
+push &output
+push count(buffer)
+store
+moduleEnd
+`,
+	[[{}, { output: 4 }]]
+);
+
+moduleTester(
+	'int[]: buffer size from count expression',
+	`module test
+int[] source 8 0
+int[] dest count(source)*2
+int output
+push &output
+push count(dest)
+store
+moduleEnd
+`,
+	[[{}, { output: 16 }]]
+);

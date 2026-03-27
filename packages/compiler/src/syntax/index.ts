@@ -19,7 +19,7 @@ export { default as getConstantsId } from './getConstantsId';
 export { default as extractUseDependencies } from './extractUseDependencies';
 export {
 	default as parseConstantMulDivExpression,
-	type ConstantMulDivExpression,
+	type CompileTimeMulDivExpression,
 } from './parseConstantMulDivExpression';
 export { default as parseLiteralMulDivExpression, type LiteralMulDivResult } from './parseLiteralMulDivExpression';
 export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
