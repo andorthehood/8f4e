@@ -42,7 +42,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "; buffer word size",
         "push &pointer",
         "push pointer",
-        "push %buffer",
+        "push sizeof(buffer)",
         "add",
         "store",
         "",
