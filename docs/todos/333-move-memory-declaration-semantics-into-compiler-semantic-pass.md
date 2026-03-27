@@ -1,3 +1,12 @@
+---
+title: 'TODO: Move memory declaration semantics into compiler semantic pass'
+priority: High
+effort: 1-2 days
+created: 2026-03-27
+status: Open
+completed: null
+---
+
 # 333 - Move memory declaration semantics into compiler semantic pass
 
 - Priority: 🔴 High
