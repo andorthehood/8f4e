@@ -115,7 +115,7 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 4
+          i32.const 8
           i32.const 3
           i32.store
           br 2 (;@1;)
@@ -140,7 +140,7 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
 exports[`infinite loop protection > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__loopErrorSignaler": {
-    "byteAddress": 4,
+    "byteAddress": 8,
     "default": -1,
     "elementWordSize": 4,
     "id": "__loopErrorSignaler",
@@ -151,7 +151,7 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
     "isUnsigned": false,
     "numberOfElements": 1,
     "type": "int",
-    "wordAlignedAddress": 1,
+    "wordAlignedAddress": 2,
     "wordAlignedSize": 1,
   },
   "counter": {
@@ -332,7 +332,7 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 2`] 
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 4
+          i32.const 8
           i32.const 3
           i32.store
           br 2 (;@1;)
@@ -362,7 +362,7 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 2`] 
 exports[`loop > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__loopErrorSignaler": {
-    "byteAddress": 4,
+    "byteAddress": 8,
     "default": -1,
     "elementWordSize": 4,
     "id": "__loopErrorSignaler",
@@ -373,7 +373,7 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 3`] 
     "isUnsigned": false,
     "numberOfElements": 1,
     "type": "int",
-    "wordAlignedAddress": 1,
+    "wordAlignedAddress": 2,
     "wordAlignedSize": 1,
   },
   "counter": {

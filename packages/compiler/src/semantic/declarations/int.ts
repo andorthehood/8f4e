@@ -1,14 +1,14 @@
 import { getPointerDepth } from '@8f4e/ast-parser';
 
-import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
-import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
-import getMemoryFlags from '../utils/memoryFlags';
-import { withValidation } from '../withValidation';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
-import createInstructionCompilerTestContext from '../utils/testUtils';
-import { ArgumentType } from '../types';
+import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
+import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
+import getMemoryFlags from '../../utils/memoryFlags';
+import { withValidation } from '../../withValidation';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
+import createInstructionCompilerTestContext from '../../utils/testUtils';
+import { ArgumentType } from '../../types';
 
-import type { AST, InstructionCompiler, MemoryTypes } from '../types';
+import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
 
 /**
  * Instruction compiler for `int`.

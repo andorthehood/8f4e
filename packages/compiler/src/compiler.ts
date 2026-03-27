@@ -11,7 +11,6 @@ import {
 	CompiledFunction,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
-	Namespace,
 	Namespaces,
 } from './types';
 import { ErrorCode, getError } from './compilerError';
@@ -20,6 +19,7 @@ import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
+import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './semantic/declarations';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
@@ -35,6 +35,15 @@ export function compileCodegenLine(line: AST[number], context: CompilationContex
 export function compileLine(line: AST[number], context: CompilationContext) {
 	if (line.isSemanticOnly) {
 		applySemanticLine(line, context);
+		return;
+	}
+
+	if (isMemoryDeclarationInstruction(line.instruction)) {
+		// This generic declaration path still exists partly because some instruction helpers
+		// synthesize hidden storage as declaration-shaped source snippets. The intended
+		// end state is to plan compiler-generated storage separately so declarations remain
+		// semantic-only and do not need to flow through generic compileLine(...) routing.
+		applyMemoryDeclarationLine(line, context);
 		return;
 	}
 
@@ -55,18 +64,49 @@ export function compileSegment(
 
 export function compileModule(
 	ast: AST,
-	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
 	functions?: CompiledFunctionLookup
 ): CompiledModule {
-	const prepassContext = prepassNamespace(ast, builtInConsts, namespaces, startingByteAddress, functions);
+	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
+	const planningContext: CompilationContext = {
+		namespace: {
+			namespaces,
+			memory: prepassContext.namespace.memory,
+			locals: {},
+			consts: { ...prepassContext.namespace.consts },
+			moduleName: prepassContext.namespace.moduleName,
+			functions,
+		},
+		byteCode: [],
+		stack: [],
+		blockStack: [
+			{
+				hasExpectedResult: false,
+				expectedResultIsInteger: false,
+				blockType: ast[0]?.instruction === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE,
+			},
+		],
+		startingByteAddress,
+		mode: 'module',
+		codeBlockId: prepassContext.namespace.moduleName,
+		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
+		skipExecutionInCycle: prepassContext.skipExecutionInCycle,
+		initOnlyExecution: prepassContext.initOnlyExecution,
+	};
+	ast.forEach(originalLine => {
+		const line = normalizeCompileTimeArguments(originalLine, planningContext);
+		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
+			compileCodegenLine(line, planningContext);
+		}
+	});
+
 	const moduleBlockType = ast[0]?.instruction === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE;
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
-			memory: {},
+			memory: prepassContext.namespace.memory,
 			locals: {},
 			consts: { ...prepassContext.namespace.consts },
 			moduleName: prepassContext.namespace.moduleName,
@@ -85,11 +125,13 @@ export function compileModule(
 		mode: 'module',
 		codeBlockId: prepassContext.namespace.moduleName,
 		codeBlockType: moduleBlockType === BLOCK_TYPE.CONSTANTS ? 'constants' : 'module',
+		skipExecutionInCycle: prepassContext.skipExecutionInCycle,
+		initOnlyExecution: prepassContext.initOnlyExecution,
 	};
 
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
-		if (!line.isSemanticOnly) {
+		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
 			compileCodegenLine(line, context);
 		}
 		return line;
@@ -133,7 +175,6 @@ export function compileModule(
 
 export function compileFunction(
 	ast: AST,
-	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry
@@ -143,7 +184,7 @@ export function compileFunction(
 			namespaces,
 			memory: {},
 			locals: {},
-			consts: { ...builtInConsts },
+			consts: {},
 			moduleName: undefined,
 			functions: {},
 		},

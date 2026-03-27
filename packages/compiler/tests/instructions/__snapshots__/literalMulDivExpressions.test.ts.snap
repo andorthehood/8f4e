@@ -273,7 +273,7 @@ exports[`init: literal-only multiplication expression > if the generated AST, WA
       },
     ],
     "instruction": "init",
-    "isSemanticOnly": false,
+    "isSemanticOnly": true,
     "lineNumberAfterMacroExpansion": 3,
     "lineNumberBeforeMacroExpansion": 3,
   },

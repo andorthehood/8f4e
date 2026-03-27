@@ -34,10 +34,13 @@ const branchIfUnchanged: InstructionCompiler = withValidation(
 		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 		const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
 		const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumberAfterMacroExpansion;
+		const previousValueDeclaration = Object.hasOwn(context.namespace.memory, previousValueMemoryName)
+			? ''
+			: `${type} ${previousValueMemoryName} 0`;
 
 		return compileSegment(
 			[
-				`${type} ${previousValueMemoryName} 0`,
+				previousValueDeclaration,
 				`local ${type} ${currentValueMemoryName}`,
 
 				`localSet ${currentValueMemoryName} `,

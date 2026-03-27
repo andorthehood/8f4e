@@ -669,7 +669,7 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
       },
     ],
     "instruction": "init",
-    "isSemanticOnly": false,
+    "isSemanticOnly": true,
     "lineNumberAfterMacroExpansion": 3,
     "lineNumberBeforeMacroExpansion": 3,
   },

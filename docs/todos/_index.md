@@ -77,6 +77,8 @@ Active todo files are listed below.
 | 325 | Add literal-only `*` and `/` folding at argument parse time | 🟡 | 4-8h | 2026-03-26 | 8f4e already folds fraction-style literals like `1/2` during argument parsing, but other literal-only arithmetic such as `16*2` and `3.5*4` still falls through as identifier-shaped input instead of becoming ordinary literals in the AST. |
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 🟡 | 4-8h | 2026-03-26 | Several editor/runtime paths still use dotted cross-module memory ids such as `module.memory`, while compiler address-style intermodule references already use `module:memory`, creating inconsistent source-level syntax. |
 | 332 | Extract syntax and AST parsing into a separate compiler package | 🟡 | 1-2d | 2026-03-27 | The compiler currently mixes syntax concerns and semantic/codegen concerns inside the same package, making the intended phase boundary harder to enforce. |
+| 334 | Move locals out of namespace and into codegen state | 🟡 | 4-8h | 2026-03-27 | The compiler still stores mutable local-variable state under `context.namespace.locals`, even though locals are really per-function codegen state rather than semantic namespace data. |
+| 335 | Separate compiler-generated hidden storage from user memory declarations | 🟡 | 6-10h | 2026-03-27 | Several instructions still rely on hidden compiler storage modeled as declaration-shaped input, which keeps synthetic declarations leaking into the generic compile path. |
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |

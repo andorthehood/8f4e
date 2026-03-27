@@ -27,7 +27,6 @@ import {
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
 	Module,
-	Namespace,
 	Namespaces,
 } from './types';
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
@@ -70,7 +69,8 @@ export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export { prepassNamespace, collectNamespacesFromASTs } from './semantic/buildNamespace';
-export { compileLine } from './compiler';
+export { isMemoryDeclarationInstruction } from './semantic/declarations';
+export { compileLine, compileCodegenLine } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {
 	parseMacroDefinitions,
@@ -84,20 +84,15 @@ export { ErrorCode, getError } from './compilerError';
 export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
-	builtInConsts?: Namespace['consts'],
 	namespaces?: Namespaces,
 	compiledFunctions?: CompiledFunctionLookup
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress ?? 0;
-
-	// If builtInConsts not provided, use empty object - all constants come from env block
-	const consts = builtInConsts ?? {};
 	const ns: Namespaces =
-		namespaces ??
-		collectNamespacesFromASTs(modules, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, consts, compiledFunctions);
+		namespaces ?? collectNamespacesFromASTs(modules, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, compiledFunctions);
 
 	return modules.map((ast, index) => {
-		const module = compileModule(ast, consts, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
+		const module = compileModule(ast, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
 		memoryAddress += module.wordAlignedSize;
 		return module;
 	});
@@ -199,7 +194,7 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, {}, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
+		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 
@@ -214,31 +209,32 @@ export default function compile(
 			...options,
 			startingMemoryWordAddress: 1,
 		},
-		{}, // Empty builtInConsts - all constants come from env block
 		namespaces,
 		compiledFunctionsMap
 	);
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	const compiledModulesBySourceAst = new Map(astModules.map((ast, index) => [ast, compiledModules[index]]));
-	resolveInterModularConnections(compiledModulesMap);
+	const resolvedCompiledModulesMap = resolveInterModularConnections(compiledModulesMap);
+	const resolvedCompiledModules = compiledModules.map(module => resolvedCompiledModulesMap[module.id]);
 	const runtimeOrderedModules = dependencyOrderedModules
 		.map(ast => compiledModulesBySourceAst.get(ast))
 		.filter((module): module is CompiledModule => typeof module !== 'undefined');
-	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
-	const functionSignatures = compiledModules.map(() => 0x00);
+	const resolvedRuntimeOrderedModules = runtimeOrderedModules.map(module => resolvedCompiledModulesMap[module.id]);
+	const cycleFunctions = resolvedCompiledModules.map(({ cycleFunction }) => cycleFunction);
+	const functionSignatures = resolvedCompiledModules.map(() => 0x00);
 
 	// Calculate the required memory footprint from the compiled program.
 	const requiredMemoryBytes =
-		compiledModules.length === 0
+		resolvedCompiledModules.length === 0
 			? 0
-			: compiledModules[compiledModules.length - 1].byteAddress +
-				compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+			: resolvedCompiledModules[resolvedCompiledModules.length - 1].byteAddress +
+				resolvedCompiledModules[resolvedCompiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
 	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle or initOnlyExecution flags
-	const cycleFunction = runtimeOrderedModules.flatMap(module =>
+	const cycleFunction = resolvedRuntimeOrderedModules.flatMap(module =>
 		module.skipExecutionInCycle || module.initOnlyExecution
 			? []
 			: call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
@@ -246,7 +242,7 @@ export default function compile(
 
 	// Generate init-only module calls (run after memory initialization)
 	// Skip if skipExecutionInCycle is true (precedence rule)
-	const initOnlyModuleCalls = runtimeOrderedModules.flatMap(module =>
+	const initOnlyModuleCalls = resolvedRuntimeOrderedModules.flatMap(module =>
 		module.initOnlyExecution && !module.skipExecutionInCycle
 			? call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 			: []
@@ -255,13 +251,13 @@ export default function compile(
 
 	const memoryInitiatorFunction = [
 		// First, call all memory initialization functions
-		...compiledModules
+		...resolvedCompiledModules
 			.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
 			.flat(),
 		// Then, call init-only module cycle functions
 		...initOnlyModuleCalls,
 	];
-	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
+	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(resolvedCompiledModules);
 
 	// Apply defaults for buffer options
 	const bufferSize = options.bufferSize ?? 128;
@@ -272,8 +268,8 @@ export default function compile(
 
 	// Strip AST from final result if not requested
 	const finalCompiledModules = options.includeAST
-		? compiledModulesMap
-		: stripASTFromCompiledModules(compiledModulesMap);
+		? resolvedCompiledModulesMap
+		: stripASTFromCompiledModules(resolvedCompiledModulesMap);
 
 	// Round up to whole wasm pages (64 KiB each); memory cannot be imported with fractional pages.
 	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));

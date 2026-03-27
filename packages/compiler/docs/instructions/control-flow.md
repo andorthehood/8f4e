@@ -236,14 +236,3 @@ mapBegin int
 mapEnd float
 store
 ```
-
-### skip
-
-The skip instruction skips execution for a number of iterations. When called without arguments it returns immediately; with a count it skips until the counter reaches the provided value.
-
-#### Examples
-
-```
-skip
-skip 4
-```

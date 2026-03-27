@@ -1,10 +1,12 @@
 import compile, {
-	compileLine,
+	compileCodegenLine,
 	collectNamespacesFromASTs,
+	isMemoryDeclarationInstruction,
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
 	type Module,
+	BLOCK_TYPE,
 } from '@8f4e/compiler';
 
 import getBlockType from './shared/getBlockType';
@@ -85,7 +87,9 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 		const stackBefore = serializeStack(context);
 		const byteCodeOffset = context.byteCode.length;
 
-		compileLine(line, context);
+		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
+			compileCodegenLine(line, context);
+		}
 
 		entries.push({
 			lineNumber: line.lineNumberBeforeMacroExpansion + 1,
@@ -170,23 +174,33 @@ export default function traceInstructionFlow(
 			continue;
 		}
 
+		const kind = module.ast.some(line => line.instruction === 'constants') ? 'constants' : 'module';
 		const context: CompilationContext = {
 			namespace: {
 				namespaces,
-				memory: {},
+				memory: module.memoryMap,
 				locals: {},
-				consts: {},
-				moduleName: undefined,
+				consts: { ...(namespaces[module.id]?.consts ?? {}) },
+				moduleName: module.id,
 				functions: compileResult.compiledFunctions,
 			},
 			byteCode: [],
 			stack: [],
-			blockStack: [],
+			blockStack: [
+				{
+					hasExpectedResult: false,
+					expectedResultIsInteger: false,
+					blockType: kind === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE,
+				},
+			],
 			startingByteAddress: module.byteAddress,
 			mode: 'module',
+			codeBlockId: module.id,
+			codeBlockType: kind,
+			skipExecutionInCycle: module.skipExecutionInCycle,
+			initOnlyExecution: module.initOnlyExecution,
 		};
 
-		const kind = module.ast.some(line => line.instruction === 'constants') ? 'constants' : 'module';
 		blocks.push(traceAst(module.id, kind, module.ast, context));
 	}
 

@@ -44,7 +44,6 @@
   - [map](instructions/control-flow.md#map)
   - [default](instructions/control-flow.md#default)
   - [mapEnd](instructions/control-flow.md#mapend)
-  - [skip](instructions/control-flow.md#skip)
 
 - [Conversion](instructions/conversion.md)
   - [castToFloat](instructions/conversion.md#casttofloat)
