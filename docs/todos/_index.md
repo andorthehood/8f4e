@@ -31,6 +31,7 @@ Active todo files are listed below.
 | 329 | Replace literal-only const collection with semantic namespace prepass | 🔴 | 6-10h | 2026-03-27 | The compiler still builds namespaces through collectConstants(ast), which assumes every const RHS is already a literal. |
 | 330 | Centralize compile-time folding as an AST normalization pass | 🔴 | 6-10h | 2026-03-27 | Compile-time expressions are still recognized and resolved across multiple layers instead of one semantic normalization stage. |
 | 331 | Delete duplicate downstream compile-time resolution paths | 🔴 | 4-8h | 2026-03-27 | Even after prepass and normalization exist, the refactor is incomplete until the old compile-time resolution paths are deleted. |
+| 333 | Move memory declaration semantics into compiler semantic pass | 🔴 | 1-2d | 2026-03-27 | Memory declarations such as int, float, arrays, and pointers are still processed twice: once in semantic prepass for metadata queries and again in module codegen to rebuild layout. |
 
 ### 🟡 Medium Priority
 
