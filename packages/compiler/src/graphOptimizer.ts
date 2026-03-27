@@ -56,6 +56,10 @@ function getIdentifierValue(argument: Argument | undefined): string {
 }
 
 export default function sortModules(modules: AST[]): AST[] {
+	// This sorter is for runtime/execution dependency ordering only.
+	// It must not be treated as the source of truth for semantic namespace availability or name resolution.
+	// Semantic collection should gather local declarations first and resolve intermodule references independently of order.
+
 	// First, separate constants blocks from regular modules
 	const constantsBlocks = modules.filter(ast => ast.some(line => line.instruction === 'constants'));
 	const regularModules = modules.filter(ast => !ast.some(line => line.instruction === 'constants'));

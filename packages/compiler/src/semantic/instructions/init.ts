@@ -13,11 +13,13 @@ export default function semanticInit(line: AST[number], context: CompilationCont
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	const memoryItem = context.namespace.memory[line.arguments[0].value];
+	const indexedTargetMatch = line.arguments[0].value.match(/(\S+)\[(\d+)\]/);
+	const targetMemoryId = indexedTargetMatch ? indexedTargetMatch[1] : line.arguments[0].value;
+	const memoryItem = context.namespace.memory[targetMemoryId];
 
 	if (!memoryItem) {
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-			identifier: line.arguments[0].value,
+			identifier: targetMemoryId,
 		});
 	}
 
@@ -51,8 +53,8 @@ export default function semanticInit(line: AST[number], context: CompilationCont
 		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 
-	if (/(\S+)\[(\d+)\]/.test(line.arguments[0].value)) {
-		const [, memoryIdentifier, offset] = line.arguments[0].value.match(/(\S+)\[(\d+)\]/) as [never, string, string];
+	if (indexedTargetMatch) {
+		const [, memoryIdentifier, offset] = indexedTargetMatch as [never, string, string];
 		const bufferMemoryItem = context.namespace.memory[memoryIdentifier];
 		if (bufferMemoryItem && typeof bufferMemoryItem.default === 'object') {
 			bufferMemoryItem.default[offset] = defaultValue;
