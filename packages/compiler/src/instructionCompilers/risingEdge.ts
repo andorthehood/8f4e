@@ -1,6 +1,7 @@
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { allocateInternalResource } from '../utils/internalResources';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -22,20 +23,17 @@ const risingEdge: InstructionCompiler = withValidation(
 		const previousValueName = '__risingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
 		const loadInstruction = operand.isInteger ? 'load' : 'loadFloat';
-		const previousValueDeclaration = Object.hasOwn(context.namespace.memory, previousValueName)
-			? ''
-			: `${memoryType} ${previousValueName} 0`;
+		const previousValue = allocateInternalResource(context, previousValueName, memoryType);
 
 		// Restore the operand for the segment so type checks apply to the original value.
 		context.stack.push(operand);
 
 		return compileSegment(
 			[
-				previousValueDeclaration,
 				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
 				`localGet ${currentValueName}`,
-				`push &${previousValueName}`,
+				`push ${previousValue.byteAddress}`,
 				loadInstruction,
 				'greaterThan',
 				'if int',
@@ -43,7 +41,7 @@ const risingEdge: InstructionCompiler = withValidation(
 				'else',
 				'push 0',
 				'ifEnd',
-				`push &${previousValueName}`,
+				`push ${previousValue.byteAddress}`,
 				`localGet ${currentValueName}`,
 				'store',
 			],

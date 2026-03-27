@@ -35,23 +35,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] 
       "isInteger": true,
     },
   },
-  "memory": {
-    "__risingEdgeDetector_previousValue4": {
-      "byteAddress": 0,
-      "default": 0,
-      "elementWordSize": 4,
-      "id": "__risingEdgeDetector_previousValue4",
-      "isInteger": true,
-      "isPointer": false,
-      "isPointingToInteger": false,
-      "isPointingToPointer": false,
-      "isUnsigned": false,
-      "numberOfElements": 1,
-      "type": "int",
-      "wordAlignedAddress": 0,
-      "wordAlignedSize": 1,
-    },
-  },
+  "memory": {},
   "stack": [
     {
       "isInteger": true,
@@ -96,23 +80,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment for 
       "isInteger": false,
     },
   },
-  "memory": {
-    "__risingEdgeDetector_previousValue4": {
-      "byteAddress": 0,
-      "default": 0,
-      "elementWordSize": 4,
-      "id": "__risingEdgeDetector_previousValue4",
-      "isInteger": false,
-      "isPointer": false,
-      "isPointingToInteger": false,
-      "isPointingToPointer": false,
-      "isUnsigned": false,
-      "numberOfElements": 1,
-      "type": "float",
-      "wordAlignedAddress": 0,
-      "wordAlignedSize": 1,
-    },
-  },
+  "memory": {},
   "stack": [
     {
       "isInteger": true,

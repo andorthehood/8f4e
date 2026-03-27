@@ -13,6 +13,10 @@ export default function createInstructionCompilerTestContext(
 			consts: {},
 			moduleName: 'test',
 		},
+		internalResources: {},
+		internalAllocator: {
+			nextByteAddress: 0,
+		},
 		stack: [],
 		blockStack: [
 			{

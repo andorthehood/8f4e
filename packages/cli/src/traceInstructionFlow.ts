@@ -184,6 +184,10 @@ export default function traceInstructionFlow(
 				moduleName: module.id,
 				functions: compileResult.compiledFunctions,
 			},
+			internalResources: {},
+			internalAllocator: {
+				nextByteAddress: compileResult.requiredMemoryBytes,
+			},
 			byteCode: [],
 			stack: [],
 			blockStack: [
@@ -217,6 +221,10 @@ export default function traceInstructionFlow(
 				consts: {},
 				moduleName: undefined,
 				functions: compileResult.compiledFunctions,
+			},
+			internalResources: {},
+			internalAllocator: {
+				nextByteAddress: 0,
 			},
 			byteCode: [],
 			stack: [],

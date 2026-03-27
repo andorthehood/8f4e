@@ -19,9 +19,7 @@ import applySemanticInstruction from './instructions';
 
 import { ErrorCode, getError } from '../compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
-import instructions, { Instruction } from '../instructionCompilers';
 import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
-import { BLOCK_TYPE } from '../types';
 import {
 	type AST,
 	type CompilationContext,
@@ -62,6 +60,10 @@ export function prepassNamespace(
 			moduleName: undefined,
 			functions,
 		},
+		internalResources: {},
+		internalAllocator: {
+			nextByteAddress: startingByteAddress,
+		},
 		byteCode: [],
 		stack: [],
 		blockStack: [],
@@ -78,57 +80,6 @@ export function prepassNamespace(
 
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		applyNamespacePrepassLine(line, context);
-	});
-
-	return context;
-}
-
-function planNamespaceLayout(
-	ast: AST,
-	namespaces: Namespaces,
-	startingByteAddress = 0,
-	functions?: CompiledFunctionLookup
-): CompilationContext {
-	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
-	const codeBlockType = ast[0]?.instruction === 'constants' ? 'constants' : 'module';
-	const blockType = codeBlockType === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE;
-	const context: CompilationContext = {
-		namespace: {
-			namespaces,
-			memory: prepassContext.namespace.memory,
-			locals: {},
-			consts: { ...prepassContext.namespace.consts },
-			moduleName: prepassContext.namespace.moduleName,
-			functions,
-		},
-		byteCode: [],
-		stack: [],
-		blockStack: [
-			{
-				hasExpectedResult: false,
-				expectedResultIsInteger: false,
-				blockType,
-			},
-		],
-		startingByteAddress,
-		mode: 'module',
-		codeBlockId: prepassContext.namespace.moduleName,
-		codeBlockType,
-		skipExecutionInCycle: prepassContext.skipExecutionInCycle,
-		initOnlyExecution: prepassContext.initOnlyExecution,
-	};
-
-	ast.forEach(originalLine => {
-		const line = normalizeCompileTimeArguments(originalLine, context);
-		if (line.isSemanticOnly || isMemoryDeclarationInstruction(line.instruction)) {
-			return;
-		}
-
-		const instruction = line.instruction as Instruction;
-		if (!instructions[instruction]) {
-			throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-		}
-		instructions[instruction](line, context);
 	});
 
 	return context;
@@ -275,9 +226,7 @@ export function collectNamespacesFromASTs(
 
 	let nextStartingByteAddress = startingByteAddress;
 	for (const ast of layoutAsts) {
-		const context = compiledFunctions
-			? planNamespaceLayout(ast, namespaces, nextStartingByteAddress, compiledFunctions)
-			: prepassNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions);
+		const context = prepassNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions);
 		if (!context.namespace.moduleName) {
 			continue;
 		}

@@ -46,15 +46,15 @@
       "index": 3,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "wordAlignedSize": 8,
+      "wordAlignedSize": 7,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "audioout",
       "index": 4,
-      "byteAddress": 36,
-      "wordAlignedAddress": 9,
+      "byteAddress": 32,
+      "wordAlignedAddress": 8,
       "wordAlignedSize": 130,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -62,8 +62,8 @@
     {
       "id": "midiNote2Freq",
       "index": 5,
-      "byteAddress": 556,
-      "wordAlignedAddress": 139,
+      "byteAddress": 552,
+      "wordAlignedAddress": 138,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -71,8 +71,8 @@
     {
       "id": "janko",
       "index": 6,
-      "byteAddress": 568,
-      "wordAlignedAddress": 142,
+      "byteAddress": 564,
+      "wordAlignedAddress": 141,
       "wordAlignedSize": 2,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -80,8 +80,8 @@
     {
       "id": "keyboard",
       "index": 7,
-      "byteAddress": 576,
-      "wordAlignedAddress": 144,
+      "byteAddress": 572,
+      "wordAlignedAddress": 143,
       "wordAlignedSize": 2,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -89,8 +89,8 @@
     {
       "id": "midiLUT",
       "index": 8,
-      "byteAddress": 584,
-      "wordAlignedAddress": 146,
+      "byteAddress": 580,
+      "wordAlignedAddress": 145,
       "wordAlignedSize": 128,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -98,8 +98,8 @@
     {
       "id": "vca",
       "index": 9,
-      "byteAddress": 1096,
-      "wordAlignedAddress": 274,
+      "byteAddress": 1092,
+      "wordAlignedAddress": 273,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -107,8 +107,8 @@
     {
       "id": "phaseAccumulator",
       "index": 10,
-      "byteAddress": 1108,
-      "wordAlignedAddress": 277,
+      "byteAddress": 1104,
+      "wordAlignedAddress": 276,
       "wordAlignedSize": 4,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -116,8 +116,8 @@
     {
       "id": "projectConfig",
       "index": 11,
-      "byteAddress": 1124,
-      "wordAlignedAddress": 281,
+      "byteAddress": 1120,
+      "wordAlignedAddress": 280,
       "wordAlignedSize": 0,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
