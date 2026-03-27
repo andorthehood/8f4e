@@ -72,6 +72,8 @@ Active todo files are listed below.
 | 324 | Add `int16*` pointer types to compiler and runtime | 🟡 | 1-2d | 2026-03-26 | The compiler currently only has coarse pointer base types such as `int*`, `float*`, and `float64*`, so pointer-aware metadata cannot represent 16-bit integer pointee semantics directly. |
 | 325 | Add literal-only `*` and `/` folding at argument parse time | 🟡 | 4-8h | 2026-03-26 | 8f4e already folds fraction-style literals like `1/2` during argument parsing, but other literal-only arithmetic such as `16*2` and `3.5*4` still falls through as identifier-shaped input instead of becoming ordinary literals in the AST. |
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 🟡 | 4-8h | 2026-03-26 | Several editor/runtime paths still use dotted cross-module memory ids such as `module.memory`, while compiler address-style intermodule references already use `module:memory`, creating inconsistent source-level syntax. |
+| 327 | Replace symbolic metadata prefixes with function-style queries | 🟡 | 1-2d | 2026-03-27 | The language currently uses symbolic metadata queries such as `$name`, `%name`, `^name`, and `!name`, which are terse but hard to discover and easy to misread compared with explicit forms like `count(name)` and `sizeof(name)`. |
+| 328 | Add compile-time `*` and `/` support for literals, constants, and metadata queries | 🟡 | 1-2d | 2026-03-27 | Compile-time arithmetic currently supports literal-only expressions and the narrow asymmetric form `CONST*<literal>`, but it cannot yet combine literals, constants, and metadata queries such as `sizeof(name)` in a single compile-time-resolvable expression. |
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |
