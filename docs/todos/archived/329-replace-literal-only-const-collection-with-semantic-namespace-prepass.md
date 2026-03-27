@@ -3,8 +3,8 @@ title: 'TODO: Replace literal-only const collection with semantic namespace prep
 priority: High
 effort: 6-10 hours
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-27
 ---
 
 # TODO: Replace literal-only const collection with semantic namespace prepass

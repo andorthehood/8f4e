@@ -3,8 +3,8 @@ title: 'TODO: Move compiler-generated hidden resources into a separate internal 
 priority: Medium
 effort: 1-2 days
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-27
 ---
 
 # TODO: Move compiler-generated hidden resources into a separate internal address space
