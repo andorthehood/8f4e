@@ -1,10 +1,9 @@
 import compile, {
+	compileLine,
 	collectNamespacesFromASTs,
-	instructions,
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
-	type Instruction,
 	type Module,
 } from '@8f4e/compiler';
 
@@ -83,15 +82,10 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 	const entries: InstructionTraceEntry[] = [];
 
 	for (const line of ast) {
-		const compiler = instructions[line.instruction as Instruction];
-		if (!compiler) {
-			continue;
-		}
-
 		const stackBefore = serializeStack(context);
 		const byteCodeOffset = context.byteCode.length;
 
-		compiler(line, context);
+		compileLine(line, context);
 
 		entries.push({
 			lineNumber: line.lineNumberBeforeMacroExpansion + 1,

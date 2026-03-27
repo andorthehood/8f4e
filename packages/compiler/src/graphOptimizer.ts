@@ -157,6 +157,7 @@ if (import.meta.vitest) {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'module',
 				arguments: [identifierArgument(moduleId)],
+				isSemanticOnly: true,
 			},
 			...references.map((reference, index) => {
 				return {
@@ -176,6 +177,7 @@ if (import.meta.vitest) {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'constants',
 				arguments: [],
+				isSemanticOnly: true,
 			},
 		] as AST;
 	};
@@ -230,6 +232,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'module',
 					arguments: [identifierArgument('alpha')],
+					isSemanticOnly: true,
 				},
 				{
 					lineNumberBeforeMacroExpansion: 2,
