@@ -23,6 +23,7 @@ describe('getError', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'use',
 			arguments: [],
+			isSemanticOnly: true,
 		} as AST[number];
 
 		const error = getError(ErrorCode.UNDECLARED_IDENTIFIER, line);

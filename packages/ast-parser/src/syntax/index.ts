@@ -3,6 +3,7 @@ export { default as instructionParser } from './instructionParser';
 export { default as isComment } from './isComment';
 export { default as isSkipExecutionDirective } from './isSkipExecutionDirective';
 export { default as isValidInstruction } from './isValidInstruction';
+export { default as isSemanticOnlyInstruction } from './isSemanticOnlyInstruction';
 export {
 	ArgumentType,
 	parseArgument,

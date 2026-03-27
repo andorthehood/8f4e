@@ -1,4 +1,3 @@
-import _const from './const';
 import load from './load';
 import localGet from './localGet';
 import localSet from './localSet';
@@ -30,8 +29,6 @@ import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
-import _module from './module';
-import moduleEnd from './moduleEnd';
 import int from './int';
 import int16 from './int16';
 import float from './float';
@@ -49,7 +46,6 @@ import dup from './dup';
 import swap from './swap';
 import cycle from './cycle';
 import abs from './abs';
-import use from './use';
 import equal from './equal';
 import wasm from './wasm';
 import branchIfUnchanged from './branchIfUnchanged';
@@ -65,8 +61,6 @@ import _function from './function';
 import functionEnd from './functionEnd';
 import param from './param';
 import call from './call';
-import constants from './constants';
-import constantsEnd from './constantsEnd';
 import skipExecution from './skipExecution';
 import initOnly from './initOnly';
 import mapBegin from './mapBegin';
@@ -78,7 +72,6 @@ import storeBytes from './storeBytes';
 const instructions = {
 	and,
 	or,
-	const: _const,
 	load: load,
 	load8u: load,
 	load16u: load,
@@ -113,8 +106,6 @@ const instructions = {
 	shiftRight,
 	shiftRightUnsigned,
 	remainder,
-	module: _module,
-	moduleEnd,
 	int: int,
 	float: float,
 	'int*': int,
@@ -153,7 +144,6 @@ const instructions = {
 	swap,
 	cycle,
 	abs,
-	use,
 	equal,
 	wasm,
 	branchIfUnchanged,
@@ -167,8 +157,6 @@ const instructions = {
 	functionEnd,
 	param,
 	call,
-	constants,
-	constantsEnd,
 	'#skipExecution': skipExecution,
 	'#initOnly': initOnly,
 	mapBegin,

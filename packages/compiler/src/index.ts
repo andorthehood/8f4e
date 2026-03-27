@@ -70,6 +70,7 @@ export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export { prepassNamespace } from './compiler';
+export { compileLine } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {
 	parseMacroDefinitions,

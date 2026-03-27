@@ -1,5 +1,6 @@
 import instructionParser from './syntax/instructionParser';
 import isComment from './syntax/isComment';
+import isSemanticOnlyInstruction from './syntax/isSemanticOnlyInstruction';
 import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
@@ -67,6 +68,7 @@ export function parseLine(
 			lineNumberAfterMacroExpansion,
 			instruction,
 			arguments: args.map(parseArgument),
+			isSemanticOnly: isSemanticOnlyInstruction(instruction),
 		};
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
@@ -94,3 +96,20 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 }
 
 export { instructionParser };
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('parseLine', () => {
+		it('flags semantic-only instructions in generated AST lines', () => {
+			expect(parseLine('const SIZE 16', 0).isSemanticOnly).toBe(true);
+			expect(parseLine('use math', 0).isSemanticOnly).toBe(true);
+			expect(parseLine('module demo', 0).isSemanticOnly).toBe(true);
+		});
+
+		it('leaves runtime/codegen instructions unflagged', () => {
+			expect(parseLine('push 1', 0).isSemanticOnly).toBe(false);
+			expect(parseLine('int value 1', 0).isSemanticOnly).toBe(false);
+		});
+	});
+}
