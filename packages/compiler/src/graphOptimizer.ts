@@ -56,10 +56,6 @@ function getIdentifierValue(argument: Argument | undefined): string {
 }
 
 export default function sortModules(modules: AST[]): AST[] {
-	// This sorter is for runtime/execution dependency ordering only.
-	// It must not be treated as the source of truth for semantic namespace availability or name resolution.
-	// Semantic collection should gather local declarations first and resolve intermodule references independently of order.
-
 	// First, separate constants blocks from regular modules
 	const constantsBlocks = modules.filter(ast => ast.some(line => line.instruction === 'constants'));
 	const regularModules = modules.filter(ast => !ast.some(line => line.instruction === 'constants'));
@@ -127,9 +123,9 @@ export default function sortModules(modules: AST[]): AST[] {
 				.flatMap(({ arguments: _arguments }) => getIntermodularReferenceModules(_arguments[1]));
 
 			if (intermodulerConnectionsB.includes(moduleIdA) && !intermodulerConnectionsA.includes(moduleIdB)) {
-				return -1;
-			} else if (!intermodulerConnectionsB.includes(moduleIdA) && intermodulerConnectionsA.includes(moduleIdB)) {
 				return 1;
+			} else if (!intermodulerConnectionsB.includes(moduleIdA) && intermodulerConnectionsA.includes(moduleIdB)) {
+				return -1;
 			} else {
 				return 0;
 			}
@@ -217,7 +213,7 @@ if (import.meta.vitest) {
 
 			const sorted = sortModules([beta, alpha]);
 
-			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
+			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
 		});
 
 		it('orders module before another module that references it', () => {
@@ -226,7 +222,7 @@ if (import.meta.vitest) {
 
 			const sorted = sortModules([alpha, beta]);
 
-			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
+			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
 		});
 
 		it('orders module before another module that references it inside a compile-time expression', () => {
@@ -249,7 +245,7 @@ if (import.meta.vitest) {
 
 			const sorted = sortModules([alpha, beta]);
 
-			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
+			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
 		});
 
 		it('handles duplicate module ids deterministically', () => {

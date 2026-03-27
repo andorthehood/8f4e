@@ -174,17 +174,12 @@ export default function compile(
 			: (functions?.map(func => ({ code: func.code, lineMetadata: undefined })) ?? []);
 
 	// Compile to AST with line metadata for error mapping.
-	// Keep source order for layout/addresses and use dependency order only where semantic/runtime scheduling needs it.
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
 	const dependencyOrderedModules = sortModules(astModules);
 
-	// Collect namespaces from all modules (includes both regular modules and constants blocks)
-	const namespaces = collectNamespacesFromASTs(
-		dependencyOrderedModules,
-		GLOBAL_ALIGNMENT_BOUNDARY,
-		undefined,
-		astModules
-	);
+	// First collect names and declaration metadata so functions can compile against the semantic namespace.
+	// A second pass below enriches the namespaces with final planned layout once user functions are known.
+	const discoveryNamespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
@@ -198,17 +193,24 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
+		compileFunction(ast, discoveryNamespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
+
+	// Rebuild namespaces with final planned layout once function references can resolve during module planning.
+	const namespaces = collectNamespacesFromASTs(
+		dependencyOrderedModules,
+		GLOBAL_ALIGNMENT_BOUNDARY,
+		compiledFunctionsMap
+	);
 
 	// Extract the unique function types and type indices from the registry
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Compile all modules in source order so layout and addresses remain stable.
+	// Compile all modules in dependency order to preserve the established physical layout.
 	const compiledModules = compileModules(
-		astModules,
+		dependencyOrderedModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -217,10 +219,6 @@ export default function compile(
 		compiledFunctionsMap
 	);
 
-	const compiledModulesBySourceAst = new Map(astModules.map((ast, index) => [ast, compiledModules[index]]));
-	const runtimeOrderedModules = dependencyOrderedModules
-		.map(ast => compiledModulesBySourceAst.get(ast))
-		.filter((module): module is CompiledModule => typeof module !== 'undefined');
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
@@ -234,7 +232,7 @@ export default function compile(
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
 	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle or initOnlyExecution flags
-	const cycleFunction = runtimeOrderedModules.flatMap(module =>
+	const cycleFunction = compiledModules.flatMap(module =>
 		module.skipExecutionInCycle || module.initOnlyExecution
 			? []
 			: call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
@@ -242,7 +240,7 @@ export default function compile(
 
 	// Generate init-only module calls (run after memory initialization)
 	// Skip if skipExecutionInCycle is true (precedence rule)
-	const initOnlyModuleCalls = runtimeOrderedModules.flatMap(module =>
+	const initOnlyModuleCalls = compiledModules.flatMap(module =>
 		module.initOnlyExecution && !module.skipExecutionInCycle
 			? call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 			: []
