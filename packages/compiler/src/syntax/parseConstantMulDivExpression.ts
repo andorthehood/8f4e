@@ -1,82 +1,140 @@
-import isConstantName from './isConstantName';
-
-export type ConstantMulDivExpression = {
-	baseIdentifier: string;
+export type CompileTimeMulDivExpression = {
+	lhs: string;
 	operator: '*' | '/';
 	rhs: string;
 };
 
-function getFirstOperatorIndex(value: string): number {
-	const mulIndex = value.indexOf('*');
-	const divIndex = value.indexOf('/');
+/**
+ * Finds the index of the single `*` or `/` operator that appears outside of parentheses.
+ * Returns -1 if there is no such operator, or -2 if there is more than one.
+ */
+function findOperatorOutsideParens(value: string): number {
+	let depth = 0;
+	let operatorIndex = -1;
 
-	if (mulIndex === -1) {
-		return divIndex;
+	for (let i = 0; i < value.length; i++) {
+		const ch = value[i];
+		if (ch === '(') {
+			depth++;
+		} else if (ch === ')') {
+			depth--;
+		} else if ((ch === '*' || ch === '/') && depth === 0) {
+			if (operatorIndex !== -1) {
+				return -2; // More than one operator outside parens
+			}
+			operatorIndex = i;
+		}
 	}
 
-	if (divIndex === -1) {
-		return mulIndex;
-	}
-
-	return Math.min(mulIndex, divIndex);
+	return operatorIndex;
 }
 
-export default function parseConstantMulDivExpression(value: string): ConstantMulDivExpression | null {
-	const operators = value.match(/[*/]/g);
+/**
+ * Parses a compile-time `*` or `/` expression with exactly one operator outside parentheses.
+ * Each side can be any compile-time-resolvable operand: a numeric literal,
+ * a constant identifier, or a metadata query such as `sizeof(name)` or `count(name)`.
+ *
+ * Returns the parsed expression or `null` if the value is not a single-operator expression.
+ */
+export default function parseConstantMulDivExpression(value: string): CompileTimeMulDivExpression | null {
+	const operatorIndex = findOperatorOutsideParens(value);
 
-	// Constant expressions support exactly one operator: CONST*number or CONST/number
-	if (!operators || operators.length !== 1) {
+	// Require exactly one operator outside parens
+	if (operatorIndex < 0) {
 		return null;
 	}
 
-	const operatorIndex = getFirstOperatorIndex(value);
-
-	if (operatorIndex <= 0 || operatorIndex === value.length - 1) {
+	// Operator must not be at start or end
+	if (operatorIndex === 0 || operatorIndex === value.length - 1) {
 		return null;
 	}
 
-	const operator = value[operatorIndex] as ConstantMulDivExpression['operator'];
-	const baseIdentifier = value.slice(0, operatorIndex);
+	const operator = value[operatorIndex] as CompileTimeMulDivExpression['operator'];
+	const lhs = value.slice(0, operatorIndex);
 	const rhs = value.slice(operatorIndex + 1);
 
-	if (!isConstantName(baseIdentifier)) {
-		return null;
-	}
-
-	return {
-		baseIdentifier,
-		operator,
-		rhs,
-	};
+	return { lhs, operator, rhs };
 }
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('parseConstantMulDivExpression', () => {
-		it('parses multiplication expressions', () => {
+		it('parses constant * literal', () => {
 			expect(parseConstantMulDivExpression('SIZE*2')).toEqual({
-				baseIdentifier: 'SIZE',
+				lhs: 'SIZE',
 				operator: '*',
 				rhs: '2',
 			});
 		});
 
-		it('parses division expressions', () => {
+		it('parses constant / literal', () => {
 			expect(parseConstantMulDivExpression('SIZE/2')).toEqual({
-				baseIdentifier: 'SIZE',
+				lhs: 'SIZE',
 				operator: '/',
 				rhs: '2',
 			});
 		});
 
-		it('rejects multiple operators', () => {
+		it('parses literal * constant', () => {
+			expect(parseConstantMulDivExpression('2*SIZE')).toEqual({
+				lhs: '2',
+				operator: '*',
+				rhs: 'SIZE',
+			});
+		});
+
+		it('parses metadata query * literal', () => {
+			expect(parseConstantMulDivExpression('sizeof(name)*2')).toEqual({
+				lhs: 'sizeof(name)',
+				operator: '*',
+				rhs: '2',
+			});
+		});
+
+		it('parses literal * metadata query', () => {
+			expect(parseConstantMulDivExpression('123*sizeof(name)')).toEqual({
+				lhs: '123',
+				operator: '*',
+				rhs: 'sizeof(name)',
+			});
+		});
+
+		it('parses metadata query with pointee form', () => {
+			expect(parseConstantMulDivExpression('sizeof(*ptr)*4')).toEqual({
+				lhs: 'sizeof(*ptr)',
+				operator: '*',
+				rhs: '4',
+			});
+		});
+
+		it('parses constant * metadata query', () => {
+			expect(parseConstantMulDivExpression('SIZE*sizeof(name)')).toEqual({
+				lhs: 'SIZE',
+				operator: '*',
+				rhs: 'sizeof(name)',
+			});
+		});
+
+		it('rejects multiple operators outside parens', () => {
 			expect(parseConstantMulDivExpression('SIZE/2/2')).toBeNull();
 			expect(parseConstantMulDivExpression('SIZE*2/2')).toBeNull();
 		});
 
-		it('rejects non-constant lhs identifiers', () => {
-			expect(parseConstantMulDivExpression('size/2')).toBeNull();
+		it('rejects operators at start or end', () => {
+			expect(parseConstantMulDivExpression('*SIZE')).toBeNull();
+			expect(parseConstantMulDivExpression('SIZE*')).toBeNull();
+		});
+
+		it('returns null for plain identifiers or literals', () => {
+			expect(parseConstantMulDivExpression('SIZE')).toBeNull();
+			expect(parseConstantMulDivExpression('42')).toBeNull();
+			expect(parseConstantMulDivExpression('sizeof(name)')).toBeNull();
+		});
+
+		it('counts operators inside parentheses as non-operators', () => {
+			// sizeof(*name) has a * inside parens — should not count as operator
+			expect(parseConstantMulDivExpression('sizeof(*name)')).toBeNull();
 		});
 	});
 }

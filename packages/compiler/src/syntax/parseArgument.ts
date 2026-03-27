@@ -4,6 +4,7 @@ import parseNumericLiteralToken, {
 	isNumericLikeInvalidToken,
 	startsWithNumericPrefix,
 } from './parseNumericLiteralToken';
+import parseConstantMulDivExpression from './parseConstantMulDivExpression';
 
 export enum ArgumentType {
 	LITERAL = 'literal',
@@ -124,7 +125,12 @@ export function parseArgument(argument: string): Argument {
 
 			// Reject numeric-looking tokens that failed literal parsing so they do not silently
 			// become identifiers. This keeps standalone and compound numeric syntax boundaries clear.
+			// Exception: if the token is a valid single-operator compile-time expression with a
+			// non-literal operand (e.g. 123*sizeof(name)), allow it through as an identifier.
 			if (isNumericLikeInvalidToken(argument)) {
+				if (parseConstantMulDivExpression(argument) !== null) {
+					return { value: argument, type: ArgumentType.IDENTIFIER };
+				}
 				throw new SyntaxRulesError(
 					SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
 					`Invalid numeric literal or expression: ${argument}`,
@@ -134,6 +140,9 @@ export function parseArgument(argument: string): Argument {
 				);
 			}
 			if (startsWithNumericPrefix(argument)) {
+				if (parseConstantMulDivExpression(argument) !== null) {
+					return { value: argument, type: ArgumentType.IDENTIFIER };
+				}
 				throw new SyntaxRulesError(
 					SyntaxErrorCode.INVALID_IDENTIFIER,
 					`Identifiers cannot start with numbers: ${argument}`,
@@ -232,6 +241,19 @@ if (import.meta.vitest) {
 		it('rejects chained or mixed numeric-looking operators', () => {
 			expect(() => parseArgument('2*3*4')).toThrow('Invalid numeric literal or expression');
 			expect(() => parseArgument('2*3/4')).toThrow('Invalid numeric literal or expression');
+		});
+
+		it('allows numeric-prefixed mixed compile-time expressions through as identifiers', () => {
+			// These start with a numeric literal but have a non-literal RHS — pass through as identifier
+			// for later resolution by the compile-time evaluator.
+			expect(parseArgument('123*sizeof(name)')).toEqual({
+				value: '123*sizeof(name)',
+				type: ArgumentType.IDENTIFIER,
+			});
+			expect(parseArgument('2*SIZE')).toEqual({
+				value: '2*SIZE',
+				type: ArgumentType.IDENTIFIER,
+			});
 		});
 
 		it('parses f64-suffixed float literals', () => {
