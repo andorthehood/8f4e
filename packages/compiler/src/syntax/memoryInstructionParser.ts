@@ -212,7 +212,7 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
-	// Check for intermodular element count reference pattern (e.g., "$module.memory")
+	// Check for intermodular element count reference pattern (e.g., "count(module:memory)")
 	if (isIntermodularElementCountReference(arg.value)) {
 		const { module, memory } = extractIntermodularElementCountBase(arg.value);
 		return {
@@ -223,7 +223,7 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
-	// Check for intermodular element word size reference pattern (e.g., "%module.memory")
+	// Check for intermodular element word size reference pattern (e.g., "sizeof(module:memory)")
 	if (isIntermodularElementWordSizeReference(arg.value)) {
 		const { module, memory } = extractIntermodularElementWordSizeBase(arg.value);
 		return {
@@ -234,7 +234,7 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
-	// Check for intermodular element max reference pattern (e.g., "^module.memory")
+	// Check for intermodular element max reference pattern (e.g., "max(module:memory)")
 	if (isIntermodularElementMaxReference(arg.value)) {
 		const { module, memory } = extractIntermodularElementMaxBase(arg.value);
 		return {
@@ -245,7 +245,7 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
-	// Check for intermodular element min reference pattern (e.g., "!module.memory")
+	// Check for intermodular element min reference pattern (e.g., "min(module:memory)")
 	if (isIntermodularElementMinReference(arg.value)) {
 		const { module, memory } = extractIntermodularElementMinBase(arg.value);
 		return {
@@ -319,42 +319,50 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular element count argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'count(mod.buffer)' }]);
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'count(mod:buffer)' },
+			]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-count',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: 'count(mod.buffer)',
+				pattern: 'count(mod:buffer)',
 			});
 		});
 
 		it('parses intermodular element word size argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'sizeof(mod.buffer)' }]);
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'sizeof(mod:buffer)' },
+			]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-word-size',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: 'sizeof(mod.buffer)',
+				pattern: 'sizeof(mod:buffer)',
 			});
 		});
 
 		it('parses intermodular element max argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'max(mod.buffer)' }]);
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'max(mod:buffer)' },
+			]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-max',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: 'max(mod.buffer)',
+				pattern: 'max(mod:buffer)',
 			});
 		});
 
 		it('parses intermodular element min argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'min(mod.buffer)' }]);
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'min(mod:buffer)' },
+			]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-min',
 				module: 'mod',
 				memory: 'buffer',
-				pattern: 'min(mod.buffer)',
+				pattern: 'min(mod:buffer)',
 			});
 		});
 
