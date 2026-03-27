@@ -4,6 +4,7 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { allocateInternalResource } from '../utils/internalResources';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -24,13 +25,11 @@ const loop: InstructionCompiler = withValidation(
 
 		const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumberAfterMacroExpansion;
 		const loopErrorSignalerName = '__loopErrorSignaler';
+		const loopErrorSignaler = allocateInternalResource(context, loopErrorSignalerName, 'int', -1);
 
 		return compileSegment(
 			[
 				`local int ${infiniteLoopProtectionCounterName}`,
-				Object.hasOwn(context.namespace.memory, infiniteLoopProtectionCounterName)
-					? ''
-					: `int ${loopErrorSignalerName} -1`,
 
 				'push 0',
 				`localSet ${infiniteLoopProtectionCounterName}`,
@@ -45,7 +44,7 @@ const loop: InstructionCompiler = withValidation(
 				'push 1000',
 				'greaterOrEqual',
 				'if void',
-				` push &${loopErrorSignalerName}`,
+				` push ${loopErrorSignaler.byteAddress}`,
 				` push ${line.lineNumberBeforeMacroExpansion}`,
 				' store',
 				` branch 2`,

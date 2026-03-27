@@ -148,9 +148,9 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
     i32.const 0
     f32.load
     local.set 0
-    local.get 0
     i32.const 8
     f32.load
+    local.get 0
     f32.eq
     i32.eqz
     i32.const 8
@@ -168,21 +168,6 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
 
 exports[`hasChanged with float > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
-  "__hasChangedDetector_previousValue7": {
-    "byteAddress": 8,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "__hasChangedDetector_previousValue7",
-    "isInteger": false,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "isUnsigned": false,
-    "numberOfElements": 1,
-    "type": "float",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
-  },
   "input": {
     "byteAddress": 0,
     "default": 0,
@@ -364,9 +349,9 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
     i32.const 0
     i32.load
     local.set 0
-    local.get 0
     i32.const 8
     i32.load
+    local.get 0
     i32.eq
     i32.eqz
     i32.const 8
@@ -384,21 +369,6 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
 
 exports[`hasChanged with int > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
-  "__hasChangedDetector_previousValue7": {
-    "byteAddress": 8,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "__hasChangedDetector_previousValue7",
-    "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "isUnsigned": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
-  },
   "input": {
     "byteAddress": 0,
     "default": 0,

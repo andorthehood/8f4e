@@ -47,6 +47,22 @@ export interface DataStructure {
 
 export type MemoryMap = Record<string, DataStructure>;
 
+export interface InternalResource {
+	id: string;
+	byteAddress: number;
+	wordAlignedAddress: number;
+	wordAlignedSize: number;
+	elementWordSize: number;
+	default: number;
+	storageType: 'int' | 'float' | 'float64';
+}
+
+export type InternalResourceMap = Record<string, InternalResource>;
+
+export interface InternalAllocator {
+	nextByteAddress: number;
+}
+
 export interface CompiledModule {
 	index: number;
 	initFunctionBody: number[];
@@ -147,6 +163,8 @@ export type CompilationMode = 'module' | 'function';
 
 export interface CompilationContext {
 	namespace: Namespace;
+	internalResources: InternalResourceMap;
+	internalAllocator: InternalAllocator;
 	stack: Stack;
 	blockStack: BlockStack;
 	startingByteAddress: number;
