@@ -74,11 +74,11 @@ export function compileModule(
 		namespace: {
 			namespaces,
 			memory: prepassContext.namespace.memory,
-			locals: {},
 			consts: { ...prepassContext.namespace.consts },
 			moduleName: prepassContext.namespace.moduleName,
 			functions,
 		},
+		locals: {},
 		internalResources: {},
 		internalAllocator,
 		byteCode: [],
@@ -139,7 +139,7 @@ export function compileModule(
 	return {
 		id: context.namespace.moduleName,
 		cycleFunction: createFunction(
-			Object.values(context.namespace.locals).map(local => {
+			Object.values(context.locals).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : local.isFloat64 ? Type.F64 : Type.F32, 1);
 			}),
 			context.byteCode
@@ -166,11 +166,11 @@ export function compileFunction(
 		namespace: {
 			namespaces,
 			memory: {},
-			locals: {},
 			consts: {},
 			moduleName: undefined,
 			functions: {},
 		},
+		locals: {},
 		internalResources: {},
 		internalAllocator: {
 			nextByteAddress: 0,
@@ -210,7 +210,7 @@ export function compileFunction(
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
 	// Regular locals declared with the 'local' instruction come after parameters
 	const parameterCount = context.currentFunctionSignature.parameters.length;
-	const localDeclarations = Object.entries(context.namespace.locals)
+	const localDeclarations = Object.entries(context.locals)
 		.filter(([, local]) => local.index >= parameterCount)
 		.map(([, local]) => ({
 			isInteger: local.isInteger,

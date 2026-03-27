@@ -28,7 +28,7 @@ const param: InstructionCompiler = withValidation(
 		//
 		// If either is true, we're past the param declaration phase and should error.
 		const paramCount = context.currentFunctionSignature?.parameters.length || 0;
-		const localCount = Object.keys(context.namespace.locals).length;
+		const localCount = Object.keys(context.locals).length;
 
 		if (localCount > paramCount || context.byteCode.length > 0) {
 			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
@@ -50,15 +50,15 @@ const param: InstructionCompiler = withValidation(
 		}
 
 		// Check for duplicate parameter names
-		if (context.namespace.locals[paramName] !== undefined) {
+		if (context.locals[paramName] !== undefined) {
 			throw getError(ErrorCode.DUPLICATE_PARAMETER_NAME, line, context);
 		}
 
 		// Register parameter as a local variable with the given name
 		// Parameters get local indices starting from 0
-		const paramIndex = Object.keys(context.namespace.locals).length;
+		const paramIndex = Object.keys(context.locals).length;
 
-		context.namespace.locals[paramName] = {
+		context.locals[paramName] = {
 			isInteger: paramType === 'int',
 			...(paramType === 'float64' ? { isFloat64: true } : {}),
 			index: paramIndex,
@@ -92,10 +92,7 @@ if (import.meta.vitest) {
 					},
 				],
 				currentFunctionSignature: { parameters: [], returns: [] },
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					locals: {},
-				},
+				locals: {},
 			});
 
 			param(
@@ -112,7 +109,7 @@ if (import.meta.vitest) {
 			);
 
 			expect({
-				locals: context.namespace.locals,
+				locals: context.locals,
 				currentFunctionSignature: context.currentFunctionSignature,
 			}).toMatchSnapshot();
 		});
@@ -128,10 +125,7 @@ if (import.meta.vitest) {
 					},
 				],
 				currentFunctionSignature: { parameters: [], returns: [] },
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					locals: {},
-				},
+				locals: {},
 			});
 
 			param(
@@ -148,7 +142,7 @@ if (import.meta.vitest) {
 			);
 
 			expect({
-				locals: context.namespace.locals,
+				locals: context.locals,
 				currentFunctionSignature: context.currentFunctionSignature,
 			}).toMatchSnapshot();
 		});
@@ -164,10 +158,7 @@ if (import.meta.vitest) {
 					},
 				],
 				currentFunctionSignature: { parameters: [], returns: [] },
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					locals: { existing: { isInteger: true, index: 0 } },
-				},
+				locals: { existing: { isInteger: true, index: 0 } },
 			});
 
 			expect(() => {

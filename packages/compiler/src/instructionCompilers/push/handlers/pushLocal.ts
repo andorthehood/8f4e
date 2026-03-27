@@ -8,7 +8,7 @@ import type { AST, CompilationContext } from '../../../types';
 
 export default function pushLocal(line: AST[number], context: CompilationContext): CompilationContext {
 	const argument = line.arguments[0] as { value: string };
-	const local = context.namespace.locals[argument.value];
+	const local = context.locals[argument.value];
 
 	if (!local) {
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
@@ -24,11 +24,8 @@ if (import.meta.vitest) {
 	describe('pushLocal', () => {
 		it('pushes a local via local.get', () => {
 			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					locals: {
-						temp: { isInteger: true, index: 3 },
-					},
+				locals: {
+					temp: { isInteger: true, index: 3 },
 				},
 			});
 

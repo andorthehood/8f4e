@@ -55,11 +55,11 @@ export function prepassNamespace(
 		namespace: {
 			namespaces,
 			memory: {},
-			locals: {},
 			consts: {},
 			moduleName: undefined,
 			functions,
 		},
+		locals: {},
 		internalResources: {},
 		internalAllocator: {
 			nextByteAddress: startingByteAddress,

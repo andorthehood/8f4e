@@ -179,11 +179,11 @@ export default function traceInstructionFlow(
 			namespace: {
 				namespaces,
 				memory: module.memoryMap,
-				locals: {},
 				consts: { ...(namespaces[module.id]?.consts ?? {}) },
 				moduleName: module.id,
 				functions: compileResult.compiledFunctions,
 			},
+			locals: {},
 			internalResources: {},
 			internalAllocator: {
 				nextByteAddress: compileResult.requiredMemoryBytes,
@@ -217,11 +217,11 @@ export default function traceInstructionFlow(
 			namespace: {
 				namespaces,
 				memory: {},
-				locals: {},
 				consts: {},
 				moduleName: undefined,
 				functions: compileResult.compiledFunctions,
 			},
+			locals: {},
 			internalResources: {},
 			internalAllocator: {
 				nextByteAddress: 0,

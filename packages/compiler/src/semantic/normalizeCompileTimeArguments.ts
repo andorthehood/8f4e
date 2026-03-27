@@ -95,11 +95,11 @@ if (import.meta.vitest) {
 			const context = {
 				namespace: {
 					memory: {},
-					locals: {},
 					consts: { SIZE: { value: 8, isInteger: true } },
 					moduleName: 'test',
 					namespaces: {},
 				},
+				locals: {},
 			} as unknown as CompilationContext;
 
 			expect(normalizeCompileTimeArguments(line, context)).toEqual({
@@ -118,11 +118,11 @@ if (import.meta.vitest) {
 			const context = {
 				namespace: {
 					memory: {},
-					locals: {},
 					consts: {},
 					moduleName: 'test',
 					namespaces: {},
 				},
+				locals: {},
 			} as unknown as CompilationContext;
 
 			expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
@@ -141,11 +141,11 @@ if (import.meta.vitest) {
 			const context = {
 				namespace: {
 					memory: {},
-					locals: {},
 					consts: { SIZE: { value: 8, isInteger: true } },
 					moduleName: 'test',
 					namespaces: {},
 				},
+				locals: {},
 			} as unknown as CompilationContext;
 
 			expect(normalizeCompileTimeArguments(line, context)).toEqual({
@@ -167,11 +167,11 @@ if (import.meta.vitest) {
 			const context = {
 				namespace: {
 					memory: {},
-					locals: {},
 					consts: {},
 					moduleName: 'test',
 					namespaces: {},
 				},
+				locals: {},
 			} as unknown as CompilationContext;
 
 			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();

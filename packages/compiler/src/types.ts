@@ -145,8 +145,8 @@ export interface TestModule {
 export type Const = { value: number; isInteger: boolean; isFloat64?: boolean };
 
 export type Consts = Record<string, Const>;
+export type LocalMap = Record<string, { isInteger: boolean; isFloat64?: boolean; index: number }>;
 export interface Namespace {
-	locals: Record<string, { isInteger: boolean; isFloat64?: boolean; index: number }>;
 	memory: MemoryMap;
 	consts: Consts;
 	moduleName: string | undefined;
@@ -163,6 +163,7 @@ export type CompilationMode = 'module' | 'function';
 
 export interface CompilationContext {
 	namespace: Namespace;
+	locals: LocalMap;
 	internalResources: InternalResourceMap;
 	internalAllocator: InternalAllocator;
 	stack: Stack;

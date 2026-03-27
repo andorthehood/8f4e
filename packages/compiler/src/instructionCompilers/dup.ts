@@ -51,7 +51,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				locals: context.namespace.locals,
+				locals: context.locals,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
@@ -72,7 +72,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				locals: context.namespace.locals,
+				locals: context.locals,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});

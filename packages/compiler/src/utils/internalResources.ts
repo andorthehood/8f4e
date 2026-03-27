@@ -54,10 +54,10 @@ if (import.meta.vitest) {
 			namespace: {
 				namespaces: {},
 				memory: {},
-				locals: {},
 				consts: {},
 				moduleName: 'testModule',
 			},
+			locals: {},
 			internalResources: {},
 			internalAllocator: {
 				nextByteAddress: 16,

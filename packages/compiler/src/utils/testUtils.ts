@@ -9,10 +9,10 @@ export default function createInstructionCompilerTestContext(
 		namespace: {
 			namespaces: {},
 			memory: {},
-			locals: {},
 			consts: {},
 			moduleName: 'test',
 		},
+		locals: {},
 		internalResources: {},
 		internalAllocator: {
 			nextByteAddress: 0,
