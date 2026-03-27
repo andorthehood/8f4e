@@ -37,7 +37,7 @@ const _function: InstructionCompiler = function (line, context) {
 	context.mode = 'function';
 
 	// Initialize empty locals - parameters will be added by param instructions
-	context.namespace.locals = {};
+	context.locals = {};
 
 	context.blockStack.push({
 		blockType: BLOCK_TYPE.FUNCTION,
@@ -72,7 +72,7 @@ if (import.meta.vitest) {
 				currentFunctionId: context.currentFunctionId,
 				currentFunctionSignature: context.currentFunctionSignature,
 				mode: context.mode,
-				locals: context.namespace.locals,
+				locals: context.locals,
 			}).toMatchSnapshot();
 		});
 
