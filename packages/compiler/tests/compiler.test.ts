@@ -2,6 +2,7 @@ import { describe, test, expect } from 'vitest';
 
 import { ArgumentType } from '../src/types';
 import { isComment, isValidInstruction, parseArgument, parseLine, compileToAST } from '../src/compiler';
+import { SyntaxErrorCode, SyntaxRulesError } from '../src/syntax/syntaxError';
 
 import type { AST } from '../src/types';
 
@@ -19,7 +20,6 @@ describe('parseArgument', () => {
 
 	const identifiers: [string, ArgumentType, string][] = [
 		['foo', ArgumentType.IDENTIFIER, 'foo'],
-		['1foo', ArgumentType.IDENTIFIER, '1foo'],
 		['foo1', ArgumentType.IDENTIFIER, 'foo1'],
 		['f0o', ArgumentType.IDENTIFIER, 'f0o'],
 	];
@@ -39,6 +39,15 @@ describe('parseArgument', () => {
 
 	test.each(identifiers)('given %p as input the output is %p', (argument, type, value) => {
 		expect(parseArgument(argument)).toStrictEqual({ type, value });
+	});
+
+	test('rejects identifiers that start with numbers', () => {
+		expect(() => parseArgument('1foo')).toThrowError(
+			expect.objectContaining({
+				name: 'SyntaxRulesError',
+				code: SyntaxErrorCode.INVALID_IDENTIFIER,
+			})
+		);
 	});
 });
 
@@ -172,5 +181,23 @@ describe('parseLine string literals', () => {
 
 	test('throws on unterminated string literal', () => {
 		expect(() => parseLine('push "hello', 0)).toThrow('Unterminated string literal');
+	});
+
+	test('adds line metadata to parse-time syntax errors', () => {
+		try {
+			parseLine('push 1e309', 7, 12);
+			throw new Error('Expected parseLine to throw');
+		} catch (error) {
+			expect(error).toBeInstanceOf(SyntaxRulesError);
+			expect((error as SyntaxRulesError).code).toBe(SyntaxErrorCode.INVALID_NUMERIC_LITERAL);
+			expect((error as SyntaxRulesError).details).toEqual(
+				expect.objectContaining({
+					argument: '1e309',
+					line: 'push 1e309',
+					lineNumberBeforeMacroExpansion: 7,
+					lineNumberAfterMacroExpansion: 12,
+				})
+			);
+		}
 	});
 });

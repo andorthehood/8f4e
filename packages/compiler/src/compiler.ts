@@ -82,15 +82,27 @@ export function parseLine(
 	lineNumberBeforeMacroExpansion: number,
 	lineNumberAfterMacroExpansion = lineNumberBeforeMacroExpansion
 ): ASTLine {
-	const tokens = tokenizeInstruction(line);
-	const [instruction, ...args] = tokens as [Instruction, ...string[]];
+	try {
+		const tokens = tokenizeInstruction(line);
+		const [instruction, ...args] = tokens as [Instruction, ...string[]];
 
-	return {
-		lineNumberBeforeMacroExpansion,
-		lineNumberAfterMacroExpansion,
-		instruction,
-		arguments: args.map(parseArgument),
-	};
+		return {
+			lineNumberBeforeMacroExpansion,
+			lineNumberAfterMacroExpansion,
+			instruction,
+			arguments: args.map(parseArgument),
+		};
+	} catch (error) {
+		if (error instanceof SyntaxRulesError) {
+			throw new SyntaxRulesError(error.code, error.message, {
+				...error.details,
+				line,
+				lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion,
+			});
+		}
+		throw error;
+	}
 }
 
 export function compileToAST(
