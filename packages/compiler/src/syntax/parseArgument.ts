@@ -19,6 +19,21 @@ export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: 
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral;
 
+function startsWithNumericPrefix(argument: string): boolean {
+	return /^-?(?:\d|\.\d)/.test(argument);
+}
+
+function isNumericLikeInvalidToken(argument: string): boolean {
+	return (
+		startsWithNumericPrefix(argument) &&
+		(/[*/]/.test(argument) ||
+			argument.includes('.') ||
+			/[eE]/.test(argument) ||
+			/^-?0[xXbB]/.test(argument) ||
+			/[fF]\d*$/.test(argument))
+	);
+}
+
 /**
  * Decodes escape sequences in a raw (unquoted) string literal body.
  * Supported: \", \\, \n, \r, \t, \xNN.
@@ -108,14 +123,27 @@ export function parseArgument(argument: string): Argument {
 		}
 		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(argument): {
 			const numStr = argument.slice(0, -3);
-			return { value: parseFloat(numStr), type: ArgumentType.LITERAL, isInteger: false, isFloat64: true };
+			const value = parseFloat(numStr);
+			if (!Number.isFinite(value)) {
+				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`, {
+					argument,
+				});
+			}
+			return { value, type: ArgumentType.LITERAL, isInteger: false, isFloat64: true };
 		}
-		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?$/.test(argument):
+		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?$/.test(argument): {
+			const value = parseFloat(argument);
+			if (!Number.isFinite(value)) {
+				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`, {
+					argument,
+				});
+			}
 			return {
-				value: parseFloat(argument),
+				value,
 				type: ArgumentType.LITERAL,
 				isInteger: /^-?[0-9]+$/.test(argument),
 			};
+		}
 		case /^-?0x[0-9a-fA-F]+$/.test(argument):
 			return {
 				value: parseInt(argument.replace('0x', ''), 16),
@@ -128,7 +156,16 @@ export function parseArgument(argument: string): Argument {
 		default:
 			// Reject numeric-looking tokens that failed literal parsing so they do not silently
 			// become identifiers. This keeps standalone and compound numeric syntax boundaries clear.
-			if (/^-?(?:\d|\.\d)/.test(argument)) {
+			if (isNumericLikeInvalidToken(argument)) {
+				throw new SyntaxRulesError(
+					SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
+					`Invalid numeric literal or expression: ${argument}`,
+					{
+						argument,
+					}
+				);
+			}
+			if (startsWithNumericPrefix(argument)) {
 				throw new SyntaxRulesError(
 					SyntaxErrorCode.INVALID_IDENTIFIER,
 					`Identifiers cannot start with numbers: ${argument}`,
@@ -175,8 +212,13 @@ if (import.meta.vitest) {
 
 		it('rejects identifiers that start with numbers', () => {
 			expect(() => parseArgument('1abc')).toThrow('Identifiers cannot start with numbers');
-			expect(() => parseArgument('1e')).toThrow('Identifiers cannot start with numbers');
-			expect(() => parseArgument('1e+')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('123ABC')).toThrow('Identifiers cannot start with numbers');
+		});
+
+		it('rejects invalid numeric literals or expressions', () => {
+			expect(() => parseArgument('1e')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('1e+')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('0xZZ')).toThrow('Invalid numeric literal or expression');
 		});
 
 		it('parses fraction literals with float result', () => {
@@ -219,8 +261,8 @@ if (import.meta.vitest) {
 		});
 
 		it('rejects chained or mixed numeric-looking operators', () => {
-			expect(() => parseArgument('2*3*4')).toThrow('Identifiers cannot start with numbers');
-			expect(() => parseArgument('2*3/4')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('2*3*4')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('2*3/4')).toThrow('Invalid numeric literal or expression');
 		});
 
 		it('parses f64-suffixed float literals', () => {
@@ -268,11 +310,18 @@ if (import.meta.vitest) {
 			});
 		});
 
+		it('rejects non-finite scientific notation literals', () => {
+			expect(() => parseArgument('1e309')).toThrow('Invalid numeric literal');
+			expect(() => parseArgument('1e309f64')).toThrow('Invalid numeric literal');
+			expect(() => parseArgument('1e309*2')).toThrow('Invalid numeric literal or expression');
+			expect(() => parseArgument('1e309f64*2')).toThrow('Invalid numeric literal or expression');
+		});
+
 		it('does not parse malformed f64 suffix forms as f64 literals', () => {
 			// F64 (uppercase) is not valid
-			expect(() => parseArgument('3.14F64')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('3.14F64')).toThrow('Invalid numeric literal or expression');
 			// double-f is not valid
-			expect(() => parseArgument('3.14ff64')).toThrow('Identifiers cannot start with numbers');
+			expect(() => parseArgument('3.14ff64')).toThrow('Invalid numeric literal or expression');
 			// multiple dots are not valid
 			expect(parseArgument('..f64').type).toBe(ArgumentType.IDENTIFIER);
 		});
