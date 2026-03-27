@@ -3,6 +3,7 @@ title: 'TODO: Replace symbolic metadata prefixes with function-style queries'
 priority: Medium
 effort: 1-2d
 created: 2026-03-27
+issue: https://github.com/andorthehood/8f4e/issues/461
 status: Open
 completed: null
 ---

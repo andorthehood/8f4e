@@ -3,6 +3,7 @@ title: 'TODO: Add compile-time `*` and `/` support for literals, constants, and 
 priority: Medium
 effort: 1-2d
 created: 2026-03-27
+issue: https://github.com/andorthehood/8f4e/issues/462
 status: Open
 completed: null
 ---

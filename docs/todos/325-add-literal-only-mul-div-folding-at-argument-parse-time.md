@@ -3,6 +3,7 @@ title: 'TODO: Add literal-only `*` and `/` folding at argument parse time'
 priority: Medium
 effort: 4-8h
 created: 2026-03-26
+issue: https://github.com/andorthehood/8f4e/issues/457
 status: Open
 completed: null
 ---

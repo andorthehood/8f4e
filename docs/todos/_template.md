@@ -3,6 +3,7 @@ title: 'TODO: [Brief Title]'
 priority: High/Medium/Low
 effort: X hours/days
 created: YYYY-MM-DD
+issue: null
 status: Open/Completed
 completed: null
 ---
@@ -87,12 +88,14 @@ Detailed description of the proposed solution:
 - Historical context
 - Decisions made and why
 - Update log (when status changes)
+- Add the GitHub issue URL to the `issue:` frontmatter field once one exists
 
 ## Archive Instructions
 
 When this TODO is completed:
 1. Update the front matter to set `status: Completed` and provide the `completed` date
-2. Move it to the `todo/archived/` folder to keep the main todo directory clean and organized
-3. Update the `todo/_index.md` file to:
+2. Keep the `issue:` frontmatter field populated if a GitHub issue exists
+3. Move it to the `todo/archived/` folder to keep the main todo directory clean and organized
+4. Update the `todo/_index.md` file to:
    - Move the TODO from the "Active TODOs" section to the "Completed TODOs" section
    - Add the completion date to the TODO entry (use `date +%Y-%m-%d` command if current date is not provided in the context) 
