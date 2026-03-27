@@ -44,7 +44,7 @@ push &out
  ; Calculate input address
 push &in0
 push counter
-push %in0
+push sizeof(in0)
 mul
 add
 

@@ -1,16 +1,21 @@
 /**
- * Extracts the base identifier from an element max identifier by removing the ^ prefix.
+ * Extracts the base identifier from a max() expression.
+ * Input:  max(value)
+ * Output: value
  */
 export default function extractElementMaxBase(name: string): string {
-	return name.startsWith('^') ? name.substring(1) : name;
+	if (name.startsWith('max(') && name.endsWith(')')) {
+		return name.slice(4, -1);
+	}
+	return name;
 }
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('extractElementMaxBase', () => {
-		it('removes element max prefix', () => {
-			expect(extractElementMaxBase('^value')).toBe('value');
+		it('removes max() wrapper', () => {
+			expect(extractElementMaxBase('max(value)')).toBe('value');
 		});
 
 		it('leaves plain identifiers unchanged', () => {

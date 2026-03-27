@@ -61,7 +61,7 @@ branchIfTrue 1
 ; Calculate output address
 push &out1
 push bitPointer
-push %out1
+push sizeof(out1)
 mul
 add
 

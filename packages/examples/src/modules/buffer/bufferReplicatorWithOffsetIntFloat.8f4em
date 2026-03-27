@@ -32,7 +32,7 @@ loop
 ; address
 push &buffer
 push _pointer
-push %buffer
+push sizeof(buffer)
 mul
 add
 
@@ -42,7 +42,7 @@ push bufferIn
 push _pointer
 push *lengthIn
 remainder
-push %bufferIn
+push sizeof(bufferIn)
 mul
 add
  

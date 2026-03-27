@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Add `%*name` pointee element word size prefix for pointers'
+title: 'TODO: Add `sizeof(*name)` pointee element word size prefix for pointers'
 priority: Medium
 effort: 2-4h
 created: 2026-03-26
@@ -7,51 +7,51 @@ status: Open
 completed: null
 ---
 
-# TODO: Add `%*name` pointee element word size prefix for pointers
+# TODO: Add `sizeof(*name)` pointee element word size prefix for pointers
 
 ## Problem Description
 
-8f4e already supports `%name` as an identifier prefix for "element word size in bytes". That works well for scalars and buffers, but it becomes ambiguous for pointer-typed memory items.
+8f4e already supports `sizeof(name)` as an identifier prefix for "element word size in bytes". That works well for scalars and buffers, but it becomes ambiguous for pointer-typed memory items.
 
 Current state:
-- `%buffer` returns the element word size of the memory item `buffer` itself
+- `sizeof(buffer)` returns the element word size of the memory item `buffer` itself
 - for pointer-typed memory, that means the width of the pointer slot, not the width of the pointed-to value
 - users coming from C-like pointer semantics may expect a way to ask for the pointee size directly
 
 Why this is a problem:
 - pointer arithmetic helpers become less expressive than the existing dereference syntax suggests
-- users have to remember that `%ptr` is about pointer storage rather than pointee width
+- users have to remember that `sizeof(ptr)` is about pointer storage rather than pointee width
 - there is no direct syntax that mirrors the distinction between `sizeof(ptr)` and `sizeof(*ptr)` in C
 
 ## Proposed Solution
 
-Add support for `%*name` as a compile-time identifier form meaning "element word size of the value pointed to by `name`".
+Add support for `sizeof(*name)` as a compile-time identifier form meaning "element word size of the value pointed to by `name`".
 
 High-level approach:
-- extend identifier classification and parsing to recognize `%*name`
-- resolve `%*name` only for pointer-typed memory identifiers
-- preserve existing `%name` behavior so it continues to describe the memory item itself
+- extend identifier classification and parsing to recognize `sizeof(*name)`
+- resolve `sizeof(*name)` only for pointer-typed memory identifiers
+- preserve existing `sizeof(name)` behavior so it continues to describe the memory item itself
 
 Expected semantics with current type system:
-- `%buffer` where `buffer` is `int*` should keep returning `4`
-- `%*buffer` where `buffer` is `int*` should return `4`
-- `%*buffer` where `buffer` is `float64*` should return `8`
+- `sizeof(buffer)` where `buffer` is `int*` should keep returning `4`
+- `sizeof(*buffer)` where `buffer` is `int*` should return `4`
+- `sizeof(*buffer)` where `buffer` is `float64*` should return `8`
 
 ## Anti-Patterns
 
-- Do not silently change `%name` semantics for pointer types.
-- Do not treat `%*name` as a runtime dereference; this should stay a compile-time metadata lookup.
-- Do not allow `%*name` on non-pointer memory without an explicit compiler or syntax error path.
+- Do not silently change `sizeof(name)` semantics for pointer types.
+- Do not treat `sizeof(*name)` as a runtime dereference; this should stay a compile-time metadata lookup.
+- Do not allow `sizeof(*name)` on non-pointer memory without an explicit compiler or syntax error path.
 
 ## Implementation Plan
 
-### Step 1: Add syntax support for `%*name`
+### Step 1: Add syntax support for `sizeof(*name)`
 - Introduce a dedicated parser/helper for the pointee element word size prefix
-- Update identifier classification so `%*name` is distinct from `%name`
+- Update identifier classification so `sizeof(*name)` is distinct from `sizeof(name)`
 
 ### Step 2: Resolve pointee size from pointer metadata
 - Extend memory metadata lookup so pointer base type determines the returned element width
-- Keep current pointer-slot width behavior for `%name`
+- Keep current pointer-slot width behavior for `sizeof(name)`
 
 ### Step 3: Add compiler tests
 - Cover `int*`, `float*`, and `float64*`
@@ -59,7 +59,7 @@ Expected semantics with current type system:
 - Cover `push %*name` and declaration initializer cases if supported
 
 ### Step 4: Update docs
-- Document `%*name` alongside `%name` in compiler prefix docs
+- Document `sizeof(*name)` alongside `sizeof(name)` in compiler prefix docs
 - Clarify the difference using a pointer example
 
 ## Validation Checkpoints
@@ -70,15 +70,15 @@ Expected semantics with current type system:
 
 ## Success Criteria
 
-- [ ] `%*name` is accepted for pointer memory identifiers.
-- [ ] `%name` keeps its existing meaning for all existing programs.
+- [ ] `sizeof(*name)` is accepted for pointer memory identifiers.
+- [ ] `sizeof(name)` keeps its existing meaning for all existing programs.
 - [ ] Pointer pointee width is resolved correctly for `int*`, `float*`, and `float64*`.
-- [ ] Invalid `%*name` usage produces a clear error.
-- [ ] Compiler docs explain the difference between `%name` and `%*name`.
+- [ ] Invalid `sizeof(*name)` usage produces a clear error.
+- [ ] Compiler docs explain the difference between `sizeof(name)` and `sizeof(*name)`.
 
 ## Affected Components
 
-- `packages/compiler/src/syntax/` - identifier parsing and classification for `%*name`
+- `packages/compiler/src/syntax/` - identifier parsing and classification for `sizeof(*name)`
 - `packages/compiler/src/utils/memoryIdentifier.ts` - prefix-aware identifier checks
 - `packages/compiler/src/utils/memoryData.ts` - metadata lookup for pointee size
 - `packages/compiler/src/instructionCompilers/push/` - push handling for compile-time size lookup
@@ -86,9 +86,9 @@ Expected semantics with current type system:
 
 ## Risks & Considerations
 
-- **Grammar overlap**: `%*name` must not be misclassified as `%name` plus pointer dereference syntax.
+- **Grammar overlap**: `sizeof(*name)` must not be misclassified as `sizeof(name)` plus pointer dereference syntax.
 - **Type-system limits**: current pointer types are coarse, so `int*` still implies 32-bit integer pointee size.
-- **Error choice**: invalid non-pointer `%*name` usage should follow the repo's syntax-vs-compiler error boundary rules.
+- **Error choice**: invalid non-pointer `sizeof(*name)` usage should follow the repo's syntax-vs-compiler error boundary rules.
 
 ## Related Items
 
@@ -98,4 +98,4 @@ Expected semantics with current type system:
 ## Notes
 
 - This TODO intentionally does not require adding new pointer base types such as `int16*`.
-- If typed narrow pointers are introduced later, `%*name` should follow the pointee type width rather than pointer slot width.
+- If typed narrow pointers are introduced later, `sizeof(*name)` should follow the pointee type width rather than pointer slot width.

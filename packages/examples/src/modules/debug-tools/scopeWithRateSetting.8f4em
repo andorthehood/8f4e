@@ -16,7 +16,7 @@ if void
 ; Increment pointer
 push &bufferPointer
 push bufferPointer
-push %buffer
+push sizeof(buffer)
 add
 store
 
