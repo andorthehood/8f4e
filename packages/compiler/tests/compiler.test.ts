@@ -2,6 +2,7 @@ import { describe, test, expect } from 'vitest';
 
 import { ArgumentType } from '../src/types';
 import { isComment, isValidInstruction, parseArgument, parseLine, compileToAST } from '../src/compiler';
+import { SyntaxErrorCode } from '../src/syntax/syntaxError';
 
 import type { AST } from '../src/types';
 
@@ -41,7 +42,12 @@ describe('parseArgument', () => {
 	});
 
 	test('rejects identifiers that start with numbers', () => {
-		expect(() => parseArgument('1foo')).toThrow('Identifiers cannot start with numbers');
+		expect(() => parseArgument('1foo')).toThrowError(
+			expect.objectContaining({
+				name: 'SyntaxRulesError',
+				code: SyntaxErrorCode.INVALID_IDENTIFIER,
+			})
+		);
 	});
 });
 
