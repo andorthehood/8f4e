@@ -8,9 +8,6 @@ import {
 } from './memoryData';
 
 import { parseArgument, ArgumentType } from '../syntax/parseArgument';
-import parseConstantMulDivExpression, {
-	type CompileTimeMulDivExpression,
-} from '../syntax/parseConstantMulDivExpression';
 import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
 import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
 import hasPointeeElementWordSizePrefix from '../syntax/hasPointeeElementWordSizePrefix';
@@ -32,9 +29,7 @@ import extractIntermodularElementWordSizeBase from '../syntax/extractIntermodula
 import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
 import extractIntermodularElementMinBase from '../syntax/extractIntermodularElementMinBase';
 
-import type { ArgumentCompileTimeExpression, Const, Namespace } from '../types';
-
-type MulDivOperator = CompileTimeMulDivExpression['operator'];
+import type { Argument, Const, Namespace } from '../types';
 
 /**
  * Tries to resolve a single compile-time operand to a `Const` value.
@@ -155,7 +150,7 @@ function resolveCompileTimeOperand(operand: string, namespace: Namespace): Const
 	return undefined;
 }
 
-function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: MulDivOperator): Const {
+function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: '*' | '/'): Const {
 	const value = operator === '*' ? lhsConst.value * rhsConst.value : lhsConst.value / rhsConst.value;
 	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
 	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
@@ -167,49 +162,27 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 	};
 }
 
-export function tryResolveCompileTimeValueOrExpression(namespace: Namespace, value: string): Const | undefined {
-	const directResult = resolveCompileTimeOperand(value, namespace);
+export function tryResolveCompileTimeArgument(namespace: Namespace, argument: Argument): Const | undefined {
+	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		const lhsConst = resolveCompileTimeOperand(argument.lhs, namespace);
+		const rhsConst = resolveCompileTimeOperand(argument.rhs, namespace);
 
-	if (directResult !== undefined) {
-		return directResult;
+		if (lhsConst === undefined || rhsConst === undefined) {
+			return undefined;
+		}
+
+		if (argument.operator === '/' && rhsConst.value === 0) {
+			return undefined;
+		}
+
+		return evaluateConstantExpression(lhsConst, rhsConst, argument.operator);
 	}
 
-	const expression = parseConstantMulDivExpression(value);
-
-	if (!expression) {
+	if (argument.type !== ArgumentType.IDENTIFIER) {
 		return undefined;
 	}
 
-	const lhsConst = resolveCompileTimeOperand(expression.lhs, namespace);
-	const rhsConst = resolveCompileTimeOperand(expression.rhs, namespace);
-
-	if (lhsConst === undefined || rhsConst === undefined) {
-		return undefined;
-	}
-
-	if (expression.operator === '/' && rhsConst.value === 0) {
-		return undefined;
-	}
-
-	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
-}
-
-export function tryResolveCompileTimeValueOrExpressionNode(
-	namespace: Namespace,
-	expression: ArgumentCompileTimeExpression
-): Const | undefined {
-	const lhsConst = resolveCompileTimeOperand(expression.lhs, namespace);
-	const rhsConst = resolveCompileTimeOperand(expression.rhs, namespace);
-
-	if (lhsConst === undefined || rhsConst === undefined) {
-		return undefined;
-	}
-
-	if (expression.operator === '/' && rhsConst.value === 0) {
-		return undefined;
-	}
-
-	return evaluateConstantExpression(lhsConst, rhsConst, expression.operator);
+	return resolveCompileTimeOperand(argument.value, namespace);
 }
 
 if (import.meta.vitest) {
@@ -237,70 +210,70 @@ if (import.meta.vitest) {
 		} as unknown as Namespace;
 
 		it('resolves direct constants', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE'))).toEqual({
 				value: 16,
 				isInteger: true,
 			});
 		});
 
 		it('resolves multiplication expression: constant * literal', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE*2')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE*2'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves division expression: constant / literal', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE/2')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE/2'))).toEqual({
 				value: 8,
 				isInteger: true,
 			});
 		});
 
 		it('resolves literal * constant', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, '2*SIZE')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('2*SIZE'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves sizeof(name) * literal', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'sizeof(samples)*2')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('sizeof(samples)*2'))).toEqual({
 				value: 4,
 				isInteger: true,
 			});
 		});
 
 		it('resolves literal * sizeof(name)', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, '123*sizeof(samples)')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('123*sizeof(samples)'))).toEqual({
 				value: 246,
 				isInteger: true,
 			});
 		});
 
 		it('resolves constant * sizeof(name)', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE*sizeof(samples)')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE*sizeof(samples)'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves sizeof(name) * constant', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'sizeof(samples)*SIZE')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('sizeof(samples)*SIZE'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves count(name) * literal', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'count(samples)*2')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('count(samples)*2'))).toEqual({
 				value: 16,
 				isInteger: true,
 			});
 		});
 
 		it('keeps float64 width for expression results', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'PI64*2')).toEqual({
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('PI64*2'))).toEqual({
 				value: 6.28318,
 				isInteger: false,
 				isFloat64: true,
@@ -308,9 +281,13 @@ if (import.meta.vitest) {
 		});
 
 		it('returns undefined for unresolved or chained expressions', () => {
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE/2/2')).toBeUndefined();
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'SIZE*2/2')).toBeUndefined();
-			expect(tryResolveCompileTimeValueOrExpression(mockNamespace, 'MISSING')).toBeUndefined();
+			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('MISSING'))).toBeUndefined();
+			expect(
+				tryResolveCompileTimeArgument(mockNamespace, { type: ArgumentType.IDENTIFIER, value: 'SIZE/2/2' })
+			).toBeUndefined();
+			expect(
+				tryResolveCompileTimeArgument(mockNamespace, { type: ArgumentType.IDENTIFIER, value: 'SIZE*2/2' })
+			).toBeUndefined();
 		});
 
 		it('resolves intermodule sizeof expressions', () => {
@@ -330,7 +307,7 @@ if (import.meta.vitest) {
 				},
 			} as unknown as Namespace;
 
-			expect(tryResolveCompileTimeValueOrExpression(intermodularNamespace, '2*sizeof(source:buffer)')).toEqual({
+			expect(tryResolveCompileTimeArgument(intermodularNamespace, parseArgument('2*sizeof(source:buffer)'))).toEqual({
 				value: 4,
 				isInteger: true,
 			});
@@ -338,7 +315,7 @@ if (import.meta.vitest) {
 
 		it('resolves explicit compile-time expression nodes', () => {
 			expect(
-				tryResolveCompileTimeValueOrExpressionNode(mockNamespace, {
+				tryResolveCompileTimeArgument(mockNamespace, {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
 					lhs: '2',
 					operator: '*',

@@ -1,7 +1,4 @@
-import {
-	tryResolveCompileTimeValueOrExpression,
-	tryResolveCompileTimeValueOrExpressionNode,
-} from './resolveConstantValue';
+import { tryResolveCompileTimeArgument } from './resolveConstantValue';
 
 import { ArgumentType, type AST, type Argument, type CompilationContext } from '../types';
 import { ErrorCode, getError } from '../compilerError';
@@ -42,9 +39,9 @@ function normalizeArgument(argument: Argument, context: CompilationContext): Arg
 	}
 
 	const resolved =
-		argument.type === ArgumentType.IDENTIFIER
-			? tryResolveCompileTimeValueOrExpression(context.namespace, argument.value)
-			: tryResolveCompileTimeValueOrExpressionNode(context.namespace, argument);
+		argument.type === ArgumentType.IDENTIFIER || argument.type === ArgumentType.COMPILE_TIME_EXPRESSION
+			? tryResolveCompileTimeArgument(context.namespace, argument)
+			: undefined;
 
 	if (!resolved) {
 		return argument;
