@@ -116,6 +116,11 @@ if (import.meta.vitest) {
 			expect(parseLiteralMulDivExpression('0x10*2')).toEqual({ value: 32, isInteger: true });
 		});
 
+		it('folds binary operands', () => {
+			expect(parseLiteralMulDivExpression('0b101*2')).toEqual({ value: 10, isInteger: true });
+			expect(parseLiteralMulDivExpression('0b1000/2')).toEqual({ value: 4, isInteger: true });
+		});
+
 		it('propagates isFloat64 from lhs operand', () => {
 			expect(parseLiteralMulDivExpression('3f64*2')).toEqual({ value: 6, isInteger: false, isFloat64: true });
 		});

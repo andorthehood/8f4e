@@ -55,7 +55,7 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow(`${ErrorCode.EXPECTED_IDENTIFIER}`);
+		expect(() => compile(modules, defaultOptions)).toThrow('Identifiers cannot start with numbers');
 	});
 
 	it('should reject constant names starting with special characters', () => {
