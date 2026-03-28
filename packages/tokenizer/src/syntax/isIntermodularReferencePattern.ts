@@ -9,13 +9,13 @@
  *
  * Enforces exactly one colon separator (module:memory only).
  */
-export const INTERMODULAR_REFERENCE_PATTERN = /^(&[^\s&:.]+:[^\s&:.]+|[^\s&:.]+:[^\s&:.]+&)$/;
+const intermodularReferencePattern = /^(&[^\s&:.]+:[^\s&:.]+|[^\s&:.]+:[^\s&:.]+&)$/;
 
 /**
  * Tests if a string matches the intermodular reference pattern.
  */
 export default function isIntermodularReferencePattern(value: string): boolean {
-	return INTERMODULAR_REFERENCE_PATTERN.test(value);
+	return intermodularReferencePattern.test(value);
 }
 
 if (import.meta.vitest) {
