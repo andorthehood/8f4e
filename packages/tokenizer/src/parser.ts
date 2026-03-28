@@ -4,6 +4,7 @@ import isSemanticOnlyInstruction from './syntax/isSemanticOnlyInstruction';
 import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
+import validateInstructionArguments from './syntax/validateInstructionArguments';
 
 import type { AST, ASTLine, ParsedLineMetadata } from './types';
 
@@ -62,12 +63,14 @@ export function parseLine(
 	try {
 		const tokens = tokenizeInstruction(line);
 		const [instruction = '', ...args] = tokens;
+		const parsedArguments = args.map(parseArgument);
+		validateInstructionArguments(instruction, parsedArguments);
 
 		return {
 			lineNumberBeforeMacroExpansion,
 			lineNumberAfterMacroExpansion,
 			instruction,
-			arguments: args.map(parseArgument),
+			arguments: parsedArguments,
 			isSemanticOnly: isSemanticOnlyInstruction(instruction),
 		};
 	} catch (error) {
@@ -111,6 +114,13 @@ if (import.meta.vitest) {
 		it('leaves runtime/codegen instructions unflagged', () => {
 			expect(parseLine('push 1', 0).isSemanticOnly).toBe(false);
 			expect(parseLine('int value 1', 0).isSemanticOnly).toBe(false);
+		});
+
+		it('rejects wrong arity and raw argument shape in tokenizer', () => {
+			expect(() => parseLine('push', 0)).toThrowError(SyntaxRulesError);
+			expect(() => parseLine('mapBegin bool', 0)).toThrowError(SyntaxRulesError);
+			expect(() => parseLine('storeBytes -1', 0)).toThrowError(SyntaxRulesError);
+			expect(() => parseLine('map "AB" 1', 0)).toThrowError(SyntaxRulesError);
 		});
 	});
 }

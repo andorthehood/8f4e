@@ -1,5 +1,4 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
-import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -15,23 +14,18 @@ const _default: InstructionCompiler = withValidation(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
-		minArguments: 1,
 	},
 	(line, context) => {
 		const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
 
-		const valueArg = line.arguments[0];
+		const valueArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
 		let defaultValue: number;
 		let defaultIsInteger: boolean;
 		let defaultIsFloat64 = false;
 
-		if (valueArg.type === ArgumentType.LITERAL) {
-			defaultValue = valueArg.value;
-			defaultIsInteger = valueArg.isInteger;
-			defaultIsFloat64 = !!valueArg.isFloat64;
-		} else {
-			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-		}
+		defaultValue = valueArg.value;
+		defaultIsInteger = valueArg.isInteger;
+		defaultIsFloat64 = !!valueArg.isFloat64;
 
 		mapState.defaultValue = defaultValue;
 		mapState.defaultIsInteger = defaultIsInteger;
@@ -78,36 +72,6 @@ if (import.meta.vitest) {
 			expect({
 				mapState: context.blockStack[context.blockStack.length - 1].mapState,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext({
-				blockStack: [
-					{
-						blockType: BLOCK_TYPE.MODULE,
-						expectedResultIsInteger: false,
-						hasExpectedResult: false,
-					},
-					{
-						blockType: BLOCK_TYPE.MAP,
-						expectedResultIsInteger: false,
-						hasExpectedResult: false,
-						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
-					},
-				],
-			});
-
-			expect(() => {
-				_default(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'default',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 
 		it('throws when used outside a map block', () => {

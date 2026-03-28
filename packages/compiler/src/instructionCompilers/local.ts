@@ -1,5 +1,5 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
+import { ErrorCode } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -15,17 +15,12 @@ const local: InstructionCompiler = withValidation(
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
 	(line, context) => {
-		if (!line.arguments[0] || !line.arguments[1]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
+		const typeArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
+		const nameArg = line.arguments[1] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
 
-		if (line.arguments[0].type !== ArgumentType.IDENTIFIER || line.arguments[1].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-		}
-
-		context.locals[line.arguments[1].value] = {
-			isInteger: line.arguments[0].value === 'int',
-			...(line.arguments[0].value === 'float64' ? { isFloat64: true } : {}),
+		context.locals[nameArg.value] = {
+			isInteger: typeArg.value === 'int',
+			...(typeArg.value === 'float64' ? { isFloat64: true } : {}),
 			index: Object.keys(context.locals).length,
 		};
 
@@ -56,22 +51,6 @@ if (import.meta.vitest) {
 			);
 
 			expect(context.locals).toMatchSnapshot();
-		});
-
-		it('throws on missing arguments', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				local(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'local',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }

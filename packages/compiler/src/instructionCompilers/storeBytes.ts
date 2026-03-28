@@ -15,8 +15,6 @@ const storeBytes: InstructionCompiler = withValidation(
 	{
 		scope: 'module',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
-		minArguments: 1,
-		argumentTypes: ['nonNegativeIntegerLiteral'],
 		validateOperands: line => {
 			const count = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>)
 				.value;
@@ -60,57 +58,6 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('storeBytes instruction compiler', () => {
-		it('throws MISSING_ARGUMENT when count argument is absent', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
-
-			expect(() => {
-				storeBytes(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'storeBytes',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrow();
-		});
-
-		it('throws TYPE_MISMATCH for a non-integer count argument', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
-
-			expect(() => {
-				storeBytes(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'storeBytes',
-						arguments: [{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false }],
-					} as AST[number],
-					context
-				);
-			}).toThrow(`${ErrorCode.TYPE_MISMATCH}`);
-		});
-
-		it('throws EXPECTED_VALUE for a negative count argument', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
-
-			expect(() => {
-				storeBytes(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'storeBytes',
-						arguments: [{ type: ArgumentType.LITERAL, value: -1, isInteger: true }],
-					} as AST[number],
-					context
-				);
-			}).toThrow(`${ErrorCode.EXPECTED_VALUE}`);
-		});
-
 		it('throws INSUFFICIENT_OPERANDS when stack has fewer than count+1 items', () => {
 			const context = createInstructionCompilerTestContext();
 			// Only 2 items on stack but count=3 requires 4
