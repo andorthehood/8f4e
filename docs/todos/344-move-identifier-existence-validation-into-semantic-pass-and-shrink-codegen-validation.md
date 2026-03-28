@@ -33,6 +33,12 @@ Even after syntax is parsed, instruction compilers still discover some errors th
 
 This keeps codegen coupled to name-resolution concerns and makes instruction compilers carry error handling that should happen earlier.
 
+The remaining late fallback in `map` is an example of this boundary. It is no longer about malformed raw syntax getting past the tokenizer. It is about whether semantic normalization has resolved a value into a codegen-ready literal/string-literal before lowering:
+
+- [packages/compiler/src/instructionCompilers/map.ts](/packages/compiler/src/instructionCompilers/map.ts)
+
+That means it belongs here rather than in [343-move-arity-and-raw-argument-shape-validation-into-tokenizer.md](/docs/todos/343-move-arity-and-raw-argument-shape-validation-into-tokenizer.md).
+
 ## Goal
 
 Move semantic validation earlier so the boundary becomes:
@@ -49,6 +55,7 @@ Move semantic validation earlier so the boundary becomes:
 - memory existence validation
 - module/intermodule target existence validation
 - semantic validity of resolved references once namespaces/layout are known
+- guarantees that compile-time-normalizable arguments have been normalized before codegen consumes them
 
 ### Keep in codegen
 
@@ -70,6 +77,7 @@ Use the semantic pass to validate:
 - memory references
 - local vs intermodule targets
 - address/query target existence
+- map/default/init inputs that should already be resolved into codegen-ready forms
 
 ### 3. Remove duplicate existence checks from instruction compilers
 
@@ -87,13 +95,14 @@ Instruction compilers should retain only:
 
 - [ ] Undeclared const/memory/module errors are raised during semantic processing, not codegen.
 - [ ] Instruction compilers stop doing semantic existence validation that the semantic pass already guarantees.
+- [ ] Codegen no longer needs late fallback branches for semantically unresolved-but-syntax-valid values such as the remaining `map` case.
 - [ ] Remaining codegen validation is limited to stack/type/lowering concerns.
 - [ ] Compiler tests reflect the earlier semantic error boundary.
 
 ## References
 
-- [packages/compiler/src/semantic](/Users/andorpolgar/git/8f4e/packages/compiler/src/semantic)
-- [packages/compiler/src/compiler.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/compiler.ts)
-- [packages/compiler/src/instructionCompilers](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers)
-- [packages/compiler/src/utils/memoryIdentifier.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryIdentifier.ts)
-- [packages/compiler/src/utils/resolveIntermodularReferenceValue.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/resolveIntermodularReferenceValue.ts)
+- [packages/compiler/src/semantic](/packages/compiler/src/semantic)
+- [packages/compiler/src/compiler.ts](/packages/compiler/src/compiler.ts)
+- [packages/compiler/src/instructionCompilers](/packages/compiler/src/instructionCompilers)
+- [packages/compiler/src/utils/memoryIdentifier.ts](/packages/compiler/src/utils/memoryIdentifier.ts)
+- [packages/compiler/src/utils/resolveIntermodularReferenceValue.ts](/packages/compiler/src/utils/resolveIntermodularReferenceValue.ts)

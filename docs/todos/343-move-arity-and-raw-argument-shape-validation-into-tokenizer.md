@@ -73,7 +73,7 @@ Extend tokenizer-owned instruction metadata so AST generation can validate:
 
 This should complement:
 
-- [339-add-instruction-classification-metadata-to-ast-lines.md](/Users/andorpolgar/git/8f4e/docs/todos/339-add-instruction-classification-metadata-to-ast-lines.md)
+- [339-add-instruction-classification-metadata-to-ast-lines.md](/docs/todos/339-add-instruction-classification-metadata-to-ast-lines.md)
 
 ### 2. Enforce syntax-only validation during parsing
 
@@ -92,8 +92,8 @@ Delete instruction-compiler validation branches that only restate tokenizer-owne
 
 ## References
 
-- [packages/tokenizer/src/parser.ts](/Users/andorpolgar/git/8f4e/packages/tokenizer/src/parser.ts)
-- [packages/tokenizer/src/syntax/parseArgument.ts](/Users/andorpolgar/git/8f4e/packages/tokenizer/src/syntax/parseArgument.ts)
-- [packages/tokenizer/src/syntax/instructionParser.ts](/Users/andorpolgar/git/8f4e/packages/tokenizer/src/syntax/instructionParser.ts)
-- [packages/compiler/src/withValidation](/Users/andorpolgar/git/8f4e/packages/compiler/src/withValidation)
-- [packages/compiler/src/instructionCompilers](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers)
+- [packages/tokenizer/src/parser.ts](/packages/tokenizer/src/parser.ts)
+- [packages/tokenizer/src/syntax/parseArgument.ts](/packages/tokenizer/src/syntax/parseArgument.ts)
+- [packages/tokenizer/src/syntax/instructionParser.ts](/packages/tokenizer/src/syntax/instructionParser.ts)
+- [packages/compiler/src/withValidation](/packages/compiler/src/withValidation)
+- [packages/compiler/src/instructionCompilers](/packages/compiler/src/instructionCompilers)

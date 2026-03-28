@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../compilerError';
 import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils/blockStack';
-import { BLOCK_TYPE, ArgumentType } from '../types';
+import { ArgumentType, BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
@@ -19,13 +19,8 @@ const _function: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
-	// Parse function name: function <name>
-	const nameArg = line.arguments[0];
-	if (!nameArg || nameArg.type !== ArgumentType.IDENTIFIER) {
-		throw getError(ErrorCode.MISSING_FUNCTION_ID, line, context);
-	}
-
-	const functionId = nameArg.value;
+	const functionId = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
+		.value;
 
 	context.currentFunctionId = functionId;
 	context.codeBlockId = functionId;

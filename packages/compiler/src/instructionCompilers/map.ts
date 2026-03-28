@@ -5,6 +5,10 @@ import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 
+type ResolvedMapValue =
+	| { type: ArgumentType.LITERAL; value: number; isInteger: boolean; isFloat64?: boolean }
+	| { type: ArgumentType.STRING_LITERAL; value: string };
+
 /**
  * Instruction compiler for `map`.
  * Records a key→value mapping entry within a map block. No bytecode is emitted;
@@ -18,9 +22,10 @@ const map: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
+		const keyArg = line.arguments[0] as ResolvedMapValue;
+		const valueArg = line.arguments[1] as ResolvedMapValue;
 
 		// Resolve key argument
-		const keyArg = line.arguments[0];
 		let keyValue: number;
 		let keyIsInteger: boolean;
 		let keyIsFloat64 = false;
@@ -59,9 +64,8 @@ const map: InstructionCompiler = withValidation(
 		}
 
 		// Resolve value argument (type is validated at mapEnd when outputType is known)
-		const valueArg = line.arguments[1];
-		let valueValue: number;
-		let valueIsInteger: boolean;
+		let valueValue = 0;
+		let valueIsInteger = false;
 		let valueIsFloat64 = false;
 
 		if (valueArg.type === ArgumentType.LITERAL) {
@@ -188,7 +192,7 @@ if (import.meta.vitest) {
 			}).toThrowError();
 		});
 
-		it('throws on missing arguments', () => {
+		it('throws when value is not resolved to a literal or string literal', () => {
 			const context = createInstructionCompilerTestContext({
 				blockStack: [
 					{
@@ -211,7 +215,10 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'map',
-						arguments: [],
+						arguments: [
+							{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+							{ type: ArgumentType.IDENTIFIER, value: 'UNRESOLVED' },
+						],
 					} as AST[number],
 					context
 				);

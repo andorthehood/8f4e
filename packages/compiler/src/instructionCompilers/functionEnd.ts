@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../compilerError';
-import { BLOCK_TYPE, ArgumentType } from '../types';
+import { ArgumentType, BLOCK_TYPE } from '../types';
 import Type from '../wasmUtils/type';
 import createFunctionType from '../wasmUtils/typeFunction/createFunctionType';
 import { withValidation } from '../withValidation';
@@ -24,15 +24,9 @@ const functionEnd: InstructionCompiler = withValidation(
 		}
 
 		// Parse return types: functionEnd [<returnType1> <returnType2> ...]
-		const returnTypes = line.arguments.map(arg => {
-			if (
-				arg.type !== ArgumentType.IDENTIFIER ||
-				(arg.value !== 'int' && arg.value !== 'float' && arg.value !== 'float64')
-			) {
-				throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, line, context);
-			}
-			return arg.value as 'int' | 'float' | 'float64';
-		});
+		const returnTypes = line.arguments.map(
+			arg => (arg as { type: ArgumentType.IDENTIFIER; value: 'int' | 'float' | 'float64' }).value
+		);
 
 		if (returnTypes.length > 8) {
 			throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);

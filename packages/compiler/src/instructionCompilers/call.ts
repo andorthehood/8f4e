@@ -17,12 +17,7 @@ const call: InstructionCompiler = withValidation(
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
 	(line, context) => {
-		const functionNameArg = line.arguments[0];
-		if (!functionNameArg || functionNameArg.type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		const functionName = functionNameArg.value;
+		const functionName = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
 		const targetFunction = context.namespace.functions?.[functionName];
 
 		if (!targetFunction) {

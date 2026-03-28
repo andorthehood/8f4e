@@ -292,7 +292,7 @@ describe('Pure Function Validation', () => {
 		);
 	});
 
-	test('should reject buffer declarations in functions', () => {
+	test('should reject array declarations in functions', () => {
 		const functions: Module[] = [
 			{
 				code: ['function invalid', 'int[] buffer 10', 'functionEnd'],

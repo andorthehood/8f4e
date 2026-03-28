@@ -67,7 +67,7 @@ Supported `memoryId` forms:
 - `name&` - Show the end address.
 - `*name` - Dereference a pointer memory.
 - `module:name` - Resolve `name` from another module.
-- `name[3]` - Show a specific buffer element.
+- `name[3]` - Show a specific array element.
 
 These modifiers can be combined when they make sense. For example:
 
@@ -82,10 +82,10 @@ These modifiers can be combined when they make sense. For example:
 
 ### `@plot`
 
-Draw a buffer plot for a buffer memory id.
+Draw an array plot for an array memory id.
 
 ```txt
-; @plot <bufferMemoryId> [minValue] [maxValue] [bufferLengthMemoryId]
+; @plot <arrayMemoryId> [minValue] [maxValue] [arrayLengthMemoryId]
 ```
 
 Defaults:
@@ -94,10 +94,10 @@ Defaults:
 
 ### `@scan`
 
-Draw a scanner line using a pointer memory id over a buffer memory id.
+Draw a scanner line using a pointer memory id over an array memory id.
 
 ```txt
-; @scan <bufferMemoryId> <pointerMemoryId>
+; @scan <arrayMemoryId> <pointerMemoryId>
 ```
 
 ### `@slider`
@@ -141,7 +141,7 @@ Render a piano keyboard control.
 ```
 
 Notes:
-- `pressedKeysListMemoryId` is used as both keyboard id and pressed-key buffer memory id.
+- `pressedKeysListMemoryId` is used as both keyboard id and pressed-key array memory id.
 - `startingMidiNote` defaults to `0`.
 
 ### `@offset`

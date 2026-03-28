@@ -16,24 +16,24 @@ function resolvePlotDirectiveWidget(
 		return;
 	}
 
-	const buffer = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.bufferMemoryId);
-	const bufferLength = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.bufferLengthMemoryId);
+	const array = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.arrayMemoryId);
+	const arrayLength = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.arrayLengthMemoryId);
 
-	if (!buffer) {
+	if (!array) {
 		return;
 	}
 
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[plotter.lineNumber] ?? plotter.lineNumber;
 
-	graphicData.widgets.bufferPlotters.push({
+	graphicData.widgets.arrayPlotters.push({
 		width: state.viewport.vGrid * 2,
 		height: state.viewport.hGrid,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
-		buffer,
+		array,
 		minValue: plotter.minValue,
 		maxValue: plotter.maxValue,
-		bufferLength,
+		arrayLength,
 	});
 }
 

@@ -1,4 +1,4 @@
-import buffer from './buffer';
+import array from './array';
 import float from './float';
 import float64 from './float64';
 import int from './int';
@@ -18,20 +18,20 @@ export const declarationCompilers = {
 	float64,
 	'float64*': float64,
 	'float64**': float64,
-	'float[]': buffer,
-	'int[]': buffer,
-	'int8[]': buffer,
-	'int8u[]': buffer,
-	'int16[]': buffer,
-	'int16u[]': buffer,
-	'int32[]': buffer,
-	'float*[]': buffer,
-	'float**[]': buffer,
-	'int*[]': buffer,
-	'int**[]': buffer,
-	'float64[]': buffer,
-	'float64*[]': buffer,
-	'float64**[]': buffer,
+	'float[]': array,
+	'int[]': array,
+	'int8[]': array,
+	'int8u[]': array,
+	'int16[]': array,
+	'int16u[]': array,
+	'int32[]': array,
+	'float*[]': array,
+	'float**[]': array,
+	'int*[]': array,
+	'int**[]': array,
+	'float64[]': array,
+	'float64*[]': array,
+	'float64**[]': array,
 } as const satisfies Record<string, InstructionCompiler>;
 
 export type MemoryDeclarationInstruction = keyof typeof declarationCompilers;

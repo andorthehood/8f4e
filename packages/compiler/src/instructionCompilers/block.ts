@@ -1,5 +1,4 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
-import { ErrorCode, getError } from '../compilerError';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { saveByteCode } from '../utils/compilation';
@@ -17,11 +16,11 @@ const block: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 	},
 	(line, context) => {
-		if (!line.arguments[0] || line.arguments[0].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
+		const resultType = (
+			line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>
+		).value;
 
-		if (line.arguments[0].value === 'float') {
+		if (resultType === 'float') {
 			context.blockStack.push({
 				expectedResultIsInteger: false,
 				hasExpectedResult: true,
@@ -30,7 +29,7 @@ const block: InstructionCompiler = withValidation(
 			return saveByteCode(context, [WASMInstruction.BLOCK, Type.F32]);
 		}
 
-		if (line.arguments[0].value === 'int') {
+		if (resultType === 'int') {
 			context.blockStack.push({
 				expectedResultIsInteger: true,
 				hasExpectedResult: true,
@@ -110,22 +109,6 @@ if (import.meta.vitest) {
 				blockStack: context.blockStack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				block(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'block',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }
