@@ -1,4 +1,4 @@
-import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/tokenizer';
+import { isIntermodularReference } from '@8f4e/tokenizer';
 
 import { ErrorCode, getError } from '../../compilerError';
 import { ArgumentType, type AST, type CompilationContext } from '../../types';
@@ -23,7 +23,7 @@ export default function semanticInit(line: AST[number], context: CompilationCont
 
 	if (defaultArg.type === ArgumentType.LITERAL) {
 		defaultValue = defaultArg.value;
-	} else if (INTERMODULAR_REFERENCE_PATTERN.test(defaultArg.value)) {
+	} else if (isIntermodularReference(defaultArg.value)) {
 		defaultValue = resolveIntermodularReferenceValue(defaultArg.value, line, context) ?? 0;
 	} else {
 		const intermodularValue = resolveIntermodularReferenceValue(defaultArg.value, line, context);
