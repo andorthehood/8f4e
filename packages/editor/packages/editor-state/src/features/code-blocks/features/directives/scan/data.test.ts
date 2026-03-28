@@ -12,12 +12,12 @@ function parseScanDirectiveData(code: string[]) {
 }
 
 describe('scan directive data', () => {
-	it('should parse scan instruction with buffer and pointer', () => {
-		const result = parseScanDirectiveData(['; @scan myBuffer myPointer']);
+	it('should parse scan instruction with array and pointer', () => {
+		const result = parseScanDirectiveData(['; @scan myArray myPointer']);
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'myBuffer',
+				arrayMemoryId: 'myArray',
 				pointerMemoryId: 'myPointer',
 				lineNumber: 0,
 			},
@@ -29,12 +29,12 @@ describe('scan directive data', () => {
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'buffer1',
+				arrayMemoryId: 'buffer1',
 				pointerMemoryId: 'ptr1',
 				lineNumber: 0,
 			},
 			{
-				bufferMemoryId: 'buffer2',
+				arrayMemoryId: 'buffer2',
 				pointerMemoryId: 'ptr2',
 				lineNumber: 2,
 			},
@@ -50,11 +50,11 @@ describe('scan directive data', () => {
 	});
 
 	it('should parse scan instruction at different line positions', () => {
-		const result = parseScanDirectiveData(['mov a b', '; @scan testBuffer testPointer', 'add c d']);
+		const result = parseScanDirectiveData(['mov a b', '; @scan testArray testPointer', 'add c d']);
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'testBuffer',
+				arrayMemoryId: 'testArray',
 				pointerMemoryId: 'testPointer',
 				lineNumber: 1,
 			},

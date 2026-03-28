@@ -13,46 +13,46 @@ function parsePlotDirectiveData(code: string[]) {
 
 describe('plot directive data', () => {
 	it('should parse plot instruction with all arguments', () => {
-		const code = ['; @plot myBuffer -10 10 bufferLength'];
+		const code = ['; @plot myArray -10 10 arrayLength'];
 		const result = parsePlotDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'myBuffer',
+				arrayMemoryId: 'myArray',
 				lineNumber: 0,
 				minValue: -10,
 				maxValue: 10,
-				bufferLengthMemoryId: 'bufferLength',
+				arrayLengthMemoryId: 'arrayLength',
 			},
 		]);
 	});
 
 	it('should parse plot instruction with default min/max values', () => {
-		const code = ['; @plot myBuffer'];
+		const code = ['; @plot myArray'];
 		const result = parsePlotDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'myBuffer',
+				arrayMemoryId: 'myArray',
 				lineNumber: 0,
 				minValue: -8,
 				maxValue: 8,
-				bufferLengthMemoryId: undefined,
+				arrayLengthMemoryId: undefined,
 			},
 		]);
 	});
 
-	it('should parse plot instruction without buffer length', () => {
-		const code = ['; @plot myBuffer -5 5'];
+	it('should parse plot instruction without array length', () => {
+		const code = ['; @plot myArray -5 5'];
 		const result = parsePlotDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'myBuffer',
+				arrayMemoryId: 'myArray',
 				lineNumber: 0,
 				minValue: -5,
 				maxValue: 5,
-				bufferLengthMemoryId: undefined,
+				arrayLengthMemoryId: undefined,
 			},
 		]);
 	});
@@ -63,18 +63,18 @@ describe('plot directive data', () => {
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'buffer1',
+				arrayMemoryId: 'buffer1',
 				lineNumber: 0,
 				minValue: -10,
 				maxValue: 10,
-				bufferLengthMemoryId: undefined,
+				arrayLengthMemoryId: undefined,
 			},
 			{
-				bufferMemoryId: 'buffer2',
+				arrayMemoryId: 'buffer2',
 				lineNumber: 2,
 				minValue: -8,
 				maxValue: 100,
-				bufferLengthMemoryId: 'len2',
+				arrayLengthMemoryId: 'len2',
 			},
 		]);
 	});
@@ -90,29 +90,29 @@ describe('plot directive data', () => {
 	});
 
 	it('should use default values when min/max are invalid numbers', () => {
-		const result = parsePlotDirectiveData(['; @plot myBuffer invalid invalid']);
+		const result = parsePlotDirectiveData(['; @plot myArray invalid invalid']);
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'myBuffer',
+				arrayMemoryId: 'myArray',
 				lineNumber: 0,
 				minValue: -8,
 				maxValue: 8,
-				bufferLengthMemoryId: undefined,
+				arrayLengthMemoryId: undefined,
 			},
 		]);
 	});
 
 	it('should preserve 0 values for min/max', () => {
-		const result = parsePlotDirectiveData(['; @plot myBuffer 0 255']);
+		const result = parsePlotDirectiveData(['; @plot myArray 0 255']);
 
 		expect(result).toEqual([
 			{
-				bufferMemoryId: 'myBuffer',
+				arrayMemoryId: 'myArray',
 				lineNumber: 0,
 				minValue: 0,
 				maxValue: 255,
-				bufferLengthMemoryId: undefined,
+				arrayLengthMemoryId: undefined,
 			},
 		]);
 	});

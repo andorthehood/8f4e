@@ -1,4 +1,5 @@
 import isConstantName from './isConstantName';
+import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
 import { ArgumentType, type Argument } from './parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
@@ -17,8 +18,6 @@ type InstructionArgumentSpec = {
 };
 
 const supportedTypeIdentifiers = new Set(['int', 'float', 'float64']);
-const bufferDeclarationInstructionPattern =
-	/^(?:float(?:\*{1,2})?|float64(?:\*{1,2})?|int(?:8u?|16u?|32|\*{1,2})?)\[\]$/;
 
 const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>> = {
 	push: { minArguments: 1 },
@@ -47,7 +46,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 };
 
 function getInstructionArgumentSpec(instruction: string): InstructionArgumentSpec | undefined {
-	if (bufferDeclarationInstructionPattern.test(instruction)) {
+	if (isArrayDeclarationInstruction(instruction)) {
 		return {
 			minArguments: 2,
 			argumentTypes: ['identifier', 'compileTimeValue'],
@@ -201,7 +200,7 @@ if (import.meta.vitest) {
 			).toThrowError(SyntaxRulesError);
 		});
 
-		it('validates buffer declaration argument shapes', () => {
+		it('validates array declaration argument shapes', () => {
 			expect(() =>
 				validateInstructionArguments('int[]', [
 					{ type: ArgumentType.IDENTIFIER, value: 'values' },
@@ -210,7 +209,7 @@ if (import.meta.vitest) {
 			).not.toThrow();
 		});
 
-		it('does not treat unsupported declarations as buffer declarations', () => {
+		it('does not treat unsupported declarations as array declarations', () => {
 			expect(() =>
 				validateInstructionArguments('int16*[]', [
 					{ type: ArgumentType.IDENTIFIER, value: 'values' },

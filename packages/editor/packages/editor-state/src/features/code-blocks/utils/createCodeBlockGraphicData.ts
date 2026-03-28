@@ -70,8 +70,8 @@ export function createCodeBlockGraphicData(
 			buttons: [],
 			sliders: [],
 			pianoKeyboards: [],
-			bufferPlotters: [],
-			bufferScanners: [],
+			arrayPlotters: [],
+			arrayScanners: [],
 			errorMessages: [],
 		},
 	};
