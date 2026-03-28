@@ -75,6 +75,8 @@ const map: InstructionCompiler = withValidation(
 		} else if (valueArg.type === ArgumentType.STRING_LITERAL) {
 			valueValue = valueArg.value.charCodeAt(0);
 			valueIsInteger = true;
+		} else {
+			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
 		mapState.rows.push({ keyValue, valueValue, valueIsInteger, valueIsFloat64 });
@@ -183,6 +185,39 @@ if (import.meta.vitest) {
 						arguments: [
 							{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
 							{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
+						],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+
+		it('throws when value is not resolved to a literal or string literal', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					{
+						blockType: BLOCK_TYPE.MODULE,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+					{
+						blockType: BLOCK_TYPE.MAP,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
+					},
+				],
+			});
+
+			expect(() => {
+				map(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'map',
+						arguments: [
+							{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+							{ type: ArgumentType.IDENTIFIER, value: 'UNRESOLVED' },
 						],
 					} as AST[number],
 					context

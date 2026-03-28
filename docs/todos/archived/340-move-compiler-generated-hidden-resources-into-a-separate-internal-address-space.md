@@ -94,17 +94,17 @@ This means:
 These current workaround paths should be revisited and ideally deleted or simplified once
 hidden resources move into a separate internal address space:
 
-- [packages/compiler/src/compiler.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/compiler.ts)
+- [packages/compiler/src/compiler.ts](/packages/compiler/src/compiler.ts)
   - `compileLine(...)` still has a generic declaration branch kept partly for helper-generated hidden storage
-- [packages/compiler/src/semantic/buildNamespace.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/semantic/buildNamespace.ts)
+- [packages/compiler/src/semantic/buildNamespace.ts](/packages/compiler/src/semantic/buildNamespace.ts)
   - `planNamespaceLayout(...)` currently replays instruction behavior to discover hidden storage during semantic layout
-- [packages/compiler/src/instructionCompilers/risingEdge.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/risingEdge.ts)
+- [packages/compiler/src/instructionCompilers/risingEdge.ts](/packages/compiler/src/instructionCompilers/risingEdge.ts)
   - still synthesizes hidden previous-value storage through declaration-shaped snippets
-- [packages/compiler/src/instructionCompilers/fallingEdge.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/fallingEdge.ts)
+- [packages/compiler/src/instructionCompilers/fallingEdge.ts](/packages/compiler/src/instructionCompilers/fallingEdge.ts)
   - still synthesizes hidden previous-value storage through declaration-shaped snippets
-- [packages/compiler/src/instructionCompilers/hasChanged.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/hasChanged.ts)
+- [packages/compiler/src/instructionCompilers/hasChanged.ts](/packages/compiler/src/instructionCompilers/hasChanged.ts)
   - still synthesizes hidden previous-value storage through declaration-shaped snippets
-- [packages/compiler/src/instructionCompilers/branchIfUnchanged.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/branchIfUnchanged.ts)
+- [packages/compiler/src/instructionCompilers/branchIfUnchanged.ts](/packages/compiler/src/instructionCompilers/branchIfUnchanged.ts)
   - still synthesizes hidden previous-value storage through declaration-shaped snippets
 
 ## Risks & Considerations
