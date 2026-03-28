@@ -1,5 +1,4 @@
 import {
-	INTERMODULAR_REFERENCE_PATTERN,
 	extractIntermodularElementCountBase,
 	extractIntermodularElementMaxBase,
 	extractIntermodularElementMinBase,
@@ -9,6 +8,7 @@ import {
 	isIntermodularElementMaxReference,
 	isIntermodularElementMinReference,
 	isIntermodularElementWordSizeReference,
+	isIntermodularReference,
 	isIntermodularModuleReference,
 } from '@8f4e/tokenizer';
 
@@ -19,6 +19,21 @@ import { ArgumentType, type AST, type Argument, type CompilationContext } from '
 import { ErrorCode, getError } from '../compilerError';
 import { isMemoryIdentifier, isMemoryPointerIdentifier, isMemoryReferenceIdentifier } from '../utils/memoryIdentifier';
 
+function hasCollectedNamespaces(context: CompilationContext): boolean {
+	return Object.keys(context.namespace.namespaces).length > 0;
+}
+
+function isIntermoduleReferenceLike(value: string): boolean {
+	return (
+		isIntermodularModuleReference(value) ||
+		isIntermodularReference(value) ||
+		isIntermodularElementCountReference(value) ||
+		isIntermodularElementWordSizeReference(value) ||
+		isIntermodularElementMaxReference(value) ||
+		isIntermodularElementMinReference(value)
+	);
+}
+
 /**
  * Validates that intermodule address references target existing modules and memory.
  * Called after namespace collection is complete (when namespaces dict is populated).
@@ -27,7 +42,7 @@ import { isMemoryIdentifier, isMemoryPointerIdentifier, isMemoryReferenceIdentif
  */
 function validateIntermoduleAddressReference(value: string, line: AST[number], context: CompilationContext): void {
 	// Only validate if we're post-prepass (namespaces collected)
-	if (Object.keys(context.namespace.namespaces).length === 0) {
+	if (!hasCollectedNamespaces(context)) {
 		return;
 	}
 
@@ -39,7 +54,7 @@ function validateIntermoduleAddressReference(value: string, line: AST[number], c
 		return;
 	}
 
-	if (INTERMODULAR_REFERENCE_PATTERN.test(value)) {
+	if (isIntermodularReference(value)) {
 		const cleanRef = value.endsWith('&') ? value.slice(0, -1) : value.substring(1);
 		const [targetModuleId, targetMemoryId] = cleanRef.split(':');
 
@@ -176,6 +191,13 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 	for (const index of argumentIndexesToNormalize) {
 		const argument = nextArguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+			if (
+				!hasCollectedNamespaces(context) &&
+				((typeof argument.lhs === 'string' && isIntermoduleReferenceLike(argument.lhs)) ||
+					(typeof argument.rhs === 'string' && isIntermoduleReferenceLike(argument.rhs)))
+			) {
+				continue;
+			}
 			// Validate intermodule references in compile-time expressions
 			if (typeof argument.lhs === 'string') {
 				validateIntermoduleAddressReference(argument.lhs, line, context);
@@ -188,6 +210,9 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 			});
 		}
 		if ((line.instruction === 'map' || line.instruction === 'default') && argument?.type === ArgumentType.IDENTIFIER) {
+			if (!hasCollectedNamespaces(context) && isIntermoduleReferenceLike(argument.value)) {
+				continue;
+			}
 			// Validate intermodule references before throwing generic undeclared error
 			validateIntermoduleAddressReference(argument.value, line, context);
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
@@ -203,8 +228,15 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 		if (line.instruction === 'push' && argument?.type === ArgumentType.IDENTIFIER) {
 			const { value } = argument;
 			const { memory } = context.namespace;
+			const isIntermodule = isIntermoduleReferenceLike(value);
+			if (!hasCollectedNamespaces(context) && isIntermodule) {
+				continue;
+			}
 			// Validate intermodule references first
 			validateIntermoduleAddressReference(value, line, context);
+			if (isIntermodule) {
+				continue;
+			}
 			if (
 				!isMemoryIdentifier(memory, value) &&
 				!isMemoryPointerIdentifier(memory, value) &&
@@ -552,7 +584,7 @@ if (import.meta.vitest) {
 			};
 
 			// Should not throw during prepass - validation is deferred
-			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+			expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 		});
 	});
 }

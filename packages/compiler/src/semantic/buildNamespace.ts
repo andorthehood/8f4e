@@ -5,11 +5,11 @@ import {
 	extractIntermodularElementMinBase,
 	extractIntermodularElementWordSizeBase,
 	extractIntermodularModuleReferenceBase,
-	INTERMODULAR_REFERENCE_PATTERN,
 	isIntermodularElementCountReference,
 	isIntermodularElementMaxReference,
 	isIntermodularElementMinReference,
 	isIntermodularElementWordSizeReference,
+	isIntermodularReference,
 	isIntermodularModuleReference,
 } from '@8f4e/tokenizer';
 
@@ -101,7 +101,7 @@ function getReferencedNamespaceIdsFromValue(value: string): string[] {
 	if (isIntermodularModuleReference(value)) {
 		return [extractIntermodularModuleReferenceBase(value).module];
 	}
-	if (INTERMODULAR_REFERENCE_PATTERN.test(value)) {
+	if (isIntermodularReference(value)) {
 		const cleanRef = value.endsWith('&') ? value.slice(0, -1) : value.slice(1);
 		return [cleanRef.split(':')[0]];
 	}

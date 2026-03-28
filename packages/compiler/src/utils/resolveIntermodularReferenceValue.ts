@@ -1,5 +1,4 @@
 import {
-	INTERMODULAR_REFERENCE_PATTERN,
 	extractIntermodularElementCountBase,
 	extractIntermodularElementMaxBase,
 	extractIntermodularElementMinBase,
@@ -9,6 +8,7 @@ import {
 	isIntermodularElementMaxReference,
 	isIntermodularElementMinReference,
 	isIntermodularElementWordSizeReference,
+	isIntermodularReference,
 	isIntermodularModuleReference,
 } from '@8f4e/tokenizer';
 
@@ -29,7 +29,6 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, isEndAddress } = extractIntermodularModuleReferenceBase(refValue);
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
 			return undefined;
 		}
@@ -41,20 +40,18 @@ export default function resolveIntermodularReferenceValue(
 		return isEndAddress ? targetModule.byteAddress + (targetModule.wordAlignedSize - 1) * 4 : targetModule.byteAddress;
 	}
 
-	if (INTERMODULAR_REFERENCE_PATTERN.test(refValue)) {
+	if (isIntermodularReference(refValue)) {
 		const isEndAddress = refValue.endsWith('&');
 		const cleanRef = isEndAddress ? refValue.slice(0, -1) : refValue.substring(1);
 		const [targetModuleId, targetMemoryId] = cleanRef.split(':');
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
 			return undefined;
 		}
 
 		const targetMemory = targetModule.memory?.[targetMemoryId];
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetMemory) {
 			return undefined;
 		}
@@ -66,12 +63,10 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(refValue);
 		const targetMemory = context.namespace.namespaces[targetModuleId]?.memory?.[targetMemoryId];
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!context.namespace.namespaces[targetModuleId]) {
 			return undefined;
 		}
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetMemory) {
 			return undefined;
 		}
@@ -83,12 +78,10 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementWordSizeBase(refValue);
 		const targetMemory = context.namespace.namespaces[targetModuleId]?.memory?.[targetMemoryId];
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!context.namespace.namespaces[targetModuleId]) {
 			return undefined;
 		}
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetMemory) {
 			return undefined;
 		}
@@ -100,12 +93,10 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(refValue);
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
 			return undefined;
 		}
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule.memory?.[targetMemoryId]) {
 			return undefined;
 		}
@@ -117,12 +108,10 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(refValue);
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
 			return undefined;
 		}
 
-		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule.memory?.[targetMemoryId]) {
 			return undefined;
 		}

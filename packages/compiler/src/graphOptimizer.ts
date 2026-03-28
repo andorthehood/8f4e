@@ -1,4 +1,4 @@
-import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/tokenizer';
+import { isIntermodularReference } from '@8f4e/tokenizer';
 import { isIntermodularModuleReference } from '@8f4e/tokenizer';
 import { extractIntermodularModuleReferenceBase } from '@8f4e/tokenizer';
 import { isIntermodularElementCountReference } from '@8f4e/tokenizer';
@@ -42,7 +42,7 @@ function getIntermodularReferenceModules(argument: Argument | undefined): string
 		if (isIntermodularModuleReference(value)) {
 			return [extractIntermodularModuleReferenceBase(value).module];
 		}
-		if (INTERMODULAR_REFERENCE_PATTERN.test(value)) {
+		if (isIntermodularReference(value)) {
 			const cleanRef = value.endsWith('&') ? value.substring(0, value.length - 1) : value.substring(1);
 			return [cleanRef.split(':')[0]];
 		}
