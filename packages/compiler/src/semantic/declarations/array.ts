@@ -15,41 +15,34 @@ function getElementWordSize(instruction: string): number {
 }
 
 /**
- * Instruction compiler for `int[]`, `float[]`, and `float64[]`.
+ * Instruction compiler for typed array declarations such as `int[]`, `float[]`, and `float64[]`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const buffer: InstructionCompiler = withValidation(
+const array: InstructionCompiler = withValidation(
 	{
 		scope: 'module',
 	},
 	(line, context) => {
-		if (!line.arguments[0] || !line.arguments[1]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-		}
-
+		const memoryId = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
+		const elementCountArg = line.arguments[1];
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 
-		let numberOfElements = 1;
 		const elementWordSize = getElementWordSize(line.instruction);
 		const isUnsigned = line.instruction.endsWith('u[]');
-
-		if (line.arguments[1].type !== ArgumentType.LITERAL) {
+		if (elementCountArg.type !== ArgumentType.LITERAL) {
 			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
-		numberOfElements = line.arguments[1].value;
 
-		// Apply 8-byte alignment for float64[] buffers: round up absolute word offset to even
+		const numberOfElements = elementCountArg.value;
+
+		// Apply 8-byte alignment for float64[] arrays: round up absolute word offset to even
 		// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.
 		const absoluteWordOffset = context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress;
 		const alignedAbsoluteWordOffset =
 			elementWordSize === 8 && absoluteWordOffset % 2 !== 0 ? absoluteWordOffset + 1 : absoluteWordOffset;
 		const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
 
-		context.namespace.memory[line.arguments[0].value] = {
+		context.namespace.memory[memoryId] = {
 			numberOfElements,
 			elementWordSize,
 			// Round up to the 4-byte allocation grid so all data structures stay word-addressable.
@@ -57,7 +50,7 @@ const buffer: InstructionCompiler = withValidation(
 			wordAlignedSize: alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY),
 			// Store address in 4-byte words because pointer math/view indexing is word-based.
 			wordAlignedAddress: alignedAbsoluteWordOffset,
-			id: line.arguments[0].value,
+			id: memoryId,
 			// Convert the word-grid offset back to a byte address for wasm load/store instructions.
 			byteAddress: alignedAbsoluteWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
 			default: {},
@@ -73,16 +66,16 @@ const buffer: InstructionCompiler = withValidation(
 	}
 );
 
-export default buffer;
+export default array;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
-	describe('buffer instruction compiler', () => {
-		it('creates a memory buffer entry', () => {
+	describe('array declaration compiler', () => {
+		it('creates a memory array entry', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -98,10 +91,10 @@ if (import.meta.vitest) {
 			expect(context.namespace.memory).toMatchSnapshot();
 		});
 
-		it('creates an int8[] buffer with correct wordAlignedSize', () => {
+		it('creates an int8[] array with correct wordAlignedSize', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -122,10 +115,10 @@ if (import.meta.vitest) {
 			expect(memory.wordAlignedSize).toBe(1);
 		});
 
-		it('creates an int8[] buffer requiring alignment padding', () => {
+		it('creates an int8[] array requiring alignment padding', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -146,10 +139,10 @@ if (import.meta.vitest) {
 			expect(memory.wordAlignedSize).toBe(2);
 		});
 
-		it('creates an int16[] buffer with correct wordAlignedSize', () => {
+		it('creates an int16[] array with correct wordAlignedSize', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -170,10 +163,10 @@ if (import.meta.vitest) {
 			expect(memory.wordAlignedSize).toBe(2);
 		});
 
-		it('creates an int16[] buffer requiring alignment padding', () => {
+		it('creates an int16[] array requiring alignment padding', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -194,10 +187,10 @@ if (import.meta.vitest) {
 			expect(memory.wordAlignedSize).toBe(3);
 		});
 
-		it('creates an int32[] buffer with correct wordAlignedSize', () => {
+		it('creates an int32[] array with correct wordAlignedSize', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -218,26 +211,10 @@ if (import.meta.vitest) {
 			expect(memory.wordAlignedSize).toBe(3);
 		});
 
-		it('throws on missing arguments', () => {
+		it('creates an int8u[] array with unsigned flag', () => {
 			const context = createInstructionCompilerTestContext();
 
-			expect(() => {
-				buffer(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'int[]',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-
-		it('creates an int8u[] buffer with unsigned flag', () => {
-			const context = createInstructionCompilerTestContext();
-
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -257,10 +234,10 @@ if (import.meta.vitest) {
 			expect(memory.isInteger).toBe(true);
 		});
 
-		it('creates an int16u[] buffer with unsigned flag', () => {
+		it('creates an int16u[] array with unsigned flag', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -280,10 +257,10 @@ if (import.meta.vitest) {
 			expect(memory.isInteger).toBe(true);
 		});
 
-		it('creates an int8[] buffer with isUnsigned false', () => {
+		it('creates an int8[] array with isUnsigned false', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -300,10 +277,10 @@ if (import.meta.vitest) {
 			expect(memory.isUnsigned).toBe(false);
 		});
 
-		it('creates a float64[] buffer with elementWordSize 8', () => {
+		it('creates a float64[] array with elementWordSize 8', () => {
 			const context = createInstructionCompilerTestContext();
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -328,7 +305,7 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 
 			// Three int32 variables to force an odd word offset
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -341,7 +318,7 @@ if (import.meta.vitest) {
 				context
 			);
 
-			buffer(
+			array(
 				{
 					lineNumberBeforeMacroExpansion: 2,
 					lineNumberAfterMacroExpansion: 2,

@@ -79,15 +79,15 @@ export interface MemoryIdentifier {
 	showBinary: boolean;
 }
 
-export interface BufferPlotter {
+export interface ArrayPlotter {
 	width: number;
 	height: number;
 	x: number;
 	y: number;
 	minValue: number;
 	maxValue: number;
-	buffer: MemoryIdentifier;
-	bufferLength: MemoryIdentifier | undefined;
+	array: MemoryIdentifier;
+	arrayLength: MemoryIdentifier | undefined;
 }
 
 export interface Switch {
@@ -112,12 +112,12 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
-export interface BufferScanner {
+export interface ArrayScanner {
 	width: number;
 	height: number;
 	x: number;
 	y: number;
-	buffer: MemoryIdentifier;
+	array: MemoryIdentifier;
 	pointer: MemoryIdentifier;
 }
 
@@ -198,8 +198,8 @@ export interface CodeBlockGraphicData {
 		inputs: Input[];
 		outputs: Output[];
 		debuggers: Debugger[];
-		bufferPlotters: BufferPlotter[];
-		bufferScanners: BufferScanner[];
+		arrayPlotters: ArrayPlotter[];
+		arrayScanners: ArrayScanner[];
 		switches: Switch[];
 		buttons: Switch[];
 		sliders: Slider[];

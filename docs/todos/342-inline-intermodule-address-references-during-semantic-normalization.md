@@ -39,7 +39,7 @@ This should happen after cross-module layout is known, not during early local-on
 
 ## Anti-Patterns
 
-- Do not mix this with local address-reference inlining; that simpler step belongs in [341](/Users/andorpolgar/git/8f4e/docs/todos/341-inline-address-references-during-semantic-normalization.md).
+- Do not mix this with local address-reference inlining; that simpler step belongs in [341](/docs/todos/341-inline-address-references-during-semantic-normalization.md).
 - Do not reintroduce post-compile patching of compiled modules just to resolve address literals.
 - Do not keep multiple late fallback paths once semantic normalization can own these values.
 
@@ -88,15 +88,15 @@ This should happen after cross-module layout is known, not during early local-on
 
 ## Related Items
 
-- **Depends on**: [341-inline-address-references-during-semantic-normalization.md](/Users/andorpolgar/git/8f4e/docs/todos/341-inline-address-references-during-semantic-normalization.md)
-- **Related**: [336-move-identifier-reference-classification-into-tokenizer.md](/Users/andorpolgar/git/8f4e/docs/todos/336-move-identifier-reference-classification-into-tokenizer.md)
-- **Related**: [337-add-structured-address-and-query-extraction-to-tokenizer.md](/Users/andorpolgar/git/8f4e/docs/todos/337-add-structured-address-and-query-extraction-to-tokenizer.md)
+- **Depends on**: [341-inline-address-references-during-semantic-normalization.md](/docs/todos/341-inline-address-references-during-semantic-normalization.md)
+- **Related**: [336-move-identifier-reference-classification-into-tokenizer.md](/docs/todos/336-move-identifier-reference-classification-into-tokenizer.md)
+- **Related**: [337-add-structured-address-and-query-extraction-to-tokenizer.md](/docs/todos/337-add-structured-address-and-query-extraction-to-tokenizer.md)
 
 ## References
 
-- [resolveIntermodularReferenceValue.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/resolveIntermodularReferenceValue.ts)
-- [graphOptimizer.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/graphOptimizer.ts)
-- [341-inline-address-references-during-semantic-normalization.md](/Users/andorpolgar/git/8f4e/docs/todos/341-inline-address-references-during-semantic-normalization.md)
+- [resolveIntermodularReferenceValue.ts](/packages/compiler/src/utils/resolveIntermodularReferenceValue.ts)
+- [graphOptimizer.ts](/packages/compiler/src/graphOptimizer.ts)
+- [341-inline-address-references-during-semantic-normalization.md](/docs/todos/341-inline-address-references-during-semantic-normalization.md)
 
 ## Notes
 
