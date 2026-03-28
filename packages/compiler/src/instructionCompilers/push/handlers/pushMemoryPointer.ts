@@ -1,6 +1,5 @@
 import { extractMemoryPointerBase } from '@8f4e/tokenizer';
 
-import { ErrorCode, getError } from '../../../compilerError';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';
@@ -17,11 +16,8 @@ export default function pushMemoryPointer(line: AST[number], context: Compilatio
 	const argument = line.arguments[0] as { value: string };
 	const memory = context.namespace.memory;
 	const base = extractMemoryPointerBase(argument.value);
-	const memoryItem = getDataStructure(memory, base);
-
-	if (!memoryItem) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: base });
-	}
+	// Existence guaranteed by resolveIdentifierPushKind routing
+	const memoryItem = getDataStructure(memory, base)!;
 
 	const kind = resolvePointerTargetValueKind(memoryItem);
 	context.stack.push(kindToStackItem(kind, { isNonZero: false }));
