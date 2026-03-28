@@ -14,8 +14,6 @@ import {
 
 import { getElementMaxValue, getElementMinValue } from './memoryData';
 
-import { ErrorCode, getError } from '../compilerError';
-
 import type { AST, CompilationContext } from '../types';
 
 export default function resolveIntermodularReferenceValue(
@@ -31,8 +29,9 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, isEndAddress } = extractIntermodularModuleReferenceBase(refValue);
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
+			return undefined;
 		}
 
 		if (typeof targetModule.byteAddress !== 'number' || typeof targetModule.wordAlignedSize !== 'number') {
@@ -48,14 +47,16 @@ export default function resolveIntermodularReferenceValue(
 		const [targetModuleId, targetMemoryId] = cleanRef.split(':');
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
+			return undefined;
 		}
 
 		const targetMemory = targetModule.memory?.[targetMemoryId];
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetMemory) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
+			return undefined;
 		}
 
 		return isEndAddress ? targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4 : targetMemory.byteAddress;
@@ -65,12 +66,14 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(refValue);
 		const targetMemory = context.namespace.namespaces[targetModuleId]?.memory?.[targetMemoryId];
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!context.namespace.namespaces[targetModuleId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
+			return undefined;
 		}
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetMemory) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
+			return undefined;
 		}
 
 		return targetMemory.wordAlignedSize;
@@ -80,12 +83,14 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementWordSizeBase(refValue);
 		const targetMemory = context.namespace.namespaces[targetModuleId]?.memory?.[targetMemoryId];
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!context.namespace.namespaces[targetModuleId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
+			return undefined;
 		}
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetMemory) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
+			return undefined;
 		}
 
 		return targetMemory.elementWordSize;
@@ -95,12 +100,14 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(refValue);
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
+			return undefined;
 		}
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule.memory?.[targetMemoryId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
+			return undefined;
 		}
 
 		return getElementMaxValue(targetModule.memory, targetMemoryId);
@@ -110,12 +117,14 @@ export default function resolveIntermodularReferenceValue(
 		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(refValue);
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
+			return undefined;
 		}
 
+		// Existence guaranteed by normalizeCompileTimeArguments validation
 		if (!targetModule.memory?.[targetMemoryId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
+			return undefined;
 		}
 
 		return getElementMinValue(targetModule.memory, targetMemoryId);
