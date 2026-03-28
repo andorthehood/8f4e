@@ -52,9 +52,7 @@ if (import.meta.vitest) {
 			expect(resolveArgumentValueKind({ isInteger: false })).toBe('float32');
 			expect(resolveArgumentValueKind({ isInteger: false, isFloat64: true })).toBe('float64');
 			expect(resolvePointerTargetValueKind({ isPointingToInteger: true } as never)).toBe('int32');
-			expect(resolvePointerTargetValueKind({ isPointingToInteger: false, type: 'float64*' } as never)).toBe(
-				'float64'
-			);
+			expect(resolvePointerTargetValueKind({ isPointingToInteger: false, type: 'float64*' } as never)).toBe('float64');
 		});
 
 		it('creates stack items with expected shape', () => {
