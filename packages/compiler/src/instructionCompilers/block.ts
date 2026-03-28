@@ -16,7 +16,9 @@ const block: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 	},
 	(line, context) => {
-		const resultType = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
+		const resultType = (
+			line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>
+		).value;
 
 		if (resultType === 'float') {
 			context.blockStack.push({
