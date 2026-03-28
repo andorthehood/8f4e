@@ -246,6 +246,19 @@ moduleEnd
 `)
 		).rejects.toThrow();
 	});
+
+	test('throws when map value is an unresolved identifier', async () => {
+		await expect(
+			createTestModule(`module m
+int x
+push x
+mapBegin int
+  map 1 MISSING_CONST
+mapEnd int
+moduleEnd
+`)
+		).rejects.toThrow('Undeclared identifier');
+	});
 });
 
 describe('map: default type mismatch', () => {
@@ -260,6 +273,19 @@ mapEnd int
 moduleEnd
 `)
 		).rejects.toThrow();
+	});
+
+	test('throws when default value is an unresolved identifier', async () => {
+		await expect(
+			createTestModule(`module m
+int x
+push x
+mapBegin int
+  default MISSING_CONST
+mapEnd int
+moduleEnd
+`)
+		).rejects.toThrow('Undeclared identifier');
 	});
 });
 
