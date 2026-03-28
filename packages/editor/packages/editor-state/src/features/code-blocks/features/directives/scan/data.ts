@@ -1,5 +1,5 @@
 export interface ScanDirectiveData {
-	bufferMemoryId: string;
+	arrayMemoryId: string;
 	pointerMemoryId: string;
 	lineNumber: number;
 }
@@ -10,7 +10,7 @@ export function createScanDirectiveData(args: string[], lineNumber: number): Sca
 	}
 
 	return {
-		bufferMemoryId: args[0],
+		arrayMemoryId: args[0],
 		pointerMemoryId: args[1],
 		lineNumber,
 	};

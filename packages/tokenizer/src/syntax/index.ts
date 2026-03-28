@@ -4,6 +4,7 @@ export { default as isComment } from './isComment';
 export { default as isSkipExecutionDirective } from './isSkipExecutionDirective';
 export { default as isValidInstruction } from './isValidInstruction';
 export { default as isSemanticOnlyInstruction } from './isSemanticOnlyInstruction';
+export { default as isArrayDeclarationInstruction } from './isArrayDeclarationInstruction';
 export {
 	ArgumentType,
 	parseArgument,

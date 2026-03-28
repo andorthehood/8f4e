@@ -60,7 +60,7 @@ describe('scan directive widget resolution', () => {
 	it('adds a scanner to graphic data widgets', () => {
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
 	});
 
 	it('does not add a scanner when dependencies cannot be resolved', () => {
@@ -68,16 +68,16 @@ describe('scan directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(0);
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(0);
 	});
 
 	it('clears existing scanners before resolving directive widgets', () => {
-		mockGraphicData.widgets.bufferScanners.push({
+		mockGraphicData.widgets.arrayScanners.push({
 			width: 0,
 			height: 0,
 			x: 0,
 			y: 0,
-			buffer: {
+			array: {
 				memory: { wordAlignedAddress: 0 } as DataStructure,
 				showAddress: false,
 				showEndAddress: false,
@@ -95,7 +95,7 @@ describe('scan directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
 	});
 
 	it('handles multiple scan directives', () => {
@@ -131,6 +131,6 @@ describe('scan directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferScanners).toHaveLength(2);
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(2);
 	});
 });

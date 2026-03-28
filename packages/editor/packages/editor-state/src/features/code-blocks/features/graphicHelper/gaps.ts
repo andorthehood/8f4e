@@ -97,8 +97,8 @@ if (import.meta.vitest) {
 					buttons: [],
 					sliders: [],
 					pianoKeyboards: [],
-					bufferPlotters: [],
-					bufferScanners: [],
+					arrayPlotters: [],
+					arrayScanners: [],
 					errorMessages: [{ message: ['Error'], x: 0, y: 0, lineNumber: 2 }],
 				},
 			});

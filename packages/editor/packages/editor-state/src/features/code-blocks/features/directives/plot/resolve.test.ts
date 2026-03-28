@@ -56,39 +56,39 @@ describe('plot directive widget resolution', () => {
 	it('adds a plotter to graphic data widgets', () => {
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(1);
-		expect(mockGraphicData.widgets.bufferPlotters[0]).toBeDefined();
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayPlotters[0]).toBeDefined();
 	});
 
-	it('does not add a plotter when the buffer cannot be resolved', () => {
+	it('does not add a plotter when the array cannot be resolved', () => {
 		setMockCodeBlockCode(mockGraphicData, ['; @plot missing -10 10']);
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(0);
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(0);
 	});
 
 	it('clears existing plotters before resolving directive widgets', () => {
-		mockGraphicData.widgets.bufferPlotters.push({
+		mockGraphicData.widgets.arrayPlotters.push({
 			width: 0,
 			height: 0,
 			x: 0,
 			y: 0,
 			minValue: -8,
 			maxValue: 8,
-			buffer: {
+			array: {
 				memory: { wordAlignedAddress: 0 } as DataStructure,
 				showAddress: false,
 				showEndAddress: false,
 				bufferPointer: 0,
 				showBinary: false,
 			} as MemoryIdentifier,
-			bufferLength: undefined,
+			arrayLength: undefined,
 		});
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
 	});
 
 	it('handles multiple plot directives', () => {
@@ -110,6 +110,6 @@ describe('plot directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.bufferPlotters).toHaveLength(2);
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(2);
 	});
 });
