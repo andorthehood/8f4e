@@ -76,6 +76,9 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 				identifier: `${argument.lhs}${argument.operator}${argument.rhs}`,
 			});
 		}
+		if ((line.instruction === 'map' || line.instruction === 'default') && argument?.type === ArgumentType.IDENTIFIER) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
+		}
 	}
 
 	return changed ? { ...line, arguments: nextArguments } : line;
@@ -175,6 +178,92 @@ if (import.meta.vitest) {
 			} as unknown as CompilationContext;
 
 			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
+		});
+
+		it('throws UNDECLARED_IDENTIFIER when a map key argument is an unresolved identifier', () => {
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'map',
+				arguments: [
+					{ type: ArgumentType.IDENTIFIER, value: 'MISSING_CONST' },
+					{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
+				],
+			};
+			const context = {
+				namespace: {
+					memory: {},
+					consts: {},
+					moduleName: 'test',
+					namespaces: {},
+				},
+				locals: {},
+			} as unknown as CompilationContext;
+
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
+		});
+
+		it('throws UNDECLARED_IDENTIFIER when a map value argument is an unresolved identifier', () => {
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'map',
+				arguments: [
+					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+					{ type: ArgumentType.IDENTIFIER, value: 'UNRESOLVED' },
+				],
+			};
+			const context = {
+				namespace: {
+					memory: {},
+					consts: {},
+					moduleName: 'test',
+					namespaces: {},
+				},
+				locals: {},
+			} as unknown as CompilationContext;
+
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
+		});
+
+		it('throws UNDECLARED_IDENTIFIER when a default argument is an unresolved identifier', () => {
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'default',
+				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'MISSING_CONST' }],
+			};
+			const context = {
+				namespace: {
+					memory: {},
+					consts: {},
+					moduleName: 'test',
+					namespaces: {},
+				},
+				locals: {},
+			} as unknown as CompilationContext;
+
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
+		});
+
+		it('leaves push identifier arguments unchanged when unresolvable (may be a local)', () => {
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'push',
+				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'localVar' }],
+			};
+			const context = {
+				namespace: {
+					memory: {},
+					consts: {},
+					moduleName: 'test',
+					namespaces: {},
+				},
+				locals: {},
+			} as unknown as CompilationContext;
+
+			expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 		});
 	});
 }
