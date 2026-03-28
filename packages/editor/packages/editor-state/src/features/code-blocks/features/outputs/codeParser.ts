@@ -1,5 +1,5 @@
-import { isConstantName } from '@8f4e/compiler/syntax';
-import { instructionParser } from '@8f4e/compiler/syntax';
+import { isConstantName } from '@8f4e/tokenizer';
+import { instructionParser } from '@8f4e/tokenizer';
 
 export default function parseOutputs(code: string[]) {
 	return code.reduce(

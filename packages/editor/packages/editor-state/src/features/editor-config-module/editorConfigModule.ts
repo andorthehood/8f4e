@@ -1,4 +1,4 @@
-import { getModuleId } from '@8f4e/compiler/syntax';
+import { getModuleId } from '@8f4e/tokenizer';
 
 import type { CodeBlockGraphicData } from '~/types';
 

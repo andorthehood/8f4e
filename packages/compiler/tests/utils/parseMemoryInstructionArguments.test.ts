@@ -34,11 +34,10 @@ describe('parseMemoryInstructionArguments', () => {
 			expect(result).toEqual({ id: '__anonymous__1', defaultValue: 42 });
 		});
 
-		it('should handle identifier that is a constant as first argument', () => {
+		it('should reject constant-style identifiers as first argument when not normalized earlier', () => {
 			const context = createMockContext({}, { MY_CONST: { value: 100, isInteger: true } });
 			const args = [{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' }];
-			const result = parseMemoryInstructionArguments(createLine(2, 'int', args), context);
-			expect(result).toEqual({ id: '__anonymous__2', defaultValue: 100 });
+			expect(() => parseMemoryInstructionArguments(createLine(2, 'int', args), context)).toThrow();
 		});
 
 		it('should use identifier as id when not a constant', () => {
@@ -161,13 +160,21 @@ describe('parseMemoryInstructionArguments', () => {
 	});
 
 	describe('second argument handling - constants', () => {
-		it('should resolve constant as second argument', () => {
+		it('should require second-argument constants to be normalized into literals earlier', () => {
 			const context = createMockContext({}, { INIT_VALUE: { value: 999, isInteger: true } });
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.IDENTIFIER, value: 'INIT_VALUE' },
 			];
-			const result = parseMemoryInstructionArguments(createLine(11, 'int', args), context);
+			expect(() => parseMemoryInstructionArguments(createLine(11, 'int', args), context)).toThrow();
+		});
+
+		it('should accept normalized literals as second argument', () => {
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				{ type: ArgumentType.LITERAL, value: 999, isInteger: true },
+			];
+			const result = parseMemoryInstructionArguments(createLine(11, 'int', args), createMockContext());
 			expect(result).toEqual({ id: 'myVar', defaultValue: 999 });
 		});
 

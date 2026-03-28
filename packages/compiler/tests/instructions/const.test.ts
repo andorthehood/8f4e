@@ -1,10 +1,10 @@
+import { SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 import { describe, it, expect } from 'vitest';
 
 import { moduleTester } from './testUtils';
 
 import compile from '../../src';
 import { ErrorCode } from '../../src/compilerError';
-import { SyntaxErrorCode, SyntaxRulesError } from '../../src/syntax/syntaxError';
 
 import type { Module } from '../../src/types';
 

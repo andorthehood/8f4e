@@ -90,7 +90,6 @@ const instructionsToHighlight = [
 	'castToInt',
 	'castToFloat',
 	'castToFloat64',
-	'skip',
 	'drop',
 	'clearStack',
 	'risingEdge',

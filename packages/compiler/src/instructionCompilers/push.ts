@@ -1,10 +1,3 @@
-import pushConst from './push/handlers/pushConst';
-import pushElementCount from './push/handlers/pushElementCount';
-import pushElementMax from './push/handlers/pushElementMax';
-import pushElementMin from './push/handlers/pushElementMin';
-import pushElementWordSize from './push/handlers/pushElementWordSize';
-import pushPointeeElementWordSize from './push/handlers/pushPointeeElementWordSize';
-import pushPointeeElementMax from './push/handlers/pushPointeeElementMax';
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
 import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
@@ -47,27 +40,17 @@ const push: InstructionCompiler = withValidation(
 					return pushMemoryPointer(line, context);
 				case IdentifierPushKind.MEMORY_REFERENCE:
 					return pushMemoryReference(line, context);
-				case IdentifierPushKind.ELEMENT_COUNT:
-					return pushElementCount(line, context);
-				case IdentifierPushKind.ELEMENT_WORD_SIZE:
-					return pushElementWordSize(line, context);
-				case IdentifierPushKind.POINTEE_ELEMENT_WORD_SIZE:
-					return pushPointeeElementWordSize(line, context);
-				case IdentifierPushKind.ELEMENT_MAX:
-					return pushElementMax(line, context);
-				case IdentifierPushKind.POINTEE_ELEMENT_MAX:
-					return pushPointeeElementMax(line, context);
-				case IdentifierPushKind.ELEMENT_MIN:
-					return pushElementMin(line, context);
-				case IdentifierPushKind.CONST:
-					return pushConst(line, context);
 				case IdentifierPushKind.LOCAL:
 				default:
 					return pushLocal(line, context);
 			}
-		} else {
+		}
+
+		if (argument.type === ArgumentType.LITERAL) {
 			return pushLiteral(argument, context);
 		}
+
+		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 );
 
@@ -96,22 +79,15 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('pushes a constant value', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					consts: {
-						ANSWER: { value: 42, isInteger: true },
-					},
-				},
-			});
+		it('pushes a normalized literal value', () => {
+			const context = createInstructionCompilerTestContext();
 
 			push(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ANSWER' }],
+					arguments: [{ type: ArgumentType.LITERAL, value: 42, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -193,22 +169,15 @@ if (import.meta.vitest) {
 			expect(context.stack[0].isInteger).toBe(false);
 		});
 
-		it('pushes a f64 constant emitting f64.const', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					consts: {
-						PI64: { value: 3.141592653589793, isInteger: false, isFloat64: true },
-					},
-				},
-			});
+		it('pushes a normalized f64 literal emitting f64.const', () => {
+			const context = createInstructionCompilerTestContext();
 
 			push(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
+					arguments: [{ type: ArgumentType.LITERAL, value: 3.141592653589793, isInteger: false, isFloat64: true }],
 				} as AST[number],
 				context
 			);
@@ -219,22 +188,15 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('tracks isFloat64 on the stack item for f64 constant', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					consts: {
-						PI64: { value: 3.141592653589793, isInteger: false, isFloat64: true },
-					},
-				},
-			});
+		it('tracks isFloat64 on the stack item for normalized f64 literal', () => {
+			const context = createInstructionCompilerTestContext();
 
 			push(
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
+					arguments: [{ type: ArgumentType.LITERAL, value: 3.141592653589793, isInteger: false, isFloat64: true }],
 				} as AST[number],
 				context
 			);
@@ -259,302 +221,6 @@ if (import.meta.vitest) {
 			expect(context.stack[0].isFloat64).toBeUndefined();
 			// f32.const opcode is 67 (0x43), f64.const opcode is 68 (0x44)
 			expect(context.byteCode[0]).toBe(67);
-		});
-
-		describe('max() query', () => {
-			it('pushes max value for int32', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myInt: {
-								elementWordSize: 4,
-								isInteger: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myInt)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes max value for int16', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myInt16: {
-								elementWordSize: 2,
-								isInteger: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myInt16)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes max value for int8', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myInt8: {
-								elementWordSize: 1,
-								isInteger: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myInt8)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes max finite value for float32', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myFloat: {
-								elementWordSize: 4,
-								isInteger: false,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myFloat)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes max finite value for float64', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myF64: {
-								elementWordSize: 8,
-								isInteger: false,
-								isFloat64: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'max(myF64)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-		});
-
-		describe('min() query', () => {
-			it('pushes min value for int32', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myInt: {
-								elementWordSize: 4,
-								isInteger: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myInt)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes min value for int16', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myInt16: {
-								elementWordSize: 2,
-								isInteger: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myInt16)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes min value for int8', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myInt8: {
-								elementWordSize: 1,
-								isInteger: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myInt8)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes lowest finite value for float32', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myFloat: {
-								elementWordSize: 4,
-								isInteger: false,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myFloat)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
-
-			it('pushes lowest finite value for float64', () => {
-				const context = createInstructionCompilerTestContext({
-					namespace: {
-						...createInstructionCompilerTestContext().namespace,
-						memory: {
-							myF64: {
-								elementWordSize: 8,
-								isInteger: false,
-								isFloat64: true,
-							} as unknown as MemoryMap[string],
-						},
-					},
-				});
-
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'min(myF64)' }],
-					} as AST[number],
-					context
-				);
-
-				expect({
-					stack: context.stack,
-					byteCode: context.byteCode,
-				}).toMatchSnapshot();
-			});
 		});
 
 		describe('float64 memory push', () => {

@@ -9,10 +9,8 @@ export default defineConfig(
 			'src/withValidation/**/*.ts',
 			'src/wasmUtils/**/*.ts',
 			'src/wasmBuilders/**/*.ts',
-			'src/astUtils/**/*.ts',
 			'src/utils/**/*.ts',
 			'src/instructionCompilers/**/*.ts',
-			'src/syntax/**/*.ts',
 		],
 		additionalExclude: [
 			'**/testUtils.ts',
