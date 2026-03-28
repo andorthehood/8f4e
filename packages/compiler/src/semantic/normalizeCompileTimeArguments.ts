@@ -200,7 +200,7 @@ if (import.meta.vitest) {
 				locals: {},
 			} as unknown as CompilationContext;
 
-			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 		});
 
 		it('throws UNDECLARED_IDENTIFIER when a map value argument is an unresolved identifier', () => {
@@ -223,7 +223,7 @@ if (import.meta.vitest) {
 				locals: {},
 			} as unknown as CompilationContext;
 
-			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 		});
 
 		it('throws UNDECLARED_IDENTIFIER when a default argument is an unresolved identifier', () => {
@@ -243,7 +243,7 @@ if (import.meta.vitest) {
 				locals: {},
 			} as unknown as CompilationContext;
 
-			expect(() => normalizeCompileTimeArguments(line, context)).toThrow();
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 		});
 
 		it('leaves push identifier arguments unchanged when unresolvable (may be a local)', () => {
