@@ -11,7 +11,7 @@ import {
 	isIntermodularElementMinReference,
 	isIntermodularElementWordSizeReference,
 	isIntermodularModuleReference,
-} from '@8f4e/ast-parser';
+} from '@8f4e/tokenizer';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './declarations';

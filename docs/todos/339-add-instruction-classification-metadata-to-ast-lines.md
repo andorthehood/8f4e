@@ -13,7 +13,7 @@ completed: null
 
 The parser already assigns some syntax-level line metadata such as `isSemanticOnly`, but the compiler still relies on repeated instruction-name checks and local string sets to decide what role a parsed line has.
 
-That means syntax-level facts about instructions are still being rediscovered in compiler code instead of being emitted by `@8f4e/ast-parser`.
+That means syntax-level facts about instructions are still being rediscovered in compiler code instead of being emitted by `@8f4e/tokenizer`.
 
 ## Goal
 
@@ -56,7 +56,7 @@ The exact field set can stay modest at first. The goal is to stop rediscovering 
 
 ### Step 2: Emit parser-owned line classification metadata
 
-- Add the chosen classification fields to AST line objects in `@8f4e/ast-parser`
+- Add the chosen classification fields to AST line objects in `@8f4e/tokenizer`
 - Populate them during AST generation
 
 ### Step 3: Replace compiler-side instruction-name routing where possible
@@ -72,8 +72,8 @@ The exact field set can stay modest at first. The goal is to stop rediscovering 
 
 ## Related Items
 
-- Related: 336 `Move identifier reference classification into ast-parser`
-- Related: 337 `Add structured address and query extraction to ast-parser`
+- Related: 336 `Move identifier reference classification into tokenizer`
+- Related: 337 `Add structured address and query extraction to tokenizer`
 - Related: 338 `Add richer compile-time expression AST nodes`
 
 ## Notes

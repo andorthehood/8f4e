@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Add structured address and query extraction to ast-parser'
+title: 'TODO: Add structured address and query extraction to tokenizer'
 priority: Medium
 effort: 4-8 hours
 created: 2026-03-27
@@ -7,7 +7,7 @@ status: Open
 completed: null
 ---
 
-# 337 - Add structured address and query extraction to ast-parser
+# 337 - Add structured address and query extraction to tokenizer
 
 - Priority: 🟡 Medium
 - Effort: 4-8h
@@ -16,7 +16,7 @@ completed: null
 
 ## Summary
 
-Even after identifier/reference classification moves into `@8f4e/ast-parser`, the compiler would still be doing unnecessary syntax reconstruction if address-style and metadata-query-style identifiers continue to flow through as mostly raw strings.
+Even after identifier/reference classification moves into `@8f4e/tokenizer`, the compiler would still be doing unnecessary syntax reconstruction if address-style and metadata-query-style identifiers continue to flow through as mostly raw strings.
 
 The parser should not only classify:
 
@@ -63,9 +63,9 @@ For relevant `ArgumentType.IDENTIFIER` nodes, the AST should carry the parsed fi
 - `isEndAddress`
 - `isPointee`
 
-### 2. Move extraction logic fully into ast-parser
+### 2. Move extraction logic fully into tokenizer
 
-Address/query extraction currently spread across helper functions should be owned by `packages/ast-parser/src/syntax/` and represented directly in the parsed argument output.
+Address/query extraction currently spread across helper functions should be owned by `packages/tokenizer/src/syntax/` and represented directly in the parsed argument output.
 
 This should eliminate the need for compiler-side “base extraction” logic for these syntax forms.
 
@@ -90,7 +90,7 @@ and instead consume the AST fields directly.
 
 This is a follow-up to:
 
-- 336 `Move identifier reference classification into ast-parser`
+- 336 `Move identifier reference classification into tokenizer`
 
 336 is about identifying what class an identifier-shaped token belongs to.
 337 is about embedding the parsed structure of those classified address/query forms directly into the AST.

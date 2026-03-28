@@ -1,4 +1,4 @@
-import { instructionParser } from '@8f4e/ast-parser';
+import { instructionParser } from '@8f4e/tokenizer';
 
 const startInstructions = ['if', 'loop', 'block'];
 
