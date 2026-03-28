@@ -1,8 +1,10 @@
+import isConstantName from './isConstantName';
 import { ArgumentType, type Argument } from './parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
 type ArgumentShapeRule =
 	| 'identifier'
+	| 'constantIdentifier'
 	| 'literal'
 	| 'nonNegativeIntegerLiteral'
 	| 'compileTimeValue'
@@ -15,6 +17,22 @@ type InstructionArgumentSpec = {
 };
 
 const supportedTypeIdentifiers = new Set(['int', 'float', 'float64']);
+const bufferDeclarationInstructions = new Set([
+	'float[]',
+	'int[]',
+	'int8[]',
+	'int8u[]',
+	'int16[]',
+	'int16u[]',
+	'int32[]',
+	'float*[]',
+	'float**[]',
+	'int*[]',
+	'int**[]',
+	'float64[]',
+	'float64*[]',
+	'float64**[]',
+]);
 
 const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>> = {
 	push: { minArguments: 1 },
@@ -22,16 +40,36 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	branchIfTrue: { minArguments: 1, argumentTypes: ['literal'] },
 	branchIfUnchanged: { minArguments: 1, argumentTypes: ['literal'] },
 	wasm: { minArguments: 1, argumentTypes: ['literal'] },
+	block: { minArguments: 1, argumentTypes: ['identifier'] },
 	local: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
 	param: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
 	localGet: { minArguments: 1, argumentTypes: ['identifier'] },
 	localSet: { minArguments: 1, argumentTypes: ['identifier'] },
+	function: { minArguments: 1, argumentTypes: ['identifier'] },
+	functionEnd: { argumentTypes: 'typeIdentifier' },
+	call: { minArguments: 1, argumentTypes: ['identifier'] },
 	mapBegin: { minArguments: 1, argumentTypes: ['typeIdentifier'] },
 	mapEnd: { minArguments: 1, argumentTypes: ['typeIdentifier'] },
 	map: { minArguments: 2, argumentTypes: ['mapValue', 'mapValue'] },
 	default: { minArguments: 1, argumentTypes: ['compileTimeValue'] },
 	storeBytes: { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
+	module: { minArguments: 1, argumentTypes: ['identifier'] },
+	constants: { minArguments: 1, argumentTypes: ['identifier'] },
+	use: { minArguments: 1, argumentTypes: ['identifier'] },
+	const: { minArguments: 2, argumentTypes: ['constantIdentifier', 'compileTimeValue'] },
+	init: { minArguments: 2, argumentTypes: ['identifier', 'compileTimeValue'] },
 };
+
+function getInstructionArgumentSpec(instruction: string): InstructionArgumentSpec | undefined {
+	if (bufferDeclarationInstructions.has(instruction)) {
+		return {
+			minArguments: 2,
+			argumentTypes: ['identifier', 'compileTimeValue'],
+		};
+	}
+
+	return instructionArgumentSpecs[instruction];
+}
 
 function isCompileTimeValue(argument: Argument): boolean {
 	return (
@@ -54,6 +92,11 @@ function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, inst
 		case 'identifier':
 			if (argument.type !== ArgumentType.IDENTIFIER) {
 				invalid(`Invalid argument for ${instruction}: expected identifier.`);
+			}
+			return;
+		case 'constantIdentifier':
+			if (argument.type !== ArgumentType.IDENTIFIER || !isConstantName(argument.value)) {
+				invalid(`Invalid argument for ${instruction}: expected constant identifier.`);
 			}
 			return;
 		case 'literal':
@@ -93,7 +136,7 @@ function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, inst
 }
 
 export default function validateInstructionArguments(instruction: string, args: Argument[]): void {
-	const spec = instructionArgumentSpecs[instruction];
+	const spec = getInstructionArgumentSpec(instruction);
 	if (!spec) {
 		return;
 	}
@@ -161,6 +204,24 @@ if (import.meta.vitest) {
 					{ type: ArgumentType.IDENTIFIER, value: 'x' },
 				])
 			).toThrowError(SyntaxRulesError);
+		});
+
+		it('rejects non-constant identifiers for const declarations', () => {
+			expect(() =>
+				validateInstructionArguments('const', [
+					{ type: ArgumentType.IDENTIFIER, value: 'foo' },
+					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+				])
+			).toThrowError(SyntaxRulesError);
+		});
+
+		it('validates buffer declaration argument shapes', () => {
+			expect(() =>
+				validateInstructionArguments('int[]', [
+					{ type: ArgumentType.IDENTIFIER, value: 'values' },
+					{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
+				])
+			).not.toThrow();
 		});
 	});
 }
