@@ -4,7 +4,6 @@ import { describe, it, expect } from 'vitest';
 import { moduleTester } from './testUtils';
 
 import compile from '../../src';
-import { ErrorCode } from '../../src/compilerError';
 
 import type { Module } from '../../src/types';
 
@@ -46,7 +45,13 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow(`${ErrorCode.EXPECTED_IDENTIFIER}`);
+		try {
+			compile(modules, defaultOptions);
+			throw new Error('Expected compile to throw');
+		} catch (error) {
+			expect(error).toBeInstanceOf(SyntaxRulesError);
+			expect((error as SyntaxRulesError).code).toBe(SyntaxErrorCode.INVALID_ARGUMENT);
+		}
 	});
 
 	it('should reject constant names starting with numbers', () => {
@@ -72,7 +77,13 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow(`${ErrorCode.EXPECTED_IDENTIFIER}`);
+		try {
+			compile(modules, defaultOptions);
+			throw new Error('Expected compile to throw');
+		} catch (error) {
+			expect(error).toBeInstanceOf(SyntaxRulesError);
+			expect((error as SyntaxRulesError).code).toBe(SyntaxErrorCode.INVALID_ARGUMENT);
+		}
 	});
 
 	it('should accept constant names with underscores after the first letter', () => {
