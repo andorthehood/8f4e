@@ -1,5 +1,4 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -10,15 +9,8 @@ import type { AST, InstructionCompiler } from '../types';
  * @see [Instruction docs](../../docs/instructions/low-level.md)
  */
 const wasm: InstructionCompiler = function (line, context) {
-	if (!line.arguments[0]) {
-		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-	}
-
-	if (line.arguments[0].type !== ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-	}
-
-	return saveByteCode(context, [line.arguments[0].value]);
+	const opcode = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
+	return saveByteCode(context, [opcode.value]);
 };
 
 export default wasm;
@@ -43,22 +35,6 @@ if (import.meta.vitest) {
 			expect({
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				wasm(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'wasm',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }

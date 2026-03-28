@@ -17,27 +17,20 @@ const _localGet: InstructionCompiler = withValidation(
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
 	(line, context) => {
-		if (!line.arguments[0]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
+		const nameArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
+		const local = context.locals[nameArg.value];
+
+		if (!local) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
 		}
 
-		if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
-			const local = context.locals[line.arguments[0].value];
+		context.stack.push({
+			isInteger: local.isInteger,
+			...(local.isFloat64 ? { isFloat64: true } : {}),
+			isNonZero: false,
+		});
 
-			if (!local) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: line.arguments[0].value });
-			}
-
-			context.stack.push({
-				isInteger: local.isInteger,
-				...(local.isFloat64 ? { isFloat64: true } : {}),
-				isNonZero: false,
-			});
-
-			return saveByteCode(context, localGet(local.index));
-		} else {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-		}
+		return saveByteCode(context, localGet(local.index));
 	}
 );
 

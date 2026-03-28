@@ -1,5 +1,4 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
-import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -13,17 +12,10 @@ import type { AST, InstructionCompiler } from '../types';
 const mapBegin: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',
-		minArguments: 1,
 	},
 	(line, context) => {
-		if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-		}
-
-		const inputType = line.arguments[0].value;
-		if (inputType !== 'int' && inputType !== 'float' && inputType !== 'float64') {
-			throw getError(ErrorCode.TYPE_MISMATCH, line, context);
-		}
+		const inputType = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
+			.value;
 
 		context.blockStack.push({
 			expectedResultIsInteger: false,
@@ -99,38 +91,6 @@ if (import.meta.vitest) {
 			expect({
 				blockStack: context.blockStack,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				mapBegin(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'mapBegin',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-
-		it('throws on unknown type', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				mapBegin(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'mapBegin',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'unknown' }],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }

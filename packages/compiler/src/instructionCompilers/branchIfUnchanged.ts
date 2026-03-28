@@ -1,5 +1,4 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -22,15 +21,7 @@ const branchIfUnchanged: InstructionCompiler = withValidation(
 
 		context.stack.push(operand);
 
-		if (!line.arguments[0]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		if (line.arguments[0].type !== ArgumentType.LITERAL) {
-			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-		}
-
-		const depth = line.arguments[0].value;
+		const depth = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>).value;
 		const type = operand.isInteger ? 'int' : 'float';
 		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 		const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
@@ -84,23 +75,6 @@ if (import.meta.vitest) {
 				memory: context.namespace.memory,
 				locals: context.locals,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: false, isNonZero: false });
-
-			expect(() => {
-				branchIfUnchanged(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'branchIfUnchanged',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }

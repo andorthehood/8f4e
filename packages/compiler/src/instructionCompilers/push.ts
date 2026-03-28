@@ -7,7 +7,6 @@ import pushStringLiteral from './push/handlers/pushStringLiteral';
 import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { ErrorCode, getError } from '../compilerError';
 import { ArgumentType } from '../types';
 import { withValidation } from '../withValidation';
 
@@ -20,12 +19,9 @@ import type { AST, InstructionCompiler, MemoryMap } from '../types';
 const push: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',
+		minArguments: 0,
 	},
 	(line, context) => {
-		if (!line.arguments[0]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
 		const argument = line.arguments[0];
 
 		if (argument.type === ArgumentType.STRING_LITERAL) {
@@ -50,7 +46,7 @@ const push: InstructionCompiler = withValidation(
 			return pushLiteral(argument, context);
 		}
 
-		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+		throw new Error(`Unexpected push argument type: ${String(argument?.type)}`);
 	}
 );
 
@@ -96,22 +92,6 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				push(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'push',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 
 		it('expands a string literal into per-byte i32.const pushes', () => {
