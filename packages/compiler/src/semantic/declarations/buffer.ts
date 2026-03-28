@@ -1,5 +1,4 @@
 import { ArgumentType } from '../../types';
-import { ErrorCode, getError } from '../../compilerError';
 import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
@@ -23,24 +22,12 @@ const buffer: InstructionCompiler = withValidation(
 		scope: 'module',
 	},
 	(line, context) => {
-		if (!line.arguments[0] || !line.arguments[1]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-		}
-
+		const memoryId = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 
-		let numberOfElements = 1;
 		const elementWordSize = getElementWordSize(line.instruction);
 		const isUnsigned = line.instruction.endsWith('u[]');
-
-		if (line.arguments[1].type !== ArgumentType.LITERAL) {
-			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-		}
-		numberOfElements = line.arguments[1].value;
+		const numberOfElements = (line.arguments[1] as { type: ArgumentType.LITERAL; value: number }).value;
 
 		// Apply 8-byte alignment for float64[] buffers: round up absolute word offset to even
 		// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.
@@ -49,7 +36,7 @@ const buffer: InstructionCompiler = withValidation(
 			elementWordSize === 8 && absoluteWordOffset % 2 !== 0 ? absoluteWordOffset + 1 : absoluteWordOffset;
 		const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
 
-		context.namespace.memory[line.arguments[0].value] = {
+		context.namespace.memory[memoryId] = {
 			numberOfElements,
 			elementWordSize,
 			// Round up to the 4-byte allocation grid so all data structures stay word-addressable.
@@ -57,7 +44,7 @@ const buffer: InstructionCompiler = withValidation(
 			wordAlignedSize: alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY),
 			// Store address in 4-byte words because pointer math/view indexing is word-based.
 			wordAlignedAddress: alignedAbsoluteWordOffset,
-			id: line.arguments[0].value,
+			id: memoryId,
 			// Convert the word-grid offset back to a byte address for wasm load/store instructions.
 			byteAddress: alignedAbsoluteWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
 			default: {},
@@ -216,22 +203,6 @@ if (import.meta.vitest) {
 			// 3 elements * 4 bytes per element = 12 bytes total
 			// ceil(12 / 4) = 3 words
 			expect(memory.wordAlignedSize).toBe(3);
-		});
-
-		it('throws on missing arguments', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				buffer(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'int[]',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 
 		it('creates an int8u[] buffer with unsigned flag', () => {

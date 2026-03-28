@@ -5,16 +5,9 @@ import { ArgumentType, type AST, type CompilationContext } from '../../types';
 import resolveIntermodularReferenceValue from '../../utils/resolveIntermodularReferenceValue';
 
 export default function semanticInit(line: AST[number], context: CompilationContext) {
-	if (!line.arguments[0] || !line.arguments[1]) {
-		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-	}
-
-	if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
-		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-	}
-
-	const indexedTargetMatch = line.arguments[0].value.match(/(\S+)\[(\d+)\]/);
-	const targetMemoryId = indexedTargetMatch ? indexedTargetMatch[1] : line.arguments[0].value;
+	const targetIdentifier = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
+	const indexedTargetMatch = targetIdentifier.match(/(\S+)\[(\d+)\]/);
+	const targetMemoryId = indexedTargetMatch ? indexedTargetMatch[1] : targetIdentifier;
 	const memoryItem = context.namespace.memory[targetMemoryId];
 
 	if (!memoryItem) {
