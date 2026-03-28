@@ -19,8 +19,8 @@ const _function: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
-	// Parse function name: function <name>
-	const functionId = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
+	const functionId = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
+		.value;
 
 	context.currentFunctionId = functionId;
 	context.codeBlockId = functionId;
