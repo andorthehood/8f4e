@@ -72,6 +72,12 @@ Active todo files are listed below.
 | 324 | Add `int16*` pointer types to compiler and runtime | 🟡 | 1-2d | 2026-03-26 | The compiler currently only has coarse pointer base types such as `int*`, `float*`, and `float64*`, so pointer-aware metadata cannot represent 16-bit integer pointee semantics directly. |
 | 325 | Add literal-only `*` and `/` folding at argument parse time | 🟡 | 4-8h | 2026-03-26 | 8f4e already folds fraction-style literals like `1/2` during argument parsing, but other literal-only arithmetic such as `16*2` and `3.5*4` still falls through as identifier-shaped input instead of becoming ordinary literals in the AST. |
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 🟡 | 4-8h | 2026-03-26 | Several editor/runtime paths still use dotted cross-module memory ids such as `module.memory`, while compiler address-style intermodule references already use `module:memory`, creating inconsistent source-level syntax. |
+| 341 | Inline address references during semantic normalization | 🟡 | 4-8h | 2026-03-27 | Local address-style identifier operands such as `&buffer` and `buffer&` are still handled in `push` codegen even though their values are known once semantic layout is finalized. |
+| 342 | Inline intermodule address references during semantic normalization | 🟡 | 4-8h | 2026-03-27 | Intermodule address-style references such as `&module:memory`, `module:memory&`, `&module:`, and `module:&` are still deferred as raw strings instead of being rewritten to literals once cross-module layout is known. |
+| 336 | Move identifier reference classification into tokenizer | 🟡 | 6-10h | 2026-03-27 | The compiler still re-parses identifier-shaped argument strings to determine whether they are memory, constant, address, module-address, pointer-dereference, or metadata-query references instead of receiving that classification directly from the AST parser. |
+| 337 | Add structured address and query extraction to tokenizer | 🟡 | 4-8h | 2026-03-27 | The compiler still reconstructs address/query syntax details such as module ids, memory ids, start/end address markers, and pointee flags from raw identifier strings instead of receiving those extracted fields directly from the AST parser. |
+| 338 | Add richer compile-time expression AST nodes | 🟡 | 4-8h | 2026-03-27 | Compile-time expression nodes still rely on partially string-shaped operands instead of carrying fully parsed AST operands such as classified identifiers and structured metadata queries. |
+| 339 | Add instruction classification metadata to AST lines | 🟡 | 4-8h | 2026-03-27 | The compiler still uses repeated instruction-name checks and local string sets for syntax-level routing instead of receiving richer instruction classification metadata directly from AST lines. |
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |
@@ -80,3 +86,14 @@ Active todo files are listed below.
 | 057 | Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution | 🟢 | 8-12 hours | 2025-09-09 | The 8f4e project currently uses WebAssembly for executing compiled code with basic debugging capabilities (debug instruction parser exists). To enhance the development experience and enable advanced debugging features,... |
 | 203 | Use CodeBlock id instead of recomputing from code | 🟢 | 2-4 days | 2026-01-22 | The system frequently derives code block IDs by calling getCodeBlockId(code) during updates and rendering. This is redundant because CodeBlockGraphicData.id is intended to be the canonical ID. Recomputing on every... |
 | 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
+
+## Completed TODOs
+
+| ID | Title | Completed | Notes |
+| ---- | ----- | --------- | ----- |
+| 329 | Replace literal-only const collection with semantic namespace prepass | 2026-03-27 | Replaced `collectConstants(ast)` bootstrap with semantic namespace prepass. |
+| 330 | Centralize compile-time folding as an AST normalization pass | 2026-03-27 | Compile-time folding now runs as a semantic normalization pass before codegen. |
+| 331 | Delete duplicate downstream compile-time resolution paths | 2026-03-27 | Removed duplicate downstream compile-time resolution, including old `push` metadata fallbacks. |
+| 332 | Extract syntax and AST parsing into a separate compiler package | 2026-03-27 | `source -> AST` now lives in `packages/tokenizer`. |
+| 334 | Move locals out of namespace and into codegen state | 2026-03-27 | Locals now live in `CompilationContext.locals` instead of `namespace.locals`. |
+| 340 | Move compiler-generated hidden resources into a separate internal address space | 2026-03-27 | Hidden resources now allocate separately from user/module memory and no longer affect module layout. |

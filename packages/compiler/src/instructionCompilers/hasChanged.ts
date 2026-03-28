@@ -1,6 +1,7 @@
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { allocateInternalResource } from '../utils/internalResources';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -20,20 +21,20 @@ const hasChanged: InstructionCompiler = withValidation(
 		const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
 		const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
+		const previousValue = allocateInternalResource(context, previousValueName, memoryType);
 
 		context.stack.push({ isInteger: operand.isInteger, isNonZero: false });
 
 		return compileSegment(
 			[
-				`${memoryType} ${previousValueName} 0`,
 				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
-				`localGet ${currentValueName}`,
-				`push &${previousValueName}`,
+				`push ${previousValue.byteAddress}`,
 				operand.isInteger ? 'load' : 'loadFloat',
+				`localGet ${currentValueName}`,
 				'equal',
 				'equalToZero',
-				`push &${previousValueName}`,
+				`push ${previousValue.byteAddress}`,
 				`localGet ${currentValueName}`,
 				'store',
 			],
@@ -65,7 +66,7 @@ if (import.meta.vitest) {
 			expect({
 				stack: context.stack,
 				memory: context.namespace.memory,
-				locals: context.namespace.locals,
+				locals: context.locals,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});

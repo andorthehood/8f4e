@@ -170,6 +170,21 @@ describe('inter-module references - element word size', () => {
 		expect(moduleC.memoryMap['sizeB'].default).toBe(4);
 	});
 
+	test('resolves intermodule sizeof expressions inside compile-time multiplication', () => {
+		const modules = [
+			{ code: ['module sourceModule', 'int16[] buffer 12 0', 'moduleEnd'] },
+			{
+				code: ['module targetModule', 'int size 2*sizeof(sourceModule:buffer)', 'moduleEnd'],
+			},
+		];
+
+		const result = compile(modules, {
+			startingMemoryWordAddress: 0,
+		});
+
+		expect(result.compiledModules.targetModule.memoryMap.size.default).toBe(4);
+	});
+
 	test('combines element word size with other reference types in same module', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 12 0', 'moduleEnd'] },

@@ -1,17 +1,59 @@
-import { INTERMODULAR_REFERENCE_PATTERN } from './syntax/isIntermodularReferencePattern';
-import isIntermodularModuleReference from './syntax/isIntermodularModuleReference';
-import extractIntermodularModuleReferenceBase from './syntax/extractIntermodularModuleReferenceBase';
-import isIntermodularElementCountReference from './syntax/isIntermodularElementCountReference';
-import extractIntermodularElementCountBase from './syntax/extractIntermodularElementCountBase';
-import isIntermodularElementWordSizeReference from './syntax/isIntermodularElementWordSizeReference';
-import extractIntermodularElementWordSizeBase from './syntax/extractIntermodularElementWordSizeBase';
-import isIntermodularElementMaxReference from './syntax/isIntermodularElementMaxReference';
-import extractIntermodularElementMaxBase from './syntax/extractIntermodularElementMaxBase';
-import isIntermodularElementMinReference from './syntax/isIntermodularElementMinReference';
-import extractIntermodularElementMinBase from './syntax/extractIntermodularElementMinBase';
+import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/tokenizer';
+import { isIntermodularModuleReference } from '@8f4e/tokenizer';
+import { extractIntermodularModuleReferenceBase } from '@8f4e/tokenizer';
+import { isIntermodularElementCountReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementCountBase } from '@8f4e/tokenizer';
+import { isIntermodularElementWordSizeReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementWordSizeBase } from '@8f4e/tokenizer';
+import { isIntermodularElementMaxReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementMaxBase } from '@8f4e/tokenizer';
+import { isIntermodularElementMinReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementMinBase } from '@8f4e/tokenizer';
+
 import { ArgumentType } from './types';
 
-import type { AST } from './types';
+import type { AST, Argument } from './types';
+
+function getIntermodularReferenceModules(argument: Argument | undefined): string[] {
+	if (!argument) {
+		return [];
+	}
+
+	const values =
+		argument.type === ArgumentType.COMPILE_TIME_EXPRESSION ? [argument.lhs, argument.rhs] : [argument.value as string];
+
+	return values.flatMap(value => {
+		if (typeof value !== 'string') {
+			return [];
+		}
+
+		if (isIntermodularElementCountReference(value)) {
+			return [extractIntermodularElementCountBase(value).module];
+		}
+		if (isIntermodularElementWordSizeReference(value)) {
+			return [extractIntermodularElementWordSizeBase(value).module];
+		}
+		if (isIntermodularElementMaxReference(value)) {
+			return [extractIntermodularElementMaxBase(value).module];
+		}
+		if (isIntermodularElementMinReference(value)) {
+			return [extractIntermodularElementMinBase(value).module];
+		}
+		if (isIntermodularModuleReference(value)) {
+			return [extractIntermodularModuleReferenceBase(value).module];
+		}
+		if (INTERMODULAR_REFERENCE_PATTERN.test(value)) {
+			const cleanRef = value.endsWith('&') ? value.substring(0, value.length - 1) : value.substring(1);
+			return [cleanRef.split(':')[0]];
+		}
+
+		return [];
+	});
+}
+
+function getIdentifierValue(argument: Argument | undefined): string {
+	return argument?.type === ArgumentType.IDENTIFIER ? argument.value : '';
+}
 
 export default function sortModules(modules: AST[]): AST[] {
 	// First, separate constants blocks from regular modules
@@ -21,14 +63,16 @@ export default function sortModules(modules: AST[]): AST[] {
 	// Sort regular modules by ID and dependencies
 	const sortedRegularModules = regularModules
 		.sort((astA, astB) => {
-			const moduleIdA =
-				(astA.find(({ instruction }) => {
+			const moduleIdA = getIdentifierValue(
+				astA.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
-			const moduleIdB =
-				(astB.find(({ instruction }) => {
+				})?.arguments[0]
+			);
+			const moduleIdB = getIdentifierValue(
+				astB.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
+				})?.arguments[0]
+			);
 
 			if (moduleIdA < moduleIdB) {
 				return -1;
@@ -39,14 +83,16 @@ export default function sortModules(modules: AST[]): AST[] {
 			return 0;
 		})
 		.sort((astA, astB) => {
-			const moduleIdA =
-				(astA.find(({ instruction }) => {
+			const moduleIdA = getIdentifierValue(
+				astA.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
-			const moduleIdB =
-				(astB.find(({ instruction }) => {
+				})?.arguments[0]
+			);
+			const moduleIdB = getIdentifierValue(
+				astB.find(({ instruction }) => {
 					return instruction === 'module';
-				})?.arguments[0].value as string) || '';
+				})?.arguments[0]
+			);
 
 			const intermodulerConnectionsA = astA
 				.filter(({ instruction, arguments: _arguments }) => {
@@ -57,49 +103,10 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
-						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
-							isIntermodularModuleReference(_arguments[1].value) ||
-							isIntermodularElementCountReference(_arguments[1].value) ||
-							isIntermodularElementWordSizeReference(_arguments[1].value) ||
-							isIntermodularElementMaxReference(_arguments[1].value) ||
-							isIntermodularElementMinReference(_arguments[1].value))
+						getIntermodularReferenceModules(_arguments[1]).length > 0
 					);
 				})
-				.map(({ arguments: _arguments }) => {
-					const value = _arguments[1].value as string;
-					// Handle element count reference (count(module:memory))
-					if (isIntermodularElementCountReference(value)) {
-						const { module } = extractIntermodularElementCountBase(value);
-						return module;
-					}
-					// Handle element word size reference (sizeof(module:memory))
-					if (isIntermodularElementWordSizeReference(value)) {
-						const { module } = extractIntermodularElementWordSizeBase(value);
-						return module;
-					}
-					// Handle element max reference (max(module:memory))
-					if (isIntermodularElementMaxReference(value)) {
-						const { module } = extractIntermodularElementMaxBase(value);
-						return module;
-					}
-					// Handle element min reference (min(module:memory))
-					if (isIntermodularElementMinReference(value)) {
-						const { module } = extractIntermodularElementMinBase(value);
-						return module;
-					}
-					if (isIntermodularModuleReference(value)) {
-						return extractIntermodularModuleReferenceBase(value).module;
-					}
-					// Handle address reference (&module:memory or module:memory&)
-					// Parse reference based on form:
-					// - Start: &module:memory -> remove leading &
-					// - End: module:memory& -> remove trailing &
-					const cleanRef = value.endsWith('&')
-						? value.substring(0, value.length - 1) // Remove trailing &
-						: value.substring(1); // Remove leading &
-					return cleanRef.split(':')[0];
-				});
+				.flatMap(({ arguments: _arguments }) => getIntermodularReferenceModules(_arguments[1]));
 
 			const intermodulerConnectionsB = astB
 				.filter(({ instruction, arguments: _arguments }) => {
@@ -110,49 +117,10 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
-						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
-							isIntermodularModuleReference(_arguments[1].value) ||
-							isIntermodularElementCountReference(_arguments[1].value) ||
-							isIntermodularElementWordSizeReference(_arguments[1].value) ||
-							isIntermodularElementMaxReference(_arguments[1].value) ||
-							isIntermodularElementMinReference(_arguments[1].value))
+						getIntermodularReferenceModules(_arguments[1]).length > 0
 					);
 				})
-				.map(({ arguments: _arguments }) => {
-					const value = _arguments[1].value as string;
-					// Handle element count reference (count(module:memory))
-					if (isIntermodularElementCountReference(value)) {
-						const { module } = extractIntermodularElementCountBase(value);
-						return module;
-					}
-					// Handle element word size reference (sizeof(module:memory))
-					if (isIntermodularElementWordSizeReference(value)) {
-						const { module } = extractIntermodularElementWordSizeBase(value);
-						return module;
-					}
-					// Handle element max reference (max(module:memory))
-					if (isIntermodularElementMaxReference(value)) {
-						const { module } = extractIntermodularElementMaxBase(value);
-						return module;
-					}
-					// Handle element min reference (min(module:memory))
-					if (isIntermodularElementMinReference(value)) {
-						const { module } = extractIntermodularElementMinBase(value);
-						return module;
-					}
-					if (isIntermodularModuleReference(value)) {
-						return extractIntermodularModuleReferenceBase(value).module;
-					}
-					// Handle address reference (&module:memory or module:memory&)
-					// Parse reference based on form:
-					// - Start: &module:memory -> remove leading &
-					// - End: module:memory& -> remove trailing &
-					const cleanRef = value.endsWith('&')
-						? value.substring(0, value.length - 1) // Remove trailing &
-						: value.substring(1); // Remove leading &
-					return cleanRef.split(':')[0];
-				});
+				.flatMap(({ arguments: _arguments }) => getIntermodularReferenceModules(_arguments[1]));
 
 			if (intermodulerConnectionsB.includes(moduleIdA) && !intermodulerConnectionsA.includes(moduleIdB)) {
 				return 1;
@@ -175,6 +143,13 @@ if (import.meta.vitest) {
 		value,
 	});
 
+	const compileTimeExpressionArgument = (lhs: string, operator: '*' | '/', rhs: string) => ({
+		type: ArgumentType.COMPILE_TIME_EXPRESSION,
+		lhs,
+		operator,
+		rhs,
+	});
+
 	const createModuleAst = (moduleId: string, references: string[] = []): AST => {
 		return [
 			{
@@ -182,6 +157,7 @@ if (import.meta.vitest) {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'module',
 				arguments: [identifierArgument(moduleId)],
+				isSemanticOnly: true,
 			},
 			...references.map((reference, index) => {
 				return {
@@ -201,13 +177,14 @@ if (import.meta.vitest) {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'constants',
 				arguments: [],
+				isSemanticOnly: true,
 			},
 		] as AST;
 	};
 
 	const getModuleId = (ast: AST): string => {
 		const moduleLine = ast.find(line => line.instruction === 'module');
-		return (moduleLine?.arguments[0]?.value as string) || 'constants';
+		return getIdentifierValue(moduleLine?.arguments[0]) || 'constants';
 	};
 
 	describe('sortModules', () => {
@@ -241,6 +218,29 @@ if (import.meta.vitest) {
 
 		it('orders module before another module that references it', () => {
 			const alpha = createModuleAst('alpha', ['&beta:value']);
+			const beta = createModuleAst('beta');
+
+			const sorted = sortModules([alpha, beta]);
+
+			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
+		});
+
+		it('orders module before another module that references it inside a compile-time expression', () => {
+			const alpha: AST = [
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'module',
+					arguments: [identifierArgument('alpha')],
+					isSemanticOnly: true,
+				},
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'int',
+					arguments: [identifierArgument('size'), compileTimeExpressionArgument('2', '*', 'sizeof(beta:value)')],
+				},
+			] as AST;
 			const beta = createModuleAst('beta');
 
 			const sorted = sortModules([alpha, beta]);

@@ -1,0 +1,1643 @@
+[
+  {
+    "lineNumberBeforeMacroExpansion": 0,
+    "lineNumberAfterMacroExpansion": 0,
+    "instruction": "8f4e/v1",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumberAfterMacroExpansion": 2,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "notes",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 10,
+    "lineNumberAfterMacroExpansion": 10,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 12,
+    "lineNumberAfterMacroExpansion": 12,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "projectConfig",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 18,
+    "lineNumberAfterMacroExpansion": 18,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 20,
+    "lineNumberAfterMacroExpansion": 20,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "andGate",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 24,
+    "lineNumberAfterMacroExpansion": 24,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 25,
+    "lineNumberAfterMacroExpansion": 25,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 26,
+    "lineNumberAfterMacroExpansion": 26,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 29,
+    "lineNumberAfterMacroExpansion": 29,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      },
+      {
+        "value": "&orGate:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 30,
+    "lineNumberAfterMacroExpansion": 30,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      },
+      {
+        "value": "&negate:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 31,
+    "lineNumberAfterMacroExpansion": 31,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 32,
+    "lineNumberAfterMacroExpansion": 32,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 33,
+    "lineNumberAfterMacroExpansion": 33,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 34,
+    "lineNumberAfterMacroExpansion": 34,
+    "instruction": "mul",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 35,
+    "lineNumberAfterMacroExpansion": 35,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 36,
+    "lineNumberAfterMacroExpansion": 36,
+    "instruction": "greaterOrEqual",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 37,
+    "lineNumberAfterMacroExpansion": 37,
+    "instruction": "if",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 38,
+    "lineNumberAfterMacroExpansion": 38,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 39,
+    "lineNumberAfterMacroExpansion": 39,
+    "instruction": "else",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 40,
+    "lineNumberAfterMacroExpansion": 40,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 41,
+    "lineNumberAfterMacroExpansion": 41,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 42,
+    "lineNumberAfterMacroExpansion": 42,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 44,
+    "lineNumberAfterMacroExpansion": 44,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 46,
+    "lineNumberAfterMacroExpansion": 46,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "buttons",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 51,
+    "lineNumberAfterMacroExpansion": 51,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "set",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 52,
+    "lineNumberAfterMacroExpansion": 52,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "reset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 60,
+    "lineNumberAfterMacroExpansion": 60,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 62,
+    "lineNumberAfterMacroExpansion": 62,
+    "instruction": "constants",
+    "arguments": [
+      {
+        "value": "env",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 69,
+    "lineNumberAfterMacroExpansion": 69,
+    "instruction": "const",
+    "arguments": [
+      {
+        "value": "SAMPLE_RATE",
+        "type": "identifier"
+      },
+      {
+        "value": 50,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 70,
+    "lineNumberAfterMacroExpansion": 70,
+    "instruction": "const",
+    "arguments": [
+      {
+        "value": "INV_SAMPLE_RATE",
+        "type": "identifier"
+      },
+      {
+        "value": 0.02,
+        "type": "literal",
+        "isInteger": false
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 71,
+    "lineNumberAfterMacroExpansion": 71,
+    "instruction": "const",
+    "arguments": [
+      {
+        "value": "AUDIO_BUFFER_SIZE",
+        "type": "identifier"
+      },
+      {
+        "value": 128,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 73,
+    "lineNumberAfterMacroExpansion": 73,
+    "instruction": "constantsEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 75,
+    "lineNumberAfterMacroExpansion": 75,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "negate",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 78,
+    "lineNumberAfterMacroExpansion": 78,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in",
+        "type": "identifier"
+      },
+      {
+        "value": "&buttons:reset",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 79,
+    "lineNumberAfterMacroExpansion": 79,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 81,
+    "lineNumberAfterMacroExpansion": 81,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 82,
+    "lineNumberAfterMacroExpansion": 82,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 83,
+    "lineNumberAfterMacroExpansion": 83,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 84,
+    "lineNumberAfterMacroExpansion": 84,
+    "instruction": "equal",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 85,
+    "lineNumberAfterMacroExpansion": 85,
+    "instruction": "if",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 86,
+    "lineNumberAfterMacroExpansion": 86,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 87,
+    "lineNumberAfterMacroExpansion": 87,
+    "instruction": "else",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 88,
+    "lineNumberAfterMacroExpansion": 88,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 89,
+    "lineNumberAfterMacroExpansion": 89,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 90,
+    "lineNumberAfterMacroExpansion": 90,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 92,
+    "lineNumberAfterMacroExpansion": 92,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 94,
+    "lineNumberAfterMacroExpansion": 94,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "norGate",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 98,
+    "lineNumberAfterMacroExpansion": 98,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 99,
+    "lineNumberAfterMacroExpansion": 99,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 100,
+    "lineNumberAfterMacroExpansion": 100,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 104,
+    "lineNumberAfterMacroExpansion": 104,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      },
+      {
+        "value": "&norGate2:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 105,
+    "lineNumberAfterMacroExpansion": 105,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      },
+      {
+        "value": "&resetButton:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 107,
+    "lineNumberAfterMacroExpansion": 107,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 108,
+    "lineNumberAfterMacroExpansion": 108,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 109,
+    "lineNumberAfterMacroExpansion": 109,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 110,
+    "lineNumberAfterMacroExpansion": 110,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 111,
+    "lineNumberAfterMacroExpansion": 111,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 112,
+    "lineNumberAfterMacroExpansion": 112,
+    "instruction": "equal",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 113,
+    "lineNumberAfterMacroExpansion": 113,
+    "instruction": "if",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 114,
+    "lineNumberAfterMacroExpansion": 114,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 115,
+    "lineNumberAfterMacroExpansion": 115,
+    "instruction": "else",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 116,
+    "lineNumberAfterMacroExpansion": 116,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 117,
+    "lineNumberAfterMacroExpansion": 117,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 118,
+    "lineNumberAfterMacroExpansion": 118,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 120,
+    "lineNumberAfterMacroExpansion": 120,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 122,
+    "lineNumberAfterMacroExpansion": 122,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "norGate2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 126,
+    "lineNumberAfterMacroExpansion": 126,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 127,
+    "lineNumberAfterMacroExpansion": 127,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 128,
+    "lineNumberAfterMacroExpansion": 128,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 133,
+    "lineNumberAfterMacroExpansion": 133,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      },
+      {
+        "value": "&norGate:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 134,
+    "lineNumberAfterMacroExpansion": 134,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      },
+      {
+        "value": "&setButton:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 135,
+    "lineNumberAfterMacroExpansion": 135,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 136,
+    "lineNumberAfterMacroExpansion": 136,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 137,
+    "lineNumberAfterMacroExpansion": 137,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 138,
+    "lineNumberAfterMacroExpansion": 138,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 139,
+    "lineNumberAfterMacroExpansion": 139,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 140,
+    "lineNumberAfterMacroExpansion": 140,
+    "instruction": "equal",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 141,
+    "lineNumberAfterMacroExpansion": 141,
+    "instruction": "if",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 142,
+    "lineNumberAfterMacroExpansion": 142,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 143,
+    "lineNumberAfterMacroExpansion": 143,
+    "instruction": "else",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 144,
+    "lineNumberAfterMacroExpansion": 144,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 145,
+    "lineNumberAfterMacroExpansion": 145,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 146,
+    "lineNumberAfterMacroExpansion": 146,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 148,
+    "lineNumberAfterMacroExpansion": 148,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 150,
+    "lineNumberAfterMacroExpansion": 150,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "orGate",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 154,
+    "lineNumberAfterMacroExpansion": 154,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 155,
+    "lineNumberAfterMacroExpansion": 155,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 156,
+    "lineNumberAfterMacroExpansion": 156,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 159,
+    "lineNumberAfterMacroExpansion": 159,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in1",
+        "type": "identifier"
+      },
+      {
+        "value": "&andGate:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 160,
+    "lineNumberAfterMacroExpansion": 160,
+    "instruction": "init",
+    "arguments": [
+      {
+        "value": "in2",
+        "type": "identifier"
+      },
+      {
+        "value": "&buttons:set",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 161,
+    "lineNumberAfterMacroExpansion": 161,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 162,
+    "lineNumberAfterMacroExpansion": 162,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in1",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 163,
+    "lineNumberAfterMacroExpansion": 163,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 164,
+    "lineNumberAfterMacroExpansion": 164,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 165,
+    "lineNumberAfterMacroExpansion": 165,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 166,
+    "lineNumberAfterMacroExpansion": 166,
+    "instruction": "greaterOrEqual",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 167,
+    "lineNumberAfterMacroExpansion": 167,
+    "instruction": "if",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 168,
+    "lineNumberAfterMacroExpansion": 168,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 1,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 169,
+    "lineNumberAfterMacroExpansion": 169,
+    "instruction": "else",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 170,
+    "lineNumberAfterMacroExpansion": 170,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": 0,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 171,
+    "lineNumberAfterMacroExpansion": 171,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 172,
+    "lineNumberAfterMacroExpansion": 172,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 174,
+    "lineNumberAfterMacroExpansion": 174,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 176,
+    "lineNumberAfterMacroExpansion": 176,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "resetButton",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 179,
+    "lineNumberAfterMacroExpansion": 179,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 184,
+    "lineNumberAfterMacroExpansion": 184,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 186,
+    "lineNumberAfterMacroExpansion": 186,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "scope",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 189,
+    "lineNumberAfterMacroExpansion": 189,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in",
+        "type": "identifier"
+      },
+      {
+        "value": "&norGate:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 190,
+    "lineNumberAfterMacroExpansion": 190,
+    "instruction": "int[]",
+    "arguments": [
+      {
+        "value": "buffer",
+        "type": "identifier"
+      },
+      {
+        "value": 64,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 191,
+    "lineNumberAfterMacroExpansion": 191,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      },
+      {
+        "value": "&buffer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 195,
+    "lineNumberAfterMacroExpansion": 195,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 196,
+    "lineNumberAfterMacroExpansion": 196,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 197,
+    "lineNumberAfterMacroExpansion": 197,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sizeof(buffer)",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 198,
+    "lineNumberAfterMacroExpansion": 198,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 199,
+    "lineNumberAfterMacroExpansion": 199,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 201,
+    "lineNumberAfterMacroExpansion": 201,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 202,
+    "lineNumberAfterMacroExpansion": 202,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "buffer&",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 203,
+    "lineNumberAfterMacroExpansion": 203,
+    "instruction": "greaterThan",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 204,
+    "lineNumberAfterMacroExpansion": 204,
+    "instruction": "if",
+    "arguments": [
+      {
+        "value": "void",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 205,
+    "lineNumberAfterMacroExpansion": 205,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 206,
+    "lineNumberAfterMacroExpansion": 206,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&buffer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 207,
+    "lineNumberAfterMacroExpansion": 207,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 208,
+    "lineNumberAfterMacroExpansion": 208,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 210,
+    "lineNumberAfterMacroExpansion": 210,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 211,
+    "lineNumberAfterMacroExpansion": 211,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 212,
+    "lineNumberAfterMacroExpansion": 212,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 214,
+    "lineNumberAfterMacroExpansion": 214,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 216,
+    "lineNumberAfterMacroExpansion": 216,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "scope2",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 219,
+    "lineNumberAfterMacroExpansion": 219,
+    "instruction": "int*",
+    "arguments": [
+      {
+        "value": "in",
+        "type": "identifier"
+      },
+      {
+        "value": "&andGate:out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 220,
+    "lineNumberAfterMacroExpansion": 220,
+    "instruction": "int[]",
+    "arguments": [
+      {
+        "value": "buffer",
+        "type": "identifier"
+      },
+      {
+        "value": 64,
+        "type": "literal",
+        "isInteger": true
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 221,
+    "lineNumberAfterMacroExpansion": 221,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      },
+      {
+        "value": "&buffer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 225,
+    "lineNumberAfterMacroExpansion": 225,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 226,
+    "lineNumberAfterMacroExpansion": 226,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 227,
+    "lineNumberAfterMacroExpansion": 227,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "sizeof(buffer)",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 228,
+    "lineNumberAfterMacroExpansion": 228,
+    "instruction": "add",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 229,
+    "lineNumberAfterMacroExpansion": 229,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 231,
+    "lineNumberAfterMacroExpansion": 231,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 232,
+    "lineNumberAfterMacroExpansion": 232,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "buffer&",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 233,
+    "lineNumberAfterMacroExpansion": 233,
+    "instruction": "greaterThan",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 234,
+    "lineNumberAfterMacroExpansion": 234,
+    "instruction": "if",
+    "arguments": [
+      {
+        "value": "void",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 235,
+    "lineNumberAfterMacroExpansion": 235,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 236,
+    "lineNumberAfterMacroExpansion": 236,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "&buffer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 237,
+    "lineNumberAfterMacroExpansion": 237,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 238,
+    "lineNumberAfterMacroExpansion": 238,
+    "instruction": "ifEnd",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 240,
+    "lineNumberAfterMacroExpansion": 240,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "bufferPointer",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 241,
+    "lineNumberAfterMacroExpansion": 241,
+    "instruction": "push",
+    "arguments": [
+      {
+        "value": "*in",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 242,
+    "lineNumberAfterMacroExpansion": 242,
+    "instruction": "store",
+    "arguments": [],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 244,
+    "lineNumberAfterMacroExpansion": 244,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 246,
+    "lineNumberAfterMacroExpansion": 246,
+    "instruction": "module",
+    "arguments": [
+      {
+        "value": "setButton",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": true
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 250,
+    "lineNumberAfterMacroExpansion": 250,
+    "instruction": "int",
+    "arguments": [
+      {
+        "value": "out",
+        "type": "identifier"
+      }
+    ],
+    "isSemanticOnly": false
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 255,
+    "lineNumberAfterMacroExpansion": 255,
+    "instruction": "moduleEnd",
+    "arguments": [],
+    "isSemanticOnly": true
+  }
+]

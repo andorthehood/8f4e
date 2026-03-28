@@ -1,13 +1,12 @@
 import compile, {
-	collectConstants,
-	getConstantsName,
-	getModuleName,
-	instructions,
+	compileCodegenLine,
+	collectNamespacesFromASTs,
+	isMemoryDeclarationInstruction,
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
 	type Module,
-	type Namespaces,
+	BLOCK_TYPE,
 } from '@8f4e/compiler';
 
 import getBlockType from './shared/getBlockType';
@@ -18,7 +17,7 @@ export interface InstructionTraceEntry {
 	lineNumber: number;
 	instruction: string;
 	arguments: Array<{
-		type: 'literal' | 'identifier' | 'string_literal';
+		type: 'literal' | 'identifier' | 'string_literal' | 'compile_time_expression';
 		value: number | string;
 		isInteger?: boolean;
 		isFloat64?: boolean;
@@ -65,6 +64,13 @@ function serializeArguments(line: AST[number]): InstructionTraceEntry['arguments
 			};
 		}
 
+		if (argument.type === 'compile_time_expression') {
+			return {
+				type: 'compile_time_expression' as const,
+				value: `${argument.lhs}${argument.operator}${argument.rhs}`,
+			};
+		}
+
 		return {
 			type: 'literal' as const,
 			value: argument.value,
@@ -78,15 +84,12 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 	const entries: InstructionTraceEntry[] = [];
 
 	for (const line of ast) {
-		const compiler = instructions[line.instruction];
-		if (!compiler) {
-			continue;
-		}
-
 		const stackBefore = serializeStack(context);
 		const byteCodeOffset = context.byteCode.length;
 
-		compiler(line, context);
+		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
+			compileCodegenLine(line, context);
+		}
 
 		entries.push({
 			lineNumber: line.lineNumberBeforeMacroExpansion + 1,
@@ -103,17 +106,6 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 		kind,
 		entries,
 	};
-}
-
-function collectNamespaces(moduleAsts: AST[]): Namespaces {
-	return Object.fromEntries(
-		moduleAsts.map(ast => {
-			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-
-			return [name, { consts: collectConstants(ast) }];
-		})
-	);
 }
 
 function pickProjectBlocks(project: ProjectInput): {
@@ -174,7 +166,7 @@ export default function traceInstructionFlow(
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
 	const moduleAsts = compiledModules.map(module => module.ast).filter((ast): ast is AST => Array.isArray(ast));
-	const namespaces = collectNamespaces(moduleAsts);
+	const namespaces = collectNamespacesFromASTs(moduleAsts);
 	const blocks: BlockTrace[] = [];
 
 	for (const module of compiledModules) {
@@ -182,23 +174,37 @@ export default function traceInstructionFlow(
 			continue;
 		}
 
+		const kind = module.ast.some(line => line.instruction === 'constants') ? 'constants' : 'module';
 		const context: CompilationContext = {
 			namespace: {
 				namespaces,
-				memory: {},
-				locals: {},
-				consts: {},
-				moduleName: undefined,
+				memory: module.memoryMap,
+				consts: { ...(namespaces[module.id]?.consts ?? {}) },
+				moduleName: module.id,
 				functions: compileResult.compiledFunctions,
+			},
+			locals: {},
+			internalResources: {},
+			internalAllocator: {
+				nextByteAddress: compileResult.requiredMemoryBytes,
 			},
 			byteCode: [],
 			stack: [],
-			blockStack: [],
+			blockStack: [
+				{
+					hasExpectedResult: false,
+					expectedResultIsInteger: false,
+					blockType: kind === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE,
+				},
+			],
 			startingByteAddress: module.byteAddress,
 			mode: 'module',
+			codeBlockId: module.id,
+			codeBlockType: kind,
+			skipExecutionInCycle: module.skipExecutionInCycle,
+			initOnlyExecution: module.initOnlyExecution,
 		};
 
-		const kind = module.ast.some(line => line.instruction === 'constants') ? 'constants' : 'module';
 		blocks.push(traceAst(module.id, kind, module.ast, context));
 	}
 
@@ -211,10 +217,14 @@ export default function traceInstructionFlow(
 			namespace: {
 				namespaces,
 				memory: {},
-				locals: {},
 				consts: {},
 				moduleName: undefined,
 				functions: compileResult.compiledFunctions,
+			},
+			locals: {},
+			internalResources: {},
+			internalAllocator: {
+				nextByteAddress: 0,
 			},
 			byteCode: [],
 			stack: [],

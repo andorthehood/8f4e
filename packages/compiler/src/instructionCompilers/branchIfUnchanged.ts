@@ -3,6 +3,7 @@ import { ErrorCode, getError } from '../compilerError';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { allocateInternalResource } from '../utils/internalResources';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -34,20 +35,21 @@ const branchIfUnchanged: InstructionCompiler = withValidation(
 		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 		const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
 		const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumberAfterMacroExpansion;
+		const previousValue = allocateInternalResource(context, previousValueMemoryName, type);
 
 		return compileSegment(
 			[
-				`${type} ${previousValueMemoryName} 0`,
 				`local ${type} ${currentValueMemoryName}`,
 
 				`localSet ${currentValueMemoryName} `,
 
-				`push ${previousValueMemoryName}`,
+				`push ${previousValue.byteAddress}`,
+				operand.isInteger ? 'load' : 'loadFloat',
 				`localGet ${currentValueMemoryName}`,
 				'equal',
 				`branchIfTrue ${depth}`,
 
-				`push &${previousValueMemoryName}`,
+				`push ${previousValue.byteAddress}`,
 				`localGet ${currentValueMemoryName}`,
 				'store',
 			],
@@ -80,7 +82,7 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 				memory: context.namespace.memory,
-				locals: context.namespace.locals,
+				locals: context.locals,
 			}).toMatchSnapshot();
 		});
 

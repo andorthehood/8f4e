@@ -1,4 +1,4 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
+import { instructionParser } from '@8f4e/tokenizer';
 
 const startInstructions = ['if', 'loop', 'block'];
 

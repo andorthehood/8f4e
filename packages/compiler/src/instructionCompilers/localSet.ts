@@ -24,7 +24,7 @@ const _localSet: InstructionCompiler = withValidation(
 
 		if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
 			const operand = context.stack.pop()!;
-			const local = context.namespace.locals[line.arguments[0].value];
+			const local = context.locals[line.arguments[0].value];
 
 			if (!local) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: line.arguments[0].value });
@@ -53,11 +53,8 @@ if (import.meta.vitest) {
 	describe('localSet instruction compiler', () => {
 		it('stores a local value', () => {
 			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					locals: {
-						value: { isInteger: true, index: 0 },
-					},
+				locals: {
+					value: { isInteger: true, index: 0 },
 				},
 			});
 			context.stack.push({ isInteger: true, isNonZero: false });

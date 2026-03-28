@@ -1,7 +1,7 @@
+import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
 import wabt from 'wabt';
 
-import { compileToAST } from '../../src/compiler';
 import createCodeSection from '../../src/wasmUtils/codeSection/createCodeSection';
 import createExportSection from '../../src/wasmUtils/export/createExportSection';
 import createFunctionExport from '../../src/wasmUtils/export/createFunctionExport';

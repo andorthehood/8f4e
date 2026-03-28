@@ -1,0 +1,76 @@
+{
+  "sourceModuleOrder": [
+    "projectConfig",
+    "dancer1",
+    "dancer2",
+    "dancer3",
+    "dancer4",
+    "env",
+    "sineLT"
+  ],
+  "compiledModuleLayout": [
+    {
+      "id": "env",
+      "index": 0,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "dancer1",
+      "index": 1,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 4,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "dancer2",
+      "index": 2,
+      "byteAddress": 20,
+      "wordAlignedAddress": 5,
+      "wordAlignedSize": 4,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "dancer3",
+      "index": 3,
+      "byteAddress": 36,
+      "wordAlignedAddress": 9,
+      "wordAlignedSize": 4,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "dancer4",
+      "index": 4,
+      "byteAddress": 52,
+      "wordAlignedAddress": 13,
+      "wordAlignedSize": 5,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "projectConfig",
+      "index": 5,
+      "byteAddress": 72,
+      "wordAlignedAddress": 18,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "sineLT",
+      "index": 6,
+      "byteAddress": 72,
+      "wordAlignedAddress": 18,
+      "wordAlignedSize": 256,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    }
+  ]
+}

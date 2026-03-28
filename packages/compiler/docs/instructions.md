@@ -3,6 +3,7 @@
 - [Comments](comments.md)
 - [Identifier prefixes](prefixes.md)
 - [Best practices](best-practices.md)
+- [Compiler design](compiler-design.md)
 
 - [Arithmetic instructions](instructions/arithmetic.md)
   - [add](instructions/arithmetic.md#add)
@@ -43,7 +44,6 @@
   - [map](instructions/control-flow.md#map)
   - [default](instructions/control-flow.md#default)
   - [mapEnd](instructions/control-flow.md#mapend)
-  - [skip](instructions/control-flow.md#skip)
 
 - [Conversion](instructions/conversion.md)
   - [castToFloat](instructions/conversion.md#casttofloat)

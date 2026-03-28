@@ -1,8 +1,8 @@
+import { compileToAST, parseLine } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
+import { isComment, isValidInstruction, parseArgument, SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 
 import { ArgumentType } from '../src/types';
-import { isComment, isValidInstruction, parseArgument, parseLine, compileToAST } from '../src/compiler';
-import { SyntaxErrorCode, SyntaxRulesError } from '../src/syntax/syntaxError';
 
 import type { AST } from '../src/types';
 
@@ -71,6 +71,7 @@ describe('parseLine', () => {
 				instruction: 'int',
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
+				isSemanticOnly: false,
 			},
 		],
 		[
@@ -88,6 +89,7 @@ describe('parseLine', () => {
 				instruction: 'push',
 				lineNumberBeforeMacroExpansion: 100,
 				lineNumberAfterMacroExpansion: 100,
+				isSemanticOnly: false,
 			},
 		],
 	];

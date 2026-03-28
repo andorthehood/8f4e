@@ -1,4 +1,4 @@
-import { extractUseDependencies } from '@8f4e/compiler/syntax';
+import { extractUseDependencies } from '@8f4e/tokenizer';
 
 import { moduleManifest, moduleMetadata } from './exampleModules';
 

@@ -6,6 +6,7 @@
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
+      "dependsOn": ["^build"],
       "options": {
         "command": "tsc",
         "cwd": "{projectRoot}"
@@ -28,6 +29,7 @@
     "test": {
       "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["^build"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"

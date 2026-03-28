@@ -35,23 +35,7 @@ exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`
       "isInteger": true,
     },
   },
-  "memory": {
-    "__fallingEdgeDetector_previousValue5": {
-      "byteAddress": 0,
-      "default": 0,
-      "elementWordSize": 4,
-      "id": "__fallingEdgeDetector_previousValue5",
-      "isInteger": true,
-      "isPointer": false,
-      "isPointingToInteger": false,
-      "isPointingToPointer": false,
-      "isUnsigned": false,
-      "numberOfElements": 1,
-      "type": "int",
-      "wordAlignedAddress": 0,
-      "wordAlignedSize": 1,
-    },
-  },
+  "memory": {},
   "stack": [
     {
       "isInteger": true,

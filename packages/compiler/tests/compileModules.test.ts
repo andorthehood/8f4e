@@ -1,8 +1,8 @@
+import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
 
 import modules from './__fixtures__/modules';
 
-import { compileToAST } from '../src/compiler';
 import { compileModules } from '../src';
 import compile from '../src';
 

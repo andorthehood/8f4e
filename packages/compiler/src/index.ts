@@ -1,3 +1,5 @@
+import { compileToAST } from '@8f4e/tokenizer';
+
 import createCodeSection from './wasmUtils/codeSection/createCodeSection';
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createExportSection from './wasmUtils/export/createExportSection';
@@ -12,13 +14,10 @@ import call from './wasmUtils/call/call';
 import f32store from './wasmUtils/store/f32store';
 import f64store from './wasmUtils/store/f64store';
 import i32store from './wasmUtils/store/i32store';
-import { compileModule, compileToAST, compileFunction } from './compiler';
-import collectConstants from './astUtils/collectConstants';
-import getConstantsName from './astUtils/getConstantsName';
-import getModuleName from './astUtils/getModuleName';
+import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-import resolveInterModularConnections from './utils/resolveInterModularConnections';
+import { collectNamespacesFromASTs } from './semantic/buildNamespace';
 import {
 	AST,
 	CompileOptions,
@@ -27,7 +26,6 @@ import {
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
 	Module,
-	Namespace,
 	Namespaces,
 } from './types';
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
@@ -69,10 +67,9 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { default as collectConstants } from './astUtils/collectConstants';
-export { default as getConstantsName } from './astUtils/getConstantsName';
-export { default as getModuleName } from './astUtils/getModuleName';
-export { instructionParser } from './compiler';
+export { prepassNamespace, collectNamespacesFromASTs } from './semantic/buildNamespace';
+export { isMemoryDeclarationInstruction } from './semantic/declarations';
+export { compileLine, compileCodegenLine } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
 export {
 	parseMacroDefinitions,
@@ -86,28 +83,30 @@ export { ErrorCode, getError } from './compilerError';
 export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
-	builtInConsts?: Namespace['consts'],
 	namespaces?: Namespaces,
-	compiledFunctions?: CompiledFunctionLookup
+	compiledFunctions?: CompiledFunctionLookup,
+	internalAllocator?: { nextByteAddress: number }
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress ?? 0;
-
-	// If builtInConsts not provided, use empty object - all constants come from env block
-	const consts = builtInConsts ?? {};
-
-	// If namespaces not provided, collect from modules
-	const ns =
-		namespaces ??
-		Object.fromEntries(
-			modules.map(ast => {
-				const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-				const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-				return [name, { consts: collectConstants(ast) }];
-			})
-		);
+	const ns: Namespaces =
+		namespaces ?? collectNamespacesFromASTs(modules, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, compiledFunctions);
+	const allocator = internalAllocator ?? {
+		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
+			const byteAddress = namespace.byteAddress ?? 0;
+			const wordAlignedSize = namespace.wordAlignedSize ?? 0;
+			return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
+		}, 0),
+	};
 
 	return modules.map((ast, index) => {
-		const module = compileModule(ast, consts, ns, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, index, compiledFunctions);
+		const module = compileModule(
+			ast,
+			ns,
+			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
+			index,
+			compiledFunctions,
+			allocator
+		);
 		memoryAddress += module.wordAlignedSize;
 		return module;
 	});
@@ -189,19 +188,11 @@ export default function compile(
 				})
 			: (functions?.map(func => ({ code: func.code, lineMetadata: undefined })) ?? []);
 
-	// Compile to AST with line metadata for error mapping
+	// Compile to AST with line metadata for error mapping.
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
-	const sortedModules = sortModules(astModules);
+	const dependencyOrderedModules = sortModules(astModules);
 
-	// Collect namespaces from all modules (includes both regular modules and constants blocks)
-	const namespaces: Namespaces = Object.fromEntries(
-		sortedModules.map(ast => {
-			// Determine if this is a constants block or regular module
-			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
-			return [name, { consts: collectConstants(ast) }];
-		})
-	);
+	const namespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
@@ -215,52 +206,59 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, {}, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
+		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
+	const totalModuleBytes = Object.values(namespaces).reduce((max, namespace) => {
+		const byteAddress = namespace.byteAddress ?? 0;
+		const wordAlignedSize = namespace.wordAlignedSize ?? 0;
+		return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
+	}, 0);
+	const internalAllocator = { nextByteAddress: totalModuleBytes };
 
 	// Extract the unique function types and type indices from the registry
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Compile all modules (constants blocks are already sorted first by sortModules)
+	// Compile all modules in dependency order to preserve the established physical layout.
 	const compiledModules = compileModules(
-		sortedModules,
+		dependencyOrderedModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
 		},
-		{}, // Empty builtInConsts - all constants come from env block
 		namespaces,
-		compiledFunctionsMap
+		compiledFunctionsMap,
+		internalAllocator
 	);
 
-	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
-	resolveInterModularConnections(compiledModulesMap);
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
 	// Calculate the required memory footprint from the compiled program.
 	const requiredMemoryBytes =
 		compiledModules.length === 0
-			? 0
-			: compiledModules[compiledModules.length - 1].byteAddress +
-				compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+			? internalAllocator.nextByteAddress
+			: Math.max(
+					compiledModules[compiledModules.length - 1].byteAddress +
+						compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
+					internalAllocator.nextByteAddress
+				);
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
 	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle or initOnlyExecution flags
-	const cycleFunction = compiledModules.flatMap((module, index) =>
+	const cycleFunction = compiledModules.flatMap(module =>
 		module.skipExecutionInCycle || module.initOnlyExecution
 			? []
-			: call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
+			: call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 	);
 
 	// Generate init-only module calls (run after memory initialization)
 	// Skip if skipExecutionInCycle is true (precedence rule)
-	const initOnlyModuleCalls = compiledModules.flatMap((module, index) =>
+	const initOnlyModuleCalls = compiledModules.flatMap(module =>
 		module.initOnlyExecution && !module.skipExecutionInCycle
-			? call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
+			? call(module.index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 			: []
 	);
 	const initOnlyFunction = createFunction([], initOnlyModuleCalls);
@@ -283,6 +281,7 @@ export default function compile(
 	const bufferFunction = createBufferFunctionBody(bufferSize, bufferStrategy, 1);
 
 	// Strip AST from final result if not requested
+	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	const finalCompiledModules = options.includeAST
 		? compiledModulesMap
 		: stripASTFromCompiledModules(compiledModulesMap);

@@ -163,23 +163,23 @@ const mapEnd: InstructionCompiler = withValidation(
 			saveByteCode(context, [WASMInstruction.DROP, ...constOp[outputKind](defaultValue)]);
 		} else {
 			// Allocate four temporary locals: inputLocal, resultLocal, matchedLocal, condLocal
-			const localBase = Object.keys(context.namespace.locals).length;
+			const localBase = Object.keys(context.locals).length;
 
-			context.namespace.locals[`__map_${localBase}_input`] = {
+			context.locals[`__map_${localBase}_input`] = {
 				isInteger: inputIsInteger,
 				...(inputIsFloat64 ? { isFloat64: true } : {}),
 				index: localBase,
 			};
-			context.namespace.locals[`__map_${localBase}_result`] = {
+			context.locals[`__map_${localBase}_result`] = {
 				isInteger: outputIsInteger,
 				...(outputIsFloat64 ? { isFloat64: true } : {}),
 				index: localBase + 1,
 			};
-			context.namespace.locals[`__map_${localBase}_matched`] = {
+			context.locals[`__map_${localBase}_matched`] = {
 				isInteger: true,
 				index: localBase + 2,
 			};
-			context.namespace.locals[`__map_${localBase}_cond`] = {
+			context.locals[`__map_${localBase}_cond`] = {
 				isInteger: true,
 				index: localBase + 3,
 			};
