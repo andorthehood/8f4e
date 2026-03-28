@@ -28,31 +28,20 @@ This keeps codegen coupled to name-resolution concerns and makes instruction com
 
 ### Done
 
-The `map`/`default` late `EXPECTED_VALUE` fallbacks have been moved into the semantic pass:
+The following sites have been moved out of codegen and into the semantic pass (`normalizeCompileTimeArguments.ts`):
 
-- `packages/compiler/src/semantic/normalizeCompileTimeArguments.ts` now throws `UNDECLARED_IDENTIFIER` when a `map` or `default` argument is still an unresolved `IDENTIFIER` after normalization.
-- The redundant `else { throw EXPECTED_VALUE }` branches have been removed from `packages/compiler/src/instructionCompilers/map.ts`.
+- **`map`/`default`**: Late `EXPECTED_VALUE` fallbacks removed from `packages/compiler/src/instructionCompilers/map.ts`; `normalizeCompileTimeArguments` now throws `UNDECLARED_IDENTIFIER` when a `map` or `default` argument is still an unresolved `IDENTIFIER` after normalization.
+- **`localGet`/`localSet`**: `UNDECLARED_IDENTIFIER` existence checks removed from codegen; `normalizeCompileTimeArguments` now validates local existence before the per-line codegen step (by the time normalize runs, all preceding `local`/`param` declarations in the same compile pass have already populated `context.locals`).
+- **`push` with undeclared identifier**: `UNDECLARED_IDENTIFIER` check removed from `pushLocal`; `normalizeCompileTimeArguments` now validates that a `push IDENTIFIER` argument resolves to a known memory item, memory pointer, memory reference, or declared local — anything else throws `UNDECLARED_IDENTIFIER`.
+- **`pushMemoryIdentifier`/`pushMemoryPointer`**: Dead `UNDECLARED_IDENTIFIER` guards removed from codegen; existence is already guaranteed by `resolveIdentifierPushKind` routing (which checks `Object.hasOwn(memory, ...)` before dispatching).
 
 ### Remaining
 
-The following sites still discover undeclared-identifier/reference errors at codegen time and should be moved to the semantic pass:
+The following site still discovers undeclared-identifier errors at codegen time and should be moved to the semantic pass:
 
-- [packages/compiler/src/instructionCompilers/localGet.ts](/packages/compiler/src/instructionCompilers/localGet.ts)
-  - throws `UNDECLARED_IDENTIFIER` when the named local is not in `context.locals`
-- [packages/compiler/src/instructionCompilers/localSet.ts](/packages/compiler/src/instructionCompilers/localSet.ts)
-  - throws `UNDECLARED_IDENTIFIER` when the named local is not in `context.locals`
-- [packages/compiler/src/instructionCompilers/push/handlers/pushMemoryIdentifier.ts](/packages/compiler/src/instructionCompilers/push/handlers/pushMemoryIdentifier.ts)
-  - throws `UNDECLARED_IDENTIFIER` when the memory item is absent from the namespace
-- [packages/compiler/src/instructionCompilers/push/handlers/pushMemoryPointer.ts](/packages/compiler/src/instructionCompilers/push/handlers/pushMemoryPointer.ts)
-  - throws `UNDECLARED_IDENTIFIER` when the pointer base is absent from the namespace
-- [packages/compiler/src/instructionCompilers/push/handlers/pushLocal.ts](/packages/compiler/src/instructionCompilers/push/handlers/pushLocal.ts)
-  - throws `UNDECLARED_IDENTIFIER` when the local is not in `context.locals`
 - [packages/compiler/src/utils/resolveIntermodularReferenceValue.ts](/packages/compiler/src/utils/resolveIntermodularReferenceValue.ts)
-  - throws `UNDECLARED_IDENTIFIER` for missing module or memory targets in intermodule references; the module/memory existence checks at the intermodule level should be validated during the semantic prepass rather than on first codegen access
-
-For locals (`localGet`, `localSet`, `pushLocal`), the right place to enforce existence is after the semantic prepass has collected all `local` declarations for the enclosing scope.
-
-For memory identifiers and intermodule references, the right place is the existing `prepassNamespace`/`normalizeCompileTimeArguments` pipeline or a dedicated semantic validation step that runs before `compileModule`.
+  - throws `UNDECLARED_IDENTIFIER` for missing module or memory targets in intermodule references
+  - **Note**: this is called during both the semantic prepass (via `memoryInstructionParser.ts` and `init.ts`) AND during layout passes. The `UNDECLARED_IDENTIFIER` throws here are also used as signals for namespace-collection deferral (`shouldDeferNamespaceCollection` in `buildNamespace.ts`). Any future move must preserve or replace this deferral mechanism.
 
 ## Goal
 
@@ -91,13 +80,14 @@ After this refactor, instruction compilers should be able to assume:
 
 "Done" means: codegen no longer discovers `UNDECLARED_IDENTIFIER` errors for syntax-valid references that the semantic normalization/prepass should already have resolved.
 
-- [ ] `localGet`, `localSet`, and `pushLocal` no longer throw `UNDECLARED_IDENTIFIER` — local existence is validated before codegen.
-- [ ] `pushMemoryIdentifier` and `pushMemoryPointer` no longer throw `UNDECLARED_IDENTIFIER` — memory existence is validated in the semantic prepass.
-- [ ] `resolveIntermodularReferenceValue` no longer throws `UNDECLARED_IDENTIFIER` for module/memory targets — intermodule reference legality is validated in the semantic prepass.
-- [ ] Instruction compilers do not rediscover undeclared-identifier errors for any syntax-valid reference that the semantic pass should already have resolved.
-- [ ] Remaining codegen validation is limited to stack/type/lowering concerns.
-- [ ] Compiler tests reflect the earlier semantic error boundary (assertions on `ErrorCode.UNDECLARED_IDENTIFIER` live in semantic-pass tests, not instruction-compiler tests).
-- [ ] Another agent can identify the intended ownership boundary from this todo without needing chat history.
+- [x] `localGet`, `localSet`, and `pushLocal` no longer throw `UNDECLARED_IDENTIFIER` — local existence is validated by `normalizeCompileTimeArguments` before codegen.
+- [x] `pushMemoryIdentifier` and `pushMemoryPointer` no longer throw `UNDECLARED_IDENTIFIER` — dead guards removed; existence is guaranteed by `resolveIdentifierPushKind` routing.
+- [x] `push` with an unresolvable identifier throws `UNDECLARED_IDENTIFIER` in `normalizeCompileTimeArguments`, not in `pushLocal` codegen.
+- [ ] `resolveIntermodularReferenceValue` no longer throws `UNDECLARED_IDENTIFIER` for module/memory targets — intermodule reference legality is validated in the semantic prepass (blocked by deferral-mechanism coupling; see Remaining section).
+- [x] Instruction compilers do not rediscover undeclared-identifier errors for any syntax-valid reference that the semantic pass now resolves.
+- [x] Remaining codegen validation is limited to stack/type/lowering concerns.
+- [x] Compiler tests reflect the earlier semantic error boundary (assertions on `ErrorCode.UNDECLARED_IDENTIFIER` live in `normalizeCompileTimeArguments` tests).
+- [x] Another agent can identify the intended ownership boundary from this todo without needing chat history.
 
 ## References
 

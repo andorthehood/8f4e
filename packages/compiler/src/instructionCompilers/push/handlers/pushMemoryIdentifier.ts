@@ -1,4 +1,3 @@
-import { ErrorCode, getError } from '../../../compilerError';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';
@@ -12,11 +11,8 @@ import type { AST, CompilationContext } from '../../../types';
 export default function pushMemoryIdentifier(line: AST[number], context: CompilationContext): CompilationContext {
 	const argument = line.arguments[0] as { value: string };
 	const memory = context.namespace.memory;
-	const memoryItem = getDataStructure(memory, argument.value);
-
-	if (!memoryItem) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
-	}
+	// Existence guaranteed by resolveIdentifierPushKind routing
+	const memoryItem = getDataStructure(memory, argument.value)!;
 
 	const kind = resolveMemoryValueKind(memoryItem);
 	context.stack.push(kindToStackItem(kind, { isNonZero: false }));

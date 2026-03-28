@@ -3,6 +3,7 @@ import { isMemoryDeclarationInstruction } from './declarations';
 
 import { ArgumentType, type AST, type Argument, type CompilationContext } from '../types';
 import { ErrorCode, getError } from '../compilerError';
+import { isMemoryIdentifier, isMemoryPointerIdentifier, isMemoryReferenceIdentifier } from '../utils/memoryIdentifier';
 
 function normalizeArgument(argument: Argument, context: CompilationContext): Argument {
 	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
@@ -28,6 +29,15 @@ function normalizeArgument(argument: Argument, context: CompilationContext): Arg
 
 export default function normalizeCompileTimeArguments(line: AST[number], context: CompilationContext): AST[number] {
 	let argumentIndexesToNormalize: number[] = [];
+
+	// Validate local existence for localGet/localSet: by the time we process these lines,
+	// all local declarations before them in the same compile pass have already run.
+	if (line.instruction === 'localGet' || line.instruction === 'localSet') {
+		const nameArg = line.arguments[0];
+		if (nameArg?.type === ArgumentType.IDENTIFIER && !context.locals[nameArg.value]) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
+		}
+	}
 
 	switch (line.instruction) {
 		case 'const':
@@ -78,6 +88,18 @@ export default function normalizeCompileTimeArguments(line: AST[number], context
 		}
 		if ((line.instruction === 'map' || line.instruction === 'default') && argument?.type === ArgumentType.IDENTIFIER) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
+		}
+		if (line.instruction === 'push' && argument?.type === ArgumentType.IDENTIFIER) {
+			const { value } = argument;
+			const { memory } = context.namespace;
+			if (
+				!isMemoryIdentifier(memory, value) &&
+				!isMemoryPointerIdentifier(memory, value) &&
+				!isMemoryReferenceIdentifier(memory, value) &&
+				!context.locals[value]
+			) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: value });
+			}
 		}
 	}
 
@@ -246,7 +268,7 @@ if (import.meta.vitest) {
 			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 		});
 
-		it('leaves push identifier arguments unchanged when unresolvable (may be a local)', () => {
+		it('leaves push identifier arguments unchanged when the identifier is a known local', () => {
 			const line: AST[number] = {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -260,10 +282,55 @@ if (import.meta.vitest) {
 					moduleName: 'test',
 					namespaces: {},
 				},
-				locals: {},
+				locals: { localVar: { isInteger: true, index: 0 } },
 			} as unknown as CompilationContext;
 
 			expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
+		});
+
+		it('throws UNDECLARED_IDENTIFIER for push with an identifier not in memory or locals', () => {
+			const context = {
+				namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+				locals: {},
+			} as unknown as CompilationContext;
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'push',
+				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'unknownVar' }],
+			};
+
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+		});
+
+		it('throws UNDECLARED_IDENTIFIER for localGet with an undeclared local', () => {
+			const context = {
+				namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+				locals: {},
+			} as unknown as CompilationContext;
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'localGet',
+				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
+			};
+
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+		});
+
+		it('throws UNDECLARED_IDENTIFIER for localSet with an undeclared local', () => {
+			const context = {
+				namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+				locals: {},
+			} as unknown as CompilationContext;
+			const line: AST[number] = {
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'localSet',
+				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
+			};
+
+			expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 		});
 	});
 }

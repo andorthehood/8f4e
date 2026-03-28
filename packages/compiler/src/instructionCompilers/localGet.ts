@@ -1,5 +1,5 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
+import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import localGet from '../wasmUtils/local/localGet';
 import { withValidation } from '../withValidation';
@@ -18,11 +18,8 @@ const _localGet: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		const nameArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
-		const local = context.locals[nameArg.value];
-
-		if (!local) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
-		}
+		// Existence guaranteed by normalizeCompileTimeArguments
+		const local = context.locals[nameArg.value]!;
 
 		context.stack.push({
 			isInteger: local.isInteger,
@@ -61,22 +58,6 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on undeclared local', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				_localGet(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'localGet',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }
