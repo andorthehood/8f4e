@@ -34,14 +34,11 @@ The following sites have been moved out of codegen and into the semantic pass (`
 - **`localGet`/`localSet`**: `UNDECLARED_IDENTIFIER` existence checks removed from codegen; `normalizeCompileTimeArguments` now validates local existence before the per-line codegen step (by the time normalize runs, all preceding `local`/`param` declarations in the same compile pass have already populated `context.locals`).
 - **`push` with undeclared identifier**: `UNDECLARED_IDENTIFIER` check removed from `pushLocal`; `normalizeCompileTimeArguments` now validates that a `push IDENTIFIER` argument resolves to a known memory item, memory pointer, memory reference, or declared local — anything else throws `UNDECLARED_IDENTIFIER`.
 - **`pushMemoryIdentifier`/`pushMemoryPointer`**: Dead `UNDECLARED_IDENTIFIER` guards removed from codegen; existence is already guaranteed by `resolveIdentifierPushKind` routing (which checks `Object.hasOwn(memory, ...)` before dispatching).
+- **`resolveIntermodularReferenceValue`**: `UNDECLARED_IDENTIFIER` throws removed and replaced with `undefined` returns when modules/memory aren't found; `normalizeCompileTimeArguments` now validates intermodule references (module existence and memory existence) after namespace collection is complete. Validation only runs when `context.namespace.namespaces` is populated (post-prepass), preserving the deferral mechanism used by `collectNamespacesFromASTs` during the initial discovery phase.
 
 ### Remaining
 
-The following site still discovers undeclared-identifier errors at codegen time and should be moved to the semantic pass:
-
-- [packages/compiler/src/utils/resolveIntermodularReferenceValue.ts](/packages/compiler/src/utils/resolveIntermodularReferenceValue.ts)
-  - throws `UNDECLARED_IDENTIFIER` for missing module or memory targets in intermodule references
-  - **Note**: this is called during both the semantic prepass (via `memoryInstructionParser.ts` and `init.ts`) AND during layout passes. The `UNDECLARED_IDENTIFIER` throws here are also used as signals for namespace-collection deferral (`shouldDeferNamespaceCollection` in `buildNamespace.ts`). Any future move must preserve or replace this deferral mechanism.
+None — all identifier existence validation has been moved into the semantic pass.
 
 ## Goal
 
@@ -83,7 +80,7 @@ After this refactor, instruction compilers should be able to assume:
 - [x] `localGet`, `localSet`, and `pushLocal` no longer throw `UNDECLARED_IDENTIFIER` — local existence is validated by `normalizeCompileTimeArguments` before codegen.
 - [x] `pushMemoryIdentifier` and `pushMemoryPointer` no longer throw `UNDECLARED_IDENTIFIER` — dead guards removed; existence is guaranteed by `resolveIdentifierPushKind` routing.
 - [x] `push` with an unresolvable identifier throws `UNDECLARED_IDENTIFIER` in `normalizeCompileTimeArguments`, not in `pushLocal` codegen.
-- [ ] `resolveIntermodularReferenceValue` no longer throws `UNDECLARED_IDENTIFIER` for module/memory targets — intermodule reference legality is validated in the semantic prepass (blocked by deferral-mechanism coupling; see Remaining section).
+- [x] `resolveIntermodularReferenceValue` no longer throws `UNDECLARED_IDENTIFIER` for module/memory targets — intermodule reference legality is validated in the semantic normalization pass, post-namespace-collection.
 - [x] Instruction compilers do not rediscover undeclared-identifier errors for any syntax-valid reference that the semantic pass now resolves.
 - [x] Remaining codegen validation is limited to stack/type/lowering concerns.
 - [x] Compiler tests reflect the earlier semantic error boundary (assertions on `ErrorCode.UNDECLARED_IDENTIFIER` live in `normalizeCompileTimeArguments` tests).
