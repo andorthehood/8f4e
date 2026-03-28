@@ -1,3 +1,10 @@
+---
+title: Agent Failure Note – Added Backward-Compat Fallback Instead Of Updating Tests
+agent: Codex App Version 26.313.41514 (1043)
+model: GPT-5.4 (medium)
+date: 2026-03-27
+---
+
 # Added Backward-Compat Fallback Instead Of Updating Tests
 
 ## What happened

@@ -2,15 +2,15 @@
 
 Practical patterns for writing predictable, efficient 8f4e modules.
 
-## Derive Buffer Facts From Metadata Queries
+## Derive Array Facts From Metadata Queries
 
-Avoid duplicating buffer metadata in separate variables.
+Avoid duplicating array metadata in separate variables.
 
 - Use `count(buffer)` for element count.
 - Use `sizeof(buffer)` for element word size.
 - Use `buffer&` (or inter-module `module.buffer&`) for end address.
 
-This keeps modules resilient when buffer declarations change.
+This keeps modules resilient when array declarations change.
 
 Bad:
 ```text
@@ -27,15 +27,15 @@ int[] rhythm 16
 
 ## Prefer Address-Based Walking
 
-When stepping through buffers, prefer a byte offset (or pointer-like state) instead of an element index that repeatedly needs address recomputation via `index * sizeof(buffer)`.
+When stepping through arrays, prefer a byte offset (or pointer-like state) instead of an element index that repeatedly needs address recomputation via `index * sizeof(array)`.
 
 In other words, this replaces:
 - element-index walking (`_index` as element number)
-- repeated address math on every access/wrap check (`buffer + _index * sizeof(buffer)`)
+- repeated address math on every access/wrap check (`array + _index * sizeof(array)`)
 
 With:
 - address/offset walking (`_offset` in bytes)
-- direct address math (`buffer + _offset`) and `_offset += sizeof(buffer)`
+- direct address math (`array + _offset`) and `_offset += sizeof(array)`
 
 - Fewer operations in hot loops.
 - No repeated `index * sizeof(buffer)` multiplications for wrap checks.

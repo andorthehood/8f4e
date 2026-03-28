@@ -16,7 +16,7 @@ export default createDirectivePlugin(
 	},
 	{
 		clearGraphicData: graphicData => {
-			graphicData.widgets.bufferScanners = [];
+			graphicData.widgets.arrayScanners = [];
 		},
 	}
 );
