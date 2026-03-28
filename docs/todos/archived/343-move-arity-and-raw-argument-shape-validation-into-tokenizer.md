@@ -1,17 +1,11 @@
 ---
-id: 343
 title: 'TODO: Move arity and raw argument-shape validation into tokenizer'
-status: Open
-owner: []
+priority: Medium
+effort: 4-8h
 created: '2026-03-28'
-updated: '2026-03-28'
-labels:
-  - compiler
-  - tokenizer
-  - validation
-dependencies:
-  - 339
-priority: medium
+status: Open
+status: Completed
+completed: '2026-03-28'
 ---
 
 # 343 - Move arity and raw argument-shape validation into tokenizer

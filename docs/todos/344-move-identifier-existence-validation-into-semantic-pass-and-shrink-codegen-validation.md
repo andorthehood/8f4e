@@ -1,19 +1,10 @@
 ---
-id: 344
 title: 'TODO: Move identifier existence validation into semantic pass and shrink codegen validation'
-status: Open
-owner: []
+priority: Medium
+effort: 4-8h
 created: '2026-03-28'
-updated: '2026-03-28'
-labels:
-  - compiler
-  - semantic-pass
-  - validation
-dependencies:
-  - 336
-  - 337
-  - 343
-priority: medium
+status: Open
+completed: null
 ---
 
 # 344 - Move identifier existence validation into semantic pass and shrink codegen validation
