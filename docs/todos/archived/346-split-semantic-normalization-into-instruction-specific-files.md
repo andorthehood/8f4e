@@ -3,8 +3,8 @@ title: 'TODO: Split semantic normalization into instruction-specific files'
 priority: Medium
 effort: 4-8h
 created: '2026-03-28'
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-28'
 ---
 
 # 346 - Split semantic normalization into instruction-specific files
