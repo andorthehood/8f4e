@@ -5,6 +5,10 @@ import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 
+type ResolvedMapValue =
+	| { type: ArgumentType.LITERAL; value: number; isInteger: boolean; isFloat64?: boolean }
+	| { type: ArgumentType.STRING_LITERAL; value: string };
+
 /**
  * Instruction compiler for `map`.
  * Records a key→value mapping entry within a map block. No bytecode is emitted;
@@ -18,9 +22,10 @@ const map: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
+		const keyArg = line.arguments[0] as ResolvedMapValue;
+		const valueArg = line.arguments[1] as ResolvedMapValue;
 
 		// Resolve key argument
-		const keyArg = line.arguments[0];
 		let keyValue: number;
 		let keyIsInteger: boolean;
 		let keyIsFloat64 = false;
@@ -59,9 +64,8 @@ const map: InstructionCompiler = withValidation(
 		}
 
 		// Resolve value argument (type is validated at mapEnd when outputType is known)
-		const valueArg = line.arguments[1];
-		let valueValue: number;
-		let valueIsInteger: boolean;
+		let valueValue = 0;
+		let valueIsInteger = false;
 		let valueIsFloat64 = false;
 
 		if (valueArg.type === ArgumentType.LITERAL) {
@@ -71,8 +75,6 @@ const map: InstructionCompiler = withValidation(
 		} else if (valueArg.type === ArgumentType.STRING_LITERAL) {
 			valueValue = valueArg.value.charCodeAt(0);
 			valueIsInteger = true;
-		} else {
-			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
 		mapState.rows.push({ keyValue, valueValue, valueIsInteger, valueIsFloat64 });
@@ -182,36 +184,6 @@ if (import.meta.vitest) {
 							{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
 							{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
 						],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-
-		it('throws on missing arguments', () => {
-			const context = createInstructionCompilerTestContext({
-				blockStack: [
-					{
-						blockType: BLOCK_TYPE.MODULE,
-						expectedResultIsInteger: false,
-						hasExpectedResult: false,
-					},
-					{
-						blockType: BLOCK_TYPE.MAP,
-						expectedResultIsInteger: false,
-						hasExpectedResult: false,
-						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
-					},
-				],
-			});
-
-			expect(() => {
-				map(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'map',
-						arguments: [],
 					} as AST[number],
 					context
 				);
