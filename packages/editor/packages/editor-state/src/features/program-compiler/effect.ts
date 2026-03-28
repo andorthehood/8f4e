@@ -1,5 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
-import { isCompilableBlockType } from '@8f4e/ast-parser';
+import { isCompilableBlockType } from '@8f4e/tokenizer';
 
 import { error, log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';

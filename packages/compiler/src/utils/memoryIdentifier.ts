@@ -1,19 +1,19 @@
-import { extractElementCountBase } from '@8f4e/ast-parser';
-import { extractElementWordSizeBase } from '@8f4e/ast-parser';
-import { extractPointeeElementWordSizeBase } from '@8f4e/ast-parser';
-import { extractMemoryPointerBase } from '@8f4e/ast-parser';
-import { extractMemoryReferenceBase } from '@8f4e/ast-parser';
-import { extractElementMaxBase } from '@8f4e/ast-parser';
-import { extractPointeeElementMaxBase } from '@8f4e/ast-parser';
-import { extractElementMinBase } from '@8f4e/ast-parser';
-import { hasElementCountPrefix } from '@8f4e/ast-parser';
-import { hasElementWordSizePrefix } from '@8f4e/ast-parser';
-import { hasPointeeElementWordSizePrefix } from '@8f4e/ast-parser';
-import { hasMemoryReferencePrefix } from '@8f4e/ast-parser';
-import { hasElementMaxPrefix } from '@8f4e/ast-parser';
-import { hasPointeeElementMaxPrefix } from '@8f4e/ast-parser';
-import { hasElementMinPrefix } from '@8f4e/ast-parser';
-import { isMemoryPointerSyntax } from '@8f4e/ast-parser';
+import { extractElementCountBase } from '@8f4e/tokenizer';
+import { extractElementWordSizeBase } from '@8f4e/tokenizer';
+import { extractPointeeElementWordSizeBase } from '@8f4e/tokenizer';
+import { extractMemoryPointerBase } from '@8f4e/tokenizer';
+import { extractMemoryReferenceBase } from '@8f4e/tokenizer';
+import { extractElementMaxBase } from '@8f4e/tokenizer';
+import { extractPointeeElementMaxBase } from '@8f4e/tokenizer';
+import { extractElementMinBase } from '@8f4e/tokenizer';
+import { hasElementCountPrefix } from '@8f4e/tokenizer';
+import { hasElementWordSizePrefix } from '@8f4e/tokenizer';
+import { hasPointeeElementWordSizePrefix } from '@8f4e/tokenizer';
+import { hasMemoryReferencePrefix } from '@8f4e/tokenizer';
+import { hasElementMaxPrefix } from '@8f4e/tokenizer';
+import { hasPointeeElementMaxPrefix } from '@8f4e/tokenizer';
+import { hasElementMinPrefix } from '@8f4e/tokenizer';
+import { isMemoryPointerSyntax } from '@8f4e/tokenizer';
 
 import type { MemoryMap } from '../types';
 

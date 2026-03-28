@@ -24,7 +24,7 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
-		"@8f4e/ast-parser": "*",
+		"@8f4e/tokenizer": "*",
 		"glugglug": "*",
 		"@8f4e/sprite-generator": "*",
 		"@8f4e/state-manager": "*",

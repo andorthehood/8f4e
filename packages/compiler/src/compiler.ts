@@ -1,4 +1,4 @@
-import { compileToAST } from '@8f4e/ast-parser';
+import { compileToAST } from '@8f4e/tokenizer';
 
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';

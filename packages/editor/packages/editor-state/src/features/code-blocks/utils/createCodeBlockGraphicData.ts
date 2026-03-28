@@ -1,4 +1,4 @@
-import { getModuleId, getConstantsId } from '@8f4e/ast-parser';
+import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
 
 import { parseBlockDirectives } from './parseBlockDirectives';
 

@@ -1,4 +1,4 @@
-import { SyntaxErrorCode, SyntaxRulesError } from '@8f4e/ast-parser';
+import { SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 import { describe, it, expect } from 'vitest';
 
 import { moduleTester } from './testUtils';

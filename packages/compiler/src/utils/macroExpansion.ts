@@ -1,6 +1,6 @@
-import { instructionParser } from '@8f4e/ast-parser';
-import { isComment } from '@8f4e/ast-parser';
-import { isValidInstruction } from '@8f4e/ast-parser';
+import { instructionParser } from '@8f4e/tokenizer';
+import { isComment } from '@8f4e/tokenizer';
+import { isValidInstruction } from '@8f4e/tokenizer';
 
 import { ErrorCode, getError } from '../compilerError';
 

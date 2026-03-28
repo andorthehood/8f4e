@@ -1,4 +1,4 @@
-import { getPointerDepth } from '@8f4e/ast-parser';
+import { getPointerDepth } from '@8f4e/tokenizer';
 
 import int from './int';
 

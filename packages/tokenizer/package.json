@@ -1,5 +1,5 @@
 {
-	"name": "@8f4e/ast-parser",
+	"name": "@8f4e/tokenizer",
 	"version": "1.0.0",
 	"private": true,
 	"description": "8f4e source-to-AST parser package",
