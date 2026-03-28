@@ -62,11 +62,34 @@ Alternative approaches considered:
 - split only by helper function inside the same file
   - better than today, but still weaker than file-level ownership and discoverability
 
+## Start Here
+
+Current implementation entry point:
+- `packages/compiler/src/semantic/normalizeCompileTimeArguments.ts`
+
+Recommended first extraction order:
+1. `push`
+2. `map`
+3. `default`
+4. `init`
+5. memory declaration normalization
+6. any remaining shared branch logic
+
+Keep these shared concerns centralized unless a very small instruction-owned wrapper is clearly better:
+- compile-time literal/const folding
+- intermodule reference validation helpers
+- shared "which argument indexes are normalizable" routing logic
+
+This todo is a **structure refactor**, not a validation-ownership refactor. The semantic/codegen ownership established by `344` must remain unchanged while this work is done.
+
 ## Anti-Patterns
 
 - Do not duplicate compile-time folding helpers in each instruction file.
 - Do not move true tokenizer concerns into semantic normalization files.
 - Do not create a generic hook system if a small explicit dispatcher is enough.
+- Do not claim this TODO is complete after moving only one or two instruction branches out of the file.
+- Do not mix this refactor with new semantic-behavior changes unless they are strictly required to preserve existing tests.
+- Do not reopen `344` by reintroducing late codegen validation while splitting files.
 
 ## Implementation Plan
 
@@ -74,32 +97,51 @@ Alternative approaches considered:
 - Create `packages/compiler/src/semantic/normalization/`
 - Move the current top-level logic into a thin dispatcher/orchestrator
 - Keep behavior unchanged at this stage
+- Leave `packages/compiler/src/semantic/normalizeCompileTimeArguments.ts` as the entry point until the split is complete, even if it becomes a wrapper over the new dispatcher
 
 ### Step 2: Extract the existing instruction-specific branches
 - Move `map`/`default` handling into dedicated files
 - Move `push` handling into its own file
 - Move `const`, `init`, and memory-declaration handling into separate files as appropriate
 - Keep shared compile-time folding utilities centralized
+- After each extraction, verify that no new semantic or codegen ownership has been introduced accidentally
 
 ### Step 3: Clarify ownership and reduce cross-instruction branching
 - Ensure each normalizer owns only its instruction-specific semantic behavior
 - Remove instruction-name branching that is no longer needed in the dispatcher
 - Add or move tests so they sit near the owning normalizer where appropriate
+- Keep behavior-preserving regression coverage for:
+  - local existence validation
+  - `push` identifier validation
+  - `map`/`default` unresolved identifier behavior
+  - intermodule deferral behavior
 
 ## Validation Checkpoints
 
 - `rg -n "line\\.instruction ===|case 'push'|case 'map'|case 'default'|case 'init'|case 'const'" packages/compiler/src/semantic`
   - should shrink in the top-level normalizer
+- `rg -n "normalizeCompileTimeArguments" packages/compiler/src`
+  - should still show a single stable semantic entry point, even if backed by a dispatcher
+- `rg -n "UNDECLARED_IDENTIFIER|validateIntermodule|isMemoryIdentifier|isMemoryPointerIdentifier|isMemoryReferenceIdentifier" packages/compiler/src/semantic`
+  - should help confirm that behavior moved structurally, not semantically
 - `npx nx run compiler:test --skipNxCache`
 - `npx nx run @8f4e/compiler:build --skipNxCache`
 
 ## Success Criteria
 
-- [ ] `normalizeCompileTimeArguments.ts` (or its replacement entry point) is a small dispatcher rather than a large instruction-policy file.
-- [ ] Instruction-specific semantic normalization rules live in separate files under `packages/compiler/src/semantic/normalization/`.
+- [ ] `packages/compiler/src/semantic/normalizeCompileTimeArguments.ts` remains the single public semantic normalization entry point, but is reduced to a small dispatcher/wrapper rather than a large instruction-policy file.
+- [ ] `push` normalization lives in its own file under `packages/compiler/src/semantic/normalization/`.
+- [ ] `map` and `default` normalization live in their own file(s) under `packages/compiler/src/semantic/normalization/`.
+- [ ] `init` normalization lives in its own file under `packages/compiler/src/semantic/normalization/`.
+- [ ] memory declaration normalization lives in its own file under `packages/compiler/src/semantic/normalization/`.
 - [ ] Shared compile-time folding helpers remain centralized and are not duplicated across instruction files.
-- [ ] Existing semantic normalization behavior remains covered by tests after the split.
+- [ ] Existing semantic normalization behavior remains unchanged after the split:
+  - local existence validation still happens in semantic normalization
+  - `push` identifier validation still happens in semantic normalization
+  - `map`/`default` unresolved identifiers still fail in semantic normalization
+  - intermodule deferral still works during prepass
 - [ ] The structure of semantic normalization matches the existing semantic ownership pattern used by `semantic/instructions` and `semantic/declarations`.
+- [ ] The TODO is not marked complete until the top-level file is no longer acting as a multi-instruction policy hub.
 
 ## Affected Components
 
@@ -130,6 +172,8 @@ Alternative approaches considered:
 
 - This is primarily a semantic-layer maintainability refactor, not a behavior change.
 - A good first split is likely `push`, `map`, and `default`, because they already carry distinctive semantic normalization behavior.
+- If the extraction reveals shared helper seams that deserve their own file, that is in scope.
+- If the extraction requires new TODOs for follow-up cleanup, add them, but do not use those as a reason to mark this one complete early.
 
 ## Archive Instructions
 
