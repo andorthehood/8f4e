@@ -18,30 +18,23 @@ const _localSet: InstructionCompiler = withValidation(
 		minOperands: 1,
 	},
 	(line, context) => {
-		if (!line.arguments[0]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
+		const nameArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
+		const operand = context.stack.pop()!;
+		const local = context.locals[nameArg.value];
+
+		if (!local) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
 		}
 
-		if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
-			const operand = context.stack.pop()!;
-			const local = context.locals[line.arguments[0].value];
-
-			if (!local) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: line.arguments[0].value });
-			}
-
-			if (local.isInteger && !operand.isInteger) {
-				throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-			}
-
-			if (!local.isInteger && operand.isInteger) {
-				throw getError(ErrorCode.ONLY_FLOATS, line, context);
-			}
-
-			return saveByteCode(context, localSet(local.index));
-		} else {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
+		if (local.isInteger && !operand.isInteger) {
+			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 		}
+
+		if (!local.isInteger && operand.isInteger) {
+			throw getError(ErrorCode.ONLY_FLOATS, line, context);
+		}
+
+		return saveByteCode(context, localSet(local.index));
 	}
 );
 
@@ -73,23 +66,6 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing arguments', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false });
-
-			expect(() => {
-				_localSet(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'localSet',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }

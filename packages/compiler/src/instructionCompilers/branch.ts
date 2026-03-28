@@ -1,5 +1,4 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
 import br from '../wasmUtils/controlFlow/br';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
@@ -16,15 +15,8 @@ const branch: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 	},
 	(line, context) => {
-		if (!line.arguments[0]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		if (line.arguments[0].type !== ArgumentType.LITERAL) {
-			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-		} else {
-			return saveByteCode(context, br(line.arguments[0].value));
-		}
+		const depth = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
+		return saveByteCode(context, br(depth.value));
 	}
 );
 
@@ -50,22 +42,6 @@ if (import.meta.vitest) {
 			expect({
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				branch(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'branch',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }

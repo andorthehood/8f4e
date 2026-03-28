@@ -49,19 +49,12 @@ const mapEnd: InstructionCompiler = withValidation(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
-		minArguments: 1,
 		minOperands: 1,
 	},
 	(line, context) => {
-		if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-		}
-
-		const outputType = line.arguments[0].value;
-		if (outputType !== 'int' && outputType !== 'float' && outputType !== 'float64') {
-			throw getError(ErrorCode.TYPE_MISMATCH, line, context);
-		}
-
+		const outputType = (
+			line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>
+		).value;
 		const outputIsInteger = outputType === 'int';
 		const outputIsFloat64 = outputType === 'float64';
 		const outputKind: MapKind = outputIsInteger ? 'int32' : outputIsFloat64 ? 'float64' : 'float32';

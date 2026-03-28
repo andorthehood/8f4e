@@ -1,5 +1,4 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../compilerError';
 import br_if from '../wasmUtils/controlFlow/br_if';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
@@ -18,18 +17,10 @@ const branchIfTrue: InstructionCompiler = withValidation(
 		operandTypes: 'int',
 	},
 	(line, context) => {
-		if (!line.arguments[0]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		if (line.arguments[0].type !== ArgumentType.LITERAL) {
-			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-		}
-
 		// Non-null assertion is safe: withValidation ensures 1 operand exists
 		context.stack.pop()!;
-
-		return saveByteCode(context, br_if(line.arguments[0].value));
+		const depth = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
+		return saveByteCode(context, br_if(depth.value));
 	}
 );
 
@@ -57,23 +48,6 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
-		});
-
-		it('throws on missing argument', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: true });
-
-			expect(() => {
-				branchIfTrue(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'branchIfTrue',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
 		});
 	});
 }

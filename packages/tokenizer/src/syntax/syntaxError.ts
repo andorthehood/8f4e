@@ -20,6 +20,7 @@
 export enum SyntaxErrorCode {
 	INVALID_MEMORY_IDENTIFIER_PREFIX = 'INVALID_MEMORY_IDENTIFIER_PREFIX',
 	INVALID_IDENTIFIER = 'INVALID_IDENTIFIER',
+	INVALID_ARGUMENT = 'INVALID_ARGUMENT',
 	INVALID_NUMERIC_LITERAL = 'INVALID_NUMERIC_LITERAL',
 	INVALID_POINTER_DEPTH = 'INVALID_POINTER_DEPTH',
 	MISSING_ARGUMENT = 'MISSING_ARGUMENT',
@@ -36,6 +37,7 @@ export enum SyntaxErrorCode {
 const SyntaxErrorMessages: Record<SyntaxErrorCode, string> = {
 	[SyntaxErrorCode.INVALID_MEMORY_IDENTIFIER_PREFIX]: 'Invalid memory identifier prefix.',
 	[SyntaxErrorCode.INVALID_IDENTIFIER]: 'Invalid identifier.',
+	[SyntaxErrorCode.INVALID_ARGUMENT]: 'Invalid instruction argument.',
 	[SyntaxErrorCode.INVALID_NUMERIC_LITERAL]: 'Invalid numeric literal or expression.',
 	[SyntaxErrorCode.INVALID_POINTER_DEPTH]: 'Invalid pointer depth.',
 	[SyntaxErrorCode.MISSING_ARGUMENT]: 'Missing required argument.',

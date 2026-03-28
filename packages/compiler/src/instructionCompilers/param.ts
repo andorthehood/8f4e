@@ -34,20 +34,10 @@ const param: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
 		}
 
-		if (!line.arguments[0] || !line.arguments[1]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		if (line.arguments[0].type !== ArgumentType.IDENTIFIER || line.arguments[1].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
-		}
-
-		const paramType = line.arguments[0].value;
-		const paramName = line.arguments[1].value;
-
-		if (paramType !== 'int' && paramType !== 'float' && paramType !== 'float64') {
-			throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, line, context);
-		}
+		const paramType = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
+			.value as 'int' | 'float' | 'float64';
+		const paramName = (line.arguments[1] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
+			.value;
 
 		// Check for duplicate parameter names
 		if (context.locals[paramName] !== undefined) {
