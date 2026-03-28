@@ -48,10 +48,7 @@ export { default as extractPointeeElementMaxBase } from './extractPointeeElement
 export { default as isIntermodularReference } from './isIntermodularReference';
 export { default as isIntermodularModuleReference } from './isIntermodularModuleReference';
 export { default as extractIntermodularModuleReferenceBase } from './extractIntermodularModuleReferenceBase';
-export {
-	default as isIntermodularReferencePattern,
-	INTERMODULAR_REFERENCE_PATTERN,
-} from './isIntermodularReferencePattern';
+export { default as isIntermodularReferencePattern } from './isIntermodularReferencePattern';
 export { default as isIntermodularElementCountReference } from './isIntermodularElementCountReference';
 export { default as extractIntermodularElementCountBase } from './extractIntermodularElementCountBase';
 export { default as isIntermodularElementWordSizeReference } from './isIntermodularElementWordSizeReference';
