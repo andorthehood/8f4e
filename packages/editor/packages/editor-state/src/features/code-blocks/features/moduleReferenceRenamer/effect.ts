@@ -1,4 +1,4 @@
-import { getModuleId } from '@8f4e/compiler/syntax';
+import { getModuleId } from '@8f4e/tokenizer';
 import { StateManager } from '@8f4e/state-manager';
 
 import { renameInterModuleReferences } from '../../utils/renameInterModuleReferences';

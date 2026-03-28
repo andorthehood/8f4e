@@ -1,19 +1,19 @@
-import extractElementCountBase from '../syntax/extractElementCountBase';
-import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
-import extractPointeeElementWordSizeBase from '../syntax/extractPointeeElementWordSizeBase';
-import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
-import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
-import extractElementMaxBase from '../syntax/extractElementMaxBase';
-import extractPointeeElementMaxBase from '../syntax/extractPointeeElementMaxBase';
-import extractElementMinBase from '../syntax/extractElementMinBase';
-import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
-import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
-import hasPointeeElementWordSizePrefix from '../syntax/hasPointeeElementWordSizePrefix';
-import hasMemoryReferencePrefix from '../syntax/hasMemoryReferencePrefix';
-import hasElementMaxPrefix from '../syntax/hasElementMaxPrefix';
-import hasPointeeElementMaxPrefix from '../syntax/hasPointeeElementMaxPrefix';
-import hasElementMinPrefix from '../syntax/hasElementMinPrefix';
-import isMemoryPointerSyntax from '../syntax/isMemoryPointerIdentifier';
+import { extractElementCountBase } from '@8f4e/tokenizer';
+import { extractElementWordSizeBase } from '@8f4e/tokenizer';
+import { extractPointeeElementWordSizeBase } from '@8f4e/tokenizer';
+import { extractMemoryPointerBase } from '@8f4e/tokenizer';
+import { extractMemoryReferenceBase } from '@8f4e/tokenizer';
+import { extractElementMaxBase } from '@8f4e/tokenizer';
+import { extractPointeeElementMaxBase } from '@8f4e/tokenizer';
+import { extractElementMinBase } from '@8f4e/tokenizer';
+import { hasElementCountPrefix } from '@8f4e/tokenizer';
+import { hasElementWordSizePrefix } from '@8f4e/tokenizer';
+import { hasPointeeElementWordSizePrefix } from '@8f4e/tokenizer';
+import { hasMemoryReferencePrefix } from '@8f4e/tokenizer';
+import { hasElementMaxPrefix } from '@8f4e/tokenizer';
+import { hasPointeeElementMaxPrefix } from '@8f4e/tokenizer';
+import { hasElementMinPrefix } from '@8f4e/tokenizer';
+import { isMemoryPointerSyntax } from '@8f4e/tokenizer';
 
 import type { MemoryMap } from '../types';
 

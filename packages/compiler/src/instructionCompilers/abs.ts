@@ -94,7 +94,7 @@ if (import.meta.vitest) {
 			expect({
 				stack: context.stack,
 				byteCode: context.byteCode,
-				locals: context.namespace.locals,
+				locals: context.locals,
 			}).toMatchSnapshot();
 		});
 

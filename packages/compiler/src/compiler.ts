@@ -1,130 +1,51 @@
-import instructionParser from './syntax/instructionParser';
-import isComment from './syntax/isComment';
-import isValidInstruction from './syntax/isValidInstruction';
-import { parseArgument } from './syntax/parseArgument';
-import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
+import { compileToAST } from '@8f4e/tokenizer';
+
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
+import f32store from './wasmUtils/store/f32store';
+import f64store from './wasmUtils/store/f64store';
+import i32store from './wasmUtils/store/i32store';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
-	type ASTLine,
+	BLOCK_TYPE,
 	CompilationContext,
 	CompiledModule,
 	CompiledFunction,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
-	Namespace,
 	Namespaces,
 } from './types';
 import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
+import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
+import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
+import { isMemoryDeclarationInstruction } from './semantic/declarations';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
-// Re-export for backward compatibility
-export { instructionParser, isComment, isValidInstruction, parseArgument };
+export function compileCodegenLine(line: AST[number], context: CompilationContext) {
+	const instruction = line.instruction as Instruction;
 
-/**
- * Tokenizes an instruction line, treating quoted strings as single tokens.
- * Stops at an unquoted semicolon (comment delimiter).
- * Escape sequences inside quotes are preserved for parseArgument to decode.
- */
-function tokenizeInstruction(line: string): string[] {
-	const tokens: string[] = [];
-	let i = 0;
-	const len = line.length;
-
-	while (i < len) {
-		// Skip whitespace
-		if (/\s/.test(line[i])) {
-			i++;
-			continue;
-		}
-		// Semicolon starts a comment – stop
-		if (line[i] === ';') break;
-
-		// Quoted string token
-		if (line[i] === '"') {
-			let token = '"';
-			i++; // skip opening quote
-			while (i < len && line[i] !== '"') {
-				if (line[i] === '\\' && i + 1 < len) {
-					token += line[i] + line[i + 1];
-					i += 2;
-				} else {
-					token += line[i++];
-				}
-			}
-			if (i >= len) {
-				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, 'Unterminated string literal');
-			}
-			token += '"'; // closing quote
-			i++; // consume closing quote
-			tokens.push(token);
-		} else {
-			// Regular token: read until whitespace or semicolon
-			let token = '';
-			while (i < len && !/\s/.test(line[i]) && line[i] !== ';') {
-				token += line[i++];
-			}
-			if (token) tokens.push(token);
-		}
+	if (!instructions[instruction]) {
+		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
-
-	return tokens;
-}
-
-export function parseLine(
-	line: string,
-	lineNumberBeforeMacroExpansion: number,
-	lineNumberAfterMacroExpansion = lineNumberBeforeMacroExpansion
-): ASTLine {
-	try {
-		const tokens = tokenizeInstruction(line);
-		const [instruction, ...args] = tokens as [Instruction, ...string[]];
-
-		return {
-			lineNumberBeforeMacroExpansion,
-			lineNumberAfterMacroExpansion,
-			instruction,
-			arguments: args.map(parseArgument),
-		};
-	} catch (error) {
-		if (error instanceof SyntaxRulesError) {
-			throw new SyntaxRulesError(error.code, error.message, {
-				...error.details,
-				line,
-				lineNumberBeforeMacroExpansion,
-				lineNumberAfterMacroExpansion,
-			});
-		}
-		throw error;
-	}
-}
-
-export function compileToAST(
-	code: string[],
-	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
-): AST {
-	return code
-		.map((line, index) => [index, line] as [number, string])
-		.filter(([, line]) => !isComment(line))
-		.filter(([, line]) => isValidInstruction(line))
-		.map(([lineNumberAfterMacroExpansion, line]) => {
-			const lineNumberBeforeMacroExpansion =
-				lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
-			return parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
-		});
+	instructions[instruction](line, context);
 }
 
 export function compileLine(line: AST[number], context: CompilationContext) {
-	if (!instructions[line.instruction]) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
+	if (line.isSemanticOnly) {
+		applySemanticLine(line, context);
+		return;
 	}
-	instructions[line.instruction](line, context);
+
+	if (isMemoryDeclarationInstruction(line.instruction) && context.mode === 'function') {
+		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
+	}
+
+	compileCodegenLine(line, context);
 }
 
 export function compileSegment(
@@ -132,7 +53,8 @@ export function compileSegment(
 	context: CompilationContext,
 	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
 ) {
-	compileToAST(code, lineMetadata).forEach(line => {
+	compileToAST(code, lineMetadata).forEach(originalLine => {
+		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
 	});
 	return context;
@@ -140,31 +62,48 @@ export function compileSegment(
 
 export function compileModule(
 	ast: AST,
-	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
-	functions?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup,
+	internalAllocator = { nextByteAddress: 0 }
 ): CompiledModule {
+	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
+	const moduleBlockType = ast[0]?.instruction === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE;
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
-			memory: {},
-			locals: {},
-			consts: { ...builtInConsts },
-			moduleName: undefined,
+			memory: prepassContext.namespace.memory,
+			consts: { ...prepassContext.namespace.consts },
+			moduleName: prepassContext.namespace.moduleName,
 			functions,
 		},
+		locals: {},
+		internalResources: {},
+		internalAllocator,
 		byteCode: [],
 		stack: [],
-		blockStack: [],
+		blockStack: [
+			{
+				hasExpectedResult: false,
+				expectedResultIsInteger: false,
+				blockType: moduleBlockType,
+			},
+		],
 		startingByteAddress,
 		mode: 'module',
-		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
+		codeBlockId: prepassContext.namespace.moduleName,
+		codeBlockType: moduleBlockType === BLOCK_TYPE.CONSTANTS ? 'constants' : 'module',
+		skipExecutionInCycle: prepassContext.skipExecutionInCycle,
+		initOnlyExecution: prepassContext.initOnlyExecution,
 	};
 
-	ast.forEach(line => {
-		compileLine(line, context);
+	const normalizedAst = ast.map(originalLine => {
+		const line = normalizeCompileTimeArguments(originalLine, context);
+		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
+			compileCodegenLine(line, context);
+		}
+		return line;
 	});
 
 	if (!context.namespace.moduleName) {
@@ -183,20 +122,34 @@ export function compileModule(
 		);
 	}
 
+	const internalResourceInitBody = Object.values(context.internalResources).flatMap(resource => {
+		if (resource.default === 0) {
+			return [];
+		}
+
+		if (resource.storageType === 'float64') {
+			return f64store(resource.byteAddress, resource.default);
+		}
+
+		return resource.storageType === 'int'
+			? i32store(resource.byteAddress, resource.default)
+			: f32store(resource.byteAddress, resource.default);
+	});
+
 	return {
 		id: context.namespace.moduleName,
 		cycleFunction: createFunction(
-			Object.values(context.namespace.locals).map(local => {
+			Object.values(context.locals).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : local.isFloat64 ? Type.F64 : Type.F32, 1);
 			}),
 			context.byteCode
 		),
-		initFunctionBody: [],
+		initFunctionBody: internalResourceInitBody,
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
-		ast,
+		ast: normalizedAst,
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
 		initOnlyExecution: context.initOnlyExecution,
@@ -205,7 +158,6 @@ export function compileModule(
 
 export function compileFunction(
 	ast: AST,
-	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry
@@ -214,10 +166,14 @@ export function compileFunction(
 		namespace: {
 			namespaces,
 			memory: {},
-			locals: {},
-			consts: { ...builtInConsts },
+			consts: {},
 			moduleName: undefined,
 			functions: {},
+		},
+		locals: {},
+		internalResources: {},
+		internalAllocator: {
+			nextByteAddress: 0,
 		},
 		byteCode: [],
 		stack: [],
@@ -228,8 +184,10 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	};
 
-	ast.forEach(line => {
+	const normalizedAst = ast.map(originalLine => {
+		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
+		return line;
 	});
 
 	if (!context.currentFunctionId) {
@@ -252,7 +210,7 @@ export function compileFunction(
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
 	// Regular locals declared with the 'local' instruction come after parameters
 	const parameterCount = context.currentFunctionSignature.parameters.length;
-	const localDeclarations = Object.entries(context.namespace.locals)
+	const localDeclarations = Object.entries(context.locals)
 		.filter(([, local]) => local.index >= parameterCount)
 		.map(([, local]) => ({
 			isInteger: local.isInteger,
@@ -282,6 +240,6 @@ export function compileFunction(
 		locals: localDeclarations,
 		wasmIndex,
 		typeIndex,
-		ast,
+		ast: normalizedAst,
 	};
 }

@@ -1,0 +1,116 @@
+{
+  "sourceModuleOrder": [
+    "notes",
+    "projectConfig",
+    "activationFn",
+    "activationFn2",
+    "activationFn3",
+    "env",
+    "perceptron",
+    "perceptron2",
+    "perceptron3",
+    "result",
+    "switches"
+  ],
+  "compiledModuleLayout": [
+    {
+      "id": "env",
+      "index": 0,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "activationFn",
+      "index": 1,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "activationFn2",
+      "index": 2,
+      "byteAddress": 12,
+      "wordAlignedAddress": 3,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "activationFn3",
+      "index": 3,
+      "byteAddress": 20,
+      "wordAlignedAddress": 5,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "notes",
+      "index": 4,
+      "byteAddress": 28,
+      "wordAlignedAddress": 7,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "perceptron",
+      "index": 5,
+      "byteAddress": 28,
+      "wordAlignedAddress": 7,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "perceptron2",
+      "index": 6,
+      "byteAddress": 40,
+      "wordAlignedAddress": 10,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "perceptron3",
+      "index": 7,
+      "byteAddress": 52,
+      "wordAlignedAddress": 13,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "projectConfig",
+      "index": 8,
+      "byteAddress": 64,
+      "wordAlignedAddress": 16,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "result",
+      "index": 9,
+      "byteAddress": 64,
+      "wordAlignedAddress": 16,
+      "wordAlignedSize": 1,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "switches",
+      "index": 10,
+      "byteAddress": 68,
+      "wordAlignedAddress": 17,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    }
+  ]
+}

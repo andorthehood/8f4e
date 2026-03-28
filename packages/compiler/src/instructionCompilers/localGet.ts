@@ -22,7 +22,7 @@ const _localGet: InstructionCompiler = withValidation(
 		}
 
 		if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
-			const local = context.namespace.locals[line.arguments[0].value];
+			const local = context.locals[line.arguments[0].value];
 
 			if (!local) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: line.arguments[0].value });
@@ -49,11 +49,8 @@ if (import.meta.vitest) {
 	describe('localGet instruction compiler', () => {
 		it('loads a local value', () => {
 			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					locals: {
-						value: { isInteger: true, index: 0 },
-					},
+				locals: {
+					value: { isInteger: true, index: 0 },
 				},
 			});
 

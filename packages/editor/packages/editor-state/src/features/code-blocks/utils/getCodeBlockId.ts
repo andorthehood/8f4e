@@ -1,4 +1,4 @@
-import { getModuleId, getFunctionId, getConstantsId } from '@8f4e/compiler/syntax';
+import { getModuleId, getFunctionId, getConstantsId } from '@8f4e/tokenizer';
 
 /**
  * Retrieves the ID from a code block based on its type.

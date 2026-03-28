@@ -1,11 +1,14 @@
 import {
+	type AST,
+	type ASTLine,
 	ArgumentType,
 	type Argument,
+	type ArgumentCompileTimeExpression,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
-} from './syntax/parseArgument';
-import { Instruction } from './instructionCompilers';
+} from '@8f4e/tokenizer';
+
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
 
@@ -43,6 +46,22 @@ export interface DataStructure {
 }
 
 export type MemoryMap = Record<string, DataStructure>;
+
+export interface InternalResource {
+	id: string;
+	byteAddress: number;
+	wordAlignedAddress: number;
+	wordAlignedSize: number;
+	elementWordSize: number;
+	default: number;
+	storageType: 'int' | 'float' | 'float64';
+}
+
+export type InternalResourceMap = Record<string, InternalResource>;
+
+export interface InternalAllocator {
+	nextByteAddress: number;
+}
 
 export interface CompiledModule {
 	index: number;
@@ -97,16 +116,16 @@ export interface Module {
 }
 
 // Re-export types from syntax subpath for backward compatibility
-export { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier, type ArgumentStringLiteral };
-
-export interface ASTLine {
-	lineNumberBeforeMacroExpansion: number;
-	lineNumberAfterMacroExpansion: number;
-	instruction: Instruction;
-	arguments: Array<Argument>;
-}
-
-export type AST = ASTLine[];
+export {
+	type AST,
+	type ASTLine,
+	ArgumentType,
+	type Argument,
+	type ArgumentCompileTimeExpression,
+	type ArgumentLiteral,
+	type ArgumentIdentifier,
+	type ArgumentStringLiteral,
+};
 
 export interface TestModule {
 	memory: MemoryBuffer & {
@@ -126,8 +145,8 @@ export interface TestModule {
 export type Const = { value: number; isInteger: boolean; isFloat64?: boolean };
 
 export type Consts = Record<string, Const>;
+export type LocalMap = Record<string, { isInteger: boolean; isFloat64?: boolean; index: number }>;
 export interface Namespace {
-	locals: Record<string, { isInteger: boolean; isFloat64?: boolean; index: number }>;
 	memory: MemoryMap;
 	consts: Consts;
 	moduleName: string | undefined;
@@ -135,12 +154,18 @@ export interface Namespace {
 	functions?: CompiledFunctionLookup;
 }
 
-export type Namespaces = Record<string, { consts: Consts }>;
+export type Namespaces = Record<
+	string,
+	{ consts: Consts; memory?: MemoryMap; byteAddress?: number; wordAlignedSize?: number }
+>;
 
 export type CompilationMode = 'module' | 'function';
 
 export interface CompilationContext {
 	namespace: Namespace;
+	locals: LocalMap;
+	internalResources: InternalResourceMap;
+	internalAllocator: InternalAllocator;
 	stack: Stack;
 	blockStack: BlockStack;
 	startingByteAddress: number;

@@ -1,6 +1,7 @@
+import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
 
-import { compileModule, compileToAST } from '../src/compiler';
+import { compileModule } from '../src/compiler';
 
 const fixture = `
 module abs
@@ -41,6 +42,6 @@ describe('moduleCompiler', () => {
 	});
 
 	test('compiled code', () => {
-		expect(compileModule(ast, {}, {}, 0, 1, 0).cycleFunction).toMatchSnapshot();
+		expect(compileModule(ast, {}, 0, 1, 0).cycleFunction).toMatchSnapshot();
 	});
 });

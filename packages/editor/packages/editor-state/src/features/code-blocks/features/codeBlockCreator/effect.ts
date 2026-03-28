@@ -1,7 +1,7 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-import { getModuleId } from '@8f4e/compiler/syntax';
-import { getFunctionId } from '@8f4e/compiler/syntax';
-import { getConstantsId } from '@8f4e/compiler/syntax';
+import { instructionParser } from '@8f4e/tokenizer';
+import { getModuleId } from '@8f4e/tokenizer';
+import { getFunctionId } from '@8f4e/tokenizer';
+import { getConstantsId } from '@8f4e/tokenizer';
 
 import { insertDependencies } from './insertDependencies';
 import parseModuleSource from './parseModuleSource';

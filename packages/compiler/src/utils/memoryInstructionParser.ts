@@ -1,11 +1,12 @@
-import { resolveConstantValueOrExpressionOrThrow, tryResolveConstantValueOrExpression } from './resolveConstantValue';
+import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '@8f4e/tokenizer';
+import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/tokenizer';
+import { ArgumentType } from '@8f4e/tokenizer';
+import { hasMemoryReferencePrefixStart } from '@8f4e/tokenizer';
+import { isConstantName } from '@8f4e/tokenizer';
 
-import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '../syntax/memoryInstructionParser';
-import { SyntaxRulesError, SyntaxErrorCode } from '../syntax/syntaxError';
-import { ArgumentType } from '../syntax/parseArgument';
+import resolveIntermodularReferenceValue from './resolveIntermodularReferenceValue';
+
 import { ErrorCode, getError } from '../compilerError';
-import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
-import isConstantName from '../syntax/isConstantName';
 
 import type { AST, CompilationContext, Argument } from '../types';
 /**
@@ -59,10 +60,9 @@ function resolveSplitByteTokens(
 			// Already validated as byte literal (0–255) at the syntax level
 			bytes.push(token.value);
 		} else {
-			// Identifier token must resolve to a declared compile-time constant.
-			// Use tryResolve so we can provide a clearer error than UNDECLARED_IDENTIFIER when the
-			// constant-style name was never declared (user likely intended it as a memory name).
-			const constant = tryResolveConstantValueOrExpression(context.namespace.consts, token.value);
+			// Split-byte identifiers must be declared constants. General compile-time folding happens
+			// earlier during AST normalization, so only plain constant identifiers remain here.
+			const constant = context.namespace.consts[token.value];
 			if (!constant) {
 				throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
 			}
@@ -109,14 +109,7 @@ export default function parseMemoryInstructionArguments(
 		defaultValue = resolveSplitByteTokens(parsedArgs.firstArg.tokens, maxBytes, lineForError, context);
 		id = '__anonymous__' + lineNumberAfterMacroExpansion;
 	} else if (parsedArgs.firstArg.type === 'identifier') {
-		const constant = tryResolveConstantValueOrExpression(context.namespace.consts, parsedArgs.firstArg.value);
-
-		if (constant) {
-			defaultValue = constant.value;
-			id = '__anonymous__' + lineNumberAfterMacroExpansion;
-		} else {
-			id = parsedArgs.firstArg.value;
-		}
+		id = parsedArgs.firstArg.value;
 	}
 
 	// Reject constant-style names as memory allocation identifiers
@@ -126,22 +119,36 @@ export default function parseMemoryInstructionArguments(
 
 	// Process second argument if present
 	if (parsedArgs.secondArg) {
+		const secondArgValue = line.arguments[1]?.type === ArgumentType.IDENTIFIER ? line.arguments[1].value : undefined;
+
 		if (parsedArgs.secondArg.type === 'literal') {
 			defaultValue = parsedArgs.secondArg.value;
 		} else if (parsedArgs.secondArg.type === 'split-byte-tokens') {
 			defaultValue = resolveSplitByteTokens(parsedArgs.secondArg.tokens, maxBytes, lineForError, context);
 		} else if (parsedArgs.secondArg.type === 'intermodular-reference') {
-			// Intermodular references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-module-reference') {
-			// Intermodular module-base references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-count') {
-			// Intermodular element count references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-word-size') {
-			// Intermodular element word size references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-max') {
-			// Intermodular element max references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-min') {
-			// Intermodular element min references are resolved later
+			defaultValue = secondArgValue
+				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+				: 0;
 		} else if (parsedArgs.secondArg.type === 'memory-reference') {
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
 
@@ -169,8 +176,9 @@ export default function parseMemoryInstructionArguments(
 
 			defaultValue = memoryItem.wordAlignedSize;
 		} else if (parsedArgs.secondArg.type === 'identifier') {
-			const constant = resolveConstantValueOrExpressionOrThrow(parsedArgs.secondArg.value, lineForError, context);
-			defaultValue = constant.value;
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
+				identifier: parsedArgs.secondArg.value,
+			});
 		}
 	}
 
@@ -229,19 +237,19 @@ if (import.meta.vitest) {
 			expect(result.defaultValue).toBe(0);
 		});
 
-		it('parses constant as anonymous variable', () => {
-			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'myConst' }];
-			const result = parseMemoryInstructionArguments(
-				{
-					lineNumberBeforeMacroExpansion: 30,
-					lineNumberAfterMacroExpansion: 30,
-					instruction: 'int',
-					arguments: args,
-				},
-				mockContext
-			);
-			expect(result.id).toBe('__anonymous__30');
-			expect(result.defaultValue).toBe(42);
+		it('rejects unnormalized constant-style identifiers as memory names', () => {
+			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' }];
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 30,
+						lineNumberAfterMacroExpansion: 30,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 
 		it('parses identifier with literal default value', () => {
@@ -262,22 +270,22 @@ if (import.meta.vitest) {
 			expect(result.defaultValue).toBe(99);
 		});
 
-		it('parses identifier with constant default value', () => {
+		it('rejects unnormalized identifier defaults that were not folded earlier', () => {
 			const args: Argument[] = [
 				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
 				{ type: ArgumentType.IDENTIFIER, value: 'myConst' },
 			];
-			const result = parseMemoryInstructionArguments(
-				{
-					lineNumberBeforeMacroExpansion: 50,
-					lineNumberAfterMacroExpansion: 50,
-					instruction: 'int',
-					arguments: args,
-				},
-				mockContext
-			);
-			expect(result.id).toBe('myVar');
-			expect(result.defaultValue).toBe(42);
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 50,
+						lineNumberAfterMacroExpansion: 50,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
 		});
 
 		it('combines named split hex bytes into one integer default (2 bytes, right-padded)', () => {

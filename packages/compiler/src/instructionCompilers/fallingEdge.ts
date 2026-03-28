@@ -1,6 +1,7 @@
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { allocateInternalResource } from '../utils/internalResources';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -22,17 +23,17 @@ const fallingEdge: InstructionCompiler = withValidation(
 		const previousValueName = '__fallingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
 		const loadInstruction = operand.isInteger ? 'load' : 'loadFloat';
+		const previousValue = allocateInternalResource(context, previousValueName, memoryType);
 
 		// Restore the operand for the segment so type checks apply to the original value.
 		context.stack.push(operand);
 
 		return compileSegment(
 			[
-				`${memoryType} ${previousValueName} 0`,
 				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
 				`localGet ${currentValueName}`,
-				`push &${previousValueName}`,
+				`push ${previousValue.byteAddress}`,
 				loadInstruction,
 				'lessThan',
 				'if int',
@@ -40,7 +41,7 @@ const fallingEdge: InstructionCompiler = withValidation(
 				'else',
 				'push 0',
 				'ifEnd',
-				`push &${previousValueName}`,
+				`push ${previousValue.byteAddress}`,
 				`localGet ${currentValueName}`,
 				'store',
 			],
@@ -72,7 +73,7 @@ if (import.meta.vitest) {
 			expect({
 				stack: context.stack,
 				memory: context.namespace.memory,
-				locals: context.namespace.locals,
+				locals: context.locals,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});

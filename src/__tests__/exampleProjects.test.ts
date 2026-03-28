@@ -50,33 +50,20 @@ const COMPILER_OPTIONS = {
 	startingMemoryWordAddress: 0,
 };
 
-function getBlockType(code: string[]): 'module' | 'function' | 'constants' | 'macro' | 'unknown' {
-	for (const line of code) {
-		const trimmed = line.trim();
-		if (trimmed === '') continue;
-		if (trimmed.startsWith('module ')) return 'module';
-		if (trimmed.startsWith('function ')) return 'function';
-		if (trimmed.startsWith('constants ')) return 'constants';
-		if (trimmed.startsWith('defineMacro ')) return 'macro';
-		break;
-	}
-	return 'unknown';
-}
-
 describe('Example Projects Compilation', () => {
 	describe('Module Compilation', () => {
 		projects.forEach((project, index) => {
 			it(`should compile module blocks in project ${index}`, () => {
 				const moduleBlocks = project.codeBlocks
-					.filter(block => getBlockType(block.code) === 'module' || getBlockType(block.code) === 'constants')
+					.filter(block => block.blockType === 'module' || block.blockType === 'constants')
 					.map(block => ({ code: block.code }));
 
 				const functionBlocks = project.codeBlocks
-					.filter(block => getBlockType(block.code) === 'function')
+					.filter(block => block.blockType === 'function')
 					.map(block => ({ code: block.code }));
 
 				const macroBlocks = project.codeBlocks
-					.filter(block => getBlockType(block.code) === 'macro')
+					.filter(block => block.blockType === 'macro')
 					.map(block => ({ code: block.code }));
 
 				const result = compile(
