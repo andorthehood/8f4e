@@ -36,7 +36,7 @@ This feature contains several subfeatures under `features/` that handle specific
 
 - `blockHighlights` - Visual highlighting for selected/hovered blocks
 - `blockTypeUpdater` - Automatic block type detection and updates
-- `bufferPlotters` - Visualization of runtime buffer data
+- `arrayPlotters` - Visualization of runtime array data
 - `buttons` - Interactive button controls derived from code
 - `codeBlockCreator` - Block creation logic
 - `codeBlockDragger` - Drag and drop operations

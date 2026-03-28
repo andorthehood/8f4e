@@ -128,8 +128,8 @@ export function createMockCodeBlock(
 			buttons: [],
 			sliders: [],
 			pianoKeyboards: [],
-			bufferPlotters: [],
-			bufferScanners: [],
+			arrayPlotters: [],
+			arrayScanners: [],
 			errorMessages: [],
 		},
 	};

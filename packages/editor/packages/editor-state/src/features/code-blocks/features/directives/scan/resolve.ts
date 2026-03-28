@@ -16,21 +16,21 @@ function resolveScanDirectiveWidget(
 		return;
 	}
 
-	const buffer = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.bufferMemoryId);
+	const array = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.arrayMemoryId);
 	const pointer = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.pointerMemoryId);
 
-	if (!buffer || !pointer) {
+	if (!array || !pointer) {
 		return;
 	}
 
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[scanner.lineNumber] ?? scanner.lineNumber;
 
-	graphicData.widgets.bufferScanners.push({
+	graphicData.widgets.arrayScanners.push({
 		width: graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		height: state.viewport.hGrid * 2,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
-		buffer,
+		array,
 		pointer,
 	});
 }

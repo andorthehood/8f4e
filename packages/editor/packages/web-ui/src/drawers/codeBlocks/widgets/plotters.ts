@@ -17,34 +17,34 @@ export default function drawer(
 
 	const maxPlotterWidth = codeBlock.width - state.viewport.hGrid * 2;
 
-	for (const { x, y, buffer, bufferLength, maxValue, minValue } of codeBlock.widgets.bufferPlotters) {
+	for (const { x, y, array, arrayLength, maxValue, minValue } of codeBlock.widgets.arrayPlotters) {
 		engine.startGroup(x, y);
 
 		let width = 0;
 
-		if (bufferLength) {
-			width = memoryViews.int32[bufferLength.memory.wordAlignedAddress];
+		if (arrayLength) {
+			width = memoryViews.int32[arrayLength.memory.wordAlignedAddress];
 		}
 
-		width = Math.min(width || buffer.memory.wordAlignedSize, maxPlotterWidth);
+		width = Math.min(width || array.memory.wordAlignedSize, maxPlotterWidth);
 
 		const height = maxValue - minValue;
 		const offset = minValue * -1;
 
 		for (let i = 0; i < width; i++) {
 			let value: number;
-			if (buffer.memory.elementWordSize === 1 && buffer.memory.isInteger) {
-				const view = buffer.memory.isUnsigned ? memoryViews.uint8 : memoryViews.int8;
-				value = view[buffer.memory.byteAddress + i];
-			} else if (buffer.memory.elementWordSize === 2 && buffer.memory.isInteger) {
-				const view = buffer.memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
-				value = view[buffer.memory.byteAddress / 2 + i];
-			} else if (buffer.memory.elementWordSize === 8 && !buffer.memory.isInteger) {
-				value = memoryViews.float64[buffer.memory.byteAddress / 8 + i];
+			if (array.memory.elementWordSize === 1 && array.memory.isInteger) {
+				const view = array.memory.isUnsigned ? memoryViews.uint8 : memoryViews.int8;
+				value = view[array.memory.byteAddress + i];
+			} else if (array.memory.elementWordSize === 2 && array.memory.isInteger) {
+				const view = array.memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
+				value = view[array.memory.byteAddress / 2 + i];
+			} else if (array.memory.elementWordSize === 8 && !array.memory.isInteger) {
+				value = memoryViews.float64[array.memory.byteAddress / 8 + i];
 			} else {
-				value = buffer.memory.isInteger
-					? memoryViews.int32[buffer.memory.wordAlignedAddress + i]
-					: memoryViews.float32[buffer.memory.wordAlignedAddress + i];
+				value = array.memory.isInteger
+					? memoryViews.int32[array.memory.wordAlignedAddress + i]
+					: memoryViews.float32[array.memory.wordAlignedAddress + i];
 			}
 
 			const normalizedValue = Math.round(((value + offset) / height) * (state.viewport.hGrid * 8));
