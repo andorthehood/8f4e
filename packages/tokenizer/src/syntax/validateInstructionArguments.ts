@@ -17,22 +17,8 @@ type InstructionArgumentSpec = {
 };
 
 const supportedTypeIdentifiers = new Set(['int', 'float', 'float64']);
-const bufferDeclarationInstructions = new Set([
-	'float[]',
-	'int[]',
-	'int8[]',
-	'int8u[]',
-	'int16[]',
-	'int16u[]',
-	'int32[]',
-	'float*[]',
-	'float**[]',
-	'int*[]',
-	'int**[]',
-	'float64[]',
-	'float64*[]',
-	'float64**[]',
-]);
+const bufferDeclarationInstructionPattern =
+	/^(?:float(?:\*{1,2})?|float64(?:\*{1,2})?|int(?:8u?|16u?|32|\*{1,2})?)\[\]$/;
 
 const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>> = {
 	push: { minArguments: 1 },
@@ -61,7 +47,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 };
 
 function getInstructionArgumentSpec(instruction: string): InstructionArgumentSpec | undefined {
-	if (bufferDeclarationInstructions.has(instruction)) {
+	if (bufferDeclarationInstructionPattern.test(instruction)) {
 		return {
 			minArguments: 2,
 			argumentTypes: ['identifier', 'compileTimeValue'],
@@ -218,6 +204,15 @@ if (import.meta.vitest) {
 		it('validates buffer declaration argument shapes', () => {
 			expect(() =>
 				validateInstructionArguments('int[]', [
+					{ type: ArgumentType.IDENTIFIER, value: 'values' },
+					{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
+				])
+			).not.toThrow();
+		});
+
+		it('does not treat unsupported declarations as buffer declarations', () => {
+			expect(() =>
+				validateInstructionArguments('int16*[]', [
 					{ type: ArgumentType.IDENTIFIER, value: 'values' },
 					{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
 				])
