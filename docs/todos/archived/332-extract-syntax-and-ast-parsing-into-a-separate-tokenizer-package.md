@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Extract source-to-AST parsing into a separate ast-parser package'
+title: 'TODO: Extract source-to-AST parsing into a separate tokenizer package'
 priority: Medium
 effort: 1-2d
 created: 2026-03-27
@@ -7,7 +7,7 @@ status: Completed
 completed: 2026-03-27
 ---
 
-# TODO: Extract source-to-AST parsing into a separate ast-parser package
+# TODO: Extract source-to-AST parsing into a separate tokenizer package
 
 ## Problem Description
 
@@ -24,7 +24,7 @@ Extracting source-to-AST parsing into its own sibling package under `packages/` 
 
 ## Proposed Solution
 
-Create a dedicated sibling package under `packages/`, for example `packages/ast-parser`, that owns:
+Create a dedicated sibling package under `packages/`, for example `packages/tokenizer`, that owns:
 
 - tokenization
 - line parsing
@@ -58,7 +58,7 @@ This should happen only after the compile-time refactor todos are complete, so t
 - Keep semantic and codegen helpers out of that surface.
 
 ### Step 3: Move code and update imports
-- Extract `source -> AST` code from `packages/compiler` into the new `ast-parser` package.
+- Extract `source -> AST` code from `packages/compiler` into the new `tokenizer` package.
 - Update `packages/compiler` to consume that package through a clear public API.
 - Keep tests with the owning package or move them intentionally with the syntax code.
 
@@ -77,7 +77,7 @@ This should happen only after the compile-time refactor todos are complete, so t
 
 ## Affected Components
 
-- `packages/ast-parser/` (new)
+- `packages/tokenizer/` (new)
 - `packages/compiler/src/syntax/`
 - `packages/compiler/src/compiler.ts`
 - `packages/compiler/src/index.ts`

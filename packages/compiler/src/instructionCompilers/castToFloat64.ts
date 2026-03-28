@@ -1,4 +1,4 @@
-import { parseLine } from '@8f4e/ast-parser';
+import { parseLine } from '@8f4e/tokenizer';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 import { saveByteCode } from '../utils/compilation';

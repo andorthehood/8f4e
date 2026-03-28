@@ -1,6 +1,6 @@
-import { compileToAST, parseLine } from '@8f4e/ast-parser';
+import { compileToAST, parseLine } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
-import { isComment, isValidInstruction, parseArgument, SyntaxErrorCode, SyntaxRulesError } from '@8f4e/ast-parser';
+import { isComment, isValidInstruction, parseArgument, SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 
 import { ArgumentType } from '../src/types';
 

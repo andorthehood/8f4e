@@ -1,4 +1,4 @@
-import { compileToAST } from '@8f4e/ast-parser';
+import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
 
 import { compileModule } from '../src/compiler';

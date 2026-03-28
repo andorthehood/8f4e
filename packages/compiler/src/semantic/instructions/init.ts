@@ -1,4 +1,4 @@
-import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/ast-parser';
+import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/tokenizer';
 
 import { ErrorCode, getError } from '../../compilerError';
 import { ArgumentType, type AST, type CompilationContext } from '../../types';

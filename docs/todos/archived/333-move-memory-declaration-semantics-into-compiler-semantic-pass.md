@@ -18,7 +18,7 @@ completed: 2026-03-27
 
 The compiler now has a clearer semantic boundary:
 
-- `@8f4e/ast-parser` owns `source -> AST`
+- `@8f4e/tokenizer` owns `source -> AST`
 - `packages/compiler/src/semantic/` owns namespace prepass and compile-time folding
 - semantic-only AST lines no longer flow through module codegen
 
@@ -37,7 +37,7 @@ Make memory declarations part of the semantic layer only once, then have codegen
 
 The target pipeline should be:
 
-1. `@8f4e/ast-parser`: source -> AST
+1. `@8f4e/tokenizer`: source -> AST
 2. semantic declaration collection:
    - constants
    - `use`

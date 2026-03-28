@@ -68,15 +68,15 @@ For example, `123*sizeof(foo)` should be represented as:
 ## Success Criteria
 
 - Compile-time expression AST nodes contain structured operand arguments.
-- Metadata-query and classified identifier operands inside expressions are already parsed by `@8f4e/ast-parser`.
+- Metadata-query and classified identifier operands inside expressions are already parsed by `@8f4e/tokenizer`.
 - Compiler semantic folding consumes AST structure directly instead of reparsing expression operands from strings.
 
 ## Related Items
 
-- Depends on: 336 `Move identifier reference classification into ast-parser`
-- Related: 337 `Add structured address and query extraction to ast-parser`
+- Depends on: 336 `Move identifier reference classification into tokenizer`
+- Related: 337 `Add structured address and query extraction to tokenizer`
 
 ## Notes
 
-This is the next parser-boundary cleanup after moving identifier/reference classification into `@8f4e/ast-parser`.
+This is the next parser-boundary cleanup after moving identifier/reference classification into `@8f4e/tokenizer`.
 It keeps compile-time expression syntax as a real AST tree instead of a partially structured container around token strings.

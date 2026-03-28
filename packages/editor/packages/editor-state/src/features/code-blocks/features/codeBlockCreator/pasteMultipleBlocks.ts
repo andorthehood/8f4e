@@ -1,4 +1,4 @@
-import { getModuleId, getFunctionId } from '@8f4e/ast-parser';
+import { getModuleId, getFunctionId } from '@8f4e/tokenizer';
 
 import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 

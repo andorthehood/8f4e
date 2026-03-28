@@ -10,7 +10,7 @@ import {
 	isIntermodularElementMinReference,
 	isIntermodularElementWordSizeReference,
 	isIntermodularModuleReference,
-} from '@8f4e/ast-parser';
+} from '@8f4e/tokenizer';
 
 import { getElementMaxValue, getElementMinValue } from './memoryData';
 

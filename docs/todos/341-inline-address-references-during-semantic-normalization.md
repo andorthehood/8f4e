@@ -85,8 +85,8 @@ After that:
 
 ## Related Items
 
-- **Related**: [336-move-identifier-reference-classification-into-ast-parser.md](/Users/andorpolgar/git/8f4e/docs/todos/336-move-identifier-reference-classification-into-ast-parser.md)
-- **Related**: [337-add-structured-address-and-query-extraction-to-ast-parser.md](/Users/andorpolgar/git/8f4e/docs/todos/337-add-structured-address-and-query-extraction-to-ast-parser.md)
+- **Related**: [336-move-identifier-reference-classification-into-tokenizer.md](/Users/andorpolgar/git/8f4e/docs/todos/336-move-identifier-reference-classification-into-tokenizer.md)
+- **Related**: [337-add-structured-address-and-query-extraction-to-tokenizer.md](/Users/andorpolgar/git/8f4e/docs/todos/337-add-structured-address-and-query-extraction-to-tokenizer.md)
 - **Related**: [338-add-richer-compile-time-expression-ast-nodes.md](/Users/andorpolgar/git/8f4e/docs/todos/338-add-richer-compile-time-expression-ast-nodes.md)
 - **Related**: [342-inline-intermodule-address-references-during-semantic-normalization.md](/Users/andorpolgar/git/8f4e/docs/todos/342-inline-intermodule-address-references-during-semantic-normalization.md)
 

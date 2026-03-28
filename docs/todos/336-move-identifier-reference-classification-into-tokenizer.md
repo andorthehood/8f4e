@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Move identifier reference classification into ast-parser'
+title: 'TODO: Move identifier reference classification into tokenizer'
 priority: Medium
 effort: 6-10 hours
 created: 2026-03-27
@@ -7,7 +7,7 @@ status: Open
 completed: null
 ---
 
-# 336 - Move identifier reference classification into ast-parser
+# 336 - Move identifier reference classification into tokenizer
 
 - Priority: 🟡 Medium
 - Effort: 6-10h
@@ -28,11 +28,11 @@ The compiler still re-parses identifier-shaped argument strings in multiple plac
 - `max(...)`
 - `min(...)`
 
-This logic belongs in `@8f4e/ast-parser`, because these classifications can be determined from token shape alone and should not be rediscovered by the semantic/compiler layer.
+This logic belongs in `@8f4e/tokenizer`, because these classifications can be determined from token shape alone and should not be rediscovered by the semantic/compiler layer.
 
 ## Goal
 
-Make `@8f4e/ast-parser` the single owner of identifier/reference classification, so the compiler receives structured identifier arguments instead of repeatedly re-parsing raw strings.
+Make `@8f4e/tokenizer` the single owner of identifier/reference classification, so the compiler receives structured identifier arguments instead of repeatedly re-parsing raw strings.
 
 ## Classification Scope
 
@@ -73,9 +73,9 @@ For example:
 - `isEndAddress`
 - `isPointee`
 
-### 2. Move token-shape classification into ast-parser
+### 2. Move token-shape classification into tokenizer
 
-Update `parseArgument(...)` and the existing syntax helpers in `packages/ast-parser/src/syntax/` so identifier arguments are classified during AST generation.
+Update `parseArgument(...)` and the existing syntax helpers in `packages/tokenizer/src/syntax/` so identifier arguments are classified during AST generation.
 
 This should include local and intermodule forms for:
 
@@ -109,7 +109,7 @@ Only the syntax classification should move.
 
 ## Success Criteria
 
-- `@8f4e/ast-parser` emits structured identifier classification metadata.
+- `@8f4e/tokenizer` emits structured identifier classification metadata.
 - Compiler semantic/codegen layers stop re-parsing identifier strings to determine syntax class.
 - Local vs intermodule and address/query/pointee forms are represented directly in AST arguments.
 - The parser/compiler boundary becomes: syntax classification in parser, semantic resolution in compiler.

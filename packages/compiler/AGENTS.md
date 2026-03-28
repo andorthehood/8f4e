@@ -5,7 +5,7 @@
 - Consumed via alias `@8f4e/compiler`.
 - Compiles custom assembly language into WebAssembly bytecode.
 - Supports modules (stateful, with memory) and pure functions (stateless, stack-only).
-- Syntax parsing now lives in the sibling package `@8f4e/ast-parser`.
+- Syntax parsing now lives in the sibling package `@8f4e/tokenizer`.
 - `@8f4e/compiler` should consume parsed AST input and semantic/codegen utilities, not source-to-AST parsing helpers.
 
 ## Build, Test, Dev
@@ -20,7 +20,7 @@
 ## Testing
 - Vitest (via Nx). Place tests in `tests/`, `__tests__/`, or `*.test.ts`.
 - Focus on deterministic, fast unit tests for parsing, IR, and transforms.
-- Syntax/parser in-source tests live with `@8f4e/ast-parser`; compiler tests should focus on semantic and codegen behavior.
+- Syntax/parser in-source tests live with `@8f4e/tokenizer`; compiler tests should focus on semantic and codegen behavior.
 - To update snapshots after intentional changes, use `npx nx run compiler:test -- --update`.
 
 ## Pure Function Feature
@@ -180,7 +180,7 @@ The compiler uses two separate error modules. **Always choose based on detection
 
 | Phase | Module | Class / Function | When to use |
 |-------|--------|-----------------|-------------|
-| Syntax | `@8f4e/ast-parser` | `SyntaxRulesError` / `SyntaxErrorCode` | Error detectable from token/argument shape alone, before semantic context |
+| Syntax | `@8f4e/tokenizer` | `SyntaxRulesError` / `SyntaxErrorCode` | Error detectable from token/argument shape alone, before semantic context |
 | Semantic | `src/compilerError.ts` | `getError` / `ErrorCode` | Error requires symbol resolution, scope, stack state, type checking, or compiler state |
 
 **Syntax error examples**: malformed literal, missing required argument, invalid pointer-depth, invalid string encoding, mixed byte-literal tokens.

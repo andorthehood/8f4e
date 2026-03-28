@@ -1,8 +1,8 @@
-import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '@8f4e/ast-parser';
-import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/ast-parser';
-import { ArgumentType } from '@8f4e/ast-parser';
-import { hasMemoryReferencePrefixStart } from '@8f4e/ast-parser';
-import { isConstantName } from '@8f4e/ast-parser';
+import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '@8f4e/tokenizer';
+import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/tokenizer';
+import { ArgumentType } from '@8f4e/tokenizer';
+import { hasMemoryReferencePrefixStart } from '@8f4e/tokenizer';
+import { isConstantName } from '@8f4e/tokenizer';
 
 import resolveIntermodularReferenceValue from './resolveIntermodularReferenceValue';
 

@@ -1,4 +1,4 @@
-import { extractMemoryPointerBase } from '@8f4e/ast-parser';
+import { extractMemoryPointerBase } from '@8f4e/tokenizer';
 
 import { ErrorCode, getError } from '../../../compilerError';
 import { saveByteCode } from '../../../utils/compilation';

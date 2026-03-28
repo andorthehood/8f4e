@@ -78,7 +78,7 @@ This should happen after cross-module layout is known, not during early local-on
 - `packages/compiler/src/semantic/`
 - `packages/compiler/src/utils/resolveIntermodularReferenceValue.ts`
 - `packages/compiler/src/graphOptimizer.ts`
-- parser-side structured reference TODOs in `@8f4e/ast-parser`
+- parser-side structured reference TODOs in `@8f4e/tokenizer`
 
 ## Risks & Considerations
 
@@ -89,8 +89,8 @@ This should happen after cross-module layout is known, not during early local-on
 ## Related Items
 
 - **Depends on**: [341-inline-address-references-during-semantic-normalization.md](/Users/andorpolgar/git/8f4e/docs/todos/341-inline-address-references-during-semantic-normalization.md)
-- **Related**: [336-move-identifier-reference-classification-into-ast-parser.md](/Users/andorpolgar/git/8f4e/docs/todos/336-move-identifier-reference-classification-into-ast-parser.md)
-- **Related**: [337-add-structured-address-and-query-extraction-to-ast-parser.md](/Users/andorpolgar/git/8f4e/docs/todos/337-add-structured-address-and-query-extraction-to-ast-parser.md)
+- **Related**: [336-move-identifier-reference-classification-into-tokenizer.md](/Users/andorpolgar/git/8f4e/docs/todos/336-move-identifier-reference-classification-into-tokenizer.md)
+- **Related**: [337-add-structured-address-and-query-extraction-to-tokenizer.md](/Users/andorpolgar/git/8f4e/docs/todos/337-add-structured-address-and-query-extraction-to-tokenizer.md)
 
 ## References
 

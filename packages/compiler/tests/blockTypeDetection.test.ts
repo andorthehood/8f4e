@@ -1,4 +1,4 @@
-import { getBlockType, getFunctionId, getModuleId } from '@8f4e/ast-parser';
+import { getBlockType, getFunctionId, getModuleId } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
 
 describe('getBlockType', () => {

@@ -1,5 +1,5 @@
-import { extractMemoryReferenceBase } from '@8f4e/ast-parser';
-import { hasMemoryReferencePrefixStart } from '@8f4e/ast-parser';
+import { extractMemoryReferenceBase } from '@8f4e/tokenizer';
+import { hasMemoryReferencePrefixStart } from '@8f4e/tokenizer';
 
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';

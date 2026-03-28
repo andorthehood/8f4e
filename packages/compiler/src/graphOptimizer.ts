@@ -1,14 +1,14 @@
-import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/ast-parser';
-import { isIntermodularModuleReference } from '@8f4e/ast-parser';
-import { extractIntermodularModuleReferenceBase } from '@8f4e/ast-parser';
-import { isIntermodularElementCountReference } from '@8f4e/ast-parser';
-import { extractIntermodularElementCountBase } from '@8f4e/ast-parser';
-import { isIntermodularElementWordSizeReference } from '@8f4e/ast-parser';
-import { extractIntermodularElementWordSizeBase } from '@8f4e/ast-parser';
-import { isIntermodularElementMaxReference } from '@8f4e/ast-parser';
-import { extractIntermodularElementMaxBase } from '@8f4e/ast-parser';
-import { isIntermodularElementMinReference } from '@8f4e/ast-parser';
-import { extractIntermodularElementMinBase } from '@8f4e/ast-parser';
+import { INTERMODULAR_REFERENCE_PATTERN } from '@8f4e/tokenizer';
+import { isIntermodularModuleReference } from '@8f4e/tokenizer';
+import { extractIntermodularModuleReferenceBase } from '@8f4e/tokenizer';
+import { isIntermodularElementCountReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementCountBase } from '@8f4e/tokenizer';
+import { isIntermodularElementWordSizeReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementWordSizeBase } from '@8f4e/tokenizer';
+import { isIntermodularElementMaxReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementMaxBase } from '@8f4e/tokenizer';
+import { isIntermodularElementMinReference } from '@8f4e/tokenizer';
+import { extractIntermodularElementMinBase } from '@8f4e/tokenizer';
 
 import { ArgumentType } from './types';
 

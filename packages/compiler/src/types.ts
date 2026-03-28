@@ -7,7 +7,7 @@ import {
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
-} from '@8f4e/ast-parser';
+} from '@8f4e/tokenizer';
 
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
