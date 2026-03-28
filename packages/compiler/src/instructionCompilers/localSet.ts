@@ -20,11 +20,8 @@ const _localSet: InstructionCompiler = withValidation(
 	(line, context) => {
 		const nameArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
 		const operand = context.stack.pop()!;
-		const local = context.locals[nameArg.value];
-
-		if (!local) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
-		}
+		// Existence guaranteed by normalizeCompileTimeArguments
+		const local = context.locals[nameArg.value]!;
 
 		if (local.isInteger && !operand.isInteger) {
 			throw getError(ErrorCode.ONLY_INTEGERS, line, context);

@@ -1,4 +1,3 @@
-import { ErrorCode, getError } from '../../../compilerError';
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';
@@ -8,11 +7,8 @@ import type { AST, CompilationContext } from '../../../types';
 
 export default function pushLocal(line: AST[number], context: CompilationContext): CompilationContext {
 	const argument = line.arguments[0] as { value: string };
-	const local = context.locals[argument.value];
-
-	if (!local) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
-	}
+	// Existence guaranteed by normalizeCompileTimeArguments
+	const local = context.locals[argument.value]!;
 
 	context.stack.push({ isInteger: local.isInteger, isNonZero: false });
 	return saveByteCode(context, localGet(local.index));
