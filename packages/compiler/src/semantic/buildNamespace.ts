@@ -26,12 +26,31 @@ import {
 	type CompiledFunctionLookup,
 	type Namespaces,
 	type Argument,
+	type ParsedSemanticInstructionLine,
 } from '../types';
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
-	applySemanticInstruction(line, context);
+	if (!isParsedSemanticInstructionLine(line)) {
+		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
+	}
+
+	applySemanticInstruction(normalizeCompileTimeArguments(line, context), context);
 }
 
+function isParsedSemanticInstructionLine(line: AST[number]): line is ParsedSemanticInstructionLine {
+	switch (line.instruction) {
+		case 'const':
+		case 'use':
+		case 'init':
+		case 'module':
+		case 'moduleEnd':
+		case 'constants':
+		case 'constantsEnd':
+			return true;
+	}
+
+	return false;
+}
 function applyNamespacePrepassLine(line: AST[number], context: CompilationContext) {
 	if (line.isSemanticOnly) {
 		applySemanticLine(line, context);

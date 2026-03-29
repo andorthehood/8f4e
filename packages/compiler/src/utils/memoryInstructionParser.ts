@@ -1,5 +1,4 @@
 import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '@8f4e/tokenizer';
-import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/tokenizer';
 import { ArgumentType } from '@8f4e/tokenizer';
 import { hasMemoryReferencePrefixStart } from '@8f4e/tokenizer';
 import { isConstantName } from '@8f4e/tokenizer';
@@ -85,20 +84,7 @@ export default function parseMemoryInstructionArguments(
 	// should not reach memory parsing. Once the normalized AST contract is tightened, this
 	// parser can rely on a narrower argument shape instead of broad AST[number] input.
 
-	// Use syntax parser for syntax-level validation and classification
-	let parsedArgs;
-	try {
-		parsedArgs = parseMemoryInstructionArgumentsShape(args);
-	} catch (error) {
-		if (error instanceof SyntaxRulesError) {
-			if (error.code === SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS) {
-				throw getError(ErrorCode.SPLIT_HEX_MIXED_TOKENS, lineForError, context);
-			}
-			// Wrap syntax error as compiler error
-			throw getError(ErrorCode.MISSING_ARGUMENT, lineForError, context);
-		}
-		throw error;
-	}
+	const parsedArgs = parseMemoryInstructionArgumentsShape(args);
 
 	const maxBytes = getMaxBytesForInstruction();
 	let defaultValue = 0;

@@ -1,17 +1,17 @@
-import type { CompilationContext, InstructionCompiler } from '../types';
+import type { AST, CompilationContext } from '../types';
 
 export type OperandRule = 'int' | 'float' | 'matching';
 export type ArgumentRule = 'literal' | 'identifier' | 'integerLiteral' | 'nonNegativeIntegerLiteral';
 export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | 'constants' | 'map';
 
-export interface ValidationSpec {
+export interface ValidationSpec<TLine extends AST[number] = AST[number]> {
 	scope?: ScopeRule;
 	minOperands?: number;
 	minArguments?: number;
 	argumentTypes?: ArgumentRule[] | ArgumentRule;
 	operandTypes?: OperandRule[] | OperandRule;
 	validateOperands?: (
-		line: Parameters<InstructionCompiler>[0],
+		line: TLine,
 		context: CompilationContext
 	) => {
 		minOperands?: number;
