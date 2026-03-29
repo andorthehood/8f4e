@@ -399,4 +399,57 @@ describe('normalizeCompileTimeArguments', () => {
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
+
+	it('throws UNDEFINED_FUNCTION for call with an undeclared function target', () => {
+		const context = {
+			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {}, functions: {} },
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'call',
+			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missingFn' }],
+		};
+
+		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDEFINED_FUNCTION}`);
+	});
+
+	it('does not throw for call when functions registry is undefined (prepass context)', () => {
+		const context = {
+			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'call',
+			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'anyFn' }],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
+	});
+
+	it('does not throw for call when the target function is registered', () => {
+		const context = {
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+				functions: {
+					knownFn: { id: 'knownFn', signature: { parameters: [], returns: [] }, body: [], locals: [] },
+				},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'call',
+			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'knownFn' }],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
+	});
 });

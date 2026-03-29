@@ -77,6 +77,33 @@ functionEnd int`,
 	[[{}, { output: 5 }]]
 );
 
+moduleTesterWithFunctions(
+	'function can call another function with its signature and wasm index available during compilation',
+	`module test
+int output
+
+loop
+  push &output
+  call compute
+  store
+loopEnd
+
+moduleEnd`,
+	[
+		`function increment
+param int x
+localGet x
+push 1
+add
+functionEnd int`,
+		`function compute
+push 41
+call increment
+functionEnd int`,
+	],
+	[[{}, { output: 42 }]]
+);
+
 describe('call instruction (float64)', () => {
 	test('passes float64 param and return through call without downgrading to float32', async () => {
 		// Use direct DataView float64 access here instead of moduleTesterWithFunctions:

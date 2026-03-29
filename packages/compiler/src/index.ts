@@ -17,7 +17,7 @@ import i32store from './wasmUtils/store/i32store';
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-import { collectNamespacesFromASTs } from './semantic/buildNamespace';
+import { collectNamespacesFromASTs, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
 import {
 	AST,
 	CompileOptions,
@@ -67,7 +67,7 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { prepassNamespace, collectNamespacesFromASTs } from './semantic/buildNamespace';
+export { prepassNamespace, collectNamespacesFromASTs, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
 export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
@@ -197,6 +197,10 @@ export default function compile(
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
 
+	// Collect pre-codegen function metadata so `call` target validation and
+	// function-body codegen can rely on the same registry before compilation finishes.
+	const functionMetadata = collectFunctionMetadataFromAsts(astFunctions, EXPORTED_FUNCTION_COUNT);
+
 	// Create a shared type registry for all functions
 	// Base type index is 3 (after the 3 built-in types)
 	const functionTypeRegistry: FunctionTypeRegistry = {
@@ -206,7 +210,7 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
+		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry, functionMetadata)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 	const totalModuleBytes = Object.values(namespaces).reduce((max, namespace) => {
