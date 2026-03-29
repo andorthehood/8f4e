@@ -289,7 +289,9 @@ export type ParsedSemanticInstructionLine =
 export type ParsedLocalVariableAccessLine = TokenizedLocalVariableAccessLine;
 export type CodegenLocalGetLine = LocalGetLine;
 export type CodegenLocalSetLine = LocalSetLine;
-export type CodegenPushLine = PushLine;
+export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral];
+};
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
 export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 	? NormalizedConstLine | ConstLine
@@ -303,9 +305,11 @@ export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 					? CodegenLocalGetLine
 					: TLine extends LocalSetLine
 						? CodegenLocalSetLine
-						: TLine extends ArrayDeclarationLine
-							? ArrayDeclarationLine
-							: TLine;
+						: TLine extends PushLine
+							? CodegenPushLine
+							: TLine extends ArrayDeclarationLine
+								? ArrayDeclarationLine
+								: TLine;
 
 export enum BLOCK_TYPE {
 	MODULE,
