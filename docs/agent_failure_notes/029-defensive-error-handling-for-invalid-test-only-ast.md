@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – Defensive error handling for invalid test-only AST
-agent: Codex
-model: GPT-5
+agent: Codex App Version 26.313.41514 (1043)
+model: GPT-5.4 (medium)
 date: 2026-03-28
 ---
 
