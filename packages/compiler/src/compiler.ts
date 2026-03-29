@@ -161,7 +161,7 @@ export function compileFunction(
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
-	functionStubs?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup
 ): CompiledFunction {
 	const context: CompilationContext = {
 		namespace: {
@@ -169,7 +169,7 @@ export function compileFunction(
 			memory: {},
 			consts: {},
 			moduleName: undefined,
-			functions: functionStubs ?? {},
+			functions: functions ?? {},
 		},
 		locals: {},
 		internalResources: {},
