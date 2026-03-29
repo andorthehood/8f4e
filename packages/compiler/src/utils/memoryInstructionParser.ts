@@ -81,6 +81,9 @@ export default function parseMemoryInstructionArguments(
 ): { id: string; defaultValue: number } {
 	const { arguments: args, lineNumberAfterMacroExpansion } = line;
 	const lineForError = line;
+	// TODO: semantic normalization now guarantees unresolved COMPILE_TIME_EXPRESSION nodes
+	// should not reach memory parsing. Once the normalized AST contract is tightened, this
+	// parser can rely on a narrower argument shape instead of broad AST[number] input.
 
 	// Use syntax parser for syntax-level validation and classification
 	let parsedArgs;
