@@ -29,6 +29,29 @@ import {
 	type ParsedSemanticInstructionLine,
 } from '../types';
 
+/**
+ * Scans function ASTs and collects function IDs as stub entries.
+ * This allows semantic normalization (e.g. `call` target validation) to run
+ * before full function codegen completes.
+ */
+export function collectFunctionIdsFromAsts(asts: AST[]): CompiledFunctionLookup {
+	const result: CompiledFunctionLookup = {};
+	for (const ast of asts) {
+		for (const line of ast) {
+			if (line.instruction === 'function' && line.arguments[0]?.type === ArgumentType.IDENTIFIER) {
+				const id = line.arguments[0].value;
+				result[id] = {
+					id,
+					signature: { parameters: [], returns: [] },
+					body: [],
+					locals: [],
+				};
+			}
+		}
+	}
+	return result;
+}
+
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
 	if (!isParsedSemanticInstructionLine(line)) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);

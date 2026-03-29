@@ -1,3 +1,4 @@
+import normalizeCall from './call';
 import normalizeConst from './const';
 import normalizeDefault from './default';
 import normalizeInit from './init';
@@ -11,6 +12,7 @@ import { isMemoryDeclarationInstruction } from '../declarations';
 import type { AST, CompilationContext, NormalizedLine } from '../../types';
 
 const instructionNormalizers = {
+	call: normalizeCall,
 	const: normalizeConst,
 	default: normalizeDefault,
 	init: normalizeInit,

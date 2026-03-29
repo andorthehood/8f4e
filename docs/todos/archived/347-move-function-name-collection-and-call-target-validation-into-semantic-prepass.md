@@ -3,8 +3,8 @@ title: 'TODO: Move function name collection and call target validation into sema
 priority: Medium
 effort: 4-8h
 created: 2026-03-29
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-29
 ---
 
 # TODO: Move function name collection and call target validation into semantic prepass
