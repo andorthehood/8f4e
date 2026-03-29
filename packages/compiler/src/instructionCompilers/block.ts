@@ -5,20 +5,18 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, BlockLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `block`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const block: InstructionCompiler = withValidation(
+const block: InstructionCompiler<BlockLine> = withValidation<BlockLine>(
 	{
 		scope: 'moduleOrFunction',
 	},
-	(line, context) => {
-		const resultType = (
-			line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>
-		).value;
+	(line: BlockLine, context) => {
+		const resultType = line.arguments[0].value;
 
 		if (resultType === 'float') {
 			context.blockStack.push({

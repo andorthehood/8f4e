@@ -1,11 +1,10 @@
-import { ArgumentType } from '../../types';
-import { ErrorCode, getError } from '../../compilerError';
 import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
+import { ArgumentType } from '../../types';
 
-import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
+import type { AST, ArrayDeclarationLine, InstructionCompiler, MemoryTypes } from '../../types';
 
 function getElementWordSize(instruction: string): number {
 	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;
@@ -18,21 +17,17 @@ function getElementWordSize(instruction: string): number {
  * Instruction compiler for typed array declarations such as `int[]`, `float[]`, and `float64[]`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const array: InstructionCompiler = withValidation(
+const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDeclarationLine>(
 	{
 		scope: 'module',
 	},
-	(line, context) => {
-		const memoryId = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
+	(line: ArrayDeclarationLine, context) => {
+		const memoryId = line.arguments[0].value;
 		const elementCountArg = line.arguments[1];
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 
 		const elementWordSize = getElementWordSize(line.instruction);
 		const isUnsigned = line.instruction.endsWith('u[]');
-		if (elementCountArg.type !== ArgumentType.LITERAL) {
-			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-		}
-
 		const numberOfElements = elementCountArg.value;
 
 		// Apply 8-byte alignment for float64[] arrays: round up absolute word offset to even
