@@ -3,8 +3,8 @@ title: 'TODO: Move identifier existence validation into semantic pass and shrink
 priority: Medium
 effort: 4-8h
 created: '2026-03-28'
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-29'
 ---
 
 # 344 - Move identifier existence validation into semantic pass and shrink codegen validation
@@ -93,4 +93,3 @@ After this refactor, instruction compilers should be able to assume:
 - [packages/compiler/src/instructionCompilers](/packages/compiler/src/instructionCompilers)
 - [packages/compiler/src/utils/memoryIdentifier.ts](/packages/compiler/src/utils/memoryIdentifier.ts)
 - [packages/compiler/src/utils/resolveIntermodularReferenceValue.ts](/packages/compiler/src/utils/resolveIntermodularReferenceValue.ts)
-
