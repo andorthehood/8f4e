@@ -99,6 +99,7 @@ Active todo files are listed below.
 | 334 | Move locals out of namespace and into codegen state | 2026-03-27 | Locals now live in `CompilationContext.locals` instead of `namespace.locals`. |
 | 340 | Move compiler-generated hidden resources into a separate internal address space | 2026-03-27 | Hidden resources now allocate separately from user/module memory and no longer affect module layout. |
 | 343 | Move arity and raw argument-shape validation into tokenizer | 2026-03-28 | Tokenizer now owns the syntax-only arity and raw argument-shape validation surface. |
+| 344 | Move identifier existence validation into semantic pass and shrink codegen validation | 2026-03-29 | Identifier existence validation now lives in semantic normalization/prepass instead of being rediscovered in codegen. |
 | 345 | Tighten tokenizer-to-compiler contract with typed AST lines | 2026-03-29 | Parsed and normalized AST stages now have stronger typed contracts across tokenizer, semantics, and compiler consumers. |
 | 346 | Split semantic normalization into instruction-specific files | 2026-03-28 | normalization/ folder with per-instruction files; normalizeCompileTimeArguments.ts is now a thin dispatcher wrapper. |
 | 347 | Move function name collection and call target validation into semantic prepass | 2026-03-29 | Function IDs now collected via `collectFunctionIdsFromAsts()` before codegen; `call` target existence validated in `normalizeCall` before codegen. |
