@@ -1,8 +1,7 @@
-import { ArgumentType, BLOCK_TYPE, type AST, type CompilationContext } from '../../types';
+import { BLOCK_TYPE, type CompilationContext, type ModuleLine } from '../../types';
 
-export default function semanticModule(line: AST[number], context: CompilationContext) {
-	const moduleId = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
-		.value;
+export default function semanticModule(line: ModuleLine, context: CompilationContext) {
+	const moduleId = line.arguments[0].value;
 
 	context.blockStack.push({
 		hasExpectedResult: false,

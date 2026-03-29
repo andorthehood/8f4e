@@ -1,13 +1,16 @@
-import { ArgumentType, type AST, type CompilationContext } from '../../types';
+import { type CompilationContext, type ParsedLocalVariableAccessLine } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
 /**
  * Validates that localGet/localSet target an already-declared local.
  * This keeps local existence checks in semantic normalization instead of the dispatcher/codegen layers.
  */
-export default function normalizeLocalVariableAccess(line: AST[number], context: CompilationContext): AST[number] {
+export default function normalizeLocalVariableAccess(
+	line: ParsedLocalVariableAccessLine,
+	context: CompilationContext
+): ParsedLocalVariableAccessLine {
 	const nameArg = line.arguments[0];
-	if (nameArg?.type === ArgumentType.IDENTIFIER && !context.locals[nameArg.value]) {
+	if (!context.locals[nameArg.value]) {
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
 	}
 

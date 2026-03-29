@@ -6,13 +6,14 @@ import i32const from '../../../wasmUtils/const/i32const';
 import i32load from '../../../wasmUtils/load/i32load';
 import { kindToStackItem, loadOpcode, resolveMemoryValueKind } from '../shared';
 
-import type { AST, CompilationContext } from '../../../types';
+import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
-export default function pushMemoryIdentifier(line: AST[number], context: CompilationContext): CompilationContext {
-	const argument = line.arguments[0] as { value: string };
+export default function pushMemoryIdentifier(
+	line: PushIdentifierLine,
+	context: CompilationContext
+): CompilationContext {
 	const memory = context.namespace.memory;
-	// Existence guaranteed by resolveIdentifierPushKind routing
-	const memoryItem = getDataStructure(memory, argument.value)!;
+	const memoryItem = getDataStructure(memory, line.arguments[0].value)!;
 
 	const kind = resolveMemoryValueKind(memoryItem);
 	context.stack.push(kindToStackItem(kind, { isNonZero: false }));
@@ -54,7 +55,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
-				} as AST[number],
+				} as PushIdentifierLine,
 				context
 			);
 

@@ -3,7 +3,7 @@ import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../ut
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, CompilationContext, FunctionLine, InstructionCompiler } from '../types';
 
 // Note: This instruction does not use withValidation because it requires inverted scope validation:
 // it must NOT be inside a module or function, which is the opposite of the standard scope rules
@@ -14,13 +14,12 @@ import type { AST, InstructionCompiler } from '../types';
  * Instruction compiler for `function`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const _function: InstructionCompiler = function (line, context) {
+const _function = function (line: FunctionLine, context: CompilationContext) {
 	if (isInstructionIsInsideAModule(context.blockStack) || isInstructionInsideFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
-	const functionId = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
-		.value;
+	const functionId = line.arguments[0].value;
 
 	context.currentFunctionId = functionId;
 	context.codeBlockId = functionId;
@@ -41,7 +40,7 @@ const _function: InstructionCompiler = function (line, context) {
 	});
 
 	return context;
-};
+} as InstructionCompiler<FunctionLine>;
 
 export default _function;
 

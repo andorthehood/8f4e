@@ -8,7 +8,7 @@ import normalizePush from './push';
 
 import { isMemoryDeclarationInstruction } from '../declarations';
 
-import type { AST, CompilationContext } from '../../types';
+import type { AST, CompilationContext, NormalizedLine } from '../../types';
 
 const instructionNormalizers = {
 	const: normalizeConst,
@@ -20,15 +20,18 @@ const instructionNormalizers = {
 	push: normalizePush,
 } as const;
 
-export default function dispatchNormalization(line: AST[number], context: CompilationContext): AST[number] {
+export default function dispatchNormalization<TLine extends AST[number]>(
+	line: TLine,
+	context: CompilationContext
+): NormalizedLine<TLine> {
 	const normalizer = instructionNormalizers[line.instruction as keyof typeof instructionNormalizers];
 	if (normalizer) {
-		return normalizer(line, context);
+		return normalizer(line as never, context) as NormalizedLine<TLine>;
 	}
 
 	if (isMemoryDeclarationInstruction(line.instruction)) {
-		return normalizeMemoryDeclaration(line, context);
+		return normalizeMemoryDeclaration(line as never, context) as NormalizedLine<TLine>;
 	}
 
-	return line;
+	return line as NormalizedLine<TLine>;
 }

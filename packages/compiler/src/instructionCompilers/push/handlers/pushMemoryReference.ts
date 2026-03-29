@@ -7,15 +7,15 @@ import { ArgumentType } from '../../../types';
 import { getDataStructureByteAddress, getMemoryStringLastByteAddress } from '../../../utils/memoryData';
 import i32const from '../../../wasmUtils/const/i32const';
 
-import type { AST, CompilationContext } from '../../../types';
+import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
-export default function pushMemoryReference(line: AST[number], context: CompilationContext): CompilationContext {
-	const argument = line.arguments[0] as { value: string };
+export default function pushMemoryReference(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
 	const memory = context.namespace.memory;
-	const base = extractMemoryReferenceBase(argument.value);
+	const reference = line.arguments[0].value;
+	const base = extractMemoryReferenceBase(reference);
 	let value = 0;
 
-	if (hasMemoryReferencePrefixStart(argument.value)) {
+	if (hasMemoryReferencePrefixStart(reference)) {
 		value = getDataStructureByteAddress(memory, base);
 	} else {
 		value = getMemoryStringLastByteAddress(memory, base);
@@ -59,7 +59,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: '&buffer' }],
-				} as AST[number],
+				} as PushIdentifierLine,
 				context
 			);
 
@@ -97,7 +97,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'buffer&' }],
-				} as AST[number],
+				} as PushIdentifierLine,
 				context
 			);
 

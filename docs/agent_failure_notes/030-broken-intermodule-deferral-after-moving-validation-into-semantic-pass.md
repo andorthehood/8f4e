@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – Broken intermodule deferral after moving validation into semantic pass
-agent: Claude
-model: Sonnet 4.6
+agent: GitHub Copilot
+model: Claude Sonnet 4.6
 date: 2026-03-28
 ---
 

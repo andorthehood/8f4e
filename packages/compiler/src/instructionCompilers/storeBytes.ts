@@ -5,27 +5,26 @@ import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, StoreBytesLine } from '../types';
 
 /**
  * Instruction compiler for `storeBytes`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const storeBytes: InstructionCompiler = withValidation(
+const storeBytes: InstructionCompiler<StoreBytesLine> = withValidation<StoreBytesLine>(
 	{
 		scope: 'module',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
-		validateOperands: line => {
-			const count = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>)
-				.value;
+		validateOperands: (line: StoreBytesLine) => {
+			const count = line.arguments[0].value;
 			return {
 				minOperands: count + 1,
 				operandTypes: new Array(count + 1).fill('int'),
 			};
 		},
 	},
-	(line, context) => {
-		const count = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>).value;
+	(line: StoreBytesLine, context) => {
+		const count = line.arguments[0].value;
 
 		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 		const tempAddrVar = `__storeBytesAddr_${lineNumberAfterMacroExpansion}`;

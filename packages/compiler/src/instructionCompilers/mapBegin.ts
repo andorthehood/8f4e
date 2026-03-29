@@ -2,20 +2,19 @@ import { ArgumentType, BLOCK_TYPE } from '../types';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, MapBeginLine } from '../types';
 
 /**
  * Instruction compiler for `mapBegin`.
  * Opens a map block scope and records the input type for the mapping operation.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const mapBegin: InstructionCompiler = withValidation(
+const mapBegin: InstructionCompiler<MapBeginLine> = withValidation<MapBeginLine>(
 	{
 		scope: 'moduleOrFunction',
 	},
-	(line, context) => {
-		const inputType = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
-			.value;
+	(line: MapBeginLine, context) => {
+		const inputType = line.arguments[0].value;
 
 		context.blockStack.push({
 			expectedResultIsInteger: false,

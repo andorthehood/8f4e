@@ -10,13 +10,11 @@ import i32load from '../../../wasmUtils/load/i32load';
 import i32load16s from '../../../wasmUtils/load/i32load16s';
 import { kindToStackItem, loadOpcode, resolvePointerTargetValueKind } from '../shared';
 
-import type { AST, CompilationContext } from '../../../types';
+import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
-export default function pushMemoryPointer(line: AST[number], context: CompilationContext): CompilationContext {
-	const argument = line.arguments[0] as { value: string };
+export default function pushMemoryPointer(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
 	const memory = context.namespace.memory;
-	const base = extractMemoryPointerBase(argument.value);
-	// Existence guaranteed by resolveIdentifierPushKind routing
+	const base = extractMemoryPointerBase(line.arguments[0].value);
 	const memoryItem = getDataStructure(memory, base)!;
 
 	const kind = resolvePointerTargetValueKind(memoryItem);
@@ -66,7 +64,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: '*ptr' }],
-				} as AST[number],
+				} as PushIdentifierLine,
 				context
 			);
 
@@ -105,7 +103,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: '*ptr' }],
-				} as AST[number],
+				} as PushIdentifierLine,
 				context
 			);
 
@@ -144,7 +142,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: '*pptr' }],
-				} as AST[number],
+				} as PushIdentifierLine,
 				context
 			);
 

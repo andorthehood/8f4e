@@ -2,7 +2,7 @@ import { ArgumentType, BLOCK_TYPE } from '../types';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, NormalizedDefaultLine } from '../types';
 
 /**
  * Instruction compiler for `default`.
@@ -10,22 +10,18 @@ import type { AST, InstructionCompiler } from '../types';
  * lowering happens at `mapEnd`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const _default: InstructionCompiler = withValidation(
+const _default: InstructionCompiler<NormalizedDefaultLine> = withValidation<NormalizedDefaultLine>(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
 	},
-	(line, context) => {
+	(line: NormalizedDefaultLine, context) => {
 		const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
 
-		const valueArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
-		let defaultValue: number;
-		let defaultIsInteger: boolean;
-		let defaultIsFloat64 = false;
-
-		defaultValue = valueArg.value;
-		defaultIsInteger = valueArg.isInteger;
-		defaultIsFloat64 = !!valueArg.isFloat64;
+		const valueArg = line.arguments[0];
+		const defaultValue = valueArg.value;
+		const defaultIsInteger = valueArg.isInteger;
+		const defaultIsFloat64 = !!valueArg.isFloat64;
 
 		mapState.defaultValue = defaultValue;
 		mapState.defaultIsInteger = defaultIsInteger;

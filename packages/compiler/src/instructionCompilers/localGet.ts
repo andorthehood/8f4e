@@ -5,21 +5,19 @@ import localGet from '../wasmUtils/local/localGet';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, CodegenLocalGetLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `localGet`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const _localGet: InstructionCompiler = withValidation(
+const _localGet: InstructionCompiler<CodegenLocalGetLine> = withValidation<CodegenLocalGetLine>(
 	{
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
-	(line, context) => {
-		const nameArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
-		// Existence guaranteed by normalizeCompileTimeArguments
-		const local = context.locals[nameArg.value]!;
+	(line: CodegenLocalGetLine, context) => {
+		const local = context.locals[line.arguments[0].value]!;
 
 		context.stack.push({
 			isInteger: local.isInteger,

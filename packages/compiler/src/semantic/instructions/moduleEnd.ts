@@ -1,8 +1,8 @@
 import { ErrorCode, getError } from '../../compilerError';
 import { isInstructionIsInsideAModule } from '../../utils/blockStack';
-import { BLOCK_TYPE, type AST, type CompilationContext } from '../../types';
+import { BLOCK_TYPE, type CompilationContext, type ModuleEndLine } from '../../types';
 
-export default function semanticModuleEnd(line: AST[number], context: CompilationContext) {
+export default function semanticModuleEnd(line: ModuleEndLine, context: CompilationContext) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
