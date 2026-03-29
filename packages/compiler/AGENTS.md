@@ -189,6 +189,27 @@ The compiler uses two separate error modules. **Always choose based on detection
 
 **Default messages** are centrally defined in each module's registry. Throw sites should omit the `message` argument unless dynamic context adds value (e.g. `INVALID_STRING_LITERAL` includes the bad escape sequence).
 
+## Internal Stage Contract Rule
+
+For compiler internals, do not re-validate argument arity or argument shape at every phase once those properties were already guaranteed earlier in the pipeline.
+
+Use this rule:
+
+- Tokenizer owns syntax validation, including instruction arity and raw argument shape.
+- Semantic normalization may transform AST lines into narrower internal forms.
+- Downstream compiler phases should trust validated and normalized internal data.
+- Internal transformation code should be verified with tests and static types, not repeated runtime guards.
+
+This means:
+
+- Do **not** add defensive runtime checks for argument-shape states that can only happen if compiler-owned normalization/manipulation code is wrong.
+- Do **not** compensate for broad internal types by repeatedly checking the same invariant in semantic/codegen steps.
+- If a phase requires a narrower shape, encode that requirement in the type boundary and route only the correct staged type there.
+
+Exception:
+
+- Runtime validation is still appropriate for real semantic/codegen concerns that depend on program state rather than token shape, such as stack validity, resolved type compatibility, scope legality, or symbol existence when that ownership has not yet been moved earlier.
+
 ## Commits & PRs
 - Commits: `compiler: <scope> <change>` (e.g., `compiler: parser fix for arrays`).
 - PRs: include rationale, test coverage notes, and linked issues.

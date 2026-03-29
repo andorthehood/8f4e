@@ -5,6 +5,7 @@ import {
 } from './helpers';
 
 import { ArgumentType, type CompilationContext, type InitLine, type NormalizedInitLine } from '../../types';
+import { ErrorCode, getError } from '../../compilerError';
 
 /**
  * Normalizes compile-time arguments for the `init` instruction.
@@ -18,12 +19,14 @@ export default function normalizeInit(line: InitLine, context: CompilationContex
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
 		if (deferred) {
-			return normalized as InitLine;
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
+				identifier: `${argument.lhs}${argument.operator}${argument.rhs}`,
+			});
 		}
 	}
 	if (argument?.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.value, line, context);
 	}
 
-	return normalized as NormalizedInitLine | InitLine;
+	return normalized as NormalizedInitLine;
 }
