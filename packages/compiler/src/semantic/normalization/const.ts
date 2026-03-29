@@ -1,6 +1,11 @@
-import { normalizeArgumentsAtIndexes, validateOrDeferCompileTimeExpression } from './helpers';
+import {
+	normalizeArgumentsAtIndexes,
+	validateOrDeferCompileTimeExpression,
+	validateOrDeferUnresolvedIdentifier,
+} from './helpers';
 
 import { ArgumentType, type CompilationContext, type ConstLine, type NormalizedConstLine } from '../../types';
+import { ErrorCode, getError } from '../../compilerError';
 
 /**
  * Normalizes compile-time arguments for the `const` instruction.
@@ -13,9 +18,17 @@ export default function normalizeConst(line: ConstLine, context: CompilationCont
 	if (valueArg?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		const deferred = validateOrDeferCompileTimeExpression(valueArg, line, context);
 		if (deferred) {
-			return result as ConstLine;
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
+				identifier: `${valueArg.lhs}${valueArg.operator}${valueArg.rhs}`,
+			});
+		}
+	}
+	if (valueArg?.type === ArgumentType.IDENTIFIER) {
+		const deferred = validateOrDeferUnresolvedIdentifier(valueArg, line, context);
+		if (deferred) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: valueArg.value });
 		}
 	}
 
-	return result as NormalizedConstLine | ConstLine;
+	return result as NormalizedConstLine;
 }
