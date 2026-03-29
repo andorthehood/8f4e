@@ -32,10 +32,10 @@ export function isIntermoduleReferenceLike(value: string): boolean {
 }
 
 /**
- * Validates that intermodule address references target existing modules and memory.
- * Called after namespace collection is complete (when namespaces dict is populated).
- * Does NOT validate metadata queries (sizeof, count, etc.) — those are handled by
- * tryResolveCompileTimeArgument returning undefined during prepass.
+ * Validates that intermodule address references, including metadata-query forms,
+ * target existing modules and memory once namespace collection is complete.
+ * It does not evaluate the query value itself during prepass; numeric resolution
+ * of sizeof/count/max/min forms is handled by tryResolveCompileTimeArgument.
  */
 export function validateIntermoduleAddressReference(
 	value: string,
@@ -185,8 +185,10 @@ export function validateOrDeferUnresolvedIdentifier(
 /**
  * Validates and normalizes arguments at the given indexes for a line.
  * Returns the (possibly updated) line and whether any argument changed.
- * Throws for unresolved compile-time expressions that reference intermodule refs.
- * Does NOT throw for plain unresolved identifiers — callers handle that.
+ * This helper only performs folding via normalizeArgument; it does not itself
+ * throw or defer unresolved compile-time expressions or identifiers. Callers
+ * are responsible for invoking validateOrDefer* helpers when that behavior
+ * is required.
  */
 export function normalizeArgumentsAtIndexes(
 	line: AST[number],

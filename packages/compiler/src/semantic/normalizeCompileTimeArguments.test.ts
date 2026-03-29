@@ -164,6 +164,29 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
+	it('throws UNDECLARED_IDENTIFIER when a const value remains an unresolved compile-time expression', () => {
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'const',
+			arguments: [
+				{ type: ArgumentType.IDENTIFIER, value: 'SIZE' },
+				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
+			],
+		};
+		const context = {
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+
+		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+	});
+
 	it('leaves push identifier arguments unchanged when the identifier is a known local', () => {
 		const line: AST[number] = {
 			lineNumberBeforeMacroExpansion: 1,
@@ -194,6 +217,29 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
 			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'unknownVar' }],
+		};
+
+		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+	});
+
+	it('throws UNDECLARED_IDENTIFIER when an init default remains an unresolved compile-time expression', () => {
+		const context = {
+			namespace: {
+				memory: { target: { numberOfElements: 1, elementWordSize: 4, isInteger: true } },
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'init',
+			arguments: [
+				{ type: ArgumentType.IDENTIFIER, value: 'target' },
+				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
+			],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -284,6 +330,24 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [
 				{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
 				{ type: ArgumentType.IDENTIFIER, value: '&source:missingBuffer' },
+			],
+		};
+
+		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+	});
+
+	it('throws UNDECLARED_IDENTIFIER for memory declaration with unresolved compile-time-expression default', () => {
+		const context = {
+			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'int',
+			arguments: [
+				{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
+				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
 			],
 		};
 
