@@ -17,11 +17,8 @@ const call: InstructionCompiler<CallLine> = withValidation<CallLine>(
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
 	(line: CallLine, context) => {
-		const targetFunction = context.namespace.functions?.[line.arguments[0].value];
-
-		if (!targetFunction) {
-			throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
-		}
+		// Normalization (normalizeCall) guarantees the function exists before codegen runs.
+		const targetFunction = context.namespace.functions![line.arguments[0].value]!;
 
 		// Validate stack has the right arguments
 		const { parameters, returns } = targetFunction.signature;
@@ -142,22 +139,6 @@ if (import.meta.vitest) {
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'call',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo64' }],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-
-		it('throws on undefined function', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				call(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'call',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
 					} as AST[number],
 					context
 				);
