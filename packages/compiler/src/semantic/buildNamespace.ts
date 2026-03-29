@@ -27,7 +27,6 @@ import {
 	type Namespaces,
 	type Argument,
 	type ParsedSemanticInstructionLine,
-	type NormalizedSemanticInstructionLine,
 } from '../types';
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
@@ -35,7 +34,7 @@ export function applySemanticLine(line: AST[number], context: CompilationContext
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
 
-	applySemanticInstruction(normalizeCompileTimeArguments(line, context) as NormalizedSemanticInstructionLine, context);
+	applySemanticInstruction(normalizeCompileTimeArguments(line, context), context);
 }
 
 function isParsedSemanticInstructionLine(line: AST[number]): line is ParsedSemanticInstructionLine {

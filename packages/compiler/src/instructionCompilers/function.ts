@@ -3,7 +3,7 @@ import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../ut
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, FunctionLine, InstructionCompiler } from '../types';
+import type { AST, CompilationContext, FunctionLine, InstructionCompiler } from '../types';
 
 // Note: This instruction does not use withValidation because it requires inverted scope validation:
 // it must NOT be inside a module or function, which is the opposite of the standard scope rules
@@ -14,7 +14,7 @@ import type { AST, FunctionLine, InstructionCompiler } from '../types';
  * Instruction compiler for `function`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const _function = function (line: FunctionLine, context) {
+const _function = function (line: FunctionLine, context: CompilationContext) {
 	if (isInstructionIsInsideAModule(context.blockStack) || isInstructionInsideFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
