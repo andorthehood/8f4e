@@ -294,9 +294,9 @@ export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
 };
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
 export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
-	? NormalizedConstLine | ConstLine
+	? NormalizedConstLine
 	: TLine extends InitLine
-		? NormalizedInitLine | InitLine
+		? NormalizedInitLine
 		: TLine extends DefaultLine
 			? NormalizedDefaultLine | DefaultLine
 			: TLine extends MapLine

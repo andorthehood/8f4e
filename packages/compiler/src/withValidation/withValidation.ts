@@ -13,7 +13,7 @@ export function withValidation<TLine extends AST[number]>(
 	spec: ValidationSpec<TLine>,
 	compiler: (line: TLine, context: Parameters<InstructionCompiler>[1]) => ReturnType<InstructionCompiler>
 ): InstructionCompiler<TLine> {
-	return function (line, context) {
+	return function (line: TLine, context: Parameters<InstructionCompiler>[1]) {
 		const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS);
 		if (insideConstantsBlock && !spec.allowedInConstantsBlocks) {
 			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
