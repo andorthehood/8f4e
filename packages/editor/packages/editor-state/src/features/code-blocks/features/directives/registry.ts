@@ -10,6 +10,7 @@ import scanDirective from './scan/plugin';
 import sliderDirective from './slider/plugin';
 import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
+import viewportDirective from './viewport/plugin';
 import { parseEditorDirectives } from './utils';
 
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
@@ -29,6 +30,7 @@ export type {
 	DirectiveLayoutContribution,
 	DirectiveBlockState,
 	DirectiveDerivedState,
+	ViewportAnchor,
 } from './types';
 
 export const directivePlugins: EditorDirectivePlugin[] = [
@@ -44,6 +46,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	favoriteDirective,
 	hideDirective,
 	groupDirective,
+	viewportDirective,
 ];
 
 export function deriveDirectiveState(
