@@ -268,6 +268,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		defaultRuntimeId: 'WebWorkerLogicRuntime',
 		graphicHelper: {
 			codeBlocks: [],
+			viewportAnchoredCodeBlocks: [],
 			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),

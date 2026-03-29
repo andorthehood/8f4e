@@ -23,6 +23,7 @@ describe('codeBlockDragger', () => {
 			},
 			graphicHelper: {
 				codeBlocks: [],
+				viewportAnchoredCodeBlocks: [],
 				draggedCodeBlock: undefined,
 				selectedCodeBlock: undefined,
 				nextCodeBlockCreationIndex: 0,
