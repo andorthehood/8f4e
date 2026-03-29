@@ -1,8 +1,8 @@
 import { ErrorCode, getError } from '../../compilerError';
-import { ArgumentType, type AST, type CompilationContext } from '../../types';
+import { type CompilationContext, type UseLine } from '../../types';
 
-export default function semanticUse(line: AST[number], context: CompilationContext) {
-	const namespaceId = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
+export default function semanticUse(line: UseLine, context: CompilationContext) {
+	const namespaceId = line.arguments[0].value;
 	const namespaceToUse = context.namespace.namespaces[namespaceId];
 
 	if (!namespaceToUse) {

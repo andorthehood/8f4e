@@ -3,11 +3,7 @@ import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
-
-type ResolvedMapValue =
-	| { type: ArgumentType.LITERAL; value: number; isInteger: boolean; isFloat64?: boolean }
-	| { type: ArgumentType.STRING_LITERAL; value: string };
+import type { AST, InstructionCompiler, NormalizedMapLine } from '../types';
 
 /**
  * Instruction compiler for `map`.
@@ -15,27 +11,27 @@ type ResolvedMapValue =
  * lowering happens at `mapEnd`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const map: InstructionCompiler = withValidation(
+const map: InstructionCompiler<NormalizedMapLine> = withValidation<NormalizedMapLine>(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
 	},
-	(line, context) => {
+	(line: NormalizedMapLine, context) => {
 		const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
-		const keyArg = line.arguments[0] as ResolvedMapValue;
-		const valueArg = line.arguments[1] as ResolvedMapValue;
+		const keyArg = line.arguments[0];
+		const valueArg = line.arguments[1];
 
 		// Resolve key argument
 		// The semantic pass (normalizeCompileTimeArguments) guarantees keyArg is LITERAL or STRING_LITERAL.
-		let keyValue!: number;
-		let keyIsInteger!: boolean;
+		let keyValue: number;
+		let keyIsInteger: boolean;
 		let keyIsFloat64 = false;
 
 		if (keyArg.type === ArgumentType.LITERAL) {
 			keyValue = keyArg.value;
 			keyIsInteger = keyArg.isInteger;
 			keyIsFloat64 = !!keyArg.isFloat64;
-		} else if (keyArg.type === ArgumentType.STRING_LITERAL) {
+		} else {
 			keyValue = keyArg.value.charCodeAt(0);
 			keyIsInteger = true;
 		}
@@ -71,7 +67,7 @@ const map: InstructionCompiler = withValidation(
 			valueValue = valueArg.value;
 			valueIsInteger = valueArg.isInteger;
 			valueIsFloat64 = !!valueArg.isFloat64;
-		} else if (valueArg.type === ArgumentType.STRING_LITERAL) {
+		} else {
 			valueValue = valueArg.value.charCodeAt(0);
 			valueIsInteger = true;
 		}

@@ -10,18 +10,17 @@ import createInstructionCompilerTestContext from '../utils/testUtils';
 import { ArgumentType } from '../types';
 import { withValidation } from '../withValidation';
 
-import type { AST, InstructionCompiler, MemoryMap } from '../types';
+import type { AST, CodegenPushLine, InstructionCompiler, MemoryMap, PushIdentifierLine } from '../types';
 
 /**
  * Instruction compiler for `push`.
  * @see [Instruction docs](../../docs/instructions/stack.md)
  */
-const push: InstructionCompiler = withValidation(
+const push: InstructionCompiler<CodegenPushLine> = withValidation<CodegenPushLine>(
 	{
 		scope: 'moduleOrFunction',
-		minArguments: 0,
 	},
-	(line, context) => {
+	(line: CodegenPushLine, context) => {
 		const argument = line.arguments[0];
 
 		if (argument.type === ArgumentType.STRING_LITERAL) {
@@ -29,24 +28,22 @@ const push: InstructionCompiler = withValidation(
 		}
 
 		if (argument.type === ArgumentType.IDENTIFIER) {
+			const identifierLine = line as PushIdentifierLine;
+
 			switch (resolveIdentifierPushKind(context.namespace, argument.value)) {
 				case IdentifierPushKind.MEMORY_IDENTIFIER:
-					return pushMemoryIdentifier(line, context);
+					return pushMemoryIdentifier(identifierLine, context);
 				case IdentifierPushKind.MEMORY_POINTER:
-					return pushMemoryPointer(line, context);
+					return pushMemoryPointer(identifierLine, context);
 				case IdentifierPushKind.MEMORY_REFERENCE:
-					return pushMemoryReference(line, context);
+					return pushMemoryReference(identifierLine, context);
 				case IdentifierPushKind.LOCAL:
 				default:
-					return pushLocal(line, context);
+					return pushLocal(identifierLine, context);
 			}
 		}
 
-		if (argument.type === ArgumentType.LITERAL) {
-			return pushLiteral(argument, context);
-		}
-
-		throw new Error(`Unexpected push argument type: ${String(argument?.type)}`);
+		return pushLiteral(argument, context);
 	}
 );
 

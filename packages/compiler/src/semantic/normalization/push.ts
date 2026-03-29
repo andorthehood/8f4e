@@ -6,7 +6,7 @@ import {
 	normalizeArgumentsAtIndexes,
 } from './helpers';
 
-import { ArgumentType, type AST, type CompilationContext } from '../../types';
+import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '../../types';
 import {
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
@@ -21,14 +21,14 @@ import { ErrorCode, getError } from '../../compilerError';
  * memory reference, local, or valid intermodule reference.
  * Throws UNDECLARED_IDENTIFIER for unrecognized identifiers.
  */
-export default function normalizePush(line: AST[number], context: CompilationContext): AST[number] {
+export default function normalizePush(line: PushLine, context: CompilationContext): CodegenPushLine {
 	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);
 
 	const argument = normalized.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
 		if (deferred) {
-			return normalized;
+			return normalized as CodegenPushLine;
 		}
 	}
 	if (argument?.type === ArgumentType.IDENTIFIER) {
@@ -36,12 +36,12 @@ export default function normalizePush(line: AST[number], context: CompilationCon
 		const { memory } = context.namespace;
 		const isIntermodule = isIntermoduleReferenceLike(value);
 		if (!hasCollectedNamespaces(context) && isIntermodule) {
-			return normalized;
+			return normalized as CodegenPushLine;
 		}
 		// Validate intermodule references first
 		validateIntermoduleAddressReference(value, line, context);
 		if (isIntermodule) {
-			return normalized;
+			return normalized as CodegenPushLine;
 		}
 		if (
 			!isMemoryIdentifier(memory, value) &&
@@ -53,5 +53,5 @@ export default function normalizePush(line: AST[number], context: CompilationCon
 		}
 	}
 
-	return normalized;
+	return normalized as CodegenPushLine;
 }
