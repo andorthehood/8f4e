@@ -268,6 +268,13 @@ export interface CodeBlockGraphicData {
 	 * Populated once per update; consumers should prefer these over rescanning raw code lines.
 	 */
 	parsedDirectives: ParsedDirectiveRecord[];
+	/**
+	 * Viewport anchor set by `; @viewport <corner>`.
+	 * When present, `@pos` is interpreted as an inward offset from the specified viewport corner,
+	 * and `gridX`/`gridY` store those anchored offsets rather than world-space grid coordinates.
+	 * Undefined when no valid `@viewport` directive is present (world-space placement).
+	 */
+	viewportAnchor?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 }
 
 /**

@@ -1,6 +1,7 @@
 import findCodeBlockAtViewportCoordinates from '../../utils/finders/findCodeBlockAtViewportCoordinates';
 import { getGroupBlocks } from '../group/getGroupBlocks';
 import upsertPos from '../directives/pos/upsert';
+import { worldPositionToAnchoredPos } from '../directives/viewport/resolve';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '~/types';
@@ -127,12 +128,38 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			block.x += deltaX;
 			block.y += deltaY;
 
-			const gridX = Math.round(block.x / vGrid);
-			const gridY = Math.round(block.y / hGrid);
+			let gridX: number;
+			let gridY: number;
+
+			if (block.viewportAnchor) {
+				// Viewport-anchored: convert dragged world-space position back to anchored @pos offset coordinates.
+				// x/y pixel position is not snapped here; it will be recomputed by updateGraphics() using the
+				// updated gridX/gridY anchored offsets after the code edit triggers a re-render.
+				const anchored = worldPositionToAnchoredPos(
+					block.viewportAnchor,
+					block.x,
+					block.y,
+					state.viewport.x,
+					state.viewport.y,
+					state.viewport.width,
+					state.viewport.height,
+					block.width,
+					block.height,
+					vGrid,
+					hGrid
+				);
+				gridX = anchored.gridX;
+				gridY = anchored.gridY;
+			} else {
+				// World-space: snap pixel position to the grid and derive grid coordinates.
+				gridX = Math.round(block.x / vGrid);
+				gridY = Math.round(block.y / hGrid);
+				block.x = gridX * vGrid;
+				block.y = gridY * hGrid;
+			}
+
 			block.gridX = gridX;
 			block.gridY = gridY;
-			block.x = gridX * vGrid;
-			block.y = gridY * hGrid;
 			block.lastUpdated = Date.now();
 			block.code = upsertPos(block.code, gridX, gridY);
 			store.set('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', block);
