@@ -2,13 +2,13 @@ import { ArgumentType } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler, WasmLine } from '../types';
+import type { AST, CompilationContext, InstructionCompiler, WasmLine } from '../types';
 
 /**
  * Instruction compiler for `wasm`.
  * @see [Instruction docs](../../docs/instructions/low-level.md)
  */
-const wasm = function (line: WasmLine, context) {
+const wasm = function (line: WasmLine, context: CompilationContext) {
 	return saveByteCode(context, [line.arguments[0].value]);
 } as InstructionCompiler<WasmLine>;
 
