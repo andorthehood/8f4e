@@ -285,6 +285,12 @@ export type GraphicHelper = {
 	outputsByWordAddress: Map<number, Output>;
 	codeBlocks: CodeBlockGraphicData[];
 	/**
+	 * Subset of codeBlocks that have a `@viewport` directive.
+	 * Maintained in sync with codeBlocks so that viewport move/resize handlers
+	 * only iterate this smaller list instead of the full block array.
+	 */
+	viewportAnchoredCodeBlocks: CodeBlockGraphicData[];
+	/**
 	 * Monotonic render invalidation counter for code block texture caches.
 	 * Increment when render-wide assets change without an individual block edit.
 	 */
