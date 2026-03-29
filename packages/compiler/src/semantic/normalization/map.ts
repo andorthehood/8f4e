@@ -4,14 +4,14 @@ import {
 	normalizeArgumentsAtIndexes,
 } from './helpers';
 
-import { ArgumentType, type AST, type CompilationContext } from '../../types';
+import { ArgumentType, type CompilationContext, type MapLine, type NormalizedMapLine } from '../../types';
 
 /**
  * Normalizes compile-time arguments for the `map` instruction.
  * Both the key argument (index 0) and value argument (index 1) are normalized.
  * Throws UNDECLARED_IDENTIFIER if either remains as an unresolved identifier after normalization.
  */
-export default function normalizeMap(line: AST[number], context: CompilationContext): AST[number] {
+export default function normalizeMap(line: MapLine, context: CompilationContext): NormalizedMapLine | MapLine {
 	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0, 1]);
 
 	for (const index of [0, 1]) {
@@ -30,5 +30,5 @@ export default function normalizeMap(line: AST[number], context: CompilationCont
 		}
 	}
 
-	return normalized;
+	return normalized as NormalizedMapLine | MapLine;
 }

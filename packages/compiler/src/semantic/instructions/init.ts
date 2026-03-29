@@ -1,16 +1,12 @@
 import { isIntermodularReference } from '@8f4e/tokenizer';
 
 import { ErrorCode, getError } from '../../compilerError';
-import { ArgumentType, type AST, type CompilationContext } from '../../types';
+import { ArgumentType, type CompilationContext, type NormalizedInitLine } from '../../types';
 import resolveIntermodularReferenceValue from '../../utils/resolveIntermodularReferenceValue';
 
-export default function semanticInit(line: AST[number], context: CompilationContext) {
-	const targetIdentifier = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
-	// TODO: normalization now guarantees argument[1] is reduced to LITERAL or IDENTIFIER here.
-	// Replace this cast with a tighter normalized-line contract when TODO 345 lands.
-	const defaultArg = line.arguments[1] as
-		| { type: ArgumentType.LITERAL; value: number }
-		| { type: ArgumentType.IDENTIFIER; value: string };
+export default function semanticInit(line: NormalizedInitLine, context: CompilationContext) {
+	const targetIdentifier = line.arguments[0].value;
+	const defaultArg = line.arguments[1];
 	const indexedTargetMatch = targetIdentifier.match(/(\S+)\[(\d+)\]/);
 	const targetMemoryId = indexedTargetMatch ? indexedTargetMatch[1] : targetIdentifier;
 	const memoryItem = context.namespace.memory[targetMemoryId];

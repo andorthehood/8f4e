@@ -4,9 +4,34 @@ import {
 	ArgumentType,
 	type Argument,
 	type ArgumentCompileTimeExpression,
+	type BlockLine,
+	type BranchIfTrueLine,
+	type BranchIfUnchangedLine,
+	type BranchLine,
+	type CallLine,
+	type ConstLine,
+	type ConstantsLine,
+	type ConstantsEndLine,
+	type DefaultLine,
+	type FunctionLine,
+	type InitLine,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
+	type LocalGetLine,
+	type LocalDeclarationLine,
+	type LocalSetLine,
+	type LocalVariableAccessLine as TokenizedLocalVariableAccessLine,
+	type MapBeginLine,
+	type MapEndLine,
+	type MapLine,
+	type ModuleLine,
+	type ModuleEndLine,
+	type ParamLine,
+	type PushLine,
+	type StoreBytesLine,
+	type UseLine,
+	type WasmLine,
 } from '@8f4e/tokenizer';
 
 import Type from './wasmUtils/type';
@@ -122,9 +147,34 @@ export {
 	ArgumentType,
 	type Argument,
 	type ArgumentCompileTimeExpression,
+	type BlockLine,
+	type BranchIfTrueLine,
+	type BranchIfUnchangedLine,
+	type BranchLine,
+	type CallLine,
+	type ConstLine,
+	type ConstantsLine,
+	type ConstantsEndLine,
+	type DefaultLine,
+	type FunctionLine,
+	type InitLine,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
+	type LocalGetLine,
+	type LocalDeclarationLine,
+	type LocalSetLine,
+	type TokenizedLocalVariableAccessLine,
+	type MapBeginLine,
+	type MapEndLine,
+	type MapLine,
+	type ModuleLine,
+	type ModuleEndLine,
+	type ParamLine,
+	type PushLine,
+	type StoreBytesLine,
+	type UseLine,
+	type WasmLine,
 };
 
 export interface TestModule {
@@ -192,6 +242,71 @@ export interface StackItem {
 
 export type Stack = StackItem[];
 
+export type ResolvedMapValueArgument = ArgumentLiteral | ArgumentStringLiteral;
+export type NormalizedMapLine = Omit<MapLine, 'arguments'> & {
+	arguments: [ResolvedMapValueArgument, ResolvedMapValueArgument];
+};
+export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & { arguments: [ArgumentLiteral] };
+export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & { arguments: [ArgumentIdentifier, ArgumentLiteral] };
+export type NormalizedInitLine = Omit<InitLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier, ArgumentLiteral | ArgumentIdentifier];
+};
+export type ArrayDeclarationInstruction =
+	| 'float[]'
+	| 'int[]'
+	| 'int8[]'
+	| 'int8u[]'
+	| 'int16[]'
+	| 'int16u[]'
+	| 'int32[]'
+	| 'float*[]'
+	| 'float**[]'
+	| 'int*[]'
+	| 'int**[]'
+	| 'float64[]'
+	| 'float64*[]'
+	| 'float64**[]';
+export type ArrayDeclarationLine = Omit<AST[number], 'instruction' | 'arguments'> & {
+	instruction: ArrayDeclarationInstruction;
+	arguments: [ArgumentIdentifier, ArgumentLiteral];
+};
+export type NormalizedSemanticInstructionLine =
+	| NormalizedConstLine
+	| UseLine
+	| NormalizedInitLine
+	| ModuleLine
+	| ModuleEndLine
+	| ConstantsLine
+	| ConstantsEndLine;
+export type ParsedSemanticInstructionLine =
+	| ConstLine
+	| UseLine
+	| InitLine
+	| ModuleLine
+	| ModuleEndLine
+	| ConstantsLine
+	| ConstantsEndLine;
+export type ParsedLocalVariableAccessLine = TokenizedLocalVariableAccessLine;
+export type CodegenLocalGetLine = LocalGetLine;
+export type CodegenLocalSetLine = LocalSetLine;
+export type CodegenPushLine = PushLine;
+export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
+export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
+	? NormalizedConstLine | ConstLine
+	: TLine extends InitLine
+		? NormalizedInitLine | InitLine
+		: TLine extends DefaultLine
+			? NormalizedDefaultLine | DefaultLine
+			: TLine extends MapLine
+				? NormalizedMapLine | MapLine
+				: TLine extends LocalGetLine
+					? CodegenLocalGetLine
+					: TLine extends LocalSetLine
+						? CodegenLocalSetLine
+						: TLine extends ArrayDeclarationLine
+							? ArrayDeclarationLine
+							: TLine;
+
 export enum BLOCK_TYPE {
 	MODULE,
 	LOOP,
@@ -226,7 +341,11 @@ export type BlockStack = Array<{
 	mapState?: MapBlockState;
 }>;
 
-export type InstructionCompiler = (line: AST[number], context: CompilationContext) => CompilationContext;
+export type InstructionCompiler<TLine extends AST[number] = AST[number]> = ((
+	line: TLine,
+	context: CompilationContext
+) => CompilationContext) &
+	((line: AST[number], context: CompilationContext) => CompilationContext);
 
 export interface Error {
 	message: string;

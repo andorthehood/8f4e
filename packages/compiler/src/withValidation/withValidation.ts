@@ -3,13 +3,16 @@ import { validateArgumentTypes } from './validateArgumentTypes';
 import { validateOperandTypes } from './validateOperandTypes';
 import { validateScope } from './validateScope';
 
-import { ArgumentType, BLOCK_TYPE, type InstructionCompiler } from '../types';
+import { ArgumentType, BLOCK_TYPE, type AST, type InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { isInstructionIsInsideBlock } from '../utils/blockStack';
 
 import type { ValidationSpec } from './types';
 
-export function withValidation(spec: ValidationSpec, compiler: InstructionCompiler): InstructionCompiler {
+export function withValidation<TLine extends AST[number]>(
+	spec: ValidationSpec<TLine>,
+	compiler: (line: TLine, context: Parameters<InstructionCompiler>[1]) => ReturnType<InstructionCompiler>
+): InstructionCompiler<TLine> {
 	return function (line, context) {
 		const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS);
 		if (insideConstantsBlock && !spec.allowedInConstantsBlocks) {
@@ -39,7 +42,7 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 			validateArgumentTypes(line.arguments, spec.argumentTypes, line, context);
 		}
 
-		const validatedOperands = spec.validateOperands?.(line, context);
+		const validatedOperands = spec.validateOperands?.(line as TLine, context);
 		const operandsNeeded = validatedOperands?.minOperands ?? spec.minOperands ?? 0;
 		const operandTypes = validatedOperands?.operandTypes ?? spec.operandTypes;
 
@@ -55,8 +58,8 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 			}
 		}
 
-		return compiler(line, context);
-	};
+		return compiler(line as TLine, context);
+	} as InstructionCompiler<TLine>;
 }
 
 if (import.meta.vitest) {
