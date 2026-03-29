@@ -26,8 +26,8 @@ import {
 	type CompiledFunctionLookup,
 	type Namespaces,
 	type Argument,
-	type NormalizedSemanticInstructionLine,
 	type ParsedSemanticInstructionLine,
+	type NormalizedSemanticInstructionLine,
 } from '../types';
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
@@ -52,7 +52,6 @@ function isParsedSemanticInstructionLine(line: AST[number]): line is ParsedSeman
 
 	return false;
 }
-
 function applyNamespacePrepassLine(line: AST[number], context: CompilationContext) {
 	if (line.isSemanticOnly) {
 		applySemanticLine(line, context);
