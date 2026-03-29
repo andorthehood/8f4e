@@ -1,4 +1,8 @@
-import { validateIntermoduleAddressReference, normalizeArgumentsAtIndexes } from './helpers';
+import {
+	validateIntermoduleAddressReference,
+	validateOrDeferCompileTimeExpression,
+	normalizeArgumentsAtIndexes,
+} from './helpers';
 
 import { ArgumentType, type AST, type CompilationContext } from '../../types';
 
@@ -11,9 +15,17 @@ import { ArgumentType, type AST, type CompilationContext } from '../../types';
 export default function normalizeMemoryDeclaration(line: AST[number], context: CompilationContext): AST[number] {
 	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0, 1]);
 
-	const argument = normalized.arguments[1];
-	if (argument?.type === ArgumentType.IDENTIFIER) {
-		validateIntermoduleAddressReference(argument.value, line, context);
+	for (const index of [0, 1]) {
+		const argument = normalized.arguments[index];
+		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+			const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+			if (deferred) {
+				continue;
+			}
+		}
+		if (index === 1 && argument?.type === ArgumentType.IDENTIFIER) {
+			validateIntermoduleAddressReference(argument.value, line, context);
+		}
 	}
 
 	return normalized;
