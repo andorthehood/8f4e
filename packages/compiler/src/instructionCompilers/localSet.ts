@@ -5,23 +5,21 @@ import localSet from '../wasmUtils/local/localSet';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, CodegenLocalSetLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `localSet`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const _localSet: InstructionCompiler = withValidation(
+const _localSet: InstructionCompiler<CodegenLocalSetLine> = withValidation<CodegenLocalSetLine>(
 	{
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 1,
 	},
-	(line, context) => {
-		const nameArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
+	(line: CodegenLocalSetLine, context) => {
 		const operand = context.stack.pop()!;
-		// Existence guaranteed by normalizeCompileTimeArguments
-		const local = context.locals[nameArg.value]!;
+		const local = context.locals[line.arguments[0].value]!;
 
 		if (local.isInteger && !operand.isInteger) {
 			throw getError(ErrorCode.ONLY_INTEGERS, line, context);

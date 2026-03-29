@@ -3,20 +3,20 @@ import { ErrorCode } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, LocalDeclarationLine } from '../types';
 
 /**
  * Instruction compiler for `local`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const local: InstructionCompiler = withValidation(
+const local: InstructionCompiler<LocalDeclarationLine> = withValidation<LocalDeclarationLine>(
 	{
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
-	(line, context) => {
-		const typeArg = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
-		const nameArg = line.arguments[1] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>;
+	(line: LocalDeclarationLine, context) => {
+		const typeArg = line.arguments[0];
+		const nameArg = line.arguments[1];
 
 		context.locals[nameArg.value] = {
 			isInteger: typeArg.value === 'int',

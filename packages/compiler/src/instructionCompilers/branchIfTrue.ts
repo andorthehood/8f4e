@@ -4,23 +4,22 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, BranchIfTrueLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branchIfTrue`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const branchIfTrue: InstructionCompiler = withValidation(
+const branchIfTrue: InstructionCompiler<BranchIfTrueLine> = withValidation<BranchIfTrueLine>(
 	{
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
 	},
-	(line, context) => {
+	(line: BranchIfTrueLine, context) => {
 		// Non-null assertion is safe: withValidation ensures 1 operand exists
 		context.stack.pop()!;
-		const depth = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
-		return saveByteCode(context, br_if(depth.value));
+		return saveByteCode(context, br_if(line.arguments[0].value));
 	}
 );
 

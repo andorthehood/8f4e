@@ -3,8 +3,8 @@ title: 'TODO: Tighten tokenizer-to-compiler contract with typed AST lines'
 priority: Medium
 effort: 1-2d
 created: '2026-03-28'
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-29'
 ---
 
 # 345 - Tighten tokenizer-to-compiler contract with typed AST lines
@@ -93,11 +93,11 @@ Alternative approaches considered:
 
 ## Success Criteria
 
-- [ ] Parsed AST lines are represented as a discriminated union with instruction-specific argument tuple types.
-- [ ] At least one semantically normalized AST stage is explicit in TypeScript for codegen-facing instructions whose argument contract narrows after normalization.
-- [ ] Instruction compilers rely on narrower line types instead of broad `AST[number]` plus repeated casts.
-- [ ] Refactoring an instruction argument shape in tokenizer causes compile-time failures in affected compiler consumers.
-- [ ] The tokenizer/semantic/codegen contract is clearer from types alone, not just comments and runtime assumptions.
+- [x] Parsed AST lines are represented as a discriminated union with instruction-specific argument tuple types.
+- [x] At least one semantically normalized AST stage is explicit in TypeScript for codegen-facing instructions whose argument contract narrows after normalization.
+- [x] Instruction compilers rely on narrower line types instead of broad `AST[number]` plus repeated casts.
+- [x] Refactoring an instruction argument shape in tokenizer causes compile-time failures in affected compiler consumers.
+- [x] The tokenizer/semantic/codegen contract is clearer from types alone, not just comments and runtime assumptions.
 
 ## Affected Components
 

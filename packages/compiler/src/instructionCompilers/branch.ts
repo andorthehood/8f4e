@@ -4,19 +4,18 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, BranchLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branch`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const branch: InstructionCompiler = withValidation(
+const branch: InstructionCompiler<BranchLine> = withValidation<BranchLine>(
 	{
 		scope: 'moduleOrFunction',
 	},
-	(line, context) => {
-		const depth = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
-		return saveByteCode(context, br(depth.value));
+	(line: BranchLine, context) => {
+		return saveByteCode(context, br(line.arguments[0].value));
 	}
 );
 

@@ -10,7 +10,7 @@ import localSet from '../wasmUtils/local/localSet';
 import { saveByteCode } from '../utils/compilation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, MapEndLine } from '../types';
 
 type MapKind = 'int32' | 'float32' | 'float64';
 
@@ -45,16 +45,14 @@ const eqOpcode: Record<MapKind, WASMInstruction> = {
  *
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const mapEnd: InstructionCompiler = withValidation(
+const mapEnd: InstructionCompiler<MapEndLine> = withValidation<MapEndLine>(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
 		minOperands: 1,
 	},
-	(line, context) => {
-		const outputType = (
-			line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>
-		).value;
+	(line: MapEndLine, context) => {
+		const outputType = line.arguments[0].value;
 		const outputIsInteger = outputType === 'int';
 		const outputIsFloat64 = outputType === 'float64';
 		const outputKind: MapKind = outputIsInteger ? 'int32' : outputIsFloat64 ? 'float64' : 'float32';

@@ -2,16 +2,15 @@ import { ArgumentType } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, WasmLine } from '../types';
 
 /**
  * Instruction compiler for `wasm`.
  * @see [Instruction docs](../../docs/instructions/low-level.md)
  */
-const wasm: InstructionCompiler = function (line, context) {
-	const opcode = line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>;
-	return saveByteCode(context, [opcode.value]);
-};
+const wasm = function (line: WasmLine, context) {
+	return saveByteCode(context, [line.arguments[0].value]);
+} as InstructionCompiler<WasmLine>;
 
 export default wasm;
 

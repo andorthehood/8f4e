@@ -3,18 +3,18 @@ import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, ParamLine } from '../types';
 
 /**
  * Instruction compiler for `param`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const param: InstructionCompiler = withValidation(
+const param: InstructionCompiler<ParamLine> = withValidation<ParamLine>(
 	{
 		scope: 'function',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
-	(line, context) => {
+	(line: ParamLine, context) => {
 		// Validate param comes immediately after function (before any non-param locals or bytecode)
 		//
 		// Parameters must be declared before any other function body code:
@@ -34,10 +34,8 @@ const param: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
 		}
 
-		const paramType = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
-			.value as 'int' | 'float' | 'float64';
-		const paramName = (line.arguments[1] as Extract<(typeof line.arguments)[number], { type: ArgumentType.IDENTIFIER }>)
-			.value;
+		const paramType = line.arguments[0].value as 'int' | 'float' | 'float64';
+		const paramName = line.arguments[1].value;
 
 		// Check for duplicate parameter names
 		if (context.locals[paramName] !== undefined) {

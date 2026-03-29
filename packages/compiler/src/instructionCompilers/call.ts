@@ -5,20 +5,19 @@ import wasmCall from '../wasmUtils/call/call';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, CompilationContext, InstructionCompiler } from '../types';
+import type { AST, CallLine, CompilationContext, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `call`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const call: InstructionCompiler = withValidation(
+const call: InstructionCompiler<CallLine> = withValidation<CallLine>(
 	{
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	},
-	(line, context) => {
-		const functionName = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
-		const targetFunction = context.namespace.functions?.[functionName];
+	(line: CallLine, context) => {
+		const targetFunction = context.namespace.functions?.[line.arguments[0].value];
 
 		if (!targetFunction) {
 			throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);

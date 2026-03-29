@@ -6,9 +6,9 @@ import semanticConstants from './constants';
 import semanticModuleEnd from './moduleEnd';
 import semanticConstantsEnd from './constantsEnd';
 
-import type { AST, CompilationContext } from '../../types';
+import type { CompilationContext, NormalizedSemanticInstructionLine } from '../../types';
 
-export default function applySemanticInstruction(line: AST[number], context: CompilationContext) {
+export default function applySemanticInstruction(line: NormalizedSemanticInstructionLine, context: CompilationContext) {
 	switch (line.instruction) {
 		case 'const':
 			semanticConst(line, context);

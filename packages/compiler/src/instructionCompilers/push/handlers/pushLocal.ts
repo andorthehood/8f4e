@@ -3,12 +3,10 @@ import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';
 import localGet from '../../../wasmUtils/local/localGet';
 
-import type { AST, CompilationContext } from '../../../types';
+import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
-export default function pushLocal(line: AST[number], context: CompilationContext): CompilationContext {
-	const argument = line.arguments[0] as { value: string };
-	// Existence guaranteed by normalizeCompileTimeArguments
-	const local = context.locals[argument.value]!;
+export default function pushLocal(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
+	const local = context.locals[line.arguments[0].value]!;
 
 	context.stack.push({ isInteger: local.isInteger, isNonZero: false });
 	return saveByteCode(context, localGet(local.index));
@@ -31,7 +29,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'temp' }],
-				} as AST[number],
+				} as PushIdentifierLine,
 				context
 			);
 
