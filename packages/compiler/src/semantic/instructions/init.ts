@@ -6,6 +6,8 @@ import resolveIntermodularReferenceValue from '../../utils/resolveIntermodularRe
 
 export default function semanticInit(line: AST[number], context: CompilationContext) {
 	const targetIdentifier = (line.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
+	// TODO: normalization now guarantees argument[1] is reduced to LITERAL or IDENTIFIER here.
+	// Replace this cast with a tighter normalized-line contract when TODO 345 lands.
 	const defaultArg = line.arguments[1] as
 		| { type: ArgumentType.LITERAL; value: number }
 		| { type: ArgumentType.IDENTIFIER; value: string };
