@@ -11,7 +11,6 @@ import {
 	runAfterGraphicDataWidthCalculation,
 	runBeforeGraphicDataWidthCalculation,
 } from '../directives/registry';
-import { resolveViewportAnchoredPosition } from '../directives/viewport/resolve';
 import inputs from '../inputs/updateGraphicData';
 import outputs from '../outputs/updateGraphicData';
 import blockHighlights from '../blockHighlights/updateGraphicData';
@@ -160,45 +159,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.cursor.y = gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid;
 		graphicData.groupName = directiveState.blockState.groupName;
 		graphicData.groupNonstick = directiveState.blockState.groupNonstick;
-
-		// Sync viewportAnchoredCodeBlocks when the anchor status of this block changes.
-		const previousAnchor = graphicData.viewportAnchor;
-		const nextAnchor = directiveState.blockState.viewportAnchor;
-		graphicData.viewportAnchor = nextAnchor;
-		if (previousAnchor !== nextAnchor) {
-			if (nextAnchor) {
-				// Block became anchored — add to the derived list if not already present.
-				if (!state.graphicHelper.viewportAnchoredCodeBlocks.includes(graphicData)) {
-					state.graphicHelper.viewportAnchoredCodeBlocks.push(graphicData);
-				}
-			} else {
-				// Block lost its anchor — remove from the derived list.
-				state.graphicHelper.viewportAnchoredCodeBlocks = state.graphicHelper.viewportAnchoredCodeBlocks.filter(
-					b => b !== graphicData
-				);
-			}
-		}
+		graphicData.viewportAnchor = directiveState.blockState.viewportAnchor;
 
 		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
-
-		// For viewport-anchored blocks, recompute pixel x/y now that width/height are known.
-		if (graphicData.viewportAnchor) {
-			const pos = resolveViewportAnchoredPosition({
-				anchor: graphicData.viewportAnchor,
-				posX: graphicData.gridX,
-				posY: graphicData.gridY,
-				viewportX: state.viewport.x,
-				viewportY: state.viewport.y,
-				viewportWidth: state.viewport.width,
-				viewportHeight: state.viewport.height,
-				blockWidth: graphicData.width,
-				blockHeight: graphicData.height,
-				vGrid: state.viewport.vGrid,
-				hGrid: state.viewport.hGrid,
-			});
-			graphicData.x = pos.x;
-			graphicData.y = pos.y;
-		}
 	};
 
 	const updateGraphicsAll = function () {
@@ -318,9 +281,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		store.set('graphicHelper.codeBlocks', codeBlocks);
 
-		// Build the derived viewport-anchored list from scratch for the new block set.
-		state.graphicHelper.viewportAnchoredCodeBlocks = codeBlocks.filter(block => block.viewportAnchor !== undefined);
-
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
 		if (homeBlock) {
@@ -388,29 +348,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 	updateErrorMessages();
 
-	// Recompute pixel position for viewport-anchored blocks when the viewport moves or resizes.
-	// This is a lightweight pass that only updates x/y — no syntax highlighting or widget recalc.
-	// Uses the pre-filtered viewportAnchoredCodeBlocks list to avoid scanning all blocks.
-	const recomputeViewportAnchoredPositions = function () {
-		for (const codeBlock of state.graphicHelper.viewportAnchoredCodeBlocks) {
-			const pos = resolveViewportAnchoredPosition({
-				anchor: codeBlock.viewportAnchor!,
-				posX: codeBlock.gridX,
-				posY: codeBlock.gridY,
-				viewportX: state.viewport.x,
-				viewportY: state.viewport.y,
-				viewportWidth: state.viewport.width,
-				viewportHeight: state.viewport.height,
-				blockWidth: codeBlock.width,
-				blockHeight: codeBlock.height,
-				vGrid: state.viewport.vGrid,
-				hGrid: state.viewport.hGrid,
-			});
-			codeBlock.x = pos.x;
-			codeBlock.y = pos.y;
-		}
-	};
-
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
@@ -418,8 +355,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		state.graphicHelper.textureCacheEpoch += 1;
 		recomputePixelCoordinatesAndUpdateGraphics();
 	});
-	events.on('viewportMoved', recomputeViewportAnchoredPositions);
-	events.on('viewportResized', recomputeViewportAnchoredPositions);
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);

@@ -6,6 +6,7 @@ import codeEditing from './features/code-editing/effect';
 import _switch from './features/code-blocks/features/directives/switch/interaction';
 import button from './features/code-blocks/features/directives/button/interaction';
 import slider from './features/code-blocks/features/directives/slider/interaction';
+import viewportDirectiveEffect from './features/code-blocks/features/directives/viewport/effect';
 import codeBlockCreator from './features/code-blocks/features/codeBlockCreator/effect';
 import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/effect';
 import codeBlockNavigation from './features/code-blocks/features/codeBlockNavigation/effect';
@@ -94,6 +95,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	runtimeDirectiveErrorsEffect(store);
 	compiler(store, events);
 	graphicHelper(store, events);
+	viewportDirectiveEffect(store, events);
 	editorConfigModule(store, events);
 	codeEditing(store, events);
 	projectExport(store, events);
