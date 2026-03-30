@@ -538,21 +538,33 @@ if (import.meta.vitest) {
 		it('parses compile-time expressions as dedicated AST nodes', () => {
 			expect(parseArgument('123*sizeof(name)')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: '123',
+				lhs: { type: ArgumentType.LITERAL, value: 123, isInteger: true },
 				operator: '*',
-				rhs: 'sizeof(name)',
+				rhs: {
+					type: ArgumentType.IDENTIFIER,
+					value: 'sizeof(name)',
+					referenceKind: 'element-word-size',
+					scope: 'local',
+					targetMemoryId: 'name',
+				},
 			});
 			expect(parseArgument('2*SIZE')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: '2',
+				lhs: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
 				operator: '*',
-				rhs: 'SIZE',
+				rhs: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
 			});
 			expect(parseArgument('SIZE*sizeof(name)')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: 'SIZE',
+				lhs: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
 				operator: '*',
-				rhs: 'sizeof(name)',
+				rhs: {
+					type: ArgumentType.IDENTIFIER,
+					value: 'sizeof(name)',
+					referenceKind: 'element-word-size',
+					scope: 'local',
+					targetMemoryId: 'name',
+				},
 			});
 		});
 
