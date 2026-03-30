@@ -1,22 +1,7 @@
-import {
-	hasMemoryReferencePrefix,
-	extractMemoryReferenceBase,
-	isMemoryPointerSyntax,
-	extractMemoryPointerBase,
-} from '@8f4e/tokenizer';
-
 import type { MemoryMap, ArgumentIdentifier } from '../types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return Object.hasOwn(memoryMap, name);
-}
-
-export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return hasMemoryReferencePrefix(name) && Object.hasOwn(memoryMap, extractMemoryReferenceBase(name));
-}
-
-export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return isMemoryPointerSyntax(name) && Object.hasOwn(memoryMap, extractMemoryPointerBase(name));
 }
 
 export function resolveIdentifierMemoryKind(
@@ -54,42 +39,6 @@ if (import.meta.vitest) {
 			it('returns false for non-existing memory identifiers', () => {
 				expect(isMemoryIdentifier(mockMemory, 'baz')).toBe(false);
 				expect(isMemoryIdentifier(mockMemory, '')).toBe(false);
-			});
-		});
-
-		describe('isMemoryReferenceIdentifier', () => {
-			it('returns true for memory references with & prefix', () => {
-				expect(isMemoryReferenceIdentifier(mockMemory, '&foo')).toBe(true);
-				expect(isMemoryReferenceIdentifier(mockMemory, '&bar')).toBe(true);
-			});
-
-			it('returns true for memory references with & suffix', () => {
-				expect(isMemoryReferenceIdentifier(mockMemory, 'foo&')).toBe(true);
-				expect(isMemoryReferenceIdentifier(mockMemory, 'bar&')).toBe(true);
-			});
-
-			it('returns false for non-existing memory references', () => {
-				expect(isMemoryReferenceIdentifier(mockMemory, '&baz')).toBe(false);
-				expect(isMemoryReferenceIdentifier(mockMemory, 'baz&')).toBe(false);
-			});
-
-			it('returns false for plain identifiers', () => {
-				expect(isMemoryReferenceIdentifier(mockMemory, 'foo')).toBe(false);
-			});
-		});
-
-		describe('isMemoryPointerIdentifier', () => {
-			it('returns true for memory pointers with * prefix', () => {
-				expect(isMemoryPointerIdentifier(mockMemory, '*foo')).toBe(true);
-				expect(isMemoryPointerIdentifier(mockMemory, '*bar')).toBe(true);
-			});
-
-			it('returns false for non-existing memory pointers', () => {
-				expect(isMemoryPointerIdentifier(mockMemory, '*baz')).toBe(false);
-			});
-
-			it('returns false for plain identifiers', () => {
-				expect(isMemoryPointerIdentifier(mockMemory, 'foo')).toBe(false);
 			});
 		});
 
