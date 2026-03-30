@@ -144,6 +144,7 @@ export default function findClosestCodeBlockInDirection(
 
 	const candidates = codeBlocks.filter(block => {
 		if (block === selectedBlock) return false;
+		if (block.viewportAnchor) return false;
 
 		const candidateBounds = getBlockBounds(block);
 
