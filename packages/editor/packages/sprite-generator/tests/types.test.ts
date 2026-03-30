@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { minimalColorScheme, config8x16, config6x10 } from './utils/testFixtures';
+import { minimalColorScheme, config8x16, config6x10, config16x32 } from './utils/testFixtures';
 
 import { Command } from '../src/types';
 
@@ -170,9 +170,18 @@ describe('Types and Enums', () => {
 			expect(config6x10.colorScheme.icons).toBeDefined();
 		});
 
-		it('should support both font types', () => {
-			expect(['6x10', '8x16']).toContain(config8x16.font);
-			expect(['6x10', '8x16']).toContain(config6x10.font);
+		it('should validate 16x32 font config', () => {
+			expect(config16x32.font).toBe('16x32');
+			expect(config16x32.colorScheme).toBeDefined();
+			expect(config16x32.colorScheme.text).toBeDefined();
+			expect(config16x32.colorScheme.fill).toBeDefined();
+			expect(config16x32.colorScheme.icons).toBeDefined();
+		});
+
+		it('should support all font types', () => {
+			expect(['6x10', '8x16', '16x32']).toContain(config8x16.font);
+			expect(['6x10', '8x16', '16x32']).toContain(config6x10.font);
+			expect(['6x10', '8x16', '16x32']).toContain(config16x32.font);
 		});
 	});
 });

@@ -5,6 +5,8 @@ import { fontMetadata as ascii8x16Metadata } from '../src/fonts/8x16/generated/a
 import { fontMetadata as glyphs8x16Metadata } from '../src/fonts/8x16/generated/glyphs';
 import { fontMetadata as ascii6x10Metadata } from '../src/fonts/6x10/generated/ascii';
 import { fontMetadata as glyphs6x10Metadata } from '../src/fonts/6x10/generated/glyphs';
+import { fontMetadata as ascii16x32Metadata } from '../src/fonts/16x32/generated/ascii';
+import { fontMetadata as glyphs16x32Metadata } from '../src/fonts/16x32/generated/glyphs';
 
 describe('font-decoder', () => {
 	describe('decodeFontBase64', () => {
@@ -42,6 +44,22 @@ describe('font-decoder', () => {
 
 			expect(decoded).toBeInstanceOf(Array);
 			expect(decoded.length).toBe(glyphs6x10Metadata.glyphCount * glyphs6x10Metadata.characterHeight);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
+		it('should decode 16x32 ASCII font correctly', () => {
+			const decoded = decodeFontBase64(ascii16x32Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(ascii16x32Metadata.glyphCount * ascii16x32Metadata.characterHeight);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
+		it('should decode 16x32 glyphs font correctly', () => {
+			const decoded = decodeFontBase64(glyphs16x32Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(glyphs16x32Metadata.glyphCount * glyphs16x32Metadata.characterHeight);
 			expect(decoded.every(val => typeof val === 'number')).toBe(true);
 		});
 
@@ -89,6 +107,11 @@ describe('font-decoder', () => {
 			expect(ascii6x10Metadata.characterHeight).toBe(10);
 			expect(ascii6x10Metadata.glyphCount).toBe(128);
 			expect(ascii6x10Metadata.bytesPerValue).toBe(1);
+
+			expect(ascii16x32Metadata.characterWidth).toBe(16);
+			expect(ascii16x32Metadata.characterHeight).toBe(32);
+			expect(ascii16x32Metadata.glyphCount).toBe(128);
+			expect(ascii16x32Metadata.bytesPerValue).toBe(2);
 		});
 
 		it('should decode specific known patterns correctly', () => {
@@ -139,11 +162,20 @@ describe('font-decoder', () => {
 			expect(glyphs6x10Metadata.characterHeight).toBe(10);
 		});
 
+		it('should have consistent dimensions for 16x32 fonts', () => {
+			expect(ascii16x32Metadata.characterWidth).toBe(16);
+			expect(ascii16x32Metadata.characterHeight).toBe(32);
+			expect(glyphs16x32Metadata.characterWidth).toBe(16);
+			expect(glyphs16x32Metadata.characterHeight).toBe(32);
+		});
+
 		it('should have base64 data', () => {
 			expect(ascii8x16Metadata.base64Data.length).toBeGreaterThan(0);
 			expect(glyphs8x16Metadata.base64Data.length).toBeGreaterThan(0);
 			expect(ascii6x10Metadata.base64Data.length).toBeGreaterThan(0);
 			expect(glyphs6x10Metadata.base64Data.length).toBeGreaterThan(0);
+			expect(ascii16x32Metadata.base64Data.length).toBeGreaterThan(0);
+			expect(glyphs16x32Metadata.base64Data.length).toBeGreaterThan(0);
 		});
 
 		it('should have valid bytesPerValue', () => {
@@ -151,6 +183,8 @@ describe('font-decoder', () => {
 			expect([1, 2]).toContain(glyphs8x16Metadata.bytesPerValue);
 			expect([1, 2]).toContain(ascii6x10Metadata.bytesPerValue);
 			expect([1, 2]).toContain(glyphs6x10Metadata.bytesPerValue);
+			expect([1, 2]).toContain(ascii16x32Metadata.bytesPerValue);
+			expect([1, 2]).toContain(glyphs16x32Metadata.bytesPerValue);
 		});
 	});
 });

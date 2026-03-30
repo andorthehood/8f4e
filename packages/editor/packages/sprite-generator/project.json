@@ -7,10 +7,11 @@
       "executor": "nx:run-commands",
       "outputs": [
         "{projectRoot}/src/fonts/8x16/generated",
-        "{projectRoot}/src/fonts/6x10/generated"
+        "{projectRoot}/src/fonts/6x10/generated",
+        "{projectRoot}/src/fonts/16x32/generated"
       ],
       "options": {
-        "command": "node tools/generate-font-bitmaps.mjs",
+        "command": "node --experimental-transform-types tools/generate-font-bitmaps.mjs",
         "cwd": "{projectRoot}"
       }
     },
