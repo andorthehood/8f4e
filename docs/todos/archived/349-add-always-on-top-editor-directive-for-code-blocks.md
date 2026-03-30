@@ -3,8 +3,8 @@ title: 'TODO: Add always-on-top editor directive for code blocks'
 priority: Medium
 effort: 3-6h
 created: 2026-03-30
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-30
 ---
 
 # TODO: Add always-on-top editor directive for code blocks
