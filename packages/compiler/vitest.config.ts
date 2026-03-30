@@ -6,6 +6,7 @@ export default defineConfig(
 		include: [
 			'tests/**/*.test.ts',
 			'src/graphOptimizer.ts',
+			'src/semantic/**/*.test.ts',
 			'src/withValidation/**/*.ts',
 			'src/wasmUtils/**/*.ts',
 			'src/wasmBuilders/**/*.ts',
