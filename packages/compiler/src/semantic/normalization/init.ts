@@ -20,7 +20,7 @@ export default function normalizeInit(line: InitLine, context: CompilationContex
 		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
 		if (deferred) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-				identifier: `${argument.lhs.value}${argument.operator}${argument.rhs.value}`,
+				identifier: `${argument.left.value}${argument.operator}${argument.right.value}`,
 			});
 		}
 	}

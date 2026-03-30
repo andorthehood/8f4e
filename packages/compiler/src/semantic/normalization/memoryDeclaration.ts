@@ -36,7 +36,7 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 			const deferred = validateOrDeferCompileTimeExpression(elementCountArg, line, context);
 			if (deferred) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-					identifier: `${elementCountArg.lhs.value}${elementCountArg.operator}${elementCountArg.rhs.value}`,
+					identifier: `${elementCountArg.left.value}${elementCountArg.operator}${elementCountArg.right.value}`,
 				});
 			}
 		}
