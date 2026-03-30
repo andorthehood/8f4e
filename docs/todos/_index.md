@@ -67,8 +67,6 @@ Active todo files are listed below.
 | 320 | Add `&*name` pointee start address prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `&name` for a memory item's own start address, but pointer-typed memory still lacks a direct identifier form for the start address stored in the pointer. |
 | 321 | Add `*name&` pointee end address suffix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `name&` for a memory item's own end-address form, but pointer-typed memory still lacks a direct identifier form for the end-address form of the pointee allocation. |
 | 323 | Add `!*name` pointee min value prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `!name` for the memory item's own element-type minimum, but pointer-typed memory still lacks a direct identifier form for the minimum value of the pointee type. |
-| 324 | Add `int16*` pointer types to compiler and runtime | 🟡 | 1-2d | 2026-03-26 | The compiler currently only has coarse pointer base types such as `int*`, `float*`, and `float64*`, so pointer-aware metadata cannot represent 16-bit integer pointee semantics directly. |
-| 325 | Add literal-only `*` and `/` folding at argument parse time | 🟡 | 4-8h | 2026-03-26 | 8f4e already folds fraction-style literals like `1/2` during argument parsing, but other literal-only arithmetic such as `16*2` and `3.5*4` still falls through as identifier-shaped input instead of becoming ordinary literals in the AST. |
 | 342 | Inline intermodule address references during semantic normalization | 🟡 | 4-8h | 2026-03-27 | Intermodule address-style references such as `&module:memory`, `module:memory&`, `&module:`, and `module:&` are still deferred as raw strings instead of being rewritten to literals once cross-module layout is known. |
 ### 🟢 Low Priority
 
@@ -91,6 +89,8 @@ Active todo files are listed below.
 | 340 | Move compiler-generated hidden resources into a separate internal address space | 2026-03-27 | Hidden resources now allocate separately from user/module memory and no longer affect module layout. |
 | 319 | Add `%*name` pointee element word size prefix for pointers | 2026-03-30 | Pointer metadata now supports `%*name` for pointee element word size. |
 | 322 | Add `^*name` pointee max value prefix for pointers | 2026-03-30 | Pointer metadata now supports `^*name` for pointee max value. |
+| 324 | Add `int16*` pointer types to compiler and runtime | 2026-03-30 | Compiler, runtime metadata, and docs now support `int16*` pointer types. |
+| 325 | Add literal-only `*` and `/` folding at argument parse time | 2026-03-30 | Tokenizer now folds literal-only mul/div expressions to literals during argument parsing, with parser and compiler integration coverage. |
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 2026-03-30 | Editor/runtime cross-module memory-id plumbing now consistently uses `module:memory`; compiler metadata-operator dot syntax remains intentionally separate. |
 | 343 | Move arity and raw argument-shape validation into tokenizer | 2026-03-28 | Tokenizer now owns the syntax-only arity and raw argument-shape validation surface. |
 | 344 | Move identifier existence validation into semantic pass and shrink codegen validation | 2026-03-29 | Identifier existence validation now lives in semantic normalization/prepass instead of being rediscovered in codegen. |
