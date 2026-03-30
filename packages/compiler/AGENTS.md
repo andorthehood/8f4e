@@ -11,6 +11,7 @@
 ## Build, Test, Dev
 - From root: `npx nx run compiler:build|test|typecheck`.
 - From package directory: use `npx nx run compiler:<target>` (e.g., `npx nx run compiler:dev`).
+- JS output is bundled with Vite; declarations are emitted separately with `tsc --emitDeclarationOnly`.
 - Artifacts in `dist/` must exist before root Vite build when APIs change.
 
 ## Coding Style
