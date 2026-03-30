@@ -3,8 +3,8 @@ title: 'TODO: Add literal-only `*` and `/` folding at argument parse time'
 priority: Medium
 effort: 4-8h
 created: 2026-03-26
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-30'
 ---
 
 # TODO: Add literal-only `*` and `/` folding at argument parse time
