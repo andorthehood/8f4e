@@ -1,10 +1,8 @@
 import { SpriteCoordinates } from 'glugglug';
 
+import { createAtlasLayout } from './atlasLayout';
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
-
-const offsetX = 540;
-const offsetY = 480;
 
 export function getFeedbackScaleColors(colors: ColorScheme['icons']): string[] {
 	return [
@@ -24,10 +22,11 @@ export default function generate(
 	colors: ColorScheme['icons']
 ): DrawingCommand[] {
 	const feedbackScaleColors = getFeedbackScaleColors(colors);
+	const layout = createAtlasLayout(characterWidth, characterHeight);
 
 	return [
 		[Command.RESET_TRANSFORM],
-		[Command.TRANSLATE, offsetX, offsetY],
+		[Command.TRANSLATE, layout.feedbackScale.x, layout.feedbackScale.y],
 
 		...feedbackScaleColors.flatMap<DrawingCommand>(color => {
 			return [
@@ -53,14 +52,15 @@ export const generateLookup = function (
 	colors: ColorScheme['icons']
 ): Record<number, SpriteCoordinates> {
 	const feedbackScaleColors = getFeedbackScaleColors(colors);
+	const layout = createAtlasLayout(characterWidth, characterHeight);
 
 	return Object.fromEntries(
 		feedbackScaleColors.map((_color, index) => {
 			return [
 				index,
 				{
-					x: offsetX + index * (characterWidth * 3),
-					y: offsetY,
+					x: layout.feedbackScale.x + index * (characterWidth * 3),
+					y: layout.feedbackScale.y,
 					spriteWidth: characterWidth * 3,
 					spriteHeight: characterHeight,
 				},

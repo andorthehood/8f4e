@@ -7,6 +7,7 @@ import generatePlotter, { generateLookup as generateLookupForPlotter } from './p
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
+import { createAtlasLayout } from './atlasLayout';
 import { Command, Config, ColorScheme } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
 import { fontMetadata as ascii8x16Metadata } from './fonts/8x16/generated/ascii';
@@ -35,17 +36,31 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 	if (fontCache[font]) {
 		return fontCache[font]!;
 	}
+	if (font === '6x10') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/6x10/generated/ascii'),
+			import('./fonts/6x10/generated/glyphs'),
+		]);
+		fontCache['6x10'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 6,
+			characterHeight: 10,
+		};
+		return fontCache['6x10'];
+	}
+
 	const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-		import('./fonts/6x10/generated/ascii'),
-		import('./fonts/6x10/generated/glyphs'),
+		import('./fonts/16x32/generated/ascii'),
+		import('./fonts/16x32/generated/glyphs'),
 	]);
-	fontCache['6x10'] = {
+	fontCache['16x32'] = {
 		asciiBitmap: decodeFontBase64(asciiMetadata),
 		glyphsBitmap: decodeFontBase64(glyphsMetadata),
-		characterWidth: 6,
-		characterHeight: 10,
+		characterWidth: 16,
+		characterHeight: 32,
 	};
-	return fontCache['6x10']!;
+	return fontCache['16x32'];
 }
 
 export interface SpriteLookups extends FontLookups {
@@ -63,8 +78,9 @@ export default async function generateSprite(config: Config): Promise<{
 	characterWidth: number;
 	characterHeight: number;
 }> {
-	const canvas = new OffscreenCanvas(1024, 1024);
 	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = await loadFont(config.font);
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+	const canvas = new OffscreenCanvas(layout.canvasWidth, layout.canvasHeight);
 
 	// Use default color scheme if none provided
 	const colorScheme = config.colorScheme || defaultColorScheme;

@@ -8,8 +8,8 @@
  * the conversion logic to the client.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { fileURLToPath } from 'url';
+import { writeFileSync, mkdirSync } from 'fs';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -40,51 +40,15 @@ function asciiGlyphsToFont(asciiGlyphs, characterWidth) {
 	return asciiGlyphs.flatMap(glyph => asciiToBitmap(glyph, characterWidth));
 }
 
-/**
- * Extracts glyphs array from a TypeScript source file.
- * This is a simple parser for the known structure of our font files.
- * 
- * Note: Uses eval() to parse the array structure, but only in a controlled
- * build-time context on trusted source files. The alternative would be a full
- * TypeScript parser which would add significant complexity.
- */
-function extractGlyphsFromSource(sourceContent) {
-	// Find the glyphs array declaration
-	const glyphsMatch = sourceContent.match(/const glyphs = \[([\s\S]*?)\];/);
-	if (!glyphsMatch) {
-		throw new Error('Could not find glyphs array in source');
+async function loadGlyphsModule(modulePath) {
+	const moduleUrl = pathToFileURL(modulePath).href;
+	const module = await import(moduleUrl);
+
+	if (!Array.isArray(module.default)) {
+		throw new Error(`Expected default export from ${modulePath} to be a glyph array`);
 	}
 
-	// Parse the glyphs - they're arrays of string arrays
-	const glyphsArrayContent = glyphsMatch[1];
-
-	// Validate that the content doesn't contain dangerous patterns
-	// Block common injection patterns while allowing our expected content
-	const dangerousPatterns = [
-		/require\s*\(/,
-		/import\s+/,
-		/__dirname/,
-		/__filename/,
-		/process\./,
-		/eval\s*\(/,
-		/Function\s*\(/,
-	];
-	
-	for (const pattern of dangerousPatterns) {
-		if (pattern.test(glyphsArrayContent)) {
-			throw new Error('Font source contains potentially dangerous code patterns');
-		}
-	}
-
-	// Use eval in controlled context with trusted source files
-	// This is safe because:
-	// 1. Only runs at build time, not in browser
-	// 2. Only processes our own source files
-	// 3. Content is validated to not contain dangerous patterns
-	// 4. Alternative (full TS parser) would add significant complexity
-	const glyphs = eval(`[${glyphsArrayContent}]`);
-
-	return glyphs;
+	return module.default;
 }
 
 /**
@@ -136,33 +100,12 @@ export const fontMetadata: FontMetadata = {
 `;
 }
 
-/**
- * Process a single font directory.
- */
-function processFont(fontName, characterWidth, characterHeight) {
-	console.log(`Processing ${fontName} font...`);
-
-	const fontDir = join(projectRoot, 'src', 'fonts', fontName);
-	const asciiPath = join(fontDir, 'ascii.ts');
-	const glyphsPath = join(fontDir, 'glyphs.ts');
-
-	// Read and parse ASCII font
-	const asciiSource = readFileSync(asciiPath, 'utf-8');
-	const asciiGlyphs = extractGlyphsFromSource(asciiSource);
-	const asciiBitmap = asciiGlyphsToFont(asciiGlyphs, characterWidth);
-	const maxAsciiValue = Math.max(...asciiBitmap);
-	const asciiBytesPerValue = maxAsciiValue <= 255 ? 1 : 2;
+function writeGeneratedFont(fontName, characterWidth, characterHeight, asciiBitmap, glyphsBitmap) {
+	const asciiBytesPerValue = Math.max(...asciiBitmap) <= 255 ? 1 : 2;
+	const glyphsBytesPerValue = Math.max(...glyphsBitmap) <= 255 ? 1 : 2;
 	const asciiBase64 = fontToBase64(asciiBitmap);
-
-	// Read and parse glyphs font
-	const glyphsSource = readFileSync(glyphsPath, 'utf-8');
-	const glyphsGlyphs = extractGlyphsFromSource(glyphsSource);
-	const glyphsBitmap = asciiGlyphsToFont(glyphsGlyphs, characterWidth);
-	const maxGlyphsValue = Math.max(...glyphsBitmap);
-	const glyphsBytesPerValue = maxGlyphsValue <= 255 ? 1 : 2;
 	const glyphsBase64 = fontToBase64(glyphsBitmap);
 
-	// Generate TypeScript modules
 	const asciiModule = generateFontModule(
 		`${fontName}/ascii`,
 		characterWidth,
@@ -178,8 +121,7 @@ function processFont(fontName, characterWidth, characterHeight) {
 		glyphsBytesPerValue
 	);
 
-	// Write generated files
-	const outputDir = join(fontDir, 'generated');
+	const outputDir = join(projectRoot, 'src', 'fonts', fontName, 'generated');
 	mkdirSync(outputDir, { recursive: true });
 
 	writeFileSync(join(outputDir, 'ascii.ts'), asciiModule, 'utf-8');
@@ -188,7 +130,6 @@ function processFont(fontName, characterWidth, characterHeight) {
 	console.log(`  ✓ Generated ${fontName}/generated/ascii.ts (${asciiBase64.length} base64 chars)`);
 	console.log(`  ✓ Generated ${fontName}/generated/glyphs.ts (${glyphsBase64.length} base64 chars)`);
 
-	// Return stats
 	return {
 		fontName,
 		ascii: {
@@ -201,22 +142,48 @@ function processFont(fontName, characterWidth, characterHeight) {
 			base64Length: glyphsBase64.length,
 			bytesPerValue: glyphsBytesPerValue,
 		},
+		asciiBitmap,
+		glyphsBitmap,
 	};
+}
+
+/**
+ * Process a single font directory.
+ */
+async function processFont(fontName, characterWidth, characterHeight) {
+	console.log(`Processing ${fontName} font...`);
+
+	const fontDir = join(projectRoot, 'src', 'fonts', fontName);
+	const asciiPath = join(fontDir, 'ascii.ts');
+	const glyphsPath = join(fontDir, 'glyphs.ts');
+
+	// Read and parse ASCII font
+	const asciiGlyphs = await loadGlyphsModule(asciiPath);
+	const asciiBitmap = asciiGlyphsToFont(asciiGlyphs, characterWidth);
+
+	// Read and parse glyphs font
+	const glyphsGlyphs = await loadGlyphsModule(glyphsPath);
+	const glyphsBitmap = asciiGlyphsToFont(glyphsGlyphs, characterWidth);
+
+	return writeGeneratedFont(fontName, characterWidth, characterHeight, asciiBitmap, glyphsBitmap);
 }
 
 /**
  * Main execution.
  */
-function main() {
+async function main() {
 	console.log('Font Bitmap Generator');
 	console.log('=====================\n');
 
 	const fonts = [
 		{ name: '8x16', width: 8, height: 16 },
 		{ name: '6x10', width: 6, height: 10 },
+		{ name: '16x32', width: 16, height: 32 },
 	];
-
-	const stats = fonts.map(font => processFont(font.name, font.width, font.height));
+	const stats = [];
+	for (const font of fonts) {
+		stats.push(await processFont(font.name, font.width, font.height));
+	}
 
 	console.log('\n✓ Font generation complete!');
 	console.log('\nSummary:');
@@ -227,4 +194,4 @@ function main() {
 	});
 }
 
-main();
+await main();

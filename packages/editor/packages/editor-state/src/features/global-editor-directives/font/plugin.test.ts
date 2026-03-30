@@ -17,6 +17,13 @@ describe('@font directive', () => {
 		expect(result.errors).toEqual([]);
 	});
 
+	it('resolves the derived 16x32 font', () => {
+		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 16x32', 'moduleEnd'])], {});
+
+		expect(result.resolved.font).toBe('16x32');
+		expect(result.errors).toEqual([]);
+	});
+
 	it('allows duplicate identical values across blocks', () => {
 		const result = resolveGlobalEditorDirectives(
 			[

@@ -9,10 +9,14 @@ import {
 	createMockBitmap,
 } from './utils/testHelpers';
 
+import { createAtlasLayout } from '../src/atlasLayout';
 import generateBackground, { generateLookup } from '../src/background';
 import { Command } from '../src/types';
 
 describe('background module', () => {
+	const layout8x16 = createAtlasLayout(characterDimensions8x16.width, characterDimensions8x16.height);
+	const layout6x10 = createAtlasLayout(characterDimensions6x10.width, characterDimensions6x10.height);
+
 	describe('generateBackground function', () => {
 		const mockGlyphs = createMockBitmap(256);
 
@@ -30,7 +34,7 @@ describe('background module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 340]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [layout8x16.background.x, layout8x16.background.y]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -132,7 +136,7 @@ describe('background module', () => {
 
 			// Should have initial positioning translate
 			const initialTranslate = translateCommands[0];
-			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [0, 340]);
+			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [layout8x16.background.x, layout8x16.background.y]);
 
 			// Should have horizontal movement translates (character width, 0)
 			const horizontalTranslates = translateCommands.filter(
@@ -256,8 +260,8 @@ describe('background module', () => {
 
 			validateSpriteCoordinates(
 				backgroundCoordinate,
-				0, // offsetX
-				340, // offsetY
+				layout8x16.background.x,
+				layout8x16.background.y,
 				characterDimensions8x16.width * 64, // spriteWidth
 				characterDimensions8x16.height * 32 // spriteHeight
 			);
@@ -270,8 +274,8 @@ describe('background module', () => {
 
 			validateSpriteCoordinates(
 				backgroundCoordinate,
-				0, // offsetX
-				340, // offsetY
+				layout6x10.background.x,
+				layout6x10.background.y,
 				characterDimensions6x10.width * 64, // spriteWidth
 				characterDimensions6x10.height * 32 // spriteHeight
 			);
@@ -282,10 +286,10 @@ describe('background module', () => {
 			const lookup6x10 = generateLookup(6, 10);
 
 			// Both should have same offset position
-			expect(lookup8x16[0].x).toBe(0);
-			expect(lookup8x16[0].y).toBe(340);
-			expect(lookup6x10[0].x).toBe(0);
-			expect(lookup6x10[0].y).toBe(340);
+			expect(lookup8x16[0].x).toBe(layout8x16.background.x);
+			expect(lookup8x16[0].y).toBe(layout8x16.background.y);
+			expect(lookup6x10[0].x).toBe(layout6x10.background.x);
+			expect(lookup6x10[0].y).toBe(layout6x10.background.y);
 
 			// But different dimensions
 			expect(lookup8x16[0].spriteWidth).toBe(8 * 64);
