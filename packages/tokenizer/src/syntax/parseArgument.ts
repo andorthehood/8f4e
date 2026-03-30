@@ -98,6 +98,13 @@ export type ArgumentCompileTimeExpression = {
 	left: CompileTimeOperand;
 	operator: '*' | '/';
 	right: CompileTimeOperand;
+	/**
+	 * Module IDs referenced by intermodular operands in this expression.
+	 * Pre-computed by the tokenizer so that compiler consumers (module sort, namespace
+	 * collection, intermodule deferral) can read this field directly instead of
+	 * inspecting each operand's type and referenceKind themselves.
+	 */
+	intermoduleIds: ReadonlyArray<string>;
 };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;
@@ -416,11 +423,20 @@ export function parseArgument(argument: string): Argument {
 
 			const compileTimeExpression = parseConstantMulDivExpression(argument);
 			if (compileTimeExpression !== null) {
+				const left = parseCompileTimeOperand(compileTimeExpression.lhs);
+				const right = parseCompileTimeOperand(compileTimeExpression.rhs);
+				const intermoduleIds: string[] = [];
+				for (const operand of [left, right]) {
+					if (operand.type === ArgumentType.IDENTIFIER && operand.scope === 'intermodule' && operand.targetModuleId) {
+						intermoduleIds.push(operand.targetModuleId);
+					}
+				}
 				return {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					left: parseCompileTimeOperand(compileTimeExpression.lhs),
+					left,
 					operator: compileTimeExpression.operator,
-					right: parseCompileTimeOperand(compileTimeExpression.rhs),
+					right,
+					intermoduleIds,
 				};
 			}
 
@@ -553,12 +569,14 @@ if (import.meta.vitest) {
 					scope: 'local',
 					targetMemoryId: 'name',
 				},
+				intermoduleIds: [],
 			});
 			expect(parseArgument('2*SIZE')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
 				left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
 				operator: '*',
 				right: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				intermoduleIds: [],
 			});
 			expect(parseArgument('SIZE*sizeof(name)')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
@@ -571,6 +589,24 @@ if (import.meta.vitest) {
 					scope: 'local',
 					targetMemoryId: 'name',
 				},
+				intermoduleIds: [],
+			});
+		});
+
+		it('populates intermoduleIds for intermodular operands', () => {
+			expect(parseArgument('2*sizeof(source:buffer)')).toEqual({
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				operator: '*',
+				right: {
+					type: ArgumentType.IDENTIFIER,
+					value: 'sizeof(source:buffer)',
+					referenceKind: 'intermodular-element-word-size',
+					scope: 'intermodule',
+					targetModuleId: 'source',
+					targetMemoryId: 'buffer',
+				},
+				intermoduleIds: ['source'],
 			});
 		});
 

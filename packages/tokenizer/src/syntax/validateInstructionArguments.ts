@@ -174,6 +174,7 @@ if (import.meta.vitest) {
 						left: parseCompileTimeOperand('SIZE'),
 						operator: '*',
 						right: parseCompileTimeOperand('2'),
+						intermoduleIds: [],
 					},
 				])
 			).not.toThrow();
