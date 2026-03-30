@@ -43,12 +43,9 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -240,12 +237,9 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -486,12 +480,9 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 12,
       },
     ],
     "instruction": "push",
