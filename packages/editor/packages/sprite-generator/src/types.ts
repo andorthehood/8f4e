@@ -85,7 +85,7 @@ export interface ColorScheme {
 	};
 }
 
-export type Font = '6x10' | '8x16';
+export type Font = '6x10' | '8x16' | '16x32';
 
 export interface Config {
 	colorScheme?: ColorScheme;
