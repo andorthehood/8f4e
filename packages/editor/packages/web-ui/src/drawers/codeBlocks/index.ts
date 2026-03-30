@@ -111,7 +111,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					drawPianoKeyboards(engine, state, codeBlock, memoryViews);
 				},
 				// Enable caching only when the block is NOT selected
-				state.graphicHelper.selectedCodeBlock !== codeBlock
+				state.graphicHelper.selectedCodeBlock !== codeBlock,
+				codeBlock.opacity
 			);
 
 			drawErrorMessages(engine, state, codeBlock);
