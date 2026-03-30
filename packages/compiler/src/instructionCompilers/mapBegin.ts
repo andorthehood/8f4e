@@ -1,4 +1,4 @@
-import { ArgumentType, BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '../types';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -36,6 +36,7 @@ export default mapBegin;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('mapBegin instruction compiler', () => {
 		it('opens a map block for int input type', () => {
@@ -46,7 +47,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapBegin',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+					arguments: [classifyIdentifier('int')],
 				} as AST[number],
 				context
 			);
@@ -64,7 +65,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapBegin',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
+					arguments: [classifyIdentifier('float')],
 				} as AST[number],
 				context
 			);
@@ -82,7 +83,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapBegin',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float64' }],
+					arguments: [classifyIdentifier('float64')],
 				} as AST[number],
 				context
 			);

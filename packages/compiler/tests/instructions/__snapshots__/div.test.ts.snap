@@ -5,6 +5,8 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "div",
       },
@@ -17,6 +19,8 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -29,6 +33,8 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },
@@ -41,6 +47,8 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -53,6 +61,10 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -65,6 +77,8 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -77,6 +91,8 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },
@@ -198,6 +214,8 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "div",
       },
@@ -210,6 +228,8 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -222,6 +242,8 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },
@@ -234,6 +256,8 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -246,6 +270,10 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -258,6 +286,8 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -270,6 +300,8 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },

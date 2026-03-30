@@ -5,6 +5,8 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -17,6 +19,8 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -36,6 +40,10 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -48,6 +56,8 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "getFortyTwo",
       },
@@ -169,6 +179,8 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -181,6 +193,8 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -200,6 +214,10 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -212,6 +230,8 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "getDoublePI",
       },
@@ -336,6 +356,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -348,6 +370,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -367,6 +391,10 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -379,6 +407,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "getTwo",
       },
@@ -391,6 +421,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "getThree",
       },
@@ -523,6 +555,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -535,6 +569,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -547,6 +583,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -566,6 +604,10 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -578,6 +620,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -590,6 +634,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "double",
       },
@@ -730,6 +776,8 @@ exports[`function can call another function with its signature and wasm index av
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -742,6 +790,8 @@ exports[`function can call another function with its signature and wasm index av
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -761,6 +811,10 @@ exports[`function can call another function with its signature and wasm index av
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -773,6 +827,8 @@ exports[`function can call another function with its signature and wasm index av
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "compute",
       },

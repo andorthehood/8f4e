@@ -5,6 +5,8 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "ensureNonZero",
       },
@@ -17,6 +19,8 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -29,6 +33,8 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -41,6 +47,10 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -53,6 +63,8 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -149,6 +161,8 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "ensureNonZero",
       },
@@ -161,6 +175,8 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -173,6 +189,8 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -185,6 +203,10 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -197,6 +219,8 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },

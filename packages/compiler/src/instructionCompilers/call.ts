@@ -1,5 +1,4 @@
 import { ErrorCode, getError } from '../compilerError';
-import { ArgumentType } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import wasmCall from '../wasmUtils/call/call';
 import { withValidation } from '../withValidation';
@@ -61,6 +60,7 @@ export default call;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('call instruction compiler', () => {
 		it('emits call bytecode and pushes returns', () => {
@@ -81,7 +81,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'call',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo' }],
+					arguments: [classifyIdentifier('foo')],
 				} as AST[number],
 				context
 			);
@@ -110,7 +110,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'call',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo64' }],
+					arguments: [classifyIdentifier('foo64')],
 				} as AST[number],
 				context
 			);
@@ -138,7 +138,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'call',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo64' }],
+						arguments: [classifyIdentifier('foo64')],
 					} as AST[number],
 					context
 				);

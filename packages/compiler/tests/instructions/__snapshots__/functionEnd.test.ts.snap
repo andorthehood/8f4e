@@ -5,6 +5,8 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -17,6 +19,8 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -36,6 +40,10 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -48,6 +56,8 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "addTwo",
       },
@@ -171,6 +181,8 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -183,6 +195,8 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -202,6 +216,10 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -214,6 +232,8 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "getPi",
       },
@@ -335,6 +355,8 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -347,6 +369,8 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -366,6 +390,10 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -378,6 +406,8 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "getFortyTwo",
       },
