@@ -48,12 +48,9 @@ exports[`compiler > compileModules 1`] = `
             "value": "in",
           },
           {
-            "isEndAddress": false,
-            "referenceKind": "memory-reference",
-            "scope": "local",
-            "targetMemoryId": "defaultValue",
-            "type": "identifier",
-            "value": "&defaultValue",
+            "isInteger": true,
+            "type": "literal",
+            "value": 0,
           },
         ],
         "instruction": "int*",
@@ -126,12 +123,9 @@ exports[`compiler > compileModules 1`] = `
       {
         "arguments": [
           {
-            "isEndAddress": false,
-            "referenceKind": "memory-reference",
-            "scope": "local",
-            "targetMemoryId": "out",
-            "type": "identifier",
-            "value": "&out",
+            "isInteger": true,
+            "type": "literal",
+            "value": 8,
           },
         ],
         "instruction": "push",
