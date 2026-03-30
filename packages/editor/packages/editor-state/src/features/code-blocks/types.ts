@@ -281,6 +281,11 @@ export interface CodeBlockGraphicData {
 	 * Undefined when no valid `@viewport` directive is present (world-space placement).
 	 */
 	viewportAnchor?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+	/**
+	 * When true, this block belongs to the always-on-top z-order partition and renders above
+	 * all normal blocks. Set by `; @alwaysOnTop`. Defaults to false.
+	 */
+	alwaysOnTop: boolean;
 }
 
 /**

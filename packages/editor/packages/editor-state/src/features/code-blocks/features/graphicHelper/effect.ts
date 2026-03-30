@@ -161,6 +161,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.groupName = directiveState.blockState.groupName;
 		graphicData.groupNonstick = directiveState.blockState.groupNonstick;
 		graphicData.viewportAnchor = directiveState.blockState.viewportAnchor;
+		graphicData.alwaysOnTop = directiveState.blockState.alwaysOnTop ?? false;
 
 		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
 	};
@@ -276,12 +277,16 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				isHome: directiveState.blockState.isHome,
 				isFavorite: directiveState.blockState.isFavorite,
 				opacity: directiveState.blockState.opacity,
+				alwaysOnTop: directiveState.blockState.alwaysOnTop ?? false,
 				viewportAnchor: directiveState.blockState.viewportAnchor,
 				parsedDirectives: blockParsedDirectives,
 			});
 		});
 
-		store.set('graphicHelper.codeBlocks', codeBlocks);
+		// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
+		const partitionedCodeBlocks = [...codeBlocks.filter(b => !b.alwaysOnTop), ...codeBlocks.filter(b => b.alwaysOnTop)];
+
+		store.set('graphicHelper.codeBlocks', partitionedCodeBlocks);
 
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);

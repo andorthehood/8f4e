@@ -213,6 +213,7 @@ export function pasteMultipleBlocks(
 			y: gridY * state.viewport.hGrid,
 			creationIndex,
 			disabled,
+			alwaysOnTop: hasDirective(code, 'alwaysOnTop'),
 		});
 
 		// Add block immediately so next iteration's ID uniqueness check sees it
@@ -220,6 +221,12 @@ export function pasteMultipleBlocks(
 		newBlocks.push(codeBlock);
 	}
 
+	// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
+	const sorted = [
+		...state.graphicHelper.codeBlocks.filter(b => !b.alwaysOnTop),
+		...state.graphicHelper.codeBlocks.filter(b => b.alwaysOnTop),
+	];
+
 	// Trigger single store update with all new blocks
-	store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks]);
+	store.set('graphicHelper.codeBlocks', sorted);
 }
