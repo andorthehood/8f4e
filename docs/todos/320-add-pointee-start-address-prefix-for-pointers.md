@@ -90,8 +90,8 @@ Expected semantics:
 
 ## Related Items
 
-- **Related**: [319-add-pointee-element-word-size-prefix-for-pointers.md](/Users/andorpolgar/git/8f4e/docs/todos/319-add-pointee-element-word-size-prefix-for-pointers.md)
-- **Related**: [146-investigate-index-arithmetic-support.md](/Users/andorpolgar/git/8f4e/docs/todos/146-investigate-index-arithmetic-support.md)
+- **Related**: `docs/todos/archived/319-add-pointee-element-word-size-prefix-for-pointers.md`
+- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
 
 ## Notes
 

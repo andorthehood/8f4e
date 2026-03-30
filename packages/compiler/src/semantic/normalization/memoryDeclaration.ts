@@ -15,7 +15,7 @@ import { ErrorCode, getError } from '../../compilerError';
  * Validates intermodule references in the default value if present.
  */
 export default function normalizeMemoryDeclaration(line: AST[number], context: CompilationContext): AST[number] {
-	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0, 1]);
+	let { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0, 1]);
 
 	for (const index of [0, 1]) {
 		const argument = normalized.arguments[index];
@@ -27,6 +27,17 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 		}
 		if (index === 1 && argument?.type === ArgumentType.IDENTIFIER) {
 			validateIntermoduleAddressReference(argument, line, context);
+
+			// If the argument could not be folded to a literal (referenceKind is an address-style
+			// intermodule ref whose target module has not yet been laid out), strip the default
+			// from the line. The deferred state is owned here rather than relying on
+			// parseMemoryInstructionArguments to fabricate a placeholder 0.
+			if (
+				argument.referenceKind === 'intermodular-module-reference' ||
+				argument.referenceKind === 'intermodular-reference'
+			) {
+				normalized = { ...normalized, arguments: [normalized.arguments[0]] };
+			}
 		}
 	}
 
