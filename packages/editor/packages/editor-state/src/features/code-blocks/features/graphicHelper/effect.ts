@@ -78,6 +78,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.disabled = directiveState.blockState.disabled;
 		graphicData.isHome = directiveState.blockState.isHome;
 		graphicData.isFavorite = directiveState.blockState.isFavorite;
+		graphicData.opacity = directiveState.blockState.opacity;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
@@ -274,6 +275,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				disabled: directiveState.blockState.disabled,
 				isHome: directiveState.blockState.isHome,
 				isFavorite: directiveState.blockState.isFavorite,
+				opacity: directiveState.blockState.opacity,
 				viewportAnchor: directiveState.blockState.viewportAnchor,
 				parsedDirectives: blockParsedDirectives,
 			});

@@ -4,6 +4,7 @@ import favoriteDirective from './favorite/plugin';
 import groupDirective from './group/plugin';
 import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
+import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
 import scanDirective from './scan/plugin';
@@ -45,6 +46,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	homeDirective,
 	favoriteDirective,
 	hideDirective,
+	opacityDirective,
 	groupDirective,
 	viewportDirective,
 ];
@@ -63,6 +65,7 @@ export function deriveDirectiveState(
 			disabled: false,
 			isHome: false,
 			isFavorite: false,
+			opacity: 1,
 		},
 		displayState: {},
 		displayModel: buildDisplayModel(code),
@@ -144,6 +147,7 @@ if (import.meta.vitest) {
 				disabled: true,
 				isHome: true,
 				isFavorite: true,
+				opacity: 1,
 			});
 			expect(result.layoutContributions).toEqual([
 				{ rawRow: 4, rows: 8 },
@@ -161,6 +165,7 @@ if (import.meta.vitest) {
 				disabled: false,
 				isHome: true,
 				isFavorite: false,
+				opacity: 1,
 			});
 			expect(result.layoutContributions).toEqual([{ rawRow: 2, rows: 8 }]);
 		});

@@ -324,6 +324,45 @@ moduleEnd
 - You can manually add or remove the directive to enable/disable blocks.
 - Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
 
+### `@opacity`
+
+Set the cached replay opacity of a code block in the editor.
+
+```txt
+; @opacity <0..1>
+```
+
+When present, this directive controls the opacity of the block's cached main body when it is rendered through the cache path.
+
+**Rules:**
+- The value must be a finite number between `0` and `1` inclusive.
+- `0` means fully transparent cached replay.
+- `1` means fully opaque cached replay.
+- Missing, malformed, negative, or greater-than-`1` values are ignored and the block falls back to `1`.
+
+**Behavior:**
+- **Cached Rendering Only**: The opacity is applied only when the block is drawn from its cached texture.
+- **Uncached Rendering**: Selected blocks and any other uncached draw path ignore `@opacity` and render normally.
+- **Overlays**: Widgets and overlays drawn after the cached block body are unaffected.
+- **Cache Reuse**: Changing `@opacity` does not invalidate or recreate the cached texture because the value is applied only at replay time.
+
+**Format:**
+The canonical format is exactly: `; @opacity ${value}`
+
+Example:
+```txt
+module hud
+; @opacity 0.65
+; @pos 2 1
+output out 1
+moduleEnd
+```
+
+**Important:**
+- Only the first valid `@opacity` directive in a block takes effect; later ones are ignored.
+- This directive affects editor rendering only. It does not change compilation or serialized position/state behavior.
+- If you need full-block fading including uncached overlays, that is outside the current behavior.
+
 ### `@pos`
 
 Define the grid position of a code block in the editor.

@@ -49,6 +49,7 @@ export default function editorConfigModule(store: StateManager<State>, events: E
 					disabled: directiveState.blockState.disabled,
 					isHome: directiveState.blockState.isHome,
 					isFavorite: directiveState.blockState.isFavorite,
+					opacity: directiveState.blockState.opacity,
 					parsedDirectives,
 					creationIndex,
 					blockType,
