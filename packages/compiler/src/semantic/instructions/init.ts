@@ -1,6 +1,5 @@
 import { ErrorCode, getError } from '../../compilerError';
 import { ArgumentType, type CompilationContext, type NormalizedInitLine } from '../../types';
-import resolveIntermodularReferenceValue from '../../utils/resolveIntermodularReferenceValue';
 
 export default function semanticInit(line: NormalizedInitLine, context: CompilationContext) {
 	const targetIdentifier = line.arguments[0].value;
@@ -19,13 +18,8 @@ export default function semanticInit(line: NormalizedInitLine, context: Compilat
 
 	if (defaultArg.type === ArgumentType.LITERAL) {
 		defaultValue = defaultArg.value;
-	} else if (defaultArg.type === ArgumentType.IDENTIFIER && defaultArg.referenceKind === 'intermodular-reference') {
-		defaultValue = resolveIntermodularReferenceValue(defaultArg, line, context) ?? 0;
 	} else if (defaultArg.type === ArgumentType.IDENTIFIER) {
-		const intermodularValue = resolveIntermodularReferenceValue(defaultArg, line, context);
-		if (typeof intermodularValue === 'number') {
-			defaultValue = intermodularValue;
-		} else if (defaultArg.referenceKind === 'memory-reference' && !defaultArg.isEndAddress) {
+		if (defaultArg.referenceKind === 'memory-reference' && !defaultArg.isEndAddress) {
 			const referencedMemoryItem = context.namespace.memory[defaultArg.targetMemoryId!];
 
 			if (!referencedMemoryItem) {

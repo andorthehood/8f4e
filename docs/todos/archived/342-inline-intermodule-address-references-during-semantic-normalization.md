@@ -3,8 +3,8 @@ title: 'TODO: Inline intermodule address references during semantic normalizatio
 priority: Medium
 effort: 4-8h
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-30
 ---
 
 # TODO: Inline intermodule address references during semantic normalization

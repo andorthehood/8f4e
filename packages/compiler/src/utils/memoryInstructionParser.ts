@@ -1,7 +1,5 @@
 import { ArgumentType, type SplitByteToken } from '@8f4e/tokenizer';
 
-import resolveIntermodularReferenceValue from './resolveIntermodularReferenceValue';
-
 import { ErrorCode, getError } from '../compilerError';
 
 import type { AST, ArgumentIdentifier, ArgumentLiteral, CompilationContext, Argument } from '../types';
@@ -109,13 +107,13 @@ function resolveDefaultArgValue(arg: Argument, lineForError: AST[number], contex
 	}
 
 	switch (arg.referenceKind) {
-		case 'intermodular-reference':
+		// Intermodule address refs that semantic normalization could not yet resolve (e.g. during
+		// the collectNamespacesFromASTs layout pass when the referenced module's byteAddress is not
+		// yet available). The correct value is set later in compileModule's prepass once all
+		// module addresses are known.
 		case 'intermodular-module-reference':
-		case 'intermodular-element-count':
-		case 'intermodular-element-word-size':
-		case 'intermodular-element-max':
-		case 'intermodular-element-min':
-			return resolveIntermodularReferenceValue(arg, lineForError, context) ?? 0;
+		case 'intermodular-reference':
+			return 0;
 
 		case 'memory-reference': {
 			const memoryItem = context.namespace.memory[arg.targetMemoryId!];
