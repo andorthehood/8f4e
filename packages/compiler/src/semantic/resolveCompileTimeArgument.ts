@@ -139,18 +139,18 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 
 export function tryResolveCompileTimeArgument(namespace: Namespace, argument: Argument): Const | undefined {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const lhsConst = resolveCompileTimeOperand(argument.lhs, namespace);
-		const rhsConst = resolveCompileTimeOperand(argument.rhs, namespace);
+		const leftConst = resolveCompileTimeOperand(argument.left, namespace);
+		const rightConst = resolveCompileTimeOperand(argument.right, namespace);
 
-		if (lhsConst === undefined || rhsConst === undefined) {
+		if (leftConst === undefined || rightConst === undefined) {
 			return undefined;
 		}
 
-		if (argument.operator === '/' && rhsConst.value === 0) {
+		if (argument.operator === '/' && rightConst.value === 0) {
 			return undefined;
 		}
 
-		return evaluateConstantExpression(lhsConst, rhsConst, argument.operator);
+		return evaluateConstantExpression(leftConst, rightConst, argument.operator);
 	}
 
 	if (argument.type !== ArgumentType.IDENTIFIER) {
@@ -289,9 +289,9 @@ if (import.meta.vitest) {
 			expect(
 				tryResolveCompileTimeArgument(mockNamespace, {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('2'),
+					left: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: parseCompileTimeOperand('SIZE'),
+					right: parseCompileTimeOperand('SIZE'),
 				})
 			).toEqual({
 				value: 32,

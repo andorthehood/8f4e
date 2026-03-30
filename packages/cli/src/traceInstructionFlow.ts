@@ -67,7 +67,7 @@ function serializeArguments(line: AST[number]): InstructionTraceEntry['arguments
 		if (argument.type === 'compile_time_expression') {
 			return {
 				type: 'compile_time_expression' as const,
-				value: `${argument.lhs}${argument.operator}${argument.rhs}`,
+				value: `${argument.left.value}${argument.operator}${argument.right.value}`,
 			};
 		}
 
