@@ -317,6 +317,40 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
+	it('strips unresolvable intermodule address default from memory declaration during layout pass', () => {
+		// When the target module exists in namespaces but has not yet been laid out (no byteAddress),
+		// the default argument must be stripped rather than kept as-is for the parser to fabricate 0.
+		const context = {
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {
+					source: {
+						consts: {},
+						// No byteAddress — module not yet laid out
+						memory: {
+							buffer: { numberOfElements: 4, elementWordSize: 4, isInteger: true },
+						},
+					},
+				},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'int',
+			isMemoryDeclaration: true,
+			arguments: [classifyIdentifier('ptr'), classifyIdentifier('&source:buffer')],
+		};
+
+		const result = normalizeCompileTimeArguments(line, context);
+		// The unresolvable default must be stripped; only the name argument remains
+		expect(result.arguments).toHaveLength(1);
+		expect(result.arguments[0]).toEqual(classifyIdentifier('ptr'));
+	});
+
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with unresolved compile-time-expression default', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },

@@ -107,14 +107,6 @@ function resolveDefaultArgValue(arg: Argument, lineForError: AST[number], contex
 	}
 
 	switch (arg.referenceKind) {
-		// Intermodule address refs that semantic normalization could not yet resolve (e.g. during
-		// the collectNamespacesFromASTs layout pass when the referenced module's byteAddress is not
-		// yet available). The correct value is set later in compileModule's prepass once all
-		// module addresses are known.
-		case 'intermodular-module-reference':
-		case 'intermodular-reference':
-			return 0;
-
 		case 'memory-reference': {
 			const memoryItem = context.namespace.memory[arg.targetMemoryId!];
 			if (!memoryItem) {
@@ -303,6 +295,24 @@ if (import.meta.vitest) {
 					{
 						lineNumberBeforeMacroExpansion: 50,
 						lineNumberAfterMacroExpansion: 50,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
+		});
+
+		it('rejects unresolved intermodule address-reference identifiers that reach the parser', () => {
+			// Intermodule address refs must be resolved or stripped by normalizeMemoryDeclaration
+			// before reaching parseMemoryInstructionArguments; they must not silently return 0.
+			const intermoduleRef = classifyIdentifier('&otherModule:someVar');
+			const args: Argument[] = [classifyIdentifier('myVar'), intermoduleRef];
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 55,
+						lineNumberAfterMacroExpansion: 55,
 						instruction: 'int',
 						arguments: args,
 					},
