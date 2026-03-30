@@ -9,10 +9,13 @@ import {
 	createMockBitmap,
 } from './utils/testHelpers';
 
+import { createAtlasLayout } from '../src/atlasLayout';
 import generateIcons, { Icon, generateLookup } from '../src/icons';
 import { Command } from '../src/types';
 
 describe('icons module', () => {
+	const layout8x16 = createAtlasLayout(characterDimensions8x16.width, characterDimensions8x16.height);
+
 	describe('Icon enum', () => {
 		it('should have all required icon types', () => {
 			expect(Icon.INPUT).toBe(0);
@@ -47,7 +50,7 @@ describe('icons module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [540, 540]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [layout8x16.icons.x, layout8x16.icons.y]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -194,8 +197,8 @@ describe('icons module', () => {
 
 			validateSpriteCoordinates(
 				inputCoordinate,
-				540, // offsetX for first icon
-				540, // offsetY
+				layout8x16.icons.x,
+				layout8x16.icons.y,
 				characterDimensions8x16.width * 3, // INPUT icon spans 3 characters
 				characterDimensions8x16.height
 			);
@@ -257,7 +260,7 @@ describe('icons module', () => {
 
 			// All icons should be on the same row
 			expect(new Set(yValues).size).toBe(1);
-			expect(yValues[0]).toBe(540); // offsetY
+			expect(yValues[0]).toBe(layout8x16.icons.y);
 		});
 
 		it('should have non-overlapping X coordinates', () => {
