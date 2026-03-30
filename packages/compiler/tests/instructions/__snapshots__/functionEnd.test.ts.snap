@@ -43,12 +43,9 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -227,12 +224,9 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -409,12 +403,9 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",

@@ -43,12 +43,9 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -225,12 +222,9 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -410,12 +404,9 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -634,12 +625,9 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -850,12 +838,9 @@ exports[`function can call another function with its signature and wasm index av
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
