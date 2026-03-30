@@ -5,6 +5,8 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -17,6 +19,8 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -36,6 +40,10 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -48,6 +56,8 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "getFortyTwo",
       },
@@ -169,6 +179,8 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -181,6 +193,8 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -193,6 +207,8 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -212,6 +228,10 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -224,6 +244,8 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -236,6 +258,8 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "double",
       },
@@ -376,6 +400,8 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -388,6 +414,8 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -400,6 +428,8 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },
@@ -412,6 +442,8 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -431,6 +463,10 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -443,6 +479,8 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -455,6 +493,8 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },
@@ -467,6 +507,8 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "add",
       },

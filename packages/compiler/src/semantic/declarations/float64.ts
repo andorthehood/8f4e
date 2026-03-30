@@ -8,7 +8,6 @@ import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
-import { ArgumentType } from '../../types';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
 
@@ -80,6 +79,7 @@ export default float64;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('float64 instruction compiler', () => {
 		it('creates a float64 memory entry', () => {
@@ -90,7 +90,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
+					arguments: [classifyIdentifier('value')],
 				} as AST[number],
 				context
 			);
@@ -106,7 +106,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
+					arguments: [classifyIdentifier('value')],
 				} as AST[number],
 				context
 			);
@@ -122,7 +122,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
+					arguments: [classifyIdentifier('value')],
 				} as AST[number],
 				context
 			);
@@ -139,7 +139,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'a' }],
+					arguments: [classifyIdentifier('a')],
 				} as AST[number],
 				context
 			);
@@ -150,7 +150,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 2,
 					lineNumberAfterMacroExpansion: 2,
 					instruction: 'int',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'x' }],
+					arguments: [classifyIdentifier('x')],
 				} as AST[number],
 				context
 			);
@@ -159,7 +159,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 3,
 					lineNumberAfterMacroExpansion: 3,
 					instruction: 'int',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'y' }],
+					arguments: [classifyIdentifier('y')],
 				} as AST[number],
 				context
 			);
@@ -168,7 +168,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 4,
 					lineNumberAfterMacroExpansion: 4,
 					instruction: 'int',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'z' }],
+					arguments: [classifyIdentifier('z')],
 				} as AST[number],
 				context
 			);
@@ -179,7 +179,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 5,
 					lineNumberAfterMacroExpansion: 5,
 					instruction: 'float64',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'b' }],
+					arguments: [classifyIdentifier('b')],
 				} as AST[number],
 				context
 			);
@@ -197,7 +197,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64*',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ptr' }],
+					arguments: [classifyIdentifier('ptr')],
 				} as AST[number],
 				context
 			);
@@ -217,7 +217,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64**',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'pptr' }],
+					arguments: [classifyIdentifier('pptr')],
 				} as AST[number],
 				context
 			);

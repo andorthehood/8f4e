@@ -5,6 +5,8 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "hasChanged",
       },
@@ -17,6 +19,8 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -29,6 +33,8 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -41,6 +47,10 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -53,6 +63,8 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -72,6 +84,8 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "int",
       },
@@ -206,6 +220,8 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "hasChanged",
       },
@@ -218,6 +234,8 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -230,6 +248,8 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -242,6 +262,10 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -254,6 +278,8 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -273,6 +299,8 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "int",
       },

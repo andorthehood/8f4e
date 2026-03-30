@@ -5,6 +5,8 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -30,6 +32,8 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -42,6 +46,10 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -54,6 +62,8 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "__anonymous__1",
       },
@@ -133,6 +143,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -145,6 +157,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "PI",
       },
@@ -175,6 +189,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -187,6 +203,10 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -199,6 +219,8 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "__anonymous__2",
       },
@@ -278,6 +300,8 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -303,6 +327,8 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -315,6 +341,10 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -327,6 +357,8 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "__anonymous__1",
       },

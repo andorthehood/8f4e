@@ -5,6 +5,8 @@ exports[`clearStack > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "clearStack",
       },

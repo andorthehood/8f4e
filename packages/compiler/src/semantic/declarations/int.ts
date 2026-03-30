@@ -6,7 +6,6 @@ import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
-import { ArgumentType } from '../../types';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
 
@@ -47,6 +46,7 @@ export default int;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('int instruction compiler', () => {
 		it('creates an int memory entry', () => {
@@ -57,7 +57,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'counter' }],
+					arguments: [classifyIdentifier('counter')],
 				} as AST[number],
 				context
 			);

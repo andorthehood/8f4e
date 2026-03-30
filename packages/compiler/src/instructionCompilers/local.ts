@@ -1,4 +1,3 @@
-import { ArgumentType } from '../types';
 import { ErrorCode } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -32,6 +31,7 @@ export default local;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('local instruction compiler', () => {
 		it('adds a local variable', () => {
@@ -42,10 +42,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'local',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'int' },
-						{ type: ArgumentType.IDENTIFIER, value: 'count' },
-					],
+					arguments: [classifyIdentifier('int'), classifyIdentifier('count')],
 				} as AST[number],
 				context
 			);

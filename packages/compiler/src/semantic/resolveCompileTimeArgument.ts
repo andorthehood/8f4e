@@ -1,24 +1,4 @@
-import { parseArgument, ArgumentType } from '@8f4e/tokenizer';
-import { hasElementCountPrefix } from '@8f4e/tokenizer';
-import { hasElementWordSizePrefix } from '@8f4e/tokenizer';
-import { hasPointeeElementWordSizePrefix } from '@8f4e/tokenizer';
-import { hasElementMaxPrefix } from '@8f4e/tokenizer';
-import { hasPointeeElementMaxPrefix } from '@8f4e/tokenizer';
-import { hasElementMinPrefix } from '@8f4e/tokenizer';
-import { extractElementCountBase } from '@8f4e/tokenizer';
-import { extractElementWordSizeBase } from '@8f4e/tokenizer';
-import { extractPointeeElementWordSizeBase } from '@8f4e/tokenizer';
-import { extractElementMaxBase } from '@8f4e/tokenizer';
-import { extractPointeeElementMaxBase } from '@8f4e/tokenizer';
-import { extractElementMinBase } from '@8f4e/tokenizer';
-import { isIntermodularElementCountReference } from '@8f4e/tokenizer';
-import { isIntermodularElementWordSizeReference } from '@8f4e/tokenizer';
-import { isIntermodularElementMaxReference } from '@8f4e/tokenizer';
-import { isIntermodularElementMinReference } from '@8f4e/tokenizer';
-import { extractIntermodularElementCountBase } from '@8f4e/tokenizer';
-import { extractIntermodularElementWordSizeBase } from '@8f4e/tokenizer';
-import { extractIntermodularElementMaxBase } from '@8f4e/tokenizer';
-import { extractIntermodularElementMinBase } from '@8f4e/tokenizer';
+import { ArgumentType } from '@8f4e/tokenizer';
 
 import {
 	getElementCount,
@@ -29,97 +9,91 @@ import {
 	getElementMinValue,
 } from '../utils/memoryData';
 
-import type { Argument, Const, Namespace } from '../types';
+import type { Argument, ArgumentIdentifier, ArgumentLiteral, Const, Namespace } from '../types';
 
 /**
- * Tries to resolve a single compile-time operand to a `Const` value.
+ * Tries to resolve a single pre-classified compile-time operand to a `Const` value.
  * Handles numeric literals, constant identifiers, and memory metadata queries
  * (sizeof, count, max, min — including pointee forms).
  * Returns `undefined` if the operand cannot be resolved from the available context.
  */
-function resolveCompileTimeOperand(operand: string, namespace: Namespace): Const | undefined {
-	// Try numeric literal first
-	const arg = parseArgument(operand);
-	if (arg.type === ArgumentType.LITERAL) {
-		return { value: arg.value, isInteger: arg.isInteger, ...(arg.isFloat64 ? { isFloat64: true } : {}) };
+function resolveCompileTimeOperand(operand: ArgumentLiteral | ArgumentIdentifier, namespace: Namespace): Const | undefined {
+	if (operand.type === ArgumentType.LITERAL) {
+		return { value: operand.value, isInteger: operand.isInteger, ...(operand.isFloat64 ? { isFloat64: true } : {}) };
 	}
 
 	// Try direct constant lookup
-	const directConst = namespace.consts[operand];
+	const directConst = namespace.consts[operand.value];
 	if (directConst !== undefined) {
 		return directConst;
 	}
 
 	const { memory } = namespace;
 
-	if (isIntermodularElementWordSizeReference(operand)) {
-		const { module, memory: memoryId } = extractIntermodularElementWordSizeBase(operand);
-		const targetMemory = namespace.namespaces[module]?.memory;
-		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
-			return { value: getElementWordSize(targetMemory, memoryId), isInteger: true };
+	if (operand.referenceKind === 'intermodular-element-word-size') {
+		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
+			return { value: getElementWordSize(targetMemory, operand.targetMemoryId!), isInteger: true };
 		}
 		return undefined;
 	}
 
-	if (isIntermodularElementCountReference(operand)) {
-		const { module, memory: memoryId } = extractIntermodularElementCountBase(operand);
-		const targetMemory = namespace.namespaces[module]?.memory;
-		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
-			return { value: getElementCount(targetMemory, memoryId), isInteger: true };
+	if (operand.referenceKind === 'intermodular-element-count') {
+		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
+			return { value: getElementCount(targetMemory, operand.targetMemoryId!), isInteger: true };
 		}
 		return undefined;
 	}
 
-	if (isIntermodularElementMaxReference(operand)) {
-		const { module, memory: memoryId } = extractIntermodularElementMaxBase(operand);
-		const targetMemory = namespace.namespaces[module]?.memory;
-		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
-			const memoryItem = targetMemory[memoryId];
-			return { value: getElementMaxValue(targetMemory, memoryId), isInteger: !!memoryItem?.isInteger };
+	if (operand.referenceKind === 'intermodular-element-max') {
+		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
+			const memoryItem = targetMemory[operand.targetMemoryId!];
+			return { value: getElementMaxValue(targetMemory, operand.targetMemoryId!), isInteger: !!memoryItem?.isInteger };
 		}
 		return undefined;
 	}
 
-	if (isIntermodularElementMinReference(operand)) {
-		const { module, memory: memoryId } = extractIntermodularElementMinBase(operand);
-		const targetMemory = namespace.namespaces[module]?.memory;
-		if (targetMemory && Object.hasOwn(targetMemory, memoryId)) {
-			const memoryItem = targetMemory[memoryId];
-			return { value: getElementMinValue(targetMemory, memoryId), isInteger: !!memoryItem?.isInteger };
+	if (operand.referenceKind === 'intermodular-element-min') {
+		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
+			const memoryItem = targetMemory[operand.targetMemoryId!];
+			return { value: getElementMinValue(targetMemory, operand.targetMemoryId!), isInteger: !!memoryItem?.isInteger };
 		}
 		return undefined;
 	}
 
-	// Try sizeof(*name) — pointee element word size
-	if (hasPointeeElementWordSizePrefix(operand)) {
-		const base = extractPointeeElementWordSizeBase(operand);
+	// sizeof(*name) — pointee element word size
+	if (operand.referenceKind === 'pointee-element-word-size') {
+		const base = operand.targetMemoryId!;
 		if (Object.hasOwn(memory, base)) {
 			return { value: getPointeeElementWordSize(memory, base), isInteger: true };
 		}
 		return undefined;
 	}
 
-	// Try sizeof(name) — element word size
-	if (hasElementWordSizePrefix(operand)) {
-		const base = extractElementWordSizeBase(operand);
+	// sizeof(name) — element word size
+	if (operand.referenceKind === 'element-word-size') {
+		const base = operand.targetMemoryId!;
 		if (Object.hasOwn(memory, base)) {
 			return { value: getElementWordSize(memory, base), isInteger: true };
 		}
 		return undefined;
 	}
 
-	// Try count(name) — element count
-	if (hasElementCountPrefix(operand)) {
-		const base = extractElementCountBase(operand);
+	// count(name) — element count
+	if (operand.referenceKind === 'element-count') {
+		const base = operand.targetMemoryId!;
 		if (Object.hasOwn(memory, base)) {
 			return { value: getElementCount(memory, base), isInteger: true };
 		}
 		return undefined;
 	}
 
-	// Try max(*name) — pointee element max value
-	if (hasPointeeElementMaxPrefix(operand)) {
-		const base = extractPointeeElementMaxBase(operand);
+	// max(*name) — pointee element max value
+	if (operand.referenceKind === 'pointee-element-max') {
+		const base = operand.targetMemoryId!;
 		if (Object.hasOwn(memory, base)) {
 			const memoryItem = memory[base];
 			return { value: getPointeeElementMaxValue(memory, base), isInteger: !!memoryItem?.isInteger };
@@ -127,9 +101,9 @@ function resolveCompileTimeOperand(operand: string, namespace: Namespace): Const
 		return undefined;
 	}
 
-	// Try max(name) — element max value
-	if (hasElementMaxPrefix(operand)) {
-		const base = extractElementMaxBase(operand);
+	// max(name) — element max value
+	if (operand.referenceKind === 'element-max') {
+		const base = operand.targetMemoryId!;
 		if (Object.hasOwn(memory, base)) {
 			const memoryItem = memory[base];
 			return { value: getElementMaxValue(memory, base), isInteger: !!memoryItem?.isInteger };
@@ -137,9 +111,9 @@ function resolveCompileTimeOperand(operand: string, namespace: Namespace): Const
 		return undefined;
 	}
 
-	// Try min(name) — element min value
-	if (hasElementMinPrefix(operand)) {
-		const base = extractElementMinBase(operand);
+	// min(name) — element min value
+	if (operand.referenceKind === 'element-min') {
+		const base = operand.targetMemoryId!;
 		if (Object.hasOwn(memory, base)) {
 			const memoryItem = memory[base];
 			return { value: getElementMinValue(memory, base), isInteger: !!memoryItem?.isInteger };
@@ -182,16 +156,12 @@ export function tryResolveCompileTimeArgument(namespace: Namespace, argument: Ar
 		return undefined;
 	}
 
-	const parsedArgument = parseArgument(argument.value);
-	if (parsedArgument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return tryResolveCompileTimeArgument(namespace, parsedArgument);
-	}
-
-	return resolveCompileTimeOperand(argument.value, namespace);
+	return resolveCompileTimeOperand(argument, namespace);
 }
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
 	describe('resolveConstantValue', () => {
 		const mockNamespace = {
@@ -287,12 +257,8 @@ if (import.meta.vitest) {
 
 		it('returns undefined for unresolved or chained expressions', () => {
 			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('MISSING'))).toBeUndefined();
-			expect(
-				tryResolveCompileTimeArgument(mockNamespace, { type: ArgumentType.IDENTIFIER, value: 'SIZE/2/2' })
-			).toBeUndefined();
-			expect(
-				tryResolveCompileTimeArgument(mockNamespace, { type: ArgumentType.IDENTIFIER, value: 'SIZE*2/2' })
-			).toBeUndefined();
+			expect(tryResolveCompileTimeArgument(mockNamespace, classifyIdentifier('SIZE/2/2'))).toBeUndefined();
+			expect(tryResolveCompileTimeArgument(mockNamespace, classifyIdentifier('SIZE*2/2'))).toBeUndefined();
 		});
 
 		it('resolves intermodule sizeof expressions', () => {
@@ -322,9 +288,9 @@ if (import.meta.vitest) {
 			expect(
 				tryResolveCompileTimeArgument(mockNamespace, {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: '2',
+					lhs: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: 'SIZE',
+					rhs: parseCompileTimeOperand('SIZE'),
 				})
 			).toEqual({
 				value: 32,

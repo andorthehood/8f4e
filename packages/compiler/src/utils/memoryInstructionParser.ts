@@ -1,7 +1,5 @@
 import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '@8f4e/tokenizer';
 import { ArgumentType } from '@8f4e/tokenizer';
-import { hasMemoryReferencePrefixStart } from '@8f4e/tokenizer';
-import { isConstantName } from '@8f4e/tokenizer';
 
 import resolveIntermodularReferenceValue from './resolveIntermodularReferenceValue';
 
@@ -101,42 +99,45 @@ export default function parseMemoryInstructionArguments(
 		id = parsedArgs.firstArg.value;
 	}
 
-	// Reject constant-style names as memory allocation identifiers
-	if (isConstantName(id)) {
-		throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
+	// Reject constant-style names as memory allocation identifiers (only when used as a plain identifier, not split-byte tokens)
+	if (parsedArgs.firstArg.type === 'identifier') {
+		const firstArgIdentifier = line.arguments[0]?.type === ArgumentType.IDENTIFIER ? line.arguments[0] : null;
+		if (firstArgIdentifier?.referenceKind === 'constant') {
+			throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
+		}
 	}
 
 	// Process second argument if present
 	if (parsedArgs.secondArg) {
-		const secondArgValue = line.arguments[1]?.type === ArgumentType.IDENTIFIER ? line.arguments[1].value : undefined;
+		const secondArgIdentifier = line.arguments[1]?.type === ArgumentType.IDENTIFIER ? line.arguments[1] : undefined;
 
 		if (parsedArgs.secondArg.type === 'literal') {
 			defaultValue = parsedArgs.secondArg.value;
 		} else if (parsedArgs.secondArg.type === 'split-byte-tokens') {
 			defaultValue = resolveSplitByteTokens(parsedArgs.secondArg.tokens, maxBytes, lineForError, context);
 		} else if (parsedArgs.secondArg.type === 'intermodular-reference') {
-			defaultValue = secondArgValue
-				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+			defaultValue = secondArgIdentifier
+				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
 				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-module-reference') {
-			defaultValue = secondArgValue
-				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+			defaultValue = secondArgIdentifier
+				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
 				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-count') {
-			defaultValue = secondArgValue
-				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+			defaultValue = secondArgIdentifier
+				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
 				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-word-size') {
-			defaultValue = secondArgValue
-				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+			defaultValue = secondArgIdentifier
+				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
 				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-max') {
-			defaultValue = secondArgValue
-				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+			defaultValue = secondArgIdentifier
+				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
 				: 0;
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-min') {
-			defaultValue = secondArgValue
-				? (resolveIntermodularReferenceValue(secondArgValue, lineForError, context) ?? 0)
+			defaultValue = secondArgIdentifier
+				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
 				: 0;
 		} else if (parsedArgs.secondArg.type === 'memory-reference') {
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
@@ -147,8 +148,8 @@ export default function parseMemoryInstructionArguments(
 				});
 			}
 
-			// Use start or end address based on syntax: &buffer vs buffer&
-			if (hasMemoryReferencePrefixStart(parsedArgs.secondArg.pattern)) {
+			// Use start or end address based on syntax: &buffer (isEndAddress false) vs buffer& (isEndAddress true)
+			if (!secondArgIdentifier?.isEndAddress) {
 				defaultValue = memoryItem.byteAddress;
 			} else {
 				// Compute end address directly from memoryItem
@@ -176,6 +177,7 @@ export default function parseMemoryInstructionArguments(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('parseMemoryInstructionArguments', () => {
 		const mockContext = {
@@ -212,7 +214,7 @@ if (import.meta.vitest) {
 		});
 
 		it('parses identifier argument', () => {
-			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'myId' }];
+			const args: Argument[] = [classifyIdentifier('myId')];
 			const result = parseMemoryInstructionArguments(
 				{
 					lineNumberBeforeMacroExpansion: 20,
@@ -227,7 +229,7 @@ if (import.meta.vitest) {
 		});
 
 		it('rejects unnormalized constant-style identifiers as memory names', () => {
-			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' }];
+			const args: Argument[] = [classifyIdentifier('MY_CONST')];
 			expect(() =>
 				parseMemoryInstructionArguments(
 					{
@@ -243,7 +245,7 @@ if (import.meta.vitest) {
 
 		it('parses identifier with literal default value', () => {
 			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				classifyIdentifier('myVar'),
 				{ type: ArgumentType.LITERAL, value: 99, isInteger: true },
 			];
 			const result = parseMemoryInstructionArguments(
@@ -260,10 +262,7 @@ if (import.meta.vitest) {
 		});
 
 		it('rejects unnormalized identifier defaults that were not folded earlier', () => {
-			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
-				{ type: ArgumentType.IDENTIFIER, value: 'myConst' },
-			];
+			const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('myConst')];
 			expect(() =>
 				parseMemoryInstructionArguments(
 					{
@@ -279,7 +278,7 @@ if (import.meta.vitest) {
 
 		it('combines named split hex bytes into one integer default (2 bytes, right-padded)', () => {
 			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				classifyIdentifier('myVar'),
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
 			];
@@ -298,7 +297,7 @@ if (import.meta.vitest) {
 
 		it('combines named split hex bytes into one integer default (4 bytes)', () => {
 			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				classifyIdentifier('myVar'),
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
@@ -337,7 +336,7 @@ if (import.meta.vitest) {
 
 		it('throws SPLIT_HEX_TOO_MANY_BYTES when byte count exceeds type width', () => {
 			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				classifyIdentifier('myVar'),
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0xff, isInteger: true, isHex: true },
 				{ type: ArgumentType.LITERAL, value: 0x00, isInteger: true, isHex: true },
@@ -358,11 +357,7 @@ if (import.meta.vitest) {
 		});
 
 		it('resolves named constant split-byte sequence (HI LO) into combined default', () => {
-			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
-				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
-				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
-			];
+			const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('HI'), classifyIdentifier('LO')];
 			const result = parseMemoryInstructionArguments(
 				{
 					lineNumberBeforeMacroExpansion: 100,
@@ -378,10 +373,7 @@ if (import.meta.vitest) {
 		});
 
 		it('resolves anonymous constant split-byte sequence (HI LO) into combined default', () => {
-			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
-				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
-			];
+			const args: Argument[] = [classifyIdentifier('HI'), classifyIdentifier('LO')];
 			const result = parseMemoryInstructionArguments(
 				{
 					lineNumberBeforeMacroExpansion: 110,
@@ -397,9 +389,9 @@ if (import.meta.vitest) {
 
 		it('resolves mixed byte literal and constant in named split-byte', () => {
 			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
+				classifyIdentifier('myVar'),
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
-				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+				classifyIdentifier('LO'),
 			];
 			const result = parseMemoryInstructionArguments(
 				{
@@ -416,11 +408,7 @@ if (import.meta.vitest) {
 		});
 
 		it('throws when constant in split-byte sequence is out of byte range (> 255)', () => {
-			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
-				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
-				{ type: ArgumentType.IDENTIFIER, value: 'BIG' },
-			];
+			const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('HI'), classifyIdentifier('BIG')];
 			expect(() =>
 				parseMemoryInstructionArguments(
 					{
@@ -435,11 +423,7 @@ if (import.meta.vitest) {
 		});
 
 		it('throws when constant in split-byte sequence is a non-integer (float)', () => {
-			const args: Argument[] = [
-				{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
-				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
-				{ type: ArgumentType.IDENTIFIER, value: 'FRAC' },
-			];
+			const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('HI'), classifyIdentifier('FRAC')];
 			expect(() =>
 				parseMemoryInstructionArguments(
 					{
@@ -454,7 +438,7 @@ if (import.meta.vitest) {
 		});
 
 		it('throws when constant-style name is used as memory identifier', () => {
-			const args: Argument[] = [{ type: ArgumentType.IDENTIFIER, value: 'MY_VAR' }];
+			const args: Argument[] = [classifyIdentifier('MY_VAR')];
 			expect(() =>
 				parseMemoryInstructionArguments(
 					{

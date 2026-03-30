@@ -1,4 +1,4 @@
-import { ArgumentType, BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -67,6 +67,7 @@ export default param;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('param instruction compiler', () => {
 		it('registers a function parameter', () => {
@@ -88,10 +89,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'param',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'int' },
-						{ type: ArgumentType.IDENTIFIER, value: 'value' },
-					],
+					arguments: [classifyIdentifier('int'), classifyIdentifier('value')],
 				} as AST[number],
 				context
 			);
@@ -121,10 +119,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'param',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'float64' },
-						{ type: ArgumentType.IDENTIFIER, value: 'x' },
-					],
+					arguments: [classifyIdentifier('float64'), classifyIdentifier('x')],
 				} as AST[number],
 				context
 			);
@@ -155,10 +150,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'param',
-						arguments: [
-							{ type: ArgumentType.IDENTIFIER, value: 'int' },
-							{ type: ArgumentType.IDENTIFIER, value: 'late' },
-						],
+						arguments: [classifyIdentifier('int'), classifyIdentifier('late')],
 					} as AST[number],
 					context
 				);

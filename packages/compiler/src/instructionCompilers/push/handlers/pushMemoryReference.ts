@@ -1,9 +1,5 @@
-import { extractMemoryReferenceBase } from '@8f4e/tokenizer';
-import { hasMemoryReferencePrefixStart } from '@8f4e/tokenizer';
-
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-import { ArgumentType } from '../../../types';
 import { getDataStructureByteAddress, getMemoryStringLastByteAddress } from '../../../utils/memoryData';
 import i32const from '../../../wasmUtils/const/i32const';
 
@@ -11,11 +7,11 @@ import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
 export default function pushMemoryReference(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
 	const memory = context.namespace.memory;
-	const reference = line.arguments[0].value;
-	const base = extractMemoryReferenceBase(reference);
+	const arg = line.arguments[0];
+	const base = arg.targetMemoryId!;
 	let value = 0;
 
-	if (hasMemoryReferencePrefixStart(reference)) {
+	if (!arg.isEndAddress) {
 		value = getDataStructureByteAddress(memory, base);
 	} else {
 		value = getMemoryStringLastByteAddress(memory, base);
@@ -27,6 +23,7 @@ export default function pushMemoryReference(line: PushIdentifierLine, context: C
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('pushMemoryReference', () => {
 		it('pushes start address for &name and marks safe address', () => {
@@ -58,7 +55,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: '&buffer' }],
+					arguments: [classifyIdentifier('&buffer')],
 				} as PushIdentifierLine,
 				context
 			);
@@ -96,7 +93,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'buffer&' }],
+					arguments: [classifyIdentifier('buffer&')],
 				} as PushIdentifierLine,
 				context
 			);

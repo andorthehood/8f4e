@@ -5,6 +5,8 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "loop",
       },
@@ -17,6 +19,8 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "counter",
       },
@@ -36,6 +40,10 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "counter",
         "type": "identifier",
         "value": "&counter",
       },
@@ -48,6 +56,8 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "counter",
       },
@@ -162,6 +172,8 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "loop",
       },
@@ -174,6 +186,8 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "counter",
       },
@@ -193,6 +207,8 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "counter",
       },
@@ -238,6 +254,10 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "counter",
         "type": "identifier",
         "value": "&counter",
       },
@@ -250,6 +270,8 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "counter",
       },
