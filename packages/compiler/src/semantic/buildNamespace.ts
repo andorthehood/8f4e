@@ -1,7 +1,7 @@
 import { ArgumentType } from '@8f4e/tokenizer';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
-import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './declarations';
+import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
 
 import { ErrorCode, getError } from '../compilerError';
@@ -91,7 +91,7 @@ function applyNamespacePrepassLine(line: AST[number], context: CompilationContex
 		return;
 	}
 
-	if (!isMemoryDeclarationInstruction(line.instruction)) {
+	if (!line.isMemoryDeclaration) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
 
@@ -127,7 +127,7 @@ export function prepassNamespace(
 
 	ast.forEach(originalLine => {
 		const isSemanticOnly = !!originalLine.isSemanticOnly;
-		if (!isSemanticOnly && !isMemoryDeclarationInstruction(originalLine.instruction)) {
+		if (!isSemanticOnly && !originalLine.isMemoryDeclaration) {
 			return;
 		}
 
@@ -189,7 +189,7 @@ function toNamespaceDiscoveryAst(ast: AST): AST {
 		}
 
 		if (
-			isMemoryDeclarationInstruction(line.instruction) &&
+			line.isMemoryDeclaration &&
 			!line.instruction.endsWith('[]') &&
 			line.arguments[0]?.type === ArgumentType.IDENTIFIER
 		) {

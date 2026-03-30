@@ -22,7 +22,6 @@ import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
-import { isMemoryDeclarationInstruction } from './semantic/declarations';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
@@ -41,7 +40,7 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 		return;
 	}
 
-	if (isMemoryDeclarationInstruction(line.instruction) && context.mode === 'function') {
+	if (line.isMemoryDeclaration && context.mode === 'function') {
 		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
 	}
 
@@ -100,7 +99,7 @@ export function compileModule(
 
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
-		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
+		if (!line.isSemanticOnly && !line.isMemoryDeclaration) {
 			compileCodegenLine(line, context);
 		}
 		return line;

@@ -81,9 +81,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [
-parseArgument('2*MISSING'),
-			],
+			arguments: [parseArgument('2*MISSING')],
 		};
 		const context = {
 			namespace: {
@@ -163,10 +161,7 @@ parseArgument('2*MISSING'),
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'const',
-			arguments: [
-				classifyIdentifier('SIZE'),
-parseArgument('2*MISSING'),
-			],
+			arguments: [classifyIdentifier('SIZE'), parseArgument('2*MISSING')],
 		};
 		const context = {
 			namespace: {
@@ -230,10 +225,7 @@ parseArgument('2*MISSING'),
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'init',
-			arguments: [
-				classifyIdentifier('target'),
-parseArgument('2*MISSING'),
-			],
+			arguments: [classifyIdentifier('target'), parseArgument('2*MISSING')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -318,6 +310,7 @@ parseArgument('2*MISSING'),
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
+			isMemoryDeclaration: true,
 			arguments: [classifyIdentifier('buffer'), classifyIdentifier('&source:missingBuffer')],
 		};
 
@@ -333,10 +326,8 @@ parseArgument('2*MISSING'),
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
-			arguments: [
-				classifyIdentifier('buffer'),
-parseArgument('2*MISSING'),
-			],
+			isMemoryDeclaration: true,
+			arguments: [classifyIdentifier('buffer'), parseArgument('2*MISSING')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);

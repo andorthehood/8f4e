@@ -1,7 +1,6 @@
 import compile, {
 	compileCodegenLine,
 	collectNamespacesFromASTs,
-	isMemoryDeclarationInstruction,
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
@@ -87,7 +86,7 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 		const stackBefore = serializeStack(context);
 		const byteCodeOffset = context.byteCode.length;
 
-		if (!line.isSemanticOnly && !isMemoryDeclarationInstruction(line.instruction)) {
+		if (!line.isSemanticOnly && !line.isMemoryDeclaration) {
 			compileCodegenLine(line, context);
 		}
 
