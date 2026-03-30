@@ -95,9 +95,9 @@ export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: 
 export type CompileTimeOperand = ArgumentLiteral | ArgumentIdentifier;
 export type ArgumentCompileTimeExpression = {
 	type: ArgumentType.COMPILE_TIME_EXPRESSION;
-	lhs: CompileTimeOperand;
+	left: CompileTimeOperand;
 	operator: '*' | '/';
-	rhs: CompileTimeOperand;
+	right: CompileTimeOperand;
 };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;
@@ -418,9 +418,9 @@ export function parseArgument(argument: string): Argument {
 			if (compileTimeExpression !== null) {
 				return {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand(compileTimeExpression.lhs),
+					left: parseCompileTimeOperand(compileTimeExpression.lhs),
 					operator: compileTimeExpression.operator,
-					rhs: parseCompileTimeOperand(compileTimeExpression.rhs),
+					right: parseCompileTimeOperand(compileTimeExpression.rhs),
 				};
 			}
 
@@ -544,9 +544,9 @@ if (import.meta.vitest) {
 		it('parses compile-time expressions as dedicated AST nodes', () => {
 			expect(parseArgument('123*sizeof(name)')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: { type: ArgumentType.LITERAL, value: 123, isInteger: true },
+				left: { type: ArgumentType.LITERAL, value: 123, isInteger: true },
 				operator: '*',
-				rhs: {
+				right: {
 					type: ArgumentType.IDENTIFIER,
 					value: 'sizeof(name)',
 					referenceKind: 'element-word-size',
@@ -556,15 +556,15 @@ if (import.meta.vitest) {
 			});
 			expect(parseArgument('2*SIZE')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
 				operator: '*',
-				rhs: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				right: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
 			});
 			expect(parseArgument('SIZE*sizeof(name)')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				left: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
 				operator: '*',
-				rhs: {
+				right: {
 					type: ArgumentType.IDENTIFIER,
 					value: 'sizeof(name)',
 					referenceKind: 'element-word-size',

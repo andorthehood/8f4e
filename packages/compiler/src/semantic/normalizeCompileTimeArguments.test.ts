@@ -15,9 +15,9 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [
 				{
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('2'),
+					left: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: parseCompileTimeOperand('SIZE'),
+					right: parseCompileTimeOperand('SIZE'),
 				},
 			],
 		};
@@ -65,15 +65,15 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [
 				{
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('SIZE'),
+					left: parseCompileTimeOperand('SIZE'),
 					operator: '/',
-					rhs: parseCompileTimeOperand('2'),
+					right: parseCompileTimeOperand('2'),
 				},
 				{
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('2'),
+					left: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: parseCompileTimeOperand('SIZE'),
+					right: parseCompileTimeOperand('SIZE'),
 				},
 			],
 		};
@@ -104,9 +104,9 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [
 				{
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('2'),
+					left: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: parseCompileTimeOperand('MISSING'),
+					right: parseCompileTimeOperand('MISSING'),
 				},
 			],
 		};
@@ -192,9 +192,9 @@ describe('normalizeCompileTimeArguments', () => {
 				classifyIdentifier('SIZE'),
 				{
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('2'),
+					left: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: parseCompileTimeOperand('MISSING'),
+					right: parseCompileTimeOperand('MISSING'),
 				},
 			],
 		};
@@ -264,9 +264,9 @@ describe('normalizeCompileTimeArguments', () => {
 				classifyIdentifier('target'),
 				{
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('2'),
+					left: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: parseCompileTimeOperand('MISSING'),
+					right: parseCompileTimeOperand('MISSING'),
 				},
 			],
 		};
@@ -372,9 +372,9 @@ describe('normalizeCompileTimeArguments', () => {
 				classifyIdentifier('buffer'),
 				{
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand('2'),
+					left: parseCompileTimeOperand('2'),
 					operator: '*',
-					rhs: parseCompileTimeOperand('MISSING'),
+					right: parseCompileTimeOperand('MISSING'),
 				},
 			],
 		};
