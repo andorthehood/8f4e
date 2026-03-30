@@ -12,6 +12,7 @@ import sliderDirective from './slider/plugin';
 import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
 import viewportDirective from './viewport/plugin';
+import alwaysOnTopDirective from './alwaysOnTop/plugin';
 import { parseEditorDirectives } from './utils';
 
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
@@ -49,6 +50,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	opacityDirective,
 	groupDirective,
 	viewportDirective,
+	alwaysOnTopDirective,
 ];
 
 export function deriveDirectiveState(

@@ -161,6 +161,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.groupName = directiveState.blockState.groupName;
 		graphicData.groupNonstick = directiveState.blockState.groupNonstick;
 		graphicData.viewportAnchor = directiveState.blockState.viewportAnchor;
+		graphicData.alwaysOnTop = directiveState.blockState.alwaysOnTop ?? false;
 
 		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
 	};
@@ -187,11 +188,30 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
+	const reorderCodeBlocksIfNeeded = function () {
+		const blocks = state.graphicHelper.codeBlocks;
+		// Partition is valid when all normal blocks precede all always-on-top blocks.
+		let seenAlwaysOnTop = false;
+		for (const block of blocks) {
+			if (block.alwaysOnTop) {
+				seenAlwaysOnTop = true;
+			} else if (seenAlwaysOnTop) {
+				// A normal block appears after an always-on-top block — re-sort.
+				store.set('graphicHelper.codeBlocks', [
+					...blocks.filter(b => !b.alwaysOnTop),
+					...blocks.filter(b => b.alwaysOnTop),
+				]);
+				return;
+			}
+		}
+	};
+
 	const updateSelectedCodeBlock = function () {
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}
 		updateGraphics(state.graphicHelper.selectedCodeBlock);
+		reorderCodeBlocksIfNeeded();
 	};
 
 	const updateProgrammaticSelectedCodeBlock = function () {
@@ -200,6 +220,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		updateGraphics(block);
+		reorderCodeBlocksIfNeeded();
 	};
 
 	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = function () {
@@ -208,6 +229,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		updateGraphics(block);
+		reorderCodeBlocksIfNeeded();
 	};
 
 	const updateHideSelectionTransition = function (
@@ -276,12 +298,16 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				isHome: directiveState.blockState.isHome,
 				isFavorite: directiveState.blockState.isFavorite,
 				opacity: directiveState.blockState.opacity,
+				alwaysOnTop: directiveState.blockState.alwaysOnTop ?? false,
 				viewportAnchor: directiveState.blockState.viewportAnchor,
 				parsedDirectives: blockParsedDirectives,
 			});
 		});
 
-		store.set('graphicHelper.codeBlocks', codeBlocks);
+		// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
+		const partitionedCodeBlocks = [...codeBlocks.filter(b => !b.alwaysOnTop), ...codeBlocks.filter(b => b.alwaysOnTop)];
+
+		store.set('graphicHelper.codeBlocks', partitionedCodeBlocks);
 
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
