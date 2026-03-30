@@ -61,6 +61,7 @@ export function createCodeBlockGraphicData(
 		isHome: false,
 		isFavorite: false,
 		opacity: 1,
+		alwaysOnTop: false,
 		parsedDirectives: parseBlockDirectives(code),
 		widgets: {
 			blockHighlights: [],

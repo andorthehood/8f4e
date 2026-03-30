@@ -450,6 +450,39 @@ moduleEnd
 
 This places the block two grid cells inward from the right edge and one grid cell down from the top edge of the viewport, regardless of where the user pans.
 
+### `@alwaysOnTop`
+
+Mark a code block as persistently top-most so it always renders above normal blocks.
+
+```txt
+; @alwaysOnTop
+```
+
+Without this directive, clicking a block brings it above all other blocks. With `@alwaysOnTop`, blocks are divided into two z-order partitions:
+
+- **Normal blocks** — rendered first, in their relative array order
+- **Always-on-top blocks** — rendered last (on top of all normal blocks), in their relative array order
+
+Clicking a normal block brings it to the front of the normal segment only; it never rises above any always-on-top block.
+Clicking an always-on-top block brings it to the front of the always-on-top segment.
+
+**Important:**
+- Rendering and hit-testing both derive from the same `codeBlocks` array order; no separate rendering pass is used.
+- The directive takes no arguments; any text after `@alwaysOnTop` is ignored.
+- `@alwaysOnTop` is compatible with `@viewport`; a viewport-anchored block may also be always-on-top.
+
+Example:
+```txt
+module overlay
+; @alwaysOnTop
+; @viewport top-left
+; @pos 1 1
+output status 1
+moduleEnd
+```
+
+This block stays pinned to the top-left corner of the viewport and is always rendered above all normal code blocks.
+
 ### `@group`
 
 Assign a code block to a named group for coordinated movement.
