@@ -18,6 +18,8 @@ export interface DirectiveBlockState {
 	disabled: boolean;
 	isHome: boolean;
 	isFavorite: boolean;
+	/** Opacity set by `; @opacity <0..1>`. Defaults to 1 when absent or invalid. */
+	opacity: number;
 	/** Group identifier set by `; @group <name> [nonstick]`. Undefined when no valid @group directive is present. */
 	groupName?: string;
 	/** When true the block may be dragged independently within its group (nonstick mode). */
