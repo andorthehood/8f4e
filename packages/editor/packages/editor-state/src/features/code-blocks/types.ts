@@ -263,9 +263,9 @@ export interface CodeBlockGraphicData {
 	 */
 	isFavorite: boolean;
 	/**
-	 * Optional cached replay opacity derived from `; @opacity <0..1>`.
+	 * Cached replay opacity value derived from `; @opacity <0..1>`.
 	 * Applied only when the block is rendered through the cached path.
-	 * Defaults to 1.
+	 * When no `; @opacity` directive is specified, this is set to 1.
 	 */
 	opacity: number;
 	/**
