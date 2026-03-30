@@ -1,8 +1,8 @@
 import { createGlobalEditorDirectivePlugin } from '../utils';
 
-type SupportedFont = '8x16' | '6x10';
+type SupportedFont = '8x16' | '6x10' | '16x32';
 
-const ALLOWED_FONTS = new Set<SupportedFont>(['8x16', '6x10']);
+const ALLOWED_FONTS = new Set<SupportedFont>(['8x16', '6x10', '16x32']);
 
 export default createGlobalEditorDirectivePlugin('font', (directive, draft, context) => {
 	if (directive.args.length === 0) {

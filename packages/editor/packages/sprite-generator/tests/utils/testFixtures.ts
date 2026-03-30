@@ -84,6 +84,14 @@ export const config6x10: Config = {
 };
 
 /**
+ * Test fixture for derived 16x32 font configuration
+ */
+export const config16x32: Config = {
+	font: '16x32',
+	colorScheme: minimalColorScheme,
+};
+
+/**
  * Standard character dimensions for 8x16 font
  */
 export const characterDimensions8x16 = {
@@ -97,4 +105,12 @@ export const characterDimensions8x16 = {
 export const characterDimensions6x10 = {
 	width: 6,
 	height: 10,
+};
+
+/**
+ * Standard character dimensions for 16x32 font
+ */
+export const characterDimensions16x32 = {
+	width: 16,
+	height: 32,
 };
