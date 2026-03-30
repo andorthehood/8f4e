@@ -20,7 +20,7 @@ Current behavior:
 - it performs a second sort that repeatedly:
   - scans each AST for the `module` line
   - filters instructions that might carry intermodular references
-  - re-parses reference syntax for both compared modules
+  - collects referenced module ids for both compared modules
 - the dependency extraction logic is duplicated almost verbatim for `astA` and `astB`
 
 Why this is a problem:
@@ -50,13 +50,14 @@ Recommended implementation shape:
 - Do not keep the current duplicated dependency-extraction blocks and merely move them into local lambdas inside the comparator.
 - Do not rely on incidental stable-sort behavior without an explicit tie-break rule.
 - Do not change intermodular reference semantics while doing this refactor.
+- Do not reintroduce raw-string syntax parsing where current AST metadata (`targetModuleId`, `intermoduleIds`) already exists.
 
 ## Implementation Plan
 
 ### Step 1: Extract metadata helpers
 - Add a helper to get the module/constants identity for an AST
-- Add a helper to collect referenced module ids from supported reference syntaxes
-- Reuse existing syntax helpers for parsing prefixes and intermodular patterns
+- Add a helper to collect referenced module ids from the current AST metadata surface
+- Reuse existing `targetModuleId` / `intermoduleIds` fields instead of reconstructing syntax
 
 ### Step 2: Precompute normalized sort inputs
 - Transform `AST[]` into metadata records once
@@ -79,28 +80,29 @@ Recommended implementation shape:
 ## Validation Checkpoints
 
 - `rg -n "graphOptimizer|sortModules|intermodular" packages/compiler/src`
-- `npx nx run compiler:test`
-- `npx nx run compiler:typecheck`
+- `sed -n '1,260p' packages/compiler/src/graphOptimizer.ts`
+- `npx nx run @8f4e/compiler:typecheck --skipNxCache`
+- `npx nx run compiler:test --skipNxCache -- packages/compiler/src/graphOptimizer.ts`
 
 ## Success Criteria
 
 - [ ] `graphOptimizer.ts` no longer rescans both ASTs inside sort comparators to extract the same metadata repeatedly.
 - [ ] Intermodular dependency extraction exists in one shared path.
 - [ ] Module ordering stays deterministic.
-- [ ] Existing supported intermodular reference syntaxes keep working.
+- [ ] Existing supported intermodular reference forms keep working.
 - [ ] Tests cover both dependency and non-dependency ordering cases.
 
 ## Affected Components
 
 - `packages/compiler/src/graphOptimizer.ts` - main refactor target
-- `packages/compiler/src/syntax/*` - reused intermodular parsing helpers
+- `packages/compiler/src/types.ts` / tokenizer-provided AST metadata - dependency source inputs
 - `packages/compiler/src/index.ts` - indirect consumer of sorted module order
 
 ## Risks & Considerations
 
 - **Ordering regressions**: this file controls compile order, so even a readability refactor needs tight tests.
 - **Cycle handling**: if dependency ordering is only partial, the implementation still needs deterministic fallback behavior.
-- **Reference coverage**: all currently supported intermodular prefixes must remain represented in the extracted metadata.
+- **Reference coverage**: all currently supported intermodular forms represented in AST metadata must remain reflected in the extracted dependencies.
 
 ## Related Items
 
@@ -110,3 +112,4 @@ Recommended implementation shape:
 
 - This is primarily a refactor and small compile-time optimization, not a behavior change.
 - The payoff is mostly code clarity plus lower repeated AST work during compilation.
+- The old raw-syntax parsing concern is largely gone; the remaining problem is repeated AST rescanning and duplicated metadata extraction.

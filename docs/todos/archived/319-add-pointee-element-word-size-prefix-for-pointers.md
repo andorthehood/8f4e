@@ -92,8 +92,8 @@ Expected semantics with current type system:
 
 ## Related Items
 
-- **Related**: [146-investigate-index-arithmetic-support.md](/Users/andorpolgar/git/8f4e/docs/todos/146-investigate-index-arithmetic-support.md)
-- **Related**: [309-extract-shared-module-memory-identifier-parser.md](/Users/andorpolgar/git/8f4e/docs/todos/309-extract-shared-module-memory-identifier-parser.md)
+- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
+- **Related**: `docs/todos/archived/309-extract-shared-module-memory-identifier-parser.md`
 
 ## Notes
 

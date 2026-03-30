@@ -11,7 +11,7 @@ completed: null
 
 ## Problem Description
 
-`342` moved intermodule address references such as `&module:memory`, `module:memory&`, `&module:`, and `module:&` into semantic compile-time resolution. That is the right ownership boundary, but one transitional behavior remains in [`memoryInstructionParser.ts`](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryInstructionParser.ts):
+`342` moved intermodule address references such as `&module:memory`, `module:memory&`, `&module:`, and `module:&` into semantic compile-time resolution. That is the right ownership boundary, but one transitional behavior remains in `packages/compiler/src/utils/memoryInstructionParser.ts`:
 
 - unresolved intermodule address-style defaults still return `0` from `resolveDefaultArgValue(...)`
 - that placeholder exists only to let namespace/layout passes continue before the final address is known
@@ -25,7 +25,7 @@ This is now follow-up cleanup after `342`, not part of the main intermodule inli
 
 ## Proposed Solution
 
-Move the “not resolvable yet” state out of [`memoryInstructionParser.ts`](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryInstructionParser.ts) and into the earlier semantic/layout flow that already owns deferred intermodule handling.
+Move the “not resolvable yet” state out of `packages/compiler/src/utils/memoryInstructionParser.ts` and into the earlier semantic/layout flow that already owns deferred intermodule handling.
 
 High-level approach:
 - stop having `parseMemoryInstructionArguments(...)` synthesize `0` for unresolved intermodule address references
@@ -81,8 +81,8 @@ High-level approach:
 
 ## Related Items
 
-- **Follows**: [342-inline-intermodule-address-references-during-semantic-normalization.md](/Users/andorpolgar/git/8f4e/docs/todos/342-inline-intermodule-address-references-during-semantic-normalization.md)
-- **Related**: [308-simplify-memory-instruction-default-value-resolution.md](/Users/andorpolgar/git/8f4e/docs/todos/308-simplify-memory-instruction-default-value-resolution.md)
+- **Follows**: `docs/todos/342-inline-intermodule-address-references-during-semantic-normalization.md`
+- **Related**: `docs/todos/308-simplify-memory-instruction-default-value-resolution.md`
 
 ## Notes
 
