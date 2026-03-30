@@ -188,30 +188,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
-	const reorderCodeBlocksIfNeeded = function () {
-		const blocks = state.graphicHelper.codeBlocks;
-		// Partition is valid when all normal blocks precede all always-on-top blocks.
-		let seenAlwaysOnTop = false;
-		for (const block of blocks) {
-			if (block.alwaysOnTop) {
-				seenAlwaysOnTop = true;
-			} else if (seenAlwaysOnTop) {
-				// A normal block appears after an always-on-top block — re-sort.
-				store.set('graphicHelper.codeBlocks', [
-					...blocks.filter(b => !b.alwaysOnTop),
-					...blocks.filter(b => b.alwaysOnTop),
-				]);
-				return;
-			}
-		}
-	};
-
 	const updateSelectedCodeBlock = function () {
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}
 		updateGraphics(state.graphicHelper.selectedCodeBlock);
-		reorderCodeBlocksIfNeeded();
 	};
 
 	const updateProgrammaticSelectedCodeBlock = function () {
@@ -220,7 +201,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		updateGraphics(block);
-		reorderCodeBlocksIfNeeded();
 	};
 
 	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = function () {
@@ -229,7 +209,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		updateGraphics(block);
-		reorderCodeBlocksIfNeeded();
 	};
 
 	const updateHideSelectionTransition = function (
