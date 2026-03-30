@@ -26,8 +26,8 @@ Active todo files are listed below.
 | 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | storeBytes <count> covers contiguous byte writes, but there is no equivalent explicit instruction for contiguous multi-byte word writes. |
 | 279 | Extend push with compile-time string literals | 🔴 | 4-8h | 2026-02-23 | push currently accepts numeric literals and identifiers, but does not support string literals. This makes byte-sequence construction verbose because users must manually push each ASCII code. |
 | 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | 8f4e has dup, swap, drop, and clearStack, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for... |
-| 301 | Refactor constant namespace collection and remove duplicated const parsing | 🔴 | 1-2d | 2026-03-14 | The compiler currently has two separate paths that parse and validate const declarations: |
 | 305 | Reuse WASM instance across incremental compiles | 🔴 | 3-6h | 2026-03-14 | The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed. |
+| 352 | Unify semantic const collection and namespace import rules | 🔴 | 1-2d | 2026-03-30 | Namespace-visible const collection and normal semantic const handling should share one clear path so `use` imports remain consistent with the current semantic architecture. |
 
 ### 🟡 Medium Priority
 
@@ -62,8 +62,6 @@ Active todo files are listed below.
 | 306 | Refactor graphOptimizer to precompute module dependencies | 🟡 | 4-8h | 2026-03-14 | packages/compiler/src/graphOptimizer.ts currently recomputes module ids and intermodular dependencies inside sort comparators. |
 | 307 | Optimize state-manager selector tokenization and subscription lookup | 🟡 | 3-6h | 2026-03-14 | The state manager currently does repeated string splitting and repeated path traversal during every set(...) call. |
 | 308 | Simplify memory instruction default value resolution | 🟡 | 4-8h | 2026-03-14 | Memory instruction argument handling is now split between a syntax-phase classifier and a semantic-phase resolver, but the semantic side still carries a long branch ladder with repeated lookup logic and several no-op... |
-| 309 | Extract shared module memory identifier parser | 🟡 | 2-4h | 2026-03-14 | The codebase currently parses `module.memory` identifiers in multiple places with slightly different local logic. |
-| 310 | Simplify compiler project flattening and compilable block checks | 🟡 | 1-3h | 2026-03-14 | The editor compiler effect currently does more array work and duplicated block-type checks than necessary during project flattening and recompile triggering. |
 | 320 | Add `&*name` pointee start address prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `&name` for a memory item's own start address, but pointer-typed memory still lacks a direct identifier form for the start address stored in the pointer. |
 | 321 | Add `*name&` pointee end address suffix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `name&` for a memory item's own end-address form, but pointer-typed memory still lacks a direct identifier form for the end-address form of the pointee allocation. |
 | 323 | Add `!*name` pointee min value prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `!name` for the memory item's own element-type minimum, but pointer-typed memory still lacks a direct identifier form for the minimum value of the pointee type. |
@@ -71,6 +69,7 @@ Active todo files are listed below.
 | 325 | Add literal-only `*` and `/` folding at argument parse time | 🟡 | 4-8h | 2026-03-26 | 8f4e already folds fraction-style literals like `1/2` during argument parsing, but other literal-only arithmetic such as `16*2` and `3.5*4` still falls through as identifier-shaped input instead of becoming ordinary literals in the AST. |
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 🟡 | 4-8h | 2026-03-26 | Several editor/runtime paths still use dotted cross-module memory ids such as `module.memory`, while compiler address-style intermodule references already use `module:memory`, creating inconsistent source-level syntax. |
 | 350 | Remove intermodule default placeholder handling from memory parser | 🟡 | 2-4h | 2026-03-30 | `memoryInstructionParser.ts` still fabricates `0` for unresolved intermodule address defaults during layout-related passes instead of leaving that deferred state owned earlier in semantics. |
+| 351 | Update editor intermodule reference renaming for current syntax | 🟡 | 2-4h | 2026-03-30 | Editor paste/rename helpers still rewrite obsolete dotted metadata-operator source syntax instead of only the currently supported intermodule forms. |
 | 349 | Add always-on-top editor directive for code blocks | 🟡 | 3-6h | 2026-03-30 | The editor currently derives z-order directly from `graphicHelper.codeBlocks`, so clicking a normal block always brings it above everything else and there is no way to persistently keep overlay-style blocks above ordinary content. |
 
 | ID | Title | Priority | Effort | Created | Summary |
@@ -108,3 +107,6 @@ Active todo files are listed below.
 | 339 | Add instruction classification metadata to AST lines | 2026-03-30 | AST lines now carry parser-owned instruction classification metadata used for compiler routing. |
 | 341 | Inline address references during semantic normalization | 2026-03-30 | Local `&name` and `name&` address references are now inlined to literals during semantic normalization; `pushMemoryReference.ts` deleted. |
 | 342 | Inline intermodule address references during semantic normalization | 2026-03-30 | Intermodule `&module:memory`, `module:memory&`, `&module:`, and `module:&` address references are now inlined to literals in `resolveCompileTimeOperand` once cross-module layout is known. |
+| 301 | Refactor constant namespace collection and remove duplicated const parsing | 2026-03-30 | Superseded by the current semantic const pipeline; the remaining work is tracked in `352`. |
+| 310 | Simplify compiler project flattening and compilable block checks | 2026-03-30 | Archived by user request as already completed. |
+| 309 | Extract shared module memory identifier parser | 2026-03-30 | Superseded by later tokenizer/compiler metadata work; the remaining issue is editor-side obsolete source-syntax renaming, tracked separately in `351`. |

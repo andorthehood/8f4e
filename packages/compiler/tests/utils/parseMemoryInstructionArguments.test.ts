@@ -57,29 +57,26 @@ describe('parseMemoryInstructionArguments', () => {
 	});
 
 	describe('second argument handling - intermodular references', () => {
-		it('should handle intermodular reference without error', () => {
+		it('rejects intermodular reference that was not stripped by normalizeMemoryDeclaration', () => {
+			// Intermodule address refs must be stripped by normalizeMemoryDeclaration before
+			// reaching this function. If they arrive here they must throw, not silently return 0.
 			const args = [classifyIdentifier('bufferIn'), classifyIdentifier('&notesMux2:out')];
-			const result = parseMemoryInstructionArguments(createLine(5, 'float*', args), createMockContext());
-			// Intermodular references are resolved later, so defaultValue stays 0
-			expect(result).toEqual({ id: 'bufferIn', defaultValue: 0 });
+			expect(() => parseMemoryInstructionArguments(createLine(5, 'float*', args), createMockContext())).toThrow();
 		});
 
-		it('should handle another intermodular reference pattern', () => {
+		it('rejects another intermodular reference pattern that was not stripped', () => {
 			const args = [classifyIdentifier('myPtr'), classifyIdentifier('&module:identifier')];
-			const result = parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext());
-			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
+			expect(() => parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext())).toThrow();
 		});
 
-		it('should handle intermodular module-base start reference without error', () => {
+		it('rejects intermodular module-base start reference that was not stripped', () => {
 			const args = [classifyIdentifier('myPtr'), classifyIdentifier('&module:')];
-			const result = parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext());
-			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
+			expect(() => parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext())).toThrow();
 		});
 
-		it('should handle intermodular module-base end reference without error', () => {
+		it('rejects intermodular module-base end reference that was not stripped', () => {
 			const args = [classifyIdentifier('myPtr'), classifyIdentifier('module:&')];
-			const result = parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext());
-			expect(result).toEqual({ id: 'myPtr', defaultValue: 0 });
+			expect(() => parseMemoryInstructionArguments(createLine(6, 'int*', args), createMockContext())).toThrow();
 		});
 	});
 
@@ -434,16 +431,16 @@ describe('parseMemoryInstructionArguments', () => {
 			expect(result).toEqual({ id: 'solo', defaultValue: 0 });
 		});
 
-		it('should prioritize intermodular check before memory reference check', () => {
-			// Even if a memory item exists with name matching the pattern,
-			// intermodular references should be detected first
+		it('rejects intermodular reference even when a memory item with matching name exists', () => {
+			// Intermodule references must be stripped by normalizeMemoryDeclaration; they must not
+			// fall through to the memory-reference branch regardless of local memory contents.
 			const memory = {
 				'module:identifier': { byteAddress: 123, wordAlignedSize: 1, isInteger: false, isPointer: false },
 			};
 			const args = [classifyIdentifier('test'), classifyIdentifier('&module:identifier')];
-			const result = parseMemoryInstructionArguments(createLine(15, 'float*', args), createMockContext(memory));
-			// Should be treated as intermodular, not memory reference
-			expect(result).toEqual({ id: 'test', defaultValue: 0 });
+			expect(() =>
+				parseMemoryInstructionArguments(createLine(15, 'float*', args), createMockContext(memory))
+			).toThrow();
 		});
 	});
 });

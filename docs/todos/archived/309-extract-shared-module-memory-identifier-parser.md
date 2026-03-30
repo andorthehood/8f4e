@@ -3,11 +3,16 @@ title: 'TODO: Extract shared module memory identifier parser'
 priority: Medium
 effort: 2-4h
 created: 2026-03-14
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-30'
 ---
 
 # TODO: Extract shared module memory identifier parser
+
+Superseded by later tokenizer/compiler boundary work. The original `module.memory` duplication problem is no longer the active issue:
+- editor/runtime resolved memory ids already use `module:memory`
+- compiler/tokenizer now carry `targetModuleId` / `targetMemoryId` metadata directly
+- the remaining cleanup is editor-side obsolete source-syntax renaming, tracked separately
 
 ## Problem Description
 

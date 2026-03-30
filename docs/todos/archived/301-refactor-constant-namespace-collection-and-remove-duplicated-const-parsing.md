@@ -4,11 +4,16 @@ priority: High
 effort: 1-2d
 created: 2026-03-14
 issue: https://github.com/andorthehood/8f4e/issues/412
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-30'
 ---
 
 # TODO: Refactor constant namespace collection and remove duplicated const parsing
+
+Superseded by the current semantic architecture. The old framing was based on pre-semantic-refactor files and no longer matches the compiler structure:
+- `const` handling now lives in semantic normalization and semantic instruction application
+- namespace construction now goes through `buildNamespace.ts`
+- the remaining issue should be tracked against the current semantic const pipeline, not the old `collectConstants`/instruction-compiler split
 
 ## Problem Description
 
