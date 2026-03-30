@@ -30,6 +30,8 @@ export interface ResolvedGlobalEditorDirectives {
 	keyPressedMemoryId?: string;
 	/** Resolved editor color overrides merged on top of the default color scheme */
 	colorScheme?: ColorScheme;
+	/** Wire thickness in pixels from `; @wireThickness <number>` directives */
+	wireThickness?: number;
 }
 
 export interface GlobalEditorDirectiveContext {
