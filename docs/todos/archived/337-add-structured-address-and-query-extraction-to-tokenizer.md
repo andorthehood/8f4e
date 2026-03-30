@@ -3,8 +3,8 @@ title: 'TODO: Add structured address and query extraction to tokenizer'
 priority: Medium
 effort: 4-8 hours
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-30
 ---
 
 # TODO: Add structured address and query extraction to tokenizer

@@ -42,6 +42,11 @@ This should happen after cross-module layout is known, not during early local-on
 - Do not mix this with local address-reference inlining; that simpler step belongs in [341](/docs/todos/341-inline-address-references-during-semantic-normalization.md).
 - Do not reintroduce post-compile patching of compiled modules just to resolve address literals.
 - Do not keep multiple late fallback paths once semantic normalization can own these values.
+- Do not treat test-only changes as progress on this todo.
+- Do not treat docs-only changes as progress on this todo.
+- Do not treat helper renames or helper extraction by themselves as completion if the inlining still happens late.
+- Do not add new defensive runtime checks in codegen for intermodule address references that semantic normalization should own.
+- Do not preserve the current internal AST/API shape just for backward compatibility if it gets in the way of a clean solution. The software is not released yet, so breaking internal contracts is acceptable here.
 
 ## Implementation Plan
 
@@ -57,9 +62,20 @@ This should happen after cross-module layout is known, not during early local-on
   - `module:&`
 - Rewrite those arguments to `ArgumentType.LITERAL`.
 
+Recommended order:
+
+1. `&module:memory`
+2. `module:memory&`
+3. `&module:`
+4. `module:&`
+
+Keep metadata-query forms out of scope unless they are already naturally handled by the same resolution path.
+
 ### Step 3: Delete late fallback routing
 - Remove any compiler paths that still treat those intermodule address forms as deferred raw strings when they can already be normalized.
 - Keep only genuinely late-bound forms if any still exist.
+
+At minimum, remove one real late consumer after the semantic inlining path is in place.
 
 ## Validation Checkpoints
 
@@ -72,6 +88,21 @@ This should happen after cross-module layout is known, not during early local-on
 - [ ] Intermodule address references are rewritten to literals once cross-module layout is known.
 - [ ] Late compiler paths no longer need to parse intermodule address strings for already-known layouts.
 - [ ] Compiler and CLI tests remain green.
+
+## Evidence Required Before Marking Complete
+
+This todo is not done unless all of the following are true:
+
+- `packages/compiler/src/utils/resolveIntermodularReferenceValue.ts` changes materially or becomes less central because intermodule address references are being inlined earlier.
+- At least one production semantic normalization path rewrites an intermodule address reference to `ArgumentType.LITERAL`.
+- At least one late compiler/codegen consumer stops handling intermodule address references specially because the earlier normalization now owns that responsibility.
+
+The following do not count as completion by themselves:
+
+- tests only
+- docs only
+- helper renames/extractions only
+- adding an earlier optional path while leaving the old late fallback as the real production path
 
 ## Affected Components
 
