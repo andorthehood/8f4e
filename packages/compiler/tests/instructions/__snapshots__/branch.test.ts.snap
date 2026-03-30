@@ -64,12 +64,9 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
       },
     ],
     "instruction": "push",

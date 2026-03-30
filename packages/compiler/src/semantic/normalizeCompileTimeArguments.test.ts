@@ -379,6 +379,99 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
 
+	it('inlines local &name start address to a literal during push normalization', () => {
+		const context = {
+			namespace: {
+				memory: {
+					buffer: {
+						id: 'buffer',
+						numberOfElements: 4,
+						elementWordSize: 4,
+						wordAlignedAddress: 3,
+						wordAlignedSize: 4,
+						byteAddress: 12,
+						default: 0,
+						isInteger: true,
+						isPointer: false,
+						isPointingToInteger: false,
+						isPointingToPointer: false,
+						isUnsigned: false,
+						type: 'int',
+					},
+				},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'push',
+			arguments: [classifyIdentifier('&buffer')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			arguments: [{ type: ArgumentType.LITERAL, value: 12, isInteger: true }],
+		});
+	});
+
+	it('inlines local name& end address to a literal during push normalization', () => {
+		const context = {
+			namespace: {
+				memory: {
+					buffer: {
+						id: 'buffer',
+						numberOfElements: 4,
+						elementWordSize: 4,
+						wordAlignedAddress: 3,
+						wordAlignedSize: 4,
+						byteAddress: 12,
+						default: 0,
+						isInteger: true,
+						isPointer: false,
+						isPointingToInteger: false,
+						isPointingToPointer: false,
+						isUnsigned: false,
+						type: 'int',
+					},
+				},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'push',
+			arguments: [classifyIdentifier('buffer&')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			arguments: [{ type: ArgumentType.LITERAL, value: 24, isInteger: true }],
+		});
+	});
+
+	it('throws UNDECLARED_IDENTIFIER for push with &name when memory does not exist', () => {
+		const context = {
+			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'push',
+			arguments: [classifyIdentifier('&missing')],
+		};
+
+		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+	});
+
 	it('throws UNDEFINED_FUNCTION for call with an undeclared function target', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {}, functions: {} },

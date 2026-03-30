@@ -130,12 +130,9 @@ exports[`const instruction > const with valid constant names > if the generated 
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output1",
-        "type": "identifier",
-        "value": "&output1",
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
       },
     ],
     "instruction": "push",
@@ -169,12 +166,9 @@ exports[`const instruction > const with valid constant names > if the generated 
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output2",
-        "type": "identifier",
-        "value": "&output2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",

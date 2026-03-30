@@ -3,8 +3,8 @@ title: 'TODO: Inline address references during semantic normalization'
 priority: Medium
 effort: 4-8h
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-30
 ---
 
 # TODO: Inline address references during semantic normalization
