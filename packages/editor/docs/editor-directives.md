@@ -347,7 +347,7 @@ When present, this directive controls the opacity of the block's cached main bod
 - **Cache Reuse**: Changing `@opacity` does not invalidate or recreate the cached texture because the value is applied only at replay time.
 
 **Format:**
-The canonical format is exactly: `; @opacity ${value}`
+The canonical format is: `; @opacity <value>`
 
 Example:
 ```txt
