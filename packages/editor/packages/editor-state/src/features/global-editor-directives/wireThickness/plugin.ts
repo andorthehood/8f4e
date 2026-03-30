@@ -2,7 +2,7 @@ import { createGlobalEditorDirectivePlugin } from '../utils';
 
 function parseWireThickness(rawValue: string): number | null {
 	const value = Number(rawValue);
-	if (!Number.isFinite(value) || value <= 0) {
+	if (!Number.isFinite(value) || value < 1 || value > 100) {
 		return null;
 	}
 
@@ -71,7 +71,10 @@ if (import.meta.vitest) {
 				[
 					{
 						id: 'wires',
-						parsedDirectives: [{ prefix: '@', name: 'wireThickness', args: ['0'], rawRow: 2 }],
+						parsedDirectives: [
+							{ prefix: '@', name: 'wireThickness', args: ['0'], rawRow: 2 },
+							{ prefix: '@', name: 'wireThickness', args: ['101'], rawRow: 3 },
+						],
 					},
 				],
 				{}
@@ -82,6 +85,11 @@ if (import.meta.vitest) {
 				{
 					lineNumber: 2,
 					message: "@wireThickness: invalid value '0'",
+					codeBlockId: 'wires',
+				},
+				{
+					lineNumber: 3,
+					message: "@wireThickness: invalid value '101'",
 					codeBlockId: 'wires',
 				},
 			]);
