@@ -144,10 +144,7 @@ function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): 
 	}
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [argument.lhs, argument.rhs].flatMap(operand => {
-			if (operand.type !== ArgumentType.IDENTIFIER) return [];
-			return operand.scope === 'intermodule' && operand.targetModuleId ? [operand.targetModuleId] : [];
-		});
+		return [...argument.intermoduleIds];
 	}
 
 	if (argument.type !== ArgumentType.IDENTIFIER) {

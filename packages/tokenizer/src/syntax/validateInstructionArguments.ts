@@ -171,9 +171,10 @@ if (import.meta.vitest) {
 				validateInstructionArguments('default', [
 					{
 						type: ArgumentType.COMPILE_TIME_EXPRESSION,
-						lhs: parseCompileTimeOperand('SIZE'),
+						left: parseCompileTimeOperand('SIZE'),
 						operator: '*',
-						rhs: parseCompileTimeOperand('2'),
+						right: parseCompileTimeOperand('2'),
+						intermoduleIds: [],
 					},
 				])
 			).not.toThrow();
