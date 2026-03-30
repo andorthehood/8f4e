@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import codeBlockDragger from '../features/codeBlockDragger/effect';
-import { createCodeBlockGraphicData } from '../utils/createCodeBlockGraphicData';
+import codeBlockDragger from '../../src/features/code-blocks/features/codeBlockDragger/effect';
+import { createCodeBlockGraphicData } from '../../src/features/code-blocks/utils/createCodeBlockGraphicData';
 
-import type { State, InternalMouseEvent, EventDispatcher } from '~/types';
+import type { State, InternalMouseEvent, EventDispatcher } from '../../src/types';
 
 describe('viewport-anchored dragging', () => {
 	let state: State;
