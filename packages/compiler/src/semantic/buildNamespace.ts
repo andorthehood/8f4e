@@ -64,26 +64,11 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 }
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
-	if (!isParsedSemanticInstructionLine(line)) {
+	if (!line.isSemanticOnly) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
 
-	applySemanticInstruction(normalizeCompileTimeArguments(line, context), context);
-}
-
-function isParsedSemanticInstructionLine(line: AST[number]): line is ParsedSemanticInstructionLine {
-	switch (line.instruction) {
-		case 'const':
-		case 'use':
-		case 'init':
-		case 'module':
-		case 'moduleEnd':
-		case 'constants':
-		case 'constantsEnd':
-			return true;
-	}
-
-	return false;
+	applySemanticInstruction(normalizeCompileTimeArguments(line as ParsedSemanticInstructionLine, context), context);
 }
 function applyNamespacePrepassLine(line: AST[number], context: CompilationContext) {
 	if (line.isSemanticOnly) {
