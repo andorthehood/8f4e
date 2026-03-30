@@ -5,7 +5,6 @@ import type { Namespace, ArgumentIdentifier } from '../../types';
 export const enum IdentifierPushKind {
 	MEMORY_IDENTIFIER,
 	MEMORY_POINTER,
-	MEMORY_REFERENCE,
 	LOCAL,
 }
 
@@ -20,8 +19,6 @@ export default function resolveIdentifierPushKind(
 			return IdentifierPushKind.MEMORY_IDENTIFIER;
 		case 'pointer':
 			return IdentifierPushKind.MEMORY_POINTER;
-		case 'reference':
-			return IdentifierPushKind.MEMORY_REFERENCE;
 		default:
 			return IdentifierPushKind.LOCAL;
 	}
@@ -51,9 +48,7 @@ if (import.meta.vitest) {
 			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('*buffer'))).toBe(
 				IdentifierPushKind.MEMORY_POINTER
 			);
-			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('&buffer'))).toBe(
-				IdentifierPushKind.MEMORY_REFERENCE
-			);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('&buffer'))).toBe(IdentifierPushKind.LOCAL);
 			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('count(buffer)'))).toBe(IdentifierPushKind.LOCAL);
 			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('sizeof(buffer)'))).toBe(IdentifierPushKind.LOCAL);
 			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('sizeof(*buffer)'))).toBe(

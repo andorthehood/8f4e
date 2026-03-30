@@ -1,8 +1,10 @@
 import { ArgumentType } from '@8f4e/tokenizer';
 
 import {
+	getDataStructureByteAddress,
 	getElementCount,
 	getElementWordSize,
+	getMemoryStringLastByteAddress,
 	getPointeeElementWordSize,
 	getElementMaxValue,
 	getPointeeElementMaxValue,
@@ -118,6 +120,19 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Names
 		if (Object.hasOwn(memory, base)) {
 			const memoryItem = memory[base];
 			return { value: getElementMinValue(memory, base), isInteger: !!memoryItem?.isInteger };
+		}
+		return undefined;
+	}
+
+	// &name — start byte address of a local memory item
+	// name& — end-word base byte address of a local memory item
+	if (operand.referenceKind === 'memory-reference') {
+		const base = operand.targetMemoryId!;
+		if (Object.hasOwn(memory, base)) {
+			const value = operand.isEndAddress
+				? getMemoryStringLastByteAddress(memory, base)
+				: getDataStructureByteAddress(memory, base);
+			return { value, isInteger: true };
 		}
 		return undefined;
 	}
