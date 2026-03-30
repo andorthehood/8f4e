@@ -124,6 +124,39 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Names
 		return undefined;
 	}
 
+	// &module: — start byte address of a module
+	// module:& — end-word base byte address of a module
+	if (operand.referenceKind === 'intermodular-module-reference') {
+		const targetModuleId = operand.targetModuleId!;
+		const targetNamespace = namespace.namespaces[targetModuleId];
+		if (typeof targetNamespace?.byteAddress === 'number' && typeof targetNamespace?.wordAlignedSize === 'number') {
+			const value = operand.isEndAddress
+				? targetNamespace.byteAddress + (targetNamespace.wordAlignedSize - 1) * 4
+				: targetNamespace.byteAddress;
+			return { value, isInteger: true };
+		}
+		return undefined;
+	}
+
+	// &module:memory — start byte address of a remote memory item
+	// module:memory& — end-word base byte address of a remote memory item
+	if (operand.referenceKind === 'intermodular-reference') {
+		const targetModuleId = operand.targetModuleId!;
+		const targetNamespace = namespace.namespaces[targetModuleId];
+		// Only resolve once the target module has been laid out (byteAddress is set on the namespace entry)
+		if (typeof targetNamespace?.byteAddress !== 'number') {
+			return undefined;
+		}
+		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId!];
+		if (targetMemory) {
+			const value = operand.isEndAddress
+				? targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4
+				: targetMemory.byteAddress;
+			return { value, isInteger: true };
+		}
+		return undefined;
+	}
+
 	// &name — start byte address of a local memory item
 	// name& — end-word base byte address of a local memory item
 	if (operand.referenceKind === 'memory-reference') {
@@ -313,6 +346,122 @@ if (import.meta.vitest) {
 				value: 32,
 				isInteger: true,
 			});
+		});
+
+		it('resolves intermodule start-address reference (&module:memory) once module is laid out', () => {
+			const laidOutNamespace = {
+				...mockNamespace,
+				namespaces: {
+					source: {
+						consts: {},
+						byteAddress: 8,
+						wordAlignedSize: 4,
+						memory: {
+							buffer: {
+								byteAddress: 8,
+								wordAlignedSize: 4,
+								numberOfElements: 4,
+								elementWordSize: 4,
+								isInteger: true,
+							},
+						},
+					},
+				},
+			} as unknown as Namespace;
+
+			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
+				value: 8,
+				isInteger: true,
+			});
+		});
+
+		it('resolves intermodule end-address reference (module:memory&) once module is laid out', () => {
+			const laidOutNamespace = {
+				...mockNamespace,
+				namespaces: {
+					source: {
+						consts: {},
+						byteAddress: 8,
+						wordAlignedSize: 4,
+						memory: {
+							buffer: {
+								byteAddress: 8,
+								wordAlignedSize: 4,
+								numberOfElements: 4,
+								elementWordSize: 4,
+								isInteger: true,
+							},
+						},
+					},
+				},
+			} as unknown as Namespace;
+
+			// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
+			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
+				value: 20,
+				isInteger: true,
+			});
+		});
+
+		it('resolves intermodule module-base start-address (&module:) once module is laid out', () => {
+			const laidOutNamespace = {
+				...mockNamespace,
+				namespaces: {
+					source: {
+						consts: {},
+						byteAddress: 12,
+						wordAlignedSize: 3,
+						memory: {},
+					},
+				},
+			} as unknown as Namespace;
+
+			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
+				value: 12,
+				isInteger: true,
+			});
+		});
+
+		it('resolves intermodule module-base end-address (module:&) once module is laid out', () => {
+			const laidOutNamespace = {
+				...mockNamespace,
+				namespaces: {
+					source: {
+						consts: {},
+						byteAddress: 12,
+						wordAlignedSize: 3,
+						memory: {},
+					},
+				},
+			} as unknown as Namespace;
+
+			// End address = 12 + (3 - 1) * 4 = 12 + 8 = 20
+			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
+				value: 20,
+				isInteger: true,
+			});
+		});
+
+		it('defers intermodule address resolution until module byteAddress is known', () => {
+			const unlaidOutNamespace = {
+				...mockNamespace,
+				namespaces: {
+					source: {
+						consts: {},
+						// No byteAddress — module not yet laid out
+						memory: {
+							buffer: {
+								numberOfElements: 4,
+								elementWordSize: 4,
+								isInteger: true,
+							},
+						},
+					},
+				},
+			} as unknown as Namespace;
+
+			expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:buffer'))).toBeUndefined();
+			expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
 		});
 	});
 }
