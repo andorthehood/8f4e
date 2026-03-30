@@ -1,7 +1,7 @@
 import { ArgumentType } from '@8f4e/tokenizer';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
-import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './declarations';
+import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
 
 import { ErrorCode, getError } from '../compilerError';
@@ -64,26 +64,11 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 }
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
-	if (!isParsedSemanticInstructionLine(line)) {
+	if (!line.isSemanticOnly) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
 
-	applySemanticInstruction(normalizeCompileTimeArguments(line, context), context);
-}
-
-function isParsedSemanticInstructionLine(line: AST[number]): line is ParsedSemanticInstructionLine {
-	switch (line.instruction) {
-		case 'const':
-		case 'use':
-		case 'init':
-		case 'module':
-		case 'moduleEnd':
-		case 'constants':
-		case 'constantsEnd':
-			return true;
-	}
-
-	return false;
+	applySemanticInstruction(normalizeCompileTimeArguments(line as ParsedSemanticInstructionLine, context), context);
 }
 function applyNamespacePrepassLine(line: AST[number], context: CompilationContext) {
 	if (line.isSemanticOnly) {
@@ -91,7 +76,7 @@ function applyNamespacePrepassLine(line: AST[number], context: CompilationContex
 		return;
 	}
 
-	if (!isMemoryDeclarationInstruction(line.instruction)) {
+	if (!line.isMemoryDeclaration) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
 
@@ -127,7 +112,7 @@ export function prepassNamespace(
 
 	ast.forEach(originalLine => {
 		const isSemanticOnly = !!originalLine.isSemanticOnly;
-		if (!isSemanticOnly && !isMemoryDeclarationInstruction(originalLine.instruction)) {
+		if (!isSemanticOnly && !originalLine.isMemoryDeclaration) {
 			return;
 		}
 
@@ -189,7 +174,7 @@ function toNamespaceDiscoveryAst(ast: AST): AST {
 		}
 
 		if (
-			isMemoryDeclarationInstruction(line.instruction) &&
+			line.isMemoryDeclaration &&
 			!line.instruction.endsWith('[]') &&
 			line.arguments[0]?.type === ArgumentType.IDENTIFIER
 		) {

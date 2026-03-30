@@ -1,5 +1,6 @@
 import instructionParser from './syntax/instructionParser';
 import isComment from './syntax/isComment';
+import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
 import isSemanticOnlyInstruction from './syntax/isSemanticOnlyInstruction';
 import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
@@ -72,6 +73,7 @@ export function parseLine(
 			instruction,
 			arguments: parsedArguments,
 			isSemanticOnly: isSemanticOnlyInstruction(instruction),
+			isMemoryDeclaration: isMemoryDeclarationInstruction(instruction),
 		};
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
