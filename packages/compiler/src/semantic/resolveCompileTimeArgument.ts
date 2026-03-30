@@ -292,6 +292,7 @@ if (import.meta.vitest) {
 					left: parseCompileTimeOperand('2'),
 					operator: '*',
 					right: parseCompileTimeOperand('SIZE'),
+					intermoduleIds: [],
 				})
 			).toEqual({
 				value: 32,
