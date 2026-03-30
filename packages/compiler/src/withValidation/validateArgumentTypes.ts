@@ -28,6 +28,7 @@ export function validateArgumentTypes(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	const line: Parameters<InstructionCompiler>[0] = {
 		lineNumberBeforeMacroExpansion: 1,
@@ -41,10 +42,7 @@ if (import.meta.vitest) {
 		it('validates argument tuples', () => {
 			expect(() =>
 				validateArgumentTypes(
-					[
-						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
-						{ type: ArgumentType.IDENTIFIER, value: 'x' },
-					],
+					[{ type: ArgumentType.LITERAL, value: 1, isInteger: true }, classifyIdentifier('x')],
 					['literal', 'identifier'],
 					line,
 					context
@@ -66,10 +64,7 @@ if (import.meta.vitest) {
 		it('validates all arguments for scalar rules', () => {
 			expect(() =>
 				validateArgumentTypes(
-					[
-						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
-						{ type: ArgumentType.IDENTIFIER, value: 'x' },
-					],
+					[{ type: ArgumentType.LITERAL, value: 1, isInteger: true }, classifyIdentifier('x')],
 					'literal',
 					line,
 					context

@@ -1,4 +1,4 @@
-import { ArgumentType, BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '../types';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { saveByteCode } from '../utils/compilation';
@@ -50,6 +50,7 @@ export default block;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('block instruction compiler', () => {
 		it('emits a typed block for float', () => {
@@ -60,7 +61,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
+					arguments: [classifyIdentifier('float')],
 				} as AST[number],
 				context
 			);
@@ -79,7 +80,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+					arguments: [classifyIdentifier('int')],
 				} as AST[number],
 				context
 			);
@@ -98,7 +99,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'void' }],
+					arguments: [classifyIdentifier('void')],
 				} as AST[number],
 				context
 			);

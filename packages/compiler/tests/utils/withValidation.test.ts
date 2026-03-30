@@ -1,3 +1,4 @@
+import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, it, expect, beforeEach } from 'vitest';
 
 import { withValidation } from '../../src/withValidation';
@@ -142,7 +143,7 @@ describe('withValidation', () => {
 		it('throws EXPECTED_VALUE for identifier on nonNegativeIntegerLiteral rule', () => {
 			const astWithArgs = {
 				...ast,
-				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'x' }],
+				arguments: [classifyIdentifier('x')],
 			};
 			const compiler = withValidation({ minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] }, mockCompiler);
 			expect(() => compiler(astWithArgs, context)).toThrow(`${ErrorCode.EXPECTED_VALUE}`);

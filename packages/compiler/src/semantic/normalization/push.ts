@@ -1,17 +1,13 @@
 import {
 	hasCollectedNamespaces,
-	isIntermoduleReferenceLike,
+	isIntermoduleReferenceKind,
 	validateIntermoduleAddressReference,
 	validateOrDeferCompileTimeExpression,
 	normalizeArgumentsAtIndexes,
 } from './helpers';
 
 import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '../../types';
-import {
-	isMemoryIdentifier,
-	isMemoryPointerIdentifier,
-	isMemoryReferenceIdentifier,
-} from '../../utils/memoryIdentifier';
+import { isMemoryIdentifier } from '../../utils/memoryIdentifier';
 import { ErrorCode, getError } from '../../compilerError';
 
 /**
@@ -32,21 +28,21 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 		}
 	}
 	if (argument?.type === ArgumentType.IDENTIFIER) {
-		const { value } = argument;
+		const { value, referenceKind } = argument;
 		const { memory } = context.namespace;
-		const isIntermodule = isIntermoduleReferenceLike(value);
+		const isIntermodule = isIntermoduleReferenceKind(referenceKind);
 		if (!hasCollectedNamespaces(context) && isIntermodule) {
 			return normalized as CodegenPushLine;
 		}
 		// Validate intermodule references first
-		validateIntermoduleAddressReference(value, line, context);
+		validateIntermoduleAddressReference(argument, line, context);
 		if (isIntermodule) {
 			return normalized as CodegenPushLine;
 		}
 		if (
-			!isMemoryIdentifier(memory, value) &&
-			!isMemoryPointerIdentifier(memory, value) &&
-			!isMemoryReferenceIdentifier(memory, value) &&
+			!(referenceKind === 'plain' && isMemoryIdentifier(memory, value)) &&
+			!(referenceKind === 'memory-pointer' && isMemoryIdentifier(memory, argument.targetMemoryId!)) &&
+			!(referenceKind === 'memory-reference' && isMemoryIdentifier(memory, argument.targetMemoryId!)) &&
 			!context.locals[value]
 		) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: value });
