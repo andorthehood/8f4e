@@ -8,7 +8,7 @@ function getIntermodularReferenceModules(argument: Argument | undefined): string
 	}
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [argument.lhs, argument.rhs].flatMap(operand => {
+		return [argument.left, argument.right].flatMap(operand => {
 			if (operand.type !== ArgumentType.IDENTIFIER) return [];
 			return operand.scope === 'intermodule' && operand.targetModuleId ? [operand.targetModuleId] : [];
 		});
@@ -117,9 +117,9 @@ if (import.meta.vitest) {
 
 	const compileTimeExpressionArgument = (lhs: string, operator: '*' | '/', rhs: string) => ({
 		type: ArgumentType.COMPILE_TIME_EXPRESSION,
-		lhs: parseCompileTimeOperand(lhs),
+		left: parseCompileTimeOperand(lhs),
 		operator,
-		rhs: parseCompileTimeOperand(rhs),
+		right: parseCompileTimeOperand(rhs),
 	});
 
 	const createModuleAst = (moduleId: string, references: string[] = []): AST => {
