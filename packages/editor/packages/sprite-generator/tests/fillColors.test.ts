@@ -3,10 +3,14 @@ import { describe, it, expect } from 'vitest';
 import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
 import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates } from './utils/testHelpers';
 
+import { createAtlasLayout } from '../src/atlasLayout';
 import generateFillColors, { generateLookup } from '../src/fillColors';
 import { Command } from '../src/types';
 
 describe('fillColors module', () => {
+	const layout8x16 = createAtlasLayout(characterDimensions8x16.width, characterDimensions8x16.height);
+	const layout6x10 = createAtlasLayout(characterDimensions6x10.width, characterDimensions6x10.height);
+
 	describe('generateFillColors function', () => {
 		it('should generate drawing commands for 8x16 characters', () => {
 			const commands = generateFillColors(
@@ -21,7 +25,7 @@ describe('fillColors module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [540, 500]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [layout8x16.fillColors.x, layout8x16.fillColors.y]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -140,8 +144,8 @@ describe('fillColors module', () => {
 
 			validateSpriteCoordinates(
 				firstCoordinate,
-				540, // offsetX
-				500, // offsetY
+				layout8x16.fillColors.x,
+				layout8x16.fillColors.y,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height
 			);
@@ -158,7 +162,13 @@ describe('fillColors module', () => {
 				const secondCoordinate = lookup[keys[1] as keyof typeof lookup];
 
 				// Second color should be offset by character width
-				validateSpriteCoordinates(secondCoordinate, 540 + width, 500, width, height);
+				validateSpriteCoordinates(
+					secondCoordinate,
+					layout8x16.fillColors.x + width,
+					layout8x16.fillColors.y,
+					width,
+					height
+				);
 				expect(secondCoordinate.x).toBe(firstCoordinate.x + width);
 			}
 		});
@@ -172,8 +182,8 @@ describe('fillColors module', () => {
 
 				validateSpriteCoordinates(
 					firstCoordinate,
-					540,
-					500,
+					layout6x10.fillColors.x,
+					layout6x10.fillColors.y,
 					characterDimensions6x10.width,
 					characterDimensions6x10.height
 				);

@@ -1,11 +1,9 @@
 import { SpriteCoordinates } from 'glugglug';
 
+import { createAtlasLayout } from './atlasLayout';
 import { drawCharacter } from './font';
 import Glyph from './fonts/types';
 import { ColorScheme, Command, DrawingCommand } from './types';
-
-const offsetX = 0;
-const offsetY = 340;
 
 export default function generate(
 	glyphs: number[],
@@ -13,11 +11,12 @@ export default function generate(
 	characterHeight: number,
 	colors: ColorScheme['fill']
 ): DrawingCommand[] {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
 	const commands: DrawingCommand[] = [
 		[Command.RESET_TRANSFORM],
-		[Command.TRANSLATE, offsetX, offsetY],
+		[Command.TRANSLATE, layout.background.x, layout.background.y],
 		[Command.FILL_COLOR, colors.background],
-		[Command.RECTANGLE, 0, 0, characterWidth * 64, characterHeight * 32],
+		[Command.RECTANGLE, 0, 0, layout.background.width, layout.background.height],
 	];
 
 	for (let i = 0; i < 32; i++) {
@@ -37,10 +36,12 @@ export default function generate(
 }
 
 export const generateLookup = function (characterWidth: number, characterHeight: number): Record<0, SpriteCoordinates> {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+
 	return {
 		0: {
-			x: offsetX,
-			y: offsetY,
+			x: layout.background.x,
+			y: layout.background.y,
 			spriteWidth: 64 * characterWidth,
 			spriteHeight: 32 * characterHeight,
 		},
