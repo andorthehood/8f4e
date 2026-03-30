@@ -3,8 +3,8 @@ title: 'TODO: Add `int16*` pointer types to compiler and runtime'
 priority: Medium
 effort: 1-2d
 created: 2026-03-26
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-30'
 ---
 
 # TODO: Add `int16*` pointer types to compiler and runtime

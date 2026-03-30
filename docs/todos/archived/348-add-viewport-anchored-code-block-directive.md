@@ -3,8 +3,8 @@ title: 'TODO: Add viewport-anchored code block directive'
 priority: Medium
 effort: 4-8h
 created: 2026-03-29
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-30
 ---
 
 # TODO: Add viewport-anchored code block directive

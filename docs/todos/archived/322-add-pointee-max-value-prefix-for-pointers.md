@@ -3,8 +3,8 @@ title: 'TODO: Add `max(*name)` pointee max value prefix for pointers'
 priority: Medium
 effort: 2-4h
 created: 2026-03-26
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-30
 ---
 
 # TODO: Add `max(*name)` pointee max value prefix for pointers
