@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classifyIdentifier } from '@8f4e/tokenizer';
+import { classifyIdentifier, parseCompileTimeOperand } from '@8f4e/tokenizer';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 
@@ -12,7 +12,14 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'SIZE' }],
+			arguments: [
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: parseCompileTimeOperand('2'),
+					operator: '*',
+					rhs: parseCompileTimeOperand('SIZE'),
+				},
+			],
 		};
 		const context = {
 			namespace: {
@@ -56,8 +63,18 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'map',
 			arguments: [
-				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: 'SIZE', operator: '/', rhs: '2' },
-				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'SIZE' },
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: parseCompileTimeOperand('SIZE'),
+					operator: '/',
+					rhs: parseCompileTimeOperand('2'),
+				},
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: parseCompileTimeOperand('2'),
+					operator: '*',
+					rhs: parseCompileTimeOperand('SIZE'),
+				},
 			],
 		};
 		const context = {
@@ -84,7 +101,14 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' }],
+			arguments: [
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: parseCompileTimeOperand('2'),
+					operator: '*',
+					rhs: parseCompileTimeOperand('MISSING'),
+				},
+			],
 		};
 		const context = {
 			namespace: {
@@ -166,7 +190,12 @@ describe('normalizeCompileTimeArguments', () => {
 			instruction: 'const',
 			arguments: [
 				classifyIdentifier('SIZE'),
-				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: parseCompileTimeOperand('2'),
+					operator: '*',
+					rhs: parseCompileTimeOperand('MISSING'),
+				},
 			],
 		};
 		const context = {
@@ -233,7 +262,12 @@ describe('normalizeCompileTimeArguments', () => {
 			instruction: 'init',
 			arguments: [
 				classifyIdentifier('target'),
-				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: parseCompileTimeOperand('2'),
+					operator: '*',
+					rhs: parseCompileTimeOperand('MISSING'),
+				},
 			],
 		};
 
@@ -296,7 +330,7 @@ describe('normalizeCompileTimeArguments', () => {
 				memory: { target: { numberOfElements: 1, elementWordSize: 4, isInteger: true } },
 				consts: {},
 				moduleName: 'test',
-				namespaces: {},
+				namespaces: { knownModule: { consts: {}, memory: {} } },
 			},
 			locals: {},
 		} as unknown as CompilationContext;
@@ -336,7 +370,12 @@ describe('normalizeCompileTimeArguments', () => {
 			instruction: 'int',
 			arguments: [
 				classifyIdentifier('buffer'),
-				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					lhs: parseCompileTimeOperand('2'),
+					operator: '*',
+					rhs: parseCompileTimeOperand('MISSING'),
+				},
 			],
 		};
 
