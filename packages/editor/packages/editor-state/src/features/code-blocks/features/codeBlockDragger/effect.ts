@@ -77,11 +77,17 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			codeBlock: draggedCodeBlock,
 		});
 
-		// Bring dragged module forward.
-		state.graphicHelper.codeBlocks = [
-			...state.graphicHelper.codeBlocks.filter(block => block !== draggedCodeBlock),
-			draggedCodeBlock,
-		];
+		// Bring dragged module forward within its z-order partition.
+		// Normal blocks move to the end of the normal segment (before always-on-top blocks).
+		// Always-on-top blocks move to the end of the always-on-top segment (end of array).
+		const allOthers = state.graphicHelper.codeBlocks.filter(block => block !== draggedCodeBlock);
+		if (draggedCodeBlock.alwaysOnTop) {
+			state.graphicHelper.codeBlocks = [...allOthers, draggedCodeBlock];
+		} else {
+			const normalOthers = allOthers.filter(block => !block.alwaysOnTop);
+			const topBlocks = allOthers.filter(block => block.alwaysOnTop);
+			state.graphicHelper.codeBlocks = [...normalOthers, draggedCodeBlock, ...topBlocks];
+		}
 	}
 
 	function onMouseMove(event: InternalMouseEvent) {

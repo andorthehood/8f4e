@@ -190,7 +190,11 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			isHome: false,
 		});
 
-		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks, codeBlock]);
+		// Insert new block before any always-on-top blocks to maintain z-order partition.
+		const existingBlocks = state.graphicHelper.codeBlocks;
+		const normalBlocks = existingBlocks.filter(b => !b.alwaysOnTop);
+		const topBlocks = existingBlocks.filter(b => b.alwaysOnTop);
+		store.set('graphicHelper.codeBlocks', [...normalBlocks, codeBlock, ...topBlocks]);
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
