@@ -92,8 +92,8 @@ Expected semantics with current type system:
 
 ## Related Items
 
-- **Related**: [319-add-pointee-element-word-size-prefix-for-pointers.md](/Users/andorpolgar/git/8f4e/docs/todos/319-add-pointee-element-word-size-prefix-for-pointers.md)
-- **Related**: [322-add-pointee-max-value-prefix-for-pointers.md](/Users/andorpolgar/git/8f4e/docs/todos/322-add-pointee-max-value-prefix-for-pointers.md)
+- **Related**: `docs/todos/archived/319-add-pointee-element-word-size-prefix-for-pointers.md`
+- **Related**: `docs/todos/archived/322-add-pointee-max-value-prefix-for-pointers.md`
 
 ## Notes
 

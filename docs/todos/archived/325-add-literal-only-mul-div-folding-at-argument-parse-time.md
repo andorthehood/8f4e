@@ -14,9 +14,9 @@ completed: '2026-03-30'
 8f4e currently supports a narrow class of literal arithmetic in syntax parsing and a separate narrow class of constant arithmetic during semantic resolution.
 
 Current state:
-- [parseArgument.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/syntax/parseArgument.ts) already folds fraction-style literals like `1/2` into `ArgumentType.LITERAL`
+- `packages/tokenizer/src/syntax/parseArgument.ts` already folds fraction-style literals like `1/2` into `ArgumentType.LITERAL`
 - plain literal multiplication such as `16*2` or `3.5*4` is not parsed as a literal and instead falls through as an identifier-shaped token
-- constant-based expressions like `SIZE*2` and `SIZE/2` are handled later by [resolveConstantValue.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/resolveConstantValue.ts)
+- constant-based expressions like `SIZE*2` and `SIZE/2` are handled later by `packages/compiler/src/utils/resolveConstantValue.ts`
 
 Why this is a problem:
 - users cannot write simple literal-only arithmetic consistently across declarations, `const`, `push`, `init`, and other instructions
@@ -32,7 +32,7 @@ Important scope boundary:
 Treat literal-only `*` and `/` expressions as syntax-level numeric literals and fold them during argument parsing.
 
 High-level approach:
-- extend [parseArgument.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/syntax/parseArgument.ts) to recognize a single binary arithmetic expression where both operands are numeric literals
+- extend `packages/tokenizer/src/syntax/parseArgument.ts` to recognize a single binary arithmetic expression where both operands are numeric literals
 - compute the value immediately and return a normal `ArgumentType.LITERAL`
 - preserve the existing semantic resolution path for identifier-based constant expressions
 
@@ -55,7 +55,7 @@ Explicit non-goals for this TODO:
 
 ## Anti-Patterns
 
-- Do not move constant-name expression resolution out of [resolveConstantValue.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/resolveConstantValue.ts).
+- Do not move constant-name expression resolution out of `packages/compiler/src/utils/resolveConstantValue.ts`.
 - Do not make AST parsing depend on namespace or constant tables.
 - Do not stack more ad hoc regex cases on top of the current fraction parser if a single-operator literal-expression parser can replace it cleanly.
 - Do not introduce precedence rules implicitly by accepting multiple operators without an explicit expression grammar.
@@ -76,7 +76,7 @@ Explicit non-goals for this TODO:
 - Throw the existing syntax error for division by zero
 
 ### Step 3: Keep semantic constant-expression handling unchanged
-- Leave `SIZE*2` and `SIZE/2` in [resolveConstantValue.ts](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/resolveConstantValue.ts)
+- Leave `SIZE*2` and `SIZE/2` in `packages/compiler/src/utils/resolveConstantValue.ts`
 - Ensure the new syntax helper does not accidentally consume identifier-based forms that should remain semantic
 
 ### Step 4: Add tests across syntax and compiler usage sites
@@ -128,7 +128,7 @@ Explicit non-goals for this TODO:
 
 ## Related Items
 
-- **Related**: [281-add-plus-minus-support-to-constant-expressions.md](/Users/andorpolgar/git/8f4e/docs/todos/281-add-plus-minus-support-to-constant-expressions.md)
+- **Related**: `docs/todos/281-add-plus-minus-support-to-constant-expressions.md`
 
 ## Notes
 

@@ -54,10 +54,10 @@ Expected result:
 ## Implementation Plan
 
 ### Step 1: Identify editor/runtime memory-id producers and consumers
-- Update [resolveMemoryIdentifier.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/pureHelpers/resolveMemoryIdentifier.ts)
-- Update [keyboardMemoryEvents.ts](/Users/andorpolgar/git/8f4e/packages/editor/src/events/keyboardMemoryEvents.ts)
-- Update [global-editor-directives/keyboardMemory/shared.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/features/global-editor-directives/keyboardMemory/shared.ts)
-- Update [binary-assets/effect.ts](/Users/andorpolgar/git/8f4e/packages/editor/packages/editor-state/src/features/binary-assets/effect.ts)
+- Update `packages/editor/packages/editor-state/src/pureHelpers/resolveMemoryIdentifier.ts`
+- Update `packages/editor/src/events/keyboardMemoryEvents.ts`
+- Update `packages/editor/packages/editor-state/src/features/global-editor-directives/keyboardMemory/shared.ts`
+- Update `packages/editor/packages/editor-state/src/features/binary-assets/effect.ts`
 
 ### Step 2: Decide migration behavior
 - Either support both `module.memory` and `module:memory` temporarily, or migrate directly if existing persisted state does not require compatibility
@@ -103,9 +103,9 @@ Expected result:
 
 ## Related Items
 
-- **Related**: [309-extract-shared-module-memory-identifier-parser.md](/Users/andorpolgar/git/8f4e/docs/todos/309-extract-shared-module-memory-identifier-parser.md)
-- **Related**: [319-add-pointee-element-word-size-prefix-for-pointers.md](/Users/andorpolgar/git/8f4e/docs/todos/319-add-pointee-element-word-size-prefix-for-pointers.md)
-- **Related**: [320-add-pointee-start-address-prefix-for-pointers.md](/Users/andorpolgar/git/8f4e/docs/todos/320-add-pointee-start-address-prefix-for-pointers.md)
+- **Related**: `docs/todos/archived/309-extract-shared-module-memory-identifier-parser.md`
+- **Related**: `docs/todos/archived/319-add-pointee-element-word-size-prefix-for-pointers.md`
+- **Related**: `docs/todos/320-add-pointee-start-address-prefix-for-pointers.md`
 
 ## Notes
 
