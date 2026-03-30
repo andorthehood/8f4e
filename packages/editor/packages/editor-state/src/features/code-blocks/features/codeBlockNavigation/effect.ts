@@ -68,7 +68,11 @@ interface JumpToFavoriteCodeBlockEvent {
  * @param direction - The direction to navigate
  * @returns {boolean} true if navigation to a different block occurred, false if no block is selected or the target is the same as the current block
  */
-export function navigateToCodeBlockInDirection(stateSource: StateSource, direction: Direction): boolean {
+export function navigateToCodeBlockInDirection(
+	stateSource: StateSource,
+	direction: Direction,
+	events?: EventDispatcher
+): boolean {
 	const state = getState(stateSource);
 	// Only proceed if a code block is currently selected
 	if (!state.graphicHelper.selectedCodeBlock) {
@@ -94,6 +98,7 @@ export function navigateToCodeBlockInDirection(stateSource: StateSource, directi
 		state.featureFlags.viewportAnimations = true;
 		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
 		state.featureFlags.viewportAnimations = originalViewportAnimations;
+		events?.dispatch('viewportMoved');
 		return true;
 	}
 
@@ -111,7 +116,12 @@ export function navigateToCodeBlockInDirection(stateSource: StateSource, directi
  * @param id - The source code ID of the target block (fallback)
  * @returns {boolean} true if the block was found and jumped to, false otherwise
  */
-export function jumpToCodeBlock(stateSource: StateSource, creationIndex: number, id: string): boolean {
+export function jumpToCodeBlock(
+	stateSource: StateSource,
+	creationIndex: number,
+	id: string,
+	events?: EventDispatcher
+): boolean {
 	const state = getState(stateSource);
 	const codeBlocks = state.graphicHelper.codeBlocks;
 
@@ -131,6 +141,7 @@ export function jumpToCodeBlock(stateSource: StateSource, creationIndex: number,
 		state.featureFlags.viewportAnimations = true;
 		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
 		state.featureFlags.viewportAnimations = originalViewportAnimations;
+		events?.dispatch('viewportMoved');
 		return true;
 	}
 
@@ -148,7 +159,7 @@ export function jumpToCodeBlock(stateSource: StateSource, creationIndex: number,
  *
  * @param state - The editor state
  */
-export function goHome(stateSource: StateSource): void {
+export function goHome(stateSource: StateSource, events?: EventDispatcher): void {
 	const state = getState(stateSource);
 	const homeBlock = state.graphicHelper.codeBlocks.find(block => block.isHome);
 	const originalViewportAnimations = state.featureFlags.viewportAnimations;
@@ -163,6 +174,7 @@ export function goHome(stateSource: StateSource): void {
 	}
 
 	state.featureFlags.viewportAnimations = originalViewportAnimations;
+	events?.dispatch('viewportMoved');
 }
 
 /**
@@ -189,15 +201,15 @@ export function goHome(stateSource: StateSource): void {
  */
 export default function codeBlockNavigation(store: StateManager<State>, events: EventDispatcher): void {
 	const onNavigateCodeBlock = (event: NavigateCodeBlockEvent) => {
-		navigateToCodeBlockInDirection(store, event.direction);
+		navigateToCodeBlockInDirection(store, event.direction, events);
 	};
 
 	const onJumpToFavoriteCodeBlock = (event: JumpToFavoriteCodeBlockEvent) => {
-		jumpToCodeBlock(store, event.creationIndex, event.id);
+		jumpToCodeBlock(store, event.creationIndex, event.id, events);
 	};
 
 	const onGoHome = () => {
-		goHome(store);
+		goHome(store, events);
 	};
 
 	// Register the abstract navigation event handler
