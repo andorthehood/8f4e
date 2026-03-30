@@ -35,17 +35,31 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 	if (fontCache[font]) {
 		return fontCache[font]!;
 	}
+	if (font === '6x10') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/6x10/generated/ascii'),
+			import('./fonts/6x10/generated/glyphs'),
+		]);
+		fontCache['6x10'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 6,
+			characterHeight: 10,
+		};
+		return fontCache['6x10'];
+	}
+
 	const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-		import('./fonts/6x10/generated/ascii'),
-		import('./fonts/6x10/generated/glyphs'),
+		import('./fonts/16x32/generated/ascii'),
+		import('./fonts/16x32/generated/glyphs'),
 	]);
-	fontCache['6x10'] = {
+	fontCache['16x32'] = {
 		asciiBitmap: decodeFontBase64(asciiMetadata),
 		glyphsBitmap: decodeFontBase64(glyphsMetadata),
-		characterWidth: 6,
-		characterHeight: 10,
+		characterWidth: 16,
+		characterHeight: 32,
 	};
-	return fontCache['6x10']!;
+	return fontCache['16x32'];
 }
 
 export interface SpriteLookups extends FontLookups {

@@ -34,6 +34,7 @@ Select the editor font used for rendering code blocks and UI text.
 Supported fonts:
 - `8x16`
 - `6x10`
+- `16x32`
 
 ### `@infoOverlay`
 
