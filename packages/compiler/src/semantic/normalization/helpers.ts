@@ -112,12 +112,7 @@ export function validateOrDeferCompileTimeExpression(
 	line: AST[number],
 	context: CompilationContext
 ): boolean {
-	const lhsIsIntermodule =
-		argument.left.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.left.referenceKind);
-	const rhsIsIntermodule =
-		argument.right.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.right.referenceKind);
-
-	if (!hasCollectedNamespaces(context) && (lhsIsIntermodule || rhsIsIntermodule)) {
+	if (!hasCollectedNamespaces(context) && argument.intermoduleIds.length > 0) {
 		return true;
 	}
 	if (argument.left.type === ArgumentType.IDENTIFIER) {
