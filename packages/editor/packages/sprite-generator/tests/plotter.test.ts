@@ -3,10 +3,14 @@ import { describe, it, expect } from 'vitest';
 import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
 import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates } from './utils/testHelpers';
 
+import { createAtlasLayout } from '../src/atlasLayout';
 import generatePlotter, { generateLookup } from '../src/plotter';
 import { Command } from '../src/types';
 
 describe('plotter module', () => {
+	const layout8x16 = createAtlasLayout(characterDimensions8x16.width, characterDimensions8x16.height);
+	const layout6x10 = createAtlasLayout(characterDimensions6x10.width, characterDimensions6x10.height);
+
 	describe('generatePlotter function', () => {
 		it('should generate drawing commands for 8x16 characters', () => {
 			const commands = generatePlotter(
@@ -21,7 +25,7 @@ describe('plotter module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [600, 340]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [layout8x16.plotter.x, layout8x16.plotter.y]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -57,10 +61,15 @@ describe('plotter module', () => {
 
 			// Should have background rectangle
 			const backgroundRectangle = rectangleCommands.find(
-				cmd => cmd[3] === 200 && cmd[4] === 200 // 200x200 background
+				cmd => cmd[3] === layout8x16.plotter.width && cmd[4] === layout8x16.plotter.height
 			);
 			expect(backgroundRectangle).toBeDefined();
-			validateDrawingCommand(backgroundRectangle!, Command.RECTANGLE, [0, 0, 200, 200]);
+			validateDrawingCommand(backgroundRectangle!, Command.RECTANGLE, [
+				0,
+				0,
+				layout8x16.plotter.width,
+				layout8x16.plotter.height,
+			]);
 		});
 
 		it('should generate trace color and trace rectangles', () => {
@@ -153,8 +162,12 @@ describe('plotter module', () => {
 			const commands6x10 = generatePlotter(6, 10, minimalColorScheme.fill);
 
 			// Both should have same background structure
-			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(cmd => cmd[3] === 200 && cmd[4] === 200);
-			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(cmd => cmd[3] === 200 && cmd[4] === 200);
+			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(
+				cmd => cmd[3] === layout8x16.plotter.width && cmd[4] === layout8x16.plotter.height
+			);
+			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(
+				cmd => cmd[3] === layout6x10.plotter.width && cmd[4] === layout6x10.plotter.height
+			);
 
 			expect(bg8x16).toBeDefined();
 			expect(bg6x10).toBeDefined();
@@ -218,8 +231,8 @@ describe('plotter module', () => {
 
 			validateSpriteCoordinates(
 				firstPoint,
-				600, // offsetX
-				340, // offsetY
+				layout8x16.plotter.x,
+				layout8x16.plotter.y,
 				1, // spriteWidth (1 pixel)
 				characterDimensions8x16.height * 8 // spriteHeight (full plot height)
 			);
@@ -231,8 +244,8 @@ describe('plotter module', () => {
 			// Check that x coordinates increase by 1 for each point
 			for (let i = 0; i < 10; i++) {
 				const point = lookup[i];
-				expect(point.x).toBe(600 + i); // offsetX + i
-				expect(point.y).toBe(340); // offsetY (constant)
+				expect(point.x).toBe(layout8x16.plotter.x + i);
+				expect(point.y).toBe(layout8x16.plotter.y);
 				expect(point.spriteWidth).toBe(1);
 				expect(point.spriteHeight).toBe(characterDimensions8x16.height * 8);
 			}
@@ -245,7 +258,7 @@ describe('plotter module', () => {
 
 			// All coordinates should have same Y, width, and height
 			coordinates.forEach(coord => {
-				expect(coord.y).toBe(340);
+				expect(coord.y).toBe(layout8x16.plotter.y);
 				expect(coord.spriteWidth).toBe(1);
 				expect(coord.spriteHeight).toBe(characterDimensions8x16.height * 8);
 			});
@@ -264,9 +277,11 @@ describe('plotter module', () => {
 			const coord8x16 = lookup8x16[0];
 			const coord6x10 = lookup6x10[0];
 
-			// Should have same x, y, width but different height
-			expect(coord8x16.x).toBe(coord6x10.x);
-			expect(coord8x16.y).toBe(coord6x10.y);
+			// Origins now scale with the atlas grid, but the sprite dimensions remain correct per font
+			expect(coord8x16.x).toBe(layout8x16.plotter.x);
+			expect(coord8x16.y).toBe(layout8x16.plotter.y);
+			expect(coord6x10.x).toBe(layout6x10.plotter.x);
+			expect(coord6x10.y).toBe(layout6x10.plotter.y);
 			expect(coord8x16.spriteWidth).toBe(coord6x10.spriteWidth);
 			expect(coord8x16.spriteHeight).toBe(16 * 8);
 			expect(coord6x10.spriteHeight).toBe(10 * 8);

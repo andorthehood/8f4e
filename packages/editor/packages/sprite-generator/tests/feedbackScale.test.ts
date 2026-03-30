@@ -9,10 +9,14 @@ import {
 	createMockBitmap,
 } from './utils/testHelpers';
 
+import { createAtlasLayout } from '../src/atlasLayout';
 import generateFeedbackScale, { generateLookup, getFeedbackScaleColors } from '../src/feedbackScale';
 import { Command } from '../src/types';
 
 describe('feedbackScale module', () => {
+	const layout8x16 = createAtlasLayout(characterDimensions8x16.width, characterDimensions8x16.height);
+	const layout6x10 = createAtlasLayout(characterDimensions6x10.width, characterDimensions6x10.height);
+
 	describe('generateFeedbackScale function', () => {
 		const mockFont = createMockBitmap(256);
 
@@ -30,7 +34,10 @@ describe('feedbackScale module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [540, 480]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [
+				layout8x16.feedbackScale.x,
+				layout8x16.feedbackScale.y,
+			]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -141,7 +148,10 @@ describe('feedbackScale module', () => {
 
 			// Should have initial positioning translate
 			const initialTranslate = translateCommands[0];
-			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [540, 480]);
+			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [
+				layout8x16.feedbackScale.x,
+				layout8x16.feedbackScale.y,
+			]);
 
 			// Should have character positioning translates
 			const characterTranslates = translateCommands.filter(
@@ -200,7 +210,7 @@ describe('feedbackScale module', () => {
 
 			// Should still have basic structure
 			expect(commands[0]).toEqual([Command.RESET_TRANSFORM]);
-			expect(commands[1]).toEqual([Command.TRANSLATE, 540, 480]);
+			expect(commands[1]).toEqual([Command.TRANSLATE, layout8x16.feedbackScale.x, layout8x16.feedbackScale.y]);
 
 			// Should not have any feedback scale specific rectangles
 			const rectangleCommands = findAllCommands(commands, Command.RECTANGLE);
@@ -269,8 +279,8 @@ describe('feedbackScale module', () => {
 
 			validateSpriteCoordinates(
 				firstItem,
-				540, // offsetX
-				480, // offsetY
+				layout8x16.feedbackScale.x,
+				layout8x16.feedbackScale.y,
 				characterDimensions8x16.width * 3, // spriteWidth (3 characters)
 				characterDimensions8x16.height // spriteHeight
 			);
@@ -291,8 +301,8 @@ describe('feedbackScale module', () => {
 
 				validateSpriteCoordinates(
 					item,
-					540 + i * itemWidth, // x position increases by item width
-					480, // offsetY (constant)
+					layout8x16.feedbackScale.x + i * itemWidth,
+					layout8x16.feedbackScale.y,
 					itemWidth, // spriteWidth (3 characters)
 					characterDimensions8x16.height // spriteHeight
 				);
@@ -310,8 +320,8 @@ describe('feedbackScale module', () => {
 
 			validateSpriteCoordinates(
 				firstItem,
-				540, // offsetX
-				480, // offsetY
+				layout6x10.feedbackScale.x,
+				layout6x10.feedbackScale.y,
 				characterDimensions6x10.width * 3, // spriteWidth (3 characters)
 				characterDimensions6x10.height // spriteHeight
 			);
@@ -366,7 +376,7 @@ describe('feedbackScale module', () => {
 
 			// All coordinates should have same Y, width, and height
 			coordinates.forEach(coord => {
-				expect(coord.y).toBe(480); // offsetY
+				expect(coord.y).toBe(layout8x16.feedbackScale.y);
 				expect(coord.spriteWidth).toBe(characterDimensions8x16.width * 3);
 				expect(coord.spriteHeight).toBe(characterDimensions8x16.height);
 			});

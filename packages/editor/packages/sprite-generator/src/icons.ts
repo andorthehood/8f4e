@@ -1,11 +1,9 @@
 import { SpriteCoordinates } from 'glugglug';
 
+import { createAtlasLayout } from './atlasLayout';
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
 import Glyph from './fonts/types';
-
-const offsetX = 540;
-const offsetY = 540;
 
 const icons = (
 	characterWidth: number,
@@ -77,9 +75,11 @@ export default function generate(
 	characterHeight: number,
 	colors: ColorScheme['icons']
 ): DrawingCommand[] {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+
 	return [
 		[Command.RESET_TRANSFORM],
-		[Command.TRANSLATE, offsetX, offsetY],
+		[Command.TRANSLATE, layout.icons.x, layout.icons.y],
 		...icons(characterWidth, characterHeight, colors).flatMap<DrawingCommand>(icon => {
 			return [
 				...icon.commandsBeforeRenderingGlyphs,
@@ -95,9 +95,11 @@ export default function generate(
 }
 
 function generateIconPositions(characterWidth: number, characterHeight: number) {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+
 	return icons(characterWidth, characterHeight).reduce((acc, current) => {
 		const length = acc.reduce((acc, icon) => acc + icon[2], 0);
-		acc.push([offsetX + length, offsetY, current.chars.length * characterWidth]);
+		acc.push([layout.icons.x + length, layout.icons.y, current.chars.length * characterWidth]);
 		return acc;
 	}, [] as number[][]);
 }
