@@ -11,42 +11,9 @@ export default function resolveIntermodularReferenceValue(
 		return undefined;
 	}
 
-	if (identifier.referenceKind === 'intermodular-module-reference') {
-		const targetModuleId = identifier.targetModuleId!;
-		const targetModule = context.namespace.namespaces[targetModuleId];
-
-		if (!targetModule) {
-			return undefined;
-		}
-
-		if (typeof targetModule.byteAddress !== 'number' || typeof targetModule.wordAlignedSize !== 'number') {
-			return undefined;
-		}
-
-		return identifier.isEndAddress
-			? targetModule.byteAddress + (targetModule.wordAlignedSize - 1) * 4
-			: targetModule.byteAddress;
-	}
-
-	if (identifier.referenceKind === 'intermodular-reference') {
-		const targetModuleId = identifier.targetModuleId!;
-		const targetMemoryId = identifier.targetMemoryId!;
-		const targetModule = context.namespace.namespaces[targetModuleId];
-
-		if (!targetModule) {
-			return undefined;
-		}
-
-		const targetMemory = targetModule.memory?.[targetMemoryId];
-
-		if (!targetMemory) {
-			return undefined;
-		}
-
-		return identifier.isEndAddress
-			? targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4
-			: targetMemory.byteAddress;
-	}
+	// intermodular-module-reference (&module:, module:&) and intermodular-reference
+	// (&module:memory, module:memory&) are now resolved to literals during semantic
+	// normalization in resolveCompileTimeOperand. This function no longer handles them.
 
 	if (identifier.referenceKind === 'intermodular-element-count') {
 		const targetModuleId = identifier.targetModuleId!;
@@ -127,7 +94,7 @@ if (import.meta.vitest) {
 			arguments: [],
 		} as unknown as AST[number];
 
-		it('resolves module start-address references when namespace layout metadata is available', () => {
+		it('returns undefined for intermodular-module-reference (now handled by resolveCompileTimeOperand)', () => {
 			const context = {
 				namespace: {
 					namespaces: {
@@ -141,22 +108,26 @@ if (import.meta.vitest) {
 				},
 			} as unknown as CompilationContext;
 
-			expect(resolveIntermodularReferenceValue(classifyIdentifier('&source:'), line, context)).toBe(12);
+			expect(resolveIntermodularReferenceValue(classifyIdentifier('&source:'), line, context)).toBeUndefined();
 		});
 
-		it('defers module-base references until layout metadata exists', () => {
+		it('returns undefined for intermodular-reference (now handled by resolveCompileTimeOperand)', () => {
 			const context = {
 				namespace: {
 					namespaces: {
 						source: {
 							consts: {},
-							memory: {},
+							byteAddress: 12,
+							wordAlignedSize: 3,
+							memory: {
+								buf: { byteAddress: 12, wordAlignedSize: 2, numberOfElements: 2, elementWordSize: 4 },
+							},
 						},
 					},
 				},
 			} as unknown as CompilationContext;
 
-			expect(resolveIntermodularReferenceValue(classifyIdentifier('&source:'), line, context)).toBeUndefined();
+			expect(resolveIntermodularReferenceValue(classifyIdentifier('&source:buf'), line, context)).toBeUndefined();
 		});
 	});
 }
