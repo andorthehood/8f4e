@@ -61,7 +61,7 @@ Set the rendered wire thickness in pixels.
 ```
 
 Accepted values:
-- any positive number
+- any number from `1` to `100`
 
 ### `@watch`
 
