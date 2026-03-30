@@ -4,7 +4,8 @@
     "lineNumberAfterMacroExpansion": 0,
     "instruction": "8f4e/v1",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 2,
@@ -18,14 +19,16 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 10,
     "lineNumberAfterMacroExpansion": 10,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 12,
@@ -39,14 +42,16 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 18,
     "lineNumberAfterMacroExpansion": 18,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 20,
@@ -60,7 +65,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 24,
@@ -74,7 +80,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 25,
@@ -88,7 +95,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 26,
@@ -102,7 +110,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 29,
@@ -125,7 +134,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 30,
@@ -148,7 +158,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 31,
@@ -164,7 +175,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 32,
@@ -179,7 +191,8 @@
         "targetMemoryId": "in1"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 33,
@@ -194,14 +207,16 @@
         "targetMemoryId": "in2"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 34,
     "lineNumberAfterMacroExpansion": 34,
     "instruction": "mul",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 35,
@@ -214,21 +229,24 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 36,
     "lineNumberAfterMacroExpansion": 36,
     "instruction": "greaterOrEqual",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 37,
     "lineNumberAfterMacroExpansion": 37,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 38,
@@ -241,14 +259,16 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 39,
     "lineNumberAfterMacroExpansion": 39,
     "instruction": "else",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 40,
@@ -261,28 +281,32 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 41,
     "lineNumberAfterMacroExpansion": 41,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 42,
     "lineNumberAfterMacroExpansion": 42,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 44,
     "lineNumberAfterMacroExpansion": 44,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 46,
@@ -296,7 +320,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 51,
@@ -310,7 +335,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 52,
@@ -324,14 +350,16 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 60,
     "lineNumberAfterMacroExpansion": 60,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 62,
@@ -345,7 +373,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 69,
@@ -364,7 +393,8 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 70,
@@ -383,7 +413,8 @@
         "isInteger": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 71,
@@ -402,14 +433,16 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 73,
     "lineNumberAfterMacroExpansion": 73,
     "instruction": "constantsEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 75,
@@ -423,7 +456,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 78,
@@ -446,7 +480,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 79,
@@ -460,7 +495,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 81,
@@ -476,7 +512,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 82,
@@ -491,7 +528,8 @@
         "targetMemoryId": "in"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 83,
@@ -504,21 +542,24 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 84,
     "lineNumberAfterMacroExpansion": 84,
     "instruction": "equal",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 85,
     "lineNumberAfterMacroExpansion": 85,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 86,
@@ -531,14 +572,16 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 87,
     "lineNumberAfterMacroExpansion": 87,
     "instruction": "else",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 88,
@@ -551,28 +594,32 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 89,
     "lineNumberAfterMacroExpansion": 89,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 90,
     "lineNumberAfterMacroExpansion": 90,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 92,
     "lineNumberAfterMacroExpansion": 92,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 94,
@@ -586,7 +633,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 98,
@@ -600,7 +648,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 99,
@@ -614,7 +663,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 100,
@@ -628,7 +678,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 104,
@@ -651,7 +702,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 105,
@@ -674,7 +726,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 107,
@@ -690,7 +743,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 108,
@@ -705,7 +759,8 @@
         "targetMemoryId": "in1"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 109,
@@ -720,14 +775,16 @@
         "targetMemoryId": "in2"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 110,
     "lineNumberAfterMacroExpansion": 110,
     "instruction": "add",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 111,
@@ -740,21 +797,24 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 112,
     "lineNumberAfterMacroExpansion": 112,
     "instruction": "equal",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 113,
     "lineNumberAfterMacroExpansion": 113,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 114,
@@ -767,14 +827,16 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 115,
     "lineNumberAfterMacroExpansion": 115,
     "instruction": "else",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 116,
@@ -787,28 +849,32 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 117,
     "lineNumberAfterMacroExpansion": 117,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 118,
     "lineNumberAfterMacroExpansion": 118,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 120,
     "lineNumberAfterMacroExpansion": 120,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 122,
@@ -822,7 +888,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 126,
@@ -836,7 +903,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 127,
@@ -850,7 +918,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 128,
@@ -864,7 +933,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 133,
@@ -887,7 +957,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 134,
@@ -910,7 +981,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 135,
@@ -926,7 +998,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 136,
@@ -941,7 +1014,8 @@
         "targetMemoryId": "in1"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 137,
@@ -956,14 +1030,16 @@
         "targetMemoryId": "in2"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 138,
     "lineNumberAfterMacroExpansion": 138,
     "instruction": "add",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 139,
@@ -976,21 +1052,24 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 140,
     "lineNumberAfterMacroExpansion": 140,
     "instruction": "equal",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 141,
     "lineNumberAfterMacroExpansion": 141,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 142,
@@ -1003,14 +1082,16 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 143,
     "lineNumberAfterMacroExpansion": 143,
     "instruction": "else",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 144,
@@ -1023,28 +1104,32 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 145,
     "lineNumberAfterMacroExpansion": 145,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 146,
     "lineNumberAfterMacroExpansion": 146,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 148,
     "lineNumberAfterMacroExpansion": 148,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 150,
@@ -1058,7 +1143,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 154,
@@ -1072,7 +1158,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 155,
@@ -1086,7 +1173,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 156,
@@ -1100,7 +1188,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 159,
@@ -1123,7 +1212,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 160,
@@ -1146,7 +1236,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 161,
@@ -1162,7 +1253,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 162,
@@ -1177,7 +1269,8 @@
         "targetMemoryId": "in1"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 163,
@@ -1192,14 +1285,16 @@
         "targetMemoryId": "in2"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 164,
     "lineNumberAfterMacroExpansion": 164,
     "instruction": "add",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 165,
@@ -1212,21 +1307,24 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 166,
     "lineNumberAfterMacroExpansion": 166,
     "instruction": "greaterOrEqual",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 167,
     "lineNumberAfterMacroExpansion": 167,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 168,
@@ -1239,14 +1337,16 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 169,
     "lineNumberAfterMacroExpansion": 169,
     "instruction": "else",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 170,
@@ -1259,28 +1359,32 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 171,
     "lineNumberAfterMacroExpansion": 171,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 172,
     "lineNumberAfterMacroExpansion": 172,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 174,
     "lineNumberAfterMacroExpansion": 174,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 176,
@@ -1294,7 +1398,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 179,
@@ -1308,14 +1413,16 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 184,
     "lineNumberAfterMacroExpansion": 184,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 186,
@@ -1329,7 +1436,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 189,
@@ -1352,7 +1460,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 190,
@@ -1371,7 +1480,8 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 191,
@@ -1393,7 +1503,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 195,
@@ -1409,7 +1520,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 196,
@@ -1423,7 +1535,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 197,
@@ -1438,21 +1551,24 @@
         "targetMemoryId": "buffer"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 198,
     "lineNumberAfterMacroExpansion": 198,
     "instruction": "add",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 199,
     "lineNumberAfterMacroExpansion": 199,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 201,
@@ -1466,7 +1582,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 202,
@@ -1482,14 +1599,16 @@
         "isEndAddress": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 203,
     "lineNumberAfterMacroExpansion": 203,
     "instruction": "greaterThan",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 204,
@@ -1503,7 +1622,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 205,
@@ -1519,7 +1639,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 206,
@@ -1535,21 +1656,24 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 207,
     "lineNumberAfterMacroExpansion": 207,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 208,
     "lineNumberAfterMacroExpansion": 208,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 210,
@@ -1563,7 +1687,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 211,
@@ -1578,21 +1703,24 @@
         "targetMemoryId": "in"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 212,
     "lineNumberAfterMacroExpansion": 212,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 214,
     "lineNumberAfterMacroExpansion": 214,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 216,
@@ -1606,7 +1734,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 219,
@@ -1629,7 +1758,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 220,
@@ -1648,7 +1778,8 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 221,
@@ -1670,7 +1801,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 225,
@@ -1686,7 +1818,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 226,
@@ -1700,7 +1833,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 227,
@@ -1715,21 +1849,24 @@
         "targetMemoryId": "buffer"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 228,
     "lineNumberAfterMacroExpansion": 228,
     "instruction": "add",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 229,
     "lineNumberAfterMacroExpansion": 229,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 231,
@@ -1743,7 +1880,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 232,
@@ -1759,14 +1897,16 @@
         "isEndAddress": true
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 233,
     "lineNumberAfterMacroExpansion": 233,
     "instruction": "greaterThan",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 234,
@@ -1780,7 +1920,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 235,
@@ -1796,7 +1937,8 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 236,
@@ -1812,21 +1954,24 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 237,
     "lineNumberAfterMacroExpansion": 237,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 238,
     "lineNumberAfterMacroExpansion": 238,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 240,
@@ -1840,7 +1985,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 241,
@@ -1855,21 +2001,24 @@
         "targetMemoryId": "in"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 242,
     "lineNumberAfterMacroExpansion": 242,
     "instruction": "store",
     "arguments": [],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 244,
     "lineNumberAfterMacroExpansion": 244,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 246,
@@ -1883,7 +2032,8 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   },
   {
     "lineNumberBeforeMacroExpansion": 250,
@@ -1897,13 +2047,15 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false
+    "isSemanticOnly": false,
+    "isMemoryDeclaration": true
   },
   {
     "lineNumberBeforeMacroExpansion": 255,
     "lineNumberAfterMacroExpansion": 255,
     "instruction": "moduleEnd",
     "arguments": [],
-    "isSemanticOnly": true
+    "isSemanticOnly": true,
+    "isMemoryDeclaration": false
   }
 ]

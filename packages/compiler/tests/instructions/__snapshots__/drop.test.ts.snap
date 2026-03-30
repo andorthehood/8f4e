@@ -12,6 +12,7 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
       },
     ],
     "instruction": "module",
+    "isMemoryDeclaration": false,
     "isSemanticOnly": true,
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
@@ -25,6 +26,7 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
       },
     ],
     "instruction": "push",
+    "isMemoryDeclaration": false,
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 2,
     "lineNumberBeforeMacroExpansion": 2,
@@ -32,6 +34,7 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [],
     "instruction": "drop",
+    "isMemoryDeclaration": false,
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 3,
     "lineNumberBeforeMacroExpansion": 3,
@@ -39,6 +42,7 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [],
     "instruction": "moduleEnd",
+    "isMemoryDeclaration": false,
     "isSemanticOnly": true,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,

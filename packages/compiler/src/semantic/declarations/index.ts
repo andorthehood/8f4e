@@ -45,7 +45,7 @@ export function isMemoryDeclarationInstruction(instruction: string): instruction
 }
 
 export function applyMemoryDeclarationLine(line: AST[number], context: CompilationContext) {
-	if (!isMemoryDeclarationInstruction(line.instruction)) {
+	if (!line.isMemoryDeclaration || !isMemoryDeclarationInstruction(line.instruction)) {
 		return context;
 	}
 
