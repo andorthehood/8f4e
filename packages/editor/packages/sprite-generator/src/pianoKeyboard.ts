@@ -1,3 +1,4 @@
+import { createAtlasLayout } from './atlasLayout';
 import { ColorScheme, Command, DrawingCommand } from './types';
 import { drawCharacterMatrix } from './font';
 import Glyph from './fonts/types';
@@ -103,9 +104,6 @@ const orderedKeys = [
 	whiteKeyRight,
 ];
 
-const offsetX = 0;
-const offsetY = 240;
-
 function stringToCharCodeArray(str: string): number[] {
 	const arr: number[] = [];
 	for (let i = 0; i < str.length; i++) {
@@ -146,11 +144,13 @@ export default function generate(
 	characterHeight: number,
 	colors: ColorScheme['icons']
 ): DrawingCommand[] {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+
 	return [
 		[Command.RESET_TRANSFORM],
-		[Command.TRANSLATE, offsetX, offsetY],
+		[Command.TRANSLATE, layout.pianoKeyboard.x, layout.pianoKeyboard.y],
 		[Command.FILL_COLOR, colors.pianoKeyboardBackground],
-		[Command.RECTANGLE, 0, 0, orderedKeys.length * characterHeight * 3, 80],
+		[Command.RECTANGLE, 0, 0, orderedKeys.length * characterHeight * 3, layout.pianoKeyboard.height],
 		...drawPianoKeyboard(State.NORMAL, glyphFont, asciiFont, characterWidth, characterHeight, colors),
 		[Command.TRANSLATE, characterHeight * orderedKeys.length, 0],
 		...drawPianoKeyboard(State.PRESSED, glyphFont, asciiFont, characterWidth, characterHeight, colors),
@@ -166,14 +166,16 @@ export enum PianoKey {
 }
 
 export const generateLookup = function (characterWidth: number, characterHeight: number) {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+
 	return {
 		...Object.fromEntries(
 			new Array(24).fill(0).map((value, index) => {
 				return [
 					index,
 					{
-						x: offsetX + index * characterWidth * 2,
-						y: offsetY,
+						x: layout.pianoKeyboard.x + index * characterWidth * 2,
+						y: layout.pianoKeyboard.y,
 						spriteWidth: characterWidth * 2,
 						spriteHeight: characterHeight * 5,
 					},

@@ -1,31 +1,7 @@
 import { SpriteCoordinates } from 'glugglug';
 
+import { createAtlasLayout, FILL_COLOR_NAMES } from './atlasLayout';
 import { ColorScheme, Command, DrawingCommand } from './types';
-
-const offsetX = 540;
-const offsetY = 500;
-
-const fillColors: Array<keyof ColorScheme['fill']> = [
-	'menuItemBackground',
-	'menuItemBackgroundHighlighted',
-	'background',
-	'backgroundDots',
-	'debugInfoBackground',
-	'moduleBackground',
-	'moduleBackgroundDragged',
-	'moduleBackgroundDisabled',
-	'wire',
-	'wireHighlighted',
-	'errorMessageBackground',
-	'dialogBackground',
-	'dialogDimmer',
-	'highlightedCodeLine',
-	'scanLine',
-	'sliderThumb',
-	'codeBlockHighlightLevel1',
-	'codeBlockHighlightLevel2',
-	'codeBlockHighlightLevel3',
-];
 
 export enum Icon {
 	INPUT,
@@ -38,10 +14,12 @@ export default function generate(
 	characterHeight: number,
 	colors: ColorScheme['fill']
 ): DrawingCommand[] {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+
 	return [
 		[Command.RESET_TRANSFORM],
-		[Command.TRANSLATE, offsetX, offsetY],
-		...fillColors.flatMap<DrawingCommand>(color => {
+		[Command.TRANSLATE, layout.fillColors.x, layout.fillColors.y],
+		...FILL_COLOR_NAMES.flatMap<DrawingCommand>(color => {
 			return [
 				[Command.FILL_COLOR, colors[color]],
 				[Command.RECTANGLE, 0, 0, characterWidth, characterHeight],
@@ -52,12 +30,14 @@ export default function generate(
 }
 
 export const generateLookup = function (characterWidth: number, characterHeight: number) {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+
 	return Object.fromEntries(
-		fillColors.map(color => [
+		FILL_COLOR_NAMES.map((color, index) => [
 			color,
 			{
-				x: offsetX + fillColors.indexOf(color) * characterWidth,
-				y: offsetY,
+				x: layout.fillColors.x + index * characterWidth,
+				y: layout.fillColors.y,
 				spriteWidth: characterWidth,
 				spriteHeight: characterHeight,
 			},

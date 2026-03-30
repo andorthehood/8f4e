@@ -1,34 +1,16 @@
 import { SpriteCoordinates } from 'glugglug';
 
+import { createAtlasLayout, TEXT_COLOR_NAMES } from './atlasLayout';
 import { Command, DrawingCommand, ColorScheme } from './types';
-
-const offsetX = 0;
-const offsetY = 0;
 
 const ASCII_START = 0;
 const ASCII_END = 127;
 
-const colorNames: Array<keyof ColorScheme['text']> = [
-	'lineNumber',
-	'debugInfo',
-	'instruction',
-	'codeComment',
-	'code',
-	'errorMessage',
-	'disabledCode',
-	'numbers',
-	'menuItemText',
-	'menuItemTextHighlighted',
-	'dialogText',
-	'dialogTitle',
-	'binaryZero',
-	'binaryOne',
-];
-
-function generateFontPositions(characterHeight: number) {
+function generateFontPositions(characterWidth: number, characterHeight: number) {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
 	return Object.fromEntries(
-		colorNames.map((color, i) => {
-			return [color, offsetY + characterHeight * i];
+		TEXT_COLOR_NAMES.map((color, i) => {
+			return [color, layout.font.y + characterHeight * i];
 		})
 	);
 }
@@ -77,7 +59,7 @@ export function drawCharacterMatrix(
 				0,
 			]);
 		});
-		commands.push([Command.TRANSLATE, characterArray.length * -8, characterHeight]);
+		commands.push([Command.TRANSLATE, characterArray.length * -characterWidth, characterHeight]);
 	});
 	commands.push([Command.RESTORE]);
 	return commands;
@@ -104,12 +86,15 @@ export default function generateFonts(
 	characterHeight: number,
 	colors: ColorScheme['text']
 ): DrawingCommand[] {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+	const fontPositions = generateFontPositions(characterWidth, characterHeight);
+
 	return [
 		[Command.RESET_TRANSFORM],
-		...colorNames.flatMap<DrawingCommand>(color => {
+		...TEXT_COLOR_NAMES.flatMap<DrawingCommand>(color => {
 			return [
 				[Command.FILL_COLOR, colors[color]],
-				...generateFont(offsetX, generateFontPositions(characterHeight)[color], font, characterWidth, characterHeight),
+				...generateFont(layout.font.x, fontPositions[color], font, characterWidth, characterHeight),
 			];
 		}),
 	];
@@ -124,14 +109,17 @@ export type FontLookups = {
 };
 
 export const generateLookups = function (characterWidth: number, characterHeight: number) {
+	const layout = createAtlasLayout(characterWidth, characterHeight);
+	const fontPositions = generateFontPositions(characterWidth, characterHeight);
+
 	return Object.fromEntries(
-		colorNames.map(colorName => {
+		TEXT_COLOR_NAMES.map(colorName => {
 			const lookups: Record<number | string, SpriteCoordinates> = {};
 
 			for (let code = ASCII_START; code <= ASCII_END; code++) {
 				const coordinates = {
-					x: code * characterWidth + offsetX,
-					y: generateFontPositions(characterHeight)[colorName],
+					x: code * characterWidth + layout.font.x,
+					y: fontPositions[colorName],
 					spriteHeight: characterHeight,
 					spriteWidth: characterWidth,
 				};

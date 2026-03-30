@@ -9,10 +9,14 @@ import {
 	createMockBitmap,
 } from './utils/testHelpers';
 
+import { createAtlasLayout } from '../src/atlasLayout';
 import generatePianoKeyboard, { PianoKey, generateLookup } from '../src/pianoKeyboard';
 import { Command } from '../src/types';
 
 describe('pianoKeyboard module', () => {
+	const layout8x16 = createAtlasLayout(characterDimensions8x16.width, characterDimensions8x16.height);
+	const layout6x10 = createAtlasLayout(characterDimensions6x10.width, characterDimensions6x10.height);
+
 	describe('PianoKey enum', () => {
 		it('should have correct piano key state values', () => {
 			expect(PianoKey.NORMAL).toBe(1000);
@@ -47,7 +51,10 @@ describe('pianoKeyboard module', () => {
 			// Should have translate command to position offset
 			const translateCommand = findCommand(commands, Command.TRANSLATE);
 			expect(translateCommand).toBeDefined();
-			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [0, 240]);
+			validateDrawingCommand(translateCommand!, Command.TRANSLATE, [
+				layout8x16.pianoKeyboard.x,
+				layout8x16.pianoKeyboard.y,
+			]);
 		});
 
 		it('should generate drawing commands for 6x10 characters', () => {
@@ -86,9 +93,7 @@ describe('pianoKeyboard module', () => {
 			expect(backgroundColorCommand).toBeDefined();
 
 			// Should have background rectangle
-			const backgroundRectangle = rectangleCommands.find(
-				cmd => cmd[4] === 80 // height is fixed at 80
-			);
+			const backgroundRectangle = rectangleCommands.find(cmd => cmd[4] === layout8x16.pianoKeyboard.height);
 			expect(backgroundRectangle).toBeDefined();
 		});
 
@@ -161,7 +166,10 @@ describe('pianoKeyboard module', () => {
 
 			// Should have initial positioning translate
 			const initialTranslate = translateCommands[0];
-			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [0, 240]);
+			validateDrawingCommand(initialTranslate, Command.TRANSLATE, [
+				layout8x16.pianoKeyboard.x,
+				layout8x16.pianoKeyboard.y,
+			]);
 
 			// Should have multiple translate commands for positioning keyboard elements
 			expect(translateCommands.length).toBeGreaterThan(10);
@@ -190,8 +198,12 @@ describe('pianoKeyboard module', () => {
 			expect(commands6x10[0]).toEqual([Command.RESET_TRANSFORM]);
 
 			// Background rectangles should have different widths but same height
-			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(cmd => cmd[4] === 80);
-			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(cmd => cmd[4] === 80);
+			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(
+				cmd => cmd[4] === layout8x16.pianoKeyboard.height
+			);
+			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(
+				cmd => cmd[4] === layout6x10.pianoKeyboard.height
+			);
 
 			expect(bg8x16).toBeDefined();
 			expect(bg6x10).toBeDefined();
@@ -269,8 +281,8 @@ describe('pianoKeyboard module', () => {
 
 			validateSpriteCoordinates(
 				firstKey,
-				0, // offsetX
-				240, // offsetY
+				layout8x16.pianoKeyboard.x,
+				layout8x16.pianoKeyboard.y,
 				characterDimensions8x16.width * 2, // spriteWidth (2 characters wide)
 				characterDimensions8x16.height * 5 // spriteHeight (5 characters tall)
 			);
@@ -288,7 +300,7 @@ describe('pianoKeyboard module', () => {
 				validateSpriteCoordinates(
 					key,
 					i * keyWidth, // x position increases by key width
-					240, // offsetY (constant)
+					layout8x16.pianoKeyboard.y,
 					keyWidth, // spriteWidth (2 characters)
 					characterDimensions8x16.height * 5 // spriteHeight (5 characters)
 				);
@@ -302,8 +314,8 @@ describe('pianoKeyboard module', () => {
 
 			validateSpriteCoordinates(
 				firstKey,
-				0, // offsetX
-				240, // offsetY
+				layout6x10.pianoKeyboard.x,
+				layout6x10.pianoKeyboard.y,
 				characterDimensions6x10.width * 2, // spriteWidth (2 characters wide)
 				characterDimensions6x10.height * 5 // spriteHeight (5 characters tall)
 			);
@@ -334,7 +346,7 @@ describe('pianoKeyboard module', () => {
 
 			// All coordinates should have same Y, width, and height
 			coordinates.forEach(coord => {
-				expect(coord.y).toBe(240); // offsetY
+				expect(coord.y).toBe(layout8x16.pianoKeyboard.y);
 				expect(coord.spriteWidth).toBe(characterDimensions8x16.width * 2);
 				expect(coord.spriteHeight).toBe(characterDimensions8x16.height * 5);
 			});
@@ -358,9 +370,11 @@ describe('pianoKeyboard module', () => {
 			const coord8x16 = lookup8x16[0];
 			const coord6x10 = lookup6x10[0];
 
-			// Should have same x, y but different width and height
-			expect(coord8x16.x).toBe(coord6x10.x);
-			expect(coord8x16.y).toBe(coord6x10.y);
+			// Origins now scale with the atlas grid, but the key sprite dimensions remain correct per font
+			expect(coord8x16.x).toBe(layout8x16.pianoKeyboard.x);
+			expect(coord8x16.y).toBe(layout8x16.pianoKeyboard.y);
+			expect(coord6x10.x).toBe(layout6x10.pianoKeyboard.x);
+			expect(coord6x10.y).toBe(layout6x10.pianoKeyboard.y);
 			expect(coord8x16.spriteWidth).toBe(8 * 2);
 			expect(coord8x16.spriteHeight).toBe(16 * 5);
 			expect(coord6x10.spriteWidth).toBe(6 * 2);
