@@ -3,8 +3,8 @@ title: 'TODO: Simplify compiler project flattening and compilable block checks'
 priority: Medium
 effort: 1-3h
 created: 2026-03-14
-status: Open
-completed: null
+status: Completed
+completed: '2026-03-30'
 ---
 
 # TODO: Simplify compiler project flattening and compilable block checks
