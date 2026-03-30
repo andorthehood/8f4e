@@ -1,4 +1,4 @@
-import { ArgumentType, type Argument, type ArgumentLiteral } from './parseArgument';
+import { ArgumentType, classifyIdentifier, type Argument, type ArgumentLiteral } from './parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 import hasMemoryReferencePrefix from './hasMemoryReferencePrefix';
 import hasElementCountPrefix from './hasElementCountPrefix';
@@ -298,12 +298,12 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular reference argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&mod:id' }]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('&mod:id')]);
 			expect(result.firstArg).toEqual({ type: 'intermodular-reference', pattern: '&mod:id' });
 		});
 
 		it('parses intermodular module-base reference argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&mod:' }]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('&mod:')]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-module-reference',
 				module: 'mod',
@@ -313,7 +313,7 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular module-end reference argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'mod:&' }]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('mod:&')]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-module-reference',
 				module: 'mod',
@@ -323,9 +323,7 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular element count argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'count(mod:buffer)' },
-			]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('count(mod:buffer)')]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-count',
 				module: 'mod',
@@ -335,9 +333,7 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular element word size argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'sizeof(mod:buffer)' },
-			]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('sizeof(mod:buffer)')]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-word-size',
 				module: 'mod',
@@ -347,9 +343,7 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular element max argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'max(mod:buffer)' },
-			]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('max(mod:buffer)')]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-max',
 				module: 'mod',
@@ -359,9 +353,7 @@ if (import.meta.vitest) {
 		});
 
 		it('parses intermodular element min argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'min(mod:buffer)' },
-			]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('min(mod:buffer)')]);
 			expect(result.firstArg).toEqual({
 				type: 'intermodular-element-min',
 				module: 'mod',
@@ -371,39 +363,36 @@ if (import.meta.vitest) {
 		});
 
 		it('parses memory reference argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&foo' }]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('&foo')]);
 			expect(result.firstArg).toEqual({ type: 'memory-reference', base: 'foo', pattern: '&foo' });
 		});
 
 		it('parses element count argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'count(foo)' }]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('count(foo)')]);
 			expect(result.firstArg).toEqual({ type: 'element-count', base: 'foo' });
 		});
 
 		it('parses identifier argument', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'foo' }]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('foo')]);
 			expect(result.firstArg).toEqual({ type: 'identifier', value: 'foo' });
 		});
 
 		it('parses second argument when provided', () => {
 			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'foo' },
+				classifyIdentifier('foo'),
 				{ type: ArgumentType.LITERAL, value: 7, isInteger: true },
 			]);
 			expect(result.secondArg).toEqual({ type: 'literal', value: 7 });
 		});
 
 		it('parses constant-style identifier as anonymous (no second arg)', () => {
-			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' }]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('MY_CONST')]);
 			expect(result.firstArg).toEqual({ type: 'identifier', value: 'MY_CONST' });
 			expect(result.secondArg).toBeUndefined();
 		});
 
 		it('parses two constant-style identifiers as anonymous split-byte-tokens', () => {
-			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
-				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
-			]);
+			const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('HI'), classifyIdentifier('LO')]);
 			expect(result.firstArg).toEqual({
 				type: 'split-byte-tokens',
 				tokens: [
@@ -416,9 +405,9 @@ if (import.meta.vitest) {
 
 		it('parses named declaration with two constant identifiers as split-byte-tokens in secondArg', () => {
 			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'foo' },
-				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
-				{ type: ArgumentType.IDENTIFIER, value: 'LO' },
+				classifyIdentifier('foo'),
+				classifyIdentifier('HI'),
+				classifyIdentifier('LO'),
 			]);
 			expect(result.firstArg).toEqual({ type: 'identifier', value: 'foo' });
 			expect(result.secondArg).toEqual({
@@ -432,9 +421,9 @@ if (import.meta.vitest) {
 
 		it('parses named declaration with mixed byte literal and constant identifier as split-byte-tokens', () => {
 			const result = parseMemoryInstructionArgumentsShape([
-				{ type: ArgumentType.IDENTIFIER, value: 'foo' },
+				classifyIdentifier('foo'),
 				{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
-				{ type: ArgumentType.IDENTIFIER, value: 'HI' },
+				classifyIdentifier('HI'),
 			]);
 			expect(result.secondArg).toEqual({
 				type: 'split-byte-tokens',
@@ -447,10 +436,7 @@ if (import.meta.vitest) {
 
 		it('throws when constant-style identifier is followed by a special reference', () => {
 			expect(() =>
-				parseMemoryInstructionArgumentsShape([
-					{ type: ArgumentType.IDENTIFIER, value: 'HI' },
-					{ type: ArgumentType.IDENTIFIER, value: '&buf' },
-				])
+				parseMemoryInstructionArgumentsShape([classifyIdentifier('HI'), classifyIdentifier('&buf')])
 			).toThrow(SyntaxRulesError);
 		});
 	});

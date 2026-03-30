@@ -26,7 +26,7 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 			}
 		}
 		if (index === 1 && argument?.type === ArgumentType.IDENTIFIER) {
-			validateIntermoduleAddressReference(argument.value, line, context);
+			validateIntermoduleAddressReference(argument, line, context);
 		}
 	}
 
@@ -36,7 +36,7 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 			const deferred = validateOrDeferCompileTimeExpression(elementCountArg, line, context);
 			if (deferred) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-					identifier: `${elementCountArg.lhs}${elementCountArg.operator}${elementCountArg.rhs}`,
+					identifier: `${elementCountArg.lhs.value}${elementCountArg.operator}${elementCountArg.rhs.value}`,
 				});
 			}
 		}

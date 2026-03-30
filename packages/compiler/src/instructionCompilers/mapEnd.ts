@@ -1,4 +1,4 @@
-import { ArgumentType, BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
@@ -237,6 +237,7 @@ export default mapEnd;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('mapEnd instruction compiler', () => {
 		it('throws on missing argument', () => {
@@ -280,7 +281,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'mapEnd',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+						arguments: [classifyIdentifier('int')],
 					} as AST[number],
 					context
 				);
@@ -310,7 +311,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapEnd',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+					arguments: [classifyIdentifier('int')],
 				} as AST[number],
 				context
 			);

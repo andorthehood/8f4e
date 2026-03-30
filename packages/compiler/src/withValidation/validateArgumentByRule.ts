@@ -44,6 +44,7 @@ export function validateArgumentByRule(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	const line: Parameters<InstructionCompiler>[0] = {
 		lineNumberBeforeMacroExpansion: 1,
@@ -58,9 +59,7 @@ if (import.meta.vitest) {
 			expect(() =>
 				validateArgumentByRule({ type: ArgumentType.LITERAL, value: 1, isInteger: true }, 'literal', line, context)
 			).not.toThrow();
-			expect(() =>
-				validateArgumentByRule({ type: ArgumentType.IDENTIFIER, value: 'x' }, 'identifier', line, context)
-			).not.toThrow();
+			expect(() => validateArgumentByRule(classifyIdentifier('x'), 'identifier', line, context)).not.toThrow();
 		});
 
 		it('rejects a float for integerLiteral', () => {

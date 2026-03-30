@@ -8,12 +8,15 @@ export { default as isArrayDeclarationInstruction } from './isArrayDeclarationIn
 export {
 	ArgumentType,
 	parseArgument,
+	classifyIdentifier,
+	parseCompileTimeOperand,
 	decodeStringLiteral,
 	type Argument,
 	type ArgumentCompileTimeExpression,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
+	type ReferenceKind,
 } from './parseArgument';
 export { getBlockType, isCompilableBlockType, type CodeBlockType } from './getBlockType';
 export { default as getModuleId } from './getModuleId';

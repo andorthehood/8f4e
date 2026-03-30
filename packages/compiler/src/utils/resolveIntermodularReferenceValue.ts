@@ -1,23 +1,9 @@
-import {
-	extractIntermodularElementCountBase,
-	extractIntermodularElementMaxBase,
-	extractIntermodularElementMinBase,
-	extractIntermodularElementWordSizeBase,
-	extractIntermodularModuleReferenceBase,
-	isIntermodularElementCountReference,
-	isIntermodularElementMaxReference,
-	isIntermodularElementMinReference,
-	isIntermodularElementWordSizeReference,
-	isIntermodularReference,
-	isIntermodularModuleReference,
-} from '@8f4e/tokenizer';
-
 import { getElementMaxValue, getElementMinValue } from './memoryData';
 
-import type { AST, CompilationContext } from '../types';
+import type { AST, ArgumentIdentifier, CompilationContext } from '../types';
 
 export default function resolveIntermodularReferenceValue(
-	refValue: string,
+	identifier: ArgumentIdentifier,
 	line: AST[number],
 	context: CompilationContext
 ): number | undefined {
@@ -25,8 +11,8 @@ export default function resolveIntermodularReferenceValue(
 		return undefined;
 	}
 
-	if (isIntermodularModuleReference(refValue)) {
-		const { module: targetModuleId, isEndAddress } = extractIntermodularModuleReferenceBase(refValue);
+	if (identifier.referenceKind === 'intermodular-module-reference') {
+		const targetModuleId = identifier.targetModuleId!;
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
 		if (!targetModule) {
@@ -37,13 +23,14 @@ export default function resolveIntermodularReferenceValue(
 			return undefined;
 		}
 
-		return isEndAddress ? targetModule.byteAddress + (targetModule.wordAlignedSize - 1) * 4 : targetModule.byteAddress;
+		return identifier.isEndAddress
+			? targetModule.byteAddress + (targetModule.wordAlignedSize - 1) * 4
+			: targetModule.byteAddress;
 	}
 
-	if (isIntermodularReference(refValue)) {
-		const isEndAddress = refValue.endsWith('&');
-		const cleanRef = isEndAddress ? refValue.slice(0, -1) : refValue.substring(1);
-		const [targetModuleId, targetMemoryId] = cleanRef.split(':');
+	if (identifier.referenceKind === 'intermodular-reference') {
+		const targetModuleId = identifier.targetModuleId!;
+		const targetMemoryId = identifier.targetMemoryId!;
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
 		if (!targetModule) {
@@ -56,11 +43,14 @@ export default function resolveIntermodularReferenceValue(
 			return undefined;
 		}
 
-		return isEndAddress ? targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4 : targetMemory.byteAddress;
+		return identifier.isEndAddress
+			? targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4
+			: targetMemory.byteAddress;
 	}
 
-	if (isIntermodularElementCountReference(refValue)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(refValue);
+	if (identifier.referenceKind === 'intermodular-element-count') {
+		const targetModuleId = identifier.targetModuleId!;
+		const targetMemoryId = identifier.targetMemoryId!;
 		const targetMemory = context.namespace.namespaces[targetModuleId]?.memory?.[targetMemoryId];
 
 		if (!context.namespace.namespaces[targetModuleId]) {
@@ -74,8 +64,9 @@ export default function resolveIntermodularReferenceValue(
 		return targetMemory.wordAlignedSize;
 	}
 
-	if (isIntermodularElementWordSizeReference(refValue)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementWordSizeBase(refValue);
+	if (identifier.referenceKind === 'intermodular-element-word-size') {
+		const targetModuleId = identifier.targetModuleId!;
+		const targetMemoryId = identifier.targetMemoryId!;
 		const targetMemory = context.namespace.namespaces[targetModuleId]?.memory?.[targetMemoryId];
 
 		if (!context.namespace.namespaces[targetModuleId]) {
@@ -89,8 +80,9 @@ export default function resolveIntermodularReferenceValue(
 		return targetMemory.elementWordSize;
 	}
 
-	if (isIntermodularElementMaxReference(refValue)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(refValue);
+	if (identifier.referenceKind === 'intermodular-element-max') {
+		const targetModuleId = identifier.targetModuleId!;
+		const targetMemoryId = identifier.targetMemoryId!;
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
 		if (!targetModule) {
@@ -104,8 +96,9 @@ export default function resolveIntermodularReferenceValue(
 		return getElementMaxValue(targetModule.memory, targetMemoryId);
 	}
 
-	if (isIntermodularElementMinReference(refValue)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(refValue);
+	if (identifier.referenceKind === 'intermodular-element-min') {
+		const targetModuleId = identifier.targetModuleId!;
+		const targetMemoryId = identifier.targetMemoryId!;
 		const targetModule = context.namespace.namespaces[targetModuleId];
 
 		if (!targetModule) {
@@ -124,6 +117,7 @@ export default function resolveIntermodularReferenceValue(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('resolveIntermodularReferenceValue', () => {
 		const line = {
@@ -147,7 +141,7 @@ if (import.meta.vitest) {
 				},
 			} as unknown as CompilationContext;
 
-			expect(resolveIntermodularReferenceValue('&source:', line, context)).toBe(12);
+			expect(resolveIntermodularReferenceValue(classifyIdentifier('&source:'), line, context)).toBe(12);
 		});
 
 		it('defers module-base references until layout metadata exists', () => {
@@ -162,7 +156,7 @@ if (import.meta.vitest) {
 				},
 			} as unknown as CompilationContext;
 
-			expect(resolveIntermodularReferenceValue('&source:', line, context)).toBeUndefined();
+			expect(resolveIntermodularReferenceValue(classifyIdentifier('&source:'), line, context)).toBeUndefined();
 		});
 	});
 }

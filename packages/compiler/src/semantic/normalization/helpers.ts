@@ -1,34 +1,25 @@
-import {
-	extractIntermodularElementCountBase,
-	extractIntermodularElementMaxBase,
-	extractIntermodularElementMinBase,
-	extractIntermodularElementWordSizeBase,
-	extractIntermodularModuleReferenceBase,
-	isIntermodularElementCountReference,
-	isIntermodularElementMaxReference,
-	isIntermodularElementMinReference,
-	isIntermodularElementWordSizeReference,
-	isIntermodularReference,
-	isIntermodularModuleReference,
-} from '@8f4e/tokenizer';
-
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
-import { ArgumentType, type AST, type Argument, type CompilationContext } from '../../types';
+import { ArgumentType, type ReferenceKind, type AST, type Argument, type ArgumentIdentifier, type CompilationContext } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;
 }
 
-export function isIntermoduleReferenceLike(value: string): boolean {
+export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolean {
 	return (
-		isIntermodularModuleReference(value) ||
-		isIntermodularReference(value) ||
-		isIntermodularElementCountReference(value) ||
-		isIntermodularElementWordSizeReference(value) ||
-		isIntermodularElementMaxReference(value) ||
-		isIntermodularElementMinReference(value)
+		referenceKind === 'intermodular-module-reference' ||
+		referenceKind === 'intermodular-reference' ||
+		referenceKind === 'intermodular-element-count' ||
+		referenceKind === 'intermodular-element-word-size' ||
+		referenceKind === 'intermodular-element-max' ||
+		referenceKind === 'intermodular-element-min'
 	);
+}
+
+/** @deprecated No longer needed - use isIntermoduleReferenceKind(argument.referenceKind) instead. */
+export function isIntermoduleReferenceLike(referenceKind: ReferenceKind): boolean {
+	return isIntermoduleReferenceKind(referenceKind);
 }
 
 /**
@@ -38,7 +29,7 @@ export function isIntermoduleReferenceLike(value: string): boolean {
  * of sizeof/count/max/min forms is handled by tryResolveCompileTimeArgument.
  */
 export function validateIntermoduleAddressReference(
-	value: string,
+	identifier: ArgumentIdentifier,
 	line: AST[number],
 	context: CompilationContext
 ): void {
@@ -47,17 +38,17 @@ export function validateIntermoduleAddressReference(
 		return;
 	}
 
-	if (isIntermodularModuleReference(value)) {
-		const { module: targetModuleId } = extractIntermodularModuleReferenceBase(value);
+	if (identifier.referenceKind === 'intermodular-module-reference') {
+		const targetModuleId = identifier.targetModuleId!;
 		if (!context.namespace.namespaces[targetModuleId]) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
 		return;
 	}
 
-	if (isIntermodularReference(value)) {
-		const cleanRef = value.endsWith('&') ? value.slice(0, -1) : value.substring(1);
-		const [targetModuleId, targetMemoryId] = cleanRef.split(':');
+	if (identifier.referenceKind === 'intermodular-reference') {
+		const targetModuleId = identifier.targetModuleId!;
+		const targetMemoryId = identifier.targetMemoryId!;
 
 		if (!context.namespace.namespaces[targetModuleId]) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
@@ -71,41 +62,14 @@ export function validateIntermoduleAddressReference(
 	}
 
 	// For metadata queries (count, sizeof, max, min), validate module and memory existence
-	if (isIntermodularElementCountReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(value);
-		if (!context.namespace.namespaces[targetModuleId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
-		}
-		if (!context.namespace.namespaces[targetModuleId].memory?.[targetMemoryId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
-		}
-		return;
-	}
-
-	if (isIntermodularElementWordSizeReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementWordSizeBase(value);
-		if (!context.namespace.namespaces[targetModuleId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
-		}
-		if (!context.namespace.namespaces[targetModuleId].memory?.[targetMemoryId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
-		}
-		return;
-	}
-
-	if (isIntermodularElementMaxReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(value);
-		if (!context.namespace.namespaces[targetModuleId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
-		}
-		if (!context.namespace.namespaces[targetModuleId].memory?.[targetMemoryId]) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
-		}
-		return;
-	}
-
-	if (isIntermodularElementMinReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(value);
+	if (
+		identifier.referenceKind === 'intermodular-element-count' ||
+		identifier.referenceKind === 'intermodular-element-word-size' ||
+		identifier.referenceKind === 'intermodular-element-max' ||
+		identifier.referenceKind === 'intermodular-element-min'
+	) {
+		const targetModuleId = identifier.targetModuleId!;
+		const targetMemoryId = identifier.targetMemoryId!;
 		if (!context.namespace.namespaces[targetModuleId]) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
@@ -146,21 +110,20 @@ export function validateOrDeferCompileTimeExpression(
 	line: AST[number],
 	context: CompilationContext
 ): boolean {
-	if (
-		!hasCollectedNamespaces(context) &&
-		((typeof argument.lhs === 'string' && isIntermoduleReferenceLike(argument.lhs)) ||
-			(typeof argument.rhs === 'string' && isIntermoduleReferenceLike(argument.rhs)))
-	) {
+	const lhsIsIntermodule = argument.lhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.lhs.referenceKind);
+	const rhsIsIntermodule = argument.rhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.rhs.referenceKind);
+
+	if (!hasCollectedNamespaces(context) && (lhsIsIntermodule || rhsIsIntermodule)) {
 		return true;
 	}
-	if (typeof argument.lhs === 'string') {
+	if (argument.lhs.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.lhs, line, context);
 	}
-	if (typeof argument.rhs === 'string') {
+	if (argument.rhs.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.rhs, line, context);
 	}
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-		identifier: `${argument.lhs}${argument.operator}${argument.rhs}`,
+		identifier: `${argument.lhs.value}${argument.operator}${argument.rhs.value}`,
 	});
 }
 
@@ -175,10 +138,10 @@ export function validateOrDeferUnresolvedIdentifier(
 	line: AST[number],
 	context: CompilationContext
 ): boolean {
-	if (!hasCollectedNamespaces(context) && isIntermoduleReferenceLike(argument.value)) {
+	if (!hasCollectedNamespaces(context) && isIntermoduleReferenceKind(argument.referenceKind)) {
 		return true;
 	}
-	validateIntermoduleAddressReference(argument.value, line, context);
+	validateIntermoduleAddressReference(argument, line, context);
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
 }
 

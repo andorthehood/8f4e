@@ -56,6 +56,7 @@ export default _if;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('if instruction compiler', () => {
 		it('emits a void if block', () => {
@@ -67,7 +68,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'void' }],
+					arguments: [classifyIdentifier('void')],
 				} as AST[number],
 				context
 			);
@@ -87,7 +88,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
+					arguments: [classifyIdentifier('float')],
 				} as AST[number],
 				context
 			);

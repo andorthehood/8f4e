@@ -6,7 +6,6 @@ import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
-import { ArgumentType } from '../../types';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
 
@@ -53,6 +52,7 @@ export default int16;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('int16 instruction compiler', () => {
 		it('creates an int16* memory entry with pointer-width allocation', () => {
@@ -63,7 +63,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16*',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ptr' }],
+					arguments: [classifyIdentifier('ptr')],
 				} as AST[number],
 				context
 			);
@@ -86,7 +86,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16**',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'pptr' }],
+					arguments: [classifyIdentifier('pptr')],
 				} as AST[number],
 				context
 			);
@@ -108,7 +108,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16*',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'p' }],
+					arguments: [classifyIdentifier('p')],
 				} as AST[number],
 				context
 			);

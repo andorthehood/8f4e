@@ -3,7 +3,7 @@ import { validateArgumentTypes } from './validateArgumentTypes';
 import { validateOperandTypes } from './validateOperandTypes';
 import { validateScope } from './validateScope';
 
-import { ArgumentType, BLOCK_TYPE, type AST, type InstructionCompiler } from '../types';
+import { BLOCK_TYPE, type AST, type InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { isInstructionIsInsideBlock } from '../utils/blockStack';
 
@@ -64,6 +64,7 @@ export function withValidation<TLine extends AST[number]>(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	const line: Parameters<InstructionCompiler>[0] = {
 		lineNumberBeforeMacroExpansion: 1,
@@ -121,7 +122,7 @@ if (import.meta.vitest) {
 			const context = createContext();
 			const identifierLine: Parameters<InstructionCompiler>[0] = {
 				...line,
-				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'arg' }],
+				arguments: [classifyIdentifier('arg')],
 			};
 
 			expect(() => compiler(identifierLine, context)).not.toThrow();

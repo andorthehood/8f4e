@@ -1,6 +1,5 @@
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-import { ArgumentType } from '../../../types';
 import localGet from '../../../wasmUtils/local/localGet';
 
 import type { CompilationContext, PushIdentifierLine } from '../../../types';
@@ -14,6 +13,7 @@ export default function pushLocal(line: PushIdentifierLine, context: Compilation
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('pushLocal', () => {
 		it('pushes a local via local.get', () => {
@@ -28,7 +28,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'temp' }],
+					arguments: [classifyIdentifier('temp')],
 				} as PushIdentifierLine,
 				context
 			);

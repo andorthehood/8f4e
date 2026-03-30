@@ -1,4 +1,4 @@
-import { compileToAST, parseLine } from '@8f4e/tokenizer';
+import { compileToAST, parseLine, classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
 import { isComment, isValidInstruction, parseArgument, SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 
@@ -38,7 +38,7 @@ describe('parseArgument', () => {
 	});
 
 	test.each(identifiers)('given %p as input the output is %p', (argument, type, value) => {
-		expect(parseArgument(argument)).toStrictEqual({ type, value });
+		expect(parseArgument(argument)).toMatchObject({ type, value });
 	});
 
 	test('rejects identifiers that start with numbers', () => {
@@ -58,10 +58,7 @@ describe('parseLine', () => {
 			'int alpha 1',
 			{
 				arguments: [
-					{
-						type: ArgumentType.IDENTIFIER,
-						value: 'alpha',
-					},
+					classifyIdentifier('alpha'),
 					{
 						type: ArgumentType.LITERAL,
 						value: 1,

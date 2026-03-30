@@ -78,6 +78,7 @@ export default functionEnd;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('functionEnd instruction compiler', () => {
 		it('updates function signature and clears stack', () => {
@@ -104,7 +105,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'functionEnd',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+					arguments: [classifyIdentifier('int')],
 				} as AST[number],
 				context
 			);
@@ -145,7 +146,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'functionEnd',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float64' }],
+					arguments: [classifyIdentifier('float64')],
 				} as AST[number],
 				context
 			);
@@ -172,7 +173,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'functionEnd',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+						arguments: [classifyIdentifier('int')],
 					} as AST[number],
 					context
 				);

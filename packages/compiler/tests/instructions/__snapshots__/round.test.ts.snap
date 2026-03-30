@@ -5,6 +5,8 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 1`]
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "round",
       },
@@ -17,6 +19,8 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 1`]
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -29,6 +33,8 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 1`]
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -41,6 +47,10 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 1`]
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -53,6 +63,8 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 1`]
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },

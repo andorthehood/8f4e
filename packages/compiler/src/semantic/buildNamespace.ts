@@ -1,17 +1,4 @@
-import {
-	ArgumentType,
-	extractIntermodularElementCountBase,
-	extractIntermodularElementMaxBase,
-	extractIntermodularElementMinBase,
-	extractIntermodularElementWordSizeBase,
-	extractIntermodularModuleReferenceBase,
-	isIntermodularElementCountReference,
-	isIntermodularElementMaxReference,
-	isIntermodularElementMinReference,
-	isIntermodularElementWordSizeReference,
-	isIntermodularReference,
-	isIntermodularModuleReference,
-} from '@8f4e/tokenizer';
+import { ArgumentType } from '@8f4e/tokenizer';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './declarations';
@@ -36,10 +23,7 @@ import {
  * function-body codegen to rely on the same registry before full function
  * compilation completes.
  */
-export function collectFunctionMetadataFromAsts(
-	asts: AST[],
-	startingWasmIndex: number
-): CompiledFunctionLookup {
+export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: number): CompiledFunctionLookup {
 	const result: CompiledFunctionLookup = {};
 
 	for (const [index, ast] of asts.entries()) {
@@ -154,46 +138,26 @@ export function prepassNamespace(
 	return context;
 }
 
-function getReferencedNamespaceIdsFromValue(value: string): string[] {
-	if (isIntermodularElementCountReference(value)) {
-		return [extractIntermodularElementCountBase(value).module];
-	}
-	if (isIntermodularElementWordSizeReference(value)) {
-		return [extractIntermodularElementWordSizeBase(value).module];
-	}
-	if (isIntermodularElementMaxReference(value)) {
-		return [extractIntermodularElementMaxBase(value).module];
-	}
-	if (isIntermodularElementMinReference(value)) {
-		return [extractIntermodularElementMinBase(value).module];
-	}
-	if (isIntermodularModuleReference(value)) {
-		return [extractIntermodularModuleReferenceBase(value).module];
-	}
-	if (isIntermodularReference(value)) {
-		const cleanRef = value.endsWith('&') ? value.slice(0, -1) : value.slice(1);
-		return [cleanRef.split(':')[0]];
-	}
-
-	return [];
-}
-
 function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {
 	if (!argument) {
 		return [];
 	}
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [argument.lhs, argument.rhs].flatMap(value =>
-			typeof value === 'string' ? getReferencedNamespaceIdsFromValue(value) : []
-		);
+		return [argument.lhs, argument.rhs].flatMap(operand => {
+			if (operand.type !== ArgumentType.IDENTIFIER) return [];
+			return operand.scope === 'intermodule' && operand.targetModuleId ? [operand.targetModuleId] : [];
+		});
 	}
 
 	if (argument.type !== ArgumentType.IDENTIFIER) {
 		return [];
 	}
 
-	return getReferencedNamespaceIdsFromValue(argument.value);
+	if (argument.scope !== 'intermodule' || !argument.targetModuleId) {
+		return [];
+	}
+	return [argument.targetModuleId];
 }
 
 function getDeferredNamespaceIds(line: AST[number]): string[] {

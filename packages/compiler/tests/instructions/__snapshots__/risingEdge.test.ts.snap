@@ -5,6 +5,8 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "risingEdgeFloat",
       },
@@ -17,6 +19,8 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -29,6 +33,8 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -41,6 +47,10 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -53,6 +63,8 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -72,6 +84,8 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "int",
       },
@@ -210,6 +224,8 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "risingEdge",
       },
@@ -222,6 +238,8 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -234,6 +252,8 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -246,6 +266,10 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -258,6 +282,8 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -277,6 +303,8 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "int",
       },

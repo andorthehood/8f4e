@@ -67,7 +67,11 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { prepassNamespace, collectNamespacesFromASTs, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
+export {
+	prepassNamespace,
+	collectNamespacesFromASTs,
+	collectFunctionMetadataFromAsts,
+} from './semantic/buildNamespace';
 export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
 export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
