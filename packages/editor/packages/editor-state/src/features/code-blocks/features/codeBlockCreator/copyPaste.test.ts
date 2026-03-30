@@ -377,7 +377,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 			const clipboardData = JSON.stringify([
 				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
 				{
-					code: ['module consumer', 'int* source &foo:memoryItem', 'int count $foo.buffer', 'moduleEnd'],
+					code: ['module consumer', 'int* source &foo:memoryItem', 'push count(foo:buffer)', 'moduleEnd'],
 					gridCoordinates: { x: 5, y: 0 },
 				},
 			]);
@@ -396,7 +396,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			expect(mockState.graphicHelper.codeBlocks[1].code[0]).toBe('module foo2');
 			expect(mockState.graphicHelper.codeBlocks[2].code[2]).toBe('int* source &foo2:memoryItem');
-			expect(mockState.graphicHelper.codeBlocks[2].code[3]).toBe('int count $foo2.buffer');
+			expect(mockState.graphicHelper.codeBlocks[2].code[3]).toBe('push count(foo2:buffer)');
 		});
 
 		it('should preserve nonstick flag in group directive', async () => {

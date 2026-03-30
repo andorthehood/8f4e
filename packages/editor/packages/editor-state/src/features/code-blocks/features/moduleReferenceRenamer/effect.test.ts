@@ -37,7 +37,7 @@ describe('moduleReferenceRenamer', () => {
 				'int* source &foo:memoryItem',
 				'int* end foo:memoryItem&',
 				'int* moduleEnd foo:&',
-				'int count $foo.buffer',
+				'push count(foo:buffer)',
 				'moduleEnd',
 			],
 			creationIndex: 2,
@@ -54,7 +54,7 @@ describe('moduleReferenceRenamer', () => {
 		expect(consumer.code[1]).toBe('int* source &bar:memoryItem');
 		expect(consumer.code[2]).toBe('int* end bar:memoryItem&');
 		expect(consumer.code[3]).toBe('int* moduleEnd bar:&');
-		expect(consumer.code[4]).toBe('int count $bar.buffer');
+		expect(consumer.code[4]).toBe('push count(bar:buffer)');
 		expect(mockState.graphicHelper.selectedCodeBlockForProgrammaticEdit).toBe(consumer);
 	});
 
@@ -65,7 +65,7 @@ describe('moduleReferenceRenamer', () => {
 			blockType: 'module',
 		});
 		const consumer = createMockCodeBlock({
-			code: ['module consumer', 'int* source &foobar:memoryItem', 'int count $foobar.buffer', 'moduleEnd'],
+			code: ['module consumer', 'int* source &foobar:memoryItem', 'push count(foobar:buffer)', 'moduleEnd'],
 			creationIndex: 2,
 			blockType: 'module',
 		});
@@ -78,6 +78,6 @@ describe('moduleReferenceRenamer', () => {
 		store.set('graphicHelper.selectedCodeBlock.code', ['module bar', 'moduleEnd']);
 
 		expect(consumer.code[1]).toBe('int* source &foobar:memoryItem');
-		expect(consumer.code[2]).toBe('int count $foobar.buffer');
+		expect(consumer.code[2]).toBe('push count(foobar:buffer)');
 	});
 });
