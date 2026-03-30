@@ -6,7 +6,6 @@ import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
-import { ArgumentType } from '../../types';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
 
@@ -44,6 +43,7 @@ export default float;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('float instruction compiler', () => {
 		it('creates a float memory entry', () => {
@@ -54,7 +54,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'temperature' }],
+					arguments: [classifyIdentifier('temperature')],
 				} as AST[number],
 				context
 			);

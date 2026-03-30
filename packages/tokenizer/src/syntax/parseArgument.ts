@@ -5,6 +5,34 @@ import parseNumericLiteralToken, {
 	startsWithNumericPrefix,
 } from './parseNumericLiteralToken';
 import parseConstantMulDivExpression, { type CompileTimeMulDivExpression } from './parseConstantMulDivExpression';
+import isIntermodularModuleReference from './isIntermodularModuleReference';
+import extractIntermodularModuleReferenceBase from './extractIntermodularModuleReferenceBase';
+import isIntermodularReference from './isIntermodularReference';
+import isIntermodularElementCountReference from './isIntermodularElementCountReference';
+import extractIntermodularElementCountBase from './extractIntermodularElementCountBase';
+import isIntermodularElementWordSizeReference from './isIntermodularElementWordSizeReference';
+import extractIntermodularElementWordSizeBase from './extractIntermodularElementWordSizeBase';
+import isIntermodularElementMaxReference from './isIntermodularElementMaxReference';
+import extractIntermodularElementMaxBase from './extractIntermodularElementMaxBase';
+import isIntermodularElementMinReference from './isIntermodularElementMinReference';
+import extractIntermodularElementMinBase from './extractIntermodularElementMinBase';
+import hasMemoryReferencePrefix from './hasMemoryReferencePrefix';
+import extractMemoryReferenceBase from './extractMemoryReferenceBase';
+import isMemoryPointerIdentifier from './isMemoryPointerIdentifier';
+import extractMemoryPointerBase from './extractMemoryPointerBase';
+import hasPointeeElementWordSizePrefix from './hasPointeeElementWordSizePrefix';
+import extractPointeeElementWordSizeBase from './extractPointeeElementWordSizeBase';
+import hasPointeeElementMaxPrefix from './hasPointeeElementMaxPrefix';
+import extractPointeeElementMaxBase from './extractPointeeElementMaxBase';
+import hasElementCountPrefix from './hasElementCountPrefix';
+import extractElementCountBase from './extractElementCountBase';
+import hasElementWordSizePrefix from './hasElementWordSizePrefix';
+import extractElementWordSizeBase from './extractElementWordSizeBase';
+import hasElementMaxPrefix from './hasElementMaxPrefix';
+import extractElementMaxBase from './extractElementMaxBase';
+import hasElementMinPrefix from './hasElementMinPrefix';
+import extractElementMinBase from './extractElementMinBase';
+import isConstantName from './isConstantName';
 
 export enum ArgumentType {
 	LITERAL = 'literal',
@@ -13,6 +41,28 @@ export enum ArgumentType {
 	COMPILE_TIME_EXPRESSION = 'compile_time_expression',
 }
 
+/**
+ * The syntactic class of an identifier-shaped argument.
+ * Computed from token shape alone by the tokenizer; no semantic resolution is needed.
+ */
+export type ReferenceKind =
+	| 'plain'
+	| 'constant'
+	| 'memory-pointer'
+	| 'memory-reference'
+	| 'element-count'
+	| 'element-word-size'
+	| 'element-max'
+	| 'element-min'
+	| 'pointee-element-word-size'
+	| 'pointee-element-max'
+	| 'intermodular-reference'
+	| 'intermodular-module-reference'
+	| 'intermodular-element-count'
+	| 'intermodular-element-word-size'
+	| 'intermodular-element-max'
+	| 'intermodular-element-min';
+
 export type ArgumentLiteral = {
 	type: ArgumentType.LITERAL;
 	value: number;
@@ -20,7 +70,22 @@ export type ArgumentLiteral = {
 	isFloat64?: boolean;
 	isHex?: boolean;
 };
-export type ArgumentIdentifier = { type: ArgumentType.IDENTIFIER; value: string };
+export type ArgumentIdentifier = {
+	type: ArgumentType.IDENTIFIER;
+	value: string;
+	/** Syntactic class of the identifier, determined at parse time from token shape. */
+	referenceKind: ReferenceKind;
+	/** Whether this is a local or intermodule reference. */
+	scope: 'local' | 'intermodule';
+	/** For intermodular forms: the target module identifier. */
+	targetModuleId?: string;
+	/** For memory-reference, memory-pointer, element-query, and intermodular-reference forms: the target memory/variable identifier. */
+	targetMemoryId?: string;
+	/** For address-reference forms (memory-reference, intermodular-reference, intermodular-module-reference): true when the reference is to the end address. */
+	isEndAddress?: boolean;
+	/** For pointee-element-* forms: true. */
+	isPointee?: boolean;
+};
 export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
 export type ArgumentCompileTimeExpression = CompileTimeMulDivExpression & {
 	type: ArgumentType.COMPILE_TIME_EXPRESSION;
@@ -92,6 +157,200 @@ export function decodeStringLiteral(raw: string): string {
 }
 
 /**
+ * Classifies an identifier string into a structured `ArgumentIdentifier` with reference metadata.
+ * Classification is based purely on token shape; no semantic resolution is performed.
+ */
+export function classifyIdentifier(value: string): ArgumentIdentifier {
+	// Intermodular module-base references must be checked before generic memory-reference
+	// because &mod: and mod:& both start with & or end with & like local memory refs.
+	if (isIntermodularModuleReference(value)) {
+		const { module: targetModuleId, isEndAddress } = extractIntermodularModuleReferenceBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-module-reference',
+			scope: 'intermodule',
+			targetModuleId,
+			isEndAddress,
+		};
+	}
+
+	// Intermodular memory references: &mod:mem or mod:mem&
+	if (isIntermodularReference(value)) {
+		const isEndAddress = value.endsWith('&');
+		const cleanRef = isEndAddress ? value.slice(0, -1) : value.slice(1);
+		const colonIdx = cleanRef.indexOf(':');
+		const targetModuleId = cleanRef.slice(0, colonIdx);
+		const targetMemoryId = cleanRef.slice(colonIdx + 1);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-reference',
+			scope: 'intermodule',
+			targetModuleId,
+			targetMemoryId,
+			isEndAddress,
+		};
+	}
+
+	// Intermodular element queries must be checked before local element queries
+	// because their pattern (e.g. count(mod:mem)) is a superset of local (count(name)).
+	if (isIntermodularElementCountReference(value)) {
+		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-count',
+			scope: 'intermodule',
+			targetModuleId,
+			targetMemoryId,
+		};
+	}
+
+	if (isIntermodularElementWordSizeReference(value)) {
+		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementWordSizeBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-word-size',
+			scope: 'intermodule',
+			targetModuleId,
+			targetMemoryId,
+		};
+	}
+
+	if (isIntermodularElementMaxReference(value)) {
+		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-max',
+			scope: 'intermodule',
+			targetModuleId,
+			targetMemoryId,
+		};
+	}
+
+	if (isIntermodularElementMinReference(value)) {
+		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-min',
+			scope: 'intermodule',
+			targetModuleId,
+			targetMemoryId,
+		};
+	}
+
+	// Local memory reference: &name (start) or name& (end).
+	// Checked after all intermodular forms since &mod: and &mod:mem also start with &.
+	if (hasMemoryReferencePrefix(value)) {
+		const targetMemoryId = extractMemoryReferenceBase(value);
+		const isEndAddress = value.endsWith('&');
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'memory-reference',
+			scope: 'local',
+			targetMemoryId,
+			isEndAddress,
+		};
+	}
+
+	// Memory pointer: *name
+	if (isMemoryPointerIdentifier(value)) {
+		const targetMemoryId = extractMemoryPointerBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'memory-pointer',
+			scope: 'local',
+			targetMemoryId,
+		};
+	}
+
+	// Pointee forms must be checked before plain element-query forms
+	// because sizeof(*name) also starts with sizeof( and max(*name) also starts with max(.
+	if (hasPointeeElementWordSizePrefix(value)) {
+		const targetMemoryId = extractPointeeElementWordSizeBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'pointee-element-word-size',
+			scope: 'local',
+			targetMemoryId,
+			isPointee: true,
+		};
+	}
+
+	if (hasPointeeElementMaxPrefix(value)) {
+		const targetMemoryId = extractPointeeElementMaxBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'pointee-element-max',
+			scope: 'local',
+			targetMemoryId,
+			isPointee: true,
+		};
+	}
+
+	// Local element-query forms
+	if (hasElementCountPrefix(value)) {
+		const targetMemoryId = extractElementCountBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'element-count',
+			scope: 'local',
+			targetMemoryId,
+		};
+	}
+
+	if (hasElementWordSizePrefix(value)) {
+		const targetMemoryId = extractElementWordSizeBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'element-word-size',
+			scope: 'local',
+			targetMemoryId,
+		};
+	}
+
+	if (hasElementMaxPrefix(value)) {
+		const targetMemoryId = extractElementMaxBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'element-max',
+			scope: 'local',
+			targetMemoryId,
+		};
+	}
+
+	if (hasElementMinPrefix(value)) {
+		const targetMemoryId = extractElementMinBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'element-min',
+			scope: 'local',
+			targetMemoryId,
+		};
+	}
+
+	// Constant-style name: starts with uppercase, contains no lowercase letters
+	if (isConstantName(value)) {
+		return { type: ArgumentType.IDENTIFIER, value, referenceKind: 'constant', scope: 'local' };
+	}
+
+	// Plain identifier
+	return { type: ArgumentType.IDENTIFIER, value, referenceKind: 'plain', scope: 'local' };
+}
+
+/**
  * Parses a single argument from an instruction line.
  * Recognizes numeric literals (decimal, hex, binary, fractions), quoted string literals, and identifiers.
  * @param argument - The argument string to parse.
@@ -155,7 +414,7 @@ export function parseArgument(argument: string): Argument {
 					}
 				);
 			}
-			return { value: argument, type: ArgumentType.IDENTIFIER };
+			return classifyIdentifier(argument);
 		}
 	}
 }
@@ -189,7 +448,12 @@ if (import.meta.vitest) {
 		});
 
 		it('parses identifiers', () => {
-			expect(parseArgument('value')).toEqual({ value: 'value', type: ArgumentType.IDENTIFIER });
+			expect(parseArgument('value')).toEqual({
+				value: 'value',
+				type: ArgumentType.IDENTIFIER,
+				referenceKind: 'plain',
+				scope: 'local',
+			});
 		});
 
 		it('rejects identifiers that start with numbers', () => {

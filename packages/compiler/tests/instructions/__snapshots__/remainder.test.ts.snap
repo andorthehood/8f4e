@@ -5,6 +5,8 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "remainder",
       },
@@ -17,6 +19,8 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -29,6 +33,8 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },
@@ -41,6 +47,8 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -53,6 +61,10 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -65,6 +77,8 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input1",
       },
@@ -77,6 +91,8 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input2",
       },

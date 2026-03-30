@@ -12,8 +12,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "notes",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -31,8 +33,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "projectConfig",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -50,8 +54,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "activationFn",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -62,12 +68,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&perceptron:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "perceptron",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -78,8 +91,10 @@
     "instruction": "float",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -90,8 +105,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -102,8 +121,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in"
       }
     ],
     "isSemanticOnly": false
@@ -114,8 +136,10 @@
     "instruction": "call",
     "arguments": [
       {
+        "type": "identifier",
         "value": "sigmoid",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -140,8 +164,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "activationFn2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -152,12 +178,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&perceptron2:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "perceptron2",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -168,8 +201,10 @@
     "instruction": "float",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -180,8 +215,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -192,8 +231,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in"
       }
     ],
     "isSemanticOnly": false
@@ -204,8 +246,10 @@
     "instruction": "call",
     "arguments": [
       {
+        "type": "identifier",
         "value": "sigmoid",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -230,8 +274,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "activationFn3",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -242,12 +288,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&perceptron3:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "perceptron3",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -258,8 +311,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -270,8 +325,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -282,8 +341,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in"
       }
     ],
     "isSemanticOnly": false
@@ -294,8 +356,10 @@
     "instruction": "call",
     "arguments": [
       {
+        "type": "identifier",
         "value": "sigmoid",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -326,8 +390,10 @@
     "instruction": "if",
     "arguments": [
       {
+        "type": "identifier",
         "value": "int",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -392,8 +458,10 @@
     "instruction": "constants",
     "arguments": [
       {
+        "type": "identifier",
         "value": "env",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -404,8 +472,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "SAMPLE_RATE",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 10,
@@ -421,8 +491,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "INV_SAMPLE_RATE",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 0.1,
@@ -438,8 +510,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "AUDIO_BUFFER_SIZE",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 128,
@@ -462,8 +536,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "perceptron",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -474,12 +550,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&switches:in1",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "switches",
+        "targetMemoryId": "in1",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -490,12 +573,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&switches:in2",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "switches",
+        "targetMemoryId": "in2",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -506,8 +596,10 @@
     "instruction": "float",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -518,8 +610,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W1",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 10.056234,
@@ -535,8 +629,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W2",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": -42.53689,
@@ -552,8 +648,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "BIAS",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": -3.92453,
@@ -569,8 +667,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -581,8 +683,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in1",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in1"
       }
     ],
     "isSemanticOnly": false
@@ -593,8 +698,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W1",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -612,8 +719,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in2",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in2"
       }
     ],
     "isSemanticOnly": false
@@ -624,8 +734,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W2",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -650,8 +762,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "BIAS",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -683,8 +797,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "perceptron2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -695,12 +811,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&switches:in1",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "switches",
+        "targetMemoryId": "in1",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -711,12 +834,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&switches:in2",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "switches",
+        "targetMemoryId": "in2",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -727,8 +857,10 @@
     "instruction": "float",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -739,8 +871,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W1",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": -70.313797,
@@ -756,8 +890,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W2",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 24.76387,
@@ -773,8 +909,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "BIAS",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": -8.765101,
@@ -790,8 +928,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -802,8 +944,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in1",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in1"
       }
     ],
     "isSemanticOnly": false
@@ -814,8 +959,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W1",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -833,8 +980,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in2",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in2"
       }
     ],
     "isSemanticOnly": false
@@ -845,8 +995,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W2",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -871,8 +1023,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "BIAS",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -904,8 +1058,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "perceptron3",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -916,12 +1072,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&activationFn:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "activationFn",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -932,12 +1095,19 @@
     "instruction": "float*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&activationFn2:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "activationFn2",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -948,8 +1118,10 @@
     "instruction": "float",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -960,8 +1132,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W1",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 6.94625,
@@ -977,8 +1151,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W2",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 6.64608,
@@ -994,8 +1170,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "BIAS",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 6.05782,
@@ -1011,8 +1189,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1023,8 +1205,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in1",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in1"
       }
     ],
     "isSemanticOnly": false
@@ -1035,8 +1220,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W1",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1054,8 +1241,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in2",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in2"
       }
     ],
     "isSemanticOnly": false
@@ -1066,8 +1256,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "W2",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1092,8 +1284,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "BIAS",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1125,8 +1319,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "result",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -1137,12 +1333,19 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&activationFn3:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "activationFn3",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1160,8 +1363,10 @@
     "instruction": "function",
     "arguments": [
       {
+        "type": "identifier",
         "value": "sigmoid",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1172,12 +1377,16 @@
     "instruction": "param",
     "arguments": [
       {
+        "type": "identifier",
         "value": "float",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "x",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1188,8 +1397,10 @@
     "instruction": "localGet",
     "arguments": [
       {
+        "type": "identifier",
         "value": "x",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1248,8 +1459,10 @@
     "instruction": "functionEnd",
     "arguments": [
       {
+        "type": "identifier",
         "value": "float",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1260,8 +1473,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "switches",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -1272,8 +1487,10 @@
     "instruction": "float",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
         "value": 1,
@@ -1289,8 +1506,10 @@
     "instruction": "float",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
         "value": 0,

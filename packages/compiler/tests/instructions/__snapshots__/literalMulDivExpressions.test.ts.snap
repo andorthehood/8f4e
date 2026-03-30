@@ -5,6 +5,8 @@ exports[`const: literal-only division expression with integer result > if the ge
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -17,6 +19,8 @@ exports[`const: literal-only division expression with integer result > if the ge
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "RESULT",
       },
@@ -34,6 +38,8 @@ exports[`const: literal-only division expression with integer result > if the ge
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -46,6 +52,10 @@ exports[`const: literal-only division expression with integer result > if the ge
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -122,6 +132,8 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -134,6 +146,8 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "RESULT",
       },
@@ -151,6 +165,8 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -163,6 +179,10 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -239,6 +259,8 @@ exports[`init: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -251,6 +273,8 @@ exports[`init: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "foo",
       },
@@ -263,6 +287,8 @@ exports[`init: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "foo",
       },
@@ -280,6 +306,8 @@ exports[`init: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -292,6 +320,10 @@ exports[`init: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -304,6 +336,8 @@ exports[`init: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "foo",
       },
@@ -383,6 +417,8 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -395,6 +431,8 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "buffer",
       },
@@ -412,6 +450,8 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -424,6 +464,10 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -515,6 +559,8 @@ exports[`push: float literal multiplication with float-typed result > if the gen
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -527,6 +573,8 @@ exports[`push: float literal multiplication with float-typed result > if the gen
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -539,6 +587,10 @@ exports[`push: float literal multiplication with float-typed result > if the gen
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -615,6 +667,8 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -627,6 +681,8 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -639,6 +695,10 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -715,6 +775,8 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -727,6 +789,8 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -739,6 +803,10 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -815,6 +883,8 @@ exports[`push: literal-only division expression with float result > if the gener
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -827,6 +897,8 @@ exports[`push: literal-only division expression with float result > if the gener
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -839,6 +911,10 @@ exports[`push: literal-only division expression with float result > if the gener
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -915,6 +991,8 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -927,6 +1005,8 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -939,6 +1019,10 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
