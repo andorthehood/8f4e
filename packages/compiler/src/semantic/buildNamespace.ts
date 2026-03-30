@@ -1,4 +1,4 @@
-import { ArgumentType, classifyIdentifier } from '@8f4e/tokenizer';
+import { ArgumentType } from '@8f4e/tokenizer';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine, isMemoryDeclarationInstruction } from './declarations';
@@ -138,23 +138,16 @@ export function prepassNamespace(
 	return context;
 }
 
-function getReferencedNamespaceIdsFromValue(value: string): string[] {
-	const identifier = classifyIdentifier(value);
-	if (identifier.scope !== 'intermodule' || !identifier.targetModuleId) {
-		return [];
-	}
-	return [identifier.targetModuleId];
-}
-
 function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {
 	if (!argument) {
 		return [];
 	}
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [argument.lhs, argument.rhs].flatMap(value =>
-			typeof value === 'string' ? getReferencedNamespaceIdsFromValue(value) : []
-		);
+		return [argument.lhs, argument.rhs].flatMap(operand => {
+			if (operand.type !== ArgumentType.IDENTIFIER) return [];
+			return operand.scope === 'intermodule' && operand.targetModuleId ? [operand.targetModuleId] : [];
+		});
 	}
 
 	if (argument.type !== ArgumentType.IDENTIFIER) {

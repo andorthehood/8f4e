@@ -8,10 +8,9 @@ function getIntermodularReferenceModules(argument: Argument | undefined): string
 	}
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [argument.lhs, argument.rhs].flatMap(value => {
-			if (typeof value !== 'string') return [];
-			const id = classifyIdentifier(value);
-			return id.scope === 'intermodule' && id.targetModuleId ? [id.targetModuleId] : [];
+		return [argument.lhs, argument.rhs].flatMap(operand => {
+			if (operand.type !== ArgumentType.IDENTIFIER) return [];
+			return operand.scope === 'intermodule' && operand.targetModuleId ? [operand.targetModuleId] : [];
 		});
 	}
 
@@ -112,14 +111,15 @@ export default function sortModules(modules: AST[]): AST[] {
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
 	const identifierArgument = (value: string) => classifyIdentifier(value);
 
 	const compileTimeExpressionArgument = (lhs: string, operator: '*' | '/', rhs: string) => ({
 		type: ArgumentType.COMPILE_TIME_EXPRESSION,
-		lhs,
+		lhs: parseCompileTimeOperand(lhs),
 		operator,
-		rhs,
+		rhs: parseCompileTimeOperand(rhs),
 	});
 
 	const createModuleAst = (moduleId: string, references: string[] = []): AST => {
