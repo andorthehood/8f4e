@@ -3,7 +3,7 @@ title: 'TODO: Add instruction classification metadata to AST lines'
 priority: Medium
 effort: 4-8 hours
 created: 2026-03-27
-status: Done
+status: Completed
 completed: 2026-03-30
 ---
 
