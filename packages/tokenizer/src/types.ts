@@ -5,6 +5,7 @@ import {
 	type ArgumentIdentifier,
 	type ArgumentLiteral,
 	type ArgumentStringLiteral,
+	type CompileTimeOperand,
 	type ReferenceKind,
 	classifyIdentifier,
 } from './syntax/parseArgument';
@@ -16,6 +17,7 @@ export {
 	type ArgumentIdentifier,
 	type ArgumentLiteral,
 	type ArgumentStringLiteral,
+	type CompileTimeOperand,
 	type ReferenceKind,
 	classifyIdentifier,
 };
