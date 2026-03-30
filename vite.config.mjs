@@ -31,10 +31,6 @@ export default defineConfig(() => {
           {
             src: '_headers',
             dest: ''
-          },
-          {
-            src: './cursor.png',
-            dest: 'assets'
           }
         ]
       })
