@@ -87,11 +87,24 @@ export type ArgumentIdentifier = {
 	isPointee?: boolean;
 };
 export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
+/**
+ * A fully parsed compile-time expression operand.
+ * Operands are either numeric literals or classified identifier nodes;
+ * they are never nested expressions because the grammar only allows a single operator.
+ */
+export type CompileTimeOperand = ArgumentLiteral | ArgumentIdentifier;
 export type ArgumentCompileTimeExpression = {
 	type: ArgumentType.COMPILE_TIME_EXPRESSION;
-	lhs: ArgumentLiteral | ArgumentIdentifier;
+	left: CompileTimeOperand;
 	operator: '*' | '/';
-	rhs: ArgumentLiteral | ArgumentIdentifier;
+	right: CompileTimeOperand;
+	/**
+	 * Module IDs referenced by intermodular operands in this expression.
+	 * Pre-computed by the tokenizer so that compiler consumers (module sort, namespace
+	 * collection, intermodule deferral) can read this field directly instead of
+	 * inspecting each operand's type and referenceKind themselves.
+	 */
+	intermoduleIds: ReadonlyArray<string>;
 };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;
@@ -410,11 +423,20 @@ export function parseArgument(argument: string): Argument {
 
 			const compileTimeExpression = parseConstantMulDivExpression(argument);
 			if (compileTimeExpression !== null) {
+				const left = parseCompileTimeOperand(compileTimeExpression.lhs);
+				const right = parseCompileTimeOperand(compileTimeExpression.rhs);
+				const intermoduleIds: string[] = [];
+				for (const operand of [left, right]) {
+					if (operand.type === ArgumentType.IDENTIFIER && operand.scope === 'intermodule' && operand.targetModuleId) {
+						intermoduleIds.push(operand.targetModuleId);
+					}
+				}
 				return {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					lhs: parseCompileTimeOperand(compileTimeExpression.lhs),
+					left,
 					operator: compileTimeExpression.operator,
-					rhs: parseCompileTimeOperand(compileTimeExpression.rhs),
+					right,
+					intermoduleIds,
 				};
 			}
 
@@ -538,33 +560,53 @@ if (import.meta.vitest) {
 		it('parses compile-time expressions as dedicated AST nodes', () => {
 			expect(parseArgument('123*sizeof(name)')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: { type: ArgumentType.LITERAL, value: 123, isInteger: true },
+				left: { type: ArgumentType.LITERAL, value: 123, isInteger: true },
 				operator: '*',
-				rhs: {
+				right: {
 					type: ArgumentType.IDENTIFIER,
 					value: 'sizeof(name)',
 					referenceKind: 'element-word-size',
 					scope: 'local',
 					targetMemoryId: 'name',
 				},
+				intermoduleIds: [],
 			});
 			expect(parseArgument('2*SIZE')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
 				operator: '*',
-				rhs: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				right: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				intermoduleIds: [],
 			});
 			expect(parseArgument('SIZE*sizeof(name)')).toEqual({
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
-				lhs: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				left: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
 				operator: '*',
-				rhs: {
+				right: {
 					type: ArgumentType.IDENTIFIER,
 					value: 'sizeof(name)',
 					referenceKind: 'element-word-size',
 					scope: 'local',
 					targetMemoryId: 'name',
 				},
+				intermoduleIds: [],
+			});
+		});
+
+		it('populates intermoduleIds for intermodular operands', () => {
+			expect(parseArgument('2*sizeof(source:buffer)')).toEqual({
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				operator: '*',
+				right: {
+					type: ArgumentType.IDENTIFIER,
+					value: 'sizeof(source:buffer)',
+					referenceKind: 'intermodular-element-word-size',
+					scope: 'intermodule',
+					targetModuleId: 'source',
+					targetMemoryId: 'buffer',
+				},
+				intermoduleIds: ['source'],
 			});
 		});
 

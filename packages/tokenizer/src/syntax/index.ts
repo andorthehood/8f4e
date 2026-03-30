@@ -16,6 +16,7 @@ export {
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
+	type CompileTimeOperand,
 	type ReferenceKind,
 } from './parseArgument';
 export { getBlockType, isCompilableBlockType, type CodeBlockType } from './getBlockType';
