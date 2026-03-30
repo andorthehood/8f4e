@@ -268,6 +268,13 @@ export interface CodeBlockGraphicData {
 	 * Populated once per update; consumers should prefer these over rescanning raw code lines.
 	 */
 	parsedDirectives: ParsedDirectiveRecord[];
+	/**
+	 * Viewport anchor set by `; @viewport <corner>`.
+	 * When present, `@pos` is interpreted as an inward offset from the specified viewport corner,
+	 * and `gridX`/`gridY` store those anchored offsets rather than world-space grid coordinates.
+	 * Undefined when no valid `@viewport` directive is present (world-space placement).
+	 */
+	viewportAnchor?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 }
 
 /**
@@ -277,6 +284,12 @@ export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
 	codeBlocks: CodeBlockGraphicData[];
+	/**
+	 * Subset of codeBlocks that have a `@viewport` directive.
+	 * Maintained in sync with codeBlocks so that viewport move/resize handlers
+	 * only iterate this smaller list instead of the full block array.
+	 */
+	viewportAnchoredCodeBlocks: CodeBlockGraphicData[];
 	/**
 	 * Monotonic render invalidation counter for code block texture caches.
 	 * Increment when render-wide assets change without an individual block edit.

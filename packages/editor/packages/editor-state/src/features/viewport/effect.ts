@@ -29,19 +29,23 @@ export default function viewport(state: State, events: EventDispatcher): () => v
 			// Disable animation when user manually drags viewport
 			state.featureFlags.viewportAnimations = false;
 			move(state, event.movementX, event.movementY);
+			events.dispatch('viewportMoved');
 		}
 	}
 
 	function onResize(event: ResizeEvent) {
 		resize(state, event.canvasWidth, event.canvasHeight);
+		events.dispatch('viewportResized');
 	}
 
 	function onMouseUp() {
 		snapToGrid(state);
+		events.dispatch('viewportMoved');
 	}
 
 	function onViewportScrollEnd(event: ViewportScrollEndEvent) {
 		snapToGridConsideringDirection(state, event);
+		events.dispatch('viewportMoved');
 	}
 
 	events.on('mousemove', onMouseMove);
