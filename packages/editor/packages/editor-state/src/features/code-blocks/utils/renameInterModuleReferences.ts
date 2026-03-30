@@ -11,12 +11,12 @@ export function renameInterModuleReferences(code: string[], oldId: string, newId
 	const identifierBoundary = '(^|[^a-zA-Z0-9_-])';
 	const startAddressPattern = new RegExp(`${identifierBoundary}&${escapedOldId}:`, 'g');
 	const endAddressPattern = new RegExp(`${identifierBoundary}${escapedOldId}:(?=[^\\s]*&)`, 'g');
-	const elementReferencePattern = new RegExp(`${identifierBoundary}([$%^!])${escapedOldId}\\.`, 'g');
+	const functionQueryPattern = new RegExp(`(\\b(?:count|sizeof|max|min)\\()${escapedOldId}:`, 'g');
 
 	return code.map(line => {
 		return line
 			.replace(startAddressPattern, `$1&${newId}:`)
 			.replace(endAddressPattern, `$1${newId}:`)
-			.replace(elementReferencePattern, `$1$2${newId}.`);
+			.replace(functionQueryPattern, `$1${newId}:`);
 	});
 }
