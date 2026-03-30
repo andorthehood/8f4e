@@ -12,6 +12,8 @@ export interface DirectiveLayoutContribution {
 	rows: number;
 }
 
+export type ViewportAnchor = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
 export interface DirectiveBlockState {
 	disabled: boolean;
 	isHome: boolean;
@@ -20,6 +22,8 @@ export interface DirectiveBlockState {
 	groupName?: string;
 	/** When true the block may be dragged independently within its group (nonstick mode). */
 	groupNonstick?: boolean;
+	/** Viewport anchor set by `; @viewport <corner>`. When present, @pos is interpreted as inward offset from this corner. */
+	viewportAnchor?: ViewportAnchor;
 }
 
 export interface DirectiveDisplayState {

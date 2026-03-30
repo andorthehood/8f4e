@@ -20,6 +20,7 @@ export default function createDefaultState() {
 		},
 		graphicHelper: {
 			codeBlocks: [],
+			viewportAnchoredCodeBlocks: [],
 			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
