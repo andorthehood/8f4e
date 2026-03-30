@@ -112,22 +112,17 @@ export function validateOrDeferCompileTimeExpression(
 	line: AST[number],
 	context: CompilationContext
 ): boolean {
-	const lhsIsIntermodule =
-		argument.lhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.lhs.referenceKind);
-	const rhsIsIntermodule =
-		argument.rhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.rhs.referenceKind);
-
-	if (!hasCollectedNamespaces(context) && (lhsIsIntermodule || rhsIsIntermodule)) {
+	if (!hasCollectedNamespaces(context) && argument.intermoduleIds.length > 0) {
 		return true;
 	}
-	if (argument.lhs.type === ArgumentType.IDENTIFIER) {
-		validateIntermoduleAddressReference(argument.lhs, line, context);
+	if (argument.left.type === ArgumentType.IDENTIFIER) {
+		validateIntermoduleAddressReference(argument.left, line, context);
 	}
-	if (argument.rhs.type === ArgumentType.IDENTIFIER) {
-		validateIntermoduleAddressReference(argument.rhs, line, context);
+	if (argument.right.type === ArgumentType.IDENTIFIER) {
+		validateIntermoduleAddressReference(argument.right, line, context);
 	}
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-		identifier: `${argument.lhs.value}${argument.operator}${argument.rhs.value}`,
+		identifier: `${argument.left.value}${argument.operator}${argument.right.value}`,
 	});
 }
 
