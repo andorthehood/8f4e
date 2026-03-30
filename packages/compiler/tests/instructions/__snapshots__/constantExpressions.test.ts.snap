@@ -5,6 +5,8 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -17,6 +19,8 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "samples",
       },
@@ -39,6 +43,8 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -56,6 +62,8 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "TOTAL",
       },
@@ -73,6 +81,8 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -85,6 +95,10 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -176,6 +190,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -188,6 +204,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -205,6 +223,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "HALF",
       },
@@ -222,6 +242,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -234,6 +256,10 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -310,6 +336,8 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -322,6 +350,8 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "samples",
       },
@@ -344,6 +374,8 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "BYTE_SIZE",
       },
@@ -361,6 +393,8 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -373,6 +407,10 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -464,6 +502,8 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -476,6 +516,8 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "samples",
       },
@@ -498,6 +540,8 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "BYTE_SIZE",
       },
@@ -515,6 +559,8 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -527,6 +573,10 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -618,6 +668,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -630,6 +682,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -647,6 +701,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "foo",
       },
@@ -659,6 +715,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "foo",
       },
@@ -676,6 +734,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -688,6 +748,10 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -700,6 +764,8 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "foo",
       },
@@ -779,6 +845,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -791,6 +859,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -808,6 +878,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "buffer",
       },
@@ -825,6 +897,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -837,6 +911,10 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -928,6 +1006,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -940,6 +1020,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -957,6 +1039,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "buffer",
       },
@@ -974,6 +1058,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -986,6 +1072,10 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -1077,6 +1167,8 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -1089,6 +1181,8 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "source",
       },
@@ -1111,6 +1205,8 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "dest",
       },
@@ -1128,6 +1224,8 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -1140,6 +1238,10 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -1246,6 +1348,8 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -1258,6 +1362,8 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "samples",
       },
@@ -1280,6 +1386,8 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "buffer",
       },
@@ -1297,6 +1405,8 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -1309,6 +1419,10 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -1415,6 +1529,8 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -1427,6 +1543,8 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "samples",
       },
@@ -1449,6 +1567,8 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -1466,6 +1586,8 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -1478,6 +1600,10 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -1569,6 +1695,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -1581,6 +1709,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -1598,6 +1728,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -1610,6 +1742,10 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -1686,6 +1822,8 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -1698,6 +1836,8 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "referenceKind": "constant",
+        "scope": "local",
         "type": "identifier",
         "value": "SIZE",
       },
@@ -1715,6 +1855,8 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -1727,6 +1869,10 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -1803,6 +1949,8 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -1815,6 +1963,8 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "samples",
       },
@@ -1837,6 +1987,8 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -1849,6 +2001,10 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -1940,6 +2096,8 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "test",
       },
@@ -1952,6 +2110,8 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "samples",
       },
@@ -1974,6 +2134,8 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -1986,6 +2148,10 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },

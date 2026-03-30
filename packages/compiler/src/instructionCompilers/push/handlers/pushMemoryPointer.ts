@@ -1,8 +1,5 @@
-import { extractMemoryPointerBase } from '@8f4e/tokenizer';
-
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-import { ArgumentType } from '../../../types';
 import { getDataStructure } from '../../../utils/memoryData';
 import i32const from '../../../wasmUtils/const/i32const';
 import f64load from '../../../wasmUtils/load/f64load';
@@ -14,7 +11,7 @@ import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
 export default function pushMemoryPointer(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
 	const memory = context.namespace.memory;
-	const base = extractMemoryPointerBase(line.arguments[0].value);
+	const base = line.arguments[0].targetMemoryId!;
 	const memoryItem = getDataStructure(memory, base)!;
 
 	const kind = resolvePointerTargetValueKind(memoryItem);
@@ -32,6 +29,7 @@ export default function pushMemoryPointer(line: PushIdentifierLine, context: Com
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('pushMemoryPointer', () => {
 		it('dereferences double pointers and loads target kind', () => {
@@ -63,7 +61,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: '*ptr' }],
+					arguments: [classifyIdentifier('*ptr')],
 				} as PushIdentifierLine,
 				context
 			);
@@ -102,7 +100,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: '*ptr' }],
+					arguments: [classifyIdentifier('*ptr')],
 				} as PushIdentifierLine,
 				context
 			);
@@ -141,7 +139,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: '*pptr' }],
+					arguments: [classifyIdentifier('*pptr')],
 				} as PushIdentifierLine,
 				context
 			);

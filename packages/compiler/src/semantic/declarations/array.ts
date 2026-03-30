@@ -65,6 +65,7 @@ export default array;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('array declaration compiler', () => {
 		it('creates a memory array entry', () => {
@@ -75,10 +76,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'values' },
-						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-					],
+					arguments: [classifyIdentifier('values'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -94,10 +92,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'bytes' },
-						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-					],
+					arguments: [classifyIdentifier('bytes'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -118,10 +113,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'bytes' },
-						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
-					],
+					arguments: [classifyIdentifier('bytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -142,10 +134,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'shorts' },
-						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-					],
+					arguments: [classifyIdentifier('shorts'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -166,10 +155,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'shorts' },
-						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
-					],
+					arguments: [classifyIdentifier('shorts'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -190,10 +176,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int32[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'ints' },
-						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-					],
+					arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -214,10 +197,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8u[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'unsignedBytes' },
-						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
-					],
+					arguments: [classifyIdentifier('unsignedBytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -237,10 +217,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int16u[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'unsignedShorts' },
-						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-					],
+					arguments: [classifyIdentifier('unsignedShorts'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -260,10 +237,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int8[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'signedBytes' },
-						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
-					],
+					arguments: [classifyIdentifier('signedBytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -280,10 +254,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'float64[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },
-						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-					],
+					arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -305,10 +276,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'ints' },
-						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-					],
+					arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 				} as AST[number],
 				context
 			);
@@ -318,10 +286,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 2,
 					lineNumberAfterMacroExpansion: 2,
 					instruction: 'float64[]',
-					arguments: [
-						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },
-						{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
-					],
+					arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 2, isInteger: true }],
 				} as AST[number],
 				context
 			);

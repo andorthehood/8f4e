@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { classifyIdentifier } from '@8f4e/tokenizer';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 
@@ -34,7 +35,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'output' }],
+			arguments: [classifyIdentifier('output')],
 		};
 		const context = {
 			namespace: {
@@ -103,10 +104,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'map',
-			arguments: [
-				{ type: ArgumentType.IDENTIFIER, value: 'MISSING_CONST' },
-				{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
-			],
+			arguments: [classifyIdentifier('MISSING_CONST'), { type: ArgumentType.LITERAL, value: 100, isInteger: true }],
 		};
 		const context = {
 			namespace: {
@@ -126,10 +124,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'map',
-			arguments: [
-				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
-				{ type: ArgumentType.IDENTIFIER, value: 'UNRESOLVED' },
-			],
+			arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }, classifyIdentifier('UNRESOLVED')],
 		};
 		const context = {
 			namespace: {
@@ -149,7 +144,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'default',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'MISSING_CONST' }],
+			arguments: [classifyIdentifier('MISSING_CONST')],
 		};
 		const context = {
 			namespace: {
@@ -170,7 +165,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'const',
 			arguments: [
-				{ type: ArgumentType.IDENTIFIER, value: 'SIZE' },
+				classifyIdentifier('SIZE'),
 				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
 			],
 		};
@@ -192,7 +187,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'localVar' }],
+			arguments: [classifyIdentifier('localVar')],
 		};
 		const context = {
 			namespace: {
@@ -216,7 +211,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'unknownVar' }],
+			arguments: [classifyIdentifier('unknownVar')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -237,7 +232,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'init',
 			arguments: [
-				{ type: ArgumentType.IDENTIFIER, value: 'target' },
+				classifyIdentifier('target'),
 				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
 			],
 		};
@@ -254,7 +249,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'localGet',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
+			arguments: [classifyIdentifier('missing')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -269,7 +264,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'localSet',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
+			arguments: [classifyIdentifier('missing')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -289,7 +284,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: '&otherModule:missingMemory' }],
+			arguments: [classifyIdentifier('&otherModule:missingMemory')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -309,10 +304,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'init',
-			arguments: [
-				{ type: ArgumentType.IDENTIFIER, value: 'target' },
-				{ type: ArgumentType.IDENTIFIER, value: '&missingModule:' },
-			],
+			arguments: [classifyIdentifier('target'), classifyIdentifier('&missingModule:')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -327,10 +319,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
-			arguments: [
-				{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
-				{ type: ArgumentType.IDENTIFIER, value: '&source:missingBuffer' },
-			],
+			arguments: [classifyIdentifier('buffer'), classifyIdentifier('&source:missingBuffer')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -346,7 +335,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
 			arguments: [
-				{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
+				classifyIdentifier('buffer'),
 				{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: '2', operator: '*', rhs: 'MISSING' },
 			],
 		};
@@ -379,7 +368,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: '&source:buffer' }],
+			arguments: [classifyIdentifier('&source:buffer')],
 		};
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
@@ -394,7 +383,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: '&otherModule:buffer' }],
+			arguments: [classifyIdentifier('&otherModule:buffer')],
 		};
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
@@ -409,7 +398,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'call',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missingFn' }],
+			arguments: [classifyIdentifier('missingFn')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDEFINED_FUNCTION}`);
@@ -424,7 +413,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'call',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'anyFn' }],
+			arguments: [classifyIdentifier('anyFn')],
 		};
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
@@ -447,7 +436,7 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'call',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'knownFn' }],
+			arguments: [classifyIdentifier('knownFn')],
 		};
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);

@@ -12,8 +12,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "notes",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -31,8 +33,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "projectConfig",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -50,8 +54,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "andGate",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -62,8 +68,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -74,8 +82,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -86,8 +96,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -98,12 +110,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&orGate:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "orGate",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -114,12 +133,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&negate:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "negate",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -130,8 +156,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -142,8 +172,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in1",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in1"
       }
     ],
     "isSemanticOnly": false
@@ -154,8 +187,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in2",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in2"
       }
     ],
     "isSemanticOnly": false
@@ -254,8 +290,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "buttons",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -266,8 +304,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "set",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -278,8 +318,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "reset",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -297,8 +339,10 @@
     "instruction": "constants",
     "arguments": [
       {
+        "type": "identifier",
         "value": "env",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -309,8 +353,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "SAMPLE_RATE",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 50,
@@ -326,8 +372,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "INV_SAMPLE_RATE",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 0.02,
@@ -343,8 +391,10 @@
     "instruction": "const",
     "arguments": [
       {
+        "type": "identifier",
         "value": "AUDIO_BUFFER_SIZE",
-        "type": "identifier"
+        "referenceKind": "constant",
+        "scope": "local"
       },
       {
         "value": 128,
@@ -367,8 +417,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "negate",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -379,12 +431,19 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&buttons:reset",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "buttons",
+        "targetMemoryId": "reset",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -395,8 +454,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -407,8 +468,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -419,8 +484,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in"
       }
     ],
     "isSemanticOnly": false
@@ -512,8 +580,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "norGate",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -524,8 +594,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -536,8 +608,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -548,8 +622,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -560,12 +636,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&norGate2:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "norGate2",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -576,12 +659,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&resetButton:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "resetButton",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -592,8 +682,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -604,8 +698,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in1",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in1"
       }
     ],
     "isSemanticOnly": false
@@ -616,8 +713,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in2",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in2"
       }
     ],
     "isSemanticOnly": false
@@ -716,8 +816,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "norGate2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -728,8 +830,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -740,8 +844,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -752,8 +858,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -764,12 +872,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&norGate:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "norGate",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -780,12 +895,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&setButton:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "setButton",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -796,8 +918,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -808,8 +934,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in1",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in1"
       }
     ],
     "isSemanticOnly": false
@@ -820,8 +949,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in2",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in2"
       }
     ],
     "isSemanticOnly": false
@@ -920,8 +1052,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "orGate",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -932,8 +1066,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -944,8 +1080,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -956,8 +1094,10 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -968,12 +1108,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in1",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&andGate:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "andGate",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -984,12 +1131,19 @@
     "instruction": "init",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&buttons:set",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "buttons",
+        "targetMemoryId": "set",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": true
@@ -1000,8 +1154,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&out",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1012,8 +1170,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in1",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in1"
       }
     ],
     "isSemanticOnly": false
@@ -1024,8 +1185,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in2",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in2"
       }
     ],
     "isSemanticOnly": false
@@ -1124,8 +1288,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "resetButton",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -1136,8 +1302,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1155,8 +1323,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "scope",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -1167,12 +1337,19 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&norGate:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "norGate",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1183,8 +1360,10 @@
     "instruction": "int[]",
     "arguments": [
       {
+        "type": "identifier",
         "value": "buffer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
         "value": 64,
@@ -1200,12 +1379,18 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&buffer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "buffer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1216,8 +1401,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&bufferPointer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "bufferPointer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1228,8 +1417,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1240,8 +1431,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "sizeof(buffer)",
-        "type": "identifier"
+        "referenceKind": "element-word-size",
+        "scope": "local",
+        "targetMemoryId": "buffer"
       }
     ],
     "isSemanticOnly": false
@@ -1266,8 +1460,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1278,8 +1474,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "buffer&",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "buffer",
+        "isEndAddress": true
       }
     ],
     "isSemanticOnly": false
@@ -1297,8 +1497,10 @@
     "instruction": "if",
     "arguments": [
       {
+        "type": "identifier",
         "value": "void",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1309,8 +1511,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&bufferPointer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "bufferPointer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1321,8 +1527,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&buffer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "buffer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1347,8 +1557,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1359,8 +1571,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in"
       }
     ],
     "isSemanticOnly": false
@@ -1385,8 +1600,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "scope2",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -1397,12 +1614,19 @@
     "instruction": "int*",
     "arguments": [
       {
+        "type": "identifier",
         "value": "in",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&andGate:out",
-        "type": "identifier"
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetModuleId": "andGate",
+        "targetMemoryId": "out",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1413,8 +1637,10 @@
     "instruction": "int[]",
     "arguments": [
       {
+        "type": "identifier",
         "value": "buffer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
         "value": 64,
@@ -1430,12 +1656,18 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       },
       {
+        "type": "identifier",
         "value": "&buffer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "buffer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1446,8 +1678,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&bufferPointer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "bufferPointer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1458,8 +1694,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1470,8 +1708,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "sizeof(buffer)",
-        "type": "identifier"
+        "referenceKind": "element-word-size",
+        "scope": "local",
+        "targetMemoryId": "buffer"
       }
     ],
     "isSemanticOnly": false
@@ -1496,8 +1737,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1508,8 +1751,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "buffer&",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "buffer",
+        "isEndAddress": true
       }
     ],
     "isSemanticOnly": false
@@ -1527,8 +1774,10 @@
     "instruction": "if",
     "arguments": [
       {
+        "type": "identifier",
         "value": "void",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1539,8 +1788,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&bufferPointer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "bufferPointer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1551,8 +1804,12 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "&buffer",
-        "type": "identifier"
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "buffer",
+        "isEndAddress": false
       }
     ],
     "isSemanticOnly": false
@@ -1577,8 +1834,10 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "bufferPointer",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false
@@ -1589,8 +1848,11 @@
     "instruction": "push",
     "arguments": [
       {
+        "type": "identifier",
         "value": "*in",
-        "type": "identifier"
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "in"
       }
     ],
     "isSemanticOnly": false
@@ -1615,8 +1877,10 @@
     "instruction": "module",
     "arguments": [
       {
+        "type": "identifier",
         "value": "setButton",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": true
@@ -1627,8 +1891,10 @@
     "instruction": "int",
     "arguments": [
       {
+        "type": "identifier",
         "value": "out",
-        "type": "identifier"
+        "referenceKind": "plain",
+        "scope": "local"
       }
     ],
     "isSemanticOnly": false

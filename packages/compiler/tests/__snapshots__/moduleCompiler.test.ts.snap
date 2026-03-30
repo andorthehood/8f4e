@@ -5,6 +5,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "abs",
       },
@@ -17,6 +19,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "defaultValue",
       },
@@ -34,10 +38,16 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "in:1",
       },
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "defaultValue",
         "type": "identifier",
         "value": "&defaultValue",
       },
@@ -50,6 +60,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "out",
       },
@@ -67,6 +79,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "arr",
       },
@@ -89,10 +103,14 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "int",
       },
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -105,6 +123,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "out",
       },
@@ -117,6 +137,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "in:1",
       },
@@ -143,6 +165,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -155,6 +179,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -207,6 +233,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -233,6 +261,8 @@ exports[`moduleCompiler > ast 1`] = `
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },

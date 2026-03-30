@@ -3,8 +3,8 @@ title: 'TODO: Move identifier reference classification into tokenizer'
 priority: Medium
 effort: 6-10 hours
 created: 2026-03-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-30
 ---
 
 # TODO: Move identifier reference classification into tokenizer

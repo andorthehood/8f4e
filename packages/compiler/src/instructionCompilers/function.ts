@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../compilerError';
 import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils/blockStack';
-import { ArgumentType, BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, CompilationContext, FunctionLine, InstructionCompiler } from '../types';
@@ -46,6 +46,7 @@ export default _function;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('function instruction compiler', () => {
 		it('starts a new function block', () => {
@@ -56,7 +57,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'function',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'doThing' }],
+					arguments: [classifyIdentifier('doThing')],
 				} as AST[number],
 				context
 			);
@@ -79,7 +80,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'function',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'nested' }],
+						arguments: [classifyIdentifier('nested')],
 					} as AST[number],
 					context
 				);

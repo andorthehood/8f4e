@@ -1,14 +1,4 @@
-import { isIntermodularReference } from '@8f4e/tokenizer';
-import { isIntermodularModuleReference } from '@8f4e/tokenizer';
-import { extractIntermodularModuleReferenceBase } from '@8f4e/tokenizer';
-import { isIntermodularElementCountReference } from '@8f4e/tokenizer';
-import { extractIntermodularElementCountBase } from '@8f4e/tokenizer';
-import { isIntermodularElementWordSizeReference } from '@8f4e/tokenizer';
-import { extractIntermodularElementWordSizeBase } from '@8f4e/tokenizer';
-import { isIntermodularElementMaxReference } from '@8f4e/tokenizer';
-import { extractIntermodularElementMaxBase } from '@8f4e/tokenizer';
-import { isIntermodularElementMinReference } from '@8f4e/tokenizer';
-import { extractIntermodularElementMinBase } from '@8f4e/tokenizer';
+import { classifyIdentifier } from '@8f4e/tokenizer';
 
 import { ArgumentType } from './types';
 
@@ -19,36 +9,23 @@ function getIntermodularReferenceModules(argument: Argument | undefined): string
 		return [];
 	}
 
-	const values =
-		argument.type === ArgumentType.COMPILE_TIME_EXPRESSION ? [argument.lhs, argument.rhs] : [argument.value as string];
+	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		return [argument.lhs, argument.rhs].flatMap(value => {
+			if (typeof value !== 'string') return [];
+			const id = classifyIdentifier(value);
+			return id.scope === 'intermodule' && id.targetModuleId ? [id.targetModuleId] : [];
+		});
+	}
 
-	return values.flatMap(value => {
-		if (typeof value !== 'string') {
-			return [];
-		}
-
-		if (isIntermodularElementCountReference(value)) {
-			return [extractIntermodularElementCountBase(value).module];
-		}
-		if (isIntermodularElementWordSizeReference(value)) {
-			return [extractIntermodularElementWordSizeBase(value).module];
-		}
-		if (isIntermodularElementMaxReference(value)) {
-			return [extractIntermodularElementMaxBase(value).module];
-		}
-		if (isIntermodularElementMinReference(value)) {
-			return [extractIntermodularElementMinBase(value).module];
-		}
-		if (isIntermodularModuleReference(value)) {
-			return [extractIntermodularModuleReferenceBase(value).module];
-		}
-		if (isIntermodularReference(value)) {
-			const cleanRef = value.endsWith('&') ? value.substring(0, value.length - 1) : value.substring(1);
-			return [cleanRef.split(':')[0]];
-		}
-
+	if (argument.type !== ArgumentType.IDENTIFIER) {
 		return [];
-	});
+	}
+
+	if (argument.scope === 'intermodule' && argument.targetModuleId) {
+		return [argument.targetModuleId];
+	}
+
+	return [];
 }
 
 function getIdentifierValue(argument: Argument | undefined): string {
@@ -138,10 +115,7 @@ export default function sortModules(modules: AST[]): AST[] {
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
-	const identifierArgument = (value: string) => ({
-		type: ArgumentType.IDENTIFIER,
-		value,
-	});
+	const identifierArgument = (value: string) => classifyIdentifier(value);
 
 	const compileTimeExpressionArgument = (lhs: string, operator: '*' | '/', rhs: string) => ({
 		type: ArgumentType.COMPILE_TIME_EXPRESSION,

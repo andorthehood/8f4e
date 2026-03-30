@@ -1,7 +1,8 @@
+import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 
 import { ErrorCode, getError } from '../src/compilerError';
-import { ArgumentType, type AST } from '../src/types';
+import { type AST } from '../src/types';
 
 describe('getError', () => {
 	it('includes the undeclared identifier when provided', () => {
@@ -9,7 +10,7 @@ describe('getError', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'localGet',
-			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missingLocal' }],
+			arguments: [classifyIdentifier('missingLocal')],
 		} as AST[number];
 
 		const error = getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: 'missingLocal' });

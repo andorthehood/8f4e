@@ -1,4 +1,3 @@
-import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import localSet from '../wasmUtils/local/localSet';
@@ -37,6 +36,7 @@ export default _localSet;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('localSet instruction compiler', () => {
 		it('stores a local value', () => {
@@ -52,7 +52,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'localSet',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
+					arguments: [classifyIdentifier('value')],
 				} as AST[number],
 				context
 			);

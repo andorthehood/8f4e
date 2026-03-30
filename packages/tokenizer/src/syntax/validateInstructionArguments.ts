@@ -1,6 +1,6 @@
 import isConstantName from './isConstantName';
 import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
-import { ArgumentType, type Argument } from './parseArgument';
+import { ArgumentType, classifyIdentifier, type Argument } from './parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
 type ArgumentShapeRule =
@@ -184,17 +184,14 @@ if (import.meta.vitest) {
 
 		it('rejects unsupported type identifiers', () => {
 			expect(() =>
-				validateInstructionArguments('param', [
-					{ type: ArgumentType.IDENTIFIER, value: 'bool' },
-					{ type: ArgumentType.IDENTIFIER, value: 'x' },
-				])
+				validateInstructionArguments('param', [classifyIdentifier('bool'), classifyIdentifier('x')])
 			).toThrowError(SyntaxRulesError);
 		});
 
 		it('rejects non-constant identifiers for const declarations', () => {
 			expect(() =>
 				validateInstructionArguments('const', [
-					{ type: ArgumentType.IDENTIFIER, value: 'foo' },
+					classifyIdentifier('foo'),
 					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 				])
 			).toThrowError(SyntaxRulesError);
@@ -203,7 +200,7 @@ if (import.meta.vitest) {
 		it('validates array declaration argument shapes', () => {
 			expect(() =>
 				validateInstructionArguments('int[]', [
-					{ type: ArgumentType.IDENTIFIER, value: 'values' },
+					classifyIdentifier('values'),
 					{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
 				])
 			).not.toThrow();
@@ -212,7 +209,7 @@ if (import.meta.vitest) {
 		it('does not treat unsupported declarations as array declarations', () => {
 			expect(() =>
 				validateInstructionArguments('int16*[]', [
-					{ type: ArgumentType.IDENTIFIER, value: 'values' },
+					classifyIdentifier('values'),
 					{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
 				])
 			).not.toThrow();

@@ -30,7 +30,7 @@ const push: InstructionCompiler<CodegenPushLine> = withValidation<CodegenPushLin
 		if (argument.type === ArgumentType.IDENTIFIER) {
 			const identifierLine = line as PushIdentifierLine;
 
-			switch (resolveIdentifierPushKind(context.namespace, argument.value)) {
+			switch (resolveIdentifierPushKind(context.namespace, argument)) {
 				case IdentifierPushKind.MEMORY_IDENTIFIER:
 					return pushMemoryIdentifier(identifierLine, context);
 				case IdentifierPushKind.MEMORY_POINTER:
@@ -51,6 +51,7 @@ export default push;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('push instruction compiler', () => {
 		it('pushes a literal value', () => {
@@ -221,7 +222,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+						arguments: [classifyIdentifier('myF64')],
 					} as AST[number],
 					context
 				);
@@ -252,7 +253,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+						arguments: [classifyIdentifier('myF64')],
 					} as AST[number],
 					context
 				);
@@ -281,7 +282,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF32' }],
+						arguments: [classifyIdentifier('myF32')],
 					} as AST[number],
 					context
 				);
@@ -310,7 +311,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+						arguments: [classifyIdentifier('myF64')],
 					} as AST[number],
 					context
 				);
@@ -338,7 +339,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF32' }],
+						arguments: [classifyIdentifier('myF32')],
 					} as AST[number],
 					context
 				);
@@ -367,7 +368,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '*floatPointer' }],
+						arguments: [classifyIdentifier('*floatPointer')],
 					} as AST[number],
 					context
 				);
@@ -396,7 +397,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: '*floatPointerPointer' }],
+						arguments: [classifyIdentifier('*floatPointerPointer')],
 					} as AST[number],
 					context
 				);
@@ -436,7 +437,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myInt' }],
+						arguments: [classifyIdentifier('myInt')],
 					} as AST[number],
 					contextInt
 				);
@@ -450,7 +451,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myFloat' }],
+						arguments: [classifyIdentifier('myFloat')],
 					} as AST[number],
 					contextFloat
 				);
@@ -464,7 +465,7 @@ if (import.meta.vitest) {
 						lineNumberBeforeMacroExpansion: 1,
 						lineNumberAfterMacroExpansion: 1,
 						instruction: 'push',
-						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+						arguments: [classifyIdentifier('myF64')],
 					} as AST[number],
 					contextF64
 				);

@@ -5,6 +5,8 @@ import {
 	type ArgumentIdentifier,
 	type ArgumentLiteral,
 	type ArgumentStringLiteral,
+	type ReferenceKind,
+	classifyIdentifier,
 } from './syntax/parseArgument';
 
 export {
@@ -14,6 +16,8 @@ export {
 	type ArgumentIdentifier,
 	type ArgumentLiteral,
 	type ArgumentStringLiteral,
+	type ReferenceKind,
+	classifyIdentifier,
 };
 
 type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> = {

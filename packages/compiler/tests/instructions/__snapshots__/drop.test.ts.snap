@@ -5,6 +5,8 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "drop",
       },

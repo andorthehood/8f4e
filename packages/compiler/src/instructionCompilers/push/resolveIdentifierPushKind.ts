@@ -1,10 +1,6 @@
-import {
-	isMemoryIdentifier,
-	isMemoryPointerIdentifier,
-	isMemoryReferenceIdentifier,
-} from '../../utils/memoryIdentifier';
+import { resolveIdentifierMemoryKind } from '../../utils/memoryIdentifier';
 
-import type { Namespace } from '../../types';
+import type { Namespace, ArgumentIdentifier } from '../../types';
 
 export const enum IdentifierPushKind {
 	MEMORY_IDENTIFIER,
@@ -13,15 +9,18 @@ export const enum IdentifierPushKind {
 	LOCAL,
 }
 
-export default function resolveIdentifierPushKind(namespace: Namespace, value: string): IdentifierPushKind {
+export default function resolveIdentifierPushKind(
+	namespace: Namespace,
+	identifier: ArgumentIdentifier
+): IdentifierPushKind {
 	const { memory } = namespace;
 
-	switch (true) {
-		case isMemoryIdentifier(memory, value):
+	switch (resolveIdentifierMemoryKind(memory, identifier)) {
+		case 'memory':
 			return IdentifierPushKind.MEMORY_IDENTIFIER;
-		case isMemoryPointerIdentifier(memory, value):
+		case 'pointer':
 			return IdentifierPushKind.MEMORY_POINTER;
-		case isMemoryReferenceIdentifier(memory, value):
+		case 'reference':
 			return IdentifierPushKind.MEMORY_REFERENCE;
 		default:
 			return IdentifierPushKind.LOCAL;
@@ -30,6 +29,7 @@ export default function resolveIdentifierPushKind(namespace: Namespace, value: s
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('resolveIdentifierPushKind', () => {
 		it('resolves memory identifiers before local fallback', () => {
@@ -45,17 +45,25 @@ if (import.meta.vitest) {
 				namespaces: {},
 			} as Namespace;
 
-			expect(resolveIdentifierPushKind(namespace, 'buffer')).toBe(IdentifierPushKind.MEMORY_IDENTIFIER);
-			expect(resolveIdentifierPushKind(namespace, '*buffer')).toBe(IdentifierPushKind.MEMORY_POINTER);
-			expect(resolveIdentifierPushKind(namespace, '&buffer')).toBe(IdentifierPushKind.MEMORY_REFERENCE);
-			expect(resolveIdentifierPushKind(namespace, 'count(buffer)')).toBe(IdentifierPushKind.LOCAL);
-			expect(resolveIdentifierPushKind(namespace, 'sizeof(buffer)')).toBe(IdentifierPushKind.LOCAL);
-			expect(resolveIdentifierPushKind(namespace, 'sizeof(*buffer)')).toBe(IdentifierPushKind.LOCAL);
-			expect(resolveIdentifierPushKind(namespace, 'max(buffer)')).toBe(IdentifierPushKind.LOCAL);
-			expect(resolveIdentifierPushKind(namespace, 'max(*buffer)')).toBe(IdentifierPushKind.LOCAL);
-			expect(resolveIdentifierPushKind(namespace, 'min(buffer)')).toBe(IdentifierPushKind.LOCAL);
-			expect(resolveIdentifierPushKind(namespace, 'ANSWER')).toBe(IdentifierPushKind.LOCAL);
-			expect(resolveIdentifierPushKind(namespace, 'localTemp')).toBe(IdentifierPushKind.LOCAL);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('buffer'))).toBe(
+				IdentifierPushKind.MEMORY_IDENTIFIER
+			);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('*buffer'))).toBe(
+				IdentifierPushKind.MEMORY_POINTER
+			);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('&buffer'))).toBe(
+				IdentifierPushKind.MEMORY_REFERENCE
+			);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('count(buffer)'))).toBe(IdentifierPushKind.LOCAL);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('sizeof(buffer)'))).toBe(IdentifierPushKind.LOCAL);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('sizeof(*buffer)'))).toBe(
+				IdentifierPushKind.LOCAL
+			);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('max(buffer)'))).toBe(IdentifierPushKind.LOCAL);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('max(*buffer)'))).toBe(IdentifierPushKind.LOCAL);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('min(buffer)'))).toBe(IdentifierPushKind.LOCAL);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('ANSWER'))).toBe(IdentifierPushKind.LOCAL);
+			expect(resolveIdentifierPushKind(namespace, classifyIdentifier('localTemp'))).toBe(IdentifierPushKind.LOCAL);
 		});
 	});
 }

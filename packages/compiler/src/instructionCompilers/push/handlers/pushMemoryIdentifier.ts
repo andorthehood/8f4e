@@ -1,6 +1,5 @@
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-import { ArgumentType } from '../../../types';
 import { getDataStructure } from '../../../utils/memoryData';
 import i32const from '../../../wasmUtils/const/i32const';
 import i32load from '../../../wasmUtils/load/i32load';
@@ -23,6 +22,7 @@ export default function pushMemoryIdentifier(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('pushMemoryIdentifier', () => {
 		it('loads memory value at byteAddress', () => {
@@ -54,7 +54,7 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
+					arguments: [classifyIdentifier('value')],
 				} as PushIdentifierLine,
 				context
 			);

@@ -5,6 +5,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "branchIfUnchanged",
       },
@@ -17,6 +19,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -29,6 +33,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "output",
       },
@@ -41,6 +47,10 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
@@ -73,6 +83,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "void",
       },
@@ -85,6 +97,8 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
   {
     "arguments": [
       {
+        "referenceKind": "plain",
+        "scope": "local",
         "type": "identifier",
         "value": "input",
       },
@@ -110,6 +124,10 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
   {
     "arguments": [
       {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "output",
         "type": "identifier",
         "value": "&output",
       },
