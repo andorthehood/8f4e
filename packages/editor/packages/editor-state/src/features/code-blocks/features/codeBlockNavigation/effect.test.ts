@@ -108,6 +108,7 @@ describe('codeBlockNavigation', () => {
 
 		onNavigateCodeBlockHandler({ direction: 'left' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(leftBlock);
+		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
 	});
 
 	it('should navigate right when navigateCodeBlock event with right direction is dispatched', () => {
@@ -115,6 +116,41 @@ describe('codeBlockNavigation', () => {
 		codeBlockNavigation(state, events);
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
+		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
+	});
+
+	it('should skip viewport-anchored blocks during directional navigation', () => {
+		const anchoredRight = createMockCodeBlock({
+			x: 300,
+			y: 200,
+			creationIndex: 5,
+			id: 'anchored-right',
+			viewportAnchor: 'top-right',
+		});
+		state.graphicHelper.codeBlocks = [selectedBlock, anchoredRight, rightBlock];
+
+		codeBlockNavigation(state, events);
+
+		onNavigateCodeBlockHandler({ direction: 'right' });
+
+		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
+	});
+
+	it('should navigate from a viewport-anchored selected block to a world-space block', () => {
+		const anchoredSelected = createMockCodeBlock({
+			x: 200,
+			y: 200,
+			creationIndex: 0,
+			id: 'anchored-selected',
+			viewportAnchor: 'top-left',
+		});
+		state.graphicHelper.selectedCodeBlock = anchoredSelected;
+		state.graphicHelper.codeBlocks = [anchoredSelected, rightBlock];
+
+		codeBlockNavigation(state, events);
+
+		onNavigateCodeBlockHandler({ direction: 'right' });
+
 		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
 	});
 
@@ -179,9 +215,10 @@ describe('codeBlockNavigation', () => {
 
 	describe('jumpToCodeBlock', () => {
 		it('should jump to code block by creationIndex', () => {
-			const result = jumpToCodeBlock(state, 2, 'wrong-id');
+			const result = jumpToCodeBlock(state, 2, 'wrong-id', events);
 			expect(result).toBe(true);
 			expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
+			expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
 		});
 
 		it('should jump to code block by id when creationIndex does not match', () => {
@@ -248,6 +285,17 @@ describe('codeBlockNavigation', () => {
 			expect(state.graphicHelper.selectedCodeBlock).toBe(firstHome);
 			expect(state.viewport.x).toBe(50);
 			expect(state.viewport.y).toBe(32);
+		});
+
+		it('should dispatch viewportMoved after goHome changes the viewport', () => {
+			const homeBlock = createMockCodeBlock({ id: 'home-dispatch', isHome: true, x: 100, y: 100 });
+			state = createMockState({
+				graphicHelper: { codeBlocks: [homeBlock] },
+			});
+
+			goHome(state, events);
+
+			expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
 		});
 
 		it('should use a disabled home block if it is first', () => {
