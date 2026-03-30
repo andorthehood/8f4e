@@ -28,6 +28,7 @@ type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> 
 	instruction: Instruction;
 	arguments: Arguments;
 	isSemanticOnly?: boolean;
+	isMemoryDeclaration?: boolean;
 };
 
 export type ASTLine = ASTLineBase<string, Array<Argument>>;

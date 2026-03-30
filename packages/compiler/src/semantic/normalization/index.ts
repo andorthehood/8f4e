@@ -7,8 +7,6 @@ import normalizeMap from './map';
 import normalizeMemoryDeclaration from './memoryDeclaration';
 import normalizePush from './push';
 
-import { isMemoryDeclarationInstruction } from '../declarations';
-
 import type { AST, CompilationContext, NormalizedLine } from '../../types';
 
 const instructionNormalizers = {
@@ -31,7 +29,7 @@ export default function dispatchNormalization<TLine extends AST[number]>(
 		return normalizer(line as never, context) as NormalizedLine<TLine>;
 	}
 
-	if (isMemoryDeclarationInstruction(line.instruction)) {
+	if (line.isMemoryDeclaration) {
 		return normalizeMemoryDeclaration(line as never, context) as NormalizedLine<TLine>;
 	}
 
