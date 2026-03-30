@@ -10,14 +10,6 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
-		},
-		"./syntax": {
-			"types": "./dist/syntax/index.d.ts",
-			"default": "./dist/syntax/index.js"
-		},
-		"./syntax/*": {
-			"types": "./dist/syntax/*.d.ts",
-			"default": "./dist/syntax/*.js"
 		}
 	},
 	"sideEffects": false,
