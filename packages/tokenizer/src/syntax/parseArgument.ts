@@ -87,11 +87,17 @@ export type ArgumentIdentifier = {
 	isPointee?: boolean;
 };
 export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
+/**
+ * A fully parsed compile-time expression operand.
+ * Operands are either numeric literals or classified identifier nodes;
+ * they are never nested expressions because the grammar only allows a single operator.
+ */
+export type CompileTimeOperand = ArgumentLiteral | ArgumentIdentifier;
 export type ArgumentCompileTimeExpression = {
 	type: ArgumentType.COMPILE_TIME_EXPRESSION;
-	lhs: ArgumentLiteral | ArgumentIdentifier;
+	lhs: CompileTimeOperand;
 	operator: '*' | '/';
-	rhs: ArgumentLiteral | ArgumentIdentifier;
+	rhs: CompileTimeOperand;
 };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;

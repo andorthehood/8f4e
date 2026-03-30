@@ -9,23 +9,24 @@ import {
 	getElementMinValue,
 } from '../utils/memoryData';
 
-import type { Argument, ArgumentIdentifier, ArgumentLiteral, Const, Namespace } from '../types';
+import type { Argument, CompileTimeOperand, Const, Namespace } from '../types';
 
 /**
  * Tries to resolve a single pre-classified compile-time operand to a `Const` value.
- * Handles numeric literals, constant identifiers, and memory metadata queries
- * (sizeof, count, max, min — including pointee forms).
+ * Dispatches on the operand's AST classification (`type` and `referenceKind`) directly,
+ * without re-parsing raw token values. Handles numeric literals, constant identifiers,
+ * and memory metadata queries (sizeof, count, max, min — including pointee forms).
  * Returns `undefined` if the operand cannot be resolved from the available context.
  */
-function resolveCompileTimeOperand(operand: ArgumentLiteral | ArgumentIdentifier, namespace: Namespace): Const | undefined {
+function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Namespace): Const | undefined {
 	if (operand.type === ArgumentType.LITERAL) {
 		return { value: operand.value, isInteger: operand.isInteger, ...(operand.isFloat64 ? { isFloat64: true } : {}) };
 	}
 
-	// Try direct constant lookup
-	const directConst = namespace.consts[operand.value];
-	if (directConst !== undefined) {
-		return directConst;
+	// Dispatch on referenceKind as the primary axis.
+	// Constant and plain identifiers are the only kinds that can appear in the const map.
+	if (operand.referenceKind === 'constant' || operand.referenceKind === 'plain') {
+		return namespace.consts[operand.value];
 	}
 
 	const { memory } = namespace;
