@@ -1,19 +1,17 @@
-import { parseMemoryInstructionArgumentsShape, type SplitByteToken } from '@8f4e/tokenizer';
-import { ArgumentType } from '@8f4e/tokenizer';
+import { ArgumentType, type SplitByteToken } from '@8f4e/tokenizer';
 
 import resolveIntermodularReferenceValue from './resolveIntermodularReferenceValue';
 
 import { ErrorCode, getError } from '../compilerError';
 
-import type { AST, CompilationContext, Argument } from '../types';
+import type { AST, ArgumentIdentifier, ArgumentLiteral, CompilationContext, Argument } from '../types';
+
 /**
- * Returns the maximum number of bytes allowed for a split-byte default value.
- * Split-byte is restricted to 4 bytes (32-bit) for all declaration types to avoid
+ * Maximum number of bytes allowed in a split-byte default value.
+ * Restricted to 4 bytes (32-bit) for all declaration types to avoid
  * exceeding JavaScript's Number.MAX_SAFE_INTEGER on 8-byte paths.
  */
-function getMaxBytesForInstruction(): number {
-	return 4;
-}
+const MAX_SPLIT_BYTE_WIDTH = 4;
 
 /**
  * Combines an array of byte values (most-significant first) into a single integer,
@@ -72,104 +70,143 @@ function resolveSplitByteTokens(
 	return combineSplitHexBytes(bytes, maxBytes);
 }
 
+function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { isInteger: true } {
+	return arg.type === ArgumentType.LITERAL && arg.isInteger === true && arg.value >= 0 && arg.value <= 255;
+}
+
+function toSplitByteToken(arg: Argument): SplitByteToken {
+	if (arg.type === ArgumentType.LITERAL) return { type: 'literal', value: (arg as ArgumentLiteral).value };
+	return { type: 'identifier', value: (arg as ArgumentIdentifier).value };
+}
+
+function collectSplitByteTokens(
+	args: Argument[],
+	start: number,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	lineForError: any,
+	context: CompilationContext
+): SplitByteToken[] {
+	return args.slice(start).map(arg => {
+		if (arg.type === ArgumentType.LITERAL && !isByteLiteral(arg)) {
+			throw getError(ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE, lineForError, context);
+		}
+		return toSplitByteToken(arg);
+	});
+}
+
+/**
+ * Resolves the second (default-value) argument of a memory declaration directly from the
+ * pre-classified AST argument. Reads referenceKind, targetMemoryId, and isEndAddress fields
+ * set by the tokenizer during parsing rather than re-parsing the raw string.
+ */
+function resolveDefaultArgValue(arg: Argument, lineForError: AST[number], context: CompilationContext): number {
+	if (arg.type === ArgumentType.LITERAL) {
+		return arg.value;
+	}
+
+	if (arg.type !== ArgumentType.IDENTIFIER) {
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, { identifier: '' });
+	}
+
+	switch (arg.referenceKind) {
+		case 'intermodular-reference':
+		case 'intermodular-module-reference':
+		case 'intermodular-element-count':
+		case 'intermodular-element-word-size':
+		case 'intermodular-element-max':
+		case 'intermodular-element-min':
+			return resolveIntermodularReferenceValue(arg, lineForError, context) ?? 0;
+
+		case 'memory-reference': {
+			const memoryItem = context.namespace.memory[arg.targetMemoryId!];
+			if (!memoryItem) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
+					identifier: arg.targetMemoryId!,
+				});
+			}
+			return arg.isEndAddress ? memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * 4 : memoryItem.byteAddress;
+		}
+
+		case 'element-count': {
+			const memoryItem = context.namespace.memory[arg.targetMemoryId!];
+			if (!memoryItem) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
+					identifier: arg.targetMemoryId!,
+				});
+			}
+			return memoryItem.wordAlignedSize;
+		}
+
+		default:
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, { identifier: arg.value });
+	}
+}
+
 export default function parseMemoryInstructionArguments(
 	line: AST[number],
 	context: CompilationContext
 ): { id: string; defaultValue: number } {
 	const { arguments: args, lineNumberAfterMacroExpansion } = line;
 	const lineForError = line;
-	// TODO: semantic normalization now guarantees unresolved COMPILE_TIME_EXPRESSION nodes
-	// should not reach memory parsing. Once the normalized AST contract is tightened, this
-	// parser can rely on a narrower argument shape instead of broad AST[number] input.
-
-	const parsedArgs = parseMemoryInstructionArgumentsShape(args);
-
-	const maxBytes = getMaxBytesForInstruction();
 	let defaultValue = 0;
 	let id = '';
 
-	// Process first argument
-	if (parsedArgs.firstArg.type === 'literal') {
-		defaultValue = parsedArgs.firstArg.value;
+	// Tokenizer validates arity, so args[0] is always present for memory instructions.
+	const first = args[0];
+
+	if (first.type === ArgumentType.LITERAL) {
+		// Anonymous literal — may start a split-byte sequence.
+		// An out-of-range first literal with extra args is rejected to prevent silent miscompilation.
+		if (args.length > 1 && !isByteLiteral(first)) {
+			throw getError(ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE, lineForError, context);
+		}
 		id = '__anonymous__' + lineNumberAfterMacroExpansion;
-	} else if (parsedArgs.firstArg.type === 'split-byte-tokens') {
-		defaultValue = resolveSplitByteTokens(parsedArgs.firstArg.tokens, maxBytes, lineForError, context);
-		id = '__anonymous__' + lineNumberAfterMacroExpansion;
-	} else if (parsedArgs.firstArg.type === 'identifier') {
-		id = parsedArgs.firstArg.value;
+		if (args.length > 1) {
+			const tokens: SplitByteToken[] = [
+				{ type: 'literal', value: (first as ArgumentLiteral).value },
+				...collectSplitByteTokens(args, 1, lineForError, context),
+			];
+			defaultValue = resolveSplitByteTokens(tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context);
+		} else {
+			defaultValue = first.value;
+		}
+		return { id, defaultValue };
 	}
 
-	// Reject constant-style names as memory allocation identifiers (only when used as a plain identifier, not split-byte tokens)
-	if (parsedArgs.firstArg.type === 'identifier') {
-		const firstArgIdentifier = line.arguments[0]?.type === ArgumentType.IDENTIFIER ? line.arguments[0] : null;
-		if (firstArgIdentifier?.referenceKind === 'constant') {
+	if (first.type !== ArgumentType.IDENTIFIER) {
+		// COMPILE_TIME_EXPRESSION should not reach here; normalization folds them before memory parsing.
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, { identifier: '' });
+	}
+
+	if (first.referenceKind === 'constant') {
+		// Constant-style names cannot be used as memory allocation identifiers.
+		if (args.length > 1) {
+			// Multiple args: anonymous split-byte sequence starting with a constant name
+			id = '__anonymous__' + lineNumberAfterMacroExpansion;
+			const tokens: SplitByteToken[] = [
+				{ type: 'identifier', value: first.value },
+				...collectSplitByteTokens(args, 1, lineForError, context),
+			];
+			defaultValue = resolveSplitByteTokens(tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context);
+		} else {
 			throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
 		}
+		return { id, defaultValue };
 	}
 
-	// Process second argument if present
-	if (parsedArgs.secondArg) {
-		const secondArgIdentifier = line.arguments[1]?.type === ArgumentType.IDENTIFIER ? line.arguments[1] : undefined;
+	// Named declaration: plain identifier as allocation name
+	id = first.value;
 
-		if (parsedArgs.secondArg.type === 'literal') {
-			defaultValue = parsedArgs.secondArg.value;
-		} else if (parsedArgs.secondArg.type === 'split-byte-tokens') {
-			defaultValue = resolveSplitByteTokens(parsedArgs.secondArg.tokens, maxBytes, lineForError, context);
-		} else if (parsedArgs.secondArg.type === 'intermodular-reference') {
-			defaultValue = secondArgIdentifier
-				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
-				: 0;
-		} else if (parsedArgs.secondArg.type === 'intermodular-module-reference') {
-			defaultValue = secondArgIdentifier
-				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
-				: 0;
-		} else if (parsedArgs.secondArg.type === 'intermodular-element-count') {
-			defaultValue = secondArgIdentifier
-				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
-				: 0;
-		} else if (parsedArgs.secondArg.type === 'intermodular-element-word-size') {
-			defaultValue = secondArgIdentifier
-				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
-				: 0;
-		} else if (parsedArgs.secondArg.type === 'intermodular-element-max') {
-			defaultValue = secondArgIdentifier
-				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
-				: 0;
-		} else if (parsedArgs.secondArg.type === 'intermodular-element-min') {
-			defaultValue = secondArgIdentifier
-				? (resolveIntermodularReferenceValue(secondArgIdentifier, lineForError, context) ?? 0)
-				: 0;
-		} else if (parsedArgs.secondArg.type === 'memory-reference') {
-			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
-
-			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-					identifier: parsedArgs.secondArg.base,
-				});
-			}
-
-			// Use start or end address based on syntax: &buffer (isEndAddress false) vs buffer& (isEndAddress true)
-			if (!secondArgIdentifier?.isEndAddress) {
-				defaultValue = memoryItem.byteAddress;
-			} else {
-				// Compute end address directly from memoryItem
-				defaultValue = memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * 4;
-			}
-		} else if (parsedArgs.secondArg.type === 'element-count') {
-			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
-
-			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-					identifier: parsedArgs.secondArg.base,
-				});
-			}
-
-			defaultValue = memoryItem.wordAlignedSize;
-		} else if (parsedArgs.secondArg.type === 'identifier') {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-				identifier: parsedArgs.secondArg.value,
-			});
-		}
+	if (args.length >= 3) {
+		// Multiple default tokens: split-byte sequence
+		defaultValue = resolveSplitByteTokens(
+			collectSplitByteTokens(args, 1, lineForError, context),
+			MAX_SPLIT_BYTE_WIDTH,
+			lineForError,
+			context
+		);
+	} else if (args.length === 2) {
+		defaultValue = resolveDefaultArgValue(args[1], lineForError, context);
 	}
 
 	return { id, defaultValue };
