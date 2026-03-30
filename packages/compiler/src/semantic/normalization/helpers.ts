@@ -1,5 +1,12 @@
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
-import { ArgumentType, type ReferenceKind, type AST, type Argument, type ArgumentIdentifier, type CompilationContext } from '../../types';
+import {
+	ArgumentType,
+	type ReferenceKind,
+	type AST,
+	type Argument,
+	type ArgumentIdentifier,
+	type CompilationContext,
+} from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
@@ -15,11 +22,6 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
 		referenceKind === 'intermodular-element-max' ||
 		referenceKind === 'intermodular-element-min'
 	);
-}
-
-/** @deprecated No longer needed - use isIntermoduleReferenceKind(argument.referenceKind) instead. */
-export function isIntermoduleReferenceLike(referenceKind: ReferenceKind): boolean {
-	return isIntermoduleReferenceKind(referenceKind);
 }
 
 /**
@@ -110,8 +112,10 @@ export function validateOrDeferCompileTimeExpression(
 	line: AST[number],
 	context: CompilationContext
 ): boolean {
-	const lhsIsIntermodule = argument.lhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.lhs.referenceKind);
-	const rhsIsIntermodule = argument.rhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.rhs.referenceKind);
+	const lhsIsIntermodule =
+		argument.lhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.lhs.referenceKind);
+	const rhsIsIntermodule =
+		argument.rhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.rhs.referenceKind);
 
 	if (!hasCollectedNamespaces(context) && (lhsIsIntermodule || rhsIsIntermodule)) {
 		return true;
