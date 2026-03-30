@@ -20,10 +20,37 @@ function getProjectRegistry() {
 	return import('./examples/projectRegistry');
 }
 
-async function init() {
+interface CanvasSize {
+	width: number;
+	height: number;
+}
+
+interface InitOptions {
+	fixedCanvasSize?: CanvasSize;
+}
+
+function applyCanvasSize(canvas: HTMLCanvasElement, size: CanvasSize): void {
+	canvas.width = size.width;
+	canvas.height = size.height;
+	canvas.style.width = '';
+	canvas.style.height = '';
+}
+
+function getCanvasSize({ fixedCanvasSize }: InitOptions = {}): CanvasSize {
+	if (fixedCanvasSize) {
+		return fixedCanvasSize;
+	}
+
+	return {
+		width: window.innerWidth,
+		height: window.innerHeight,
+	};
+}
+
+async function init(options: InitOptions = {}) {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+	const initialCanvasSize = getCanvasSize(options);
+	applyCanvasSize(canvas, initialCanvasSize);
 	const editor = await initEditor(canvas, {
 		runtimeRegistry,
 		defaultRuntimeId: DEFAULT_RUNTIME_ID,
@@ -48,19 +75,22 @@ async function init() {
 	// @ts-expect-error - Expose state for debugging purposes
 	window.state = editor.state;
 
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
-	editor.resize(window.innerWidth, window.innerHeight);
+	const resizeEditor = () => {
+		if (options.fixedCanvasSize) {
+			return;
+		}
+		const nextCanvasSize = getCanvasSize(options);
+		applyCanvasSize(canvas, nextCanvasSize);
+		editor.resize(nextCanvasSize.width, nextCanvasSize.height);
+	};
 
-	window.addEventListener('resize', () => {
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		editor.resize(window.innerWidth, window.innerHeight);
-	});
+	resizeEditor();
+
+	window.addEventListener('resize', resizeEditor);
 }
 
 if (document.readyState === 'complete') {
 	init();
 } else {
-	window.addEventListener('DOMContentLoaded', init);
+	window.addEventListener('DOMContentLoaded', () => init());
 }
