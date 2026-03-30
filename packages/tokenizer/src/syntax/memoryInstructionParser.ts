@@ -1,21 +1,5 @@
 import { ArgumentType, classifyIdentifier, type Argument, type ArgumentLiteral } from './parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
-import hasMemoryReferencePrefix from './hasMemoryReferencePrefix';
-import hasElementCountPrefix from './hasElementCountPrefix';
-import extractMemoryReferenceBase from './extractMemoryReferenceBase';
-import extractElementCountBase from './extractElementCountBase';
-import isIntermodularReference from './isIntermodularReference';
-import isIntermodularModuleReference from './isIntermodularModuleReference';
-import extractIntermodularModuleReferenceBase from './extractIntermodularModuleReferenceBase';
-import isIntermodularElementCountReference from './isIntermodularElementCountReference';
-import extractIntermodularElementCountBase from './extractIntermodularElementCountBase';
-import isIntermodularElementWordSizeReference from './isIntermodularElementWordSizeReference';
-import extractIntermodularElementWordSizeBase from './extractIntermodularElementWordSizeBase';
-import isIntermodularElementMaxReference from './isIntermodularElementMaxReference';
-import extractIntermodularElementMaxBase from './extractIntermodularElementMaxBase';
-import isIntermodularElementMinReference from './isIntermodularElementMinReference';
-import extractIntermodularElementMinBase from './extractIntermodularElementMinBase';
-import isConstantName from './isConstantName';
 
 /**
  * A single token within a split-byte sequence.
@@ -51,24 +35,16 @@ function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: Argument
 
 /**
  * Returns true when the argument can participate in a split-byte sequence:
- * either a byte-sized integer literal (0–255) or a plain identifier (not a special reference).
- * Plain identifiers are expected to be resolved as compile-time constants in the semantic phase.
+ * either a byte-sized integer literal (0–255) or a plain or constant-style identifier.
+ * Plain and constant-style identifiers are expected to be resolved as compile-time constants
+ * in the semantic phase.
  */
 function isSplitByteCandidate(arg: Argument): boolean {
 	if (isByteLiteral(arg)) return true;
 	if (arg.type !== ArgumentType.IDENTIFIER) return false;
-	// Must be a plain identifier, not a special reference prefix
-	const v = arg.value;
-	return (
-		!isIntermodularReference(v) &&
-		!isIntermodularModuleReference(v) &&
-		!isIntermodularElementCountReference(v) &&
-		!isIntermodularElementWordSizeReference(v) &&
-		!isIntermodularElementMaxReference(v) &&
-		!isIntermodularElementMinReference(v) &&
-		!hasMemoryReferencePrefix(v) &&
-		!hasElementCountPrefix(v)
-	);
+	// Only plain and constant-style identifiers are valid split-byte participants.
+	// All other reference kinds (memory-reference, element-count, intermodular-*, etc.) are excluded.
+	return arg.referenceKind === 'plain' || arg.referenceKind === 'constant';
 }
 
 /**
@@ -148,7 +124,11 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 	// Case C: Anonymous path — starts with a constant-style identifier.
 	// Constant-style names (all-uppercase) cannot be memory allocation names; treat as anonymous.
 	// When followed by additional tokens they form a split-byte sequence.
-	if (result.firstArg.type === 'identifier' && isConstantName(result.firstArg.value)) {
+	if (
+		result.firstArg.type === 'identifier' &&
+		args[0].type === ArgumentType.IDENTIFIER &&
+		args[0].referenceKind === 'constant'
+	) {
 		if (args[1]) {
 			if (!isSplitByteCandidate(args[1])) {
 				throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
@@ -197,91 +177,66 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		throw new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT);
 	}
 
-	// Check for intermodular reference pattern (e.g., "&module:identifier")
-	if (isIntermodularReference(arg.value)) {
-		return {
-			type: 'intermodular-reference',
-			pattern: arg.value,
-		};
+	// Use the pre-classified referenceKind and extracted fields from the ArgumentIdentifier
+	// instead of re-detecting patterns from raw strings.
+	switch (arg.referenceKind) {
+		case 'intermodular-reference':
+			return {
+				type: 'intermodular-reference',
+				pattern: arg.value,
+			};
+		case 'intermodular-module-reference':
+			return {
+				type: 'intermodular-module-reference',
+				module: arg.targetModuleId!,
+				pattern: arg.value,
+				isEndAddress: !!arg.isEndAddress,
+			};
+		case 'intermodular-element-count':
+			return {
+				type: 'intermodular-element-count',
+				module: arg.targetModuleId!,
+				memory: arg.targetMemoryId!,
+				pattern: arg.value,
+			};
+		case 'intermodular-element-word-size':
+			return {
+				type: 'intermodular-element-word-size',
+				module: arg.targetModuleId!,
+				memory: arg.targetMemoryId!,
+				pattern: arg.value,
+			};
+		case 'intermodular-element-max':
+			return {
+				type: 'intermodular-element-max',
+				module: arg.targetModuleId!,
+				memory: arg.targetMemoryId!,
+				pattern: arg.value,
+			};
+		case 'intermodular-element-min':
+			return {
+				type: 'intermodular-element-min',
+				module: arg.targetModuleId!,
+				memory: arg.targetMemoryId!,
+				pattern: arg.value,
+			};
+		case 'memory-reference':
+			return {
+				type: 'memory-reference',
+				base: arg.targetMemoryId!,
+				pattern: arg.value,
+			};
+		case 'element-count':
+			return {
+				type: 'element-count',
+				base: arg.targetMemoryId!,
+			};
+		default:
+			return {
+				type: 'identifier',
+				value: arg.value,
+			};
 	}
-
-	// Check for intermodular module-base reference pattern (e.g., "&module:")
-	if (isIntermodularModuleReference(arg.value)) {
-		const { module, isEndAddress } = extractIntermodularModuleReferenceBase(arg.value);
-		return {
-			type: 'intermodular-module-reference',
-			module,
-			pattern: arg.value,
-			isEndAddress,
-		};
-	}
-
-	// Check for intermodular element count reference pattern (e.g., "count(module:memory)")
-	if (isIntermodularElementCountReference(arg.value)) {
-		const { module, memory } = extractIntermodularElementCountBase(arg.value);
-		return {
-			type: 'intermodular-element-count',
-			module,
-			memory,
-			pattern: arg.value,
-		};
-	}
-
-	// Check for intermodular element word size reference pattern (e.g., "sizeof(module:memory)")
-	if (isIntermodularElementWordSizeReference(arg.value)) {
-		const { module, memory } = extractIntermodularElementWordSizeBase(arg.value);
-		return {
-			type: 'intermodular-element-word-size',
-			module,
-			memory,
-			pattern: arg.value,
-		};
-	}
-
-	// Check for intermodular element max reference pattern (e.g., "max(module:memory)")
-	if (isIntermodularElementMaxReference(arg.value)) {
-		const { module, memory } = extractIntermodularElementMaxBase(arg.value);
-		return {
-			type: 'intermodular-element-max',
-			module,
-			memory,
-			pattern: arg.value,
-		};
-	}
-
-	// Check for intermodular element min reference pattern (e.g., "min(module:memory)")
-	if (isIntermodularElementMinReference(arg.value)) {
-		const { module, memory } = extractIntermodularElementMinBase(arg.value);
-		return {
-			type: 'intermodular-element-min',
-			module,
-			memory,
-			pattern: arg.value,
-		};
-	}
-
-	// Check for memory reference prefix
-	if (hasMemoryReferencePrefix(arg.value)) {
-		return {
-			type: 'memory-reference',
-			base: extractMemoryReferenceBase(arg.value),
-			pattern: arg.value,
-		};
-	}
-
-	// Check for element count prefix
-	if (hasElementCountPrefix(arg.value)) {
-		return {
-			type: 'element-count',
-			base: extractElementCountBase(arg.value),
-		};
-	}
-
-	// Plain identifier
-	return {
-		type: 'identifier',
-		value: arg.value,
-	};
 }
 
 if (import.meta.vitest) {
