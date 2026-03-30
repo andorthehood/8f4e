@@ -69,6 +69,7 @@ describe('parseLine', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				isSemanticOnly: false,
+				isMemoryDeclaration: true,
 			},
 		],
 		[
@@ -87,6 +88,7 @@ describe('parseLine', () => {
 				lineNumberBeforeMacroExpansion: 100,
 				lineNumberAfterMacroExpansion: 100,
 				isSemanticOnly: false,
+				isMemoryDeclaration: false,
 			},
 		],
 	];
