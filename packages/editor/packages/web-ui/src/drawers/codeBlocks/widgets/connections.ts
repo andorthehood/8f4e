@@ -38,7 +38,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 				output.codeBlock.x + output.codeBlock.offsetX + output.x + state.viewport.vGrid,
 				output.codeBlock.y + output.codeBlock.offsetY + output.y + state.viewport.vGrid,
 				isSelected ? 'wireHighlighted' : 'wire',
-				1
+				state.globalEditorDirectives.wireThickness ?? 1
 			);
 		}
 	}

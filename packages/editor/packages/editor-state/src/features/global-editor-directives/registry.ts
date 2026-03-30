@@ -6,6 +6,7 @@ import infoOverlayDirective from './infoOverlay/plugin';
 import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
 import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import runtimeDirective from './runtime/plugin';
+import wireThicknessDirective from './wireThickness/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
 import type { CodeError, ParsedDirectiveRecord, CodeBlockType } from '~/types';
@@ -27,6 +28,7 @@ export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
 	disableAutoCompilationDirective,
 	keyCodeMemoryDirective,
 	keyPressedMemoryDirective,
+	wireThicknessDirective,
 ];
 
 export function resolveGlobalEditorDirectives(

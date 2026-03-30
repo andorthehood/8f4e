@@ -52,6 +52,17 @@ Aliases:
 - `true` -> `on`
 - `false` -> `off`
 
+### `@wireThickness`
+
+Set the rendered wire thickness in pixels.
+
+```txt
+; @wireThickness <number>
+```
+
+Accepted values:
+- any positive number
+
 ### `@watch`
 
 Show a runtime debugger value for a memory id.
