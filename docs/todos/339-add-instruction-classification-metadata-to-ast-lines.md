@@ -58,6 +58,11 @@ The exact field set can stay modest at first. The goal is to stop rediscovering 
 - Do not add metadata that merely duplicates compiler runtime state.
 - Do not keep compiler-side string-set routing as an active fallback once AST metadata exists.
 - Do not mark this complete while core compiler routing still depends on syntax-only instruction-name checks.
+- Do not treat test-only changes as progress on this todo.
+- Do not treat docs-only changes as progress on this todo.
+- Do not treat “metadata was added” as completion unless compiler production routing actually consumes it.
+- Do not replace one small helper while leaving the main production routing logic instruction-name-based and then call the todo done.
+- Do not preserve the current AST line API shape just for backward compatibility if that gets in the way of a clean parser/compiler boundary. The software is not released yet, so breaking internal AST contracts is acceptable here.
 
 ## Implementation Plan
 
@@ -75,11 +80,20 @@ The exact field set can stay modest at first. The goal is to stop rediscovering 
 
 - Add the chosen classification fields to AST line objects in `@8f4e/tokenizer`.
 - Populate them during AST generation.
+- Start with the highest-value syntax-only categories first:
+  - `isSemanticOnly`
+  - `isMemoryDeclaration`
+  - one additional line-routing classification only if it directly removes compiler-side instruction-name routing
 
 ### Step 3: Replace compiler-side instruction-name routing where possible
 
 - Update semantic/codegen routing to use AST metadata instead of repeated instruction-name lists.
 - Keep only semantic validation in compiler.
+- At minimum, remove one real syntax-only instruction-name routing decision from:
+  - `packages/compiler/src/semantic/buildNamespace.ts`
+  - and one of:
+    - `packages/compiler/src/semantic/declarations/index.ts`
+    - `packages/compiler/src/semantic/instructions/index.ts`
 
 ### Step 4: Remove obsolete compiler-side syntax routing helpers
 
@@ -98,6 +112,25 @@ The exact field set can stay modest at first. The goal is to stop rediscovering 
 - Compiler routing uses parser-owned metadata where classification is syntax-only.
 - Repeated instruction-name string sets in compiler are reduced or removed.
 - This TODO is not complete while compiler still uses syntax-only instruction-name matching for major routing decisions that tokenizer could classify.
+
+## Evidence Required Before Marking Complete
+
+This todo is not done unless all of the following are true:
+
+- `packages/tokenizer/src/types.ts` changes to expose real line-level classification metadata.
+- Tokenizer AST generation attaches at least one new production classification field to parsed lines.
+- `packages/compiler/src/semantic/buildNamespace.ts` stops using at least one syntax-only instruction-name check because it now consumes parser-owned metadata.
+- At least one of:
+  - `packages/compiler/src/semantic/declarations/index.ts`
+  - `packages/compiler/src/semantic/instructions/index.ts`
+  changes to route from AST metadata instead of instruction-name matching.
+
+The following do not count as completion by themselves:
+
+- tests only
+- docs only
+- metadata additions with no compiler routing changes
+- replacing a minor helper while leaving the main production routing model unchanged
 
 ## Affected Components
 
