@@ -50,12 +50,9 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -260,12 +257,9 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -500,12 +494,9 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -547,12 +538,9 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",

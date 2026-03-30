@@ -100,12 +100,9 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -269,12 +266,9 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
       },
     ],
     "instruction": "push",
@@ -428,12 +422,9 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -602,12 +593,9 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -786,12 +774,9 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -957,12 +942,9 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 16,
       },
     ],
     "instruction": "push",
@@ -1126,12 +1108,9 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 64,
       },
     ],
     "instruction": "push",
@@ -1300,12 +1279,9 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 96,
       },
     ],
     "instruction": "push",
@@ -1489,12 +1465,9 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 24,
       },
     ],
     "instruction": "push",
@@ -1678,12 +1651,9 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -1827,12 +1797,9 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
       },
     ],
     "instruction": "push",
@@ -1961,12 +1928,9 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
       },
     ],
     "instruction": "push",
@@ -2100,12 +2064,9 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
@@ -2254,12 +2215,9 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",

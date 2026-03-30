@@ -50,12 +50,9 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -278,12 +275,9 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output",
-        "type": "identifier",
-        "value": "&output",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",

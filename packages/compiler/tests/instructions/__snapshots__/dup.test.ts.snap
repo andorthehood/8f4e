@@ -65,12 +65,9 @@ exports[`dup > if the generated AST, WAT and memory map match the snapshot 1`] =
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output1",
-        "type": "identifier",
-        "value": "&output1",
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
       },
     ],
     "instruction": "push",
@@ -82,12 +79,9 @@ exports[`dup > if the generated AST, WAT and memory map match the snapshot 1`] =
   {
     "arguments": [
       {
-        "isEndAddress": false,
-        "referenceKind": "memory-reference",
-        "scope": "local",
-        "targetMemoryId": "output2",
-        "type": "identifier",
-        "value": "&output2",
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
       },
     ],
     "instruction": "push",
