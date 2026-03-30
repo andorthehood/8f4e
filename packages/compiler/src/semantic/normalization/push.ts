@@ -35,7 +35,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 			return normalized as CodegenPushLine;
 		}
 		// Validate intermodule references first
-		validateIntermoduleAddressReference(value, line, context);
+		validateIntermoduleAddressReference(argument, line, context);
 		if (isIntermodule) {
 			return normalized as CodegenPushLine;
 		}

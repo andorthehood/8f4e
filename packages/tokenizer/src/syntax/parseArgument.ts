@@ -4,7 +4,7 @@ import parseNumericLiteralToken, {
 	isNumericLikeInvalidToken,
 	startsWithNumericPrefix,
 } from './parseNumericLiteralToken';
-import parseConstantMulDivExpression, { type CompileTimeMulDivExpression } from './parseConstantMulDivExpression';
+import parseConstantMulDivExpression from './parseConstantMulDivExpression';
 import isIntermodularModuleReference from './isIntermodularModuleReference';
 import extractIntermodularModuleReferenceBase from './extractIntermodularModuleReferenceBase';
 import isIntermodularReference from './isIntermodularReference';
@@ -87,8 +87,11 @@ export type ArgumentIdentifier = {
 	isPointee?: boolean;
 };
 export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
-export type ArgumentCompileTimeExpression = CompileTimeMulDivExpression & {
+export type ArgumentCompileTimeExpression = {
 	type: ArgumentType.COMPILE_TIME_EXPRESSION;
+	lhs: ArgumentLiteral | ArgumentIdentifier;
+	operator: '*' | '/';
+	rhs: ArgumentLiteral | ArgumentIdentifier;
 };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;
@@ -351,6 +354,25 @@ export function classifyIdentifier(value: string): ArgumentIdentifier {
 }
 
 /**
+ * Parses a single compile-time expression operand (left-hand or right-hand side).
+ * Operands can be numeric literals or identifier-shaped tokens; they are never
+ * themselves expressions because the grammar only allows a single operator.
+ */
+export function parseCompileTimeOperand(operand: string): ArgumentLiteral | ArgumentIdentifier {
+	const numericLiteral = parseNumericLiteralToken(operand);
+	if (numericLiteral) {
+		return {
+			value: numericLiteral.value,
+			type: ArgumentType.LITERAL,
+			isInteger: numericLiteral.isInteger,
+			...(numericLiteral.isFloat64 && { isFloat64: true }),
+			...(numericLiteral.isHex && { isHex: true }),
+		};
+	}
+	return classifyIdentifier(operand);
+}
+
+/**
  * Parses a single argument from an instruction line.
  * Recognizes numeric literals (decimal, hex, binary, fractions), quoted string literals, and identifiers.
  * @param argument - The argument string to parse.
@@ -390,7 +412,9 @@ export function parseArgument(argument: string): Argument {
 			if (compileTimeExpression !== null) {
 				return {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
-					...compileTimeExpression,
+					lhs: parseCompileTimeOperand(compileTimeExpression.lhs),
+					operator: compileTimeExpression.operator,
+					rhs: parseCompileTimeOperand(compileTimeExpression.rhs),
 				};
 			}
 

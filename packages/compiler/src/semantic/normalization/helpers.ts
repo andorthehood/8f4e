@@ -1,7 +1,5 @@
-import { classifyIdentifier } from '@8f4e/tokenizer';
-
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
-import { ArgumentType, type ReferenceKind, type AST, type Argument, type CompilationContext } from '../../types';
+import { ArgumentType, type ReferenceKind, type AST, type Argument, type ArgumentIdentifier, type CompilationContext } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
@@ -20,9 +18,8 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
 }
 
 /** @deprecated No longer needed - use isIntermoduleReferenceKind(argument.referenceKind) instead. */
-export function isIntermoduleReferenceLike(value: string): boolean {
-	const identifier = classifyIdentifier(value);
-	return isIntermoduleReferenceKind(identifier.referenceKind);
+export function isIntermoduleReferenceLike(referenceKind: ReferenceKind): boolean {
+	return isIntermoduleReferenceKind(referenceKind);
 }
 
 /**
@@ -32,7 +29,7 @@ export function isIntermoduleReferenceLike(value: string): boolean {
  * of sizeof/count/max/min forms is handled by tryResolveCompileTimeArgument.
  */
 export function validateIntermoduleAddressReference(
-	value: string,
+	identifier: ArgumentIdentifier,
 	line: AST[number],
 	context: CompilationContext
 ): void {
@@ -40,8 +37,6 @@ export function validateIntermoduleAddressReference(
 	if (!hasCollectedNamespaces(context)) {
 		return;
 	}
-
-	const identifier = classifyIdentifier(value);
 
 	if (identifier.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = identifier.targetModuleId!;
@@ -115,21 +110,20 @@ export function validateOrDeferCompileTimeExpression(
 	line: AST[number],
 	context: CompilationContext
 ): boolean {
-	if (
-		!hasCollectedNamespaces(context) &&
-		((typeof argument.lhs === 'string' && isIntermoduleReferenceKind(classifyIdentifier(argument.lhs).referenceKind)) ||
-			(typeof argument.rhs === 'string' && isIntermoduleReferenceKind(classifyIdentifier(argument.rhs).referenceKind)))
-	) {
+	const lhsIsIntermodule = argument.lhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.lhs.referenceKind);
+	const rhsIsIntermodule = argument.rhs.type === ArgumentType.IDENTIFIER && isIntermoduleReferenceKind(argument.rhs.referenceKind);
+
+	if (!hasCollectedNamespaces(context) && (lhsIsIntermodule || rhsIsIntermodule)) {
 		return true;
 	}
-	if (typeof argument.lhs === 'string') {
+	if (argument.lhs.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.lhs, line, context);
 	}
-	if (typeof argument.rhs === 'string') {
+	if (argument.rhs.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.rhs, line, context);
 	}
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-		identifier: `${argument.lhs}${argument.operator}${argument.rhs}`,
+		identifier: `${argument.lhs.value}${argument.operator}${argument.rhs.value}`,
 	});
 }
 
@@ -147,7 +141,7 @@ export function validateOrDeferUnresolvedIdentifier(
 	if (!hasCollectedNamespaces(context) && isIntermoduleReferenceKind(argument.referenceKind)) {
 		return true;
 	}
-	validateIntermoduleAddressReference(argument.value, line, context);
+	validateIntermoduleAddressReference(argument, line, context);
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
 }
 

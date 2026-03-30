@@ -156,6 +156,7 @@ export default function validateInstructionArguments(instruction: string, args: 
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+	const { parseCompileTimeOperand } = await import('./parseArgument');
 
 	describe('validateInstructionArguments', () => {
 		it('enforces missing arguments for known instruction arity', () => {
@@ -168,7 +169,12 @@ if (import.meta.vitest) {
 		it('accepts compile-time values for default', () => {
 			expect(() =>
 				validateInstructionArguments('default', [
-					{ type: ArgumentType.COMPILE_TIME_EXPRESSION, lhs: 'SIZE', operator: '*', rhs: '2' },
+					{
+						type: ArgumentType.COMPILE_TIME_EXPRESSION,
+						lhs: parseCompileTimeOperand('SIZE'),
+						operator: '*',
+						rhs: parseCompileTimeOperand('2'),
+					},
 				])
 			).not.toThrow();
 		});

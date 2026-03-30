@@ -9,6 +9,7 @@ export {
 	ArgumentType,
 	parseArgument,
 	classifyIdentifier,
+	parseCompileTimeOperand,
 	decodeStringLiteral,
 	type Argument,
 	type ArgumentCompileTimeExpression,

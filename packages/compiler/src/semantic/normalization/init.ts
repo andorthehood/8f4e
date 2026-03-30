@@ -20,12 +20,12 @@ export default function normalizeInit(line: InitLine, context: CompilationContex
 		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
 		if (deferred) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-				identifier: `${argument.lhs}${argument.operator}${argument.rhs}`,
+				identifier: `${argument.lhs.value}${argument.operator}${argument.rhs.value}`,
 			});
 		}
 	}
 	if (argument?.type === ArgumentType.IDENTIFIER) {
-		validateIntermoduleAddressReference(argument.value, line, context);
+		validateIntermoduleAddressReference(argument, line, context);
 	}
 
 	return normalized as NormalizedInitLine;

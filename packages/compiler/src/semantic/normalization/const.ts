@@ -19,7 +19,7 @@ export default function normalizeConst(line: ConstLine, context: CompilationCont
 		const deferred = validateOrDeferCompileTimeExpression(valueArg, line, context);
 		if (deferred) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-				identifier: `${valueArg.lhs}${valueArg.operator}${valueArg.rhs}`,
+				identifier: `${valueArg.lhs.value}${valueArg.operator}${valueArg.rhs.value}`,
 			});
 		}
 	}
