@@ -3,8 +3,8 @@ title: 'TODO: Dedupe font atlas rows for identical text colors'
 priority: Medium
 effort: 1-2h
 created: 2026-03-14
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-31
 ---
 
 # TODO: Dedupe font atlas rows for identical text colors

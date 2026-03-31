@@ -6,13 +6,37 @@ import { Command, DrawingCommand, ColorScheme } from './types';
 const ASCII_START = 0;
 const ASCII_END = 127;
 
-function generateFontPositions(characterWidth: number, characterHeight: number) {
-	const layout = createAtlasLayout(characterWidth, characterHeight);
-	return Object.fromEntries(
-		TEXT_COLOR_NAMES.map((color, i) => {
-			return [color, layout.font.y + characterHeight * i];
-		})
-	);
+/**
+ * Builds a deduped font layout from the runtime text color map.
+ *
+ * Deduplication is based on exact string equality of color values. Roles that
+ * share the same color string are assigned the same row index, so only one
+ * atlas row is rendered per unique color. Row ordering is deterministic:
+ * unique colors are assigned row indices in the order their first corresponding
+ * role appears in TEXT_COLOR_NAMES.
+ */
+export function buildFontLayout(colors: ColorScheme['text']): {
+	rowsByRole: Record<keyof ColorScheme['text'], number>;
+	uniqueRows: Array<{ color: string; roles: Array<keyof ColorScheme['text']> }>;
+} {
+	const colorToRow = new Map<string, number>();
+	const uniqueRows: Array<{ color: string; roles: Array<keyof ColorScheme['text']> }> = [];
+
+	for (const role of TEXT_COLOR_NAMES) {
+		const color = colors[role];
+		if (!colorToRow.has(color)) {
+			colorToRow.set(color, uniqueRows.length);
+			uniqueRows.push({ color, roles: [] });
+		}
+		uniqueRows[colorToRow.get(color)!].roles.push(role);
+	}
+
+	const rowsByRole = Object.fromEntries(TEXT_COLOR_NAMES.map(role => [role, colorToRow.get(colors[role])!])) as Record<
+		keyof ColorScheme['text'],
+		number
+	>;
+
+	return { rowsByRole, uniqueRows };
 }
 
 function forEachBit(
@@ -87,14 +111,14 @@ export default function generateFonts(
 	colors: ColorScheme['text']
 ): DrawingCommand[] {
 	const layout = createAtlasLayout(characterWidth, characterHeight);
-	const fontPositions = generateFontPositions(characterWidth, characterHeight);
+	const { uniqueRows } = buildFontLayout(colors);
 
 	return [
 		[Command.RESET_TRANSFORM],
-		...TEXT_COLOR_NAMES.flatMap<DrawingCommand>(color => {
+		...uniqueRows.flatMap<DrawingCommand>(({ color }, i) => {
 			return [
-				[Command.FILL_COLOR, colors[color]],
-				...generateFont(layout.font.x, fontPositions[color], font, characterWidth, characterHeight),
+				[Command.FILL_COLOR, color],
+				...generateFont(layout.font.x, layout.font.y + characterHeight * i, font, characterWidth, characterHeight),
 			];
 		}),
 	];
@@ -108,18 +132,19 @@ export type FontLookups = {
 	[key in keyof ColorScheme['text'] as `font${Capitalize<string & key>}`]: Record<number | string, SpriteCoordinates>;
 };
 
-export const generateLookups = function (characterWidth: number, characterHeight: number) {
+export const generateLookups = function (characterWidth: number, characterHeight: number, colors: ColorScheme['text']) {
 	const layout = createAtlasLayout(characterWidth, characterHeight);
-	const fontPositions = generateFontPositions(characterWidth, characterHeight);
+	const { rowsByRole } = buildFontLayout(colors);
 
 	return Object.fromEntries(
 		TEXT_COLOR_NAMES.map(colorName => {
 			const lookups: Record<number | string, SpriteCoordinates> = {};
+			const y = layout.font.y + characterHeight * rowsByRole[colorName];
 
 			for (let code = ASCII_START; code <= ASCII_END; code++) {
 				const coordinates = {
 					x: code * characterWidth + layout.font.x,
-					y: fontPositions[colorName],
+					y,
 					spriteHeight: characterHeight,
 					spriteWidth: characterWidth,
 				};
