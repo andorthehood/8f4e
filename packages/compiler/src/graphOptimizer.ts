@@ -26,81 +26,45 @@ function getIdentifierValue(argument: Argument | undefined): string {
 	return argument?.type === ArgumentType.IDENTIFIER ? argument.value : '';
 }
 
+interface ModuleSortMetadata {
+	ast: AST;
+	moduleId: string;
+	isConstantsBlock: boolean;
+	referencedModuleIds: string[];
+	index: number;
+}
+
+function extractIntermodularDependencies(ast: AST): string[] {
+	return ast.flatMap(({ arguments: args }) => args.flatMap(arg => getIntermodularReferenceModules(arg)));
+}
+
+function getModuleSortMetadata(ast: AST, index: number): ModuleSortMetadata {
+	const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+	const moduleId = getIdentifierValue(ast.find(line => line.instruction === 'module')?.arguments[0]);
+	const referencedModuleIds = isConstantsBlock ? [] : extractIntermodularDependencies(ast);
+	return { ast, moduleId, isConstantsBlock, referencedModuleIds, index };
+}
+
 export default function sortModules(modules: AST[]): AST[] {
-	// First, separate constants blocks from regular modules
-	const constantsBlocks = modules.filter(ast => ast.some(line => line.instruction === 'constants'));
-	const regularModules = modules.filter(ast => !ast.some(line => line.instruction === 'constants'));
+	const metadata = modules.map((ast, index) => getModuleSortMetadata(ast, index));
 
-	// Sort regular modules by ID and dependencies
-	const sortedRegularModules = regularModules
-		.sort((astA, astB) => {
-			const moduleIdA = getIdentifierValue(
-				astA.find(({ instruction }) => {
-					return instruction === 'module';
-				})?.arguments[0]
-			);
-			const moduleIdB = getIdentifierValue(
-				astB.find(({ instruction }) => {
-					return instruction === 'module';
-				})?.arguments[0]
-			);
+	const constantsBlocks = metadata.filter(m => m.isConstantsBlock).map(m => m.ast);
 
-			if (moduleIdA < moduleIdB) {
-				return -1;
-			}
-			if (moduleIdA > moduleIdB) {
-				return 1;
-			}
-			return 0;
+	const sortedRegularModules = metadata
+		.filter(m => !m.isConstantsBlock)
+		.sort((a, b) => {
+			const aReferencesB = a.referencedModuleIds.includes(b.moduleId);
+			const bReferencesA = b.referencedModuleIds.includes(a.moduleId);
+
+			if (!bReferencesA && aReferencesB) return -1;
+			if (bReferencesA && !aReferencesB) return 1;
+
+			if (a.moduleId < b.moduleId) return -1;
+			if (a.moduleId > b.moduleId) return 1;
+
+			return a.index - b.index;
 		})
-		.sort((astA, astB) => {
-			const moduleIdA = getIdentifierValue(
-				astA.find(({ instruction }) => {
-					return instruction === 'module';
-				})?.arguments[0]
-			);
-			const moduleIdB = getIdentifierValue(
-				astB.find(({ instruction }) => {
-					return instruction === 'module';
-				})?.arguments[0]
-			);
-
-			const intermodulerConnectionsA = astA
-				.filter(({ instruction, arguments: _arguments }) => {
-					return (
-						['int*', 'int**', 'float*', 'float**', 'float64', 'float64*', 'float64**', 'init', 'int', 'float'].includes(
-							instruction
-						) &&
-						_arguments[0] &&
-						_arguments[1] &&
-						_arguments[0].type === ArgumentType.IDENTIFIER &&
-						getIntermodularReferenceModules(_arguments[1]).length > 0
-					);
-				})
-				.flatMap(({ arguments: _arguments }) => getIntermodularReferenceModules(_arguments[1]));
-
-			const intermodulerConnectionsB = astB
-				.filter(({ instruction, arguments: _arguments }) => {
-					return (
-						['int*', 'int**', 'float*', 'float**', 'float64', 'float64*', 'float64**', 'init', 'int', 'float'].includes(
-							instruction
-						) &&
-						_arguments[0] &&
-						_arguments[1] &&
-						_arguments[0].type === ArgumentType.IDENTIFIER &&
-						getIntermodularReferenceModules(_arguments[1]).length > 0
-					);
-				})
-				.flatMap(({ arguments: _arguments }) => getIntermodularReferenceModules(_arguments[1]));
-
-			if (intermodulerConnectionsB.includes(moduleIdA) && !intermodulerConnectionsA.includes(moduleIdB)) {
-				return 1;
-			} else if (!intermodulerConnectionsB.includes(moduleIdA) && intermodulerConnectionsA.includes(moduleIdB)) {
-				return -1;
-			} else {
-				return 0;
-			}
-		});
+		.map(m => m.ast);
 
 	// Return constants blocks first, then sorted regular modules
 	return [...constantsBlocks, ...sortedRegularModules];

@@ -60,29 +60,29 @@
       "initOnlyExecution": false
     },
     {
-      "id": "midiNote2Freq",
+      "id": "janko",
       "index": 5,
       "byteAddress": 552,
       "wordAlignedAddress": 138,
-      "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "janko",
-      "index": 6,
-      "byteAddress": 564,
-      "wordAlignedAddress": 141,
       "wordAlignedSize": 2,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "keyboard",
-      "index": 7,
-      "byteAddress": 572,
-      "wordAlignedAddress": 143,
+      "index": 6,
+      "byteAddress": 560,
+      "wordAlignedAddress": 140,
       "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "midiNote2Freq",
+      "index": 7,
+      "byteAddress": 568,
+      "wordAlignedAddress": 142,
+      "wordAlignedSize": 3,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
