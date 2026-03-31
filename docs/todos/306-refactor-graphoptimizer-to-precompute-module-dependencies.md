@@ -104,10 +104,6 @@ Recommended implementation shape:
 - **Cycle handling**: if dependency ordering is only partial, the implementation still needs deterministic fallback behavior.
 - **Reference coverage**: all currently supported intermodular forms represented in AST metadata must remain reflected in the extracted dependencies.
 
-## Related Items
-
-- **Related**: `docs/todos/301-refactor-constant-namespace-collection-and-remove-duplicated-const-parsing.md`
-
 ## Notes
 
 - This is primarily a refactor and small compile-time optimization, not a behavior change.
