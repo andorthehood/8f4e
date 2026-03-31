@@ -170,6 +170,46 @@ describe('const scoping and import rules', () => {
 
 		expect(() => compile(modules, defaultOptions)).toThrow();
 	});
+
+	test('forward const reference within a module throws', () => {
+		// Declaration order is significant: a const may only reference identifiers
+		// that appear in earlier declarations or were imported via a preceding `use`.
+		const modules: Module[] = [
+			{
+				code: ['module testModule', 'const B A', 'const A 10', 'int x B', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions)).toThrow();
+	});
+
+	test('use before const allows subsequent const to reference imported value', () => {
+		const modules: Module[] = [
+			{
+				code: ['module moduleA', 'const FOO 42', 'moduleEnd'],
+			},
+			{
+				code: ['module moduleB', 'use moduleA', 'const BAR FOO', 'int x BAR', 'moduleEnd'],
+			},
+		];
+
+		const result = compile(modules, defaultOptions);
+		expect(result.compiledModules.moduleB.memoryMap.x.default).toBe(42);
+	});
+
+	test('const before use cannot reference values from that use', () => {
+		// Declaration order is significant: `use` only imports into scope from its position onward.
+		const modules: Module[] = [
+			{
+				code: ['module moduleA', 'const FOO 42', 'moduleEnd'],
+			},
+			{
+				code: ['module moduleB', 'const BAR FOO', 'use moduleA', 'int x BAR', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions)).toThrow();
+	});
 });
 
 describe('constants block validation', () => {
