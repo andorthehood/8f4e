@@ -3,8 +3,8 @@ title: 'TODO: Nest tokenizer package under compiler'
 priority: Medium
 effort: 1-2d
 created: 2026-03-31
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-31
 ---
 
 # TODO: Nest tokenizer package under compiler
