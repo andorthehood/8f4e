@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
 import { findAllCommands, createMockBitmap } from './utils/testHelpers';
 
-import generateFonts, { generateLookups, drawCharacter, drawCharacterMatrix } from '../src/font';
+import generateFonts, { generateLookups, buildFontLayout, drawCharacter, drawCharacterMatrix } from '../src/font';
 import { Command } from '../src/types';
 
 describe('font module', () => {
@@ -240,11 +240,72 @@ describe('font module', () => {
 				expect(colorValues).toContain(color);
 			});
 		});
+		it('should render only one row per unique color (deduplicated)', () => {
+			const commands = generateFonts(
+				mockFont,
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
+
+			const fillColorCommands = findAllCommands(commands, Command.FILL_COLOR);
+			const uniqueColorValues = [...new Set(Object.values(minimalColorScheme.text))];
+
+			// Should produce exactly one fill color command per unique color, not one per role
+			expect(fillColorCommands.length).toBe(uniqueColorValues.length);
+		});
+	});
+
+	describe('buildFontLayout function', () => {
+		it('should assign the same row index to roles with identical colors', () => {
+			// minimalColorScheme has code/errorMessage/menuItemText/dialogText/dialogTitle all as '#ffffff'
+			const { rowsByRole } = buildFontLayout(minimalColorScheme.text);
+			expect(rowsByRole.errorMessage).toBe(rowsByRole.code);
+			expect(rowsByRole.menuItemText).toBe(rowsByRole.code);
+			expect(rowsByRole.dialogText).toBe(rowsByRole.code);
+			expect(rowsByRole.dialogTitle).toBe(rowsByRole.code);
+		});
+
+		it('should assign different row indices to roles with different colors', () => {
+			const { rowsByRole } = buildFontLayout(minimalColorScheme.text);
+			// lineNumber (#333333), instruction (#887ecb), code (#ffffff) are all distinct
+			expect(rowsByRole.lineNumber).not.toBe(rowsByRole.instruction);
+			expect(rowsByRole.instruction).not.toBe(rowsByRole.code);
+			expect(rowsByRole.lineNumber).not.toBe(rowsByRole.code);
+		});
+
+		it('should produce only as many unique rows as there are distinct colors', () => {
+			const { uniqueRows } = buildFontLayout(minimalColorScheme.text);
+			// minimalColorScheme has 14 roles but only 7 distinct text colors
+			const uniqueColorValues = [...new Set(Object.values(minimalColorScheme.text))];
+			expect(uniqueRows.length).toBe(uniqueColorValues.length);
+		});
+
+		it('should order unique rows by first appearance of each color in TEXT_COLOR_NAMES', () => {
+			const { uniqueRows } = buildFontLayout(minimalColorScheme.text);
+			// First role is 'lineNumber' with '#333333', so row 0 should be that color
+			expect(uniqueRows[0].color).toBe(minimalColorScheme.text.lineNumber);
+		});
+
+		it('should include all roles for each unique color in the roles array', () => {
+			const { uniqueRows } = buildFontLayout(minimalColorScheme.text);
+			const whiteRow = uniqueRows.find(row => row.color === '#ffffff');
+			expect(whiteRow).toBeDefined();
+			expect(whiteRow!.roles).toContain('code');
+			expect(whiteRow!.roles).toContain('errorMessage');
+			expect(whiteRow!.roles).toContain('menuItemText');
+			expect(whiteRow!.roles).toContain('dialogText');
+			expect(whiteRow!.roles).toContain('dialogTitle');
+		});
 	});
 
 	describe('generateLookups function', () => {
 		it('should generate correct lookups for 8x16 characters', () => {
-			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
+			const lookups = generateLookups(
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
 
 			// Should have font lookups for all text color types
 			expect(lookups.fontLineNumber).toBeDefined();
@@ -262,7 +323,11 @@ describe('font module', () => {
 		});
 
 		it('should generate correct lookups for 6x10 characters', () => {
-			const lookups = generateLookups(characterDimensions6x10.width, characterDimensions6x10.height);
+			const lookups = generateLookups(
+				characterDimensions6x10.width,
+				characterDimensions6x10.height,
+				minimalColorScheme.text
+			);
 
 			// Should have same font lookup types
 			expect(lookups.fontLineNumber).toBeDefined();
@@ -271,7 +336,11 @@ describe('font module', () => {
 		});
 
 		it('should generate correct sprite coordinates for ASCII characters', () => {
-			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
+			const lookups = generateLookups(
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
 
 			// Check character 'A' (ASCII 65) in first font
 			const charA = lookups.fontLineNumber[65];
@@ -287,7 +356,11 @@ describe('font module', () => {
 		});
 
 		it('should generate correct sprite coordinates for string characters', () => {
-			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
+			const lookups = generateLookups(
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
 
 			// Check character 'A' by string and by ASCII code
 			const charAByString = lookups.fontLineNumber['A'];
@@ -298,10 +371,14 @@ describe('font module', () => {
 			expect(charAByString).toEqual(charAByCode);
 		});
 
-		it('should generate lookups with different Y positions for different font types', () => {
-			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
+		it('should generate lookups with different Y positions for roles with different colors', () => {
+			const lookups = generateLookups(
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
 
-			// Different font types should have different Y positions
+			// lineNumber, instruction, and code all have distinct colors in the test fixture
 			const charALineNumber = lookups.fontLineNumber['A'];
 			const charAInstruction = lookups.fontInstruction['A'];
 			const charACode = lookups.fontCode['A'];
@@ -316,8 +393,44 @@ describe('font module', () => {
 			expect(charALineNumber.spriteHeight).toBe(charAInstruction.spriteHeight);
 		});
 
+		it('should share Y position for roles with the same color', () => {
+			// In minimalColorScheme: code, errorMessage, menuItemText, dialogText, dialogTitle all use '#ffffff'
+			const lookups = generateLookups(
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
+
+			const charACode = lookups.fontCode['A'];
+			const charAErrorMessage = lookups.fontErrorMessage['A'];
+			const charAMenuItemText = lookups.fontMenuItemText['A'];
+			const charADialogText = lookups.fontDialogText['A'];
+			const charADialogTitle = lookups.fontDialogTitle['A'];
+
+			expect(charAErrorMessage.y).toBe(charACode.y);
+			expect(charAMenuItemText.y).toBe(charACode.y);
+			expect(charADialogText.y).toBe(charACode.y);
+			expect(charADialogTitle.y).toBe(charACode.y);
+
+			// lineNumber and debugInfo both use '#333333'
+			const charALineNumber = lookups.fontLineNumber['A'];
+			const charADebugInfo = lookups.fontDebugInfo['A'];
+			expect(charADebugInfo.y).toBe(charALineNumber.y);
+
+			// numbers, binaryZero, binaryOne all use '#c9d487'
+			const charANumbers = lookups.fontNumbers['A'];
+			const charABinaryZero = lookups.fontBinaryZero['A'];
+			const charABinaryOne = lookups.fontBinaryOne['A'];
+			expect(charABinaryZero.y).toBe(charANumbers.y);
+			expect(charABinaryOne.y).toBe(charANumbers.y);
+		});
+
 		it('should handle all ASCII characters', () => {
-			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
+			const lookups = generateLookups(
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
 
 			// Check space character (ASCII 32)
 			expect(lookups.fontCode[32]).toBeDefined();
@@ -331,7 +444,11 @@ describe('font module', () => {
 		});
 
 		it('should generate coordinates with correct character spacing', () => {
-			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
+			const lookups = generateLookups(
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.text
+			);
 
 			// Check that characters are spaced by character width
 			const charA = lookups.fontCode['A']; // ASCII 65
