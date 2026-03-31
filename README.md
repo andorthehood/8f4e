@@ -15,6 +15,9 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 8f4e/
 └── packages/
     ├── <a href="./packages/compiler/README.md">compiler</a> (The core compiler that transforms 8f4e code into WebAssembly)
+    │   └── packages/
+    │       ├── <a href="./packages/compiler/packages/wasm-utils/README.md">wasm-utils</a>
+    │       └── <a href="./packages/compiler/packages/tokenizer/README.md">tokenizer</a>
     ├── <a href="./packages/editor/README.md">editor</a> (The main editor package)
     │   └── packages/
     │       ├── <a href="./packages/editor/packages/editor-state/README.md">editor-state</a> (Editor state management)
