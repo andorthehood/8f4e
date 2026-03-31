@@ -17,7 +17,7 @@ const exampleProjects = [
 ] as const;
 
 function loadExampleProject(relativePath: string): string[] {
-	const fullPath = resolve(__dirname, '../../examples/src/projects', relativePath);
+	const fullPath = resolve(__dirname, '../../../../examples/src/projects', relativePath);
 	return readFileSync(fullPath, 'utf-8').split('\n');
 }
 
