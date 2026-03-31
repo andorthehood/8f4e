@@ -29,6 +29,22 @@ function combineSplitHexBytes(bytes: number[], maxBytes: number): number {
 }
 
 /**
+ * Looks up a memory item by id and throws UNDECLARED_IDENTIFIER if not found.
+ * Centralizes the repeated pattern of memory map lookup followed by error on miss.
+ */
+function getMemoryItemOrThrow(
+	memoryId: string,
+	lineForError: AST[number],
+	context: CompilationContext
+): CompilationContext['namespace']['memory'][string] {
+	const memoryItem = context.namespace.memory[memoryId];
+	if (!memoryItem) {
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, { identifier: memoryId });
+	}
+	return memoryItem;
+}
+
+/**
  * Resolves a split-byte token sequence into a single combined integer default value.
  * Literal tokens are used directly; identifier tokens are resolved as compile-time constants
  * and validated to be integers in the range 0–255.
@@ -93,11 +109,46 @@ function collectSplitByteTokens(
 }
 
 /**
+ * Determines the memory allocation id from the first argument.
+ *
+ * - Literal first args produce an `'__anonymous__N'` id.
+ * - Plain identifier first args produce the identifier string as the id.
+ * - Constant-style identifier first args with additional args (split-byte sequence)
+ *   produce `'__anonymous__N'`.
+ * - Constant-style identifier first args without additional args throw
+ *   CONSTANT_NAME_AS_MEMORY_IDENTIFIER — bare constant names are not valid allocation names.
+ * - Non-identifier, non-literal first args throw UNDECLARED_IDENTIFIER.
+ */
+function resolveAnonymousOrNamedMemoryId(
+	first: Argument,
+	hasAdditionalArgs: boolean,
+	lineNumberAfterMacroExpansion: number,
+	lineForError: AST[number],
+	context: CompilationContext
+): string {
+	if (first.type === ArgumentType.LITERAL) {
+		return '__anonymous__' + lineNumberAfterMacroExpansion;
+	}
+	if (first.type !== ArgumentType.IDENTIFIER) {
+		// COMPILE_TIME_EXPRESSION should not reach here; normalization folds them before memory parsing.
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, { identifier: '' });
+	}
+	if (first.referenceKind === 'constant') {
+		if (!hasAdditionalArgs) {
+			throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
+		}
+		// Multiple args: anonymous split-byte sequence starting with a constant name
+		return '__anonymous__' + lineNumberAfterMacroExpansion;
+	}
+	return first.value;
+}
+
+/**
  * Resolves the second (default-value) argument of a memory declaration directly from the
  * pre-classified AST argument. Reads referenceKind, targetMemoryId, and isEndAddress fields
  * set by the tokenizer during parsing rather than re-parsing the raw string.
  */
-function resolveDefaultArgValue(arg: Argument, lineForError: AST[number], context: CompilationContext): number {
+function resolveMemoryDefaultValue(arg: Argument, lineForError: AST[number], context: CompilationContext): number {
 	if (arg.type === ArgumentType.LITERAL) {
 		return arg.value;
 	}
@@ -108,22 +159,12 @@ function resolveDefaultArgValue(arg: Argument, lineForError: AST[number], contex
 
 	switch (arg.referenceKind) {
 		case 'memory-reference': {
-			const memoryItem = context.namespace.memory[arg.targetMemoryId!];
-			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-					identifier: arg.targetMemoryId!,
-				});
-			}
+			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId!, lineForError, context);
 			return arg.isEndAddress ? memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * 4 : memoryItem.byteAddress;
 		}
 
 		case 'element-count': {
-			const memoryItem = context.namespace.memory[arg.targetMemoryId!];
-			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-					identifier: arg.targetMemoryId!,
-				});
-			}
+			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId!, lineForError, context);
 			return memoryItem.wordAlignedSize;
 		}
 
@@ -138,68 +179,49 @@ export default function parseMemoryInstructionArguments(
 ): { id: string; defaultValue: number } {
 	const { arguments: args, lineNumberAfterMacroExpansion } = line;
 	const lineForError = line;
-	let defaultValue = 0;
-	let id = '';
 
 	// Tokenizer validates arity, so args[0] is always present for memory instructions.
 	const first = args[0];
+	const id = resolveAnonymousOrNamedMemoryId(
+		first,
+		args.length > 1,
+		lineNumberAfterMacroExpansion,
+		lineForError,
+		context
+	);
 
-	if (first.type === ArgumentType.LITERAL) {
-		// Anonymous literal — may start a split-byte sequence.
-		// An out-of-range first literal with extra args is rejected to prevent silent miscompilation.
-		if (args.length > 1 && !isByteLiteral(first)) {
+	// Anonymous literal (single arg) — no split-byte sequence
+	if (first.type === ArgumentType.LITERAL && args.length === 1) {
+		return { id, defaultValue: first.value };
+	}
+
+	// Split-byte sequence: literal or constant-style first arg with additional args
+	if (first.type === ArgumentType.LITERAL || (first as ArgumentIdentifier).referenceKind === 'constant') {
+		if (first.type === ArgumentType.LITERAL && !isByteLiteral(first)) {
+			// Out-of-range first literal with extra args rejected to prevent silent miscompilation
 			throw getError(ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE, lineForError, context);
 		}
-		id = '__anonymous__' + lineNumberAfterMacroExpansion;
-		if (args.length > 1) {
-			const tokens: SplitByteToken[] = [
-				{ type: 'literal', value: (first as ArgumentLiteral).value },
-				...collectSplitByteTokens(args, 1, lineForError, context),
-			];
-			defaultValue = resolveSplitByteTokens(tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context);
-		} else {
-			defaultValue = first.value;
-		}
-		return { id, defaultValue };
+		const tokens: SplitByteToken[] = [
+			toSplitByteToken(first),
+			...collectSplitByteTokens(args, 1, lineForError, context),
+		];
+		return { id, defaultValue: resolveSplitByteTokens(tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context) };
 	}
 
-	if (first.type !== ArgumentType.IDENTIFIER) {
-		// COMPILE_TIME_EXPRESSION should not reach here; normalization folds them before memory parsing.
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, { identifier: '' });
-	}
-
-	if (first.referenceKind === 'constant') {
-		// Constant-style names cannot be used as memory allocation identifiers.
-		if (args.length > 1) {
-			// Multiple args: anonymous split-byte sequence starting with a constant name
-			id = '__anonymous__' + lineNumberAfterMacroExpansion;
-			const tokens: SplitByteToken[] = [
-				{ type: 'identifier', value: first.value },
-				...collectSplitByteTokens(args, 1, lineForError, context),
-			];
-			defaultValue = resolveSplitByteTokens(tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context);
-		} else {
-			throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
-		}
-		return { id, defaultValue };
-	}
-
-	// Named declaration: plain identifier as allocation name
-	id = first.value;
-
+	// Named declaration: resolve second-argument default or multi-token split-byte sequence
 	if (args.length >= 3) {
-		// Multiple default tokens: split-byte sequence
-		defaultValue = resolveSplitByteTokens(
-			collectSplitByteTokens(args, 1, lineForError, context),
-			MAX_SPLIT_BYTE_WIDTH,
-			lineForError,
-			context
-		);
-	} else if (args.length === 2) {
-		defaultValue = resolveDefaultArgValue(args[1], lineForError, context);
+		return {
+			id,
+			defaultValue: resolveSplitByteTokens(
+				collectSplitByteTokens(args, 1, lineForError, context),
+				MAX_SPLIT_BYTE_WIDTH,
+				lineForError,
+				context
+			),
+		};
 	}
 
-	return { id, defaultValue };
+	return { id, defaultValue: args.length === 2 ? resolveMemoryDefaultValue(args[1], lineForError, context) : 0 };
 }
 
 if (import.meta.vitest) {
@@ -489,6 +511,84 @@ if (import.meta.vitest) {
 					{
 						lineNumberBeforeMacroExpansion: 150,
 						lineNumberAfterMacroExpansion: 150,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
+		});
+
+		it('resolves memory-reference default (&myVar) to byteAddress', () => {
+			const args: Argument[] = [classifyIdentifier('ptr'), classifyIdentifier('&myVar')];
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 160,
+					lineNumberAfterMacroExpansion: 160,
+					instruction: 'int*',
+					arguments: args,
+				},
+				mockContext
+			);
+			expect(result.id).toBe('ptr');
+			// myVar has byteAddress 100
+			expect(result.defaultValue).toBe(100);
+		});
+
+		it('resolves memory-reference end-address default (myVar&) to last byte address', () => {
+			const args: Argument[] = [classifyIdentifier('ptr'), classifyIdentifier('myVar&')];
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 165,
+					lineNumberAfterMacroExpansion: 165,
+					instruction: 'int*',
+					arguments: args,
+				},
+				mockContext
+			);
+			expect(result.id).toBe('ptr');
+			// byteAddress + (wordAlignedSize - 1) * 4 = 100 + (5 - 1) * 4 = 116
+			expect(result.defaultValue).toBe(116);
+		});
+
+		it('resolves element-count default (count(myVar)) to wordAlignedSize', () => {
+			const args: Argument[] = [classifyIdentifier('n'), classifyIdentifier('count(myVar)')];
+			const result = parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 170,
+					lineNumberAfterMacroExpansion: 170,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			);
+			expect(result.id).toBe('n');
+			// myVar has wordAlignedSize 5
+			expect(result.defaultValue).toBe(5);
+		});
+
+		it('throws UNDECLARED_IDENTIFIER when memory-reference target does not exist', () => {
+			const args: Argument[] = [classifyIdentifier('ptr'), classifyIdentifier('&noSuch')];
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 175,
+						lineNumberAfterMacroExpansion: 175,
+						instruction: 'int*',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
+		});
+
+		it('throws UNDECLARED_IDENTIFIER when element-count target does not exist', () => {
+			const args: Argument[] = [classifyIdentifier('n'), classifyIdentifier('count(noSuch)')];
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 180,
+						lineNumberAfterMacroExpansion: 180,
 						instruction: 'int',
 						arguments: args,
 					},
