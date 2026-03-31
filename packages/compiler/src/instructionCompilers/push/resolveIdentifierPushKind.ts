@@ -1,5 +1,3 @@
-import { resolveIdentifierMemoryKind } from '../../utils/memoryIdentifier';
-
 import type { Namespace, ArgumentIdentifier } from '../../types';
 
 export const enum IdentifierPushKind {
@@ -14,14 +12,19 @@ export default function resolveIdentifierPushKind(
 ): IdentifierPushKind {
 	const { memory } = namespace;
 
-	switch (resolveIdentifierMemoryKind(memory, identifier)) {
-		case 'memory':
-			return IdentifierPushKind.MEMORY_IDENTIFIER;
-		case 'pointer':
-			return IdentifierPushKind.MEMORY_POINTER;
-		default:
-			return IdentifierPushKind.LOCAL;
+	if (identifier.referenceKind === 'plain' && Object.hasOwn(memory, identifier.value)) {
+		return IdentifierPushKind.MEMORY_IDENTIFIER;
 	}
+
+	if (
+		identifier.referenceKind === 'memory-pointer' &&
+		identifier.targetMemoryId &&
+		Object.hasOwn(memory, identifier.targetMemoryId)
+	) {
+		return IdentifierPushKind.MEMORY_POINTER;
+	}
+
+	return IdentifierPushKind.LOCAL;
 }
 
 if (import.meta.vitest) {
