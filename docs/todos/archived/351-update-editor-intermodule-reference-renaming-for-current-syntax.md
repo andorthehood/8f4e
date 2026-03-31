@@ -3,8 +3,8 @@ title: 'TODO: Update editor intermodule reference renaming for current syntax'
 priority: Medium
 effort: 2-4h
 created: 2026-03-30
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-31
 ---
 
 # TODO: Update editor intermodule reference renaming for current syntax
