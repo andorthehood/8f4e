@@ -18,7 +18,7 @@ import type { CodeBlockGraphicData, State } from '~/types';
 /**
  * Updates inter-module references in code when pasting multiple blocks.
  * Replaces old module/function IDs with new ones based on the ID mapping.
- * Handles current inter-module reference forms such as &module:memory, module:memory&, module:&, and $module.memory.
+ * Handles current inter-module reference forms such as &module:memory, module:memory&, module:&, count(module:memory), sizeof(module:memory), max(module:memory), and min(module:memory).
  */
 export function updateInterModuleReferences(code: string[], idMapping: Map<string, string>): string[] {
 	if (idMapping.size === 0) {
