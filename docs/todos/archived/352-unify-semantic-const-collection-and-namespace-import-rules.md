@@ -3,8 +3,8 @@ title: 'TODO: Unify semantic const collection and namespace import rules'
 priority: High
 effort: 1-2d
 created: 2026-03-30
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-31
 ---
 
 # TODO: Unify semantic const collection and namespace import rules
@@ -78,10 +78,10 @@ High-level approach:
 
 ## Success Criteria
 
-- [ ] Namespace-visible const collection and normal semantic const handling share one clear validation/declaration path.
-- [ ] `use` continues to import constants correctly from constants blocks and modules.
-- [ ] The const pipeline is described by the current semantic architecture, not legacy collection helpers.
-- [ ] Regression tests cover malformed declarations and import behavior.
+- [x] Namespace-visible const collection and normal semantic const handling share one clear validation/declaration path.
+- [x] `use` continues to import constants correctly from constants blocks and modules.
+- [x] The const pipeline is described by the current semantic architecture, not legacy collection helpers.
+- [x] Regression tests cover malformed declarations and import behavior.
 
 ## Affected Components
 

@@ -27,7 +27,6 @@ Active todo files are listed below.
 | 279 | Extend push with compile-time string literals | 🔴 | 4-8h | 2026-02-23 | push currently accepts numeric literals and identifiers, but does not support string literals. This makes byte-sequence construction verbose because users must manually push each ASCII code. |
 | 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | 8f4e has dup, swap, drop, and clearStack, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for... |
 | 305 | Reuse WASM instance across incremental compiles | 🔴 | 3-6h | 2026-03-14 | The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed. |
-| 352 | Unify semantic const collection and namespace import rules | 🔴 | 1-2d | 2026-03-30 | Namespace-visible const collection and normal semantic const handling should share one clear path so `use` imports remain consistent with the current semantic architecture. |
 
 ### 🟡 Medium Priority
 
@@ -101,6 +100,7 @@ Active todo files are listed below.
 | 308 | Simplify memory instruction default value resolution | 2026-03-31 | `memoryInstructionParser.ts` now centralizes split-byte and default-value resolution into smaller semantic helpers. |
 | 350 | Remove intermodule default placeholder handling from memory parser | 2026-03-31 | Removed the fake `0` intermodule-default path from `memoryInstructionParser.ts`; deferred state is now owned earlier in semantic normalization. |
 | 351 | Update editor intermodule reference renaming for current syntax | 2026-03-31 | Editor paste/rename flows now rewrite the current `module:`-based intermodule syntax and function-style queries instead of obsolete dotted/operator forms. |
+| 352 | Unify semantic const collection and namespace import rules | 2026-03-31 | Module compilation now reapplies semantic lines directly instead of seeding const/import state from copied prepass snapshots. |
 | 336 | Move identifier reference classification into tokenizer | 2026-03-30 | Identifier-shaped argument classification now lives in tokenizer metadata instead of compiler-side raw string reclassification. |
 | 337 | Add structured address and query extraction to tokenizer | 2026-03-30 | Address/query identifier structure now flows through AST metadata instead of compiler-side syntax reconstruction. |
 | 338 | Add richer compile-time expression AST nodes | 2026-03-30 | Compile-time expression nodes now carry richer parsed structure and precomputed intermodule metadata for compiler consumers. |

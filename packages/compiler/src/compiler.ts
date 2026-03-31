@@ -8,7 +8,6 @@ import i32store from './wasmUtils/store/i32store';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
-	BLOCK_TYPE,
 	CompilationContext,
 	CompiledModule,
 	CompiledFunction,
@@ -67,14 +66,16 @@ export function compileModule(
 	functions?: CompiledFunctionLookup,
 	internalAllocator = { nextByteAddress: 0 }
 ): CompiledModule {
+	// Prepass establishes the memory layout (byte addresses, sizes) for this module.
+	// Semantic instructions (const, use, init, module/moduleEnd) are applied during
+	// the compilation loop below, so consts are not copied from the prepass context.
 	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
-	const moduleBlockType = ast[0]?.instruction === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE;
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
 			memory: prepassContext.namespace.memory,
-			consts: { ...prepassContext.namespace.consts },
-			moduleName: prepassContext.namespace.moduleName,
+			consts: {},
+			moduleName: undefined,
 			functions,
 		},
 		locals: {},
@@ -82,24 +83,16 @@ export function compileModule(
 		internalAllocator,
 		byteCode: [],
 		stack: [],
-		blockStack: [
-			{
-				hasExpectedResult: false,
-				expectedResultIsInteger: false,
-				blockType: moduleBlockType,
-			},
-		],
+		blockStack: [],
 		startingByteAddress,
 		mode: 'module',
-		codeBlockId: prepassContext.namespace.moduleName,
-		codeBlockType: moduleBlockType === BLOCK_TYPE.CONSTANTS ? 'constants' : 'module',
-		skipExecutionInCycle: prepassContext.skipExecutionInCycle,
-		initOnlyExecution: prepassContext.initOnlyExecution,
 	};
 
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
-		if (!line.isSemanticOnly && !line.isMemoryDeclaration) {
+		if (line.isSemanticOnly) {
+			applySemanticLine(line, context);
+		} else if (!line.isMemoryDeclaration) {
 			compileCodegenLine(line, context);
 		}
 		return line;
