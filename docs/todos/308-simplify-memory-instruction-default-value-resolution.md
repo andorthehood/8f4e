@@ -3,8 +3,8 @@ title: 'TODO: Simplify memory instruction default value resolution'
 priority: Medium
 effort: 4-8h
 created: 2026-03-14
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-31
 ---
 
 # TODO: Simplify memory instruction default value resolution
@@ -95,11 +95,11 @@ Recommended behavior:
 
 ## Success Criteria
 
-- [ ] Semantic memory default resolution no longer depends on one large branch ladder inside `memoryInstructionParser.ts`.
-- [ ] Repeated memory lookup and undeclared-identifier handling is centralized.
-- [ ] Syntax/semantic error boundaries stay intact.
-- [ ] Existing memory argument behavior remains unchanged.
-- [ ] Regression tests cover the main resolved shape families.
+- [x] Semantic memory default resolution no longer depends on one large branch ladder inside `memoryInstructionParser.ts`.
+- [x] Repeated memory lookup and undeclared-identifier handling is centralized.
+- [x] Syntax/semantic error boundaries stay intact.
+- [x] Existing memory argument behavior remains unchanged.
+- [x] Regression tests cover the main resolved shape families.
 
 ## Affected Components
 
