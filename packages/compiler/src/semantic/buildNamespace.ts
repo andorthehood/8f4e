@@ -80,7 +80,7 @@ function applyNamespacePrepassLine(line: AST[number], context: CompilationContex
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
 
-	applyMemoryDeclarationLine(line, context);
+	applyMemoryDeclarationLine(normalizeCompileTimeArguments(line, context), context);
 }
 
 export function prepassNamespace(
@@ -111,13 +111,11 @@ export function prepassNamespace(
 	};
 
 	ast.forEach(originalLine => {
-		const isSemanticOnly = !!originalLine.isSemanticOnly;
-		if (!isSemanticOnly && !originalLine.isMemoryDeclaration) {
+		if (!originalLine.isSemanticOnly && !originalLine.isMemoryDeclaration) {
 			return;
 		}
 
-		const line = normalizeCompileTimeArguments(originalLine, context);
-		applyNamespacePrepassLine(line, context);
+		applyNamespacePrepassLine(originalLine, context);
 	});
 
 	return context;
