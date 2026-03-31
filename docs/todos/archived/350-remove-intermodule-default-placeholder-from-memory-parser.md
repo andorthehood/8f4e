@@ -3,8 +3,8 @@ title: 'TODO: Remove intermodule default placeholder handling from memory parser
 priority: Medium
 effort: 2-4h
 created: 2026-03-30
-status: Open
-completed: null
+status: Completed
+completed: 2026-03-31
 ---
 
 # TODO: Remove intermodule default placeholder handling from memory parser

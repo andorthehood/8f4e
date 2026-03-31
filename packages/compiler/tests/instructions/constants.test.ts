@@ -101,6 +101,77 @@ describe('constantsEnd instruction', () => {
 	});
 });
 
+describe('const scoping and import rules', () => {
+	test('const declared in module A is not visible in module B without use', () => {
+		const modules: Module[] = [
+			{
+				code: ['module moduleA', 'const SECRET 99', 'moduleEnd'],
+			},
+			{
+				code: ['module moduleB', 'int result SECRET', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions)).toThrow();
+	});
+
+	test('const declared in module A becomes visible in module B after use', () => {
+		const modules: Module[] = [
+			{
+				code: ['module moduleA', 'const SECRET 99', 'moduleEnd'],
+			},
+			{
+				code: ['module moduleB', 'use moduleA', 'int result SECRET', 'moduleEnd'],
+			},
+		];
+
+		const result = compile(modules, defaultOptions);
+		expect(result.codeBuffer).toBeDefined();
+		expect(result.compiledModules.moduleB.memoryMap.result.default).toBe(99);
+	});
+
+	test('const value derived from another const in the same module resolves correctly', () => {
+		const modules: Module[] = [
+			{
+				code: ['module testModule', 'const BASE 10', 'const DOUBLE BASE', 'int result DOUBLE', 'moduleEnd'],
+			},
+		];
+
+		const result = compile(modules, defaultOptions);
+		expect(result.compiledModules.testModule.memoryMap.result.default).toBe(10);
+	});
+
+	test('use with undeclared namespace throws', () => {
+		const modules: Module[] = [
+			{
+				code: ['module testModule', 'use missingNamespace', 'int x 0', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions)).toThrow();
+	});
+
+	test('const with undeclared identifier as value throws', () => {
+		const modules: Module[] = [
+			{
+				code: ['module testModule', 'const RESULT UNDEFINED_CONST', 'int x RESULT', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions)).toThrow();
+	});
+
+	test('const with undeclared expression operand throws', () => {
+		const modules: Module[] = [
+			{
+				code: ['module testModule', 'const RESULT UNDEFINED_CONST/2', 'int x RESULT', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions)).toThrow();
+	});
+});
+
 describe('constants block validation', () => {
 	test('should reject non-const instructions inside constants block', () => {
 		const modules: Module[] = [
