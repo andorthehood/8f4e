@@ -70,18 +70,6 @@ export function applySemanticLine(line: AST[number], context: CompilationContext
 
 	applySemanticInstruction(normalizeCompileTimeArguments(line as ParsedSemanticInstructionLine, context), context);
 }
-function applyNamespacePrepassLine(line: AST[number], context: CompilationContext) {
-	if (line.isSemanticOnly) {
-		applySemanticLine(line, context);
-		return;
-	}
-
-	if (!line.isMemoryDeclaration) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-	}
-
-	applyMemoryDeclarationLine(normalizeCompileTimeArguments(line, context), context);
-}
 
 export function prepassNamespace(
 	ast: AST,
@@ -111,11 +99,11 @@ export function prepassNamespace(
 	};
 
 	ast.forEach(originalLine => {
-		if (!originalLine.isSemanticOnly && !originalLine.isMemoryDeclaration) {
-			return;
+		if (originalLine.isSemanticOnly) {
+			applySemanticLine(originalLine, context);
+		} else if (originalLine.isMemoryDeclaration) {
+			applyMemoryDeclarationLine(normalizeCompileTimeArguments(originalLine, context), context);
 		}
-
-		applyNamespacePrepassLine(originalLine, context);
 	});
 
 	return context;

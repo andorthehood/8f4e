@@ -1,6 +1,16 @@
 import { ErrorCode, getError } from '../../compilerError';
 import { type CompilationContext, type UseLine } from '../../types';
 
+/**
+ * Applies a `use` instruction by importing all consts from the target namespace into
+ * the current compilation context.
+ *
+ * `use` reads exclusively from validated namespace data produced by the namespace prepass.
+ * It does not parse or validate const values itself; those are guaranteed to be literal
+ * values already by the time the namespace is registered. Declaration order matters:
+ * only consts imported by a `use` that appears before a subsequent `const` reference
+ * are in scope for that reference.
+ */
 export default function semanticUse(line: UseLine, context: CompilationContext) {
 	const namespaceId = line.arguments[0].value;
 	const namespaceToUse = context.namespace.namespaces[namespaceId];
