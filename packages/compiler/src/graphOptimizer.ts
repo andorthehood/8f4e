@@ -2,19 +2,6 @@ import { ArgumentType } from './types';
 
 import type { AST, Argument } from './types';
 
-const MEMORY_DECLARATION_INSTRUCTIONS = [
-	'int*',
-	'int**',
-	'float*',
-	'float**',
-	'float64',
-	'float64*',
-	'float64**',
-	'init',
-	'int',
-	'float',
-];
-
 function getIntermodularReferenceModules(argument: Argument | undefined): string[] {
 	if (!argument) {
 		return [];
@@ -48,15 +35,7 @@ interface ModuleSortMetadata {
 }
 
 function extractIntermodularDependencies(ast: AST): string[] {
-	return ast
-		.filter(
-			({ instruction, arguments: args }) =>
-				MEMORY_DECLARATION_INSTRUCTIONS.includes(instruction) &&
-				args[0] &&
-				args[1] &&
-				args[0].type === ArgumentType.IDENTIFIER
-		)
-		.flatMap(({ arguments: args }) => getIntermodularReferenceModules(args[1]));
+	return ast.flatMap(({ arguments: args }) => args.flatMap(arg => getIntermodularReferenceModules(arg)));
 }
 
 function getModuleSortMetadata(ast: AST, index: number): ModuleSortMetadata {
