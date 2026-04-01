@@ -1,5 +1,4 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-
 import { ErrorCode } from '../compilerError';
 import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
