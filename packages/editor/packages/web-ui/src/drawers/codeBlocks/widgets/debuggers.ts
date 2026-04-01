@@ -17,8 +17,11 @@ export default function drawConnectors(
 		return;
 	}
 
-	for (const { x, y, memory, showAddress, showEndAddress, showBinary, bufferPointer } of codeBlock.widgets.debuggers) {
+	for (const { x, y, memory, showAddress, showEndAddress, showBinary, showHex, bufferPointer } of codeBlock.widgets
+		.debuggers) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+
+		const radix = showBinary ? 2 : showHex ? 16 : 10;
 
 		if (showAddress) {
 			engine.drawText(x, y, '[' + (memory.byteAddress + bufferPointer * 4) + ']');
@@ -28,15 +31,15 @@ export default function drawConnectors(
 			let value = '';
 			if (memory.elementWordSize === 1 && memory.isInteger) {
 				const view = memory.isUnsigned ? memoryViews.uint8 : memoryViews.int8;
-				value = view[memory.byteAddress + bufferPointer].toString(showBinary ? 2 : 10);
+				value = view[memory.byteAddress + bufferPointer].toString(radix);
 			} else if (memory.elementWordSize === 2 && memory.isInteger) {
 				const view = memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
-				value = view[memory.byteAddress / 2 + bufferPointer].toString(showBinary ? 2 : 10);
+				value = view[memory.byteAddress / 2 + bufferPointer].toString(radix);
 			} else if (memory.elementWordSize === 8 && !memory.isInteger) {
 				value = memoryViews.float64[memory.byteAddress / 8 + bufferPointer].toFixed(4);
 			} else {
 				value = memory.isInteger
-					? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(showBinary ? 2 : 10)
+					? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(radix)
 					: memoryViews.float32[memory.wordAlignedAddress + bufferPointer].toFixed(4);
 			}
 
