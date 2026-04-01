@@ -1,9 +1,9 @@
-import WASMInstruction from '../wasmUtils/wasmInstruction';
+
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import f64const from '../wasmUtils/const/f64const';
+import { WASMInstruction, f64const } from '@8f4e/compiler-wasm-utils';
 
 import type { AST, InstructionCompiler } from '../types';
 

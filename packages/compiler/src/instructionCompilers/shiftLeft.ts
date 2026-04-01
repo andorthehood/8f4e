@@ -1,6 +1,6 @@
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';

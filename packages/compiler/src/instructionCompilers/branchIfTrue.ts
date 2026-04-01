@@ -1,5 +1,5 @@
 import { ArgumentType } from '../types';
-import br_if from '../wasmUtils/controlFlow/br_if';
+import { br_if } from '@8f4e/compiler-wasm-utils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';

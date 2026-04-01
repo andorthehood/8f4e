@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
-import wasmCall from '../wasmUtils/call/call';
+import { call as wasmCall } from '@8f4e/compiler-wasm-utils';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
