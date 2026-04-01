@@ -158,3 +158,71 @@ push min(buffer)
 int8u[] unsignedBuffer 10 0
 push min(unsignedBuffer)
 ```
+
+---
+
+## Intermodular references
+
+All of the address and metadata forms above have intermodular counterparts that reference memory declared in a different module. The module name and the memory name (or index) are separated by a colon.
+
+### Module base address
+
+- `&module:` — start byte address of the module's memory region.
+- `module:&` — end-word base byte address of the module's memory region (base address of the last 4-byte word in the allocation).
+
+```
+module targetModule
+int* start &sourceModule:
+int* end   sourceModule:&
+moduleEnd
+```
+
+### Named memory item address
+
+- `&module:name` — start byte address of a named memory item in another module.
+- `module:name&` — end-word base byte address of a named memory item in another module.
+
+```
+module targetModule
+int* ptr    &sourceModule:buffer
+int* endPtr sourceModule:buffer&
+moduleEnd
+```
+
+### Nth memory item address
+
+- `&module:N` — start byte address of the Nth memory item (0-indexed, by declaration order) within another module.
+
+`&module:0` is equivalent to `&module:` — both resolve to the module's base address. Each subsequent index N steps to the next declared memory item regardless of its size.
+
+```
+module sourceModule
+int  a 0      ; item 0
+int  b 0      ; item 1
+int[] c 10 0  ; item 2 — the whole array counts as one slot
+moduleEnd
+
+module targetModule
+int* ptrA &sourceModule:0   ; same as &sourceModule:a
+int* ptrB &sourceModule:1   ; same as &sourceModule:b
+int* ptrC &sourceModule:2   ; same as &sourceModule:c
+moduleEnd
+```
+
+### Intermodular metadata queries
+
+The `count`, `sizeof`, `max`, and `min` queries all accept a `module:name` pair:
+
+- `count(module:name)` — element count of a memory item in another module.
+- `sizeof(module:name)` — element word size (bytes) of a memory item in another module.
+- `max(module:name)` — maximum finite value for the element type of a memory item in another module.
+- `min(module:name)` — minimum finite value for the element type of a memory item in another module.
+
+```
+module targetModule
+push count(sourceModule:buffer)
+push sizeof(sourceModule:buffer)
+push max(sourceModule:buffer)
+push min(sourceModule:buffer)
+moduleEnd
+```
