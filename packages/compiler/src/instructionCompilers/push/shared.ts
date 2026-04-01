@@ -1,9 +1,4 @@
-import f32const from '../../wasmUtils/const/f32const';
-import f64const from '../../wasmUtils/const/f64const';
-import i32const from '../../wasmUtils/const/i32const';
-import f32load from '../../wasmUtils/load/f32load';
-import f64load from '../../wasmUtils/load/f64load';
-import i32load from '../../wasmUtils/load/i32load';
+import { f32const, f64const, i32const, f32load, f64load, i32load } from '@8f4e/compiler-wasm-utils';
 
 import type { DataStructure, StackItem } from '../../types';
 

@@ -1,14 +1,16 @@
-import call from '../wasmUtils/call/call';
-import i32const from '../wasmUtils/const/i32const';
-import localGet from '../wasmUtils/local/localGet';
-import localSet from '../wasmUtils/local/localSet';
-import br_if from '../wasmUtils/controlFlow/br_if';
-import Type from '../wasmUtils/type';
-import WASMInstruction from '../wasmUtils/wasmInstruction';
-import createFunction from '../wasmUtils/codeSection/createFunction';
-import createLocalDeclaration from '../wasmUtils/codeSection/createLocalDeclaration';
+import {
+	call,
+	i32const,
+	localGet,
+	localSet,
+	br_if,
+	Type,
+	WASMInstruction,
+	createFunction,
+	createLocalDeclaration,
+} from '@8f4e/compiler-wasm-utils';
 
-import type { FunctionBody } from '../wasmUtils/section';
+import type { FunctionBody } from '@8f4e/compiler-wasm-utils';
 
 /**
  * Creates the complete buffer function, which repeatedly calls the cycle function.
