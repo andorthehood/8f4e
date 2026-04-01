@@ -1,3 +1,0 @@
-const WASM_MEMORY_PAGE_SIZE = 65536;
-
-export default WASM_MEMORY_PAGE_SIZE;
