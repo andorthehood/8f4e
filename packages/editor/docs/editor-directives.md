@@ -75,6 +75,7 @@ Supported `memoryId` forms:
 
 - `name` - Show the current value.
 - `0bname` - Show an integer value in binary.
+- `0xname` - Show an integer value in hexadecimal.
 - `&name` - Show the start address.
 - `name&` - Show the end address.
 - `*name` - Dereference a pointer memory.
@@ -85,6 +86,7 @@ These modifiers can be combined when they make sense. For example:
 
 ```txt
 ; @watch 0bcounter
+; @watch 0xcounter
 ; @watch &buffer
 ; @watch pointer&
 ; @watch *out

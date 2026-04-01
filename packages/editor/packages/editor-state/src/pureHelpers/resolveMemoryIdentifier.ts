@@ -16,9 +16,13 @@ export default function resolveMemoryIdentifier(
 	let operator: '&' | '*' | undefined;
 	let bufferPointer = 0;
 	let showBinary = false;
+	let showHex = false;
 
 	if (memoryIdentifier.startsWith('0b')) {
 		showBinary = true;
+		memoryIdentifier = memoryIdentifier.substring(2);
+	} else if (memoryIdentifier.startsWith('0x')) {
+		showHex = true;
 		memoryIdentifier = memoryIdentifier.substring(2);
 	}
 
@@ -72,5 +76,6 @@ export default function resolveMemoryIdentifier(
 		memory,
 		bufferPointer,
 		showBinary,
+		showHex,
 	};
 }

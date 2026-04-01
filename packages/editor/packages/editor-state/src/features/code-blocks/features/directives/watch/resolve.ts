@@ -35,6 +35,7 @@ function resolveWatchDirectiveWidget(
 		showAddress: memory.showAddress,
 		showEndAddress: memory.showEndAddress,
 		showBinary: memory.showBinary,
+		showHex: memory.showHex,
 		bufferPointer: memory.bufferPointer,
 	});
 }
