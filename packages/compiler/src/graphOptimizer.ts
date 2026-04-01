@@ -1,4 +1,5 @@
 import { ArgumentType } from './types';
+import { isMemoryDeclarationInstruction } from './semantic/declarations';
 
 import type { AST, Argument } from './types';
 
@@ -35,7 +36,9 @@ interface ModuleSortMetadata {
 }
 
 function extractIntermodularDependencies(ast: AST): string[] {
-	return ast.flatMap(({ arguments: args }) => args.flatMap(arg => getIntermodularReferenceModules(arg)));
+	return ast
+		.filter(({ instruction }) => isMemoryDeclarationInstruction(instruction))
+		.flatMap(({ arguments: args }) => args.flatMap(arg => getIntermodularReferenceModules(arg)));
 }
 
 function getModuleSortMetadata(ast: AST, index: number): ModuleSortMetadata {
@@ -49,25 +52,45 @@ export default function sortModules(modules: AST[]): AST[] {
 	const metadata = modules.map((ast, index) => getModuleSortMetadata(ast, index));
 
 	const constantsBlocks = metadata.filter(m => m.isConstantsBlock).map(m => m.ast);
+	const regularMetadata = metadata.filter(m => !m.isConstantsBlock);
 
-	const sortedRegularModules = metadata
-		.filter(m => !m.isConstantsBlock)
-		.sort((a, b) => {
-			const aReferencesB = a.referencedModuleIds.includes(b.moduleId);
-			const bReferencesA = b.referencedModuleIds.includes(a.moduleId);
+	// Build moduleId → modules lookup (handles duplicate module IDs)
+	const modulesByIdMap = new Map<string, ModuleSortMetadata[]>();
+	for (const m of regularMetadata) {
+		const bucket = modulesByIdMap.get(m.moduleId) ?? [];
+		bucket.push(m);
+		modulesByIdMap.set(m.moduleId, bucket);
+	}
 
-			if (!bReferencesA && aReferencesB) return -1;
-			if (bReferencesA && !aReferencesB) return 1;
+	// DFS topological sort: referenced (dependency) modules are emitted before
+	// the modules that reference them. `visited` uses the unique `index` field
+	// so duplicate module IDs are handled correctly.
+	const visited = new Set<number>();
+	const sorted: ModuleSortMetadata[] = [];
 
-			if (a.moduleId < b.moduleId) return -1;
-			if (a.moduleId > b.moduleId) return 1;
+	function visit(m: ModuleSortMetadata): void {
+		if (visited.has(m.index)) return;
+		visited.add(m.index);
+		for (const depId of m.referencedModuleIds) {
+			for (const dep of modulesByIdMap.get(depId) ?? []) {
+				visit(dep);
+			}
+		}
+		sorted.push(m);
+	}
 
-			return a.index - b.index;
-		})
-		.map(m => m.ast);
+	// Iterate in alphabetical order so independent modules appear deterministically
+	const alphabeticalOrder = [...regularMetadata].sort((a, b) => {
+		if (a.moduleId < b.moduleId) return -1;
+		if (a.moduleId > b.moduleId) return 1;
+		return a.index - b.index;
+	});
 
-	// Return constants blocks first, then sorted regular modules
-	return [...constantsBlocks, ...sortedRegularModules];
+	for (const m of alphabeticalOrder) {
+		visit(m);
+	}
+
+	return [...constantsBlocks, ...sorted.map(m => m.ast)];
 }
 
 if (import.meta.vitest) {
@@ -155,19 +178,19 @@ if (import.meta.vitest) {
 
 			const sorted = sortModules([beta, alpha]);
 
-			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
+			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
 		});
 
-		it('orders module before another module that references it', () => {
+		it('orders referenced module before the module that references it', () => {
 			const alpha = createModuleAst('alpha', ['&beta:value']);
 			const beta = createModuleAst('beta');
 
 			const sorted = sortModules([alpha, beta]);
 
-			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
+			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
 		});
 
-		it('orders module before another module that references it inside a compile-time expression', () => {
+		it('orders referenced module before the module that references it inside a compile-time expression', () => {
 			const alpha: AST = [
 				{
 					lineNumberBeforeMacroExpansion: 1,
@@ -187,7 +210,51 @@ if (import.meta.vitest) {
 
 			const sorted = sortModules([alpha, beta]);
 
-			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
+			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
+		});
+
+		it('ignores non-memory-declaration instructions when detecting dependencies', () => {
+			// alpha has a memory declaration referencing zeta (real dependency: zeta must come first)
+			const alpha: AST = [
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'module',
+					arguments: [identifierArgument('alpha')],
+					isSemanticOnly: true,
+				},
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'int',
+					arguments: [identifierArgument('x'), identifierArgument('&zeta:value')],
+				},
+			] as AST;
+			// zeta has a runtime instruction referencing alpha (must NOT create a layout dependency)
+			// If it did, alpha→zeta and zeta→alpha would form a cycle, and alphabetical order
+			// would incorrectly place alpha before zeta.
+			const zeta: AST = [
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'module',
+					arguments: [identifierArgument('zeta')],
+					isSemanticOnly: true,
+				},
+				{
+					lineNumberBeforeMacroExpansion: 2,
+					lineNumberAfterMacroExpansion: 2,
+					instruction: 'push',
+					arguments: [identifierArgument('&alpha:value')],
+				},
+			] as AST;
+
+			const sorted = sortModules([alpha, zeta]);
+
+			// zeta must come first: alpha's memory declaration references it, so zeta's byteAddress
+			// must be resolved before alpha is laid out. zeta's push of &alpha: is a runtime
+			// instruction and must not create a false reverse dependency.
+			expect(sorted.map(getModuleId)).toEqual(['zeta', 'alpha']);
 		});
 
 		it('handles duplicate module ids deterministically', () => {

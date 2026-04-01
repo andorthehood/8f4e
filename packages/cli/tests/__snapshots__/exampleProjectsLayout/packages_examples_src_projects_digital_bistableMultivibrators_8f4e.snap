@@ -34,7 +34,7 @@
       "initOnlyExecution": false
     },
     {
-      "id": "negate",
+      "id": "buttons",
       "index": 2,
       "byteAddress": 16,
       "wordAlignedAddress": 4,
@@ -43,7 +43,7 @@
       "initOnlyExecution": false
     },
     {
-      "id": "buttons",
+      "id": "negate",
       "index": 3,
       "byteAddress": 24,
       "wordAlignedAddress": 6,
