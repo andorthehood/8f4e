@@ -1,6 +1,6 @@
 import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
-import localGet from '../wasmUtils/local/localGet';
+import { localGet } from '@8f4e/compiler-wasm-utils';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 

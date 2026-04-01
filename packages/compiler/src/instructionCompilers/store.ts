@@ -1,8 +1,6 @@
 import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
-import f32store from '../wasmUtils/store/f32store';
-import f64store from '../wasmUtils/store/f64store';
-import i32store from '../wasmUtils/store/i32store';
+import { f32store, f64store, i32store } from '@8f4e/compiler-wasm-utils';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
