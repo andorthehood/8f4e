@@ -19,56 +19,56 @@
       "initOnlyExecution": false
     },
     {
-      "id": "dancer1",
+      "id": "sineLT",
       "index": 1,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
+      "wordAlignedSize": 256,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "dancer1",
+      "index": 2,
+      "byteAddress": 1028,
+      "wordAlignedAddress": 257,
       "wordAlignedSize": 4,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "dancer2",
-      "index": 2,
-      "byteAddress": 20,
-      "wordAlignedAddress": 5,
+      "index": 3,
+      "byteAddress": 1044,
+      "wordAlignedAddress": 261,
       "wordAlignedSize": 4,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "dancer3",
-      "index": 3,
-      "byteAddress": 36,
-      "wordAlignedAddress": 9,
+      "index": 4,
+      "byteAddress": 1060,
+      "wordAlignedAddress": 265,
       "wordAlignedSize": 4,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "dancer4",
-      "index": 4,
-      "byteAddress": 52,
-      "wordAlignedAddress": 13,
+      "index": 5,
+      "byteAddress": 1076,
+      "wordAlignedAddress": 269,
       "wordAlignedSize": 5,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "projectConfig",
-      "index": 5,
-      "byteAddress": 72,
-      "wordAlignedAddress": 18,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "sineLT",
       "index": 6,
-      "byteAddress": 72,
-      "wordAlignedAddress": 18,
-      "wordAlignedSize": 256,
+      "byteAddress": 1096,
+      "wordAlignedAddress": 274,
+      "wordAlignedSize": 0,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     }

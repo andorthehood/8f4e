@@ -27,29 +27,29 @@
       "initOnlyExecution": false
     },
     {
-      "id": "audioout",
+      "id": "phaseAccumulator",
       "index": 2,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
+      "wordAlignedSize": 4,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "audioout",
+      "index": 3,
+      "byteAddress": 20,
+      "wordAlignedAddress": 5,
       "wordAlignedSize": 130,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "notes",
-      "index": 3,
-      "byteAddress": 524,
-      "wordAlignedAddress": 131,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "phaseAccumulator",
       "index": 4,
-      "byteAddress": 524,
-      "wordAlignedAddress": 131,
-      "wordAlignedSize": 4,
+      "byteAddress": 540,
+      "wordAlignedAddress": 135,
+      "wordAlignedSize": 0,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },

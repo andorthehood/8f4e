@@ -98,7 +98,7 @@
           "wordAlignedSize": 1,
           "byteAddress": 12,
           "id": "in2",
-          "default": 20,
+          "default": 28,
           "type": "int*",
           "isPointer": true,
           "isPointingToInteger": true,
@@ -110,15 +110,60 @@
       "wordAlignedSize": 3,
       "index": 1
     },
+    "buttons": {
+      "id": "buttons",
+      "cycleFunction": [
+        2,
+        0,
+        11
+      ],
+      "initFunctionBody": [],
+      "byteAddress": 16,
+      "wordAlignedAddress": 4,
+      "memoryMap": {
+        "set": {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+          "byteAddress": 16,
+          "id": "set",
+          "default": 0,
+          "type": "int",
+          "isPointer": false,
+          "isPointingToInteger": false,
+          "isPointingToPointer": false,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        "reset": {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+          "byteAddress": 20,
+          "id": "reset",
+          "default": 0,
+          "type": "int",
+          "isPointer": false,
+          "isPointingToInteger": false,
+          "isPointingToPointer": false,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      },
+      "wordAlignedSize": 2,
+      "index": 2
+    },
     "negate": {
       "id": "negate",
       "cycleFunction": [
         26,
         0,
         65,
-        20,
+        28,
         65,
-        16,
+        24,
         40,
         2,
         0,
@@ -142,17 +187,17 @@
         11
       ],
       "initFunctionBody": [],
-      "byteAddress": 16,
-      "wordAlignedAddress": 4,
+      "byteAddress": 24,
+      "wordAlignedAddress": 6,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
-          "wordAlignedAddress": 4,
+          "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
-          "byteAddress": 16,
+          "byteAddress": 24,
           "id": "in",
-          "default": 28,
+          "default": 20,
           "type": "int*",
           "isPointer": true,
           "isPointingToInteger": true,
@@ -163,55 +208,10 @@
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
-          "wordAlignedAddress": 5,
-          "wordAlignedSize": 1,
-          "byteAddress": 20,
-          "id": "out",
-          "default": 0,
-          "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
-          "isPointingToPointer": false,
-          "isInteger": true,
-          "isUnsigned": false
-        }
-      },
-      "wordAlignedSize": 2,
-      "index": 2
-    },
-    "buttons": {
-      "id": "buttons",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
-      "byteAddress": 24,
-      "wordAlignedAddress": 6,
-      "memoryMap": {
-        "set": {
-          "numberOfElements": 1,
-          "elementWordSize": 4,
-          "wordAlignedAddress": 6,
-          "wordAlignedSize": 1,
-          "byteAddress": 24,
-          "id": "set",
-          "default": 0,
-          "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
-          "isPointingToPointer": false,
-          "isInteger": true,
-          "isUnsigned": false
-        },
-        "reset": {
-          "numberOfElements": 1,
-          "elementWordSize": 4,
           "wordAlignedAddress": 7,
           "wordAlignedSize": 1,
           "byteAddress": 28,
-          "id": "reset",
+          "id": "out",
           "default": 0,
           "type": "int",
           "isPointer": false,
@@ -506,7 +506,7 @@
           "wordAlignedSize": 1,
           "byteAddress": 64,
           "id": "in2",
-          "default": 24,
+          "default": 16,
           "type": "int*",
           "isPointer": true,
           "isPointingToInteger": true,
@@ -823,6 +823,6 @@
       "index": 12
     }
   },
-  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIPAQJqcwZtZW1vcnkCAwEBAx8eAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMKlQQeHAAQERASEBMQFBAVEBYQFxAYEBkQGhAbEBwQHQscABAEEAUQBhAHEAgQCRAKEAsQDBANEA4QDxAQCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLAgALIwBBCEEEKAIAKAIAQQwoAgAoAgBsQQFOBH9BAQVBAAs2AgALGgBBFEEQKAIAKAIAQQBGBH9BAQVBAAs2AgALAgALIwBBJEEgKAIAKAIAQSgoAgAoAgBqQQBGBH9BAQVBAAs2AgALIwBBMEEsKAIAKAIAQTQoAgAoAgBqQQBGBH9BAQVBAAs2AgALAgALJABBPEE4KAIAKAIAQcAAKAIAKAIAakEBTgR/QQEFQQALNgIACwIACwIACzkAQcwCQcwCKAIAQQRqNgIAQcwCKAIAQcgCSgRAQcwCQcwANgIAC0HMAigCAEHIACgCACgCADYCAAs5AEHUBEHUBCgCAEEEajYCAEHUBCgCAEHQBEoEQEHUBEHUAjYCAAtB1AQoAgBB0AIoAgAoAgA2AgALAgALAgALEABBBEE8NgIAQQxBFDYCAAsJAEEQQRw2AgALAgALEQBBIEEwNgIAQShBxAA2AgALEQBBLEEkNgIAQTRB2AQ2AgALAgALEQBBOEEINgIAQcAAQRg2AgALAgALAgALEwBByABBJDYCAEHMAkHMADYCAAsTAEHQAkEINgIAQdQEQdQCNgIACwIACw==",
+  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIPAQJqcwZtZW1vcnkCAwEBAx8eAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMKlQQeHAAQERASEBMQFBAVEBYQFxAYEBkQGhAbEBwQHQscABAEEAUQBhAHEAgQCRAKEAsQDBANEA4QDxAQCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLAgALIwBBCEEEKAIAKAIAQQwoAgAoAgBsQQFOBH9BAQVBAAs2AgALAgALGgBBHEEYKAIAKAIAQQBGBH9BAQVBAAs2AgALIwBBJEEgKAIAKAIAQSgoAgAoAgBqQQBGBH9BAQVBAAs2AgALIwBBMEEsKAIAKAIAQTQoAgAoAgBqQQBGBH9BAQVBAAs2AgALAgALJABBPEE4KAIAKAIAQcAAKAIAKAIAakEBTgR/QQEFQQALNgIACwIACwIACzkAQcwCQcwCKAIAQQRqNgIAQcwCKAIAQcgCSgRAQcwCQcwANgIAC0HMAigCAEHIACgCACgCADYCAAs5AEHUBEHUBCgCAEEEajYCAEHUBCgCAEHQBEoEQEHUBEHUAjYCAAtB1AQoAgBB0AIoAgAoAgA2AgALAgALAgALEABBBEE8NgIAQQxBHDYCAAsCAAsJAEEYQRQ2AgALEQBBIEEwNgIAQShBxAA2AgALEQBBLEEkNgIAQTRB2AQ2AgALAgALEQBBOEEINgIAQcAAQRA2AgALAgALAgALEwBByABBJDYCAEHMAkHMADYCAAsTAEHQAkEINgIAQdQEQdQCNgIACwIACw==",
   "requiredMemoryBytes": 604
 }

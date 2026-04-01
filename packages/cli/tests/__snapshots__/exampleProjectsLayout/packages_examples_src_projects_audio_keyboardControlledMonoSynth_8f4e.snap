@@ -42,74 +42,74 @@
       "initOnlyExecution": false
     },
     {
-      "id": "arEnv",
+      "id": "keyboard",
       "index": 3,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "wordAlignedSize": 7,
+      "wordAlignedSize": 2,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
-      "id": "audioout",
+      "id": "arEnv",
       "index": 4,
-      "byteAddress": 32,
-      "wordAlignedAddress": 8,
-      "wordAlignedSize": 130,
+      "byteAddress": 12,
+      "wordAlignedAddress": 3,
+      "wordAlignedSize": 7,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "janko",
       "index": 5,
-      "byteAddress": 552,
-      "wordAlignedAddress": 138,
+      "byteAddress": 40,
+      "wordAlignedAddress": 10,
       "wordAlignedSize": 2,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
-      "id": "keyboard",
+      "id": "midiLUT",
       "index": 6,
-      "byteAddress": 560,
-      "wordAlignedAddress": 140,
-      "wordAlignedSize": 2,
+      "byteAddress": 48,
+      "wordAlignedAddress": 12,
+      "wordAlignedSize": 128,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "midiNote2Freq",
       "index": 7,
-      "byteAddress": 568,
-      "wordAlignedAddress": 142,
-      "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "midiLUT",
-      "index": 8,
-      "byteAddress": 580,
-      "wordAlignedAddress": 145,
-      "wordAlignedSize": 128,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "vca",
-      "index": 9,
-      "byteAddress": 1092,
-      "wordAlignedAddress": 273,
+      "byteAddress": 560,
+      "wordAlignedAddress": 140,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "phaseAccumulator",
-      "index": 10,
-      "byteAddress": 1104,
-      "wordAlignedAddress": 276,
+      "index": 8,
+      "byteAddress": 572,
+      "wordAlignedAddress": 143,
       "wordAlignedSize": 4,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "vca",
+      "index": 9,
+      "byteAddress": 588,
+      "wordAlignedAddress": 147,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "audioout",
+      "index": 10,
+      "byteAddress": 600,
+      "wordAlignedAddress": 150,
+      "wordAlignedSize": 130,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
