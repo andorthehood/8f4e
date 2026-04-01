@@ -91,6 +91,7 @@ describe('watch directive widget resolution', () => {
 			memory: { wordAlignedAddress: 0 } as DataStructure,
 			bufferPointer: 0,
 			showBinary: false,
+			showHex: false,
 		});
 
 		runDirectiveResolution();

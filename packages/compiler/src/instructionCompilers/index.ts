@@ -52,6 +52,7 @@ import round from './round';
 import ensureNonZero from './ensureNonZero';
 import _function from './function';
 import functionEnd from './functionEnd';
+import _return from './return';
 import param from './param';
 import call from './call';
 import skipExecution from './skipExecution';
@@ -121,6 +122,7 @@ const instructions = {
 	ensureNonZero,
 	function: _function,
 	functionEnd,
+	return: _return,
 	param,
 	call,
 	'#skipExecution': skipExecution,
