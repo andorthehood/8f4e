@@ -3,7 +3,7 @@ import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } fro
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { ErrorCode, getError } from '../compilerError';
-import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import type { AST, InstructionCompiler } from '../types';
 

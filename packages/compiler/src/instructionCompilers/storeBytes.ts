@@ -1,6 +1,6 @@
 import { ArgumentType } from '../types';
 import { ErrorCode } from '../compilerError';
-import i32store8 from '../wasmUtils/store/i32store8';
+import { i32store8 } from '@8f4e/compiler-wasm-utils';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
