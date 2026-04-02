@@ -5,6 +5,8 @@ const scalarMemoryDeclarationInstructions = new Set([
 	'float',
 	'int*',
 	'int**',
+	'int8*',
+	'int8**',
 	'int16*',
 	'int16**',
 	'float*',
@@ -28,6 +30,8 @@ if (import.meta.vitest) {
 			expect(isMemoryDeclarationInstruction('float64')).toBe(true);
 			expect(isMemoryDeclarationInstruction('int*')).toBe(true);
 			expect(isMemoryDeclarationInstruction('int**')).toBe(true);
+			expect(isMemoryDeclarationInstruction('int8*')).toBe(true);
+			expect(isMemoryDeclarationInstruction('int8**')).toBe(true);
 			expect(isMemoryDeclarationInstruction('int16*')).toBe(true);
 			expect(isMemoryDeclarationInstruction('int16**')).toBe(true);
 			expect(isMemoryDeclarationInstruction('float*')).toBe(true);

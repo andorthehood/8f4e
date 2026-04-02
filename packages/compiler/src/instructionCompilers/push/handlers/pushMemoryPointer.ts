@@ -1,4 +1,4 @@
-import { i32const, f64load, i32load, i32load16s } from '@8f4e/compiler-wasm-utils';
+import { i32const, f64load, i32load, i32load8s, i32load16s } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
@@ -15,8 +15,13 @@ export default function pushMemoryPointer(line: PushIdentifierLine, context: Com
 	const kind = resolvePointerTargetValueKind(memoryItem);
 	context.stack.push(kindToStackItem(kind, { isNonZero: false }));
 
+	// For int8* and int8**, use i32load8s (sign-extended 8-bit load) for the final dereference.
 	// For int16* and int16**, use i32load16s (sign-extended 16-bit load) for the final dereference.
-	const finalLoad = memoryItem.isPointingToInt16 ? i32load16s() : loadOpcode[kind]();
+	const finalLoad = memoryItem.isPointingToInt8
+		? i32load8s()
+		: memoryItem.isPointingToInt16
+			? i32load16s()
+			: loadOpcode[kind]();
 
 	return saveByteCode(context, [
 		...i32const(memoryItem.byteAddress),
@@ -66,6 +71,84 @@ if (import.meta.vitest) {
 
 			expect(context.byteCode).toEqual([...i32const(12), ...i32load(), ...i32load(), ...f64load()]);
 			expect(context.stack).toEqual([{ isInteger: false, isFloat64: true, isNonZero: false }]);
+		});
+
+		it('dereferences int8* with i32load8s for the final load', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					memory: {
+						ptr: {
+							id: 'ptr',
+							numberOfElements: 1,
+							elementWordSize: 4,
+							wordAlignedAddress: 0,
+							wordAlignedSize: 1,
+							byteAddress: 8,
+							default: 0,
+							isInteger: true,
+							isPointer: true,
+							isPointingToInteger: true,
+							isPointingToInt8: true,
+							isPointingToPointer: false,
+							isUnsigned: false,
+							type: 'int8*',
+						} as never,
+					},
+				},
+			});
+
+			pushMemoryPointer(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'push',
+					arguments: [classifyIdentifier('*ptr')],
+				} as PushIdentifierLine,
+				context
+			);
+
+			expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8s()]);
+			expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
+		});
+
+		it('dereferences int8** with i32load8s for the final load', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					memory: {
+						pptr: {
+							id: 'pptr',
+							numberOfElements: 1,
+							elementWordSize: 4,
+							wordAlignedAddress: 0,
+							wordAlignedSize: 1,
+							byteAddress: 4,
+							default: 0,
+							isInteger: true,
+							isPointer: true,
+							isPointingToInteger: true,
+							isPointingToInt8: true,
+							isPointingToPointer: true,
+							isUnsigned: false,
+							type: 'int8**',
+						} as never,
+					},
+				},
+			});
+
+			pushMemoryPointer(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'push',
+					arguments: [classifyIdentifier('*pptr')],
+				} as PushIdentifierLine,
+				context
+			);
+
+			expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load8s()]);
+			expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
 		});
 
 		it('dereferences int16* with i32load16s for the final load', () => {
