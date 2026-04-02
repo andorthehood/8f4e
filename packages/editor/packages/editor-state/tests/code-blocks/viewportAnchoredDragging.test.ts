@@ -37,6 +37,8 @@ describe('viewport-anchored dragging', () => {
 				hGrid: 20,
 				width: 800,
 				height: 600,
+				roundedWidth: 800,
+				roundedHeight: 600,
 				gridCoordinates: { x: 0, y: 0 },
 			},
 		} as State;
