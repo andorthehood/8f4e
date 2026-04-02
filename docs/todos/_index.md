@@ -68,6 +68,7 @@ Active todo files are listed below.
 | 349 | Add always-on-top editor directive for code blocks | 🟡 | 3-6h | 2026-03-30 | The editor currently derives z-order directly from `graphicHelper.codeBlocks`, so clicking a normal block always brings it above everything else and there is no way to persistently keep overlay-style blocks above ordinary content. |
 | 354 | Extract WASM Utils to Separate Package | 🟡 | 3h | 2026-03-31 | Extract WASM utility functions (encoding, sections, instructions) from `packages/compiler/src/wasmUtils` into a nested package at `packages/compiler/packages/wasm-utils`. |
 | 355 | Replace `isPointingToInt8`/`isPointingToInt16` booleans with a single `pointeeBaseType` field | 🟢 | 2-4h | 2026-04-02 | The boolean-per-narrow-type pattern on `DataStructure` does not scale; a single discriminant field would simplify consumers and make adding new narrow pointer types trivial. |
+| 356 | Consolidate declaration compilers into a single factory | 🟢 | 2-4h | 2026-04-02 | The per-type declaration compiler files (`int.ts`, `int8.ts`, `int16.ts`, `float.ts`, `float64.ts`) are nearly identical; a `createDeclarationCompiler(baseType)` factory would eliminate the duplication. Best done after #355. |
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
