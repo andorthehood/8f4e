@@ -59,7 +59,7 @@ export enum ErrorCode {
 	SPLIT_BYTE_CONSTANT_OUT_OF_RANGE,
 	POINTEE_WORD_SIZE_ON_NON_POINTER,
 	POINTEE_ELEMENT_MAX_ON_NON_POINTER,
-	EARLY_RETURN_OUTSIDE_FUNCTION,
+	RETURN_OUTSIDE_FUNCTION,
 }
 
 interface ErrorDetails {
@@ -370,7 +370,7 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.EARLY_RETURN_OUTSIDE_FUNCTION:
+		case ErrorCode.RETURN_OUTSIDE_FUNCTION:
 			return {
 				code,
 				message: 'earlyReturn can only be used inside a function, not in a module. (' + code + ')',

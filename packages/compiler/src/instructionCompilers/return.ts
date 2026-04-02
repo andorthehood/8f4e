@@ -1,4 +1,5 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
 import { ErrorCode } from '../compilerError';
 import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
@@ -21,7 +22,7 @@ import type { AST, InstructionCompiler } from '../types';
 const _return: InstructionCompiler = withValidation(
 	{
 		scope: 'function',
-		onInvalidScope: ErrorCode.EARLY_RETURN_OUTSIDE_FUNCTION,
+		onInvalidScope: ErrorCode.RETURN_OUTSIDE_FUNCTION,
 	},
 	(line, context) => {
 		saveByteCode(context, [WASMInstruction.RETURN]);
