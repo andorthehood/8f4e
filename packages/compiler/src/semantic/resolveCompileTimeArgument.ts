@@ -138,6 +138,21 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Names
 		return undefined;
 	}
 
+	// &module:N — start byte address of the Nth memory item (0-indexed) within a module
+	if (operand.referenceKind === 'intermodular-module-nth-reference') {
+		const targetModuleId = operand.targetModuleId!;
+		const targetNamespace = namespace.namespaces[targetModuleId];
+		if (typeof targetNamespace?.byteAddress !== 'number' || !targetNamespace.memory) {
+			return undefined;
+		}
+		const items = Object.values(targetNamespace.memory);
+		const item = items[operand.targetMemoryIndex!];
+		if (item) {
+			return { value: item.byteAddress, isInteger: true };
+		}
+		return undefined;
+	}
+
 	// &module:memory — start byte address of a remote memory item
 	// module:memory& — end-word base byte address of a remote memory item
 	if (operand.referenceKind === 'intermodular-reference') {
