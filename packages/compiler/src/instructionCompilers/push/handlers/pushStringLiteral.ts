@@ -1,7 +1,8 @@
+import { i32const } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';
-import i32const from '../../../wasmUtils/const/i32const';
 
 import type { ArgumentStringLiteral, CompilationContext } from '../../../types';
 

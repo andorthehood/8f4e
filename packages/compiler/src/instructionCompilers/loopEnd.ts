@@ -1,7 +1,7 @@
 import { ErrorCode, getError } from '../compilerError';
 import { BLOCK_TYPE } from '../types';
-import WASMInstruction from '../wasmUtils/wasmInstruction';
-import br from '../wasmUtils/controlFlow/br';
+
+import { WASMInstruction, br } from '@8f4e/compiler-wasm-utils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
