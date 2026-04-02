@@ -10,7 +10,6 @@ Active todo files are listed below.
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
-| 257 | Fix collectConstants identifier RHS resolution | 🔴 | 2-4h | 2026-02-20 | collectConstants currently assumes every const RHS is a literal and force-casts arguments[1] to ArgumentLiteral. |
 | 262 | Add float64 support for equal instruction | 🔴 | 1-3h | 2026-02-20 | equal is missing explicit float64 support in the compiler instruction path. |
 | 263 | Add float64 support for lessThan instruction | 🔴 | 1-3h | 2026-02-20 | lessThan is missing explicit float64 support in the compiler instruction path. |
 | 264 | Add float64 support for lessOrEqual instruction | 🔴 | 1-3h | 2026-02-20 | lessOrEqual is missing explicit float64 support in the compiler instruction path. |
@@ -48,16 +47,13 @@ Active todo files are listed below.
 | 210 | Add WebMCP-based MCP server integration to the 8f4e editor | 🟡 | 2-4d | 2026-02-07 | The editor currently has no built-in MCP server integration path for browser-hosted workflows. That limits direct tool interoperability from within the 8f4e editor experience and makes experimentation with MCP-based... |
 | 211 | Add WASM memory to GLSL float uniform bindings via project config | 🟡 | 2-4d | 2026-02-08 | Post-process and background shader effects currently support engine-owned shared uniform buffers, but there is no declarative way to bind shader uniforms to values in WebAssembly memory through stack config. |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
-| 254 | Fix max/min helpers for float64 memory | 🟡 | 2-4h | 2026-02-19 | float64, float64*, and float64** are being included in inter-module resolution paths, so ^module.memory and !module.memory can target float64-backed memory items. |
 | 261 | Update instruction test helpers for float64 and refactor call test | 🟡 | 2-4h | 2026-02-20 | packages/compiler/tests/instructions/testUtils.ts currently reads/writes all non-integer memory as float32 in shared helpers like moduleTesterWithFunctions. |
 | 274 | Consolidate defaultFeatureFlags into a single source of truth | 🟡 | 2-4h | 2026-02-21 | There are currently two defaultFeatureFlags definitions: |
 | 281 | Add Plus/Minus Support to Constant Expressions | 🟡 | 4-8h | 2026-02-23 | Compile-time constant expressions currently support only CONST*number and CONST/number with a single operator. This blocks simple offset-style expressions like SIZE+1 or SIZE-1 in const, declarations, push, and init. |
 | 291 | Add int64 support across compiler, runtime, and docs | 🟡 | 2-4d | 2026-03-09 | The language already has dedicated float64 support, including 64-bit memory allocation and type-aware compiler paths, but there is no equivalent int64 support. |
-| 292 | Refactor error systems and document syntax vs compiler error boundaries | 🟡 | 1-2d | 2026-03-09 | The compiler currently has two different error systems: |
 | 293 | Add separate color for non-decimal literal base prefixes | 🟡 | 4-8h | 2026-03-09 | The editor currently highlights non-decimal numeric literals such as binary and hexadecimal values as a single token. That means the base prefix and the digits share the same color: |
 | 297 | Add url editor directive for clickable links | 🟡 | 4-8h | 2026-03-12 | The editor currently has no directive for attaching a clickable external link to a code block. |
 | 302 | Add jump editor directive for code block navigation | 🟡 | 4-8h | 2026-03-14 | The editor currently supports code block navigation through the context-menu jump flow, but there is no in-code directive for linking one code block to another. |
-| 303 | Dedupe font atlas rows for identical text colors | 🟡 | 1-2h | 2026-03-14 | The sprite generator currently renders one full ASCII font row for every text color role, even when multiple roles resolve to the same color value. |
 | 307 | Optimize state-manager selector tokenization and subscription lookup | 🟡 | 3-6h | 2026-03-14 | The state manager currently does repeated string splitting and repeated path traversal during every set(...) call. |
 | 320 | Add `&*name` pointee start address prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `&name` for a memory item's own start address, but pointer-typed memory still lacks a direct identifier form for the start address stored in the pointer. |
 | 321 | Add `*name&` pointee end address suffix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e currently supports `name&` for a memory item's own end-address form, but pointer-typed memory still lacks a direct identifier form for the end-address form of the pointee allocation. |
@@ -66,7 +62,6 @@ Active todo files are listed below.
 | 325 | Add literal-only `*` and `/` folding at argument parse time | 🟡 | 4-8h | 2026-03-26 | 8f4e already folds fraction-style literals like `1/2` during argument parsing, but other literal-only arithmetic such as `16*2` and `3.5*4` still falls through as identifier-shaped input instead of becoming ordinary literals in the AST. |
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 🟡 | 4-8h | 2026-03-26 | Several editor/runtime paths still use dotted cross-module memory ids such as `module.memory`, while compiler address-style intermodule references already use `module:memory`, creating inconsistent source-level syntax. |
 | 349 | Add always-on-top editor directive for code blocks | 🟡 | 3-6h | 2026-03-30 | The editor currently derives z-order directly from `graphicHelper.codeBlocks`, so clicking a normal block always brings it above everything else and there is no way to persistently keep overlay-style blocks above ordinary content. |
-| 354 | Extract WASM Utils to Separate Package | 🟡 | 3h | 2026-03-31 | Extract WASM utility functions (encoding, sections, instructions) from `packages/compiler/src/wasmUtils` into a nested package at `packages/compiler/packages/wasm-utils`. |
 | 355 | Replace `isPointingToInt8`/`isPointingToInt16` booleans with a single `pointeeBaseType` field | 🟢 | 2-4h | 2026-04-02 | The boolean-per-narrow-type pattern on `DataStructure` does not scale; a single discriminant field would simplify consumers and make adding new narrow pointer types trivial. |
 | 356 | Consolidate declaration compilers into a single factory | 🟢 | 2-4h | 2026-04-02 | The per-type declaration compiler files (`int.ts`, `int8.ts`, `int16.ts`, `float.ts`, `float64.ts`) are nearly identical; a `createDeclarationCompiler(baseType)` factory would eliminate the duplication. Best done after #355. |
 
@@ -119,3 +114,8 @@ Active todo files are listed below.
 | 310 | Simplify compiler project flattening and compilable block checks | 2026-03-30 | Archived by user request as already completed. |
 | 309 | Extract shared module memory identifier parser | 2026-03-30 | Superseded by later tokenizer/compiler metadata work; the remaining issue is editor-side obsolete source-syntax renaming, tracked separately in `351`. |
 | 353 | Nest tokenizer package under compiler | 2026-03-31 | Tokenizer now lives at `packages/compiler/packages/tokenizer`; Nx and TypeScript path resolution updated to the nested layout. |
+| 254 | Fix max/min helpers for float64 memory | 2026-04-02 | `getElementMaxValue`/`getElementMinValue` now branch on `elementWordSize === 8` and return correct float64 bounds. |
+| 257 | Fix collectConstants identifier RHS resolution | 2026-04-02 | Superseded by semantic normalization refactor; constant RHS now resolved via the normalization pipeline without force-casting. |
+| 292 | Refactor error systems and document syntax vs compiler error boundaries | 2026-04-02 | `errors.ts` renamed to `compilerError.ts`; `SyntaxRulesError` centralized; policy comments added to both modules. |
+| 303 | Dedupe font atlas rows for identical text colors | 2026-03-31 | Sprite generator now deduplicates font atlas rows for identical text color roles. |
+| 354 | Extract WASM Utils to Separate Package | 2026-04-02 | WASM utility functions extracted from `packages/compiler/src/wasmUtils` into a nested package at `packages/compiler/packages/wasm-utils`. |

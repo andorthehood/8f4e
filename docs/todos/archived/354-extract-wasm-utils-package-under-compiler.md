@@ -3,8 +3,8 @@ title: 'TODO: Extract WASM Utils to Separate Package'
 priority: Medium
 effort: 3 hours
 created: 2026-03-31
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-02
 ---
 
 # TODO: Extract WASM Utils to Separate Package

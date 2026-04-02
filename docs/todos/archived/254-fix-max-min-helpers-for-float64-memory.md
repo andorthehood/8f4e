@@ -3,8 +3,8 @@ title: 'TODO: Fix max/min helpers for float64 memory'
 priority: Medium
 effort: 2-4h
 created: 2026-02-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-02
 ---
 
 # TODO: Fix max/min helpers for float64 memory
