@@ -3,8 +3,8 @@ title: 'TODO: Refactor error systems and document syntax vs compiler error bound
 priority: Medium
 effort: 1-2d
 created: 2026-03-09
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-02
 ---
 
 # TODO: Refactor error systems and document syntax vs compiler error boundaries
