@@ -1,19 +1,21 @@
 import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
 import wabt from 'wabt';
+import {
+	createCodeSection,
+	createExportSection,
+	createFunctionExport,
+	createImportSection,
+	createMemoryImport,
+	createFunctionSection,
+	createFunctionType,
+	createTypeSection,
+} from '@8f4e/compiler-wasm-utils';
 
-import createCodeSection from '../../src/wasmUtils/codeSection/createCodeSection';
-import createExportSection from '../../src/wasmUtils/export/createExportSection';
-import createFunctionExport from '../../src/wasmUtils/export/createFunctionExport';
-import createImportSection from '../../src/wasmUtils/import/createImportSection';
-import createMemoryImport from '../../src/wasmUtils/import/createMemoryImport';
-import createFunctionSection from '../../src/wasmUtils/typeFunction/createFunctionSection';
-import createFunctionType from '../../src/wasmUtils/typeFunction/createFunctionType';
-import createTypeSection from '../../src/wasmUtils/typeFunction/createTypeSection';
 import { compileModules } from '../../src';
 import compile from '../../src/index';
 
-import type { FunctionBody } from '../../src/wasmUtils/section';
+import type { FunctionBody } from '@8f4e/compiler-wasm-utils';
 import type { CompiledModule, TestModule, MemoryBuffer, Module } from '../../src/types';
 
 // Extended memory buffer interface for testing

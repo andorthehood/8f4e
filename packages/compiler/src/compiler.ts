@@ -1,10 +1,6 @@
 import { compileToAST } from '@8f4e/tokenizer';
+import { createFunction, createLocalDeclaration, f32store, f64store, i32store, Type } from '@8f4e/compiler-wasm-utils';
 
-import createFunction from './wasmUtils/codeSection/createFunction';
-import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
-import f32store from './wasmUtils/store/f32store';
-import f64store from './wasmUtils/store/f64store';
-import i32store from './wasmUtils/store/i32store';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
@@ -17,7 +13,6 @@ import {
 } from './types';
 import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';

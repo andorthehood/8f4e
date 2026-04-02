@@ -35,9 +35,7 @@ import {
 	type UseLine,
 	type WasmLine,
 } from '@8f4e/tokenizer';
-
-import Type from './wasmUtils/type';
-import WASMInstruction from './wasmUtils/wasmInstruction';
+import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 export enum MemoryTypes {
 	'int',
@@ -112,7 +110,7 @@ export interface FunctionSignature {
 }
 
 export interface FunctionTypeRegistry {
-	types: Array<ReturnType<typeof import('./wasmUtils/typeFunction/createFunctionType').default>>;
+	types: Array<ReturnType<typeof import('@8f4e/compiler-wasm-utils').createFunctionType>>;
 	signatureMap: Map<string, number>;
 	baseTypeIndex: number;
 }

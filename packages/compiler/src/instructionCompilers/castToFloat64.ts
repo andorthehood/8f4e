@@ -3,7 +3,7 @@ import { parseLine } from '@8f4e/tokenizer';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import type { InstructionCompiler } from '../types';
 
