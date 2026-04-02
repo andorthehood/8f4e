@@ -1,19 +1,22 @@
 import { compileToAST } from '@8f4e/tokenizer';
+import {
+	createCodeSection,
+	createFunction,
+	createExportSection,
+	createFunctionExport,
+	createImportSection,
+	createMemoryImport,
+	createFunctionSection,
+	createFunctionType,
+	createTypeSection,
+	Type,
+	call,
+	f32store,
+	f64store,
+	i32store,
+	WASM_MEMORY_PAGE_SIZE,
+} from '@8f4e/compiler-wasm-utils';
 
-import createCodeSection from './wasmUtils/codeSection/createCodeSection';
-import createFunction from './wasmUtils/codeSection/createFunction';
-import createExportSection from './wasmUtils/export/createExportSection';
-import createFunctionExport from './wasmUtils/export/createFunctionExport';
-import createImportSection from './wasmUtils/import/createImportSection';
-import createMemoryImport from './wasmUtils/import/createMemoryImport';
-import createFunctionSection from './wasmUtils/typeFunction/createFunctionSection';
-import createFunctionType from './wasmUtils/typeFunction/createFunctionType';
-import createTypeSection from './wasmUtils/typeFunction/createTypeSection';
-import Type from './wasmUtils/type';
-import call from './wasmUtils/call/call';
-import f32store from './wasmUtils/store/f32store';
-import f64store from './wasmUtils/store/f64store';
-import i32store from './wasmUtils/store/i32store';
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
@@ -30,7 +33,6 @@ import {
 } from './types';
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
-import WASM_MEMORY_PAGE_SIZE from './wasmUtils/consts';
 
 export {
 	MemoryTypes,
@@ -74,7 +76,7 @@ export {
 } from './semantic/buildNamespace';
 export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
-export { deriveEffectiveMemorySize } from './wasmUtils/deriveEffectiveMemorySize';
+export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export {
 	parseMacroDefinitions,
 	expandMacros,

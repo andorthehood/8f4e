@@ -1,8 +1,8 @@
+import { f64const, i32const } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { ArgumentType } from '../../../types';
-import f64const from '../../../wasmUtils/const/f64const';
-import i32const from '../../../wasmUtils/const/i32const';
 import { constOpcode, kindToStackItem, resolveArgumentValueKind } from '../shared';
 
 import type { ArgumentLiteral, CompilationContext } from '../../../types';

@@ -1,10 +1,8 @@
+import { i32const, f64load, i32load, i32load16s } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import { getDataStructure } from '../../../utils/memoryData';
-import i32const from '../../../wasmUtils/const/i32const';
-import f64load from '../../../wasmUtils/load/f64load';
-import i32load from '../../../wasmUtils/load/i32load';
-import i32load16s from '../../../wasmUtils/load/i32load16s';
 import { kindToStackItem, loadOpcode, resolvePointerTargetValueKind } from '../shared';
 
 import type { CompilationContext, PushIdentifierLine } from '../../../types';

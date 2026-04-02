@@ -1,12 +1,7 @@
 import { BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
-import WASMInstruction from '../wasmUtils/wasmInstruction';
-import i32const from '../wasmUtils/const/i32const';
-import f32const from '../wasmUtils/const/f32const';
-import f64const from '../wasmUtils/const/f64const';
-import localGet from '../wasmUtils/local/localGet';
-import localSet from '../wasmUtils/local/localSet';
+import { WASMInstruction, i32const, f32const, f64const, localGet, localSet } from '@8f4e/compiler-wasm-utils';
 import { saveByteCode } from '../utils/compilation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 

@@ -1,8 +1,8 @@
 {
-	"name": "@8f4e/compiler",
+	"name": "@8f4e/compiler-wasm-utils",
 	"version": "1.0.0",
 	"private": true,
-	"description": "8f4e compiler package",
+	"description": "8f4e WASM encoding utilities package",
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -23,10 +23,6 @@
 		"url": "https://github.com/andorthehood/8f4e/issues"
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
-	"dependencies": {
-		"@8f4e/tokenizer": "*",
-		"@8f4e/compiler-wasm-utils": "*"
-	},
 	"devDependencies": {
 		"@types/node": "^24.3.0"
 	}

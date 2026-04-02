@@ -1,6 +1,7 @@
+import { localGet } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../../../utils/compilation';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-import localGet from '../../../wasmUtils/local/localGet';
 
 import type { CompilationContext, PushIdentifierLine } from '../../../types';
 

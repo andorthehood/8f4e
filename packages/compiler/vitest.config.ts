@@ -8,7 +8,6 @@ export default defineConfig(
 			'src/graphOptimizer.ts',
 			'src/semantic/**/*.test.ts',
 			'src/withValidation/**/*.ts',
-			'src/wasmUtils/**/*.ts',
 			'src/wasmBuilders/**/*.ts',
 			'src/utils/**/*.ts',
 			'src/instructionCompilers/**/*.ts',
