@@ -2,6 +2,7 @@ import array from './array';
 import float from './float';
 import float64 from './float64';
 import int from './int';
+import int8 from './int8';
 import int16 from './int16';
 
 import type { AST, CompilationContext, InstructionCompiler } from '../../types';
@@ -11,6 +12,8 @@ export const declarationCompilers = {
 	float,
 	'int*': int,
 	'int**': int,
+	'int8*': int8,
+	'int8**': int8,
 	'int16*': int16,
 	'int16**': int16,
 	'float*': float,

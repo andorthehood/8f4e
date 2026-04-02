@@ -58,7 +58,7 @@ push sizeof(samples)
 ## Pointee element word size
 
 - `sizeof(*name)` pushes the element word size (in bytes) of the value pointed to by a pointer-typed memory item.
-- Only valid for pointer identifiers (`int*`, `int16*`, `float*`, `float64*`, etc.).
+- Only valid for pointer identifiers (`int*`, `int8*`, `int16*`, `float*`, `float64*`, etc.).
 - Using `sizeof(*name)` on a non-pointer identifier produces a compiler error.
 
 Examples:
@@ -66,6 +66,7 @@ Examples:
 | Declaration         | `sizeof(name)` | `sizeof(*name)` |
 |---------------------|----------------|-----------------|
 | `int* ptr`          | 4              | 4               |
+| `int8* ptr`         | 4              | 1               |
 | `int16* ptr`        | 4              | 2               |
 | `float* ptr`        | 4              | 4               |
 | `float64* ptr`      | 4              | 8               |
@@ -110,7 +111,7 @@ push max(unsignedBuffer)
 ## Pointee element max value
 
 - `max(*name)` pushes the maximum finite value for the type pointed to by a pointer-typed memory item.
-- Only valid for pointer identifiers (`int*`, `int16*`, `float*`, `float64*`, etc.).
+- Only valid for pointer identifiers (`int*`, `int8*`, `int16*`, `float*`, `float64*`, etc.).
 - Using `max(*name)` on a non-pointer identifier produces a compiler error.
 - `max(name)` keeps its existing meaning (max of the memory item's own element type).
 
@@ -119,6 +120,7 @@ Examples:
 | Declaration         | `max(name)`         | `max(*name)`                       |
 |---------------------|---------------------|------------------------------------|
 | `int* ptr`          | 2,147,483,647       | 2,147,483,647                      |
+| `int8* ptr`         | 2,147,483,647       | 127                                |
 | `int16* ptr`        | 2,147,483,647       | 32,767                             |
 | `float* ptr`        | 2,147,483,647       | 3.4028234663852886e+38             |
 | `float64* ptr`      | 2,147,483,647       | 1.7976931348623157e+308            |

@@ -31,6 +31,7 @@ export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): num
 	if (!memoryItem || !memoryItem.isPointer) return 0;
 	if (memoryItem.isPointingToPointer) return 4;
 	if (String(memoryItem.type) === 'float64*') return 8;
+	if (memoryItem.isPointingToInt8) return 1;
 	if (memoryItem.isPointingToInt16) return 2;
 	return 4;
 }
@@ -74,6 +75,9 @@ export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): num
 
 	// float64*: max float64
 	if (String(memoryItem.type).startsWith('float64')) return 1.7976931348623157e308;
+
+	// int8*: max signed int8
+	if (memoryItem.isPointingToInt8) return 127;
 
 	// int16*: max signed int16
 	if (memoryItem.isPointingToInt16) return 32767;
@@ -218,6 +222,19 @@ if (import.meta.vitest) {
 					} as unknown as MemoryMap[string],
 				};
 				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(8);
+			});
+
+			it('returns 1 for int8* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToPointer: false,
+						isPointingToInt8: true,
+						type: 'int8*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementWordSize(memory, 'ptr')).toBe(1);
 			});
 
 			it('returns 2 for int16* pointer', () => {
@@ -423,6 +440,20 @@ if (import.meta.vitest) {
 					} as unknown as MemoryMap[string],
 				};
 				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(2147483647);
+			});
+
+			it('returns max int8 value for int8* pointer', () => {
+				const memory: MemoryMap = {
+					ptr: {
+						elementWordSize: 4,
+						isPointer: true,
+						isPointingToInteger: true,
+						isPointingToInt8: true,
+						isPointingToPointer: false,
+						type: 'int8*',
+					} as unknown as MemoryMap[string],
+				};
+				expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(127);
 			});
 
 			it('returns max int16 value for int16* pointer', () => {

@@ -67,6 +67,7 @@ Active todo files are listed below.
 | 326 | Unify remaining editor/runtime memory ids to `module:memory` syntax | 🟡 | 4-8h | 2026-03-26 | Several editor/runtime paths still use dotted cross-module memory ids such as `module.memory`, while compiler address-style intermodule references already use `module:memory`, creating inconsistent source-level syntax. |
 | 349 | Add always-on-top editor directive for code blocks | 🟡 | 3-6h | 2026-03-30 | The editor currently derives z-order directly from `graphicHelper.codeBlocks`, so clicking a normal block always brings it above everything else and there is no way to persistently keep overlay-style blocks above ordinary content. |
 | 354 | Extract WASM Utils to Separate Package | 🟡 | 3h | 2026-03-31 | Extract WASM utility functions (encoding, sections, instructions) from `packages/compiler/src/wasmUtils` into a nested package at `packages/compiler/packages/wasm-utils`. |
+| 355 | Replace `isPointingToInt8`/`isPointingToInt16` booleans with a single `pointeeBaseType` field | 🟢 | 2-4h | 2026-04-02 | The boolean-per-narrow-type pattern on `DataStructure` does not scale; a single discriminant field would simplify consumers and make adding new narrow pointer types trivial. |
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |

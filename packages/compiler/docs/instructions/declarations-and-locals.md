@@ -81,6 +81,30 @@ int colorFromConst HI LO
 int HI LO
 ```
 
+### int8*
+
+The `int8*` and `int8**` instructions declare pointer types whose pointee is a signed 8-bit integer.
+
+The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allocation width. The pointee width is 1 byte.
+
+Dereferencing with `push *name` emits a signed 8-bit load (`i32.load8_s`), which sign-extends the 8-bit value to a 32-bit integer on the stack.
+
+Pointer-aware metadata reflects the 1-byte pointee width:
+- `%*name` returns `1` for `int8*` (pointee element word size)
+
+#### Examples
+
+```
+int8[] samples 64 0
+int8* ptr &samples
+push *ptr        ; loads a signed 8-bit value, sign-extended to i32
+
+int8** pptr &ptr
+push *pptr       ; fully dereferences the double pointer
+
+push %*ptr       ; 1 — pointee element word size
+```
+
 ### int16*
 
 The `int16*` and `int16**` instructions declare pointer types whose pointee is a signed 16-bit integer.
