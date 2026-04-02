@@ -72,6 +72,11 @@ Active todo files are listed below.
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
+| 357 | Reuse single-block recompute in bulk viewport-anchored loop | 🟢 | 30m | 2026-04-02 | `recomputeViewportAnchoredPositions` duplicates the body of `recomputeViewportAnchoredPosition` instead of calling it. |
+| 358 | Convert worldPositionToAnchoredPos to use an input object | 🟢 | 1h | 2026-04-02 | The function takes 11 positional args while its counterpart uses a typed input object, making call sites fragile and inconsistent. |
+| 359 | Audit borderLineCoordinates use of raw vs rounded viewport dimensions | 🟢 | 1-2h | 2026-04-02 | Arrow indicators use raw pixel dimensions; anchored block positioning uses rounded dimensions — the intentional difference is undocumented. |
+| 360 | Use createMockState in viewport-anchored dragging integration test | 🟢 | 30m | 2026-04-02 | The test builds state by hand, causing silent breakage when new required fields are added to the viewport or state slices. |
+| 361 | Replace showBinary/showHex booleans with a displayFormat union type | 🟢 | 1-2h | 2026-04-01 | `MemoryIdentifier` and `Debugger` use two separate booleans for a mutually exclusive three-way display choice; a `displayFormat` union eliminates the invalid combined state and scales to future formats. |
 | 016 | Runtime Loading UI Improvements | 🟢 | 2-3 days | 2025-08-26 | After implementing lazy loading for runtimes (TODO: 015), users will experience a delay when switching between runtime types. Currently, there's no visual feedback during this loading process, which could lead to... |
 | 057 | Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution | 🟢 | 8-12 hours | 2025-09-09 | The 8f4e project currently uses WebAssembly for executing compiled code with basic debugging capabilities (debug instruction parser exists). To enhance the development experience and enable advanced debugging features,... |
 | 203 | Use CodeBlock id instead of recomputing from code | 🟢 | 2-4 days | 2026-01-22 | The system frequently derives code block IDs by calling getCodeBlockId(code) during updates and rendering. This is redundant because CodeBlockGraphicData.id is intended to be the canonical ID. Recomputing on every... |
