@@ -51,6 +51,54 @@ describe('parseInputs', () => {
 		]);
 	});
 
+	it('should parse int8* instruction', () => {
+		const code = ['int8* myInput'];
+		const result = parseInputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myInput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse int8** instruction', () => {
+		const code = ['int8** myInput'];
+		const result = parseInputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myInput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse int16* instruction', () => {
+		const code = ['int16* myInput'];
+		const result = parseInputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myInput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse int16** instruction', () => {
+		const code = ['int16** myInput'];
+		const result = parseInputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myInput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse float64* instruction', () => {
 		const code = ['float64* myInput'];
 		const result = parseInputs(code);
