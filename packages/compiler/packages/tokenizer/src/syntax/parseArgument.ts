@@ -7,6 +7,8 @@ import parseNumericLiteralToken, {
 import parseConstantMulDivExpression from './parseConstantMulDivExpression';
 import isIntermodularModuleReference from './isIntermodularModuleReference';
 import extractIntermodularModuleReferenceBase from './extractIntermodularModuleReferenceBase';
+import isIntermodularModuleNthReference from './isIntermodularModuleNthReference';
+import extractIntermodularModuleNthReferenceBase from './extractIntermodularModuleNthReferenceBase';
 import isIntermodularReference from './isIntermodularReference';
 import isIntermodularElementCountReference from './isIntermodularElementCountReference';
 import extractIntermodularElementCountBase from './extractIntermodularElementCountBase';
@@ -58,6 +60,7 @@ export type ReferenceKind =
 	| 'pointee-element-max'
 	| 'intermodular-reference'
 	| 'intermodular-module-reference'
+	| 'intermodular-module-nth-reference'
 	| 'intermodular-element-count'
 	| 'intermodular-element-word-size'
 	| 'intermodular-element-max'
@@ -83,6 +86,8 @@ export type ArgumentIdentifier = {
 	targetMemoryId?: string;
 	/** For address-reference forms (memory-reference, intermodular-reference, intermodular-module-reference): true when the reference is to the end address. */
 	isEndAddress?: boolean;
+	/** For intermodular-module-nth-reference: the 0-based index of the memory item within the target module. */
+	targetMemoryIndex?: number;
 	/** For pointee-element-* forms: true. */
 	isPointee?: boolean;
 };
@@ -188,6 +193,21 @@ export function classifyIdentifier(value: string): ArgumentIdentifier {
 			scope: 'intermodule',
 			targetModuleId,
 			isEndAddress,
+		};
+	}
+
+	// Intermodular module nth-item references: &mod:0, &mod:1, etc.
+	// Checked before generic intermodular-reference to prevent numeric suffixes from being
+	// treated as named memory identifiers.
+	if (isIntermodularModuleNthReference(value)) {
+		const { module: targetModuleId, index: targetMemoryIndex } = extractIntermodularModuleNthReferenceBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-module-nth-reference',
+			scope: 'intermodule',
+			targetModuleId,
+			targetMemoryIndex,
 		};
 	}
 
