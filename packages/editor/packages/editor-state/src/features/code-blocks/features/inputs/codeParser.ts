@@ -6,9 +6,13 @@ export default function parseInputs(code: string[]): Array<{ id: string; lineNum
 
 		if (
 			instruction === 'int*' ||
+			instruction === 'int8*' ||
+			instruction === 'int16*' ||
 			instruction === 'float*' ||
 			instruction === 'float64*' ||
 			instruction === 'int**' ||
+			instruction === 'int8**' ||
+			instruction === 'int16**' ||
 			instruction === 'float**' ||
 			instruction === 'float64**'
 		) {
