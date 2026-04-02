@@ -3,8 +3,8 @@ title: 'TODO: Fix collectConstants identifier RHS resolution'
 priority: High
 effort: 2-4h
 created: 2026-02-20
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-02
 ---
 
 # TODO: Fix collectConstants identifier RHS resolution
