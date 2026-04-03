@@ -29,7 +29,7 @@ function parseTrailingDirectiveComment(line: string): { name: string; args: stri
 export function createDirectivePlugin(
 	name: string,
 	apply: NonNullable<EditorDirectivePlugin['apply']>,
-	options: Pick<EditorDirectivePlugin, 'allowTrailingComment' | 'clearGraphicData'> = {}
+	options: Pick<EditorDirectivePlugin, 'aliases' | 'allowTrailingComment' | 'clearGraphicData'> = {}
 ): EditorDirectivePlugin {
 	return {
 		name,
@@ -39,7 +39,10 @@ export function createDirectivePlugin(
 }
 
 export function parseEditorDirectives(code: string[], plugins: EditorDirectivePlugin[]): ParsedEditorDirective[] {
-	const pluginsByName = new Map(plugins.map(plugin => [plugin.name, plugin]));
+	const pluginEntries = plugins.flatMap(plugin =>
+		[plugin.name, ...(plugin.aliases ?? [])].map(name => [name, plugin] as const)
+	);
+	const pluginsByName = new Map(pluginEntries);
 
 	return code.flatMap((line, rawRow) => {
 		const parsed = parseDirectiveComment(line);
@@ -51,7 +54,7 @@ export function parseEditorDirectives(code: string[], plugins: EditorDirectivePl
 
 			return [
 				{
-					name: parsed.name,
+					name: plugin.name,
 					rawRow,
 					args: parsed.args,
 					sourceLine: line,
@@ -71,7 +74,7 @@ export function parseEditorDirectives(code: string[], plugins: EditorDirectivePl
 
 		return [
 			{
-				name: trailingParsed.name,
+				name: plugin.name,
 				rawRow,
 				args: trailingParsed.args,
 				sourceLine: line,

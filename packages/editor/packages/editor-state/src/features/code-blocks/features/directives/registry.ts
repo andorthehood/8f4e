@@ -59,8 +59,29 @@ export function deriveDirectiveState(
 	options: DirectiveDeriveOptions = {},
 	plugins: EditorDirectivePlugin[] = directivePlugins
 ): DirectiveDerivedState {
-	const pluginNames = new Set(plugins.map(p => p.name));
-	const directives: ParsedEditorDirective[] = parsedDirectives.filter(d => d.prefix === '@' && pluginNames.has(d.name));
+	const pluginEntries = plugins.flatMap(plugin =>
+		[plugin.name, ...(plugin.aliases ?? [])].map(name => [name, plugin] as const)
+	);
+	const pluginsByName = new Map(pluginEntries);
+	const directives: ParsedEditorDirective[] = parsedDirectives.flatMap(directive => {
+		if (directive.prefix !== '@') {
+			return [];
+		}
+
+		const plugin = pluginsByName.get(directive.name);
+		if (!plugin) {
+			return [];
+		}
+
+		return [
+			{
+				name: plugin.name,
+				rawRow: directive.rawRow,
+				args: directive.args,
+				sourceLine: directive.sourceLine,
+			},
+		];
+	});
 	const draft: DirectiveDerivedStateDraft = {
 		sourceCode: code,
 		blockState: {
@@ -137,6 +158,12 @@ if (import.meta.vitest) {
 			const result = parseEditorDirectives(['int foo 1 ; @watch', 'int bar 1 ; @plot buffer'], directivePlugins);
 
 			expect(result).toEqual([{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' }]);
+		});
+
+		it('normalizes plugin aliases during parsing', () => {
+			const result = parseEditorDirectives(['; @w value'], directivePlugins);
+
+			expect(result).toEqual([{ name: 'watch', rawRow: 0, args: ['value'], sourceLine: '; @w value' }]);
 		});
 
 		it('derives block state and layout in a single pass', () => {
