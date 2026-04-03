@@ -93,11 +93,7 @@ export function navigateToCodeBlockInDirection(
 		}
 
 		setSelectedCodeBlock(stateSource, targetBlock);
-		// Enable animation for this programmatic viewport change, but restore original value after
-		const originalViewportAnimations = state.featureFlags.viewportAnimations;
-		state.featureFlags.viewportAnimations = true;
 		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
-		state.featureFlags.viewportAnimations = originalViewportAnimations;
 		events?.dispatch('viewportMoved');
 		return true;
 	}
@@ -136,11 +132,7 @@ export function jumpToCodeBlock(
 	// If we found a block, select it and center viewport on it
 	if (targetBlock) {
 		setSelectedCodeBlock(stateSource, targetBlock);
-		// Enable animation for this programmatic viewport change, but restore original value after
-		const originalViewportAnimations = state.featureFlags.viewportAnimations;
-		state.featureFlags.viewportAnimations = true;
 		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
-		state.featureFlags.viewportAnimations = originalViewportAnimations;
 		events?.dispatch('viewportMoved');
 		return true;
 	}
@@ -153,17 +145,13 @@ export function jumpToCodeBlock(
  * Centers the viewport on the first @home code block, or defaults to origin.
  *
  * Selects the first code block with isHome=true (regardless of disabled state),
- * centers the viewport on it with animation enabled, and keeps the previous
- * viewport animation setting afterward. If no home block exists, centers the
- * viewport at (0,0).
+ * centers the viewport on it. If no home block exists, centers the viewport at (0,0).
  *
  * @param state - The editor state
  */
 export function goHome(stateSource: StateSource, events?: EventDispatcher): void {
 	const state = getState(stateSource);
 	const homeBlock = state.graphicHelper.codeBlocks.find(block => block.isHome);
-	const originalViewportAnimations = state.featureFlags.viewportAnimations;
-	state.featureFlags.viewportAnimations = true;
 
 	if (homeBlock) {
 		setSelectedCodeBlock(stateSource, homeBlock);
@@ -173,7 +161,6 @@ export function goHome(stateSource: StateSource, events?: EventDispatcher): void
 		state.viewport.y = 0;
 	}
 
-	state.featureFlags.viewportAnimations = originalViewportAnimations;
 	events?.dispatch('viewportMoved');
 }
 

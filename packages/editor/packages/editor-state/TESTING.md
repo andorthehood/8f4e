@@ -71,7 +71,7 @@ Create mock Viewport objects:
 ```typescript
 const viewport = createMockViewport(); // { x: 0, y: 0 }
 const viewport = createMockViewport(100, 200); // { x: 100, y: 200 }
-const viewport = createMockViewport(100, 200, 500); // with animation duration
+const viewport = createMockViewport(100, 200, 500); // custom width
 ```
 
 ### createMockEventDispatcher

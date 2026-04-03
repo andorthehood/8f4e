@@ -9,7 +9,6 @@ import drawInfoOverlay from './drawers/infoOverlay';
 import drawModeOverlay from './drawers/modeOverlay';
 import drawConsoleOverlay from './drawers/consoleOverlay';
 import drawBackground from './drawers/drawBackground';
-import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
 
 import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from './types';
@@ -36,28 +35,12 @@ export default async function init(
 	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
 	clearCache: () => void;
 }> {
-	// Animation state - local to web-ui, not part of editor-state
-	const animationState: { current: AnimationState | null } = { current: null };
-	const previousViewport = {
-		x: state.viewport.x,
-		y: state.viewport.y,
-	};
-
 	const engine = new Engine(canvas, { caching: true });
 
 	engine.loadSpriteSheet(spriteData.canvas);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
-		const effectiveViewport = calculateAnimatedViewport(state, performance.now(), animationState, previousViewport);
 		const shouldDrawInfoOverlay = state.globalEditorDirectives.infoOverlay ?? state.featureFlags.infoOverlay;
-
-		const originalViewport = {
-			x: state.viewport.x,
-			y: state.viewport.y,
-		};
-
-		state.viewport.x = effectiveViewport.x;
-		state.viewport.y = effectiveViewport.y;
 
 		drawBackground(engine, state);
 		if (state.featureFlags.consoleOverlay && state.featureFlags.editing) {
@@ -76,9 +59,6 @@ export default async function init(
 		drawContextMenu(engine, state);
 		drawModeOverlay(engine, state);
 		drawDialog(engine, state);
-
-		state.viewport.x = originalViewport.x;
-		state.viewport.y = originalViewport.y;
 	});
 
 	return {

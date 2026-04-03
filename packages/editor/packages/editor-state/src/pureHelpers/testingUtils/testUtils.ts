@@ -182,17 +182,16 @@ export function findWidgetById<T extends { id: string }>(array: T[], id: string)
  * @param y - Y coordinate (defaults to 0)
  * @param width - Viewport width (defaults to 800)
  * @param height - Viewport height (defaults to 600)
- * @param animationDurationMs - Optional animation duration in milliseconds
  * @returns A GraphicHelper viewport object
  *
  * @example
  * const viewport = createMockViewport();
  * const viewport = createMockViewport(100, 200);
  * const viewport = createMockViewport(100, 200, 1920, 1080);
- * const viewport = createMockViewport(100, 200, 800, 600, 500);
+ * const viewport = createMockViewport(100, 200, 800, 600);
  */
-export function createMockViewport(x = 0, y = 0, width = 800, height = 600, animationDurationMs?: number): Viewport {
-	const viewport: Viewport = {
+export function createMockViewport(x = 0, y = 0, width = 800, height = 600): Viewport {
+	return {
 		x,
 		y,
 		width,
@@ -209,10 +208,6 @@ export function createMockViewport(x = 0, y = 0, width = 800, height = 600, anim
 		},
 		center: { x: 0, y: 0 },
 	};
-	if (animationDurationMs !== undefined) {
-		viewport.animationDurationMs = animationDurationMs;
-	}
-	return viewport;
 }
 
 /**
@@ -298,7 +293,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportDragging: true,
 			editing: true,
 			modeToggling: true,
-			viewportAnimations: true,
 			demoMode: false,
 			consoleOverlay: false,
 			positionOffsetters: true,

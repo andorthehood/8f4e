@@ -10,7 +10,6 @@ import type { GridCoordinates } from '../../shared/types';
  */
 export interface ProjectViewport {
 	gridCoordinates: GridCoordinates;
-	animationDurationMs?: number;
 }
 
 export interface Viewport {
@@ -29,5 +28,4 @@ export interface Viewport {
 	center: { x: number; y: number };
 	x: number;
 	y: number;
-	animationDurationMs?: number;
 }

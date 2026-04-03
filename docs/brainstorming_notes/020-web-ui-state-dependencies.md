@@ -5,7 +5,7 @@ This note captures which editor-state fields the `@8f4e/web-ui` package reads or
 ## State surface used by `@8f4e/web-ui`
 
 - `state.graphicHelper.spriteLookups` (read + write); expects lookups like `fillColors`, `fontLineNumber`, `fontMenuItemText`, `fontMenuItemTextHighlighted`, `background`, `icons`, `fontNumbers`, `fontCode`, `feedbackScale`, `plotter`, `pianoKeys`
-- `state.graphicHelper.viewport` (read + write): `x`, `y`, `width`, `height`, `roundedWidth`, `roundedHeight`, `hGrid`, `vGrid`, `animationDurationMs?`, `center.{x,y}`, `borderLineCoordinates.{top|right|bottom|left}.{startX,startY,endX,endY}`
+- `state.graphicHelper.viewport` (read + write): `x`, `y`, `width`, `height`, `roundedWidth`, `roundedHeight`, `hGrid`, `vGrid`, `center.{x,y}`, `borderLineCoordinates.{top|right|bottom|left}.{startX,startY,endX,endY}`
 - `state.graphicHelper.codeBlocks` (iterated for rendering)
 - `state.graphicHelper.selectedCodeBlock`, `state.graphicHelper.draggedCodeBlock`
 - `state.graphicHelper.outputsByWordAddress` (Map lookup for wire rendering)
@@ -14,7 +14,7 @@ This note captures which editor-state fields the `@8f4e/web-ui` package reads or
 - `state.console.logs`
 - `state.editorSettings.font`
 - `state.colorScheme`
-- `state.featureFlags.{consoleOverlay,infoOverlay,viewportAnimations}`
+- `state.featureFlags.{consoleOverlay,infoOverlay}`
 - `state.compiler.{compiledModules,compilationTime,byteCodeSize,allocatedMemorySize}`
 - `state.compiledConfig.{memorySizeBytes,runtimeSettings,selectedRuntime}`
 - `state.runtime.stats.{timerExpectedIntervalTimeMs,timeToExecuteLoopMs,timerPrecisionPercentage,timerDriftMs}`

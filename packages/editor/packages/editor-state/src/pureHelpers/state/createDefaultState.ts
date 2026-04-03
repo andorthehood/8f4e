@@ -76,7 +76,6 @@ export default function createDefaultState() {
 		viewport: {
 			x: 0,
 			y: 0,
-			animationDurationMs: 0,
 			width: 0,
 			height: 0,
 			roundedHeight: 0,
