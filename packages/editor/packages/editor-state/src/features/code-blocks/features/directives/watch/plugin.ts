@@ -14,6 +14,7 @@ export default createDirectivePlugin(
 		draft.widgets.push(createWatchDirectiveWidgetContribution(watch));
 	},
 	{
+		aliases: ['w'],
 		allowTrailingComment: true,
 		clearGraphicData: graphicData => {
 			graphicData.widgets.debuggers = [];

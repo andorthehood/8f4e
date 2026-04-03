@@ -66,6 +66,7 @@ export interface DirectiveDeriveOptions {
 
 export interface EditorDirectivePlugin {
 	name: string;
+	aliases?: string[];
 	allowTrailingComment?: boolean;
 	clearGraphicData?: (graphicData: CodeBlockGraphicData) => void;
 	apply?: (directive: ParsedEditorDirective, draft: DirectiveDerivedStateDraft) => void;

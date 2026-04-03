@@ -180,6 +180,28 @@ describe('watch directive widget resolution', () => {
 		expect(findWidgetById(mockGraphicData.widgets.debuggers, 'myVar')).toBeDefined();
 	});
 
+	it('should resolve shorthand watch directives', () => {
+		mockGraphicData.code = ['; @w myVar'];
+		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
+			wordAlignedAddress: 5,
+			byteAddress: 20,
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'myVar',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
+
+		runDirectiveResolution();
+
+		expect(findWidgetById(mockGraphicData.widgets.debuggers, 'myVar')).toBeDefined();
+	});
+
 	it('should resolve inline watch directives for anonymous declarations', () => {
 		mockGraphicData.code = ['int 0 ; @watch'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__0'] = {
