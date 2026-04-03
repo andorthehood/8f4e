@@ -12,8 +12,8 @@ completed: null
 ## Problem Description
 
 Memory declaration rules are currently encoded in two places:
-- tokenizer-side shape parsing in [`packages/compiler/packages/tokenizer/src/syntax/memoryInstructionParser.ts`](/Users/andorpolgar/git/8f4e/packages/compiler/packages/tokenizer/src/syntax/memoryInstructionParser.ts)
-- compiler-side semantic parsing in [`packages/compiler/src/utils/memoryInstructionParser.ts`](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryInstructionParser.ts)
+- tokenizer-side shape parsing in [`packages/compiler/packages/tokenizer/src/syntax/memoryInstructionParser.ts`](../../packages/compiler/packages/tokenizer/src/syntax/memoryInstructionParser.ts)
+- compiler-side semantic parsing in [`packages/compiler/src/utils/memoryInstructionParser.ts`](../../packages/compiler/src/utils/memoryInstructionParser.ts)
 
 These files do not do the same job, but they do encode overlapping knowledge about:
 - anonymous vs named scalar declarations
@@ -100,10 +100,10 @@ The preferred outcome is not necessarily less code, but less duplicated rule int
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/368-separate-memory-declaration-id-and-default-resolution.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/362-refactor-argumentidentifier-to-discriminated-union.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/363-enforce-classifyidentifier-check-ordering.md`
+- **Related**: `367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
+- **Related**: `368-separate-memory-declaration-id-and-default-resolution.md`
+- **Related**: `362-refactor-argumentidentifier-to-discriminated-union.md`
+- **Related**: `363-enforce-classifyidentifier-check-ordering.md`
 
 ## Notes
 
