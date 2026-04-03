@@ -4,6 +4,7 @@ exports[`watch directive widget resolution > should handle multiple debuggers 1`
 [
   {
     "bufferPointer": 0,
+    "displayFormat": "decimal",
     "height": 16,
     "id": "var1",
     "memory": {
@@ -21,15 +22,14 @@ exports[`watch directive widget resolution > should handle multiple debuggers 1`
       "wordAlignedSize": 1,
     },
     "showAddress": false,
-    "showBinary": false,
     "showEndAddress": false,
-    "showHex": false,
     "width": 16,
     "x": 144,
     "y": 0,
   },
   {
     "bufferPointer": 0,
+    "displayFormat": "decimal",
     "height": 16,
     "id": "var2",
     "memory": {
@@ -47,9 +47,7 @@ exports[`watch directive widget resolution > should handle multiple debuggers 1`
       "wordAlignedSize": 1,
     },
     "showAddress": false,
-    "showBinary": false,
     "showEndAddress": false,
-    "showHex": false,
     "width": 16,
     "x": 144,
     "y": 16,
@@ -60,6 +58,7 @@ exports[`watch directive widget resolution > should handle multiple debuggers 1`
 exports[`watch directive widget resolution > should position debuggers at correct y coordinate based on line number 1`] = `
 {
   "bufferPointer": 0,
+  "displayFormat": "decimal",
   "height": 16,
   "id": "myVar",
   "memory": {
@@ -77,9 +76,7 @@ exports[`watch directive widget resolution > should position debuggers at correc
     "wordAlignedSize": 1,
   },
   "showAddress": false,
-  "showBinary": false,
   "showEndAddress": false,
-  "showHex": false,
   "width": 16,
   "x": 152,
   "y": 32,

@@ -17,11 +17,12 @@ export default function drawConnectors(
 		return;
 	}
 
-	for (const { x, y, memory, showAddress, showEndAddress, showBinary, showHex, bufferPointer } of codeBlock.widgets
+	for (const { x, y, memory, showAddress, showEndAddress, displayFormat, bufferPointer } of codeBlock.widgets
 		.debuggers) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
-		const radix = showBinary ? 2 : showHex ? 16 : 10;
+		const radixMap = { decimal: 10, binary: 2, hex: 16 } as const;
+		const radix = radixMap[displayFormat];
 
 		if (showAddress) {
 			engine.drawText(x, y, '[' + (memory.byteAddress + bufferPointer * 4) + ']');

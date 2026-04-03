@@ -68,8 +68,7 @@ export interface Debugger {
 	id: string;
 	memory: DataStructure;
 	bufferPointer: number;
-	showBinary: boolean;
-	showHex: boolean;
+	displayFormat: 'decimal' | 'binary' | 'hex';
 }
 
 export interface MemoryIdentifier {
@@ -77,8 +76,7 @@ export interface MemoryIdentifier {
 	showAddress: boolean;
 	showEndAddress: boolean;
 	bufferPointer: number;
-	showBinary: boolean;
-	showHex: boolean;
+	displayFormat: 'decimal' | 'binary' | 'hex';
 }
 
 export interface ArrayPlotter {
