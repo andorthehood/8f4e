@@ -180,6 +180,30 @@ describe('watch directive widget resolution', () => {
 		expect(findWidgetById(mockGraphicData.widgets.debuggers, 'myVar')).toBeDefined();
 	});
 
+	it('should resolve inline hex watch directives by templating the same-line declaration id', () => {
+		mockGraphicData.code = ['int myVar 1 ; @watch 0x'];
+		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
+			wordAlignedAddress: 5,
+			byteAddress: 20,
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'myVar',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
+
+		runDirectiveResolution();
+
+		const debuggerWidget = findWidgetById(mockGraphicData.widgets.debuggers, '0xmyVar');
+		expect(debuggerWidget).toBeDefined();
+		expect(debuggerWidget?.displayFormat).toBe('hex');
+	});
+
 	it('should resolve shorthand watch directives', () => {
 		mockGraphicData.code = ['; @w myVar'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
@@ -222,5 +246,29 @@ describe('watch directive widget resolution', () => {
 		runDirectiveResolution();
 
 		expect(findWidgetById(mockGraphicData.widgets.debuggers, '__anonymous__0')).toBeDefined();
+	});
+
+	it('should resolve inline hex watch directives for anonymous declarations', () => {
+		mockGraphicData.code = ['int 0 ; @watch 0x'];
+		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__0'] = {
+			wordAlignedAddress: 5,
+			byteAddress: 20,
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: '__anonymous__0',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
+
+		runDirectiveResolution();
+
+		const debuggerWidget = findWidgetById(mockGraphicData.widgets.debuggers, '0x__anonymous__0');
+		expect(debuggerWidget).toBeDefined();
+		expect(debuggerWidget?.displayFormat).toBe('hex');
 	});
 });
