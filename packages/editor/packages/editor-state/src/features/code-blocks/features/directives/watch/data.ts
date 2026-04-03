@@ -5,6 +5,41 @@ export interface WatchDirectiveData {
 	lineNumber: number;
 }
 
+function applyWatchTemplate(template: string, inferredId: string): string | undefined {
+	let remaining = template;
+	let formatPrefix = '';
+	let leadingOperator = '';
+	let trailingEndAddress = '';
+	let indexSuffix = '';
+
+	if (remaining.startsWith('0b') || remaining.startsWith('0x')) {
+		formatPrefix = remaining.slice(0, 2);
+		remaining = remaining.slice(2);
+	}
+
+	if (remaining.startsWith('&') || remaining.startsWith('*')) {
+		leadingOperator = remaining[0];
+		remaining = remaining.slice(1);
+	}
+
+	if (remaining.endsWith('&')) {
+		trailingEndAddress = '&';
+		remaining = remaining.slice(0, -1);
+	}
+
+	const indexMatch = remaining.match(/\[\d+\]$/);
+	if (indexMatch) {
+		indexSuffix = indexMatch[0];
+		remaining = remaining.slice(0, -indexSuffix.length);
+	}
+
+	if (remaining.length > 0) {
+		return undefined;
+	}
+
+	return formatPrefix + leadingOperator + inferredId + trailingEndAddress + indexSuffix;
+}
+
 function inferWatchIdFromSourceLine(sourceLine: string, lineNumber: number): string | undefined {
 	try {
 		const parsedLine = parseLine(sourceLine, lineNumber);
@@ -41,7 +76,8 @@ export function createWatchDirectiveData(
 	lineNumber: number,
 	sourceLine?: string
 ): WatchDirectiveData | undefined {
-	const id = args[0] ?? (sourceLine ? inferWatchIdFromSourceLine(sourceLine, lineNumber) : undefined);
+	const inferredId = sourceLine ? inferWatchIdFromSourceLine(sourceLine, lineNumber) : undefined;
+	const id = !args[0] ? inferredId : inferredId ? (applyWatchTemplate(args[0], inferredId) ?? args[0]) : args[0];
 	if (!id) {
 		return undefined;
 	}

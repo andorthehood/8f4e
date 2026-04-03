@@ -117,6 +117,33 @@ describe('watch directive data', () => {
 		]);
 	});
 
+	it('should apply hex formatting to an inferred same-line watch id', () => {
+		expect(parseWatchDirectiveData(['int foo 1 ; @watch 0x'])).toEqual([
+			{
+				id: '0xfoo',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should apply binary formatting to an inferred same-line watch id', () => {
+		expect(parseWatchDirectiveData(['int foo 1 ; @watch 0b'])).toEqual([
+			{
+				id: '0bfoo',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should preserve explicit hex watch ids instead of treating them as templates', () => {
+		expect(parseWatchDirectiveData(['int foo 1 ; @watch 0xbar'])).toEqual([
+			{
+				id: '0xbar',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should infer compiler-generated ids for inline anonymous declarations', () => {
 		expect(parseWatchDirectiveData(['int 1 ; @watch'])).toEqual([
 			{
@@ -130,6 +157,15 @@ describe('watch directive data', () => {
 		expect(parseWatchDirectiveData(['int 0 ; @watch'])).toEqual([
 			{
 				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should apply formatting templates to inferred anonymous declaration ids', () => {
+		expect(parseWatchDirectiveData(['int 0 ; @watch 0x'])).toEqual([
+			{
+				id: '0x__anonymous__0',
 				lineNumber: 0,
 			},
 		]);
