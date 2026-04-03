@@ -96,7 +96,21 @@ describe('watch directive data', () => {
 		]);
 	});
 
-	it('should ignore inline watch directives on declarations without a named memory id', () => {
-		expect(parseWatchDirectiveData(['int 1 ; @watch'])).toEqual([]);
+	it('should infer compiler-generated ids for inline anonymous declarations', () => {
+		expect(parseWatchDirectiveData(['int 1 ; @watch'])).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should infer compiler-generated ids for same-line anonymous declarations', () => {
+		expect(parseWatchDirectiveData(['int 0 ; @watch'])).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
 	});
 });
