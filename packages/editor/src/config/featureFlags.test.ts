@@ -35,7 +35,6 @@ describe('Feature Flags Configuration', () => {
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
 		expect(defaultFeatureFlags.editing).toBe(false);
 		expect(defaultFeatureFlags.modeToggling).toBe(true);
-		expect(defaultFeatureFlags.demoMode).toBe(false);
 	});
 
 	test('validateFeatureFlags should preserve enabled flags when disabled flags are specified', () => {
@@ -51,7 +50,6 @@ describe('Feature Flags Configuration', () => {
 		expect(result.viewportDragging).toBe(true);
 		expect(result.editing).toBe(false);
 		expect(result.modeToggling).toBe(true);
-		expect(result.demoMode).toBe(false);
 	});
 
 	test('validateFeatureFlags should allow disabling editing flag', () => {
@@ -80,21 +78,5 @@ describe('Feature Flags Configuration', () => {
 		expect(result.moduleDragging).toBe(false);
 		expect(result.infoOverlay).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-	});
-
-	test('validateFeatureFlags should allow enabling demo mode', () => {
-		const config: FeatureFlagsConfig = {
-			demoMode: true,
-		};
-		const result = validateFeatureFlags(config);
-
-		expect(result.demoMode).toBe(true);
-		expect(result.contextMenu).toBe(true);
-		expect(result.infoOverlay).toBe(false);
-		expect(result.moduleDragging).toBe(true);
-		expect(result.codeLineSelection).toBe(false);
-		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(false);
-		expect(result.modeToggling).toBe(true);
 	});
 });

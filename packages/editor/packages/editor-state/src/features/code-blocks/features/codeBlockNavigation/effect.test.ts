@@ -44,7 +44,6 @@ describe('codeBlockNavigation', () => {
 				moduleDragging: true,
 				viewportDragging: true,
 				editing: true,
-				demoMode: false,
 			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,

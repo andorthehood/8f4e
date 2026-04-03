@@ -151,9 +151,6 @@ export interface FeatureFlags {
 	/** Enable/disable keyboard toggling between view/edit modes (e/Escape) */
 	modeToggling: boolean;
 
-	/** Enable/disable automatic demo mode with periodic code block navigation */
-	demoMode: boolean;
-
 	/** Enable/disable history tracking for undo/redo functionality */
 	historyTracking?: boolean;
 

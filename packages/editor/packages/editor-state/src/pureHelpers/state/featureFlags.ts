@@ -12,7 +12,6 @@ export const defaultFeatureFlags: FeatureFlags = {
 	viewportDragging: true,
 	editing: false,
 	modeToggling: true,
-	demoMode: false,
 	historyTracking: true,
 	consoleOverlay: true,
 	positionOffsetters: true,

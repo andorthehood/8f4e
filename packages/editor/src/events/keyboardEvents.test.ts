@@ -69,7 +69,6 @@ describe('keyboardEvents mode switching', () => {
 			viewportDragging: true,
 			editing: false,
 			modeToggling: true,
-			demoMode: false,
 			historyTracking: true,
 			consoleOverlay: true,
 			positionOffsetters: true,

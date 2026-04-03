@@ -293,7 +293,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportDragging: true,
 			editing: true,
 			modeToggling: true,
-			demoMode: false,
 			consoleOverlay: false,
 			positionOffsetters: true,
 		},
