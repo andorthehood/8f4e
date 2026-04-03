@@ -10,7 +10,6 @@ import viewportDirectiveEffect from './features/code-blocks/features/directives/
 import codeBlockCreator from './features/code-blocks/features/codeBlockCreator/effect';
 import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/effect';
 import codeBlockNavigation from './features/code-blocks/features/codeBlockNavigation/effect';
-import demoModeNavigation from './features/demo-mode/demoModeNavigation';
 import compiler from './features/program-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
@@ -68,7 +67,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	projectImport(store, events);
 	codeBlockDragger(store, events);
 	codeBlockNavigation(store, events);
-	demoModeNavigation(store, events);
 	_switch(state, events);
 	button(state, events);
 	slider(store, events);

@@ -10,7 +10,6 @@ The feature flags system allows you to enable/disable specific editor functional
 - `moduleDragging: boolean` - Enable/disable dragging and repositioning of code block modules
 - `viewportDragging: boolean` - Enable/disable panning/scrolling of the editor viewport
 - `editing: boolean` - Enable/disable all editing functionality (create, edit, delete, save)
-- `demoMode: boolean` - Enable/disable automatic demo mode with periodic code block navigation (default: false)
 
 ## Usage Examples
 
@@ -95,28 +94,6 @@ const state = init(events, project, {
   }
 });
 ```
-
-### Demo Mode (Automatic Navigation)
-
-```typescript
-import init from '@8f4e/editor';
-
-const state = init(events, project, {
-  featureFlags: {
-    demoMode: true,          // Enable automatic code block navigation
-    editing: false,          // Disable editing during demo
-    contextMenu: false,      // Disable context menu
-    infoOverlay: false,      // Hide development information
-    moduleDragging: false,   // Disable module dragging
-    // viewportDragging remains enabled for manual navigation if needed
-  }
-});
-```
-
-Demo mode features:
-- Automatically selects a random code block when the project loads
-- Navigates between code blocks every 2 seconds in random directions
-- Perfect for automated demos, presentations, or showcase displays
 
 ### Debug Mode (With Console Overlay)
 
