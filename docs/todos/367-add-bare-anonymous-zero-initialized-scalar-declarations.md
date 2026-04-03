@@ -61,12 +61,12 @@ Implementation approach:
 ## Implementation Plan
 
 ### Step 1: Extend scalar declaration argument parsing
-- Update [`packages/compiler/src/utils/memoryInstructionParser.ts`](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryInstructionParser.ts) so zero-argument scalar declarations return an anonymous id plus `defaultValue: 0`.
+- Update [`packages/compiler/src/utils/memoryInstructionParser.ts`](../../packages/compiler/src/utils/memoryInstructionParser.ts) so zero-argument scalar declarations return an anonymous id plus `defaultValue: 0`.
 - Keep the existing branches for literal-first and constant-style anonymous declarations unchanged.
 - Preserve the current named-declaration fallback where a missing second token means default `0`.
 
 ### Step 2: Add focused compiler tests
-- Add a unit test in [`packages/compiler/tests/utils/parseMemoryInstructionArguments.test.ts`](/Users/andorpolgar/git/8f4e/packages/compiler/tests/utils/parseMemoryInstructionArguments.test.ts) for zero arguments returning an anonymous zero-initialized declaration.
+- Add a unit test in [`packages/compiler/tests/utils/parseMemoryInstructionArguments.test.ts`](../../packages/compiler/tests/utils/parseMemoryInstructionArguments.test.ts) for zero arguments returning an anonymous zero-initialized declaration.
 - Add or extend instruction-level tests for representative scalar declarations:
 - `int`
 - `float`
@@ -74,7 +74,7 @@ Implementation approach:
 - Verify existing tests for `int 42` and `int FOO` still pass unchanged.
 
 ### Step 3: Update documentation
-- Update [`packages/compiler/docs/instructions/declarations-and-locals.md`](/Users/andorpolgar/git/8f4e/packages/compiler/docs/instructions/declarations-and-locals.md) to document the new bare scalar form.
+- Update [`packages/compiler/docs/instructions/declarations-and-locals.md`](../../packages/compiler/docs/instructions/declarations-and-locals.md) to document the new bare scalar form.
 - Clarify that anonymous scalar declarations now have three supported forms:
 - bare implicit zero, e.g. `int`
 - anonymous literal/value, e.g. `int 42`
@@ -116,10 +116,10 @@ Implementation approach:
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/356-consolidate-declaration-compilers-into-factory.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/362-refactor-argumentidentifier-to-discriminated-union.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/363-enforce-classifyidentifier-check-ordering.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/archived/308-simplify-memory-instruction-default-value-resolution.md`
+- **Related**: `356-consolidate-declaration-compilers-into-factory.md`
+- **Related**: `362-refactor-argumentidentifier-to-discriminated-union.md`
+- **Related**: `363-enforce-classifyidentifier-check-ordering.md`
+- **Related**: `archived/308-simplify-memory-instruction-default-value-resolution.md`
 
 ## Notes
 

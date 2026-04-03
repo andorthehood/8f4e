@@ -11,7 +11,7 @@ completed: null
 
 ## Problem Description
 
-[`packages/compiler/src/utils/memoryInstructionParser.ts`](/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryInstructionParser.ts) currently handles several distinct concerns in one function:
+[`packages/compiler/src/utils/memoryInstructionParser.ts`](../../packages/compiler/src/utils/memoryInstructionParser.ts) currently handles several distinct concerns in one function:
 - deciding whether a scalar declaration is named or anonymous
 - interpreting anonymous declaration forms
 - decoding split-byte defaults
@@ -99,9 +99,9 @@ The key goal is not to change user-visible behavior. The refactor should preserv
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/356-consolidate-declaration-compilers-into-factory.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/archived/308-simplify-memory-instruction-default-value-resolution.md`
+- **Related**: `367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
+- **Related**: `356-consolidate-declaration-compilers-into-factory.md`
+- **Related**: `archived/308-simplify-memory-instruction-default-value-resolution.md`
 
 ## Notes
 
