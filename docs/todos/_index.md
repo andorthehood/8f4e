@@ -77,6 +77,7 @@ Active todo files are listed below.
 | 203 | Use CodeBlock id instead of recomputing from code | 🟢 | 2-4 days | 2026-01-22 | The system frequently derives code block IDs by calling getCodeBlockId(code) during updates and rendering. This is redundant because CodeBlockGraphicData.id is intended to be the canonical ID. Recomputing on every... |
 | 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
 | 366 | Add configurable loop cap directive and loop override | 🟡 | 4-8h | 2026-04-03 | The compiler currently injects infinite-loop protection into every `loop`, but the cap is hardcoded to `1000`. |
+| 367 | Refactor compiler directive plumbing and loop guard config | 🟡 | 4-8h | 2026-04-03 | Recent compiler directive work exposed repeated directive boilerplate, a magic loop-cap value in codegen, and some likely-obsolete tokenizer directive helpers. |
 
 ## Completed TODOs
 
