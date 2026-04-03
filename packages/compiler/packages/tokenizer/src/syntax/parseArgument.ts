@@ -180,6 +180,19 @@ export function decodeStringLiteral(raw: string): string {
 /**
  * Classifies an identifier string into a structured `ArgumentIdentifier` with reference metadata.
  * Classification is based purely on token shape; no semantic resolution is performed.
+ *
+ * Required check order (earlier checks must precede later ones):
+ *  1. intermodular-module-reference  (&mod: / mod:&)     — before intermodular-reference,
+ *     because &mod: starts with & like local memory refs and the module-base form must win.
+ *  2. intermodular-module-nth-reference (&mod:0)          — before intermodular-reference,
+ *     because digits are valid [^\s&:.] chars so &mod:0 would silently match the named-memory regex.
+ *  3. intermodular-reference (&mod:mem / mod:mem&)        — before memory-reference,
+ *     because both start/end with & and the intermodular form must win.
+ *  4. intermodular element-query forms (count/sizeof/…)   — before local element-query forms,
+ *     because their pattern (e.g. count(mod:mem)) is a superset of the local form (count(name)).
+ *  5. memory-reference (&name / name&)                    — after all intermodular forms.
+ *  6. pointee element-query forms                         — before plain element-query forms,
+ *     because sizeof(*name) also starts with sizeof( and max(*name) also starts with max(.
  */
 export function classifyIdentifier(value: string): ArgumentIdentifier {
 	// Intermodular module-base references must be checked before generic memory-reference
