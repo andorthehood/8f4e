@@ -43,7 +43,6 @@ describe('codeBlockNavigation', () => {
 				infoOverlay: true,
 				moduleDragging: true,
 				viewportDragging: true,
-				viewportAnimations: false,
 				editing: true,
 				demoMode: false,
 			},
@@ -313,7 +312,6 @@ describe('codeBlockNavigation', () => {
 
 		it('should center on origin when no home block exists', () => {
 			state = createMockState({
-				featureFlags: { viewportAnimations: false },
 				viewport: { x: 25, y: -10 },
 				graphicHelper: { codeBlocks: [selectedBlock], selectedCodeBlock: selectedBlock },
 			});
@@ -322,7 +320,6 @@ describe('codeBlockNavigation', () => {
 
 			expect(state.viewport.x).toBe(0);
 			expect(state.viewport.y).toBe(0);
-			expect(state.featureFlags.viewportAnimations).toBe(false);
 			expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
 		});
 

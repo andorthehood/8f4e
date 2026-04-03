@@ -145,9 +145,6 @@ export interface FeatureFlags {
 	/** Enable/disable panning/scrolling of the editor viewport */
 	viewportDragging: boolean;
 
-	/** Enable/disable viewport animations for programmatic viewport changes */
-	viewportAnimations: boolean;
-
 	/** Enable/disable all editing functionality (create, edit, delete, save) */
 	editing: boolean;
 

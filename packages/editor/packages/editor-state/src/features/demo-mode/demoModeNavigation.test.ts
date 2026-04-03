@@ -46,7 +46,6 @@ describe('demoModeNavigation', () => {
 				infoOverlay: true,
 				moduleDragging: true,
 				viewportDragging: true,
-				viewportAnimations: false,
 				editing: true,
 				demoMode: true,
 			},
