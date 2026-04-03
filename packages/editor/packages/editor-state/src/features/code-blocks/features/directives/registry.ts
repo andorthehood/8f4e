@@ -128,9 +128,15 @@ if (import.meta.vitest) {
 			);
 
 			expect(result).toEqual([
-				{ name: 'plot', rawRow: 1, args: ['buffer', '-1', '1'] },
-				{ name: 'slider', rawRow: 2, args: ['gain', '0', '1', '0.01'] },
+				{ name: 'plot', rawRow: 1, args: ['buffer', '-1', '1'], sourceLine: '; @plot buffer -1 1' },
+				{ name: 'slider', rawRow: 2, args: ['gain', '0', '1', '0.01'], sourceLine: '; @slider gain 0 1 0.01' },
 			]);
+		});
+
+		it('parses trailing-comment directives only for plugins that allow them', () => {
+			const result = parseEditorDirectives(['int foo 1 ; @watch', 'int bar 1 ; @plot buffer'], directivePlugins);
+
+			expect(result).toEqual([{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' }]);
 		});
 
 		it('derives block state and layout in a single pass', () => {
