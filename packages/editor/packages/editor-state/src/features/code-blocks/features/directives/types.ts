@@ -5,6 +5,7 @@ export interface ParsedEditorDirective {
 	name: string;
 	rawRow: number;
 	args: string[];
+	sourceLine?: string;
 }
 
 export interface DirectiveLayoutContribution {
@@ -65,6 +66,8 @@ export interface DirectiveDeriveOptions {
 
 export interface EditorDirectivePlugin {
 	name: string;
+	aliases?: string[];
+	allowTrailingComment?: boolean;
 	clearGraphicData?: (graphicData: CodeBlockGraphicData) => void;
 	apply?: (directive: ParsedEditorDirective, draft: DirectiveDerivedStateDraft) => void;
 }

@@ -1,6 +1,7 @@
 import type { ParsedDirectiveRecord } from '~/types';
 
 const DIRECTIVE_PATTERN = /^\s*;\s*([@~])(\w+)(?:\s+(.*))?$/;
+const TRAILING_EDITOR_DIRECTIVE_PATTERN = /;\s*@(\w+)(?:\s+(.*))?\s*$/;
 
 /**
  * Scans every line of a code block's raw source and returns a flat array of
@@ -15,6 +16,19 @@ export function parseBlockDirectives(code: string[]): ParsedDirectiveRecord[] {
 	for (let rawRow = 0; rawRow < code.length; rawRow++) {
 		const match = code[rawRow].match(DIRECTIVE_PATTERN);
 		if (!match) {
+			const trailingMatch = code[rawRow].match(TRAILING_EDITOR_DIRECTIVE_PATTERN);
+			if (!trailingMatch) {
+				continue;
+			}
+
+			const [, name, rawArgs] = trailingMatch;
+			records.push({
+				prefix: '@',
+				name,
+				args: rawArgs ? rawArgs.trim().split(/\s+/) : [],
+				rawRow,
+				sourceLine: code[rawRow],
+			});
 			continue;
 		}
 
@@ -24,6 +38,7 @@ export function parseBlockDirectives(code: string[]): ParsedDirectiveRecord[] {
 			name,
 			args: rawArgs ? rawArgs.trim().split(/\s+/) : [],
 			rawRow,
+			sourceLine: code[rawRow],
 		});
 	}
 
