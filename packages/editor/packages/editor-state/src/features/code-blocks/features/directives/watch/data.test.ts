@@ -24,6 +24,18 @@ describe('watch directive data', () => {
 		]);
 	});
 
+	it('should parse shorthand watch directives', () => {
+		const code = ['; @w myVar'];
+		const result = parseWatchDirectiveData(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myVar',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should handle multiple debug instructions', () => {
 		const code = ['; @watch var1', 'mov a b', '; @watch var2', 'add c d', '; @watch var3'];
 		const result = parseWatchDirectiveData(code);
@@ -80,6 +92,15 @@ describe('watch directive data', () => {
 
 	it('should infer the watched memory id from a same-line declaration', () => {
 		expect(parseWatchDirectiveData(['int foo 1 ; @watch'])).toEqual([
+			{
+				id: 'foo',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should infer the watched memory id from a same-line shorthand directive', () => {
+		expect(parseWatchDirectiveData(['int foo 1 ; @w'])).toEqual([
 			{
 				id: 'foo',
 				lineNumber: 0,
