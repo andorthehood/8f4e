@@ -145,6 +145,8 @@ export interface ParsedDirectiveRecord {
 	args: string[];
 	/** Zero-based raw line index within the code block */
 	rawRow: number;
+	/** Original source line that contained the directive */
+	sourceLine?: string;
 }
 
 /**
