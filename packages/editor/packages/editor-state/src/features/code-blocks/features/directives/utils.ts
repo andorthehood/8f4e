@@ -13,10 +13,23 @@ export function parseDirectiveComment(line: string): { name: string; args: strin
 	};
 }
 
+function parseTrailingDirectiveComment(line: string): { name: string; args: string[] } | undefined {
+	const commentMatch = line.match(/;\s*@(\w+)(?:\s+(.*))?\s*$/);
+	if (!commentMatch) {
+		return undefined;
+	}
+
+	const [, name, rawArgs] = commentMatch;
+	return {
+		name,
+		args: rawArgs ? rawArgs.trim().split(/\s+/) : [],
+	};
+}
+
 export function createDirectivePlugin(
 	name: string,
 	apply: NonNullable<EditorDirectivePlugin['apply']>,
-	options: Pick<EditorDirectivePlugin, 'clearGraphicData'> = {}
+	options: Pick<EditorDirectivePlugin, 'allowTrailingComment' | 'clearGraphicData'> = {}
 ): EditorDirectivePlugin {
 	return {
 		name,
@@ -26,19 +39,42 @@ export function createDirectivePlugin(
 }
 
 export function parseEditorDirectives(code: string[], plugins: EditorDirectivePlugin[]): ParsedEditorDirective[] {
-	const pluginNames = new Set(plugins.map(plugin => plugin.name));
+	const pluginsByName = new Map(plugins.map(plugin => [plugin.name, plugin]));
 
 	return code.flatMap((line, rawRow) => {
 		const parsed = parseDirectiveComment(line);
-		if (!parsed || !pluginNames.has(parsed.name)) {
+		if (parsed) {
+			const plugin = pluginsByName.get(parsed.name);
+			if (!plugin) {
+				return [];
+			}
+
+			return [
+				{
+					name: parsed.name,
+					rawRow,
+					args: parsed.args,
+					sourceLine: line,
+				},
+			];
+		}
+
+		const trailingParsed = parseTrailingDirectiveComment(line);
+		if (!trailingParsed) {
+			return [];
+		}
+
+		const plugin = pluginsByName.get(trailingParsed.name);
+		if (!plugin?.allowTrailingComment) {
 			return [];
 		}
 
 		return [
 			{
-				name: parsed.name,
+				name: trailingParsed.name,
 				rawRow,
-				args: parsed.args,
+				args: trailingParsed.args,
+				sourceLine: line,
 			},
 		];
 	});

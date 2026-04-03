@@ -7,7 +7,7 @@ import { parseEditorDirectives } from '../utils';
 
 function parseWatchDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [watchDirective])
-		.map(directive => createWatchDirectiveData(directive.args, directive.rawRow))
+		.map(directive => createWatchDirectiveData(directive.args, directive.rawRow, directive.sourceLine))
 		.filter(result => result !== undefined);
 }
 
@@ -76,5 +76,27 @@ describe('watch directive data', () => {
 
 	it('should ignore malformed watch directives without an id', () => {
 		expect(parseWatchDirectiveData(['; @watch'])).toEqual([]);
+	});
+
+	it('should infer the watched memory id from a same-line declaration', () => {
+		expect(parseWatchDirectiveData(['int foo 1 ; @watch'])).toEqual([
+			{
+				id: 'foo',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should prefer an explicit watch id over same-line inference', () => {
+		expect(parseWatchDirectiveData(['int foo 1 ; @watch bar'])).toEqual([
+			{
+				id: 'bar',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should ignore inline watch directives on declarations without a named memory id', () => {
+		expect(parseWatchDirectiveData(['int 1 ; @watch'])).toEqual([]);
 	});
 });

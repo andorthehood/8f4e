@@ -6,7 +6,7 @@ import { createDirectivePlugin } from '../utils';
 export default createDirectivePlugin(
 	'watch',
 	(directive, draft) => {
-		const watch = createWatchDirectiveData(directive.args, directive.rawRow);
+		const watch = createWatchDirectiveData(directive.args, directive.rawRow, directive.sourceLine);
 		if (!watch) {
 			return;
 		}
@@ -14,6 +14,7 @@ export default createDirectivePlugin(
 		draft.widgets.push(createWatchDirectiveWidgetContribution(watch));
 	},
 	{
+		allowTrailingComment: true,
 		clearGraphicData: graphicData => {
 			graphicData.widgets.debuggers = [];
 		},

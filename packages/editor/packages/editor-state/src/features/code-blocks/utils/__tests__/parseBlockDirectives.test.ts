@@ -9,41 +9,45 @@ describe('parseBlockDirectives', () => {
 
 	it('should parse an editor directive (@)', () => {
 		expect(parseBlockDirectives(['; @pos 10 20'])).toEqual([
-			{ prefix: '@', name: 'pos', args: ['10', '20'], rawRow: 0 },
+			{ prefix: '@', name: 'pos', args: ['10', '20'], rawRow: 0, sourceLine: '; @pos 10 20' },
 		]);
 	});
 
 	it('should parse a runtime directive (~)', () => {
 		expect(parseBlockDirectives(['; ~sampleRate 44100'])).toEqual([
-			{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 0 },
+			{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 0, sourceLine: '; ~sampleRate 44100' },
 		]);
 	});
 
 	it('should parse runtime directives with leading whitespace', () => {
 		expect(parseBlockDirectives(['  ; ~sampleRate 44100'])).toEqual([
-			{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 0 },
+			{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 0, sourceLine: '  ; ~sampleRate 44100' },
 		]);
 	});
 
 	it('should parse unknown runtime directive names', () => {
 		expect(parseBlockDirectives(['; ~runtime WebWorker'])).toEqual([
-			{ prefix: '~', name: 'runtime', args: ['WebWorker'], rawRow: 0 },
+			{ prefix: '~', name: 'runtime', args: ['WebWorker'], rawRow: 0, sourceLine: '; ~runtime WebWorker' },
 		]);
 	});
 
 	it('should parse directives with no arguments', () => {
-		expect(parseBlockDirectives(['; @disabled'])).toEqual([{ prefix: '@', name: 'disabled', args: [], rawRow: 0 }]);
+		expect(parseBlockDirectives(['; @disabled'])).toEqual([
+			{ prefix: '@', name: 'disabled', args: [], rawRow: 0, sourceLine: '; @disabled' },
+		]);
 	});
 
 	it('should parse runtime directives with no arguments', () => {
-		expect(parseBlockDirectives(['; ~sampleRate'])).toEqual([{ prefix: '~', name: 'sampleRate', args: [], rawRow: 0 }]);
+		expect(parseBlockDirectives(['; ~sampleRate'])).toEqual([
+			{ prefix: '~', name: 'sampleRate', args: [], rawRow: 0, sourceLine: '; ~sampleRate' },
+		]);
 	});
 
 	it('should record the correct rawRow for each directive', () => {
 		const code = ['module test', '; @pos 5 10', 'push 1', '; ~sampleRate 48000', 'moduleEnd'];
 		expect(parseBlockDirectives(code)).toEqual([
-			{ prefix: '@', name: 'pos', args: ['5', '10'], rawRow: 1 },
-			{ prefix: '~', name: 'sampleRate', args: ['48000'], rawRow: 3 },
+			{ prefix: '@', name: 'pos', args: ['5', '10'], rawRow: 1, sourceLine: '; @pos 5 10' },
+			{ prefix: '~', name: 'sampleRate', args: ['48000'], rawRow: 3, sourceLine: '; ~sampleRate 48000' },
 		]);
 	});
 
@@ -57,16 +61,22 @@ describe('parseBlockDirectives', () => {
 
 	it('should parse directives with leading whitespace', () => {
 		expect(parseBlockDirectives(['   ; @group myGroup'])).toEqual([
-			{ prefix: '@', name: 'group', args: ['myGroup'], rawRow: 0 },
+			{ prefix: '@', name: 'group', args: ['myGroup'], rawRow: 0, sourceLine: '   ; @group myGroup' },
 		]);
 	});
 
 	it('should parse multiple directives from a block', () => {
 		const code = ['; @pos 0 0', '; @disabled', '; ~sampleRate 44100'];
 		expect(parseBlockDirectives(code)).toEqual([
-			{ prefix: '@', name: 'pos', args: ['0', '0'], rawRow: 0 },
-			{ prefix: '@', name: 'disabled', args: [], rawRow: 1 },
-			{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 2 },
+			{ prefix: '@', name: 'pos', args: ['0', '0'], rawRow: 0, sourceLine: '; @pos 0 0' },
+			{ prefix: '@', name: 'disabled', args: [], rawRow: 1, sourceLine: '; @disabled' },
+			{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 2, sourceLine: '; ~sampleRate 44100' },
+		]);
+	});
+
+	it('should parse trailing inline editor directives', () => {
+		expect(parseBlockDirectives(['int foo 1 ; @watch'])).toEqual([
+			{ prefix: '@', name: 'watch', args: [], rawRow: 0, sourceLine: 'int foo 1 ; @watch' },
 		]);
 	});
 
