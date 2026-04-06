@@ -76,9 +76,9 @@ const LO 0xFF
 int
 int count 4
 int halfCount MAX/2
+int*
 int* ptr &count
 int* endPtr count&
-int* anonPtr
 int colorARGB 0xA8 0xFF 0x00 0x00
 int colorAR   0xA8 0xFF
 int 0xA8 0xFF
@@ -155,9 +155,9 @@ float
 float gain 0.75
 float halfGain MAX_GAIN/2
 float[] samples 4 0.0
+float*
 float* ptr &samples
 float* endPtr samples&
-float* anonPtr
 ```
 
 ### int[]
