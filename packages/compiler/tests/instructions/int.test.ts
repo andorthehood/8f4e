@@ -1,6 +1,19 @@
 import { moduleTester } from './testUtils';
 
 moduleTester(
+	'int: bare anonymous zero-initialized allocation',
+	`module test
+int
+int output
+push &output
+push __anonymous__1
+store
+moduleEnd
+`,
+	[[{}, { output: 0 }]]
+);
+
+moduleTester(
 	'int: with literal (anonymous allocation)',
 	`module test
 int 42
@@ -257,4 +270,17 @@ moduleEnd
 `,
 	// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
 	[[{}, { output: 0xa8400000 | 0 }]]
+);
+
+moduleTester(
+	'int*: bare anonymous zero-initialized pointer allocation',
+	`module test
+int*
+int output
+push &output
+push __anonymous__1
+store
+moduleEnd
+`,
+	[[{}, { output: 0 }]]
 );

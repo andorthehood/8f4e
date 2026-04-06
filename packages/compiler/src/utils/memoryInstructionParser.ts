@@ -180,7 +180,11 @@ export default function parseMemoryInstructionArguments(
 	const { arguments: args, lineNumberAfterMacroExpansion } = line;
 	const lineForError = line;
 
-	// Tokenizer validates arity, so args[0] is always present for memory instructions.
+	// Zero-argument scalar declaration: bare anonymous zero-initialized allocation (e.g. `int`, `float`).
+	if (args.length === 0) {
+		return { id: '__anonymous__' + lineNumberAfterMacroExpansion, defaultValue: 0 };
+	}
+
 	const first = args[0];
 	const id = resolveAnonymousOrNamedMemoryId(
 		first,
