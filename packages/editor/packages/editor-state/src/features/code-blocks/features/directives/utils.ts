@@ -13,7 +13,7 @@ export function parseDirectiveLine(
 	| { prefix: '@' | '~'; name: string; args: string[]; isTrailing: false }
 	| { prefix: '@'; name: string; args: string[]; isTrailing: true }
 	| undefined {
-	const fullLineMatch = line.match(/^\s*;\s*([@~])(\w+)(?:\s+(.*))?$/);
+	const fullLineMatch = line.match(/^\s*;\s*([@~])(\w+)(?:\s+(.*\S))?\s*$/);
 	if (fullLineMatch) {
 		const [, prefix, name, rawArgs] = fullLineMatch;
 		return {
@@ -24,7 +24,7 @@ export function parseDirectiveLine(
 		};
 	}
 
-	const trailingMatch = line.match(/;\s*@(\w+)(?:\s+(.*))?\s*$/);
+	const trailingMatch = line.match(/;\s*@(\w+)(?:\s+(.*\S))?\s*$/);
 	if (trailingMatch) {
 		const [, name, rawArgs] = trailingMatch;
 		return {
