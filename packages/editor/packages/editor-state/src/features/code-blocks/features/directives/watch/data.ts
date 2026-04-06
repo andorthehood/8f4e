@@ -45,8 +45,12 @@ function inferWatchIdFromSourceLine(sourceLine: string, lineNumber: number): str
 		const parsedLine = parseLine(sourceLine, lineNumber);
 		const [firstArg] = parsedLine.arguments;
 
-		if (!parsedLine.isMemoryDeclaration || !firstArg) {
+		if (!parsedLine.isMemoryDeclaration) {
 			return undefined;
+		}
+
+		if (!firstArg) {
+			return '__anonymous__' + lineNumber;
 		}
 
 		if (firstArg.type === ArgumentType.IDENTIFIER && firstArg.referenceKind === 'plain') {
