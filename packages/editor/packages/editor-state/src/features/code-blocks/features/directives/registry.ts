@@ -13,7 +13,7 @@ import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
 import viewportDirective from './viewport/plugin';
 import alwaysOnTopDirective from './alwaysOnTop/plugin';
-import { parseEditorDirectives } from './utils';
+import { parseEditorDirectives, normalizeEditorDirectiveRecords } from './utils';
 
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
@@ -24,7 +24,6 @@ import type {
 	DirectiveDerivedState,
 	DirectiveDerivedStateDraft,
 	EditorDirectivePlugin,
-	ParsedEditorDirective,
 } from './types';
 
 export type {
@@ -59,29 +58,7 @@ export function deriveDirectiveState(
 	options: DirectiveDeriveOptions = {},
 	plugins: EditorDirectivePlugin[] = directivePlugins
 ): DirectiveDerivedState {
-	const pluginEntries = plugins.flatMap(plugin =>
-		[plugin.name, ...(plugin.aliases ?? [])].map(name => [name, plugin] as const)
-	);
-	const pluginsByName = new Map(pluginEntries);
-	const directives: ParsedEditorDirective[] = parsedDirectives.flatMap(directive => {
-		if (directive.prefix !== '@') {
-			return [];
-		}
-
-		const plugin = pluginsByName.get(directive.name);
-		if (!plugin) {
-			return [];
-		}
-
-		return [
-			{
-				name: plugin.name,
-				rawRow: directive.rawRow,
-				args: directive.args,
-				sourceLine: directive.sourceLine,
-			},
-		];
-	});
+	const directives = normalizeEditorDirectiveRecords(parsedDirectives, plugins);
 	const draft: DirectiveDerivedStateDraft = {
 		sourceCode: code,
 		blockState: {
@@ -223,6 +200,29 @@ if (import.meta.vitest) {
 
 			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3]);
 			expect(result.displayModel.isCollapsed).toBe(false);
+		});
+
+		it('deriveDirectiveState and parseEditorDirectives agree on trailing directive behavior', () => {
+			// @watch allows trailing comments; @plot does not.
+			const code = ['int foo 1 ; @watch', 'int bar 1 ; @plot buffer'];
+			const fromParse = parseEditorDirectives(code, directivePlugins);
+			const fromDerive = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			// Both flows must recognize the trailing @watch (results in one parsed directive / one widget).
+			expect(fromParse.map(d => d.name)).toEqual(['watch']);
+			// @plot trailing should not produce any layout contribution.
+			expect(fromDerive.layoutContributions).toEqual([]);
+		});
+
+		it('normalizes aliases in deriveDirectiveState the same way as parseEditorDirectives', () => {
+			const code = ['; @w value'];
+			const fromParse = parseEditorDirectives(code, directivePlugins);
+			const fromDerive = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			// Both paths normalize '@w' to the canonical 'watch' name.
+			expect(fromParse[0].name).toBe('watch');
+			// @watch with a valid arg produces one widget.
+			expect(fromDerive.widgets).toHaveLength(1);
 		});
 	});
 }

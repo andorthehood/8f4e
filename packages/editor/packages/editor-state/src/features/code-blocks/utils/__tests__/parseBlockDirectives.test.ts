@@ -76,7 +76,7 @@ describe('parseBlockDirectives', () => {
 
 	it('should parse trailing inline editor directives', () => {
 		expect(parseBlockDirectives(['int foo 1 ; @watch'])).toEqual([
-			{ prefix: '@', name: 'watch', args: [], rawRow: 0, sourceLine: 'int foo 1 ; @watch' },
+			{ prefix: '@', name: 'watch', args: [], rawRow: 0, sourceLine: 'int foo 1 ; @watch', isTrailing: true },
 		]);
 	});
 
