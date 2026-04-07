@@ -1255,7 +1255,7 @@
   {
     "lineNumberBeforeMacroExpansion": 154,
     "lineNumberAfterMacroExpansion": 154,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1323,7 +1323,7 @@
   {
     "lineNumberBeforeMacroExpansion": 159,
     "lineNumberAfterMacroExpansion": 159,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1369,7 +1369,7 @@
   {
     "lineNumberBeforeMacroExpansion": 164,
     "lineNumberAfterMacroExpansion": 164,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1481,7 +1481,7 @@
   {
     "lineNumberBeforeMacroExpansion": 173,
     "lineNumberAfterMacroExpansion": 173,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1548,7 +1548,7 @@
   {
     "lineNumberBeforeMacroExpansion": 179,
     "lineNumberAfterMacroExpansion": 179,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1654,7 +1654,7 @@
   {
     "lineNumberBeforeMacroExpansion": 189,
     "lineNumberAfterMacroExpansion": 189,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1715,7 +1715,7 @@
   {
     "lineNumberBeforeMacroExpansion": 194,
     "lineNumberAfterMacroExpansion": 194,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1761,7 +1761,7 @@
   {
     "lineNumberBeforeMacroExpansion": 198,
     "lineNumberAfterMacroExpansion": 198,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",
@@ -1806,7 +1806,7 @@
   {
     "lineNumberBeforeMacroExpansion": 202,
     "lineNumberAfterMacroExpansion": 202,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",

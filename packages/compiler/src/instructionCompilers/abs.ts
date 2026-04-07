@@ -1,4 +1,5 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
@@ -27,15 +28,15 @@ const abs: InstructionCompiler = withValidation(
 				[
 					`local int ${valueName}`,
 					`localSet ${valueName}`,
-					`localGet ${valueName}`,
+					`push ${valueName}`,
 					'push 0',
 					'lessThan',
 					'if',
 					' push 0',
-					` localGet ${valueName}`,
+					` push ${valueName}`,
 					' sub',
 					'else',
-					` localGet ${valueName}`,
+					` push ${valueName}`,
 					'ifEnd',
 				],
 				context
