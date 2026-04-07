@@ -1,5 +1,7 @@
 import { Engine } from 'glugglug';
 
+import formatDebuggerValue from './formatDebuggerValue';
+
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../../types';
 
@@ -21,29 +23,12 @@ export default function drawConnectors(
 		.debuggers) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
-		const radixMap = { decimal: 10, binary: 2, hex: 16 } as const;
-		const radix = radixMap[displayFormat];
-
 		if (showAddress) {
 			engine.drawText(x, y, '[' + (memory.byteAddress + bufferPointer * 4) + ']');
 		} else if (showEndAddress) {
 			engine.drawText(x, y, '[' + ((memory.wordAlignedSize - 1) * 4 + memory.byteAddress) + ']');
 		} else {
-			let value = '';
-			if (memory.elementWordSize === 1 && memory.isInteger) {
-				const view = memory.isUnsigned ? memoryViews.uint8 : memoryViews.int8;
-				value = view[memory.byteAddress + bufferPointer].toString(radix);
-			} else if (memory.elementWordSize === 2 && memory.isInteger) {
-				const view = memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
-				value = view[memory.byteAddress / 2 + bufferPointer].toString(radix);
-			} else if (memory.elementWordSize === 8 && !memory.isInteger) {
-				value = memoryViews.float64[memory.byteAddress / 8 + bufferPointer].toFixed(4);
-			} else {
-				value = memory.isInteger
-					? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(radix)
-					: memoryViews.float32[memory.wordAlignedAddress + bufferPointer].toFixed(4);
-			}
-
+			const value = formatDebuggerValue(memoryViews, memory, bufferPointer, displayFormat);
 			engine.drawText(x, y, '[' + value + ']');
 		}
 	}
