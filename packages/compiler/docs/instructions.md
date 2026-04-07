@@ -75,7 +75,6 @@
   - [int[]](instructions/declarations-and-locals.md#int-1)
   - [float[]](instructions/declarations-and-locals.md#float-1)
   - [local](instructions/declarations-and-locals.md#local)
-  - [localGet](instructions/declarations-and-locals.md#localget)
   - [localSet](instructions/declarations-and-locals.md#localset)
 
 - [Program structure and functions](instructions/program-structure-and-functions.md)

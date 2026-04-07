@@ -1497,7 +1497,7 @@
   {
     "lineNumberBeforeMacroExpansion": 179,
     "lineNumberAfterMacroExpansion": 179,
-    "instruction": "localGet",
+    "instruction": "push",
     "arguments": [
       {
         "type": "identifier",

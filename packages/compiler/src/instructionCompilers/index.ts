@@ -1,5 +1,4 @@
 import load from './load';
-import localGet from './localGet';
 import localSet from './localSet';
 import _else from './else';
 import store from './store';
@@ -72,7 +71,6 @@ const instructions = {
 	load16u: load,
 	load8s: load,
 	load16s: load,
-	localGet,
 	localSet,
 	else: _else,
 	if: _if,

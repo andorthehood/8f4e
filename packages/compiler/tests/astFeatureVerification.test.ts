@@ -11,7 +11,7 @@ const testModule = {
 		'',
 		'push 42',
 		'localSet temp',
-		'localGet temp',
+		'push temp',
 		'push &out',
 		'store',
 		'moduleEnd',

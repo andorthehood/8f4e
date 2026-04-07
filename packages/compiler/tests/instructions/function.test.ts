@@ -37,7 +37,7 @@ moduleEnd`,
 	[
 		`function double
 param int x
-localGet x
+push x
 push 2
 mul
 functionEnd int`,
@@ -68,8 +68,8 @@ moduleEnd`,
 		`function add
 param int x
 param int y
-localGet x
-localGet y
+push x
+push y
 add
 functionEnd int`,
 	],

@@ -3,8 +3,8 @@ title: 'TODO: Remove `localGet` and migrate sources to `push`'
 priority: Medium
 effort: 4-8h
 created: 2026-04-07
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-07
 ---
 
 # TODO: Remove `localGet` and migrate sources to `push`

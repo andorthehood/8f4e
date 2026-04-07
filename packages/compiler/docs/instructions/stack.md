@@ -15,7 +15,7 @@ Supported escape sequences: `\"`, `\\`, `\n`, `\r`, `\t`, `\xNN`.
 
 #### Local reads
 
-`push <local>` is a supported form for reading a local variable and is fully equivalent to `localGet <local>`.
+`push <local>` is the canonical form for reading a local variable onto the stack.
 It preserves the complete stack metadata for the local type including `float64` precision.
 
 **Identifier resolution rule**: when a plain identifier appears as the argument to `push`, locals are
@@ -36,7 +36,7 @@ push "line1\nline2"
 push "\x41\x42"
 push SIZE/2
 local int temp
-push temp        ; equivalent to: localGet temp
+push temp
 local float64 x
 push x           ; pushes x as float64, preserving full precision
 ```
