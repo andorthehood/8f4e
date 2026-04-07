@@ -4,6 +4,11 @@ import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 export default function calculateBorderLineCoordinates(state: State): void {
 	const viewport = state.viewport;
+	// Intentionally use raw width/height (not roundedWidth/roundedHeight).
+	// Border lines represent the true visible pixel edges of the viewport — the exact boundary
+	// where offscreen-arrow indicators should be drawn. viewport-anchored block positioning
+	// uses roundedWidth/roundedHeight to snap block coordinates to the grid, but arrows are
+	// purely visual overlays that must track the actual screen bounds regardless of grid alignment.
 	const { borderLineCoordinates, center, x, y, width, height } = viewport;
 
 	borderLineCoordinates.left.startX = x;

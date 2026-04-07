@@ -3,8 +3,8 @@ title: 'TODO: Audit borderLineCoordinates use of raw vs rounded viewport dimensi
 priority: Low
 effort: 1-2 hours
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-07
 ---
 
 # TODO: Audit borderLineCoordinates use of raw vs rounded viewport dimensions
@@ -39,8 +39,8 @@ Document the decision either way with a comment in `calculateBorderLineCoordinat
 
 ## Success Criteria
 
-- [ ] The choice of raw vs rounded dimensions in `calculateBorderLineCoordinates` is deliberate and documented
-- [ ] Arrow placement is visually correct at non-grid-aligned viewport sizes
+- [x] The choice of raw vs rounded dimensions in `calculateBorderLineCoordinates` is deliberate and documented
+- [x] Arrow placement is visually correct at non-grid-aligned viewport sizes
 
 ## Affected Components
 
