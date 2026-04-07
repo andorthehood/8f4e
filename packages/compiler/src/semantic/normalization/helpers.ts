@@ -88,7 +88,7 @@ export function normalizeArgument(argument: Argument, context: CompilationContex
 		return argument;
 	}
 
-	const resolved = tryResolveCompileTimeArgument(context.namespace, argument);
+	const resolved = tryResolveCompileTimeArgument(context, argument);
 
 	if (!resolved) {
 		return argument;

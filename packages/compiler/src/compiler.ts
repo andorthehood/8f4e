@@ -13,7 +13,6 @@ import {
 } from './types';
 import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
 
@@ -80,6 +79,8 @@ export function compileModule(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
+		currentModuleNextWordOffset: prepassContext.currentModuleNextWordOffset,
+		currentModuleWordAlignedSize: prepassContext.currentModuleWordAlignedSize,
 		mode: 'module',
 	};
 
@@ -135,7 +136,7 @@ export function compileModule(
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
-		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
+		wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		ast: normalizedAst,
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
@@ -167,6 +168,8 @@ export function compileFunction(
 		stack: [],
 		blockStack: [],
 		startingByteAddress: 0,
+		currentModuleNextWordOffset: 0,
+		currentModuleWordAlignedSize: 0,
 		mode: 'function',
 		codeBlockType: 'function',
 		functionTypeRegistry: typeRegistry,
