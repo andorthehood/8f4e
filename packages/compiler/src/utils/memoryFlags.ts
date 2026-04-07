@@ -4,8 +4,12 @@ export default function getMemoryFlags(baseType: 'int' | 'int8' | 'int16' | 'flo
 	const isPointingToPointer = pointerDepth === 2;
 	const isInteger = baseType === 'int' || baseType === 'int8' || baseType === 'int16' || isPointer;
 	const isFloat64 = baseType === 'float64' && !isPointer;
-	const isPointingToInt8 = isPointer && baseType === 'int8';
-	const isPointingToInt16 = isPointer && baseType === 'int16';
+	const pointeeBaseType: 'int' | 'int8' | 'int16' | 'float' | 'float64' | undefined =
+		isPointer && baseType !== 'int'
+			? (baseType as 'int8' | 'int16' | 'float' | 'float64')
+			: isPointer
+				? 'int'
+				: undefined;
 
 	return {
 		isPointer,
@@ -13,8 +17,7 @@ export default function getMemoryFlags(baseType: 'int' | 'int8' | 'int16' | 'flo
 		isPointingToPointer,
 		isInteger,
 		...(isFloat64 ? { isFloat64 } : {}),
-		...(isPointingToInt8 ? { isPointingToInt8 } : {}),
-		...(isPointingToInt16 ? { isPointingToInt16 } : {}),
+		...(pointeeBaseType !== undefined ? { pointeeBaseType } : {}),
 		isUnsigned: false,
 	};
 }
@@ -31,7 +34,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: false,
 					isInteger: true,
-					isPointingToInt8: true,
+					pointeeBaseType: 'int8',
 					isUnsigned: false,
 				});
 			});
@@ -43,7 +46,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: true,
 					isInteger: true,
-					isPointingToInt8: true,
+					pointeeBaseType: 'int8',
 					isUnsigned: false,
 				});
 			});
@@ -57,7 +60,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: false,
 					isInteger: true,
-					isPointingToInt16: true,
+					pointeeBaseType: 'int16',
 					isUnsigned: false,
 				});
 			});
@@ -69,7 +72,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: true,
 					isInteger: true,
-					isPointingToInt16: true,
+					pointeeBaseType: 'int16',
 					isUnsigned: false,
 				});
 			});
@@ -94,6 +97,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: false,
 					isInteger: true,
+					pointeeBaseType: 'int',
 					isUnsigned: false,
 				});
 			});
@@ -105,6 +109,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: true,
 					isInteger: true,
+					pointeeBaseType: 'int',
 					isUnsigned: false,
 				});
 			});
@@ -130,6 +135,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: false,
 					isInteger: true,
+					pointeeBaseType: 'float64',
 					isUnsigned: false,
 				});
 			});
@@ -141,6 +147,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: true,
 					isInteger: true,
+					pointeeBaseType: 'float64',
 					isUnsigned: false,
 				});
 			});
@@ -165,6 +172,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: false,
 					isInteger: true,
+					pointeeBaseType: 'float',
 					isUnsigned: false,
 				});
 			});
@@ -176,6 +184,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: true,
 					isInteger: true,
+					pointeeBaseType: 'float',
 					isUnsigned: false,
 				});
 			});
