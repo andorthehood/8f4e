@@ -9,7 +9,7 @@ describe('getError', () => {
 		const line = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
-			instruction: 'localGet',
+			instruction: 'push',
 			arguments: [classifyIdentifier('missingLocal')],
 		} as AST[number];
 

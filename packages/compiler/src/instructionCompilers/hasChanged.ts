@@ -31,11 +31,11 @@ const hasChanged: InstructionCompiler = withValidation(
 				`localSet ${currentValueName}`,
 				`push ${previousValue.byteAddress}`,
 				operand.isInteger ? 'load' : 'loadFloat',
-				`localGet ${currentValueName}`,
+				`push ${currentValueName}`,
 				'equal',
 				'equalToZero',
 				`push ${previousValue.byteAddress}`,
-				`localGet ${currentValueName}`,
+				`push ${currentValueName}`,
 				'store',
 			],
 			context

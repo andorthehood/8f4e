@@ -23,7 +23,7 @@ const dup: InstructionCompiler = withValidation(
 		const localType = operand.isInteger ? 'int' : operand.isFloat64 ? 'float64' : 'float';
 
 		return compileSegment(
-			[`local ${localType} ${tempName}`, `localSet ${tempName}`, `localGet ${tempName}`, `localGet ${tempName}`],
+			[`local ${localType} ${tempName}`, `localSet ${tempName}`, `push ${tempName}`, `push ${tempName}`],
 			context
 		);
 	}
