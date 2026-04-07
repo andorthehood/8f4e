@@ -19,9 +19,18 @@ export default function drawConnectors(
 		return;
 	}
 
-	for (const { x, y, memory, showAddress, showEndAddress, displayFormat, bufferPointer } of codeBlock.widgets
+	for (const { x, y, memory, showAddress, showEndAddress, displayFormat, bufferPointer, text } of codeBlock.widgets
 		.debuggers) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+
+		if (text !== undefined) {
+			engine.drawText(x, y, '[' + text + ']');
+			continue;
+		}
+
+		if (!memory) {
+			continue;
+		}
 
 		if (showAddress) {
 			engine.drawText(x, y, '[' + (memory.byteAddress + bufferPointer * 4) + ']');
