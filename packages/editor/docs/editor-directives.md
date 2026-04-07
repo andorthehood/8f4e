@@ -94,6 +94,18 @@ These modifiers can be combined when they make sense. For example:
 ; @watch buffer[3]
 ```
 
+### `@nth`
+
+Show the module's 1-based compile order number.
+
+```txt
+; @nth
+```
+
+Notes:
+- This reflects compile/layout order.
+- The first module shows `1`, the sixteenth shows `16`.
+
 ### `@plot`
 
 Draw an array plot for an array memory id.
