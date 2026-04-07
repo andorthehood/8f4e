@@ -361,6 +361,7 @@ exports[`compiler > compileModules 1`] = `
         "isPointingToPointer": false,
         "isUnsigned": false,
         "numberOfElements": 1,
+        "pointeeBaseType": "int",
         "type": "int*",
         "wordAlignedAddress": 1,
         "wordAlignedSize": 1,

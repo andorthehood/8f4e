@@ -30,9 +30,9 @@ export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): num
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem || !memoryItem.isPointer) return 0;
 	if (memoryItem.isPointingToPointer) return 4;
-	if (String(memoryItem.type) === 'float64*') return 8;
-	if (memoryItem.isPointingToInt8) return 1;
-	if (memoryItem.isPointingToInt16) return 2;
+	if (memoryItem.pointeeBaseType === 'float64') return 8;
+	if (memoryItem.pointeeBaseType === 'int8') return 1;
+	if (memoryItem.pointeeBaseType === 'int16') return 2;
 	return 4;
 }
 
@@ -74,13 +74,13 @@ export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): num
 	if (memoryItem.isPointingToPointer) return 2147483647;
 
 	// float64*: max float64
-	if (String(memoryItem.type).startsWith('float64')) return 1.7976931348623157e308;
+	if (memoryItem.pointeeBaseType === 'float64') return 1.7976931348623157e308;
 
 	// int8*: max signed int8
-	if (memoryItem.isPointingToInt8) return 127;
+	if (memoryItem.pointeeBaseType === 'int8') return 127;
 
 	// int16*: max signed int16
-	if (memoryItem.isPointingToInt16) return 32767;
+	if (memoryItem.pointeeBaseType === 'int16') return 32767;
 
 	// int*: max signed int32
 	if (memoryItem.isPointingToInteger) return 2147483647;
@@ -218,6 +218,7 @@ if (import.meta.vitest) {
 						elementWordSize: 4,
 						isPointer: true,
 						isPointingToPointer: false,
+						pointeeBaseType: 'float64',
 						type: 'float64*',
 					} as unknown as MemoryMap[string],
 				};
@@ -230,7 +231,7 @@ if (import.meta.vitest) {
 						elementWordSize: 4,
 						isPointer: true,
 						isPointingToPointer: false,
-						isPointingToInt8: true,
+						pointeeBaseType: 'int8',
 						type: 'int8*',
 					} as unknown as MemoryMap[string],
 				};
@@ -243,7 +244,7 @@ if (import.meta.vitest) {
 						elementWordSize: 4,
 						isPointer: true,
 						isPointingToPointer: false,
-						isPointingToInt16: true,
+						pointeeBaseType: 'int16',
 						type: 'int16*',
 					} as unknown as MemoryMap[string],
 				};
@@ -448,7 +449,7 @@ if (import.meta.vitest) {
 						elementWordSize: 4,
 						isPointer: true,
 						isPointingToInteger: true,
-						isPointingToInt8: true,
+						pointeeBaseType: 'int8',
 						isPointingToPointer: false,
 						type: 'int8*',
 					} as unknown as MemoryMap[string],
@@ -462,7 +463,7 @@ if (import.meta.vitest) {
 						elementWordSize: 4,
 						isPointer: true,
 						isPointingToInteger: true,
-						isPointingToInt16: true,
+						pointeeBaseType: 'int16',
 						isPointingToPointer: false,
 						type: 'int16*',
 					} as unknown as MemoryMap[string],
@@ -490,6 +491,7 @@ if (import.meta.vitest) {
 						isPointer: true,
 						isPointingToInteger: false,
 						isPointingToPointer: false,
+						pointeeBaseType: 'float64',
 						type: 'float64*',
 					} as unknown as MemoryMap[string],
 				};

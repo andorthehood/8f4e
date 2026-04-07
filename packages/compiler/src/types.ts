@@ -64,8 +64,7 @@ export interface DataStructure {
 	// lineNumber: number;
 	isInteger: boolean;
 	isFloat64?: boolean;
-	isPointingToInt8?: boolean;
-	isPointingToInt16?: boolean;
+	pointeeBaseType?: 'int' | 'int8' | 'int8u' | 'int16' | 'int16u' | 'float' | 'float64';
 	id: string;
 	isPointer: boolean;
 	isPointingToInteger: boolean;

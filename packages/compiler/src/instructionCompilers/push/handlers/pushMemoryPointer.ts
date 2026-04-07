@@ -17,11 +17,12 @@ export default function pushMemoryPointer(line: PushIdentifierLine, context: Com
 
 	// For int8* and int8**, use i32load8s (sign-extended 8-bit load) for the final dereference.
 	// For int16* and int16**, use i32load16s (sign-extended 16-bit load) for the final dereference.
-	const finalLoad = memoryItem.isPointingToInt8
-		? i32load8s()
-		: memoryItem.isPointingToInt16
-			? i32load16s()
-			: loadOpcode[kind]();
+	const finalLoad =
+		memoryItem.pointeeBaseType === 'int8'
+			? i32load8s()
+			: memoryItem.pointeeBaseType === 'int16'
+				? i32load16s()
+				: loadOpcode[kind]();
 
 	return saveByteCode(context, [
 		...i32const(memoryItem.byteAddress),
@@ -89,7 +90,7 @@ if (import.meta.vitest) {
 							isInteger: true,
 							isPointer: true,
 							isPointingToInteger: true,
-							isPointingToInt8: true,
+							pointeeBaseType: 'int8',
 							isPointingToPointer: false,
 							isUnsigned: false,
 							type: 'int8*',
@@ -128,7 +129,7 @@ if (import.meta.vitest) {
 							isInteger: true,
 							isPointer: true,
 							isPointingToInteger: true,
-							isPointingToInt8: true,
+							pointeeBaseType: 'int8',
 							isPointingToPointer: true,
 							isUnsigned: false,
 							type: 'int8**',
@@ -167,7 +168,7 @@ if (import.meta.vitest) {
 							isInteger: true,
 							isPointer: true,
 							isPointingToInteger: true,
-							isPointingToInt16: true,
+							pointeeBaseType: 'int16',
 							isPointingToPointer: false,
 							isUnsigned: false,
 							type: 'int16*',
@@ -206,7 +207,7 @@ if (import.meta.vitest) {
 							isInteger: true,
 							isPointer: true,
 							isPointingToInteger: true,
-							isPointingToInt16: true,
+							pointeeBaseType: 'int16',
 							isPointingToPointer: true,
 							isUnsigned: false,
 							type: 'int16**',

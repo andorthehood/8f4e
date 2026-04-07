@@ -3,8 +3,8 @@ title: 'TODO: Replace isPointingToInt8/isPointingToInt16 booleans with a single 
 priority: Low
 effort: 2-4h
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-07
 ---
 
 # TODO: Replace isPointingToInt8/isPointingToInt16 booleans with a single pointeeBaseType field
@@ -55,9 +55,9 @@ This also makes it trivial to add `int8u*`, `int16u*`, or future narrow types wi
 
 ## Success Criteria
 
-- [ ] `DataStructure` has no `isPointingToIntN` booleans; `pointeeBaseType` is the single source of truth.
-- [ ] Adding a new narrow pointer type requires only: adding the type string to the union, a declaration compiler, and entries in lookup tables — no new booleans.
-- [ ] All existing tests pass.
+- [x] `DataStructure` has no `isPointingToIntN` booleans; `pointeeBaseType` is the single source of truth.
+- [x] Adding a new narrow pointer type requires only: adding the type string to the union, a declaration compiler, and entries in lookup tables — no new booleans.
+- [x] All existing tests pass.
 
 ## Affected Components
 
