@@ -82,6 +82,9 @@ Active todo files are listed below.
 | 367 | Refactor compiler directive plumbing and loop guard config | 🟡 | 4-8h | 2026-04-03 | Recent compiler directive work exposed repeated directive boilerplate, a magic loop-cap value in codegen, and some likely-obsolete tokenizer directive helpers. |
 | 370 | Move if result type to ifEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `if` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
 | 371 | Move block result type to blockEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `block` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
+| 372 | Make `push <local>` fully equivalent to `localGet` | 🟡 | 2-4h | 2026-04-07 | `push <identifier>` already falls back to locals, but the path is not yet semantically identical to `localGet` for float64 metadata and identifier-resolution behavior. |
+| 373 | Remove `localGet` and migrate sources to `push` | 🟡 | 4-8h | 2026-04-07 | After `push <local>` reaches parity, remove `localGet` outright and update compiler-owned source, tests, docs, fixtures, and examples without adding fallback compatibility logic. |
+| 374 | Add local-vs-memory name collision errors | 🟡 | 1-3h | 2026-04-07 | `local` declarations currently do not reject names already used by memory declarations, which allows ambiguous identifier reuse that should fail at declaration time. |
 
 ## Completed TODOs
 
