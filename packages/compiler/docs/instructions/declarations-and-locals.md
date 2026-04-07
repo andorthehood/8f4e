@@ -190,6 +190,8 @@ float[] samples 4 0.0
 
 The local instruction declares a local variable inside a module or function (`local int name` or `local float name`).
 
+Local variable names must not collide with any memory declaration identifier in the same namespace. Declaring a local whose name is already used by a `int`, `float`, `int[]`, or any other memory allocation is a compiler error.
+
 #### Examples
 
 ```
