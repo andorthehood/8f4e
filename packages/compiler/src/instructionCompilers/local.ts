@@ -78,7 +78,8 @@ if (import.meta.vitest) {
 				},
 			});
 
-			expect(() =>
+			let thrownError: unknown;
+			try {
 				local(
 					{
 						lineNumberBeforeMacroExpansion: 1,
@@ -87,8 +88,13 @@ if (import.meta.vitest) {
 						arguments: [classifyIdentifier('int'), classifyIdentifier('count')],
 					} as AST[number],
 					context
-				)
-			).toThrow();
+				);
+			} catch (e) {
+				thrownError = e;
+			}
+
+			expect(thrownError).toBeDefined();
+			expect((thrownError as { code: number }).code).toBe(ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY);
 		});
 	});
 }
