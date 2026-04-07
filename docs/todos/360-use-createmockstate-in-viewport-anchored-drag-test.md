@@ -3,8 +3,8 @@ title: 'TODO: Use createMockState in viewport-anchored dragging integration test
 priority: Low
 effort: 30 minutes
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-07
 ---
 
 # TODO: Use createMockState in viewport-anchored dragging integration test
