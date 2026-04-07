@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-import codeBlockNavigation, { goHome, jumpToCodeBlock } from './effect';
+import codeBlockNavigation, { goHome, jumpToCodeBlock, navigateToCodeBlockInDirection } from './effect';
 
 import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '~/types';
 
@@ -175,6 +175,8 @@ describe('codeBlockNavigation', () => {
 	it('should navigate up when navigateCodeBlock event with up direction is dispatched', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
+		selectedBlock.cursor.row = 0;
+		selectedBlock.cursor.y = 0;
 
 		onNavigateCodeBlockHandler({ direction: 'up' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(upBlock);
@@ -183,9 +185,86 @@ describe('codeBlockNavigation', () => {
 	it('should navigate down when navigateCodeBlock event with down direction is dispatched', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
+		selectedBlock.code = ['zero', 'one', 'two', 'three'];
+		selectedBlock.cursor.row = 3;
+		selectedBlock.cursor.y = 3 * state.viewport.hGrid;
 
 		onNavigateCodeBlockHandler({ direction: 'down' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(downBlock);
+	});
+
+	it('should move to the first line of the current block before navigating upward', () => {
+		selectedBlock.code = ['zero', 'one', 'two', 'three'];
+		selectedBlock.cursor.row = 2;
+		selectedBlock.cursor.col = 2;
+		selectedBlock.cursor.y = 2 * state.viewport.hGrid;
+
+		const result = navigateToCodeBlockInDirection(state, 'up', events);
+
+		expect(result).toBe(true);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+		expect(selectedBlock.cursor.row).toBe(0);
+		expect(selectedBlock.cursor.y).toBe(0);
+		expect(state.viewport.y).toBe(selectedBlock.y + selectedBlock.offsetY - state.viewport.height / 2);
+		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+	});
+
+	it('should move to the last line of the current block before navigating downward', () => {
+		selectedBlock.code = ['zero', 'one', 'two', 'three'];
+		selectedBlock.cursor.row = 1;
+		selectedBlock.cursor.col = 1;
+		selectedBlock.cursor.y = state.viewport.hGrid;
+
+		const result = navigateToCodeBlockInDirection(state, 'down', events);
+
+		expect(result).toBe(true);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+		expect(selectedBlock.cursor.row).toBe(3);
+		expect(selectedBlock.cursor.y).toBe(3 * state.viewport.hGrid);
+		expect(state.viewport.y).toBe(
+			selectedBlock.y + selectedBlock.offsetY + 3 * state.viewport.hGrid - state.viewport.height / 2
+		);
+		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+	});
+
+	it('should select the bottom row of the block above after the current top row is highlighted', () => {
+		selectedBlock.code = ['zero', 'one', 'two', 'three'];
+		selectedBlock.cursor.row = 0;
+		selectedBlock.cursor.col = 2;
+		selectedBlock.cursor.y = 0;
+
+		upBlock.code = ['a', 'bb', 'ccc'];
+		upBlock.cursor.row = 0;
+		upBlock.cursor.col = 0;
+		upBlock.cursor.y = 0;
+
+		const result = navigateToCodeBlockInDirection(state, 'up', events);
+
+		expect(result).toBe(true);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(upBlock);
+		expect(upBlock.cursor.row).toBe(2);
+		expect(upBlock.cursor.col).toBe(2);
+		expect(upBlock.cursor.y).toBe(2 * state.viewport.hGrid);
+	});
+
+	it('should select the top row of the block below after the current bottom row is highlighted', () => {
+		selectedBlock.code = ['zero', 'one', 'two', 'three'];
+		selectedBlock.cursor.row = 3;
+		selectedBlock.cursor.col = 3;
+		selectedBlock.cursor.y = 3 * state.viewport.hGrid;
+
+		downBlock.code = ['a', 'bb', 'ccc'];
+		downBlock.cursor.row = 2;
+		downBlock.cursor.col = 1;
+		downBlock.cursor.y = 2 * state.viewport.hGrid;
+
+		const result = navigateToCodeBlockInDirection(state, 'down', events);
+
+		expect(result).toBe(true);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(downBlock);
+		expect(downBlock.cursor.row).toBe(0);
+		expect(downBlock.cursor.col).toBe(1);
+		expect(downBlock.cursor.y).toBe(0);
 	});
 
 	it('should center viewport on the newly selected highlighted line', () => {
