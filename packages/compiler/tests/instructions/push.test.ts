@@ -57,12 +57,26 @@ describe('push <local> parity with localGet', () => {
 	test('push <float local> and localGet produce the same stack metadata', () => {
 		const functions: Module[] = [
 			{
-				code: ['function floatGet', 'local float flt', 'push 1.5', 'localSet flt', 'localGet flt', 'functionEnd float'],
+				code: [
+					'function floatGet',
+					'local float flt',
+					'push 1.5',
+					'localSet flt',
+					'localGet flt',
+					'functionEnd float',
+				],
 			},
 		];
 		const functionsPush: Module[] = [
 			{
-				code: ['function floatPush', 'local float flt', 'push 1.5', 'localSet flt', 'push flt', 'functionEnd float'],
+				code: [
+					'function floatPush',
+					'local float flt',
+					'push 1.5',
+					'localSet flt',
+					'push flt',
+					'functionEnd float',
+				],
 			},
 		];
 
@@ -78,12 +92,26 @@ describe('push <local> parity with localGet', () => {
 	test('push <float64 local> preserves float64 metadata and matches localGet behavior', () => {
 		const functionsGet: Module[] = [
 			{
-				code: ['function double64Get', 'param float64 x', 'localGet x', 'push 2.0f64', 'mul', 'functionEnd float64'],
+				code: [
+					'function double64Get',
+					'param float64 x',
+					'localGet x',
+					'push 2.0f64',
+					'mul',
+					'functionEnd float64',
+				],
 			},
 		];
 		const functionsPush: Module[] = [
 			{
-				code: ['function double64Push', 'param float64 x', 'push x', 'push 2.0f64', 'mul', 'functionEnd float64'],
+				code: [
+					'function double64Push',
+					'param float64 x',
+					'push x',
+					'push 2.0f64',
+					'mul',
+					'functionEnd float64',
+				],
 			},
 		];
 
