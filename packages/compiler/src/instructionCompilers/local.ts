@@ -1,4 +1,4 @@
-import { ErrorCode } from '../compilerError';
+import { ErrorCode, getError } from '../compilerError';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -16,6 +16,10 @@ const local: InstructionCompiler<LocalDeclarationLine> = withValidation<LocalDec
 	(line: LocalDeclarationLine, context) => {
 		const typeArg = line.arguments[0];
 		const nameArg = line.arguments[1];
+
+		if (Object.prototype.hasOwnProperty.call(context.namespace.memory, nameArg.value)) {
+			throw getError(ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY, line, context, { identifier: nameArg.value });
+		}
 
 		context.locals[nameArg.value] = {
 			isInteger: typeArg.value === 'int',
@@ -48,6 +52,43 @@ if (import.meta.vitest) {
 			);
 
 			expect(context.locals).toMatchSnapshot();
+		});
+
+		it('throws when local name collides with a memory identifier', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					namespaces: {},
+					consts: {},
+					moduleName: 'test',
+					memory: {
+						count: {
+							id: 'count',
+							byteAddress: 0,
+							wordAlignedAddress: 0,
+							wordAlignedSize: 1,
+							numberOfElements: 1,
+							elementWordSize: 4,
+							type: 0,
+							default: 0,
+							isInteger: true,
+							isPointingToPointer: false,
+							isUnsigned: false,
+						},
+					},
+				},
+			});
+
+			expect(() =>
+				local(
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'local',
+						arguments: [classifyIdentifier('int'), classifyIdentifier('count')],
+					} as AST[number],
+					context
+				)
+			).toThrow();
 		});
 	});
 }
