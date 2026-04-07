@@ -6,7 +6,7 @@ import applySemanticInstruction from './instructions';
 
 import { ErrorCode, getError } from '../compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
-import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
+import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import {
 	type AST,
 	type CompilationContext,
@@ -94,6 +94,8 @@ export function prepassNamespace(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
+		currentModuleNextWordOffset: 0,
+		currentModuleWordAlignedSize: undefined,
 		mode: 'module',
 		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
 	};
@@ -104,6 +106,23 @@ export function prepassNamespace(
 		} else if (originalLine.isMemoryDeclaration) {
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(originalLine, context), context);
 		}
+	});
+
+	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset ?? 0;
+
+	ast.forEach(originalLine => {
+		if (!originalLine.isMemoryDeclaration || originalLine.instruction.endsWith('[]')) {
+			return;
+		}
+
+		const line = normalizeCompileTimeArguments(originalLine, context);
+		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
+		const memoryItem = context.namespace.memory[id];
+		if (!memoryItem || memoryItem.numberOfElements !== 1) {
+			return;
+		}
+
+		memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
 	});
 
 	return context;
@@ -236,10 +255,10 @@ export function collectNamespacesFromASTs(
 			consts: { ...context.namespace.consts },
 			memory: context.namespace.memory,
 			byteAddress: nextStartingByteAddress,
-			wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
+			wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		};
 
-		nextStartingByteAddress += calculateWordAlignedSizeOfMemory(context.namespace.memory) * GLOBAL_ALIGNMENT_BOUNDARY;
+		nextStartingByteAddress += (context.currentModuleWordAlignedSize ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	}
 
 	return namespaces;

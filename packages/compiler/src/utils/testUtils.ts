@@ -26,6 +26,8 @@ export default function createInstructionCompilerTestContext(
 			},
 		],
 		startingByteAddress: 0,
+		currentModuleNextWordOffset: 0,
+		currentModuleWordAlignedSize: 0,
 		byteCode: [],
 		codeBlockId: 'test',
 		codeBlockType: 'module',

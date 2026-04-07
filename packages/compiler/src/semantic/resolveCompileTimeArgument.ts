@@ -10,8 +10,9 @@ import {
 	getPointeeElementMaxValue,
 	getElementMinValue,
 } from '../utils/memoryData';
+import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
 
-import type { Argument, CompileTimeOperand, Const, Namespace } from '../types';
+import type { Argument, CompilationContext, CompileTimeOperand, Const } from '../types';
 
 /**
  * Tries to resolve a single pre-classified compile-time operand to a `Const` value.
@@ -20,7 +21,8 @@ import type { Argument, CompileTimeOperand, Const, Namespace } from '../types';
  * and memory metadata queries (sizeof, count, max, min — including pointee forms).
  * Returns `undefined` if the operand cannot be resolved from the available context.
  */
-function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Namespace): Const | undefined {
+function resolveCompileTimeOperand(operand: CompileTimeOperand, context: CompilationContext): Const | undefined {
+	const { namespace } = context;
 	if (operand.type === ArgumentType.LITERAL) {
 		return { value: operand.value, isInteger: operand.isInteger, ...(operand.isFloat64 ? { isFloat64: true } : {}) };
 	}
@@ -131,7 +133,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Names
 		const targetNamespace = namespace.namespaces[targetModuleId];
 		if (typeof targetNamespace?.byteAddress === 'number' && typeof targetNamespace?.wordAlignedSize === 'number') {
 			const value = operand.isEndAddress
-				? targetNamespace.byteAddress + (targetNamespace.wordAlignedSize - 1) * 4
+				? getModuleEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
 				: targetNamespace.byteAddress;
 			return { value, isInteger: true };
 		}
@@ -164,9 +166,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Names
 		}
 		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId!];
 		if (targetMemory) {
-			const value = operand.isEndAddress
-				? targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4
-				: targetMemory.byteAddress;
+			const value = operand.isEndAddress ? getEndByteAddress(targetMemory.byteAddress, targetMemory.wordAlignedSize) : targetMemory.byteAddress;
 			return { value, isInteger: true };
 		}
 		return undefined;
@@ -176,6 +176,18 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, namespace: Names
 	// name& — end-word base byte address of a local memory item
 	if (operand.referenceKind === 'memory-reference') {
 		const base = operand.targetMemoryId!;
+		if (base === 'this') {
+			if (!operand.isEndAddress) {
+				return { value: context.startingByteAddress, isInteger: true };
+			}
+			if (typeof context.currentModuleWordAlignedSize === 'number') {
+				return {
+					value: getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize),
+					isInteger: true,
+				};
+			}
+			return undefined;
+		}
 		if (Object.hasOwn(memory, base)) {
 			const value = operand.isEndAddress
 				? getMemoryStringLastByteAddress(memory, base)
@@ -200,10 +212,10 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 	};
 }
 
-export function tryResolveCompileTimeArgument(namespace: Namespace, argument: Argument): Const | undefined {
+export function tryResolveCompileTimeArgument(context: CompilationContext, argument: Argument): Const | undefined {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const leftConst = resolveCompileTimeOperand(argument.left, namespace);
-		const rightConst = resolveCompileTimeOperand(argument.right, namespace);
+		const leftConst = resolveCompileTimeOperand(argument.left, context);
+		const rightConst = resolveCompileTimeOperand(argument.right, context);
 
 		if (leftConst === undefined || rightConst === undefined) {
 			return undefined;
@@ -220,99 +232,103 @@ export function tryResolveCompileTimeArgument(namespace: Namespace, argument: Ar
 		return undefined;
 	}
 
-	return resolveCompileTimeOperand(argument, namespace);
+	return resolveCompileTimeOperand(argument, context);
 }
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 	const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
-	describe('resolveConstantValue', () => {
-		const mockNamespace = {
-			consts: {
-				SIZE: { value: 16, isInteger: true },
-				PI64: { value: 3.14159, isInteger: false, isFloat64: true },
-			},
-			memory: {
-				samples: {
-					numberOfElements: 8,
-					elementWordSize: 2,
-					isInteger: true,
+	describe('tryResolveCompileTimeArgument', () => {
+		const mockContext = {
+			namespace: {
+				consts: {
+					SIZE: { value: 16, isInteger: true },
+					PI64: { value: 3.14159, isInteger: false, isFloat64: true },
 				},
-				floatBuf: {
-					numberOfElements: 4,
-					elementWordSize: 4,
-					isInteger: false,
+				memory: {
+					samples: {
+						numberOfElements: 8,
+						elementWordSize: 2,
+						isInteger: true,
+					},
+					floatBuf: {
+						numberOfElements: 4,
+						elementWordSize: 4,
+						isInteger: false,
+					},
 				},
+				namespaces: {},
 			},
-			namespaces: {},
-		} as unknown as Namespace;
+			startingByteAddress: 24,
+			currentModuleWordAlignedSize: 5,
+		} as unknown as CompilationContext;
 
 		it('resolves direct constants', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE'))).toEqual({
 				value: 16,
 				isInteger: true,
 			});
 		});
 
 		it('resolves multiplication expression: constant * literal', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE*2'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE*2'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves division expression: constant / literal', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE/2'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE/2'))).toEqual({
 				value: 8,
 				isInteger: true,
 			});
 		});
 
 		it('resolves literal * constant', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('2*SIZE'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('2*SIZE'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves sizeof(name) * literal', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('sizeof(samples)*2'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)*2'))).toEqual({
 				value: 4,
 				isInteger: true,
 			});
 		});
 
 		it('resolves literal * sizeof(name)', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('123*sizeof(samples)'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('123*sizeof(samples)'))).toEqual({
 				value: 246,
 				isInteger: true,
 			});
 		});
 
 		it('resolves constant * sizeof(name)', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('SIZE*sizeof(samples)'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE*sizeof(samples)'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves sizeof(name) * constant', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('sizeof(samples)*SIZE'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)*SIZE'))).toEqual({
 				value: 32,
 				isInteger: true,
 			});
 		});
 
 		it('resolves count(name) * literal', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('count(samples)*2'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(samples)*2'))).toEqual({
 				value: 16,
 				isInteger: true,
 			});
 		});
 
 		it('keeps float64 width for expression results', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('PI64*2'))).toEqual({
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64*2'))).toEqual({
 				value: 6.28318,
 				isInteger: false,
 				isFloat64: true,
@@ -320,27 +336,30 @@ if (import.meta.vitest) {
 		});
 
 		it('returns undefined for unresolved or chained expressions', () => {
-			expect(tryResolveCompileTimeArgument(mockNamespace, parseArgument('MISSING'))).toBeUndefined();
-			expect(tryResolveCompileTimeArgument(mockNamespace, classifyIdentifier('SIZE/2/2'))).toBeUndefined();
-			expect(tryResolveCompileTimeArgument(mockNamespace, classifyIdentifier('SIZE*2/2'))).toBeUndefined();
+			expect(tryResolveCompileTimeArgument(mockContext, parseArgument('MISSING'))).toBeUndefined();
+			expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('SIZE/2/2'))).toBeUndefined();
+			expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('SIZE*2/2'))).toBeUndefined();
 		});
 
 		it('resolves intermodule sizeof expressions', () => {
 			const intermodularNamespace = {
-				...mockNamespace,
-				namespaces: {
-					source: {
-						consts: {},
-						memory: {
-							buffer: {
-								numberOfElements: 4,
-								elementWordSize: 2,
-								isInteger: true,
+				...mockContext,
+				namespace: {
+					...mockContext.namespace,
+					namespaces: {
+						source: {
+							consts: {},
+							memory: {
+								buffer: {
+									numberOfElements: 4,
+									elementWordSize: 2,
+									isInteger: true,
+								},
 							},
 						},
 					},
 				},
-			} as unknown as Namespace;
+			} as unknown as CompilationContext;
 
 			expect(tryResolveCompileTimeArgument(intermodularNamespace, parseArgument('2*sizeof(source:buffer)'))).toEqual({
 				value: 4,
@@ -350,7 +369,7 @@ if (import.meta.vitest) {
 
 		it('resolves explicit compile-time expression nodes', () => {
 			expect(
-				tryResolveCompileTimeArgument(mockNamespace, {
+				tryResolveCompileTimeArgument(mockContext, {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
 					left: parseCompileTimeOperand('2'),
 					operator: '*',
@@ -365,24 +384,27 @@ if (import.meta.vitest) {
 
 		it('resolves intermodule start-address reference (&module:memory) once module is laid out', () => {
 			const laidOutNamespace = {
-				...mockNamespace,
-				namespaces: {
-					source: {
-						consts: {},
-						byteAddress: 8,
-						wordAlignedSize: 4,
-						memory: {
-							buffer: {
-								byteAddress: 8,
-								wordAlignedSize: 4,
-								numberOfElements: 4,
-								elementWordSize: 4,
-								isInteger: true,
+				...mockContext,
+				namespace: {
+					...mockContext.namespace,
+					namespaces: {
+						source: {
+							consts: {},
+							byteAddress: 8,
+							wordAlignedSize: 4,
+							memory: {
+								buffer: {
+									byteAddress: 8,
+									wordAlignedSize: 4,
+									numberOfElements: 4,
+									elementWordSize: 4,
+									isInteger: true,
+								},
 							},
 						},
 					},
 				},
-			} as unknown as Namespace;
+			} as unknown as CompilationContext;
 
 			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
 				value: 8,
@@ -392,24 +414,27 @@ if (import.meta.vitest) {
 
 		it('resolves intermodule end-address reference (module:memory&) once module is laid out', () => {
 			const laidOutNamespace = {
-				...mockNamespace,
-				namespaces: {
-					source: {
-						consts: {},
-						byteAddress: 8,
-						wordAlignedSize: 4,
-						memory: {
-							buffer: {
-								byteAddress: 8,
-								wordAlignedSize: 4,
-								numberOfElements: 4,
-								elementWordSize: 4,
-								isInteger: true,
+				...mockContext,
+				namespace: {
+					...mockContext.namespace,
+					namespaces: {
+						source: {
+							consts: {},
+							byteAddress: 8,
+							wordAlignedSize: 4,
+							memory: {
+								buffer: {
+									byteAddress: 8,
+									wordAlignedSize: 4,
+									numberOfElements: 4,
+									elementWordSize: 4,
+									isInteger: true,
+								},
 							},
 						},
 					},
 				},
-			} as unknown as Namespace;
+			} as unknown as CompilationContext;
 
 			// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
 			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
@@ -420,16 +445,19 @@ if (import.meta.vitest) {
 
 		it('resolves intermodule module-base start-address (&module:) once module is laid out', () => {
 			const laidOutNamespace = {
-				...mockNamespace,
-				namespaces: {
-					source: {
-						consts: {},
-						byteAddress: 12,
-						wordAlignedSize: 3,
-						memory: {},
+				...mockContext,
+				namespace: {
+					...mockContext.namespace,
+					namespaces: {
+						source: {
+							consts: {},
+							byteAddress: 12,
+							wordAlignedSize: 3,
+							memory: {},
+						},
 					},
 				},
-			} as unknown as Namespace;
+			} as unknown as CompilationContext;
 
 			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
 				value: 12,
@@ -439,16 +467,19 @@ if (import.meta.vitest) {
 
 		it('resolves intermodule module-base end-address (module:&) once module is laid out', () => {
 			const laidOutNamespace = {
-				...mockNamespace,
-				namespaces: {
-					source: {
-						consts: {},
-						byteAddress: 12,
-						wordAlignedSize: 3,
-						memory: {},
+				...mockContext,
+				namespace: {
+					...mockContext.namespace,
+					namespaces: {
+						source: {
+							consts: {},
+							byteAddress: 12,
+							wordAlignedSize: 3,
+							memory: {},
+						},
 					},
 				},
-			} as unknown as Namespace;
+			} as unknown as CompilationContext;
 
 			// End address = 12 + (3 - 1) * 4 = 12 + 8 = 20
 			expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
@@ -459,24 +490,38 @@ if (import.meta.vitest) {
 
 		it('defers intermodule address resolution until module byteAddress is known', () => {
 			const unlaidOutNamespace = {
-				...mockNamespace,
-				namespaces: {
-					source: {
-						consts: {},
-						// No byteAddress — module not yet laid out
-						memory: {
-							buffer: {
-								numberOfElements: 4,
-								elementWordSize: 4,
-								isInteger: true,
+				...mockContext,
+				namespace: {
+					...mockContext.namespace,
+					namespaces: {
+						source: {
+							consts: {},
+							// No byteAddress — module not yet laid out
+							memory: {
+								buffer: {
+									numberOfElements: 4,
+									elementWordSize: 4,
+									isInteger: true,
+								},
 							},
 						},
 					},
 				},
-			} as unknown as Namespace;
+			} as unknown as CompilationContext;
 
 			expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:buffer'))).toBeUndefined();
 			expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
+		});
+
+		it('resolves current-module shorthands from compilation context', () => {
+			expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&this'))).toEqual({
+				value: 24,
+				isInteger: true,
+			});
+			expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('this&'))).toEqual({
+				value: 40,
+				isInteger: true,
+			});
 		});
 	});
 }
