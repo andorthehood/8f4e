@@ -1,6 +1,7 @@
 import { ArgumentType, type SplitByteToken } from '@8f4e/tokenizer';
 
 import { ErrorCode, getError } from '../compilerError';
+import { getEndByteAddress, getModuleEndByteAddress } from '../semantic/layoutAddresses';
 
 import type { AST, ArgumentIdentifier, ArgumentLiteral, CompilationContext, Argument } from '../types';
 
@@ -167,11 +168,11 @@ function resolveMemoryDefaultValue(arg: Argument, lineForError: AST[number], con
 					return context.startingByteAddress;
 				}
 				return typeof context.currentModuleWordAlignedSize === 'number'
-					? context.startingByteAddress + (context.currentModuleWordAlignedSize - 1) * 4
+					? getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
 					: 0;
 			}
 			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId!, lineForError, context);
-			return arg.isEndAddress ? memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * 4 : memoryItem.byteAddress;
+			return arg.isEndAddress ? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize) : memoryItem.byteAddress;
 		}
 
 		case 'element-count': {

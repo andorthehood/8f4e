@@ -4,6 +4,11 @@ import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser
 import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
+import {
+	alignAbsoluteWordOffset,
+	getAbsoluteWordOffset,
+	getByteAddressFromWordOffset,
+} from '../layoutAddresses';
 
 import type { InstructionCompiler, MemoryTypes } from '../../types';
 
@@ -51,9 +56,9 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				context.namespace.memory[id] = {
 					numberOfElements: 1,
 					elementWordSize: 4,
-					wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset,
+					wordAlignedAddress: getAbsoluteWordOffset(context.startingByteAddress, localWordOffset),
 					wordAlignedSize,
-					byteAddress: context.startingByteAddress + localWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
+					byteAddress: getByteAddressFromWordOffset(context.startingByteAddress, localWordOffset),
 					id,
 					default: finalDefault,
 					type: line.instruction as unknown as MemoryTypes,
@@ -63,8 +68,8 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 			} else {
 				// 64-bit scalar (nonPointerElementWordSize === 8): requires 8-byte (2-word) start
 				// alignment so that byteAddress = wordAlignedAddress * 4 is always divisible by 8.
-				const absoluteWordOffset = context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset;
-				const alignedAbsoluteWordOffset = absoluteWordOffset % 2 === 0 ? absoluteWordOffset : absoluteWordOffset + 1;
+				const absoluteWordOffset = getAbsoluteWordOffset(context.startingByteAddress, localWordOffset);
+				const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, nonPointerElementWordSize);
 				const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
 				const wordAlignedSize = alignmentPadding + 2;
 
@@ -73,7 +78,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 					elementWordSize: nonPointerElementWordSize,
 					wordAlignedAddress: alignedAbsoluteWordOffset,
 					wordAlignedSize,
-					byteAddress: alignedAbsoluteWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
+					byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 					id,
 					default: finalDefault,
 					type: line.instruction as unknown as MemoryTypes,

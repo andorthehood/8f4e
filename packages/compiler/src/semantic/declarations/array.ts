@@ -2,6 +2,7 @@ import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import { ArgumentType } from '../../types';
+import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
 import type { AST, ArrayDeclarationLine, InstructionCompiler, MemoryTypes } from '../../types';
 
@@ -31,9 +32,8 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 
 		// Apply 8-byte alignment for float64[] arrays: round up absolute word offset to even
 		// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.
-		const absoluteWordOffset = context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress;
-		const alignedAbsoluteWordOffset =
-			elementWordSize === 8 && absoluteWordOffset % 2 !== 0 ? absoluteWordOffset + 1 : absoluteWordOffset;
+		const absoluteWordOffset = getAbsoluteWordOffset(context.startingByteAddress, wordAlignedAddress);
+		const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, elementWordSize);
 		const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
 		const wordAlignedSize = alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY);
 
@@ -47,7 +47,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 			wordAlignedAddress: alignedAbsoluteWordOffset,
 			id: memoryId,
 			// Convert the word-grid offset back to a byte address for wasm load/store instructions.
-			byteAddress: alignedAbsoluteWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
+			byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 			default: {},
 			isInteger: line.instruction.startsWith('int') || line.instruction.includes('*'),
 			isPointingToPointer: line.instruction.includes('**'),
