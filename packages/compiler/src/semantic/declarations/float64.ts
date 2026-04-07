@@ -1,15 +1,9 @@
-import { getPointerDepth } from '@8f4e/tokenizer';
-
+import createDeclarationCompiler from './createDeclarationCompiler';
 import int from './int';
 
-import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
-import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
-import getMemoryFlags from '../../utils/memoryFlags';
-import { withValidation } from '../../withValidation';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
+import type { AST, InstructionCompiler } from '../../types';
 
 /**
  * Instruction compiler for `float64`, `float64*`, `float64**`.
@@ -24,56 +18,11 @@ import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
  *
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const float64: InstructionCompiler = withValidation(
-	{
-		scope: 'module',
-	},
-	(line, context) => {
-		const localWordOffset = calculateWordAlignedSizeOfMemory(context.namespace.memory);
-		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
-		const pointerDepth = getPointerDepth(line.instruction);
-		const flags = getMemoryFlags('float64', pointerDepth);
-
-		if (pointerDepth > 0) {
-			// float64* / float64** store a pointer (4 bytes), same width as float* / int*.
-			// No 8-byte alignment required for the pointer slot itself.
-			context.namespace.memory[id] = {
-				numberOfElements: 1,
-				elementWordSize: 4,
-				wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset,
-				wordAlignedSize: 1,
-				byteAddress: context.startingByteAddress + localWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
-				id,
-				default: defaultValue,
-				type: line.instruction as unknown as MemoryTypes,
-				...flags,
-			};
-		} else {
-			// float64 scalar: elementWordSize = 8, requires 8-byte (2-word) start alignment.
-			// Compute absolute word address and round up to the next even boundary so that
-			// byteAddress = wordAlignedAddress * 4 is always divisible by 8.
-			const absoluteWordOffset = context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset;
-			const alignedAbsoluteWordOffset = absoluteWordOffset % 2 === 0 ? absoluteWordOffset : absoluteWordOffset + 1;
-			// alignmentPadding (0 or 1) is folded into wordAlignedSize so that
-			// calculateWordAlignedSizeOfMemory returns the correct next-free offset.
-			const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
-
-			context.namespace.memory[id] = {
-				numberOfElements: 1,
-				elementWordSize: 8,
-				wordAlignedAddress: alignedAbsoluteWordOffset,
-				wordAlignedSize: alignmentPadding + 2,
-				byteAddress: alignedAbsoluteWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
-				id,
-				default: defaultValue,
-				type: line.instruction as unknown as MemoryTypes,
-				...flags,
-			};
-		}
-
-		return context;
-	}
-);
+const float64: InstructionCompiler = createDeclarationCompiler({
+	baseType: 'float64',
+	truncate: false,
+	nonPointerElementWordSize: 8,
+});
 
 export default float64;
 
