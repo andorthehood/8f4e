@@ -81,3 +81,6 @@ export type DefaultLine = ASTLineBase<
 	'default',
 	[ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression]
 >;
+
+export type LoopLine = ASTLineBase<'loop', [] | [ArgumentLiteral]>;
+export type LoopCapLine = ASTLineBase<'#loopCap', [ArgumentLiteral]>;

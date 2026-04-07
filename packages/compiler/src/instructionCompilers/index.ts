@@ -57,6 +57,7 @@ import param from './param';
 import call from './call';
 import skipExecution from './skipExecution';
 import initOnly from './initOnly';
+import loopCap from './loopCap';
 import mapBegin from './mapBegin';
 import map from './map';
 import _default from './default';
@@ -127,6 +128,7 @@ const instructions = {
 	call,
 	'#skipExecution': skipExecution,
 	'#initOnly': initOnly,
+	'#loopCap': loopCap,
 	mapBegin,
 	map,
 	default: _default,
