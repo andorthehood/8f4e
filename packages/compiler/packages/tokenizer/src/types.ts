@@ -40,9 +40,8 @@ export type ParsedLineMetadata = Array<{ callSiteLineNumber: number; macroId?: s
 export type PushArgument = ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression;
 export type PushLine = ASTLineBase<'push', [PushArgument]>;
 
-export type LocalGetLine = ASTLineBase<'localGet', [ArgumentIdentifier]>;
 export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
-export type LocalVariableAccessLine = LocalGetLine | LocalSetLine;
+export type LocalVariableAccessLine = LocalSetLine;
 
 export type BlockLine = ASTLineBase<'block', [ArgumentIdentifier]>;
 export type FunctionLine = ASTLineBase<'function', [ArgumentIdentifier]>;

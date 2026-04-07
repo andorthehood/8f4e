@@ -36,12 +36,12 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = withValida
 
 				`push ${previousValue.byteAddress}`,
 				operand.isInteger ? 'load' : 'loadFloat',
-				`localGet ${currentValueMemoryName}`,
+				`push ${currentValueMemoryName}`,
 				'equal',
 				`branchIfTrue ${depth}`,
 
 				`push ${previousValue.byteAddress}`,
-				`localGet ${currentValueMemoryName}`,
+				`push ${currentValueMemoryName}`,
 				'store',
 			],
 			context

@@ -273,21 +273,6 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
-	it('throws UNDECLARED_IDENTIFIER for localGet with an undeclared local', () => {
-		const context = {
-			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
-			locals: {},
-		} as unknown as CompilationContext;
-		const line: AST[number] = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
-			instruction: 'localGet',
-			arguments: [classifyIdentifier('missing')],
-		};
-
-		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
-	});
-
 	it('throws UNDECLARED_IDENTIFIER for localSet with an undeclared local', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },

@@ -164,7 +164,7 @@ function maskEffect
 use mod
 param int row
 
-localGet row
+push row
 push EFFECT_NIBBLE
 and
 push EFFECT_NIBBLE_SHIFT
@@ -177,7 +177,7 @@ function maskParam
 use mod
 param int row
 
-localGet row
+push row
 push EFFECT_PARAM
 and
 push EFFECT_PARAM_SHIFT
@@ -190,12 +190,12 @@ function maskPeriod
 use mod
 param int row
 
-localGet row
+push row
 push PERIOD_HI
 and
 push PERIOD_SHIFT
 shiftLeft
-localGet row
+push row
 push PERIOD_LO
 and
 push PERIOD_SHIFT
@@ -209,10 +209,10 @@ function maskSampleNumber
 use mod
 param int row
 
-localGet row
+push row
 push SAMPLE_HI_NIBBLE
 and
-localGet row
+push row
 push SAMPLE_LO_NIBBLE
 and
 push SAMPLE_LO_NIBBLE_SHIFT
@@ -227,7 +227,7 @@ param int period
 use mod
 use env
 
-localGet period
+push period
 equalToZero
 if void
 push 0.0
@@ -235,7 +235,7 @@ return
 ifEnd
 
 push PAL_AMIGA_CLOCK/2
-localGet period
+push period
 castToFloat
 ensureNonZero
 div
@@ -250,7 +250,7 @@ function sampleNumberToAddr
 ; @tab 8
 param int sampleNumber
 
-localGet sampleNumber
+push sampleNumber
 mapBegin int
 map 0	&samplePack:sample0
 map 1	&samplePack:sample1
@@ -274,7 +274,7 @@ function sampleNumberToRepeatLen
 ; @tab 8
 use sampleMeta
 param int sampleNumber
-localGet sampleNumber
+push sampleNumber
 mapBegin int
 map 0	2
 map 1	S01_REPEAT_LENGTH
@@ -298,7 +298,7 @@ function sampleNumberToRepeatOffset
 ; @tab 8
 use sampleMeta
 param int sampleNumber
-localGet sampleNumber
+push sampleNumber
 mapBegin int
 map 0	2
 map 1	S01_REPEAT_OFFSET
@@ -323,7 +323,7 @@ function sampleNumberToSize
 use env
 param int sampleNumber
 
-localGet sampleNumber
+push sampleNumber
 mapBegin int
 map 0	1
 map 1	ASSET_SAMPLE1_SIZE
@@ -347,7 +347,7 @@ function sampleNumberToVolume
 use sampleMeta
 param int sampleNumber
 
-localGet sampleNumber
+push sampleNumber
 mapBegin int
 map 0	0
 map 1	S01_VOLUME
