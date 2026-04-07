@@ -17,7 +17,7 @@ const PROJECT_WITH_SAMPLE_RATE_DIRECTIVE: Project = {
 
 function resolveSampleRateFromDirectives(
 	codeBlocks: Array<{
-		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number }>;
+		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number; isTrailing: boolean }>;
 		id?: string | number;
 	}>
 ) {
@@ -35,7 +35,7 @@ function resolveSampleRateFromDirectives(
 
 function getRuntimeEnvConstants(
 	codeBlocks: Array<{
-		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number }>;
+		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number; isTrailing: boolean }>;
 		id?: string | number;
 	}>
 ) {
@@ -174,7 +174,7 @@ describe('autoEnvConstants', () => {
 			createMockCodeBlock({
 				id: 'module_rate',
 				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
-				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 }],
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1, isTrailing: false }],
 				moduleId: 'rate',
 				blockType: 'module',
 			}),
@@ -271,7 +271,7 @@ describe('autoEnvConstants', () => {
 			createMockCodeBlock({
 				id: 'module_rate',
 				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
-				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 }],
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1, isTrailing: false }],
 				moduleId: 'rate',
 				blockType: 'module',
 			}),
@@ -298,7 +298,7 @@ describe('autoEnvConstants', () => {
 			createMockCodeBlock({
 				id: 'module_rate',
 				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
-				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1 }],
+				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1, isTrailing: false }],
 				moduleId: 'rate',
 				blockType: 'module',
 			}),
