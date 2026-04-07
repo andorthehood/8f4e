@@ -65,6 +65,8 @@ if (import.meta.vitest) {
 			stack: [],
 			blockStack: [],
 			startingByteAddress: 0,
+			currentModuleNextWordOffset: 0,
+			currentModuleWordAlignedSize: 0,
 			byteCode: [],
 			mode: 'module',
 			codeBlockId: 'testBlock',

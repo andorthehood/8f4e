@@ -1,4 +1,3 @@
-import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
 import { withValidation } from '../../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
@@ -24,7 +23,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 	(line: ArrayDeclarationLine, context) => {
 		const memoryId = line.arguments[0].value;
 		const elementCountArg = line.arguments[1];
-		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
+		const wordAlignedAddress = context.currentModuleNextWordOffset ?? 0;
 
 		const elementWordSize = getElementWordSize(line.instruction);
 		const isUnsigned = line.instruction.endsWith('u[]');
@@ -36,13 +35,14 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 		const alignedAbsoluteWordOffset =
 			elementWordSize === 8 && absoluteWordOffset % 2 !== 0 ? absoluteWordOffset + 1 : absoluteWordOffset;
 		const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
+		const wordAlignedSize = alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY);
 
 		context.namespace.memory[memoryId] = {
 			numberOfElements,
 			elementWordSize,
 			// Round up to the 4-byte allocation grid so all data structures stay word-addressable.
 			// alignmentPadding reserves any gap needed before float64[] to guarantee 8-byte byte-address alignment.
-			wordAlignedSize: alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY),
+			wordAlignedSize,
 			// Store address in 4-byte words because pointer math/view indexing is word-based.
 			wordAlignedAddress: alignedAbsoluteWordOffset,
 			id: memoryId,
@@ -63,6 +63,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 			type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
 			isUnsigned,
 		};
+		context.currentModuleNextWordOffset = wordAlignedAddress + wordAlignedSize;
 
 		return context;
 	}

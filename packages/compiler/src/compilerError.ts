@@ -56,6 +56,7 @@ export enum ErrorCode {
 	SPLIT_HEX_TOO_MANY_BYTES,
 	SPLIT_HEX_MIXED_TOKENS,
 	CONSTANT_NAME_AS_MEMORY_IDENTIFIER,
+	RESERVED_MEMORY_IDENTIFIER,
 	SPLIT_BYTE_CONSTANT_OUT_OF_RANGE,
 	POINTEE_WORD_SIZE_ON_NON_POINTER,
 	POINTEE_ELEMENT_MAX_ON_NON_POINTER,
@@ -334,6 +335,18 @@ export function getError(
 				code,
 				message:
 					'Constant-style identifiers (all-uppercase) are reserved for constants and cannot be used as memory allocation names. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.RESERVED_MEMORY_IDENTIFIER:
+			return {
+				code,
+				message:
+					'Reserved identifier cannot be used as a memory allocation name' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. (' +
 					code +
 					')',
 				line,

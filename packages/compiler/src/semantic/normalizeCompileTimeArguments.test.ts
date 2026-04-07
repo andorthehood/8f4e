@@ -200,6 +200,8 @@ describe('normalizeCompileTimeArguments', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
+			startingByteAddress: 16,
+			currentModuleWordAlignedSize: 3,
 		} as unknown as CompilationContext;
 		const line: AST[number] = {
 			lineNumberBeforeMacroExpansion: 1,
@@ -209,6 +211,46 @@ describe('normalizeCompileTimeArguments', () => {
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+	});
+
+	it('folds push &this into the current module start address', () => {
+		const context = {
+			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+			locals: {},
+			startingByteAddress: 16,
+			currentModuleWordAlignedSize: 3,
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'push',
+			arguments: [classifyIdentifier('&this')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			arguments: [{ type: ArgumentType.LITERAL, value: 16, isInteger: true }],
+		});
+	});
+
+	it('folds push this& into the current module end address', () => {
+		const context = {
+			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+			locals: {},
+			startingByteAddress: 16,
+			currentModuleWordAlignedSize: 3,
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'push',
+			arguments: [classifyIdentifier('this&')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			arguments: [{ type: ArgumentType.LITERAL, value: 24, isInteger: true }],
+		});
 	});
 
 	it('throws UNDECLARED_IDENTIFIER when an init default remains an unresolved compile-time expression', () => {
