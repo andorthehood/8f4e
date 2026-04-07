@@ -34,6 +34,8 @@ import {
 	type StoreBytesLine,
 	type UseLine,
 	type WasmLine,
+	type LoopLine,
+	type LoopCapLine,
 } from '@8f4e/tokenizer';
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
@@ -184,6 +186,8 @@ export {
 	type StoreBytesLine,
 	type UseLine,
 	type WasmLine,
+	type LoopLine,
+	type LoopCapLine,
 };
 
 export interface TestModule {
@@ -238,6 +242,8 @@ export interface CompilationContext {
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
+	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
+	loopCap?: number;
 }
 
 export interface StackItem {

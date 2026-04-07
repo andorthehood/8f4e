@@ -115,6 +115,10 @@ ifEnd
 
 The loop instruction begins a loop block. The loop body repeats until a branch exits the loop.
 
+An optional non-negative integer argument sets the cap for this loop's infinite-loop guard. When omitted, the effective cap is determined by the ambient `#loopCap` directive in the current block, or the built-in default of `1000` if no directive is active.
+
+**Precedence:** explicit `loop <int>` > ambient `#loopCap` > built-in default `1000`
+
 #### Examples
 
 ```
@@ -124,6 +128,37 @@ loop
  push 10
  equal
  branchIfTrue 1
+ push &counter
+ push counter
+ push 1
+ add
+ store
+loopEnd
+```
+
+Loop with an explicit cap of 32 iterations:
+
+```
+int counter
+loop 32
+ push &counter
+ push counter
+ push 1
+ add
+ store
+loopEnd
+```
+
+Loop cap set for all subsequent loops via the `#loopCap` directive:
+
+```
+#loopCap 5000
+loop
+ ; uses 5000
+loopEnd
+
+loop 32
+ ; uses 32 (explicit argument takes precedence)
 loopEnd
 ```
 
