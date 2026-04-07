@@ -14,7 +14,6 @@ const instructionNormalizers = {
 	const: normalizeConst,
 	default: normalizeDefault,
 	init: normalizeInit,
-	localGet: normalizeLocalVariableAccess,
 	localSet: normalizeLocalVariableAccess,
 	map: normalizeMap,
 	push: normalizePush,

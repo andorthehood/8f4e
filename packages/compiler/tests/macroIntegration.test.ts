@@ -27,7 +27,7 @@ describe('Macro expansion integration', () => {
 
 		const functions: Module[] = [
 			{
-				code: ['function doubleValue', 'param int value', 'localGet value', 'macro double', 'functionEnd int'],
+				code: ['function doubleValue', 'param int value', 'push value', 'macro double', 'functionEnd int'],
 			},
 		];
 
@@ -106,7 +106,7 @@ describe('Macro expansion integration', () => {
 	test('should compile without macros (backward compatibility)', () => {
 		const functions: Module[] = [
 			{
-				code: ['function doubleValue', 'param int value', 'localGet value', 'push 2', 'mul', 'functionEnd int'],
+				code: ['function doubleValue', 'param int value', 'push value', 'push 2', 'mul', 'functionEnd int'],
 			},
 		];
 

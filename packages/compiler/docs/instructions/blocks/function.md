@@ -10,8 +10,8 @@ The function instruction begins a function block with the provided name.
 function add
 param int x
 param int y
-localGet x
-localGet y
+push x
+push y
 add
 functionEnd int
 ```
@@ -34,13 +34,13 @@ param float x2
 param float y2
 
 ; dx = x2 - x1
-localGet x2
-localGet x1
+push x2
+push x1
 sub
 
 ; dy = y2 - y1
-localGet y2
-localGet y1
+push y2
+push y1
 sub
 
 ; dx * dx
@@ -70,7 +70,7 @@ The param instruction declares a function parameter (`param int name` or `param 
 ```
 function double
 param int x
-localGet x
+push x
 push 2
 mul
 functionEnd int
@@ -80,7 +80,7 @@ functionEnd int
 
 - Parameters must be declared immediately after the function declaration
 - Parameter names must be unique within the function
-- Parameters can be accessed using `localGet` and modified using `localSet`
+- Parameters can be accessed using `push` and modified using `localSet`
 
 ## functionEnd
 

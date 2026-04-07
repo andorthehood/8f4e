@@ -4,6 +4,7 @@ import favoriteDirective from './favorite/plugin';
 import groupDirective from './group/plugin';
 import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
+import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
@@ -42,6 +43,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	buttonDirective,
 	switchDirective,
 	watchDirective,
+	nthDirective,
 	disabledDirective,
 	homeDirective,
 	favoriteDirective,

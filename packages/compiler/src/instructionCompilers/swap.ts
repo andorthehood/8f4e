@@ -31,8 +31,8 @@ const swap: InstructionCompiler = withValidation(
 				`local ${operand2.isInteger ? 'int' : 'float'} ${tempBName}`,
 				`localSet ${tempAName}`,
 				`localSet ${tempBName}`,
-				`localGet ${tempAName}`,
-				`localGet ${tempBName}`,
+				`push ${tempAName}`,
+				`push ${tempBName}`,
 			],
 			context
 		);
