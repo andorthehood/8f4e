@@ -50,6 +50,67 @@ function alignTargetBlockCursorForHorizontalNavigation(
 	targetBlock.cursor.y = gapCalculator(boundedDisplayRow, targetBlock.gaps) * state.viewport.hGrid;
 }
 
+function setBlockCursorToDisplayRow(
+	state: State,
+	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	displayRow: number,
+	sourceCol?: number
+): void {
+	const directiveState = deriveDirectiveState(block.code, block.parsedDirectives, {
+		isExpandedForEditing: true,
+	});
+	const maxDisplayRow = Math.max(directiveState.displayModel.displayRowToRawRow.length - 1, 0);
+	const boundedDisplayRow = Math.min(Math.max(displayRow, 0), maxDisplayRow);
+	const targetRawRow = directiveState.displayModel.displayRowToRawRow[boundedDisplayRow] ?? 0;
+
+	block.cursor.row = targetRawRow;
+	block.cursor.col = Math.min(sourceCol ?? block.cursor.col, block.code[targetRawRow]?.length ?? 0);
+	block.cursor.y = gapCalculator(boundedDisplayRow, block.gaps) * state.viewport.hGrid;
+}
+
+function getSelectedBlockDisplayRow(
+	state: State,
+	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>
+): number {
+	const physicalRow = Math.max(Math.floor(block.cursor.y / state.viewport.hGrid), 0);
+	return reverseGapCalculator(physicalRow, block.gaps);
+}
+
+function moveSelectionToCurrentBlockVerticalEdge(
+	state: State,
+	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	direction: 'up' | 'down'
+): boolean {
+	const directiveState = deriveDirectiveState(block.code, block.parsedDirectives, {
+		isExpandedForEditing: true,
+	});
+	const maxDisplayRow = Math.max(directiveState.displayModel.displayRowToRawRow.length - 1, 0);
+	const currentDisplayRow = getSelectedBlockDisplayRow(state, block);
+	const edgeDisplayRow = direction === 'up' ? 0 : maxDisplayRow;
+
+	if (currentDisplayRow === edgeDisplayRow) {
+		return false;
+	}
+
+	setBlockCursorToDisplayRow(state, block, edgeDisplayRow);
+	return true;
+}
+
+function alignTargetBlockCursorForVerticalNavigation(
+	state: State,
+	sourceBlock: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	targetBlock: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	direction: 'up' | 'down'
+): void {
+	const targetDirectiveState = deriveDirectiveState(targetBlock.code, targetBlock.parsedDirectives, {
+		isExpandedForEditing: true,
+	});
+	const maxDisplayRow = Math.max(targetDirectiveState.displayModel.displayRowToRawRow.length - 1, 0);
+	const targetDisplayRow = direction === 'up' ? maxDisplayRow : 0;
+
+	setBlockCursorToDisplayRow(state, targetBlock, targetDisplayRow, sourceBlock.cursor.col);
+}
+
 /**
  * Event payload for jumping to a favorite code block.
  */
@@ -84,12 +145,23 @@ export function navigateToCodeBlockInDirection(
 	const currentBlock = state.graphicHelper.selectedCodeBlock;
 
 	// Find the closest code block in the specified direction
+	if (
+		(direction === 'up' || direction === 'down') &&
+		moveSelectionToCurrentBlockVerticalEdge(state, currentBlock, direction)
+	) {
+		centerViewportOnCodeBlockCursor(state.viewport, currentBlock);
+		events?.dispatch('viewportMoved');
+		return true;
+	}
+
 	const targetBlock = findClosestCodeBlockInDirection(codeBlocks, currentBlock, direction);
 
 	// If we found a different block, select it and center viewport on it
 	if (targetBlock !== currentBlock) {
 		if (direction === 'left' || direction === 'right') {
 			alignTargetBlockCursorForHorizontalNavigation(state, currentBlock, targetBlock);
+		} else {
+			alignTargetBlockCursorForVerticalNavigation(state, currentBlock, targetBlock, direction);
 		}
 
 		setSelectedCodeBlock(stateSource, targetBlock);
