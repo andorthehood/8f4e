@@ -13,7 +13,7 @@ const defaultOptions = {
 };
 
 describe('push <local> parity with localGet', () => {
-	test('push <int local> and localGet produce the same stack metadata', () => {
+	test('push <int local> emits the same WASM bytecode as localGet', () => {
 		const functions: Module[] = [
 			{
 				code: [
@@ -46,37 +46,18 @@ describe('push <local> parity with localGet', () => {
 		const resultGet = compile(modules, defaultOptions, functions);
 		const resultPush = compile(modules, defaultOptions, functionsPush);
 
-		const getBody = resultGet.compiledFunctions!.compareInt;
-		const pushBody = resultPush.compiledFunctions!.compareIntPush;
-
-		// Both should have the same return type
-		expect(getBody.signature.returns).toEqual(['int']);
-		expect(pushBody.signature.returns).toEqual(['int']);
+		expect(resultGet.compiledFunctions!.compareInt.body).toEqual(resultPush.compiledFunctions!.compareIntPush.body);
 	});
 
-	test('push <float local> and localGet produce the same stack metadata', () => {
+	test('push <float local> emits the same WASM bytecode as localGet', () => {
 		const functions: Module[] = [
 			{
-				code: [
-					'function floatGet',
-					'local float flt',
-					'push 1.5',
-					'localSet flt',
-					'localGet flt',
-					'functionEnd float',
-				],
+				code: ['function floatGet', 'local float flt', 'push 1.5', 'localSet flt', 'localGet flt', 'functionEnd float'],
 			},
 		];
 		const functionsPush: Module[] = [
 			{
-				code: [
-					'function floatPush',
-					'local float flt',
-					'push 1.5',
-					'localSet flt',
-					'push flt',
-					'functionEnd float',
-				],
+				code: ['function floatPush', 'local float flt', 'push 1.5', 'localSet flt', 'push flt', 'functionEnd float'],
 			},
 		];
 
@@ -85,33 +66,18 @@ describe('push <local> parity with localGet', () => {
 		const resultGet = compile(modules, defaultOptions, functions);
 		const resultPush = compile(modules, defaultOptions, functionsPush);
 
-		expect(resultGet.compiledFunctions!.floatGet.signature.returns).toEqual(['float']);
-		expect(resultPush.compiledFunctions!.floatPush.signature.returns).toEqual(['float']);
+		expect(resultGet.compiledFunctions!.floatGet.body).toEqual(resultPush.compiledFunctions!.floatPush.body);
 	});
 
 	test('push <float64 local> preserves float64 metadata and matches localGet behavior', () => {
 		const functionsGet: Module[] = [
 			{
-				code: [
-					'function double64Get',
-					'param float64 x',
-					'localGet x',
-					'push 2.0f64',
-					'mul',
-					'functionEnd float64',
-				],
+				code: ['function double64Get', 'param float64 x', 'localGet x', 'push 2.0f64', 'mul', 'functionEnd float64'],
 			},
 		];
 		const functionsPush: Module[] = [
 			{
-				code: [
-					'function double64Push',
-					'param float64 x',
-					'push x',
-					'push 2.0f64',
-					'mul',
-					'functionEnd float64',
-				],
+				code: ['function double64Push', 'param float64 x', 'push x', 'push 2.0f64', 'mul', 'functionEnd float64'],
 			},
 		];
 
