@@ -38,6 +38,8 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	map: { minArguments: 2, argumentTypes: ['mapValue', 'mapValue'] },
 	default: { minArguments: 1, argumentTypes: ['compileTimeValue'] },
 	storeBytes: { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
+	loop: { argumentTypes: ['nonNegativeIntegerLiteral'] },
+	'#loopCap': { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
 	module: { minArguments: 1, argumentTypes: ['identifier'] },
 	constants: { minArguments: 1, argumentTypes: ['identifier'] },
 	use: { minArguments: 1, argumentTypes: ['identifier'] },
