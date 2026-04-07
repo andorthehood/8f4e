@@ -142,8 +142,6 @@
           "id": "defaultFreq",
           "default": 440,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -157,10 +155,9 @@
           "id": "frequency",
           "default": 4,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "phase": {
@@ -172,8 +169,6 @@
           "id": "phase",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -187,8 +182,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -270,10 +263,9 @@
           "id": "in",
           "default": 16,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "buffer": {
@@ -285,8 +277,6 @@
           "byteAddress": 24,
           "default": {},
           "isInteger": false,
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "type": "float",
           "isUnsigned": false
@@ -300,8 +290,6 @@
           "id": "pointer",
           "default": 24,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false

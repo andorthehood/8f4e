@@ -65,8 +65,6 @@
           "id": "keyPressed",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -80,8 +78,6 @@
           "id": "keyCode",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -253,8 +249,6 @@
           "id": "dAttack",
           "default": 0.0001,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -268,8 +262,6 @@
           "id": "dRelease",
           "default": 0.0001,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -283,10 +275,9 @@
           "id": "trigger",
           "default": 4,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "attackRate": {
@@ -298,10 +289,9 @@
           "id": "attackRate",
           "default": 12,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "releaseRate": {
@@ -313,10 +303,9 @@
           "id": "releaseRate",
           "default": 16,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -328,8 +317,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -343,8 +330,6 @@
           "id": "attacking",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -388,10 +373,9 @@
           "id": "in",
           "default": 8,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "out": {
@@ -403,8 +387,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -562,8 +544,6 @@
             "127": 12543.854
           },
           "isInteger": false,
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "type": "float",
           "isUnsigned": false
@@ -620,10 +600,9 @@
           "id": "in",
           "default": 44,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "out": {
@@ -635,8 +614,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -650,10 +627,9 @@
           "id": "notes",
           "default": 48,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         }
       },
@@ -778,8 +754,6 @@
           "id": "defaultFreq",
           "default": 440,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -793,10 +767,9 @@
           "id": "frequency",
           "default": 564,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "phase": {
@@ -808,8 +781,6 @@
           "id": "phase",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -823,8 +794,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -878,10 +847,9 @@
           "id": "in",
           "default": 584,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "volume": {
@@ -893,10 +861,9 @@
           "id": "volume",
           "default": 32,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -908,8 +875,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -993,10 +958,9 @@
           "id": "in",
           "default": 596,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "buffer": {
@@ -1008,8 +972,6 @@
           "byteAddress": 604,
           "default": {},
           "isInteger": false,
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "type": "float",
           "isUnsigned": false
@@ -1023,8 +985,6 @@
           "id": "pointer",
           "default": 604,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false

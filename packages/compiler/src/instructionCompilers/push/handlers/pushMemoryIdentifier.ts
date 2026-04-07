@@ -39,8 +39,6 @@ if (import.meta.vitest) {
 							byteAddress: 8,
 							default: 0,
 							isInteger: true,
-							isPointer: false,
-							isPointingToInteger: false,
 							isPointingToPointer: false,
 							isUnsigned: false,
 							type: 'int',

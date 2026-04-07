@@ -353,7 +353,7 @@ if (import.meta.vitest) {
 							floatPointer: {
 								byteAddress: 0,
 								type: 'float64*',
-								isPointingToInteger: false,
+								pointeeBaseType: 'float64',
 								isPointingToPointer: false,
 							} as unknown as MemoryMap[string],
 						},
@@ -382,7 +382,7 @@ if (import.meta.vitest) {
 							floatPointerPointer: {
 								byteAddress: 0,
 								type: 'float64**',
-								isPointingToInteger: false,
+								pointeeBaseType: 'float64',
 								isPointingToPointer: true,
 							} as unknown as MemoryMap[string],
 						},

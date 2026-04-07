@@ -154,7 +154,7 @@ if (import.meta.vitest) {
 			const entry = context.namespace.memory['ptr'];
 			expect(entry.elementWordSize).toBe(4);
 			expect(entry.wordAlignedSize).toBe(1);
-			expect(entry.isPointer).toBe(true);
+			expect(entry.pointeeBaseType).toBe('float64');
 			expect(entry.isInteger).toBe(true);
 		});
 
@@ -174,7 +174,7 @@ if (import.meta.vitest) {
 			const entry = context.namespace.memory['pptr'];
 			expect(entry.elementWordSize).toBe(4);
 			expect(entry.wordAlignedSize).toBe(1);
-			expect(entry.isPointer).toBe(true);
+			expect(entry.pointeeBaseType).toBe('float64');
 			expect(entry.isPointingToPointer).toBe(true);
 		});
 	});
