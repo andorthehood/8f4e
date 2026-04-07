@@ -103,8 +103,6 @@ describe('plot directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'buffer2',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 

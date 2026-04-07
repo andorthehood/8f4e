@@ -70,10 +70,9 @@
           "id": "in1",
           "default": 60,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "out": {
@@ -85,8 +84,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -100,10 +97,9 @@
           "id": "in2",
           "default": 28,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         }
       },
@@ -130,8 +126,6 @@
           "id": "set",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -145,8 +139,6 @@
           "id": "reset",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -199,10 +191,9 @@
           "id": "in",
           "default": 20,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "out": {
@@ -214,8 +205,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -277,10 +266,9 @@
           "id": "in1",
           "default": 48,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "out": {
@@ -292,8 +280,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -307,10 +293,9 @@
           "id": "in2",
           "default": 68,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         }
       },
@@ -370,10 +355,9 @@
           "id": "in1",
           "default": 36,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "out": {
@@ -385,8 +369,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -400,10 +382,9 @@
           "id": "in2",
           "default": 600,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         }
       },
@@ -478,10 +459,9 @@
           "id": "in1",
           "default": 8,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "out": {
@@ -493,8 +473,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -508,10 +486,9 @@
           "id": "in2",
           "default": 16,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         }
       },
@@ -552,8 +529,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -637,10 +612,9 @@
           "id": "in",
           "default": 36,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "buffer": {
@@ -652,8 +626,6 @@
           "byteAddress": 76,
           "default": {},
           "isInteger": true,
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "type": "int",
           "isUnsigned": false
@@ -667,8 +639,6 @@
           "id": "bufferPointer",
           "default": 76,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -752,10 +722,9 @@
           "id": "in",
           "default": 8,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         },
         "buffer": {
@@ -767,8 +736,6 @@
           "byteAddress": 340,
           "default": {},
           "isInteger": true,
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "type": "int",
           "isUnsigned": false
@@ -782,8 +749,6 @@
           "id": "bufferPointer",
           "default": 340,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -812,8 +777,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false

@@ -50,9 +50,16 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 			byteAddress: alignedAbsoluteWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
 			default: {},
 			isInteger: line.instruction.startsWith('int') || line.instruction.includes('*'),
-			isPointer: line.instruction.includes('*'),
-			isPointingToInteger: line.instruction.startsWith('int') && line.instruction.includes('*'),
 			isPointingToPointer: line.instruction.includes('**'),
+			...(line.instruction.includes('*')
+				? {
+						pointeeBaseType: line.instruction.startsWith('float64')
+							? 'float64'
+							: line.instruction.startsWith('int')
+								? 'int'
+								: 'float',
+					}
+				: {}),
 			type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
 			isUnsigned,
 		};
