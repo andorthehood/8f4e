@@ -63,6 +63,18 @@ describe('parseOutputs', () => {
 		]);
 	});
 
+	it('should parse bare anonymous scalar allocation', () => {
+		const code = ['int'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse int[] instruction', () => {
 		const code = ['int[] myOutput'];
 		const result = parseOutputs(code);
@@ -155,6 +167,13 @@ describe('parseOutputs', () => {
 
 	it('should not match pointer types', () => {
 		const code = ['int* myVar', 'float* myOtherVar'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([]);
+	});
+
+	it('should not treat bare arrays as outputs', () => {
+		const code = ['int[]'];
 		const result = parseOutputs(code);
 
 		expect(result).toEqual([]);
