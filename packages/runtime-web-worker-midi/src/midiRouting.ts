@@ -138,7 +138,7 @@ function resolveWordAddress(
 		return undefined;
 	}
 
-	if (memory.isPointer) {
+	if (memory.pointeeBaseType) {
 		return memoryBuffer[memory.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT;
 	}
 

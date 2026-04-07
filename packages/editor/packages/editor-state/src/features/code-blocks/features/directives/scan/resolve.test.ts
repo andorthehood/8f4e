@@ -110,8 +110,6 @@ describe('scan directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'buffer2',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['pointer2'] = {
@@ -124,8 +122,6 @@ describe('scan directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'pointer2',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 

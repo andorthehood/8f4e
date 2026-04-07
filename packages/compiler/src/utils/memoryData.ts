@@ -28,7 +28,7 @@ export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 
 export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	if (!memoryItem || !memoryItem.isPointer) return 0;
+	if (!memoryItem || !memoryItem.pointeeBaseType) return 0;
 	if (memoryItem.isPointingToPointer) return 4;
 	if (memoryItem.pointeeBaseType === 'float64') return 8;
 	if (memoryItem.pointeeBaseType === 'int8') return 1;
@@ -68,7 +68,7 @@ export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
 
 export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	if (!memoryItem || !memoryItem.isPointer) return 0;
+	if (!memoryItem || !memoryItem.pointeeBaseType) return 0;
 
 	// double pointers: pointee is a pointer slot (stored as i32)
 	if (memoryItem.isPointingToPointer) return 2147483647;
@@ -83,7 +83,7 @@ export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): num
 	if (memoryItem.pointeeBaseType === 'int16') return 32767;
 
 	// int*: max signed int32
-	if (memoryItem.isPointingToInteger) return 2147483647;
+	if (memoryItem.pointeeBaseType === 'int') return 2147483647;
 
 	// float*: max float32
 	return 3.4028234663852886e38;
@@ -192,7 +192,7 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
+						pointeeBaseType: 'int',
 						isPointingToPointer: false,
 						type: 'int*',
 					} as unknown as MemoryMap[string],
@@ -204,7 +204,7 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
+						pointeeBaseType: 'float',
 						isPointingToPointer: false,
 						type: 'float*',
 					} as unknown as MemoryMap[string],
@@ -216,7 +216,6 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
 						isPointingToPointer: false,
 						pointeeBaseType: 'float64',
 						type: 'float64*',
@@ -229,7 +228,6 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
 						isPointingToPointer: false,
 						pointeeBaseType: 'int8',
 						type: 'int8*',
@@ -242,7 +240,6 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
 						isPointingToPointer: false,
 						pointeeBaseType: 'int16',
 						type: 'int16*',
@@ -255,7 +252,7 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
+						pointeeBaseType: 'int',
 						isPointingToPointer: true,
 						type: 'int**',
 					} as unknown as MemoryMap[string],
@@ -267,7 +264,7 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
+						pointeeBaseType: 'float64',
 						isPointingToPointer: true,
 						type: 'float64**',
 					} as unknown as MemoryMap[string],
@@ -277,7 +274,7 @@ if (import.meta.vitest) {
 
 			it('returns 0 for non-pointer identifier', () => {
 				const memory: MemoryMap = {
-					val: { elementWordSize: 4, isPointer: false } as unknown as MemoryMap[string],
+					val: { elementWordSize: 4 } as unknown as MemoryMap[string],
 				};
 				expect(getPointeeElementWordSize(memory, 'val')).toBe(0);
 			});
@@ -434,8 +431,7 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
-						isPointingToInteger: true,
+						pointeeBaseType: 'int',
 						isPointingToPointer: false,
 						type: 'int*',
 					} as unknown as MemoryMap[string],
@@ -447,8 +443,6 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
-						isPointingToInteger: true,
 						pointeeBaseType: 'int8',
 						isPointingToPointer: false,
 						type: 'int8*',
@@ -461,8 +455,6 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
-						isPointingToInteger: true,
 						pointeeBaseType: 'int16',
 						isPointingToPointer: false,
 						type: 'int16*',
@@ -475,8 +467,7 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
-						isPointingToInteger: false,
+						pointeeBaseType: 'float',
 						isPointingToPointer: false,
 						type: 'float*',
 					} as unknown as MemoryMap[string],
@@ -488,8 +479,6 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
-						isPointingToInteger: false,
 						isPointingToPointer: false,
 						pointeeBaseType: 'float64',
 						type: 'float64*',
@@ -502,8 +491,7 @@ if (import.meta.vitest) {
 				const memory: MemoryMap = {
 					ptr: {
 						elementWordSize: 4,
-						isPointer: true,
-						isPointingToInteger: false,
+						pointeeBaseType: 'float64',
 						isPointingToPointer: true,
 						type: 'float64**',
 					} as unknown as MemoryMap[string],
@@ -513,7 +501,7 @@ if (import.meta.vitest) {
 
 			it('returns 0 for non-pointer identifier', () => {
 				const memory: MemoryMap = {
-					val: { elementWordSize: 4, isPointer: false } as unknown as MemoryMap[string],
+					val: { elementWordSize: 4 } as unknown as MemoryMap[string],
 				};
 				expect(getPointeeElementMaxValue(memory, 'val')).toBe(0);
 			});
