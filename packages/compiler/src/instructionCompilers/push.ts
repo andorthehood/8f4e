@@ -29,7 +29,7 @@ const push: InstructionCompiler<CodegenPushLine> = withValidation<CodegenPushLin
 		if (argument.type === ArgumentType.IDENTIFIER) {
 			const identifierLine = line as PushIdentifierLine;
 
-			switch (resolveIdentifierPushKind(context.namespace, argument)) {
+			switch (resolveIdentifierPushKind(context.namespace, context.locals, argument)) {
 				case IdentifierPushKind.MEMORY_IDENTIFIER:
 					return pushMemoryIdentifier(identifierLine, context);
 				case IdentifierPushKind.MEMORY_POINTER:
