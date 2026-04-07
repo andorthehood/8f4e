@@ -61,6 +61,7 @@ export enum ErrorCode {
 	POINTEE_WORD_SIZE_ON_NON_POINTER,
 	POINTEE_ELEMENT_MAX_ON_NON_POINTER,
 	RETURN_OUTSIDE_FUNCTION,
+	LOCAL_NAME_COLLISION_WITH_MEMORY,
 }
 
 interface ErrorDetails {
@@ -387,6 +388,18 @@ export function getError(
 			return {
 				code,
 				message: 'earlyReturn can only be used inside a function, not in a module. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY:
+			return {
+				code,
+				message:
+					'Local variable name collides with a memory declaration' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Local names must be unique within the namespace. (' +
+					code +
+					')',
 				line,
 				context,
 			};
