@@ -323,7 +323,7 @@ describe('watch directive widget resolution', () => {
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
-			type: MemoryTypes.int,
+			type: MemoryTypes['int*'],
 			wordAlignedSize: 1,
 			default: 0,
 			isInteger: true,
