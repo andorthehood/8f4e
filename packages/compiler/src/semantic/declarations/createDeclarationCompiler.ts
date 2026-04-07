@@ -1,6 +1,5 @@
 import { getPointerDepth } from '@8f4e/tokenizer';
 
-import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
 import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
 import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
@@ -39,7 +38,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 			scope: 'module',
 		},
 		(line, context) => {
-			const localWordOffset = calculateWordAlignedSizeOfMemory(context.namespace.memory);
+			const localWordOffset = context.currentModuleNextWordOffset ?? 0;
 			const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
 			const pointerDepth = getPointerDepth(line.instruction);
 			const flags = getMemoryFlags(baseType, pointerDepth);
@@ -48,37 +47,39 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 
 			if (pointerDepth > 0 || nonPointerElementWordSize === 4) {
 				// Pointer variants and 32-bit scalars always occupy one 4-byte word.
+				const wordAlignedSize = 1;
 				context.namespace.memory[id] = {
 					numberOfElements: 1,
 					elementWordSize: 4,
 					wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset,
-					wordAlignedSize: 1,
+					wordAlignedSize,
 					byteAddress: context.startingByteAddress + localWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
 					id,
 					default: finalDefault,
 					type: line.instruction as unknown as MemoryTypes,
 					...flags,
 				};
+				context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;
 			} else {
 				// 64-bit scalar (nonPointerElementWordSize === 8): requires 8-byte (2-word) start
 				// alignment so that byteAddress = wordAlignedAddress * 4 is always divisible by 8.
 				const absoluteWordOffset = context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset;
 				const alignedAbsoluteWordOffset = absoluteWordOffset % 2 === 0 ? absoluteWordOffset : absoluteWordOffset + 1;
-				// alignmentPadding (0 or 1) is folded into wordAlignedSize so that
-				// calculateWordAlignedSizeOfMemory returns the correct next-free offset.
 				const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
+				const wordAlignedSize = alignmentPadding + 2;
 
 				context.namespace.memory[id] = {
 					numberOfElements: 1,
 					elementWordSize: nonPointerElementWordSize,
 					wordAlignedAddress: alignedAbsoluteWordOffset,
-					wordAlignedSize: alignmentPadding + 2,
+					wordAlignedSize,
 					byteAddress: alignedAbsoluteWordOffset * GLOBAL_ALIGNMENT_BOUNDARY,
 					id,
 					default: finalDefault,
 					type: line.instruction as unknown as MemoryTypes,
 					...flags,
 				};
+				context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;
 			}
 
 			return context;

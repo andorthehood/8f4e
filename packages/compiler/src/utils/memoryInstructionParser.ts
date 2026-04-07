@@ -140,6 +140,9 @@ function resolveAnonymousOrNamedMemoryId(
 		// Multiple args: anonymous split-byte sequence starting with a constant name
 		return '__anonymous__' + lineNumberAfterMacroExpansion;
 	}
+	if (first.referenceKind === 'plain' && first.value === 'this') {
+		throw getError(ErrorCode.RESERVED_MEMORY_IDENTIFIER, lineForError, context, { identifier: first.value });
+	}
 	return first.value;
 }
 
@@ -159,6 +162,14 @@ function resolveMemoryDefaultValue(arg: Argument, lineForError: AST[number], con
 
 	switch (arg.referenceKind) {
 		case 'memory-reference': {
+			if (arg.targetMemoryId === 'this') {
+				if (!arg.isEndAddress) {
+					return context.startingByteAddress;
+				}
+				return typeof context.currentModuleWordAlignedSize === 'number'
+					? context.startingByteAddress + (context.currentModuleWordAlignedSize - 1) * 4
+					: 0;
+			}
 			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId!, lineForError, context);
 			return arg.isEndAddress ? memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * 4 : memoryItem.byteAddress;
 		}
@@ -288,6 +299,21 @@ if (import.meta.vitest) {
 					{
 						lineNumberBeforeMacroExpansion: 30,
 						lineNumberAfterMacroExpansion: 30,
+						instruction: 'int',
+						arguments: args,
+					},
+					mockContext
+				)
+			).toThrow();
+		});
+
+		it('rejects reserved identifier this as a memory name', () => {
+			const args: Argument[] = [classifyIdentifier('this')];
+			expect(() =>
+				parseMemoryInstructionArguments(
+					{
+						lineNumberBeforeMacroExpansion: 31,
+						lineNumberAfterMacroExpansion: 31,
 						instruction: 'int',
 						arguments: args,
 					},
