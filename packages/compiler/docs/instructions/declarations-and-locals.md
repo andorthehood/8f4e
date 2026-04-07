@@ -32,7 +32,7 @@ The int instruction declares a 32-bit integer in module memory. Use `int*` or `i
 Anonymous scalar declarations are supported in three forms:
 - **Bare implicit zero**: `int` allocates an anonymous `int` with default `0`
 - **Anonymous literal/value**: `int 42` allocates an anonymous `int` with default `42`
-- **Anonymous constant-style identifier**: `int FOO` allocates an anonymous `int` with default equal to constant `FOO`
+- **Anonymous constant-style identifier**: `int FOO` allocates an anonymous `int` with default equal to constant `FOO`, where `FOO` is a declared `const`
 
 This bare zero-initialized form applies to scalar declarations only (including pointer variants such as `int*`). Array declarations (`int[]`) still require an element count.
 
