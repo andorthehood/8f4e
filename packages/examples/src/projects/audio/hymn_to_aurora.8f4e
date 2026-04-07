@@ -5,18 +5,21 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 4/2/2026, 10:44:40 PM
+; Last updated: 4/7/2026, 10:32:09 PM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
+
 ; Binary asset sizes in bytes
-; 'patterns_ch0.bin'
-const ASSET_CH0_SIZE 6144
 ; 'patterns_ch1.bin'
 const ASSET_CH1_SIZE 6144
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 6144
 ; 'patterns_ch3.bin'
 const ASSET_CH3_SIZE 6144
+; 'patterns_ch0.bin'
+const ASSET_CH0_SIZE 6144
 ; 'sample_1.bin'
 const ASSET_SAMPLE1_SIZE 9964
 ; 'sample_2.bin'
@@ -41,13 +44,11 @@ const ASSET_SAMPLE10_SIZE 9550
 const ASSET_SAMPLE11_SIZE 9906
 ; 'sample_12.bin'
 const ASSET_SAMPLE12_SIZE 9000
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 6144
 
 constantsEnd
 
 constants mod
-; @pos 213 -117
+; @pos 213 -126
 ; @tab 30
 use env
 ; Row layout (little-endian)
@@ -365,6 +366,119 @@ map 12	S12_VOLUME
 mapEnd int
 functionEnd int
 
+module amigaTick
+; @pos -62 -11
+use mod
+
+int tempo 125
+int out
+int counter
+
+; @watch counter
+
+push &out
+push 0
+store
+
+push counter
+push ROW_SAMPLES
+push tempo
+ensureNonZero
+div
+greaterThan
+if void
+push &counter
+push 0
+store
+push &out
+push 1
+store
+ifEnd
+
+push &counter
+push counter
+push 1
+add
+store
+
+moduleEnd
+
+module amp1
+; @pos 442 -67
+; @group ch0
+float* in &modSamplePlayer1:out
+int* volume &volume1:out
+float out
+
+push &out
+push *in
+;add
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
+module amp2
+; @pos 443 -24
+; @group ch1
+float* in &modSamplePlayer2:out
+int* volume &volume2:out
+float out
+
+push &out
+push *in
+;add
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
+module amp3
+; @pos 442 21
+; @group ch2
+float* in &modSamplePlayer3:out
+int* volume &volume3:out
+float out
+
+push &out
+push *in
+;add
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
+module amp4
+; @pos 443 65
+; @group ch3
+float* in &modSamplePlayer4:out
+int* volume &volume4:out
+float out
+
+push &out
+push *in
+;add
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
 module assets
 ; @pos 41 -93
 ; @tab 22
@@ -463,154 +577,6 @@ ifEnd
 
 moduleEnd
 
-module amigaTick
-; @pos 58 -1
-use mod
-
-int tempo 125
-int out
-int counter
-
-; @watch counter
-
-push &out
-push 0
-store
-
-push counter
-push ROW_SAMPLES
-push tempo
-ensureNonZero
-div
-greaterThan
-if void
-push &counter
-push 0
-store
-push &out
-push 1
-store
-ifEnd
-
-push &counter
-push counter
-push 1
-add
-store
-
-moduleEnd
-
-module ultimateSoundtrackerColors
-; @pos 544 -134
-; @tab 46
-; @color fill.moduleBackground	#000
-; @color fill.background	#000
-; @color fill.backgroundDots	#523110
-; @color fill.backgroundDots2	#02639c
-; @color fill.highlightedCodeLine	#444
-; @color fill.moduleBackgroundDragged	#000
-; @color text.instruction	#02639c
-; @color text.code	#ad8c63
-; @color text.lineNumber	#523110
-; @color text.codeComment	#725130
-; @color text.numbers	#ffffff
-; @color text.debugInfo	#ad8c63
-; @color fill.debugInfoBackground	#02639c
-; @color fill.wire	rgba(255,255,255,0.3)
-; @color fill.wireHighlighted	#ffffff
-; @color fill.menuItemBackground	#0000aa
-; @color fill.menuItemBackgroundHighlighted	#ffffff
-; @color fill.errorMessageBackground	#aa0000
-; @color fill.dialogBackground	#0000aa
-; @color fill.dialogDimmer	#000000
-; @color fill.codeBlockHighlightLevel1	#111111
-; @color fill.codeBlockHighlightLevel2	#222222
-; @color fill.codeBlockHighlightLevel3	#333333
-; @color fill.plotterBackground	#000000
-; @color fill.plotterTrace	#55ff55
-; @color fill.scanLine	#55ffff
-; @color icons.outputConnectorBackground	#02639c
-; @color icons.outputConnector	#000
-; @color icons.inputConnectorBackground	#02639c
-; @color icons.inputConnector	#000
-moduleEnd
-
-module amp1
-; @pos 438 -65
-
-float* in &modSamplePlayer1:out
-int* volume &volume1:out
-float out
-
-push &out
-push *in
-;add
-push *volume
-castToFloat
-push 64.0
-div
-mul 
-store
-
-moduleEnd
-
-module amp2
-; @pos 440 -24
-; @group ch1
-float* in &modSamplePlayer2:out
-int* volume &volume2:out
-float out
-
-push &out
-push *in
-;add
-push *volume
-castToFloat
-push 64.0
-div
-mul 
-store
-
-moduleEnd
-
-module amp3
-; @pos 439 21
-; @group ch2
-float* in &modSamplePlayer3:out
-int* volume &volume3:out
-float out
-
-push &out
-push *in
-;add
-push *volume
-castToFloat
-push 64.0
-div
-mul 
-store
-
-moduleEnd
-
-module amp4
-; @pos 440 65
-; @group ch3
-float* in &modSamplePlayer4:out
-int* volume &volume4:out
-float out
-
-push &out
-push *in
-;add
-push *volume
-castToFloat
-push 64.0
-div
-mul 
-store
-
-moduleEnd
-
 module mixer
 ; @pos 486 0
 float* in1 &amp1:out
@@ -639,13 +605,12 @@ store
 moduleEnd
 
 module modRowCounter
-; @pos 126 -1
+; @pos 85 -9
 use env
-
-int* trigger &amigaTick:out
-int rowCounter
+int* trigger &amigaTick:out 
+int rowCounter 
 int* patternPointer &patternOrder:
-int out
+int out ; @w
 
 ; @watch rowCounter
 ; @watch out
@@ -697,7 +662,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer1
-; @pos 394 -65
+; @pos 397 -67
 ; @group ch0
 use env
 
@@ -772,16 +737,16 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 395 -24
+; @pos 397 -24
 ; @group ch1
 use env
 
 float out
-int* period &period2:out
+int*  period &period2:out 
 float _position 0.0
-int* trigger &trigger2:out
-int _playing
-int* sampleNumber &sampleNumber2:out
+int*  trigger &trigger2:out
+int   _playing
+int*  sampleNumber &sampleNumber2:out
 int8* sampleAddress
 
 ; @watch sampleAddress
@@ -849,7 +814,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer3
-; @pos 394 21
+; @pos 397 21
 ; @group ch2
 use env
 
@@ -941,7 +906,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 394 65
+; @pos 397 65
 ; @group ch3
 use env
 
@@ -1033,7 +998,7 @@ ifEnd
 moduleEnd
 
 module notes
-; @pos 344 -2
+; @pos 350 -8
 ; @home
 ; This is a bare-bones
 ; implementation of a MOD player
@@ -1043,7 +1008,7 @@ module notes
 moduleEnd
 
 module patternOrder
-; @pos 92 -1
+; @pos -25 -11
 ; @tab 6
 int	0x00
 int	0x00
@@ -1053,7 +1018,7 @@ int	0x05
 int	0x05
 int	0x06
 int	0x07
-int	0x06
+int	0x06 
 int	0x08
 int	0x09
 int	0x09
@@ -1082,9 +1047,9 @@ int	0x0f
 moduleEnd
 
 module period1
-; @pos 222 -43
+; @pos 224 -45
 ; @group ch0
-int* row &rowReader1:out
+int* row &rowBuffer1:
 int out
 
 ; @watch out
@@ -1103,9 +1068,9 @@ ifEnd
 moduleEnd
 
 module period2
-; @pos 222 0
+; @pos 224 0
 ; @group ch1
-int* row &rowReader2:out
+int* row &rowBuffer2:
 int out
 
 ; @watch out
@@ -1124,9 +1089,9 @@ ifEnd
 moduleEnd
 
 module period3
-; @pos 221 45
+; @pos 224 45
 ; @group ch2
-int* row &rowReader3:out
+int* row &rowBuffer3:
 int out
 
 ; @watch out
@@ -1145,9 +1110,9 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 221 89
+; @pos 224 89
 ; @group ch3
-int* row &rowReader4:out
+int* row &rowBuffer4:
 int out
 
 ; @watch out
@@ -1173,102 +1138,248 @@ module projectConfig
 
 moduleEnd
 
-module rowReader1
-; @pos 179 -59
+module rowBuffer1
+; @pos 179 -67
 ; @group ch0
 use env
-int[] buffer ASSET_CH0_SIZE/4
-; @loadAsset ch0 &buffer
 
-int* rowCounter &modRowCounter:out
-int out
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
 
-; @watch 0xout
+int* row &modRowCounter:out
+int[] patterns ASSET_CH0_SIZE/4
+; @loadAsset ch0 &patterns
+; @hide
 
-push &out
-push &buffer
-push *rowCounter
-push sizeof(buffer)
+local int loopCounter
+
+loop 16
+push &this
+push loopCounter
+push sizeof(patterns)
+mul
+add
+push &patterns
+push *row
+push loopCounter
+add
+push sizeof(patterns)
 mul
 add
 load
 store
 
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
 moduleEnd
 
-module rowReader2
+module rowBuffer2
+; @pos 48 -10
+
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+moduleEnd
+
+module rowBuffer2
 ; @pos 179 -22
 ; @group ch1
 use env
-int[] buffer ASSET_CH1_SIZE/4
-; @loadAsset ch1 &buffer
 
-int* rowCounter &modRowCounter:out
-int out
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
 
-; @watch 0xout
+int* row &modRowCounter:out
+int[] patterns ASSET_CH1_SIZE/4
+; @loadAsset ch1 &patterns
+; @hide
 
-push &out
-push &buffer
-push *rowCounter
-push sizeof(buffer)
+local int loopCounter
+
+loop 16
+push &this
+push loopCounter
+push sizeof(patterns)
+mul
+add
+push &patterns
+push *row
+push loopCounter
+add
+push sizeof(patterns)
 mul
 add
 load
 store
 
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
 moduleEnd
 
-module rowReader3
+module rowBuffer3
 ; @pos 178 23
 ; @group ch2
 use env
-int[] buffer ASSET_CH2_SIZE/4
-; @loadAsset ch2 &buffer
 
-int* rowCounter &modRowCounter:out
-int out
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
 
-; @watch 0xout
+int* row &modRowCounter:out
+int[] patterns ASSET_CH2_SIZE/4
+; @loadAsset ch2 &patterns
+; @hide
 
-push &out
-push &buffer
-push *rowCounter
-push sizeof(buffer)
+local int loopCounter
+
+loop 16
+push &this
+push loopCounter
+push sizeof(patterns)
+mul
+add
+push &patterns
+push *row
+push loopCounter
+add
+push sizeof(patterns)
 mul
 add
 load
 store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
 
 moduleEnd
 
-module rowReader4
+module rowBuffer4
 ; @pos 178 67
 ; @group ch3
 use env
-int[] buffer ASSET_CH3_SIZE/4
-; @loadAsset ch3 &buffer
 
-int* rowCounter &modRowCounter:out
-int out
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
 
-; @watch 0xout
+int* row &modRowCounter:out
+int[] patterns ASSET_CH3_SIZE/4
+; @loadAsset ch3 &patterns
+; @hide
 
-push &out
-push &buffer
-push *rowCounter
-push sizeof(buffer)
+local int loopCounter
+
+loop 16
+push &this
+push loopCounter
+push sizeof(patterns)
+mul
+add
+push &patterns
+push *row
+push loopCounter
+add
+push sizeof(patterns)
 mul
 add
 load
 store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
 
 moduleEnd
 
 module sampleNumber1
-; @pos 222 -65
+; @pos 224 -67
 ; @group ch0
-int* row &rowReader1:out
+int* row &rowBuffer1:
 int out
 int param
 
@@ -1288,9 +1399,9 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 222 -22
+; @pos 224 -22
 ; @group ch1
-int* row &rowReader2:out
+int* row &rowBuffer2:
 int out
 int param
 
@@ -1310,9 +1421,9 @@ ifEnd
 moduleEnd
 
 module sampleNumber3
-; @pos 221 23
+; @pos 224 23
 ; @group ch2
-int* row &rowReader3:out
+int* row &rowBuffer3:
 int out
 int param
 
@@ -1332,9 +1443,9 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 221 67
+; @pos 224 67
 ; @group ch3
-int* row &rowReader4:out
+int* row &rowBuffer4:
 int out
 int param
 
@@ -1354,7 +1465,7 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 343 -36
+; @pos 347 -41
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -1509,9 +1620,9 @@ store
 moduleEnd
 
 module trigger1
-; @pos 256 -58
+; @pos 258 -60
 ; @group ch0
-int* row &rowReader1:out
+int* row &rowBuffer1:
 int* rowCounter &modRowCounter:out
 int* period &period1:out
 int out
@@ -1535,9 +1646,9 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 256 -22
+; @pos 258 -22
 ; @group ch1
-int* row &rowReader2:out
+int* row &rowBuffer2:
 int* rowCounter &modRowCounter:out
 int* period &period2:out
 int out
@@ -1561,9 +1672,9 @@ ifEnd
 moduleEnd
 
 module trigger3
-; @pos 255 23
+; @pos 258 23
 ; @group ch2
-int* row &rowReader3:out
+int* row &rowBuffer3:
 int* rowCounter &modRowCounter:out
 int* period &period3:out
 int out
@@ -1587,9 +1698,9 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 255 67
+; @pos 258 67
 ; @group ch3
-int* row &rowReader4:out
+int* row &rowBuffer4:
 int* rowCounter &modRowCounter:out
 int* period &period4:out
 int out
@@ -1610,11 +1721,46 @@ ifEnd
 
 moduleEnd
 
+module ultimateSoundtrackerColors
+; @pos 544 -134
+; @tab 46
+; @color fill.moduleBackground	#000
+; @color fill.background	#000
+; @color fill.backgroundDots	#523110
+; @color fill.backgroundDots2	#02639c
+; @color fill.highlightedCodeLine	#444
+; @color fill.moduleBackgroundDragged	#000
+; @color text.instruction	#02639c
+; @color text.code	#ad8c63
+; @color text.lineNumber	#523110
+; @color text.codeComment	#725130
+; @color text.numbers	#ffffff
+; @color text.debugInfo	#ad8c63
+; @color fill.debugInfoBackground	#02639c
+; @color fill.wire	rgba(255,255,255,0.3)
+; @color fill.wireHighlighted	#ffffff
+; @color fill.menuItemBackground	#0000aa
+; @color fill.menuItemBackgroundHighlighted	#ffffff
+; @color fill.errorMessageBackground	#aa0000
+; @color fill.dialogBackground	#0000aa
+; @color fill.dialogDimmer	#000000
+; @color fill.codeBlockHighlightLevel1	#111111
+; @color fill.codeBlockHighlightLevel2	#222222
+; @color fill.codeBlockHighlightLevel3	#333333
+; @color fill.plotterBackground	#000000
+; @color fill.plotterTrace	#55ff55
+; @color fill.scanLine	#55ffff
+; @color icons.outputConnectorBackground	#02639c
+; @color icons.outputConnector	#000
+; @color icons.inputConnectorBackground	#02639c
+; @color icons.inputConnector	#000
+moduleEnd
+
 module volume1
-; @pos 299 -65
+; @pos 301 -67
 ; @group ch0
 use mod
-int* row &rowReader1:out
+int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
 int out
 
@@ -1646,10 +1792,10 @@ ifEnd
 moduleEnd
 
 module volume2
-; @pos 299 -22
+; @pos 301 -22
 ; @group ch1
 use mod
-int* row &rowReader2:out
+int* row &rowBuffer2:
 int* sampleNumber &sampleNumber2:out
 int out
 
@@ -1681,10 +1827,10 @@ ifEnd
 moduleEnd
 
 module volume3
-; @pos 298 23
+; @pos 301 23
 ; @group ch2
 use mod
-int* row &rowReader3:out
+int* row &rowBuffer3:
 int* sampleNumber &sampleNumber3:out
 int out
 
@@ -1716,10 +1862,10 @@ ifEnd
 moduleEnd
 
 module volume4
-; @pos 298 67
+; @pos 301 67
 ; @group ch3
 use mod
-int* row &rowReader4:out
+int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
 int out
 
