@@ -1,13 +1,8 @@
-import { getPointerDepth } from '@8f4e/tokenizer';
+import createDeclarationCompiler from './createDeclarationCompiler';
 
-import { calculateWordAlignedSizeOfMemory } from '../../utils/compilation';
-import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
-import getMemoryFlags from '../../utils/memoryFlags';
-import { withValidation } from '../../withValidation';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
+import type { AST, InstructionCompiler } from '../../types';
 
 /**
  * Instruction compiler for `int16*`, `int16**`.
@@ -18,35 +13,11 @@ import type { AST, InstructionCompiler, MemoryTypes } from '../../types';
  *
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const int16: InstructionCompiler = withValidation(
-	{
-		scope: 'module',
-	},
-	(line, context) => {
-		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
-		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
-		const pointerDepth = getPointerDepth(line.instruction);
-		const flags = getMemoryFlags('int16', pointerDepth);
-
-		// Truncate any float values to integers (important for fraction literals and float defaults)
-		const truncatedDefault = Math.trunc(defaultValue);
-
-		// int16* / int16** store a pointer (4 bytes), same width as int* / float*.
-		context.namespace.memory[id] = {
-			numberOfElements: 1,
-			elementWordSize: 4,
-			wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
-			wordAlignedSize: 1,
-			byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-			id,
-			default: truncatedDefault,
-			type: line.instruction as unknown as MemoryTypes,
-			...flags,
-		};
-
-		return context;
-	}
-);
+const int16: InstructionCompiler = createDeclarationCompiler({
+	baseType: 'int16',
+	truncate: true,
+	nonPointerElementWordSize: 4,
+});
 
 export default int16;
 
