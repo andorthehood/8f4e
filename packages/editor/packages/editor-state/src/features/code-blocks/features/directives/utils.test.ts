@@ -92,36 +92,36 @@ describe('normalizeEditorDirectiveRecords', () => {
 	const plotPlugin = createDirectivePlugin('plot', () => undefined);
 
 	it('normalizes alias to canonical plugin name', () => {
-		const records = [{ prefix: '@' as const, name: 'w', args: ['value'], rawRow: 0 }];
+		const records = [{ prefix: '@' as const, name: 'w', args: ['value'], rawRow: 0, isTrailing: false }];
 		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([
 			{ name: 'watch', rawRow: 0, args: ['value'], sourceLine: undefined },
 		]);
 	});
 
 	it('filters out runtime (~) records', () => {
-		const records = [{ prefix: '~' as const, name: 'sampleRate', args: ['44100'], rawRow: 0 }];
+		const records = [{ prefix: '~' as const, name: 'sampleRate', args: ['44100'], rawRow: 0, isTrailing: false }];
 		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([]);
 	});
 
 	it('filters out unknown directive names', () => {
-		const records = [{ prefix: '@' as const, name: 'unknown', args: [], rawRow: 0 }];
+		const records = [{ prefix: '@' as const, name: 'unknown', args: [], rawRow: 0, isTrailing: false }];
 		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([]);
 	});
 
 	it('allows trailing directives for plugins with allowTrailingComment', () => {
-		const records = [{ prefix: '@' as const, name: 'watch', args: [], rawRow: 1, isTrailing: true as const }];
+		const records = [{ prefix: '@' as const, name: 'watch', args: [], rawRow: 1, isTrailing: true }];
 		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([
 			{ name: 'watch', rawRow: 1, args: [], sourceLine: undefined },
 		]);
 	});
 
 	it('blocks trailing directives for plugins without allowTrailingComment', () => {
-		const records = [{ prefix: '@' as const, name: 'plot', args: ['buf'], rawRow: 2, isTrailing: true as const }];
+		const records = [{ prefix: '@' as const, name: 'plot', args: ['buf'], rawRow: 2, isTrailing: true }];
 		expect(normalizeEditorDirectiveRecords(records, [plotPlugin])).toEqual([]);
 	});
 
 	it('allows non-trailing directives for plugins without allowTrailingComment', () => {
-		const records = [{ prefix: '@' as const, name: 'plot', args: ['buf'], rawRow: 2 }];
+		const records = [{ prefix: '@' as const, name: 'plot', args: ['buf'], rawRow: 2, isTrailing: false }];
 		expect(normalizeEditorDirectiveRecords(records, [plotPlugin])).toEqual([
 			{ name: 'plot', rawRow: 2, args: ['buf'], sourceLine: undefined },
 		]);
