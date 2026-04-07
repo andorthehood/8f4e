@@ -39,7 +39,7 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with int parameters', () => {
 		const functions: Module[] = [
 			{
-				code: ['function add', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
+				code: ['function add', 'param int x', 'param int y', 'push x', 'push y', 'add', 'functionEnd int'],
 			},
 		];
 
@@ -59,15 +59,7 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with float parameters', () => {
 		const functions: Module[] = [
 			{
-				code: [
-					'function multiply',
-					'param float x',
-					'param float y',
-					'localGet x',
-					'localGet y',
-					'mul',
-					'functionEnd float',
-				],
+				code: ['function multiply', 'param float x', 'param float y', 'push x', 'push y', 'mul', 'functionEnd float'],
 			},
 		];
 
@@ -91,8 +83,8 @@ describe('Pure Function Compilation', () => {
 					'function convert',
 					'param int x',
 					'param float y',
-					'localGet x',
-					'localGet y',
+					'push x',
+					'push y',
 					'drop',
 					'castToFloat',
 					'functionEnd float',
@@ -116,7 +108,7 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with multiple return values', () => {
 		const functions: Module[] = [
 			{
-				code: ['function duplicate', 'param int x', 'localGet x', 'dup', 'functionEnd int int'],
+				code: ['function duplicate', 'param int x', 'push x', 'dup', 'functionEnd int int'],
 			},
 		];
 
@@ -136,7 +128,7 @@ describe('Pure Function Compilation', () => {
 	test('should support calling a function from a module', () => {
 		const functions: Module[] = [
 			{
-				code: ['function square', 'param int x', 'localGet x', 'dup', 'mul', 'functionEnd int'],
+				code: ['function square', 'param int x', 'push x', 'dup', 'mul', 'functionEnd int'],
 			},
 		];
 
@@ -162,11 +154,11 @@ describe('Pure Function Compilation', () => {
 					'param int x',
 					'param int y',
 					'local int temp',
-					'localGet x',
-					'localGet y',
+					'push x',
+					'push y',
 					'add',
 					'localSet temp',
-					'localGet temp',
+					'push temp',
 					'functionEnd int',
 				],
 			},
@@ -208,13 +200,13 @@ describe('Pure Function Compilation', () => {
 	test('should compile multiple functions', () => {
 		const functions: Module[] = [
 			{
-				code: ['function add', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
+				code: ['function add', 'param int x', 'param int y', 'push x', 'push y', 'add', 'functionEnd int'],
 			},
 			{
-				code: ['function sub', 'param int x', 'param int y', 'localGet x', 'localGet y', 'sub', 'functionEnd int'],
+				code: ['function sub', 'param int x', 'param int y', 'push x', 'push y', 'sub', 'functionEnd int'],
 			},
 			{
-				code: ['function mul', 'param int x', 'param int y', 'localGet x', 'localGet y', 'mul', 'functionEnd int'],
+				code: ['function mul', 'param int x', 'param int y', 'push x', 'push y', 'mul', 'functionEnd int'],
 			},
 		];
 
@@ -259,7 +251,7 @@ describe('Pure Function Validation', () => {
 	test('should reject load operations in functions', () => {
 		const functions: Module[] = [
 			{
-				code: ['function invalid', 'param int x', 'localGet x', 'load', 'functionEnd int'],
+				code: ['function invalid', 'param int x', 'push x', 'load', 'functionEnd int'],
 			},
 		];
 
@@ -277,7 +269,7 @@ describe('Pure Function Validation', () => {
 	test('should reject store operations in functions', () => {
 		const functions: Module[] = [
 			{
-				code: ['function invalid', 'param int x', 'param int y', 'localGet x', 'localGet y', 'store', 'functionEnd'],
+				code: ['function invalid', 'param int x', 'param int y', 'push x', 'push y', 'store', 'functionEnd'],
 			},
 		];
 
@@ -443,7 +435,7 @@ describe('Pure Function Validation', () => {
 	test('should reject function call with wrong argument types', () => {
 		const functions: Module[] = [
 			{
-				code: ['function addInts', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
+				code: ['function addInts', 'param int x', 'param int y', 'push x', 'push y', 'add', 'functionEnd int'],
 			},
 		];
 
@@ -459,7 +451,7 @@ describe('Pure Function Validation', () => {
 	test('should reject function call with insufficient arguments', () => {
 		const functions: Module[] = [
 			{
-				code: ['function add', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
+				code: ['function add', 'param int x', 'param int y', 'push x', 'push y', 'add', 'functionEnd int'],
 			},
 		];
 
@@ -515,7 +507,7 @@ describe('Pure Function Edge Cases', () => {
 				code: [
 					'function abs',
 					'param int x',
-					'localGet x',
+					'push x',
 					'dup',
 					'push 0',
 					'lessThan',
@@ -545,8 +537,8 @@ describe('Pure Function Edge Cases', () => {
 					'function swapAndAdd',
 					'param int x',
 					'param int y',
-					'localGet x',
-					'localGet y',
+					'push x',
+					'push y',
 					'swap',
 					'add',
 					'functionEnd int',

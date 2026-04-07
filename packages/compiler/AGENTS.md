@@ -63,7 +63,7 @@ moduleEnd
 - **Arithmetic**: `add`, `sub`, `mul`, `div`, `remainder`, `abs`, `sqrt`, `pow2`, `round`
 - **Logic**: `and`, `or`, `xor`, `equal`, `equalToZero`, `greaterThan`, `lessThan`, `greaterOrEqual`, `lessOrEqual`
 - **Stack**: `push`, `dup`, `drop`, `swap`, `clearStack`
-- **Locals**: `local`, `localGet`, `localSet`
+- **Locals**: `local`, `localSet`
 - **Control flow**: `if`, `ifEnd`, `else`, `loop`, `loopEnd`, `block`, `blockEnd`, `branch`, `branchIfTrue`, `branchIfUnchanged`
 - **Type conversion**: `castToInt`, `castToFloat`
 - **Bitwise**: `shiftLeft`, `shiftRight`, `shiftRightUnsigned`
@@ -153,7 +153,7 @@ function clamp int int int
   lessThan
   if int
     drop
-    localGet temp
+    push temp
   ifEnd
   
   ; Compare with max

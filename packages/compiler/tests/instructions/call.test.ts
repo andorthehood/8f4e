@@ -41,7 +41,7 @@ moduleEnd`,
 	[
 		`function double
 param int x
-localGet x
+push x
 push 2
 mul
 functionEnd int`,
@@ -92,7 +92,7 @@ moduleEnd`,
 	[
 		`function increment
 param int x
-localGet x
+push x
 push 1
 add
 functionEnd int`,
@@ -131,7 +131,7 @@ describe('call instruction (float64)', () => {
 			},
 			[
 				{
-					code: ['function axion', 'param float64 x', 'localGet x', 'functionEnd float64'],
+					code: ['function axion', 'param float64 x', 'push x', 'functionEnd float64'],
 				},
 			]
 		);

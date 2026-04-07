@@ -1,6 +1,7 @@
+import { i32store8 } from '@8f4e/compiler-wasm-utils';
+
 import { ArgumentType } from '../types';
 import { ErrorCode } from '../compilerError';
-import { i32store8 } from '@8f4e/compiler-wasm-utils';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -34,8 +35,8 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = withValidation<StoreByte
 		for (let i = 0; i < count; i++) {
 			lines.push(
 				`localSet ${tempByteVar}`,
-				`localGet ${tempAddrVar}`,
-				`localGet ${tempByteVar}`,
+				`push ${tempAddrVar}`,
+				`push ${tempByteVar}`,
 				...i32store8(undefined, undefined, 0, i).map(b => `wasm ${b}`)
 			);
 		}

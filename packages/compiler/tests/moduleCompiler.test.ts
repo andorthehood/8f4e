@@ -21,15 +21,15 @@ push in:1
 load
 load
 localSet input
-localGet input
+push input
 push 0
 lessThan
 if 
     push 0
-    localGet input
+    push input
     sub
 else
-    localGet input
+    push input
 	ifEnd
 store
 moduleEnd`.split('\n');

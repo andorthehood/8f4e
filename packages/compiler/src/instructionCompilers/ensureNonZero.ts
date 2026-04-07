@@ -43,12 +43,12 @@ const ensureNonZero: InstructionCompiler = withValidation(
 				[
 					`local int ${tempVariableName}`,
 					`localSet ${tempVariableName}`,
-					`localGet ${tempVariableName}`,
+					`push ${tempVariableName}`,
 					'equalToZero',
 					'if int',
 					`push ${defaultNonZeroValue}`,
 					'else',
-					`localGet ${tempVariableName}`,
+					`push ${tempVariableName}`,
 					'ifEnd',
 				],
 				context
@@ -62,13 +62,13 @@ const ensureNonZero: InstructionCompiler = withValidation(
 				[
 					`local ${localType} ${tempVariableName}`,
 					`localSet ${tempVariableName}`,
-					`localGet ${tempVariableName}`,
+					`push ${tempVariableName}`,
 					'equalToZero',
 					'if void',
 					`push ${defaultNonZeroValue}`,
 					`localSet ${tempVariableName}`,
 					'ifEnd',
-					`localGet ${tempVariableName}`,
+					`push ${tempVariableName}`,
 				],
 				context
 			);

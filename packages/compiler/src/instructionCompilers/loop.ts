@@ -50,7 +50,7 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 				`wasm ${WASMInstruction.LOOP}`,
 				`wasm ${Type.VOID}`,
 
-				`localGet ${infiniteLoopProtectionCounterName}`,
+				`push ${infiniteLoopProtectionCounterName}`,
 				`push ${effectiveCap}`,
 				'greaterOrEqual',
 				'if void',
@@ -59,7 +59,7 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 				' store',
 				` branch 2`,
 				'ifEnd',
-				`localGet ${infiniteLoopProtectionCounterName}`,
+				`push ${infiniteLoopProtectionCounterName}`,
 				'push 1',
 				'add',
 				`localSet ${infiniteLoopProtectionCounterName}`,

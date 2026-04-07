@@ -110,7 +110,7 @@ And use them in functions:
 ```
 function calculate
 param int x
-localGet x
+push x
 macro triple
 macro square
 functionEnd int

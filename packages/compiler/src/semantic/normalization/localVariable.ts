@@ -2,7 +2,7 @@ import { type CompilationContext, type ParsedLocalVariableAccessLine } from '../
 import { ErrorCode, getError } from '../../compilerError';
 
 /**
- * Validates that localGet/localSet target an already-declared local.
+ * Validates that localSet targets an already-declared local.
  * This keeps local existence checks in semantic normalization instead of the dispatcher/codegen layers.
  */
 export default function normalizeLocalVariableAccess(
