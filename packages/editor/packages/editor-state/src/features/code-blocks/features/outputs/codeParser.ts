@@ -5,11 +5,10 @@ export default function parseOutputs(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
+			const isScalarDeclaration = instruction === 'int' || instruction === 'float' || instruction === 'float64';
 
 			if (
-				instruction === 'int' ||
-				instruction === 'float' ||
-				instruction === 'float64' ||
+				isScalarDeclaration ||
 				instruction === 'int[]' ||
 				instruction === 'float[]' ||
 				instruction === 'float64[]' ||
@@ -17,7 +16,11 @@ export default function parseOutputs(code: string[]) {
 				instruction === 'int16[]'
 			) {
 				if (!args[0]) {
-					return acc;
+					if (!isScalarDeclaration) {
+						return acc;
+					}
+
+					return [...acc, { id: '__anonymous__' + index, lineNumber: index }];
 				}
 
 				let id: string;

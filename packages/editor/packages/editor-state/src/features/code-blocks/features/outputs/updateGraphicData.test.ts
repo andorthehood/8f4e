@@ -101,6 +101,28 @@ describe('updateOutputsGraphicData', () => {
 		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(0);
 	});
 
+	it('should render bare anonymous scalar allocations', () => {
+		mockGraphicData.code = ['module test-block', 'int'];
+		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__1'] = {
+			wordAlignedAddress: 8,
+			byteAddress: 32,
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: '__anonymous__1',
+			isPointingToPointer: false,
+		};
+
+		updateOutputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.outputs.length).toBe(1);
+		expect(findWidgetById(mockGraphicData.widgets.outputs, '__anonymous__1')).toBeDefined();
+		expect(mockState.graphicHelper.outputsByWordAddress.get(32)?.id).toBe('__anonymous__1');
+	});
+
 	it('should clear existing outputs before updating', () => {
 		mockGraphicData.widgets.outputs.push({
 			codeBlock: mockGraphicData,
