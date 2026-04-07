@@ -1,4 +1,5 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { getEndByteAddress } from '../semantic/layoutAddresses';
 
 import type { MemoryMap } from '../types';
 
@@ -13,7 +14,7 @@ export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): n
 
 export function getMemoryStringLastByteAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY : 0;
+	return memoryItem ? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize) : 0;
 }
 
 export function getElementCount(memoryMap: MemoryMap, id: string): number {

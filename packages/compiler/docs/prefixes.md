@@ -6,6 +6,8 @@
 
 - `&name` pushes the start address (byte address) of the memory item.
 - `name&` pushes the start address (byte address) of the last word-aligned chunk covering the memory item (i.e., the base address of the final 4-byte word of the allocation).
+- `&this` pushes the start byte address of the current module.
+- `this&` pushes the end-word base byte address of the current module.
 
 These work in both `push` instructions and declaration initializers (e.g., `int* ptr &buffer` or `int* endPtr buffer&`) with the same address semantics.
 
@@ -17,6 +19,9 @@ push &value
 
 int8[] buffer 4 0
 push &buffer[0]
+
+int* moduleStart &this
+int* moduleEnd this&
 
 ```
 
