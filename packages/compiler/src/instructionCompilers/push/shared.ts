@@ -16,9 +16,13 @@ export function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat
 }
 
 export function resolvePointerTargetValueKind(memoryItem: DataStructure): PushValueKind {
-	if (memoryItem.isPointingToInteger) return 'int32';
-	const memoryType = String(memoryItem.type);
-	if (memoryType.startsWith('float64')) return 'float64';
+	if (
+		memoryItem.pointeeBaseType === 'int' ||
+		memoryItem.pointeeBaseType === 'int8' ||
+		memoryItem.pointeeBaseType === 'int16'
+	)
+		return 'int32';
+	if (memoryItem.pointeeBaseType === 'float64') return 'float64';
 	return 'float32';
 }
 
@@ -46,8 +50,8 @@ if (import.meta.vitest) {
 			expect(resolveArgumentValueKind({ isInteger: true })).toBe('int32');
 			expect(resolveArgumentValueKind({ isInteger: false })).toBe('float32');
 			expect(resolveArgumentValueKind({ isInteger: false, isFloat64: true })).toBe('float64');
-			expect(resolvePointerTargetValueKind({ isPointingToInteger: true } as never)).toBe('int32');
-			expect(resolvePointerTargetValueKind({ isPointingToInteger: false, type: 'float64*' } as never)).toBe('float64');
+			expect(resolvePointerTargetValueKind({ pointeeBaseType: 'int' } as never)).toBe('int32');
+			expect(resolvePointerTargetValueKind({ pointeeBaseType: 'float64' } as never)).toBe('float64');
 		});
 
 		it('creates stack items with expected shape', () => {

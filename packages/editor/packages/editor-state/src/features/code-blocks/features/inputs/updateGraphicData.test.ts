@@ -94,8 +94,6 @@ describe('updateInputsGraphicData', () => {
 			default: 0,
 			isInteger: false,
 			id: 'input2',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -123,8 +121,6 @@ describe('updateInputsGraphicData', () => {
 			default: 0,
 			isInteger: true,
 			id: 'input1',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 

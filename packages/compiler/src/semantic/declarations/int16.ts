@@ -42,10 +42,8 @@ if (import.meta.vitest) {
 			const entry = context.namespace.memory['ptr'];
 			expect(entry.elementWordSize).toBe(4);
 			expect(entry.wordAlignedSize).toBe(1);
-			expect(entry.isPointer).toBe(true);
 			expect(entry.isInteger).toBe(true);
-			expect(entry.isPointingToInteger).toBe(true);
-			expect(entry.isPointingToInt16).toBe(true);
+			expect(entry.pointeeBaseType).toBe('int16');
 			expect(entry.isPointingToPointer).toBe(false);
 		});
 
@@ -65,9 +63,8 @@ if (import.meta.vitest) {
 			const entry = context.namespace.memory['pptr'];
 			expect(entry.elementWordSize).toBe(4);
 			expect(entry.wordAlignedSize).toBe(1);
-			expect(entry.isPointer).toBe(true);
 			expect(entry.isInteger).toBe(true);
-			expect(entry.isPointingToInt16).toBe(true);
+			expect(entry.pointeeBaseType).toBe('int16');
 			expect(entry.isPointingToPointer).toBe(true);
 		});
 

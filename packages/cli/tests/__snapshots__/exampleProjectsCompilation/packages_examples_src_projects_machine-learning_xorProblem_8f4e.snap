@@ -37,8 +37,6 @@
           "id": "in1",
           "default": 1,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -52,8 +50,6 @@
           "id": "in2",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -122,10 +118,9 @@
           "id": "in1",
           "default": 4,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "in2": {
@@ -137,10 +132,9 @@
           "id": "in2",
           "default": 8,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -152,8 +146,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -197,10 +189,9 @@
           "id": "in",
           "default": 20,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -212,8 +203,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -282,10 +271,9 @@
           "id": "in1",
           "default": 4,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "in2": {
@@ -297,10 +285,9 @@
           "id": "in2",
           "default": 8,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -312,8 +299,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -357,10 +342,9 @@
           "id": "in",
           "default": 40,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -372,8 +356,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -442,10 +424,9 @@
           "id": "in1",
           "default": 28,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "in2": {
@@ -457,10 +438,9 @@
           "id": "in2",
           "default": 48,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -472,8 +452,6 @@
           "id": "out",
           "default": 0,
           "type": "float",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": false,
           "isUnsigned": false
@@ -533,10 +511,9 @@
           "id": "in",
           "default": 60,
           "type": "float*",
-          "isPointer": true,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "float",
           "isUnsigned": false
         },
         "out": {
@@ -548,8 +525,6 @@
           "id": "out",
           "default": 0,
           "type": "int",
-          "isPointer": false,
-          "isPointingToInteger": false,
           "isPointingToPointer": false,
           "isInteger": true,
           "isUnsigned": false
@@ -606,10 +581,9 @@
           "id": "out",
           "default": 68,
           "type": "int*",
-          "isPointer": true,
-          "isPointingToInteger": true,
           "isPointingToPointer": false,
           "isInteger": true,
+          "pointeeBaseType": "int",
           "isUnsigned": false
         }
       },
