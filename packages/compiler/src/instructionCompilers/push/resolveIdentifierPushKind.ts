@@ -66,7 +66,7 @@ if (import.meta.vitest) {
 				namespaces: {},
 			} as Namespace;
 
-			const locals = {};
+			const locals: LocalMap = {};
 
 			expect(resolveIdentifierPushKind(namespace, locals, classifyIdentifier('buffer'))).toBe(
 				IdentifierPushKind.MEMORY_IDENTIFIER
@@ -85,7 +85,7 @@ if (import.meta.vitest) {
 				namespaces: {},
 			} as Namespace;
 
-			const locals = {};
+			const locals: LocalMap = {};
 
 			expect(resolveIdentifierPushKind(namespace, locals, classifyIdentifier('*buffer'))).toBe(
 				IdentifierPushKind.MEMORY_POINTER
