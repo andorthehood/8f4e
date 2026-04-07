@@ -9,42 +9,6 @@ import {
 } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
-function tryResolveCurrentModuleAddress(context: CompilationContext, argument: Argument): Argument | undefined {
-	if (argument.type === ArgumentType.IDENTIFIER && argument.referenceKind === 'memory-reference' && argument.targetMemoryId === 'this') {
-		if (!argument.isEndAddress) {
-			return { type: ArgumentType.LITERAL, value: context.startingByteAddress, isInteger: true };
-		}
-		if (typeof context.currentModuleWordAlignedSize === 'number') {
-			return {
-				type: ArgumentType.LITERAL,
-				value: context.startingByteAddress + (context.currentModuleWordAlignedSize - 1) * 4,
-				isInteger: true,
-			};
-		}
-		return undefined;
-	}
-
-	if (argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return undefined;
-	}
-
-	const operands = [argument.left, argument.right].map(operand => tryResolveCurrentModuleAddress(context, operand));
-	if (!operands.some(Boolean)) {
-		return undefined;
-	}
-	if (operands.some(operand => operand === undefined)) {
-		return undefined;
-	}
-
-	const [left, right] = operands as [{ type: ArgumentType.LITERAL; value: number; isInteger: boolean }, { type: ArgumentType.LITERAL; value: number; isInteger: boolean }];
-	const value = argument.operator === '*' ? left.value * right.value : left.value / right.value;
-	return {
-		type: ArgumentType.LITERAL,
-		value,
-		isInteger: left.isInteger && right.isInteger && Number.isInteger(value),
-	};
-}
-
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;
 }
@@ -118,18 +82,13 @@ export function validateIntermoduleAddressReference(
 }
 
 export function normalizeArgument(argument: Argument, context: CompilationContext): Argument {
-	const currentModuleResolved = tryResolveCurrentModuleAddress(context, argument);
-	if (currentModuleResolved) {
-		return currentModuleResolved;
-	}
-
 	// tryResolveCompileTimeArgument returns undefined for non-IDENTIFIER and non-COMPILE_TIME_EXPRESSION
 	// types, so we short-circuit here to avoid unnecessary work.
 	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
 		return argument;
 	}
 
-	const resolved = tryResolveCompileTimeArgument(context.namespace, argument);
+	const resolved = tryResolveCompileTimeArgument(context, argument);
 
 	if (!resolved) {
 		return argument;
