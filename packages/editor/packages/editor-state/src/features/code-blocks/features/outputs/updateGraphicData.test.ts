@@ -92,8 +92,6 @@ describe('updateOutputsGraphicData', () => {
 			default: 0,
 			isInteger: true,
 			id: '_privateOutput',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -133,8 +131,6 @@ describe('updateOutputsGraphicData', () => {
 			default: 0,
 			isInteger: false,
 			id: 'output2',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -164,8 +160,6 @@ describe('updateOutputsGraphicData', () => {
 			default: 0,
 			isInteger: true,
 			id: 'output1',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
