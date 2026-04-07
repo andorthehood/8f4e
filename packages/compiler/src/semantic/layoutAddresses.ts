@@ -5,6 +5,9 @@ export function getByteAddressFromWordOffset(startingByteAddress: number, wordOf
 }
 
 export function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
+	if (wordAlignedSize <= 0) {
+		return byteAddress;
+	}
 	return byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
 }
 
@@ -34,6 +37,14 @@ if (import.meta.vitest) {
 
 		it('calculates end byte addresses', () => {
 			expect(getEndByteAddress(24, 5)).toBe(40);
+		});
+
+		it('returns byteAddress unchanged when wordAlignedSize is 0', () => {
+			expect(getEndByteAddress(24, 0)).toBe(24);
+		});
+
+		it('returns byteAddress unchanged when wordAlignedSize is negative', () => {
+			expect(getEndByteAddress(24, -1)).toBe(24);
 		});
 
 		it('calculates module end byte addresses from module start', () => {
