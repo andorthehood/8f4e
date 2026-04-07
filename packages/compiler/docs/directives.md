@@ -151,8 +151,77 @@ moduleEnd
 
 The `#skipExecution` directive takes precedence, and the module code does not execute during either init or cycle. This allows you to temporarily disable a module that was previously marked as init-only without removing the `#initOnly` directive.
 
+## Module- and Function-Scoped Directives
+
+### `#loopCap`
+
+Sets the default loop cap for subsequent `loop` blocks in the current module or function block. The loop cap limits the maximum number of iterations to prevent infinite loops at runtime.
+
+**Scope:** Module and function blocks
+
+**Syntax:** `#loopCap <non-negative integer>`
+
+**Usage:**
+```
+module myModule
+#loopCap 5000
+; ... loops after this line use a cap of 5000 ...
+moduleEnd
+```
+
+**Behavior:**
+- Sets the ambient loop cap for all `loop` instructions that follow in the same module or function body
+- Only affects `loop` instructions that appear after the directive (single-pass compilation)
+- A per-loop explicit argument (`loop <int>`) takes precedence over the ambient `#loopCap`
+- When no `#loopCap` is present and no per-loop argument is given, the built-in default of `1000` applies
+- The cap value `0` is valid and causes the loop guard to exit immediately on the first guard check
+- Multiple `#loopCap` directives in the same block update the ambient default each time they appear
+
+**Precedence order (highest to lowest):**
+1. Explicit `loop <int>` argument
+2. Current ambient `#loopCap <int>` value
+3. Built-in fallback `1000`
+
+**Use Cases:**
+- Raise the cap for modules with legitimately long-running loops (e.g., audio processing)
+- Lower the cap during debugging to surface runaway loops earlier
+- Set a function-local cap for pure computational functions with deep iterations
+
+**Examples:**
+
+Module-scoped cap:
+```
+module demo
+#loopCap 5000
+
+loop
+  ; uses 5000
+loopEnd
+
+loop 32
+  ; uses 32 (explicit argument overrides #loopCap)
+loopEnd
+moduleEnd
+```
+
+Function-scoped cap:
+```
+function int:int slowPath
+#loopCap 2048
+param int input
+; loops inside this function default to 2048
+push input
+functionEnd
+```
+
+**Errors:**
+- Using `#loopCap` outside of a module or function block (e.g., in `constants` blocks or at the top level before any `module`) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+- Providing a non-integer, float, or negative integer argument is a syntax error detected by the tokenizer
+
 ## Error Handling
 
 If an unknown compiler directive is encountered, the compiler will throw an `UNRECOGNISED_INSTRUCTION` error.
 
 If a module-scoped directive like `#skipExecution` or `#initOnly` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
+
+If `#loopCap` is used outside of a module or function block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
