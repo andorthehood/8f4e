@@ -78,8 +78,8 @@ if (import.meta.vitest) {
 				[
 					{
 						parsedDirectives: [
-							{ prefix: '@', name: 'unknown', args: ['x'], rawRow: 0 },
-							{ prefix: '@', name: 'exportFileName', args: ['demo'], rawRow: 1 },
+							{ prefix: '@', name: 'unknown', args: ['x'], rawRow: 0, isTrailing: false },
+							{ prefix: '@', name: 'exportFileName', args: ['demo'], rawRow: 1, isTrailing: false },
 						],
 					},
 				],
