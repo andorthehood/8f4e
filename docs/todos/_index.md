@@ -80,6 +80,8 @@ Active todo files are listed below.
 | 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
 | 366 | Add configurable loop cap directive and loop override | 🟡 | 4-8h | 2026-04-03 | The compiler currently injects infinite-loop protection into every `loop`, but the cap is hardcoded to `1000`. |
 | 367 | Refactor compiler directive plumbing and loop guard config | 🟡 | 4-8h | 2026-04-03 | Recent compiler directive work exposed repeated directive boilerplate, a magic loop-cap value in codegen, and some likely-obsolete tokenizer directive helpers. |
+| 370 | Move if result type to ifEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `if` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
+| 371 | Move block result type to blockEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `block` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
 
 ## Completed TODOs
 
