@@ -89,8 +89,8 @@ if (import.meta.vitest) {
 				[
 					{
 						parsedDirectives: [
-							{ prefix: '@', name: 'color', args: ['text.code', '#112233'], rawRow: 1 },
-							{ prefix: '@', name: 'color', args: ['fill.wire', 'rgba(1,2,3,0.4)'], rawRow: 2 },
+							{ prefix: '@', name: 'color', args: ['text.code', '#112233'], rawRow: 1, isTrailing: false },
+							{ prefix: '@', name: 'color', args: ['fill.wire', 'rgba(1,2,3,0.4)'], rawRow: 2, isTrailing: false },
 						],
 					},
 				],
@@ -109,8 +109,8 @@ if (import.meta.vitest) {
 				[
 					{
 						parsedDirectives: [
-							{ prefix: '@', name: 'color', args: ['text.code', '#111111'], rawRow: 1 },
-							{ prefix: '@', name: 'color', args: ['text.code', '#222222'], rawRow: 2 },
+							{ prefix: '@', name: 'color', args: ['text.code', '#111111'], rawRow: 1, isTrailing: false },
+							{ prefix: '@', name: 'color', args: ['text.code', '#222222'], rawRow: 2, isTrailing: false },
 						],
 					},
 				],
@@ -129,8 +129,8 @@ if (import.meta.vitest) {
 					{
 						id: 'colors',
 						parsedDirectives: [
-							{ prefix: '@', name: 'color', args: ['bad.path', '#000000'], rawRow: 1 },
-							{ prefix: '@', name: 'color', args: ['text.code', '???'], rawRow: 2 },
+							{ prefix: '@', name: 'color', args: ['bad.path', '#000000'], rawRow: 1, isTrailing: false },
+							{ prefix: '@', name: 'color', args: ['text.code', '???'], rawRow: 2, isTrailing: false },
 						],
 					},
 				],

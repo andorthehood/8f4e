@@ -114,7 +114,7 @@ export function parseEditorDirectives(code: string[], plugins: EditorDirectivePl
 					args: parsed.args,
 					rawRow,
 					sourceLine: line,
-					...(parsed.isTrailing && { isTrailing: true as const }),
+					isTrailing: parsed.isTrailing,
 				},
 			];
 		}),

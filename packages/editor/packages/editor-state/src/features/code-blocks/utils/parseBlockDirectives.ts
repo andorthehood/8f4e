@@ -24,7 +24,7 @@ export function parseBlockDirectives(code: string[]): ParsedDirectiveRecord[] {
 			args: parsed.args,
 			rawRow,
 			sourceLine: code[rawRow],
-			...(parsed.isTrailing && { isTrailing: true as const }),
+			isTrailing: parsed.isTrailing,
 		});
 	}
 
