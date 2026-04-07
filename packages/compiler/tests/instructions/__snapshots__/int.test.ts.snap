@@ -114,6 +114,7 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "isPointingToPointer": false,
     "isUnsigned": false,
     "numberOfElements": 1,
+    "pointeeBaseType": "int",
     "type": "int*",
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
