@@ -54,7 +54,7 @@ if (import.meta.vitest) {
 			const result = resolveGlobalEditorDirectives(
 				[
 					{
-						parsedDirectives: [{ prefix: '@', name: 'wireThickness', args: ['3'], rawRow: 1 }],
+						parsedDirectives: [{ prefix: '@', name: 'wireThickness', args: ['3'], rawRow: 1, isTrailing: false }],
 					},
 				],
 				{}
@@ -72,8 +72,8 @@ if (import.meta.vitest) {
 					{
 						id: 'wires',
 						parsedDirectives: [
-							{ prefix: '@', name: 'wireThickness', args: ['0'], rawRow: 2 },
-							{ prefix: '@', name: 'wireThickness', args: ['101'], rawRow: 3 },
+							{ prefix: '@', name: 'wireThickness', args: ['0'], rawRow: 2, isTrailing: false },
+							{ prefix: '@', name: 'wireThickness', args: ['101'], rawRow: 3, isTrailing: false },
 						],
 					},
 				],
@@ -101,10 +101,10 @@ if (import.meta.vitest) {
 			const result = resolveGlobalEditorDirectives(
 				[
 					{
-						parsedDirectives: [{ prefix: '@', name: 'wireThickness', args: ['2'], rawRow: 1 }],
+						parsedDirectives: [{ prefix: '@', name: 'wireThickness', args: ['2'], rawRow: 1, isTrailing: false }],
 					},
 					{
-						parsedDirectives: [{ prefix: '@', name: 'wireThickness', args: ['4'], rawRow: 2 }],
+						parsedDirectives: [{ prefix: '@', name: 'wireThickness', args: ['4'], rawRow: 2, isTrailing: false }],
 					},
 				],
 				{}

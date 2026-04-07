@@ -147,6 +147,8 @@ export interface ParsedDirectiveRecord {
 	rawRow: number;
 	/** Original source line that contained the directive */
 	sourceLine?: string;
+	/** True when the directive appears as a trailing inline comment on a non-directive line */
+	isTrailing: boolean;
 }
 
 /**
