@@ -13,19 +13,19 @@ export default function findMidiCCModules(
 			const cc = module.memoryMap['cc'];
 
 			const valueWordAddress = value
-				? value?.isPointer
+				? value?.pointeeBaseType
 					? memoryBuffer[value.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: value.wordAlignedAddress
 				: undefined;
 
 			const channelWordAddress = channel
-				? channel?.isPointer
+				? channel?.pointeeBaseType
 					? memoryBuffer[channel.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: channel.wordAlignedAddress
 				: undefined;
 
 			const selectedCCWordAddress = cc
-				? cc?.isPointer
+				? cc?.pointeeBaseType
 					? memoryBuffer[cc.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: cc.wordAlignedAddress
 				: undefined;

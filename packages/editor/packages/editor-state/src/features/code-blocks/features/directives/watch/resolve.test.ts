@@ -110,8 +110,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'var1',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['var2'] = {
@@ -124,8 +122,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'var2',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -147,8 +143,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -170,8 +164,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -192,8 +184,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -216,8 +206,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -238,8 +226,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -260,8 +246,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -284,8 +268,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -306,8 +288,6 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: false,
 			id: '__anonymous__0',
-			isPointer: false,
-			isPointingToInteger: false,
 			isPointingToPointer: false,
 		};
 
@@ -328,8 +308,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
-			isPointer: true,
-			isPointingToInteger: true,
+			pointeeBaseType: 'int',
 			isPointingToPointer: false,
 		};
 

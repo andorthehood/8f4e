@@ -15,31 +15,31 @@ export default function findMidiNoteOutModules(
 			const port = module.memoryMap['port'];
 
 			const noteWordAddress = note
-				? note?.isPointer
+				? note?.pointeeBaseType
 					? memoryBuffer[note.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: note.wordAlignedAddress
 				: undefined;
 
 			const channelWordAddress = channel
-				? channel?.isPointer
+				? channel?.pointeeBaseType
 					? memoryBuffer[channel.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: channel.wordAlignedAddress
 				: undefined;
 
 			const noteOnOffWordAddress = noteOnOff
-				? noteOnOff?.isPointer
+				? noteOnOff?.pointeeBaseType
 					? memoryBuffer[noteOnOff.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: noteOnOff.wordAlignedAddress
 				: undefined;
 
 			const velocityWordAddress = velocity
-				? velocity?.isPointer
+				? velocity?.pointeeBaseType
 					? memoryBuffer[velocity.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: velocity.wordAlignedAddress
 				: undefined;
 
 			const portWordAddress = port
-				? port?.isPointer
+				? port?.pointeeBaseType
 					? memoryBuffer[port.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
 					: port.wordAlignedAddress
 				: undefined;
