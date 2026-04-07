@@ -148,11 +148,20 @@ describe('parseMemoryInstructionArguments', () => {
 		});
 	});
 
-	describe('error handling', () => {
-		it('should throw error when first argument is missing', () => {
-			expect(() => {
-				parseMemoryInstructionArguments(createLine(13, 'float', []), createMockContext());
-			}).toThrow();
+	describe('zero-argument (bare scalar) declarations', () => {
+		it('should return anonymous zero-initialized id when no arguments are given', () => {
+			const result = parseMemoryInstructionArguments(createLine(13, 'int', []), createMockContext());
+			expect(result).toEqual({ id: '__anonymous__13', defaultValue: 0 });
+		});
+
+		it('should return anonymous zero-initialized id for float with no arguments', () => {
+			const result = parseMemoryInstructionArguments(createLine(14, 'float', []), createMockContext());
+			expect(result).toEqual({ id: '__anonymous__14', defaultValue: 0 });
+		});
+
+		it('should return anonymous zero-initialized id for int* with no arguments', () => {
+			const result = parseMemoryInstructionArguments(createLine(15, 'int*', []), createMockContext());
+			expect(result).toEqual({ id: '__anonymous__15', defaultValue: 0 });
 		});
 	});
 

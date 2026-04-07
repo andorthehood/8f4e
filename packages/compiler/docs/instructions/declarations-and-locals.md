@@ -29,6 +29,13 @@ store
 
 The int instruction declares a 32-bit integer in module memory. Use `int*` or `int**` to declare pointer types.
 
+Anonymous scalar declarations are supported in three forms:
+- **Bare implicit zero**: `int` allocates an anonymous `int` with default `0`
+- **Anonymous literal/value**: `int 42` allocates an anonymous `int` with default `42`
+- **Anonymous constant-style identifier**: `int FOO` allocates an anonymous `int` with default equal to constant `FOO`, where `FOO` is a declared `const`
+
+This bare zero-initialized form applies to scalar declarations only (including pointer variants such as `int*`). Array declarations (`int[]`) still require an element count.
+
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
 Constant mul/div expressions are also supported with the same one-operator rule (`CONST*number` or `CONST/number`).
 
@@ -66,8 +73,10 @@ When a constant-style identifier appears as the first argument and is declared a
 const MAX 8
 const HI 0xA8
 const LO 0xFF
+int
 int count 4
 int halfCount MAX/2
+int*
 int* ptr &count
 int* endPtr count&
 int colorARGB 0xA8 0xFF 0x00 0x00
@@ -133,6 +142,8 @@ push %*ptr       ; 2 — pointee element word size
 
 The float instruction declares a 32-bit floating-point value in module memory. Use `float*` or `float**` to declare pointer types.
 
+A bare `float` (no arguments) allocates an anonymous `float` with default `0`. This zero-initialized form applies to scalar declarations only (including pointer variants such as `float*`).
+
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
 Constant mul/div expressions are also supported with the same one-operator rule (`CONST*number` or `CONST/number`).
 
@@ -140,9 +151,11 @@ Constant mul/div expressions are also supported with the same one-operator rule 
 
 ```
 const MAX_GAIN 2
+float
 float gain 0.75
 float halfGain MAX_GAIN/2
 float[] samples 4 0.0
+float*
 float* ptr &samples
 float* endPtr samples&
 ```
