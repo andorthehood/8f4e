@@ -1,6 +1,19 @@
 import { moduleTester } from './testUtils';
 
 moduleTester(
+	'float: bare anonymous zero-initialized allocation',
+	`module test
+float
+float output
+push &output
+push __anonymous__1
+store
+moduleEnd
+`,
+	[[{}, { output: 0 }]]
+);
+
+moduleTester(
 	'float: with literal (anonymous allocation)',
 	`module test
 float 3.14

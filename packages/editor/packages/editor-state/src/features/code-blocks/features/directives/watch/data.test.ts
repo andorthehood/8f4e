@@ -170,4 +170,40 @@ describe('watch directive data', () => {
 			},
 		]);
 	});
+
+	it('should infer compiler-generated id for bare int declaration (no arguments)', () => {
+		expect(parseWatchDirectiveData(['int ; @watch'])).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should infer compiler-generated id for bare float declaration (no arguments)', () => {
+		expect(parseWatchDirectiveData(['float ; @watch'])).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should infer compiler-generated id for bare int* declaration (no arguments)', () => {
+		expect(parseWatchDirectiveData(['int* ; @watch'])).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should apply formatting templates to inferred bare anonymous declaration ids', () => {
+		expect(parseWatchDirectiveData(['int ; @watch 0x'])).toEqual([
+			{
+				id: '0x__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
 });
