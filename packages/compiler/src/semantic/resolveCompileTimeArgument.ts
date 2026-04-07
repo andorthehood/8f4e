@@ -10,6 +10,7 @@ import {
 	getPointeeElementMaxValue,
 	getElementMinValue,
 } from '../utils/memoryData';
+import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
 
 import type { Argument, CompilationContext, CompileTimeOperand, Const } from '../types';
 
@@ -132,7 +133,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		const targetNamespace = namespace.namespaces[targetModuleId];
 		if (typeof targetNamespace?.byteAddress === 'number' && typeof targetNamespace?.wordAlignedSize === 'number') {
 			const value = operand.isEndAddress
-				? targetNamespace.byteAddress + (targetNamespace.wordAlignedSize - 1) * 4
+				? getModuleEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
 				: targetNamespace.byteAddress;
 			return { value, isInteger: true };
 		}
@@ -165,9 +166,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		}
 		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId!];
 		if (targetMemory) {
-			const value = operand.isEndAddress
-				? targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4
-				: targetMemory.byteAddress;
+			const value = operand.isEndAddress ? getEndByteAddress(targetMemory.byteAddress, targetMemory.wordAlignedSize) : targetMemory.byteAddress;
 			return { value, isInteger: true };
 		}
 		return undefined;
@@ -183,7 +182,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 			}
 			if (typeof context.currentModuleWordAlignedSize === 'number') {
 				return {
-					value: context.startingByteAddress + (context.currentModuleWordAlignedSize - 1) * 4,
+					value: getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize),
 					isInteger: true,
 				};
 			}
