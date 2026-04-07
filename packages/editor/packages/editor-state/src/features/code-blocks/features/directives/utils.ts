@@ -1,11 +1,14 @@
 import type { EditorDirectivePlugin, ParsedEditorDirective } from './types';
 import type { ParsedDirectiveRecord } from '~/types';
 
+const FULL_LINE_DIRECTIVE_RE = /^\s*;\s*([@~])(\w+)(?:\s+(.*\S))?\s*$/;
+const TRAILING_DIRECTIVE_RE = /;\s*@(\w+)(?:\s+(.*\S))?\s*$/;
+
 /**
  * Low-level directive line parser. Tries a full-line directive comment first
  * (`; @name` / `; ~name`), then a trailing inline editor directive (`; @name`
- * at the end of a non-comment line). Returns `undefined` when no directive
- * pattern is found.
+ * near the end of the line). Returns `undefined` when no directive pattern is
+ * found.
  */
 export function parseDirectiveLine(
 	line: string
@@ -13,7 +16,7 @@ export function parseDirectiveLine(
 	| { prefix: '@' | '~'; name: string; args: string[]; isTrailing: false }
 	| { prefix: '@'; name: string; args: string[]; isTrailing: true }
 	| undefined {
-	const fullLineMatch = line.match(/^\s*;\s*([@~])(\w+)(?:\s+(.*\S))?\s*$/);
+	const fullLineMatch = line.match(FULL_LINE_DIRECTIVE_RE);
 	if (fullLineMatch) {
 		const [, prefix, name, rawArgs] = fullLineMatch;
 		return {
@@ -24,7 +27,7 @@ export function parseDirectiveLine(
 		};
 	}
 
-	const trailingMatch = line.match(/;\s*@(\w+)(?:\s+(.*\S))?\s*$/);
+	const trailingMatch = line.match(TRAILING_DIRECTIVE_RE);
 	if (trailingMatch) {
 		const [, name, rawArgs] = trailingMatch;
 		return {
