@@ -119,64 +119,22 @@ describe('push local-vs-memory identifier resolution', () => {
 			},
 		];
 
-		// This should compile successfully – the local shadows the memory name.
-		const result = compile(modules, defaultOptions, functions);
-		expect(result.compiledFunctions!.shadowTest).toBeDefined();
-		expect(result.compiledFunctions!.shadowTest.signature.returns).toEqual(['int']);
-	});
-
-	test('push rejects an identifier that is neither in locals nor memory', () => {
-		const functions: Module[] = [
-			{
-				code: ['function bad', 'push undeclared', 'functionEnd int'],
-			},
-		];
-
-		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
-	});
-});
-
-describe('push local-vs-memory identifier resolution', () => {
-	test('push resolves to local when name exists only in locals', () => {
-		const functions: Module[] = [
-			{
-				code: ['function localOnly', 'param int val', 'push val', 'functionEnd int'],
-			},
-		];
-
-		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
 		const result = compile(modules, defaultOptions, functions);
 
-		expect(result.compiledFunctions!.localOnly.signature.parameters).toEqual(['int']);
-		expect(result.compiledFunctions!.localOnly.signature.returns).toEqual(['int']);
-	});
+		// local.get opcode (0x20 = 32) must be present; i32.load opcode (0x28 = 40) must not be
+		const LOCAL_GET = 0x20;
+		const I32_LOAD = 0x28;
+		expect(result.compiledFunctions!.shadowTest.body).toContain(LOCAL_GET);
+		expect(result.compiledFunctions!.shadowTest.body).not.toContain(I32_LOAD);
 
-	test('push resolves to local when name exists in both locals and module memory (locals shadow memory)', () => {
-		// 'value' is declared as both a module memory item and a function param.
-		// push value inside the function should resolve to the local, not the memory item.
-		const functions: Module[] = [
+		// The emitted bytecode must be identical to a function that has no competing module-memory item
+		const functionsNoMemory: Module[] = [
 			{
-				code: [
-					'function shadowTest',
-					'param int value',
-					// push value here must use the local (param), not the module memory
-					'push value',
-					'functionEnd int',
-				],
+				code: ['function localOnly', 'param int value', 'push value', 'functionEnd int'],
 			},
 		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'int value 42', 'moduleEnd'],
-			},
-		];
-
-		// This should compile successfully – the local shadows the memory name.
-		const result = compile(modules, defaultOptions, functions);
-		expect(result.compiledFunctions!.shadowTest).toBeDefined();
-		expect(result.compiledFunctions!.shadowTest.signature.returns).toEqual(['int']);
+		const resultNoMemory = compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, functionsNoMemory);
+		expect(result.compiledFunctions!.shadowTest.body).toEqual(resultNoMemory.compiledFunctions!.localOnly.body);
 	});
 
 	test('push rejects an identifier that is neither in locals nor memory', () => {
