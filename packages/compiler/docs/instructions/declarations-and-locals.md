@@ -199,6 +199,8 @@ local int temp
 ### localGet
 
 The localGet instruction pushes the value of a local variable onto the stack.
+`push <local>` is also a supported form and is fully equivalent to `localGet <local>` in all cases,
+including `float64` locals. See [push](stack.md#push) for the identifier-resolution rule.
 
 #### Examples
 
@@ -206,7 +208,7 @@ The localGet instruction pushes the value of a local variable onto the stack.
 local int temp
 push 5
 localSet temp
-localGet temp
+localGet temp   ; equivalent to: push temp
 ```
 
 ### localSet
