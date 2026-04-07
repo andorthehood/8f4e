@@ -28,7 +28,6 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	block: { minArguments: 1, argumentTypes: ['identifier'] },
 	local: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
 	param: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
-	localGet: { minArguments: 1, argumentTypes: ['identifier'] },
 	localSet: { minArguments: 1, argumentTypes: ['identifier'] },
 	function: { minArguments: 1, argumentTypes: ['identifier'] },
 	functionEnd: { argumentTypes: 'typeIdentifier' },

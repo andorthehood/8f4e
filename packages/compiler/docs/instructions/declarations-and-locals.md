@@ -196,21 +196,6 @@ The local instruction declares a local variable inside a module or function (`lo
 local int temp
 ```
 
-### localGet
-
-The localGet instruction pushes the value of a local variable onto the stack.
-`push <local>` is also a supported form and is fully equivalent to `localGet <local>` in all cases,
-including `float64` locals. See [push](stack.md#push) for the identifier-resolution rule.
-
-#### Examples
-
-```
-local int temp
-push 5
-localSet temp
-localGet temp   ; equivalent to: push temp
-```
-
 ### localSet
 
 The localSet instruction consumes a value from the stack and stores it in a local variable.

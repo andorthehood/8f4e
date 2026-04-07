@@ -177,7 +177,7 @@ param float x
 ; Polynomial sigmoid
 ; func. approximation
 
-localGet x
+push x
 dup
 abs
 push 1.0
