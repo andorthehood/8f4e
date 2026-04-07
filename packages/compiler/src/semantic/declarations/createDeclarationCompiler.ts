@@ -3,7 +3,6 @@ import { getPointerDepth } from '@8f4e/tokenizer';
 import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
 import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import {
 	alignAbsoluteWordOffset,
 	getAbsoluteWordOffset,
