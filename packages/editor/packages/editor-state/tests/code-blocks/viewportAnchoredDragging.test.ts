@@ -3,6 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import codeBlockDragger from '../../src/features/code-blocks/features/codeBlockDragger/effect';
 import { createCodeBlockGraphicData } from '../../src/features/code-blocks/utils/createCodeBlockGraphicData';
+import { createMockState } from '../../src/pureHelpers/testingUtils/testUtils';
 
 import type { State, InternalMouseEvent, EventDispatcher } from '../../src/types';
 
@@ -15,33 +16,10 @@ describe('viewport-anchored dragging', () => {
 	let mouseupHandlers: Array<() => void>;
 
 	beforeEach(() => {
-		state = {
-			featureFlags: {
-				moduleDragging: true,
-			},
-			graphicHelper: {
-				codeBlocks: [],
-				viewportAnchoredCodeBlocks: [],
-				draggedCodeBlock: undefined,
-				selectedCodeBlock: undefined,
-				nextCodeBlockCreationIndex: 0,
-				outputsByWordAddress: new Map(),
-				contextMenu: { visible: false, x: 0, y: 0, items: [] },
-				postProcessEffects: [],
-				backgroundEffects: [],
-			},
-			viewport: {
-				x: 0,
-				y: 0,
-				vGrid: 10,
-				hGrid: 20,
-				width: 800,
-				height: 600,
-				roundedWidth: 800,
-				roundedHeight: 600,
-				gridCoordinates: { x: 0, y: 0 },
-			},
-		} as State;
+		state = createMockState({
+			featureFlags: { moduleDragging: true },
+			viewport: { vGrid: 10, hGrid: 20, width: 800, height: 600, roundedWidth: 800, roundedHeight: 600 },
+		});
 
 		store = createStateManager(state);
 
