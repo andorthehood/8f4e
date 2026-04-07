@@ -32,7 +32,7 @@ const risingEdge: InstructionCompiler = withValidation(
 			[
 				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
-				`localGet ${currentValueName}`,
+				`push ${currentValueName}`,
 				`push ${previousValue.byteAddress}`,
 				loadInstruction,
 				'greaterThan',
@@ -42,7 +42,7 @@ const risingEdge: InstructionCompiler = withValidation(
 				'push 0',
 				'ifEnd',
 				`push ${previousValue.byteAddress}`,
-				`localGet ${currentValueName}`,
+				`push ${currentValueName}`,
 				'store',
 			],
 			context

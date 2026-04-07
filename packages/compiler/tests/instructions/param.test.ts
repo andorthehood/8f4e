@@ -16,7 +16,7 @@ describe('Param Instruction', () => {
 	test('should allow accessing parameters in declaration order', () => {
 		const functions: Module[] = [
 			{
-				code: ['function add', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
+				code: ['function add', 'param int x', 'param int y', 'push x', 'push y', 'add', 'functionEnd int'],
 			},
 		];
 
@@ -36,7 +36,7 @@ describe('Param Instruction', () => {
 	test('should allow accessing parameters in different order', () => {
 		const functions: Module[] = [
 			{
-				code: ['function subtract', 'param int x', 'param int y', 'localGet y', 'localGet x', 'sub', 'functionEnd int'],
+				code: ['function subtract', 'param int x', 'param int y', 'push y', 'push x', 'sub', 'functionEnd int'],
 			},
 		];
 
@@ -55,15 +55,7 @@ describe('Param Instruction', () => {
 	test('should allow accessing only some parameters', () => {
 		const functions: Module[] = [
 			{
-				code: [
-					'function useFirst',
-					'param int x',
-					'param int unused',
-					'localGet x',
-					'push 2',
-					'mul',
-					'functionEnd int',
-				],
+				code: ['function useFirst', 'param int x', 'param int unused', 'push x', 'push 2', 'mul', 'functionEnd int'],
 			},
 		];
 
@@ -82,7 +74,7 @@ describe('Param Instruction', () => {
 	test('should allow accessing the same parameter multiple times', () => {
 		const functions: Module[] = [
 			{
-				code: ['function square', 'param int x', 'localGet x', 'localGet x', 'mul', 'functionEnd int'],
+				code: ['function square', 'param int x', 'push x', 'push x', 'mul', 'functionEnd int'],
 			},
 		];
 
@@ -105,8 +97,8 @@ describe('Param Instruction', () => {
 					'function calculateArea',
 					'param int width',
 					'param int height',
-					'localGet width',
-					'localGet height',
+					'push width',
+					'push height',
 					'mul',
 					'functionEnd int',
 				],
@@ -133,11 +125,11 @@ describe('Param Instruction', () => {
 					'param int x',
 					'param int y',
 					'local int temp',
-					'localGet x',
-					'localGet y',
+					'push x',
+					'push y',
 					'add',
 					'localSet temp',
-					'localGet temp',
+					'push temp',
 					'functionEnd int',
 				],
 			},
@@ -162,9 +154,9 @@ describe('Param Instruction', () => {
 					'function mixedParams',
 					'param int intVal',
 					'param float floatVal',
-					'localGet intVal',
+					'push intVal',
 					'castToFloat',
-					'localGet floatVal',
+					'push floatVal',
 					'mul',
 					'functionEnd float',
 				],
@@ -186,7 +178,7 @@ describe('Param Instruction', () => {
 	test('should accept float64 param and track it in function signature', () => {
 		const functions: Module[] = [
 			{
-				code: ['function getDouble', 'param float64 x', 'localGet x', 'push 2.0f64', 'mul', 'functionEnd float64'],
+				code: ['function getDouble', 'param float64 x', 'push x', 'push 2.0f64', 'mul', 'functionEnd float64'],
 			},
 		];
 
@@ -211,7 +203,7 @@ describe('Param Instruction', () => {
 					'param int intVal',
 					'param float floatVal',
 					'param float64 doubleVal',
-					'localGet doubleVal',
+					'push doubleVal',
 					'functionEnd float64',
 				],
 			},

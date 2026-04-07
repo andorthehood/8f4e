@@ -19,7 +19,6 @@ import {
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
-	type LocalGetLine,
 	type LocalDeclarationLine,
 	type LocalSetLine,
 	type LocalVariableAccessLine as TokenizedLocalVariableAccessLine,
@@ -171,7 +170,6 @@ export {
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 	type ArgumentStringLiteral,
-	type LocalGetLine,
 	type LocalDeclarationLine,
 	type LocalSetLine,
 	type TokenizedLocalVariableAccessLine,
@@ -304,7 +302,6 @@ export type ParsedSemanticInstructionLine =
 	| ConstantsLine
 	| ConstantsEndLine;
 export type ParsedLocalVariableAccessLine = TokenizedLocalVariableAccessLine;
-export type CodegenLocalGetLine = LocalGetLine;
 export type CodegenLocalSetLine = LocalSetLine;
 export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral];
@@ -318,15 +315,13 @@ export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 			? NormalizedDefaultLine | DefaultLine
 			: TLine extends MapLine
 				? NormalizedMapLine | MapLine
-				: TLine extends LocalGetLine
-					? CodegenLocalGetLine
-					: TLine extends LocalSetLine
-						? CodegenLocalSetLine
-						: TLine extends PushLine
-							? CodegenPushLine
-							: TLine extends ArrayDeclarationLine
-								? ArrayDeclarationLine
-								: TLine;
+				: TLine extends LocalSetLine
+					? CodegenLocalSetLine
+					: TLine extends PushLine
+						? CodegenPushLine
+						: TLine extends ArrayDeclarationLine
+							? ArrayDeclarationLine
+							: TLine;
 
 export enum BLOCK_TYPE {
 	MODULE,

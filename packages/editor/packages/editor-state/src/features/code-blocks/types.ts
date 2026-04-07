@@ -66,9 +66,10 @@ export interface Debugger {
 	x: number;
 	y: number;
 	id: string;
-	memory: DataStructure;
+	memory?: DataStructure;
 	bufferPointer: number;
 	displayFormat: 'decimal' | 'binary' | 'hex';
+	text?: string;
 }
 
 export interface MemoryIdentifier {
