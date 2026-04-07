@@ -232,6 +232,8 @@ export interface CompilationContext {
 	stack: Stack;
 	blockStack: BlockStack;
 	startingByteAddress: number;
+	currentModuleNextWordOffset?: number;
+	currentModuleWordAlignedSize?: number;
 	byteCode: Array<WASMInstruction | Type | number>;
 	mode?: CompilationMode;
 	codeBlockId?: string;
