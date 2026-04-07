@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`loop instruction compiler > compiles the loop segment 1`] = `
+exports[`loop instruction compiler > compiles the loop segment with default cap 1`] = `
 {
   "blockStack": [
     {
@@ -28,6 +28,181 @@ exports[`loop instruction compiler > compiles the loop segment 1`] = `
     65,
     232,
     7,
+    78,
+    4,
+    64,
+    65,
+    0,
+    65,
+    2,
+    54,
+    2,
+    0,
+    12,
+    2,
+    11,
+    32,
+    0,
+    65,
+    1,
+    106,
+    33,
+    0,
+  ],
+  "locals": {
+    "__infiniteLoopProtectionCounter2": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "memory": {},
+}
+`;
+
+exports[`loop instruction compiler > compiles the loop segment with explicit cap argument 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 1,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "byteCode": [
+    65,
+    0,
+    33,
+    0,
+    2,
+    64,
+    3,
+    64,
+    32,
+    0,
+    65,
+    32,
+    78,
+    4,
+    64,
+    65,
+    0,
+    65,
+    2,
+    54,
+    2,
+    0,
+    12,
+    2,
+    11,
+    32,
+    0,
+    65,
+    1,
+    106,
+    33,
+    0,
+  ],
+  "locals": {
+    "__infiniteLoopProtectionCounter2": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "memory": {},
+}
+`;
+
+exports[`loop instruction compiler > explicit argument overrides context.loopCap 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 1,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "byteCode": [
+    65,
+    0,
+    33,
+    0,
+    2,
+    64,
+    3,
+    64,
+    32,
+    0,
+    65,
+    10,
+    78,
+    4,
+    64,
+    65,
+    0,
+    65,
+    2,
+    54,
+    2,
+    0,
+    12,
+    2,
+    11,
+    32,
+    0,
+    65,
+    1,
+    106,
+    33,
+    0,
+  ],
+  "locals": {
+    "__infiniteLoopProtectionCounter2": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "memory": {},
+}
+`;
+
+exports[`loop instruction compiler > uses context.loopCap when no argument is provided 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 1,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "byteCode": [
+    65,
+    0,
+    33,
+    0,
+    2,
+    64,
+    3,
+    64,
+    32,
+    0,
+    65,
+    244,
+    3,
     78,
     4,
     64,
