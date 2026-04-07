@@ -22,11 +22,9 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@nx/js": "22.5.2",
-    "@nx/vite": "22.5.2",
+    "@nx/js": "22.6.3",
+    "@nx/vite": "22.6.3",
     "@playwright/test": "^1.56.1",
-    "@swc/cli": "^0.7.7",
-    "@swc/core": "^1.13.3",
     "@types/audioworklet": "^0.0.38",
     "@types/mocha": "^10.0.8",
     "@types/node": "^24.3.0",
@@ -44,7 +42,7 @@
     "globals": "^16.5.0",
     "husky": "7.0.4",
     "lint-staged": "12.1.4",
-    "nx": "22.5.2",
+    "nx": "22.6.3",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
@@ -68,10 +66,19 @@
   },
   "overrides": {
     "nx": {
-      "minimatch": "10.2.1"
+      "minimatch": "10.2.3"
+    },
+    "@nx/js": {
+      "picomatch": "4.0.4"
+    },
+    "@nx/vite": {
+      "picomatch": "4.0.4"
     },
     "@nx/devkit": {
-      "minimatch": "10.2.1"
+      "minimatch": "10.2.3"
+    },
+    "@nx/workspace": {
+      "picomatch": "4.0.4"
     }
   }
 }
