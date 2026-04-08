@@ -108,9 +108,11 @@ export function parseLine(
 	lineNumberBeforeMacroExpansion: number,
 	lineNumberAfterMacroExpansion = lineNumberBeforeMacroExpansion
 ): ASTLine {
+	let instruction: string | undefined;
 	try {
 		const tokens = tokenizeInstruction(line);
-		const [instruction = '', ...args] = tokens;
+		const [first = '', ...args] = tokens;
+		instruction = first;
 		const parsedArguments = args.map(parseArgument);
 		validateInstructionArguments(instruction, parsedArguments);
 
@@ -125,10 +127,10 @@ export function parseLine(
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
 			throw new SyntaxRulesError(error.code, error.message, {
-				...error.details,
-				line,
 				lineNumberBeforeMacroExpansion,
 				lineNumberAfterMacroExpansion,
+				// instruction is undefined only if tokenizeInstruction threw before assignment
+				instruction: instruction ?? undefined,
 			});
 		}
 		throw error;
@@ -168,9 +170,9 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 					SyntaxErrorCode.INVALID_BLOCK_STRUCTURE,
 					'Unexpected else without a matching open if block.',
 					{
-						line,
 						lineNumberBeforeMacroExpansion,
 						lineNumberAfterMacroExpansion,
+						instruction: parsedLine.instruction,
 					}
 				);
 			}
@@ -180,9 +182,9 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 					SyntaxErrorCode.INVALID_BLOCK_STRUCTURE,
 					'Unexpected else: if blocks may only contain one else branch.',
 					{
-						line,
 						lineNumberBeforeMacroExpansion,
 						lineNumberAfterMacroExpansion,
+						instruction: parsedLine.instruction,
 					}
 				);
 			}
@@ -204,9 +206,9 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 				SyntaxErrorCode.INVALID_BLOCK_STRUCTURE,
 				`Unexpected ${endInstruction} without a matching open ${expectedStartInstruction} block.`,
 				{
-					line,
 					lineNumberBeforeMacroExpansion,
 					lineNumberAfterMacroExpansion,
+					instruction: parsedLine.instruction,
 				}
 			);
 		}
@@ -216,12 +218,9 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 				SyntaxErrorCode.INVALID_BLOCK_STRUCTURE,
 				`Unexpected ${endInstruction}: expected ${openBlock.instruction} to be closed before ending ${expectedStartInstruction}.`,
 				{
-					line,
 					lineNumberBeforeMacroExpansion,
 					lineNumberAfterMacroExpansion,
-					openInstruction: openBlock.instruction,
-					openLineNumberBeforeMacroExpansion: ast[openBlock.astIndex].lineNumberBeforeMacroExpansion,
-					openLineNumberAfterMacroExpansion: ast[openBlock.astIndex].lineNumberAfterMacroExpansion,
+					instruction: parsedLine.instruction,
 				}
 			);
 		}
@@ -261,7 +260,7 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_BLOCK_STRUCTURE, `Unclosed ${openBlock.instruction} block.`, {
 			lineNumberBeforeMacroExpansion: openLine.lineNumberBeforeMacroExpansion,
 			lineNumberAfterMacroExpansion: openLine.lineNumberAfterMacroExpansion,
-			openInstruction: openBlock.instruction,
+			instruction: openBlock.instruction,
 		});
 	}
 

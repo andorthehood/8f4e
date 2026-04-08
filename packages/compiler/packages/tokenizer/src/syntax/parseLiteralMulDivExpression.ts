@@ -42,13 +42,7 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 		if (error instanceof SyntaxRulesError && error.code === SyntaxErrorCode.INVALID_NUMERIC_LITERAL) {
 			throw new SyntaxRulesError(
 				SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
-				`Invalid numeric literal or expression: ${argument}`,
-				{
-					...error.details,
-					argument,
-					lhs: lhsStr,
-					rhs: rhsStr,
-				}
+				`Invalid numeric literal or expression: ${argument}`
 			);
 		}
 		throw error;
@@ -58,25 +52,14 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 		if (isNumericLikeInvalidToken(lhsStr) || isNumericLikeInvalidToken(rhsStr)) {
 			throw new SyntaxRulesError(
 				SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
-				`Invalid numeric literal or expression: ${argument}`,
-				{
-					argument,
-					lhs: lhsStr,
-					rhs: rhsStr,
-				}
+				`Invalid numeric literal or expression: ${argument}`
 			);
 		}
 		return null;
 	}
 
 	if (operator === '/' && rhs.value === 0) {
-		throw new SyntaxRulesError(
-			SyntaxErrorCode.DIVISION_BY_ZERO,
-			`Division by zero in literal expression: ${argument}`,
-			{
-				argument,
-			}
-		);
+		throw new SyntaxRulesError(SyntaxErrorCode.DIVISION_BY_ZERO, `Division by zero in literal expression: ${argument}`);
 	}
 
 	const value = operator === '*' ? lhs.value * rhs.value : lhs.value / rhs.value;

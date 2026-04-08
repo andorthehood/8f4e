@@ -241,10 +241,7 @@ export interface CollectedNamespace {
 	wordAlignedSize?: number;
 }
 
-export type Namespaces = Record<
-	string,
-	CollectedNamespace
->;
+export type Namespaces = Record<string, CollectedNamespace>;
 
 export type CompilationMode = 'module' | 'function';
 
@@ -389,11 +386,40 @@ export type InstructionCompiler<TLine extends AST[number] = AST[number]> = ((
 ) => CompilationContext) &
 	((line: AST[number], context: CompilationContext) => CompilationContext);
 
-export interface Error {
+/**
+ * Internal compiler-stage error shape returned by getError().
+ * This is not the public cross-stage contract; consumers should use CompilerDiagnostic.
+ */
+export interface CompilerStageError {
 	message: string;
 	line: Parameters<InstructionCompiler>[0];
 	context?: CompilationContext;
 	code: number;
+}
+
+/**
+ * The shared, serializable diagnostic shape exposed to all consumers of the compiler pipeline.
+ * Both syntax errors (SyntaxRulesError) and semantic/compiler errors conform to this contract
+ * once serialized. Consumers must not special-case either stage.
+ */
+export interface CompilerDiagnosticLine {
+	lineNumberBeforeMacroExpansion: number;
+	lineNumberAfterMacroExpansion: number;
+	instruction?: string;
+	arguments?: unknown[];
+}
+
+export interface CompilerDiagnosticContext {
+	codeBlockId?: string;
+	codeBlockType?: 'module' | 'function' | 'constants';
+}
+
+export interface CompilerDiagnostic {
+	/** Numeric ErrorCode for compiler errors; SyntaxErrorCode string for syntax errors. */
+	code: number | string;
+	message: string;
+	line: CompilerDiagnosticLine;
+	context: CompilerDiagnosticContext;
 }
 
 export interface CompileOptions {
