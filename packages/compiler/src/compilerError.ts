@@ -62,6 +62,7 @@ export enum ErrorCode {
 	POINTEE_ELEMENT_MAX_ON_NON_POINTER,
 	RETURN_OUTSIDE_FUNCTION,
 	LOCAL_NAME_COLLISION_WITH_MEMORY,
+	DUPLICATE_IDENTIFIER,
 }
 
 interface ErrorDetails {
@@ -398,6 +399,18 @@ export function getError(
 					'Local variable name collides with a memory declaration' +
 					(details?.identifier ? `: ${details.identifier}` : '') +
 					'. Local names must be unique within the namespace. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.DUPLICATE_IDENTIFIER:
+			return {
+				code,
+				message:
+					'Duplicate identifier' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Module and function IDs must be unique. (' +
 					code +
 					')',
 				line,

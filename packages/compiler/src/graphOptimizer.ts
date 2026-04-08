@@ -54,25 +54,22 @@ export default function sortModules(modules: AST[]): AST[] {
 	const constantsBlocks = metadata.filter(m => m.isConstantsBlock).map(m => m.ast);
 	const regularMetadata = metadata.filter(m => !m.isConstantsBlock);
 
-	// Build moduleId → modules lookup (handles duplicate module IDs)
-	const modulesByIdMap = new Map<string, ModuleSortMetadata[]>();
+	const modulesByIdMap = new Map<string, ModuleSortMetadata>();
 	for (const m of regularMetadata) {
-		const bucket = modulesByIdMap.get(m.moduleId) ?? [];
-		bucket.push(m);
-		modulesByIdMap.set(m.moduleId, bucket);
+		modulesByIdMap.set(m.moduleId, m);
 	}
 
 	// DFS topological sort: referenced (dependency) modules are emitted before
-	// the modules that reference them. `visited` uses the unique `index` field
-	// so duplicate module IDs are handled correctly.
-	const visited = new Set<number>();
+	// the modules that reference them.
+	const visited = new Set<string>();
 	const sorted: ModuleSortMetadata[] = [];
 
 	function visit(m: ModuleSortMetadata): void {
-		if (visited.has(m.index)) return;
-		visited.add(m.index);
+		if (visited.has(m.moduleId)) return;
+		visited.add(m.moduleId);
 		for (const depId of m.referencedModuleIds) {
-			for (const dep of modulesByIdMap.get(depId) ?? []) {
+			const dep = modulesByIdMap.get(depId);
+			if (dep) {
 				visit(dep);
 			}
 		}
@@ -257,15 +254,5 @@ if (import.meta.vitest) {
 			expect(sorted.map(getModuleId)).toEqual(['zeta', 'alpha']);
 		});
 
-		it('handles duplicate module ids deterministically', () => {
-			const first = createModuleAst('same');
-			const second = createModuleAst('same');
-
-			const sorted = sortModules([first, second]);
-
-			expect(sorted).toHaveLength(2);
-			expect(sorted[0]).toBe(first);
-			expect(sorted[1]).toBe(second);
-		});
 	});
 }

@@ -68,10 +68,26 @@ export const minimalColorScheme: ColorScheme = {
 };
 
 /**
- * Test fixture for 8x16 font configuration
+ * Test fixture for ibmvga8x16 font configuration
  */
 export const config8x16: Config = {
-	font: '8x16',
+	font: 'ibmvga8x16',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus8x16 font configuration
+ */
+export const configTerminus8x16: Config = {
+	font: 'terminus8x16',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus8x16bold font configuration
+ */
+export const configTerminus8x16Bold: Config = {
+	font: 'terminus8x16bold',
 	colorScheme: minimalColorScheme,
 };
 
@@ -84,10 +100,42 @@ export const config6x10: Config = {
 };
 
 /**
- * Test fixture for derived 16x32 font configuration
+ * Test fixture for terminus10x18 font configuration
  */
-export const config16x32: Config = {
-	font: '16x32',
+export const configTerminus10x18: Config = {
+	font: 'terminus10x18',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus10x18bold font configuration
+ */
+export const configTerminus10x18Bold: Config = {
+	font: 'terminus10x18bold',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for kana12x13 font configuration
+ */
+export const configKana12x13: Config = {
+	font: 'kana12x13',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus12x24 font configuration
+ */
+export const configTerminus12x24: Config = {
+	font: 'terminus12x24',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus12x24bold font configuration
+ */
+export const configTerminus12x24Bold: Config = {
+	font: 'terminus12x24bold',
 	colorScheme: minimalColorScheme,
 };
 
@@ -108,9 +156,25 @@ export const characterDimensions6x10 = {
 };
 
 /**
- * Standard character dimensions for 16x32 font
+ * Standard character dimensions for terminus10x18 font
  */
-export const characterDimensions16x32 = {
-	width: 16,
-	height: 32,
+export const characterDimensionsTerminus10x18 = {
+	width: 10,
+	height: 18,
+};
+
+/**
+ * Standard character dimensions for kana12x13 font
+ */
+export const characterDimensionsKana12x13 = {
+	width: 12,
+	height: 13,
+};
+
+/**
+ * Standard character dimensions for terminus12x24 font
+ */
+export const characterDimensionsTerminus12x24 = {
+	width: 12,
+	height: 24,
 };

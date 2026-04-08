@@ -233,9 +233,17 @@ export interface Namespace {
 	functions?: CompiledFunctionLookup;
 }
 
+export interface CollectedNamespace {
+	kind: 'module' | 'constants';
+	consts: Consts;
+	memory?: MemoryMap;
+	byteAddress?: number;
+	wordAlignedSize?: number;
+}
+
 export type Namespaces = Record<
 	string,
-	{ consts: Consts; memory?: MemoryMap; byteAddress?: number; wordAlignedSize?: number }
+	CollectedNamespace
 >;
 
 export type CompilationMode = 'module' | 'function';
