@@ -24,6 +24,76 @@ describe('@font directive', () => {
 		expect(result.errors).toEqual([]);
 	});
 
+	it('resolves the renamed bios8x16 font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font bios8x16', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('bios8x16');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('resolves the imported terminus10x18 font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font terminus10x18', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('terminus10x18');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('resolves the imported terminus8x16 font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font terminus8x16', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('terminus8x16');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('resolves the imported terminus8x16bold font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font terminus8x16bold', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('terminus8x16bold');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('resolves the imported terminus10x18bold font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font terminus10x18bold', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('terminus10x18bold');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('resolves the imported terminus12x24 font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font terminus12x24', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('terminus12x24');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('resolves the imported terminus12x24bold font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font terminus12x24bold', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('terminus12x24bold');
+		expect(result.errors).toEqual([]);
+	});
+
 	it('allows duplicate identical values across blocks', () => {
 		const result = resolveGlobalEditorDirectives(
 			[
@@ -41,7 +111,7 @@ describe('@font directive', () => {
 		const result = resolveGlobalEditorDirectives(
 			[
 				createParsedBlock(['module a', '; @font 6x10', 'moduleEnd']),
-				createParsedBlock(['module b', '; @font 8x16', 'moduleEnd']),
+				createParsedBlock(['module b', '; @font bios8x16', 'moduleEnd']),
 			],
 			{}
 		);
