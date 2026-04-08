@@ -48,7 +48,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	const: { minArguments: 2, argumentTypes: ['constantIdentifier', 'compileTimeValue'] },
 	init: { minArguments: 2, argumentTypes: ['identifier', 'compileTimeValue'] },
 	if: { maxArguments: 0 },
-	ifEnd: { argumentTypes: 'ifResultType' },
+	ifEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
 };
 
 function getInstructionArgumentSpec(instruction: string): InstructionArgumentSpec | undefined {
@@ -211,6 +211,12 @@ if (import.meta.vitest) {
 		it('rejects unsupported type identifiers', () => {
 			expect(() =>
 				validateInstructionArguments('param', [classifyIdentifier('bool'), classifyIdentifier('x')])
+			).toThrowError(SyntaxRulesError);
+		});
+
+		it('rejects too many result types for ifEnd', () => {
+			expect(() =>
+				validateInstructionArguments('ifEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
 			).toThrowError(SyntaxRulesError);
 		});
 
