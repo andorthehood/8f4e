@@ -3,8 +3,8 @@ title: 'TODO: Add configurable loop cap directive and loop override'
 priority: Medium
 effort: 4-8h
 created: 2026-04-03
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-08
 ---
 
 # TODO: Add configurable loop cap directive and loop override

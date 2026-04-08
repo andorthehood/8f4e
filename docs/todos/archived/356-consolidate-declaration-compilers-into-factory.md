@@ -3,8 +3,8 @@ title: 'TODO: Consolidate declaration compilers into a single factory'
 priority: Low
 effort: 2-4h
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-08
 ---
 
 # TODO: Consolidate declaration compilers into a single factory

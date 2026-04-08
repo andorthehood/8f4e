@@ -3,8 +3,8 @@ title: 'TODO: Add local-vs-memory name collision errors'
 priority: Medium
 effort: 1-3h
 created: 2026-04-07
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-07
 ---
 
 # TODO: Add local-vs-memory name collision errors
