@@ -191,14 +191,41 @@ describe('parseLine string literals', () => {
 		} catch (error) {
 			expect(error).toBeInstanceOf(SyntaxRulesError);
 			expect((error as SyntaxRulesError).code).toBe(SyntaxErrorCode.INVALID_NUMERIC_LITERAL);
-			expect((error as SyntaxRulesError).details).toEqual(
+			expect((error as SyntaxRulesError).line).toEqual(
 				expect.objectContaining({
-					argument: '1e309',
-					line: 'push 1e309',
 					lineNumberBeforeMacroExpansion: 7,
 					lineNumberAfterMacroExpansion: 12,
+					instruction: 'push',
 				})
 			);
 		}
+	});
+
+	test('exposes instruction in line metadata for argument-level errors', () => {
+		let thrownError: SyntaxRulesError | undefined;
+		try {
+			parseLine('push', 5, 8);
+		} catch (error) {
+			thrownError = error as SyntaxRulesError;
+		}
+		expect(thrownError).toBeInstanceOf(SyntaxRulesError);
+		expect(thrownError?.line?.lineNumberBeforeMacroExpansion).toBe(5);
+		expect(thrownError?.line?.lineNumberAfterMacroExpansion).toBe(8);
+		expect(thrownError?.line?.instruction).toBe('push');
+	});
+});
+
+describe('compileToAST', () => {
+	test('exposes line location in block structure errors via the line property', () => {
+		let thrownError: SyntaxRulesError | undefined;
+		try {
+			compileToAST(['push 1', 'if', 'push 10']);
+		} catch (error) {
+			thrownError = error as SyntaxRulesError;
+		}
+		expect(thrownError).toBeInstanceOf(SyntaxRulesError);
+		expect(thrownError?.line?.lineNumberBeforeMacroExpansion).toBe(1);
+		expect(thrownError?.line?.lineNumberAfterMacroExpansion).toBe(1);
+		expect(thrownError?.line?.instruction).toBe('if');
 	});
 });

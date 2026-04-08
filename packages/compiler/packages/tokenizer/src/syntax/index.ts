@@ -30,7 +30,7 @@ export {
 	type CompileTimeMulDivExpression,
 } from './parseConstantMulDivExpression';
 export { default as parseLiteralMulDivExpression, type LiteralMulDivResult } from './parseLiteralMulDivExpression';
-export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
+export { SyntaxRulesError, SyntaxErrorCode, type SyntaxErrorLine } from './syntaxError';
 export { default as hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
 export { default as hasMemoryReferencePrefixStart } from './hasMemoryReferencePrefixStart';
 export { default as hasMemoryReferencePrefixEnd } from './hasMemoryReferencePrefixEnd';
