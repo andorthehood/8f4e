@@ -78,6 +78,7 @@ Active todo files are listed below.
 | 371 | Move block result type to blockEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `block` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
 | 375 | Unify syntax and compiler error shapes | 🟡 | 4-8h | 2026-04-08 | Syntax errors currently expose location through `details` while compiler errors use `line` and `context`, which leaks internal stage differences into consumers and causes degraded editor diagnostics. |
 | 376 | Add ASCII scene renderer for editor snapshot tests | 🟡 | 1-2d | 2026-04-08 | The editor lacks a cheap whole-scene regression layer between raw object snapshots and expensive browser/image visual tests, leaving overlap, z-order, clipping, and text-grid composition bugs under-covered. |
+| 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The parser already handles some structural block state, but it does not yet cleanly generalize block pairing and top-level owning-block context well enough to route syntax diagnostics to code blocks reliably. |
 
 ## Completed TODOs
 
