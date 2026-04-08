@@ -6,7 +6,7 @@ moduleTester(
 
 int output
 
-block void
+block
 branch 1
 push &output
 push 1
