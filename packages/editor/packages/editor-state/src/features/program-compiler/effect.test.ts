@@ -59,4 +59,26 @@ describe('program compiler effect', () => {
 			},
 		]);
 	});
+
+	it('reads line number from syntax errors that expose line directly (no longer defaults to 0)', async () => {
+		mockCompileCode.mockRejectedValue({
+			message: 'Too many arguments for if.',
+			line: { lineNumberBeforeMacroExpansion: 3, lineNumberAfterMacroExpansion: 3, instruction: 'if' },
+		});
+
+		compilerEffect(store, mockEvents);
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const compileCodeCall = onCalls.find(call => call[0] === 'compileCode');
+		expect(compileCodeCall).toBeDefined();
+		await compileCodeCall![1]();
+
+		expect(mockState.codeErrors.compilationErrors).toEqual([
+			{
+				lineNumber: 3,
+				codeBlockId: '',
+				codeBlockType: undefined,
+				message: 'Too many arguments for if.',
+			},
+		]);
+	});
 });
