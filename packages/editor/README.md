@@ -42,6 +42,7 @@ Example color overrides:
 ; @color icons.feedbackScale4 #3300cc
 ; @color icons.feedbackScale5 #0000ff
 ```
+
 - `docs/color-paths.md` - Configurable color paths for `; @color <path> <value>`.
 
 ## Font
@@ -49,5 +50,7 @@ Example color overrides:
 Select the editor font with a global editor directive:
 
 ```txt
-; @font 8x16
+; @font bios8x16
 ```
+
+Supported fonts: `6x10`, `bios8x16`, `terminus8x16`, `terminus8x16bold`, `terminus10x18`, `terminus10x18bold`, `terminus12x24`, `terminus12x24bold`, `16x32`.
