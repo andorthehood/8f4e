@@ -20,7 +20,11 @@ import {
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-import { assertUniqueModuleIds, collectNamespacesFromASTs, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
+import {
+	assertUniqueModuleIds,
+	collectNamespacesFromASTs,
+	collectFunctionMetadataFromAsts,
+} from './semantic/buildNamespace';
 import {
 	AST,
 	CompileOptions,
@@ -63,7 +67,7 @@ export {
 	BLOCK_TYPE,
 	type BlockStack,
 	type InstructionCompiler,
-	type Error,
+	type CompilerStageError,
 	type CompileOptions,
 	type CompilerDiagnostic,
 	type CompilerDiagnosticLine,

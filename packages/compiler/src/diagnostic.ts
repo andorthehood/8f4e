@@ -8,9 +8,9 @@
 
 import { SyntaxRulesError } from '@8f4e/tokenizer';
 
-import type { CompilerDiagnostic, Error as CompilerError } from './types';
+import type { CompilerDiagnostic, CompilerStageError } from './types';
 
-function isCompilerError(value: unknown): value is CompilerError {
+function isCompilerStageError(value: unknown): value is CompilerStageError {
 	return (
 		value !== null &&
 		typeof value === 'object' &&
@@ -31,7 +31,7 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 		};
 	}
 
-	if (isCompilerError(error)) {
+	if (isCompilerStageError(error)) {
 		return {
 			code: error.code,
 			message: error.message,
