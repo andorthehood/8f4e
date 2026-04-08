@@ -3,7 +3,7 @@ import spriteGenerator from '@8f4e/sprite-generator';
 (async function () {
 	const canvasElement = document.getElementById('test-canvas') as HTMLCanvasElement;
 	const { canvas, spriteLookups } = await spriteGenerator({
-		font: '8x16',
+		font: 'ibmvga8x16',
 	});
 
 	void spriteLookups;

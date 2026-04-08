@@ -95,7 +95,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = await generateSprite({
-		font: state.globalEditorDirectives.font ?? '8x16',
+		font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
 		colorScheme: state.colorScheme,
 	});
 
@@ -113,7 +113,10 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	});
 
 	events.dispatch('init');
-	events.dispatch('resize', { canvasWidth: canvas.width, canvasHeight: canvas.height });
+	events.dispatch('resize', {
+		canvasWidth: canvas.width,
+		canvasHeight: canvas.height,
+	});
 	view.resize(canvas.width, canvas.height);
 	events.dispatch('loadSession');
 

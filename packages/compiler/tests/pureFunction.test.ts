@@ -1,5 +1,6 @@
 import { describe, test, expect } from 'vitest';
 
+import { ErrorCode } from '../src/compilerError';
 import compile from '../src/index';
 
 import type { Module } from '../src/types';
@@ -226,6 +227,25 @@ describe('Pure Function Compilation', () => {
 		// Each should have unique WASM indices
 		const indices = Object.values(result.compiledFunctions!).map(f => f.wasmIndex);
 		expect(new Set(indices).size).toBe(3);
+	});
+
+	test('should reject duplicate function ids', () => {
+		const functions: Module[] = [
+			{
+				code: ['function same', 'functionEnd'],
+			},
+			{
+				code: ['function same', 'functionEnd'],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(`${ErrorCode.DUPLICATE_IDENTIFIER}`);
 	});
 });
 

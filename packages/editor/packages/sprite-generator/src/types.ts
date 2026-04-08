@@ -85,7 +85,24 @@ export interface ColorScheme {
 	};
 }
 
-export type Font = '6x10' | '8x16' | '16x32';
+export const FONT_NAMES = [
+	'6x10',
+	'spleen5x8',
+	'spleen6x12',
+	'ibmvga8x16',
+	'spleen8x16',
+	'terminus8x16',
+	'terminus8x16bold',
+	'terminus10x18',
+	'terminus10x18bold',
+	'kana12x13',
+	'spleen12x24',
+	'terminus12x24',
+	'terminus12x24bold',
+	'spleen16x32',
+] as const;
+
+export type Font = (typeof FONT_NAMES)[number];
 
 export interface Config {
 	colorScheme?: ColorScheme;
