@@ -16,7 +16,7 @@ int	_counter
 ; Start ATTACK
 push	*trigger
 risingEdge
-if void
+if
 push	&_state
 push	ATTACK
 store
@@ -33,7 +33,7 @@ push	_counter
 push	0
 greaterThan
 and
-if	void
+if
 push	&out
 push	1.0
 push	_counter
@@ -54,7 +54,7 @@ push	_state
 push	ATTACK
 equal
 and
-if	void ; End of attack
+if ; End of attack
 push	&_state
 push	DECAY
 store
@@ -71,7 +71,7 @@ push	_counter
 push 0
 greaterThan
 and
-if	void
+if
 push	&out
 push	sustainLevel
 push	_counter
@@ -97,17 +97,17 @@ equal
 push	_counter
 equalToZero
 and
-if void
+if
 push	&_state
 push	sustainEnabled
-if	int
+if
 push	SUSTAIN
 else
 push	&_counter
 push	releaseTime
 store
 push	RELEASE
-ifEnd
+ifEnd int
 store
 ifEnd
 
@@ -119,7 +119,7 @@ push    *trigger
 push    0
 greaterThan
 and
-if void
+if
 push &out
 push sustainLevel
 store
@@ -133,7 +133,7 @@ equal
 push	*trigger
 equalToZero
 and
-if void
+if
 push	&_state
 push	RELEASE
 store
@@ -150,7 +150,7 @@ push	_counter
 push	0
 greaterThan
 and
-if void
+if
 push	&out
 push	_counter
 castToFloat
@@ -167,7 +167,7 @@ ifEnd
 push	_counter
 push	0
 greaterThan
-if	void
+if
 push	&_counter
 push	_counter
 push	1
@@ -426,7 +426,7 @@ use math
 push x
 push HALF_PI
 greaterThan
-if void
+if
 push PI
 push x
 sub
@@ -438,7 +438,7 @@ push HALF_PI
 push -1.0
 mul
 lessThan
-if void
+if
 push PI
 push -1.0
 mul
@@ -502,7 +502,7 @@ float	out
 ; Start ATTACK
 push	*trigger
 risingEdge
-if void
+if
 push	&_state
 push	ATTACK
 store
@@ -519,7 +519,7 @@ push	_counter
 push	0
 greaterThan
 and
-if	void
+if
 push	&out
 push	1.0
 push	_counter
@@ -540,7 +540,7 @@ push	_state
 push	ATTACK
 equal
 and
-if	void ; End of attack
+if ; End of attack
 push	&_state
 push	DECAY
 store
@@ -557,7 +557,7 @@ push	_counter
 push 0
 greaterThan
 and
-if	void
+if
 push	&out
 push	decayLevel
 push	_counter
@@ -582,7 +582,7 @@ equal
 push	_counter
 equalToZero
 and
-if void
+if
 push	&_state
 push	RELEASE
 store
@@ -599,7 +599,7 @@ push	_counter
 push	0
 greaterThan
 and
-if void
+if
 push	&out
 push	_counter
 castToFloat
@@ -616,7 +616,7 @@ ifEnd
 push	_counter
 push	0
 greaterThan
-if	void
+if
 push	&_counter
 push	_counter
 push	1
@@ -796,7 +796,7 @@ store
 push pointer
 push buffer&
 greaterThan
-if void
+if
 push &pointer
 push &buffer
 store
@@ -826,7 +826,7 @@ push bpm
 ensureNonZero
 div
 greaterThan
-if void
+if
 push &counter
 push 0
 store
@@ -878,7 +878,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -934,7 +934,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -990,7 +990,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -1064,18 +1064,18 @@ push &out
 push *in
 push 1.0
 greaterThan
-if float
+if
 push 1.0
 else
 push *in
-ifEnd
+ifEnd float
 push -1.0
 lessThan
-if float
+if
 push -1.0
 else
 push *in
-ifEnd
+ifEnd float
 store
 
 moduleEnd
@@ -1293,7 +1293,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -1345,7 +1345,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -1397,7 +1397,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -1457,7 +1457,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store

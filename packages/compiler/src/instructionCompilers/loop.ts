@@ -53,7 +53,7 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 				`push ${infiniteLoopProtectionCounterName}`,
 				`push ${effectiveCap}`,
 				'greaterOrEqual',
-				'if void',
+				'if',
 				` push ${loopErrorSignaler.byteAddress}`,
 				` push ${line.lineNumberBeforeMacroExpansion}`,
 				' store',

@@ -53,7 +53,7 @@ store
 push pointer
 push buffer&
 greaterThan
-if void
+if
 push &pointer
 push &buffer
 store
@@ -125,7 +125,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -155,7 +155,7 @@ use math
 push x
 push HALF_PI
 greaterThan
-if void
+if
 push PI
 push x
 sub
@@ -167,7 +167,7 @@ push HALF_PI
 push -1.0
 mul
 lessThan
-if void
+if
 push PI
 push -1.0
 mul

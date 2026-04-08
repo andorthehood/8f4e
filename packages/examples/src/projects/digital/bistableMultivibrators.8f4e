@@ -35,11 +35,11 @@ push *in2
 mul
 push 1
 greaterOrEqual
-if 
+if
 push 1
 else
 push 0
-ifEnd
+ifEnd int
 store
 
 moduleEnd
@@ -83,11 +83,11 @@ push &out
 push *in
 push 0
 equal
-if 
+if
 push 1
 else
 push 0
-ifEnd
+ifEnd int
 store
 
 moduleEnd
@@ -111,11 +111,11 @@ push *in2
 add
 push 0
 equal
-if 
+if
 push 1
 else
 push 0
-ifEnd
+ifEnd int
 store
 
 moduleEnd
@@ -139,11 +139,11 @@ push *in2
 add
 push 0
 equal
-if 
+if
 push 1 
 else
 push 0
-ifEnd
+ifEnd int
 store
 
 moduleEnd
@@ -165,11 +165,11 @@ push *in2
 add
 push 1
 greaterOrEqual
-if 
+if
 push 1
 else
 push 0
-ifEnd
+ifEnd int
 store
 
 moduleEnd
@@ -202,7 +202,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
@@ -232,7 +232,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
