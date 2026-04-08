@@ -201,14 +201,20 @@ async function main() {
 
   const fonts = [
     { name: "8x16", width: 8, height: 16 },
+    { name: "spleen5x8", width: 5, height: 8 },
+    { name: "spleen6x12", width: 6, height: 12 },
     { name: "terminus8x16", width: 8, height: 16 },
+    { name: "spleen8x16", width: 8, height: 16 },
     { name: "terminus8x16bold", width: 8, height: 16 },
     { name: "6x10", width: 6, height: 10 },
     { name: "terminus10x18", width: 10, height: 18 },
     { name: "terminus10x18bold", width: 10, height: 18 },
+    { name: "spleen12x24", width: 12, height: 24 },
     { name: "terminus12x24", width: 12, height: 24 },
     { name: "terminus12x24bold", width: 12, height: 24 },
     { name: "16x32", width: 16, height: 32 },
+    { name: "spleen16x32", width: 16, height: 32 },
+    { name: "spleen32x64", width: 32, height: 64 },
   ];
   const stats = [];
   for (const font of fonts) {

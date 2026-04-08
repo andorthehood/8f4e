@@ -15,6 +15,7 @@ import { fontMetadata as glyphs8x16Metadata } from './fonts/8x16/generated/glyph
 import defaultColorScheme from './defaultColorScheme';
 
 export { Icon } from './icons';
+export { FONT_NAMES } from './types';
 export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
@@ -54,6 +55,32 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 		};
 		return fontCache['6x10'];
 	}
+	if (font === 'spleen5x8') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/spleen5x8/generated/ascii'),
+			import('./fonts/spleen5x8/generated/glyphs'),
+		]);
+		fontCache['spleen5x8'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 5,
+			characterHeight: 8,
+		};
+		return fontCache['spleen5x8'];
+	}
+	if (font === 'spleen6x12') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/spleen6x12/generated/ascii'),
+			import('./fonts/spleen6x12/generated/glyphs'),
+		]);
+		fontCache['spleen6x12'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 6,
+			characterHeight: 12,
+		};
+		return fontCache['spleen6x12'];
+	}
 	if (font === 'terminus8x16') {
 		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
 			import('./fonts/terminus8x16/generated/ascii'),
@@ -66,6 +93,19 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 			characterHeight: 16,
 		};
 		return fontCache['terminus8x16'];
+	}
+	if (font === 'spleen8x16') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/spleen8x16/generated/ascii'),
+			import('./fonts/spleen8x16/generated/glyphs'),
+		]);
+		fontCache['spleen8x16'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 8,
+			characterHeight: 16,
+		};
+		return fontCache['spleen8x16'];
 	}
 	if (font === 'terminus8x16bold') {
 		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
@@ -106,6 +146,19 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 		};
 		return fontCache['terminus10x18bold'];
 	}
+	if (font === 'spleen12x24') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/spleen12x24/generated/ascii'),
+			import('./fonts/spleen12x24/generated/glyphs'),
+		]);
+		fontCache['spleen12x24'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 12,
+			characterHeight: 24,
+		};
+		return fontCache['spleen12x24'];
+	}
 	if (font === 'terminus12x24') {
 		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
 			import('./fonts/terminus12x24/generated/ascii'),
@@ -131,6 +184,32 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 			characterHeight: 24,
 		};
 		return fontCache['terminus12x24bold'];
+	}
+	if (font === 'spleen16x32') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/spleen16x32/generated/ascii'),
+			import('./fonts/spleen16x32/generated/glyphs'),
+		]);
+		fontCache['spleen16x32'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 16,
+			characterHeight: 32,
+		};
+		return fontCache['spleen16x32'];
+	}
+	if (font === 'spleen32x64') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/spleen32x64/generated/ascii'),
+			import('./fonts/spleen32x64/generated/glyphs'),
+		]);
+		fontCache['spleen32x64'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 32,
+			characterHeight: 64,
+		};
+		return fontCache['spleen32x64'];
 	}
 
 	const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([

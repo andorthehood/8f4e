@@ -17,6 +17,16 @@ describe('@font directive', () => {
 		expect(result.errors).toEqual([]);
 	});
 
+	it('resolves the imported spleen5x8 font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font spleen5x8', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('spleen5x8');
+		expect(result.errors).toEqual([]);
+	});
+
 	it('resolves the derived 16x32 font', () => {
 		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 16x32', 'moduleEnd'])], {});
 

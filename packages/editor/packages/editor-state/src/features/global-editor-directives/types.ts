@@ -2,7 +2,7 @@
  * Types for global editor directives.
  * Editor directives use `; @<name> <args...>` syntax.
  */
-import type { ColorScheme } from '@8f4e/sprite-generator';
+import type { ColorScheme, Font } from '@8f4e/sprite-generator';
 import type { CodeError } from '~/types';
 import type { CodeBlockType } from '../code-blocks/types';
 import type { RuntimeRegistry } from '../runtime/types';
@@ -15,16 +15,7 @@ export interface ParsedGlobalEditorDirective {
 
 export interface ResolvedGlobalEditorDirectives {
 	/** Selected editor font from `; @font <font>` directives */
-	font?:
-		| 'bios8x16'
-		| 'terminus8x16'
-		| 'terminus8x16bold'
-		| '6x10'
-		| 'terminus10x18'
-		| 'terminus10x18bold'
-		| 'terminus12x24'
-		| 'terminus12x24bold'
-		| '16x32';
+	font?: Font;
 	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
 	infoOverlay?: boolean;
 	/** Export file base name from `; @exportFileName <value>` directives */
