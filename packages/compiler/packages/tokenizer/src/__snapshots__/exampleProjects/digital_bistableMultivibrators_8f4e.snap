@@ -1614,14 +1614,7 @@
     "lineNumberBeforeMacroExpansion": 204,
     "lineNumberAfterMacroExpansion": 204,
     "instruction": "if",
-    "arguments": [
-      {
-        "type": "identifier",
-        "value": "void",
-        "referenceKind": "plain",
-        "scope": "local"
-      }
-    ],
+    "arguments": [],
     "isSemanticOnly": false,
     "isMemoryDeclaration": false
   },
@@ -1912,14 +1905,7 @@
     "lineNumberBeforeMacroExpansion": 234,
     "lineNumberAfterMacroExpansion": 234,
     "instruction": "if",
-    "arguments": [
-      {
-        "type": "identifier",
-        "value": "void",
-        "referenceKind": "plain",
-        "scope": "local"
-      }
-    ],
+    "arguments": [],
     "isSemanticOnly": false,
     "isMemoryDeclaration": false
   },

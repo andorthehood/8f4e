@@ -215,7 +215,7 @@ use math
 push x
 push HALF_PI
 greaterThan
-if void
+if
 push PI
 push x
 sub
@@ -227,7 +227,7 @@ push HALF_PI
 push -1.0
 mul
 lessThan
-if void
+if
 push PI
 push -1.0
 mul
@@ -289,7 +289,7 @@ int	_counter
 ; Start ATTACK
 push	*trigger
 risingEdge
-if void
+if
 push	&_state
 push	ATTACK
 store
@@ -306,7 +306,7 @@ push	_counter
 push	0
 greaterThan
 and
-if	void
+if
 push	&out
 push	1.0
 push	_counter
@@ -327,7 +327,7 @@ push	_state
 push	ATTACK
 equal
 and
-if  void ; End of attack
+if ; End of attack
 push	&_state
 push	DECAY
 store
@@ -344,7 +344,7 @@ push	_counter
 push    0
 greaterThan
 and
-if	void
+if
 push	&out
 push	sustainLevel
 push	_counter
@@ -369,7 +369,7 @@ equal
 push	_counter
 equalToZero
 and
-if void
+if
 push	&_state
 push	SUSTAIN
 store
@@ -383,7 +383,7 @@ push    *trigger
 push    0
 greaterThan
 and
-if  void
+if
 push    &out
 push    sustainLevel
 store
@@ -397,7 +397,7 @@ equal
 push	*trigger
 equalToZero
 and
-if  void
+if
 push	&_state
 push	RELEASE
 store
@@ -414,7 +414,7 @@ push	_counter
 push	0
 greaterThan
 and
-if void
+if
 push	&out
 push	_counter
 castToFloat
@@ -431,7 +431,7 @@ ifEnd
 push	_counter
 push	0
 greaterThan
-if	    void
+if
 push	&_counter
 push	_counter
 push	1
@@ -477,7 +477,7 @@ store
 push pointer
 push buffer&
 greaterThan
-if void
+if
 push &pointer
 push &buffer
 store
@@ -520,7 +520,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -728,7 +728,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -787,7 +787,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
@@ -884,7 +884,7 @@ int noteOn
 
 push pointer
 hasChanged
-if void
+if
 ; Load note
 push &note
 push *pointer
@@ -916,7 +916,7 @@ ifEnd
 ; Decrement the counters
 push *tick
 risingEdge
-if void
+if
 push &noteStart
 push noteStart
 push 1
@@ -942,7 +942,7 @@ store
 push noteEnd
 push -1
 lessOrEqual
-if void
+if
 push &pointer
 push pointer
 push 4
@@ -954,7 +954,7 @@ ifEnd
 push pointer
 push end
 greaterThan
-if void
+if
 push &pointer
 push start
 store
@@ -1018,7 +1018,7 @@ push bpm
 ensureNonZero
 div
 greaterThan
-if void
+if
 push &counter
 push 0
 store

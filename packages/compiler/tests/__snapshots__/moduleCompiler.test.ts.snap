@@ -293,7 +293,14 @@ exports[`moduleCompiler > ast 1`] = `
     "lineNumberBeforeMacroExpansion": 26,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
     "instruction": "ifEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,

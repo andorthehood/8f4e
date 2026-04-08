@@ -45,11 +45,11 @@ const ensureNonZero: InstructionCompiler = withValidation(
 					`localSet ${tempVariableName}`,
 					`push ${tempVariableName}`,
 					'equalToZero',
-					'if int',
+					'if',
 					`push ${defaultNonZeroValue}`,
 					'else',
 					`push ${tempVariableName}`,
-					'ifEnd',
+					'ifEnd int',
 				],
 				context
 			);
@@ -64,7 +64,7 @@ const ensureNonZero: InstructionCompiler = withValidation(
 					`localSet ${tempVariableName}`,
 					`push ${tempVariableName}`,
 					'equalToZero',
-					'if void',
+					'if',
 					`push ${defaultNonZeroValue}`,
 					`localSet ${tempVariableName}`,
 					'ifEnd',

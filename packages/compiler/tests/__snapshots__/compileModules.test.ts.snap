@@ -202,7 +202,14 @@ exports[`compiler > compileModules 1`] = `
         "lineNumberBeforeMacroExpansion": 18,
       },
       {
-        "arguments": [],
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "int",
+          },
+        ],
         "instruction": "if",
         "isMemoryDeclaration": false,
         "isSemanticOnly": false,

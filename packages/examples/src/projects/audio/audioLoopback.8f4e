@@ -44,7 +44,7 @@ store
 push pointer
 push buffer&
 greaterThan
-if void
+if
 push &pointer
 push &buffer
 store
@@ -87,7 +87,7 @@ store
 push pointer
 push buffer&
 greaterThan
-if void
+if
 push &pointer
 push &buffer
 store
@@ -130,7 +130,7 @@ store
 push pointer
 push buffer&
 greaterThan
-if void
+if
 push &pointer
 push &buffer
 store

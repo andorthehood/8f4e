@@ -57,7 +57,7 @@ store
 push pointer
 push buffer&  ; end address
 greaterThan 
-if void
+if
 push &pointer ; address
 push &buffer  ; address
 store
@@ -125,7 +125,7 @@ push &buffer
 push endPos
 add
 greaterThan
-if void
+if
 push &playhead
 push &buffer
 push startPos
