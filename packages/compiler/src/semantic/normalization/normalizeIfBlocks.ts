@@ -24,10 +24,9 @@ import type { AST } from '../../types';
  * can emit the WebAssembly block type before entering the block body.
  */
 export default function normalizeIfBlocks(ast: AST): AST {
-	// Shallow-clone the AST so we can mutate individual line argument arrays
-	// without affecting the original. Each line object is reused; only the
-	// `arguments` array is replaced when we need to inject or clear arguments.
-	const result: AST = ast.map(line => ({ ...line }));
+	// Shallow-clone the AST, also spreading the `arguments` array on each line
+	// so mutations below don't affect the caller's original AST.
+	const result: AST = ast.map(line => ({ ...line, arguments: [...line.arguments] }));
 
 	// Stack of indices into `result`. Each entry is either the index of an `if`
 	// line (so we can back-patch it) or `null` for any other block opener
