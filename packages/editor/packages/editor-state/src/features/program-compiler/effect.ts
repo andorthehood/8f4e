@@ -94,9 +94,9 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			store.set('codeErrors.compilationErrors', [
 				{
-					lineNumber: diagnostic?.line?.lineNumberBeforeMacroExpansion ?? 0,
-					codeBlockId: diagnostic?.context?.codeBlockId || '',
-					codeBlockType: diagnostic?.context?.codeBlockType,
+					lineNumber: diagnostic.line.lineNumberBeforeMacroExpansion,
+					codeBlockId: diagnostic.context.codeBlockId || '',
+					codeBlockType: diagnostic.context.codeBlockType,
 					message: diagnostic?.message || String(error) || 'Compilation failed',
 				},
 			]);

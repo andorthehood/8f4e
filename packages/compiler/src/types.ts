@@ -418,8 +418,8 @@ export interface CompilerDiagnostic {
 	/** Numeric ErrorCode for compiler errors; SyntaxErrorCode string for syntax errors. */
 	code: number | string;
 	message: string;
-	line?: CompilerDiagnosticLine;
-	context?: CompilerDiagnosticContext;
+	line: CompilerDiagnosticLine;
+	context: CompilerDiagnosticContext;
 }
 
 export interface CompileOptions {
