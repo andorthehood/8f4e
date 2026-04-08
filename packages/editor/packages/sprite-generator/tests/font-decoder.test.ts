@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
 import decodeFontBase64 from '../src/fonts/font-decoder';
-import { fontMetadata as ascii8x16Metadata } from '../src/fonts/8x16/generated/ascii';
-import { fontMetadata as glyphs8x16Metadata } from '../src/fonts/8x16/generated/glyphs';
+import { fontMetadata as ascii8x16Metadata } from '../src/fonts/ibmvga8x16/generated/ascii';
+import { fontMetadata as glyphs8x16Metadata } from '../src/fonts/ibmvga8x16/generated/glyphs';
 import { fontMetadata as asciiTerminus8x16Metadata } from '../src/fonts/terminus8x16/generated/ascii';
 import { fontMetadata as glyphsTerminus8x16Metadata } from '../src/fonts/terminus8x16/generated/glyphs';
 import { fontMetadata as asciiTerminus8x16BoldMetadata } from '../src/fonts/terminus8x16bold/generated/ascii';
@@ -17,8 +17,6 @@ import { fontMetadata as asciiTerminus12x24Metadata } from '../src/fonts/terminu
 import { fontMetadata as glyphsTerminus12x24Metadata } from '../src/fonts/terminus12x24/generated/glyphs';
 import { fontMetadata as asciiTerminus12x24BoldMetadata } from '../src/fonts/terminus12x24bold/generated/ascii';
 import { fontMetadata as glyphsTerminus12x24BoldMetadata } from '../src/fonts/terminus12x24bold/generated/glyphs';
-import { fontMetadata as ascii16x32Metadata } from '../src/fonts/16x32/generated/ascii';
-import { fontMetadata as glyphs16x32Metadata } from '../src/fonts/16x32/generated/glyphs';
 
 describe('font-decoder', () => {
 	describe('decodeFontBase64', () => {
@@ -92,22 +90,6 @@ describe('font-decoder', () => {
 
 			expect(decoded).toBeInstanceOf(Array);
 			expect(decoded.length).toBe(glyphs6x10Metadata.glyphCount * glyphs6x10Metadata.characterHeight);
-			expect(decoded.every(val => typeof val === 'number')).toBe(true);
-		});
-
-		it('should decode 16x32 ASCII font correctly', () => {
-			const decoded = decodeFontBase64(ascii16x32Metadata);
-
-			expect(decoded).toBeInstanceOf(Array);
-			expect(decoded.length).toBe(ascii16x32Metadata.glyphCount * ascii16x32Metadata.characterHeight);
-			expect(decoded.every(val => typeof val === 'number')).toBe(true);
-		});
-
-		it('should decode 16x32 glyphs font correctly', () => {
-			const decoded = decodeFontBase64(glyphs16x32Metadata);
-
-			expect(decoded).toBeInstanceOf(Array);
-			expect(decoded.length).toBe(glyphs16x32Metadata.glyphCount * glyphs16x32Metadata.characterHeight);
 			expect(decoded.every(val => typeof val === 'number')).toBe(true);
 		});
 
@@ -257,11 +239,6 @@ describe('font-decoder', () => {
 			expect(asciiTerminus12x24BoldMetadata.characterHeight).toBe(24);
 			expect(asciiTerminus12x24BoldMetadata.glyphCount).toBe(128);
 			expect(asciiTerminus12x24BoldMetadata.bytesPerValue).toBe(2);
-
-			expect(ascii16x32Metadata.characterWidth).toBe(16);
-			expect(ascii16x32Metadata.characterHeight).toBe(32);
-			expect(ascii16x32Metadata.glyphCount).toBe(128);
-			expect(ascii16x32Metadata.bytesPerValue).toBe(2);
 		});
 
 		it('should decode specific known patterns correctly', () => {
@@ -326,13 +303,6 @@ describe('font-decoder', () => {
 			expect(glyphs6x10Metadata.characterHeight).toBe(10);
 		});
 
-		it('should have consistent dimensions for 16x32 fonts', () => {
-			expect(ascii16x32Metadata.characterWidth).toBe(16);
-			expect(ascii16x32Metadata.characterHeight).toBe(32);
-			expect(glyphs16x32Metadata.characterWidth).toBe(16);
-			expect(glyphs16x32Metadata.characterHeight).toBe(32);
-		});
-
 		it('should have consistent dimensions for terminus10x18 fonts', () => {
 			expect(asciiTerminus10x18Metadata.characterWidth).toBe(10);
 			expect(asciiTerminus10x18Metadata.characterHeight).toBe(18);
@@ -378,8 +348,6 @@ describe('font-decoder', () => {
 			expect(glyphsTerminus12x24Metadata.base64Data.length).toBeGreaterThan(0);
 			expect(asciiTerminus12x24BoldMetadata.base64Data.length).toBeGreaterThan(0);
 			expect(glyphsTerminus12x24BoldMetadata.base64Data.length).toBeGreaterThan(0);
-			expect(ascii16x32Metadata.base64Data.length).toBeGreaterThan(0);
-			expect(glyphs16x32Metadata.base64Data.length).toBeGreaterThan(0);
 		});
 
 		it('should have valid bytesPerValue', () => {
@@ -399,8 +367,6 @@ describe('font-decoder', () => {
 			expect([1, 2]).toContain(glyphsTerminus12x24Metadata.bytesPerValue);
 			expect([1, 2]).toContain(asciiTerminus12x24BoldMetadata.bytesPerValue);
 			expect([1, 2]).toContain(glyphsTerminus12x24BoldMetadata.bytesPerValue);
-			expect([1, 2]).toContain(ascii16x32Metadata.bytesPerValue);
-			expect([1, 2]).toContain(glyphs16x32Metadata.bytesPerValue);
 		});
 	});
 });

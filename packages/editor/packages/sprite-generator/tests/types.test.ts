@@ -8,9 +8,9 @@ import {
 	config6x10,
 	configTerminus10x18,
 	configTerminus10x18Bold,
+	configKana12x13,
 	configTerminus12x24,
 	configTerminus12x24Bold,
-	config16x32,
 } from './utils/testFixtures';
 
 import { Command } from '../src/types';
@@ -165,8 +165,8 @@ describe('Types and Enums', () => {
 	});
 
 	describe('Config validation', () => {
-		it('should validate bios8x16 font config', () => {
-			expect(config8x16.font).toBe('bios8x16');
+		it('should validate ibmvga8x16 font config', () => {
+			expect(config8x16.font).toBe('ibmvga8x16');
 			expect(config8x16.colorScheme).toBeDefined();
 			expect(config8x16.colorScheme.text).toBeDefined();
 			expect(config8x16.colorScheme.fill).toBeDefined();
@@ -197,14 +197,6 @@ describe('Types and Enums', () => {
 			expect(configTerminus8x16Bold.colorScheme.icons).toBeDefined();
 		});
 
-		it('should validate 16x32 font config', () => {
-			expect(config16x32.font).toBe('16x32');
-			expect(config16x32.colorScheme).toBeDefined();
-			expect(config16x32.colorScheme.text).toBeDefined();
-			expect(config16x32.colorScheme.fill).toBeDefined();
-			expect(config16x32.colorScheme.icons).toBeDefined();
-		});
-
 		it('should validate terminus10x18 font config', () => {
 			expect(configTerminus10x18.font).toBe('terminus10x18');
 			expect(configTerminus10x18.colorScheme).toBeDefined();
@@ -219,6 +211,14 @@ describe('Types and Enums', () => {
 			expect(configTerminus10x18Bold.colorScheme.text).toBeDefined();
 			expect(configTerminus10x18Bold.colorScheme.fill).toBeDefined();
 			expect(configTerminus10x18Bold.colorScheme.icons).toBeDefined();
+		});
+
+		it('should validate kana12x13 font config', () => {
+			expect(configKana12x13.font).toBe('kana12x13');
+			expect(configKana12x13.colorScheme).toBeDefined();
+			expect(configKana12x13.colorScheme.text).toBeDefined();
+			expect(configKana12x13.colorScheme.fill).toBeDefined();
+			expect(configKana12x13.colorScheme.icons).toBeDefined();
 		});
 
 		it('should validate terminus12x24 font config', () => {
@@ -240,103 +240,103 @@ describe('Types and Enums', () => {
 		it('should support all font types', () => {
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
 			]).toContain(config8x16.font);
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
 			]).toContain(configTerminus8x16.font);
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
 			]).toContain(configTerminus8x16Bold.font);
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
 			]).toContain(config6x10.font);
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
 			]).toContain(configTerminus10x18.font);
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
 			]).toContain(configTerminus10x18Bold.font);
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
+			]).toContain(configKana12x13.font);
+			expect([
+				'6x10',
+				'ibmvga8x16',
+				'terminus8x16',
+				'terminus8x16bold',
+				'terminus10x18',
+				'terminus10x18bold',
+				'kana12x13',
+				'terminus12x24',
+				'terminus12x24bold',
 			]).toContain(configTerminus12x24.font);
 			expect([
 				'6x10',
-				'bios8x16',
+				'ibmvga8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
 				'terminus10x18bold',
+				'kana12x13',
 				'terminus12x24',
 				'terminus12x24bold',
-				'16x32',
 			]).toContain(configTerminus12x24Bold.font);
-			expect([
-				'6x10',
-				'bios8x16',
-				'terminus8x16',
-				'terminus8x16bold',
-				'terminus10x18',
-				'terminus10x18bold',
-				'terminus12x24',
-				'terminus12x24bold',
-				'16x32',
-			]).toContain(config16x32.font);
 		});
 	});
 });

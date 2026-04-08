@@ -27,20 +27,23 @@ describe('@font directive', () => {
 		expect(result.errors).toEqual([]);
 	});
 
-	it('resolves the derived 16x32 font', () => {
-		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 16x32', 'moduleEnd'])], {});
-
-		expect(result.resolved.font).toBe('16x32');
-		expect(result.errors).toEqual([]);
-	});
-
-	it('resolves the renamed bios8x16 font', () => {
+	it('resolves the renamed ibmvga8x16 font', () => {
 		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['module a', '; @font bios8x16', 'moduleEnd'])],
+			[createParsedBlock(['module a', '; @font ibmvga8x16', 'moduleEnd'])],
 			{}
 		);
 
-		expect(result.resolved.font).toBe('bios8x16');
+		expect(result.resolved.font).toBe('ibmvga8x16');
+		expect(result.errors).toEqual([]);
+	});
+
+	it('resolves the imported kana12x13 font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font kana12x13', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('kana12x13');
 		expect(result.errors).toEqual([]);
 	});
 
@@ -121,7 +124,7 @@ describe('@font directive', () => {
 		const result = resolveGlobalEditorDirectives(
 			[
 				createParsedBlock(['module a', '; @font 6x10', 'moduleEnd']),
-				createParsedBlock(['module b', '; @font bios8x16', 'moduleEnd']),
+				createParsedBlock(['module b', '; @font ibmvga8x16', 'moduleEnd']),
 			],
 			{}
 		);
