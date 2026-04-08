@@ -20,7 +20,7 @@ import {
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-import { collectNamespacesFromASTs, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
+import { assertUniqueModuleIds, collectNamespacesFromASTs, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
 import {
 	AST,
 	CompileOptions,
@@ -71,6 +71,7 @@ export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export {
 	prepassNamespace,
+	assertUniqueModuleIds,
 	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
 } from './semantic/buildNamespace';
@@ -196,6 +197,7 @@ export default function compile(
 
 	// Compile to AST with line metadata for error mapping.
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
+	assertUniqueModuleIds(astModules);
 	const dependencyOrderedModules = sortModules(astModules);
 
 	const namespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);

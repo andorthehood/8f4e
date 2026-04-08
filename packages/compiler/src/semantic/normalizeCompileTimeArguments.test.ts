@@ -294,7 +294,7 @@ describe('normalizeCompileTimeArguments', () => {
 				memory: {},
 				consts: {},
 				moduleName: 'test',
-				namespaces: { otherModule: { consts: {}, memory: {} } },
+				namespaces: { otherModule: { kind: 'module', consts: {}, memory: {} } },
 			},
 			locals: {},
 		} as unknown as CompilationContext;
@@ -314,7 +314,7 @@ describe('normalizeCompileTimeArguments', () => {
 				memory: { target: { numberOfElements: 1, elementWordSize: 4, isInteger: true } },
 				consts: {},
 				moduleName: 'test',
-				namespaces: { knownModule: { consts: {}, memory: {} } },
+				namespaces: { knownModule: { kind: 'module', consts: {}, memory: {} } },
 			},
 			locals: {},
 		} as unknown as CompilationContext;
@@ -330,7 +330,12 @@ describe('normalizeCompileTimeArguments', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with undeclared intermodule memory reference', () => {
 		const context = {
-			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: { source: { consts: {}, memory: {} } } },
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: { source: { kind: 'module', consts: {}, memory: {} } },
+			},
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: AST[number] = {
@@ -354,6 +359,7 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {
 					source: {
+						kind: 'module',
 						consts: {},
 						// No byteAddress — module not yet laid out
 						memory: {
@@ -402,6 +408,7 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {
 					source: {
+						kind: 'module',
 						consts: {},
 						memory: {
 							buffer: {

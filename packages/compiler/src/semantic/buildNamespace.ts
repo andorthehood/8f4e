@@ -33,6 +33,9 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 		}
 
 		const id = functionLine.arguments[0].value;
+		if (result[id]) {
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, functionLine, undefined, { identifier: id });
+		}
 		const signature: FunctionSignature = {
 			parameters: ast.flatMap(line => {
 				if (line.instruction !== 'param' || line.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
@@ -61,6 +64,23 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 	}
 
 	return result;
+}
+
+export function assertUniqueModuleIds(asts: AST[]): void {
+	const seenModuleIds = new Set<string>();
+
+	for (const ast of asts) {
+		const moduleLine = ast.find(line => line.instruction === 'module');
+		if (!moduleLine || moduleLine.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
+			continue;
+		}
+
+		const id = moduleLine.arguments[0].value;
+		if (seenModuleIds.has(id)) {
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine, undefined, { identifier: id });
+		}
+		seenModuleIds.add(id);
+	}
 }
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
@@ -217,14 +237,22 @@ export function collectNamespacesFromASTs(
 					namespaces,
 					startingByteAddress,
 					compiledFunctions
-				);
-				if (!context.namespace.moduleName) {
-					continue;
-				}
-				namespaces[context.namespace.moduleName] = {
-					consts: { ...context.namespace.consts },
-					memory: context.namespace.memory,
-				};
+					);
+					if (!context.namespace.moduleName) {
+						continue;
+					}
+					const moduleLine = ast.find(line => line.instruction === 'module');
+					const existingNamespace = namespaces[context.namespace.moduleName];
+					if (moduleLine && existingNamespace?.kind === 'module') {
+						throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine ?? ast[0], context, {
+							identifier: context.namespace.moduleName,
+						});
+					}
+					namespaces[context.namespace.moduleName] = {
+						kind: moduleLine ? 'module' : 'constants',
+						consts: { ...context.namespace.consts },
+						memory: context.namespace.memory,
+					};
 				madeProgress = true;
 			} catch (error) {
 				const failingLine =
@@ -251,10 +279,11 @@ export function collectNamespacesFromASTs(
 			continue;
 		}
 
-		namespaces[context.namespace.moduleName] = {
-			consts: { ...context.namespace.consts },
-			memory: context.namespace.memory,
-			byteAddress: nextStartingByteAddress,
+			namespaces[context.namespace.moduleName] = {
+				kind: 'module',
+				consts: { ...context.namespace.consts },
+				memory: context.namespace.memory,
+				byteAddress: nextStartingByteAddress,
 			wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		};
 
