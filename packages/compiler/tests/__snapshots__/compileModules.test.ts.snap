@@ -203,6 +203,11 @@ exports[`compiler > compileModules 1`] = `
       },
       {
         "arguments": [],
+        "ifBlock": {
+          "hasElse": true,
+          "matchingIfEndIndex": 18,
+          "resultType": "int",
+        },
         "instruction": "if",
         "isMemoryDeclaration": false,
         "isSemanticOnly": false,
@@ -270,7 +275,18 @@ exports[`compiler > compileModules 1`] = `
         "lineNumberBeforeMacroExpansion": 24,
       },
       {
-        "arguments": [],
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "int",
+          },
+        ],
+        "ifEndBlock": {
+          "matchingIfIndex": 12,
+          "resultType": "int",
+        },
         "instruction": "ifEnd",
         "isMemoryDeclaration": false,
         "isSemanticOnly": false,

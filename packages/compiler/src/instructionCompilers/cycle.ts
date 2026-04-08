@@ -51,7 +51,7 @@ const cycle: InstructionCompiler = withValidation(
 				'load',
 				`push ${endPositionName}`,
 				'greaterThan',
-				'if void',
+				'if',
 				` push ${pointerName}`,
 				` push ${startPositionName}`,
 				` store`,

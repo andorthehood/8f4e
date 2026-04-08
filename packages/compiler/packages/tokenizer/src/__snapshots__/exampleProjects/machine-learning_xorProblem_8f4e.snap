@@ -417,16 +417,14 @@
     "lineNumberBeforeMacroExpansion": 60,
     "lineNumberAfterMacroExpansion": 60,
     "instruction": "if",
-    "arguments": [
-      {
-        "type": "identifier",
-        "value": "int",
-        "referenceKind": "plain",
-        "scope": "local"
-      }
-    ],
+    "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifBlock": {
+      "matchingIfEndIndex": 33,
+      "resultType": "int",
+      "hasElse": true
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 61,
@@ -468,9 +466,20 @@
     "lineNumberBeforeMacroExpansion": 64,
     "lineNumberAfterMacroExpansion": 64,
     "instruction": "ifEnd",
-    "arguments": [],
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+        "referenceKind": "plain",
+        "scope": "local"
+      }
+    ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifEndBlock": {
+      "matchingIfIndex": 29,
+      "resultType": "int"
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 66,
