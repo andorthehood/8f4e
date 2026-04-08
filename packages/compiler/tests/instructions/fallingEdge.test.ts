@@ -10,11 +10,11 @@ int output
 push &output
  push input
  fallingEdge
- if int
+ if
   push 1
  else
   push 0
- ifEnd
+ ifEnd int
 store
 
 moduleEnd
@@ -41,11 +41,11 @@ int output
 push &output
  push input
  fallingEdge
- if int
+ if
   push 1
  else
   push 0
- ifEnd
+ ifEnd int
 store
 
 moduleEnd

@@ -58,11 +58,11 @@ call sigmoid
 
 push 0.5
 greaterThan
-if int
+if
 push 1
 else
 push 0
-ifEnd
+ifEnd int
 
 store
 

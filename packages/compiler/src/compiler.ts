@@ -14,6 +14,7 @@ import {
 import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
+import normalizeIfBlocks from './semantic/normalization/normalizeIfBlocks';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
 
 export type { MemoryTypes, MemoryMap } from './types';
@@ -45,7 +46,9 @@ export function compileSegment(
 	context: CompilationContext,
 	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
 ) {
-	compileToAST(code, lineMetadata).forEach(originalLine => {
+	const rawAst = compileToAST(code, lineMetadata);
+	const normalizedAst = normalizeIfBlocks(rawAst);
+	normalizedAst.forEach(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
 	});
@@ -84,7 +87,8 @@ export function compileModule(
 		mode: 'module',
 	};
 
-	const normalizedAst = ast.map(originalLine => {
+	const ifNormalizedAst = normalizeIfBlocks(ast);
+	const normalizedAst = ifNormalizedAst.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		if (line.isSemanticOnly) {
 			applySemanticLine(line, context);
@@ -175,7 +179,8 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	};
 
-	const normalizedAst = ast.map(originalLine => {
+	const ifNormalizedAst = normalizeIfBlocks(ast);
+	const normalizedAst = ifNormalizedAst.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
 		return line;
