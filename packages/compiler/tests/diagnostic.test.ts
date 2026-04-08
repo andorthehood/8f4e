@@ -34,7 +34,7 @@ describe('serializeDiagnostic', () => {
 					lineNumberAfterMacroExpansion: 5,
 					instruction: 'if',
 				},
-				context: undefined,
+				context: {},
 			});
 		});
 
@@ -45,8 +45,11 @@ describe('serializeDiagnostic', () => {
 
 			expect(result.code).toBe(SyntaxErrorCode.INVALID_IDENTIFIER);
 			expect(result.message).toBe('Invalid identifier.');
-			expect(result.line).toBeUndefined();
-			expect(result.context).toBeUndefined();
+			expect(result.line).toEqual({
+				lineNumberBeforeMacroExpansion: 0,
+				lineNumberAfterMacroExpansion: 0,
+			});
+			expect(result.context).toEqual({});
 		});
 	});
 
@@ -64,7 +67,7 @@ describe('serializeDiagnostic', () => {
 				instruction: 'push',
 				arguments: [],
 			});
-			expect(result.context).toBeUndefined();
+			expect(result.context).toEqual({});
 		});
 
 		it('includes codeBlockId and codeBlockType from context', () => {
@@ -98,8 +101,8 @@ describe('serializeDiagnostic', () => {
 			for (const d of [syntax, compiler]) {
 				expect(typeof d.code === 'string' || typeof d.code === 'number').toBe(true);
 				expect(typeof d.message).toBe('string');
-				expect('line' in d).toBe(true);
-				expect('context' in d).toBe(true);
+				expect(d.line).toBeDefined();
+				expect(d.context).toBeDefined();
 			}
 		});
 	});
@@ -110,6 +113,11 @@ describe('serializeDiagnostic', () => {
 
 			expect(result.code).toBe(-1);
 			expect(result.message).toBe('Unexpected crash');
+			expect(result.line).toEqual({
+				lineNumberBeforeMacroExpansion: 0,
+				lineNumberAfterMacroExpansion: 0,
+			});
+			expect(result.context).toEqual({});
 		});
 
 		it('wraps a string with code -1', () => {
@@ -117,6 +125,11 @@ describe('serializeDiagnostic', () => {
 
 			expect(result.code).toBe(-1);
 			expect(result.message).toBe('something went wrong');
+			expect(result.line).toEqual({
+				lineNumberBeforeMacroExpansion: 0,
+				lineNumberAfterMacroExpansion: 0,
+			});
+			expect(result.context).toEqual({});
 		});
 	});
 });
