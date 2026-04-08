@@ -42,7 +42,7 @@ exports[`block instruction compiler > emits a typed block for int 1`] = `
 }
 `;
 
-exports[`block instruction compiler > emits a void block for unknown type 1`] = `
+exports[`block instruction compiler > emits a void block when no result type is declared 1`] = `
 {
   "blockStack": [
     {

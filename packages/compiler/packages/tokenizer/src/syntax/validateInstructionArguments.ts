@@ -28,7 +28,8 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	branchIfTrue: { minArguments: 1, argumentTypes: ['literal'] },
 	branchIfUnchanged: { minArguments: 1, argumentTypes: ['literal'] },
 	wasm: { minArguments: 1, argumentTypes: ['literal'] },
-	block: { minArguments: 1, argumentTypes: ['identifier'] },
+	block: { maxArguments: 0 },
+	blockEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
 	local: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
 	param: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
 	localSet: { minArguments: 1, argumentTypes: ['identifier'] },
@@ -238,13 +239,30 @@ if (import.meta.vitest) {
 			).not.toThrow();
 		});
 
-		it('does not treat unsupported declarations as array declarations', () => {
+		it('rejects any argument for block', () => {
+			expect(() => validateInstructionArguments('block', [classifyIdentifier('int')])).toThrowError(SyntaxRulesError);
+			expect(() => validateInstructionArguments('block', [classifyIdentifier('void')])).toThrowError(SyntaxRulesError);
+		});
+
+		it('accepts bare blockEnd', () => {
+			expect(() => validateInstructionArguments('blockEnd', [])).not.toThrow();
+		});
+
+		it('accepts blockEnd with int or float', () => {
+			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('int')])).not.toThrow();
+			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('float')])).not.toThrow();
+		});
+
+		it('rejects blockEnd with void or other identifiers', () => {
+			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('void')])).toThrowError(
+				SyntaxRulesError
+			);
+		});
+
+		it('rejects too many result types for blockEnd', () => {
 			expect(() =>
-				validateInstructionArguments('int16*[]', [
-					classifyIdentifier('values'),
-					{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
-				])
-			).not.toThrow();
+				validateInstructionArguments('blockEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
+			).toThrowError(SyntaxRulesError);
 		});
 	});
 }
