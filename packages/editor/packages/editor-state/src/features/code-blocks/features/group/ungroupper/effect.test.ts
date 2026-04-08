@@ -39,7 +39,7 @@ describe('groupUngroupper', () => {
 		codeBlock3.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -69,7 +69,7 @@ describe('groupUngroupper', () => {
 		codeBlock2.groupName = 'otherGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -97,7 +97,7 @@ describe('groupUngroupper', () => {
 		codeBlock2.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -120,7 +120,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -149,7 +149,7 @@ describe('groupUngroupper', () => {
 		codeBlock2.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -172,7 +172,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -194,7 +194,7 @@ describe('groupUngroupper', () => {
 		});
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -218,7 +218,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'nonexistentGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -249,7 +249,7 @@ describe('groupUngroupper', () => {
 		codeBlock2.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = false;
+		mockState.editorMode = 'view';
 
 		groupUngroupper(store, mockEvents);
 
@@ -277,7 +277,7 @@ describe('groupUngroupper', () => {
 		codeBlock2.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -305,7 +305,7 @@ describe('groupUngroupper', () => {
 		codeBlock2.groupName = 'audio-chain_1';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 
@@ -338,7 +338,7 @@ describe('groupUngroupper', () => {
 		codeBlock3.groupName = 'myGroupExtended';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupUngroupper(store, mockEvents);
 

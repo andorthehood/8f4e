@@ -39,7 +39,7 @@ describe('groupDeleter', () => {
 		codeBlock3.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -73,7 +73,7 @@ describe('groupDeleter', () => {
 		codeBlock3.groupName = undefined;
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -107,7 +107,7 @@ describe('groupDeleter', () => {
 		envBlock.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [moduleBlock, functionBlock, envBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -136,7 +136,7 @@ describe('groupDeleter', () => {
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
 		mockState.graphicHelper.selectedCodeBlock = codeBlock1;
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -165,7 +165,7 @@ describe('groupDeleter', () => {
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
 		mockState.graphicHelper.draggedCodeBlock = codeBlock2;
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -194,7 +194,7 @@ describe('groupDeleter', () => {
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
 		mockState.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock1;
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -222,7 +222,7 @@ describe('groupDeleter', () => {
 		codeBlock2.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -250,7 +250,7 @@ describe('groupDeleter', () => {
 		codeBlock2.groupName = 'myGroup';
 
 		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.featureFlags.editing = false; // Editing disabled
+		mockState.editorMode = 'view'; // Editing disabled
 
 		groupDeleter(store, mockEvents);
 
@@ -288,7 +288,7 @@ describe('groupDeleter', () => {
 		otherGroupBlock.groupName = 'otherGroup';
 
 		mockState.graphicHelper.codeBlocks = [groupBlock1, groupBlock2, standaloneBlock, otherGroupBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 
@@ -321,7 +321,7 @@ describe('groupDeleter', () => {
 		});
 
 		mockState.graphicHelper.codeBlocks = [...groupBlocks, otherBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupDeleter(store, mockEvents);
 

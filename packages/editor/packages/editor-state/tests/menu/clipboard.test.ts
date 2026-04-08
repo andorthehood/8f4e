@@ -9,7 +9,7 @@ describe('menus - clipboard callback disabled state', () => {
 	describe('mainMenu', () => {
 		it('should disable "Paste Module" when readClipboardText is not provided', () => {
 			const mockState = createMockState({
-				featureFlags: { editing: true },
+				editorMode: 'edit',
 				callbacks: { readClipboardText: undefined },
 			});
 
@@ -22,7 +22,7 @@ describe('menus - clipboard callback disabled state', () => {
 
 		it('should enable "Paste Module" when readClipboardText is provided', () => {
 			const mockState = createMockState({
-				featureFlags: { editing: true },
+				editorMode: 'edit',
 				callbacks: { readClipboardText: async () => 'test' },
 			});
 
@@ -35,7 +35,7 @@ describe('menus - clipboard callback disabled state', () => {
 
 		it('should not show "Paste Module" when editing is disabled', () => {
 			const mockState = createMockState({
-				featureFlags: { editing: false },
+				editorMode: 'view',
 			});
 
 			const menu = mainMenu(mockState as State);

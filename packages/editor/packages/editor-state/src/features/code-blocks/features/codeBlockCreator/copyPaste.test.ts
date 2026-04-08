@@ -177,7 +177,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 			mockState.viewport.vGrid = 8;
 			mockState.viewport.hGrid = 8;
 
@@ -212,7 +212,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
@@ -242,7 +242,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
@@ -279,7 +279,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
@@ -300,7 +300,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
@@ -323,7 +323,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
@@ -351,7 +351,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
@@ -384,7 +384,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
@@ -407,7 +407,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
+			mockState.editorMode = 'edit';
 
 			codeBlockCreator(store, mockEvents);
 
