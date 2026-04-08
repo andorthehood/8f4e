@@ -31,6 +31,7 @@ export type {
 	WebWorkerMIDIRuntime,
 	FeatureFlags,
 	FeatureFlagsConfig,
+	EditorMode,
 	JSONSchemaLike,
 	EditorConfigStorageBlock,
 } from '@8f4e/editor-state';

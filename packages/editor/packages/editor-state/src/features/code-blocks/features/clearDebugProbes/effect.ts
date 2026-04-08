@@ -11,7 +11,7 @@ export default function clearDebugProbes(store: StateManager<State>, events: Eve
 	const state = store.getState();
 
 	function onClearDebugProbes({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		if (!state.featureFlags.editing) {
+		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
 			return;
 		}
 

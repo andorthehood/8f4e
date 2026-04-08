@@ -25,7 +25,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -45,7 +45,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -64,7 +64,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -83,7 +83,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -102,7 +102,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -122,7 +122,7 @@ describe('skipExecutionToggler', () => {
 			lastUpdated: 1000,
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -141,7 +141,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -162,7 +162,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = false;
+		mockState.editorMode = 'view';
 
 		skipExecutionToggler(store, mockEvents);
 

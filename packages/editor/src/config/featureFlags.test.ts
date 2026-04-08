@@ -27,13 +27,13 @@ describe('Feature Flags Configuration', () => {
 		});
 	});
 
-	test('defaultFeatureFlags should default to view mode with editing disabled', () => {
+	test('defaultFeatureFlags should enable editing capability by default', () => {
 		expect(defaultFeatureFlags.contextMenu).toBe(true);
 		expect(defaultFeatureFlags.infoOverlay).toBe(false);
 		expect(defaultFeatureFlags.moduleDragging).toBe(true);
 		expect(defaultFeatureFlags.codeLineSelection).toBe(false);
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
-		expect(defaultFeatureFlags.editing).toBe(false);
+		expect(defaultFeatureFlags.editing).toBe(true);
 		expect(defaultFeatureFlags.modeToggling).toBe(true);
 	});
 
@@ -48,11 +48,24 @@ describe('Feature Flags Configuration', () => {
 		expect(result.moduleDragging).toBe(true);
 		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(false);
+		expect(result.editing).toBe(true);
 		expect(result.modeToggling).toBe(true);
 	});
 
-	test('validateFeatureFlags should allow disabling editing flag', () => {
+	test('validateFeatureFlags should preserve editing capability unless explicitly disabled', () => {
+		const config: FeatureFlagsConfig = {
+			contextMenu: true,
+		};
+		const result = validateFeatureFlags(config);
+
+		expect(result.contextMenu).toBe(true);
+		expect(result.infoOverlay).toBe(false);
+		expect(result.moduleDragging).toBe(true);
+		expect(result.viewportDragging).toBe(true);
+		expect(result.editing).toBe(true);
+	});
+
+	test('validateFeatureFlags should allow disabling editing capability', () => {
 		const config: FeatureFlagsConfig = {
 			editing: false,
 		};
@@ -60,23 +73,20 @@ describe('Feature Flags Configuration', () => {
 
 		expect(result.editing).toBe(false);
 		expect(result.contextMenu).toBe(true);
-		expect(result.infoOverlay).toBe(false);
-		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
 	});
 
-	test('validateFeatureFlags should allow combining editing flag with other flags', () => {
+	test('validateFeatureFlags should allow combining multiple non-mode flags', () => {
 		const config: FeatureFlagsConfig = {
-			editing: false,
 			contextMenu: false,
 			moduleDragging: false,
 		};
 		const result = validateFeatureFlags(config);
 
-		expect(result.editing).toBe(false);
 		expect(result.contextMenu).toBe(false);
 		expect(result.moduleDragging).toBe(false);
 		expect(result.infoOverlay).toBe(false);
 		expect(result.viewportDragging).toBe(true);
+		expect(result.editing).toBe(true);
 	});
 });

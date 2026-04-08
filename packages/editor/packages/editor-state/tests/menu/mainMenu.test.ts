@@ -8,7 +8,7 @@ import type { State } from '../../src/types';
 describe('menus - go home entry', () => {
 	it('places "Go @home" directly above "Jump to..."', () => {
 		const mockState = createMockState({
-			featureFlags: { editing: true },
+			editorMode: 'edit',
 		});
 
 		const menu = mainMenu(mockState as State);
@@ -22,7 +22,7 @@ describe('menus - go home entry', () => {
 
 	it('shows "Go @home" even when no home block exists', () => {
 		const mockState = createMockState({
-			featureFlags: { editing: true },
+			editorMode: 'edit',
 			graphicHelper: { codeBlocks: [] },
 		});
 
@@ -36,7 +36,7 @@ describe('menus - go home entry', () => {
 
 	it('shows "Jump to..." in view mode when editing is disabled', () => {
 		const mockState = createMockState({
-			featureFlags: { editing: false },
+			editorMode: 'view',
 		});
 
 		const menu = mainMenu(mockState as State);

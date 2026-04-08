@@ -28,7 +28,7 @@ Handles low-level text editing operations within code blocks: caret movement, ch
 - `state.graphicHelper.selectedCodeBlock.cursor.row` - Current cursor row (line number)
 - `state.graphicHelper.selectedCodeBlock.cursor.col` - Current cursor column position
 - `state.graphicHelper.selectedCodeBlock.lastUpdated` - Timestamp of last edit
-- `state.featureFlags.editing` - Global editing enable/disable flag
+- `state.editorMode` - Global editor mode (`view`, `edit`, or `presentation`)
 
 ## Integration Points
 
@@ -40,7 +40,7 @@ Handles low-level text editing operations within code blocks: caret movement, ch
 
 ## Notes & Limitations
 
-- All operations check `state.featureFlags.editing` before executing
+- All edit operations check `state.editorMode === 'edit'` before executing
 - Editing requires a selected code block
 - Gap calculations handle edge cases like line wrapping and cursor bounds
 - Line and column indices are 0-based internally

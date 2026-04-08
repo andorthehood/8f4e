@@ -48,7 +48,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 	};
 
 	const onDeleteBackward = function () {
-		if (!state.featureFlags.editing) {
+		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
 			return;
 		}
 
@@ -65,7 +65,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 	};
 
 	const onInsertNewLine = function () {
-		if (!state.featureFlags.editing) {
+		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
 			return;
 		}
 
@@ -82,7 +82,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 	};
 
 	const onInsertText = function (event: InsertTextEvent) {
-		if (!state.featureFlags.editing) {
+		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
 			return;
 		}
 

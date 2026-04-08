@@ -26,7 +26,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -47,7 +47,7 @@ describe('groupRemover', () => {
 			groupName: 'firstGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -67,7 +67,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -87,7 +87,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -107,7 +107,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -127,7 +127,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -147,7 +147,7 @@ describe('groupRemover', () => {
 		});
 		const originalCode = [...codeBlock.code];
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -168,7 +168,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -188,7 +188,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -209,7 +209,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = false;
+		mockState.editorMode = 'view';
 
 		groupRemover(store, mockEvents);
 
@@ -229,7 +229,7 @@ describe('groupRemover', () => {
 			groupName: 'funcGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [functionBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -249,7 +249,7 @@ describe('groupRemover', () => {
 			groupName: 'audio-chain_1',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 
@@ -269,7 +269,7 @@ describe('groupRemover', () => {
 			groupName: 'myGroup',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupRemover(store, mockEvents);
 

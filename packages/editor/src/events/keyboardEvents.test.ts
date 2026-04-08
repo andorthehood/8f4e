@@ -53,6 +53,7 @@ describe('keyboardEvents mode switching', () => {
 	const originalWindow = globalThis.window;
 	let mockWindow: MockWindow;
 	let featureFlags: State['featureFlags'];
+	let editorMode: State['editorMode'];
 	let set: ReturnType<typeof vi.fn>;
 	let events: EventDispatcher;
 	let store: StateManager<State>;
@@ -67,20 +68,15 @@ describe('keyboardEvents mode switching', () => {
 			moduleDragging: true,
 			codeLineSelection: false,
 			viewportDragging: true,
-			editing: false,
+			editing: true,
 			modeToggling: true,
 			historyTracking: true,
 			consoleOverlay: true,
 			positionOffsetters: true,
 		};
+		editorMode = 'view';
 
 		set = vi.fn((path: string, value: unknown) => {
-			if (path === 'featureFlags.editing') {
-				featureFlags.editing = value as boolean;
-			}
-			if (path === 'featureFlags.codeLineSelection') {
-				featureFlags.codeLineSelection = value as boolean;
-			}
 			if (path === 'featureFlags.positionOffsetters') {
 				featureFlags.positionOffsetters = value as boolean;
 			}
@@ -93,7 +89,7 @@ describe('keyboardEvents mode switching', () => {
 		};
 
 		store = {
-			getState: () => ({ featureFlags }) as State,
+			getState: () => ({ featureFlags, editorMode }) as State,
 			set,
 		} as unknown as StateManager<State>;
 	});
@@ -108,35 +104,75 @@ describe('keyboardEvents mode switching', () => {
 
 		mockWindow.emit('keydown', event);
 
-		expect(set).toHaveBeenCalledWith('featureFlags.editing', true);
-		expect(set).toHaveBeenCalledWith('featureFlags.codeLineSelection', true);
+		expect(events.dispatch).toHaveBeenCalledWith('enterEditMode');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
-		expect(events.dispatch).not.toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('does not enter edit mode when editing capability is disabled', () => {
+		featureFlags.editing = false;
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('e');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).not.toHaveBeenCalledWith('enterEditMode');
+		cleanup();
+	});
+
+	it('enters presentation mode when p is pressed in view mode', () => {
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('p');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('enterPresentationMode');
 		cleanup();
 	});
 
 	it('returns to view mode when Escape is pressed in edit mode', () => {
-		featureFlags.editing = true;
+		editorMode = 'edit';
 		const cleanup = keyboardEvents(events, store);
 		const event = createKeyboardEventLike('Escape');
 
 		mockWindow.emit('keydown', event);
 
-		expect(set).toHaveBeenCalledWith('featureFlags.editing', false);
-		expect(set).toHaveBeenCalledWith('featureFlags.codeLineSelection', false);
+		expect(events.dispatch).toHaveBeenCalledWith('exitToViewMode');
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('returns to view mode when Escape is pressed in presentation mode', () => {
+		editorMode = 'presentation';
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('Escape');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('exitToViewMode');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
 		cleanup();
 	});
 
 	it('keeps i as text insertion while already in edit mode', () => {
-		featureFlags.editing = true;
+		editorMode = 'edit';
 		const cleanup = keyboardEvents(events, store);
 		const event = createKeyboardEventLike('i');
 
 		mockWindow.emit('keydown', event);
 
-		expect(set).not.toHaveBeenCalledWith('featureFlags.editing', true);
 		expect(events.dispatch).toHaveBeenCalledWith('insertText', { text: 'i' });
+		cleanup();
+	});
+
+	it('ignores text insertion while in presentation mode', () => {
+		editorMode = 'presentation';
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('i');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).not.toHaveBeenCalled();
 		cleanup();
 	});
 
@@ -147,20 +183,18 @@ describe('keyboardEvents mode switching', () => {
 
 		mockWindow.emit('keydown', enterEditEvent);
 
-		expect(set).not.toHaveBeenCalledWith('featureFlags.editing', true);
-		expect(set).not.toHaveBeenCalledWith('featureFlags.codeLineSelection', true);
+		expect(events.dispatch).not.toHaveBeenCalledWith('enterEditMode');
 
-		featureFlags.editing = true;
+		editorMode = 'edit';
 		const exitEditEvent = createKeyboardEventLike('Escape');
 		mockWindow.emit('keydown', exitEditEvent);
 
-		expect(set).not.toHaveBeenCalledWith('featureFlags.editing', false);
-		expect(set).not.toHaveBeenCalledWith('featureFlags.codeLineSelection', false);
+		expect(events.dispatch).not.toHaveBeenCalledWith('exitToViewMode');
 		cleanup();
 	});
 
 	it('dispatches literal tab insertion when Tab is pressed', () => {
-		featureFlags.editing = true;
+		editorMode = 'edit';
 		const cleanup = keyboardEvents(events, store);
 		const event = createKeyboardEventLike('Tab');
 

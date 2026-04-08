@@ -11,7 +11,7 @@ export default function skipExecutionToggler(store: StateManager<State>, events:
 	const state = store.getState();
 
 	function onToggleModuleSkipExecutionDirective({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		if (!state.featureFlags.editing) {
+		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
 			return;
 		}
 
