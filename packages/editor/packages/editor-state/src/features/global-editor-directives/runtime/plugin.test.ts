@@ -66,6 +66,17 @@ describe('@runtime directive', () => {
 		expect(result.errors[0].message).toContain('unknown runtime');
 	});
 
+	it('suggests the closest runtime id for typos', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @runtime AudioWorkletRuntim', 'moduleEnd'])],
+			runtimeRegistry
+		);
+
+		expect(result.resolved.runtime).toBeUndefined();
+		expect(result.errors).toHaveLength(1);
+		expect(result.errors[0].message).toContain("Did you mean 'AudioWorkletRuntime'?");
+	});
+
 	it('uses block id in errors when available', () => {
 		const result = resolveGlobalEditorDirectives(
 			[

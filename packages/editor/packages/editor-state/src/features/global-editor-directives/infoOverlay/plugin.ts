@@ -1,4 +1,5 @@
 import { createGlobalEditorDirectivePlugin } from '../utils';
+import { formatDidYouMeanSuffix } from '../suggestions';
 
 const BOOLEAN_ARGUMENTS = new Map<string, boolean>([
 	['on', true],
@@ -23,7 +24,9 @@ export default createGlobalEditorDirectivePlugin('infoOverlay', (directive, draf
 	if (value === undefined) {
 		draft.errors.push({
 			lineNumber: directive.rawRow,
-			message: `@infoOverlay: unsupported value '${directive.args[0]}'`,
+			message: `@infoOverlay: unsupported value '${directive.args[0]}'${formatDidYouMeanSuffix(directive.args[0], [
+				...BOOLEAN_ARGUMENTS.keys(),
+			])}`,
 			codeBlockId: context.codeBlockId,
 		});
 		return;
