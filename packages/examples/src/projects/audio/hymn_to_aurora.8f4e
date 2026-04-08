@@ -1722,9 +1722,9 @@ module ultimateSoundtrackerColors
 ; @color fill.errorMessageBackground	#900
 ; @color fill.dialogBackground	#036
 ; @color fill.dialogDimmer	#000
-; @color fill.codeBlockHighlightLevel1	#111
-; @color fill.codeBlockHighlightLevel2	#222
-; @color fill.codeBlockHighlightLevel3	#333
+; @color fill.codeBlockHighlightLevel1	#000a14
+; @color fill.codeBlockHighlightLevel2	#001429
+; @color fill.codeBlockHighlightLevel3	#001f3d
 ; @color fill.plotterBackground	#000
 ; @color fill.plotterTrace	#0f0
 ; @color fill.scanLine	#0f0
