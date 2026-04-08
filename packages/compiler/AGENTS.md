@@ -151,10 +151,10 @@ function clamp int int int
   dup
   localSet temp
   lessThan
-  if int
+  if
     drop
     push temp
-  ifEnd
+  ifEnd int
   
   ; Compare with max
   ; (implementation continues...)

@@ -10,14 +10,17 @@ type ArgumentShapeRule =
 	| 'nonNegativeIntegerLiteral'
 	| 'compileTimeValue'
 	| 'mapValue'
-	| 'typeIdentifier';
+	| 'typeIdentifier'
+	| 'ifResultType';
 
 type InstructionArgumentSpec = {
 	minArguments?: number;
+	maxArguments?: number;
 	argumentTypes?: ArgumentShapeRule[] | ArgumentShapeRule;
 };
 
 const supportedTypeIdentifiers = new Set(['int', 'float', 'float64']);
+const supportedIfResultTypeIdentifiers = new Set(['int', 'float']);
 
 const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>> = {
 	push: { minArguments: 1 },
@@ -44,6 +47,8 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	use: { minArguments: 1, argumentTypes: ['identifier'] },
 	const: { minArguments: 2, argumentTypes: ['constantIdentifier', 'compileTimeValue'] },
 	init: { minArguments: 2, argumentTypes: ['identifier', 'compileTimeValue'] },
+	if: { maxArguments: 0 },
+	ifEnd: { argumentTypes: 'ifResultType' },
 };
 
 function getInstructionArgumentSpec(instruction: string): InstructionArgumentSpec | undefined {
@@ -118,6 +123,11 @@ function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, inst
 				invalid(`Invalid argument for ${instruction}: expected type identifier (int, float, or float64).`);
 			}
 			return;
+		case 'ifResultType':
+			if (argument.type !== ArgumentType.IDENTIFIER || !supportedIfResultTypeIdentifiers.has(argument.value)) {
+				invalid(`Invalid argument for ${instruction}: expected result type (int or float).`);
+			}
+			return;
 	}
 }
 
@@ -131,6 +141,14 @@ export default function validateInstructionArguments(instruction: string, args: 
 		throw new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT, `Missing required argument for ${instruction}.`, {
 			instruction,
 			minArguments: spec.minArguments,
+			actualArguments: args.length,
+		});
+	}
+
+	if (spec.maxArguments !== undefined && args.length > spec.maxArguments) {
+		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, `Too many arguments for ${instruction}.`, {
+			instruction,
+			maxArguments: spec.maxArguments,
 			actualArguments: args.length,
 		});
 	}

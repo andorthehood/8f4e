@@ -298,14 +298,7 @@
     "lineNumberBeforeMacroExpansion": 55,
     "lineNumberAfterMacroExpansion": 55,
     "instruction": "if",
-    "arguments": [
-      {
-        "type": "identifier",
-        "value": "void",
-        "referenceKind": "plain",
-        "scope": "local"
-      }
-    ],
+    "arguments": [],
     "isSemanticOnly": false,
     "isMemoryDeclaration": false
   },
@@ -1079,14 +1072,7 @@
     "lineNumberBeforeMacroExpansion": 127,
     "lineNumberAfterMacroExpansion": 127,
     "instruction": "if",
-    "arguments": [
-      {
-        "type": "identifier",
-        "value": "void",
-        "referenceKind": "plain",
-        "scope": "local"
-      }
-    ],
+    "arguments": [],
     "isSemanticOnly": false,
     "isMemoryDeclaration": false
   },
@@ -1294,14 +1280,7 @@
     "lineNumberBeforeMacroExpansion": 157,
     "lineNumberAfterMacroExpansion": 157,
     "instruction": "if",
-    "arguments": [
-      {
-        "type": "identifier",
-        "value": "void",
-        "referenceKind": "plain",
-        "scope": "local"
-      }
-    ],
+    "arguments": [],
     "isSemanticOnly": false,
     "isMemoryDeclaration": false
   },
@@ -1430,14 +1409,7 @@
     "lineNumberBeforeMacroExpansion": 169,
     "lineNumberAfterMacroExpansion": 169,
     "instruction": "if",
-    "arguments": [
-      {
-        "type": "identifier",
-        "value": "void",
-        "referenceKind": "plain",
-        "scope": "local"
-      }
-    ],
+    "arguments": [],
     "isSemanticOnly": false,
     "isMemoryDeclaration": false
   },

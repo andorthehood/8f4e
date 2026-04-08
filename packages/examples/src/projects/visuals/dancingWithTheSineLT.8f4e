@@ -28,7 +28,7 @@ store
 push sin
 push last
 equal
-if void
+if
 push &sin
 push first
 store
@@ -61,7 +61,7 @@ store
 push sin
 push last
 equal
-if void
+if
 push &sin
 push first
 store
@@ -95,7 +95,7 @@ store
 push sin
 push last
 equal
-if void
+if
 push &sin
 push first
 store
@@ -132,7 +132,7 @@ store
 push sin
 push last
 equal
-if void
+if
 push &sin
 push first
 store

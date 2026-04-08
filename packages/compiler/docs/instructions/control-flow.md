@@ -76,39 +76,39 @@ The else instruction begins the else branch of the current if block.
 
 ```
 push 1
-if int
+if
  push 10
 else
  push 20
-ifEnd
+ifEnd int
 ```
 
 ### if
 
-The if instruction consumes an integer condition from the stack and begins a conditional block. It accepts an optional result type (`int`, `float`, or `void`) to declare whether the block must leave a value on the stack.
+The if instruction consumes an integer condition from the stack and begins a conditional block. The result type is declared on the closing `ifEnd` instruction.
 
 #### Examples
 
 ```
 push 1
-if int
+if
  push 1
-ifEnd
+ifEnd int
 ```
 
 ### ifEnd
 
-The ifEnd instruction ends an if or else block and validates any expected result value for the block.
+The ifEnd instruction ends an if or else block. It accepts an optional result type (`int` or `float`) to declare whether the block must leave a value on the stack. A bare `ifEnd` means the block produces no result.
 
 #### Examples
 
 ```
 push 0
-if int
+if
  push 1
 else
  push 2
-ifEnd
+ifEnd int
 ```
 
 ### loop
