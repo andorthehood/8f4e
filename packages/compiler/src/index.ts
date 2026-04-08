@@ -65,6 +65,9 @@ export {
 	type InstructionCompiler,
 	type Error,
 	type CompileOptions,
+	type CompilerDiagnostic,
+	type CompilerDiagnosticLine,
+	type CompilerDiagnosticContext,
 } from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
@@ -85,6 +88,7 @@ export {
 	type ExpandedLine,
 } from './utils/macroExpansion';
 export { ErrorCode, getError } from './compilerError';
+export { serializeDiagnostic } from './diagnostic';
 
 export function compileModules(
 	modules: AST[],
