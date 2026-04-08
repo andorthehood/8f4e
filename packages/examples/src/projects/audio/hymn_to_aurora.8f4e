@@ -5,7 +5,7 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 4/8/2026, 1:24:25 PM
+; Last updated: 4/8/2026, 6:20:23 PM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
@@ -367,7 +367,7 @@ mapEnd int
 functionEnd int
 
 module amigaTick
-; @pos -62 -11
+; @pos 28 -9
 use mod
 
 int tempo 125
@@ -605,7 +605,7 @@ store
 moduleEnd
 
 module modRowCounter
-; @pos 85 -9
+; @pos 103 -9
 use env
 int* trigger &amigaTick:out 
 int rowCounter 
@@ -1008,7 +1008,7 @@ module notes
 moduleEnd
 
 module patternOrder
-; @pos -25 -11
+; @pos 62 -9
 ; @tab 6
 int	0x00
 int	0x00
@@ -1712,7 +1712,7 @@ module ultimateSoundtrackerColors
 ; @color text.code	#c96
 ; @color text.lineNumber	#630
 ; @color text.codeComment	#963
-; @color text.numbers	#fff
+; @color text.numbers	#fc9
 ; @color text.debugInfo	#963
 ; @color fill.debugInfoBackground	#036
 ; @color fill.wire	rgba(255,255,255,0.3)
