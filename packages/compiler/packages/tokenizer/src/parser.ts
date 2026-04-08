@@ -38,7 +38,7 @@ const blockEndToStartInstruction: Record<BlockEndInstruction, BlockStartInstruct
 	mapEnd: 'mapBegin',
 };
 
-function getIfResultType(line: ASTLine): IfBlockResultType {
+function getResultTypeFromFirstArgument(line: ASTLine): IfBlockResultType {
 	const typeArgument = line.arguments[0];
 
 	if (!typeArgument || typeArgument.type !== ArgumentType.IDENTIFIER) {
@@ -48,14 +48,12 @@ function getIfResultType(line: ASTLine): IfBlockResultType {
 	return typeArgument.value === 'int' || typeArgument.value === 'float' ? typeArgument.value : null;
 }
 
+function getIfResultType(line: ASTLine): IfBlockResultType {
+	return getResultTypeFromFirstArgument(line);
+}
+
 function getBlockEndResultType(line: ASTLine): BlockBlockResultType {
-	const typeArgument = line.arguments[0];
-
-	if (!typeArgument || typeArgument.type !== ArgumentType.IDENTIFIER) {
-		return null;
-	}
-
-	return typeArgument.value === 'int' || typeArgument.value === 'float' ? typeArgument.value : null;
+	return getResultTypeFromFirstArgument(line);
 }
 
 /**

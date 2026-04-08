@@ -241,7 +241,11 @@ if (import.meta.vitest) {
 
 		it('rejects any argument for block', () => {
 			expect(() => validateInstructionArguments('block', [classifyIdentifier('int')])).toThrowError(SyntaxRulesError);
+			expect(() => validateInstructionArguments('block', [classifyIdentifier('float')])).toThrowError(SyntaxRulesError);
 			expect(() => validateInstructionArguments('block', [classifyIdentifier('void')])).toThrowError(SyntaxRulesError);
+			expect(() =>
+				validateInstructionArguments('block', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])
+			).toThrowError(SyntaxRulesError);
 		});
 
 		it('accepts bare blockEnd', () => {
@@ -253,8 +257,14 @@ if (import.meta.vitest) {
 			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('float')])).not.toThrow();
 		});
 
-		it('rejects blockEnd with void or other identifiers', () => {
+		it('rejects blockEnd with invalid type identifiers', () => {
 			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('void')])).toThrowError(
+				SyntaxRulesError
+			);
+			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('bool')])).toThrowError(
+				SyntaxRulesError
+			);
+			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('string')])).toThrowError(
 				SyntaxRulesError
 			);
 		});
