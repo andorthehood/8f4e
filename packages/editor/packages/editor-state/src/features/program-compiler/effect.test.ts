@@ -64,6 +64,7 @@ describe('program compiler effect', () => {
 		mockCompileCode.mockRejectedValue({
 			message: 'Too many arguments for if.',
 			line: { lineNumberBeforeMacroExpansion: 3, lineNumberAfterMacroExpansion: 3, instruction: 'if' },
+			context: {},
 		});
 
 		compilerEffect(store, mockEvents);
