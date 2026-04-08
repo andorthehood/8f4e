@@ -75,7 +75,6 @@ Active todo files are listed below.
 | 057 | Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution | 🟢 | 8-12 hours | 2025-09-09 | The 8f4e project currently uses WebAssembly for executing compiled code with basic debugging capabilities (debug instruction parser exists). To enhance the development experience and enable advanced debugging features,... |
 | 203 | Use CodeBlock id instead of recomputing from code | 🟢 | 2-4 days | 2026-01-22 | The system frequently derives code block IDs by calling getCodeBlockId(code) during updates and rendering. This is redundant because CodeBlockGraphicData.id is intended to be the canonical ID. Recomputing on every... |
 | 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
-| 370 | Move if result type to ifEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `if` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
 | 371 | Move block result type to blockEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `block` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
 
 ## Completed TODOs
@@ -85,6 +84,7 @@ Active todo files are listed below.
 | 329 | Replace literal-only const collection with semantic namespace prepass | 2026-03-27 | Replaced `collectConstants(ast)` bootstrap with semantic namespace prepass. |
 | 330 | Centralize compile-time folding as an AST normalization pass | 2026-03-27 | Compile-time folding now runs as a semantic normalization pass before codegen. |
 | 331 | Delete duplicate downstream compile-time resolution paths | 2026-03-27 | Removed duplicate downstream compile-time resolution, including old `push` metadata fallbacks. |
+| 370 | Move if result type to ifEnd and drop explicit void | 2026-04-08 | `if`/`ifEnd` pairing now happens in the tokenizer/parser, with source-faithful AST metadata and no compiler-side rewrite pass. |
 | 332 | Extract syntax and AST parsing into a separate compiler package | 2026-03-27 | `source -> AST` now lives in `packages/tokenizer`. |
 | 334 | Move locals out of namespace and into codegen state | 2026-03-27 | Locals now live in `CompilationContext.locals` instead of `namespace.locals`. |
 | 340 | Move compiler-generated hidden resources into a separate internal address space | 2026-03-27 | Hidden resources now allocate separately from user/module memory and no longer affect module layout. |
