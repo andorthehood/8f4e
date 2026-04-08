@@ -68,10 +68,10 @@ export const minimalColorScheme: ColorScheme = {
 };
 
 /**
- * Test fixture for bios8x16 font configuration
+ * Test fixture for ibmvga8x16 font configuration
  */
 export const config8x16: Config = {
-	font: 'bios8x16',
+	font: 'ibmvga8x16',
 	colorScheme: minimalColorScheme,
 };
 
@@ -116,6 +116,14 @@ export const configTerminus10x18Bold: Config = {
 };
 
 /**
+ * Test fixture for kana12x13 font configuration
+ */
+export const configKana12x13: Config = {
+	font: 'kana12x13',
+	colorScheme: minimalColorScheme,
+};
+
+/**
  * Test fixture for terminus12x24 font configuration
  */
 export const configTerminus12x24: Config = {
@@ -128,14 +136,6 @@ export const configTerminus12x24: Config = {
  */
 export const configTerminus12x24Bold: Config = {
 	font: 'terminus12x24bold',
-	colorScheme: minimalColorScheme,
-};
-
-/**
- * Test fixture for derived 16x32 font configuration
- */
-export const config16x32: Config = {
-	font: '16x32',
 	colorScheme: minimalColorScheme,
 };
 
@@ -164,17 +164,17 @@ export const characterDimensionsTerminus10x18 = {
 };
 
 /**
+ * Standard character dimensions for kana12x13 font
+ */
+export const characterDimensionsKana12x13 = {
+	width: 12,
+	height: 13,
+};
+
+/**
  * Standard character dimensions for terminus12x24 font
  */
 export const characterDimensionsTerminus12x24 = {
 	width: 12,
 	height: 24,
-};
-
-/**
- * Standard character dimensions for 16x32 font
- */
-export const characterDimensions16x32 = {
-	width: 16,
-	height: 32,
 };

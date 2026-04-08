@@ -10,8 +10,8 @@ import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } f
 import { createAtlasLayout } from './atlasLayout';
 import { Command, Config, ColorScheme } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
-import { fontMetadata as ascii8x16Metadata } from './fonts/8x16/generated/ascii';
-import { fontMetadata as glyphs8x16Metadata } from './fonts/8x16/generated/glyphs';
+import { fontMetadata as ascii8x16Metadata } from './fonts/ibmvga8x16/generated/ascii';
+import { fontMetadata as glyphs8x16Metadata } from './fonts/ibmvga8x16/generated/glyphs';
 import defaultColorScheme from './defaultColorScheme';
 
 export { Icon } from './icons';
@@ -27,9 +27,9 @@ type FontData = {
 	characterHeight: number;
 };
 
-// bios8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
+// ibmvga8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
 const fontCache: Partial<Record<Config['font'], FontData>> = {
-	bios8x16: {
+	ibmvga8x16: {
 		asciiBitmap: decodeFontBase64(ascii8x16Metadata),
 		glyphsBitmap: decodeFontBase64(glyphs8x16Metadata),
 		characterWidth: 8,
@@ -146,6 +146,19 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 		};
 		return fontCache['terminus10x18bold'];
 	}
+	if (font === 'kana12x13') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/kana12x13/generated/ascii'),
+			import('./fonts/kana12x13/generated/glyphs'),
+		]);
+		fontCache['kana12x13'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 12,
+			characterHeight: 13,
+		};
+		return fontCache['kana12x13'];
+	}
 	if (font === 'spleen12x24') {
 		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
 			import('./fonts/spleen12x24/generated/ascii'),
@@ -198,31 +211,8 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 		};
 		return fontCache['spleen16x32'];
 	}
-	if (font === 'spleen32x64') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/spleen32x64/generated/ascii'),
-			import('./fonts/spleen32x64/generated/glyphs'),
-		]);
-		fontCache['spleen32x64'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 32,
-			characterHeight: 64,
-		};
-		return fontCache['spleen32x64'];
-	}
 
-	const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-		import('./fonts/16x32/generated/ascii'),
-		import('./fonts/16x32/generated/glyphs'),
-	]);
-	fontCache['16x32'] = {
-		asciiBitmap: decodeFontBase64(asciiMetadata),
-		glyphsBitmap: decodeFontBase64(glyphsMetadata),
-		characterWidth: 16,
-		characterHeight: 32,
-	};
-	return fontCache['16x32'];
+	throw new Error(`Unsupported font '${font}'`);
 }
 
 export interface SpriteLookups extends FontLookups {

@@ -23,7 +23,7 @@ export function createSpriteSheetManager(
 	const state = store.getState();
 	const rerenderSpriteSheet = async () => {
 		const spriteData = await generateSprite({
-			font: state.globalEditorDirectives.font ?? 'bios8x16',
+			font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
 			colorScheme: state.colorScheme,
 		});
 
