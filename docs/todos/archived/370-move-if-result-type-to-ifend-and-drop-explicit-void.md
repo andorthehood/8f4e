@@ -3,8 +3,8 @@ title: 'TODO: Move if result type to ifEnd and drop explicit void'
 priority: Medium
 effort: 4-8h
 created: 2026-04-07
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-08
 ---
 
 # TODO: Move if result type to ifEnd and drop explicit void
@@ -128,4 +128,4 @@ This change is intentionally breaking at the source syntax level:
 
 - This is a source-language cleanup, not a compatibility migration.
 - Breaking API/source compatibility is expected here because the compiler is unreleased.
-- The preferred internal model is still effectively `if <normalizedResultType> ... ifEnd`, but only after preprocessing the new surface syntax.
+- Completed on 2026-04-08 by moving `if`/`ifEnd` structural pairing into the tokenizer/parser, keeping the AST source-faithful, and deleting the compiler-side rewrite pass.
