@@ -53,7 +53,7 @@ export const moduleMenu: MenuGenerator = state => {
 	}
 
 	return [
-		...(state.featureFlags.editing && state.editorMode === 'edit'
+		...(state.featureFlags.editing
 			? [
 					{
 						title: `Delete ${blockLabel}`,

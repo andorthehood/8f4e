@@ -109,7 +109,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader';
 		code?: string[];
 	}) {
-		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+		if (!state.featureFlags.editing) {
 			return;
 		}
 
@@ -198,7 +198,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+		if (!state.featureFlags.editing) {
 			return;
 		}
 
@@ -219,7 +219,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 	}
 
 	function onToggleCodeBlockDisabled({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+		if (!state.featureFlags.editing) {
 			return;
 		}
 

@@ -6,7 +6,7 @@ import type { StateManager } from '@8f4e/state-manager';
 import type { EventDispatcher, State } from '~/types';
 
 describe('editorMode', () => {
-	function setup(editorModeValue: State['editorMode'] = 'view', editing = true) {
+	function setup(editorModeValue: State['editorMode'] = 'view', editing = false) {
 		const handlers = new Map<string, (() => void)[]>();
 		const state = {
 			featureFlags: {
@@ -20,6 +20,9 @@ describe('editorMode', () => {
 			set: vi.fn((path: string, value: unknown) => {
 				if (path === 'editorMode') {
 					state.editorMode = value as State['editorMode'];
+				}
+				if (path === 'featureFlags.editing') {
+					state.featureFlags.editing = value as boolean;
 				}
 				if (path === 'featureFlags.codeLineSelection') {
 					state.featureFlags.codeLineSelection = value as boolean;
@@ -53,6 +56,7 @@ describe('editorMode', () => {
 		emit('enterEditMode');
 
 		expect(state.editorMode).toBe('edit');
+		expect(state.featureFlags.editing).toBe(true);
 		expect(state.featureFlags.codeLineSelection).toBe(true);
 	});
 
@@ -62,24 +66,27 @@ describe('editorMode', () => {
 		emit('enterPresentationMode');
 
 		expect(state.editorMode).toBe('presentation');
+		expect(state.featureFlags.editing).toBe(false);
 		expect(state.featureFlags.codeLineSelection).toBe(false);
 	});
 
 	it('returns to view mode from presentation mode', () => {
-		const { emit, state } = setup('presentation');
+		const { emit, state } = setup('presentation', false);
 
 		emit('exitToViewMode');
 
 		expect(state.editorMode).toBe('view');
+		expect(state.featureFlags.editing).toBe(false);
 		expect(state.featureFlags.codeLineSelection).toBe(false);
 	});
 
-	it('does not enter edit mode when editing capability is disabled', () => {
-		const { emit, state } = setup('view', false);
+	it('returns to view mode from edit mode', () => {
+		const { emit, state } = setup('edit', true);
 
-		emit('enterEditMode');
+		emit('exitToViewMode');
 
 		expect(state.editorMode).toBe('view');
+		expect(state.featureFlags.editing).toBe(false);
 		expect(state.featureFlags.codeLineSelection).toBe(false);
 	});
 });
