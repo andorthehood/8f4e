@@ -129,7 +129,8 @@ export function parseLine(
 			throw new SyntaxRulesError(error.code, error.message, {
 				lineNumberBeforeMacroExpansion,
 				lineNumberAfterMacroExpansion,
-				...(instruction !== undefined && { instruction }),
+				// instruction is undefined only if tokenizeInstruction threw before assignment
+				instruction: instruction ?? undefined,
 			});
 		}
 		throw error;
