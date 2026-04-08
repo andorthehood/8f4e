@@ -1,4 +1,4 @@
-import { type Module, type CompileOptions } from '@8f4e/compiler';
+import { type Module, type CompileOptions, type CompilerDiagnostic } from '@8f4e/compiler';
 import { Editor, type CompilationResult } from '@8f4e/editor';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 
@@ -37,18 +37,9 @@ export async function compileCode(
 						initOnlyReran: data.payload.initOnlyReran,
 					});
 					break;
-				case 'compilationError': {
-					const error = new Error(data.payload.message) as Error & {
-						line?: { lineNumber: number };
-						context?: { namespace?: { moduleName: string } };
-						errorCode?: number;
-					};
-					error.line = data.payload?.line;
-					error.context = data.payload?.context;
-					error.errorCode = data.payload?.errorCode;
-					reject(error);
+				case 'compilationError':
+					reject(data.payload as CompilerDiagnostic);
 					break;
-				}
 			}
 		};
 
