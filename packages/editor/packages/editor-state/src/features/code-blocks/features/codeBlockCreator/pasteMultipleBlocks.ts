@@ -89,7 +89,7 @@ export function pasteMultipleBlocks(
 ): void {
 	const state = store.getState();
 
-	if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+	if (!state.featureFlags.editing) {
 		return;
 	}
 

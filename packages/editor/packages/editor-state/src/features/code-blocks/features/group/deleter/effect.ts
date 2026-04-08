@@ -11,7 +11,7 @@ export default function groupDeleter(store: StateManager<State>, events: EventDi
 	function onDeleteGroup({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
 		const state = store.getState();
 
-		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+		if (!state.featureFlags.editing) {
 			return;
 		}
 

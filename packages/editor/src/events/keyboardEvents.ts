@@ -49,14 +49,7 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 
 		// Modal switching: e enters edit mode from view mode, Esc returns to view mode.
 		if (state.featureFlags.modeToggling) {
-			if (
-				state.featureFlags.editing &&
-				state.editorMode === 'view' &&
-				key === 'e' &&
-				!event.altKey &&
-				!event.ctrlKey &&
-				!event.metaKey
-			) {
+			if (state.editorMode === 'view' && key === 'e' && !event.altKey && !event.ctrlKey && !event.metaKey) {
 				event.preventDefault();
 				events.dispatch('enterEditMode');
 				return;

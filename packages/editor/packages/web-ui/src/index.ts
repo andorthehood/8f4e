@@ -43,7 +43,7 @@ export default async function init(
 		const shouldDrawInfoOverlay = state.globalEditorDirectives.infoOverlay ?? state.featureFlags.infoOverlay;
 
 		drawBackground(engine, state);
-		if (state.featureFlags.consoleOverlay && state.editorMode === 'edit') {
+		if (state.featureFlags.consoleOverlay && state.featureFlags.editing) {
 			drawConsoleOverlay(engine, state);
 		}
 		if (shouldDrawInfoOverlay) {

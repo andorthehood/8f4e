@@ -13,7 +13,7 @@ export default function groupSkipExecutionToggler(store: StateManager<State>, ev
 	const state = store.getState();
 
 	function onToggleGroupSkipExecutionDirective({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+		if (!state.featureFlags.editing) {
 			return;
 		}
 

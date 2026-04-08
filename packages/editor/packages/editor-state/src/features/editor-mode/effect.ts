@@ -5,11 +5,12 @@ export default function editorMode(store: StateManager<State>, events: EventDisp
 	const state = store.getState();
 
 	function enterEditMode(): void {
-		if (!state.featureFlags.editing || state.editorMode !== 'view') {
+		if (state.editorMode !== 'view') {
 			return;
 		}
 
 		store.set('editorMode', 'edit');
+		store.set('featureFlags.editing', true);
 		store.set('featureFlags.codeLineSelection', true);
 	}
 
@@ -19,6 +20,7 @@ export default function editorMode(store: StateManager<State>, events: EventDisp
 		}
 
 		store.set('editorMode', 'presentation');
+		store.set('featureFlags.editing', false);
 		store.set('featureFlags.codeLineSelection', false);
 	}
 
@@ -28,6 +30,7 @@ export default function editorMode(store: StateManager<State>, events: EventDisp
 		}
 
 		store.set('editorMode', 'view');
+		store.set('featureFlags.editing', false);
 		store.set('featureFlags.codeLineSelection', false);
 	}
 
