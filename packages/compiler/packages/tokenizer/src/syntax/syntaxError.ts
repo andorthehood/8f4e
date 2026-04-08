@@ -27,6 +27,7 @@ export enum SyntaxErrorCode {
 	DIVISION_BY_ZERO = 'DIVISION_BY_ZERO',
 	INVALID_STRING_LITERAL = 'INVALID_STRING_LITERAL',
 	SPLIT_HEX_MIXED_TOKENS = 'SPLIT_HEX_MIXED_TOKENS',
+	INVALID_BLOCK_STRUCTURE = 'INVALID_BLOCK_STRUCTURE',
 }
 
 /**
@@ -45,6 +46,7 @@ const SyntaxErrorMessages: Record<SyntaxErrorCode, string> = {
 	[SyntaxErrorCode.INVALID_STRING_LITERAL]: 'Invalid string literal.',
 	[SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS]:
 		'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255), literal-only * or / expressions that fold to an integer in that range, or constant-style identifiers. Memory references and non-byte-resolving forms are not allowed in split-byte sequences.',
+	[SyntaxErrorCode.INVALID_BLOCK_STRUCTURE]: 'Invalid block structure.',
 };
 
 export class SyntaxRulesError extends Error {
