@@ -36,7 +36,10 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	const { memory } = namespace;
 
 	if (operand.referenceKind === 'intermodular-element-word-size') {
-		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		const targetMemory =
+			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId!]?.memory
+				: undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
 			return { value: getElementWordSize(targetMemory, operand.targetMemoryId!), isInteger: true };
 		}
@@ -44,7 +47,10 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	}
 
 	if (operand.referenceKind === 'intermodular-element-count') {
-		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		const targetMemory =
+			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId!]?.memory
+				: undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
 			return { value: getElementCount(targetMemory, operand.targetMemoryId!), isInteger: true };
 		}
@@ -52,7 +58,10 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	}
 
 	if (operand.referenceKind === 'intermodular-element-max') {
-		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		const targetMemory =
+			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId!]?.memory
+				: undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
 			const memoryItem = targetMemory[operand.targetMemoryId!];
 			return { value: getElementMaxValue(targetMemory, operand.targetMemoryId!), isInteger: !!memoryItem?.isInteger };
@@ -61,7 +70,10 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	}
 
 	if (operand.referenceKind === 'intermodular-element-min') {
-		const targetMemory = namespace.namespaces[operand.targetModuleId!]?.memory;
+		const targetMemory =
+			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId!]?.memory
+				: undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
 			const memoryItem = targetMemory[operand.targetMemoryId!];
 			return { value: getElementMinValue(targetMemory, operand.targetMemoryId!), isInteger: !!memoryItem?.isInteger };
@@ -131,7 +143,11 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	if (operand.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = operand.targetModuleId!;
 		const targetNamespace = namespace.namespaces[targetModuleId];
-		if (typeof targetNamespace?.byteAddress === 'number' && typeof targetNamespace?.wordAlignedSize === 'number') {
+		if (
+			targetNamespace?.kind === 'module' &&
+			typeof targetNamespace.byteAddress === 'number' &&
+			typeof targetNamespace.wordAlignedSize === 'number'
+		) {
 			const value = operand.isEndAddress
 				? getModuleEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
 				: targetNamespace.byteAddress;
@@ -144,7 +160,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	if (operand.referenceKind === 'intermodular-module-nth-reference') {
 		const targetModuleId = operand.targetModuleId!;
 		const targetNamespace = namespace.namespaces[targetModuleId];
-		if (typeof targetNamespace?.byteAddress !== 'number' || !targetNamespace.memory) {
+		if (targetNamespace?.kind !== 'module' || typeof targetNamespace.byteAddress !== 'number' || !targetNamespace.memory) {
 			return undefined;
 		}
 		const items = Object.values(targetNamespace.memory);
@@ -161,7 +177,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		const targetModuleId = operand.targetModuleId!;
 		const targetNamespace = namespace.namespaces[targetModuleId];
 		// Only resolve once the target module has been laid out (byteAddress is set on the namespace entry)
-		if (typeof targetNamespace?.byteAddress !== 'number') {
+		if (targetNamespace?.kind !== 'module' || typeof targetNamespace.byteAddress !== 'number') {
 			return undefined;
 		}
 		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId!];

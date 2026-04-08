@@ -31,4 +31,18 @@ describe('getError', () => {
 
 		expect(error.message).toBe(`Undeclared identifier. (${ErrorCode.UNDECLARED_IDENTIFIER})`);
 	});
+
+	it('includes the duplicate identifier when provided', () => {
+		const line = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'module',
+			arguments: [classifyIdentifier('same')],
+			isSemanticOnly: true,
+		} as AST[number];
+
+		const error = getError(ErrorCode.DUPLICATE_IDENTIFIER, line, undefined, { identifier: 'same' });
+
+		expect(error.message).toBe(`Duplicate identifier: same. Module and function IDs must be unique. (${ErrorCode.DUPLICATE_IDENTIFIER})`);
+	});
 });
