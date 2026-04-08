@@ -10,8 +10,8 @@ Font bitmaps are precomputed from ASCII art sources and bundled as Base64-encode
 
 Font glyphs are defined as ASCII art in the source files:
 
-- `src/fonts/8x16/ascii.ts` - 8x16 ASCII character font
-- `src/fonts/8x16/glyphs.ts` - 8x16 custom glyphs for UI elements
+- `src/fonts/ibmvga8x16/ascii.ts` - 8x16 ASCII character font
+- `src/fonts/ibmvga8x16/glyphs.ts` - 8x16 custom glyphs for UI elements
 - `src/fonts/6x10/ascii.ts` - 6x10 ASCII character font
 - `src/fonts/6x10/glyphs.ts` - 6x10 custom glyphs for UI elements
 
@@ -45,7 +45,7 @@ npx nx run sprite-generator:generate-fonts
 ```
 
 Generated files are located in:
-- `src/fonts/8x16/generated/`
+- `src/fonts/ibmvga8x16/generated/`
 - `src/fonts/6x10/generated/`
 
 These files are git-ignored and should not be committed.

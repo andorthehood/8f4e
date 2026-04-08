@@ -16,7 +16,7 @@ Examples:
 ; @watch counter
 ; @plot audioBuffer -2 2 lengthMemory
 ; @button gate0 0 1
-; @font bios8x16
+; @font ibmvga8x16
 ```
 
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
@@ -33,15 +33,20 @@ Select the editor font used for rendering code blocks and UI text.
 
 Supported fonts:
 
-- `bios8x16`
+- `ibmvga8x16`
 - `terminus8x16`
 - `terminus8x16bold`
 - `6x10`
 - `terminus10x18`
 - `terminus10x18bold`
+- `kana12x13`
 - `terminus12x24`
 - `terminus12x24bold`
-- `16x32`
+- `spleen5x8`
+- `spleen6x12`
+- `spleen8x16`
+- `spleen12x24`
+- `spleen16x32`
 
 ### `@infoOverlay`
 
