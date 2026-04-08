@@ -62,6 +62,7 @@ describe('serializeDiagnostic', () => {
 				lineNumberBeforeMacroExpansion: 3,
 				lineNumberAfterMacroExpansion: 5,
 				instruction: 'push',
+				arguments: [],
 			});
 			expect(result.context).toBeUndefined();
 		});

@@ -40,6 +40,7 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 						lineNumberBeforeMacroExpansion: error.line.lineNumberBeforeMacroExpansion,
 						lineNumberAfterMacroExpansion: error.line.lineNumberAfterMacroExpansion,
 						instruction: error.line.instruction,
+						arguments: error.line.arguments as unknown[],
 					}
 				: undefined,
 			context: error.context
