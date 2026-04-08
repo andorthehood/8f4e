@@ -20,7 +20,11 @@ import {
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-import { assertUniqueModuleIds, collectNamespacesFromASTs, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
+import {
+	assertUniqueModuleIds,
+	collectNamespacesFromASTs,
+	collectFunctionMetadataFromAsts,
+} from './semantic/buildNamespace';
 import {
 	AST,
 	CompileOptions,
@@ -63,8 +67,11 @@ export {
 	BLOCK_TYPE,
 	type BlockStack,
 	type InstructionCompiler,
-	type Error,
+	type CompilerStageError,
 	type CompileOptions,
+	type CompilerDiagnostic,
+	type CompilerDiagnosticLine,
+	type CompilerDiagnosticContext,
 } from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
@@ -86,6 +93,7 @@ export {
 	type ExpandedLine,
 } from './utils/macroExpansion';
 export { ErrorCode, getError } from './compilerError';
+export { serializeDiagnostic } from './diagnostic';
 
 export function compileModules(
 	modules: AST[],
