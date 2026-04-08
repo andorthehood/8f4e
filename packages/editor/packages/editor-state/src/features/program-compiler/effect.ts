@@ -90,12 +90,15 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			store.set('compiler.isCompiling', false);
 			const errorObject = error as Error & {
-				line?: { lineNumberBeforeMacroExpansion?: number; lineNumberAfterMacroExpansion?: number };
+				line?: {
+					lineNumberBeforeMacroExpansion?: number;
+					lineNumberAfterMacroExpansion?: number;
+					instruction?: string;
+				};
 				context?: {
 					codeBlockId?: string;
 					codeBlockType?: 'module' | 'function' | 'constants';
 				};
-				errorCode?: number;
 			};
 
 			store.set('codeErrors.compilationErrors', [
