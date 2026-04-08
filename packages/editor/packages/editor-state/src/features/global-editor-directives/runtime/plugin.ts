@@ -1,3 +1,4 @@
+import { formatDidYouMeanSuffix } from '../suggestions';
 import { createGlobalEditorDirectivePlugin } from '../utils';
 
 import type { RuntimeRegistry, Runtimes } from '../../runtime/types';
@@ -46,7 +47,7 @@ export default createGlobalEditorDirectivePlugin('runtime', (directive, draft, c
 	if (!(value in context.runtimeRegistry)) {
 		draft.errors.push({
 			lineNumber: directive.rawRow,
-			message: `@runtime: unknown runtime '${value}'`,
+			message: `@runtime: unknown runtime '${value}'${formatDidYouMeanSuffix(value, Object.keys(context.runtimeRegistry))}`,
 			codeBlockId: context.codeBlockId,
 		});
 		return;
