@@ -71,13 +71,9 @@ function isCompileTimeValue(argument: Argument): boolean {
 	);
 }
 
-function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, instruction: string, index: number): void {
+function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, instruction: string): void {
 	const invalid = (message: string) => {
-		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, message, {
-			instruction,
-			argumentIndex: index,
-			rule,
-		});
+		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, message);
 	};
 
 	switch (rule) {
@@ -139,19 +135,11 @@ export default function validateInstructionArguments(instruction: string, args: 
 	}
 
 	if (spec.minArguments !== undefined && args.length < spec.minArguments) {
-		throw new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT, `Missing required argument for ${instruction}.`, {
-			instruction,
-			minArguments: spec.minArguments,
-			actualArguments: args.length,
-		});
+		throw new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT, `Missing required argument for ${instruction}.`);
 	}
 
 	if (spec.maxArguments !== undefined && args.length > spec.maxArguments) {
-		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, `Too many arguments for ${instruction}.`, {
-			instruction,
-			maxArguments: spec.maxArguments,
-			actualArguments: args.length,
-		});
+		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, `Too many arguments for ${instruction}.`);
 	}
 
 	if (!spec.argumentTypes) {
@@ -164,13 +152,13 @@ export default function validateInstructionArguments(instruction: string, args: 
 			if (!argument) {
 				return;
 			}
-			validateArgumentShape(argument, spec.argumentTypes[i], instruction, i);
+			validateArgumentShape(argument, spec.argumentTypes[i], instruction);
 		}
 		return;
 	}
 
 	for (let i = 0; i < args.length; i++) {
-		validateArgumentShape(args[i], spec.argumentTypes, instruction, i);
+		validateArgumentShape(args[i], spec.argumentTypes, instruction);
 	}
 }
 
