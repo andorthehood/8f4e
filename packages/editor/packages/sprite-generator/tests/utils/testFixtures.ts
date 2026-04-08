@@ -68,10 +68,26 @@ export const minimalColorScheme: ColorScheme = {
 };
 
 /**
- * Test fixture for 8x16 font configuration
+ * Test fixture for bios8x16 font configuration
  */
 export const config8x16: Config = {
-	font: '8x16',
+	font: 'bios8x16',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus8x16 font configuration
+ */
+export const configTerminus8x16: Config = {
+	font: 'terminus8x16',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus8x16bold font configuration
+ */
+export const configTerminus8x16Bold: Config = {
+	font: 'terminus8x16bold',
 	colorScheme: minimalColorScheme,
 };
 
@@ -80,6 +96,38 @@ export const config8x16: Config = {
  */
 export const config6x10: Config = {
 	font: '6x10',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus10x18 font configuration
+ */
+export const configTerminus10x18: Config = {
+	font: 'terminus10x18',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus10x18bold font configuration
+ */
+export const configTerminus10x18Bold: Config = {
+	font: 'terminus10x18bold',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus12x24 font configuration
+ */
+export const configTerminus12x24: Config = {
+	font: 'terminus12x24',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for terminus12x24bold font configuration
+ */
+export const configTerminus12x24Bold: Config = {
+	font: 'terminus12x24bold',
 	colorScheme: minimalColorScheme,
 };
 
@@ -105,6 +153,22 @@ export const characterDimensions8x16 = {
 export const characterDimensions6x10 = {
 	width: 6,
 	height: 10,
+};
+
+/**
+ * Standard character dimensions for terminus10x18 font
+ */
+export const characterDimensionsTerminus10x18 = {
+	width: 10,
+	height: 18,
+};
+
+/**
+ * Standard character dimensions for terminus12x24 font
+ */
+export const characterDimensionsTerminus12x24 = {
+	width: 12,
+	height: 24,
 };
 
 /**

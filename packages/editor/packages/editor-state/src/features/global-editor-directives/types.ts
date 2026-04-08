@@ -15,7 +15,16 @@ export interface ParsedGlobalEditorDirective {
 
 export interface ResolvedGlobalEditorDirectives {
 	/** Selected editor font from `; @font <font>` directives */
-	font?: '8x16' | '6x10' | '16x32';
+	font?:
+		| 'bios8x16'
+		| 'terminus8x16'
+		| 'terminus8x16bold'
+		| '6x10'
+		| 'terminus10x18'
+		| 'terminus10x18bold'
+		| 'terminus12x24'
+		| 'terminus12x24bold'
+		| '16x32';
 	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
 	infoOverlay?: boolean;
 	/** Export file base name from `; @exportFileName <value>` directives */

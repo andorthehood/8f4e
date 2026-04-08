@@ -85,7 +85,16 @@ export interface ColorScheme {
 	};
 }
 
-export type Font = '6x10' | '8x16' | '16x32';
+export type Font =
+	| '6x10'
+	| 'bios8x16'
+	| 'terminus8x16'
+	| 'terminus8x16bold'
+	| 'terminus10x18'
+	| 'terminus10x18bold'
+	| 'terminus12x24'
+	| 'terminus12x24bold'
+	| '16x32';
 
 export interface Config {
 	colorScheme?: ColorScheme;

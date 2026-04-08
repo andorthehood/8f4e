@@ -16,7 +16,7 @@ Examples:
 ; @watch counter
 ; @plot audioBuffer -2 2 lengthMemory
 ; @button gate0 0 1
-; @font 8x16
+; @font bios8x16
 ```
 
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
@@ -32,8 +32,15 @@ Select the editor font used for rendering code blocks and UI text.
 ```
 
 Supported fonts:
-- `8x16`
+
+- `bios8x16`
+- `terminus8x16`
+- `terminus8x16bold`
 - `6x10`
+- `terminus10x18`
+- `terminus10x18bold`
+- `terminus12x24`
+- `terminus12x24bold`
 - `16x32`
 
 ### `@infoOverlay`
@@ -45,10 +52,12 @@ Enable or disable the editor info overlay for the project.
 ```
 
 Accepted values:
+
 - `on`
 - `off`
 
 Aliases:
+
 - `true` -> `on`
 - `false` -> `off`
 
@@ -61,6 +70,7 @@ Set the rendered wire thickness in pixels.
 ```
 
 Accepted values:
+
 - any number from `1` to `100`
 
 ### `@watch`
@@ -103,6 +113,7 @@ Show the module's 1-based compile order number.
 ```
 
 Notes:
+
 - This reflects compile/layout order.
 - The first module shows `1`, the sixteenth shows `16`.
 
@@ -115,6 +126,7 @@ Draw an array plot for an array memory id.
 ```
 
 Defaults:
+
 - `minValue`: `-8`
 - `maxValue`: `8`
 
@@ -143,6 +155,7 @@ Render a momentary button bound to a memory id.
 ```
 
 Defaults:
+
 - `offValue`: `0`
 - `onValue`: `1`
 
@@ -155,6 +168,7 @@ Render a toggle switch bound to a memory id.
 ```
 
 Defaults:
+
 - `offValue`: `0`
 - `onValue`: `1`
 
@@ -167,6 +181,7 @@ Render a piano keyboard control.
 ```
 
 Notes:
+
 - `pressedKeysListMemoryId` is used as both keyboard id and pressed-key array memory id.
 - `startingMidiNote` defaults to `0`.
 
@@ -179,6 +194,7 @@ Apply code-block visual position offset from an integer memory value.
 ```
 
 Where:
+
 - `axis` is `x` or `y`.
 
 ### `@color`
@@ -208,6 +224,7 @@ Define a visual tab stop for literal tab characters within the code block.
 ```
 
 Notes:
+
 - Each position must be a positive integer visual column.
 - One `@tab` directive defines the full active stop list at that point in the block.
 - If another valid `@tab` directive appears later, it replaces the active stop list from that line onward.
@@ -237,6 +254,7 @@ Define a named binary asset URL for later loading.
 ```
 
 Notes:
+
 - Allowed in any block type.
 - If the same `id` is defined multiple times, the last definition wins.
 - Asset size constants are auto-generated in the env block as `ASSET_<ID>_SIZE`.
@@ -250,6 +268,7 @@ Load a previously defined asset into a memory location.
 ```
 
 Notes:
+
 - Allowed in any block type.
 - Directives are evaluated in project order and use last-write-wins for duplicate paths.
 - Invalid paths/values are ignored with a console warning.
@@ -281,6 +300,7 @@ Mark a code block as the home block for initial viewport placement.
 When a project loads, the viewport centers on the first code block containing the `@home` directive. If no code block contains `@home`, the viewport defaults to position `(0,0)`.
 
 **Behavior:**
+
 - **Project Load**: On load, viewport centers on the first block with `@home` (determined by code block order).
 - **Multiple @home**: If multiple blocks have `@home`, only the first one (by project order) is used.
 - **No @home**: If no blocks have `@home`, viewport defaults to `(0,0)`.
@@ -290,6 +310,7 @@ When a project loads, the viewport centers on the first code block containing th
 The canonical format is exactly: `; @home`
 
 Example:
+
 ```txt
 module mainOscillator
 ; @home
@@ -299,6 +320,7 @@ moduleEnd
 ```
 
 **Important:**
+
 - Use `@home` to define the starting view for your project.
 - Only one `@home` directive takes effect (the first block in project order).
 
@@ -311,6 +333,7 @@ Hide everything after the directive line while the block is not selected.
 ```
 
 Notes:
+
 - Everything after the `@hide` line is hidden while the block is unselected.
 - Selecting the block expands the full source again for editing.
 - Directives with arguments are ignored.
@@ -328,6 +351,7 @@ Mark a code block as disabled to exclude it from compilation.
 When a code block contains this directive, it is excluded from compilation and rendered with a transparent background. This is useful for temporarily disabling modules, functions, or other blocks without deleting them.
 
 **Behavior:**
+
 - **Project Load**: Disabled state is parsed from `@disabled` directive. Blocks without the directive are enabled by default.
 - **Context Menu**: Use "Disable <blockLabel>" or "Enable <blockLabel>" menu items to toggle the directive.
 - **Compilation**: Disabled blocks are filtered out before compilation, so they don't affect the compiled program.
@@ -337,6 +361,7 @@ When a code block contains this directive, it is excluded from compilation and r
 The canonical format is exactly: `; @disabled`
 
 Example:
+
 ```txt
 module debugOscillator
 ; @disabled
@@ -346,6 +371,7 @@ moduleEnd
 ```
 
 **Important:**
+
 - The `@disabled` directive is the source of truth for disabled state in saved projects.
 - You can manually add or remove the directive to enable/disable blocks.
 - Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
@@ -361,12 +387,14 @@ Set the cached replay opacity of a code block in the editor.
 When present, this directive controls the opacity of the block's cached main body when it is rendered through the cache path.
 
 **Rules:**
+
 - The value must be a finite number between `0` and `1` inclusive.
 - `0` means fully transparent cached replay.
 - `1` means fully opaque cached replay.
 - Missing, malformed, negative, or greater-than-`1` values are ignored and the block falls back to `1`.
 
 **Behavior:**
+
 - **Cached Rendering Only**: The opacity is applied only when the block is drawn from its cached texture.
 - **Uncached Rendering**: Selected blocks and any other uncached draw path ignore `@opacity` and render normally.
 - **Overlays**: Widgets and overlays drawn after the cached block body are unaffected.
@@ -376,6 +404,7 @@ When present, this directive controls the opacity of the block's cached main bod
 The canonical format is: `; @opacity <value>`
 
 Example:
+
 ```txt
 module hud
 ; @opacity 0.65
@@ -385,6 +414,7 @@ moduleEnd
 ```
 
 **Important:**
+
 - Only the first valid `@opacity` directive in a block takes effect; later ones are ignored.
 - This directive affects editor rendering only. It does not change compilation or serialized position/state behavior.
 - If you need full-block fading including uncached overlays, that is outside the current behavior.
@@ -400,12 +430,14 @@ Define the grid position of a code block in the editor.
 This directive stores the position of a code block within the project.
 
 **Rules:**
+
 - `gridX` and `gridY` must be strict integers (floats are rejected)
 - Negative values are allowed
 - Multiple `@pos` directives in one block are treated as invalid (position defaults to `0,0`)
 - Malformed values (non-integers) are treated as invalid (position defaults to `0,0`)
 
 **Behavior:**
+
 - **Project Load**: Position is parsed from `@pos` directive. Missing or invalid directive defaults to `(0,0)`
 - **Code Edit**: If you manually edit `@pos` to valid values, the block immediately moves to that position
 - **Dragging**: When you drag a block, `@pos` is automatically updated when the drag ends (not during the drag)
@@ -416,6 +448,7 @@ This directive stores the position of a code block within the project.
 The canonical format is exactly: `; @pos ${gridX} ${gridY}`
 
 Example:
+
 ```txt
 module oscillator
 ; @pos 10 20
@@ -425,6 +458,7 @@ moduleEnd
 ```
 
 **Important:**
+
 - The `@pos` directive is the source of truth for block position in saved projects
 - During drag, `@pos` updates only on drag end (not during the drag)
 - When `@viewport` is also present, `@pos` stores the inward offset from the anchored corner instead of world-space coordinates (see `@viewport`)
@@ -440,12 +474,14 @@ Pin a code block to a viewport corner so it stays visible as you pan around the 
 When this directive is present, `@pos` is interpreted as an **inward offset** from the specified corner of the visible viewport instead of world-space grid coordinates.
 
 **Accepted values:**
+
 - `top-left`
 - `top-right`
 - `bottom-left`
 - `bottom-right`
 
 **Offset semantics** — positive `@pos` values always move inward from the anchored edges:
+
 - `top-left`: `+x` moves right, `+y` moves down
 - `top-right`: `+x` moves left, `+y` moves down
 - `bottom-left`: `+x` moves right, `+y` moves up
@@ -460,12 +496,14 @@ Viewport-anchored blocks are always clamped to remain visible. If a block would 
 Dragging a viewport-anchored block works normally. When the drag ends, `@pos` is rewritten in anchored coordinates (not world-space), and `@viewport` is left unchanged.
 
 **Important:**
+
 - `@viewport` changes how `@pos` is interpreted but does **not** replace it. `@pos` remains the only persisted coordinate.
 - When `@viewport` is absent the block uses normal world-space placement.
 - Only the first `@viewport` directive in a block takes effect; duplicates are ignored.
 - An unknown anchor value (anything other than the four listed above) is treated as if `@viewport` were absent.
 
 Example:
+
 ```txt
 module hud
 ; @viewport top-right
@@ -493,11 +531,13 @@ Clicking a normal block brings it to the front of the normal segment only; it ne
 Clicking an always-on-top block brings it to the front of the always-on-top segment.
 
 **Important:**
+
 - Rendering and hit-testing both derive from the same `codeBlocks` array order; no separate rendering pass is used.
 - The directive takes no arguments; any text after `@alwaysOnTop` is ignored.
 - `@alwaysOnTop` is compatible with `@viewport`; a viewport-anchored block may also be always-on-top.
 
 Example:
+
 ```txt
 module overlay
 ; @alwaysOnTop
@@ -544,6 +584,7 @@ When a code block belongs to a group, the context menu provides these actions:
 - **Ungroup "<groupName>"**: Removes the `@group` directive from all blocks in the group
 
 Notes:
+
 - Group names are case-sensitive.
 - Group names can contain letters, numbers, hyphens, and underscores.
 - Group names should not contain spaces (the first token after @group is used as the group name).
@@ -561,6 +602,7 @@ The editor supports two clipboard formats for copying and pasting code blocks:
 When you copy a single code block (using "Copy module/function" in the context menu), it is copied to the clipboard as plain text with newline-separated code lines.
 
 **Example:**
+
 ```txt
 module oscillator
 output out 1
@@ -574,6 +616,7 @@ Pasting plain text creates a single new code block at the paste location.
 When you copy a group (using "Copy group" in the context menu), all blocks in the group are copied to the clipboard as a JSON array.
 
 **Format:**
+
 ```json
 [
   {
@@ -588,6 +631,7 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 ```
 
 **Rules:**
+
 - `gridCoordinates` are **relative offsets** used only for paste positioning (not for project storage)
 - Coordinates are relative to the copied anchor block (the selected block becomes `{x: 0, y: 0}`)
 - When pasted, final position = paste location + relative offset, then `@pos` is updated in code
@@ -598,6 +642,7 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 **Note:** The clipboard format uses `gridCoordinates` for paste mechanics only. In saved projects, both position and disabled state are stored in directives within code (`@pos` and `@disabled`), not as separate fields.
 
 **Paste Behavior:**
+
 - The editor automatically detects whether clipboard content is a multi-block array or plain text
 - A valid multi-block array must have at least 2 items with the required shape
 - Pasted blocks are placed relative to the paste location (anchor position)
@@ -613,6 +658,7 @@ When pasted blocks contain `@group` directives, group names are automatically re
 - All blocks with the same original group name get the same new group name
 
 **Examples:**
+
 - Paste `audio` when `audio` exists → becomes `audio1`
 - Paste `audio1` when `audio` and `audio1` exist → becomes `audio2`
 - Paste `bass09` when `bass09` and `bass10` exist → becomes `bass11`
@@ -620,6 +666,7 @@ When pasted blocks contain `@group` directives, group names are automatically re
 **Fallback Behavior:**
 
 Invalid clipboard content falls back to single-block paste behavior:
+
 - Non-JSON text
 - JSON that isn't an array
 - Arrays with fewer than 2 items

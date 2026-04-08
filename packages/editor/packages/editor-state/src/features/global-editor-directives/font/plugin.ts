@@ -1,8 +1,27 @@
 import { createGlobalEditorDirectivePlugin } from '../utils';
 
-type SupportedFont = '8x16' | '6x10' | '16x32';
+type SupportedFont =
+	| 'bios8x16'
+	| 'terminus8x16'
+	| 'terminus8x16bold'
+	| '6x10'
+	| 'terminus10x18'
+	| 'terminus10x18bold'
+	| 'terminus12x24'
+	| 'terminus12x24bold'
+	| '16x32';
 
-const ALLOWED_FONTS = new Set<SupportedFont>(['8x16', '6x10', '16x32']);
+const ALLOWED_FONTS = new Set<SupportedFont>([
+	'bios8x16',
+	'terminus8x16',
+	'terminus8x16bold',
+	'6x10',
+	'terminus10x18',
+	'terminus10x18bold',
+	'terminus12x24',
+	'terminus12x24bold',
+	'16x32',
+]);
 
 export default createGlobalEditorDirectivePlugin('font', (directive, draft, context) => {
 	if (directive.args.length === 0) {

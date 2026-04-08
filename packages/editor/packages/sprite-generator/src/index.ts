@@ -19,11 +19,16 @@ export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
 
-type FontData = { asciiBitmap: number[]; glyphsBitmap: number[]; characterWidth: number; characterHeight: number };
+type FontData = {
+	asciiBitmap: number[];
+	glyphsBitmap: number[];
+	characterWidth: number;
+	characterHeight: number;
+};
 
-// 8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
+// bios8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
 const fontCache: Partial<Record<Config['font'], FontData>> = {
-	'8x16': {
+	bios8x16: {
 		asciiBitmap: decodeFontBase64(ascii8x16Metadata),
 		glyphsBitmap: decodeFontBase64(glyphs8x16Metadata),
 		characterWidth: 8,
@@ -48,6 +53,84 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 			characterHeight: 10,
 		};
 		return fontCache['6x10'];
+	}
+	if (font === 'terminus8x16') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/terminus8x16/generated/ascii'),
+			import('./fonts/terminus8x16/generated/glyphs'),
+		]);
+		fontCache['terminus8x16'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 8,
+			characterHeight: 16,
+		};
+		return fontCache['terminus8x16'];
+	}
+	if (font === 'terminus8x16bold') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/terminus8x16bold/generated/ascii'),
+			import('./fonts/terminus8x16bold/generated/glyphs'),
+		]);
+		fontCache['terminus8x16bold'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 8,
+			characterHeight: 16,
+		};
+		return fontCache['terminus8x16bold'];
+	}
+	if (font === 'terminus10x18') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/terminus10x18/generated/ascii'),
+			import('./fonts/terminus10x18/generated/glyphs'),
+		]);
+		fontCache['terminus10x18'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 10,
+			characterHeight: 18,
+		};
+		return fontCache['terminus10x18'];
+	}
+	if (font === 'terminus10x18bold') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/terminus10x18bold/generated/ascii'),
+			import('./fonts/terminus10x18bold/generated/glyphs'),
+		]);
+		fontCache['terminus10x18bold'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 10,
+			characterHeight: 18,
+		};
+		return fontCache['terminus10x18bold'];
+	}
+	if (font === 'terminus12x24') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/terminus12x24/generated/ascii'),
+			import('./fonts/terminus12x24/generated/glyphs'),
+		]);
+		fontCache['terminus12x24'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 12,
+			characterHeight: 24,
+		};
+		return fontCache['terminus12x24'];
+	}
+	if (font === 'terminus12x24bold') {
+		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+			import('./fonts/terminus12x24bold/generated/ascii'),
+			import('./fonts/terminus12x24bold/generated/glyphs'),
+		]);
+		fontCache['terminus12x24bold'] = {
+			asciiBitmap: decodeFontBase64(asciiMetadata),
+			glyphsBitmap: decodeFontBase64(glyphsMetadata),
+			characterWidth: 12,
+			characterHeight: 24,
+		};
+		return fontCache['terminus12x24bold'];
 	}
 
 	const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([

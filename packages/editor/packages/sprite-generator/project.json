@@ -7,7 +7,13 @@
       "executor": "nx:run-commands",
       "outputs": [
         "{projectRoot}/src/fonts/8x16/generated",
+        "{projectRoot}/src/fonts/terminus8x16/generated",
+        "{projectRoot}/src/fonts/terminus8x16bold/generated",
         "{projectRoot}/src/fonts/6x10/generated",
+        "{projectRoot}/src/fonts/terminus10x18/generated",
+        "{projectRoot}/src/fonts/terminus10x18bold/generated",
+        "{projectRoot}/src/fonts/terminus12x24/generated",
+        "{projectRoot}/src/fonts/terminus12x24bold/generated",
         "{projectRoot}/src/fonts/16x32/generated"
       ],
       "options": {
