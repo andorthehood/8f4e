@@ -1,8 +1,8 @@
+import { FONT_NAMES, type Font } from '@8f4e/sprite-generator';
+
 import { createGlobalEditorDirectivePlugin } from '../utils';
 
-type SupportedFont = '8x16' | '6x10' | '16x32';
-
-const ALLOWED_FONTS = new Set<SupportedFont>(['8x16', '6x10', '16x32']);
+const ALLOWED_FONTS = new Set<Font>(FONT_NAMES);
 
 export default createGlobalEditorDirectivePlugin('font', (directive, draft, context) => {
 	if (directive.args.length === 0) {
@@ -14,7 +14,7 @@ export default createGlobalEditorDirectivePlugin('font', (directive, draft, cont
 		return;
 	}
 
-	const value = directive.args[0] as SupportedFont;
+	const value = directive.args[0] as Font;
 	if (!ALLOWED_FONTS.has(value)) {
 		draft.errors.push({
 			lineNumber: directive.rawRow,
