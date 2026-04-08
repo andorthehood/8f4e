@@ -77,14 +77,12 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
     "lineNumberBeforeMacroExpansion": 5,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "float",
-      },
-    ],
+    "arguments": [],
+    "ifBlock": {
+      "hasElse": true,
+      "matchingIfEndIndex": 9,
+      "resultType": "float",
+    },
     "instruction": "if",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -128,7 +126,18 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
     "lineNumberBeforeMacroExpansion": 9,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "float",
+      },
+    ],
+    "ifEndBlock": {
+      "matchingIfIndex": 5,
+      "resultType": "float",
+    },
     "instruction": "ifEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -280,14 +289,12 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
     "lineNumberBeforeMacroExpansion": 5,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "int",
-      },
-    ],
+    "arguments": [],
+    "ifBlock": {
+      "hasElse": true,
+      "matchingIfEndIndex": 9,
+      "resultType": "int",
+    },
     "instruction": "if",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -331,7 +338,18 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
     "lineNumberBeforeMacroExpansion": 9,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "ifEndBlock": {
+      "matchingIfIndex": 5,
+      "resultType": "int",
+    },
     "instruction": "ifEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -469,14 +487,12 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
     "lineNumberBeforeMacroExpansion": 4,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "void",
-      },
-    ],
+    "arguments": [],
+    "ifBlock": {
+      "hasElse": true,
+      "matchingIfEndIndex": 12,
+      "resultType": null,
+    },
     "instruction": "if",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -565,6 +581,10 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
   },
   {
     "arguments": [],
+    "ifEndBlock": {
+      "matchingIfIndex": 4,
+      "resultType": null,
+    },
     "instruction": "ifEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,

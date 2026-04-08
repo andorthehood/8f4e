@@ -419,7 +419,12 @@
     "instruction": "if",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifBlock": {
+      "matchingIfEndIndex": 33,
+      "resultType": "int",
+      "hasElse": true
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 61,
@@ -470,7 +475,11 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifEndBlock": {
+      "matchingIfIndex": 29,
+      "resultType": "int"
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 66,
