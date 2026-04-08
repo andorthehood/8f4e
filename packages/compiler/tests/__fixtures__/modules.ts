@@ -19,13 +19,13 @@ export default [
             push input
             push 0
             lessThan
-            if 
+            if
                 push 0
                 push input
                 sub
             else
                 push input
-                ifEnd
+            ifEnd int
             store
             moduleEnd
         `.split('\n'),

@@ -29,6 +29,8 @@ type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> 
 	arguments: Arguments;
 	isSemanticOnly?: boolean;
 	isMemoryDeclaration?: boolean;
+	ifBlock?: IfBlockMetadata;
+	ifEndBlock?: IfEndBlockMetadata;
 };
 
 export type ASTLine = ASTLineBase<string, Array<Argument>>;
@@ -39,6 +41,22 @@ export type ParsedLineMetadata = Array<{ callSiteLineNumber: number; macroId?: s
 
 export type PushArgument = ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression;
 export type PushLine = ASTLineBase<'push', [PushArgument]>;
+
+export type IfBlockResultType = 'int' | 'float' | null;
+
+export interface IfBlockMetadata {
+	matchingIfEndIndex: number;
+	resultType: IfBlockResultType;
+	hasElse: boolean;
+}
+
+export interface IfEndBlockMetadata {
+	matchingIfIndex: number;
+	resultType: IfBlockResultType;
+}
+
+export type IfLine = ASTLineBase<'if', []>;
+export type IfEndLine = ASTLineBase<'ifEnd', [] | [ArgumentIdentifier]>;
 
 export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
 export type LocalVariableAccessLine = LocalSetLine;

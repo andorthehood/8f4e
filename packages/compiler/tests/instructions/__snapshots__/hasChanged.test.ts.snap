@@ -85,14 +85,12 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
     "lineNumberBeforeMacroExpansion": 7,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "int",
-      },
-    ],
+    "arguments": [],
+    "ifBlock": {
+      "hasElse": true,
+      "matchingIfEndIndex": 10,
+      "resultType": "int",
+    },
     "instruction": "if",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -136,7 +134,18 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
     "lineNumberBeforeMacroExpansion": 11,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "ifEndBlock": {
+      "matchingIfIndex": 6,
+      "resultType": "int",
+    },
     "instruction": "ifEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -306,14 +315,12 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
     "lineNumberBeforeMacroExpansion": 7,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "int",
-      },
-    ],
+    "arguments": [],
+    "ifBlock": {
+      "hasElse": true,
+      "matchingIfEndIndex": 10,
+      "resultType": "int",
+    },
     "instruction": "if",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -357,7 +364,18 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
     "lineNumberBeforeMacroExpansion": 11,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "ifEndBlock": {
+      "matchingIfIndex": 6,
+      "resultType": "int",
+    },
     "instruction": "ifEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,

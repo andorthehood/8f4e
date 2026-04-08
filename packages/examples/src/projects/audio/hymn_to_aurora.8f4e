@@ -230,7 +230,7 @@ use env
 
 push period
 equalToZero
-if void
+if
 push 0.0
 return
 ifEnd
@@ -386,7 +386,7 @@ push tempo
 ensureNonZero
 div
 greaterThan
-if void
+if
 push &counter
 push 0
 store
@@ -531,7 +531,7 @@ store
 push pointer
 push buffer&
 greaterThan 
-if void
+if
 push &pointer
 push &buffer
 store
@@ -569,7 +569,7 @@ store
 push pointer
 push buffer& 
 greaterThan 
-if void
+if
 push &pointer
 push &buffer
 store
@@ -627,7 +627,7 @@ store
 ; Advance the playhead
 push *trigger
 risingEdge
-if void
+if
 push &rowCounter
 push rowCounter
 push 1
@@ -638,7 +638,7 @@ ifEnd
 push rowCounter
 push 64
 equal
-if void
+if
 push &rowCounter
 push 0
 store
@@ -653,7 +653,7 @@ ifEnd
 push patternPointer
 push patternOrder:&
 greaterThan
-if void
+if
 push &patternPointer
 push &patternOrder:
 store
@@ -687,7 +687,7 @@ store
 
 push *trigger
 risingEdge
-if void
+if
 push &_playing
 push 1
 store
@@ -712,7 +712,7 @@ store
 
 ; Advance the playhead
 push _playing
-if void
+if
 push &_position
 push _position
 push *period
@@ -728,7 +728,7 @@ castToInt
 push *sampleNumber
 call sampleNumberToSize
 greaterThan
-if void
+if
 push &_playing
 push 0
 store
@@ -764,7 +764,7 @@ store
 
 push *trigger
 risingEdge
-if void
+if
 push &_playing
 push 1
 store
@@ -789,7 +789,7 @@ store
 
 ; Advance the playhead
 push _playing
-if void
+if
 push &_position
 push _position
 push *period
@@ -805,7 +805,7 @@ castToInt
 push *sampleNumber
 call sampleNumberToSize
 greaterThan
-if void
+if
 push &_playing
 push 0
 store
@@ -839,7 +839,7 @@ store
 
 push *trigger
 risingEdge
-if void
+if
 push &_playing
 push 1
 store
@@ -864,7 +864,7 @@ store
 
 ; Advance the playhead
 push _playing
-if void
+if
 push &_position
 push _position
 push *period
@@ -884,7 +884,7 @@ push *sampleNumber
 call sampleNumberToRepeatLen
 greaterThan
 and
-if void
+if
 push &_position
 push 0.0
 store
@@ -897,7 +897,7 @@ castToInt
 push *sampleNumber
 call sampleNumberToSize
 greaterThan
-if void
+if
 push &_playing
 push 0
 store
@@ -931,7 +931,7 @@ store
 
 push *trigger
 risingEdge
-if void
+if
 push &_playing
 push 1
 store
@@ -956,7 +956,7 @@ store
 
 ; Advance the playhead
 push _playing
-if void
+if
 push &_position
 push _position
 push *period
@@ -976,7 +976,7 @@ push *sampleNumber
 call sampleNumberToRepeatLen
 greaterThan
 and
-if void
+if
 push &_position
 push 0.0
 store
@@ -989,7 +989,7 @@ castToInt
 push *sampleNumber
 call sampleNumberToSize
 greaterThan
-if void
+if
 push &_playing
 push 0
 store
@@ -1058,7 +1058,7 @@ push *row
 call maskPeriod
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1079,7 +1079,7 @@ push *row
 call maskPeriod
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1100,7 +1100,7 @@ push *row
 call maskPeriod
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1121,7 +1121,7 @@ push *row
 call maskPeriod
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1389,7 +1389,7 @@ push *row
 call maskSampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskSampleNumber
@@ -1411,7 +1411,7 @@ push *row
 call maskSampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskSampleNumber
@@ -1433,7 +1433,7 @@ push *row
 call maskSampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskSampleNumber
@@ -1455,7 +1455,7 @@ push *row
 call maskSampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *row
 call maskSampleNumber
@@ -1514,7 +1514,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
@@ -1545,7 +1545,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
@@ -1576,7 +1576,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
@@ -1607,7 +1607,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
@@ -1634,7 +1634,7 @@ push 0
 store
 push *rowCounter
 hasChanged
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1660,7 +1660,7 @@ push 0
 store
 push *rowCounter
 hasChanged
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1686,7 +1686,7 @@ push 0
 store
 push *rowCounter
 hasChanged
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1710,7 +1710,7 @@ push 0
 store
 push *rowCounter
 hasChanged
-if void
+if
 push &out
 push *row
 call maskPeriod
@@ -1770,7 +1770,7 @@ int out
 push *sampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *sampleNumber
 call sampleNumberToVolume
@@ -1782,7 +1782,7 @@ push *row
 call maskEffect
 push SET_VOLUME
 equal
-if void
+if
 push &out
 push *row
 call maskParam
@@ -1805,7 +1805,7 @@ int out
 push *sampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *sampleNumber
 call sampleNumberToVolume
@@ -1817,7 +1817,7 @@ push *row
 call maskEffect
 push SET_VOLUME
 equal
-if void
+if
 push &out
 push *row
 call maskParam
@@ -1840,7 +1840,7 @@ int out
 push *sampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *sampleNumber
 call sampleNumberToVolume
@@ -1852,7 +1852,7 @@ push *row
 call maskEffect
 push SET_VOLUME
 equal
-if void
+if
 push &out
 push *row
 call maskParam
@@ -1875,7 +1875,7 @@ int out
 push *sampleNumber
 push 0
 greaterThan
-if void
+if
 push &out
 push *sampleNumber
 call sampleNumberToVolume
@@ -1887,7 +1887,7 @@ push *row
 call maskEffect
 push SET_VOLUME
 equal
-if void
+if
 push &out
 push *row
 call maskParam

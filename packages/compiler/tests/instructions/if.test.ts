@@ -8,11 +8,11 @@ int output
 
 push &output
  push input
- if int
+ if
   push 1
  else
   push -1
- ifEnd
+ ifEnd int
 store
 
 moduleEnd
@@ -29,11 +29,11 @@ float output
 
 push &output
  push input
- if float
+ if
   push 1.1
  else
   push -1.1
- ifEnd
+ ifEnd float
 store
 
 moduleEnd
@@ -49,7 +49,7 @@ int input
 int output
 
 push input
-if void
+if
  push &output
   push 1
  store

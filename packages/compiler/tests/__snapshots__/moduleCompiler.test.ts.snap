@@ -226,6 +226,11 @@ exports[`moduleCompiler > ast 1`] = `
   },
   {
     "arguments": [],
+    "ifBlock": {
+      "hasElse": true,
+      "matchingIfEndIndex": 20,
+      "resultType": "int",
+    },
     "instruction": "if",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -293,7 +298,18 @@ exports[`moduleCompiler > ast 1`] = `
     "lineNumberBeforeMacroExpansion": 26,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "ifEndBlock": {
+      "matchingIfIndex": 14,
+      "resultType": "int",
+    },
     "instruction": "ifEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,

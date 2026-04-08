@@ -1,6 +1,7 @@
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
 import { ErrorCode, getError } from '../compilerError';
 import { BLOCK_TYPE } from '../types';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -18,7 +19,7 @@ const _else: InstructionCompiler = withValidation(
 	(line, context) => {
 		const block = context.blockStack.pop();
 
-		if (!block) {
+		if (!block || block.blockType !== BLOCK_TYPE.CONDITION) {
 			throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 		}
 
@@ -55,7 +56,7 @@ if (import.meta.vitest) {
 				blockStack: [
 					...createInstructionCompilerTestContext().blockStack,
 					{
-						blockType: BLOCK_TYPE.BLOCK,
+						blockType: BLOCK_TYPE.CONDITION,
 						expectedResultIsInteger: true,
 						hasExpectedResult: true,
 					},

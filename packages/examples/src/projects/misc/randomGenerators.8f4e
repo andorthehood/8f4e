@@ -117,7 +117,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store
@@ -147,7 +147,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store

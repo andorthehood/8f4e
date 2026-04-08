@@ -82,10 +82,10 @@ store
 
 push *trigger
 risingEdge
-if void
+if
  ; only pulse on edge and active step
  push stepValue
- if void
+ if
   push &out
   push 1
   store
@@ -152,11 +152,11 @@ Bad:
 ; repeated defensive checks every cycle
 push *trigger
 risingEdge
-if void
+if
  push *lengthIn
  push 0
  lessOrEqual
- if void
+ if
   push &_index
   push 0
   store
@@ -164,7 +164,7 @@ if void
   push _index
   push *lengthIn
   greaterOrEqual
-  if void
+  if
    push &_index
    push 0
    store
@@ -179,7 +179,7 @@ Good:
 ; wiring guarantees valid range, so hot path stays lean
 push *trigger
 risingEdge
-if void
+if
  ; ...real work...
 
  push &_offset
@@ -194,7 +194,7 @@ if void
  add
  push *bufferEndIn
  greaterThan
- if void
+ if
   push &_offset
   push 0
   store

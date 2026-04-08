@@ -291,7 +291,7 @@ if (import.meta.vitest) {
 				'push pointer',
 				'push buffer&',
 				'greaterThan',
-				'if void',
+				'if',
 				'  push &pointer',
 				'  push &buffer',
 				'  store',

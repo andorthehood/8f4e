@@ -37,7 +37,7 @@ const abs: InstructionCompiler = withValidation(
 					' sub',
 					'else',
 					` push ${valueName}`,
-					'ifEnd',
+					'ifEnd int',
 				],
 				context
 			);

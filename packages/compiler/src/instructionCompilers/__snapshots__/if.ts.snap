@@ -21,7 +21,7 @@ exports[`if instruction compiler > emits a float if block 1`] = `
 }
 `;
 
-exports[`if instruction compiler > emits a void if block 1`] = `
+exports[`if instruction compiler > emits a void if block when given no arguments 1`] = `
 {
   "blockStack": [
     {
@@ -38,6 +38,48 @@ exports[`if instruction compiler > emits a void if block 1`] = `
   "byteCode": [
     4,
     64,
+  ],
+}
+`;
+
+exports[`if instruction compiler > emits a void if block when the matching ifEnd declares no result 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 2,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "byteCode": [
+    4,
+    64,
+  ],
+}
+`;
+
+exports[`if instruction compiler > emits an int if block 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 2,
+      "expectedResultIsInteger": true,
+      "hasExpectedResult": true,
+    },
+  ],
+  "byteCode": [
+    4,
+    127,
   ],
 }
 `;

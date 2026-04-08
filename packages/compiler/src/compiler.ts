@@ -45,7 +45,8 @@ export function compileSegment(
 	context: CompilationContext,
 	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
 ) {
-	compileToAST(code, lineMetadata).forEach(originalLine => {
+	const rawAst = compileToAST(code, lineMetadata);
+	rawAst.forEach(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
 	});

@@ -26,7 +26,7 @@ int attacking 0
 
 push *trigger
 risingEdge
-if void
+if
 push &attacking
 push 1
 store
@@ -35,7 +35,7 @@ ifEnd
 push attacking
 push 0
 greaterThan
-if void
+if
 push &out
 push out
 push *attackRate
@@ -52,7 +52,7 @@ ifEnd
 push out
 push 1.0
 greaterThan
-if void
+if
 push &attacking
 push 0
 store
@@ -61,7 +61,7 @@ ifEnd
 push out
 push 0.0
 lessThan
-if void
+if
 push &out
 push 0.0
 store
@@ -104,7 +104,7 @@ store
 push pointer
 push buffer&
 greaterThan
-if void
+if
 push &pointer
 push &buffer
 store
@@ -557,7 +557,7 @@ store
 push phase
 push PI
 greaterThan
-if void
+if
 push &phase
 push NEG_PI
 store
@@ -587,7 +587,7 @@ use math
 push x
 push HALF_PI
 greaterThan
-if void
+if
 push PI
 push x
 sub
@@ -599,7 +599,7 @@ push HALF_PI
 push -1.0
 mul
 lessThan
-if void
+if
 push PI
 push -1.0
 mul
