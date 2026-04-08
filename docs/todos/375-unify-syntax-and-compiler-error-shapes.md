@@ -3,8 +3,8 @@ title: 'TODO: Unify syntax and compiler error shapes'
 priority: Medium
 effort: 4-8h
 created: 2026-04-08
-status: Open
-completed: null
+status: Done
+completed: 2026-04-08
 ---
 
 # TODO: Unify syntax and compiler error shapes
