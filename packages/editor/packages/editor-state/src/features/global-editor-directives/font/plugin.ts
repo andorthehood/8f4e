@@ -1,5 +1,6 @@
 import { FONT_NAMES, type Font } from '@8f4e/sprite-generator';
 
+import { formatDidYouMeanSuffix } from '../suggestions';
 import { createGlobalEditorDirectivePlugin } from '../utils';
 
 const ALLOWED_FONTS = new Set<Font>(FONT_NAMES);
@@ -18,7 +19,7 @@ export default createGlobalEditorDirectivePlugin('font', (directive, draft, cont
 	if (!ALLOWED_FONTS.has(value)) {
 		draft.errors.push({
 			lineNumber: directive.rawRow,
-			message: `@font: unsupported font '${value}'`,
+			message: `@font: unsupported font '${value}'${formatDidYouMeanSuffix(value, FONT_NAMES)}`,
 			codeBlockId: context.codeBlockId,
 		});
 		return;

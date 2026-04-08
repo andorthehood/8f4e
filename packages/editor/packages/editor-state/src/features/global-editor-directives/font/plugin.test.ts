@@ -141,4 +141,15 @@ describe('@font directive', () => {
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].message).toContain('unsupported font');
 	});
+
+	it('suggests the closest supported font for typos', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font terminus8x16bld', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBeUndefined();
+		expect(result.errors).toHaveLength(1);
+		expect(result.errors[0].message).toContain("Did you mean 'terminus8x16bold'?");
+	});
 });

@@ -85,4 +85,15 @@ describe('@infoOverlay directive', () => {
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].message).toContain('unsupported value');
 	});
+
+	it('suggests the closest supported value for typos', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @infoOverlay of', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.infoOverlay).toBeUndefined();
+		expect(result.errors).toHaveLength(1);
+		expect(result.errors[0].message).toContain("Did you mean 'off'?");
+	});
 });
