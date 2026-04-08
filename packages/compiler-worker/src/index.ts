@@ -1,5 +1,4 @@
-import { CompileOptions, Module } from '@8f4e/compiler';
-import { serializeDiagnostic } from '@8f4e/compiler';
+import { CompileOptions, Module, serializeDiagnostic } from '@8f4e/compiler';
 
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
