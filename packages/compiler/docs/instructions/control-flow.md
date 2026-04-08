@@ -2,26 +2,26 @@
 
 ### block
 
-The block instruction starts a new block. It accepts an optional result type (`int`, `float`, or `void`) to declare whether the block must leave a value on the stack.
+The block instruction starts a new block. It takes no arguments.
 
 #### Examples
 
 ```
-block int
+block
  push 1
-blockEnd
+blockEnd int
 ```
 
 ### blockEnd
 
-The blockEnd instruction ends a block and validates any expected result value for the block.
+The blockEnd instruction ends a block and validates any expected result value for the block. It accepts an optional result type (`int` or `float`) to declare whether the block must leave a value on the stack. A bare `blockEnd` means the block produces no result.
 
 #### Examples
 
 ```
-block float
+block
  push 1.25
-blockEnd
+blockEnd float
 ```
 
 ### branch
@@ -31,8 +31,8 @@ The branch instruction performs an unconditional branch out of nested blocks. Th
 #### Examples
 
 ```
-block void
- block void
+block
+ block
   branch 1
  blockEnd
 blockEnd
@@ -45,8 +45,8 @@ The branchIfTrue instruction consumes an integer value from the stack and branch
 #### Examples
 
 ```
-block void
- block void
+block
+ block
   push 1
   branchIfTrue 1
  blockEnd
@@ -60,7 +60,7 @@ The branchIfUnchanged instruction consumes a value, compares it to the previous 
 #### Examples
 
 ```
-block void
+block
  push 2
  branchIfUnchanged 0
  push 2
