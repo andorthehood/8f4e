@@ -7,7 +7,7 @@ import { ArgumentType, parseArgument } from './syntax/parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
 
-import type { AST, ASTLine, IfBlockResultType, ParsedLineMetadata } from './types';
+import type { AST, ASTLine, BlockBlockResultType, IfBlockResultType, ParsedLineMetadata } from './types';
 
 type BlockStartInstruction = 'if' | 'block' | 'loop' | 'function' | 'module' | 'constants' | 'mapBegin';
 type BlockEndInstruction = 'ifEnd' | 'blockEnd' | 'loopEnd' | 'functionEnd' | 'moduleEnd' | 'constantsEnd' | 'mapEnd';
@@ -38,7 +38,7 @@ const blockEndToStartInstruction: Record<BlockEndInstruction, BlockStartInstruct
 	mapEnd: 'mapBegin',
 };
 
-function getIfResultType(line: ASTLine): IfBlockResultType {
+function getResultTypeFromFirstArgument(line: ASTLine): IfBlockResultType {
 	const typeArgument = line.arguments[0];
 
 	if (!typeArgument || typeArgument.type !== ArgumentType.IDENTIFIER) {
@@ -46,6 +46,14 @@ function getIfResultType(line: ASTLine): IfBlockResultType {
 	}
 
 	return typeArgument.value === 'int' || typeArgument.value === 'float' ? typeArgument.value : null;
+}
+
+function getIfResultType(line: ASTLine): IfBlockResultType {
+	return getResultTypeFromFirstArgument(line);
+}
+
+function getBlockEndResultType(line: ASTLine): BlockBlockResultType {
+	return getResultTypeFromFirstArgument(line);
 }
 
 /**
@@ -218,20 +226,32 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 			);
 		}
 
-		if (endInstruction !== 'ifEnd') {
+		if (endInstruction !== 'ifEnd' && endInstruction !== 'blockEnd') {
 			continue;
 		}
 
-		const resultType = getIfResultType(parsedLine);
-		ast[openBlock.astIndex].ifBlock = {
-			matchingIfEndIndex: astIndex,
-			resultType,
-			hasElse: Boolean(openBlock.hasElse),
-		};
-		parsedLine.ifEndBlock = {
-			matchingIfIndex: openBlock.astIndex,
-			resultType,
-		};
+		if (endInstruction === 'ifEnd') {
+			const resultType = getIfResultType(parsedLine);
+			ast[openBlock.astIndex].ifBlock = {
+				matchingIfEndIndex: astIndex,
+				resultType,
+				hasElse: Boolean(openBlock.hasElse),
+			};
+			parsedLine.ifEndBlock = {
+				matchingIfIndex: openBlock.astIndex,
+				resultType,
+			};
+		} else {
+			const resultType = getBlockEndResultType(parsedLine);
+			ast[openBlock.astIndex].blockBlock = {
+				matchingBlockEndIndex: astIndex,
+				resultType,
+			};
+			parsedLine.blockEndBlock = {
+				matchingBlockIndex: openBlock.astIndex,
+				resultType,
+			};
+		}
 	}
 
 	if (blockStack.length > 0) {
@@ -312,6 +332,68 @@ if (import.meta.vitest) {
 
 		it('rejects unclosed if blocks', () => {
 			expect(() => compileToAST(['push 1', 'if', 'push 10'])).toThrowError(SyntaxRulesError);
+		});
+
+		it('pairs block with blockEnd metadata without rewriting source arguments', () => {
+			const ast = compileToAST(['block', 'push 10', 'blockEnd int']);
+
+			expect(ast[0]).toMatchObject({
+				instruction: 'block',
+				arguments: [],
+				blockBlock: {
+					matchingBlockEndIndex: 2,
+					resultType: 'int',
+				},
+			});
+			expect(ast[2]).toMatchObject({
+				instruction: 'blockEnd',
+				blockEndBlock: {
+					matchingBlockIndex: 0,
+					resultType: 'int',
+				},
+			});
+		});
+
+		it('pairs block with blockEnd float metadata', () => {
+			const ast = compileToAST(['block', 'push 1.0', 'blockEnd float']);
+
+			expect(ast[0].blockBlock).toMatchObject({
+				matchingBlockEndIndex: 2,
+				resultType: 'float',
+			});
+			expect(ast[2].blockEndBlock).toMatchObject({
+				matchingBlockIndex: 0,
+				resultType: 'float',
+			});
+		});
+
+		it('pairs bare block with bare blockEnd as no-result', () => {
+			const ast = compileToAST(['block', 'push 1', 'blockEnd']);
+
+			expect(ast[0].blockBlock).toMatchObject({
+				matchingBlockEndIndex: 2,
+				resultType: null,
+			});
+			expect(ast[2].blockEndBlock).toMatchObject({
+				matchingBlockIndex: 0,
+				resultType: null,
+			});
+		});
+
+		it('rejects block with a type argument', () => {
+			expect(() => compileToAST(['block int'])).toThrowError(SyntaxRulesError);
+		});
+
+		it('rejects blockEnd with an invalid type argument', () => {
+			expect(() => compileToAST(['block', 'blockEnd void'])).toThrowError(SyntaxRulesError);
+		});
+
+		it('rejects unexpected blockEnd without a matching block', () => {
+			expect(() => compileToAST(['blockEnd'])).toThrowError(SyntaxRulesError);
+		});
+
+		it('rejects unclosed block blocks', () => {
+			expect(() => compileToAST(['block', 'push 1'])).toThrowError(SyntaxRulesError);
 		});
 	});
 }

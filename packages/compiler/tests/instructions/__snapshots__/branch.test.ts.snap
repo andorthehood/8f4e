@@ -33,14 +33,11 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
     "lineNumberBeforeMacroExpansion": 2,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "void",
-      },
-    ],
+    "arguments": [],
+    "blockBlock": {
+      "matchingBlockEndIndex": 7,
+      "resultType": null,
+    },
     "instruction": "block",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -99,6 +96,10 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
   },
   {
     "arguments": [],
+    "blockEndBlock": {
+      "matchingBlockIndex": 2,
+      "resultType": null,
+    },
     "instruction": "blockEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,

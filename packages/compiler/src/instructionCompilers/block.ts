@@ -1,6 +1,6 @@
-import { BLOCK_TYPE } from '../types';
-
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
+import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -16,7 +16,7 @@ const block: InstructionCompiler<BlockLine> = withValidation<BlockLine>(
 		scope: 'moduleOrFunction',
 	},
 	(line: BlockLine, context) => {
-		const resultType = line.arguments[0].value;
+		const resultType = line.blockBlock?.resultType;
 
 		if (resultType === 'float') {
 			context.blockStack.push({
@@ -50,7 +50,6 @@ export default block;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('block instruction compiler', () => {
 		it('emits a typed block for float', () => {
@@ -61,7 +60,8 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
-					arguments: [classifyIdentifier('float')],
+					arguments: [],
+					blockBlock: { matchingBlockEndIndex: 2, resultType: 'float' },
 				} as AST[number],
 				context
 			);
@@ -80,7 +80,8 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
-					arguments: [classifyIdentifier('int')],
+					arguments: [],
+					blockBlock: { matchingBlockEndIndex: 2, resultType: 'int' },
 				} as AST[number],
 				context
 			);
@@ -91,7 +92,7 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('emits a void block for unknown type', () => {
+		it('emits a void block when no result type is declared', () => {
 			const context = createInstructionCompilerTestContext();
 
 			block(
@@ -99,7 +100,8 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'block',
-					arguments: [classifyIdentifier('void')],
+					arguments: [],
+					blockBlock: { matchingBlockEndIndex: 2, resultType: null },
 				} as AST[number],
 				context
 			);

@@ -8,9 +8,9 @@ int output
     
 
 push &output
-block int
+block
  push input
-blockEnd
+blockEnd int
 store
     
 moduleEnd
@@ -30,9 +30,9 @@ float output
     
 
 push &output
-block float
+block
  push input
-blockEnd
+blockEnd float
 store
     
 moduleEnd
