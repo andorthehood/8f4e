@@ -13,12 +13,12 @@ export interface CodeBlockBounds {
 }
 
 /**
- * Centers the viewport on a given code block, ensuring the top edge is always visible.
+ * Centers the viewport on a given code block, ensuring oversized blocks keep a small top margin.
  *
  * This function mutates the viewport object to position it such that the code block
  * appears centered on screen. For blocks smaller than the viewport, perfect centering
- * is achieved. For blocks larger than the viewport, the top edge is prioritized and
- * remains visible while the bottom may extend beyond the viewport.
+ * is achieved. For blocks larger than the viewport, the block is aligned near the top
+ * with a two-row margin while the bottom may extend beyond the viewport.
  *
  * @param viewport - The viewport object to mutate (will be modified in place)
  * @param codeBlock - The code block to center on
@@ -26,10 +26,10 @@ export interface CodeBlockBounds {
  * @remarks
  * **Centering Behavior:**
  * - Horizontally: Block is centered within the viewport width
- * - Vertically: Block is centered, but constrained so top edge is always visible
+ * - Vertically: Block is centered, but oversized blocks get a two-row top margin
  *
  * **Constraints:**
- * - The top edge of the code block never goes offscreen
+ * - Oversized blocks get `2 * viewport.hGrid` padding above their top edge
  * - For large blocks (taller than viewport), only the bottom may be clipped
  * - Code block offsets (offsetX, offsetY) are included in calculations
  *
@@ -49,7 +49,9 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(vie
 	const idealViewportY = blockCenterY - viewportCenterY;
 
 	const blockTop = codeBlock.y + codeBlock.offsetY;
-	const constrainedViewportY = Math.min(blockTop, idealViewportY);
+	const oversizedBlockTop = blockTop - viewport.hGrid * 2;
+	const constrainedViewportY =
+		codeBlock.height > viewport.height ? oversizedBlockTop : Math.min(blockTop, idealViewportY);
 
 	viewport.x = Math.round(idealViewportX);
 	viewport.y = Math.round(constrainedViewportY);

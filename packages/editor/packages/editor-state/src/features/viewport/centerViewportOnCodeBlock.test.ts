@@ -79,32 +79,27 @@ describe('centerViewportOnCodeBlock', () => {
 			expect(viewport.y).toBe(-50);
 		});
 
-		it('should constrain viewport Y to block top for large blocks', () => {
+		it('should add two rows of top margin for large blocks', () => {
 			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 100, 800);
 
 			centerViewportOnCodeBlock(viewport, codeBlock);
 
-			// Block center Y: 100 + 0 + 800/2 = 500
-			// Viewport center Y: 600/2 = 300
-			// Ideal viewport Y: 500 - 300 = 200
+			// Oversized blocks use a two-row top margin based on viewport.hGrid (16px).
 			// Block top: 100 + 0 = 100
-			// Constrained viewport Y: min(100, 200) = 100
-			expect(viewport.y).toBe(100);
+			// Constrained viewport Y: 100 - (2 * 16) = 68
+			expect(viewport.y).toBe(68);
 		});
 
-		it('should show top of block when block is taller than viewport', () => {
+		it('should keep two rows above a tall block at the origin', () => {
 			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(0, 0, 100, 1000);
 
 			centerViewportOnCodeBlock(viewport, codeBlock);
 
-			// Block center Y: 0 + 0 + 1000/2 = 500
-			// Viewport center Y: 600/2 = 300
-			// Ideal viewport Y: 500 - 300 = 200
 			// Block top: 0 + 0 = 0
-			// Constrained viewport Y: min(0, 200) = 0
-			expect(viewport.y).toBe(0);
+			// Constrained viewport Y: 0 - (2 * 16) = -32
+			expect(viewport.y).toBe(-32);
 		});
 	});
 
@@ -154,18 +149,15 @@ describe('centerViewportOnCodeBlock', () => {
 			expect(viewport.y).toBe(-10);
 		});
 
-		it('should apply top constraint with offsetY for large blocks', () => {
+		it('should apply the two-row top margin with offsetY for large blocks', () => {
 			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(0, 100, 100, 800, 0, 50);
 
 			centerViewportOnCodeBlock(viewport, codeBlock);
 
-			// Block center Y: 100 + 50 + 800/2 = 550
-			// Viewport center Y: 600/2 = 300
-			// Ideal viewport Y: 550 - 300 = 250
 			// Block top: 100 + 50 = 150
-			// Constrained viewport Y: min(150, 250) = 150
-			expect(viewport.y).toBe(150);
+			// Constrained viewport Y: 150 - (2 * 16) = 118
+			expect(viewport.y).toBe(118);
 		});
 	});
 
@@ -227,7 +219,7 @@ describe('centerViewportOnCodeBlock', () => {
 			expect(viewport.y).toBe(-180);
 		});
 
-		it('should handle very small viewport', () => {
+		it('should keep the two-row margin for oversized blocks in a very small viewport', () => {
 			const viewport = createMockViewport(0, 0, 50, 50);
 			const codeBlock = createMockCodeBlock(100, 100, 100, 100);
 
@@ -238,12 +230,9 @@ describe('centerViewportOnCodeBlock', () => {
 			// Expected viewport X: 150 - 25 = 125
 			expect(viewport.x).toBe(125);
 
-			// Block center Y: 100 + 0 + 100/2 = 150
-			// Viewport center Y: 50/2 = 25
-			// Ideal viewport Y: 150 - 25 = 125
 			// Block top: 100 + 0 = 100
-			// Constrained viewport Y: min(100, 125) = 100
-			expect(viewport.y).toBe(100);
+			// Constrained viewport Y: 100 - (2 * 16) = 68
+			expect(viewport.y).toBe(68);
 		});
 	});
 
