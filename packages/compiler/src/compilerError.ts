@@ -17,7 +17,7 @@
  *   before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
-import type { AST, CompilationContext, Error } from './types';
+import type { AST, CompilationContext, CompilerStageError } from './types';
 
 export enum ErrorCode {
 	INSUFFICIENT_OPERANDS,
@@ -74,7 +74,7 @@ export function getError(
 	line: AST[number],
 	context?: CompilationContext,
 	details?: ErrorDetails
-): Error {
+): CompilerStageError {
 	switch (code) {
 		case ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK:
 			return {
