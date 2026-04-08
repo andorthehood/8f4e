@@ -104,9 +104,10 @@ export default async function createMockStateWithColors(overrides: Partial<State
 			moduleDragging: false,
 			codeLineSelection: true,
 			viewportDragging: false,
-			editing: false,
+			editing: true,
 			modeToggling: true,
 		},
+		editorMode: 'view',
 		...overrides,
 	});
 

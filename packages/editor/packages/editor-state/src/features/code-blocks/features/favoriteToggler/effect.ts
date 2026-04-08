@@ -11,7 +11,7 @@ export default function favoriteToggler(store: StateManager<State>, events: Even
 	const state = store.getState();
 
 	function onToggleFavoriteDirective({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		if (!state.featureFlags.editing) {
+		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
 			return;
 		}
 

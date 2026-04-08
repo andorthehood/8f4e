@@ -36,7 +36,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'other-group',
 		});
 		mockState.graphicHelper.codeBlocks = [block1, block2, block3];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -68,7 +68,7 @@ describe('groupNonstickToggler', () => {
 			groupNonstick: true,
 		});
 		mockState.graphicHelper.codeBlocks = [block1, block2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -96,7 +96,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 		});
 		mockState.graphicHelper.codeBlocks = [block1, block2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -118,7 +118,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 		});
 		mockState.graphicHelper.codeBlocks = [block1];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -144,7 +144,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 		});
 		mockState.graphicHelper.codeBlocks = [moduleBlock, functionBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -166,7 +166,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 		});
 		mockState.graphicHelper.codeBlocks = [block1];
-		mockState.featureFlags.editing = false;
+		mockState.editorMode = 'view';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -185,7 +185,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [block1];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -212,7 +212,7 @@ describe('groupNonstickToggler', () => {
 			lastUpdated: 1000,
 		});
 		mockState.graphicHelper.codeBlocks = [block1, block2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -238,7 +238,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 		});
 		mockState.graphicHelper.codeBlocks = [block1, block2];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -263,7 +263,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 		});
 		mockState.graphicHelper.codeBlocks = [block1];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		groupNonstickToggler(store, mockEvents);
 

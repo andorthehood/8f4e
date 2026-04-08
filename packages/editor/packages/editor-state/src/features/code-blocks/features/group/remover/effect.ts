@@ -11,7 +11,7 @@ export default function groupRemover(store: StateManager<State>, events: EventDi
 	const state = store.getState();
 
 	function onRemoveFromGroupDirective({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		if (!state.featureFlags.editing) {
+		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
 			return;
 		}
 

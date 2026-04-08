@@ -25,7 +25,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -45,7 +45,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -64,7 +64,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -83,7 +83,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -102,7 +102,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -121,7 +121,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -141,7 +141,7 @@ describe('clearDebugProbes', () => {
 			lastUpdated: 1000,
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -160,7 +160,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -181,7 +181,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = false;
+		mockState.editorMode = 'view';
 
 		clearDebugProbes(store, mockEvents);
 
@@ -200,7 +200,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
+		mockState.editorMode = 'edit';
 
 		clearDebugProbes(store, mockEvents);
 
