@@ -10,6 +10,13 @@ import { SyntaxRulesError } from '@8f4e/tokenizer';
 
 import type { CompilerDiagnostic, CompilerStageError } from './types';
 
+const FALLBACK_LINE = {
+	lineNumberBeforeMacroExpansion: 0,
+	lineNumberAfterMacroExpansion: 0,
+} as const;
+
+const FALLBACK_CONTEXT = {} as const;
+
 function isCompilerStageError(value: unknown): value is CompilerStageError {
 	return (
 		value !== null &&
@@ -26,8 +33,8 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 		return {
 			code: error.code,
 			message: error.message,
-			line: error.line,
-			context: undefined,
+			line: error.line ?? FALLBACK_LINE,
+			context: FALLBACK_CONTEXT,
 		};
 	}
 
@@ -42,17 +49,17 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 						instruction: error.line.instruction,
 						arguments: error.line.arguments as unknown[],
 					}
-				: undefined,
+				: FALLBACK_LINE,
 			context: error.context
 				? {
 						codeBlockId: error.context.codeBlockId,
 						codeBlockType: error.context.codeBlockType,
 					}
-				: undefined,
+				: FALLBACK_CONTEXT,
 		};
 	}
 
 	// Generic fallback for unexpected throw values
 	const message = error instanceof Error ? error.message : String(error);
-	return { code: -1, message };
+	return { code: -1, message, line: FALLBACK_LINE, context: FALLBACK_CONTEXT };
 }
