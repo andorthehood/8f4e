@@ -62,14 +62,11 @@ exports[`block (float) > if the generated AST, WAT and memory map match the snap
     "lineNumberBeforeMacroExpansion": 5,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "float",
-      },
-    ],
+    "arguments": [],
+    "blockBlock": {
+      "matchingBlockEndIndex": 6,
+      "resultType": "float",
+    },
     "instruction": "block",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -92,7 +89,18 @@ exports[`block (float) > if the generated AST, WAT and memory map match the snap
     "lineNumberBeforeMacroExpansion": 7,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "float",
+      },
+    ],
+    "blockEndBlock": {
+      "matchingBlockIndex": 4,
+      "resultType": "float",
+    },
     "instruction": "blockEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -226,14 +234,11 @@ exports[`block (int) > if the generated AST, WAT and memory map match the snapsh
     "lineNumberBeforeMacroExpansion": 5,
   },
   {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "int",
-      },
-    ],
+    "arguments": [],
+    "blockBlock": {
+      "matchingBlockEndIndex": 6,
+      "resultType": "int",
+    },
     "instruction": "block",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,
@@ -256,7 +261,18 @@ exports[`block (int) > if the generated AST, WAT and memory map match the snapsh
     "lineNumberBeforeMacroExpansion": 7,
   },
   {
-    "arguments": [],
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "blockEndBlock": {
+      "matchingBlockIndex": 4,
+      "resultType": "int",
+    },
     "instruction": "blockEnd",
     "isMemoryDeclaration": false,
     "isSemanticOnly": false,

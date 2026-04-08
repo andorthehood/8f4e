@@ -11,7 +11,7 @@ push &output
 push 0
 store
 
-block void
+block
  push input
  branchIfUnchanged 1 ; Return before the output is set to 1
  push &output

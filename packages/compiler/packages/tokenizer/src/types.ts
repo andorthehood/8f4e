@@ -31,6 +31,8 @@ type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> 
 	isMemoryDeclaration?: boolean;
 	ifBlock?: IfBlockMetadata;
 	ifEndBlock?: IfEndBlockMetadata;
+	blockBlock?: BlockBlockMetadata;
+	blockEndBlock?: BlockEndBlockMetadata;
 };
 
 export type ASTLine = ASTLineBase<string, Array<Argument>>;
@@ -58,10 +60,23 @@ export interface IfEndBlockMetadata {
 export type IfLine = ASTLineBase<'if', []>;
 export type IfEndLine = ASTLineBase<'ifEnd', [] | [ArgumentIdentifier]>;
 
+export type BlockBlockResultType = 'int' | 'float' | null;
+
+export interface BlockBlockMetadata {
+	matchingBlockEndIndex: number;
+	resultType: BlockBlockResultType;
+}
+
+export interface BlockEndBlockMetadata {
+	matchingBlockIndex: number;
+	resultType: BlockBlockResultType;
+}
+
+export type BlockLine = ASTLineBase<'block', []>;
+export type BlockEndLine = ASTLineBase<'blockEnd', [] | [ArgumentIdentifier]>;
 export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
 export type LocalVariableAccessLine = LocalSetLine;
 
-export type BlockLine = ASTLineBase<'block', [ArgumentIdentifier]>;
 export type FunctionLine = ASTLineBase<'function', [ArgumentIdentifier]>;
 export type CallLine = ASTLineBase<'call', [ArgumentIdentifier]>;
 export type ModuleLine = ASTLineBase<'module', [ArgumentIdentifier]>;
