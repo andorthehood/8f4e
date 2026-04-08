@@ -26,9 +26,7 @@ export default function parseNumericLiteralToken(argument: string): ParsedNumeri
 	if (/^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(argument)) {
 		const value = parseFloat(argument.slice(0, -3));
 		if (!Number.isFinite(value)) {
-			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`, {
-				argument,
-			});
+			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`);
 		}
 		return { value, isInteger: false, isFloat64: true };
 	}
@@ -36,9 +34,7 @@ export default function parseNumericLiteralToken(argument: string): ParsedNumeri
 	if (/^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?$/.test(argument)) {
 		const value = parseFloat(argument);
 		if (!Number.isFinite(value)) {
-			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`, {
-				argument,
-			});
+			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_NUMERIC_LITERAL, `Invalid numeric literal: ${argument}`);
 		}
 		return {
 			value,

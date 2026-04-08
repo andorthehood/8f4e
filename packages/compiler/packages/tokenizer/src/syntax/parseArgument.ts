@@ -124,9 +124,7 @@ export function decodeStringLiteral(raw: string): string {
 	while (i < raw.length) {
 		if (raw[i] === '\\') {
 			if (i + 1 >= raw.length) {
-				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, `Unexpected end of string after backslash`, {
-					raw,
-				});
+				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, `Unexpected end of string after backslash`);
 			}
 			const next = raw[i + 1];
 			switch (next) {
@@ -155,8 +153,7 @@ export function decodeStringLiteral(raw: string): string {
 					if (!/^[0-9a-fA-F]{2}$/.test(hex)) {
 						throw new SyntaxRulesError(
 							SyntaxErrorCode.INVALID_STRING_LITERAL,
-							`Invalid hex escape sequence: \\x${hex}`,
-							{ raw, hex }
+							`Invalid hex escape sequence: \\x${hex}`
 						);
 					}
 					result += String.fromCharCode(parseInt(hex, 16));
@@ -164,10 +161,7 @@ export function decodeStringLiteral(raw: string): string {
 					break;
 				}
 				default:
-					throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, `Unknown escape sequence: \\${next}`, {
-						raw,
-						escape: next,
-					});
+					throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, `Unknown escape sequence: \\${next}`);
 			}
 		} else {
 			result += raw[i];
@@ -478,19 +472,13 @@ export function parseArgument(argument: string): Argument {
 			if (isNumericLikeInvalidToken(argument)) {
 				throw new SyntaxRulesError(
 					SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
-					`Invalid numeric literal or expression: ${argument}`,
-					{
-						argument,
-					}
+					`Invalid numeric literal or expression: ${argument}`
 				);
 			}
 			if (startsWithNumericPrefix(argument)) {
 				throw new SyntaxRulesError(
 					SyntaxErrorCode.INVALID_IDENTIFIER,
-					`Identifiers cannot start with numbers: ${argument}`,
-					{
-						argument,
-					}
+					`Identifiers cannot start with numbers: ${argument}`
 				);
 			}
 			return classifyIdentifier(argument);
