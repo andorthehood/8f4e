@@ -49,11 +49,18 @@ const SyntaxErrorMessages: Record<SyntaxErrorCode, string> = {
 	[SyntaxErrorCode.INVALID_BLOCK_STRUCTURE]: 'Invalid block structure.',
 };
 
+export interface SyntaxErrorLine {
+	lineNumberBeforeMacroExpansion: number;
+	lineNumberAfterMacroExpansion: number;
+	instruction?: string;
+	arguments?: unknown[];
+}
+
 export class SyntaxRulesError extends Error {
 	constructor(
 		public code: SyntaxErrorCode,
 		message?: string,
-		public details?: Record<string, unknown>
+		public line?: SyntaxErrorLine
 	) {
 		super(message ?? SyntaxErrorMessages[code]);
 		this.name = 'SyntaxRulesError';

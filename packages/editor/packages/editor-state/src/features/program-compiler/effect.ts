@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
+import { type CompilerDiagnostic } from '@8f4e/compiler';
 
 import { error, log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
@@ -89,21 +90,14 @@ export default async function compiler(store: StateManager<State>, events: Event
 			log(state, 'Compilation failed', 'Compiler');
 
 			store.set('compiler.isCompiling', false);
-			const errorObject = error as Error & {
-				line?: { lineNumberBeforeMacroExpansion?: number; lineNumberAfterMacroExpansion?: number };
-				context?: {
-					codeBlockId?: string;
-					codeBlockType?: 'module' | 'function' | 'constants';
-				};
-				errorCode?: number;
-			};
+			const diagnostic = error as CompilerDiagnostic;
 
 			store.set('codeErrors.compilationErrors', [
 				{
-					lineNumber: errorObject?.line?.lineNumberBeforeMacroExpansion ?? 0,
-					codeBlockId: errorObject?.context?.codeBlockId || '',
-					codeBlockType: errorObject?.context?.codeBlockType,
-					message: errorObject?.message || error?.toString() || 'Compilation failed',
+					lineNumber: diagnostic.line.lineNumberBeforeMacroExpansion,
+					codeBlockId: diagnostic.context.codeBlockId || '',
+					codeBlockType: diagnostic.context.codeBlockType,
+					message: diagnostic?.message || String(error) || 'Compilation failed',
 				},
 			]);
 		}
