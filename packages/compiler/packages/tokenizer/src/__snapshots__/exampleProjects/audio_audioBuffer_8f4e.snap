@@ -300,7 +300,12 @@
     "instruction": "if",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifBlock": {
+      "matchingIfEndIndex": 25,
+      "resultType": null,
+      "hasElse": false
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 56,
@@ -350,7 +355,11 @@
     "instruction": "ifEnd",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifEndBlock": {
+      "matchingIfIndex": 21,
+      "resultType": null
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 61,
@@ -1074,7 +1083,12 @@
     "instruction": "if",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifBlock": {
+      "matchingIfEndIndex": 75,
+      "resultType": null,
+      "hasElse": false
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 128,
@@ -1122,7 +1136,11 @@
     "instruction": "ifEnd",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifEndBlock": {
+      "matchingIfIndex": 71,
+      "resultType": null
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 133,
@@ -1282,7 +1300,12 @@
     "instruction": "if",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifBlock": {
+      "matchingIfEndIndex": 92,
+      "resultType": null,
+      "hasElse": false
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 158,
@@ -1343,7 +1366,11 @@
     "instruction": "ifEnd",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifEndBlock": {
+      "matchingIfIndex": 87,
+      "resultType": null
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 164,
@@ -1411,7 +1438,12 @@
     "instruction": "if",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifBlock": {
+      "matchingIfEndIndex": 105,
+      "resultType": null,
+      "hasElse": false
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 170,
@@ -1494,7 +1526,11 @@
     "instruction": "ifEnd",
     "arguments": [],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "isMemoryDeclaration": false,
+    "ifEndBlock": {
+      "matchingIfIndex": 98,
+      "resultType": null
+    }
   },
   {
     "lineNumberBeforeMacroExpansion": 178,

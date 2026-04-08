@@ -21,7 +21,7 @@ exports[`if instruction compiler > emits a float if block 1`] = `
 }
 `;
 
-exports[`if instruction compiler > emits a void if block when given a void argument 1`] = `
+exports[`if instruction compiler > emits a void if block when given no arguments 1`] = `
 {
   "blockStack": [
     {
@@ -42,7 +42,7 @@ exports[`if instruction compiler > emits a void if block when given a void argum
 }
 `;
 
-exports[`if instruction compiler > emits a void if block when given no arguments 1`] = `
+exports[`if instruction compiler > emits a void if block when the matching ifEnd declares no result 1`] = `
 {
   "blockStack": [
     {

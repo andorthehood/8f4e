@@ -1,17 +1,17 @@
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
-import { ArgumentType, BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { AST, IfLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `if`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const _if: InstructionCompiler = withValidation(
+const _if: InstructionCompiler<IfLine> = withValidation(
 	{
 		scope: 'moduleOrFunction',
 		minOperands: 1,
@@ -21,11 +21,7 @@ const _if: InstructionCompiler = withValidation(
 		// Non-null assertion is safe: withValidation confirmed 1 operand exists before this function was called
 		context.stack.pop()!;
 
-		if (
-			line.arguments[0] &&
-			line.arguments[0].type === ArgumentType.IDENTIFIER &&
-			line.arguments[0].value === 'float'
-		) {
+		if (line.ifBlock?.resultType === 'float') {
 			context.blockStack.push({
 				expectedResultIsInteger: false,
 				hasExpectedResult: true,
@@ -34,7 +30,7 @@ const _if: InstructionCompiler = withValidation(
 			return saveByteCode(context, [WASMInstruction.IF, Type.F32]);
 		}
 
-		if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'int') {
+		if (line.ifBlock?.resultType === 'int') {
 			context.blockStack.push({
 				expectedResultIsInteger: true,
 				hasExpectedResult: true,
@@ -43,7 +39,7 @@ const _if: InstructionCompiler = withValidation(
 			return saveByteCode(context, [WASMInstruction.IF, Type.I32]);
 		}
 
-		// No argument or 'void' — no result
+		// No declared result type on the matching ifEnd means no block result.
 		context.blockStack.push({
 			expectedResultIsInteger: false,
 			hasExpectedResult: false,
@@ -57,10 +53,9 @@ export default _if;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 	describe('if instruction compiler', () => {
-		it('emits a void if block when given a void argument', () => {
+		it('emits a void if block when the matching ifEnd declares no result', () => {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
 
@@ -69,7 +64,8 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
-					arguments: [classifyIdentifier('void')],
+					arguments: [],
+					ifBlock: { matchingIfEndIndex: 2, resultType: null, hasElse: false },
 				} as AST[number],
 				context
 			);
@@ -90,6 +86,7 @@ if (import.meta.vitest) {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
 					arguments: [],
+					ifBlock: { matchingIfEndIndex: 2, resultType: null, hasElse: false },
 				} as AST[number],
 				context
 			);
@@ -109,7 +106,8 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
-					arguments: [classifyIdentifier('float')],
+					arguments: [],
+					ifBlock: { matchingIfEndIndex: 2, resultType: 'float', hasElse: false },
 				} as AST[number],
 				context
 			);
@@ -129,7 +127,8 @@ if (import.meta.vitest) {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'if',
-					arguments: [classifyIdentifier('int')],
+					arguments: [],
+					ifBlock: { matchingIfEndIndex: 2, resultType: 'int', hasElse: false },
 				} as AST[number],
 				context
 			);

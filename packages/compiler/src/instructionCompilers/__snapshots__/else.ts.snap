@@ -9,7 +9,7 @@ exports[`else instruction compiler > emits else bytecode and restores block 1`] 
       "hasExpectedResult": false,
     },
     {
-      "blockType": 4,
+      "blockType": 2,
       "expectedResultIsInteger": true,
       "hasExpectedResult": true,
     },
