@@ -396,6 +396,31 @@ export interface Error {
 	code: number;
 }
 
+/**
+ * The shared, serializable diagnostic shape exposed to all consumers of the compiler pipeline.
+ * Both syntax errors (SyntaxRulesError) and semantic/compiler errors conform to this contract
+ * once serialized. Consumers must not special-case either stage.
+ */
+export interface CompilerDiagnosticLine {
+	lineNumberBeforeMacroExpansion: number;
+	lineNumberAfterMacroExpansion: number;
+	instruction?: string;
+	arguments?: unknown[];
+}
+
+export interface CompilerDiagnosticContext {
+	codeBlockId?: string;
+	codeBlockType?: 'module' | 'function' | 'constants';
+}
+
+export interface CompilerDiagnostic {
+	/** Numeric ErrorCode for compiler errors; SyntaxErrorCode string for syntax errors. */
+	code: number | string;
+	message: string;
+	line?: CompilerDiagnosticLine;
+	context?: CompilerDiagnosticContext;
+}
+
 export interface CompileOptions {
 	startingMemoryWordAddress?: number;
 	globalDataStructures?: DataStructure[];
