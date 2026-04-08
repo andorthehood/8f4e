@@ -76,6 +76,7 @@ Active todo files are listed below.
 | 203 | Use CodeBlock id instead of recomputing from code | 🟢 | 2-4 days | 2026-01-22 | The system frequently derives code block IDs by calling getCodeBlockId(code) during updates and rendering. This is redundant because CodeBlockGraphicData.id is intended to be the canonical ID. Recomputing on every... |
 | 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
 | 371 | Move block result type to blockEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `block` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
+| 375 | Unify syntax and compiler error shapes | 🟡 | 4-8h | 2026-04-08 | Syntax errors currently expose location through `details` while compiler errors use `line` and `context`, which leaks internal stage differences into consumers and causes degraded editor diagnostics. |
 
 ## Completed TODOs
 
