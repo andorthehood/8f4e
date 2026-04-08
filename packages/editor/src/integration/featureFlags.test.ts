@@ -20,7 +20,7 @@ describe('Feature Flags Integration', () => {
 		// Other flags should remain at defaults
 		expect(featureFlags.infoOverlay).toBe(false);
 		expect(featureFlags.viewportDragging).toBe(true);
-		expect(featureFlags.editing).toBe(true);
+		expect(featureFlags.editing).toBe(false);
 	});
 
 	test('should handle feature flags override correctly', () => {
@@ -57,7 +57,7 @@ describe('Feature Flags Integration', () => {
 		expect(result.moduleDragging).toBe(true);
 		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(true);
+		expect(result.editing).toBe(false);
 		expect(result.modeToggling).toBe(true);
 	});
 
@@ -75,7 +75,7 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.moduleDragging).toBe(true);
 		expect(featureFlags.codeLineSelection).toBe(false);
 		expect(featureFlags.viewportDragging).toBe(true);
-		expect(featureFlags.editing).toBe(true);
+		expect(featureFlags.editing).toBe(false);
 		expect(featureFlags.modeToggling).toBe(true);
 	});
 
@@ -95,17 +95,17 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.modeToggling).toBe(true);
 		// Navigation should remain enabled while info overlay stays at its default
 		expect(featureFlags.viewportDragging).toBe(true);
-		expect(featureFlags.editing).toBe(true);
+		expect(featureFlags.editing).toBe(false);
 		expect(featureFlags.infoOverlay).toBe(false);
 	});
 
-	test('should allow editing capability to be disabled separately from mode', () => {
+	test('should allow editing to be configured as active', () => {
 		const featureFlags = validateFeatureFlags({
-			editing: false,
+			editing: true,
 			contextMenu: false,
 		});
 
-		expect(featureFlags.editing).toBe(false);
+		expect(featureFlags.editing).toBe(true);
 		expect(featureFlags.contextMenu).toBe(false);
 		expect(featureFlags.modeToggling).toBe(true);
 	});

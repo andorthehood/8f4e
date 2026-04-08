@@ -27,13 +27,13 @@ describe('Feature Flags Configuration', () => {
 		});
 	});
 
-	test('defaultFeatureFlags should enable editing capability by default', () => {
+	test('defaultFeatureFlags should default editing to inactive', () => {
 		expect(defaultFeatureFlags.contextMenu).toBe(true);
 		expect(defaultFeatureFlags.infoOverlay).toBe(false);
 		expect(defaultFeatureFlags.moduleDragging).toBe(true);
 		expect(defaultFeatureFlags.codeLineSelection).toBe(false);
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
-		expect(defaultFeatureFlags.editing).toBe(true);
+		expect(defaultFeatureFlags.editing).toBe(false);
 		expect(defaultFeatureFlags.modeToggling).toBe(true);
 	});
 
@@ -48,11 +48,11 @@ describe('Feature Flags Configuration', () => {
 		expect(result.moduleDragging).toBe(true);
 		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(true);
+		expect(result.editing).toBe(false);
 		expect(result.modeToggling).toBe(true);
 	});
 
-	test('validateFeatureFlags should preserve editing capability unless explicitly disabled', () => {
+	test('validateFeatureFlags should preserve inactive editing unless explicitly enabled', () => {
 		const config: FeatureFlagsConfig = {
 			contextMenu: true,
 		};
@@ -62,16 +62,16 @@ describe('Feature Flags Configuration', () => {
 		expect(result.infoOverlay).toBe(false);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(true);
+		expect(result.editing).toBe(false);
 	});
 
-	test('validateFeatureFlags should allow disabling editing capability', () => {
+	test('validateFeatureFlags should allow enabling editing', () => {
 		const config: FeatureFlagsConfig = {
-			editing: false,
+			editing: true,
 		};
 		const result = validateFeatureFlags(config);
 
-		expect(result.editing).toBe(false);
+		expect(result.editing).toBe(true);
 		expect(result.contextMenu).toBe(true);
 		expect(result.viewportDragging).toBe(true);
 	});
@@ -87,6 +87,6 @@ describe('Feature Flags Configuration', () => {
 		expect(result.moduleDragging).toBe(false);
 		expect(result.infoOverlay).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(true);
+		expect(result.editing).toBe(false);
 	});
 });

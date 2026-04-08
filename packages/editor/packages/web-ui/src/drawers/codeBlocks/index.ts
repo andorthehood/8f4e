@@ -104,7 +104,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 						}
 					}
 
-					if (state.editorMode === 'edit' && state.graphicHelper.selectedCodeBlock === codeBlock) {
+					if (state.featureFlags.editing && state.graphicHelper.selectedCodeBlock === codeBlock) {
 						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 					}
 

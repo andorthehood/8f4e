@@ -18,7 +18,7 @@ export default function groupNonstickToggler(store: StateManager<State>, events:
 	}): void {
 		const state = store.getState();
 
-		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+		if (!state.featureFlags.editing) {
 			return;
 		}
 

@@ -12,7 +12,7 @@ export default function groupUngroupper(store: StateManager<State>, events: Even
 	function onUngroupByName({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
 		const state = store.getState();
 
-		if (!state.featureFlags.editing || state.editorMode !== 'edit') {
+		if (!state.featureFlags.editing) {
 			return;
 		}
 

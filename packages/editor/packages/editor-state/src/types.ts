@@ -145,7 +145,7 @@ export interface FeatureFlags {
 	/** Enable/disable panning/scrolling of the editor viewport */
 	viewportDragging: boolean;
 
-	/** Enable/disable entry into edit-capable modes and edit-only actions. */
+	/** Whether the editor is currently in an edit-enabled state. */
 	editing: boolean;
 
 	/** Enable/disable keyboard toggling between view/edit modes (e/Escape) */

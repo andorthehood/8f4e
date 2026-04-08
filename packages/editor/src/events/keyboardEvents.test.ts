@@ -68,7 +68,7 @@ describe('keyboardEvents mode switching', () => {
 			moduleDragging: true,
 			codeLineSelection: false,
 			viewportDragging: true,
-			editing: true,
+			editing: false,
 			modeToggling: true,
 			historyTracking: true,
 			consoleOverlay: true,
@@ -106,17 +106,6 @@ describe('keyboardEvents mode switching', () => {
 
 		expect(events.dispatch).toHaveBeenCalledWith('enterEditMode');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
-		cleanup();
-	});
-
-	it('does not enter edit mode when editing capability is disabled', () => {
-		featureFlags.editing = false;
-		const cleanup = keyboardEvents(events, store);
-		const event = createKeyboardEventLike('e');
-
-		mockWindow.emit('keydown', event);
-
-		expect(events.dispatch).not.toHaveBeenCalledWith('enterEditMode');
 		cleanup();
 	});
 

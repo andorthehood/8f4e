@@ -1,7 +1,7 @@
 import type { MenuGenerator } from '~/types';
 
 export const mainMenu: MenuGenerator = state => [
-	...(state.featureFlags.editing && state.editorMode === 'edit'
+	...(state.featureFlags.editing
 		? [
 				{
 					title: 'New Module',
@@ -71,8 +71,8 @@ export const mainMenu: MenuGenerator = state => [
 				},
 			]
 		: []),
-	...(state.featureFlags.editing && state.editorMode === 'edit' ? [{ divider: true }] : []),
-	...(state.featureFlags.editing && state.editorMode === 'edit'
+	...(state.featureFlags.editing ? [{ divider: true }] : []),
+	...(state.featureFlags.editing
 		? [
 				{
 					title: 'Go @home',
@@ -88,9 +88,7 @@ export const mainMenu: MenuGenerator = state => [
 		close: false,
 	},
 	{ divider: true },
-	...(state.featureFlags.editing && state.editorMode === 'edit'
-		? [{ title: 'New Project', action: 'new', close: true }, { divider: true }]
-		: []),
+	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
 	{ title: 'Open From Disk', action: 'importProject', close: true, disabled: !state.callbacks.importProject },
 	{
 		title: 'Open Project',
