@@ -3,8 +3,8 @@ title: 'TODO: Refactor compiler directive plumbing and loop guard config'
 priority: Medium
 effort: 4-8h
 created: 2026-04-03
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-08
 ---
 
 # TODO: Refactor compiler directive plumbing and loop guard config
