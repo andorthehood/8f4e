@@ -51,18 +51,18 @@ describe('centerViewportOnCodeBlock', () => {
 		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-50);
 	});
 
-	it('adds two rows of top margin for large blocks', () => {
+	it('adds 25% viewport-height top margin for large blocks, rounded to rows', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 100, 100, 800);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(68);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-44);
 	});
 
-	it('keeps two rows above a tall block at the origin', () => {
+	it('keeps a rounded 25% viewport-height margin above a tall block at the origin', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(0, 0, 100, 1000);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-32);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-144);
 	});
 
 	it('accounts for offsets in both axes', () => {
@@ -72,11 +72,11 @@ describe('centerViewportOnCodeBlock', () => {
 		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -170, y: -10 });
 	});
 
-	it('applies the two-row top margin with offsetY for large blocks', () => {
+	it('applies the rounded 25% viewport-height top margin with offsetY for large blocks', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(0, 100, 100, 800, 0, 50);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(118);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(6);
 	});
 
 	it('handles zero-sized blocks', () => {
@@ -100,11 +100,11 @@ describe('centerViewportOnCodeBlock', () => {
 		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -270, y: -180 });
 	});
 
-	it('keeps the two-row margin for oversized blocks in a very small viewport', () => {
+	it('keeps the rounded 25% viewport-height margin for oversized blocks in a very small viewport', () => {
 		const viewport = createMockViewport(0, 0, 50, 50);
 		const codeBlock = createMockCodeBlock(100, 100, 100, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 125, y: 68 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 125, y: 84 });
 	});
 
 	it('does not mutate the provided viewport object', () => {
