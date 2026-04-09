@@ -5,6 +5,8 @@ import presentation from './effect';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 import type { StateManager } from '@8f4e/state-manager';
 
+import { createMockViewport } from '~/pureHelpers/testingUtils/testUtils';
+
 function createCodeBlock(
 	creationIndex: number,
 	x: number,
@@ -41,12 +43,7 @@ describe('presentation effect', () => {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 2), createCodeBlock(2, 400, 500, 2, 3)],
 				selectedCodeBlock: undefined,
 			},
-			viewport: {
-				x: 0,
-				y: 0,
-				width: 300,
-				height: 200,
-			},
+			viewport: createMockViewport(0, 0, 300, 200),
 		} as State;
 
 		const store = {
@@ -100,7 +97,7 @@ describe('presentation effect', () => {
 			featureFlags: {},
 			editorMode: 'view',
 			graphicHelper: { codeBlocks: [] },
-			viewport: { x: 0, y: 0, width: 300, height: 200 },
+			viewport: createMockViewport(0, 0, 300, 200),
 		} as State;
 
 		const store = {

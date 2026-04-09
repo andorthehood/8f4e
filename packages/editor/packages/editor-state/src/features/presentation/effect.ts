@@ -1,6 +1,7 @@
 import { getPresentationStops } from './directives';
 
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
+import updateViewport from '../viewport/updateViewport';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { EventDispatcher, State } from '~/types';
@@ -16,8 +17,7 @@ function centerCurrentStop(
 	}
 
 	store.set('graphicHelper.selectedCodeBlock', stop.codeBlock);
-	centerViewportOnCodeBlock(state.viewport, stop.codeBlock);
-	events.dispatch('viewportMoved');
+	updateViewport(state, viewport => centerViewportOnCodeBlock(viewport, stop.codeBlock), events);
 }
 
 export default function presentation(store: StateManager<State>, events: EventDispatcher): () => void {

@@ -1,6 +1,7 @@
 import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCodeBlockInDirection';
 import { deriveDirectiveState } from '../directives/registry';
 import centerViewportOnCodeBlockCursor from '../../../viewport/centerViewportOnCodeBlockCursor';
+import updateViewport from '../../../viewport/updateViewport';
 import gapCalculator from '../../../code-editing/gapCalculator';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 
@@ -149,8 +150,7 @@ export function navigateToCodeBlockInDirection(
 		(direction === 'up' || direction === 'down') &&
 		moveSelectionToCurrentBlockVerticalEdge(state, currentBlock, direction)
 	) {
-		centerViewportOnCodeBlockCursor(state.viewport, currentBlock);
-		events?.dispatch('viewportMoved');
+		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, currentBlock), events);
 		return true;
 	}
 
@@ -165,8 +165,7 @@ export function navigateToCodeBlockInDirection(
 		}
 
 		setSelectedCodeBlock(stateSource, targetBlock);
-		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
-		events?.dispatch('viewportMoved');
+		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, targetBlock), events);
 		return true;
 	}
 
@@ -204,8 +203,7 @@ export function jumpToCodeBlock(
 	// If we found a block, select it and center viewport on it
 	if (targetBlock) {
 		setSelectedCodeBlock(stateSource, targetBlock);
-		centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
-		events?.dispatch('viewportMoved');
+		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, targetBlock), events);
 		return true;
 	}
 
@@ -227,13 +225,17 @@ export function goHome(stateSource: StateSource, events?: EventDispatcher): void
 
 	if (homeBlock) {
 		setSelectedCodeBlock(stateSource, homeBlock);
-		centerViewportOnCodeBlockCursor(state.viewport, homeBlock);
+		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, homeBlock), events);
 	} else {
-		state.viewport.x = 0;
-		state.viewport.y = 0;
+		updateViewport(
+			state,
+			viewport => {
+				viewport.x = 0;
+				viewport.y = 0;
+			},
+			events
+		);
 	}
-
-	events?.dispatch('viewportMoved');
 }
 
 /**
