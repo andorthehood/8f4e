@@ -362,6 +362,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			activeStopIndex: 0,
 			totalStops: 0,
 			remainingMs: 0,
+			currentStopDurationMs: 0,
 			deadlineAt: undefined,
 		},
 	};

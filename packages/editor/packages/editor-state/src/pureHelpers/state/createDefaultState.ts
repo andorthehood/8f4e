@@ -103,6 +103,7 @@ export default function createDefaultState() {
 			activeStopIndex: 0,
 			totalStops: 0,
 			remainingMs: 0,
+			currentStopDurationMs: 0,
 			deadlineAt: undefined,
 		},
 	};
