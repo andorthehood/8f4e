@@ -165,7 +165,7 @@ describe('keyboardEvents mode switching', () => {
 		cleanup();
 	});
 
-	it('does not toggle modes when modeToggling is disabled', () => {
+	it('does not enter alternate modes when modeToggling is disabled', () => {
 		featureFlags.modeToggling = false;
 		const cleanup = keyboardEvents(events, store);
 		const enterEditEvent = createKeyboardEventLike('e');
@@ -173,12 +173,19 @@ describe('keyboardEvents mode switching', () => {
 		mockWindow.emit('keydown', enterEditEvent);
 
 		expect(events.dispatch).not.toHaveBeenCalledWith('enterEditMode');
+		cleanup();
+	});
 
-		editorMode = 'edit';
-		const exitEditEvent = createKeyboardEventLike('Escape');
-		mockWindow.emit('keydown', exitEditEvent);
+	it('still exits presentation mode with Escape when modeToggling is disabled', () => {
+		featureFlags.modeToggling = false;
+		editorMode = 'presentation';
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('Escape');
 
-		expect(events.dispatch).not.toHaveBeenCalledWith('exitToViewMode');
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('exitToViewMode');
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
 		cleanup();
 	});
 
