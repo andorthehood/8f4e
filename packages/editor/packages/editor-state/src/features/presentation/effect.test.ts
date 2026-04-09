@@ -12,7 +12,8 @@ function createCodeBlock(
 	x: number,
 	y: number,
 	order: number,
-	seconds: number
+	seconds: number,
+	alignment?: 'center' | 'left' | 'right' | 'top' | 'bottom'
 ): CodeBlockGraphicData {
 	return {
 		creationIndex,
@@ -23,7 +24,13 @@ function createCodeBlock(
 		offsetX: 0,
 		offsetY: 0,
 		parsedDirectives: [
-			{ prefix: '@', name: 'stop', args: [String(order), String(seconds)], rawRow: 1, isTrailing: false },
+			{
+				prefix: '@',
+				name: 'stop',
+				args: alignment ? [String(order), String(seconds), alignment] : [String(order), String(seconds)],
+				rawRow: 1,
+				isTrailing: false,
+			},
 		],
 	} as CodeBlockGraphicData;
 }
@@ -114,6 +121,134 @@ describe('presentation effect', () => {
 		expect(state.viewportAnimation.durationMs).toBe(2000);
 
 		cleanup();
+	});
+
+	it('supports left and right presentation alignment anchors', () => {
+		const modeSubscribers: Array<(value: State['editorMode']) => void> = [];
+		let scheduledFrame: ((time: number) => void) | undefined;
+		const state = {
+			callbacks: {
+				requestAnimationFrame: vi.fn(callback => {
+					scheduledFrame = callback;
+					return 1;
+				}),
+				cancelAnimationFrame: vi.fn(),
+			},
+			featureFlags: {},
+			editorMode: 'view',
+			graphicHelper: {
+				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5, 'left'), createCodeBlock(2, 400, 500, 2, 3, 'right')],
+				selectedCodeBlock: undefined,
+			},
+			viewport: createMockViewport(0, 0, 300, 200),
+			viewportAnimation: {
+				startX: 0,
+				startY: 0,
+				targetX: 0,
+				targetY: 0,
+				active: false,
+				durationMs: 90,
+			},
+		} as State;
+
+		const store = {
+			getState: () => state,
+			set: vi.fn((path: string, value: unknown) => {
+				if (path === 'editorMode') {
+					state.editorMode = value as State['editorMode'];
+					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
+				}
+				if (path === 'graphicHelper.selectedCodeBlock') {
+					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				}
+			}),
+			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
+				if (path === 'editorMode') {
+					modeSubscribers.push(callback as (value: State['editorMode']) => void);
+				}
+				return { selector: path, callback };
+			}),
+			unsubscribe: vi.fn(),
+		} as unknown as StateManager<State>;
+
+		const events = {
+			dispatch: vi.fn(),
+			on: vi.fn(),
+			off: vi.fn(),
+		} as unknown as EventDispatcher;
+
+		presentation(store, events);
+		store.set('editorMode', 'presentation');
+		expect(state.viewportAnimation.targetX).toBe(85);
+
+		vi.advanceTimersByTime(5000);
+		scheduledFrame?.(5016);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.viewportAnimation.targetX).toBe(235);
+	});
+
+	it('supports top and bottom presentation alignment anchors', () => {
+		const modeSubscribers: Array<(value: State['editorMode']) => void> = [];
+		let scheduledFrame: ((time: number) => void) | undefined;
+		const state = {
+			callbacks: {
+				requestAnimationFrame: vi.fn(callback => {
+					scheduledFrame = callback;
+					return 1;
+				}),
+				cancelAnimationFrame: vi.fn(),
+			},
+			featureFlags: {},
+			editorMode: 'view',
+			graphicHelper: {
+				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5, 'top'), createCodeBlock(2, 400, 500, 2, 3, 'bottom')],
+				selectedCodeBlock: undefined,
+			},
+			viewport: createMockViewport(0, 0, 300, 200),
+			viewportAnimation: {
+				startX: 0,
+				startY: 0,
+				targetX: 0,
+				targetY: 0,
+				active: false,
+				durationMs: 90,
+			},
+		} as State;
+
+		const store = {
+			getState: () => state,
+			set: vi.fn((path: string, value: unknown) => {
+				if (path === 'editorMode') {
+					state.editorMode = value as State['editorMode'];
+					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
+				}
+				if (path === 'graphicHelper.selectedCodeBlock') {
+					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				}
+			}),
+			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
+				if (path === 'editorMode') {
+					modeSubscribers.push(callback as (value: State['editorMode']) => void);
+				}
+				return { selector: path, callback };
+			}),
+			unsubscribe: vi.fn(),
+		} as unknown as StateManager<State>;
+
+		const events = {
+			dispatch: vi.fn(),
+			on: vi.fn(),
+			off: vi.fn(),
+		} as unknown as EventDispatcher;
+
+		presentation(store, events);
+		store.set('editorMode', 'presentation');
+		expect(state.viewportAnimation.targetY).toBe(190);
+
+		vi.advanceTimersByTime(5000);
+		scheduledFrame?.(5016);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.viewportAnimation.targetY).toBe(390);
 	});
 
 	it('exits immediately when presentation mode has no tagged blocks', () => {

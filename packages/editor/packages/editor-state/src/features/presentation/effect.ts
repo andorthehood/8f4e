@@ -19,7 +19,9 @@ function centerCurrentStop(
 	}
 
 	store.set('graphicHelper.selectedCodeBlock', stop.codeBlock);
-	const { x, y } = centerViewportOnCodeBlock(state.viewport, stop.codeBlock);
+	const { x, y } = centerViewportOnCodeBlock(state.viewport, stop.codeBlock, {
+		alignment: stop.alignment,
+	});
 	animateViewport(state, x, y, events);
 }
 
