@@ -1,0 +1,43 @@
+8f4e/v1
+
+constants editorDirectives
+; Editor directives cheat sheet.
+; Literal examples below use "@ name" so they stay visible as text.
+; @tab 82
+;
+; Global editor directives
+; @ color <path> <value>	Override a named editor color.
+; @ disableAutoCompilation	Stop the editor from recompiling automatically.
+; @ exportFileName <fileName>	Set the export file name for the project.
+; @ font <font>	Change the editor font.
+; @ infoOverlay <on|off>	Show or hide the info overlay.
+; @ keyCodeMemory <memoryId>	Store keyboard key codes in a module memory.
+; @ keyPressedMemory <memoryId>	Store pressed-key state in a module memory.
+; @ runtime <runtimeId>	Select the runtime backend for the project.
+; @ wireThickness <number>	Set the rendered wire thickness.
+;
+; Code block directives
+; @ alwaysOnTop	Keep the block rendered above normal blocks.
+; @ button <memoryId> [offValue] [onValue]	Add a momentary button widget.
+; @ disabled	Mark the block as disabled.
+; @ favorite	Mark the block as a favorite.
+; @ group <name> [nonstick]	Group blocks together for dragging behavior.
+; @ hide	Collapse the rest of the block behind "...".
+; @ home	Mark the block as the home/starting focus target.
+; @ nth	Show the module's compile order number.
+; @ opacity <0..1>	Set the block opacity.
+; @ piano <pressedKeysListMemoryId> <pressedKeyCountMemoryId> [startingMidiNote]	Render a piano keyboard widget.
+; @ plot <arrayMemoryId> [minValue] [maxValue] [arrayLengthMemoryId]	Plot an array memory.
+; @ scan <arrayMemoryId> <pointerMemoryId>	Draw a scanner over an array using a pointer.
+; @ slider <memoryId> [min] [max] [step]	Add a slider widget.
+; @ switch <memoryId> [offValue] [onValue]	Add a toggle switch widget.
+; @ tab <position1> <position2> ...	Define visual tab stops for literal tab characters.
+; @ viewport <top-left|top-right|bottom-left|bottom-right>	Anchor the block to a viewport corner.
+; @ watch <memoryId>	Show a runtime watch value.
+; alias: @ w <memoryId>	Short alias for @ watch.
+;
+; Notes
+; @ watch can also be written as a trailing comment on a code line.
+; @ keyCodeMemory and @ keyPressedMemory only work inside module blocks.
+
+constantsEnd
