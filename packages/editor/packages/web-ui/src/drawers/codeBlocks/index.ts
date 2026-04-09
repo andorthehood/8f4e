@@ -17,6 +17,27 @@ import type { MemoryViews } from '../../types';
 
 const corner = '+';
 
+function drawSelectedOutline(engine: Engine, state: State, codeBlockWidth: number, codeBlockHeight: number): void {
+	const { vGrid, hGrid } = state.viewport;
+
+	engine.setSpriteLookup(state.graphicHelper.spriteLookups!.fontNumbers);
+
+	engine.drawText(-vGrid * 2, -hGrid, '.');
+	engine.drawText(-vGrid, -hGrid, '-');
+	engine.drawText(codeBlockWidth, -hGrid, '-');
+	engine.drawText(codeBlockWidth + vGrid, -hGrid, '.');
+
+	engine.drawText(-vGrid * 2, 0, '|');
+	engine.drawText(codeBlockWidth + vGrid, 0, '|');
+	engine.drawText(-vGrid * 2, codeBlockHeight - hGrid, '|');
+	engine.drawText(codeBlockWidth + vGrid, codeBlockHeight - hGrid, '|');
+
+	engine.drawText(-vGrid * 2, codeBlockHeight, '`');
+	engine.drawText(-vGrid, codeBlockHeight, '-');
+	engine.drawText(codeBlockWidth, codeBlockHeight, '-');
+	engine.drawText(codeBlockWidth + vGrid, codeBlockHeight, "'");
+}
+
 export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
 	const spriteLookups = state.graphicHelper.spriteLookups;
 
@@ -116,6 +137,10 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 				state.graphicHelper.selectedCodeBlock !== codeBlock,
 				codeBlock.opacity
 			);
+
+			if (state.graphicHelper.selectedCodeBlock === codeBlock) {
+				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height);
+			}
 
 			drawErrorMessages(engine, state, codeBlock);
 			drawSwitches(engine, state, codeBlock, memoryViews);
