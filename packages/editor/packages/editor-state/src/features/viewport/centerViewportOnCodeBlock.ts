@@ -15,15 +15,15 @@ export interface CodeBlockBounds {
 }
 
 /**
- * Centers the viewport on a given code block, ensuring oversized blocks keep a small top margin.
+ * Calculates the viewport position needed to center a given code block, ensuring oversized blocks keep a small top margin.
  *
- * This function mutates the viewport object to position it such that the code block
- * appears centered on screen. For blocks smaller than the viewport, perfect centering
- * is achieved. For blocks larger than the viewport, the block is aligned near the top
- * with a two-row margin while the bottom may extend beyond the viewport.
+ * For blocks smaller than the viewport, perfect centering is achieved. For blocks
+ * larger than the viewport, the block is aligned near the top with a two-row
+ * margin while the bottom may extend beyond the viewport.
  *
- * @param viewport - The viewport object to mutate (will be modified in place)
+ * @param viewport - The viewport dimensions and grid sizing to center within
  * @param codeBlock - The code block to center on
+ * @returns The viewport position that centers the code block
  *
  * @remarks
  * **Centering Behavior:**
@@ -36,7 +36,7 @@ export interface CodeBlockBounds {
  * - Code block offsets (offsetX, offsetY) are included in calculations
  *
  * **Implementation Notes:**
- * - This function mutates the viewport parameter directly
+ * - This function is pure and does not mutate the viewport parameter
  * - Coordinates use pixels, not grid units (grid conversion happens elsewhere)
  * - Negative viewport coordinates are allowed (viewport can pan anywhere)
  */
