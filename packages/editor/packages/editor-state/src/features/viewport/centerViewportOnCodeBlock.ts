@@ -18,8 +18,9 @@ export interface CodeBlockBounds {
  * Calculates the viewport position needed to center a given code block, ensuring oversized blocks keep a small top margin.
  *
  * For blocks smaller than the viewport, perfect centering is achieved. For blocks
- * larger than the viewport, the block is aligned near the top with a two-row
- * margin while the bottom may extend beyond the viewport.
+ * larger than the viewport, the block is aligned near the top with a margin equal
+ * to 25% of the viewport height, rounded to whole rows, while the bottom may
+ * extend beyond the viewport.
  *
  * @param viewport - The viewport dimensions and grid sizing to center within
  * @param codeBlock - The code block to center on
@@ -28,10 +29,10 @@ export interface CodeBlockBounds {
  * @remarks
  * **Centering Behavior:**
  * - Horizontally: Block is centered within the viewport width
- * - Vertically: Block is centered, but oversized blocks get a two-row top margin
+ * - Vertically: Block is centered, but oversized blocks get a top margin equal to 25% of the viewport height
  *
  * **Constraints:**
- * - Oversized blocks get `2 * viewport.hGrid` padding above their top edge
+ * - Oversized blocks get `round((viewport.height * 0.25) / viewport.hGrid) * viewport.hGrid` padding above their top edge
  * - For large blocks (taller than viewport), only the bottom may be clipped
  * - Code block offsets (offsetX, offsetY) are included in calculations
  *
@@ -54,7 +55,8 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 	const idealViewportY = blockCenterY - viewportCenterY;
 
 	const blockTop = codeBlock.y + codeBlock.offsetY;
-	const oversizedBlockTop = blockTop - viewport.hGrid * 2;
+	const oversizedBlockPadding = Math.round((viewport.height * 0.25) / viewport.hGrid) * viewport.hGrid;
+	const oversizedBlockTop = blockTop - oversizedBlockPadding;
 	const constrainedViewportY =
 		codeBlock.height > viewport.height ? oversizedBlockTop : Math.min(blockTop, idealViewportY);
 
