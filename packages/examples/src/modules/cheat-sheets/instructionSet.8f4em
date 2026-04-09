@@ -1,0 +1,112 @@
+constants instructionSet
+; @pos 27 83
+; 8f4e instruction set.
+; @tab 36
+;
+; Arithmetic
+; add	Add the top two stack values.
+; div	Divide the second stack value by the top value.
+; mul	Multiply the top two stack values.
+; remainder	Get the integer remainder.
+; sub	Subtract the top value from the second value.
+;
+; Bitwise
+; and	Bitwise AND.
+; or	Bitwise OR.
+; shiftLeft	Shift bits left.
+; shiftRight	Arithmetic right shift.
+; shiftRightUnsigned	Logical right shift.
+; xor	Bitwise XOR.
+;
+; Comparison
+; equal	Compare two values for equality.
+; equalToZero	Test whether the top value is zero.
+; greaterOrEqual	Test whether left >= right.
+; greaterOrEqualUnsigned	Unsigned greater-or-equal comparison.
+; greaterThan	Test whether left > right.
+; lessOrEqual	Test whether left <= right.
+; lessThan	Test whether left < right.
+;
+; Control flow
+; block	Begin a block.
+; blockEnd	End a block.
+; branch	Jump to a block or loop label.
+; branchIfTrue	Branch when the condition is true.
+; branchIfUnchanged	Branch when a value has not changed.
+; else	Begin the else branch of an if block.
+; if	Begin a conditional branch.
+; ifEnd	End an if block.
+; loop	Begin a loop.
+; loopEnd	End a loop.
+; mapBegin	Begin a map/case block.
+; map		Add a map case.
+; default	Add the default map case.
+; mapEnd	End a map/case block.
+;
+; Conversion
+; castToFloat	Convert the top value to float32.
+; castToInt	Convert the top value to int32.
+; castToFloat64	Convert the top value to float64.
+;
+; Stack
+; push	Push a literal, identifier, 
+; 	`-> or pointer-derived value.
+; drop	Discard the top stack value.
+; dup	Duplicate the top stack value.
+; swap	Swap the top two stack values.
+; clearStack	Clear the current stack.
+;
+; Memory
+; load	Load a value from memory.
+; load8s	Load a signed 8-bit value from memory.
+; load8u	Load an unsigned 8-bit value from memory.
+; load16s	Load a signed 16-bit value from memory.
+; load16u	Load an unsigned 16-bit value from memory.
+; loadFloat	Load a float value from memory.
+; store	Store the top stack value into memory.
+; storeBytes	Store byte data into memory.
+; init	Initialize memory from compile-time data.
+;
+; Declarations and locals
+; const	Declare a constant.
+; int	Declare an integer memory value.
+; float	Declare a float memory value.
+; int[]	Declare an integer array.
+; float[]	Declare a float array.
+; local	Declare a local function variable.
+; localSet	Write a value into a local.
+;
+; Program structure and functions
+; module	Begin a module block.
+; moduleEnd	End a module block.
+; function	Begin a function block.
+; param	Declare a function parameter.
+; functionEnd	End a function block and declare return types.
+; return	Return immediately from a function.
+; call	Call a function by name.
+; use	Import constants from another namespace.
+; constants	Begin a constants block.
+; constantsEnd	End a constants block.
+;
+; Macros
+; defineMacro	Begin a macro definition block.
+; defineMacroEnd	End a macro definition block.
+; macro	Expand a macro at compile time.
+;
+; Math helpers
+; abs	Absolute value.
+; pow2	Raise 2 to the power of the top value.
+; sqrt	Square root.
+; round	Round to the nearest integer value.
+; ensureNonZero	Replace zero with a safe non-zero value.
+;
+; Signal helpers
+; risingEdge	Detect a rising edge.
+; fallingEdge	Detect a falling edge.
+; hasChanged	Detect whether a value changed.
+; cycle	Wrap a value around a range or cycle.
+;
+; Low-level
+; wasm	Emit a raw WebAssembly opcode.
+
+constantsEnd
