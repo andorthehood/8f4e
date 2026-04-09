@@ -26,14 +26,7 @@ interface ViewportScrollEndEvent {
 export default function viewport(state: State, events: EventDispatcher): () => void {
 	function onMouseMove(event: MouseMoveEvent) {
 		if (event.buttons === 1 && state.featureFlags.viewportDragging) {
-			updateViewport(
-				state,
-				viewport => {
-					viewport.x -= event.movementX;
-					viewport.y -= event.movementY;
-				},
-				events
-			);
+			updateViewport(state, state.viewport.x - event.movementX, state.viewport.y - event.movementY, events);
 		}
 	}
 

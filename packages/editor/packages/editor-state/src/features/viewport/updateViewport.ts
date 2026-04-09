@@ -1,6 +1,5 @@
 import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
 
-import type { Viewport } from './types';
 import type { EventDispatcher, State } from '~/types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
@@ -16,15 +15,12 @@ export interface ViewportChangedEvent {
 /**
  * Applies viewport position updates through a single commit path.
  */
-export default function updateViewport(
-	state: State,
-	update: (viewport: Viewport) => void,
-	events?: EventDispatcher
-): boolean {
+export default function updateViewport(state: State, x: number, y: number, events?: EventDispatcher): boolean {
 	const previousX = state.viewport.x;
 	const previousY = state.viewport.y;
 
-	update(state.viewport);
+	state.viewport.x = x;
+	state.viewport.y = y;
 	calculateBorderLineCoordinates(state);
 
 	const changed = state.viewport.x !== previousX || state.viewport.y !== previousY;
@@ -58,14 +54,7 @@ if (import.meta.vitest) {
 			});
 			const events = createMockEventDispatcherWithVitest();
 
-			updateViewport(
-				state,
-				viewport => {
-					viewport.x = 24;
-					viewport.y = 40;
-				},
-				events
-			);
+			updateViewport(state, 24, 40, events);
 
 			expect(state.viewport.borderLineCoordinates.left.startX).toBe(24);
 			expect(state.viewport.borderLineCoordinates.top.startY).toBe(40);
@@ -82,14 +71,7 @@ if (import.meta.vitest) {
 			const state = createMockState();
 			const events = createMockEventDispatcherWithVitest();
 
-			updateViewport(
-				state,
-				viewport => {
-					viewport.x = state.viewport.x;
-					viewport.y = state.viewport.y;
-				},
-				events
-			);
+			updateViewport(state, state.viewport.x, state.viewport.y, events);
 
 			expect(events.dispatch).not.toHaveBeenCalled();
 		});

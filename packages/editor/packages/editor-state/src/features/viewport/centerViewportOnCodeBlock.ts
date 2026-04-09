@@ -1,5 +1,7 @@
 import { Viewport } from './types';
 
+import type { Position } from '~/types';
+
 /**
  * Minimal positional data required for viewport centering
  */
@@ -38,7 +40,10 @@ export interface CodeBlockBounds {
  * - Coordinates use pixels, not grid units (grid conversion happens elsewhere)
  * - Negative viewport coordinates are allowed (viewport can pan anywhere)
  */
-export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(viewport: Viewport, codeBlock: T): void {
+export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
+	viewport: Viewport,
+	codeBlock: T
+): Position {
 	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
 	const blockCenterY = codeBlock.y + codeBlock.offsetY + codeBlock.height / 2;
 
@@ -53,6 +58,8 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(vie
 	const constrainedViewportY =
 		codeBlock.height > viewport.height ? oversizedBlockTop : Math.min(blockTop, idealViewportY);
 
-	viewport.x = Math.round(idealViewportX);
-	viewport.y = Math.round(constrainedViewportY);
+	return {
+		x: Math.round(idealViewportX),
+		y: Math.round(constrainedViewportY),
+	};
 }

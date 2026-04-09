@@ -17,7 +17,8 @@ function centerCurrentStop(
 	}
 
 	store.set('graphicHelper.selectedCodeBlock', stop.codeBlock);
-	updateViewport(state, viewport => centerViewportOnCodeBlock(viewport, stop.codeBlock), events);
+	const { x, y } = centerViewportOnCodeBlock(state.viewport, stop.codeBlock);
+	updateViewport(state, x, y, events);
 }
 
 export default function presentation(store: StateManager<State>, events: EventDispatcher): () => void {
