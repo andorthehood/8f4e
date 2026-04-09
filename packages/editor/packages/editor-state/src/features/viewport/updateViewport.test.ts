@@ -38,4 +38,27 @@ describe('updateViewport', () => {
 
 		expect(events.dispatch).not.toHaveBeenCalled();
 	});
+
+	it('rounds fractional viewport coordinates before storing state and dispatching events', () => {
+		const state = createMockState({
+			viewport: {
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 60,
+			},
+		});
+		const events = createMockEventDispatcherWithVitest();
+
+		updateViewport(state, 24.4, 39.6, events);
+
+		expect(state.viewport.x).toBe(24);
+		expect(state.viewport.y).toBe(40);
+		expect(events.dispatch).toHaveBeenCalledWith('viewportChanged', {
+			previousX: 0,
+			previousY: 0,
+			x: 24,
+			y: 40,
+		});
+	});
 });

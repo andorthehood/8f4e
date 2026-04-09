@@ -85,3 +85,73 @@ export default function animateViewport(state: State, x: number, y: number, even
 	const frameId = requestAnimationFrame(onFrame);
 	scheduledFrames.set(state, frameId);
 }
+
+if (import.meta.vitest) {
+	const { describe, it, expect, vi } = import.meta.vitest;
+	const { createMockState } = await import('~/pureHelpers/testingUtils/testUtils');
+
+	describe('animateViewport', () => {
+		it('rounds intermediate animated viewport coordinates before updating state', () => {
+			const callbacks: Array<(time: number) => void> = [];
+			const state = createMockState({
+				viewport: {
+					x: 0,
+					y: 0,
+				},
+				viewportAnimation: {
+					durationMs: 100,
+				},
+				callbacks: {
+					requestAnimationFrame: vi.fn(callback => {
+						callbacks.push(callback);
+						return callbacks.length;
+					}),
+					cancelAnimationFrame: vi.fn(),
+				},
+			});
+			const events = {
+				dispatch: vi.fn(),
+			} as unknown as EventDispatcher;
+
+			animateViewport(state, 10, 10, events);
+
+			callbacks[0](0);
+			callbacks[1](50);
+
+			expect(state.viewport.x).toBe(9);
+			expect(state.viewport.y).toBe(9);
+		});
+
+		it('snaps to the exact target coordinates on the final frame', () => {
+			const callbacks: Array<(time: number) => void> = [];
+			const state = createMockState({
+				viewport: {
+					x: 0,
+					y: 0,
+				},
+				viewportAnimation: {
+					durationMs: 100,
+				},
+				callbacks: {
+					requestAnimationFrame: vi.fn(callback => {
+						callbacks.push(callback);
+						return callbacks.length;
+					}),
+					cancelAnimationFrame: vi.fn(),
+				},
+			});
+			const events = {
+				dispatch: vi.fn(),
+			} as unknown as EventDispatcher;
+
+			animateViewport(state, 10, 10, events);
+
+			callbacks[0](0);
+			callbacks[1](100);
+
+			expect(state.viewport.x).toBe(10);
+			expect(state.viewport.y).toBe(10);
+			expect(state.viewportAnimation.active).toBe(false);
+		});
+	});
+}
