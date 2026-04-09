@@ -292,16 +292,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
 		if (homeBlock) {
-			updateViewport(state, viewport => centerViewportOnCodeBlock(viewport, homeBlock), events);
+			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock);
+			updateViewport(state, x, y, events);
 		} else {
-			updateViewport(
-				state,
-				viewport => {
-					viewport.x = 0;
-					viewport.y = 0;
-				},
-				events
-			);
+			updateViewport(state, 0, 0, events);
 		}
 
 		events.dispatch('projectCodeBlocksPopulated');

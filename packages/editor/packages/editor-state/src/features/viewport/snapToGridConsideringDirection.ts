@@ -36,10 +36,8 @@ export default function snapToGridConsideringDirection(
 ): void {
 	updateViewport(
 		state,
-		viewport => {
-			viewport.x = snapAxis(viewport.x, viewport.vGrid, direction.movementX);
-			viewport.y = snapAxis(viewport.y, viewport.hGrid, direction.movementY);
-		},
+		snapAxis(state.viewport.x, state.viewport.vGrid, direction.movementX),
+		snapAxis(state.viewport.y, state.viewport.hGrid, direction.movementY),
 		events
 	);
 }

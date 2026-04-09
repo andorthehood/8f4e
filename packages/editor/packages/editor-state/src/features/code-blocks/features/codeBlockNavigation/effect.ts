@@ -150,7 +150,8 @@ export function navigateToCodeBlockInDirection(
 		(direction === 'up' || direction === 'down') &&
 		moveSelectionToCurrentBlockVerticalEdge(state, currentBlock, direction)
 	) {
-		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, currentBlock), events);
+		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, currentBlock);
+		updateViewport(state, x, y, events);
 		return true;
 	}
 
@@ -165,7 +166,8 @@ export function navigateToCodeBlockInDirection(
 		}
 
 		setSelectedCodeBlock(stateSource, targetBlock);
-		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, targetBlock), events);
+		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
+		updateViewport(state, x, y, events);
 		return true;
 	}
 
@@ -203,7 +205,8 @@ export function jumpToCodeBlock(
 	// If we found a block, select it and center viewport on it
 	if (targetBlock) {
 		setSelectedCodeBlock(stateSource, targetBlock);
-		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, targetBlock), events);
+		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
+		updateViewport(state, x, y, events);
 		return true;
 	}
 
@@ -225,16 +228,10 @@ export function goHome(stateSource: StateSource, events?: EventDispatcher): void
 
 	if (homeBlock) {
 		setSelectedCodeBlock(stateSource, homeBlock);
-		updateViewport(state, viewport => centerViewportOnCodeBlockCursor(viewport, homeBlock), events);
+		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, homeBlock);
+		updateViewport(state, x, y, events);
 	} else {
-		updateViewport(
-			state,
-			viewport => {
-				viewport.x = 0;
-				viewport.y = 0;
-			},
-			events
-		);
+		updateViewport(state, 0, 0, events);
 	}
 }
 
