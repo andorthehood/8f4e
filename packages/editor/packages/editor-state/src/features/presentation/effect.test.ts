@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import presentation from './effect';
 
@@ -38,6 +38,10 @@ function createCodeBlock(
 describe('presentation effect', () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
 	});
 
 	it('centers the first tagged block and advances on its timer', () => {
@@ -249,6 +253,144 @@ describe('presentation effect', () => {
 		scheduledFrame?.(5016);
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
 		expect(state.viewportAnimation.targetY).toBe(390);
+	});
+
+	it('jumps between presentation stops with manual previous and next events', () => {
+		const modeSubscribers: Array<(value: State['editorMode']) => void> = [];
+		const eventHandlers = new Map<string, (payload?: unknown) => void>();
+		const state = {
+			callbacks: {
+				requestAnimationFrame: vi.fn(() => 1),
+				cancelAnimationFrame: vi.fn(),
+			},
+			featureFlags: {},
+			editorMode: 'view',
+			graphicHelper: {
+				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5), createCodeBlock(2, 400, 500, 2, 3)],
+				selectedCodeBlock: undefined,
+			},
+			viewport: createMockViewport(0, 0, 300, 200),
+			viewportAnimation: {
+				startX: 0,
+				startY: 0,
+				targetX: 0,
+				targetY: 0,
+				active: false,
+				durationMs: 90,
+			},
+		} as State;
+
+		const store = {
+			getState: () => state,
+			set: vi.fn((path: string, value: unknown) => {
+				if (path === 'editorMode') {
+					state.editorMode = value as State['editorMode'];
+					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
+				}
+				if (path === 'graphicHelper.selectedCodeBlock') {
+					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				}
+			}),
+			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
+				if (path === 'editorMode') {
+					modeSubscribers.push(callback as (value: State['editorMode']) => void);
+				}
+				return { selector: path, callback };
+			}),
+			unsubscribe: vi.fn(),
+		} as unknown as StateManager<State>;
+
+		const events = {
+			dispatch: vi.fn(),
+			on: vi.fn((eventName: string, callback: (payload?: unknown) => void) => {
+				eventHandlers.set(eventName, callback);
+			}),
+			off: vi.fn((eventName: string) => {
+				eventHandlers.delete(eventName);
+			}),
+		} as unknown as EventDispatcher;
+
+		presentation(store, events);
+		store.set('editorMode', 'presentation');
+
+		eventHandlers.get('nextPresentationStop')?.();
+		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.viewportAnimation.targetX).toBe(310);
+		expect(state.viewportAnimation.targetY).toBe(440);
+
+		eventHandlers.get('previousPresentationStop')?.();
+		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[0]);
+		expect(state.viewportAnimation.targetX).toBe(10);
+		expect(state.viewportAnimation.targetY).toBe(140);
+	});
+
+	it('restarts the current stop timer after a manual skip', () => {
+		const modeSubscribers: Array<(value: State['editorMode']) => void> = [];
+		const eventHandlers = new Map<string, (payload?: unknown) => void>();
+		const state = {
+			callbacks: {
+				requestAnimationFrame: vi.fn(() => 1),
+				cancelAnimationFrame: vi.fn(),
+			},
+			featureFlags: {},
+			editorMode: 'view',
+			graphicHelper: {
+				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5), createCodeBlock(2, 400, 500, 2, 3)],
+				selectedCodeBlock: undefined,
+			},
+			viewport: createMockViewport(0, 0, 300, 200),
+			viewportAnimation: {
+				startX: 0,
+				startY: 0,
+				targetX: 0,
+				targetY: 0,
+				active: false,
+				durationMs: 90,
+			},
+		} as State;
+
+		const store = {
+			getState: () => state,
+			set: vi.fn((path: string, value: unknown) => {
+				if (path === 'editorMode') {
+					state.editorMode = value as State['editorMode'];
+					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
+				}
+				if (path === 'graphicHelper.selectedCodeBlock') {
+					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				}
+			}),
+			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
+				if (path === 'editorMode') {
+					modeSubscribers.push(callback as (value: State['editorMode']) => void);
+				}
+				return { selector: path, callback };
+			}),
+			unsubscribe: vi.fn(),
+		} as unknown as StateManager<State>;
+
+		const events = {
+			dispatch: vi.fn(),
+			on: vi.fn((eventName: string, callback: (payload?: unknown) => void) => {
+				eventHandlers.set(eventName, callback);
+			}),
+			off: vi.fn((eventName: string) => {
+				eventHandlers.delete(eventName);
+			}),
+		} as unknown as EventDispatcher;
+
+		presentation(store, events);
+		store.set('editorMode', 'presentation');
+
+		vi.advanceTimersByTime(4000);
+		eventHandlers.get('nextPresentationStop')?.();
+		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+
+		vi.advanceTimersByTime(2999);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+
+		vi.advanceTimersByTime(1);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[0]);
 	});
 
 	it('exits immediately when presentation mode has no tagged blocks', () => {

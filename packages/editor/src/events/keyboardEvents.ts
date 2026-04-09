@@ -70,6 +70,16 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 		}
 
 		if (state.editorMode === 'presentation') {
+			if (key === 'ArrowLeft') {
+				event.preventDefault();
+				events.dispatch('previousPresentationStop');
+			}
+
+			if (key === 'ArrowRight') {
+				event.preventDefault();
+				events.dispatch('nextPresentationStop');
+			}
+
 			return;
 		}
 

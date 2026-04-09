@@ -165,6 +165,30 @@ describe('keyboardEvents mode switching', () => {
 		cleanup();
 	});
 
+	it('jumps to the previous presentation stop when ArrowLeft is pressed in presentation mode', () => {
+		editorMode = 'presentation';
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('ArrowLeft');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('previousPresentationStop');
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('jumps to the next presentation stop when ArrowRight is pressed in presentation mode', () => {
+		editorMode = 'presentation';
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('ArrowRight');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('nextPresentationStop');
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
+
 	it('does not enter alternate modes when modeToggling is disabled', () => {
 		featureFlags.modeToggling = false;
 		const cleanup = keyboardEvents(events, store);
