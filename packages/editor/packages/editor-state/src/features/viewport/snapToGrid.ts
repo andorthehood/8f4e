@@ -1,15 +1,13 @@
-import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
 import roundToGrid from './roundToGrid';
+import updateViewport from './updateViewport';
 
-import type { State } from '~/types';
+import type { EventDispatcher, State } from '~/types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
-export default function snapToGrid(state: State): void {
+export default function snapToGrid(state: State, events?: EventDispatcher): void {
 	const [x, y] = roundToGrid(state.viewport.x, state.viewport.y, state.viewport);
-	state.viewport.x = x;
-	state.viewport.y = y;
-	calculateBorderLineCoordinates(state);
+	updateViewport(state, x, y, events);
 }
 
 if (import.meta.vitest) {

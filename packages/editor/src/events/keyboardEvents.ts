@@ -47,21 +47,30 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 		const { key, metaKey, ctrlKey } = event;
 		const state = store.getState();
 
-		// Modal switching: e enters edit mode from view mode, Esc returns to view mode.
+		// Escape should always allow leaving non-view modes, even if mode toggling is disabled.
+		if (state.editorMode !== 'view' && key === 'Escape') {
+			event.preventDefault();
+			events.dispatch('exitToViewMode');
+			return;
+		}
+
+		// Modal switching: e enters edit mode from view mode.
 		if (state.featureFlags.modeToggling) {
-			if (!state.featureFlags.editing && key === 'e' && !event.altKey && !event.ctrlKey && !event.metaKey) {
+			if (state.editorMode === 'view' && key === 'e' && !event.altKey && !event.ctrlKey && !event.metaKey) {
 				event.preventDefault();
-				store.set('featureFlags.editing', true);
-				store.set('featureFlags.codeLineSelection', true);
+				events.dispatch('enterEditMode');
 				return;
 			}
 
-			if (state.featureFlags.editing && key === 'Escape') {
+			if (state.editorMode === 'view' && key === 'p' && !event.altKey && !event.ctrlKey && !event.metaKey) {
 				event.preventDefault();
-				store.set('featureFlags.editing', false);
-				store.set('featureFlags.codeLineSelection', false);
+				events.dispatch('enterPresentationMode');
 				return;
 			}
+		}
+
+		if (state.editorMode === 'presentation') {
+			return;
 		}
 
 		// Handle F10 for toggling position offsetters

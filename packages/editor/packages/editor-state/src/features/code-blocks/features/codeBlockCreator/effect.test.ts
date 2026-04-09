@@ -23,7 +23,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 		it('should read from clipboard callback when pasting a module', async () => {
 			const mockReadClipboard = vi.fn().mockResolvedValue('module test\n\nmoduleEnd');
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
 
 			codeBlockCreator(store, mockEvents);
 
@@ -50,7 +49,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 		it('should fail silently when readClipboardText is not provided', async () => {
 			mockState.callbacks.readClipboardText = undefined;
-			mockState.featureFlags.editing = true;
 
 			codeBlockCreator(store, mockEvents);
 
@@ -68,7 +66,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 		it('should fail silently when clipboard read fails', async () => {
 			const mockReadClipboard = vi.fn().mockRejectedValue(new Error('Clipboard read failed'));
 			mockState.callbacks.readClipboardText = mockReadClipboard;
-			mockState.featureFlags.editing = true;
 
 			codeBlockCreator(store, mockEvents);
 
@@ -188,7 +185,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			mockState.callbacks.getModule = mockGetModule;
 			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1', 'dep2']);
-			mockState.featureFlags.editing = true;
 
 			codeBlockCreator(store, mockEvents);
 
@@ -226,7 +222,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			mockState.callbacks.getModule = mockGetModule;
 			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1', 'dep2']);
-			mockState.featureFlags.editing = true;
 
 			// Pre-populate with dep1
 			const existingDep1 = createMockCodeBlock({
@@ -257,7 +252,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			mockState.callbacks.getModule = mockGetModule;
 			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue([]);
-			mockState.featureFlags.editing = true;
 
 			codeBlockCreator(store, mockEvents);
 
@@ -286,7 +280,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			mockState.callbacks.getModule = mockGetModule;
 			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1', 'missing']);
-			mockState.featureFlags.editing = true;
 
 			// Mock console.warn to verify error handling
 			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -324,7 +317,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			mockState.callbacks.getModule = mockGetModule;
 			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1']);
-			mockState.featureFlags.editing = true;
 			mockState.viewport.vGrid = 8; // 8 pixels per grid unit
 
 			codeBlockCreator(store, mockEvents);
@@ -364,7 +356,6 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			mockState.callbacks.getModule = mockGetModule;
 			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['sine']);
-			mockState.featureFlags.editing = true;
 
 			// Pre-populate with a module named 'sine' (different type from the function dependency)
 			const existingSineModule = createMockCodeBlock({
@@ -412,7 +403,6 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 	it('should toggle disabled state from false to true', () => {
 		const codeBlock = createMockCodeBlock({ disabled: false });
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		codeBlockCreator(store, mockEvents);
 
@@ -429,7 +419,6 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 	it('should toggle disabled state from true to false', () => {
 		const codeBlock = createMockCodeBlock({ disabled: true });
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		codeBlockCreator(store, mockEvents);
 
@@ -445,7 +434,6 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 	it('should update lastUpdated for cache invalidation', () => {
 		const codeBlock = createMockCodeBlock({ disabled: false, lastUpdated: 1000 });
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		codeBlockCreator(store, mockEvents);
 
@@ -461,7 +449,6 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 	it('should trigger store update', () => {
 		const codeBlock = createMockCodeBlock({ disabled: false });
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		codeBlockCreator(store, mockEvents);
 
@@ -495,7 +482,6 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 	it('should add @disabled directive when enabling disabled', () => {
 		const codeBlock = createMockCodeBlock({ code: ['module test', 'moduleEnd'], disabled: false });
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		codeBlockCreator(store, mockEvents);
 
@@ -512,7 +498,6 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 	it('should remove @disabled directive when disabling disabled', () => {
 		const codeBlock = createMockCodeBlock({ code: ['module test', '; @disabled', 'moduleEnd'], disabled: true });
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		codeBlockCreator(store, mockEvents);
 

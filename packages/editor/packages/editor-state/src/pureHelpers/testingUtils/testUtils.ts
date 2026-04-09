@@ -296,6 +296,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			consoleOverlay: false,
 			positionOffsetters: true,
 		},
+		editorMode: 'edit',
 		colorScheme: defaultColorScheme,
 		historyStack: [],
 		redoStack: [],
