@@ -16,11 +16,17 @@ import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../types';
 
 const corner = '+';
+let selectedBorderFrame = 0;
+
+function getSelectedBorderLookup(state: State) {
+	const spriteLookups = state.graphicHelper.spriteLookups!;
+	return Math.floor(selectedBorderFrame / 30) % 2 === 0 ? spriteLookups.fontNumbers : spriteLookups.fontCode;
+}
 
 function drawSelectedOutline(engine: Engine, state: State, codeBlockWidth: number, codeBlockHeight: number): void {
 	const { vGrid, hGrid } = state.viewport;
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups!.fontNumbers);
+	engine.setSpriteLookup(getSelectedBorderLookup(state));
 
 	engine.drawText(-vGrid * 2, -hGrid, '.');
 	engine.drawText(-vGrid, -hGrid, '-');
@@ -44,6 +50,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 	if (!spriteLookups) {
 		return;
 	}
+
+	selectedBorderFrame++;
 
 	const { x, y } = state.viewport;
 
@@ -97,7 +105,9 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					}
 
 					engine.setSpriteLookup(
-						state.graphicHelper.selectedCodeBlock === codeBlock ? spriteLookups.fontNumbers : spriteLookups.fontCode
+						state.graphicHelper.selectedCodeBlock === codeBlock
+							? getSelectedBorderLookup(state)
+							: spriteLookups.fontCode
 					);
 
 					engine.drawText(0, 0, corner);

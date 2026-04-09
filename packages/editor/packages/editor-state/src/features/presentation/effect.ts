@@ -31,6 +31,20 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	let stopIndex = 0;
 	let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
+	function clearPresentationState(): void {
+		state.presentation.activeStopIndex = 0;
+		state.presentation.totalStops = 0;
+		state.presentation.remainingMs = 0;
+		state.presentation.deadlineAt = undefined;
+	}
+
+	function updatePresentationState(seconds: number): void {
+		state.presentation.activeStopIndex = stopIndex;
+		state.presentation.totalStops = stops.length;
+		state.presentation.remainingMs = Math.round(seconds * 1000);
+		state.presentation.deadlineAt = Date.now() + state.presentation.remainingMs;
+	}
+
 	function clearScheduledAdvance(): void {
 		if (!timeoutId) {
 			return;
@@ -43,6 +57,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	function exitPresentation(): void {
 		clearScheduledAdvance();
 		stopViewportAnimation(state);
+		clearPresentationState();
 		if (state.editorMode === 'presentation') {
 			store.set('editorMode', 'view');
 		}
@@ -60,7 +75,13 @@ export default function presentation(store: StateManager<State>, events: EventDi
 
 	function scheduleNextAdvance(): void {
 		clearScheduledAdvance();
-		if (state.editorMode !== 'presentation' || stops.length <= 1) {
+		if (state.editorMode !== 'presentation' || stops.length === 0) {
+			return;
+		}
+
+		updatePresentationState(stops[stopIndex].seconds);
+
+		if (stops.length <= 1) {
 			return;
 		}
 
@@ -100,6 +121,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		clearScheduledAdvance();
 		if (editorMode !== 'presentation') {
 			stopViewportAnimation(state);
+			clearPresentationState();
 			return;
 		}
 
@@ -140,6 +162,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	return () => {
 		clearScheduledAdvance();
 		stopViewportAnimation(state);
+		clearPresentationState();
 		store.unsubscribe('editorMode', onPresentationChanged);
 		store.unsubscribe('graphicHelper.codeBlocks', syncStops);
 		events.off('viewportResized', onViewportResized);
