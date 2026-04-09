@@ -44,6 +44,34 @@ describe('centerViewportOnCodeBlock', () => {
 		expect(centerViewportOnCodeBlock(viewport, codeBlock).x).toBe(100);
 	});
 
+	it('places the code block center on the left quarter of the viewport when aligned left', () => {
+		const viewport = createMockViewport(0, 0, 800, 600);
+		const codeBlock = createMockCodeBlock(100, 100, 200, 100);
+
+		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'left' }).x).toBe(0);
+	});
+
+	it('places the code block center on the right quarter of the viewport when aligned right', () => {
+		const viewport = createMockViewport(0, 0, 800, 600);
+		const codeBlock = createMockCodeBlock(100, 100, 200, 100);
+
+		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'right' }).x).toBe(-400);
+	});
+
+	it('places the code block center on the top quarter of the viewport when aligned top', () => {
+		const viewport = createMockViewport(0, 0, 800, 600);
+		const codeBlock = createMockCodeBlock(100, 200, 100, 100);
+
+		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'top' }).y).toBe(100);
+	});
+
+	it('places the code block center on the bottom quarter of the viewport when aligned bottom', () => {
+		const viewport = createMockViewport(0, 0, 800, 600);
+		const codeBlock = createMockCodeBlock(100, 200, 100, 100);
+
+		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'bottom' }).y).toBe(-200);
+	});
+
 	it('centers a small block vertically when it fits in the viewport', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 200, 100, 100);
