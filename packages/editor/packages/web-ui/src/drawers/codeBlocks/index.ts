@@ -15,6 +15,8 @@ import drawBlockHighlights from './widgets/blockHighlights';
 import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../types';
 
+const corner = '+';
+
 export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
 	const spriteLookups = state.graphicHelper.spriteLookups;
 
@@ -73,9 +75,9 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 						engine.drawSprite(0, codeBlock.cursor.y, 'highlightedCodeLine', codeBlock.width, state.viewport.hGrid);
 					}
 
-					engine.setSpriteLookup(spriteLookups.fontCode);
-
-					const corner = '+';
+					engine.setSpriteLookup(
+						state.graphicHelper.selectedCodeBlock === codeBlock ? spriteLookups.fontNumbers : spriteLookups.fontCode
+					);
 
 					engine.drawText(0, 0, corner);
 					engine.drawText(codeBlock.width - state.viewport.vGrid, 0, corner);
