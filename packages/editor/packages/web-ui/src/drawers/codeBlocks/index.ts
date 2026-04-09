@@ -17,7 +17,6 @@ import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../types';
 
 const corner = '+';
-let selectedBorderFrame = 0;
 
 export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
 	const spriteLookups = state.graphicHelper.spriteLookups;
@@ -25,8 +24,6 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 	if (!spriteLookups) {
 		return;
 	}
-
-	selectedBorderFrame++;
 
 	const { x, y } = state.viewport;
 
@@ -122,7 +119,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			);
 
 			if (state.editorMode === 'presentation' && state.graphicHelper.selectedCodeBlock === codeBlock) {
-				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height, selectedBorderFrame);
+				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height);
 			}
 
 			drawErrorMessages(engine, state, codeBlock);
