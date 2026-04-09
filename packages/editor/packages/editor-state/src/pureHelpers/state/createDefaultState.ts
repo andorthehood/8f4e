@@ -91,5 +91,13 @@ export default function createDefaultState() {
 			},
 			center: { x: 0, y: 0 },
 		},
+		viewportAnimation: {
+			startX: 0,
+			startY: 0,
+			targetX: 0,
+			targetY: 0,
+			active: false,
+			durationMs: 90,
+		},
 	};
 }

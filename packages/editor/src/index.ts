@@ -87,6 +87,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			writeClipboardText: async (text: string) => {
 				await navigator.clipboard.writeText(text);
 			},
+			requestAnimationFrame: callback => window.requestAnimationFrame(callback),
+			cancelAnimationFrame: id => window.cancelAnimationFrame(id),
 		},
 	});
 	const state = store.getState();

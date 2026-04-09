@@ -3,6 +3,7 @@ import snapToGrid from './snapToGrid';
 import snapToGridConsideringDirection from './snapToGridConsideringDirection';
 import updateViewport from './updateViewport';
 
+import type { StateManager } from '@8f4e/state-manager';
 import type { State } from '~/types';
 
 import { EventDispatcher } from '~/types';
@@ -23,7 +24,9 @@ interface ViewportScrollEndEvent {
 	movementY: number;
 }
 
-export default function viewport(state: State, events: EventDispatcher): () => void {
+export default function viewport(store: StateManager<State>, events: EventDispatcher): () => void {
+	const state = store.getState();
+
 	function onMouseMove(event: MouseMoveEvent) {
 		if (event.buttons === 1 && state.featureFlags.viewportDragging) {
 			updateViewport(state, state.viewport.x - event.movementX, state.viewport.y - event.movementY, events);
@@ -36,11 +39,13 @@ export default function viewport(state: State, events: EventDispatcher): () => v
 	}
 
 	function onMouseUp() {
-		snapToGrid(state, events);
+		const { x, y } = snapToGrid(state);
+		updateViewport(state, x, y, events);
 	}
 
 	function onViewportScrollEnd(event: ViewportScrollEndEvent) {
-		snapToGridConsideringDirection(state, event, events);
+		const { x, y } = snapToGridConsideringDirection(state, event);
+		updateViewport(state, x, y, events);
 	}
 
 	events.on('mousemove', onMouseMove);

@@ -29,3 +29,13 @@ export interface Viewport {
 	x: number;
 	y: number;
 }
+
+export interface ViewportAnimation {
+	startX: number;
+	startY: number;
+	targetX: number;
+	targetY: number;
+	active: boolean;
+	startTime?: number;
+	durationMs: number;
+}
