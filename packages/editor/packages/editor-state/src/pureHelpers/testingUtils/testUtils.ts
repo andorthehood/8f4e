@@ -350,6 +350,14 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			},
 			center: { x: 0, y: 0 },
 		},
+		viewportAnimation: {
+			startX: 0,
+			startY: 0,
+			targetX: 0,
+			targetY: 0,
+			active: false,
+			durationMs: 90,
+		},
 	};
 
 	return mergeDeep(defaults, overrides);
