@@ -48,6 +48,16 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		}
 	}
 
+	function jumpToStop(indexDelta: number): void {
+		if (state.editorMode !== 'presentation' || stops.length === 0) {
+			return;
+		}
+
+		stopIndex = (stopIndex + indexDelta + stops.length) % stops.length;
+		centerCurrentStop(store, state, events, stops[stopIndex]);
+		scheduleNextAdvance();
+	}
+
 	function scheduleNextAdvance(): void {
 		clearScheduledAdvance();
 		if (state.editorMode !== 'presentation' || stops.length <= 1) {
@@ -113,9 +123,19 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		centerCurrentStop(store, state, events, stops[stopIndex]);
 	}
 
+	function onPreviousPresentationStop(): void {
+		jumpToStop(-1);
+	}
+
+	function onNextPresentationStop(): void {
+		jumpToStop(1);
+	}
+
 	store.subscribe('editorMode', onPresentationChanged);
 	store.subscribe('graphicHelper.codeBlocks', syncStops);
 	events.on('viewportResized', onViewportResized);
+	events.on('previousPresentationStop', onPreviousPresentationStop);
+	events.on('nextPresentationStop', onNextPresentationStop);
 
 	return () => {
 		clearScheduledAdvance();
@@ -123,5 +143,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		store.unsubscribe('editorMode', onPresentationChanged);
 		store.unsubscribe('graphicHelper.codeBlocks', syncStops);
 		events.off('viewportResized', onViewportResized);
+		events.off('previousPresentationStop', onPreviousPresentationStop);
+		events.off('nextPresentationStop', onNextPresentationStop);
 	};
 }
