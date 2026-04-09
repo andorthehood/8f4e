@@ -31,6 +31,7 @@ import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
 import type { Compiler, CompilationResult } from './features/program-compiler/types';
 import type { Project, ModuleMetadata, ProjectMetadata } from './features/project-import/types';
+import type { PresentationState } from './features/presentation/types';
 import type {
 	RuntimeFactory,
 	RuntimeRegistryEntry,
@@ -302,4 +303,5 @@ export interface State {
 	};
 	viewport: Viewport;
 	viewportAnimation: ViewportAnimation;
+	presentation: PresentationState;
 }

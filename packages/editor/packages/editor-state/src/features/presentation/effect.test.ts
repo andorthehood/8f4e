@@ -71,6 +71,12 @@ describe('presentation effect', () => {
 				active: false,
 				durationMs: 90,
 			},
+			presentation: {
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				deadlineAt: undefined,
+			},
 		} as State;
 
 		const store = {
@@ -108,6 +114,10 @@ describe('presentation effect', () => {
 		scheduledFrame?.(16);
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[0]);
 		expect(state.viewportAnimation.durationMs).toBe(2000);
+		expect(state.presentation.activeStopIndex).toBe(0);
+		expect(state.presentation.totalStops).toBe(2);
+		expect(state.presentation.remainingMs).toBe(5000);
+		expect(state.presentation.deadlineAt).toBe(Date.now() + 5000);
 		expect(state.viewport.x).toBe(0);
 		expect(state.viewport.y).toBe(0);
 
@@ -120,6 +130,10 @@ describe('presentation effect', () => {
 		vi.advanceTimersByTime(3000);
 		scheduledFrame?.(5016);
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.presentation.activeStopIndex).toBe(1);
+		expect(state.presentation.totalStops).toBe(2);
+		expect(state.presentation.remainingMs).toBe(3000);
+		expect(state.presentation.deadlineAt).toBe(Date.now() + 3000);
 		expect(state.viewportAnimation.targetX).toBe(310);
 		expect(state.viewportAnimation.targetY).toBe(440);
 		expect(state.viewportAnimation.durationMs).toBe(2000);
@@ -153,6 +167,12 @@ describe('presentation effect', () => {
 				active: false,
 				durationMs: 90,
 			},
+			presentation: {
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				deadlineAt: undefined,
+			},
 		} as State;
 
 		const store = {
@@ -184,11 +204,14 @@ describe('presentation effect', () => {
 		presentation(store, events);
 		store.set('editorMode', 'presentation');
 		expect(state.viewportAnimation.targetX).toBe(85);
+		expect(state.presentation.activeStopIndex).toBe(0);
+		expect(state.presentation.totalStops).toBe(2);
 
 		vi.advanceTimersByTime(5000);
 		scheduledFrame?.(5016);
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
 		expect(state.viewportAnimation.targetX).toBe(235);
+		expect(state.presentation.activeStopIndex).toBe(1);
 	});
 
 	it('supports top and bottom presentation alignment anchors', () => {
@@ -216,6 +239,12 @@ describe('presentation effect', () => {
 				targetY: 0,
 				active: false,
 				durationMs: 90,
+			},
+			presentation: {
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				deadlineAt: undefined,
 			},
 		} as State;
 
@@ -248,11 +277,14 @@ describe('presentation effect', () => {
 		presentation(store, events);
 		store.set('editorMode', 'presentation');
 		expect(state.viewportAnimation.targetY).toBe(190);
+		expect(state.presentation.activeStopIndex).toBe(0);
+		expect(state.presentation.totalStops).toBe(2);
 
 		vi.advanceTimersByTime(5000);
 		scheduledFrame?.(5016);
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
 		expect(state.viewportAnimation.targetY).toBe(390);
+		expect(state.presentation.activeStopIndex).toBe(1);
 	});
 
 	it('jumps between presentation stops with manual previous and next events', () => {
@@ -277,6 +309,12 @@ describe('presentation effect', () => {
 				targetY: 0,
 				active: false,
 				durationMs: 90,
+			},
+			presentation: {
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				deadlineAt: undefined,
 			},
 		} as State;
 
@@ -315,11 +353,16 @@ describe('presentation effect', () => {
 
 		eventHandlers.get('nextPresentationStop')?.();
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.presentation.activeStopIndex).toBe(1);
+		expect(state.presentation.totalStops).toBe(2);
+		expect(state.presentation.remainingMs).toBe(3000);
 		expect(state.viewportAnimation.targetX).toBe(310);
 		expect(state.viewportAnimation.targetY).toBe(440);
 
 		eventHandlers.get('previousPresentationStop')?.();
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[0]);
+		expect(state.presentation.activeStopIndex).toBe(0);
+		expect(state.presentation.remainingMs).toBe(5000);
 		expect(state.viewportAnimation.targetX).toBe(10);
 		expect(state.viewportAnimation.targetY).toBe(140);
 	});
@@ -346,6 +389,12 @@ describe('presentation effect', () => {
 				targetY: 0,
 				active: false,
 				durationMs: 90,
+			},
+			presentation: {
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				deadlineAt: undefined,
 			},
 		} as State;
 
@@ -385,6 +434,7 @@ describe('presentation effect', () => {
 		vi.advanceTimersByTime(4000);
 		eventHandlers.get('nextPresentationStop')?.();
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.presentation.deadlineAt).toBe(Date.now() + 3000);
 
 		vi.advanceTimersByTime(2999);
 		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
@@ -408,6 +458,12 @@ describe('presentation effect', () => {
 				targetY: 0,
 				active: false,
 				durationMs: 90,
+			},
+			presentation: {
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				deadlineAt: undefined,
 			},
 		} as State;
 
@@ -439,6 +495,8 @@ describe('presentation effect', () => {
 
 		expect(store.set).toHaveBeenLastCalledWith('editorMode', 'view');
 		expect(events.dispatch).not.toHaveBeenCalled();
+		expect(state.presentation.totalStops).toBe(0);
+		expect(state.presentation.deadlineAt).toBeUndefined();
 	});
 
 	it('cancels viewport animation when presentation mode is exited externally', () => {
@@ -466,6 +524,12 @@ describe('presentation effect', () => {
 				targetY: 0,
 				active: false,
 				durationMs: 90,
+			},
+			presentation: {
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				deadlineAt: undefined,
 			},
 		} as State;
 
@@ -500,10 +564,14 @@ describe('presentation effect', () => {
 		store.set('editorMode', 'presentation');
 		scheduledFrame?.(16);
 		expect(state.viewportAnimation.active).toBe(true);
+		expect(state.presentation.totalStops).toBe(1);
+		expect(state.presentation.deadlineAt).toBe(Date.now() + 2000);
 
 		store.set('editorMode', 'view');
 		expect(state.viewportAnimation.active).toBe(false);
 		expect(state.viewportAnimation.startTime).toBeUndefined();
 		expect(state.callbacks.cancelAnimationFrame).toHaveBeenCalled();
+		expect(state.presentation.totalStops).toBe(0);
+		expect(state.presentation.deadlineAt).toBeUndefined();
 	});
 });
