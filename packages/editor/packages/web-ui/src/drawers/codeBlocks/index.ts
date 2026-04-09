@@ -11,38 +11,13 @@ import drawErrorMessages from './widgets/errorMessages';
 import drawPianoKeyboards from './widgets/pianoKeyboards';
 import drawArrow from './drawArrow';
 import drawBlockHighlights from './widgets/blockHighlights';
+import drawSelectedOutline from './drawSelectedOutline';
 
 import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../types';
 
 const corner = '+';
 let selectedBorderFrame = 0;
-
-function getSelectedBorderLookup(state: State) {
-	const spriteLookups = state.graphicHelper.spriteLookups!;
-	return Math.floor(selectedBorderFrame / 30) % 2 === 0 ? spriteLookups.fontNumbers : spriteLookups.fontCode;
-}
-
-function drawSelectedOutline(engine: Engine, state: State, codeBlockWidth: number, codeBlockHeight: number): void {
-	const { vGrid, hGrid } = state.viewport;
-
-	engine.setSpriteLookup(getSelectedBorderLookup(state));
-
-	engine.drawText(-vGrid * 2, -hGrid, '.');
-	engine.drawText(-vGrid, -hGrid, '-');
-	engine.drawText(codeBlockWidth, -hGrid, '-');
-	engine.drawText(codeBlockWidth + vGrid, -hGrid, '.');
-
-	engine.drawText(-vGrid * 2, 0, '|');
-	engine.drawText(codeBlockWidth + vGrid, 0, '|');
-	engine.drawText(-vGrid * 2, codeBlockHeight - hGrid, '|');
-	engine.drawText(codeBlockWidth + vGrid, codeBlockHeight - hGrid, '|');
-
-	engine.drawText(-vGrid * 2, codeBlockHeight, '`');
-	engine.drawText(-vGrid, codeBlockHeight, '-');
-	engine.drawText(codeBlockWidth, codeBlockHeight, '-');
-	engine.drawText(codeBlockWidth + vGrid, codeBlockHeight, "'");
-}
 
 export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
 	const spriteLookups = state.graphicHelper.spriteLookups;
@@ -146,8 +121,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 				codeBlock.opacity
 			);
 
-			if (state.graphicHelper.selectedCodeBlock === codeBlock) {
-				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height);
+			if (state.editorMode === 'presentation' && state.graphicHelper.selectedCodeBlock === codeBlock) {
+				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height, selectedBorderFrame);
 			}
 
 			drawErrorMessages(engine, state, codeBlock);
