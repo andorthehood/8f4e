@@ -25,7 +25,6 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -45,7 +44,6 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -64,7 +62,6 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -83,7 +80,6 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -102,7 +98,6 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -122,7 +117,6 @@ describe('skipExecutionToggler', () => {
 			lastUpdated: 1000,
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -141,7 +135,6 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 		});
 		mockState.graphicHelper.codeBlocks = [codeBlock];
-		mockState.featureFlags.editing = true;
 
 		skipExecutionToggler(store, mockEvents);
 

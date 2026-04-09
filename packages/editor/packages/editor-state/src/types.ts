@@ -145,7 +145,7 @@ export interface FeatureFlags {
 	/** Enable/disable panning/scrolling of the editor viewport */
 	viewportDragging: boolean;
 
-	/** Enable/disable all editing functionality (create, edit, delete, save) */
+	/** Whether the editor is currently in an edit-enabled state. */
 	editing: boolean;
 
 	/** Enable/disable keyboard toggling between view/edit modes (e/Escape) */
@@ -166,6 +166,8 @@ export interface FeatureFlags {
  * This allows users to specify only the flags they want to override.
  */
 export type FeatureFlagsConfig = Partial<FeatureFlags>;
+
+export type EditorMode = 'view' | 'edit' | 'presentation';
 
 // Callbacks interface contains all callback functions (top-level public API)
 export interface Callbacks {
@@ -248,6 +250,7 @@ export interface State {
 	graphicHelper: GraphicHelper;
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;
+	editorMode: EditorMode;
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	initialProjectState?: Project;

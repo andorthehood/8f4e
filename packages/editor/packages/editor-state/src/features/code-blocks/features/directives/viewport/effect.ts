@@ -114,6 +114,6 @@ export default function viewportDirectiveEffect(store: StateManager<State>, even
 		syncProgrammaticSelectedCodeBlockWithoutCompilerTrigger
 	);
 	events.on('spriteSheetRerendered', recomputeAnchoredPositions);
-	events.on('viewportMoved', recomputeAnchoredPositions);
+	events.on('viewportChanged', recomputeAnchoredPositions);
 	events.on('viewportResized', recomputeAnchoredPositions);
 }

@@ -75,7 +75,7 @@ Manages viewport interactions and transformations: panning, resizing, snap-to-gr
 - Border calculations: `calculateBorderLineCoordinates.ts`
 - Centering logic: `centerViewportOnCodeBlock.ts`
 - Grid snapping: `snapToGrid.ts`
-- Viewport movement: `move.ts`
+- Viewport updates: `updateViewport.ts`
 - Resize operations: `resize.ts`
 
 ## Notes & Limitations

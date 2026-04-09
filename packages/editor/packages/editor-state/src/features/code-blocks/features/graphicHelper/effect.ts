@@ -32,6 +32,7 @@ import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
+import updateViewport from '../../../viewport/updateViewport';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -291,10 +292,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
 		if (homeBlock) {
-			centerViewportOnCodeBlock(state.viewport, homeBlock);
+			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock);
+			updateViewport(state, x, y, events);
 		} else {
-			state.viewport.x = 0;
-			state.viewport.y = 0;
+			updateViewport(state, 0, 0, events);
 		}
 
 		events.dispatch('projectCodeBlocksPopulated');
