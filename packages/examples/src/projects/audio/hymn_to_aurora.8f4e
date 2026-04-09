@@ -1,25 +1,25 @@
 8f4e/v1
 
 constants env
-; @pos 41 -70
+; @pos 141 -140
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 4/8/2026, 6:20:23 PM
+; Last updated: 4/9/2026, 9:02:57 PM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
-; 'patterns_ch0.bin'
-const ASSET_CH0_SIZE 6144
 ; 'patterns_ch1.bin'
 const ASSET_CH1_SIZE 6144
 ; 'patterns_ch2.bin'
 const ASSET_CH2_SIZE 6144
 ; 'patterns_ch3.bin'
 const ASSET_CH3_SIZE 6144
+; 'patterns_ch0.bin'
+const ASSET_CH0_SIZE 6144
 ; 'sample_1.bin'
 const ASSET_SAMPLE1_SIZE 9964
 ; 'sample_2.bin'
@@ -48,7 +48,7 @@ const ASSET_SAMPLE12_SIZE 9000
 constantsEnd
 
 constants mod
-; @pos 213 -126
+; @pos 197 -140
 ; @tab 30
 use env
 ; Row layout (little-endian)
@@ -161,7 +161,7 @@ const S12_REPEAT_LENGTH	2
 constantsEnd
 
 function maskEffect
-; @pos 342 -113
+; @pos 335 -128
 use mod
 param int row
 
@@ -174,7 +174,7 @@ shiftRight
 functionEnd int
 
 function maskParam
-; @pos 342 -100
+; @pos 335 -110
 use mod
 param int row
 
@@ -187,7 +187,7 @@ shiftRight
 functionEnd int
 
 function maskPeriod
-; @pos 307 -100
+; @pos 298 -110
 use mod
 param int row
 
@@ -206,7 +206,7 @@ or
 functionEnd int
 
 function maskSampleNumber
-; @pos 305 -117
+; @pos 297 -128
 use mod
 param int row
 
@@ -223,7 +223,7 @@ or
 functionEnd int
 
 function period2Step
-; @pos 271 -117
+; @pos 261 -128
 param int period
 use mod
 use env
@@ -247,7 +247,7 @@ div
 functionEnd float
 
 function sampleNumberToAddr
-; @pos 377 -114
+; @pos 371 -110
 ; @tab 8
 param int sampleNumber
 
@@ -271,7 +271,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatLen
-; @pos 373 -138
+; @pos 372 -139
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -295,7 +295,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatOffset
-; @pos 415 -138
+; @pos 415 -139
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -319,7 +319,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToSize
-; @pos 415 -114
+; @pos 415 -110
 ; @tab 8
 use env
 param int sampleNumber
@@ -343,7 +343,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToVolume
-; @pos 451 -114
+; @pos 452 -110
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -404,7 +404,7 @@ store
 moduleEnd
 
 module amp1
-; @pos 442 -67
+; @pos 443 -69
 ; @group ch0
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
@@ -412,7 +412,6 @@ float out
 
 push &out
 push *in
-;add
 push *volume
 castToFloat
 push 64.0
@@ -431,7 +430,6 @@ float out
 
 push &out
 push *in
-;add
 push *volume
 castToFloat
 push 64.0
@@ -450,7 +448,6 @@ float out
 
 push &out
 push *in
-;add
 push *volume
 castToFloat
 push 64.0
@@ -469,7 +466,6 @@ float out
 
 push &out
 push *in
-;add
 push *volume
 castToFloat
 push 64.0
@@ -480,7 +476,7 @@ store
 moduleEnd
 
 module assets
-; @pos 41 -93
+; @pos 33 -115
 ; @tab 22
 ; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_1.bin
 ; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_2.bin
@@ -503,11 +499,11 @@ moduleEnd
 
 module audiooutL
 ; @pos 525 -4
-; ~audioOutput buffer 0 0
 use env
 
 float* in &mixer:outL
 float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 0
 int pointer &buffer
 
 ; @plot buffer -1 1
@@ -541,11 +537,11 @@ moduleEnd
 
 module audiooutR
 ; @pos 566 -4
-; ~audioOutput buffer 0 1
 use env
 
 float* in &mixer:outR
 float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 1
 int pointer &buffer
 
 ; @plot buffer -1 1
@@ -578,7 +574,7 @@ ifEnd
 moduleEnd
 
 module mixer
-; @pos 486 0
+; @pos 487 -1
 float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
@@ -662,7 +658,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer1
-; @pos 397 -67
+; @pos 398 -69
 ; @group ch0
 use env
 
@@ -740,7 +736,7 @@ module modSamplePlayer2
 ; @pos 397 -24
 ; @group ch1
 use env
-
+; @stop 12 5
 float out
 int*  period &period2:out 
 float _position 0.0
@@ -997,14 +993,93 @@ ifEnd
 
 moduleEnd
 
-module notes
-; @pos 350 -8
-; @home
-; This is a bare-bones
-; implementation of a MOD player
-; containing just enough feature
-; to play hymn_for_aurora.mod 
-; by Horace Wimp
+module notes11
+; @pos 351 -8
+
+; The samples are selected by  --- \ 
+; the sample player based on        >
+; the sample number extracted  --- /
+; from the active row.
+
+; @stop 11 5 left
+moduleEnd
+
+module notes12
+; @pos 403 -1
+
+; There are four of these,
+; each channel has one.
+
+; @stop 12 3 bottom
+moduleEnd
+
+module notes13
+; @pos 447 5
+
+; The four channel signals
+; are mixed together here.
+
+;                    --------->
+; @stop 13 5 left
+moduleEnd
+
+module notes14
+; @pos 536 -14
+
+; Finally, the generated audio sample values
+; are written into the output audio buffers
+; so the operating system can play the sound.
+
+; @stop 14 5 top
+moduleEnd
+
+module notes2
+; @pos 131 -70
+; @stop 2 10 left
+
+; This patch is a bare-bones
+; MOD player implemented in 8f4e.
+
+; It loads pattern data and samples,
+; steps through the song row by row,
+; plays four channels in parallel,
+; and mixes them into stereo output.
+
+; In this example, it is playing 
+; "Hymn to Aurora" by Horace Wimp.
+
+moduleEnd
+
+module notes3
+; @pos 126 -52
+; @stop 3 10 left
+;                              _______|\
+; Here you can see the song   |          \
+; data scrolling through the  |          /
+; memory. Each row encodes    `-------|/
+; an event with a sample number, 
+; pitch and effect information.
+
+moduleEnd
+
+module notes4
+; @pos 261 -35
+; @stop 4 10 bottom
+; These are the modules that extract the              /\
+; information from the rows. This particular song   /    \
+; is quite simple, it only has sample number, pitch  |  |
+; and volume data.                                   |  |
+moduleEnd
+
+module notes9
+; @pos 393 -35
+; @stop 9 5 right
+
+;   /|        The instrument samples
+; /  `------. are stored
+; \  .------' in these memory
+;   \|        buffers.
+
 moduleEnd
 
 module patternOrder
@@ -1047,8 +1122,9 @@ int	0x0f
 moduleEnd
 
 module period1
-; @pos 224 -45
+; @pos 225 -47
 ; @group ch0
+; @stop 6 3
 int* row &rowBuffer1:
 int out
 
@@ -1131,7 +1207,7 @@ ifEnd
 moduleEnd
 
 module projectConfig
-; @pos 96 -70
+; @pos 97 -125
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 44100
 ; @exportFileName hymn_to_aurora
@@ -1139,7 +1215,7 @@ module projectConfig
 moduleEnd
 
 module rowBuffer1
-; @pos 179 -67
+; @pos 180 -69
 ; @group ch0
 use env
 
@@ -1355,8 +1431,9 @@ loopEnd
 moduleEnd
 
 module sampleNumber1
-; @pos 224 -67
+; @pos 225 -70
 ; @group ch0
+; @stop 5 3
 int* row &rowBuffer1:
 int out
 int param
@@ -1444,6 +1521,7 @@ moduleEnd
 
 module samplePack
 ; @pos 347 -41
+; @stop 10 3
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -1473,133 +1551,10 @@ int8[] sample12 ASSET_SAMPLE12_SIZE
 
 moduleEnd
 
-module scope1
-; @pos 107 -19
-; @viewport bottom-right
-; @alwaysOnTop
-float* in &amp1:out
-float[] buffer 64
-int bufferPointer &buffer
-; @opacity 0.7
-; @plot buffer -1 1
-; @hide
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-
-module scope2
-; @pos 73 -19
-; @viewport bottom-right
-; @alwaysOnTop
-float* in &amp2:out
-float[] buffer 64
-int bufferPointer &buffer
-; @opacity 0.7
-; @plot buffer -1 1
-; @hide
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-
-module scope3
-; @pos 39 -19
-; @viewport bottom-right
-; @alwaysOnTop
-float* in &amp3:out
-float[] buffer 64
-int bufferPointer &buffer
-; @opacity 0.7
-; @plot buffer -1 1
-; @hide
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-
-module scope4
-; @pos 5 -19
-; @viewport bottom-right
-; @alwaysOnTop
-float* in &amp4:out
-float[] buffer 64
-int bufferPointer &buffer
-; @opacity 0.7
-; @plot buffer -1 1
-; @hide
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
-store
-
-moduleEnd
-
 module trigger1
-; @pos 258 -60
+; @pos 259 -62
 ; @group ch0
+; @stop 7 3
 int* row &rowBuffer1:
 int* rowCounter &modRowCounter:out
 int* period &period1:out
@@ -1735,8 +1690,9 @@ module ultimateSoundtrackerColors
 moduleEnd
 
 module volume1
-; @pos 301 -67
+; @pos 302 -71
 ; @group ch0
+; @stop 8 3
 use mod
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
