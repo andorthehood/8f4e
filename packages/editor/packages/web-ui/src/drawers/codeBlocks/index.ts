@@ -105,9 +105,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					}
 
 					engine.setSpriteLookup(
-						state.graphicHelper.selectedCodeBlock === codeBlock
-							? getSelectedBorderLookup(state)
-							: spriteLookups.fontCode
+						state.graphicHelper.selectedCodeBlock === codeBlock ? spriteLookups.fontNumbers : spriteLookups.fontCode
 					);
 
 					engine.drawText(0, 0, corner);
