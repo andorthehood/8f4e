@@ -1,13 +1,12 @@
 import roundToGrid from './roundToGrid';
-import updateViewport from './updateViewport';
 
-import type { EventDispatcher, State } from '~/types';
+import type { Position, State } from '~/types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
-export default function snapToGrid(state: State, events?: EventDispatcher): void {
+export default function snapToGrid(state: State): Position {
 	const [x, y] = roundToGrid(state.viewport.x, state.viewport.y, state.viewport);
-	updateViewport(state, x, y, events);
+	return { x, y };
 }
 
 if (import.meta.vitest) {
@@ -26,14 +25,9 @@ if (import.meta.vitest) {
 				},
 			});
 
-			snapToGrid(state);
+			const position = snapToGrid(state);
 
-			const viewport = state.viewport;
-			expect(viewport.x).toBe(32);
-			expect(viewport.y).toBe(48);
-			expect(viewport.borderLineCoordinates.left.startX).toBe(32);
-			expect(viewport.borderLineCoordinates.top.startY).toBe(48);
-			expect(viewport.center).toEqual({ x: 72, y: 68 });
+			expect(position).toEqual({ x: 32, y: 48 });
 		});
 	});
 }

@@ -73,7 +73,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	button(state, events);
 	slider(store, events);
 	pianoKeyboard(store, events);
-	viewport(state, events);
+	viewport(store, events);
 	contextMenu(store, events);
 	codeBlockCreator(store, events);
 	skipExecutionToggler(store, events);

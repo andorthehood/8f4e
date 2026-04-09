@@ -46,7 +46,7 @@ import type {
 	RuntimeEnvConstantsContributor,
 	JSONSchemaLike,
 } from './features/runtime/types';
-import type { ProjectViewport, Viewport } from './features/viewport/types';
+import type { ProjectViewport, Viewport, ViewportAnimation } from './features/viewport/types';
 import type {
 	Size,
 	Position,
@@ -225,6 +225,17 @@ export interface Callbacks {
 	 * @returns Promise that resolves when the write operation completes
 	 */
 	writeClipboardText?: (text: string) => Promise<void>;
+
+	/**
+	 * Schedules a frame callback for editor-state driven animations.
+	 * Hosts can provide `window.requestAnimationFrame` or an equivalent scheduler.
+	 */
+	requestAnimationFrame?: (callback: (time: number) => void) => number;
+
+	/**
+	 * Cancels a previously scheduled animation frame callback.
+	 */
+	cancelAnimationFrame?: (id: number) => void;
 }
 
 // Options interface for editor initialization (top-level public API)
@@ -290,4 +301,5 @@ export interface State {
 		y: number;
 	};
 	viewport: Viewport;
+	viewportAnimation: ViewportAnimation;
 }

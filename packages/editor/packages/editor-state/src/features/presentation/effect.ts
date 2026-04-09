@@ -1,10 +1,12 @@
 import { getPresentationStops } from './directives';
 
+import animateViewport, { stopViewportAnimation } from '../viewport/animateViewport';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
-import updateViewport from '../viewport/updateViewport';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { EventDispatcher, State } from '~/types';
+
+const PRESENTATION_DURATION_MS = 2000;
 
 function centerCurrentStop(
 	store: StateManager<State>,
@@ -18,7 +20,7 @@ function centerCurrentStop(
 
 	store.set('graphicHelper.selectedCodeBlock', stop.codeBlock);
 	const { x, y } = centerViewportOnCodeBlock(state.viewport, stop.codeBlock);
-	updateViewport(state, x, y, events);
+	animateViewport(state, x, y, events);
 }
 
 export default function presentation(store: StateManager<State>, events: EventDispatcher): () => void {
@@ -38,6 +40,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 
 	function exitPresentation(): void {
 		clearScheduledAdvance();
+		stopViewportAnimation(state);
 		if (state.editorMode === 'presentation') {
 			store.set('editorMode', 'view');
 		}
@@ -84,6 +87,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	function onPresentationChanged(editorMode: State['editorMode']): void {
 		clearScheduledAdvance();
 		if (editorMode !== 'presentation') {
+			stopViewportAnimation(state);
 			return;
 		}
 
@@ -93,6 +97,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 			return;
 		}
 
+		state.viewportAnimation.durationMs = PRESENTATION_DURATION_MS;
 		stopIndex = 0;
 		centerCurrentStop(store, state, events, stops[stopIndex]);
 		scheduleNextAdvance();
@@ -112,6 +117,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 
 	return () => {
 		clearScheduledAdvance();
+		stopViewportAnimation(state);
 		store.unsubscribe('editorMode', onPresentationChanged);
 		store.unsubscribe('graphicHelper.codeBlocks', syncStops);
 		events.off('viewportResized', onViewportResized);
