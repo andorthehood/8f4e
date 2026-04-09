@@ -75,6 +75,7 @@ describe('presentation effect', () => {
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
+				currentStopDurationMs: 0,
 				deadlineAt: undefined,
 			},
 		} as State;
@@ -171,6 +172,7 @@ describe('presentation effect', () => {
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
+				currentStopDurationMs: 0,
 				deadlineAt: undefined,
 			},
 		} as State;
@@ -244,6 +246,7 @@ describe('presentation effect', () => {
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
+				currentStopDurationMs: 0,
 				deadlineAt: undefined,
 			},
 		} as State;
@@ -314,6 +317,7 @@ describe('presentation effect', () => {
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
+				currentStopDurationMs: 0,
 				deadlineAt: undefined,
 			},
 		} as State;
@@ -394,6 +398,7 @@ describe('presentation effect', () => {
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
+				currentStopDurationMs: 0,
 				deadlineAt: undefined,
 			},
 		} as State;
@@ -463,6 +468,7 @@ describe('presentation effect', () => {
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
+				currentStopDurationMs: 0,
 				deadlineAt: undefined,
 			},
 		} as State;
@@ -529,6 +535,7 @@ describe('presentation effect', () => {
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
+				currentStopDurationMs: 0,
 				deadlineAt: undefined,
 			},
 		} as State;

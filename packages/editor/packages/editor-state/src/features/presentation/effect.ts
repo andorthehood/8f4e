@@ -35,14 +35,17 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		state.presentation.activeStopIndex = 0;
 		state.presentation.totalStops = 0;
 		state.presentation.remainingMs = 0;
+		state.presentation.currentStopDurationMs = 0;
 		state.presentation.deadlineAt = undefined;
 	}
 
 	function updatePresentationState(seconds: number): void {
+		const durationMs = Math.round(seconds * 1000);
 		state.presentation.activeStopIndex = stopIndex;
 		state.presentation.totalStops = stops.length;
-		state.presentation.remainingMs = Math.round(seconds * 1000);
-		state.presentation.deadlineAt = Date.now() + state.presentation.remainingMs;
+		state.presentation.remainingMs = durationMs;
+		state.presentation.currentStopDurationMs = durationMs;
+		state.presentation.deadlineAt = Date.now() + durationMs;
 	}
 
 	function clearScheduledAdvance(): void {
