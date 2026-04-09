@@ -1,5 +1,6 @@
 import type { Viewport } from './types';
 import type { CodeBlockBounds } from './centerViewportOnCodeBlock';
+import type { Position } from '~/types';
 
 export interface CodeBlockCursorBounds extends CodeBlockBounds {
 	cursor: {
@@ -13,12 +14,14 @@ export interface CodeBlockCursorBounds extends CodeBlockBounds {
 export default function centerViewportOnCodeBlockCursor<T extends CodeBlockCursorBounds>(
 	viewport: Viewport,
 	codeBlock: T
-): void {
+): Position {
 	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
 	const highlightedLineY = codeBlock.y + codeBlock.offsetY + codeBlock.cursor.y;
 
-	viewport.x = Math.round(blockCenterX - viewport.width / 2);
-	viewport.y = Math.round(highlightedLineY - viewport.height / 2);
+	return {
+		x: Math.round(blockCenterX - viewport.width / 2),
+		y: Math.round(highlightedLineY - viewport.height / 2),
+	};
 }
 
 if (import.meta.vitest) {
@@ -53,10 +56,12 @@ if (import.meta.vitest) {
 				cursor: { y: 48 },
 			};
 
-			centerViewportOnCodeBlockCursor(viewport, codeBlock);
+			const nextViewport = centerViewportOnCodeBlockCursor(viewport, codeBlock);
 
-			expect(viewport.x).toBe(-90);
-			expect(viewport.y).toBe(168);
+			expect(nextViewport.x).toBe(-90);
+			expect(nextViewport.y).toBe(168);
+			expect(viewport.x).toBe(0);
+			expect(viewport.y).toBe(0);
 		});
 	});
 }

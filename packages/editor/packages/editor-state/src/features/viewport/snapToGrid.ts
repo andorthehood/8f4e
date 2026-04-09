@@ -7,14 +7,7 @@ import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 export default function snapToGrid(state: State, events?: EventDispatcher): void {
 	const [x, y] = roundToGrid(state.viewport.x, state.viewport.y, state.viewport);
-	updateViewport(
-		state,
-		viewport => {
-			viewport.x = x;
-			viewport.y = y;
-		},
-		events
-	);
+	updateViewport(state, x, y, events);
 }
 
 if (import.meta.vitest) {
