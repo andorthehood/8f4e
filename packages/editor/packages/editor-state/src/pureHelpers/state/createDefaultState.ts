@@ -38,6 +38,7 @@ export default function createDefaultState() {
 			backgroundEffects: [],
 		},
 		featureFlags: defaultFeatureFlags,
+		editorMode: 'view' as const,
 		colorScheme: defaultColorScheme,
 		historyStack: [],
 		redoStack: [],

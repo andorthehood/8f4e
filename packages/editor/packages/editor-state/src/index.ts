@@ -37,6 +37,8 @@ import groupDeleter from './features/code-blocks/features/group/deleter/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
 import runtimeDirectiveErrorsEffect from './features/runtime/directiveErrorsEffect';
+import editorMode from './features/editor-mode/effect';
+import presentation from './features/presentation/effect';
 
 import type { Options, State, EventDispatcher } from './types';
 
@@ -62,6 +64,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	const state = store.getState();
 
 	runtime(store, events);
+	editorMode(store, events);
+	presentation(store, events);
 	projectImport(store, events);
 	codeBlockDragger(store, events);
 	codeBlockNavigation(store, events);
@@ -148,6 +152,7 @@ export type {
 	JSONSchemaLike,
 	FeatureFlags,
 	FeatureFlagsConfig,
+	EditorMode,
 	EventDispatcher,
 	ResolvedGlobalEditorDirectives,
 	InternalMouseEvent,

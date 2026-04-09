@@ -38,13 +38,6 @@ describe('codeBlockNavigation', () => {
 
 		// Create mock state using shared utility
 		state = createMockState({
-			featureFlags: {
-				contextMenu: true,
-				infoOverlay: true,
-				moduleDragging: true,
-				viewportDragging: true,
-				editing: true,
-			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,
 				codeBlocks: [selectedBlock, leftBlock, rightBlock, upBlock, downBlock],

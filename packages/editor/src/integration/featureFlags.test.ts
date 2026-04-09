@@ -20,6 +20,7 @@ describe('Feature Flags Integration', () => {
 		// Other flags should remain at defaults
 		expect(featureFlags.infoOverlay).toBe(false);
 		expect(featureFlags.viewportDragging).toBe(true);
+		expect(featureFlags.editing).toBe(false);
 	});
 
 	test('should handle feature flags override correctly', () => {
@@ -60,29 +61,27 @@ describe('Feature Flags Integration', () => {
 		expect(result.modeToggling).toBe(true);
 	});
 
-	test('should handle editing flag configuration', () => {
+	test('should preserve defaults when no mode is configured through feature flags', () => {
 		const options: Partial<Options> = {
 			featureFlags: {
-				editing: false,
+				contextMenu: true,
 			},
 		};
 
 		const featureFlags = validateFeatureFlags(options.featureFlags);
 
-		expect(featureFlags.editing).toBe(false);
-		// Other flags should remain at defaults
 		expect(featureFlags.contextMenu).toBe(true);
 		expect(featureFlags.infoOverlay).toBe(false);
 		expect(featureFlags.moduleDragging).toBe(true);
 		expect(featureFlags.codeLineSelection).toBe(false);
 		expect(featureFlags.viewportDragging).toBe(true);
+		expect(featureFlags.editing).toBe(false);
 		expect(featureFlags.modeToggling).toBe(true);
 	});
 
-	test('should support view-only mode with editing and contextMenu disabled', () => {
+	test('should support view-oriented feature configuration with contextMenu disabled', () => {
 		const options: Partial<Options> = {
 			featureFlags: {
-				editing: false,
 				contextMenu: false,
 				moduleDragging: false,
 			},
@@ -90,13 +89,24 @@ describe('Feature Flags Integration', () => {
 
 		const featureFlags = validateFeatureFlags(options.featureFlags);
 
-		expect(featureFlags.editing).toBe(false);
 		expect(featureFlags.contextMenu).toBe(false);
 		expect(featureFlags.moduleDragging).toBe(false);
 		expect(featureFlags.codeLineSelection).toBe(false);
 		expect(featureFlags.modeToggling).toBe(true);
 		// Navigation should remain enabled while info overlay stays at its default
 		expect(featureFlags.viewportDragging).toBe(true);
+		expect(featureFlags.editing).toBe(false);
 		expect(featureFlags.infoOverlay).toBe(false);
+	});
+
+	test('should allow editing to be configured as active', () => {
+		const featureFlags = validateFeatureFlags({
+			editing: true,
+			contextMenu: false,
+		});
+
+		expect(featureFlags.editing).toBe(true);
+		expect(featureFlags.contextMenu).toBe(false);
+		expect(featureFlags.modeToggling).toBe(true);
 	});
 });

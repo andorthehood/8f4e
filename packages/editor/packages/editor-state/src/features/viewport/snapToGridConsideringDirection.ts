@@ -1,6 +1,6 @@
-import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
+import updateViewport from './updateViewport';
 
-import type { State } from '~/types';
+import type { EventDispatcher, State } from '~/types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
@@ -29,10 +29,17 @@ function snapAxis(value: number, grid: number, movement?: number): number {
  * user's final scroll direction. Keeping the behaviors in separate helpers makes that distinction
  * explicit and avoids mixing wheel-specific heuristics into the generic snap path.
  */
-export default function snapToGridConsideringDirection(state: State, direction: ViewportSnapDirection): void {
-	state.viewport.x = snapAxis(state.viewport.x, state.viewport.vGrid, direction.movementX);
-	state.viewport.y = snapAxis(state.viewport.y, state.viewport.hGrid, direction.movementY);
-	calculateBorderLineCoordinates(state);
+export default function snapToGridConsideringDirection(
+	state: State,
+	direction: ViewportSnapDirection,
+	events?: EventDispatcher
+): void {
+	updateViewport(
+		state,
+		snapAxis(state.viewport.x, state.viewport.vGrid, direction.movementX),
+		snapAxis(state.viewport.y, state.viewport.hGrid, direction.movementY),
+		events
+	);
 }
 
 if (import.meta.vitest) {

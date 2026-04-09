@@ -11,9 +11,12 @@ export default function drawModeOverlay(engine: Engine, state: State): void {
 		return;
 	}
 
-	const modeHint = state.featureFlags.editing
-		? "You're in edit mode, press ESC to enter view mode"
-		: "You're in view mode, press e to enter edit mode";
+	const modeHint =
+		state.editorMode === 'edit'
+			? "You're in edit mode, press ESC to enter view mode"
+			: state.editorMode === 'presentation'
+				? "You're in presentation mode, press ESC to enter view mode"
+				: "You're in view mode, press e to edit or p to present";
 
 	engine.startGroup(0, 0);
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
