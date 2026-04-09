@@ -99,5 +99,11 @@ export default function createDefaultState() {
 			active: false,
 			durationMs: 90,
 		},
+		presentation: {
+			activeStopIndex: 0,
+			totalStops: 0,
+			remainingMs: 0,
+			deadlineAt: undefined,
+		},
 	};
 }
