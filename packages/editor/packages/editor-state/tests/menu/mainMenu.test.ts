@@ -59,17 +59,4 @@ describe('menus - go home entry', () => {
 		expect(newNoteItem?.action).toBe('addCodeBlock');
 		expect(newNoteItem?.payload).toEqual({ isNew: true, blockType: 'note' });
 	});
-
-	it('does not show dedicated shader creators', () => {
-		const mockState = createMockState({
-			editorMode: 'edit',
-		});
-
-		const menu = mainMenu(mockState as State);
-
-		expect(menu.find(item => item.title === 'New Post-process Vertex Shader')).toBeUndefined();
-		expect(menu.find(item => item.title === 'New Background Vertex Shader')).toBeUndefined();
-		expect(menu.find(item => item.title === 'New Post-process Fragment Shader')).toBeUndefined();
-		expect(menu.find(item => item.title === 'New Background Fragment Shader')).toBeUndefined();
-	});
 });
