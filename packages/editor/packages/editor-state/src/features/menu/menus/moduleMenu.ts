@@ -18,6 +18,8 @@ export const moduleMenu: MenuGenerator = state => {
 		blockLabel = 'vertex shader';
 	} else if (blockType === 'fragmentShader') {
 		blockLabel = 'fragment shader';
+	} else if (blockType === 'note') {
+		blockLabel = 'note';
 	}
 
 	const isDisabled = state.graphicHelper.selectedCodeBlock?.disabled ?? false;
