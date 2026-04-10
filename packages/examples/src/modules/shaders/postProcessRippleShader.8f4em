@@ -1,6 +1,6 @@
 8f4e/v1
 
-fragmentShader postprocess
+note fragmentShaderPostprocess
 #version 300 es
 
 precision mediump float;
@@ -34,4 +34,4 @@ void main() {
 
   outColor = vec4(color, 1.0);
 }
-fragmentShaderEnd
+noteEnd

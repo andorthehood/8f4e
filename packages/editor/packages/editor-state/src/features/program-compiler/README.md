@@ -28,7 +28,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 - **Modules**: Includes `module` and `constants` block types
 - **Functions**: Includes `function` block types
-- **Excluded**: `vertexShader`, `fragmentShader`, and `unknown` blocks are not passed to WASM compiler
+- **Excluded**: `note` and `unknown` blocks are not passed to WASM compiler
 
 ## Events & Callbacks
 
