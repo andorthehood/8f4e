@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import deriveShaderEffects from './deriveShaderEffects';
+import { isShaderNoteCode } from './getShaderNoteMetadata';
 
 import { log } from '../logger/logger';
 
@@ -39,18 +40,12 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 		recomputeShaderEffects();
 	});
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
-		if (
-			state.graphicHelper.selectedCodeBlock?.blockType === 'fragmentShader' ||
-			state.graphicHelper.selectedCodeBlock?.blockType === 'vertexShader'
-		) {
+		if (isShaderNoteCode(state.graphicHelper.selectedCodeBlock?.code ?? [])) {
 			recomputeShaderEffects();
 		}
 	});
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
-		if (
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType === 'fragmentShader' ||
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType === 'vertexShader'
-		) {
+		if (isShaderNoteCode(state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.code ?? [])) {
 			recomputeShaderEffects();
 		}
 	});

@@ -108,16 +108,14 @@ describe('deriveFavorites', () => {
 		const blocks = [
 			mockCodeBlock(0, 'mod', 'module', true),
 			mockCodeBlock(1, 'fn', 'function', true),
-			mockCodeBlock(2, 'vs', 'vertexShader', true),
-			mockCodeBlock(3, 'fs', 'fragmentShader', true),
+			mockCodeBlock(2, 'note', 'note', true),
 			mockCodeBlock(4, 'consts', 'constants', true),
 		];
 		const result = deriveFavorites(blocks);
 		expect(result).toEqual([
 			{ creationIndex: 0, id: 'mod', blockType: 'module' },
 			{ creationIndex: 1, id: 'fn', blockType: 'function' },
-			{ creationIndex: 2, id: 'vs', blockType: 'vertexShader' },
-			{ creationIndex: 3, id: 'fs', blockType: 'fragmentShader' },
+			{ creationIndex: 2, id: 'note', blockType: 'note' },
 			{ creationIndex: 4, id: 'consts', blockType: 'constants' },
 		]);
 	});

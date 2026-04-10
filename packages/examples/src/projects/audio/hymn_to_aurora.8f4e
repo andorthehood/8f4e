@@ -1,25 +1,113 @@
 8f4e/v1
 
+note
+; @pos 261 -35
+; @stop 4 10 bottom
+; These are the modules that extract the              /\
+; information from the rows. This particular song   /_  _\
+; is quite simple, it only has sample number, pitch  |  |
+; and volume data.                                   `--'
+noteEnd
+
+note
+; @pos 126 -52
+; @stop 3 10 left
+;                              _______|\
+; Here you can see the song   |          \
+; data scrolling through the  |          /
+; memory. Each row encodes    `-------|/
+; an event with a sample number, 
+; pitch and effect information.
+
+noteEnd
+
+note
+; @pos 131 -70
+; @stop 2 10 left
+
+; This patch is a bare-bones
+; MOD player implemented in 8f4e.
+
+; It loads pattern data and samples,
+; steps through the song row by row,
+; plays four channels in parallel,
+; and mixes them into stereo output.
+
+; In this example, it is playing 
+; "Hymn to Aurora" by Horace Wimp.
+
+noteEnd
+
+note
+; @pos 397 -36
+; @stop 9 5 right
+
+;   /|        The instrument samples
+; /  `------. are stored
+; \  .------' in these memory
+;   \|        buffers.
+
+noteEnd
+
+note
+; @pos 397 -1
+
+; There are four of these,
+; each channel has one.
+
+; @stop 12 3 bottom
+noteEnd
+
+note
+; @pos 447 5
+
+; The four channel signals
+; are mixed together here.
+
+;                    --------->
+; @stop 13 5 left
+noteEnd
+
+note
+; @pos 536 -14
+
+; Finally, the generated audio sample values
+; are written into the output audio buffers
+; so the operating system can play the sound.
+
+; @stop 14 5 top
+noteEnd
+
+note
+; @pos 347 -9
+;                                  .
+; The samples are selected by  ....;;.  
+; the sample player based on   ::::;;;;.
+; the sample number extracted  ::::;;:'
+; from the active row.             :'
+
+; @stop 11 5 left
+noteEnd
+
 constants env
 ; @pos 141 -140
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 4/9/2026, 9:02:57 PM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
+; 'patterns_ch0.bin'
+const ASSET_CH0_SIZE 6144
 ; 'patterns_ch1.bin'
 const ASSET_CH1_SIZE 6144
 ; 'patterns_ch2.bin'
 const ASSET_CH2_SIZE 6144
 ; 'patterns_ch3.bin'
 const ASSET_CH3_SIZE 6144
-; 'patterns_ch0.bin'
-const ASSET_CH0_SIZE 6144
 ; 'sample_1.bin'
 const ASSET_SAMPLE1_SIZE 9964
 ; 'sample_2.bin'
@@ -993,95 +1081,6 @@ ifEnd
 
 moduleEnd
 
-module notes11
-; @pos 351 -8
-
-; The samples are selected by  --- \ 
-; the sample player based on        >
-; the sample number extracted  --- /
-; from the active row.
-
-; @stop 11 5 left
-moduleEnd
-
-module notes12
-; @pos 403 -1
-
-; There are four of these,
-; each channel has one.
-
-; @stop 12 3 bottom
-moduleEnd
-
-module notes13
-; @pos 447 5
-
-; The four channel signals
-; are mixed together here.
-
-;                    --------->
-; @stop 13 5 left
-moduleEnd
-
-module notes14
-; @pos 536 -14
-
-; Finally, the generated audio sample values
-; are written into the output audio buffers
-; so the operating system can play the sound.
-
-; @stop 14 5 top
-moduleEnd
-
-module notes2
-; @pos 131 -70
-; @stop 2 10 left
-
-; This patch is a bare-bones
-; MOD player implemented in 8f4e.
-
-; It loads pattern data and samples,
-; steps through the song row by row,
-; plays four channels in parallel,
-; and mixes them into stereo output.
-
-; In this example, it is playing 
-; "Hymn to Aurora" by Horace Wimp.
-
-moduleEnd
-
-module notes3
-; @pos 126 -52
-; @stop 3 10 left
-;                              _______|\
-; Here you can see the song   |          \
-; data scrolling through the  |          /
-; memory. Each row encodes    `-------|/
-; an event with a sample number, 
-; pitch and effect information.
-
-moduleEnd
-
-module notes4
-; @pos 261 -35
-; @stop 4 10 bottom
-; These are the modules that extract the              /\
-; information from the rows. This particular song   /    \
-; is quite simple, it only has sample number, pitch  |  |
-; and volume data.                                   |  |
-moduleEnd
-
-module notes9
-; @pos 393 -35
-; @stop 9 5 right
-
-;   /|        The instrument samples
-; /  `------. are stored
-; \  .------' in these memory
-;   \|        buffers.
-
-moduleEnd
-
 module patternOrder
 ; @pos 62 -9
 ; @tab 6
@@ -1520,7 +1519,7 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 347 -41
+; @pos 347 -42
 ; @stop 10 3
 use env
 int8[] sample0 1
@@ -1668,8 +1667,8 @@ module ultimateSoundtrackerColors
 ; @color text.lineNumber	#630
 ; @color text.codeComment	#963
 ; @color text.numbers	#fc9
-; @color text.debugInfo	#963
-; @color fill.debugInfoBackground	#036
+; @color text.debugInfo	#369
+; @color fill.debugInfoBackground	#000
 ; @color fill.wire	rgba(255,255,255,0.3)
 ; @color fill.wireHighlighted	#fff
 ; @color fill.menuItemBackground	#036

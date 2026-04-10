@@ -122,10 +122,8 @@ const instructionsToHighlight = [
 	'map',
 	'default',
 	'mapEnd',
-	'vertexShader',
-	'vertexShaderEnd',
-	'fragmentShader',
-	'fragmentShaderEnd',
+	'note',
+	'noteEnd',
 ];
 
 /**
