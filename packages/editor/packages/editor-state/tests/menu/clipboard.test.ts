@@ -88,34 +88,6 @@ describe('menus - clipboard callback disabled state', () => {
 			expect(copyItem?.disabled).toBe(true);
 		});
 
-		it('should show correct label for vertex shader block type', () => {
-			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'vertexShader' });
-			const mockState = createMockState({
-				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
-			});
-
-			const menu = moduleMenu(mockState as State);
-
-			const copyItem = menu.find(item => item.title === 'Copy vertex shader');
-			expect(copyItem).toBeDefined();
-			expect(copyItem?.disabled).toBe(true);
-		});
-
-		it('should show correct label for fragment shader block type', () => {
-			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'fragmentShader' });
-			const mockState = createMockState({
-				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
-			});
-
-			const menu = moduleMenu(mockState as State);
-
-			const copyItem = menu.find(item => item.title === 'Copy fragment shader');
-			expect(copyItem).toBeDefined();
-			expect(copyItem?.disabled).toBe(true);
-		});
-
 		it('should show correct label for note block type', () => {
 			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'note' });
 			const mockState = createMockState({

@@ -70,7 +70,7 @@ if (import.meta.vitest) {
 
 		it('returns false for non-compilable block types', () => {
 			expect(isCompilableBlockType('unknown')).toBe(false);
-			expect(isCompilableBlockType('vertexShader')).toBe(false);
+			expect(isCompilableBlockType('note')).toBe(false);
 			expect(isCompilableBlockType(undefined)).toBe(false);
 		});
 	});
