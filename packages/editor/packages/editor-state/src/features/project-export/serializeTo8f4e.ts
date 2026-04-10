@@ -1,39 +1,6 @@
+import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
+
 import type { Project } from '~/types';
-
-const FORMAT_HEADER = '8f4e/v1';
-
-const OPENERS = ['module', 'function', 'constants', 'defineMacro', 'vertexShader', 'fragmentShader'] as const;
-
-const CLOSERS = [
-	'moduleEnd',
-	'functionEnd',
-	'constantsEnd',
-	'defineMacroEnd',
-	'vertexShaderEnd',
-	'fragmentShaderEnd',
-] as const;
-
-function getOpenerKeyword(line: string): string | null {
-	for (const opener of OPENERS) {
-		if (line === opener || line.startsWith(opener + ' ')) {
-			return opener;
-		}
-	}
-	return null;
-}
-
-function getCloserKeyword(line: string): string | null {
-	for (const closer of CLOSERS) {
-		if (line === closer || line.startsWith(closer + ' ')) {
-			return closer;
-		}
-	}
-	return null;
-}
-
-function getExpectedCloserPrefix(opener: string): string {
-	return opener + 'End';
-}
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
 	// Find first non-empty line (must be opener)
@@ -109,6 +76,7 @@ if (import.meta.vitest) {
 
 	const validBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 	const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
+	const validNoteBlock = ['note', '; @pos 1 2', 'compiler should ignore this', 'noteEnd'];
 
 	describe('serializeProjectTo8f4e', () => {
 		it('produces 8f4e/v1 header', () => {
@@ -119,10 +87,15 @@ if (import.meta.vitest) {
 
 		it('serializes multiple code blocks separated by blank lines', () => {
 			const project = {
-				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }],
+				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }, { code: validNoteBlock }],
 			};
 			const result = serializeProjectTo8f4e(project);
 			expect(result).toContain('\n\n');
+		});
+
+		it('accepts note blocks', () => {
+			const project = { codeBlocks: [{ code: validNoteBlock }] };
+			expect(() => serializeProjectTo8f4e(project)).not.toThrow();
 		});
 
 		it('handles empty codeBlocks array', () => {
