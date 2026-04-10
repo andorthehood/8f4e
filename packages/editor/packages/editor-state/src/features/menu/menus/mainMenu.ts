@@ -16,6 +16,12 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 				},
 				{
+					title: 'New Note',
+					action: 'addCodeBlock',
+					payload: { isNew: true, blockType: 'note' },
+					close: true,
+				},
+				{
 					title: 'New Post-process Vertex Shader',
 					action: 'addCodeBlock',
 					payload: {
