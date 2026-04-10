@@ -2,41 +2,41 @@
 
 ## Purpose
 
-Derives post-process visual effects from shader code blocks for display in the editor. Extracts vertex and fragment shaders from code blocks to create effect descriptors for algorave-style visual overlays.
+Derives post-process visual effects from shader notes for display in the editor. Extracts vertex and fragment shaders from note blocks to create effect descriptors for algorave-style visual overlays.
 
 ## Key Behaviors
 
-- **Effect Derivation**: Scans code blocks for `vertexShader` and `fragmentShader` types
-- **Shader Extraction**: Extracts GLSL source code from shader blocks
+- **Effect Derivation**: Scans note blocks for recognized shader note subtypes
+- **Shader Extraction**: Extracts GLSL source code from shader notes
 - **Effect Descriptors**: Creates post-process effect objects for the rendering pipeline
 - **Editor Overlays**: Powers visual effects displayed in the editor (not runtime output)
 - **Error Surfacing**: Shader compilation errors are surfaced alongside code compilation errors
 
-## Shader Block Types
+## Shader Note Types
 
-- **`vertexShader`**: GLSL vertex shader code blocks
-- **`fragmentShader`**: GLSL fragment shader code blocks
+- **`note vertexShaderPostprocess`** / **`note vertexShaderBackground`**: GLSL vertex shader notes
+- **`note fragmentShaderPostprocess`** / **`note fragmentShaderBackground`**: GLSL fragment shader notes
 
-Blocks are automatically classified by content or explicit type annotation.
+Notes are automatically recognized by their header subtype.
 
 ## Effect Generation
 
-A single post-process effect is derived from shader blocks:
-- The first fragment shader block (by creation order) is used as the effect
-- The first vertex shader block is paired with it; if none exists, the default vertex shader is used
+A single post-process effect is derived from shader notes:
+- The first fragment shader note (by creation order) is used as the effect
+- The first vertex shader note is paired with it; if none exists, the default vertex shader is used
 - Only one effect is active at a time
 
 ## Events & Callbacks
 
 ### State Touched
 
-- `state.graphicHelper.codeBlocks` - Source of shader blocks
+- `state.graphicHelper.codeBlocks` - Source of shader notes
 - `state.postProcessEffects` - Derived array of effect descriptors (if stored)
 - Shader compilation errors are added to error state
 
 ## Integration Points
 
-- **Code Blocks**: Reads `vertexShader` and `fragmentShader` block types
+- **Code Blocks**: Reads note headers to detect shader roles
 - **Editor Rendering**: Effect descriptors feed into visual overlay system
 - **Error Handling**: Shader errors are displayed like compilation errors
 - **Project Export**: Effects are derived on-the-fly, not persisted in project files
@@ -44,24 +44,24 @@ A single post-process effect is derived from shader blocks:
 ## Use Case: Algorave Visuals
 
 This feature enables live coding visuals for algorave performances:
-- Write GLSL shaders as code blocks
+- Write GLSL shaders as typed note blocks
 - Effects automatically applied to editor view
 - Real-time shader updates during performance
 - Visual feedback synchronized with audio code
 
-## Shader Block Format
+## Shader Note Format
 
-Shader blocks use targeted markers with no ID argument:
-- `vertexShader postprocess` ... `vertexShaderEnd`
-- `fragmentShader postprocess` ... `fragmentShaderEnd`
-- `vertexShader background` ... `vertexShaderEnd`
-- `fragmentShader background` ... `fragmentShaderEnd`
+Shader notes use `note ... noteEnd` with a typed subtype:
+- `note vertexShaderPostprocess` ... `noteEnd`
+- `note fragmentShaderPostprocess` ... `noteEnd`
+- `note vertexShaderBackground` ... `noteEnd`
+- `note fragmentShaderBackground` ... `noteEnd`
 
 ## Default Shaders
 
 A default vertex shader is provided by `glugglug` for fragment-only effects:
 - Pass-through fullscreen-quad shader for simple post-processing/background effects
-- `deriveShaderEffects` leaves `vertexShader` undefined when no vertex block is present
+- `deriveShaderEffects` leaves `vertexShader` undefined when no vertex shader note is present
 
 ## References
 

@@ -3,7 +3,7 @@ import { getModuleId, getFunctionId, getConstantsId } from '@8f4e/tokenizer';
 /**
  * Retrieves the ID from a code block based on its type.
  * Tries to identify the code block as a module, function, or constants block.
- * Shader blocks (vertexShader / fragmentShader) do not carry IDs.
+ * Note blocks do not carry IDs.
  *
  * @param code - Code block represented as an array of lines
  * @returns The ID of the code block, or an empty string if no ID is found
@@ -46,9 +46,9 @@ if (import.meta.vitest) {
 			expect(getCodeBlockId(code)).toBe('constants_env');
 		});
 
-		it('returns empty string for shader blocks', () => {
-			expect(getCodeBlockId(['vertexShader', '', 'vertexShaderEnd'])).toBe('');
-			expect(getCodeBlockId(['fragmentShader', '', 'fragmentShaderEnd'])).toBe('');
+		it('returns empty string for note blocks', () => {
+			expect(getCodeBlockId(['note', '', 'noteEnd'])).toBe('');
+			expect(getCodeBlockId(['note fragmentShaderPostprocess', '', 'noteEnd'])).toBe('');
 		});
 
 		it('returns empty string when no ID is found', () => {

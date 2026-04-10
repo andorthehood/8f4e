@@ -5,7 +5,7 @@ import { BLOCK_DELIMITERS, getCloserKeyword, getOpenerKeyword } from '~/features
 type DetectableBlockType = Exclude<CodeBlockType, 'unknown'>;
 
 /**
- * Detects whether a block of code represents a shader, module, config, function, or unknown block by scanning for marker pairs.
+ * Detects whether a block of code represents a module, config, function, note, or unknown block by scanning for marker pairs.
  * @param code - Code block represented as an array of lines.
  * @returns The inferred code block type.
  */
@@ -46,14 +46,6 @@ if (import.meta.vitest) {
 			expect(getBlockType(['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'])).toBe('macro');
 		});
 
-		it('detects vertexShader blocks', () => {
-			expect(getBlockType(['vertexShader crt', 'vertexShaderEnd'])).toBe('vertexShader');
-		});
-
-		it('detects fragmentShader blocks', () => {
-			expect(getBlockType(['fragmentShader crt', 'fragmentShaderEnd'])).toBe('fragmentShader');
-		});
-
 		it('detects note blocks', () => {
 			expect(getBlockType(['note', '; @pos 10 12', 'some text', 'noteEnd'])).toBe('note');
 		});
@@ -62,8 +54,8 @@ if (import.meta.vitest) {
 			expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
 		});
 
-		it('returns unknown for mixed shader and module markers', () => {
-			expect(getBlockType(['module foo', 'vertexShaderEnd'])).toBe('unknown');
+		it('returns unknown for mixed note and module markers', () => {
+			expect(getBlockType(['module foo', 'noteEnd'])).toBe('unknown');
 		});
 	});
 }
