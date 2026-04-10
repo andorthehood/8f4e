@@ -1,4 +1,4 @@
-const FORMAT_HEADER = '8f4e/v1';
+import { FORMAT_HEADER } from '~/features/project-format';
 
 export default function parseModuleSource(source: string): string[] {
 	const lines = source.split('\n');

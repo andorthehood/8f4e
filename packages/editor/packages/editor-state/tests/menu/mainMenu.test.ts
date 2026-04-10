@@ -46,4 +46,17 @@ describe('menus - go home entry', () => {
 		expect(jumpToItem).toBeDefined();
 		expect(jumpToItem?.action).toBe('openSubMenu');
 	});
+
+	it('shows "New Note" when editing is enabled', () => {
+		const mockState = createMockState({
+			editorMode: 'edit',
+		});
+
+		const menu = mainMenu(mockState as State);
+		const newNoteItem = menu.find(item => item.title === 'New Note');
+
+		expect(newNoteItem).toBeDefined();
+		expect(newNoteItem?.action).toBe('addCodeBlock');
+		expect(newNoteItem?.payload).toEqual({ isNew: true, blockType: 'note' });
+	});
 });
