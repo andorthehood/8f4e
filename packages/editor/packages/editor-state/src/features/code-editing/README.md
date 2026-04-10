@@ -37,7 +37,7 @@ Handles low-level text editing operations within code blocks: caret movement, ch
 - **Code Blocks**: Works on the currently selected code block
 - **Edit History**: Code changes trigger debounced history snapshots
 - **Syntax Highlighting**: Block type determines GLSL vs 8f4e highlighting mode
-  - `vertexShader` and `fragmentShader` blocks use GLSL syntax
+  - `note` blocks with recognized shader subtypes use GLSL syntax
   - All other blocks use 8f4e syntax
 
 ## Notes & Limitations

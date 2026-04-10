@@ -14,10 +14,6 @@ export const moduleMenu: MenuGenerator = state => {
 
 	if (blockType === 'function') {
 		blockLabel = 'function';
-	} else if (blockType === 'vertexShader') {
-		blockLabel = 'vertex shader';
-	} else if (blockType === 'fragmentShader') {
-		blockLabel = 'fragment shader';
 	} else if (blockType === 'note') {
 		blockLabel = 'note';
 	}

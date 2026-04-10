@@ -34,6 +34,7 @@ import parsePos from '../directives/pos/data';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 import updateViewport from '../../../viewport/updateViewport';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
+import { isShaderNoteCode } from '../../../shader-effects/getShaderNoteMetadata';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -96,7 +97,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		// Choose highlighter based on block type and get syntax colors for raw code
 		let rawCodeColors;
-		if (graphicData.blockType === 'vertexShader' || graphicData.blockType === 'fragmentShader') {
+		if (isShaderNoteCode(graphicData.code)) {
 			rawCodeColors = highlightSyntaxGlsl(graphicData.code, spriteLookups);
 		} else {
 			rawCodeColors = highlightSyntax8f4e(graphicData.code, spriteLookups);

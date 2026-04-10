@@ -2,16 +2,9 @@ import type { ProjectInput } from './types';
 
 const FORMAT_HEADER = '8f4e/v1';
 
-const OPENERS = ['module', 'function', 'constants', 'defineMacro', 'vertexShader', 'fragmentShader'] as const;
+const OPENERS = ['module', 'function', 'constants', 'defineMacro', 'note'] as const;
 
-const CLOSERS = [
-	'moduleEnd',
-	'functionEnd',
-	'constantsEnd',
-	'defineMacroEnd',
-	'vertexShaderEnd',
-	'fragmentShaderEnd',
-] as const;
+const CLOSERS = ['moduleEnd', 'functionEnd', 'constantsEnd', 'defineMacroEnd', 'noteEnd'] as const;
 
 function getOpenerKeyword(line: string): string | null {
 	for (const opener of OPENERS) {

@@ -5,8 +5,6 @@ export const BLOCK_DELIMITERS = [
 	{ type: 'function', opener: 'function', closer: 'functionEnd' },
 	{ type: 'constants', opener: 'constants', closer: 'constantsEnd' },
 	{ type: 'macro', opener: 'defineMacro', closer: 'defineMacroEnd' },
-	{ type: 'vertexShader', opener: 'vertexShader', closer: 'vertexShaderEnd' },
-	{ type: 'fragmentShader', opener: 'fragmentShader', closer: 'fragmentShaderEnd' },
 	{ type: 'note', opener: 'note', closer: 'noteEnd' },
 ] as const;
 
