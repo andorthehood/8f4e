@@ -106,7 +106,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		x: number;
 		y: number;
 		isNew: boolean;
-		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader';
+		blockType?: 'module' | 'function' | 'note';
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -118,10 +118,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		if (isNew && !hasExplicitCode) {
 			if (blockType === 'function') {
 				code = ['function ' + getRandomCodeBlockId(), '', '', 'functionEnd'];
-			} else if (blockType === 'vertexShader') {
-				code = ['vertexShader', '', '', 'vertexShaderEnd'];
-			} else if (blockType === 'fragmentShader') {
-				code = ['fragmentShader', '', '', 'fragmentShaderEnd'];
+			} else if (blockType === 'note') {
+				code = ['note', '', '', 'noteEnd'];
 			} else {
 				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
 			}

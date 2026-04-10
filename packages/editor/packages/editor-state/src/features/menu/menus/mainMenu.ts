@@ -16,43 +16,9 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 				},
 				{
-					title: 'New Post-process Vertex Shader',
+					title: 'New Note',
 					action: 'addCodeBlock',
-					payload: {
-						isNew: true,
-						blockType: 'vertexShader',
-						code: ['vertexShader postprocess', '', '', 'vertexShaderEnd'],
-					},
-					close: true,
-				},
-				{
-					title: 'New Background Vertex Shader',
-					action: 'addCodeBlock',
-					payload: {
-						isNew: true,
-						blockType: 'vertexShader',
-						code: ['vertexShader background', '', '', 'vertexShaderEnd'],
-					},
-					close: true,
-				},
-				{
-					title: 'New Post-process Fragment Shader',
-					action: 'addCodeBlock',
-					payload: {
-						isNew: true,
-						blockType: 'fragmentShader',
-						code: ['fragmentShader postprocess', '', '', 'fragmentShaderEnd'],
-					},
-					close: true,
-				},
-				{
-					title: 'New Background Fragment Shader',
-					action: 'addCodeBlock',
-					payload: {
-						isNew: true,
-						blockType: 'fragmentShader',
-						code: ['fragmentShader background', '', '', 'fragmentShaderEnd'],
-					},
+					payload: { isNew: true, blockType: 'note' },
 					close: true,
 				},
 				{

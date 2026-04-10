@@ -1,127 +1,29 @@
 import type { CodeBlockType } from '~/types';
 
+import { BLOCK_DELIMITERS, getCloserKeyword, getOpenerKeyword } from '~/features/project-format';
+
+type DetectableBlockType = Exclude<CodeBlockType, 'unknown'>;
+
 /**
- * Detects whether a block of code represents a shader, module, config, function, or unknown block by scanning for marker pairs.
+ * Detects whether a block of code represents a module, config, function, note, or unknown block by scanning for marker pairs.
  * @param code - Code block represented as an array of lines.
  * @returns The inferred code block type.
  */
 export default function getBlockType(code: string[]): CodeBlockType {
-	const hasModule = code.some(line => /^\s*module(\s|$)/.test(line));
-	const hasModuleEnd = code.some(line => /^\s*moduleEnd(\s|$)/.test(line));
-	const hasFunction = code.some(line => /^\s*function(\s|$)/.test(line));
-	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
-	const hasConstants = code.some(line => /^\s*constants(\s|$)/.test(line));
-	const hasConstantsEnd = code.some(line => /^\s*constantsEnd(\s|$)/.test(line));
-	const hasDefineMacro = code.some(line => /^\s*defineMacro(\s|$)/.test(line));
-	const hasDefineMacroEnd = code.some(line => /^\s*defineMacroEnd(\s|$)/.test(line));
-	const hasVertexShader = code.some(line => /^\s*vertexShader(\s|$)/.test(line));
-	const hasVertexShaderEnd = code.some(line => /^\s*vertexShaderEnd(\s|$)/.test(line));
-	const hasFragmentShader = code.some(line => /^\s*fragmentShader(\s|$)/.test(line));
-	const hasFragmentShaderEnd = code.some(line => /^\s*fragmentShaderEnd(\s|$)/.test(line));
+	const trimmedLines = code.map(line => line.trim());
+	const markerMatches = BLOCK_DELIMITERS.map(({ type, opener, closer }) => ({
+		type,
+		hasOpener: trimmedLines.some(line => getOpenerKeyword(line) === opener),
+		hasCloser: trimmedLines.some(line => getCloserKeyword(line) === closer),
+	}));
+	const presentTypes = markerMatches.filter(({ hasOpener, hasCloser }) => hasOpener || hasCloser);
 
-	if (
-		hasModule &&
-		hasModuleEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasConstants &&
-		!hasConstantsEnd &&
-		!hasDefineMacro &&
-		!hasDefineMacroEnd &&
-		!hasVertexShader &&
-		!hasVertexShaderEnd &&
-		!hasFragmentShader &&
-		!hasFragmentShaderEnd
-	) {
-		return 'module';
+	if (presentTypes.length !== 1) {
+		return 'unknown';
 	}
 
-	if (
-		hasFunction &&
-		hasFunctionEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasConstants &&
-		!hasConstantsEnd &&
-		!hasDefineMacro &&
-		!hasDefineMacroEnd &&
-		!hasVertexShader &&
-		!hasVertexShaderEnd &&
-		!hasFragmentShader &&
-		!hasFragmentShaderEnd
-	) {
-		return 'function';
-	}
-
-	if (
-		hasConstants &&
-		hasConstantsEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasDefineMacro &&
-		!hasDefineMacroEnd &&
-		!hasVertexShader &&
-		!hasVertexShaderEnd &&
-		!hasFragmentShader &&
-		!hasFragmentShaderEnd
-	) {
-		return 'constants';
-	}
-
-	if (
-		hasDefineMacro &&
-		hasDefineMacroEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasConstants &&
-		!hasConstantsEnd &&
-		!hasVertexShader &&
-		!hasVertexShaderEnd &&
-		!hasFragmentShader &&
-		!hasFragmentShaderEnd
-	) {
-		return 'macro';
-	}
-
-	if (
-		hasVertexShader &&
-		hasVertexShaderEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasConstants &&
-		!hasConstantsEnd &&
-		!hasDefineMacro &&
-		!hasDefineMacroEnd &&
-		!hasFragmentShader &&
-		!hasFragmentShaderEnd
-	) {
-		return 'vertexShader';
-	}
-
-	if (
-		hasFragmentShader &&
-		hasFragmentShaderEnd &&
-		!hasModule &&
-		!hasModuleEnd &&
-		!hasFunction &&
-		!hasFunctionEnd &&
-		!hasConstants &&
-		!hasConstantsEnd &&
-		!hasDefineMacro &&
-		!hasDefineMacroEnd &&
-		!hasVertexShader &&
-		!hasVertexShaderEnd
-	) {
-		return 'fragmentShader';
-	}
-
-	return 'unknown';
+	const [match] = presentTypes;
+	return match.hasOpener && match.hasCloser ? (match.type as DetectableBlockType) : 'unknown';
 }
 
 if (import.meta.vitest) {
@@ -144,20 +46,16 @@ if (import.meta.vitest) {
 			expect(getBlockType(['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'])).toBe('macro');
 		});
 
-		it('detects vertexShader blocks', () => {
-			expect(getBlockType(['vertexShader crt', 'vertexShaderEnd'])).toBe('vertexShader');
-		});
-
-		it('detects fragmentShader blocks', () => {
-			expect(getBlockType(['fragmentShader crt', 'fragmentShaderEnd'])).toBe('fragmentShader');
+		it('detects note blocks', () => {
+			expect(getBlockType(['note', '; @pos 10 12', 'some text', 'noteEnd'])).toBe('note');
 		});
 
 		it('returns unknown for mixed markers', () => {
 			expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
 		});
 
-		it('returns unknown for mixed shader and module markers', () => {
-			expect(getBlockType(['module foo', 'vertexShaderEnd'])).toBe('unknown');
+		it('returns unknown for mixed note and module markers', () => {
+			expect(getBlockType(['module foo', 'noteEnd'])).toBe('unknown');
 		});
 	});
 }

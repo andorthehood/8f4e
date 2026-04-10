@@ -1,39 +1,6 @@
+import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
+
 import type { Project } from '~/types';
-
-const FORMAT_HEADER = '8f4e/v1';
-
-const OPENERS = ['module', 'function', 'constants', 'defineMacro', 'vertexShader', 'fragmentShader'] as const;
-
-const CLOSERS = [
-	'moduleEnd',
-	'functionEnd',
-	'constantsEnd',
-	'defineMacroEnd',
-	'vertexShaderEnd',
-	'fragmentShaderEnd',
-] as const;
-
-function getOpenerKeyword(line: string): string | null {
-	for (const opener of OPENERS) {
-		if (line === opener || line.startsWith(opener + ' ')) {
-			return opener;
-		}
-	}
-	return null;
-}
-
-function getCloserKeyword(line: string): string | null {
-	for (const closer of CLOSERS) {
-		if (line === closer || line.startsWith(closer + ' ')) {
-			return closer;
-		}
-	}
-	return null;
-}
-
-function getExpectedCloserPrefix(opener: string): string {
-	return opener + 'End';
-}
 
 /**
  * Parses .8f4e text format into a Project.
@@ -105,6 +72,7 @@ if (import.meta.vitest) {
 
 	const validBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 	const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
+	const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
 
 	describe('parse8f4eToProject', () => {
 		it('parses a valid .8f4e text with one block', () => {
@@ -118,6 +86,13 @@ if (import.meta.vitest) {
 			const text = '8f4e/v1\n\n' + validBlock.join('\n') + '\n\n' + validFunctionBlock.join('\n');
 			const project = parse8f4eToProject(text);
 			expect(project.codeBlocks).toHaveLength(2);
+		});
+
+		it('parses note blocks', () => {
+			const text = '8f4e/v1\n\n' + validNoteBlock.join('\n');
+			const project = parse8f4eToProject(text);
+			expect(project.codeBlocks).toHaveLength(1);
+			expect(project.codeBlocks[0].code).toEqual(validNoteBlock);
 		});
 
 		it('parses empty file (header only)', () => {
@@ -150,13 +125,14 @@ if (import.meta.vitest) {
 		it('round-trips through serialize then parse', async () => {
 			const { serializeProjectTo8f4e } = await import('../project-export/serializeTo8f4e');
 			const project = {
-				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }],
+				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }, { code: validNoteBlock }],
 			};
 			const text = serializeProjectTo8f4e(project);
 			const parsed = parse8f4eToProject(text);
-			expect(parsed.codeBlocks).toHaveLength(2);
+			expect(parsed.codeBlocks).toHaveLength(3);
 			expect(parsed.codeBlocks[0].code).toEqual(validBlock);
 			expect(parsed.codeBlocks[1].code).toEqual(validFunctionBlock);
+			expect(parsed.codeBlocks[2].code).toEqual(validNoteBlock);
 		});
 	});
 }

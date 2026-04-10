@@ -1,31 +1,30 @@
 export type CodeBlockType = 'module' | 'function' | 'constants' | 'unknown';
 
+const BLOCK_MARKERS: Array<{ type: Exclude<CodeBlockType, 'unknown'>; opener: RegExp; closer: RegExp }> = [
+	{ type: 'module', opener: /^\s*module(\s|$)/, closer: /^\s*moduleEnd(\s|$)/ },
+	{ type: 'function', opener: /^\s*function(\s|$)/, closer: /^\s*functionEnd(\s|$)/ },
+	{ type: 'constants', opener: /^\s*constants(\s|$)/, closer: /^\s*constantsEnd(\s|$)/ },
+];
+
 /**
  * Detects whether a block of code represents a module, function, constants, or unknown block by scanning for marker pairs.
  * @param code - Code block represented as an array of lines.
  * @returns The inferred code block type.
  */
 export function getBlockType(code: string[]): CodeBlockType {
-	const hasModule = code.some(line => /^\s*module(\s|$)/.test(line));
-	const hasModuleEnd = code.some(line => /^\s*moduleEnd(\s|$)/.test(line));
-	const hasFunction = code.some(line => /^\s*function(\s|$)/.test(line));
-	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
-	const hasConstants = code.some(line => /^\s*constants(\s|$)/.test(line));
-	const hasConstantsEnd = code.some(line => /^\s*constantsEnd(\s|$)/.test(line));
+	const markerMatches = BLOCK_MARKERS.map(({ type, opener, closer }) => ({
+		type,
+		hasOpener: code.some(line => opener.test(line)),
+		hasCloser: code.some(line => closer.test(line)),
+	}));
+	const presentTypes = markerMatches.filter(({ hasOpener, hasCloser }) => hasOpener || hasCloser);
 
-	if (hasModule && hasModuleEnd && !hasFunction && !hasFunctionEnd && !hasConstants && !hasConstantsEnd) {
-		return 'module';
+	if (presentTypes.length !== 1) {
+		return 'unknown';
 	}
 
-	if (hasFunction && hasFunctionEnd && !hasModule && !hasModuleEnd && !hasConstants && !hasConstantsEnd) {
-		return 'function';
-	}
-
-	if (hasConstants && hasConstantsEnd && !hasModule && !hasModuleEnd && !hasFunction && !hasFunctionEnd) {
-		return 'constants';
-	}
-
-	return 'unknown';
+	const [match] = presentTypes;
+	return match.hasOpener && match.hasCloser ? match.type : 'unknown';
 }
 
 /**
@@ -71,7 +70,7 @@ if (import.meta.vitest) {
 
 		it('returns false for non-compilable block types', () => {
 			expect(isCompilableBlockType('unknown')).toBe(false);
-			expect(isCompilableBlockType('vertexShader')).toBe(false);
+			expect(isCompilableBlockType('note')).toBe(false);
 			expect(isCompilableBlockType(undefined)).toBe(false);
 		});
 	});

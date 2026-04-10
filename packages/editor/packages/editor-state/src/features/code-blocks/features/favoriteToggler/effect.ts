@@ -26,18 +26,12 @@ export default function favoriteToggler(store: StateManager<State>, events: Even
 			codeBlock.code = removeDirective(codeBlock.code, 'favorite');
 		} else {
 			// Find the best position to insert the directive
-			// For modules/functions/shaders, insert after the header line
+			// For modules/functions/notes/constants, insert after the header line
 			// For other block types, insert at the beginning
 			let insertIndex = 0;
 
-			// Look for header line (module, function, vertexShader, fragmentShader, etc.)
-			const headerPatterns = [
-				/^\s*module\s+/,
-				/^\s*function\s+/,
-				/^\s*vertexShader\s+/,
-				/^\s*fragmentShader\s+/,
-				/^\s*constants\s*$/,
-			];
+			// Look for header line (module, function, note, constants)
+			const headerPatterns = [/^\s*module\s+/, /^\s*function\s+/, /^\s*note(?:\s+.*)?$/, /^\s*constants\s*$/];
 
 			for (let i = 0; i < codeBlock.code.length; i++) {
 				const line = codeBlock.code[i];
