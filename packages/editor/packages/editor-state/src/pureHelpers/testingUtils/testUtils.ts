@@ -356,7 +356,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			targetX: 0,
 			targetY: 0,
 			active: false,
-			durationMs: 90,
+			durationMs: 500,
 		},
 		presentation: {
 			activeStopIndex: 0,

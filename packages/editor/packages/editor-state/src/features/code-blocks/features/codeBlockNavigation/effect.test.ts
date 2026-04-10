@@ -30,11 +30,31 @@ describe('codeBlockNavigation', () => {
 		vi.useFakeTimers();
 
 		// Create mock code blocks using shared utility
-		selectedBlock = createMockCodeBlock({ x: 200, y: 200, creationIndex: 0, id: 'selected' });
-		leftBlock = createMockCodeBlock({ x: 0, y: 200, creationIndex: 1, id: 'left' });
-		rightBlock = createMockCodeBlock({ x: 400, y: 200, creationIndex: 2, id: 'right' });
+		selectedBlock = createMockCodeBlock({
+			x: 200,
+			y: 200,
+			creationIndex: 0,
+			id: 'selected',
+		});
+		leftBlock = createMockCodeBlock({
+			x: 0,
+			y: 200,
+			creationIndex: 1,
+			id: 'left',
+		});
+		rightBlock = createMockCodeBlock({
+			x: 400,
+			y: 200,
+			creationIndex: 2,
+			id: 'right',
+		});
 		upBlock = createMockCodeBlock({ x: 200, y: 0, creationIndex: 3, id: 'up' });
-		downBlock = createMockCodeBlock({ x: 200, y: 400, creationIndex: 4, id: 'down' });
+		downBlock = createMockCodeBlock({
+			x: 200,
+			y: 400,
+			creationIndex: 4,
+			id: 'down',
+		});
 
 		// Create mock state using shared utility
 		state = createMockState({
@@ -272,6 +292,56 @@ describe('codeBlockNavigation', () => {
 		expect(state.viewport.y).toBe(rightBlock.y + rightBlock.offsetY + rightBlock.cursor.y - state.viewport.height / 2);
 	});
 
+	it('should animate viewport when navigating between code blocks if animation callbacks are available', () => {
+		const frameCallbacks: Array<(time: number) => void> = [];
+		state = createMockState({
+			callbacks: {
+				requestAnimationFrame: vi.fn(callback => {
+					frameCallbacks.push(callback);
+					return frameCallbacks.length;
+				}),
+				cancelAnimationFrame: vi.fn(),
+			},
+			graphicHelper: {
+				selectedCodeBlock: selectedBlock,
+				codeBlocks: [selectedBlock, leftBlock, rightBlock, upBlock, downBlock],
+			},
+			viewport: {
+				x: 0,
+				y: 0,
+				width: 800,
+				height: 600,
+				roundedWidth: 800,
+				roundedHeight: 600,
+				vGrid: 8,
+				hGrid: 16,
+			},
+		});
+
+		codeBlockNavigation(state, events);
+
+		onNavigateCodeBlockHandler({ direction: 'right' });
+
+		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
+		expect(state.viewportAnimation.active).toBe(true);
+		expect(state.viewportAnimation.targetX).toBe(
+			rightBlock.x + rightBlock.offsetX + rightBlock.width / 2 - state.viewport.width / 2
+		);
+		expect(state.viewportAnimation.targetY).toBe(
+			rightBlock.y + rightBlock.offsetY + rightBlock.cursor.y - state.viewport.height / 2
+		);
+		expect(state.viewport.x).toBe(0);
+		expect(state.viewport.y).toBe(0);
+
+		frameCallbacks[0](0);
+		frameCallbacks[1](state.viewportAnimation.durationMs);
+
+		expect(state.viewport.x).toBe(state.viewportAnimation.targetX);
+		expect(state.viewport.y).toBe(state.viewportAnimation.targetY);
+		expect(state.viewportAnimation.active).toBe(false);
+		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+	});
+
 	it('should not change selection if no block found in direction', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
@@ -334,7 +404,10 @@ describe('codeBlockNavigation', () => {
 			// Initialize the effect
 			codeBlockNavigation(state, events);
 
-			onJumpToFavoriteCodeBlockHandler({ creationIndex: 999, id: 'nonexistent' });
+			onJumpToFavoriteCodeBlockHandler({
+				creationIndex: 999,
+				id: 'nonexistent',
+			});
 			// selectedCodeBlock should remain unchanged
 			expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
 		});
@@ -342,12 +415,30 @@ describe('codeBlockNavigation', () => {
 
 	describe('goHome', () => {
 		it('should center viewport on the first home block and select it', () => {
-			const firstHome = createMockCodeBlock({ id: 'home-1', x: 100, y: 100, isHome: true, cursorY: 32 });
-			const secondHome = createMockCodeBlock({ id: 'home-2', x: 400, y: 400, isHome: true });
+			const firstHome = createMockCodeBlock({
+				id: 'home-1',
+				x: 100,
+				y: 100,
+				isHome: true,
+				cursorY: 32,
+			});
+			const secondHome = createMockCodeBlock({
+				id: 'home-2',
+				x: 400,
+				y: 400,
+				isHome: true,
+			});
 
 			state = createMockState({
 				graphicHelper: { codeBlocks: [firstHome, secondHome] },
-				viewport: { x: 10, y: 20, width: 200, height: 200, roundedWidth: 200, roundedHeight: 200 },
+				viewport: {
+					x: 10,
+					y: 20,
+					width: 200,
+					height: 200,
+					roundedWidth: 200,
+					roundedHeight: 200,
+				},
 			});
 
 			goHome(state);
@@ -358,7 +449,12 @@ describe('codeBlockNavigation', () => {
 		});
 
 		it('should dispatch viewportMoved after goHome changes the viewport', () => {
-			const homeBlock = createMockCodeBlock({ id: 'home-dispatch', isHome: true, x: 100, y: 100 });
+			const homeBlock = createMockCodeBlock({
+				id: 'home-dispatch',
+				isHome: true,
+				x: 100,
+				y: 100,
+			});
 			state = createMockState({
 				graphicHelper: { codeBlocks: [homeBlock] },
 			});
@@ -369,7 +465,11 @@ describe('codeBlockNavigation', () => {
 		});
 
 		it('should use a disabled home block if it is first', () => {
-			const disabledHome = createMockCodeBlock({ id: 'home-disabled', isHome: true, disabled: true });
+			const disabledHome = createMockCodeBlock({
+				id: 'home-disabled',
+				isHome: true,
+				disabled: true,
+			});
 			const otherHome = createMockCodeBlock({ id: 'home-other', isHome: true });
 
 			state = createMockState({
@@ -384,7 +484,10 @@ describe('codeBlockNavigation', () => {
 		it('should center on origin when no home block exists', () => {
 			state = createMockState({
 				viewport: { x: 25, y: -10 },
-				graphicHelper: { codeBlocks: [selectedBlock], selectedCodeBlock: selectedBlock },
+				graphicHelper: {
+					codeBlocks: [selectedBlock],
+					selectedCodeBlock: selectedBlock,
+				},
 			});
 
 			goHome(state);
@@ -395,7 +498,12 @@ describe('codeBlockNavigation', () => {
 		});
 
 		it('should respond to goHome event', () => {
-			const homeBlock = createMockCodeBlock({ id: 'home-event', isHome: true, x: 160, y: 80 });
+			const homeBlock = createMockCodeBlock({
+				id: 'home-event',
+				isHome: true,
+				x: 160,
+				y: 80,
+			});
 			state.graphicHelper.codeBlocks = [homeBlock, ...state.graphicHelper.codeBlocks];
 
 			codeBlockNavigation(state, events);

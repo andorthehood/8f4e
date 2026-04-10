@@ -1,7 +1,7 @@
 import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCodeBlockInDirection';
 import { deriveDirectiveState } from '../directives/registry';
+import animateViewport from '../../../viewport/animateViewport';
 import centerViewportOnCodeBlockCursor from '../../../viewport/centerViewportOnCodeBlockCursor';
-import updateViewport from '../../../viewport/updateViewport';
 import gapCalculator from '../../../code-editing/gapCalculator';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 
@@ -151,7 +151,7 @@ export function navigateToCodeBlockInDirection(
 		moveSelectionToCurrentBlockVerticalEdge(state, currentBlock, direction)
 	) {
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, currentBlock);
-		updateViewport(state, x, y, events);
+		animateViewport(state, x, y, events);
 		return true;
 	}
 
@@ -167,7 +167,7 @@ export function navigateToCodeBlockInDirection(
 
 		setSelectedCodeBlock(stateSource, targetBlock);
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
-		updateViewport(state, x, y, events);
+		animateViewport(state, x, y, events);
 		return true;
 	}
 
@@ -206,7 +206,7 @@ export function jumpToCodeBlock(
 	if (targetBlock) {
 		setSelectedCodeBlock(stateSource, targetBlock);
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
-		updateViewport(state, x, y, events);
+		animateViewport(state, x, y, events);
 		return true;
 	}
 
@@ -229,9 +229,9 @@ export function goHome(stateSource: StateSource, events?: EventDispatcher): void
 	if (homeBlock) {
 		setSelectedCodeBlock(stateSource, homeBlock);
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, homeBlock);
-		updateViewport(state, x, y, events);
+		animateViewport(state, x, y, events);
 	} else {
-		updateViewport(state, 0, 0, events);
+		animateViewport(state, 0, 0, events);
 	}
 }
 
