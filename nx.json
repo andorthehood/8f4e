@@ -1,28 +1,45 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "sharedGlobals": []
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"],
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ],
       "cache": true
     },
-	"dev": {
-		"cache": false
-	},
+    "dev": {
+      "cache": false
+    },
     "test": {
-      "inputs": ["default", "^default"],
+      "inputs": [
+        "default",
+        "^default"
+      ],
       "cache": true
     },
     "typecheck": {
-      "inputs": ["default", "^default"],
+      "inputs": [
+        "default",
+        "^default"
+      ],
       "cache": true
     },
     "lint": {
-      "inputs": ["default", "^default"],
+      "inputs": [
+        "default",
+        "^default"
+      ],
       "cache": true
     }
   },
@@ -32,5 +49,6 @@
     }
   },
   "nxCloudAccessToken": null,
-  "defaultBase": "HEAD~1"
+  "defaultBase": "HEAD~1",
+  "analytics": false
 }
