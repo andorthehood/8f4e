@@ -1,6 +1,6 @@
 8f4e/v1
 
-fragmentShader background
+note fragmentShaderBackground
 ; @pos 98 78
 ; @home
 #version 300 es
@@ -33,7 +33,7 @@ void main() {
  );
  outColor = vec4(color, 1.0);
 }
-fragmentShaderEnd
+noteEnd
 
 module projectConfig
 ; @pos -114 36

@@ -24,8 +24,7 @@ Code blocks are categorized by type, which determines compilation and rendering 
 - **`module`** - Top-level code modules compiled as standalone units
 - **`function`** - Function definitions compiled separately
 - **`constants`** - Constant definitions (compiled as modules)
-- **`vertexShader`** - GLSL vertex shader code
-- **`fragmentShader`** - GLSL fragment shader code
+- **`note`** - Editor-only notes, including typed notes like shader notes
 - **`unknown`** - Unclassified blocks (fallback)
 
 Block types are automatically detected and updated based on code content.

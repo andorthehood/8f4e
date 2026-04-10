@@ -1,12 +1,11 @@
 import extractShaderSource from './extractShaderSource';
-
-import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
+import getShaderNoteMetadata from './getShaderNoteMetadata';
 
 import type { BackgroundEffect, PostProcessEffect } from 'glugglug';
 import type { CodeBlockGraphicData, CodeError } from '~/types';
 
 /**
- * Derives post-process and background effects from targeted shader code blocks.
+ * Derives post-process and background effects from targeted shader notes.
  * Uses the first fragment/vertex shader per target (by creation order).
  */
 export default function deriveShaderEffects(codeBlocks: CodeBlockGraphicData[]): {
@@ -14,7 +13,6 @@ export default function deriveShaderEffects(codeBlocks: CodeBlockGraphicData[]):
 	backgroundEffects: BackgroundEffect[];
 	errors: CodeError[];
 } {
-	// Sort by creation index to ensure stable ordering
 	const sortedBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
 
 	let postProcessFragment: string | null = null;
@@ -26,31 +24,24 @@ export default function deriveShaderEffects(codeBlocks: CodeBlockGraphicData[]):
 		if (block.disabled) {
 			continue;
 		}
-		const blockType = getBlockType(block.code);
-		if (blockType !== 'fragmentShader' && blockType !== 'vertexShader') {
+
+		const shaderNote = getShaderNoteMetadata(block.code);
+		if (!shaderNote) {
 			continue;
 		}
 
-		const startMarker = block.code[0]?.trim() ?? '';
-		const [, target] = startMarker.split(/\s+/);
-		if (target !== 'postprocess' && target !== 'background') {
-			continue;
-		}
+		const source = extractShaderSource(block.code);
 
-		const source = extractShaderSource(block.code, startMarker);
-
-		if (target === 'postprocess') {
-			if (blockType === 'fragmentShader' && postProcessFragment === null) {
+		if (shaderNote.target === 'postprocess') {
+			if (shaderNote.shaderType === 'fragment' && postProcessFragment === null) {
 				postProcessFragment = source;
-			} else if (blockType === 'vertexShader' && postProcessVertex === null) {
+			} else if (shaderNote.shaderType === 'vertex' && postProcessVertex === null) {
 				postProcessVertex = source;
 			}
-		} else if (target === 'background') {
-			if (blockType === 'fragmentShader' && backgroundFragment === null) {
-				backgroundFragment = source;
-			} else if (blockType === 'vertexShader' && backgroundVertex === null) {
-				backgroundVertex = source;
-			}
+		} else if (shaderNote.shaderType === 'fragment' && backgroundFragment === null) {
+			backgroundFragment = source;
+		} else if (shaderNote.shaderType === 'vertex' && backgroundVertex === null) {
+			backgroundVertex = source;
 		}
 
 		if (
@@ -91,11 +82,11 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('deriveShaderEffects', () => {
-		it('produces a post-process effect from a fragment shader block', () => {
+		it('produces a post-process effect from a fragment shader note', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['fragmentShader postprocess', 'void main() {}', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'void main() {}', 'noteEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 			];
@@ -109,11 +100,11 @@ if (import.meta.vitest) {
 			expect(errors).toHaveLength(0);
 		});
 
-		it('produces a background effect from a fragment shader block', () => {
+		it('produces a background effect from a fragment shader note', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['fragmentShader background', 'void main() {}', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderBackground', 'void main() {}', 'noteEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 			];
@@ -131,22 +122,22 @@ if (import.meta.vitest) {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['vertexShader postprocess', 'post vertex', 'vertexShaderEnd'],
+					code: ['note vertexShaderPostprocess', 'post vertex', 'noteEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 				{
 					id: 'b',
-					code: ['fragmentShader background', 'background fragment', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderBackground', 'background fragment', 'noteEnd'],
 					creationIndex: 1,
 				} as CodeBlockGraphicData,
 				{
 					id: 'c',
-					code: ['fragmentShader postprocess', 'post fragment', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'post fragment', 'noteEnd'],
 					creationIndex: 2,
 				} as CodeBlockGraphicData,
 				{
 					id: 'd',
-					code: ['vertexShader background', 'background vertex', 'vertexShaderEnd'],
+					code: ['note vertexShaderBackground', 'background vertex', 'noteEnd'],
 					creationIndex: 3,
 				} as CodeBlockGraphicData,
 			];
@@ -166,22 +157,22 @@ if (import.meta.vitest) {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['fragmentShader postprocess', 'first post', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'first post', 'noteEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 				{
 					id: 'b',
-					code: ['fragmentShader postprocess', 'second post', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'second post', 'noteEnd'],
 					creationIndex: 1,
 				} as CodeBlockGraphicData,
 				{
 					id: 'c',
-					code: ['fragmentShader background', 'first bg', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderBackground', 'first bg', 'noteEnd'],
 					creationIndex: 2,
 				} as CodeBlockGraphicData,
 				{
 					id: 'd',
-					code: ['fragmentShader background', 'second bg', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderBackground', 'second bg', 'noteEnd'],
 					creationIndex: 3,
 				} as CodeBlockGraphicData,
 			];
@@ -194,21 +185,21 @@ if (import.meta.vitest) {
 			expect(backgroundEffects[0].fragmentShader).toBe('first bg');
 		});
 
-		it('skips shader blocks without a target suffix', () => {
+		it('skips notes without a recognized shader subtype', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['fragmentShader', 'bare fragment', 'fragmentShaderEnd'],
+					code: ['note', 'bare fragment', 'noteEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 				{
 					id: 'b',
-					code: ['vertexShader', 'bare vertex', 'vertexShaderEnd'],
+					code: ['note todo', 'bare vertex', 'noteEnd'],
 					creationIndex: 1,
 				} as CodeBlockGraphicData,
 				{
 					id: 'c',
-					code: ['fragmentShader postprocess', 'targeted fragment', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'targeted fragment', 'noteEnd'],
 					creationIndex: 2,
 				} as CodeBlockGraphicData,
 			];
@@ -220,17 +211,17 @@ if (import.meta.vitest) {
 			expect(backgroundEffects).toHaveLength(0);
 		});
 
-		it('skips disabled shader blocks', () => {
+		it('skips disabled shader notes', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['fragmentShader postprocess', 'disabled fragment', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'disabled fragment', 'noteEnd'],
 					creationIndex: 0,
 					disabled: true,
 				} as CodeBlockGraphicData,
 				{
 					id: 'b',
-					code: ['fragmentShader postprocess', 'active fragment', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'active fragment', 'noteEnd'],
 					creationIndex: 1,
 				} as CodeBlockGraphicData,
 			];
@@ -241,11 +232,11 @@ if (import.meta.vitest) {
 			expect(postProcessEffects[0].fragmentShader).toBe('active fragment');
 		});
 
-		it('produces no effect when only a vertex shader block exists', () => {
+		it('produces no effect when only a vertex shader note exists', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['vertexShader postprocess', 'vertex only', 'vertexShaderEnd'],
+					code: ['note vertexShaderPostprocess', 'vertex only', 'noteEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 			];
@@ -261,22 +252,22 @@ if (import.meta.vitest) {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'a',
-					code: ['vertexShader postprocess', 'vertexShaderEnd'],
+					code: ['note vertexShaderPostprocess', 'noteEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 				{
 					id: 'b',
-					code: ['fragmentShader postprocess', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderPostprocess', 'noteEnd'],
 					creationIndex: 1,
 				} as CodeBlockGraphicData,
 				{
 					id: 'c',
-					code: ['vertexShader background', 'vertexShaderEnd'],
+					code: ['note vertexShaderBackground', 'noteEnd'],
 					creationIndex: 2,
 				} as CodeBlockGraphicData,
 				{
 					id: 'd',
-					code: ['fragmentShader background', 'fragmentShaderEnd'],
+					code: ['note fragmentShaderBackground', 'noteEnd'],
 					creationIndex: 3,
 				} as CodeBlockGraphicData,
 			];
