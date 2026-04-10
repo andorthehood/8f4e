@@ -32,6 +32,28 @@ describe('flattenProjectForCompiler', () => {
 		expect(result.functions[0].code).toEqual(['function helper', 'functionEnd']);
 	});
 
+	it('should exclude note blocks from compilation', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['note', '; @pos 10 10', 'todo: clean this up', 'noteEnd'],
+				blockType: 'note',
+				creationIndex: 0,
+			} as CodeBlockGraphicData,
+			{
+				code: ['module test', 'moduleEnd'],
+				blockType: 'module',
+				creationIndex: 1,
+			} as CodeBlockGraphicData,
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks);
+
+		expect(result.modules).toHaveLength(1);
+		expect(result.modules[0].code).toEqual(['module test', 'moduleEnd']);
+		expect(result.functions).toHaveLength(0);
+		expect(result.macros).toHaveLength(0);
+	});
+
 	it('should include constants blocks but not unknown blocks', () => {
 		const mockCodeBlocks: CodeBlockGraphicData[] = [
 			{

@@ -28,7 +28,6 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	lines.push('; @favorite');
 	lines.push('; Auto-generated environment constants');
 	lines.push('; Changes will be overwritten');
-	lines.push('; Last updated: ' + new Date().toLocaleString());
 	lines.push('');
 
 	lines.push(...resolveRuntimeEnvConstants(state));
@@ -73,6 +72,20 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
  * @param store - State manager instance
  */
 export default function autoEnvConstants(store: StateManager<State>): void {
+	function areCodeLinesEqual(a: string[], b: string[]): boolean {
+		if (a.length !== b.length) {
+			return false;
+		}
+
+		for (let i = 0; i < a.length; i++) {
+			if (a[i] !== b[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Updates the env constants block code in graphicHelper.codeBlocks.
 	 * This avoids triggering an infinite loop by not modifying initialProjectState.
@@ -86,6 +99,10 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		}
 		const existingPos = parsePos(targetBlock.parsedDirectives);
 		const newCode = generateEnvConstantsBlock(state, existingPos);
+
+		if (areCodeLinesEqual(targetBlock.code, newCode)) {
+			return;
+		}
 
 		targetBlock.code = newCode;
 		targetBlock.lastUpdated = performance.now();

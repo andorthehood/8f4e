@@ -24,6 +24,7 @@ export interface CodeBlock {
  * - 'macro': Contains defineMacro/defineMacroEnd markers (reusable code snippets)
  * - 'vertexShader': Contains vertexShader/vertexShaderEnd markers (GLSL vertex shader)
  * - 'fragmentShader': Contains fragmentShader/fragmentShaderEnd markers (GLSL fragment shader)
+ * - 'note': Contains note/noteEnd markers (editor-only notes, not compiled)
  * - 'unknown': Mixed or incomplete markers, or no recognizable markers
  */
 export type CodeBlockType =
@@ -33,6 +34,7 @@ export type CodeBlockType =
 	| 'macro'
 	| 'vertexShader'
 	| 'fragmentShader'
+	| 'note'
 	| 'unknown';
 
 // Forward declarations for circular dependencies
