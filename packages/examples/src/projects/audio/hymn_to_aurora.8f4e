@@ -1,55 +1,6 @@
 8f4e/v1
 
 note
-; @pos 261 -35
-; @stop 4 10 bottom
-; These are the modules that extract the              /\
-; information from the rows. This particular song   /_  _\
-; is quite simple, it only has sample number, pitch  |  |
-; and volume data.                                   `--'
-noteEnd
-
-note
-; @pos 126 -52
-; @stop 3 10 left
-;                              _______|\
-; Here you can see the song   |          \
-; data scrolling through the  |          /
-; memory. Each row encodes    `-------|/
-; an event with a sample number, 
-; pitch and effect information.
-
-noteEnd
-
-note
-; @pos 131 -70
-; @stop 2 10 left
-
-; This patch is a bare-bones
-; MOD player implemented in 8f4e.
-
-; It loads pattern data and samples,
-; steps through the song row by row,
-; plays four channels in parallel,
-; and mixes them into stereo output.
-
-; In this example, it is playing 
-; "Hymn to Aurora" by Horace Wimp.
-
-noteEnd
-
-note
-; @pos 397 -36
-; @stop 9 5 right
-
-;   /|        The instrument samples
-; /  `------. are stored
-; \  .------' in these memory
-;   \|        buffers.
-
-noteEnd
-
-note
 ; @pos 397 -1
 
 ; There are four of these,
@@ -87,6 +38,58 @@ note
 ; from the active row.             :'
 
 ; @stop 11 5 left
+noteEnd
+
+note
+; @pos 261 -35
+; @stop 4 10 bottom
+; These are the modules that extract the              /\
+; information from the rows. This particular song   /_  _\
+; is quite simple, it only has sample number, pitch  |  |
+; and volume data.                                   `--'
+noteEnd
+
+note
+; @pos 179 -78
+; @stop 1 3 top
+
+; This patch is a bare-bones
+; MOD player implemented in 8f4e.
+noteEnd
+
+note
+; @pos 125 -69
+; @stop 2 10 left
+
+; MOD is a classic tracker music format
+; from the Amiag era.
+; Tracker music is written as rows of events.
+; Each row encodes what to do next, 
+; such as which audio sample to play, 
+; at what pitch, and which effect to apply.
+noteEnd
+
+note
+; @pos 128 -56
+; @stop 3 5 left
+;                               _______|\
+; Here you can see the event   |          \
+; data scrolling through the   |          /
+; memory.                      `-------|/
+
+noteEnd
+
+note
+; @pos 393 -38
+; @stop 9 5 right
+
+;   /|______  The instrument samples are
+; /         : short recorded waveforms
+; \   ______; stored in these memory 
+;   \|        slots.
+; The sample players read from these
+; buffers and move through them at
+; different speeds to change pitch.
 noteEnd
 
 constants env
@@ -1082,7 +1085,7 @@ ifEnd
 moduleEnd
 
 module patternOrder
-; @pos 62 -9
+; @pos 65 -9
 ; @tab 6
 int	0x00
 int	0x00
