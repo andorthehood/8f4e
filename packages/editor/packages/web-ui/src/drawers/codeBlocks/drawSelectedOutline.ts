@@ -62,9 +62,11 @@ export default function drawSelectedOutline(
 					? '.'
 					: '-'
 				: y === bottomY
-					? x === leftX || x === rightX
+					? x === leftX
 						? '`'
-						: '-'
+						: x === rightX
+							? "'"
+							: '-'
 					: '|';
 
 		engine.drawText(x, y, character);
