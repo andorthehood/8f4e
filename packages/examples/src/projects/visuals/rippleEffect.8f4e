@@ -41,7 +41,7 @@ module main
 
 moduleEnd
 
-fragmentShader postprocess
+note fragmentShaderPostprocess
 ; @pos 87 10
 #version 300 es
 
@@ -76,4 +76,4 @@ void main() {
 
   outColor = vec4(color, 1.0);
 }
-fragmentShaderEnd
+noteEnd
