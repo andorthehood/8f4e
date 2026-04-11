@@ -269,7 +269,7 @@ if (import.meta.vitest) {
 				'int pointer &buffer',
 				'',
 				'; @watch count',
-				'; @plot buffer -2 2',
+				'; @plot &buffer',
 				'',
 				'; Store the input value',
 				'; in the buffer',

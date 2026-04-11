@@ -79,8 +79,10 @@ export interface ArrayPlotter {
 	y: number;
 	minValue: number;
 	maxValue: number;
-	array: MemoryIdentifier;
-	arrayLength: MemoryIdentifier | undefined;
+	startAddress: MemoryIdentifier;
+	baseSampleShift: 0 | 1 | 2 | 3;
+	length: number | MemoryIdentifier;
+	valueType: TypedValueKind;
 }
 
 export interface Switch {
@@ -105,13 +107,23 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
-export interface ArrayScanner {
+export type TypedValueKind = 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'float32' | 'float64';
+
+export interface ArrayWave {
 	width: number;
 	height: number;
 	x: number;
 	y: number;
-	array: MemoryIdentifier;
-	pointer: MemoryIdentifier;
+	startAddress: MemoryIdentifier;
+	elementByteSize: number;
+	inverseElementByteSize: number;
+	baseSampleShift: 0 | 1 | 2 | 3;
+	length: number | MemoryIdentifier;
+	pointer?: MemoryIdentifier;
+	valueType: TypedValueKind;
+	minValue: number;
+	maxValue: number;
+	inverseValueRange: number;
 }
 
 export interface Slider {
@@ -196,7 +208,7 @@ export interface CodeBlockGraphicData {
 		outputs: Output[];
 		debuggers: Debugger[];
 		arrayPlotters: ArrayPlotter[];
-		arrayScanners: ArrayScanner[];
+		arrayWaves: ArrayWave[];
 		switches: Switch[];
 		buttons: Switch[];
 		sliders: Slider[];

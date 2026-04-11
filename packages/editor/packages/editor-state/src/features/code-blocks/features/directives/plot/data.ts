@@ -1,24 +1,30 @@
 export interface PlotDirectiveData {
-	arrayMemoryId: string;
+	startAddressMemoryId: string;
 	lineNumber: number;
-	minValue: number;
-	maxValue: number;
-	arrayLengthMemoryId: string | undefined;
+	length: string | number;
+	minValueOverride?: number;
+	maxValueOverride?: number;
 }
 
 export function createPlotDirectiveData(args: string[], lineNumber: number): PlotDirectiveData | undefined {
-	if (!args[0]) {
+	if (!args[0] || !args[1]) {
 		return undefined;
 	}
 
-	const parsedMin = args[1] !== undefined ? parseInt(args[1], 10) : undefined;
-	const parsedMax = args[2] !== undefined ? parseInt(args[2], 10) : undefined;
+	const parsedArgs = args.slice(1);
+	const hasRangeOverride =
+		parsedArgs.length >= 3 &&
+		/^-?\d*\.?\d+$/.test(parsedArgs[parsedArgs.length - 2]) &&
+		/^-?\d*\.?\d+$/.test(parsedArgs[parsedArgs.length - 1]);
+	const lengthArg = parsedArgs[0];
+	const minValueOverride = hasRangeOverride ? Number.parseFloat(parsedArgs[parsedArgs.length - 2]) : undefined;
+	const maxValueOverride = hasRangeOverride ? Number.parseFloat(parsedArgs[parsedArgs.length - 1]) : undefined;
 
 	return {
-		arrayMemoryId: args[0],
+		startAddressMemoryId: args[0],
 		lineNumber,
-		minValue: parsedMin !== undefined && !isNaN(parsedMin) ? parsedMin : -8,
-		maxValue: parsedMax !== undefined && !isNaN(parsedMax) ? parsedMax : 8,
-		arrayLengthMemoryId: args[3] || undefined,
+		length: /^-?\d+$/.test(lengthArg) ? Number.parseInt(lengthArg, 10) : lengthArg,
+		minValueOverride,
+		maxValueOverride,
 	};
 }

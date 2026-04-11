@@ -31,7 +31,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -79,7 +79,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -127,7 +127,7 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -175,7 +175,7 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -223,7 +223,7 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -271,7 +271,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -319,7 +319,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -367,7 +367,7 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -416,7 +416,7 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -467,7 +467,7 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -515,7 +515,7 @@ exports[`createMockCodeBlock > override behavior > should override id and offset
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],
@@ -563,7 +563,7 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "textureCacheKey": "",
   "widgets": {
     "arrayPlotters": [],
-    "arrayScanners": [],
+    "arrayWaves": [],
     "blockHighlights": [],
     "buttons": [],
     "debuggers": [],

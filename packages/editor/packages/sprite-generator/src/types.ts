@@ -52,8 +52,8 @@ export interface ColorScheme {
 		dialogBackground: string;
 		dialogDimmer: string;
 		highlightedCodeLine: string;
-		plotterTrace: string;
-		plotterBackground: string;
+		trace: string;
+		waveform: string;
 		scanLine: string;
 		sliderThumb: string;
 		codeBlockHighlightLevel1: string;

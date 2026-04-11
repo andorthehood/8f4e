@@ -1,3 +1,5 @@
+import { resolveElementCount, resolveTypedValueSpec } from '../shared/typedValueSpec';
+
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../types';
 import type { PlotDirectiveData } from './data';
 
@@ -16,10 +18,11 @@ function resolvePlotDirectiveWidget(
 		return;
 	}
 
-	const array = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.arrayMemoryId);
-	const arrayLength = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.arrayLengthMemoryId);
+	const startAddress = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.startAddressMemoryId);
+	const length = resolveElementCount(plotter.length, graphicData.moduleId, state);
+	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
-	if (!array) {
+	if (!startAddress || !valueSpec || !length) {
 		return;
 	}
 
@@ -30,10 +33,12 @@ function resolvePlotDirectiveWidget(
 		height: state.viewport.hGrid,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
-		array,
-		minValue: plotter.minValue,
-		maxValue: plotter.maxValue,
-		arrayLength,
+		startAddress,
+		baseSampleShift: valueSpec.baseSampleShift,
+		length,
+		valueType: valueSpec.valueType,
+		minValue: plotter.minValueOverride ?? valueSpec.minValue,
+		maxValue: plotter.maxValueOverride ?? valueSpec.maxValue,
 	});
 }
 

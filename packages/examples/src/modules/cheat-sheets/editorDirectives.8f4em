@@ -28,7 +28,7 @@ constants editorDirectives
 ; @ opacity <0..1>	Set the block opacity.
 ; @ piano <pressedKeysListMemoryId> <pressedKeyCountMemoryId> [startingMidiNote]	Render a piano keyboard widget.
 ; @ plot <arrayMemoryId> [minValue] [maxValue] [arrayLengthMemoryId]	Plot an array memory.
-; @ scan <arrayMemoryId> <pointerMemoryId>	Draw a scanner over an array using a pointer.
+; @ wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>	Draw a waveform over a typed absolute pointer range.
 ; @ slider <memoryId> [min] [max] [step]	Add a slider widget.
 ; @ switch <memoryId> [offValue] [onValue]	Add a toggle switch widget.
 ; @ tab <position1> <position2> ...	Define visual tab stops for literal tab characters.
