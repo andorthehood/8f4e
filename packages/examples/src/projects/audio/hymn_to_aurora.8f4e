@@ -86,15 +86,7 @@ note
 noteEnd
 
 note
-; @pos 503 -36
-Hey AI please make
-me something nice.
-
-
-noteEnd
-
-note
-; @pos 393 -38
+; @pos 392 -38
 ; @stop 9 10 right
 
 ;   /|______  The instrument samples are
@@ -509,7 +501,7 @@ store
 moduleEnd
 
 module amp1
-; @pos 443 -69
+; @pos 448 -69
 ; @group ch0
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
@@ -527,7 +519,7 @@ store
 moduleEnd
 
 module amp2
-; @pos 443 -24
+; @pos 449 -25
 ; @group ch1
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
@@ -545,7 +537,7 @@ store
 moduleEnd
 
 module amp3
-; @pos 442 21
+; @pos 453 21
 ; @group ch2
 float* in &modSamplePlayer3:out
 int* volume &volume3:out
@@ -563,7 +555,7 @@ store
 moduleEnd
 
 module amp4
-; @pos 443 65
+; @pos 455 65
 ; @group ch3
 float* in &modSamplePlayer4:out
 int* volume &volume4:out
@@ -603,7 +595,7 @@ module assets
 moduleEnd
 
 module audiooutL
-; @pos 525 -4
+; @pos 533 -4
 use env
 
 float* in &mixer:outL
@@ -641,7 +633,7 @@ ifEnd
 moduleEnd
 
 module audiooutR
-; @pos 566 -4
+; @pos 574 -4
 use env
 
 float* in &mixer:outR
@@ -679,7 +671,7 @@ ifEnd
 moduleEnd
 
 module mixer
-; @pos 487 -1
+; @pos 496 -2
 float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
@@ -767,23 +759,28 @@ module modSamplePlayer1
 ; @group ch0
 use env
 
-float out
+float out; @w
 int* period &period1:out
-float _position 0.0
+float _position 0.0; @w
 int* trigger &trigger1:out
-int _playing
+int _playing; @w
 int* sampleNumber &sampleNumber1:out
-int8* sampleAddress
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
 
-; @watch sampleAddress
-; @watch _playing
-; @watch sampleNumber
+; @wave sampleAddress sampleSize playhead
 
 ; @hide
 
 push &sampleAddress
 push *sampleNumber
 call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
 store
 
 push *trigger
@@ -797,14 +794,18 @@ push 0
 store
 ifEnd
 
-; Read sample at playhead
-; write it to output
-push &out
+; Calculate read address
+push &playhead
 push _position
 castToInt
 push sampleAddress
 add
-load8s
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
 castToFloat
 push max(*sampleAddress) ; max value
 castToFloat
@@ -838,7 +839,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 397 -25
+; @pos 399 -25
 ; @group ch1
 use env
 ; @stop 12 5
@@ -922,27 +923,32 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer3
-; @pos 397 21
+; @pos 402 21
 ; @group ch2
 use env
 
-float out
+float out; @w
 int* period &period3:out
-float _position 0.0
+float _position 0.0; @w
 int* trigger &trigger3:out
-int _playing
+int _playing; @w
 int* sampleNumber &sampleNumber3:out
-int8* sampleAddress
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
 
-; @watch sampleAddress
-; @watch _playing
-; @watch sampleNumber
+; @wave sampleAddress sampleSize playhead
 
 ; @hide
 
 push &sampleAddress
 push *sampleNumber
 call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
 store
 
 push *trigger
@@ -956,16 +962,20 @@ push 0
 store
 ifEnd
 
-; Read sample at playhead
-; write it to output
-push &out
+; Calculate read address
+push &playhead
 push _position
 castToInt
 push sampleAddress
 add
-load8s
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
 castToFloat
-push max(*sampleAddress) ; max value
+push max(*sampleAddress)
 castToFloat
 div
 store
@@ -1014,27 +1024,32 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 397 65
+; @pos 404 65
 ; @group ch3
 use env
 
-float out
+float out; @w
 int* period &period4:out
-float _position 0.0
+float _position 0.0; @w
 int* trigger &trigger4:out
-int _playing
+int _playing; @w
 int* sampleNumber &sampleNumber4:out
-int8* sampleAddress
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
 
-; @watch sampleAddress
-; @watch _playing
-; @watch sampleNumber
+; @wave sampleAddress sampleSize playhead
 
 ; @hide
 
 push &sampleAddress
 push *sampleNumber
 call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
 store
 
 push *trigger
@@ -1048,14 +1063,18 @@ push 0
 store
 ifEnd
 
-; Read sample at playhead
-; write it to output
-push &out
+; Calculate read address
+push &playhead
 push _position
 castToInt
 push sampleAddress
 add
-load8s
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
 castToFloat
 push max(*sampleAddress)
 castToFloat
