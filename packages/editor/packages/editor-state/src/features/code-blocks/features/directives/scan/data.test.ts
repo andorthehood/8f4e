@@ -25,6 +25,19 @@ describe('scan directive data', () => {
 		]);
 	});
 
+	it('should parse scan instruction without a pointer for waveform-only rendering', () => {
+		const result = parseScanDirectiveData(['; @scan bufferAddress 16']);
+
+		expect(result).toEqual([
+			{
+				startAddressMemoryId: 'bufferAddress',
+				length: 16,
+				pointerMemoryId: undefined,
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse scan instruction with an address-of buffer start and a length memory identifier', () => {
 		const result = parseScanDirectiveData(['; @scan &buffer1 length ptr1']);
 
@@ -32,6 +45,19 @@ describe('scan directive data', () => {
 			{
 				startAddressMemoryId: '&buffer1',
 				length: 'length',
+				pointerMemoryId: 'ptr1',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse scan instruction with a count() length expression', () => {
+		const result = parseScanDirectiveData(['; @scan &buffer1 count(buffer1) ptr1']);
+
+		expect(result).toEqual([
+			{
+				startAddressMemoryId: '&buffer1',
+				length: 'count(buffer1)',
 				pointerMemoryId: 'ptr1',
 				lineNumber: 0,
 			},
@@ -81,7 +107,6 @@ describe('scan directive data', () => {
 	it('should ignore malformed scan directives without required arguments', () => {
 		expect(parseScanDirectiveData(['; @scan'])).toEqual([]);
 		expect(parseScanDirectiveData(['; @scan startPtr'])).toEqual([]);
-		expect(parseScanDirectiveData(['; @scan startPtr 16'])).toEqual([]);
 	});
 
 	it('should ignore non-positive literal lengths', () => {
