@@ -32,6 +32,7 @@ export const FILL_COLOR_NAMES = [
 	'dialogBackground',
 	'dialogDimmer',
 	'highlightedCodeLine',
+	'trace',
 	'waveform',
 	'scanLine',
 	'sliderThumb',
@@ -44,8 +45,6 @@ const FONT_COLUMNS = 128;
 const BACKGROUND_COLUMNS = 64;
 const BACKGROUND_ROWS = 32;
 const PIANO_ROWS = 5;
-const PLOTTER_COLUMNS = 25;
-const PLOTTER_ROWS = 8;
 const FEEDBACK_SCALE_SLOT_COUNT = 6;
 const FEEDBACK_SCALE_ITEM_COLUMNS = 3;
 const ICON_CHARACTER_WIDTHS = [3, 4, 4, 1, 1, 1, 1] as const;
@@ -92,8 +91,7 @@ export function createAtlasLayout(characterWidth: number, characterHeight: numbe
 	const pianoYRows = fontRows;
 	const backgroundYRows = pianoYRows + PIANO_ROWS;
 	const sidebarXColumns = BACKGROUND_COLUMNS;
-	const plotterYRows = backgroundYRows;
-	const feedbackScaleYRows = plotterYRows + PLOTTER_ROWS;
+	const feedbackScaleYRows = backgroundYRows;
 	const fillColorsYRows = feedbackScaleYRows + 1;
 	const iconsYRows = fillColorsYRows + 1;
 
@@ -101,12 +99,7 @@ export function createAtlasLayout(characterWidth: number, characterHeight: numbe
 	const feedbackScaleWidthColumns = FEEDBACK_SCALE_SLOT_COUNT * FEEDBACK_SCALE_ITEM_COLUMNS;
 	const fillColorsWidthColumns = FILL_COLOR_NAMES.length;
 	const iconsWidthColumns = ICON_CHARACTER_WIDTHS.reduce((sum, width) => sum + width, 0);
-	const sidebarWidthColumns = Math.max(
-		PLOTTER_COLUMNS,
-		feedbackScaleWidthColumns,
-		fillColorsWidthColumns,
-		iconsWidthColumns
-	);
+	const sidebarWidthColumns = Math.max(feedbackScaleWidthColumns, fillColorsWidthColumns, iconsWidthColumns);
 
 	const font = createSection(0, 0, FONT_COLUMNS, fontRows, characterWidth, characterHeight);
 	const pianoKeyboard = createSection(0, pianoYRows, pianoWidthColumns, PIANO_ROWS, characterWidth, characterHeight);
@@ -115,14 +108,6 @@ export function createAtlasLayout(characterWidth: number, characterHeight: numbe
 		backgroundYRows,
 		BACKGROUND_COLUMNS,
 		BACKGROUND_ROWS,
-		characterWidth,
-		characterHeight
-	);
-	const plotter = createSection(
-		sidebarXColumns,
-		plotterYRows,
-		PLOTTER_COLUMNS,
-		PLOTTER_ROWS,
 		characterWidth,
 		characterHeight
 	);
@@ -155,7 +140,6 @@ export function createAtlasLayout(characterWidth: number, characterHeight: numbe
 		font,
 		pianoKeyboard,
 		background,
-		plotter,
 		feedbackScale,
 		fillColors,
 		icons,
