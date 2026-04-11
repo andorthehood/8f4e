@@ -1,7 +1,13 @@
 import { Engine } from 'glugglug';
 
+import { getBaseValueIndex, getTypedValueView } from './typedValueView';
+
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../../types';
+
+function clamp(value: number, min: number, max: number): number {
+	return Math.max(min, Math.min(value, max));
+}
 
 export default function drawer(
 	engine: Engine,
@@ -13,49 +19,34 @@ export default function drawer(
 		return;
 	}
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.plotter);
+	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
 	const maxPlotterWidth = codeBlock.width - state.viewport.hGrid * 2;
+	const plotHeight = state.viewport.hGrid * 8;
+	const pointHeight = 1;
 
-	for (const { x, y, array, arrayLength, maxValue, minValue } of codeBlock.widgets.arrayPlotters) {
+	for (const { x, y, startAddress, baseSampleShift, length, valueType, maxValue, minValue } of codeBlock.widgets
+		.arrayPlotters) {
 		engine.startGroup(x, y);
 
-		let width = 0;
-
-		if (arrayLength) {
-			width = memoryViews.int32[arrayLength.memory.wordAlignedAddress];
-		}
-
-		width = Math.min(width || array.memory.wordAlignedSize, maxPlotterWidth);
-
-		const height = maxValue - minValue;
-		const offset = minValue * -1;
+		const baseValueIndex = getBaseValueIndex(startAddress, memoryViews, baseSampleShift);
+		const values = getTypedValueView(memoryViews, valueType);
+		const arrayLength =
+			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
+		const width = Math.min(arrayLength || startAddress.memory.wordAlignedSize, maxPlotterWidth);
+		const valueRange = maxValue - minValue;
+		const columnWidth = Math.max(1, Math.floor(maxPlotterWidth / Math.max(width, 1)));
 
 		for (let i = 0; i < width; i++) {
-			let value: number;
-			if (array.memory.elementWordSize === 1 && array.memory.isInteger) {
-				const view = array.memory.isUnsigned ? memoryViews.uint8 : memoryViews.int8;
-				value = view[array.memory.byteAddress + i];
-			} else if (array.memory.elementWordSize === 2 && array.memory.isInteger) {
-				const view = array.memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
-				value = view[array.memory.byteAddress / 2 + i];
-			} else if (array.memory.elementWordSize === 8 && !array.memory.isInteger) {
-				value = memoryViews.float64[array.memory.byteAddress / 8 + i];
-			} else {
-				value = array.memory.isInteger
-					? memoryViews.int32[array.memory.wordAlignedAddress + i]
-					: memoryViews.float32[array.memory.wordAlignedAddress + i];
-			}
-
-			const normalizedValue = Math.round(((value + offset) / height) * (state.viewport.hGrid * 8));
-
-			engine.drawSprite(
-				i * Math.floor(maxPlotterWidth / width),
+			const value = values[baseValueIndex + i];
+			const normalizedValue = valueRange === 0 ? 0.5 : (value - minValue) / valueRange;
+			const pointY = clamp(
+				plotHeight - pointHeight - Math.round(normalizedValue * (plotHeight - pointHeight)),
 				0,
-				normalizedValue,
-				Math.floor(maxPlotterWidth / width),
-				state.viewport.hGrid * 8
+				plotHeight - pointHeight
 			);
+
+			engine.drawSprite(i * columnWidth, pointY, 'trace', columnWidth, pointHeight);
 		}
 
 		engine.endGroup();

@@ -18,7 +18,7 @@ That means each directive should keep its:
 
 in one place under the directives feature area.
 
-The shared directive engine should stay generic. It should coordinate directive parsing and application, but it should not hardcode directive-specific behavior such as plotter buckets, scanner rules, or layout switches.
+The shared directive engine should stay generic. It should coordinate directive parsing and application, but it should not hardcode directive-specific behavior such as plotter buckets, wave rules, or layout switches.
 
 This document is specifically about the code-block directive system under `code-blocks/features/directives/`. Global editor directives are a separate feature area and should follow the same ownership principle, but they do not live in this pipeline.
 
@@ -59,7 +59,7 @@ directives/
     resolve.ts
     data.test.ts
     resolve.test.ts
-  scan/
+  wave/
     data.ts
     plugin.ts
     resolve.ts

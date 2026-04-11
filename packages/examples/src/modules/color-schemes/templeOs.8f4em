@@ -25,8 +25,7 @@ module templeOS
 ; @color fill.codeBlockHighlightLevel1	#eeeeee
 ; @color fill.codeBlockHighlightLevel2	#dddddd
 ; @color fill.codeBlockHighlightLevel3	#cccccc
-; @color fill.plotterBackground	#000000
-; @color fill.plotterTrace	#55ff55
+; @color fill.trace	#55ff55
 ; @color fill.scanLine	#55ffff
 ; @color icons.outputConnectorBackground	#ffff55
 ; @color icons.outputConnector	#000000

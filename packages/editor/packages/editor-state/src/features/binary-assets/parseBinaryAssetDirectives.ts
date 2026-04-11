@@ -107,7 +107,7 @@ if (import.meta.vitest) {
 			const codeBlocks = [
 				{
 					id: 'foo',
-					code: ['module foo', '; @defAsset onlyId', '; @loadAsset onlyId', '; @plot buffer -1 1', 'moduleEnd'],
+					code: ['module foo', '; @defAsset onlyId', '; @loadAsset onlyId', '; @plot &buffer', 'moduleEnd'],
 				},
 			] as CodeBlockGraphicData[];
 
