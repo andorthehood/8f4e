@@ -1,10 +1,65 @@
 8f4e/v1
 
-module projectConfig
-; @pos -53 -63
-; @runtime AudioWorkletRuntime
-; ~sampleRate 44100
-; @exportFileName samplePlayer
+constants env
+; @pos 32 -63
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 44100
+const INV_SAMPLE_RATE 0.000022675736961451248
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'amen-170bpm-8s.pcm'
+const ASSET_AMEN_SIZE 124516
+
+constantsEnd
+
+module assets
+; @pos -107 -70
+; @defAsset amen https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
+
+moduleEnd
+
+module audioout
+; @pos 140 -63
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
+use env
+
+float* in &pcmPlayer8bit:out
+
+float[] buffer AUDIO_BUFFER_SIZE
+float* pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the word size
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer& 
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
 
 moduleEnd
 
@@ -17,120 +72,52 @@ module notes
 ; right audio channels.
 moduleEnd
 
-module assets
-; @pos -107 -70
-; @defAsset amen https://static.llllllllllll.com/andor/8f4e/amen_170bpm_8bit_unsigned.pcm
-
-moduleEnd
-
-module audioout
-; @pos 130 -63
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
-use env
-
-float* in &pcmPlayer8bit:out
-
-float[] buffer AUDIO_BUFFER_SIZE
-int pointer &buffer
-
-; @plot buffer -1 1
-
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer 
-; pointer by the word size
-; which is 4 bytes
-push &pointer ; address
-push pointer
-push sizeof(buffer)  ; word size
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&  ; end address
-greaterThan 
-if
-push &pointer ; address
-push &buffer  ; address
-store
-ifEnd
-
-moduleEnd
-
-constants env
-; @pos 32 -63
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 2/26/2026, 1:22:04 PM
-
-const SAMPLE_RATE 44100
-const INV_SAMPLE_RATE 0.000022675736961451248
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'amen_170bpm_8bit_unsigned.pcm'
-const ASSET_AMEN_SIZE 62258
-
-constantsEnd
-
 module pcmPlayer8bit
 ; @pos 91 -63
 ; @home
 use env
 
-int8u[] buffer ASSET_AMEN_SIZE
+int8[] buffer ASSET_AMEN_SIZE
 ; @loadAsset amen &buffer
-int playhead &buffer
+int8* playhead &buffer
 float out
-int startPos 0
-int endPos ASSET_AMEN_SIZE
 
-; @wave &buffer endPos playhead
+; @wave &buffer count(buffer) playhead
 
 ; Read sample at playhead
 ; write it to output
 push &out
-push playhead
-load8u
+push *playhead
 castToFloat
-push max(buffer) ; max value
+push max(buffer)
 castToFloat
 div
-push 2.0
-mul
-push 1.0
-sub
 store
 
 ; Advance the playhead
 push &playhead
 push playhead
-push sizeof(buffer) ; word size
+push sizeof(buffer)
 add
 store
 
 ; Reset playhead
 ; when reaches buffer end
 push playhead
-push &buffer
-push endPos
-add
+push buffer&
 greaterThan
 if
 push &playhead
 push &buffer
-push startPos
-add
 store
 ifEnd
+
+moduleEnd
+
+module projectConfig
+; @pos -53 -63
+; @runtime AudioWorkletRuntime
+; ~sampleRate 44100
+; @exportFileName samplePlayer
 
 moduleEnd

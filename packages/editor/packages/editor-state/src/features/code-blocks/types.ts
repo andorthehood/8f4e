@@ -79,8 +79,10 @@ export interface ArrayPlotter {
 	y: number;
 	minValue: number;
 	maxValue: number;
-	array: MemoryIdentifier;
-	arrayLength: MemoryIdentifier | undefined;
+	startAddress: MemoryIdentifier;
+	baseSampleShift: 0 | 1 | 2 | 3;
+	length: number | MemoryIdentifier;
+	sampleType: WaveSampleType;
 }
 
 export interface Switch {

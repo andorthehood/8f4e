@@ -75,20 +75,8 @@ note
 noteEnd
 
 note
-; @pos 347 -10
-;                                  .
-; The samples are selected by  ....;;.  
-; the sample player based on   ::::;;;;.
-; the sample number extracted  ::::;;:'
-; from the active row.             :'
-
-; @stop 11 5 left
-noteEnd
-
-note
-; @pos 392 -38
+; @pos 399 -37
 ; @stop 9 10 right
-
 ;   /|______  The instrument samples are
 ; /         : short recorded waveforms
 ; \   ______; stored in these memory 
@@ -96,6 +84,17 @@ note
 ; The sample players read from these
 ; buffers and move through them at
 ; different speeds to change pitch.
+noteEnd
+
+note
+; @pos 399 -47
+;                                  .
+; The samples are selected by  ....;;.  
+; the sample players based on  ::::;;;;.
+; the sample number extracted  ::::;;:'
+; from the active row.             :'
+
+; @stop 11 5 left
 noteEnd
 
 constants env
@@ -603,7 +602,7 @@ float[] buffer AUDIO_BUFFER_SIZE
 ; ~audioOutput buffer 0 0
 int pointer &buffer
 
-; @plot buffer -1 1
+; @plot &buffer count(buffer)
 ; Store the input value
 ; in the buffer
 push pointer
@@ -641,7 +640,7 @@ float[] buffer AUDIO_BUFFER_SIZE
 ; ~audioOutput buffer 0 1
 int pointer &buffer
 
-; @plot buffer -1 1
+; @plot &buffer count(buffer)
 ; Store the input value
 ; in the buffer
 push pointer
@@ -1560,7 +1559,7 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 347 -65
+; @pos 348 -62
 ; @stop 10 3
 use env
 int8[] sample0 1
@@ -1732,7 +1731,8 @@ module ultimateSoundtrackerColors
 ; @color fill.codeBlockHighlightLevel3	#001f3d
 ; @color fill.plotterBackground	#000
 ; @color fill.plotterTrace	#0f0
-; @color fill.scanLine	#0f0
+; @color fill.scanLine	#fff
+; @color fill.waveform	#666
 ; @color icons.outputConnectorBackground	#369
 ; @color icons.outputConnector	#000
 ; @color icons.inputConnectorBackground	#369
