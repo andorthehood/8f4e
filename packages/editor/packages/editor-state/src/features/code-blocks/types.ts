@@ -82,7 +82,7 @@ export interface ArrayPlotter {
 	startAddress: MemoryIdentifier;
 	baseSampleShift: 0 | 1 | 2 | 3;
 	length: number | MemoryIdentifier;
-	sampleType: WaveSampleType;
+	valueType: TypedValueKind;
 }
 
 export interface Switch {
@@ -107,7 +107,7 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
-export type WaveSampleType = 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'float32' | 'float64';
+export type TypedValueKind = 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'float32' | 'float64';
 
 export interface ArrayWave {
 	width: number;
@@ -120,7 +120,7 @@ export interface ArrayWave {
 	baseSampleShift: 0 | 1 | 2 | 3;
 	length: number | MemoryIdentifier;
 	pointer?: MemoryIdentifier;
-	sampleType: WaveSampleType;
+	valueType: TypedValueKind;
 	minValue: number;
 	maxValue: number;
 	inverseValueRange: number;

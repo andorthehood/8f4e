@@ -140,6 +140,7 @@ export type {
 	MemoryIdentifier,
 	ArrayPlotter,
 	ArrayWave,
+	TypedValueKind,
 	Switch,
 	Debugger,
 	Output,

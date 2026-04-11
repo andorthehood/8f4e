@@ -40,7 +40,7 @@ function resolveWaveDirectiveWidget(
 		baseSampleShift: valueSpec.baseSampleShift,
 		length,
 		pointer,
-		sampleType: valueSpec.valueType,
+		valueType: valueSpec.valueType,
 		minValue: valueSpec.minValue,
 		maxValue: valueSpec.maxValue,
 		inverseValueRange: valueSpec.maxValue === valueSpec.minValue ? 0 : 1 / (valueSpec.maxValue - valueSpec.minValue),

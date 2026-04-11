@@ -94,7 +94,7 @@ describe('plot directive widget resolution', () => {
 			} as MemoryIdentifier,
 			baseSampleShift: 0,
 			length: 16,
-			sampleType: 'int8',
+			valueType: 'int8',
 		});
 
 		runDirectiveResolution();
@@ -172,6 +172,6 @@ describe('plot directive widget resolution', () => {
 
 		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
 		expect(mockGraphicData.widgets.arrayPlotters[0].length).toBe(16);
-		expect(mockGraphicData.widgets.arrayPlotters[0].sampleType).toBe('int8');
+		expect(mockGraphicData.widgets.arrayPlotters[0].valueType).toBe('int8');
 	});
 });

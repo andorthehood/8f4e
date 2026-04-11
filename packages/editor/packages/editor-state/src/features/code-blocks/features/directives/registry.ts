@@ -128,7 +128,7 @@ if (import.meta.vitest) {
 			);
 
 			expect(result).toEqual([
-				{ name: 'plot', rawRow: 1, args: ['buffer'], sourceLine: '; @plot &buffer' },
+				{ name: 'plot', rawRow: 1, args: ['&buffer'], sourceLine: '; @plot &buffer' },
 				{ name: 'slider', rawRow: 2, args: ['gain', '0', '1', '0.01'], sourceLine: '; @slider gain 0 1 0.01' },
 			]);
 		});
