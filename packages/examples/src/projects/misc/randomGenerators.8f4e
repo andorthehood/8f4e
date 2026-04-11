@@ -106,7 +106,7 @@ float* in &lcg:out
 float[] buffer 64
 int bufferPointer &buffer
 
-; @plot buffer -2 2
+; @plot &buffer count(buffer)
 
 push &bufferPointer
 push bufferPointer
@@ -136,7 +136,7 @@ float* in &XORShift:out
 float[] buffer 64
 int bufferPointer &buffer
 
-; @plot buffer -2 2
+; @plot &buffer count(buffer)
 
 push &bufferPointer
 push bufferPointer

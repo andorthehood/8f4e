@@ -3,7 +3,6 @@ import { SpriteCoordinates } from 'glugglug';
 import generateFont, { FontLookups, generateLookups as generateLookupsForFonts } from './font';
 import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors';
 import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale';
-import generatePlotter, { generateLookup as generateLookupForPlotter } from './plotter';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
@@ -217,7 +216,6 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 
 export interface SpriteLookups extends FontLookups {
 	fillColors: Record<keyof ColorScheme['fill'], SpriteCoordinates>;
-	plotter: Record<number, SpriteCoordinates>;
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;
@@ -243,7 +241,6 @@ export default async function generateSprite(config: Config): Promise<{
 	}) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 
 	const commands = [
-		...generatePlotter(characterWidth, characterHeight, colorScheme.fill),
 		...generateFillColors(characterWidth, characterHeight, colorScheme.fill),
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
@@ -286,7 +283,6 @@ export default async function generateSprite(config: Config): Promise<{
 			fillColors: generateLookupForFillColors(characterWidth, characterHeight),
 			...generateLookupsForFonts(characterWidth, characterHeight, colorScheme.text),
 			feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons),
-			plotter: generateLookupForPlotter(characterWidth, characterHeight),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),
 			pianoKeys: generateLookupForPianoKeys(characterWidth, characterHeight),

@@ -24,8 +24,7 @@ module cgaColors
 ; @color fill.codeBlockHighlightLevel1 #000099
 ; @color fill.codeBlockHighlightLevel2 #000088
 ; @color fill.codeBlockHighlightLevel3 #000077
-; @color fill.plotterBackground #000000
-; @color fill.plotterTrace #55ff55
+; @color fill.trace #55ff55
 ; @color fill.scanLine #55ffff
 ; @color icons.outputConnectorBackground #0000aa
 ; @color icons.outputConnector #ffff55

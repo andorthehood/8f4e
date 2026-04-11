@@ -14,7 +14,7 @@ Examples:
 
 ```txt
 ; @watch counter
-; @plot audioBuffer -2 2 lengthMemory
+; @plot &audioBuffer lengthMemory
 ; @button gate0 0 1
 ; @font ibmvga8x16
 ```
@@ -124,23 +124,26 @@ Notes:
 
 ### `@plot`
 
-Draw an array plot for an array memory id.
+Draw a plot over a typed absolute pointer range or direct buffer memory. The first argument provides the start pointer and element type metadata. The second argument is always the element count. You can optionally provide an explicit min/max range override.
 
 ```txt
-; @plot <arrayMemoryId> [minValue] [maxValue] [arrayLengthMemoryId]
+; @plot <startPointer|&buffer|buffer> <elementCount|elementCountMemoryId>
+; @plot <startPointer|&buffer|buffer> <elementCount|elementCountMemoryId> <minValue> <maxValue>
 ```
 
-Defaults:
+Range detection:
 
-- `minValue`: `-8`
-- `maxValue`: `8`
+- float arrays use `-1..1`
+- integer arrays use type-derived bounds, matching `@wave`
+- lengths can be literal counts, memory ids, or `count(buffer)`
+- if `minValue` and `maxValue` are specified, they override the type-derived defaults
 
-### `@scan`
+### `@wave`
 
-Draw a scanner line using a pointer memory id over an array memory id.
+Draw a waveform over a typed absolute pointer range. The first argument provides the start pointer and element size metadata, the second argument is the element count, and the optional third argument is an absolute pointer in the same address space.
 
 ```txt
-; @scan <arrayMemoryId> <pointerMemoryId>
+; @wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
 ```
 
 ### `@slider`

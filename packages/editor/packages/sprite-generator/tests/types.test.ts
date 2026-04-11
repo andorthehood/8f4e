@@ -125,8 +125,9 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('dialogBackground');
 			expect(fillKeys).toContain('dialogDimmer');
 			expect(fillKeys).toContain('highlightedCodeLine');
-			expect(fillKeys).toContain('plotterTrace');
-			expect(fillKeys).toContain('plotterBackground');
+			expect(fillKeys).toContain('trace');
+			expect(fillKeys).toContain('waveform');
+			expect(fillKeys).toContain('scanLine');
 		});
 
 		it('should have all required icon color properties', () => {
