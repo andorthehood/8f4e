@@ -11,6 +11,7 @@ type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGra
 
 type ScanSampleSpec = {
 	elementByteSize: number;
+	baseSampleShift: 0 | 1 | 2 | 3;
 	sampleType: ScanSampleType;
 	minValue: number;
 	maxValue: number;
@@ -52,26 +53,26 @@ function getSampleSpecFromDirectMemory(startAddress: MemoryIdentifier): ScanSamp
 	const { memory } = startAddress;
 
 	if (memory.elementWordSize === 8 && !memory.isInteger) {
-		return { elementByteSize: 8, sampleType: 'float64', minValue: -1, maxValue: 1 };
+		return { elementByteSize: 8, baseSampleShift: 3, sampleType: 'float64', minValue: -1, maxValue: 1 };
 	}
 
 	if (!memory.isInteger) {
-		return { elementByteSize: 4, sampleType: 'float32', minValue: -1, maxValue: 1 };
+		return { elementByteSize: 4, baseSampleShift: 2, sampleType: 'float32', minValue: -1, maxValue: 1 };
 	}
 
 	if (memory.elementWordSize === 1) {
 		return memory.isUnsigned
-			? { elementByteSize: 1, sampleType: 'uint8', minValue: 0, maxValue: 255 }
-			: { elementByteSize: 1, sampleType: 'int8', minValue: -128, maxValue: 127 };
+			? { elementByteSize: 1, baseSampleShift: 0, sampleType: 'uint8', minValue: 0, maxValue: 255 }
+			: { elementByteSize: 1, baseSampleShift: 0, sampleType: 'int8', minValue: -128, maxValue: 127 };
 	}
 
 	if (memory.elementWordSize === 2) {
 		return memory.isUnsigned
-			? { elementByteSize: 2, sampleType: 'uint16', minValue: 0, maxValue: 65535 }
-			: { elementByteSize: 2, sampleType: 'int16', minValue: -32768, maxValue: 32767 };
+			? { elementByteSize: 2, baseSampleShift: 1, sampleType: 'uint16', minValue: 0, maxValue: 65535 }
+			: { elementByteSize: 2, baseSampleShift: 1, sampleType: 'int16', minValue: -32768, maxValue: 32767 };
 	}
 
-	return { elementByteSize: 4, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
+	return { elementByteSize: 4, baseSampleShift: 2, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
 }
 
 function getSampleSpecFromPointerMemory(startAddress: MemoryIdentifier): ScanSampleSpec | undefined {
@@ -82,34 +83,34 @@ function getSampleSpecFromPointerMemory(startAddress: MemoryIdentifier): ScanSam
 	}
 
 	if (memory.isPointingToPointer) {
-		return { elementByteSize: 4, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
+		return { elementByteSize: 4, baseSampleShift: 2, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
 	}
 
 	if (memory.pointeeBaseType === 'float64') {
-		return { elementByteSize: 8, sampleType: 'float64', minValue: -1, maxValue: 1 };
+		return { elementByteSize: 8, baseSampleShift: 3, sampleType: 'float64', minValue: -1, maxValue: 1 };
 	}
 
 	if (memory.pointeeBaseType === 'float') {
-		return { elementByteSize: 4, sampleType: 'float32', minValue: -1, maxValue: 1 };
+		return { elementByteSize: 4, baseSampleShift: 2, sampleType: 'float32', minValue: -1, maxValue: 1 };
 	}
 
 	if (memory.pointeeBaseType === 'int8') {
-		return { elementByteSize: 1, sampleType: 'int8', minValue: -128, maxValue: 127 };
+		return { elementByteSize: 1, baseSampleShift: 0, sampleType: 'int8', minValue: -128, maxValue: 127 };
 	}
 
 	if (memory.pointeeBaseType === 'int8u') {
-		return { elementByteSize: 1, sampleType: 'uint8', minValue: 0, maxValue: 255 };
+		return { elementByteSize: 1, baseSampleShift: 0, sampleType: 'uint8', minValue: 0, maxValue: 255 };
 	}
 
 	if (memory.pointeeBaseType === 'int16') {
-		return { elementByteSize: 2, sampleType: 'int16', minValue: -32768, maxValue: 32767 };
+		return { elementByteSize: 2, baseSampleShift: 1, sampleType: 'int16', minValue: -32768, maxValue: 32767 };
 	}
 
 	if (memory.pointeeBaseType === 'int16u') {
-		return { elementByteSize: 2, sampleType: 'uint16', minValue: 0, maxValue: 65535 };
+		return { elementByteSize: 2, baseSampleShift: 1, sampleType: 'uint16', minValue: 0, maxValue: 65535 };
 	}
 
-	return { elementByteSize: 4, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
+	return { elementByteSize: 4, baseSampleShift: 2, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
 }
 
 function getStartSampleSpec(startAddress: MemoryIdentifier): ScanSampleSpec | undefined {
@@ -166,11 +167,15 @@ function resolveScanDirectiveWidget(
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
 		startAddress,
 		elementByteSize,
+		inverseElementByteSize: 1 / elementByteSize,
+		baseSampleShift: sampleSpec.baseSampleShift,
 		length,
 		pointer,
 		sampleType: sampleSpec.sampleType,
 		minValue: sampleSpec.minValue,
 		maxValue: sampleSpec.maxValue,
+		inverseValueRange:
+			sampleSpec.maxValue === sampleSpec.minValue ? 0 : 1 / (sampleSpec.maxValue - sampleSpec.minValue),
 	});
 }
 

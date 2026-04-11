@@ -114,11 +114,14 @@ export interface ArrayScanner {
 	y: number;
 	startAddress: MemoryIdentifier;
 	elementByteSize: number;
+	inverseElementByteSize: number;
+	baseSampleShift: 0 | 1 | 2 | 3;
 	length: number | MemoryIdentifier;
 	pointer?: MemoryIdentifier;
 	sampleType: ScanSampleType;
 	minValue: number;
 	maxValue: number;
+	inverseValueRange: number;
 }
 
 export interface Slider {
