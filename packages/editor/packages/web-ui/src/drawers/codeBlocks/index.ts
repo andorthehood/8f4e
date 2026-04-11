@@ -2,7 +2,7 @@ import { Engine } from 'glugglug';
 
 import drawConnectors from './widgets/connectors';
 import drawPlotters from './widgets/plotters';
-import drawScanners from './widgets/scanners';
+import drawWaves from './widgets/waves';
 import drawDebuggers from './widgets/debuggers';
 import drawSwitches from './widgets/switches';
 import drawButtons from './widgets/buttons';
@@ -128,7 +128,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawSliders(engine, state, codeBlock, memoryViews);
 			drawConnectors(engine, state, codeBlock, memoryViews);
 			drawPlotters(engine, state, codeBlock, memoryViews);
-			drawScanners(engine, state, codeBlock, memoryViews);
+			drawWaves(engine, state, codeBlock, memoryViews);
 			drawDebuggers(engine, state, codeBlock, memoryViews);
 
 			engine.endGroup();

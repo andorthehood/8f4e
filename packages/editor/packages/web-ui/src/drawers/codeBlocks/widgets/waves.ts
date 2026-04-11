@@ -48,7 +48,7 @@ function drawWaveform(
 		const rectY = Math.min(minY, maxY);
 		const rectHeight = Math.max(1, Math.abs(maxY - minY) + 1);
 
-		engine.drawSprite(column * columnWidth, rectY, 'scanWave', columnWidth, rectHeight);
+		engine.drawSprite(column * columnWidth, rectY, 'waveFill', columnWidth, rectHeight);
 	}
 }
 
@@ -78,7 +78,7 @@ export default function drawer(
 		minValue,
 		maxValue,
 		inverseValueRange,
-	} of codeBlock.widgets.arrayScanners) {
+	} of codeBlock.widgets.arrayWaves) {
 		engine.startGroup(x, y);
 
 		const arrayLength =

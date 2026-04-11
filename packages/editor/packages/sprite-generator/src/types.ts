@@ -54,7 +54,7 @@ export interface ColorScheme {
 		highlightedCodeLine: string;
 		plotterTrace: string;
 		plotterBackground: string;
-		scanWave: string;
+		waveFill: string;
 		scanLine: string;
 		sliderThumb: string;
 		codeBlockHighlightLevel1: string;
