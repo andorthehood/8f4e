@@ -20,7 +20,7 @@ describe('plot directive widget resolution', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			moduleId: 'test-block',
-			code: ['; @plot &buffer1'],
+			code: ['; @plot &buffer1 count(buffer1)'],
 			gaps: new Map(),
 			width: 100,
 		});
@@ -70,7 +70,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('does not add a plotter when the array cannot be resolved', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @plot missing']);
+		setMockCodeBlockCode(mockGraphicData, ['; @plot missing count(buffer1)']);
 
 		runDirectiveResolution();
 
@@ -103,7 +103,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('handles multiple plot directives', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1', '; @plot &buffer2']);
+		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1 count(buffer1)', '; @plot &buffer2 count(buffer2)']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
@@ -135,7 +135,7 @@ describe('plot directive widget resolution', () => {
 			id: 'floatBuffer',
 			isPointingToPointer: false,
 		};
-		setMockCodeBlockCode(mockGraphicData, ['; @plot &floatBuffer']);
+		setMockCodeBlockCode(mockGraphicData, ['; @plot &floatBuffer count(floatBuffer)']);
 
 		runDirectiveResolution();
 
@@ -150,6 +150,25 @@ describe('plot directive widget resolution', () => {
 		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
 		expect(mockGraphicData.widgets.arrayPlotters[0].minValue).toBe(-128);
 		expect(mockGraphicData.widgets.arrayPlotters[0].maxValue).toBe(127);
+	});
+
+	it('does not add a plotter when the required length cannot be resolved', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1 missingLength']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(0);
+	});
+
+	it('uses explicit range overrides when provided with a length', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1 8 -10 10']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayPlotters[0].minValue).toBe(-10);
+		expect(mockGraphicData.widgets.arrayPlotters[0].maxValue).toBe(10);
+		expect(mockGraphicData.widgets.arrayPlotters[0].length).toBe(8);
 	});
 
 	it('supports pointer starts with count() lengths', () => {

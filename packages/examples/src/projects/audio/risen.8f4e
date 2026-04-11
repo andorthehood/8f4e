@@ -454,7 +454,7 @@ float[] buffer AUDIO_BUFFER_SIZE
 ; ~audioOutput buffer 0 1
 int pointer &buffer
 
-; @plot &buffer
+; @plot &buffer count(buffer)
 
 ; Store the input value
 ; in the buffer
