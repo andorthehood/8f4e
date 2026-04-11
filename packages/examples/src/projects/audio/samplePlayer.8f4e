@@ -94,7 +94,7 @@ float out
 int startPos 0
 int endPos ASSET_AMEN_SIZE
 
-; @scan buffer playhead
+; @scan &buffer endPos playhead
 
 ; Read sample at playhead
 ; write it to output
