@@ -6,7 +6,7 @@ float* in
 float[] buffer 64
 int bufferPointer &buffer
 
-; @plot &buffer
+; @plot &buffer count(buffer)
 
 push &bufferPointer
 push bufferPointer

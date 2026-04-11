@@ -124,10 +124,11 @@ Notes:
 
 ### `@plot`
 
-Draw a plot over a typed absolute pointer range or direct buffer memory. The first argument provides the start pointer and element type metadata, and the optional second argument is the element count.
+Draw a plot over a typed absolute pointer range or direct buffer memory. The first argument provides the start pointer and element type metadata. The second argument is always the element count. You can optionally provide an explicit min/max range override.
 
 ```txt
-; @plot <startPointer|&buffer|buffer> [elementCount|elementCountMemoryId]
+; @plot <startPointer|&buffer|buffer> <elementCount|elementCountMemoryId>
+; @plot <startPointer|&buffer|buffer> <elementCount|elementCountMemoryId> <minValue> <maxValue>
 ```
 
 Range detection:
@@ -135,6 +136,7 @@ Range detection:
 - float arrays use `-1..1`
 - integer arrays use type-derived bounds, matching `@wave`
 - lengths can be literal counts, memory ids, or `count(buffer)`
+- if `minValue` and `maxValue` are specified, they override the type-derived defaults
 
 ### `@wave`
 

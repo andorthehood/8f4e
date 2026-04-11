@@ -6,7 +6,7 @@ int bufferPointer &buffer
 const RATE SAMPLE_RATE/4410
 int _counter
 
-; @plot &buffer
+; @plot &buffer count(buffer)
 push _counter 
 push SAMPLE_RATE
 push RATE
