@@ -48,7 +48,7 @@ function drawWaveform(
 		const rectY = Math.min(minY, maxY);
 		const rectHeight = Math.max(1, Math.abs(maxY - minY) + 1);
 
-		engine.drawSprite(column * columnWidth, rectY, 'waveFill', columnWidth, rectHeight);
+		engine.drawSprite(column * columnWidth, rectY, 'waveform', columnWidth, rectHeight);
 	}
 }
 

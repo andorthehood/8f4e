@@ -46,7 +46,7 @@ Example:
 - `fill.highlightedCodeLine`
 - `fill.plotterTrace`
 - `fill.plotterBackground`
-- `fill.waveFill`
+- `fill.waveform`
 - `fill.scanLine`
 - `fill.sliderThumb`
 - `fill.codeBlockHighlightLevel1`
