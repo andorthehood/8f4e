@@ -36,7 +36,7 @@ function resolvePlotDirectiveWidget(
 		startAddress,
 		baseSampleShift: valueSpec.baseSampleShift,
 		length: length ?? startAddress.memory.numberOfElements,
-		sampleType: valueSpec.valueType,
+		valueType: valueSpec.valueType,
 		minValue: valueSpec.minValue,
 		maxValue: valueSpec.maxValue,
 	});
