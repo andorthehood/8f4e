@@ -114,6 +114,8 @@ describe('scan directive widget resolution', () => {
 				displayFormat: 'decimal',
 			} as unknown as MemoryIdentifier,
 			elementByteSize: 1,
+			inverseElementByteSize: 1,
+			baseSampleShift: 0,
 			length: 16,
 			pointer: {
 				memory: { wordAlignedAddress: 10 } as DataStructure,
@@ -125,6 +127,7 @@ describe('scan directive widget resolution', () => {
 			sampleType: 'int8',
 			minValue: -128,
 			maxValue: 127,
+			inverseValueRange: 1 / 255,
 		});
 
 		runDirectiveResolution();
