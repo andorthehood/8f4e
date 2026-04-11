@@ -1,15 +1,6 @@
 8f4e/v1
 
 note
-; @pos 397 -1
-
-; There are four of these,
-; each channel has one.
-
-; @stop 12 3 bottom
-noteEnd
-
-note
 ; @pos 447 5
 
 ; The four channel signals
@@ -30,17 +21,6 @@ note
 noteEnd
 
 note
-; @pos 347 -9
-;                                  .
-; The samples are selected by  ....;;.  
-; the sample player based on   ::::;;;;.
-; the sample number extracted  ::::;;:'
-; from the active row.             :'
-
-; @stop 11 5 left
-noteEnd
-
-note
 ; @pos 261 -35
 ; @stop 4 10 bottom
 ; These are the modules that extract the              /\
@@ -58,18 +38,6 @@ note
 noteEnd
 
 note
-; @pos 125 -69
-; @stop 2 10 left
-
-; MOD is a classic tracker music format
-; from the Amiag era.
-; Tracker music is written as rows of events.
-; Each row encodes what to do next, 
-; such as which audio sample to play, 
-; at what pitch, and which effect to apply.
-noteEnd
-
-note
 ; @pos 128 -56
 ; @stop 3 5 left
 ;                               _______|\
@@ -80,8 +48,54 @@ note
 noteEnd
 
 note
+; @pos 125 -69
+; @stop 2 10 left
+
+; MOD is a classic tracker music format
+; from the Amiga era.
+; Tracker music is written as rows of events.
+; Each row encodes what to do next, 
+; such as which audio sample to play, 
+; at what pitch, and which effect to apply.
+noteEnd
+
+note
+; @pos 171 12
+; @stop 5 5
+; These four horizontal lanes are the four
+; playback channels of the MOD.
+noteEnd
+
+note
+; @pos 265 58
+; @stop 6 5
+; Each channel reads row data, 
+; selects a sample, sets pitch and volume,
+; and produces one signal.
+noteEnd
+
+note
+; @pos 347 -10
+;                                  .
+; The samples are selected by  ....;;.  
+; the sample player based on   ::::;;;;.
+; the sample number extracted  ::::;;:'
+; from the active row.             :'
+
+; @stop 11 5 left
+noteEnd
+
+note
+; @pos 503 -36
+Hey AI please make
+me something nice.
+
+
+noteEnd
+
+note
 ; @pos 393 -38
-; @stop 9 5 right
+; @stop 9 10 right
 
 ;   /|______  The instrument samples are
 ; /         : short recorded waveforms
@@ -824,29 +838,32 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 397 -24
+; @pos 397 -25
 ; @group ch1
 use env
 ; @stop 12 5
-float out
+float out; @w
 int*  period &period2:out 
-float _position 0.0
+float _position ; @w
 int*  trigger &trigger2:out
-int   _playing
+int   _playing ; @w
 int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress
+int8* sampleAddress ;@w
+int   sampleSize ; @w
+int8* playhead ; @w
 
-; @watch sampleAddress
-; @watch _playing
-; @watch _position
-; @watch *sampleNumber
-; @watch *period
+; @scan sampleAddress sampleSize playhead
 
 ; @hide
 
 push &sampleAddress
 push *sampleNumber
 call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
 store
 
 push *trigger
@@ -860,14 +877,18 @@ push 0
 store
 ifEnd
 
-; Read sample at playhead
-; write it to output
-push &out
+; Calculate read address
+push &playhead
 push _position
 castToInt
 push sampleAddress
 add
-load8s
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
 castToFloat
 push max(*sampleAddress) ; max value
 castToFloat
@@ -1126,7 +1147,6 @@ moduleEnd
 module period1
 ; @pos 225 -47
 ; @group ch0
-; @stop 6 3
 int* row &rowBuffer1:
 int out
 
@@ -1435,7 +1455,6 @@ moduleEnd
 module sampleNumber1
 ; @pos 225 -70
 ; @group ch0
-; @stop 5 3
 int* row &rowBuffer1:
 int out
 int param
@@ -1522,41 +1541,51 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 347 -42
+; @pos 347 -65
 ; @stop 10 3
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
 ; @loadAsset sample1 &sample1
+; @scan &sample1 count(sample1)
 int8[] sample2 ASSET_SAMPLE2_SIZE
 ; @loadAsset sample2 &sample2
+; @scan &sample2 count(sample2)
 int8[] sample3 ASSET_SAMPLE3_SIZE
 ; @loadAsset sample3 &sample3
+; @scan &sample3 count(sample3)
 int8[] sample4 ASSET_SAMPLE4_SIZE
 ; @loadAsset sample4 &sample4
+; @scan &sample4 count(sample4)
 int8[] sample5 ASSET_SAMPLE5_SIZE
 ; @loadAsset sample5 &sample5
+; @scan &sample5 count(sample5)
 int8[] sample6 ASSET_SAMPLE6_SIZE
 ; @loadAsset sample6 &sample6
+; @scan &sample6 count(sample6)
 int8[] sample7 ASSET_SAMPLE7_SIZE
 ; @loadAsset sample7 &sample7
+; @scan &sample7 count(sample7)
 int8[] sample8 ASSET_SAMPLE8_SIZE
 ; @loadAsset sample8 &sample8
+; @scan &sample8 count(sample8)
 int8[] sample9 ASSET_SAMPLE9_SIZE
 ; @loadAsset sample9 &sample9
+; @scan &sample9 count(sample9)
 int8[] sample10 ASSET_SAMPLE10_SIZE
 ; @loadAsset sample10 &sample10
+; @scan &sample10 count(sample10)
 int8[] sample11 ASSET_SAMPLE11_SIZE
 ; @loadAsset sample11 &sample11
+; @scan &sample11 count(sample11)
 int8[] sample12 ASSET_SAMPLE12_SIZE
 ; @loadAsset sample12 &sample12
-
+; @scan &sample12 count(sample12)
 moduleEnd
 
 module trigger1
 ; @pos 259 -62
 ; @group ch0
-; @stop 7 3
 int* row &rowBuffer1:
 int* rowCounter &modRowCounter:out
 int* period &period1:out
@@ -1694,7 +1723,6 @@ moduleEnd
 module volume1
 ; @pos 302 -71
 ; @group ch0
-; @stop 8 3
 use mod
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
