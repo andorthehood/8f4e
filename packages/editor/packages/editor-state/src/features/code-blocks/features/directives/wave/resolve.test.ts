@@ -124,7 +124,7 @@ describe('wave directive widget resolution', () => {
 				bufferPointer: 0,
 				displayFormat: 'decimal',
 			} as unknown as MemoryIdentifier,
-			sampleType: 'int8',
+			valueType: 'int8',
 			minValue: -128,
 			maxValue: 127,
 			inverseValueRange: 1 / 255,

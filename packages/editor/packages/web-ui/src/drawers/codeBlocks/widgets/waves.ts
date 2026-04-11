@@ -1,5 +1,7 @@
 import { Engine } from 'glugglug';
 
+import { getBaseValueIndex, getTypedValueView } from './typedValueView';
+
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../../types';
 
@@ -74,7 +76,7 @@ export default function drawer(
 		baseSampleShift,
 		length,
 		pointer,
-		sampleType,
+		valueType,
 		minValue,
 		maxValue,
 		inverseValueRange,
@@ -91,14 +93,15 @@ export default function drawer(
 		const startPointerValue = startAddress.showAddress
 			? startAddress.memory.byteAddress
 			: memoryViews.int32[startAddress.memory.wordAlignedAddress + startAddress.bufferPointer];
-		const baseSampleIndex = startPointerValue >> baseSampleShift;
+		const baseValueIndex = getBaseValueIndex(startAddress, memoryViews, baseSampleShift);
+		const values = getTypedValueView(memoryViews, valueType);
 		const waveformColumnWidth = Math.max(1, Math.floor(state.viewport.vGrid / 2));
 		const columnCount = Math.max(1, Math.floor(width / waveformColumnWidth));
 		const columnWidth = Math.max(1, Math.floor(width / columnCount));
 		drawWaveform(
 			engine,
-			memoryViews[sampleType],
-			baseSampleIndex,
+			values,
+			baseValueIndex,
 			arrayLength,
 			width,
 			height,

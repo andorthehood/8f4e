@@ -1,12 +1,12 @@
 import { extractElementCountBase, hasElementCountPrefix } from '@8f4e/tokenizer';
 
-import type { MemoryIdentifier, State, WaveSampleType } from '~/types';
+import type { MemoryIdentifier, State, TypedValueKind } from '~/types';
 
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 export type TypedValueSpec = {
 	baseSampleShift: 0 | 1 | 2 | 3;
-	valueType: WaveSampleType;
+	valueType: TypedValueKind;
 	minValue: number;
 	maxValue: number;
 	elementByteSize: number;
