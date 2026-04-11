@@ -15,17 +15,27 @@ export default function drawer(
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
-	for (const { x, y, width, height, array, pointer } of codeBlock.widgets.arrayScanners) {
+	for (const { x, y, width, height, startAddress, elementByteSize, length, pointer } of codeBlock.widgets
+		.arrayScanners) {
 		engine.startGroup(x, y);
 
-		// Get the array length
-		const arrayLength = array.memory.numberOfElements;
+		const arrayLength =
+			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
+		if (arrayLength <= 0 || elementByteSize <= 0) {
+			engine.endGroup();
+			continue;
+		}
 
-		// Read the pointer value
-		const pointerValue = memoryViews.int32[pointer.memory.wordAlignedAddress + pointer.bufferPointer];
+		const startPointerValue = startAddress.showAddress
+			? startAddress.memory.byteAddress
+			: memoryViews.int32[startAddress.memory.wordAlignedAddress + startAddress.bufferPointer];
+		const pointerValue = pointer.showAddress
+			? pointer.memory.byteAddress
+			: memoryViews.int32[pointer.memory.wordAlignedAddress + pointer.bufferPointer];
+		const pointerIndex = Math.floor((pointerValue - startPointerValue) / elementByteSize);
 
-		// Clamp the pointer to valid range [0, arrayLength - 1]
-		const clampedIndex = Math.max(0, Math.min(pointerValue, arrayLength - 1));
+		// Clamp the absolute pointer-derived index to the visible element range.
+		const clampedIndex = Math.max(0, Math.min(pointerIndex, arrayLength - 1));
 
 		// Calculate scanline width (1 grid column)
 		const scanlineWidth = state.viewport.vGrid;

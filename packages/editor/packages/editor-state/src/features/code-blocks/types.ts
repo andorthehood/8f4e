@@ -110,7 +110,9 @@ export interface ArrayScanner {
 	height: number;
 	x: number;
 	y: number;
-	array: MemoryIdentifier;
+	startAddress: MemoryIdentifier;
+	elementByteSize: number;
+	length: number | MemoryIdentifier;
 	pointer: MemoryIdentifier;
 }
 

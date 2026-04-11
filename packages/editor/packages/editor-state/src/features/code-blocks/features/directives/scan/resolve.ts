@@ -1,10 +1,43 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../types';
 import type { ScanDirectiveData } from './data';
+import type { MemoryIdentifier } from '~/types';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
+
+function getPointeeElementByteSize(memory: MemoryIdentifier['memory']): number {
+	if (!memory.pointeeBaseType) {
+		return 0;
+	}
+
+	if (memory.isPointingToPointer) {
+		return 4;
+	}
+
+	if (memory.pointeeBaseType === 'float64') {
+		return 8;
+	}
+
+	if (memory.pointeeBaseType === 'int8' || memory.pointeeBaseType === 'int8u') {
+		return 1;
+	}
+
+	if (memory.pointeeBaseType === 'int16' || memory.pointeeBaseType === 'int16u') {
+		return 2;
+	}
+
+	return 4;
+}
+
+function getStartElementByteSize(startAddress: MemoryIdentifier): number {
+	if (startAddress.showAddress) {
+		return startAddress.memory.elementWordSize;
+	}
+
+	return getPointeeElementByteSize(startAddress.memory);
+}
 
 function resolveScanDirectiveWidget(
 	scanner: ScanDirectiveData,
@@ -16,10 +49,15 @@ function resolveScanDirectiveWidget(
 		return;
 	}
 
-	const array = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.arrayMemoryId);
+	const startAddress = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.startAddressMemoryId);
+	const length =
+		typeof scanner.length === 'number'
+			? scanner.length
+			: resolveMemoryIdentifier(state, graphicData.moduleId, scanner.length);
 	const pointer = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.pointerMemoryId);
+	const elementByteSize = startAddress ? getStartElementByteSize(startAddress) : 0;
 
-	if (!array || !pointer) {
+	if (!startAddress || !length || !pointer || elementByteSize <= 0) {
 		return;
 	}
 
@@ -30,7 +68,9 @@ function resolveScanDirectiveWidget(
 		height: state.viewport.hGrid * 2,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
-		array,
+		startAddress,
+		elementByteSize,
+		length,
 		pointer,
 	});
 }

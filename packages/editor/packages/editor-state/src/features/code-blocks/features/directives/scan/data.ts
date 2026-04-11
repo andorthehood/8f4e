@@ -1,17 +1,24 @@
 export interface ScanDirectiveData {
-	arrayMemoryId: string;
+	startAddressMemoryId: string;
+	length: number | string;
 	pointerMemoryId: string;
 	lineNumber: number;
 }
 
 export function createScanDirectiveData(args: string[], lineNumber: number): ScanDirectiveData | undefined {
-	if (!args[0] || !args[1]) {
+	if (!args[0] || !args[1] || !args[2]) {
+		return undefined;
+	}
+
+	const parsedLength = /^-?\d+$/.test(args[1]) ? Number.parseInt(args[1], 10) : args[1];
+	if (typeof parsedLength === 'number' && parsedLength <= 0) {
 		return undefined;
 	}
 
 	return {
-		arrayMemoryId: args[0],
-		pointerMemoryId: args[1],
+		startAddressMemoryId: args[0],
+		length: parsedLength,
+		pointerMemoryId: args[2],
 		lineNumber,
 	};
 }
