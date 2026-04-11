@@ -1729,8 +1729,7 @@ module ultimateSoundtrackerColors
 ; @color fill.codeBlockHighlightLevel1	#000a14
 ; @color fill.codeBlockHighlightLevel2	#001429
 ; @color fill.codeBlockHighlightLevel3	#001f3d
-; @color fill.plotterBackground	#000
-; @color fill.plotterTrace	#0f0
+; @color fill.trace	#0f0
 ; @color fill.scanLine	#fff
 ; @color fill.waveform	#666
 ; @color icons.outputConnectorBackground	#369
