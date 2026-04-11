@@ -478,7 +478,7 @@ const midiArpeggiator2: Project = {
 				' ',
 				'; @watch length',
 				'',
-				'; @plot buffer 0 127 length',
+				'; @plot &buffer length',
 				'',
 				'push &length',
 				'push *lengthIn',

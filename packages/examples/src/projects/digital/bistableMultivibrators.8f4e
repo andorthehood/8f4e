@@ -191,7 +191,7 @@ int* in &norGate:out
 int[] buffer 64
 int bufferPointer &buffer
 
-; @plot buffer -1 2
+; @plot &buffer
 
 push &bufferPointer
 push bufferPointer
@@ -221,7 +221,7 @@ int* in &andGate:out
 int[] buffer 64
 int bufferPointer &buffer
 
-; @plot buffer -1 2
+; @plot &buffer
 
 push &bufferPointer
 push bufferPointer

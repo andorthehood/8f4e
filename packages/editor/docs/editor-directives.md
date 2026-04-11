@@ -14,7 +14,7 @@ Examples:
 
 ```txt
 ; @watch counter
-; @plot audioBuffer -2 2 lengthMemory
+; @plot &audioBuffer lengthMemory
 ; @button gate0 0 1
 ; @font ibmvga8x16
 ```
@@ -124,16 +124,17 @@ Notes:
 
 ### `@plot`
 
-Draw an array plot for an array memory id.
+Draw a plot over a typed absolute pointer range or direct buffer memory. The first argument provides the start pointer and element type metadata, and the optional second argument is the element count.
 
 ```txt
-; @plot <arrayMemoryId> [minValue] [maxValue] [arrayLengthMemoryId]
+; @plot <startPointer|&buffer|buffer> [elementCount|elementCountMemoryId]
 ```
 
-Defaults:
+Range detection:
 
-- `minValue`: `-8`
-- `maxValue`: `8`
+- float arrays use `-1..1`
+- integer arrays use type-derived bounds, matching `@wave`
+- lengths can be literal counts, memory ids, or `count(buffer)`
 
 ### `@wave`
 

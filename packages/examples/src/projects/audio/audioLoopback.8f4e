@@ -28,7 +28,7 @@ float[] buffer AUDIO_BUFFER_SIZE
 float out
 int pointer &buffer
 
-; @plot buffer -2 2
+; @plot &buffer
 
 push &out
 push pointer
@@ -64,7 +64,7 @@ float* in &audioin:out
 float[] buffer AUDIO_BUFFER_SIZE
 int pointer &buffer
 
-; @plot buffer -2 2
+; @plot &buffer
 
 ; Store the input value
 ; in the buffer
@@ -107,7 +107,7 @@ float* in &audioin:out
 float[] buffer AUDIO_BUFFER_SIZE
 int pointer &buffer
 
-; @plot buffer -2 2
+; @plot &buffer
 
 ; Store the input value
 ; in the buffer

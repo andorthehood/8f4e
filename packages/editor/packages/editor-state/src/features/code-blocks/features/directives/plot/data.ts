@@ -1,9 +1,7 @@
 export interface PlotDirectiveData {
-	arrayMemoryId: string;
+	startAddressMemoryId: string;
 	lineNumber: number;
-	minValue: number;
-	maxValue: number;
-	arrayLengthMemoryId: string | undefined;
+	length: string | number | undefined;
 }
 
 export function createPlotDirectiveData(args: string[], lineNumber: number): PlotDirectiveData | undefined {
@@ -11,14 +9,9 @@ export function createPlotDirectiveData(args: string[], lineNumber: number): Plo
 		return undefined;
 	}
 
-	const parsedMin = args[1] !== undefined ? parseInt(args[1], 10) : undefined;
-	const parsedMax = args[2] !== undefined ? parseInt(args[2], 10) : undefined;
-
 	return {
-		arrayMemoryId: args[0],
+		startAddressMemoryId: args[0],
 		lineNumber,
-		minValue: parsedMin !== undefined && !isNaN(parsedMin) ? parsedMin : -8,
-		maxValue: parsedMax !== undefined && !isNaN(parsedMax) ? parsedMax : 8,
-		arrayLengthMemoryId: args[3] || undefined,
+		length: args[1] !== undefined && /^-?\d+$/.test(args[1]) ? Number.parseInt(args[1], 10) : args[1],
 	};
 }

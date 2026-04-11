@@ -20,7 +20,7 @@ describe('plot directive widget resolution', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			moduleId: 'test-block',
-			code: ['; @plot buffer1 -10 10'],
+			code: ['; @plot &buffer1'],
 			gaps: new Map(),
 			width: 100,
 		});
@@ -39,6 +39,15 @@ describe('plot directive widget resolution', () => {
 							buffer1: {
 								wordAlignedAddress: 0,
 								byteAddress: 0,
+								numberOfElements: 16,
+								elementWordSize: 1,
+								type: MemoryTypes.int,
+								wordAlignedSize: 16,
+								default: 0,
+								isInteger: true,
+								isUnsigned: false,
+								id: 'buffer1',
+								isPointingToPointer: false,
 							},
 						},
 					},
@@ -61,7 +70,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('does not add a plotter when the array cannot be resolved', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @plot missing -10 10']);
+		setMockCodeBlockCode(mockGraphicData, ['; @plot missing']);
 
 		runDirectiveResolution();
 
@@ -76,14 +85,16 @@ describe('plot directive widget resolution', () => {
 			y: 0,
 			minValue: -8,
 			maxValue: 8,
-			array: {
+			startAddress: {
 				memory: { wordAlignedAddress: 0 } as DataStructure,
-				showAddress: false,
+				showAddress: true,
 				showEndAddress: false,
 				bufferPointer: 0,
-				showBinary: false,
+				displayFormat: 'decimal',
 			} as MemoryIdentifier,
-			arrayLength: undefined,
+			baseSampleShift: 0,
+			length: 16,
+			sampleType: 'int8',
 		});
 
 		runDirectiveResolution();
@@ -92,7 +103,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('handles multiple plot directives', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @plot buffer1 -10 10', '; @plot buffer2 0 100']);
+		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1', '; @plot &buffer2']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
@@ -109,5 +120,58 @@ describe('plot directive widget resolution', () => {
 		runDirectiveResolution();
 
 		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(2);
+	});
+
+	it('derives float plot ranges as -1..1', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['floatBuffer'] = {
+			wordAlignedAddress: 4,
+			byteAddress: 16,
+			numberOfElements: 16,
+			elementWordSize: 4,
+			type: MemoryTypes.float,
+			wordAlignedSize: 16,
+			default: 0,
+			isInteger: false,
+			id: 'floatBuffer',
+			isPointingToPointer: false,
+		};
+		setMockCodeBlockCode(mockGraphicData, ['; @plot &floatBuffer']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayPlotters[0].minValue).toBe(-1);
+		expect(mockGraphicData.widgets.arrayPlotters[0].maxValue).toBe(1);
+	});
+
+	it('derives integer plot ranges from the array type', () => {
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayPlotters[0].minValue).toBe(-128);
+		expect(mockGraphicData.widgets.arrayPlotters[0].maxValue).toBe(127);
+	});
+
+	it('supports pointer starts with count() lengths', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['bufferPtr'] = {
+			wordAlignedAddress: 8,
+			byteAddress: 32,
+			numberOfElements: 1,
+			elementWordSize: 4,
+			type: MemoryTypes['int*'],
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'bufferPtr',
+			pointeeBaseType: 'int8',
+			isPointingToPointer: false,
+		};
+		setMockCodeBlockCode(mockGraphicData, ['; @plot bufferPtr count(buffer1)']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayPlotters).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayPlotters[0].length).toBe(16);
+		expect(mockGraphicData.widgets.arrayPlotters[0].sampleType).toBe('int8');
 	});
 });
