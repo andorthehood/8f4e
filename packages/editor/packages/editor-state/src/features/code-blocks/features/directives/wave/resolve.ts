@@ -1,18 +1,18 @@
 import { extractElementCountBase, hasElementCountPrefix } from '@8f4e/tokenizer';
 
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../types';
-import type { ScanDirectiveData } from './data';
-import type { MemoryIdentifier, ScanSampleType } from '~/types';
+import type { WaveDirectiveData } from './data';
+import type { MemoryIdentifier, WaveSampleType } from '~/types';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
-type ScanSampleSpec = {
+type WaveSampleSpec = {
 	elementByteSize: number;
 	baseSampleShift: 0 | 1 | 2 | 3;
-	sampleType: ScanSampleType;
+	sampleType: WaveSampleType;
 	minValue: number;
 	maxValue: number;
 };
@@ -49,7 +49,7 @@ function getStartElementByteSize(startAddress: MemoryIdentifier): number {
 	return getPointeeElementByteSize(startAddress.memory);
 }
 
-function getSampleSpecFromDirectMemory(startAddress: MemoryIdentifier): ScanSampleSpec | undefined {
+function getSampleSpecFromDirectMemory(startAddress: MemoryIdentifier): WaveSampleSpec | undefined {
 	const { memory } = startAddress;
 
 	if (memory.elementWordSize === 8 && !memory.isInteger) {
@@ -75,7 +75,7 @@ function getSampleSpecFromDirectMemory(startAddress: MemoryIdentifier): ScanSamp
 	return { elementByteSize: 4, baseSampleShift: 2, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
 }
 
-function getSampleSpecFromPointerMemory(startAddress: MemoryIdentifier): ScanSampleSpec | undefined {
+function getSampleSpecFromPointerMemory(startAddress: MemoryIdentifier): WaveSampleSpec | undefined {
 	const { memory } = startAddress;
 
 	if (!memory.pointeeBaseType) {
@@ -113,7 +113,7 @@ function getSampleSpecFromPointerMemory(startAddress: MemoryIdentifier): ScanSam
 	return { elementByteSize: 4, baseSampleShift: 2, sampleType: 'int32', minValue: -2147483648, maxValue: 2147483647 };
 }
 
-function getStartSampleSpec(startAddress: MemoryIdentifier): ScanSampleSpec | undefined {
+function getStartSampleSpec(startAddress: MemoryIdentifier): WaveSampleSpec | undefined {
 	if (startAddress.showAddress) {
 		return getSampleSpecFromDirectMemory(startAddress);
 	}
@@ -121,8 +121,8 @@ function getStartSampleSpec(startAddress: MemoryIdentifier): ScanSampleSpec | un
 	return getSampleSpecFromPointerMemory(startAddress);
 }
 
-function resolveScanLength(
-	length: ScanDirectiveData['length'],
+function resolveWaveLength(
+	length: WaveDirectiveData['length'],
 	moduleId: string,
 	state: Parameters<DirectiveWidgetResolver>[1]
 ): number | MemoryIdentifier | undefined {
@@ -138,8 +138,8 @@ function resolveScanLength(
 	return resolveMemoryIdentifier(state, moduleId, length);
 }
 
-function resolveScanDirectiveWidget(
-	scanner: ScanDirectiveData,
+function resolveWaveDirectiveWidget(
+	wave: WaveDirectiveData,
 	graphicData: Parameters<DirectiveWidgetResolver>[0],
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
@@ -148,9 +148,9 @@ function resolveScanDirectiveWidget(
 		return;
 	}
 
-	const startAddress = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.startAddressMemoryId);
-	const length = resolveScanLength(scanner.length, graphicData.moduleId, state);
-	const pointer = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.pointerMemoryId);
+	const startAddress = resolveMemoryIdentifier(state, graphicData.moduleId, wave.startAddressMemoryId);
+	const length = resolveWaveLength(wave.length, graphicData.moduleId, state);
+	const pointer = resolveMemoryIdentifier(state, graphicData.moduleId, wave.pointerMemoryId);
 	const sampleSpec = startAddress ? getStartSampleSpec(startAddress) : undefined;
 	const elementByteSize = startAddress ? getStartElementByteSize(startAddress) : 0;
 
@@ -158,9 +158,9 @@ function resolveScanDirectiveWidget(
 		return;
 	}
 
-	const displayRow = directiveState.displayModel.rawRowToDisplayRow[scanner.lineNumber] ?? scanner.lineNumber;
+	const displayRow = directiveState.displayModel.rawRowToDisplayRow[wave.lineNumber] ?? wave.lineNumber;
 
-	graphicData.widgets.arrayScanners.push({
+	graphicData.widgets.arrayWaves.push({
 		width: graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		height: state.viewport.hGrid * 2,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
@@ -179,10 +179,10 @@ function resolveScanDirectiveWidget(
 	});
 }
 
-export function createScanDirectiveWidgetContribution(scanner: ScanDirectiveData): DirectiveWidgetContribution {
+export function createWaveDirectiveWidgetContribution(wave: WaveDirectiveData): DirectiveWidgetContribution {
 	return {
 		afterGraphicDataWidthCalculation: (graphicData, state, directiveState) => {
-			resolveScanDirectiveWidget(scanner, graphicData, state, directiveState);
+			resolveWaveDirectiveWidget(wave, graphicData, state, directiveState);
 		},
 	};
 }

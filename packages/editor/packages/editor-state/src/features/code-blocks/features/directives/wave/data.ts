@@ -1,11 +1,11 @@
-export interface ScanDirectiveData {
+export interface WaveDirectiveData {
 	startAddressMemoryId: string;
 	length: number | string;
 	pointerMemoryId?: string;
 	lineNumber: number;
 }
 
-export function createScanDirectiveData(args: string[], lineNumber: number): ScanDirectiveData | undefined {
+export function createWaveDirectiveData(args: string[], lineNumber: number): WaveDirectiveData | undefined {
 	if (!args[0] || !args[1]) {
 		return undefined;
 	}

@@ -38,7 +38,7 @@ const defaultColorScheme: ColorScheme = {
 		highlightedCodeLine: '#444444',
 		plotterBackground: '#000000',
 		plotterTrace: '#ffffff',
-		scanWave: 'rgba(255,255,255,0.45)',
+		waveFill: 'rgba(255,255,255,0.45)',
 		scanLine: '#ffffff',
 		sliderThumb: '#ffffff',
 		codeBlockHighlightLevel1: '#111111',

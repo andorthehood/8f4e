@@ -32,7 +32,7 @@ export const FILL_COLOR_NAMES = [
 	'dialogBackground',
 	'dialogDimmer',
 	'highlightedCodeLine',
-	'scanWave',
+	'waveFill',
 	'scanLine',
 	'sliderThumb',
 	'codeBlockHighlightLevel1',
