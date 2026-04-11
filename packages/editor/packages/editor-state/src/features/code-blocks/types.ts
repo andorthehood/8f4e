@@ -105,6 +105,8 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
+export type ScanSampleType = 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'float32' | 'float64';
+
 export interface ArrayScanner {
 	width: number;
 	height: number;
@@ -113,7 +115,10 @@ export interface ArrayScanner {
 	startAddress: MemoryIdentifier;
 	elementByteSize: number;
 	length: number | MemoryIdentifier;
-	pointer: MemoryIdentifier;
+	pointer?: MemoryIdentifier;
+	sampleType: ScanSampleType;
+	minValue: number;
+	maxValue: number;
 }
 
 export interface Slider {
