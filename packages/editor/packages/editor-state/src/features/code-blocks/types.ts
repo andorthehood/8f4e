@@ -105,9 +105,9 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
-export type ScanSampleType = 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'float32' | 'float64';
+export type WaveSampleType = 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'float32' | 'float64';
 
-export interface ArrayScanner {
+export interface ArrayWave {
 	width: number;
 	height: number;
 	x: number;
@@ -118,7 +118,7 @@ export interface ArrayScanner {
 	baseSampleShift: 0 | 1 | 2 | 3;
 	length: number | MemoryIdentifier;
 	pointer?: MemoryIdentifier;
-	sampleType: ScanSampleType;
+	sampleType: WaveSampleType;
 	minValue: number;
 	maxValue: number;
 	inverseValueRange: number;
@@ -206,7 +206,7 @@ export interface CodeBlockGraphicData {
 		outputs: Output[];
 		debuggers: Debugger[];
 		arrayPlotters: ArrayPlotter[];
-		arrayScanners: ArrayScanner[];
+		arrayWaves: ArrayWave[];
 		switches: Switch[];
 		buttons: Switch[];
 		sliders: Slider[];

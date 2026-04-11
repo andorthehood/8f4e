@@ -852,7 +852,7 @@ int8* sampleAddress ;@w
 int   sampleSize ; @w
 int8* playhead ; @w
 
-; @scan sampleAddress sampleSize playhead
+; @wave sampleAddress sampleSize playhead
 
 ; @hide
 
@@ -1547,40 +1547,40 @@ use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
 ; @loadAsset sample1 &sample1
-; @scan &sample1 count(sample1)
+; @wave &sample1 count(sample1)
 int8[] sample2 ASSET_SAMPLE2_SIZE
 ; @loadAsset sample2 &sample2
-; @scan &sample2 count(sample2)
+; @wave &sample2 count(sample2)
 int8[] sample3 ASSET_SAMPLE3_SIZE
 ; @loadAsset sample3 &sample3
-; @scan &sample3 count(sample3)
+; @wave &sample3 count(sample3)
 int8[] sample4 ASSET_SAMPLE4_SIZE
 ; @loadAsset sample4 &sample4
-; @scan &sample4 count(sample4)
+; @wave &sample4 count(sample4)
 int8[] sample5 ASSET_SAMPLE5_SIZE
 ; @loadAsset sample5 &sample5
-; @scan &sample5 count(sample5)
+; @wave &sample5 count(sample5)
 int8[] sample6 ASSET_SAMPLE6_SIZE
 ; @loadAsset sample6 &sample6
-; @scan &sample6 count(sample6)
+; @wave &sample6 count(sample6)
 int8[] sample7 ASSET_SAMPLE7_SIZE
 ; @loadAsset sample7 &sample7
-; @scan &sample7 count(sample7)
+; @wave &sample7 count(sample7)
 int8[] sample8 ASSET_SAMPLE8_SIZE
 ; @loadAsset sample8 &sample8
-; @scan &sample8 count(sample8)
+; @wave &sample8 count(sample8)
 int8[] sample9 ASSET_SAMPLE9_SIZE
 ; @loadAsset sample9 &sample9
-; @scan &sample9 count(sample9)
+; @wave &sample9 count(sample9)
 int8[] sample10 ASSET_SAMPLE10_SIZE
 ; @loadAsset sample10 &sample10
-; @scan &sample10 count(sample10)
+; @wave &sample10 count(sample10)
 int8[] sample11 ASSET_SAMPLE11_SIZE
 ; @loadAsset sample11 &sample11
-; @scan &sample11 count(sample11)
+; @wave &sample11 count(sample11)
 int8[] sample12 ASSET_SAMPLE12_SIZE
 ; @loadAsset sample12 &sample12
-; @scan &sample12 count(sample12)
+; @wave &sample12 count(sample12)
 moduleEnd
 
 module trigger1

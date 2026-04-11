@@ -8,7 +8,7 @@ import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
-import scanDirective from './scan/plugin';
+import waveDirective from './wave/plugin';
 import sliderDirective from './slider/plugin';
 import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
@@ -37,7 +37,7 @@ export type {
 
 export const directivePlugins: EditorDirectivePlugin[] = [
 	plotDirective,
-	scanDirective,
+	waveDirective,
 	sliderDirective,
 	pianoDirective,
 	buttonDirective,
@@ -152,7 +152,7 @@ if (import.meta.vitest) {
 				'; @home',
 				'; @favorite',
 				'; @plot buffer',
-				'; @scan &buffer 16 pointer',
+				'; @wave &buffer 16 pointer',
 				'moduleEnd',
 			];
 			const result = deriveDirectiveState(code, parseBlockDirectives(code));

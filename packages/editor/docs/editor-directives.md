@@ -135,12 +135,12 @@ Defaults:
 - `minValue`: `-8`
 - `maxValue`: `8`
 
-### `@scan`
+### `@wave`
 
-Draw a scanner line over a typed absolute pointer range. The first argument provides the start pointer and element size metadata, the second argument is the element count, and the third argument is an absolute pointer in the same address space.
+Draw a waveform over a typed absolute pointer range. The first argument provides the start pointer and element size metadata, the second argument is the element count, and the optional third argument is an absolute pointer in the same address space.
 
 ```txt
-; @scan <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
+; @wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
 ```
 
 ### `@slider`

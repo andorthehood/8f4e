@@ -12,7 +12,7 @@ import {
 	setMockCodeBlockCode,
 } from '~/pureHelpers/testingUtils/testUtils';
 
-describe('scan directive widget resolution', () => {
+describe('wave directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;
 	let mockState: State;
 
@@ -20,7 +20,7 @@ describe('scan directive widget resolution', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			moduleId: 'test-block',
-			code: ['; @scan bufferAddress 16 pointer1'],
+			code: ['; @wave bufferAddress 16 pointer1'],
 			gaps: new Map(),
 			width: 100,
 		});
@@ -86,22 +86,22 @@ describe('scan directive widget resolution', () => {
 		runAfterGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 	}
 
-	it('adds a scanner to graphic data widgets', () => {
+	it('adds a wave to graphic data widgets', () => {
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
 	});
 
-	it('does not add a scanner when dependencies cannot be resolved', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @scan missingStart 16 pointer1']);
+	it('does not add a wave when dependencies cannot be resolved', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @wave missingStart 16 pointer1']);
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(0);
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(0);
 	});
 
-	it('clears existing scanners before resolving directive widgets', () => {
-		mockGraphicData.widgets.arrayScanners.push({
+	it('clears existing waves before resolving directive widgets', () => {
+		mockGraphicData.widgets.arrayWaves.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -132,20 +132,20 @@ describe('scan directive widget resolution', () => {
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
 	});
 
-	it('adds a waveform-only scanner when the pointer is omitted', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @scan bufferAddress 16']);
+	it('adds a waveform-only wave when the pointer is omitted', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @wave bufferAddress 16']);
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
-		expect(mockGraphicData.widgets.arrayScanners[0].pointer).toBeUndefined();
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayWaves[0].pointer).toBeUndefined();
 	});
 
-	it('handles multiple scan directives', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @scan bufferAddress 16 pointer1', '; @scan &buffer2 len2 pointer2']);
+	it('handles multiple wave directives', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @wave bufferAddress 16 pointer1', '; @wave &buffer2 len2 pointer2']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
@@ -196,32 +196,32 @@ describe('scan directive widget resolution', () => {
 			isPointingToPointer: false,
 		};
 
-		setMockCodeBlockCode(mockGraphicData, ['; @scan &buffer1 16 pointer1', '; @scan buffer2Address len2 pointer2']);
+		setMockCodeBlockCode(mockGraphicData, ['; @wave &buffer1 16 pointer1', '; @wave buffer2Address len2 pointer2']);
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(2);
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(2);
 	});
 
-	it('does not add a scanner when the length memory cannot be resolved', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @scan bufferAddress missingLength pointer1']);
+	it('does not add a wave when the length memory cannot be resolved', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @wave bufferAddress missingLength pointer1']);
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(0);
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(0);
 	});
 
 	it('resolves count() length expressions directly from the target memory', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @scan &buffer1 count(buffer1)']);
+		setMockCodeBlockCode(mockGraphicData, ['; @wave &buffer1 count(buffer1)']);
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
-		expect(mockGraphicData.widgets.arrayScanners[0].length).toBe(16);
-		expect(mockGraphicData.widgets.arrayScanners[0].pointer).toBeUndefined();
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayWaves[0].length).toBe(16);
+		expect(mockGraphicData.widgets.arrayWaves[0].pointer).toBeUndefined();
 	});
 
-	it('does not add a scanner when the start memory does not encode element size', () => {
+	it('does not add a wave when the start memory does not encode element size', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['plainInt'] = {
 			wordAlignedAddress: 30,
 			byteAddress: 120,
@@ -234,10 +234,10 @@ describe('scan directive widget resolution', () => {
 			id: 'plainInt',
 			isPointingToPointer: false,
 		};
-		setMockCodeBlockCode(mockGraphicData, ['; @scan plainInt 16 pointer1']);
+		setMockCodeBlockCode(mockGraphicData, ['; @wave plainInt 16 pointer1']);
 
 		runDirectiveResolution();
 
-		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(0);
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(0);
 	});
 });

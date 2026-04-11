@@ -139,7 +139,7 @@ export type {
 	WebWorkerMIDIRuntime,
 	MemoryIdentifier,
 	ArrayPlotter,
-	ArrayScanner,
+	ArrayWave,
 	Switch,
 	Debugger,
 	Output,
