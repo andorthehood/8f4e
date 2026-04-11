@@ -22,7 +22,7 @@ function resolvePlotDirectiveWidget(
 	const length = resolveElementCount(plotter.length, graphicData.moduleId, state);
 	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
-	if (!startAddress || !valueSpec) {
+	if (!startAddress || !valueSpec || !length) {
 		return;
 	}
 
@@ -35,10 +35,10 @@ function resolvePlotDirectiveWidget(
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
 		startAddress,
 		baseSampleShift: valueSpec.baseSampleShift,
-		length: length ?? startAddress.memory.numberOfElements,
+		length,
 		valueType: valueSpec.valueType,
-		minValue: valueSpec.minValue,
-		maxValue: valueSpec.maxValue,
+		minValue: plotter.minValueOverride ?? valueSpec.minValue,
+		maxValue: plotter.maxValueOverride ?? valueSpec.maxValue,
 	});
 }
 
