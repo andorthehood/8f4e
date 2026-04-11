@@ -123,12 +123,12 @@ if (import.meta.vitest) {
 	describe('directive registry', () => {
 		it('parses registered directives from code', () => {
 			const result = parseEditorDirectives(
-				['module foo', '; @plot buffer -1 1', '; @slider gain 0 1 0.01', '; note', 'moduleEnd'],
+				['module foo', '; @plot &buffer', '; @slider gain 0 1 0.01', '; note', 'moduleEnd'],
 				directivePlugins
 			);
 
 			expect(result).toEqual([
-				{ name: 'plot', rawRow: 1, args: ['buffer', '-1', '1'], sourceLine: '; @plot buffer -1 1' },
+				{ name: 'plot', rawRow: 1, args: ['buffer'], sourceLine: '; @plot &buffer' },
 				{ name: 'slider', rawRow: 2, args: ['gain', '0', '1', '0.01'], sourceLine: '; @slider gain 0 1 0.01' },
 			]);
 		});
@@ -151,7 +151,7 @@ if (import.meta.vitest) {
 				'; @disabled',
 				'; @home',
 				'; @favorite',
-				'; @plot buffer',
+				'; @plot &buffer',
 				'; @wave &buffer 16 pointer',
 				'moduleEnd',
 			];
@@ -172,7 +172,7 @@ if (import.meta.vitest) {
 		});
 
 		it('ignores unregistered directives', () => {
-			const code = ['; @unknown', '; @home', '; @plot buffer'];
+			const code = ['; @unknown', '; @home', '; @plot &buffer'];
 			const result = deriveDirectiveState(code, parseBlockDirectives(code));
 
 			expect(result.blockState).toEqual({
