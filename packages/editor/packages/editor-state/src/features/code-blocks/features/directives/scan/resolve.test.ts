@@ -122,11 +122,23 @@ describe('scan directive widget resolution', () => {
 				bufferPointer: 0,
 				displayFormat: 'decimal',
 			} as unknown as MemoryIdentifier,
+			sampleType: 'int8',
+			minValue: -128,
+			maxValue: 127,
 		});
 
 		runDirectiveResolution();
 
 		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
+	});
+
+	it('adds a waveform-only scanner when the pointer is omitted', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @scan bufferAddress 16']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayScanners[0].pointer).toBeUndefined();
 	});
 
 	it('handles multiple scan directives', () => {
@@ -194,6 +206,16 @@ describe('scan directive widget resolution', () => {
 		runDirectiveResolution();
 
 		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(0);
+	});
+
+	it('resolves count() length expressions directly from the target memory', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @scan &buffer1 count(buffer1)']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayScanners[0].length).toBe(16);
+		expect(mockGraphicData.widgets.arrayScanners[0].pointer).toBeUndefined();
 	});
 
 	it('does not add a scanner when the start memory does not encode element size', () => {
