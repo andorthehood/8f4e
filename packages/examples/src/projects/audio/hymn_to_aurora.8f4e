@@ -1,6 +1,32 @@
 8f4e/v1
 
 note
+; @pos 261 -35
+; @stop 4 10 bottom
+; These are the modules that extract the              /\
+; information from the rows. This particular song   /_  _\
+; is quite simple, it only has sample number, pitch  |  |
+; and volume data.                                   `--'
+noteEnd
+
+note
+; @pos 131 -70
+; @stop 2 10 left
+
+; This patch is a bare-bones
+; MOD player implemented in 8f4e.
+
+; It loads pattern data and samples,
+; steps through the song row by row,
+; plays four channels in parallel,
+; and mixes them into stereo output.
+
+; In this example, it is playing 
+; "Hymn to Aurora" by Horace Wimp.
+
+noteEnd
+
+note
 ; @pos 397 -1
 
 ; There are four of these,
@@ -30,7 +56,19 @@ note
 noteEnd
 
 note
-; @pos 347 -9
+; @pos 126 -52
+; @stop 3 10 left
+;                             ........|\
+; Here you can see the song   |          \
+; data scrolling through the  |          /
+; memory. Each row encodes    `'''''''|/
+; an event with a sample number, 
+; pitch and effect information.
+
+noteEnd
+
+note
+; @pos 347 3
 ;                                  .
 ; The samples are selected by  ....;;.  
 ; the sample player based on   ::::;;;;.
@@ -41,55 +79,14 @@ note
 noteEnd
 
 note
-; @pos 261 -35
-; @stop 4 10 bottom
-; These are the modules that extract the              /\
-; information from the rows. This particular song   /_  _\
-; is quite simple, it only has sample number, pitch  |  |
-; and volume data.                                   `--'
-noteEnd
-
-note
-; @pos 179 -78
-; @stop 1 3 top
-
-; This patch is a bare-bones
-; MOD player implemented in 8f4e.
-noteEnd
-
-note
-; @pos 125 -69
-; @stop 2 10 left
-
-; MOD is a classic tracker music format
-; from the Amiag era.
-; Tracker music is written as rows of events.
-; Each row encodes what to do next, 
-; such as which audio sample to play, 
-; at what pitch, and which effect to apply.
-noteEnd
-
-note
-; @pos 128 -56
-; @stop 3 5 left
-;                               _______|\
-; Here you can see the event   |          \
-; data scrolling through the   |          /
-; memory.                      `-------|/
-
-noteEnd
-
-note
-; @pos 393 -38
+; @pos 397 -37
 ; @stop 9 5 right
 
-;   /|______  The instrument samples are
-; /         : short recorded waveforms
-; \   ______; stored in these memory 
-;   \|        slots.
-; The sample players read from these
-; buffers and move through them at
-; different speeds to change pitch.
+;   /|        The instrument samples
+; /  `------. are stored
+; \  .------' in these memory
+;   \|        buffers.
+
 noteEnd
 
 constants env
@@ -107,8 +104,6 @@ const AUDIO_BUFFER_SIZE 128
 const ASSET_CH0_SIZE 6144
 ; 'patterns_ch1.bin'
 const ASSET_CH1_SIZE 6144
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 6144
 ; 'patterns_ch3.bin'
 const ASSET_CH3_SIZE 6144
 ; 'sample_1.bin'
@@ -135,6 +130,8 @@ const ASSET_SAMPLE10_SIZE 9550
 const ASSET_SAMPLE11_SIZE 9906
 ; 'sample_12.bin'
 const ASSET_SAMPLE12_SIZE 9000
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 6144
 
 constantsEnd
 
@@ -513,7 +510,7 @@ store
 moduleEnd
 
 module amp2
-; @pos 443 -24
+; @pos 443 -25
 ; @group ch1
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
@@ -824,29 +821,32 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 397 -24
+; @pos 397 -25
 ; @group ch1
 use env
 ; @stop 12 5
-float out
+float out; @w
 int*  period &period2:out 
-float _position 0.0
+float _position ; @w
 int*  trigger &trigger2:out
-int   _playing
+int   _playing ; @w
 int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress
+int8* sampleAddress ;@w
+int   sampleSize ; @w
+int8* playhead ; @w
 
-; @watch sampleAddress
-; @watch _playing
-; @watch _position
-; @watch *sampleNumber
-; @watch *period
+; @scan sampleAddress sampleSize playhead
 
 ; @hide
 
 push &sampleAddress
 push *sampleNumber
 call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
 store
 
 push *trigger
@@ -860,14 +860,18 @@ push 0
 store
 ifEnd
 
-; Read sample at playhead
-; write it to output
-push &out
+; Calculate read address
+push &playhead
 push _position
 castToInt
 push sampleAddress
 add
-load8s
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
 castToFloat
 push max(*sampleAddress) ; max value
 castToFloat
@@ -1085,7 +1089,7 @@ ifEnd
 moduleEnd
 
 module patternOrder
-; @pos 65 -9
+; @pos 62 -9
 ; @tab 6
 int	0x00
 int	0x00
@@ -1146,7 +1150,7 @@ ifEnd
 moduleEnd
 
 module period2
-; @pos 224 0
+; @pos 224 -1
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1271,7 +1275,7 @@ loopEnd
 moduleEnd
 
 module rowBuffer2
-; @pos 179 -22
+; @pos 179 -23
 ; @group ch1
 use env
 
@@ -1456,7 +1460,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 224 -22
+; @pos 224 -23
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1522,35 +1526,46 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 347 -42
+; @pos 347 -65
 ; @stop 10 3
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
 ; @loadAsset sample1 &sample1
+; @scan &sample1 count(sample1)
 int8[] sample2 ASSET_SAMPLE2_SIZE
 ; @loadAsset sample2 &sample2
+; @scan &sample2 count(sample2)
 int8[] sample3 ASSET_SAMPLE3_SIZE
 ; @loadAsset sample3 &sample3
+; @scan &sample3 count(sample3)
 int8[] sample4 ASSET_SAMPLE4_SIZE
 ; @loadAsset sample4 &sample4
+; @scan &sample4 count(sample4)
 int8[] sample5 ASSET_SAMPLE5_SIZE
 ; @loadAsset sample5 &sample5
+; @scan &sample5 count(sample5)
 int8[] sample6 ASSET_SAMPLE6_SIZE
 ; @loadAsset sample6 &sample6
+; @scan &sample6 count(sample6)
 int8[] sample7 ASSET_SAMPLE7_SIZE
 ; @loadAsset sample7 &sample7
+; @scan &sample7 count(sample7)
 int8[] sample8 ASSET_SAMPLE8_SIZE
 ; @loadAsset sample8 &sample8
+; @scan &sample8 count(sample8)
 int8[] sample9 ASSET_SAMPLE9_SIZE
 ; @loadAsset sample9 &sample9
+; @scan &sample9 count(sample9)
 int8[] sample10 ASSET_SAMPLE10_SIZE
 ; @loadAsset sample10 &sample10
+; @scan &sample10 count(sample10)
 int8[] sample11 ASSET_SAMPLE11_SIZE
 ; @loadAsset sample11 &sample11
+; @scan &sample11 count(sample11)
 int8[] sample12 ASSET_SAMPLE12_SIZE
 ; @loadAsset sample12 &sample12
-
+; @scan &sample12 count(sample12)
 moduleEnd
 
 module trigger1
@@ -1581,7 +1596,7 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 258 -22
+; @pos 258 -23
 ; @group ch1
 int* row &rowBuffer2:
 int* rowCounter &modRowCounter:out
@@ -1684,11 +1699,13 @@ module ultimateSoundtrackerColors
 ; @color fill.codeBlockHighlightLevel3	#001f3d
 ; @color fill.plotterBackground	#000
 ; @color fill.plotterTrace	#0f0
-; @color fill.scanLine	#0f0
+; @color fill.scanLine	#9cf
+; @color fill.scanWave	#369
 ; @color icons.outputConnectorBackground	#369
 ; @color icons.outputConnector	#000
 ; @color icons.inputConnectorBackground	#369
 ; @color icons.inputConnector	#000
+; @color icons.arrow	#fff
 moduleEnd
 
 module volume1
@@ -1728,7 +1745,7 @@ ifEnd
 moduleEnd
 
 module volume2
-; @pos 301 -22
+; @pos 301 -23
 ; @group ch1
 use mod
 int* row &rowBuffer2:
