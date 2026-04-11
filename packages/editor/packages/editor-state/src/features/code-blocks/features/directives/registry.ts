@@ -152,7 +152,7 @@ if (import.meta.vitest) {
 				'; @home',
 				'; @favorite',
 				'; @plot buffer',
-				'; @scan buffer pointer',
+				'; @scan &buffer 16 pointer',
 				'moduleEnd',
 			];
 			const result = deriveDirectiveState(code, parseBlockDirectives(code));

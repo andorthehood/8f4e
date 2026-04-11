@@ -20,7 +20,7 @@ describe('scan directive widget resolution', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			moduleId: 'test-block',
-			code: ['; @scan buffer1 pointer1'],
+			code: ['; @scan bufferAddress 16 pointer1'],
 			gaps: new Map(),
 			width: 100,
 		});
@@ -39,10 +39,39 @@ describe('scan directive widget resolution', () => {
 							buffer1: {
 								wordAlignedAddress: 0,
 								byteAddress: 0,
+								numberOfElements: 16,
+								elementWordSize: 1,
+								type: MemoryTypes['int*'],
+								wordAlignedSize: 16,
+								default: 0,
+								isInteger: true,
+								id: 'buffer1',
+								isPointingToPointer: false,
+							},
+							bufferAddress: {
+								wordAlignedAddress: 5,
+								byteAddress: 20,
+								numberOfElements: 1,
+								elementWordSize: 4,
+								type: MemoryTypes['int*'],
+								wordAlignedSize: 1,
+								default: 0,
+								isInteger: true,
+								id: 'bufferAddress',
+								pointeeBaseType: 'int8',
+								isPointingToPointer: false,
 							},
 							pointer1: {
 								wordAlignedAddress: 10,
 								byteAddress: 40,
+								numberOfElements: 1,
+								elementWordSize: 4,
+								type: MemoryTypes.int,
+								wordAlignedSize: 1,
+								default: 0,
+								isInteger: true,
+								id: 'pointer1',
+								isPointingToPointer: false,
 							},
 						},
 					},
@@ -64,7 +93,7 @@ describe('scan directive widget resolution', () => {
 	});
 
 	it('does not add a scanner when dependencies cannot be resolved', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @scan missing pointer1']);
+		setMockCodeBlockCode(mockGraphicData, ['; @scan missingStart 16 pointer1']);
 
 		runDirectiveResolution();
 
@@ -77,20 +106,22 @@ describe('scan directive widget resolution', () => {
 			height: 0,
 			x: 0,
 			y: 0,
-			array: {
+			startAddress: {
 				memory: { wordAlignedAddress: 0 } as DataStructure,
-				showAddress: false,
+				showAddress: true,
 				showEndAddress: false,
 				bufferPointer: 0,
-				showBinary: false,
-			} as MemoryIdentifier,
+				displayFormat: 'decimal',
+			} as unknown as MemoryIdentifier,
+			elementByteSize: 1,
+			length: 16,
 			pointer: {
 				memory: { wordAlignedAddress: 10 } as DataStructure,
 				showAddress: false,
 				showEndAddress: false,
 				bufferPointer: 0,
-				showBinary: false,
-			} as MemoryIdentifier,
+				displayFormat: 'decimal',
+			} as unknown as MemoryIdentifier,
 		});
 
 		runDirectiveResolution();
@@ -99,7 +130,7 @@ describe('scan directive widget resolution', () => {
 	});
 
 	it('handles multiple scan directives', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @scan buffer1 pointer1', '; @scan buffer2 pointer2']);
+		setMockCodeBlockCode(mockGraphicData, ['; @scan bufferAddress 16 pointer1', '; @scan &buffer2 len2 pointer2']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
@@ -110,6 +141,31 @@ describe('scan directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'buffer2',
+			isPointingToPointer: false,
+		};
+		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2Address'] = {
+			wordAlignedAddress: 2,
+			byteAddress: 8,
+			numberOfElements: 1,
+			elementWordSize: 4,
+			type: MemoryTypes['int*'],
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'buffer2Address',
+			pointeeBaseType: 'int8',
+			isPointingToPointer: false,
+		};
+		mockState.compiler.compiledModules['test-block'].memoryMap['len2'] = {
+			wordAlignedAddress: 15,
+			byteAddress: 60,
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'len2',
 			isPointingToPointer: false,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['pointer2'] = {
@@ -125,8 +181,38 @@ describe('scan directive widget resolution', () => {
 			isPointingToPointer: false,
 		};
 
+		setMockCodeBlockCode(mockGraphicData, ['; @scan &buffer1 16 pointer1', '; @scan buffer2Address len2 pointer2']);
+
 		runDirectiveResolution();
 
 		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(2);
+	});
+
+	it('does not add a scanner when the length memory cannot be resolved', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @scan bufferAddress missingLength pointer1']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(0);
+	});
+
+	it('does not add a scanner when the start memory does not encode element size', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['plainInt'] = {
+			wordAlignedAddress: 30,
+			byteAddress: 120,
+			numberOfElements: 1,
+			elementWordSize: 4,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'plainInt',
+			isPointingToPointer: false,
+		};
+		setMockCodeBlockCode(mockGraphicData, ['; @scan plainInt 16 pointer1']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayScanners).toHaveLength(0);
 	});
 });

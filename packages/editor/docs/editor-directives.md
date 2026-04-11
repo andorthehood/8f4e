@@ -137,10 +137,10 @@ Defaults:
 
 ### `@scan`
 
-Draw a scanner line using a pointer memory id over an array memory id.
+Draw a scanner line over a typed absolute pointer range. The first argument provides the start pointer and element size metadata, the second argument is the element count, and the third argument is an absolute pointer in the same address space.
 
 ```txt
-; @scan <arrayMemoryId> <pointerMemoryId>
+; @scan <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
 ```
 
 ### `@slider`
