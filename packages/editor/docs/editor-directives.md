@@ -368,6 +368,7 @@ Notes:
 
 - While the block is unselected, it is not rendered.
 - Selecting the block makes it visible again.
+- Holding `F9` reveals all hidden blocks temporarily without changing selection.
 - When selection moves away, it becomes hidden again.
 - Directives with arguments are ignored.
 - Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
