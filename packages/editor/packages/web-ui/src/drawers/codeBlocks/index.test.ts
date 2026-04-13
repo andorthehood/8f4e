@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
+import { createMockCodeBlock, createMockState } from '@8f4e/editor-state/testing';
 
 import drawModules from './index';
 
 import type { Engine } from 'glugglug';
-import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../types';
 
 function createMemoryViews(): MemoryViews {
@@ -20,37 +20,12 @@ function createMemoryViews(): MemoryViews {
 
 describe('drawModules', () => {
 	it('skips hidden blocks entirely', () => {
-		const hiddenBlock = {
+		const hiddenBlock = createMockCodeBlock({
 			hidden: true,
-			x: 0,
-			y: 0,
-			offsetX: 0,
-			offsetY: 0,
-			width: 100,
-			height: 50,
-			codeToRender: [],
-			codeColors: [],
-			cursor: { x: 0, y: 0, row: 0, col: 0 },
 			textureCacheKey: 'hidden-block',
 			code: ['module hidden', 'moduleEnd'],
-			gaps: new Map(),
-			lineNumberColumnWidth: 1,
-			disabled: false,
-			widgets: {
-				blockHighlights: [],
-				inputs: [],
-				outputs: [],
-				debuggers: [],
-				switches: [],
-				buttons: [],
-				sliders: [],
-				pianoKeyboards: [],
-				arrayPlotters: [],
-				arrayWaves: [],
-				errorMessages: [],
-			},
-		} as State['graphicHelper']['codeBlocks'][number];
-		const state = {
+		});
+		const state = createMockState({
 			graphicHelper: {
 				codeBlocks: [hiddenBlock],
 				spriteLookups: {
@@ -61,24 +36,13 @@ describe('drawModules', () => {
 					fontLineNumber: {},
 					fontCodeComment: {},
 				} as never,
-				selectedCodeBlock: undefined,
-				draggedCodeBlock: undefined,
 			},
 			featureFlags: {
 				positionOffsetters: true,
 				codeLineSelection: true,
 				editing: true,
 			},
-			viewport: {
-				x: 0,
-				y: 0,
-				width: 800,
-				height: 600,
-				vGrid: 8,
-				hGrid: 16,
-			},
-			editorMode: 'edit',
-		} as unknown as State;
+		});
 		const engine = {
 			startGroup: vi.fn(),
 			endGroup: vi.fn(),
