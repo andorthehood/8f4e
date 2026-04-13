@@ -58,6 +58,7 @@ describe('editor config block placement', () => {
 		expect(state.graphicHelper.codeBlocks).toHaveLength(3);
 		expect(state.graphicHelper.codeBlocks[2].gridX).toBe(0);
 		expect(state.graphicHelper.codeBlocks[2].gridY).toBe(13);
+		expect(state.graphicHelper.codeBlocks[2].code).toContain('; @pos 0 13');
 	});
 
 	it('preserves stored coordinates when the preferred slot is already free', async () => {
@@ -100,5 +101,6 @@ describe('editor config block placement', () => {
 
 		expect(state.graphicHelper.codeBlocks[1].gridX).toBe(20);
 		expect(state.graphicHelper.codeBlocks[1].gridY).toBe(7);
+		expect(state.graphicHelper.codeBlocks[1].code).toContain('; @pos 20 7');
 	});
 });
