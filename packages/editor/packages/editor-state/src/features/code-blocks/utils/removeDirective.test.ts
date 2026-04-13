@@ -72,4 +72,10 @@ describe('removeDirective', () => {
 		removeDirective(code, 'group');
 		expect(code).toEqual(original);
 	});
+
+	it('should preserve other directives on the same line', () => {
+		const code = ['module test', '; @group myGroup @favorite', 'moduleEnd'];
+		const result = removeDirective(code, 'group');
+		expect(result).toEqual(['module test', '; @favorite', 'moduleEnd']);
+	});
 });

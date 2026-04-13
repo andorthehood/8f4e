@@ -138,8 +138,10 @@ export interface Slider {
 }
 
 /**
- * A single parsed directive comment found in a code block's raw lines.
+ * A single parsed directive record found in a code block's raw lines.
  * Covers both editor directives (`; @name`) and runtime directives (`; ~name`).
+ * Multiple records may come from the same source line when directives are
+ * chained in one comment.
  */
 export interface ParsedDirectiveRecord {
 	/** Directive prefix: '@' for editor directives, '~' for runtime directives */

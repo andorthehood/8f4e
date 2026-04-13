@@ -1,89 +1,139 @@
 import { describe, it, expect } from 'vitest';
 
-import { parseDirectiveLine, normalizeEditorDirectiveRecords } from './utils';
+import {
+	parseDirectiveLineRecords,
+	parseDirectiveComments,
+	serializeDirectiveComments,
+	normalizeEditorDirectiveRecords,
+} from './utils';
 import { createDirectivePlugin } from './utils';
 
-describe('parseDirectiveLine', () => {
+describe('parseDirectiveLineRecords', () => {
 	it('parses a full-line editor directive', () => {
-		expect(parseDirectiveLine('; @pos 10 20')).toEqual({
-			prefix: '@',
-			name: 'pos',
-			args: ['10', '20'],
-			isTrailing: false,
-		});
+		expect(parseDirectiveLineRecords('; @pos 10 20')).toEqual([
+			{
+				prefix: '@',
+				name: 'pos',
+				args: ['10', '20'],
+				isTrailing: false,
+			},
+		]);
 	});
 
 	it('parses a full-line runtime directive', () => {
-		expect(parseDirectiveLine('; ~sampleRate 44100')).toEqual({
-			prefix: '~',
-			name: 'sampleRate',
-			args: ['44100'],
-			isTrailing: false,
-		});
+		expect(parseDirectiveLineRecords('; ~sampleRate 44100')).toEqual([
+			{
+				prefix: '~',
+				name: 'sampleRate',
+				args: ['44100'],
+				isTrailing: false,
+			},
+		]);
 	});
 
 	it('parses a full-line directive with no arguments', () => {
-		expect(parseDirectiveLine('; @disabled')).toEqual({
-			prefix: '@',
-			name: 'disabled',
-			args: [],
-			isTrailing: false,
-		});
+		expect(parseDirectiveLineRecords('; @disabled')).toEqual([
+			{
+				prefix: '@',
+				name: 'disabled',
+				args: [],
+				isTrailing: false,
+			},
+		]);
 	});
 
 	it('parses a full-line directive with leading whitespace', () => {
-		expect(parseDirectiveLine('   ; @group myGroup')).toEqual({
-			prefix: '@',
-			name: 'group',
-			args: ['myGroup'],
-			isTrailing: false,
-		});
+		expect(parseDirectiveLineRecords('   ; @group myGroup')).toEqual([
+			{
+				prefix: '@',
+				name: 'group',
+				args: ['myGroup'],
+				isTrailing: false,
+			},
+		]);
 	});
 
 	it('parses a trailing inline editor directive', () => {
-		expect(parseDirectiveLine('int foo 1 ; @watch')).toEqual({
-			prefix: '@',
-			name: 'watch',
-			args: [],
-			isTrailing: true,
-		});
+		expect(parseDirectiveLineRecords('int foo 1 ; @watch')).toEqual([
+			{
+				prefix: '@',
+				name: 'watch',
+				args: [],
+				isTrailing: true,
+			},
+		]);
 	});
 
 	it('parses a trailing inline directive with arguments', () => {
-		expect(parseDirectiveLine('int foo 1 ; @watch value')).toEqual({
-			prefix: '@',
-			name: 'watch',
-			args: ['value'],
-			isTrailing: true,
-		});
+		expect(parseDirectiveLineRecords('int foo 1 ; @watch value')).toEqual([
+			{
+				prefix: '@',
+				name: 'watch',
+				args: ['value'],
+				isTrailing: true,
+			},
+		]);
 	});
 
 	it('returns undefined for a plain comment', () => {
-		expect(parseDirectiveLine('; this is a plain comment')).toBeUndefined();
+		expect(parseDirectiveLineRecords('; this is a plain comment')).toEqual([]);
 	});
 
 	it('returns undefined for a non-comment line', () => {
-		expect(parseDirectiveLine('push 1')).toBeUndefined();
+		expect(parseDirectiveLineRecords('push 1')).toEqual([]);
 	});
 
 	it('returns undefined for an empty line', () => {
-		expect(parseDirectiveLine('')).toBeUndefined();
+		expect(parseDirectiveLineRecords('')).toEqual([]);
 	});
 
-	it('prefers the full-line pattern over trailing when a line is a pure directive comment', () => {
-		// A line like "; @watch" should be treated as full-line (isTrailing: false),
-		// not as a trailing comment, because the full-line pattern matches first.
-		expect(parseDirectiveLine('; @watch')).toEqual({
-			prefix: '@',
-			name: 'watch',
-			args: [],
-			isTrailing: false,
-		});
+	it('treats a pure directive comment as non-trailing', () => {
+		expect(parseDirectiveLineRecords('; @watch')).toEqual([
+			{
+				prefix: '@',
+				name: 'watch',
+				args: [],
+				isTrailing: false,
+			},
+		]);
 	});
 
 	it('does not parse trailing runtime (~) directives', () => {
-		// The trailing pattern only matches @, not ~.
-		expect(parseDirectiveLine('int foo 1 ; ~runtime')).toBeUndefined();
+		expect(parseDirectiveLineRecords('int foo 1 ; ~runtime')).toEqual([]);
+	});
+
+	it('parses multiple full-line directives from one comment line', () => {
+		expect(parseDirectiveLineRecords('; @stop 1 01 @favorite')).toEqual([
+			{ prefix: '@', name: 'stop', args: ['1', '01'], isTrailing: false },
+			{ prefix: '@', name: 'favorite', args: [], isTrailing: false },
+		]);
+	});
+
+	it('parses multiple trailing directives from one inline comment', () => {
+		expect(parseDirectiveLineRecords('int foo 1 ; @watch value @favorite')).toEqual([
+			{ prefix: '@', name: 'watch', args: ['value'], isTrailing: true },
+			{ prefix: '@', name: 'favorite', args: [], isTrailing: true },
+		]);
+	});
+});
+
+describe('parseDirectiveComments', () => {
+	it('returns all full-line editor directives in source order', () => {
+		expect(parseDirectiveComments('; @stop 1 01 @favorite')).toEqual([
+			{ name: 'stop', args: ['1', '01'] },
+			{ name: 'favorite', args: [] },
+		]);
+	});
+});
+
+describe('serializeDirectiveComments', () => {
+	it('serializes full-line editor directives into canonical source', () => {
+		expect(
+			serializeDirectiveComments([
+				{ name: 'group', args: ['audio', 'nonstick'] },
+				{ name: 'favorite', args: [] },
+			])
+		).toBe('; @group audio nonstick @favorite');
 	});
 });
 

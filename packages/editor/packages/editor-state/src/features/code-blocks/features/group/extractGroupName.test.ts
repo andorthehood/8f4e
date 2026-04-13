@@ -26,4 +26,10 @@ describe('extractGroupName', () => {
 		const groupName = extractGroupName(code);
 		expect(groupName).toBe('audio');
 	});
+
+	it('should extract group name when directives are chained on one line', () => {
+		const code = ['module foo', '; @favorite @group audio', 'moduleEnd'];
+		const groupName = extractGroupName(code);
+		expect(groupName).toBe('audio');
+	});
 });
