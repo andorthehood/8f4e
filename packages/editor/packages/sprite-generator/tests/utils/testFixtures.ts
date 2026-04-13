@@ -70,6 +70,30 @@ export const minimalColorScheme: ColorScheme = {
 };
 
 /**
+ * Test fixture for attpc63008x16 font configuration
+ */
+export const configAttPc63008x16: Config = {
+	font: 'attpc63008x16',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for nix8810m168x16 font configuration
+ */
+export const configNix8810M168x16: Config = {
+	font: 'nix8810m168x16',
+	colorScheme: minimalColorScheme,
+};
+
+/**
+ * Test fixture for olivettithin8x16 font configuration
+ */
+export const configOlivettiThin8x16: Config = {
+	font: 'olivettithin8x16',
+	colorScheme: minimalColorScheme,
+};
+
+/**
  * Test fixture for ibmvga8x16 font configuration
  */
 export const config8x16: Config = {

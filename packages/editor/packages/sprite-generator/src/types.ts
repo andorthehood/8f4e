@@ -86,7 +86,10 @@ export interface ColorScheme {
 }
 
 export const FONT_NAMES = [
+	'attpc63008x16',
 	'6x10',
+	'nix8810m168x16',
+	'olivettithin8x16',
 	'spleen5x8',
 	'spleen6x12',
 	'ibmvga8x16',

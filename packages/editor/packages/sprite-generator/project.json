@@ -6,7 +6,10 @@
     "generate-fonts": {
       "executor": "nx:run-commands",
       "outputs": [
+        "{projectRoot}/src/fonts/attpc63008x16/generated",
         "{projectRoot}/src/fonts/ibmvga8x16/generated",
+        "{projectRoot}/src/fonts/nix8810m168x16/generated",
+        "{projectRoot}/src/fonts/olivettithin8x16/generated",
         "{projectRoot}/src/fonts/spleen5x8/generated",
         "{projectRoot}/src/fonts/spleen6x12/generated",
         "{projectRoot}/src/fonts/terminus8x16/generated",

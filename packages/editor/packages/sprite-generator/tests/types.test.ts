@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
 import {
+	configAttPc63008x16,
+	configNix8810M168x16,
+	configOlivettiThin8x16,
 	minimalColorScheme,
 	config8x16,
 	configTerminus8x16,
@@ -166,6 +169,30 @@ describe('Types and Enums', () => {
 	});
 
 	describe('Config validation', () => {
+		it('should validate attpc63008x16 font config', () => {
+			expect(configAttPc63008x16.font).toBe('attpc63008x16');
+			expect(configAttPc63008x16.colorScheme).toBeDefined();
+			expect(configAttPc63008x16.colorScheme.text).toBeDefined();
+			expect(configAttPc63008x16.colorScheme.fill).toBeDefined();
+			expect(configAttPc63008x16.colorScheme.icons).toBeDefined();
+		});
+
+		it('should validate nix8810m168x16 font config', () => {
+			expect(configNix8810M168x16.font).toBe('nix8810m168x16');
+			expect(configNix8810M168x16.colorScheme).toBeDefined();
+			expect(configNix8810M168x16.colorScheme.text).toBeDefined();
+			expect(configNix8810M168x16.colorScheme.fill).toBeDefined();
+			expect(configNix8810M168x16.colorScheme.icons).toBeDefined();
+		});
+
+		it('should validate olivettithin8x16 font config', () => {
+			expect(configOlivettiThin8x16.font).toBe('olivettithin8x16');
+			expect(configOlivettiThin8x16.colorScheme).toBeDefined();
+			expect(configOlivettiThin8x16.colorScheme.text).toBeDefined();
+			expect(configOlivettiThin8x16.colorScheme.fill).toBeDefined();
+			expect(configOlivettiThin8x16.colorScheme.icons).toBeDefined();
+		});
+
 		it('should validate ibmvga8x16 font config', () => {
 			expect(config8x16.font).toBe('ibmvga8x16');
 			expect(config8x16.colorScheme).toBeDefined();
@@ -240,8 +267,53 @@ describe('Types and Enums', () => {
 
 		it('should support all font types', () => {
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
+				'terminus8x16',
+				'terminus8x16bold',
+				'terminus10x18',
+				'terminus10x18bold',
+				'kana12x13',
+				'terminus12x24',
+				'terminus12x24bold',
+			]).toContain(configAttPc63008x16.font);
+			expect([
+				'attpc63008x16',
+				'6x10',
+				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
+				'terminus8x16',
+				'terminus8x16bold',
+				'terminus10x18',
+				'terminus10x18bold',
+				'kana12x13',
+				'terminus12x24',
+				'terminus12x24bold',
+			]).toContain(configNix8810M168x16.font);
+			expect([
+				'attpc63008x16',
+				'6x10',
+				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
+				'terminus8x16',
+				'terminus8x16bold',
+				'terminus10x18',
+				'terminus10x18bold',
+				'kana12x13',
+				'terminus12x24',
+				'terminus12x24bold',
+			]).toContain(configOlivettiThin8x16.font);
+			expect([
+				'attpc63008x16',
+				'6x10',
+				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -251,8 +323,11 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(config8x16.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -262,8 +337,11 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(configTerminus8x16.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -273,8 +351,11 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(configTerminus8x16Bold.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -284,8 +365,11 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(config6x10.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -295,8 +379,11 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(configTerminus10x18.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -306,8 +393,11 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(configTerminus10x18Bold.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -317,8 +407,11 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(configKana12x13.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'nix8810m168x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
@@ -328,8 +421,10 @@ describe('Types and Enums', () => {
 				'terminus12x24bold',
 			]).toContain(configTerminus12x24.font);
 			expect([
+				'attpc63008x16',
 				'6x10',
 				'ibmvga8x16',
+				'olivettithin8x16',
 				'terminus8x16',
 				'terminus8x16bold',
 				'terminus10x18',
