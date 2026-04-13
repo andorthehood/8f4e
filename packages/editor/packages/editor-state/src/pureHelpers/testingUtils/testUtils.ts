@@ -279,6 +279,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				y: 0,
 				menuStack: [],
 			},
+			showHiddenCodeBlocks: false,
 			postProcessEffects: [],
 			backgroundEffects: [],
 		},

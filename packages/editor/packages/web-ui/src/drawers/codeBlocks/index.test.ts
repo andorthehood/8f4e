@@ -56,4 +56,47 @@ describe('drawModules', () => {
 
 		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).not.toHaveBeenCalled();
 	});
+
+	it('renders hidden blocks when the reveal override is active', () => {
+		const hiddenBlock = createMockCodeBlock({
+			hidden: true,
+			textureCacheKey: 'hidden-block',
+			width: 100,
+			height: 50,
+			codeToRender: [],
+			codeColors: [],
+			code: ['module hidden', 'moduleEnd'],
+		});
+		const state = createMockState({
+			graphicHelper: {
+				codeBlocks: [hiddenBlock],
+				showHiddenCodeBlocks: true,
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+				} as never,
+			},
+			featureFlags: {
+				positionOffsetters: true,
+				codeLineSelection: true,
+				editing: true,
+			},
+		});
+		const engine = {
+			startGroup: vi.fn(),
+			endGroup: vi.fn(),
+			cacheGroup: vi.fn(),
+			setSpriteLookup: vi.fn(),
+			drawSprite: vi.fn(),
+			drawText: vi.fn(),
+		} as unknown as Engine;
+
+		drawModules(engine, state, createMemoryViews());
+
+		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).toHaveBeenCalled();
+	});
 });

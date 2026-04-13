@@ -36,7 +36,9 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * - `insertNewLine` – when Enter is pressed.
  * - `insertText` – when a single printable character key is pressed without modifier keys; payload includes text.
  *
- * Additionally, F10 toggles position offsetters directly via store mutation (does not dispatch an event).
+ * Additionally:
+ * - holding F9 reveals blocks hidden by `; @hidden`
+ * - F10 toggles position offsetters directly via store mutation
  *
  * @param events - Dispatcher used to emit editor actions in response to keyboard input.
  * @param store - State manager for direct feature flag toggling.
@@ -80,6 +82,14 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 				events.dispatch('nextPresentationStop');
 			}
 
+			return;
+		}
+
+		if (key === 'F9') {
+			event.preventDefault();
+			if (!state.graphicHelper.showHiddenCodeBlocks) {
+				store.set('graphicHelper.showHiddenCodeBlocks', true);
+			}
 			return;
 		}
 
@@ -180,10 +190,24 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 		}
 	}
 
+	function onKeyup(event: KeyboardEvent) {
+		if (event.key !== 'F9') {
+			return;
+		}
+
+		event.preventDefault();
+
+		if (store.getState().graphicHelper.showHiddenCodeBlocks) {
+			store.set('graphicHelper.showHiddenCodeBlocks', false);
+		}
+	}
+
 	window.addEventListener('keydown', onKeydown);
+	window.addEventListener('keyup', onKeyup);
 
 	// Return cleanup function
 	return () => {
 		window.removeEventListener('keydown', onKeydown);
+		window.removeEventListener('keyup', onKeyup);
 	};
 }

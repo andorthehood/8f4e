@@ -48,7 +48,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			codeBlock.offsetY = 0;
 		}
 
-		if (codeBlock.hidden) {
+		if (codeBlock.hidden && !state.graphicHelper.showHiddenCodeBlocks) {
 			continue;
 		}
 

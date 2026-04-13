@@ -54,6 +54,7 @@ describe('keyboardEvents mode switching', () => {
 	let mockWindow: MockWindow;
 	let featureFlags: State['featureFlags'];
 	let editorMode: State['editorMode'];
+	let graphicHelper: Pick<State['graphicHelper'], 'showHiddenCodeBlocks'>;
 	let set: ReturnType<typeof vi.fn>;
 	let events: EventDispatcher;
 	let store: StateManager<State>;
@@ -75,8 +76,12 @@ describe('keyboardEvents mode switching', () => {
 			positionOffsetters: true,
 		};
 		editorMode = 'view';
+		graphicHelper = { showHiddenCodeBlocks: false };
 
 		set = vi.fn((path: string, value: unknown) => {
+			if (path === 'graphicHelper.showHiddenCodeBlocks') {
+				graphicHelper.showHiddenCodeBlocks = value as boolean;
+			}
 			if (path === 'featureFlags.positionOffsetters') {
 				featureFlags.positionOffsetters = value as boolean;
 			}
@@ -89,7 +94,7 @@ describe('keyboardEvents mode switching', () => {
 		};
 
 		store = {
-			getState: () => ({ featureFlags, editorMode }) as State,
+			getState: () => ({ featureFlags, editorMode, graphicHelper }) as State,
 			set,
 		} as unknown as StateManager<State>;
 	});
@@ -222,6 +227,25 @@ describe('keyboardEvents mode switching', () => {
 
 		expect(events.dispatch).toHaveBeenCalledWith('insertText', { text: '\t' });
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('reveals hidden code blocks while F9 is held', () => {
+		const cleanup = keyboardEvents(events, store);
+		const keydownEvent = createKeyboardEventLike('F9');
+		const keyupEvent = createKeyboardEventLike('F9');
+
+		mockWindow.emit('keydown', keydownEvent);
+
+		expect(set).toHaveBeenCalledWith('graphicHelper.showHiddenCodeBlocks', true);
+		expect(graphicHelper.showHiddenCodeBlocks).toBe(true);
+		expect(keydownEvent.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+
+		mockWindow.emit('keyup', keyupEvent);
+
+		expect(set).toHaveBeenCalledWith('graphicHelper.showHiddenCodeBlocks', false);
+		expect(graphicHelper.showHiddenCodeBlocks).toBe(false);
+		expect(keyupEvent.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
 		cleanup();
 	});
 });

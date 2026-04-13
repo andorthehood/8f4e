@@ -33,6 +33,7 @@ export default function createDefaultState() {
 				y: 0,
 				menuStack: [],
 			},
+			showHiddenCodeBlocks: false,
 			selectedCodeBlockForProgrammaticEdit: undefined,
 			postProcessEffects: [],
 			backgroundEffects: [],

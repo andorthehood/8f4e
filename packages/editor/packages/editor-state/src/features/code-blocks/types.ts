@@ -332,6 +332,8 @@ export type GraphicHelper = {
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
+	/** When true, blocks hidden by `; @hidden` stay visible regardless of selection. */
+	showHiddenCodeBlocks: boolean;
 	selectedCodeBlockForProgrammaticEdit?: CodeBlockGraphicData;
 	/**
 	 * Similar to selectedCodeBlockForProgrammaticEdit but without triggering compiler effects.
