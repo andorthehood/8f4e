@@ -1,4 +1,4 @@
-import { parseDirectiveComment } from '../directives/utils';
+import { removeDirective } from './removeDirective';
 
 /**
  * Upserts a canonical single-line directive into code block lines.
@@ -21,7 +21,7 @@ import { parseDirectiveComment } from '../directives/utils';
  * ```
  */
 export function upsertDirective(code: string[], name: string, args: string[] = []): string[] {
-	const withoutDirective = code.filter(line => parseDirectiveComment(line)?.name !== name);
+	const withoutDirective = removeDirective(code, name);
 
 	const directive = args.length > 0 ? `; @${name} ${args.join(' ')}` : `; @${name}`;
 

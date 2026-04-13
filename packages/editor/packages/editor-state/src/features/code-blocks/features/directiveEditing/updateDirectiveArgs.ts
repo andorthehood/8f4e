@@ -1,4 +1,4 @@
-import { parseDirectiveComment } from '../directives/utils';
+import { parseDirectiveComments, serializeDirectiveComments } from '../directives/utils';
 
 /**
  * Updates the arguments of all existing directive lines in code.
@@ -21,12 +21,15 @@ import { parseDirectiveComment } from '../directives/utils';
  */
 export function updateDirectiveArgs(code: string[], name: string, updater: (args: string[]) => string[]): string[] {
 	return code.map(line => {
-		const parsed = parseDirectiveComment(line);
-		if (!parsed || parsed.name !== name) {
+		const directives = parseDirectiveComments(line);
+		if (directives.length === 0 || directives.every(directive => directive.name !== name)) {
 			return line;
 		}
 
-		const newArgs = updater(parsed.args);
-		return newArgs.length > 0 ? `; @${name} ${newArgs.join(' ')}` : `; @${name}`;
+		return (
+			serializeDirectiveComments(
+				directives.map(directive => (directive.name === name ? { name, args: updater(directive.args) } : directive))
+			) ?? line
+		);
 	});
 }

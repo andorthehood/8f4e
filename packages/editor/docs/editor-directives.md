@@ -10,6 +10,14 @@ Editor directives use comment lines in this form:
 ; @<directive> <args...>
 ```
 
+You can also chain multiple directives in one comment line:
+
+```txt
+; @stop 1 01 @favorite
+```
+
+When directives are chained, parsing starts a new directive at the next `@name` token.
+
 Examples:
 
 ```txt
