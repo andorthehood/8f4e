@@ -58,6 +58,7 @@ export function createCodeBlockGraphicData(
 		creationIndex: 0,
 		blockType: 'unknown',
 		disabled: false,
+		hidden: false,
 		isHome: false,
 		isFavorite: false,
 		opacity: 1,

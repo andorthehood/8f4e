@@ -38,3 +38,44 @@ describe('graphic helper error mapping', () => {
 		expect(functionBlock.widgets.errorMessages[0].message).toContain('Error:');
 	});
 });
+
+describe('graphic helper hidden directive', () => {
+	it('shows a hidden block only while selected', () => {
+		const hiddenBlock = createMockCodeBlock({
+			code: ['module hidden', '; @hidden', 'moduleEnd'],
+			parsedDirectives: [
+				{ prefix: '@', name: 'hidden', args: [], rawRow: 1, isTrailing: false, sourceLine: '; @hidden' },
+			],
+		});
+		const otherBlock = createMockCodeBlock({
+			id: 'other',
+			code: ['module other', 'moduleEnd'],
+		});
+		const state = createMockState({
+			graphicHelper: {
+				codeBlocks: [hiddenBlock, otherBlock],
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+				} as never,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		graphicHelperEffect(store, events);
+		store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
+
+		expect(hiddenBlock.hidden).toBe(true);
+
+		store.set('graphicHelper.selectedCodeBlock', hiddenBlock);
+		expect(hiddenBlock.hidden).toBe(false);
+
+		store.set('graphicHelper.selectedCodeBlock', otherBlock);
+		expect(hiddenBlock.hidden).toBe(true);
+	});
+});

@@ -17,6 +17,7 @@ export type ViewportAnchor = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-
 
 export interface DirectiveBlockState {
 	disabled: boolean;
+	hidden: boolean;
 	isHome: boolean;
 	isFavorite: boolean;
 	/** Opacity set by `; @opacity <0..1>`. Defaults to 1 when absent or invalid. */
