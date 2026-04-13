@@ -17,6 +17,7 @@ import {
 	getCodeBlockGridSizeFromCode,
 	placeCodeBlockAtFirstFreeGridY,
 } from '../code-blocks/utils/finders/findFirstFreeCodeBlockGridY';
+import upsertPos from '../code-blocks/features/directives/pos/upsert';
 
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
@@ -76,6 +77,7 @@ export default function editorConfigModule(store: StateManager<State>, events: E
 				codeBlock.gridY = placement.gridY;
 				codeBlock.x = placement.gridX * state.viewport.vGrid;
 				codeBlock.y = placement.gridY * state.viewport.hGrid;
+				codeBlock.code = upsertPos(codeBlock.code, placement.gridX, placement.gridY);
 
 				nextCodeBlocks.push(codeBlock);
 
