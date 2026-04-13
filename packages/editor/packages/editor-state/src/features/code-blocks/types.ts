@@ -249,6 +249,12 @@ export interface CodeBlockGraphicData {
 	 */
 	disabled: boolean;
 	/**
+	 * When true, the block is hidden from rendering while unselected.
+	 * Derived from `; @hidden`.
+	 * Defaults to false.
+	 */
+	hidden: boolean;
+	/**
 	 * Optional group name for the code block, derived from ; @group directive.
 	 * Blocks with the same group name move together by default during drag.
 	 */

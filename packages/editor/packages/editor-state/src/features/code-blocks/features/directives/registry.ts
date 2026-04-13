@@ -3,6 +3,7 @@ import disabledDirective from './disabled/plugin';
 import favoriteDirective from './favorite/plugin';
 import groupDirective from './group/plugin';
 import hideDirective from './hide/plugin';
+import hiddenDirective from './hidden/plugin';
 import homeDirective from './home/plugin';
 import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
@@ -48,6 +49,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	homeDirective,
 	favoriteDirective,
 	hideDirective,
+	hiddenDirective,
 	opacityDirective,
 	groupDirective,
 	viewportDirective,
@@ -65,6 +67,7 @@ export function deriveDirectiveState(
 		sourceCode: code,
 		blockState: {
 			disabled: false,
+			hidden: false,
 			isHome: false,
 			isFavorite: false,
 			opacity: 1,
@@ -173,6 +176,7 @@ if (import.meta.vitest) {
 
 			expect(result.blockState).toEqual({
 				disabled: true,
+				hidden: false,
 				isHome: true,
 				isFavorite: true,
 				opacity: 1,
@@ -191,6 +195,7 @@ if (import.meta.vitest) {
 
 			expect(result.blockState).toEqual({
 				disabled: false,
+				hidden: false,
 				isHome: true,
 				isFavorite: false,
 				opacity: 1,
@@ -216,6 +221,13 @@ if (import.meta.vitest) {
 
 			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3]);
 			expect(result.displayModel.isCollapsed).toBe(false);
+		});
+
+		it('derives hidden block state from @hidden', () => {
+			const code = ['module foo', '; @hidden', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			expect(result.blockState.hidden).toBe(true);
 		});
 
 		it('deriveDirectiveState and parseEditorDirectives agree on trailing directive behavior', () => {
