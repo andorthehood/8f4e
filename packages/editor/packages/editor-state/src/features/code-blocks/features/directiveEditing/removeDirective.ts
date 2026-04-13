@@ -1,4 +1,4 @@
-import { parseDirectiveComment } from '../directives/utils';
+import { parseDirectiveComments, serializeDirectiveComments } from '../directives/utils';
 
 /**
  * Removes all lines containing a specific directive from code.
@@ -15,5 +15,18 @@ import { parseDirectiveComment } from '../directives/utils';
  * ```
  */
 export function removeDirective(code: string[], name: string): string[] {
-	return code.filter(line => parseDirectiveComment(line)?.name !== name);
+	return code.flatMap(line => {
+		const directives = parseDirectiveComments(line);
+		if (directives.length === 0) {
+			return [line];
+		}
+
+		const remaining = directives.filter(directive => directive.name !== name);
+		if (remaining.length === directives.length) {
+			return [line];
+		}
+
+		const serialized = serializeDirectiveComments(remaining);
+		return serialized ? [serialized] : [];
+	});
 }

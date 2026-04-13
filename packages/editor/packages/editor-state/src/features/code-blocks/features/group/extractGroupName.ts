@@ -1,4 +1,4 @@
-import { parseDirectiveComment } from '../directives/utils';
+import { parseDirectiveComments } from '../directives/utils';
 
 /**
  * Extracts group name from code block lines.
@@ -15,9 +15,10 @@ import { parseDirectiveComment } from '../directives/utils';
  */
 export function extractGroupName(code: string[]): string | undefined {
 	for (const line of code) {
-		const parsed = parseDirectiveComment(line);
-		if (parsed?.name === 'group' && parsed.args[0]) {
-			return parsed.args[0];
+		for (const parsed of parseDirectiveComments(line)) {
+			if (parsed.name === 'group' && parsed.args[0]) {
+				return parsed.args[0];
+			}
 		}
 	}
 	return undefined;

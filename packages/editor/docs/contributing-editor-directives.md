@@ -184,7 +184,12 @@ handles the common syntax:
 
 ```txt
 ; @directiveName argument1 argument2 ...
+; @directiveName argument1 @otherDirective
 ```
+
+Multiple directives may share one comment line. Shared syntax utilities parse
+one directive record per `@name` or `~name` token, and source-editing helpers
+must preserve unrelated directives on the same line.
 
 Directives should not re-parse their own comment syntax.
 

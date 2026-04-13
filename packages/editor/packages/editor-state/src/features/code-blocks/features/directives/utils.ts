@@ -1,52 +1,91 @@
 import type { EditorDirectivePlugin, ParsedEditorDirective } from './types';
 import type { ParsedDirectiveRecord } from '~/types';
 
-const FULL_LINE_DIRECTIVE_RE = /^\s*;\s*([@~])(\w+)(?:\s+(.*\S))?\s*$/;
-const TRAILING_DIRECTIVE_RE = /;\s*@(\w+)(?:\s+(.*\S))?\s*$/;
-
-/**
- * Low-level directive line parser. Tries a full-line directive comment first
- * (`; @name` / `; ~name`), then a trailing inline editor directive (`; @name`
- * near the end of the line). Returns `undefined` when no directive pattern is
- * found.
- */
-export function parseDirectiveLine(
-	line: string
-):
-	| { prefix: '@' | '~'; name: string; args: string[]; isTrailing: false }
-	| { prefix: '@'; name: string; args: string[]; isTrailing: true }
-	| undefined {
-	const fullLineMatch = line.match(FULL_LINE_DIRECTIVE_RE);
-	if (fullLineMatch) {
-		const [, prefix, name, rawArgs] = fullLineMatch;
-		return {
-			prefix: prefix as '@' | '~',
-			name,
-			args: rawArgs ? rawArgs.trim().split(/\s+/) : [],
-			isTrailing: false,
-		};
-	}
-
-	const trailingMatch = line.match(TRAILING_DIRECTIVE_RE);
-	if (trailingMatch) {
-		const [, name, rawArgs] = trailingMatch;
-		return {
-			prefix: '@',
-			name,
-			args: rawArgs ? rawArgs.trim().split(/\s+/) : [],
-			isTrailing: true,
-		};
-	}
-
-	return undefined;
+export interface DirectiveComment {
+	name: string;
+	args: string[];
 }
 
-export function parseDirectiveComment(line: string): { name: string; args: string[] } | undefined {
-	const parsed = parseDirectiveLine(line);
-	if (!parsed || parsed.isTrailing || parsed.prefix !== '@') {
+type ParsedDirectiveLineRecord =
+	| { prefix: '@' | '~'; name: string; args: string[]; isTrailing: false }
+	| { prefix: '@'; name: string; args: string[]; isTrailing: true };
+
+function parseDirectiveCommentSegment(segment: string, isTrailing: boolean): ParsedDirectiveLineRecord[] {
+	const trimmed = segment.trim();
+	if (!trimmed) {
+		return [];
+	}
+
+	const tokens = trimmed.split(/\s+/);
+	const directives: ParsedDirectiveLineRecord[] = [];
+	let current: ParsedDirectiveLineRecord | undefined;
+
+	for (const token of tokens) {
+		const directiveMatch = token.match(/^([@~])(\w+)$/);
+		if (directiveMatch) {
+			const [, prefix, name] = directiveMatch;
+			if (isTrailing && prefix !== '@') {
+				return [];
+			}
+
+			if (current) {
+				directives.push(current);
+			}
+
+			current = {
+				prefix: prefix as '@' | '~',
+				name,
+				args: [],
+				isTrailing,
+			} as ParsedDirectiveLineRecord;
+			continue;
+		}
+
+		if (!current) {
+			return [];
+		}
+
+		current.args.push(token);
+	}
+
+	if (current) {
+		directives.push(current);
+	}
+
+	return directives;
+}
+
+export function parseDirectiveLineRecords(line: string): ParsedDirectiveLineRecord[] {
+	if (/^\s*;/.test(line)) {
+		return parseDirectiveCommentSegment(line.replace(/^\s*;\s*/, ''), false);
+	}
+
+	const commentStart = line.indexOf(';');
+	if (commentStart === -1) {
+		return [];
+	}
+
+	return parseDirectiveCommentSegment(line.slice(commentStart + 1), true);
+}
+
+export function parseDirectiveComments(line: string): DirectiveComment[] {
+	return parseDirectiveLineRecords(line).flatMap(parsed => {
+		if (parsed.isTrailing || parsed.prefix !== '@') {
+			return [];
+		}
+
+		return [{ name: parsed.name, args: parsed.args }];
+	});
+}
+
+export function serializeDirectiveComments(directives: DirectiveComment[]): string | undefined {
+	if (directives.length === 0) {
 		return undefined;
 	}
-	return { name: parsed.name, args: parsed.args };
+
+	return `; ${directives
+		.map(({ name, args }) => (args.length > 0 ? `@${name} ${args.join(' ')}` : `@${name}`))
+		.join(' ')}`;
 }
 
 export function createDirectivePlugin(
@@ -106,25 +145,19 @@ export function normalizeEditorDirectiveRecords(
 export function parseEditorDirectives(code: string[], plugins: EditorDirectivePlugin[]): ParsedEditorDirective[] {
 	return normalizeEditorDirectiveRecords(
 		code.flatMap((line, rawRow) => {
-			const parsed = parseDirectiveLine(line);
-			if (!parsed) {
-				return [];
-			}
-			return [
-				{
-					prefix: parsed.prefix,
-					name: parsed.name,
-					args: parsed.args,
-					rawRow,
-					sourceLine: line,
-					isTrailing: parsed.isTrailing,
-				},
-			];
+			return parseDirectiveLineRecords(line).map(parsed => ({
+				prefix: parsed.prefix,
+				name: parsed.name,
+				args: parsed.args,
+				rawRow,
+				sourceLine: line,
+				isTrailing: parsed.isTrailing,
+			}));
 		}),
 		plugins
 	);
 }
 
 export function hasDirective(code: string[], name: string): boolean {
-	return code.some(line => parseDirectiveComment(line)?.name === name);
+	return code.some(line => parseDirectiveComments(line).some(directive => directive.name === name));
 }

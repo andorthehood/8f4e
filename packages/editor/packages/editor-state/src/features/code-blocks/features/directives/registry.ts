@@ -144,6 +144,15 @@ if (import.meta.vitest) {
 			expect(result).toEqual([{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' }]);
 		});
 
+		it('parses chained directives from a single full-line comment', () => {
+			const result = parseEditorDirectives(['; @home @favorite'], directivePlugins);
+
+			expect(result).toEqual([
+				{ name: 'home', rawRow: 0, args: [], sourceLine: '; @home @favorite' },
+				{ name: 'favorite', rawRow: 0, args: [], sourceLine: '; @home @favorite' },
+			]);
+		});
+
 		it('normalizes plugin aliases during parsing', () => {
 			const result = parseEditorDirectives(['; @w value'], directivePlugins);
 
