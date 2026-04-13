@@ -78,6 +78,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const displayModel = directiveState.displayModel;
 
 		graphicData.disabled = directiveState.blockState.disabled;
+		graphicData.hidden = directiveState.blockState.hidden && state.graphicHelper.selectedCodeBlock !== graphicData;
 		graphicData.isHome = directiveState.blockState.isHome;
 		graphicData.isFavorite = directiveState.blockState.isFavorite;
 		graphicData.opacity = directiveState.blockState.opacity;
@@ -276,6 +277,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				creationIndex,
 				blockType,
 				disabled: directiveState.blockState.disabled,
+				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,
 				isFavorite: directiveState.blockState.isFavorite,
 				opacity: directiveState.blockState.opacity,

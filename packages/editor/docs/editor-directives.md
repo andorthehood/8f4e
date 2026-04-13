@@ -356,6 +356,22 @@ Notes:
 - If multiple valid `@hide` directives exist, the first one wins.
 - Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
 
+### `@hidden`
+
+Hide the entire code block from rendering until it is selected.
+
+```txt
+; @hidden
+```
+
+Notes:
+
+- While the block is unselected, it is not rendered.
+- Selecting the block makes it visible again.
+- When selection moves away, it becomes hidden again.
+- Directives with arguments are ignored.
+- Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
+
 ### `@disabled`
 
 Mark a code block as disabled to exclude it from compilation.

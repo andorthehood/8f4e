@@ -48,6 +48,10 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			codeBlock.offsetY = 0;
 		}
 
+		if (codeBlock.hidden) {
+			continue;
+		}
+
 		if (
 			codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
 			codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&

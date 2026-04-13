@@ -40,7 +40,7 @@ if (import.meta.vitest) {
 	describe('gaps', () => {
 		it('inserts directive gaps using display rows', async () => {
 			const directiveState: DirectiveDerivedState = {
-				blockState: { disabled: false, isHome: false, isFavorite: false, opacity: 1 },
+				blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
 				displayState: {},
 				displayModel: {
 					lines: [
@@ -70,7 +70,7 @@ if (import.meta.vitest) {
 
 		it('skips gaps for raw rows hidden from the display model', async () => {
 			const directiveState: DirectiveDerivedState = {
-				blockState: { disabled: false, isHome: false, isFavorite: false, opacity: 1 },
+				blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
 				displayState: {},
 				displayModel: {
 					lines: [

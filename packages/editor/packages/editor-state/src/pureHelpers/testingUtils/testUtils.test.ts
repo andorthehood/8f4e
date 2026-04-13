@@ -11,6 +11,7 @@ import type { CodeBlockGraphicData } from '~/types';
 function normalizeBlock(block: CodeBlockGraphicData) {
 	const normalizedBlock = { ...block };
 	delete normalizedBlock.isCollapsed;
+	delete normalizedBlock.hidden;
 
 	return {
 		...normalizedBlock,
