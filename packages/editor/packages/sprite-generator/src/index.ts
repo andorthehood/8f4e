@@ -13,6 +13,8 @@ import { fontMetadata as ascii8x16Metadata } from './fonts/ibmvga8x16/generated/
 import { fontMetadata as glyphs8x16Metadata } from './fonts/ibmvga8x16/generated/glyphs';
 import defaultColorScheme from './defaultColorScheme';
 
+import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii';
+
 export { Icon } from './icons';
 export { FONT_NAMES } from './types';
 export type { ColorScheme, Font } from './types';
@@ -26,14 +28,238 @@ type FontData = {
 	characterHeight: number;
 };
 
-// ibmvga8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
-const fontCache: Partial<Record<Config['font'], FontData>> = {
-	ibmvga8x16: {
-		asciiBitmap: decodeFontBase64(ascii8x16Metadata),
-		glyphsBitmap: decodeFontBase64(glyphs8x16Metadata),
+type FontMetadataSet = {
+	asciiMetadata: FontMetadata;
+	glyphsMetadata: FontMetadata;
+};
+
+type FontDefinition = {
+	characterWidth: number;
+	characterHeight: number;
+	loadMetadata: () => Promise<FontMetadataSet>;
+};
+
+const FONT_DEFINITIONS: Record<Config['font'], FontDefinition> = {
+	attpc63008x16: {
 		characterWidth: 8,
 		characterHeight: 16,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/attpc63008x16/generated/ascii'),
+				import('./fonts/attpc63008x16/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
 	},
+	'6x10': {
+		characterWidth: 6,
+		characterHeight: 10,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/6x10/generated/ascii'),
+				import('./fonts/6x10/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	ibmvga8x16: {
+		characterWidth: 8,
+		characterHeight: 16,
+		loadMetadata: async () => ({
+			asciiMetadata: ascii8x16Metadata,
+			glyphsMetadata: glyphs8x16Metadata,
+		}),
+	},
+	nix8810m168x16: {
+		characterWidth: 8,
+		characterHeight: 16,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/nix8810m168x16/generated/ascii'),
+				import('./fonts/nix8810m168x16/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	olivettithin8x16: {
+		characterWidth: 8,
+		characterHeight: 16,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/olivettithin8x16/generated/ascii'),
+				import('./fonts/olivettithin8x16/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	spleen5x8: {
+		characterWidth: 5,
+		characterHeight: 8,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/spleen5x8/generated/ascii'),
+				import('./fonts/spleen5x8/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	spleen6x12: {
+		characterWidth: 6,
+		characterHeight: 12,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/spleen6x12/generated/ascii'),
+				import('./fonts/spleen6x12/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	spleen8x16: {
+		characterWidth: 8,
+		characterHeight: 16,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/spleen8x16/generated/ascii'),
+				import('./fonts/spleen8x16/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	spleen12x24: {
+		characterWidth: 12,
+		characterHeight: 24,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/spleen12x24/generated/ascii'),
+				import('./fonts/spleen12x24/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	spleen16x32: {
+		characterWidth: 16,
+		characterHeight: 32,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/spleen16x32/generated/ascii'),
+				import('./fonts/spleen16x32/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	terminus8x16: {
+		characterWidth: 8,
+		characterHeight: 16,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/terminus8x16/generated/ascii'),
+				import('./fonts/terminus8x16/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	terminus8x16bold: {
+		characterWidth: 8,
+		characterHeight: 16,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/terminus8x16bold/generated/ascii'),
+				import('./fonts/terminus8x16bold/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	terminus10x18: {
+		characterWidth: 10,
+		characterHeight: 18,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/terminus10x18/generated/ascii'),
+				import('./fonts/terminus10x18/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	terminus10x18bold: {
+		characterWidth: 10,
+		characterHeight: 18,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/terminus10x18bold/generated/ascii'),
+				import('./fonts/terminus10x18bold/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	kana12x13: {
+		characterWidth: 12,
+		characterHeight: 13,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/kana12x13/generated/ascii'),
+				import('./fonts/kana12x13/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	terminus12x24: {
+		characterWidth: 12,
+		characterHeight: 24,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/terminus12x24/generated/ascii'),
+				import('./fonts/terminus12x24/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+	terminus12x24bold: {
+		characterWidth: 12,
+		characterHeight: 24,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/terminus12x24bold/generated/ascii'),
+				import('./fonts/terminus12x24bold/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
+};
+
+function decodeFontData({ asciiMetadata, glyphsMetadata }: FontMetadataSet, definition: FontDefinition): FontData {
+	return {
+		asciiBitmap: decodeFontBase64(asciiMetadata),
+		glyphsBitmap: decodeFontBase64(glyphsMetadata),
+		characterWidth: definition.characterWidth,
+		characterHeight: definition.characterHeight,
+	};
+}
+
+// ibmvga8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
+const fontCache: Partial<Record<Config['font'], FontData>> = {
+	ibmvga8x16: decodeFontData(
+		{
+			asciiMetadata: ascii8x16Metadata,
+			glyphsMetadata: glyphs8x16Metadata,
+		},
+		FONT_DEFINITIONS.ibmvga8x16
+	),
 };
 
 // Lazily load and decode an alternate font, caching the result so it is decoded at most once.
@@ -41,177 +267,13 @@ async function loadFont(font: Config['font']): Promise<FontData> {
 	if (fontCache[font]) {
 		return fontCache[font]!;
 	}
-	if (font === '6x10') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/6x10/generated/ascii'),
-			import('./fonts/6x10/generated/glyphs'),
-		]);
-		fontCache['6x10'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 6,
-			characterHeight: 10,
-		};
-		return fontCache['6x10'];
-	}
-	if (font === 'spleen5x8') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/spleen5x8/generated/ascii'),
-			import('./fonts/spleen5x8/generated/glyphs'),
-		]);
-		fontCache['spleen5x8'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 5,
-			characterHeight: 8,
-		};
-		return fontCache['spleen5x8'];
-	}
-	if (font === 'spleen6x12') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/spleen6x12/generated/ascii'),
-			import('./fonts/spleen6x12/generated/glyphs'),
-		]);
-		fontCache['spleen6x12'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 6,
-			characterHeight: 12,
-		};
-		return fontCache['spleen6x12'];
-	}
-	if (font === 'terminus8x16') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/terminus8x16/generated/ascii'),
-			import('./fonts/terminus8x16/generated/glyphs'),
-		]);
-		fontCache['terminus8x16'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 8,
-			characterHeight: 16,
-		};
-		return fontCache['terminus8x16'];
-	}
-	if (font === 'spleen8x16') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/spleen8x16/generated/ascii'),
-			import('./fonts/spleen8x16/generated/glyphs'),
-		]);
-		fontCache['spleen8x16'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 8,
-			characterHeight: 16,
-		};
-		return fontCache['spleen8x16'];
-	}
-	if (font === 'terminus8x16bold') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/terminus8x16bold/generated/ascii'),
-			import('./fonts/terminus8x16bold/generated/glyphs'),
-		]);
-		fontCache['terminus8x16bold'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 8,
-			characterHeight: 16,
-		};
-		return fontCache['terminus8x16bold'];
-	}
-	if (font === 'terminus10x18') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/terminus10x18/generated/ascii'),
-			import('./fonts/terminus10x18/generated/glyphs'),
-		]);
-		fontCache['terminus10x18'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 10,
-			characterHeight: 18,
-		};
-		return fontCache['terminus10x18'];
-	}
-	if (font === 'terminus10x18bold') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/terminus10x18bold/generated/ascii'),
-			import('./fonts/terminus10x18bold/generated/glyphs'),
-		]);
-		fontCache['terminus10x18bold'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 10,
-			characterHeight: 18,
-		};
-		return fontCache['terminus10x18bold'];
-	}
-	if (font === 'kana12x13') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/kana12x13/generated/ascii'),
-			import('./fonts/kana12x13/generated/glyphs'),
-		]);
-		fontCache['kana12x13'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 12,
-			characterHeight: 13,
-		};
-		return fontCache['kana12x13'];
-	}
-	if (font === 'spleen12x24') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/spleen12x24/generated/ascii'),
-			import('./fonts/spleen12x24/generated/glyphs'),
-		]);
-		fontCache['spleen12x24'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 12,
-			characterHeight: 24,
-		};
-		return fontCache['spleen12x24'];
-	}
-	if (font === 'terminus12x24') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/terminus12x24/generated/ascii'),
-			import('./fonts/terminus12x24/generated/glyphs'),
-		]);
-		fontCache['terminus12x24'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 12,
-			characterHeight: 24,
-		};
-		return fontCache['terminus12x24'];
-	}
-	if (font === 'terminus12x24bold') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/terminus12x24bold/generated/ascii'),
-			import('./fonts/terminus12x24bold/generated/glyphs'),
-		]);
-		fontCache['terminus12x24bold'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 12,
-			characterHeight: 24,
-		};
-		return fontCache['terminus12x24bold'];
-	}
-	if (font === 'spleen16x32') {
-		const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-			import('./fonts/spleen16x32/generated/ascii'),
-			import('./fonts/spleen16x32/generated/glyphs'),
-		]);
-		fontCache['spleen16x32'] = {
-			asciiBitmap: decodeFontBase64(asciiMetadata),
-			glyphsBitmap: decodeFontBase64(glyphsMetadata),
-			characterWidth: 16,
-			characterHeight: 32,
-		};
-		return fontCache['spleen16x32'];
-	}
 
-	throw new Error(`Unsupported font '${font}'`);
+	const definition = FONT_DEFINITIONS[font];
+	const metadata = await definition.loadMetadata();
+	const fontData = decodeFontData(metadata, definition);
+
+	fontCache[font] = fontData;
+	return fontData;
 }
 
 export interface SpriteLookups extends FontLookups {

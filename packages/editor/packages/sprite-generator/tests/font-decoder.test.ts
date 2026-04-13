@@ -1,8 +1,14 @@
 import { describe, it, expect } from 'vitest';
 
 import decodeFontBase64 from '../src/fonts/font-decoder';
+import { fontMetadata as asciiAttPc63008x16Metadata } from '../src/fonts/attpc63008x16/generated/ascii';
+import { fontMetadata as glyphsAttPc63008x16Metadata } from '../src/fonts/attpc63008x16/generated/glyphs';
 import { fontMetadata as ascii8x16Metadata } from '../src/fonts/ibmvga8x16/generated/ascii';
 import { fontMetadata as glyphs8x16Metadata } from '../src/fonts/ibmvga8x16/generated/glyphs';
+import { fontMetadata as asciiNix8810M168x16Metadata } from '../src/fonts/nix8810m168x16/generated/ascii';
+import { fontMetadata as glyphsNix8810M168x16Metadata } from '../src/fonts/nix8810m168x16/generated/glyphs';
+import { fontMetadata as asciiOlivettiThin8x16Metadata } from '../src/fonts/olivettithin8x16/generated/ascii';
+import { fontMetadata as glyphsOlivettiThin8x16Metadata } from '../src/fonts/olivettithin8x16/generated/glyphs';
 import { fontMetadata as asciiTerminus8x16Metadata } from '../src/fonts/terminus8x16/generated/ascii';
 import { fontMetadata as glyphsTerminus8x16Metadata } from '../src/fonts/terminus8x16/generated/glyphs';
 import { fontMetadata as asciiTerminus8x16BoldMetadata } from '../src/fonts/terminus8x16bold/generated/ascii';
@@ -20,6 +26,60 @@ import { fontMetadata as glyphsTerminus12x24BoldMetadata } from '../src/fonts/te
 
 describe('font-decoder', () => {
 	describe('decodeFontBase64', () => {
+		it('should decode attpc63008x16 ASCII font correctly', () => {
+			const decoded = decodeFontBase64(asciiAttPc63008x16Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(asciiAttPc63008x16Metadata.glyphCount * asciiAttPc63008x16Metadata.characterHeight);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
+		it('should decode attpc63008x16 glyphs font correctly', () => {
+			const decoded = decodeFontBase64(glyphsAttPc63008x16Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(glyphsAttPc63008x16Metadata.glyphCount * glyphsAttPc63008x16Metadata.characterHeight);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
+		it('should decode nix8810m168x16 ASCII font correctly', () => {
+			const decoded = decodeFontBase64(asciiNix8810M168x16Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(asciiNix8810M168x16Metadata.glyphCount * asciiNix8810M168x16Metadata.characterHeight);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
+		it('should decode nix8810m168x16 glyphs font correctly', () => {
+			const decoded = decodeFontBase64(glyphsNix8810M168x16Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(
+				glyphsNix8810M168x16Metadata.glyphCount * glyphsNix8810M168x16Metadata.characterHeight
+			);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
+		it('should decode olivettithin8x16 ASCII font correctly', () => {
+			const decoded = decodeFontBase64(asciiOlivettiThin8x16Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(
+				asciiOlivettiThin8x16Metadata.glyphCount * asciiOlivettiThin8x16Metadata.characterHeight
+			);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
+		it('should decode olivettithin8x16 glyphs font correctly', () => {
+			const decoded = decodeFontBase64(glyphsOlivettiThin8x16Metadata);
+
+			expect(decoded).toBeInstanceOf(Array);
+			expect(decoded.length).toBe(
+				glyphsOlivettiThin8x16Metadata.glyphCount * glyphsOlivettiThin8x16Metadata.characterHeight
+			);
+			expect(decoded.every(val => typeof val === 'number')).toBe(true);
+		});
+
 		it('should decode 8x16 ASCII font correctly', () => {
 			const decoded = decodeFontBase64(ascii8x16Metadata);
 
@@ -200,6 +260,21 @@ describe('font-decoder', () => {
 		});
 
 		it('should decode metadata correctly', () => {
+			expect(asciiAttPc63008x16Metadata.characterWidth).toBe(8);
+			expect(asciiAttPc63008x16Metadata.characterHeight).toBe(16);
+			expect(asciiAttPc63008x16Metadata.glyphCount).toBe(128);
+			expect(asciiAttPc63008x16Metadata.bytesPerValue).toBe(1);
+
+			expect(asciiNix8810M168x16Metadata.characterWidth).toBe(8);
+			expect(asciiNix8810M168x16Metadata.characterHeight).toBe(16);
+			expect(asciiNix8810M168x16Metadata.glyphCount).toBe(128);
+			expect(asciiNix8810M168x16Metadata.bytesPerValue).toBe(1);
+
+			expect(asciiOlivettiThin8x16Metadata.characterWidth).toBe(8);
+			expect(asciiOlivettiThin8x16Metadata.characterHeight).toBe(16);
+			expect(asciiOlivettiThin8x16Metadata.glyphCount).toBe(128);
+			expect(asciiOlivettiThin8x16Metadata.bytesPerValue).toBe(1);
+
 			expect(ascii8x16Metadata.characterWidth).toBe(8);
 			expect(ascii8x16Metadata.characterHeight).toBe(16);
 			expect(ascii8x16Metadata.glyphCount).toBe(128);

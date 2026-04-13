@@ -200,7 +200,10 @@ async function main() {
   console.log("=====================\n");
 
   const fonts = [
+    { name: "attpc63008x16", width: 8, height: 16 },
     { name: "ibmvga8x16", width: 8, height: 16 },
+    { name: "nix8810m168x16", width: 8, height: 16 },
+    { name: "olivettithin8x16", width: 8, height: 16 },
     { name: "spleen5x8", width: 5, height: 8 },
     { name: "spleen6x12", width: 6, height: 12 },
     { name: "terminus8x16", width: 8, height: 16 },
