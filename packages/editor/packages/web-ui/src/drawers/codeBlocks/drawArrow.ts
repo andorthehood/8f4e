@@ -8,7 +8,7 @@ import type { CodeBlockGraphicData } from '@8f4e/editor-state';
 const ARROW_CHARACTERS = {
 	top: '^',
 	right: '>',
-	bottom: 'V',
+	bottom: 'v',
 	left: '<',
 } as const;
 
