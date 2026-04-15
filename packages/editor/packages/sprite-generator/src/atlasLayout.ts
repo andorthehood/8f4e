@@ -3,6 +3,7 @@ import type { SpriteCoordinates } from 'glugglug';
 export const TEXT_COLOR_NAMES = [
 	'lineNumber',
 	'debugInfo',
+	'arrow',
 	'instruction',
 	'codeComment',
 	'code',
@@ -47,7 +48,7 @@ const BACKGROUND_ROWS = 32;
 const PIANO_ROWS = 5;
 const FEEDBACK_SCALE_SLOT_COUNT = 6;
 const FEEDBACK_SCALE_ITEM_COLUMNS = 3;
-const ICON_CHARACTER_WIDTHS = [3, 4, 4, 1, 1, 1, 1] as const;
+const ICON_CHARACTER_WIDTHS = [3, 4, 4] as const;
 const PIANO_GROUP_COUNT = 12;
 const PIANO_STATE_COUNT = 3;
 

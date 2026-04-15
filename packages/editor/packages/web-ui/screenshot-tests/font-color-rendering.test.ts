@@ -30,6 +30,7 @@ test('font color rendering', async () => {
 	const colors = [
 		'fontBinaryOne',
 		'fontBinaryZero',
+		'fontArrow',
 		'fontCode',
 		'fontCodeComment',
 		'fontErrorMessage',

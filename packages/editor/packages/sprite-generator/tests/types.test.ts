@@ -146,7 +146,6 @@ describe('Types and Enums', () => {
 			expect(iconKeys).toContain('feedbackScale3');
 			expect(iconKeys).toContain('feedbackScale4');
 			expect(iconKeys).toContain('feedbackScale5');
-			expect(iconKeys).toContain('arrow');
 			expect(iconKeys).toContain('pianoKeyWhite');
 			expect(iconKeys).toContain('pianoKeyWhiteHighlighted');
 			expect(iconKeys).toContain('pianoKeyWhitePressed');

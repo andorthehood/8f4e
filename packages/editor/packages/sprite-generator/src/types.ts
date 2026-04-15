@@ -23,6 +23,7 @@ export interface ColorScheme {
 	text: {
 		lineNumber: string;
 		debugInfo: string;
+		arrow: string;
 		instruction: string;
 		codeComment: string;
 		code: string;
@@ -72,7 +73,6 @@ export interface ColorScheme {
 		feedbackScale3: string;
 		feedbackScale4: string;
 		feedbackScale5: string;
-		arrow: string;
 		pianoKeyWhite: string;
 		pianoKeyWhiteHighlighted: string;
 		pianoKeyWhitePressed: string;

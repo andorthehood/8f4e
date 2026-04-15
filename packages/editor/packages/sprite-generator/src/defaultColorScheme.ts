@@ -7,6 +7,7 @@ const defaultColorScheme: ColorScheme = {
 	text: {
 		lineNumber: '#999999',
 		debugInfo: '#999999',
+		arrow: '#ffffff',
 		instruction: '#ffffff',
 		codeComment: '#666666',
 		code: '#cccccc',
@@ -56,7 +57,6 @@ const defaultColorScheme: ColorScheme = {
 		feedbackScale3: '#660099',
 		feedbackScale4: '#3300cc',
 		feedbackScale5: '#0000ff',
-		arrow: '#ffffff',
 		pianoKeyWhite: '#000000',
 		pianoKeyWhiteHighlighted: '#ff0000',
 		pianoKeyWhitePressed: '#000000',
