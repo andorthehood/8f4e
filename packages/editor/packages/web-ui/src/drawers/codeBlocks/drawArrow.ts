@@ -1,10 +1,16 @@
 import { Engine } from 'glugglug';
-import { Icon } from '@8f4e/sprite-generator';
 
 import { calculateArrowPlacement } from './arrowPlacement';
 
 import type { State } from '@8f4e/editor-state';
 import type { CodeBlockGraphicData } from '@8f4e/editor-state';
+
+const ARROW_CHARACTERS = {
+	top: '^',
+	right: '>',
+	bottom: 'V',
+	left: '<',
+} as const;
 
 /**
  * Draws directional arrow indicators for an off-screen code block.
@@ -17,23 +23,23 @@ import type { CodeBlockGraphicData } from '@8f4e/editor-state';
 export default function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state: State): void {
 	const arrowPlacement = calculateArrowPlacement(codeBlock, state);
 
-	if (state.graphicHelper.spriteLookups) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+	if (state.graphicHelper.spriteLookups?.fontArrow) {
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontArrow);
 	}
 
 	if (arrowPlacement.top) {
-		engine.drawSprite(arrowPlacement.top.x, arrowPlacement.top.y, Icon.ARROW_TOP);
+		engine.drawText(arrowPlacement.top.x, arrowPlacement.top.y, ARROW_CHARACTERS.top);
 	}
 
 	if (arrowPlacement.right) {
-		engine.drawSprite(arrowPlacement.right.x - state.viewport.vGrid, arrowPlacement.right.y, Icon.ARROW_RIGHT);
+		engine.drawText(arrowPlacement.right.x - state.viewport.vGrid, arrowPlacement.right.y, ARROW_CHARACTERS.right);
 	}
 
 	if (arrowPlacement.bottom) {
-		engine.drawSprite(arrowPlacement.bottom.x, arrowPlacement.bottom.y - state.viewport.hGrid, Icon.ARROW_BOTTOM);
+		engine.drawText(arrowPlacement.bottom.x, arrowPlacement.bottom.y - state.viewport.hGrid, ARROW_CHARACTERS.bottom);
 	}
 
 	if (arrowPlacement.left) {
-		engine.drawSprite(arrowPlacement.left.x, arrowPlacement.left.y, Icon.ARROW_LEFT);
+		engine.drawText(arrowPlacement.left.x, arrowPlacement.left.y, ARROW_CHARACTERS.left);
 	}
 }

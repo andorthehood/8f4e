@@ -7,6 +7,7 @@ export const minimalColorScheme: ColorScheme = {
 	text: {
 		lineNumber: '#333333',
 		debugInfo: '#333333',
+		arrow: '#ffffff',
 		instruction: '#887ecb',
 		codeComment: '#666666',
 		code: '#ffffff',
@@ -56,7 +57,6 @@ export const minimalColorScheme: ColorScheme = {
 		feedbackScale3: '#660099',
 		feedbackScale4: '#3300cc',
 		feedbackScale5: '#0000ff',
-		arrow: '#000000',
 		pianoKeyWhite: '#ffffff',
 		pianoKeyWhiteHighlighted: '#ff0000',
 		pianoKeyWhitePressed: '#cccccc',
