@@ -141,19 +141,19 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 				// Viewport-anchored: convert dragged world-space position back to anchored @pos offset coordinates.
 				// x/y pixel position is not snapped here; it will be recomputed by updateGraphics() using the
 				// updated gridX/gridY anchored offsets after the code edit triggers a re-render.
-				const anchored = worldPositionToAnchoredPos(
-					block.viewportAnchor,
-					block.x,
-					block.y,
-					state.viewport.x,
-					state.viewport.y,
-					state.viewport.roundedWidth,
-					state.viewport.roundedHeight,
-					block.width,
-					block.height,
+				const anchored = worldPositionToAnchoredPos({
+					anchor: block.viewportAnchor,
+					worldX: block.x,
+					worldY: block.y,
+					viewportX: state.viewport.x,
+					viewportY: state.viewport.y,
+					viewportWidth: state.viewport.roundedWidth,
+					viewportHeight: state.viewport.roundedHeight,
+					blockWidth: block.width,
+					blockHeight: block.height,
 					vGrid,
-					hGrid
-				);
+					hGrid,
+				});
 				gridX = anchored.gridX;
 				gridY = anchored.gridY;
 			} else {

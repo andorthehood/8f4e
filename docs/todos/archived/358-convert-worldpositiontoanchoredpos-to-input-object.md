@@ -3,8 +3,8 @@ title: 'TODO: Convert worldPositionToAnchoredPos to use an input object'
 priority: Low
 effort: 1 hour
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-15
 ---
 
 # TODO: Convert worldPositionToAnchoredPos to use an input object

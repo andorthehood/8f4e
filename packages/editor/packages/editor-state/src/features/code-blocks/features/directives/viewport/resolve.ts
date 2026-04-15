@@ -23,6 +23,20 @@ export interface ViewportAnchoredPositionInput {
 	hGrid: number;
 }
 
+export interface WorldToAnchoredPosInput {
+	anchor: ViewportAnchor;
+	worldX: number;
+	worldY: number;
+	viewportX: number;
+	viewportY: number;
+	viewportWidth: number;
+	viewportHeight: number;
+	blockWidth: number;
+	blockHeight: number;
+	vGrid: number;
+	hGrid: number;
+}
+
 /**
  * Resolves the world-space pixel position of a viewport-anchored code block.
  *
@@ -125,19 +139,19 @@ export function resolveViewportAnchoredPosition(input: ViewportAnchoredPositionI
  * This is the inverse of resolveViewportAnchoredPosition (without clamping).
  * Used when a viewport-anchored block is dragged to write back the new @pos.
  */
-export function worldPositionToAnchoredPos(
-	anchor: ViewportAnchor,
-	worldX: number,
-	worldY: number,
-	viewportX: number,
-	viewportY: number,
-	viewportWidth: number,
-	viewportHeight: number,
-	blockWidth: number,
-	blockHeight: number,
-	vGrid: number,
-	hGrid: number
-): { gridX: number; gridY: number } {
+export function worldPositionToAnchoredPos({
+	anchor,
+	worldX,
+	worldY,
+	viewportX,
+	viewportY,
+	viewportWidth,
+	viewportHeight,
+	blockWidth,
+	blockHeight,
+	vGrid,
+	hGrid,
+}: WorldToAnchoredPosInput): { gridX: number; gridY: number } {
 	const screenX = worldX - viewportX;
 	const screenY = worldY - viewportY;
 
@@ -277,73 +291,73 @@ if (import.meta.vitest) {
 	describe('worldPositionToAnchoredPos', () => {
 		it('round-trips top-left', () => {
 			const { x, y } = resolveViewportAnchoredPosition({ ...base, anchor: 'top-left', posX: 3, posY: 2 });
-			const result = worldPositionToAnchoredPos(
-				'top-left',
-				x,
-				y,
-				base.viewportX,
-				base.viewportY,
-				base.viewportWidth,
-				base.viewportHeight,
-				base.blockWidth,
-				base.blockHeight,
-				base.vGrid,
-				base.hGrid
-			);
+			const result = worldPositionToAnchoredPos({
+				anchor: 'top-left',
+				worldX: x,
+				worldY: y,
+				viewportX: base.viewportX,
+				viewportY: base.viewportY,
+				viewportWidth: base.viewportWidth,
+				viewportHeight: base.viewportHeight,
+				blockWidth: base.blockWidth,
+				blockHeight: base.blockHeight,
+				vGrid: base.vGrid,
+				hGrid: base.hGrid,
+			});
 			expect(result).toEqual({ gridX: 3, gridY: 2 });
 		});
 
 		it('round-trips top-right', () => {
 			const { x, y } = resolveViewportAnchoredPosition({ ...base, anchor: 'top-right', posX: 3, posY: 2 });
-			const result = worldPositionToAnchoredPos(
-				'top-right',
-				x,
-				y,
-				base.viewportX,
-				base.viewportY,
-				base.viewportWidth,
-				base.viewportHeight,
-				base.blockWidth,
-				base.blockHeight,
-				base.vGrid,
-				base.hGrid
-			);
+			const result = worldPositionToAnchoredPos({
+				anchor: 'top-right',
+				worldX: x,
+				worldY: y,
+				viewportX: base.viewportX,
+				viewportY: base.viewportY,
+				viewportWidth: base.viewportWidth,
+				viewportHeight: base.viewportHeight,
+				blockWidth: base.blockWidth,
+				blockHeight: base.blockHeight,
+				vGrid: base.vGrid,
+				hGrid: base.hGrid,
+			});
 			expect(result).toEqual({ gridX: 3, gridY: 2 });
 		});
 
 		it('round-trips bottom-left', () => {
 			const { x, y } = resolveViewportAnchoredPosition({ ...base, anchor: 'bottom-left', posX: 3, posY: 2 });
-			const result = worldPositionToAnchoredPos(
-				'bottom-left',
-				x,
-				y,
-				base.viewportX,
-				base.viewportY,
-				base.viewportWidth,
-				base.viewportHeight,
-				base.blockWidth,
-				base.blockHeight,
-				base.vGrid,
-				base.hGrid
-			);
+			const result = worldPositionToAnchoredPos({
+				anchor: 'bottom-left',
+				worldX: x,
+				worldY: y,
+				viewportX: base.viewportX,
+				viewportY: base.viewportY,
+				viewportWidth: base.viewportWidth,
+				viewportHeight: base.viewportHeight,
+				blockWidth: base.blockWidth,
+				blockHeight: base.blockHeight,
+				vGrid: base.vGrid,
+				hGrid: base.hGrid,
+			});
 			expect(result).toEqual({ gridX: 3, gridY: 2 });
 		});
 
 		it('round-trips bottom-right', () => {
 			const { x, y } = resolveViewportAnchoredPosition({ ...base, anchor: 'bottom-right', posX: 3, posY: 2 });
-			const result = worldPositionToAnchoredPos(
-				'bottom-right',
-				x,
-				y,
-				base.viewportX,
-				base.viewportY,
-				base.viewportWidth,
-				base.viewportHeight,
-				base.blockWidth,
-				base.blockHeight,
-				base.vGrid,
-				base.hGrid
-			);
+			const result = worldPositionToAnchoredPos({
+				anchor: 'bottom-right',
+				worldX: x,
+				worldY: y,
+				viewportX: base.viewportX,
+				viewportY: base.viewportY,
+				viewportWidth: base.viewportWidth,
+				viewportHeight: base.viewportHeight,
+				blockWidth: base.blockWidth,
+				blockHeight: base.blockHeight,
+				vGrid: base.vGrid,
+				hGrid: base.hGrid,
+			});
 			expect(result).toEqual({ gridX: 3, gridY: 2 });
 		});
 	});
