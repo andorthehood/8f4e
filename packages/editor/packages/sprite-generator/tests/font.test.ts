@@ -309,6 +309,7 @@ describe('font module', () => {
 
 			// Should have font lookups for all text color types
 			expect(lookups.fontLineNumber).toBeDefined();
+			expect(lookups.fontArrow).toBeDefined();
 			expect(lookups.fontInstruction).toBeDefined();
 			expect(lookups.fontCode).toBeDefined();
 			expect(lookups.fontErrorMessage).toBeDefined();
@@ -331,6 +332,7 @@ describe('font module', () => {
 
 			// Should have same font lookup types
 			expect(lookups.fontLineNumber).toBeDefined();
+			expect(lookups.fontArrow).toBeDefined();
 			expect(lookups.fontInstruction).toBeDefined();
 			expect(lookups.fontCode).toBeDefined();
 		});

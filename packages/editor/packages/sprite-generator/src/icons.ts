@@ -37,36 +37,12 @@ const icons = (
 		chars: [Glyph.CONNECTOR_LEFT, Glyph.SPACE, Glyph.SWITCH_KNOB, Glyph.CONNECTOR_RIGHT],
 		colors: [],
 	},
-	{
-		commandsBeforeRenderingGlyphs: [],
-		chars: [Glyph.ARROW_TOP],
-		colors: [colors?.arrow || ''],
-	},
-	{
-		commandsBeforeRenderingGlyphs: [],
-		chars: [Glyph.ARROW_RIGHT],
-		colors: [colors?.arrow || ''],
-	},
-	{
-		commandsBeforeRenderingGlyphs: [],
-		chars: [Glyph.ARROW_BOTTOM],
-		colors: [colors?.arrow || ''],
-	},
-	{
-		commandsBeforeRenderingGlyphs: [],
-		chars: [Glyph.ARROW_LEFT],
-		colors: [colors?.arrow || ''],
-	},
 ];
 
 export enum Icon {
 	INPUT,
 	SWITCH_OFF,
 	SWITCH_ON,
-	ARROW_TOP,
-	ARROW_RIGHT,
-	ARROW_BOTTOM,
-	ARROW_LEFT,
 }
 
 export default function generate(

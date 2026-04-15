@@ -21,15 +21,11 @@ describe('icons module', () => {
 			expect(Icon.INPUT).toBe(0);
 			expect(Icon.SWITCH_OFF).toBe(1);
 			expect(Icon.SWITCH_ON).toBe(2);
-			expect(Icon.ARROW_TOP).toBe(3);
-			expect(Icon.ARROW_RIGHT).toBe(4);
-			expect(Icon.ARROW_BOTTOM).toBe(5);
-			expect(Icon.ARROW_LEFT).toBe(6);
 		});
 
 		it('should have correct number of icon types', () => {
 			const iconKeys = Object.keys(Icon).filter(key => isNaN(Number(key)));
-			expect(iconKeys.length).toBe(7);
+			expect(iconKeys.length).toBe(3);
 		});
 	});
 
@@ -153,7 +149,6 @@ describe('icons module', () => {
 			const colorsWithUndefined = {
 				...minimalColorScheme.icons,
 				inputConnectorBackground: undefined as string | undefined,
-				arrow: undefined as string | undefined,
 			};
 
 			expect(() => {
@@ -180,14 +175,10 @@ describe('icons module', () => {
 			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Should have entries for all icon types
-			expect(Object.keys(lookup)).toHaveLength(7);
+			expect(Object.keys(lookup)).toHaveLength(3);
 			expect(lookup[Icon.INPUT]).toBeDefined();
 			expect(lookup[Icon.SWITCH_OFF]).toBeDefined();
 			expect(lookup[Icon.SWITCH_ON]).toBeDefined();
-			expect(lookup[Icon.ARROW_TOP]).toBeDefined();
-			expect(lookup[Icon.ARROW_RIGHT]).toBeDefined();
-			expect(lookup[Icon.ARROW_BOTTOM]).toBeDefined();
-			expect(lookup[Icon.ARROW_LEFT]).toBeDefined();
 		});
 
 		it('should generate correct sprite coordinates for INPUT icon', () => {
@@ -218,38 +209,17 @@ describe('icons module', () => {
 			expect(switchOnCoordinate.x).toBeGreaterThan(switchOffCoordinate.x);
 		});
 
-		it('should generate correct sprite coordinates for arrow icons', () => {
-			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
-
-			const arrowTopCoordinate = lookup[Icon.ARROW_TOP];
-			const arrowRightCoordinate = lookup[Icon.ARROW_RIGHT];
-			const arrowBottomCoordinate = lookup[Icon.ARROW_BOTTOM];
-			const arrowLeftCoordinate = lookup[Icon.ARROW_LEFT];
-
-			// All arrow icons should span 1 character
-			expect(arrowTopCoordinate.spriteWidth).toBe(characterDimensions8x16.width);
-			expect(arrowRightCoordinate.spriteWidth).toBe(characterDimensions8x16.width);
-			expect(arrowBottomCoordinate.spriteWidth).toBe(characterDimensions8x16.width);
-			expect(arrowLeftCoordinate.spriteWidth).toBe(characterDimensions8x16.width);
-
-			// Arrows should be positioned after switches
-			expect(arrowTopCoordinate.x).toBeGreaterThan(0);
-			expect(arrowRightCoordinate.x).toBeGreaterThan(arrowTopCoordinate.x);
-			expect(arrowBottomCoordinate.x).toBeGreaterThan(arrowRightCoordinate.x);
-			expect(arrowLeftCoordinate.x).toBeGreaterThan(arrowBottomCoordinate.x);
-		});
-
 		it('should generate correct coordinates for 6x10 characters', () => {
 			const lookup = generateLookup(characterDimensions6x10.width, characterDimensions6x10.height);
 
 			const inputCoordinate = lookup[Icon.INPUT];
-			const arrowCoordinate = lookup[Icon.ARROW_TOP];
+			const switchCoordinate = lookup[Icon.SWITCH_OFF];
 
 			// Should have correct dimensions for 6x10
 			expect(inputCoordinate.spriteHeight).toBe(characterDimensions6x10.height);
 			expect(inputCoordinate.spriteWidth).toBe(characterDimensions6x10.width * 3);
-			expect(arrowCoordinate.spriteHeight).toBe(characterDimensions6x10.height);
-			expect(arrowCoordinate.spriteWidth).toBe(characterDimensions6x10.width);
+			expect(switchCoordinate.spriteHeight).toBe(characterDimensions6x10.height);
+			expect(switchCoordinate.spriteWidth).toBe(characterDimensions6x10.width * 4);
 		});
 
 		it('should maintain consistent Y coordinates for all icons', () => {
