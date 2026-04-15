@@ -41,7 +41,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 		}
 		if (
 			!(referenceKind === 'plain' && isMemoryIdentifier(memory, value)) &&
-			!(referenceKind === 'memory-pointer' && isMemoryIdentifier(memory, argument.targetMemoryId!)) &&
+			!(referenceKind === 'memory-pointer' && isMemoryIdentifier(memory, argument.targetMemoryId)) &&
 			!context.locals[value]
 		) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: value });
