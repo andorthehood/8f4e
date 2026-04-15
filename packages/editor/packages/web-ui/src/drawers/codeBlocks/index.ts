@@ -33,6 +33,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 	engine.startGroup(offsetX, offsetY);
 
 	for (const codeBlock of state.graphicHelper.codeBlocks) {
+		const renderHiddenPreview = codeBlock.hidden && !state.graphicHelper.showHiddenCodeBlocks;
+
 		// Read position offsets from memory only if the feature is enabled
 		if (state.featureFlags.positionOffsetters) {
 			if (codeBlock.positionOffsetterXWordAddress) {
@@ -48,10 +50,6 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			codeBlock.offsetY = 0;
 		}
 
-		if (codeBlock.hidden && !state.graphicHelper.showHiddenCodeBlocks) {
-			continue;
-		}
-
 		if (
 			codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
 			codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
@@ -64,20 +62,22 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 				codeBlock.width,
 				codeBlock.height,
 				() => {
-					engine.setSpriteLookup(spriteLookups.fillColors);
+					if (!renderHiddenPreview) {
+						engine.setSpriteLookup(spriteLookups.fillColors);
 
-					if (codeBlock === state.graphicHelper.draggedCodeBlock) {
-						engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
-					} else if (codeBlock.disabled) {
-						engine.drawSprite(0, 0, 'moduleBackgroundDisabled', codeBlock.width, codeBlock.height);
-					} else {
-						engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
-					}
+						if (codeBlock === state.graphicHelper.draggedCodeBlock) {
+							engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
+						} else if (codeBlock.disabled) {
+							engine.drawSprite(0, 0, 'moduleBackgroundDisabled', codeBlock.width, codeBlock.height);
+						} else {
+							engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
+						}
 
-					drawBlockHighlights(engine, state, codeBlock);
+						drawBlockHighlights(engine, state, codeBlock);
 
-					if (state.featureFlags.codeLineSelection && state.graphicHelper.selectedCodeBlock === codeBlock) {
-						engine.drawSprite(0, codeBlock.cursor.y, 'highlightedCodeLine', codeBlock.width, state.viewport.hGrid);
+						if (state.featureFlags.codeLineSelection && state.graphicHelper.selectedCodeBlock === codeBlock) {
+							engine.drawSprite(0, codeBlock.cursor.y, 'highlightedCodeLine', codeBlock.width, state.viewport.hGrid);
+						}
 					}
 
 					engine.setSpriteLookup(
@@ -88,6 +88,10 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					engine.drawText(codeBlock.width - state.viewport.vGrid, 0, corner);
 					engine.drawText(0, codeBlock.height - state.viewport.hGrid, corner);
 					engine.drawText(codeBlock.width - state.viewport.vGrid, codeBlock.height - state.viewport.hGrid, corner);
+
+					if (renderHiddenPreview) {
+						return;
+					}
 
 					engine.setSpriteLookup(spriteLookups.fontCode);
 
