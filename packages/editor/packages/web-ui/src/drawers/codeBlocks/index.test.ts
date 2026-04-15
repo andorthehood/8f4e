@@ -18,11 +18,26 @@ function createMemoryViews(): MemoryViews {
 	};
 }
 
+function createMockEngine(): Engine {
+	return {
+		startGroup: vi.fn(),
+		endGroup: vi.fn(),
+		cacheGroup: vi.fn((_key, _width, _height, draw) => draw()),
+		setSpriteLookup: vi.fn(),
+		drawSprite: vi.fn(),
+		drawText: vi.fn(),
+	} as unknown as Engine;
+}
+
 describe('drawModules', () => {
-	it('skips hidden blocks entirely', () => {
+	it('renders only the corners for hidden blocks by default', () => {
 		const hiddenBlock = createMockCodeBlock({
 			hidden: true,
 			textureCacheKey: 'hidden-block',
+			width: 100,
+			height: 50,
+			codeToRender: [],
+			codeColors: [],
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
@@ -43,18 +58,13 @@ describe('drawModules', () => {
 				editing: true,
 			},
 		});
-		const engine = {
-			startGroup: vi.fn(),
-			endGroup: vi.fn(),
-			cacheGroup: vi.fn(),
-			setSpriteLookup: vi.fn(),
-			drawSprite: vi.fn(),
-			drawText: vi.fn(),
-		} as unknown as Engine;
+		const engine = createMockEngine();
 
 		drawModules(engine, state, createMemoryViews());
 
-		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).not.toHaveBeenCalled();
+		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).toHaveBeenCalled();
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledTimes(4);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
 	});
 
 	it('renders hidden blocks when the reveal override is active', () => {
@@ -86,14 +96,7 @@ describe('drawModules', () => {
 				editing: true,
 			},
 		});
-		const engine = {
-			startGroup: vi.fn(),
-			endGroup: vi.fn(),
-			cacheGroup: vi.fn(),
-			setSpriteLookup: vi.fn(),
-			drawSprite: vi.fn(),
-			drawText: vi.fn(),
-		} as unknown as Engine;
+		const engine = createMockEngine();
 
 		drawModules(engine, state, createMemoryViews());
 
