@@ -2,6 +2,10 @@ import { Engine } from 'glugglug';
 
 import type { State } from '@8f4e/editor-state';
 
+const EDIT_MODE_HINT = "You're in edit mode, press ESC to enter view mode";
+const VIEW_MODE_HINT = "You're in view mode, press e to edit or p to present";
+const PRESENTATION_MODE_HINT_PREFIX = "You're in presentation mode, press ESC to enter view mode";
+
 function formatPresentationCountdown(state: State): string {
 	const { totalStops, activeStopIndex, deadlineAt, remainingMs } = state.presentation;
 	if (totalStops === 0) {
@@ -24,10 +28,10 @@ export default function drawModeOverlay(engine: Engine, state: State): void {
 
 	const modeHint =
 		state.editorMode === 'edit'
-			? "You're in edit mode, press ESC to enter view mode"
+			? EDIT_MODE_HINT
 			: state.editorMode === 'presentation'
-				? `You're in presentation mode, press ESC to enter view mode${formatPresentationCountdown(state)}`
-				: "You're in view mode, press e to edit or p to present";
+				? `${PRESENTATION_MODE_HINT_PREFIX}${formatPresentationCountdown(state)}`
+				: VIEW_MODE_HINT;
 
 	engine.startGroup(0, 0);
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);

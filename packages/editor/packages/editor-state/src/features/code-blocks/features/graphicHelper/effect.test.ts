@@ -35,7 +35,7 @@ describe('graphic helper error mapping', () => {
 
 		expect(functionBlock.widgets.errorMessages).toHaveLength(1);
 		expect(functionBlock.widgets.errorMessages[0].lineNumber).toBe(2);
-		expect(functionBlock.widgets.errorMessages[0].message).toContain('Error:');
+		expect(functionBlock.widgets.errorMessages[0].message).toContain(' Error:');
 	});
 });
 
