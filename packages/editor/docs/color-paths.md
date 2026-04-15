@@ -15,6 +15,7 @@ Example:
 ## `text.*`
 
 - `text.lineNumber`
+- `text.arrow`
 - `text.instruction`
 - `text.codeComment`
 - `text.code`
@@ -60,7 +61,6 @@ Example:
 - `icons.inputConnectorBackground`
 - `icons.outputConnectorBackground`
 - `icons.switchBackground`
-- `icons.arrow`
 - `icons.pianoKeyWhite`
 - `icons.pianoKeyWhiteHighlighted`
 - `icons.pianoKeyWhitePressed`
