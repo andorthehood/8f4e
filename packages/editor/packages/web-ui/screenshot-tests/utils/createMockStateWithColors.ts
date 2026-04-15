@@ -21,6 +21,7 @@ const defaultColorScheme = {
 	text: {
 		lineNumber: 'rgba(51,51,51,255)',
 		debugInfo: 'rgba(51,51,51,255)',
+		arrow: '#ffffff',
 		instruction: 'rgba(136,126,203,255)',
 		codeComment: 'rgba(102,102,102,255)',
 		code: 'rgba(255,255,255,255)',
@@ -70,7 +71,6 @@ const defaultColorScheme = {
 		feedbackScale3: '#660099',
 		feedbackScale4: '#3300cc',
 		feedbackScale5: '#0000ff',
-		arrow: '#ffffff',
 		pianoKeyWhite: '#ffffff',
 		pianoKeyWhiteHighlighted: '#ff0000',
 		pianoKeyWhitePressed: '#cccccc',
