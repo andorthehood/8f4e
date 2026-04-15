@@ -358,7 +358,7 @@ Notes:
 
 ### `@hidden`
 
-Hide the entire code block from rendering until it is selected.
+Hide the contents of a code block until it is selected, while still leaving its corner markers visible.
 
 ```txt
 ; @hidden
@@ -366,7 +366,7 @@ Hide the entire code block from rendering until it is selected.
 
 Notes:
 
-- While the block is unselected, it is not rendered.
+- While the block is unselected, only its `+` corner markers are rendered.
 - Selecting the block makes it visible again.
 - Holding `F9` reveals all hidden blocks temporarily without changing selection.
 - When selection moves away, it becomes hidden again.
