@@ -3,8 +3,8 @@ title: 'TODO: Audit borderLineCoordinates use of raw vs rounded viewport dimensi
 priority: Low
 effort: 1-2 hours
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-15
 ---
 
 # TODO: Audit borderLineCoordinates use of raw vs rounded viewport dimensions
