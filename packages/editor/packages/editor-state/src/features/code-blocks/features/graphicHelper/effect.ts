@@ -19,6 +19,7 @@ import wrapText from '../../utils/wrapText';
 import gapCalculator from '../../../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../../../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
+import highlightSyntaxNote from '../../../code-editing/highlightSyntaxNote';
 import { moveCaret } from '../../../code-editing/moveCaret';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import {
@@ -98,8 +99,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		// Choose highlighter based on block type and get syntax colors for raw code
 		let rawCodeColors;
-		if (isShaderNoteCode(graphicData.code)) {
+		if (graphicData.blockType === 'note' && isShaderNoteCode(graphicData.code)) {
 			rawCodeColors = highlightSyntaxGlsl(graphicData.code, spriteLookups);
+		} else if (graphicData.blockType === 'note') {
+			rawCodeColors = highlightSyntaxNote(graphicData.code, spriteLookups);
 		} else {
 			rawCodeColors = highlightSyntax8f4e(graphicData.code, spriteLookups);
 		}
