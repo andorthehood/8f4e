@@ -32,25 +32,7 @@ function syncViewportAnchoredBlock(state: State, block: CodeBlockGraphicData | u
 
 function recomputeViewportAnchoredPositions(state: State): void {
 	for (const codeBlock of state.graphicHelper.viewportAnchoredCodeBlocks) {
-		if (codeBlock === state.graphicHelper.draggedCodeBlock) {
-			continue;
-		}
-
-		const pos = resolveViewportAnchoredPosition({
-			anchor: codeBlock.viewportAnchor!,
-			posX: codeBlock.gridX,
-			posY: codeBlock.gridY,
-			viewportX: state.viewport.x,
-			viewportY: state.viewport.y,
-			viewportWidth: state.viewport.roundedWidth,
-			viewportHeight: state.viewport.roundedHeight,
-			blockWidth: codeBlock.width,
-			blockHeight: codeBlock.height,
-			vGrid: state.viewport.vGrid,
-			hGrid: state.viewport.hGrid,
-		});
-		codeBlock.x = pos.x;
-		codeBlock.y = pos.y;
+		recomputeViewportAnchoredPosition(state, codeBlock);
 	}
 }
 
@@ -65,8 +47,8 @@ function recomputeViewportAnchoredPosition(state: State, block: CodeBlockGraphic
 		posY: block.gridY,
 		viewportX: state.viewport.x,
 		viewportY: state.viewport.y,
-		viewportWidth: state.viewport.width,
-		viewportHeight: state.viewport.height,
+		viewportWidth: state.viewport.roundedWidth,
+		viewportHeight: state.viewport.roundedHeight,
 		blockWidth: block.width,
 		blockHeight: block.height,
 		vGrid: state.viewport.vGrid,

@@ -3,8 +3,8 @@ title: 'TODO: Unify editor directive parsing and alias normalization'
 priority: Low
 effort: 2-4 hours
 created: 2026-04-03
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-15
 ---
 
 # TODO: Unify editor directive parsing and alias normalization

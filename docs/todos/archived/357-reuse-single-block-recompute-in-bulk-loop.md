@@ -3,8 +3,8 @@ title: 'TODO: Reuse single-block recompute in bulk viewport-anchored loop'
 priority: Low
 effort: 30 minutes
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-15
 ---
 
 # TODO: Reuse single-block recompute in bulk viewport-anchored loop
