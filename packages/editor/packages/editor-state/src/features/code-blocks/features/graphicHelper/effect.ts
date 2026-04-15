@@ -323,12 +323,14 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						: codeBlock.creationIndex === codeError.codeBlockId || codeBlock.id === codeError.codeBlockId;
 
 				if (matchesCodeBlock) {
-					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1);
+					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1).map(
+						line => ' ' + line
+					);
 
 					codeBlock.widgets.errorMessages.push({
 						x: 0,
 						y: (gapCalculator(codeError.lineNumber, codeBlock.gaps) + 1) * state.viewport.hGrid,
-						message: ['Error:', ...message],
+						message: [' Error:', ...message],
 						lineNumber: codeError.lineNumber,
 					});
 

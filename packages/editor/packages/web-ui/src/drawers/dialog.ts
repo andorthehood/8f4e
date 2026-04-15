@@ -2,6 +2,8 @@ import { Engine } from 'glugglug';
 
 import type { State } from '@8f4e/editor-state';
 
+const DIALOG_CORNER = '+';
+
 export default function drawDialog(engine: Engine, state: State): void {
 	const { show } = state.dialog;
 
@@ -20,11 +22,10 @@ export default function drawDialog(engine: Engine, state: State): void {
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
-	const corner = '+';
-	engine.drawText(0, 0, corner);
-	engine.drawText(state.dialog.width - state.viewport.vGrid, 0, corner);
-	engine.drawText(0, state.dialog.height - state.viewport.hGrid, corner);
-	engine.drawText(state.dialog.width - state.viewport.vGrid, state.dialog.height - state.viewport.hGrid, corner);
+	engine.drawText(0, 0, DIALOG_CORNER);
+	engine.drawText(state.dialog.width - state.viewport.vGrid, 0, DIALOG_CORNER);
+	engine.drawText(0, state.dialog.height - state.viewport.hGrid, DIALOG_CORNER);
+	engine.drawText(state.dialog.width - state.viewport.vGrid, state.dialog.height - state.viewport.hGrid, DIALOG_CORNER);
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontDialogTitle);
 	engine.drawText(state.viewport.vGrid, state.viewport.hGrid, state.dialog.title);

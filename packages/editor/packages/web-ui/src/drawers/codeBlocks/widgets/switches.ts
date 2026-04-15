@@ -4,6 +4,8 @@ import { Icon } from '@8f4e/sprite-generator';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../../types';
 
+const UNRESOLVED_SWITCH_VALUE_LABEL = '[__]';
+
 export default function drawSwitches(
 	engine: Engine,
 	state: State,
@@ -36,7 +38,7 @@ export default function drawSwitches(
 			engine.drawSprite(x, y, Icon.SWITCH_OFF);
 		} else {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontNumbers);
-			engine.drawText(x, y, '[__]');
+			engine.drawText(x, y, UNRESOLVED_SWITCH_VALUE_LABEL);
 		}
 	}
 }
