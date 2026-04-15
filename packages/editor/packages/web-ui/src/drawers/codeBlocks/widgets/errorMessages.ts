@@ -13,7 +13,7 @@ export default function drawErrorMessages(engine: Engine, state: State, codeBloc
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontErrorMessage);
 		for (let i = 0; i < message.length; i++) {
-			engine.drawText(x, y + i * state.viewport.hGrid, ' ' + message[i]);
+			engine.drawText(x, y + i * state.viewport.hGrid, message[i]);
 		}
 	}
 }
