@@ -4,6 +4,11 @@ import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 export default function calculateBorderLineCoordinates(state: State): void {
 	const viewport = state.viewport;
+
+	// Offscreen arrows intersect against the visible pixel edges of the viewport, not the
+	// grid-snapped anchored-position bounds. Keep these lines based on raw width/height so
+	// the indicators point at the actual rendered screen boundary even when roundedWidth /
+	// roundedHeight are smaller.
 	const { borderLineCoordinates, center, x, y, width, height } = viewport;
 
 	borderLineCoordinates.left.startX = x;
@@ -52,6 +57,26 @@ if (import.meta.vitest) {
 			expect(borderLineCoordinates.right).toEqual({ startX: 130, startY: 20, endX: 130, endY: 80 });
 			expect(borderLineCoordinates.bottom).toEqual({ startX: 10, startY: 80, endX: 130, endY: 80 });
 			expect(center).toEqual({ x: 70, y: 50 });
+		});
+
+		it('uses raw viewport dimensions rather than rounded dimensions', () => {
+			const state = createMockState({
+				viewport: {
+					x: 10,
+					y: 20,
+					width: 125,
+					height: 63,
+					roundedWidth: 120,
+					roundedHeight: 48,
+				},
+			});
+
+			calculateBorderLineCoordinates(state);
+
+			const { borderLineCoordinates, center } = state.viewport;
+			expect(borderLineCoordinates.right.startX).toBe(135);
+			expect(borderLineCoordinates.bottom.startY).toBe(83);
+			expect(center).toEqual({ x: 73, y: 52 });
 		});
 	});
 }
