@@ -65,7 +65,6 @@ Active todo files are listed below.
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
-| 358 | Convert worldPositionToAnchoredPos to use an input object | 🟢 | 1h | 2026-04-02 | The function takes 11 positional args while its counterpart uses a typed input object, making call sites fragile and inconsistent. |
 | 359 | Audit borderLineCoordinates use of raw vs rounded viewport dimensions | 🟢 | 1-2h | 2026-04-02 | Arrow indicators use raw pixel dimensions; anchored block positioning uses rounded dimensions — the intentional difference is undocumented. |
 | 361 | Replace showBinary/showHex booleans with a displayFormat union type | 🟢 | 1-2h | 2026-04-01 | `MemoryIdentifier` and `Debugger` use two separate booleans for a mutually exclusive three-way display choice; a `displayFormat` union eliminates the invalid combined state and scales to future formats. |
 | 364 | Centralize alwaysOnTop code block partition logic | 🟢 | 1-2h | 2026-04-03 | The `@alwaysOnTop` behavior currently reimplements the same z-order partitioning rules across creation, paste, drag, and load paths, which makes the behavior easy to drift and already leaves the single-block creation path inconsistent with multi-block paste. |
@@ -124,6 +123,7 @@ Active todo files are listed below.
 | 355 | Replace `isPointingToInt8`/`isPointingToInt16` booleans with a single `pointeeBaseType` field | 2026-04-07 | Archived after completion; `DataStructure` pointer metadata now uses `pointeeBaseType` as the single source of truth. |
 | 356 | Consolidate declaration compilers into a single factory | 2026-04-08 | Archived after completion; scalar declaration compilers now share `createDeclarationCompiler` instead of duplicating per-type implementation logic. |
 | 357 | Reuse single-block recompute in bulk viewport-anchored loop | 2026-04-15 | Archived after completion; viewport-anchored recomputation now delegates through one shared single-block path using the rounded viewport dimensions expected by the resolver. |
+| 358 | Convert worldPositionToAnchoredPos to use an input object | 2026-04-15 | Archived after completion; viewport anchored reverse-position conversion now uses a named input object instead of an 11-argument positional call signature. |
 | 360 | Use `createMockState` in viewport-anchored dragging integration test | 2026-04-07 | Archived after completion; the viewport-anchored dragging test now relies on shared mock-state defaults instead of a hand-built state literal. |
 | 365 | Unify editor directive parsing and alias normalization | 2026-04-15 | Archived after completion; editor directive parsing and alias normalization now share a single implementation path across direct parsing and cached directive derivation. |
 | 366 | Add configurable loop cap directive and loop override | 2026-04-08 | Archived after completion; loop guards now support configurable ambient defaults and per-loop overrides instead of a fixed hardcoded cap only. |
