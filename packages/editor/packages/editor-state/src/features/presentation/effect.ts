@@ -31,8 +31,10 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	let stopIndex = 0;
 	let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
-	function clearPresentationState(): void {
-		state.presentation.activeStopIndex = 0;
+	function clearPresentationState(options: { preserveActiveStopIndex?: boolean } = {}): void {
+		if (!options.preserveActiveStopIndex) {
+			state.presentation.activeStopIndex = 0;
+		}
 		state.presentation.totalStops = 0;
 		state.presentation.remainingMs = 0;
 		state.presentation.currentStopDurationMs = 0;
@@ -124,7 +126,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		clearScheduledAdvance();
 		if (editorMode !== 'presentation') {
 			stopViewportAnimation(state);
-			clearPresentationState();
+			clearPresentationState({ preserveActiveStopIndex: true });
 			return;
 		}
 
@@ -135,7 +137,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		}
 
 		state.viewportAnimation.durationMs = PRESENTATION_DURATION_MS;
-		stopIndex = 0;
+		stopIndex = Math.min(state.presentation.activeStopIndex, stops.length - 1);
 		centerCurrentStop(store, state, events, stops[stopIndex]);
 		scheduleNextAdvance();
 	}
