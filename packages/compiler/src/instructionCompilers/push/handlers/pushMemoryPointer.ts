@@ -9,7 +9,11 @@ import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
 export default function pushMemoryPointer(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
 	const memory = context.namespace.memory;
-	const base = line.arguments[0].targetMemoryId!;
+	const argument = line.arguments[0];
+	if (argument.referenceKind !== 'memory-pointer') {
+		return context;
+	}
+	const base = argument.targetMemoryId;
 	const memoryItem = getDataStructure(memory, base)!;
 
 	const kind = resolvePointerTargetValueKind(memoryItem);

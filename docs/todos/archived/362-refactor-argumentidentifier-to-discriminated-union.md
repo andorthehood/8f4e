@@ -3,8 +3,8 @@ title: 'TODO: Refactor ArgumentIdentifier to a discriminated union'
 priority: Medium
 effort: 2-4 hours
 created: 2026-04-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-15
 ---
 
 # TODO: Refactor ArgumentIdentifier to a discriminated union

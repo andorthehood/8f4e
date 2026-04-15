@@ -20,11 +20,11 @@ export default function semanticInit(line: NormalizedInitLine, context: Compilat
 		defaultValue = defaultArg.value;
 	} else if (defaultArg.type === ArgumentType.IDENTIFIER) {
 		if (defaultArg.referenceKind === 'memory-reference' && !defaultArg.isEndAddress) {
-			const referencedMemoryItem = context.namespace.memory[defaultArg.targetMemoryId!];
+			const referencedMemoryItem = context.namespace.memory[defaultArg.targetMemoryId];
 
 			if (!referencedMemoryItem) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-					identifier: defaultArg.targetMemoryId!,
+					identifier: defaultArg.targetMemoryId,
 				});
 			}
 

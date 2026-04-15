@@ -188,48 +188,48 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		case 'intermodular-module-reference':
 			return {
 				type: 'intermodular-module-reference',
-				module: arg.targetModuleId!,
+				module: arg.targetModuleId,
 				pattern: arg.value,
 				isEndAddress: !!arg.isEndAddress,
 			};
 		case 'intermodular-element-count':
 			return {
 				type: 'intermodular-element-count',
-				module: arg.targetModuleId!,
-				memory: arg.targetMemoryId!,
+				module: arg.targetModuleId,
+				memory: arg.targetMemoryId,
 				pattern: arg.value,
 			};
 		case 'intermodular-element-word-size':
 			return {
 				type: 'intermodular-element-word-size',
-				module: arg.targetModuleId!,
-				memory: arg.targetMemoryId!,
+				module: arg.targetModuleId,
+				memory: arg.targetMemoryId,
 				pattern: arg.value,
 			};
 		case 'intermodular-element-max':
 			return {
 				type: 'intermodular-element-max',
-				module: arg.targetModuleId!,
-				memory: arg.targetMemoryId!,
+				module: arg.targetModuleId,
+				memory: arg.targetMemoryId,
 				pattern: arg.value,
 			};
 		case 'intermodular-element-min':
 			return {
 				type: 'intermodular-element-min',
-				module: arg.targetModuleId!,
-				memory: arg.targetMemoryId!,
+				module: arg.targetModuleId,
+				memory: arg.targetMemoryId,
 				pattern: arg.value,
 			};
 		case 'memory-reference':
 			return {
 				type: 'memory-reference',
-				base: arg.targetMemoryId!,
+				base: arg.targetMemoryId,
 				pattern: arg.value,
 			};
 		case 'element-count':
 			return {
 				type: 'element-count',
-				base: arg.targetMemoryId!,
+				base: arg.targetMemoryId,
 			};
 		default:
 			return {
