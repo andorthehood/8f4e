@@ -73,24 +73,80 @@ export type ArgumentLiteral = {
 	isFloat64?: boolean;
 	isHex?: boolean;
 };
-export type ArgumentIdentifier = {
+type IdentifierBase<K extends ReferenceKind, S extends 'local' | 'intermodule'> = {
 	type: ArgumentType.IDENTIFIER;
 	value: string;
-	/** Syntactic class of the identifier, determined at parse time from token shape. */
-	referenceKind: ReferenceKind;
-	/** Whether this is a local or intermodule reference. */
-	scope: 'local' | 'intermodule';
-	/** For intermodular forms: the target module identifier. */
-	targetModuleId?: string;
-	/** For memory-reference, memory-pointer, element-query, and intermodular-reference forms: the target memory/variable identifier. */
-	targetMemoryId?: string;
-	/** For address-reference forms (memory-reference, intermodular-reference, intermodular-module-reference): true when the reference is to the end address. */
-	isEndAddress?: boolean;
-	/** For intermodular-module-nth-reference: the 0-based index of the memory item within the target module. */
-	targetMemoryIndex?: number;
-	/** For pointee-element-* forms: true. */
-	isPointee?: boolean;
+	referenceKind: K;
+	scope: S;
 };
+
+type PlainIdentifier = IdentifierBase<'plain', 'local'>;
+type ConstantIdentifier = IdentifierBase<'constant', 'local'>;
+type MemoryPointerIdentifier = IdentifierBase<'memory-pointer', 'local'> & { targetMemoryId: string };
+type MemoryReferenceIdentifier = IdentifierBase<'memory-reference', 'local'> & {
+	targetMemoryId: string;
+	isEndAddress: boolean;
+};
+type ElementCountIdentifier = IdentifierBase<'element-count', 'local'> & { targetMemoryId: string };
+type ElementWordSizeIdentifier = IdentifierBase<'element-word-size', 'local'> & { targetMemoryId: string };
+type ElementMaxIdentifier = IdentifierBase<'element-max', 'local'> & { targetMemoryId: string };
+type ElementMinIdentifier = IdentifierBase<'element-min', 'local'> & { targetMemoryId: string };
+type PointeeElementWordSizeIdentifier = IdentifierBase<'pointee-element-word-size', 'local'> & {
+	targetMemoryId: string;
+	isPointee: true;
+};
+type PointeeElementMaxIdentifier = IdentifierBase<'pointee-element-max', 'local'> & {
+	targetMemoryId: string;
+	isPointee: true;
+};
+type IntermodularReferenceIdentifier = IdentifierBase<'intermodular-reference', 'intermodule'> & {
+	targetModuleId: string;
+	targetMemoryId: string;
+	isEndAddress: boolean;
+};
+type IntermodularModuleReferenceIdentifier = IdentifierBase<'intermodular-module-reference', 'intermodule'> & {
+	targetModuleId: string;
+	isEndAddress: boolean;
+};
+type IntermodularModuleNthReferenceIdentifier = IdentifierBase<'intermodular-module-nth-reference', 'intermodule'> & {
+	targetModuleId: string;
+	targetMemoryIndex: number;
+};
+type IntermodularElementCountIdentifier = IdentifierBase<'intermodular-element-count', 'intermodule'> & {
+	targetModuleId: string;
+	targetMemoryId: string;
+};
+type IntermodularElementWordSizeIdentifier = IdentifierBase<'intermodular-element-word-size', 'intermodule'> & {
+	targetModuleId: string;
+	targetMemoryId: string;
+};
+type IntermodularElementMaxIdentifier = IdentifierBase<'intermodular-element-max', 'intermodule'> & {
+	targetModuleId: string;
+	targetMemoryId: string;
+};
+type IntermodularElementMinIdentifier = IdentifierBase<'intermodular-element-min', 'intermodule'> & {
+	targetModuleId: string;
+	targetMemoryId: string;
+};
+
+export type ArgumentIdentifier =
+	| PlainIdentifier
+	| ConstantIdentifier
+	| MemoryPointerIdentifier
+	| MemoryReferenceIdentifier
+	| ElementCountIdentifier
+	| ElementWordSizeIdentifier
+	| ElementMaxIdentifier
+	| ElementMinIdentifier
+	| PointeeElementWordSizeIdentifier
+	| PointeeElementMaxIdentifier
+	| IntermodularReferenceIdentifier
+	| IntermodularModuleReferenceIdentifier
+	| IntermodularModuleNthReferenceIdentifier
+	| IntermodularElementCountIdentifier
+	| IntermodularElementWordSizeIdentifier
+	| IntermodularElementMaxIdentifier
+	| IntermodularElementMinIdentifier;
 export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
 /**
  * A fully parsed compile-time expression operand.

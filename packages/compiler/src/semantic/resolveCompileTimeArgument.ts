@@ -37,53 +37,53 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 
 	if (operand.referenceKind === 'intermodular-element-word-size') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId!]?.memory
+			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId]?.memory
 				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
-			return { value: getElementWordSize(targetMemory, operand.targetMemoryId!), isInteger: true };
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
+			return { value: getElementWordSize(targetMemory, operand.targetMemoryId), isInteger: true };
 		}
 		return undefined;
 	}
 
 	if (operand.referenceKind === 'intermodular-element-count') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId!]?.memory
+			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId]?.memory
 				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
-			return { value: getElementCount(targetMemory, operand.targetMemoryId!), isInteger: true };
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
+			return { value: getElementCount(targetMemory, operand.targetMemoryId), isInteger: true };
 		}
 		return undefined;
 	}
 
 	if (operand.referenceKind === 'intermodular-element-max') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId!]?.memory
+			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId]?.memory
 				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
-			const memoryItem = targetMemory[operand.targetMemoryId!];
-			return { value: getElementMaxValue(targetMemory, operand.targetMemoryId!), isInteger: !!memoryItem?.isInteger };
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
+			const memoryItem = targetMemory[operand.targetMemoryId];
+			return { value: getElementMaxValue(targetMemory, operand.targetMemoryId), isInteger: !!memoryItem?.isInteger };
 		}
 		return undefined;
 	}
 
 	if (operand.referenceKind === 'intermodular-element-min') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId!]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId!]?.memory
+			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
+				? namespace.namespaces[operand.targetModuleId]?.memory
 				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId!)) {
-			const memoryItem = targetMemory[operand.targetMemoryId!];
-			return { value: getElementMinValue(targetMemory, operand.targetMemoryId!), isInteger: !!memoryItem?.isInteger };
+		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
+			const memoryItem = targetMemory[operand.targetMemoryId];
+			return { value: getElementMinValue(targetMemory, operand.targetMemoryId), isInteger: !!memoryItem?.isInteger };
 		}
 		return undefined;
 	}
 
 	// sizeof(*name) — pointee element word size
 	if (operand.referenceKind === 'pointee-element-word-size') {
-		const base = operand.targetMemoryId!;
+		const base = operand.targetMemoryId;
 		if (Object.hasOwn(memory, base)) {
 			return { value: getPointeeElementWordSize(memory, base), isInteger: true };
 		}
@@ -92,7 +92,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 
 	// sizeof(name) — element word size
 	if (operand.referenceKind === 'element-word-size') {
-		const base = operand.targetMemoryId!;
+		const base = operand.targetMemoryId;
 		if (Object.hasOwn(memory, base)) {
 			return { value: getElementWordSize(memory, base), isInteger: true };
 		}
@@ -101,7 +101,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 
 	// count(name) — element count
 	if (operand.referenceKind === 'element-count') {
-		const base = operand.targetMemoryId!;
+		const base = operand.targetMemoryId;
 		if (Object.hasOwn(memory, base)) {
 			return { value: getElementCount(memory, base), isInteger: true };
 		}
@@ -110,7 +110,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 
 	// max(*name) — pointee element max value
 	if (operand.referenceKind === 'pointee-element-max') {
-		const base = operand.targetMemoryId!;
+		const base = operand.targetMemoryId;
 		if (Object.hasOwn(memory, base)) {
 			const memoryItem = memory[base];
 			return { value: getPointeeElementMaxValue(memory, base), isInteger: !!memoryItem?.isInteger };
@@ -120,7 +120,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 
 	// max(name) — element max value
 	if (operand.referenceKind === 'element-max') {
-		const base = operand.targetMemoryId!;
+		const base = operand.targetMemoryId;
 		if (Object.hasOwn(memory, base)) {
 			const memoryItem = memory[base];
 			return { value: getElementMaxValue(memory, base), isInteger: !!memoryItem?.isInteger };
@@ -130,7 +130,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 
 	// min(name) — element min value
 	if (operand.referenceKind === 'element-min') {
-		const base = operand.targetMemoryId!;
+		const base = operand.targetMemoryId;
 		if (Object.hasOwn(memory, base)) {
 			const memoryItem = memory[base];
 			return { value: getElementMinValue(memory, base), isInteger: !!memoryItem?.isInteger };
@@ -141,7 +141,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	// &module: — start byte address of a module
 	// module:& — end-word base byte address of a module
 	if (operand.referenceKind === 'intermodular-module-reference') {
-		const targetModuleId = operand.targetModuleId!;
+		const targetModuleId = operand.targetModuleId;
 		const targetNamespace = namespace.namespaces[targetModuleId];
 		if (
 			targetNamespace?.kind === 'module' &&
@@ -158,13 +158,13 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 
 	// &module:N — start byte address of the Nth memory item (0-indexed) within a module
 	if (operand.referenceKind === 'intermodular-module-nth-reference') {
-		const targetModuleId = operand.targetModuleId!;
+		const targetModuleId = operand.targetModuleId;
 		const targetNamespace = namespace.namespaces[targetModuleId];
 		if (targetNamespace?.kind !== 'module' || typeof targetNamespace.byteAddress !== 'number' || !targetNamespace.memory) {
 			return undefined;
 		}
 		const items = Object.values(targetNamespace.memory);
-		const item = items[operand.targetMemoryIndex!];
+		const item = items[operand.targetMemoryIndex];
 		if (item) {
 			return { value: item.byteAddress, isInteger: true };
 		}
@@ -174,13 +174,13 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	// &module:memory — start byte address of a remote memory item
 	// module:memory& — end-word base byte address of a remote memory item
 	if (operand.referenceKind === 'intermodular-reference') {
-		const targetModuleId = operand.targetModuleId!;
+		const targetModuleId = operand.targetModuleId;
 		const targetNamespace = namespace.namespaces[targetModuleId];
 		// Only resolve once the target module has been laid out (byteAddress is set on the namespace entry)
 		if (targetNamespace?.kind !== 'module' || typeof targetNamespace.byteAddress !== 'number') {
 			return undefined;
 		}
-		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId!];
+		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId];
 		if (targetMemory) {
 			const value = operand.isEndAddress ? getEndByteAddress(targetMemory.byteAddress, targetMemory.wordAlignedSize) : targetMemory.byteAddress;
 			return { value, isInteger: true };
@@ -191,7 +191,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	// &name — start byte address of a local memory item
 	// name& — end-word base byte address of a local memory item
 	if (operand.referenceKind === 'memory-reference') {
-		const base = operand.targetMemoryId!;
+		const base = operand.targetMemoryId;
 		if (base === 'this') {
 			if (!operand.isEndAddress) {
 				return { value: context.startingByteAddress, isInteger: true };

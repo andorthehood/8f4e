@@ -46,7 +46,7 @@ export function validateIntermoduleAddressReference(
 	}
 
 	if (identifier.referenceKind === 'intermodular-module-reference') {
-		const targetModuleId = identifier.targetModuleId!;
+		const targetModuleId = identifier.targetModuleId;
 		if (!getTargetModuleNamespace(context, targetModuleId)) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
@@ -54,8 +54,8 @@ export function validateIntermoduleAddressReference(
 	}
 
 	if (identifier.referenceKind === 'intermodular-reference') {
-		const targetModuleId = identifier.targetModuleId!;
-		const targetMemoryId = identifier.targetMemoryId!;
+		const targetModuleId = identifier.targetModuleId;
+		const targetMemoryId = identifier.targetMemoryId;
 
 		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
 		if (!targetNamespace) {
@@ -76,8 +76,8 @@ export function validateIntermoduleAddressReference(
 		identifier.referenceKind === 'intermodular-element-max' ||
 		identifier.referenceKind === 'intermodular-element-min'
 	) {
-		const targetModuleId = identifier.targetModuleId!;
-		const targetMemoryId = identifier.targetMemoryId!;
+		const targetModuleId = identifier.targetModuleId;
+		const targetMemoryId = identifier.targetMemoryId;
 		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
 		if (!targetNamespace) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });

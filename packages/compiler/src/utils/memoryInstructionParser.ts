@@ -171,12 +171,12 @@ function resolveMemoryDefaultValue(arg: Argument, lineForError: AST[number], con
 					? getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
 					: 0;
 			}
-			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId!, lineForError, context);
+			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId, lineForError, context);
 			return arg.isEndAddress ? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize) : memoryItem.byteAddress;
 		}
 
 		case 'element-count': {
-			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId!, lineForError, context);
+			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId, lineForError, context);
 			return memoryItem.wordAlignedSize;
 		}
 
