@@ -1,3 +1,5 @@
+import highlightEditorDirective from './highlightEditorDirective';
+
 /**
  * Generates a 2D lookup where each cell contains the sprite used to render a code character.
  * Plain note blocks render their body as comment text, while `note` and `noteEnd` remain
@@ -37,6 +39,7 @@ export default function highlightSyntaxNote<T>(
 		if (line.length > 0) {
 			codeColors[0] = spriteLookups.fontCodeComment;
 		}
+		highlightEditorDirective(line, codeColors, spriteLookups.fontCode, spriteLookups.fontCodeComment);
 
 		return codeColors;
 	});
@@ -62,6 +65,8 @@ if (import.meta.vitest) {
 			expect(result[0][0]).toBe('instruction');
 			expect(result[1][0]).toBe('comment');
 			expect(result[2][0]).toBe('comment');
+			expect(result[2][2]).toBe('code');
+			expect(result[2][3]).toBe('comment');
 			expect(result[3][0]).toBe('instruction');
 		});
 

@@ -1,3 +1,5 @@
+import highlightEditorDirective from './highlightEditorDirective';
+
 /**
  * Builds a deterministic regexp that matches instructions while preferring longer tokens.
  * @param instructions Instruction mnemonics that should be highlighted.
@@ -239,6 +241,8 @@ export default function highlightSyntax8f4e<T>(
 			}
 		}
 
+		highlightEditorDirective(line, codeColors, spriteLookups.fontCode, spriteLookups.fontCodeComment);
+
 		return codeColors;
 	});
 }
@@ -270,6 +274,7 @@ if (import.meta.vitest) {
 				'',
 				'; @watch count',
 				'; @plot &buffer',
+				'push 1 ; @watch counter',
 				'',
 				'; Store the input value',
 				'; in the buffer',
