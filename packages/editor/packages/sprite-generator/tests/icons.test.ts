@@ -35,6 +35,7 @@ describe('icons module', () => {
 		it('should generate drawing commands for 8x16 characters', () => {
 			const commands = generateIcons(
 				mockFont,
+				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
 				minimalColorScheme.icons
@@ -52,6 +53,7 @@ describe('icons module', () => {
 		it('should generate drawing commands for 6x10 characters', () => {
 			const commands = generateIcons(
 				mockFont,
+				mockFont,
 				characterDimensions6x10.width,
 				characterDimensions6x10.height,
 				minimalColorScheme.icons
@@ -67,6 +69,7 @@ describe('icons module', () => {
 
 		it('should generate fill color commands for icon backgrounds', () => {
 			const commands = generateIcons(
+				mockFont,
 				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
@@ -84,6 +87,7 @@ describe('icons module', () => {
 
 		it('should generate rectangle commands for icon backgrounds', () => {
 			const commands = generateIcons(
+				mockFont,
 				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
@@ -107,6 +111,7 @@ describe('icons module', () => {
 		it('should generate translate commands for character positioning', () => {
 			const commands = generateIcons(
 				mockFont,
+				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
 				minimalColorScheme.icons
@@ -124,9 +129,28 @@ describe('icons module', () => {
 			expect(characterWidthTranslates.length).toBeGreaterThan(0);
 		});
 
+		it('should draw input brackets from the ascii font', () => {
+			const asciiFont = Array.from({ length: 128 * characterDimensions8x16.height }, () => 0);
+			const glyphsFont = Array.from({ length: 32 * characterDimensions8x16.height }, () => 0);
+			asciiFont['['.charCodeAt(0) * characterDimensions8x16.height + 1] = 0b10000000;
+			asciiFont[']'.charCodeAt(0) * characterDimensions8x16.height + 2] = 0b01000000;
+
+			const commands = generateIcons(
+				asciiFont,
+				glyphsFont,
+				characterDimensions8x16.width,
+				characterDimensions8x16.height,
+				minimalColorScheme.icons
+			);
+			const pixels = findAllCommands(commands, Command.PIXEL);
+
+			expect(pixels).toContainEqual([Command.PIXEL, 0, 1]);
+			expect(pixels).toContainEqual([Command.PIXEL, 1, 2]);
+		});
+
 		it('should handle different character dimensions correctly', () => {
-			const commands8x16 = generateIcons(mockFont, 8, 16, minimalColorScheme.icons);
-			const commands6x10 = generateIcons(mockFont, 6, 10, minimalColorScheme.icons);
+			const commands8x16 = generateIcons(mockFont, mockFont, 8, 16, minimalColorScheme.icons);
+			const commands6x10 = generateIcons(mockFont, mockFont, 6, 10, minimalColorScheme.icons);
 
 			// Both should start with same structure
 			expect(commands8x16[0]).toEqual([Command.RESET_TRANSFORM]);
@@ -152,12 +176,19 @@ describe('icons module', () => {
 			};
 
 			expect(() => {
-				generateIcons(mockFont, characterDimensions8x16.width, characterDimensions8x16.height, colorsWithUndefined);
+				generateIcons(
+					mockFont,
+					mockFont,
+					characterDimensions8x16.width,
+					characterDimensions8x16.height,
+					colorsWithUndefined
+				);
 			}).not.toThrow();
 		});
 
 		it('should generate pixel commands for character rendering', () => {
 			const commands = generateIcons(
+				mockFont,
 				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,

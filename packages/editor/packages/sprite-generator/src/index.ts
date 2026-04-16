@@ -307,7 +307,7 @@ export default async function generateSprite(config: Config): Promise<{
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, colorScheme.fill),
-		...generateIcons(glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
+		...generateIcons(asciiBitmap, glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
 		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 	];
 
