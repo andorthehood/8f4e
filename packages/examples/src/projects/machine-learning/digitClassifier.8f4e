@@ -1,42 +1,36 @@
 8f4e/v1
 
-module notes1
-; @pos -185 -19
-
-; Mapping from the
-; drawing grid to the
-; neural network's input
-; layer
-
-moduleEnd
-
-module notes2
-; @pos -326 27
-; This project implements a feedforward
-; neural network that maps a 3x5 binary 
-; drawing grid into 15 inputs, runs them
-; through multiple sigmoid-based hidden
-; layers, and exposes per-digit (0-9) 
-; classification confidence scores
-moduleEnd
-
-module notes3
-; @pos -458 20
-; @color fill.wire rgba(255,255,255,0.3)
-moduleEnd
-
 constants env
 ; @pos 0 0
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/24/2026, 4:31:39 PM
 
 const SAMPLE_RATE 50
 const INV_SAMPLE_RATE 0.02
-const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
+
+function sigmoid
+; @pos -326 38
+param float64 x
+; Fast sigmoid approximation
+; of logistic sigmoid
+; mapped to [0, 1]
+
+push x
+dup
+abs
+push 1.0f64
+add
+ensureNonZero
+div
+push 0.5f64
+mul
+push 0.5f64
+add
+
+functionEnd float64
 
 module grid
 ; @pos -274 10
@@ -47,6 +41,7 @@ module grid
 ; the neural network
 ; with 1s
 
+; @color text.binaryOne #f00
 int row0 0b0111
 int row1 0b0100
 int row2 0b0111
@@ -4437,6 +4432,26 @@ store
 
 moduleEnd
 
+module notes1
+; @pos -185 -13
+
+; Mapping from the
+; drawing grid to the
+; neural network's input
+; layer
+
+moduleEnd
+
+module notes2
+; @pos -326 27
+; This project implements a feedforward
+; neural network that maps a 3x5 binary 
+; drawing grid into 15 inputs, runs them
+; through multiple sigmoid-based hidden
+; layers, and exposes per-digit (0-9) 
+; classification confidence scores
+moduleEnd
+
 module outputs
 ; @pos -274 33
 
@@ -4466,24 +4481,3 @@ float64* confidence8 &neuron116:out
 float64* confidence9 &neuron117:out
 
 moduleEnd
-
-function sigmoid
-; @pos -326 38
-param float64 x
-; Fast sigmoid approximation
-; of logistic sigmoid
-; mapped to [0, 1]
-
-push x
-dup
-abs
-push 1.0f64
-add
-ensureNonZero
-div
-push 0.5f64
-mul
-push 0.5f64
-add
-
-functionEnd float64
