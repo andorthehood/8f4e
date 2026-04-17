@@ -19,8 +19,9 @@
 - Prettier: tabs, single quotes, semi, width 120, trailing commas.
 
 ## Testing
-- Vitest (via Nx). Place tests in `tests/`, `__tests__/`, or `*.test.ts`.
-- Focus on deterministic, fast unit tests for parsing, IR, and transforms.
+- Vitest (via Nx). Keep narrow unit tests colocated with the source under test using `*.test.ts` or `__tests__/`.
+- Put broader compiler behavior, multi-module, integration-style, and generic regression coverage in `tests/`.
+- Focus on deterministic, fast tests for semantic analysis, IR, transforms, and codegen behavior.
 - Syntax/parser in-source tests live with `@8f4e/tokenizer`; compiler tests should focus on semantic and codegen behavior.
 - To update snapshots after intentional changes, use `npx nx run compiler:test -- --update`.
 

@@ -1,10 +1,10 @@
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `remainder`.
@@ -31,46 +31,3 @@ const remainder: InstructionCompiler = withValidation(
 );
 
 export default remainder;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('remainder instruction compiler', () => {
-		it('emits I32_REM_S for integer operands', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
-
-			remainder(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'remainder',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('throws on division by zero', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
-
-			expect(() => {
-				remainder(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'remainder',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-	});
-}

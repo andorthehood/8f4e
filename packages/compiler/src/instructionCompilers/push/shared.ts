@@ -1,4 +1,4 @@
-import { f32const, f64const, i32const, f32load, f64load, i32load } from '@8f4e/compiler-wasm-utils';
+import { f32const, f32load, f64const, f64load, i32const, i32load } from '@8f4e/compiler-wasm-utils';
 
 import type { DataStructure, StackItem } from '../../types';
 
@@ -39,28 +39,9 @@ export const loadOpcode: Record<PushValueKind, () => number[]> = {
 };
 
 export function kindToStackItem(kind: PushValueKind, extras?: Partial<StackItem>): StackItem {
-	return { isInteger: kind === 'int32', ...(kind === 'float64' ? { isFloat64: true } : {}), ...extras };
-}
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('push shared helpers', () => {
-		it('resolves value kinds correctly', () => {
-			expect(resolveArgumentValueKind({ isInteger: true })).toBe('int32');
-			expect(resolveArgumentValueKind({ isInteger: false })).toBe('float32');
-			expect(resolveArgumentValueKind({ isInteger: false, isFloat64: true })).toBe('float64');
-			expect(resolvePointerTargetValueKind({ pointeeBaseType: 'int' } as never)).toBe('int32');
-			expect(resolvePointerTargetValueKind({ pointeeBaseType: 'float64' } as never)).toBe('float64');
-		});
-
-		it('creates stack items with expected shape', () => {
-			expect(kindToStackItem('int32', { isNonZero: true })).toEqual({ isInteger: true, isNonZero: true });
-			expect(kindToStackItem('float64', { isNonZero: false })).toEqual({
-				isInteger: false,
-				isFloat64: true,
-				isNonZero: false,
-			});
-		});
-	});
+	return {
+		isInteger: kind === 'int32',
+		...(kind === 'float64' ? { isFloat64: true } : {}),
+		...extras,
+	};
 }

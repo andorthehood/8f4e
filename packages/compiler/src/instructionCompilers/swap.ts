@@ -1,8 +1,7 @@
-import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import { withValidation } from '../withValidation';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `swap`.
@@ -40,30 +39,3 @@ const swap: InstructionCompiler = withValidation(
 );
 
 export default swap;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('swap instruction compiler', () => {
-		it('swaps the top two stack values', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: true });
-
-			swap(
-				{
-					lineNumberBeforeMacroExpansion: 3,
-					lineNumberAfterMacroExpansion: 3,
-					instruction: 'swap',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				locals: context.locals,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

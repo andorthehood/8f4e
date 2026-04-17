@@ -1,9 +1,9 @@
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `or`.
@@ -21,35 +21,12 @@ const or: InstructionCompiler = withValidation(
 		const operand2 = context.stack.pop()!;
 		const operand1 = context.stack.pop()!;
 
-		context.stack.push({ isInteger: true, isNonZero: operand1.isNonZero || operand2.isNonZero });
+		context.stack.push({
+			isInteger: true,
+			isNonZero: operand1.isNonZero || operand2.isNonZero,
+		});
 		return saveByteCode(context, [WASMInstruction.I32_OR]);
 	}
 );
 
 export default or;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('or instruction compiler', () => {
-		it('emits I32_OR and tracks non-zero state', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: true });
-
-			or(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'or',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

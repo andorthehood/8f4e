@@ -1,5 +1,5 @@
-import { ArgumentType, type CompilationContext, type InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../compilerError';
+import { ArgumentType, type CompilationContext, type InstructionCompiler } from '../types';
 
 import type { ArgumentRule } from './types';
 
@@ -40,48 +40,4 @@ export function validateArgumentByRule(
 			}
 			break;
 	}
-}
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-	const { classifyIdentifier } = await import('@8f4e/tokenizer');
-
-	const line: Parameters<InstructionCompiler>[0] = {
-		lineNumberBeforeMacroExpansion: 1,
-		lineNumberAfterMacroExpansion: 1,
-		instruction: 'test' as never,
-		arguments: [],
-	};
-	const context = { stack: [] } as unknown as CompilationContext;
-
-	describe('validateArgumentByRule', () => {
-		it('accepts matching literal and identifier rules', () => {
-			expect(() =>
-				validateArgumentByRule({ type: ArgumentType.LITERAL, value: 1, isInteger: true }, 'literal', line, context)
-			).not.toThrow();
-			expect(() => validateArgumentByRule(classifyIdentifier('x'), 'identifier', line, context)).not.toThrow();
-		});
-
-		it('rejects a float for integerLiteral', () => {
-			expect(() =>
-				validateArgumentByRule(
-					{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
-					'integerLiteral',
-					line,
-					context
-				)
-			).toThrow(`${ErrorCode.TYPE_MISMATCH}`);
-		});
-
-		it('rejects a negative value for nonNegativeIntegerLiteral', () => {
-			expect(() =>
-				validateArgumentByRule(
-					{ type: ArgumentType.LITERAL, value: -1, isInteger: true },
-					'nonNegativeIntegerLiteral',
-					line,
-					context
-				)
-			).toThrow(`${ErrorCode.EXPECTED_VALUE}`);
-		});
-	});
 }

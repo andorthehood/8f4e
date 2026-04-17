@@ -1,10 +1,9 @@
-import { ArgumentType } from '../types';
 import { br_if } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, BranchIfTrueLine, InstructionCompiler } from '../types';
+import type { BranchIfTrueLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branchIfTrue`.
@@ -24,29 +23,3 @@ const branchIfTrue: InstructionCompiler<BranchIfTrueLine> = withValidation<Branc
 );
 
 export default branchIfTrue;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('branchIfTrue instruction compiler', () => {
-		it('emits br_if bytecode', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: true });
-
-			branchIfTrue(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'branchIfTrue',
-					arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

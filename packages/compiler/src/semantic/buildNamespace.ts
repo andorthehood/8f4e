@@ -237,22 +237,22 @@ export function collectNamespacesFromASTs(
 					namespaces,
 					startingByteAddress,
 					compiledFunctions
-					);
-					if (!context.namespace.moduleName) {
-						continue;
-					}
-					const moduleLine = ast.find(line => line.instruction === 'module');
-					const existingNamespace = namespaces[context.namespace.moduleName];
-					if (moduleLine && existingNamespace?.kind === 'module') {
-						throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine ?? ast[0], context, {
-							identifier: context.namespace.moduleName,
-						});
-					}
-					namespaces[context.namespace.moduleName] = {
-						kind: moduleLine ? 'module' : 'constants',
-						consts: { ...context.namespace.consts },
-						memory: context.namespace.memory,
-					};
+				);
+				if (!context.namespace.moduleName) {
+					continue;
+				}
+				const moduleLine = ast.find(line => line.instruction === 'module');
+				const existingNamespace = namespaces[context.namespace.moduleName];
+				if (moduleLine && existingNamespace?.kind === 'module') {
+					throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine ?? ast[0], context, {
+						identifier: context.namespace.moduleName,
+					});
+				}
+				namespaces[context.namespace.moduleName] = {
+					kind: moduleLine ? 'module' : 'constants',
+					consts: { ...context.namespace.consts },
+					memory: context.namespace.memory,
+				};
 				madeProgress = true;
 			} catch (error) {
 				const failingLine =
@@ -279,11 +279,11 @@ export function collectNamespacesFromASTs(
 			continue;
 		}
 
-			namespaces[context.namespace.moduleName] = {
-				kind: 'module',
-				consts: { ...context.namespace.consts },
-				memory: context.namespace.memory,
-				byteAddress: nextStartingByteAddress,
+		namespaces[context.namespace.moduleName] = {
+			kind: 'module',
+			consts: { ...context.namespace.consts },
+			memory: context.namespace.memory,
+			byteAddress: nextStartingByteAddress,
 			wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		};
 

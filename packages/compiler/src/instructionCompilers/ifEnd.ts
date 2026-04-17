@@ -1,11 +1,11 @@
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
 import { ErrorCode, getError } from '../compilerError';
 import { BLOCK_TYPE } from '../types';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `ifEnd`.
@@ -45,55 +45,3 @@ const ifEnd: InstructionCompiler = withValidation(
 );
 
 export default ifEnd;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('ifEnd instruction compiler', () => {
-		it('ends a conditional block with result', () => {
-			const context = createInstructionCompilerTestContext({
-				blockStack: [
-					...createInstructionCompilerTestContext().blockStack,
-					{
-						blockType: BLOCK_TYPE.CONDITION,
-						expectedResultIsInteger: true,
-						hasExpectedResult: true,
-					},
-				],
-			});
-			context.stack.push({ isInteger: true, isNonZero: false });
-
-			ifEnd(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'ifEnd',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				blockStack: context.blockStack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('throws when missing condition block', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				ifEnd(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'ifEnd',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-	});
-}

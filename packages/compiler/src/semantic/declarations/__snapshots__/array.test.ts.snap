@@ -1,21 +1,19 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`int instruction compiler > creates an int memory entry 1`] = `
+exports[`array declaration compiler > creates a memory array entry 1`] = `
 {
-  "counter": {
+  "values": {
     "byteAddress": 0,
-    "default": 0,
+    "default": {},
     "elementWordSize": 4,
-    "id": "counter",
+    "id": "values",
     "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
-    "numberOfElements": 1,
+    "numberOfElements": 3,
     "type": "int",
     "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
+    "wordAlignedSize": 3,
   },
 }
 `;
