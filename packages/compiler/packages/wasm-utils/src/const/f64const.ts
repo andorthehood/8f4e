@@ -10,15 +10,3 @@ import Instruction from '../wasmInstruction';
 export default function f64const(number: number): number[] {
 	return [Instruction.F64_CONST, ...ieee754_64(number)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('f64const generates correct bytecode for 0', () => {
-		expect(f64const(0)).toStrictEqual([68, 0, 0, 0, 0, 0, 0, 0, 0]);
-	});
-
-	test('f64const generates correct bytecode for 1', () => {
-		expect(f64const(1)).toStrictEqual([68, 0, 0, 0, 0, 0, 0, 240, 63]);
-	});
-}

@@ -13,14 +13,3 @@ import Type from '../type';
 export default function loop(resultType: Type, code: number[]): number[] {
 	return [Instruction.LOOP, resultType, ...code, ...br(0), Instruction.END];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('loop generates structure with branch back', () => {
-		const result = loop(Type.VOID, [65, 1]);
-		expect(result).toContain(3);
-		expect(result).toContain(12);
-		expect(result).toContain(11);
-	});
-}

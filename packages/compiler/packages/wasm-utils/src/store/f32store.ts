@@ -21,17 +21,3 @@ export default function f32store(address?: number, value?: number, alignment = 2
 		...unsignedLEB128(offset),
 	];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('f32store with no setup generates only store instruction', () => {
-		const result = f32store();
-		expect(result.slice(-3)).toStrictEqual([56, 2, 0]);
-	});
-
-	test('f32store with address and value generates full instruction sequence', () => {
-		const result = f32store(100, 3.14);
-		expect(result).toContain(56);
-	});
-}

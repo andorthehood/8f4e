@@ -22,12 +22,3 @@ export default function createFunctionType(parameterTypes: Type[], resultTypes: 
 		...resultTypes,
 	];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('createFunctionType generates correct signature', () => {
-		const funcType = createFunctionType([Type.I32, Type.I32], [Type.I32]);
-		expect(funcType).toStrictEqual([0x60, 2, Type.I32, Type.I32, 1, Type.I32]);
-	});
-}

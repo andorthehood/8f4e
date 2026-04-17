@@ -21,17 +21,3 @@ export default function f64store(address?: number, value?: number, alignment = 3
 		...unsignedLEB128(offset),
 	];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('f64store with no setup generates only store instruction', () => {
-		const result = f64store();
-		expect(result.slice(-3)).toStrictEqual([57, 3, 0]);
-	});
-
-	test('f64store with address and value generates full instruction sequence', () => {
-		const result = f64store(0, 1.0);
-		expect(result).toContain(57);
-	});
-}

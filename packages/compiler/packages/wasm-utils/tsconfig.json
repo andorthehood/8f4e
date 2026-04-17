@@ -2,8 +2,7 @@
 	"extends": "@8f4e/config/tsconfig.node.json",
 	"compilerOptions": {
 		"outDir": "dist",
-		"rootDir": "src",
-		"types": ["vitest/importMeta"]
+		"rootDir": "src"
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules", "src/**/*.test.ts"]

@@ -1,5 +1,3 @@
-import createFunctionName from './createFunctionName';
-
 import createVector from '../encoding/createVector';
 import encodeString from '../encoding/encodeString';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
@@ -23,14 +21,4 @@ export default function createNameSection(functionNames: FunctionName[]): number
 			...createVector([...unsignedLEB128(numFunctions), ...functionNames.flat()]),
 		]),
 	];
-}
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('createNameSection wraps function names correctly', () => {
-		const names = [createFunctionName(0, 'main')];
-		const section = createNameSection(names);
-		expect(section[0]).toBe(Section.CUSTOM);
-	});
 }

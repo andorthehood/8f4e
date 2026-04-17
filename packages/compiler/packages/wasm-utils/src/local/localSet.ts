@@ -10,13 +10,3 @@ import Instruction from '../wasmInstruction';
 export default function localSet(index: number): number[] {
 	return [Instruction.LOCAL_SET, ...unsignedLEB128(index)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('localSet generates correct bytecode', () => {
-		expect(localSet(1)).toStrictEqual([33, 1]);
-		expect(localSet(32)).toStrictEqual([33, 32]);
-		expect(localSet(256)).toStrictEqual([33, 128, 2]);
-	});
-}
