@@ -151,6 +151,35 @@ describe('tryResolveCompileTimeArgument', () => {
 		});
 	});
 
+	it('resolves exponentiation expression: constant ^ literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE^2'))).toEqual({
+			value: 256,
+			isInteger: true,
+		});
+	});
+
+	it('resolves exponentiation expression: literal ^ constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('2^SIZE'))).toEqual({
+			value: 65536,
+			isInteger: true,
+		});
+	});
+
+	it('keeps float64 width for exponentiation results', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64^2'))).toEqual({
+			value: Math.pow(3.14159, 2),
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+
+	it('resolves exponentiation with sizeof: sizeof(name)^literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)^2'))).toEqual({
+			value: 4,
+			isInteger: true,
+		});
+	});
+
 	it('resolves intermodule start-address reference (&module:memory) once module is laid out', () => {
 		const laidOutNamespace = {
 			...mockContext,

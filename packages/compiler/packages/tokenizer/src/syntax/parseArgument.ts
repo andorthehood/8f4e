@@ -168,7 +168,7 @@ export type CompileTimeOperand = ArgumentLiteral | ArgumentIdentifier;
 export type ArgumentCompileTimeExpression = {
 	type: ArgumentType.COMPILE_TIME_EXPRESSION;
 	left: CompileTimeOperand;
-	operator: '*' | '/';
+	operator: '*' | '/' | '^';
 	right: CompileTimeOperand;
 	/**
 	 * Module IDs referenced by intermodular operands in this expression.
