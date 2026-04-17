@@ -1,23 +1,14 @@
 8f4e/v1
 
-module projectConfig
-; @pos -242 -1
-; @runtime AudioWorkletRuntime
-; ~sampleRate 44100
-; @exportFileName risen
-
-moduleEnd
-
 constants env
 ; @pos -242 -38
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/19/2026, 1:23:48 PM
-; @tab 24
-const SAMPLE_RATE	44100
-const INV_SAMPLE_RATE	0.000022675736961451248
-const AUDIO_BUFFER_SIZE	128
+
+const SAMPLE_RATE 44100
+const INV_SAMPLE_RATE 0.000022675736961451248
+const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
@@ -442,7 +433,7 @@ ifEnd
 moduleEnd
 
 module audioout
-; @pos 241 -22
+; @pos 210 -22
 ; @home
 use env
 
@@ -745,8 +736,16 @@ store
 
 moduleEnd
 
+module projectConfig
+; @pos -242 -1
+; @runtime AudioWorkletRuntime
+; ~sampleRate 44100
+; @exportFileName risen
+
+moduleEnd
+
 module reverb
-; @pos 203 -22
+; @pos 174 -22
 
 float* in &carrier:out
 float out
@@ -963,7 +962,7 @@ ifEnd
 moduleEnd
 
 module templeOS
-; @pos -41 76
+; @pos -314 -38
 ; @tab 46
 ; @color fill.moduleBackground	#ffffff
 ; @color fill.background	#55ffff
@@ -987,7 +986,8 @@ module templeOS
 ; @color fill.codeBlockHighlightLevel1	#eeeeee
 ; @color fill.codeBlockHighlightLevel2	#dddddd
 ; @color fill.codeBlockHighlightLevel3	#cccccc
-; @color fill.trace	#55ff55
+; @color fill.plotterBackground	#000000
+; @color fill.trace	#ffffff
 ; @color fill.scanLine	#55ffff
 ; @color icons.outputConnectorBackground	#ffff55
 ; @color icons.outputConnector	#000000
