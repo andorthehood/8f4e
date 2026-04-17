@@ -3,8 +3,8 @@ title: 'TODO: Add exponentiation support to compile-time expressions'
 priority: Medium
 effort: 4-8h
 created: 2026-04-17
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-17
 ---
 
 # TODO: Add exponentiation support to compile-time expressions
