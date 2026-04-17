@@ -17,6 +17,24 @@ describe('global editor directive suggestions', () => {
 		expect(getDidYouMeanSuggestion('t', ['terminus8x16', 'terminus8x16bold', 'spleen5x8'])).toBe('terminus8x16');
 	});
 
+	it('suggests a candidate when the input appears anywhere in it', () => {
+		expect(getDidYouMeanSuggestion('prefix', ['text.code', 'text.basePrefix', 'fill.background'])).toBe(
+			'text.basePrefix'
+		);
+	});
+
+	it('does not require segment separators for substring suggestions', () => {
+		expect(getDidYouMeanSuggestion('prefix', ['textbasePrefix', 'fill.background'])).toBe('textbasePrefix');
+	});
+
+	it('does not depend on a specific separator for substring suggestions', () => {
+		expect(getDidYouMeanSuggestion('prefix', ['text@basePrefix', 'fill.background'])).toBe('text@basePrefix');
+	});
+
+	it('prefers the shortest substring match', () => {
+		expect(getDidYouMeanSuggestion('code', ['text.codeComment', 'text.code'])).toBe('text.code');
+	});
+
 	it('skips suggestions when no candidate is close enough', () => {
 		expect(getDidYouMeanSuggestion('tiny', ['AudioWorkletRuntime', 'WebWorkerLogicRuntime'])).toBeUndefined();
 	});
