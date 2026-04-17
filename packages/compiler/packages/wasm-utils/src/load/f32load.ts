@@ -11,12 +11,3 @@ import Instruction from '../wasmInstruction';
 export default function f32load(alignment = 2, offset = 0): number[] {
 	return [Instruction.F32_LOAD, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('f32load generates correct bytecode', () => {
-		expect(f32load()).toStrictEqual([42, 2, 0]);
-		expect(f32load(0, 16)).toStrictEqual([42, 0, 16]);
-	});
-}

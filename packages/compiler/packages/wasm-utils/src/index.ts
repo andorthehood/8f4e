@@ -35,7 +35,15 @@ export { default as createMemorySection } from './memory/memorySection';
 export { default as createFunctionName } from './name/createFunctionName';
 export { default as createNameSection } from './name/createNameSection';
 export { Section, NameSection, ImportDesc, ExportDesc } from './section';
-export type { LocalDeclaration, FunctionBody, FunctionExport, FunctionType, FunctionName, LocalName, Import } from './section';
+export type {
+	LocalDeclaration,
+	FunctionBody,
+	FunctionExport,
+	FunctionType,
+	FunctionName,
+	LocalName,
+	Import,
+} from './section';
 export { default as f32store } from './store/f32store';
 export { default as f64store } from './store/f64store';
 export { default as i32store } from './store/i32store';

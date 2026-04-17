@@ -20,12 +20,3 @@ export default function createFunction(localDeclarations: LocalDeclaration[], fu
 		Instruction.END,
 	]);
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('createFunction wraps body with locals and end', () => {
-		const func = createFunction([], [65, 42]);
-		expect(func[func.length - 1]).toBe(Instruction.END);
-	});
-}

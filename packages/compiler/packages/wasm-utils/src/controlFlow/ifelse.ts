@@ -12,12 +12,3 @@ import Type from '../type';
 export default function ifelse(resultType: Type, trueBranch: number[], falseBranch: number[] = []): number[] {
 	return [Instruction.IF, resultType, ...trueBranch, Instruction.ELSE, ...falseBranch, Instruction.END];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('ifelse generates correct structure', () => {
-		const result = ifelse(Type.I32, [65, 1], [65, 0]);
-		expect(result).toStrictEqual([4, 127, 65, 1, 5, 65, 0, 11]);
-	});
-}

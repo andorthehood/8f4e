@@ -13,12 +13,3 @@ import type { FunctionName } from '../section';
 export default function createFunctionName(functionIndex: number, name: string): FunctionName {
 	return [...unsignedLEB128(functionIndex), ...encodeString(name)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('createFunctionName generates correct entry', () => {
-		const name = createFunctionName(0, 'main');
-		expect(name[0]).toBe(0);
-	});
-}

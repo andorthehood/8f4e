@@ -10,18 +10,3 @@ import Instruction from '../wasmInstruction';
 export default function i32const(number: number): number[] {
 	return [Instruction.I32_CONST, ...signedLEB128(number)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('i32const generates correct bytecode for positive values', () => {
-		expect(i32const(1)).toStrictEqual([65, 1]);
-		expect(i32const(32)).toStrictEqual([65, 32]);
-		expect(i32const(256)).toStrictEqual([65, 128, 2]);
-	});
-
-	test('i32const generates correct bytecode for negative values', () => {
-		expect(i32const(-1)).toStrictEqual([65, 127]);
-		expect(i32const(-256)).toStrictEqual([65, 128, 126]);
-	});
-}

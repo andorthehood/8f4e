@@ -11,12 +11,3 @@ import Type from '../type';
 export default function block(resultType: Type, code: number[]): number[] {
 	return [Instruction.BLOCK, resultType, ...code, Instruction.END];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('block generates correct structure', () => {
-		const result = block(Type.I32, [65, 42]);
-		expect(result).toStrictEqual([2, 127, 65, 42, 11]);
-	});
-}

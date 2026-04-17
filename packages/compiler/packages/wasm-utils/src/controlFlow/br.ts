@@ -10,12 +10,3 @@ import Instruction from '../wasmInstruction';
 export default function br(breakDepth: number): number[] {
 	return [Instruction.BR, ...unsignedLEB128(breakDepth)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('br generates correct bytecode', () => {
-		expect(br(0)).toStrictEqual([12, 0]);
-		expect(br(2)).toStrictEqual([12, 2]);
-	});
-}

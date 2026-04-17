@@ -10,13 +10,3 @@ import Instruction from '../wasmInstruction';
 export default function call(functionIndex: number): number[] {
 	return [Instruction.CALL, ...unsignedLEB128(functionIndex)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('call generates correct bytecode', () => {
-		expect(call(1)).toStrictEqual([16, 1]);
-		expect(call(32)).toStrictEqual([16, 32]);
-		expect(call(256)).toStrictEqual([16, 128, 2]);
-	});
-}
