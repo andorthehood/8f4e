@@ -9,21 +9,3 @@ export default function extractPointeeElementMaxBase(name: string): string {
 	}
 	return name;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractPointeeElementMaxBase', () => {
-		it('removes pointee max() wrapper', () => {
-			expect(extractPointeeElementMaxBase('max(*value)')).toBe('value');
-		});
-
-		it('leaves plain identifiers unchanged', () => {
-			expect(extractPointeeElementMaxBase('value')).toBe('value');
-		});
-
-		it('does not strip plain max() form', () => {
-			expect(extractPointeeElementMaxBase('max(value)')).toBe('max(value)');
-		});
-	});
-}

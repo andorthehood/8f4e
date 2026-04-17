@@ -14,17 +14,3 @@ export default function getFunctionId(code: string[]) {
 	}
 	return '';
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('getFunctionId', () => {
-		it('returns the function identifier', () => {
-			expect(getFunctionId(['function foo', 'functionEnd'])).toBe('foo');
-		});
-
-		it('returns empty string when missing', () => {
-			expect(getFunctionId(['module foo', 'moduleEnd'])).toBe('');
-		});
-	});
-}

@@ -6,23 +6,3 @@
 export default function isComment(line: string): boolean {
 	return /^\s*;/.test(line);
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('isComment', () => {
-		it('matches lines starting with semicolon', () => {
-			expect(isComment('; comment')).toBe(true);
-			expect(isComment('   ; comment')).toBe(true);
-		});
-
-		it('returns false for lines starting with hash', () => {
-			expect(isComment('# directive')).toBe(false);
-			expect(isComment('   # directive')).toBe(false);
-		});
-
-		it('returns false for non-comment lines', () => {
-			expect(isComment('add 1 2')).toBe(false);
-		});
-	});
-}

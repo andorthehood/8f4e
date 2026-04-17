@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 import { describe, expect, it } from 'vitest';
 
-import { compileToAST } from './parser';
+import { compileToAST } from '../src/parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

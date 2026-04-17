@@ -1,9 +1,21 @@
 export type CodeBlockType = 'module' | 'function' | 'constants' | 'unknown';
 
-const BLOCK_MARKERS: Array<{ type: Exclude<CodeBlockType, 'unknown'>; opener: RegExp; closer: RegExp }> = [
+const BLOCK_MARKERS: Array<{
+	type: Exclude<CodeBlockType, 'unknown'>;
+	opener: RegExp;
+	closer: RegExp;
+}> = [
 	{ type: 'module', opener: /^\s*module(\s|$)/, closer: /^\s*moduleEnd(\s|$)/ },
-	{ type: 'function', opener: /^\s*function(\s|$)/, closer: /^\s*functionEnd(\s|$)/ },
-	{ type: 'constants', opener: /^\s*constants(\s|$)/, closer: /^\s*constantsEnd(\s|$)/ },
+	{
+		type: 'function',
+		opener: /^\s*function(\s|$)/,
+		closer: /^\s*functionEnd(\s|$)/,
+	},
+	{
+		type: 'constants',
+		opener: /^\s*constants(\s|$)/,
+		closer: /^\s*constantsEnd(\s|$)/,
+	},
 ];
 
 /**
@@ -37,41 +49,4 @@ export function isCompilableBlockType(
 	blockType: string | undefined
 ): blockType is 'module' | 'function' | 'constants' | 'macro' {
 	return blockType === 'module' || blockType === 'function' || blockType === 'constants' || blockType === 'macro';
-}
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('getBlockType', () => {
-		it('detects module blocks', () => {
-			expect(getBlockType(['module foo', 'moduleEnd'])).toBe('module');
-		});
-
-		it('detects function blocks', () => {
-			expect(getBlockType(['function foo', 'functionEnd'])).toBe('function');
-		});
-
-		it('detects constants blocks', () => {
-			expect(getBlockType(['constants', 'constantsEnd'])).toBe('constants');
-		});
-
-		it('returns unknown for mixed markers', () => {
-			expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
-		});
-	});
-
-	describe('isCompilableBlockType', () => {
-		it('returns true for compilable block types', () => {
-			expect(isCompilableBlockType('module')).toBe(true);
-			expect(isCompilableBlockType('function')).toBe(true);
-			expect(isCompilableBlockType('constants')).toBe(true);
-			expect(isCompilableBlockType('macro')).toBe(true);
-		});
-
-		it('returns false for non-compilable block types', () => {
-			expect(isCompilableBlockType('unknown')).toBe(false);
-			expect(isCompilableBlockType('note')).toBe(false);
-			expect(isCompilableBlockType(undefined)).toBe(false);
-		});
-	});
 }

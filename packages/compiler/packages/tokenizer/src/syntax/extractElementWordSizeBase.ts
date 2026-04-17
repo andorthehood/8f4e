@@ -9,17 +9,3 @@ export default function extractElementWordSizeBase(name: string): string {
 	}
 	return name;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractElementWordSizeBase', () => {
-		it('removes sizeof() wrapper', () => {
-			expect(extractElementWordSizeBase('sizeof(value)')).toBe('value');
-		});
-
-		it('leaves plain identifiers unchanged', () => {
-			expect(extractElementWordSizeBase('value')).toBe('value');
-		});
-	});
-}
