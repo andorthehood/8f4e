@@ -118,4 +118,85 @@ describe('parseConstantMulDivExpression', () => {
 		expect(parseConstantMulDivExpression('SIZE^2*3')).toBeNull();
 		expect(parseConstantMulDivExpression('2*SIZE^3')).toBeNull();
 	});
+
+	it('parses constant + literal', () => {
+		expect(parseConstantMulDivExpression('SIZE+1')).toEqual({
+			lhs: 'SIZE',
+			operator: '+',
+			rhs: '1',
+		});
+	});
+
+	it('parses constant - literal', () => {
+		expect(parseConstantMulDivExpression('SIZE-1')).toEqual({
+			lhs: 'SIZE',
+			operator: '-',
+			rhs: '1',
+		});
+	});
+
+	it('parses literal + constant', () => {
+		expect(parseConstantMulDivExpression('1+SIZE')).toEqual({
+			lhs: '1',
+			operator: '+',
+			rhs: 'SIZE',
+		});
+	});
+
+	it('parses literal - constant', () => {
+		expect(parseConstantMulDivExpression('10-SIZE')).toEqual({
+			lhs: '10',
+			operator: '-',
+			rhs: 'SIZE',
+		});
+	});
+
+	it('parses metadata query + literal', () => {
+		expect(parseConstantMulDivExpression('sizeof(name)+1')).toEqual({
+			lhs: 'sizeof(name)',
+			operator: '+',
+			rhs: '1',
+		});
+	});
+
+	it('parses metadata query - literal', () => {
+		expect(parseConstantMulDivExpression('sizeof(name)-1')).toEqual({
+			lhs: 'sizeof(name)',
+			operator: '-',
+			rhs: '1',
+		});
+	});
+
+	it('rejects unary minus (operator at start)', () => {
+		expect(parseConstantMulDivExpression('-SIZE')).toBeNull();
+	});
+
+	it('rejects + at end', () => {
+		expect(parseConstantMulDivExpression('SIZE+')).toBeNull();
+	});
+
+	it('rejects - at end', () => {
+		expect(parseConstantMulDivExpression('SIZE-')).toBeNull();
+	});
+
+	it('rejects multiple + operators', () => {
+		expect(parseConstantMulDivExpression('SIZE+1+2')).toBeNull();
+	});
+
+	it('rejects mixed + and - operators', () => {
+		expect(parseConstantMulDivExpression('SIZE+1-2')).toBeNull();
+	});
+
+	it('rejects mixed + and * operators', () => {
+		expect(parseConstantMulDivExpression('SIZE+1*2')).toBeNull();
+	});
+
+	it('does not count operators inside parentheses for + and -', () => {
+		// The + inside parens should not be counted as operator; sizeof(*ptr)+1 has one + outside
+		expect(parseConstantMulDivExpression('sizeof(*ptr)+1')).toEqual({
+			lhs: 'sizeof(*ptr)',
+			operator: '+',
+			rhs: '1',
+		});
+	});
 });
