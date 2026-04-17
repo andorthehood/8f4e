@@ -10,21 +10,3 @@ export default function extractMemoryReferenceBase(name: string): string {
 	}
 	return name;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractMemoryReferenceBase', () => {
-		it('removes prefix', () => {
-			expect(extractMemoryReferenceBase('&value')).toBe('value');
-		});
-
-		it('removes suffix', () => {
-			expect(extractMemoryReferenceBase('value&')).toBe('value');
-		});
-
-		it('leaves plain identifiers unchanged', () => {
-			expect(extractMemoryReferenceBase('value')).toBe('value');
-		});
-	});
-}

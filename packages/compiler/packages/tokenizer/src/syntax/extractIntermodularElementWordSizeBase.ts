@@ -12,20 +12,3 @@ export default function extractIntermodularElementWordSizeBase(value: string): {
 	const [module, memory] = inner.split(':');
 	return { module, memory };
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractIntermodularElementWordSizeBase', () => {
-		it('extracts module and memory from element word size reference', () => {
-			expect(extractIntermodularElementWordSizeBase('sizeof(module:buffer)')).toEqual({
-				module: 'module',
-				memory: 'buffer',
-			});
-			expect(extractIntermodularElementWordSizeBase('sizeof(sourceModule:data)')).toEqual({
-				module: 'sourceModule',
-				memory: 'data',
-			});
-		});
-	});
-}

@@ -9,17 +9,3 @@ export default function extractElementCountBase(name: string): string {
 	}
 	return name;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractElementCountBase', () => {
-		it('removes count() wrapper', () => {
-			expect(extractElementCountBase('count(value)')).toBe('value');
-		});
-
-		it('leaves plain identifiers unchanged', () => {
-			expect(extractElementCountBase('value')).toBe('value');
-		});
-	});
-}

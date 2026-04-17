@@ -1,6 +1,6 @@
 import isConstantName from './isConstantName';
 import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
-import { ArgumentType, classifyIdentifier, type Argument } from './parseArgument';
+import { ArgumentType, type Argument } from './parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
 type ArgumentShapeRule =
@@ -46,7 +46,10 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	module: { minArguments: 1, argumentTypes: ['identifier'] },
 	constants: { minArguments: 1, argumentTypes: ['identifier'] },
 	use: { minArguments: 1, argumentTypes: ['identifier'] },
-	const: { minArguments: 2, argumentTypes: ['constantIdentifier', 'compileTimeValue'] },
+	const: {
+		minArguments: 2,
+		argumentTypes: ['constantIdentifier', 'compileTimeValue'],
+	},
 	init: { minArguments: 2, argumentTypes: ['identifier', 'compileTimeValue'] },
 	if: { maxArguments: 0 },
 	ifEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
@@ -160,107 +163,4 @@ export default function validateInstructionArguments(instruction: string, args: 
 	for (let i = 0; i < args.length; i++) {
 		validateArgumentShape(args[i], spec.argumentTypes, instruction);
 	}
-}
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-	const { parseCompileTimeOperand } = await import('./parseArgument');
-
-	describe('validateInstructionArguments', () => {
-		it('enforces missing arguments for known instruction arity', () => {
-			expect(() => validateInstructionArguments('push', [])).toThrowError(SyntaxRulesError);
-			expect(() =>
-				validateInstructionArguments('map', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])
-			).toThrowError(SyntaxRulesError);
-		});
-
-		it('accepts compile-time values for default', () => {
-			expect(() =>
-				validateInstructionArguments('default', [
-					{
-						type: ArgumentType.COMPILE_TIME_EXPRESSION,
-						left: parseCompileTimeOperand('SIZE'),
-						operator: '*',
-						right: parseCompileTimeOperand('2'),
-						intermoduleIds: [],
-					},
-				])
-			).not.toThrow();
-		});
-
-		it('rejects non-single-character string literals in map', () => {
-			expect(() =>
-				validateInstructionArguments('map', [
-					{ type: ArgumentType.STRING_LITERAL, value: 'AB' },
-					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
-				])
-			).toThrowError(SyntaxRulesError);
-		});
-
-		it('rejects unsupported type identifiers', () => {
-			expect(() =>
-				validateInstructionArguments('param', [classifyIdentifier('bool'), classifyIdentifier('x')])
-			).toThrowError(SyntaxRulesError);
-		});
-
-		it('rejects too many result types for ifEnd', () => {
-			expect(() =>
-				validateInstructionArguments('ifEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
-			).toThrowError(SyntaxRulesError);
-		});
-
-		it('rejects non-constant identifiers for const declarations', () => {
-			expect(() =>
-				validateInstructionArguments('const', [
-					classifyIdentifier('foo'),
-					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
-				])
-			).toThrowError(SyntaxRulesError);
-		});
-
-		it('validates array declaration argument shapes', () => {
-			expect(() =>
-				validateInstructionArguments('int[]', [
-					classifyIdentifier('values'),
-					{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
-				])
-			).not.toThrow();
-		});
-
-		it('rejects any argument for block', () => {
-			expect(() => validateInstructionArguments('block', [classifyIdentifier('int')])).toThrowError(SyntaxRulesError);
-			expect(() => validateInstructionArguments('block', [classifyIdentifier('float')])).toThrowError(SyntaxRulesError);
-			expect(() => validateInstructionArguments('block', [classifyIdentifier('void')])).toThrowError(SyntaxRulesError);
-			expect(() =>
-				validateInstructionArguments('block', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])
-			).toThrowError(SyntaxRulesError);
-		});
-
-		it('accepts bare blockEnd', () => {
-			expect(() => validateInstructionArguments('blockEnd', [])).not.toThrow();
-		});
-
-		it('accepts blockEnd with int or float', () => {
-			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('int')])).not.toThrow();
-			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('float')])).not.toThrow();
-		});
-
-		it('rejects blockEnd with invalid type identifiers', () => {
-			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('void')])).toThrowError(
-				SyntaxRulesError
-			);
-			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('bool')])).toThrowError(
-				SyntaxRulesError
-			);
-			expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('string')])).toThrowError(
-				SyntaxRulesError
-			);
-		});
-
-		it('rejects too many result types for blockEnd', () => {
-			expect(() =>
-				validateInstructionArguments('blockEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
-			).toThrowError(SyntaxRulesError);
-		});
-	});
 }

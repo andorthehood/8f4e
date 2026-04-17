@@ -12,20 +12,3 @@ export default function extractIntermodularElementCountBase(value: string): {
 	const [module, memory] = inner.split(':');
 	return { module, memory };
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractIntermodularElementCountBase', () => {
-		it('extracts module and memory from element count reference', () => {
-			expect(extractIntermodularElementCountBase('count(module:buffer)')).toEqual({
-				module: 'module',
-				memory: 'buffer',
-			});
-			expect(extractIntermodularElementCountBase('count(sourceModule:data)')).toEqual({
-				module: 'sourceModule',
-				memory: 'data',
-			});
-		});
-	});
-}

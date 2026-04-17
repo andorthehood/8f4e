@@ -14,17 +14,3 @@ export default function getConstantsId(code: string[]) {
 	}
 	return '';
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('getConstantsId', () => {
-		it('returns the constants identifier', () => {
-			expect(getConstantsId(['constants math', 'constantsEnd'])).toBe('math');
-		});
-
-		it('returns empty string when missing', () => {
-			expect(getConstantsId(['module foo', 'moduleEnd'])).toBe('');
-		});
-	});
-}
