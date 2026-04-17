@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/tokenizer';
 
-import { serializeDiagnostic } from '../src/diagnostic';
-import { ErrorCode, getError } from '../src/compilerError';
+import { serializeDiagnostic } from './diagnostic';
+import { ErrorCode, getError } from './compilerError';
 
-import type { AST } from '../src/types';
+import type { AST } from './types';
 
 const stubLine = {
 	lineNumberBeforeMacroExpansion: 3,

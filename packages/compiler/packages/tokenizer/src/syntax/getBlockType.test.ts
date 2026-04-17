@@ -15,8 +15,16 @@ describe('getBlockType', () => {
 		expect(getBlockType(['constants', 'constantsEnd'])).toBe('constants');
 	});
 
+	it('returns unknown for blocks without proper markers', () => {
+		expect(getBlockType(['int x 5', 'add'])).toBe('unknown');
+	});
+
 	it('returns unknown for mixed markers', () => {
 		expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
+	});
+
+	it('handles whitespace in block markers', () => {
+		expect(getBlockType(['  constants   math  ', 'const PI 3.14159', '  constantsEnd  '])).toBe('constants');
 	});
 });
 

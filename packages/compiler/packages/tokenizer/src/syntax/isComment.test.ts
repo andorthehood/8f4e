@@ -15,5 +15,6 @@ describe('isComment', () => {
 
 	it('returns false for non-comment lines', () => {
 		expect(isComment('add 1 2')).toBe(false);
+		expect(isComment('hello')).toBe(false);
 	});
 });
