@@ -39,6 +39,7 @@ export const minimalColorScheme: ColorScheme = {
 		dialogDimmer: 'rgba(0,0,0,0.5)',
 		highlightedCodeLine: '#333333',
 		trace: '#ffffff',
+		plotterBackground: 'rgba(0,0,0,0)',
 		waveform: 'rgba(255,255,255,0.45)',
 		scanLine: '#ffffff',
 		sliderThumb: '#ffffff',

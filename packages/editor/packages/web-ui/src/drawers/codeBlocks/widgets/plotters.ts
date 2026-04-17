@@ -37,6 +37,8 @@ export default function drawer(
 		const valueRange = maxValue - minValue;
 		const columnWidth = Math.max(1, Math.floor(maxPlotterWidth / Math.max(width, 1)));
 
+		engine.drawSprite(0, 0, 'plotterBackground', maxPlotterWidth, plotHeight);
+
 		for (let i = 0; i < width; i++) {
 			const value = values[baseValueIndex + i];
 			const normalizedValue = valueRange === 0 ? 0.5 : (value - minValue) / valueRange;
