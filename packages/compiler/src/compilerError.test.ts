@@ -1,8 +1,8 @@
 import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 
-import { ErrorCode, getError } from '../src/compilerError';
-import { type AST } from '../src/types';
+import { ErrorCode, getError } from './compilerError';
+import { type AST } from './types';
 
 describe('getError', () => {
 	it('includes the undeclared identifier when provided', () => {
@@ -43,6 +43,8 @@ describe('getError', () => {
 
 		const error = getError(ErrorCode.DUPLICATE_IDENTIFIER, line, undefined, { identifier: 'same' });
 
-		expect(error.message).toBe(`Duplicate identifier: same. Module and function IDs must be unique. (${ErrorCode.DUPLICATE_IDENTIFIER})`);
+		expect(error.message).toBe(
+			`Duplicate identifier: same. Module and function IDs must be unique. (${ErrorCode.DUPLICATE_IDENTIFIER})`
+		);
 	});
 });

@@ -10,4 +10,8 @@ describe('getModuleId', () => {
 	it('returns empty string when missing', () => {
 		expect(getModuleId(['function foo', 'functionEnd'])).toBe('');
 	});
+
+	it('returns empty string if no module instruction is present', () => {
+		expect(getModuleId(['int x 5', 'add'])).toBe('');
+	});
 });

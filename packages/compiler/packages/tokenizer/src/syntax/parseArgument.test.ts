@@ -70,6 +70,11 @@ describe('classifyIdentifier – check ordering regression', () => {
 
 describe('parseArgument', () => {
 	it('parses decimal integers', () => {
+		expect(parseArgument('0')).toEqual({
+			value: 0,
+			type: ArgumentType.LITERAL,
+			isInteger: true,
+		});
 		expect(parseArgument('42')).toEqual({
 			value: 42,
 			type: ArgumentType.LITERAL,
@@ -83,6 +88,11 @@ describe('parseArgument', () => {
 	});
 
 	it('parses decimal floats', () => {
+		expect(parseArgument('0.0')).toEqual({
+			value: 0,
+			type: ArgumentType.LITERAL,
+			isInteger: false,
+		});
 		expect(parseArgument('3.14')).toEqual({
 			value: 3.14,
 			type: ArgumentType.LITERAL,
@@ -116,11 +126,22 @@ describe('parseArgument', () => {
 			isInteger: true,
 			isHex: true,
 		});
+		expect(parseArgument('0xff')).toEqual({
+			value: 255,
+			type: ArgumentType.LITERAL,
+			isInteger: true,
+			isHex: true,
+		});
 	});
 
 	it('parses binary integers', () => {
 		expect(parseArgument('0b101')).toEqual({
 			value: 5,
+			type: ArgumentType.LITERAL,
+			isInteger: true,
+		});
+		expect(parseArgument('0b001')).toEqual({
+			value: 1,
 			type: ArgumentType.LITERAL,
 			isInteger: true,
 		});
@@ -132,6 +153,14 @@ describe('parseArgument', () => {
 			type: ArgumentType.IDENTIFIER,
 			referenceKind: 'plain',
 			scope: 'local',
+		});
+		expect(parseArgument('foo1')).toMatchObject({
+			value: 'foo1',
+			type: ArgumentType.IDENTIFIER,
+		});
+		expect(parseArgument('f0o')).toMatchObject({
+			value: 'f0o',
+			type: ArgumentType.IDENTIFIER,
 		});
 	});
 
