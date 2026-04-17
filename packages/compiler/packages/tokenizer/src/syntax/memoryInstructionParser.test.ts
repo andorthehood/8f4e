@@ -88,6 +88,17 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 			type: 'memory-reference',
 			base: 'foo',
 			pattern: '&foo',
+			isEndAddress: false,
+		});
+	});
+
+	it('parses memory end-address reference argument', () => {
+		const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('foo&')]);
+		expect(result.firstArg).toEqual({
+			type: 'memory-reference',
+			base: 'foo',
+			pattern: 'foo&',
+			isEndAddress: true,
 		});
 	});
 
@@ -109,9 +120,9 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 		expect(result.secondArg).toEqual({ type: 'literal', value: 7 });
 	});
 
-	it('parses constant-style identifier as anonymous (no second arg)', () => {
+	it('parses single constant-style identifier as constant-identifier (rejected by semantic phase)', () => {
 		const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('MY_CONST')]);
-		expect(result.firstArg).toEqual({ type: 'identifier', value: 'MY_CONST' });
+		expect(result.firstArg).toEqual({ type: 'constant-identifier', value: 'MY_CONST' });
 		expect(result.secondArg).toBeUndefined();
 	});
 

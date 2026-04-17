@@ -1,9 +1,15 @@
-import { ArgumentType, type SplitByteToken } from '@8f4e/tokenizer';
+import {
+	parseMemoryInstructionArgumentsShape,
+	SyntaxRulesError,
+	SyntaxErrorCode,
+	type MemoryArgumentShape,
+	type SplitByteToken,
+} from '@8f4e/tokenizer';
 
 import { ErrorCode, getError } from '../compilerError';
 import { getEndByteAddress, getModuleEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { AST, Argument, ArgumentIdentifier, ArgumentLiteral, CompilationContext } from '../types';
+import type { AST, CompilationContext } from '../types';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.
@@ -87,89 +93,55 @@ function resolveSplitByteTokens(
 	return combineSplitHexBytes(bytes, maxBytes);
 }
 
-function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { isInteger: true } {
-	return arg.type === ArgumentType.LITERAL && arg.isInteger === true && arg.value >= 0 && arg.value <= 255;
-}
-
-function toSplitByteToken(arg: Argument): SplitByteToken {
-	if (arg.type === ArgumentType.LITERAL) return { type: 'literal', value: (arg as ArgumentLiteral).value };
-	return { type: 'identifier', value: (arg as ArgumentIdentifier).value };
-}
-
-function collectSplitByteTokens(
-	args: Argument[],
-	start: number,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	lineForError: any,
-	context: CompilationContext
-): SplitByteToken[] {
-	return args.slice(start).map(arg => {
-		if (arg.type === ArgumentType.LITERAL && !isByteLiteral(arg)) {
-			throw getError(ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE, lineForError, context);
-		}
-		return toSplitByteToken(arg);
-	});
-}
-
 /**
- * Determines the memory allocation id from the first argument.
+ * Determines the memory allocation id from the tokenizer-classified first-argument shape.
  *
- * - Literal first args produce an `'__anonymous__N'` id.
- * - Plain identifier first args produce the identifier string as the id.
- * - Constant-style identifier first args with additional args (split-byte sequence)
- *   produce `'__anonymous__N'`.
- * - Constant-style identifier first args without additional args throw
- *   CONSTANT_NAME_AS_MEMORY_IDENTIFIER — bare constant names are not valid allocation names.
- * - Non-identifier, non-literal first args throw UNDECLARED_IDENTIFIER.
+ * - `literal` and `split-byte-tokens` first args produce an `'__anonymous__N'` id.
+ * - `identifier` first args produce the identifier string as the id (with reserved-name guard).
+ * - `constant-identifier` first args (bare constant-style names) throw
+ *   CONSTANT_NAME_AS_MEMORY_IDENTIFIER — they are not valid allocation names.
+ * - Other shape types (intermodular refs, etc.) throw UNDECLARED_IDENTIFIER.
  */
-function resolveAnonymousOrNamedMemoryId(
-	first: Argument,
-	hasAdditionalArgs: boolean,
+function resolveIdFromShape(
+	firstArg: MemoryArgumentShape,
 	lineNumberAfterMacroExpansion: number,
 	lineForError: AST[number],
 	context: CompilationContext
 ): string {
-	if (first.type === ArgumentType.LITERAL) {
-		return '__anonymous__' + lineNumberAfterMacroExpansion;
-	}
-	if (first.type !== ArgumentType.IDENTIFIER) {
-		// COMPILE_TIME_EXPRESSION should not reach here; normalization folds them before memory parsing.
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-			identifier: '',
-		});
-	}
-	if (first.referenceKind === 'constant') {
-		if (!hasAdditionalArgs) {
+	switch (firstArg.type) {
+		case 'literal':
+		case 'split-byte-tokens':
+			return '__anonymous__' + lineNumberAfterMacroExpansion;
+		case 'constant-identifier':
+			// Bare constant-style names cannot be memory allocation names.
 			throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
-		}
-		// Multiple args: anonymous split-byte sequence starting with a constant name
-		return '__anonymous__' + lineNumberAfterMacroExpansion;
+		case 'identifier':
+			if (firstArg.value === 'this') {
+				throw getError(ErrorCode.RESERVED_MEMORY_IDENTIFIER, lineForError, context, { identifier: firstArg.value });
+			}
+			return firstArg.value;
+		default:
+			// Intermodular references and other special forms are not valid allocation names.
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, { identifier: '' });
 	}
-	if (first.referenceKind === 'plain' && first.value === 'this') {
-		throw getError(ErrorCode.RESERVED_MEMORY_IDENTIFIER, lineForError, context, { identifier: first.value });
-	}
-	return first.value;
 }
 
 /**
- * Resolves the second (default-value) argument of a memory declaration directly from the
- * pre-classified AST argument. Reads referenceKind, targetMemoryId, and isEndAddress fields
- * set by the tokenizer during parsing rather than re-parsing the raw string.
+ * Resolves the second (default-value) argument from its tokenizer-classified shape.
+ * Reads shape fields set by the tokenizer during argument classification rather than
+ * re-parsing the raw string.
  */
-function resolveMemoryDefaultValue(arg: Argument, lineForError: AST[number], context: CompilationContext): number {
-	if (arg.type === ArgumentType.LITERAL) {
-		return arg.value;
-	}
+function resolveMemoryDefaultValue(
+	arg: MemoryArgumentShape,
+	lineForError: AST[number],
+	context: CompilationContext
+): number {
+	switch (arg.type) {
+		case 'literal':
+			return arg.value;
 
-	if (arg.type !== ArgumentType.IDENTIFIER) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-			identifier: '',
-		});
-	}
-
-	switch (arg.referenceKind) {
 		case 'memory-reference': {
-			if (arg.targetMemoryId === 'this') {
+			if (arg.base === 'this') {
 				if (!arg.isEndAddress) {
 					return context.startingByteAddress;
 				}
@@ -177,20 +149,20 @@ function resolveMemoryDefaultValue(arg: Argument, lineForError: AST[number], con
 					? getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
 					: 0;
 			}
-			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId, lineForError, context);
+			const memoryItem = getMemoryItemOrThrow(arg.base, lineForError, context);
 			return arg.isEndAddress
 				? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize)
 				: memoryItem.byteAddress;
 		}
 
 		case 'element-count': {
-			const memoryItem = getMemoryItemOrThrow(arg.targetMemoryId, lineForError, context);
+			const memoryItem = getMemoryItemOrThrow(arg.base, lineForError, context);
 			return memoryItem.wordAlignedSize;
 		}
 
 		default:
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-				identifier: arg.value,
+				identifier: 'value' in arg ? (arg as { value: string }).value : '',
 			});
 	}
 }
@@ -210,51 +182,46 @@ export default function parseMemoryInstructionArguments(
 		};
 	}
 
-	const first = args[0];
-	const id = resolveAnonymousOrNamedMemoryId(
-		first,
-		args.length > 1,
-		lineNumberAfterMacroExpansion,
-		lineForError,
-		context
-	);
-
-	// Anonymous literal (single arg) — no split-byte sequence
-	if (first.type === ArgumentType.LITERAL && args.length === 1) {
-		return { id, defaultValue: first.value };
-	}
-
-	// Split-byte sequence: literal or constant-style first arg with additional args
-	if (first.type === ArgumentType.LITERAL || (first as ArgumentIdentifier).referenceKind === 'constant') {
-		if (first.type === ArgumentType.LITERAL && !isByteLiteral(first)) {
-			// Out-of-range first literal with extra args rejected to prevent silent miscompilation
-			throw getError(ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE, lineForError, context);
+	// Delegate argument shape classification to the tokenizer. The tokenizer owns raw token-shape
+	// classification (anonymous vs named, constant-style detection, split-byte sequence detection);
+	// this function owns semantic resolution against constants, memory layout, and namespaces.
+	let shape: ReturnType<typeof parseMemoryInstructionArgumentsShape>;
+	try {
+		shape = parseMemoryInstructionArgumentsShape(args);
+	} catch (error) {
+		if (error instanceof SyntaxRulesError && error.code === SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS) {
+			// Re-throw as a compiler error to attach line/context info for diagnostics.
+			throw getError(ErrorCode.SPLIT_HEX_MIXED_TOKENS, lineForError, context);
 		}
-		const tokens: SplitByteToken[] = [
-			toSplitByteToken(first),
-			...collectSplitByteTokens(args, 1, lineForError, context),
-		];
+		throw error;
+	}
+
+	const id = resolveIdFromShape(shape.firstArg, lineNumberAfterMacroExpansion, lineForError, context);
+
+	// Anonymous split-byte sequence (e.g. `int 0xA8 0xFF` or `int HI LO`):
+	if (shape.firstArg.type === 'split-byte-tokens') {
 		return {
 			id,
-			defaultValue: resolveSplitByteTokens(tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context),
+			defaultValue: resolveSplitByteTokens(shape.firstArg.tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context),
 		};
 	}
 
-	// Named declaration: resolve second-argument default or multi-token split-byte sequence
-	if (args.length >= 3) {
+	// No default value present (e.g. `int name`, `float 42`):
+	if (!shape.secondArg) {
 		return {
 			id,
-			defaultValue: resolveSplitByteTokens(
-				collectSplitByteTokens(args, 1, lineForError, context),
-				MAX_SPLIT_BYTE_WIDTH,
-				lineForError,
-				context
-			),
+			defaultValue: shape.firstArg.type === 'literal' ? shape.firstArg.value : 0,
 		};
 	}
 
-	return {
-		id,
-		defaultValue: args.length === 2 ? resolveMemoryDefaultValue(args[1], lineForError, context) : 0,
-	};
+	// Named declaration with split-byte default (e.g. `int name 0xA8 0xFF`):
+	if (shape.secondArg.type === 'split-byte-tokens') {
+		return {
+			id,
+			defaultValue: resolveSplitByteTokens(shape.secondArg.tokens, MAX_SPLIT_BYTE_WIDTH, lineForError, context),
+		};
+	}
+
+	// Named declaration with a single default value:
+	return { id, defaultValue: resolveMemoryDefaultValue(shape.secondArg, lineForError, context) };
 }
