@@ -168,7 +168,36 @@ push min(unsignedBuffer)
 
 ---
 
-## Intermodular references
+## Compile-time arithmetic expressions
+
+Compile-time expressions combine two compile-time-resolvable operands with a single arithmetic operator.
+They are evaluated at compile time and produce a constant value; they do not generate any runtime instructions.
+
+Supported operators:
+
+| Operator | Meaning        | Example       |
+|----------|----------------|---------------|
+| `*`      | Multiplication | `SIZE*2`      |
+| `/`      | Division       | `SIZE/2`      |
+| `^`      | Exponentiation | `2^16`        |
+
+Each side can be a numeric literal, a constant name, or a metadata query such as `sizeof(name)` or `count(name)`.
+Exactly one operator is allowed; chained forms like `2^3^4` or `SIZE*2/4` are not valid.
+
+**Note**: `^` means exponentiation in compile-time expressions, not bitwise XOR (which is the runtime `xor` instruction).
+
+Examples:
+
+```
+const WIDTH  2^16          ; 65536
+const TOTAL  SIZE^2        ; SIZE squared
+const BYTES  sizeof(buf)^2 ; element word size squared
+const HALF   SIZE/2        ; integer or float division
+const DOUBLE SIZE*2        ; multiplication
+
+int[] buffer SIZE^2        ; allocate SIZE² elements
+push 2^EXP                 ; push 2 raised to EXP
+```
 
 All of the address and metadata forms above have intermodular counterparts that reference memory declared in a different module. The module name and the memory name (or index) are separated by a colon.
 

@@ -79,4 +79,43 @@ describe('parseConstantMulDivExpression', () => {
 		// sizeof(*name) has a * inside parens — should not count as operator
 		expect(parseConstantMulDivExpression('sizeof(*name)')).toBeNull();
 	});
+
+	it('parses constant ^ literal', () => {
+		expect(parseConstantMulDivExpression('SIZE^2')).toEqual({
+			lhs: 'SIZE',
+			operator: '^',
+			rhs: '2',
+		});
+	});
+
+	it('parses literal ^ constant', () => {
+		expect(parseConstantMulDivExpression('2^SIZE')).toEqual({
+			lhs: '2',
+			operator: '^',
+			rhs: 'SIZE',
+		});
+	});
+
+	it('parses metadata query ^ literal', () => {
+		expect(parseConstantMulDivExpression('sizeof(name)^2')).toEqual({
+			lhs: 'sizeof(name)',
+			operator: '^',
+			rhs: '2',
+		});
+	});
+
+	it('rejects chained exponentiation', () => {
+		expect(parseConstantMulDivExpression('SIZE^2^3')).toBeNull();
+		expect(parseConstantMulDivExpression('2^SIZE^3')).toBeNull();
+	});
+
+	it('rejects ^ at start or end', () => {
+		expect(parseConstantMulDivExpression('^SIZE')).toBeNull();
+		expect(parseConstantMulDivExpression('SIZE^')).toBeNull();
+	});
+
+	it('rejects mixed ^ and other operators', () => {
+		expect(parseConstantMulDivExpression('SIZE^2*3')).toBeNull();
+		expect(parseConstantMulDivExpression('2*SIZE^3')).toBeNull();
+	});
 });
