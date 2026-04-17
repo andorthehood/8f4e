@@ -29,6 +29,23 @@ note
 ;                   :'
 noteEnd
 
+note
+; @pos -310 -6
+
+; This project runs a feedforward neural network
+; in inference mode to classify hand-drawn digits.
+
+; A 3x5 binary drawinggrid is mapped into 15 inputs, 
+; then processed through sigmoid-based layers 
+; where each neuron has a fan-in of 4.
+
+; Instead of tensor-style layer operations,
+; the network is written out neuron by neuron
+; so the fixed-weight multiplies, sums, biases,
+; sigmoid activations, and connections remain
+; visible in the editor.
+noteEnd
+
 constants env
 ; @pos 0 0
 ; @favorite
@@ -4357,18 +4374,6 @@ module notes1
 ; drawing grid to the
 ; neural network's input
 ; layer
-
-moduleEnd
-
-module notes2
-; @pos -321 -2
-
-; This project implements a feedforward
-; neural network that maps a 3x5 binary 
-; drawing grid into 15 inputs, runs them
-; through multiple sigmoid-based hidden
-; layers, and exposes per-digit (0-9) 
-; classification confidence scores
 
 moduleEnd
 
