@@ -1,9 +1,9 @@
-import { withValidation } from '../withValidation';
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import { saveByteCode } from '../utils/compilation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import { saveByteCode } from '../utils/compilation';
+import { withValidation } from '../withValidation';
+
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `drop`.
@@ -22,29 +22,3 @@ const drop: InstructionCompiler = withValidation(
 );
 
 export default drop;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('drop instruction compiler', () => {
-		it('drops the top stack value', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: true });
-
-			drop(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'drop',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

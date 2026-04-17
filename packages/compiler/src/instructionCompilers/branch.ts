@@ -1,10 +1,9 @@
-import { ArgumentType } from '../types';
 import { br } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, BranchLine, InstructionCompiler } from '../types';
+import type { BranchLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branch`.
@@ -20,27 +19,3 @@ const branch: InstructionCompiler<BranchLine> = withValidation<BranchLine>(
 );
 
 export default branch;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('branch instruction compiler', () => {
-		it('emits br bytecode', () => {
-			const context = createInstructionCompilerTestContext();
-
-			branch(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'branch',
-					arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

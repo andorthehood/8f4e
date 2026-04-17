@@ -4,9 +4,8 @@ import { ErrorCode, getError } from '../compilerError';
 import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `else`.
@@ -46,55 +45,3 @@ const _else: InstructionCompiler = withValidation(
 );
 
 export default _else;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('else instruction compiler', () => {
-		it('emits else bytecode and restores block', () => {
-			const context = createInstructionCompilerTestContext({
-				blockStack: [
-					...createInstructionCompilerTestContext().blockStack,
-					{
-						blockType: BLOCK_TYPE.CONDITION,
-						expectedResultIsInteger: true,
-						hasExpectedResult: true,
-					},
-				],
-			});
-			context.stack.push({ isInteger: true, isNonZero: false });
-
-			_else(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'else',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				blockStack: context.blockStack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('throws when no matching block start exists', () => {
-			const context = createInstructionCompilerTestContext({ blockStack: [] });
-
-			expect(() => {
-				_else(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'else',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-	});
-}

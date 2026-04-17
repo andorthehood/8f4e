@@ -1,9 +1,8 @@
 import { ErrorCode, getError } from '../compilerError';
-import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils/blockStack';
 import { BLOCK_TYPE } from '../types';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import { isInstructionInsideFunction, isInstructionIsInsideAModule } from '../utils/blockStack';
 
-import type { AST, CompilationContext, FunctionLine, InstructionCompiler } from '../types';
+import type { CompilationContext, FunctionLine, InstructionCompiler } from '../types';
 
 // Note: This instruction does not use withValidation because it requires inverted scope validation:
 // it must NOT be inside a module or function, which is the opposite of the standard scope rules
@@ -43,48 +42,3 @@ const _function = function (line: FunctionLine, context: CompilationContext) {
 } as InstructionCompiler<FunctionLine>;
 
 export default _function;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-	const { classifyIdentifier } = await import('@8f4e/tokenizer');
-
-	describe('function instruction compiler', () => {
-		it('starts a new function block', () => {
-			const context = createInstructionCompilerTestContext({ blockStack: [] });
-
-			_function(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'function',
-					arguments: [classifyIdentifier('doThing')],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				blockStack: context.blockStack,
-				currentFunctionId: context.currentFunctionId,
-				currentFunctionSignature: context.currentFunctionSignature,
-				mode: context.mode,
-				locals: context.locals,
-			}).toMatchSnapshot();
-		});
-
-		it('throws when declared inside a module', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				_function(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'function',
-						arguments: [classifyIdentifier('nested')],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-	});
-}

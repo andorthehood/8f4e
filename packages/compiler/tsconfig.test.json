@@ -4,14 +4,8 @@
 		"noEmit": true,
 		"rootDir": ".",
 		"lib": ["es2023", "webworker"],
-		"types": ["node"]
+		"types": ["node", "vitest"]
 	},
-	"include": [
-		"src/**/*.ts",
-		"tests/**/*.test.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"dist"
-	]
+	"include": ["src/**/*.ts", "tests/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
 }

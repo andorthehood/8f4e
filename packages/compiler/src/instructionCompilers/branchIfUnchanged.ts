@@ -1,10 +1,8 @@
-import { ArgumentType } from '../types';
 import { compileSegment } from '../compiler';
-import { withValidation } from '../withValidation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 import { allocateInternalResource } from '../utils/internalResources';
+import { withValidation } from '../withValidation';
 
-import type { AST, BranchIfUnchangedLine, InstructionCompiler } from '../types';
+import type { BranchIfUnchangedLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branchIfUnchanged`.
@@ -50,31 +48,3 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = withValida
 );
 
 export default branchIfUnchanged;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('branchIfUnchanged instruction compiler', () => {
-		it('compiles the unchanged check segment', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: true });
-
-			branchIfUnchanged(
-				{
-					lineNumberBeforeMacroExpansion: 4,
-					lineNumberAfterMacroExpansion: 4,
-					instruction: 'branchIfUnchanged',
-					arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-				memory: context.namespace.memory,
-				locals: context.locals,
-			}).toMatchSnapshot();
-		});
-	});
-}

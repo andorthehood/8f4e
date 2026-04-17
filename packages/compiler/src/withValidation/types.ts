@@ -21,13 +21,3 @@ export interface ValidationSpec<TLine extends AST[number] = AST[number]> {
 	allowedInConstantsBlocks?: boolean;
 	allowedInMapBlocks?: boolean;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('withValidation types', () => {
-		it('loads type module', () => {
-			expect(true).toBe(true);
-		});
-	});
-}

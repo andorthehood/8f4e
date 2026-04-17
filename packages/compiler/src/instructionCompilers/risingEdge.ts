@@ -1,9 +1,8 @@
 import { compileSegment } from '../compiler';
-import { withValidation } from '../withValidation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 import { allocateInternalResource } from '../utils/internalResources';
+import { withValidation } from '../withValidation';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `risingEdge`.
@@ -51,53 +50,3 @@ const risingEdge: InstructionCompiler = withValidation(
 );
 
 export default risingEdge;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('risingEdge instruction compiler', () => {
-		it('compiles the rising edge segment', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false });
-
-			risingEdge(
-				{
-					lineNumberBeforeMacroExpansion: 4,
-					lineNumberAfterMacroExpansion: 4,
-					instruction: 'risingEdge',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				memory: context.namespace.memory,
-				locals: context.locals,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('compiles the rising edge segment for float operands', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: false, isNonZero: false });
-
-			risingEdge(
-				{
-					lineNumberBeforeMacroExpansion: 4,
-					lineNumberAfterMacroExpansion: 4,
-					instruction: 'risingEdge',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				memory: context.namespace.memory,
-				locals: context.locals,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

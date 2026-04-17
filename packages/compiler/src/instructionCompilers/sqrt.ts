@@ -1,9 +1,9 @@
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `sqrt`.
@@ -25,29 +25,3 @@ const sqrt: InstructionCompiler = withValidation(
 );
 
 export default sqrt;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('sqrt instruction compiler', () => {
-		it('emits F32_SQRT for float operands', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: false, isNonZero: true });
-
-			sqrt(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'sqrt',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

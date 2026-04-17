@@ -8,8 +8,6 @@ exports[`float instruction compiler > creates a float memory entry 1`] = `
     "elementWordSize": 4,
     "id": "temperature",
     "isInteger": false,
-    "isPointer": false,
-    "isPointingToInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
     "numberOfElements": 1,

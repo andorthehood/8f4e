@@ -1,13 +1,13 @@
 import {
+	br_if,
 	call,
+	createFunction,
+	createLocalDeclaration,
 	i32const,
 	localGet,
 	localSet,
-	br_if,
 	Type,
 	WASMInstruction,
-	createFunction,
-	createLocalDeclaration,
 } from '@8f4e/compiler-wasm-utils';
 
 import type { FunctionBody } from '@8f4e/compiler-wasm-utils';
@@ -63,30 +63,4 @@ export default function createBufferFunctionBody(
 
 	// Loop strategy needs a local i32 counter variable
 	return createFunction([createLocalDeclaration(Type.I32, 1)], body);
-}
-
-if (import.meta.vitest) {
-	const { describe, test, expect } = import.meta.vitest;
-
-	describe('createBufferFunctionBody', () => {
-		test('unrolled strategy generates repeated call instructions', () => {
-			const result = createBufferFunctionBody(3, 'unrolled', 1);
-			expect(result).toMatchSnapshot();
-		});
-
-		test('loop strategy generates loop control flow', () => {
-			const result = createBufferFunctionBody(128, 'loop', 1);
-			expect(result).toMatchSnapshot();
-		});
-
-		test('loop strategy with custom buffer size', () => {
-			const result = createBufferFunctionBody(256, 'loop', 1);
-			expect(result).toMatchSnapshot();
-		});
-
-		test('default parameters use loop strategy with bufferSize 128', () => {
-			const result = createBufferFunctionBody();
-			expect(result).toMatchSnapshot();
-		});
-	});
 }

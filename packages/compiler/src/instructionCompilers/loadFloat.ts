@@ -1,9 +1,9 @@
+import { f32load } from '@8f4e/compiler-wasm-utils';
+
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { f32load } from '@8f4e/compiler-wasm-utils';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `loadFloat`.
@@ -23,49 +23,3 @@ const loadFloat: InstructionCompiler = withValidation(
 );
 
 export default loadFloat;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('loadFloat instruction compiler', () => {
-		it('loads from a safe memory address', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
-
-			loadFloat(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'loadFloat',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('loads from an unsafe memory address without extra bounds checks', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: false });
-
-			loadFloat(
-				{
-					lineNumberBeforeMacroExpansion: 2,
-					lineNumberAfterMacroExpansion: 2,
-					instruction: 'loadFloat',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

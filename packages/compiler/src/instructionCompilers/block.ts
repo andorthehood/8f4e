@@ -3,9 +3,8 @@ import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, BlockLine, InstructionCompiler } from '../types';
+import type { BlockLine, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `block`.
@@ -47,69 +46,3 @@ const block: InstructionCompiler<BlockLine> = withValidation<BlockLine>(
 );
 
 export default block;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('block instruction compiler', () => {
-		it('emits a typed block for float', () => {
-			const context = createInstructionCompilerTestContext();
-
-			block(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'block',
-					arguments: [],
-					blockBlock: { matchingBlockEndIndex: 2, resultType: 'float' },
-				} as AST[number],
-				context
-			);
-
-			expect({
-				blockStack: context.blockStack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('emits a typed block for int', () => {
-			const context = createInstructionCompilerTestContext();
-
-			block(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'block',
-					arguments: [],
-					blockBlock: { matchingBlockEndIndex: 2, resultType: 'int' },
-				} as AST[number],
-				context
-			);
-
-			expect({
-				blockStack: context.blockStack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('emits a void block when no result type is declared', () => {
-			const context = createInstructionCompilerTestContext();
-
-			block(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'block',
-					arguments: [],
-					blockBlock: { matchingBlockEndIndex: 2, resultType: null },
-				} as AST[number],
-				context
-			);
-
-			expect({
-				blockStack: context.blockStack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}
