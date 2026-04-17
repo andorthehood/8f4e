@@ -180,6 +180,64 @@ describe('tryResolveCompileTimeArgument', () => {
 		});
 	});
 
+	it('resolves addition expression: constant + literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE+1'))).toEqual({
+			value: 17,
+			isInteger: true,
+		});
+	});
+
+	it('resolves subtraction expression: constant - literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE-1'))).toEqual({
+			value: 15,
+			isInteger: true,
+		});
+	});
+
+	it('resolves addition expression: literal + constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('1+SIZE'))).toEqual({
+			value: 17,
+			isInteger: true,
+		});
+	});
+
+	it('resolves subtraction expression: literal - constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('100-SIZE'))).toEqual({
+			value: 84,
+			isInteger: true,
+		});
+	});
+
+	it('resolves addition with sizeof: sizeof(name)+1', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)+1'))).toEqual({
+			value: 3,
+			isInteger: true,
+		});
+	});
+
+	it('resolves subtraction with sizeof: sizeof(name)-1', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)-1'))).toEqual({
+			value: 1,
+			isInteger: true,
+		});
+	});
+
+	it('keeps float64 width for addition results', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64+1'))).toEqual({
+			value: 3.14159 + 1,
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+
+	it('keeps float64 width for subtraction results', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64-1'))).toEqual({
+			value: 3.14159 - 1,
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+
 	it('resolves intermodule start-address reference (&module:memory) once module is laid out', () => {
 		const laidOutNamespace = {
 			...mockContext,
