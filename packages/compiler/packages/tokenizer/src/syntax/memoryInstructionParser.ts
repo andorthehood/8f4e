@@ -10,8 +10,9 @@ export type SplitByteToken = { type: 'literal'; value: number } | { type: 'ident
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
 	| { type: 'identifier'; value: string }
+	| { type: 'constant-identifier'; value: string }
 	| { type: 'split-byte-tokens'; tokens: SplitByteToken[] }
-	| { type: 'memory-reference'; base: string; pattern: string }
+	| { type: 'memory-reference'; base: string; pattern: string; isEndAddress: boolean }
 	| { type: 'element-count'; base: string }
 	| { type: 'intermodular-reference'; pattern: string }
 	| {
@@ -149,6 +150,9 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 	// Case C: Anonymous path — starts with a constant-style identifier.
 	// Constant-style names (all-uppercase) cannot be memory allocation names; treat as anonymous.
 	// When followed by additional tokens they form a split-byte sequence.
+	// A single constant-style identifier is marked as 'constant-identifier' so the semantic phase
+	// can emit the appropriate CONSTANT_NAME_AS_MEMORY_IDENTIFIER error rather than silently
+	// treating it as a named allocation.
 	if (
 		result.firstArg.type === 'identifier' &&
 		args[0].type === ArgumentType.IDENTIFIER &&
@@ -164,8 +168,10 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 				...collectSplitByteTokens(args, 1),
 			];
 			result.firstArg = { type: 'split-byte-tokens', tokens };
+		} else {
+			// Single constant-style identifier: mark explicitly so the semantic phase can reject it.
+			result.firstArg = { type: 'constant-identifier', value: result.firstArg.value };
 		}
-		// Single constant-style identifier: keep as identifier (resolved to constant value in semantic phase)
 		return result;
 	}
 
@@ -250,6 +256,7 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 				type: 'memory-reference',
 				base: arg.targetMemoryId,
 				pattern: arg.value,
+				isEndAddress: arg.isEndAddress,
 			};
 		case 'element-count':
 			return {
