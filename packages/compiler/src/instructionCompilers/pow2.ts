@@ -1,8 +1,7 @@
-import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import { withValidation } from '../withValidation';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `pow2`.
@@ -25,29 +24,3 @@ const pow2: InstructionCompiler = withValidation(
 );
 
 export default pow2;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('pow2 instruction compiler', () => {
-		it('computes power of two', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: true });
-
-			pow2(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'pow2',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

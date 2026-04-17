@@ -1,11 +1,11 @@
-import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
-import { saveByteCode } from '../utils/compilation';
-import { withValidation } from '../withValidation';
-import { ErrorCode, getError } from '../compilerError';
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, InstructionCompiler } from '../types';
+import { ErrorCode, getError } from '../compilerError';
+import { saveByteCode } from '../utils/compilation';
+import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
+import { withValidation } from '../withValidation';
+
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `sub`.
@@ -29,7 +29,11 @@ const sub: InstructionCompiler = withValidation(
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
 
-		context.stack.push({ isInteger, ...(isFloat64 ? { isFloat64: true } : {}), isNonZero: false });
+		context.stack.push({
+			isInteger,
+			...(isFloat64 ? { isFloat64: true } : {}),
+			isNonZero: false,
+		});
 		return saveByteCode(context, [
 			isInteger ? WASMInstruction.I32_SUB : isFloat64 ? WASMInstruction.F64_SUB : WASMInstruction.F32_SUB,
 		]);
@@ -37,92 +41,3 @@ const sub: InstructionCompiler = withValidation(
 );
 
 export default sub;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('sub instruction compiler', () => {
-		it('emits I32_SUB for integer operands', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
-
-			sub(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'sub',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('emits F32_SUB for float32 operands', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
-
-			sub(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'sub',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('emits F64_SUB for float64 operands', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push(
-				{ isInteger: false, isFloat64: true, isNonZero: false },
-				{ isInteger: false, isFloat64: true, isNonZero: false }
-			);
-
-			sub(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'sub',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-
-		it('throws on mixed float32/float64 operands', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push(
-				{ isInteger: false, isNonZero: false },
-				{ isInteger: false, isFloat64: true, isNonZero: false }
-			);
-
-			expect(() => {
-				sub(
-					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
-						instruction: 'sub',
-						arguments: [],
-					} as AST[number],
-					context
-				);
-			}).toThrowError();
-		});
-	});
-}

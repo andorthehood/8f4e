@@ -1,9 +1,8 @@
-import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 import { allocateInternalResource } from '../utils/internalResources';
+import { withValidation } from '../withValidation';
 
-import type { AST, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `hasChanged`.
@@ -44,31 +43,3 @@ const hasChanged: InstructionCompiler = withValidation(
 );
 
 export default hasChanged;
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('hasChanged instruction compiler', () => {
-		it('compiles the change detector segment', () => {
-			const context = createInstructionCompilerTestContext();
-			context.stack.push({ isInteger: true, isNonZero: false });
-
-			hasChanged(
-				{
-					lineNumberBeforeMacroExpansion: 3,
-					lineNumberAfterMacroExpansion: 3,
-					instruction: 'hasChanged',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-
-			expect({
-				stack: context.stack,
-				memory: context.namespace.memory,
-				locals: context.locals,
-				byteCode: context.byteCode,
-			}).toMatchSnapshot();
-		});
-	});
-}

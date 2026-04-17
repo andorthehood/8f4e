@@ -3,11 +3,7 @@ import { getPointerDepth } from '@8f4e/tokenizer';
 import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
 import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
-import {
-	alignAbsoluteWordOffset,
-	getAbsoluteWordOffset,
-	getByteAddressFromWordOffset,
-} from '../layoutAddresses';
+import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
 import type { InstructionCompiler, MemoryTypes } from '../../types';
 
