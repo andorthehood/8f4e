@@ -1,5 +1,21 @@
 8f4e/v1
 
+note
+; @pos -309 11
+
+; Draw the symbols
+; you want to input into
+; the neural network
+; with 1s
+;                .
+; ...............::.
+; :::::::::::::::::::.
+; ::::::::::::::::::;'
+;                :;'
+;                '
+
+noteEnd
+
 constants env
 ; @pos 0 0
 ; @favorite
@@ -33,20 +49,17 @@ add
 functionEnd float64
 
 module grid
-; @pos -274 10
+; @pos -274 11
 ; @home 
-
-; Draw the symbols
-; you want to input into
-; the neural network
-; with 1s
-
 ; @color text.binaryOne #f00
-int row0 0b0111
-int row1 0b0100
-int row2 0b0111
-int row3 0b0101
-int row4 0b0111
+; @color text.basePrefix #333
+; @color text.binaryZero #666
+
+int row0 0b111
+int row1 0b100
+int row2 0b111
+int row3 0b101
+int row4 0b111
 
 ; Below you can read
 ; the confidence score
@@ -320,7 +333,7 @@ float64* in0 &neuron57:out
 float64* in1 &neuron73:out
 float64* in2 &neuron74:out
 float64* in3 &neuron76:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.757478194135897f64
@@ -360,7 +373,7 @@ float64* in0 &neuron56:out
 float64* in1 &neuron59:out
 float64* in2 &neuron71:out
 float64* in3 &neuron81:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.586981124469845f64
@@ -400,7 +413,7 @@ float64* in0 &neuron51:out
 float64* in1 &neuron52:out
 float64* in2 &neuron70:out
 float64* in3 &neuron73:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 4.161569541968561f64
@@ -440,7 +453,7 @@ float64* in0 &neuron53:out
 float64* in1 &neuron58:out
 float64* in2 &neuron71:out
 float64* in3 &neuron77:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -0.023039573171386496f64
@@ -480,7 +493,7 @@ float64* in0 &neuron59:out
 float64* in1 &neuron63:out
 float64* in2 &neuron71:out
 float64* in3 &neuron75:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.2264623726137605f64
@@ -520,7 +533,7 @@ float64* in0 &neuron59:out
 float64* in1 &neuron64:out
 float64* in2 &neuron67:out
 float64* in3 &neuron77:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.261125822235786f64
@@ -560,7 +573,7 @@ float64* in0 &neuron53:out
 float64* in1 &neuron59:out
 float64* in2 &neuron68:out
 float64* in3 &neuron72:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -7.631298658396915f64
@@ -600,7 +613,7 @@ float64* in0 &neuron58:out
 float64* in1 &neuron60:out
 float64* in2 &neuron68:out
 float64* in3 &neuron75:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -4.033837279562088f64
@@ -640,7 +653,7 @@ float64* in0 &neuron91:out
 float64* in1 &neuron94:out
 float64* in2 &neuron96:out
 float64* in3 &neuron97:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -2.3673690733199244f64
@@ -680,7 +693,7 @@ float64* in0 &neuron93:out
 float64* in1 &neuron98:out
 float64* in2 &neuron105:out
 float64* in3 &neuron106:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.2116952018518496f64
@@ -720,7 +733,7 @@ float64* in0 &neuron86:out
 float64* in1 &neuron90:out
 float64* in2 &neuron99:out
 float64* in3 &neuron103:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.6472555863898319f64
@@ -760,7 +773,7 @@ float64* in0 &neuron91:out
 float64* in1 &neuron100:out
 float64* in2 &neuron101:out
 float64* in3 &neuron105:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.8712288362699737f64
@@ -800,7 +813,7 @@ float64* in0 &neuron82:out
 float64* in1 &neuron88:out
 float64* in2 &neuron104:out
 float64* in3 &neuron107:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -4.782825470153802f64
@@ -840,7 +853,7 @@ float64* in0 &neuron88:out
 float64* in1 &neuron89:out
 float64* in2 &neuron99:out
 float64* in3 &neuron102:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 6.471207910839414f64
@@ -880,7 +893,7 @@ float64* in0 &neuron84:out
 float64* in1 &neuron85:out
 float64* in2 &neuron90:out
 float64* in3 &neuron105:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 5.596474717551611f64
@@ -920,7 +933,7 @@ float64* in0 &neuron84:out
 float64* in1 &neuron85:out
 float64* in2 &neuron87:out
 float64* in3 &neuron106:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 6.664282273180268f64
@@ -960,7 +973,7 @@ float64* in0 &neuron83:out
 float64* in1 &neuron91:out
 float64* in2 &neuron92:out
 float64* in3 &neuron107:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -10.039030771099961f64
@@ -1000,7 +1013,7 @@ float64* in0 &neuron89:out
 float64* in1 &neuron95:out
 float64* in2 &neuron102:out
 float64* in3 &neuron104:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 7.837461185160993f64
@@ -1040,7 +1053,7 @@ float64* in0 &inputs:input0
 float64* in1 &inputs:input4
 float64* in2 &inputs:input10
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.1383185028099765f64
@@ -1080,7 +1093,7 @@ float64* in0 &inputs:input3
 float64* in1 &inputs:input5
 float64* in2 &inputs:input6
 float64* in3 &inputs:input9
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -7.479177359069729f64
@@ -1120,7 +1133,7 @@ float64* in0 &inputs:input0
 float64* in1 &inputs:input7
 float64* in2 &inputs:input9
 float64* in3 &inputs:input10
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -2.1633151584131767f64
@@ -1160,7 +1173,7 @@ float64* in0 &inputs:input2
 float64* in1 &inputs:input6
 float64* in2 &inputs:input13
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.1104892732427174f64
@@ -1200,7 +1213,7 @@ float64* in0 &inputs:input0
 float64* in1 &inputs:input3
 float64* in2 &inputs:input7
 float64* in3 &inputs:input12
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 4.259377714402604f64
@@ -1240,7 +1253,7 @@ float64* in0 &inputs:input2
 float64* in1 &inputs:input6
 float64* in2 &inputs:input7
 float64* in3 &inputs:input9
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.04485081549189279f64
@@ -1280,7 +1293,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input8
 float64* in2 &inputs:input11
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.83921035736664f64
@@ -1320,7 +1333,7 @@ float64* in0 &inputs:input2
 float64* in1 &inputs:input3
 float64* in2 &inputs:input7
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -6.107360024573014f64
@@ -1360,7 +1373,7 @@ float64* in0 &inputs:input3
 float64* in1 &inputs:input6
 float64* in2 &inputs:input11
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -2.9225140682629873f64
@@ -1400,7 +1413,7 @@ float64* in0 &inputs:input4
 float64* in1 &inputs:input6
 float64* in2 &inputs:input10
 float64* in3 &inputs:input12
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -3.058638554485918f64
@@ -1440,7 +1453,7 @@ float64* in0 &inputs:input4
 float64* in1 &inputs:input5
 float64* in2 &inputs:input10
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -5.180643074439107f64
@@ -1480,7 +1493,7 @@ float64* in0 &inputs:input0
 float64* in1 &inputs:input1
 float64* in2 &inputs:input3
 float64* in3 &inputs:input7
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -3.205275628385772f64
@@ -1520,7 +1533,7 @@ float64* in0 &inputs:input3
 float64* in1 &inputs:input6
 float64* in2 &inputs:input7
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.9663599176068152f64
@@ -1560,7 +1573,7 @@ float64* in0 &inputs:input4
 float64* in1 &inputs:input10
 float64* in2 &inputs:input13
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.8138722820817328f64
@@ -1600,7 +1613,7 @@ float64* in0 &inputs:input0
 float64* in1 &inputs:input5
 float64* in2 &inputs:input9
 float64* in3 &inputs:input10
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.3855708379924305f64
@@ -1640,7 +1653,7 @@ float64* in0 &inputs:input5
 float64* in1 &inputs:input8
 float64* in2 &inputs:input9
 float64* in3 &inputs:input11
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.9510117502834463f64
@@ -1680,7 +1693,7 @@ float64* in0 &inputs:input3
 float64* in1 &inputs:input5
 float64* in2 &inputs:input8
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -4.176655185971842f64
@@ -1720,7 +1733,7 @@ float64* in0 &inputs:input4
 float64* in1 &inputs:input5
 float64* in2 &inputs:input13
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.105427309057273f64
@@ -1760,7 +1773,7 @@ float64* in0 &inputs:input3
 float64* in1 &inputs:input4
 float64* in2 &inputs:input6
 float64* in3 &inputs:input10
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -2.6161226189734097f64
@@ -1800,7 +1813,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input5
 float64* in2 &inputs:input7
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.812163703876991f64
@@ -1840,7 +1853,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input2
 float64* in2 &inputs:input10
 float64* in3 &inputs:input11
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -0.12375689707670424f64
@@ -1880,7 +1893,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input2
 float64* in2 &inputs:input5
 float64* in3 &inputs:input11
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.8883910013477094f64
@@ -1920,7 +1933,7 @@ float64* in0 &inputs:input3
 float64* in1 &inputs:input7
 float64* in2 &inputs:input8
 float64* in3 &inputs:input9
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.642379845702539f64
@@ -1960,7 +1973,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input9
 float64* in2 &inputs:input10
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.1506687532134647f64
@@ -2000,7 +2013,7 @@ float64* in0 &inputs:input2
 float64* in1 &inputs:input8
 float64* in2 &inputs:input10
 float64* in3 &inputs:input12
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 4.612821304168174f64
@@ -2040,7 +2053,7 @@ float64* in0 &inputs:input2
 float64* in1 &inputs:input6
 float64* in2 &inputs:input7
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.4618912465179243f64
@@ -2080,7 +2093,7 @@ float64* in0 &inputs:input5
 float64* in1 &inputs:input7
 float64* in2 &inputs:input11
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.5292963827244619f64
@@ -2120,7 +2133,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input7
 float64* in2 &inputs:input10
 float64* in3 &inputs:input11
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -0.471116840962701f64
@@ -2160,7 +2173,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input3
 float64* in2 &inputs:input6
 float64* in3 &inputs:input9
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.875836752913605f64
@@ -2200,7 +2213,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input7
 float64* in2 &inputs:input8
 float64* in3 &inputs:input12
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -3.4159824808602437f64
@@ -2240,7 +2253,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input2
 float64* in2 &inputs:input10
 float64* in3 &inputs:input14
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.020320184865573f64
@@ -2280,7 +2293,7 @@ float64* in0 &inputs:input4
 float64* in1 &inputs:input7
 float64* in2 &inputs:input10
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.1942224368529384f64
@@ -2320,7 +2333,7 @@ float64* in0 &inputs:input0
 float64* in1 &inputs:input4
 float64* in2 &inputs:input8
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.175062803551527f64
@@ -2360,7 +2373,7 @@ float64* in0 &inputs:input3
 float64* in1 &inputs:input5
 float64* in2 &inputs:input11
 float64* in3 &inputs:input12
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.4627904634817805f64
@@ -2400,7 +2413,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input2
 float64* in2 &inputs:input7
 float64* in3 &inputs:input13
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.806023897476518f64
@@ -2440,7 +2453,7 @@ float64* in0 &inputs:input1
 float64* in1 &inputs:input4
 float64* in2 &inputs:input6
 float64* in3 &inputs:input9
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -6.177206397037313f64
@@ -2480,7 +2493,7 @@ float64* in0 &neuron21:out
 float64* in1 &neuron22:out
 float64* in2 &neuron29:out
 float64* in3 &neuron43:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 7.508169577552545f64
@@ -2520,7 +2533,7 @@ float64* in0 &neuron32:out
 float64* in1 &neuron33:out
 float64* in2 &neuron40:out
 float64* in3 &neuron46:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.5815131816476975f64
@@ -2560,7 +2573,7 @@ float64* in0 &neuron31:out
 float64* in1 &neuron37:out
 float64* in2 &neuron47:out
 float64* in3 &neuron48:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -5.098591717699961f64
@@ -2600,7 +2613,7 @@ float64* in0 &neuron15:out
 float64* in1 &neuron17:out
 float64* in2 &neuron25:out
 float64* in3 &neuron38:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.165097641317072f64
@@ -2640,7 +2653,7 @@ float64* in0 &neuron25:out
 float64* in1 &neuron35:out
 float64* in2 &neuron46:out
 float64* in3 &neuron47:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -2.299024388190367f64
@@ -2680,7 +2693,7 @@ float64* in0 &neuron34:out
 float64* in1 &neuron46:out
 float64* in2 &neuron48:out
 float64* in3 &neuron49:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.2781846581725098f64
@@ -2720,7 +2733,7 @@ float64* in0 &neuron31:out
 float64* in1 &neuron39:out
 float64* in2 &neuron41:out
 float64* in3 &neuron49:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.5359450330844205f64
@@ -2760,7 +2773,7 @@ float64* in0 &neuron16:out
 float64* in1 &neuron24:out
 float64* in2 &neuron25:out
 float64* in3 &neuron32:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -4.615960376731606f64
@@ -2797,10 +2810,10 @@ module neuron59
 ; @group hiddenLayer2
 
 float64* in0 &neuron19:out
-float64* in1 &neuron25:out
+float64* in1 &neuron25:out 
 float64* in2 &neuron27:out
 float64* in3 &neuron48:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -8.34825811818246f64
@@ -2840,7 +2853,7 @@ float64* in0 &neuron15:out
 float64* in1 &neuron34:out
 float64* in2 &neuron48:out
 float64* in3 &neuron50:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.6391354309987487f64
@@ -2880,7 +2893,7 @@ float64* in0 &neuron24:out
 float64* in1 &neuron32:out
 float64* in2 &neuron42:out
 float64* in3 &neuron44:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 4.918723613778873f64
@@ -2920,7 +2933,7 @@ float64* in0 &neuron17:out
 float64* in1 &neuron18:out
 float64* in2 &neuron31:out
 float64* in3 &neuron42:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0  -5.066599350868912f64
@@ -2960,7 +2973,7 @@ float64* in0 &neuron27:out
 float64* in1 &neuron44:out
 float64* in2 &neuron47:out
 float64* in3 &neuron50:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.5147795011557459f64
@@ -3000,7 +3013,7 @@ float64* in0 &neuron16:out
 float64* in1 &neuron19:out
 float64* in2 &neuron27:out
 float64* in3 &neuron39:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -2.516618856376174f64
@@ -3040,7 +3053,7 @@ float64* in0 &neuron18:out
 float64* in1 &neuron24:out
 float64* in2 &neuron36:out
 float64* in3 &neuron50:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.6237603087048084f64
@@ -3080,7 +3093,7 @@ float64* in0 &neuron25:out
 float64* in1 &neuron27:out
 float64* in2 &neuron32:out
 float64* in3 &neuron37:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.438693793546532f64
@@ -3120,7 +3133,7 @@ float64* in0 &neuron18:out
 float64* in1 &neuron19:out
 float64* in2 &neuron38:out
 float64* in3 &neuron40:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -3.787036039740706f64
@@ -3160,7 +3173,7 @@ float64* in0 &neuron25:out
 float64* in1 &neuron30:out
 float64* in2 &neuron48:out
 float64* in3 &neuron50:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -4.6472203203933145f64
@@ -3200,7 +3213,7 @@ float64* in0 &neuron15:out
 float64* in1 &neuron20:out
 float64* in2 &neuron34:out
 float64* in3 &neuron49:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.1953875853590956f64
@@ -3240,7 +3253,7 @@ float64* in0 &neuron21:out
 float64* in1 &neuron24:out
 float64* in2 &neuron27:out
 float64* in3 &neuron30:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.3774234378172061f64
@@ -3280,7 +3293,7 @@ float64* in0 &neuron22:out
 float64* in1 &neuron24:out
 float64* in2 &neuron31:out
 float64* in3 &neuron47:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.7282730015713f64
@@ -3320,7 +3333,7 @@ float64* in0 &neuron16:out
 float64* in1 &neuron23:out
 float64* in2 &neuron30:out
 float64* in3 &neuron39:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 4.693200137465278f64
@@ -3360,7 +3373,7 @@ float64* in0 &neuron16:out
 float64* in1 &neuron25:out
 float64* in2 &neuron36:out
 float64* in3 &neuron41:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 9.05085510174141f64
@@ -3400,7 +3413,7 @@ float64* in0 &neuron22:out
 float64* in1 &neuron28:out
 float64* in2 &neuron29:out
 float64* in3 &neuron38:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -5.118169476161381f64
@@ -3440,7 +3453,7 @@ float64* in0 &neuron19:out
 float64* in1 &neuron33:out
 float64* in2 &neuron42:out
 float64* in3 &neuron49:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.5340272072513466f64
@@ -3480,7 +3493,7 @@ float64* in0 &neuron22:out
 float64* in1 &neuron28:out
 float64* in2 &neuron36:out
 float64* in3 &neuron49:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.8489232589720694f64
@@ -3520,7 +3533,7 @@ float64* in0 &neuron18:out
 float64* in1 &neuron26:out
 float64* in2 &neuron39:out
 float64* in3 &neuron47:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.8990565833517322f64
@@ -3560,7 +3573,7 @@ float64* in0 &neuron29:out
 float64* in1 &neuron36:out
 float64* in2 &neuron44:out
 float64* in3 &neuron46:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -2.3245994633977975f64
@@ -3600,7 +3613,7 @@ float64* in0 &neuron15:out
 float64* in1 &neuron30:out
 float64* in2 &neuron39:out
 float64* in3 &neuron44:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.6132231393938841f64
@@ -3640,7 +3653,7 @@ float64* in0 &neuron22:out
 float64* in1 &neuron29:out
 float64* in2 &neuron30:out
 float64* in3 &neuron41:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.4446329335126173f64
@@ -3680,7 +3693,7 @@ float64* in0 &neuron26:out
 float64* in1 &neuron31:out
 float64* in2 &neuron37:out
 float64* in3 &neuron45:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -8.195448354064249f64
@@ -3720,7 +3733,7 @@ float64* in0 &neuron54:out
 float64* in1 &neuron58:out
 float64* in2 &neuron65:out
 float64* in3 &neuron69:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.7334657222118448f64
@@ -3760,7 +3773,7 @@ float64* in0 &neuron61:out
 float64* in1 &neuron66:out
 float64* in2 &neuron78:out
 float64* in3 &neuron80:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 5.01994345131093f64
@@ -3800,7 +3813,7 @@ float64* in0 &neuron52:out
 float64* in1 &neuron60:out
 float64* in2 &neuron62:out
 float64* in3 &neuron81:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 1.1338694824152538f64
@@ -3840,7 +3853,7 @@ float64* in0 &neuron53:out
 float64* in1 &neuron57:out
 float64* in2 &neuron60:out
 float64* in3 &neuron79:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.5674249148966389f64
@@ -3880,7 +3893,7 @@ float64* in0 &neuron59:out
 float64* in1 &neuron61:out
 float64* in2 &neuron65:out
 float64* in3 &neuron75:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -0.0670516208256435f64
@@ -3920,7 +3933,7 @@ float64* in0 &neuron58:out
 float64* in1 &neuron63:out
 float64* in2 &neuron66:out
 float64* in3 &neuron68:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 0.44315762439752215f64
@@ -3960,7 +3973,7 @@ float64* in0 &neuron64:out
 float64* in1 &neuron67:out
 float64* in2 &neuron71:out
 float64* in3 &neuron73:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -0.5379044806557166f64
@@ -4000,7 +4013,7 @@ float64* in0 &neuron65:out
 float64* in1 &neuron70:out
 float64* in2 &neuron74:out
 float64* in3 &neuron81:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 2.7723537797651514f64
@@ -4040,7 +4053,7 @@ float64* in0 &neuron51:out
 float64* in1 &neuron67:out
 float64* in2 &neuron69:out
 float64* in3 &neuron74:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -5.161071978828384f64
@@ -4080,7 +4093,7 @@ float64* in0 &neuron57:out
 float64* in1 &neuron64:out
 float64* in2 &neuron80:out
 float64* in3 &neuron81:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -0.5733612071082838f64
@@ -4120,7 +4133,7 @@ float64* in0 &neuron51:out
 float64* in1 &neuron53:out
 float64* in2 &neuron79:out
 float64* in3 &neuron81:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -3.373420882262691f64
@@ -4160,7 +4173,7 @@ float64* in0 &neuron54:out
 float64* in1 &neuron62:out
 float64* in2 &neuron65:out
 float64* in3 &neuron78:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -0.19650250573495961f64
@@ -4200,7 +4213,7 @@ float64* in0 &neuron52:out
 float64* in1 &neuron62:out
 float64* in2 &neuron67:out
 float64* in3 &neuron77:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.1837669531235666f64
@@ -4240,7 +4253,7 @@ float64* in0 &neuron51:out
 float64* in1 &neuron52:out
 float64* in2 &neuron55:out
 float64* in3 &neuron72:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 12.204018966809462f64
@@ -4280,7 +4293,7 @@ float64* in0 &neuron52:out
 float64* in1 &neuron63:out
 float64* in2 &neuron72:out
 float64* in3 &neuron76:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 3.48163185824482f64
@@ -4320,7 +4333,7 @@ float64* in0 &neuron59:out
 float64* in1 &neuron69:out
 float64* in2 &neuron71:out
 float64* in3 &neuron75:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -1.7344940469038082f64
@@ -4360,7 +4373,7 @@ float64* in0 &neuron53:out
 float64* in1 &neuron60:out
 float64* in2 &neuron73:out
 float64* in3 &neuron74:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 7.500210415879902f64
@@ -4400,7 +4413,7 @@ float64* in0 &neuron53:out
 float64* in1 &neuron56:out
 float64* in2 &neuron69:out
 float64* in3 &neuron74:out
-float64 out
+float64 out ; @w
 
 ; Weights
 const W0 -3.730862374274342f64
@@ -4443,13 +4456,15 @@ module notes1
 moduleEnd
 
 module notes2
-; @pos -326 27
+; @pos -324 -2
+
 ; This project implements a feedforward
 ; neural network that maps a 3x5 binary 
 ; drawing grid into 15 inputs, runs them
 ; through multiple sigmoid-based hidden
 ; layers, and exposes per-digit (0-9) 
 ; classification confidence scores
+
 moduleEnd
 
 module outputs
