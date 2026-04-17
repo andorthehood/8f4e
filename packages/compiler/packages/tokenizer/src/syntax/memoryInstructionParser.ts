@@ -256,7 +256,7 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 				type: 'memory-reference',
 				base: arg.targetMemoryId,
 				pattern: arg.value,
-				isEndAddress: !!arg.isEndAddress,
+				isEndAddress: arg.isEndAddress,
 			};
 		case 'element-count':
 			return {
