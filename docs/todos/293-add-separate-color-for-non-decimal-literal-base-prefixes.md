@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-03-09
 issue: https://github.com/andorthehood/8f4e/issues/419
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-17
 ---
 
 # TODO: Add separate color for non-decimal literal base prefixes

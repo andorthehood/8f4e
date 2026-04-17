@@ -36,6 +36,7 @@ export interface ColorScheme {
 		dialogText: string;
 		binaryZero: string;
 		binaryOne: string;
+		basePrefix: string;
 	};
 	fill: {
 		menuItemBackground: string;

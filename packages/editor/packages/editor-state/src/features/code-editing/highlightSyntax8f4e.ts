@@ -145,6 +145,7 @@ export default function highlightSyntax8f4e<T>(
 		fontNumbers: T;
 		fontBinaryZero: T;
 		fontBinaryOne: T;
+		fontBasePrefix: T;
 	}
 ): T[][] {
 	const getCommentIndex = (line: string): number | undefined => {
@@ -179,6 +180,7 @@ export default function highlightSyntax8f4e<T>(
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const numberMatches = line.matchAll(/(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi);
 		const binaryNumberMatches = line.matchAll(/0b([01]+)/g);
+		const hexNumberMatches = line.matchAll(/0x([\da-f]+)/gi);
 
 		const codeColors = new Array(line.length).fill(undefined);
 		const isBeforeComment = (index: number) => typeof commentIndex === 'undefined' || index < commentIndex;
@@ -229,6 +231,8 @@ export default function highlightSyntax8f4e<T>(
 			const binaryZeros = binaryNumber.matchAll(/(0+)/g);
 			const binaryOnes = binaryNumber.matchAll(/(1+)/g);
 
+			codeColors[binaryNumberIndex] = spriteLookups.fontBasePrefix;
+
 			for (const match of binaryZeros) {
 				if (typeof match.index === 'number') {
 					codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryZero;
@@ -239,6 +243,15 @@ export default function highlightSyntax8f4e<T>(
 					codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryOne;
 				}
 			}
+		}
+
+		for (const hexNumberMatch of hexNumberMatches) {
+			if (typeof hexNumberMatch.index !== 'number' || !isBeforeComment(hexNumberMatch.index)) {
+				continue;
+			}
+
+			codeColors[hexNumberMatch.index] = spriteLookups.fontBasePrefix;
+			codeColors[hexNumberMatch.index + 2] = spriteLookups.fontNumbers;
 		}
 
 		highlightEditorDirective(line, codeColors, spriteLookups.fontCode, spriteLookups.fontCodeComment);
@@ -258,6 +271,7 @@ if (import.meta.vitest) {
 		fontNumbers: 'number',
 		fontBinaryZero: 'zero',
 		fontBinaryOne: 'one',
+		fontBasePrefix: 'prefix',
 	} as const;
 
 	describe('highlightSyntax8f4e', () => {

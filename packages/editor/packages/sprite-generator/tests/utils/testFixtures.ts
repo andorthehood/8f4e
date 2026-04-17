@@ -20,6 +20,7 @@ export const minimalColorScheme: ColorScheme = {
 		dialogTitle: '#ffffff',
 		binaryZero: '#c9d487',
 		binaryOne: '#c9d487',
+		basePrefix: '#c9d487',
 	},
 	fill: {
 		menuItemBackground: '#000000',
