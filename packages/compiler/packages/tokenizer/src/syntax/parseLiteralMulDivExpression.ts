@@ -8,16 +8,16 @@ export type LiteralMulDivResult = {
 };
 
 /**
- * Tries to parse a literal-only `*` or `/` expression with exactly one operator
+ * Tries to parse a literal-only `*`, `/`, or `^` expression with exactly one operator
  * and numeric-literal operands on both sides.
  *
- * Returns the folded result, or `null` if the argument is not a literal mul/div expression.
+ * Returns the folded result, or `null` if the argument is not a literal arithmetic expression.
  * Throws `SyntaxRulesError` when a literal-only numeric expression contains an invalid
  * numeric operand or divides by zero.
  */
 export default function parseLiteralMulDivExpression(argument: string): LiteralMulDivResult | null {
-	// Require exactly one * or / across the whole string
-	const operators = argument.match(/[*/]/g);
+	// Require exactly one *, /, or ^ across the whole string
+	const operators = argument.match(/[*/^]/g);
 	if (!operators || operators.length !== 1) {
 		return null;
 	}
@@ -28,7 +28,7 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 		return null;
 	}
 
-	const operator = argument[opIndex] as '*' | '/';
+	const operator = argument[opIndex] as '*' | '/' | '^';
 	const lhsStr = argument.slice(0, opIndex);
 	const rhsStr = argument.slice(opIndex + 1);
 
@@ -62,7 +62,12 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 		throw new SyntaxRulesError(SyntaxErrorCode.DIVISION_BY_ZERO, `Division by zero in literal expression: ${argument}`);
 	}
 
-	const value = operator === '*' ? lhs.value * rhs.value : lhs.value / rhs.value;
+	const value =
+		operator === '*'
+			? lhs.value * rhs.value
+			: operator === '/'
+				? lhs.value / rhs.value
+				: Math.pow(lhs.value, rhs.value);
 	const isFloat64 = lhs.isFloat64 || rhs.isFloat64;
 
 	return {
