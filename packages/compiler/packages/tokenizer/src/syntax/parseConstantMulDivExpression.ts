@@ -1,11 +1,11 @@
 export type CompileTimeMulDivExpression = {
 	lhs: string;
-	operator: '*' | '/';
+	operator: '*' | '/' | '^';
 	rhs: string;
 };
 
 /**
- * Finds the index of the single `*` or `/` operator that appears outside of parentheses.
+ * Finds the index of the single `*`, `/`, or `^` operator that appears outside of parentheses.
  * Returns -1 if there is no such operator, or -2 if there is more than one.
  */
 function findOperatorOutsideParens(value: string): number {
@@ -18,7 +18,7 @@ function findOperatorOutsideParens(value: string): number {
 			depth++;
 		} else if (ch === ')') {
 			depth--;
-		} else if ((ch === '*' || ch === '/') && depth === 0) {
+		} else if ((ch === '*' || ch === '/' || ch === '^') && depth === 0) {
 			if (operatorIndex !== -1) {
 				return -2; // More than one operator outside parens
 			}
@@ -30,7 +30,7 @@ function findOperatorOutsideParens(value: string): number {
 }
 
 /**
- * Parses a compile-time `*` or `/` expression with exactly one operator outside parentheses.
+ * Parses a compile-time `*`, `/`, or `^` expression with exactly one operator outside parentheses.
  * Each side can be any compile-time-resolvable operand: a numeric literal,
  * a constant identifier, or a metadata query such as `sizeof(name)` or `count(name)`.
  *

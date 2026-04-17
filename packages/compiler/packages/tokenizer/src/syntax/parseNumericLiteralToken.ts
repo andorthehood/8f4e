@@ -14,7 +14,7 @@ export function startsWithNumericPrefix(argument: string): boolean {
 export function isNumericLikeInvalidToken(argument: string): boolean {
 	return (
 		startsWithNumericPrefix(argument) &&
-		(/[*/]/.test(argument) ||
+		(/[*/^]/.test(argument) ||
 			argument.includes('.') ||
 			/[eE]/.test(argument) ||
 			/^-?0[xXbB]/.test(argument) ||
