@@ -129,6 +129,7 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('dialogDimmer');
 			expect(fillKeys).toContain('highlightedCodeLine');
 			expect(fillKeys).toContain('trace');
+			expect(fillKeys).toContain('plotterBackground');
 			expect(fillKeys).toContain('waveform');
 			expect(fillKeys).toContain('scanLine');
 		});

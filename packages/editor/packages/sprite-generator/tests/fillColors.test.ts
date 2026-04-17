@@ -72,6 +72,7 @@ describe('fillColors module', () => {
 			expect(colorValues).toContain(minimalColorScheme.fill.background);
 			expect(colorValues).toContain(minimalColorScheme.fill.menuItemBackground);
 			expect(colorValues).toContain(minimalColorScheme.fill.wire);
+			expect(colorValues).toContain(minimalColorScheme.fill.plotterBackground);
 		});
 
 		it('should generate rectangle commands with correct dimensions', () => {

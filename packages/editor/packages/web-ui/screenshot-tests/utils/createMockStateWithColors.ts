@@ -52,6 +52,7 @@ const defaultColorScheme = {
 		dialogDimmer: 'rgba(0,0,0,0.5)',
 		highlightedCodeLine: '#333333',
 		trace: '#66ff66',
+		plotterBackground: 'rgba(0,0,0,0)',
 		waveform: 'rgba(102,255,102,0.45)',
 		scanLine: '#66ff66',
 		sliderThumb: '#ffffff',
