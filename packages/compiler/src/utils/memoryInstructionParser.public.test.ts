@@ -1,8 +1,9 @@
 import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, it, expect } from 'vitest';
 
-import parseMemoryInstructionArguments from '../../src/utils/memoryInstructionParser';
-import { ArgumentType, type AST, type CompilationContext } from '../../src/types';
+import parseMemoryInstructionArguments from './memoryInstructionParser';
+
+import { ArgumentType, type AST, type CompilationContext } from '../types';
 
 describe('parseMemoryInstructionArguments', () => {
 	const createMockContext = (memory = {}, consts = {}): CompilationContext => ({
