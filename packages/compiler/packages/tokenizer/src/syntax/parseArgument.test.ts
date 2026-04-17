@@ -461,4 +461,59 @@ describe('parseArgument', () => {
 			expect(() => decodeStringLiteral('abc\\')).toThrow('Unexpected end of string');
 		});
 	});
+
+	describe('exponentiation expressions', () => {
+		it('folds literal-only exponentiation to a literal', () => {
+			expect(parseArgument('2^16')).toEqual({
+				type: ArgumentType.LITERAL,
+				value: 65536,
+				isInteger: true,
+			});
+			expect(parseArgument('0x10^2')).toEqual({
+				type: ArgumentType.LITERAL,
+				value: 256,
+				isInteger: true,
+			});
+		});
+
+		it('parses constant ^ literal as a compile-time expression', () => {
+			expect(parseArgument('SIZE^2')).toEqual({
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				left: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				operator: '^',
+				right: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				intermoduleIds: [],
+			});
+		});
+
+		it('parses literal ^ constant as a compile-time expression', () => {
+			expect(parseArgument('2^SIZE')).toEqual({
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				operator: '^',
+				right: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
+				intermoduleIds: [],
+			});
+		});
+
+		it('parses metadata query ^ literal as a compile-time expression', () => {
+			expect(parseArgument('sizeof(samples)^2')).toEqual({
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				left: {
+					type: ArgumentType.IDENTIFIER,
+					value: 'sizeof(samples)',
+					referenceKind: 'element-word-size',
+					scope: 'local',
+					targetMemoryId: 'samples',
+				},
+				operator: '^',
+				right: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				intermoduleIds: [],
+			});
+		});
+
+		it('rejects chained exponentiation as invalid', () => {
+			expect(() => parseArgument('2^3^4')).toThrow('Invalid numeric literal or expression');
+		});
+	});
 });
