@@ -57,6 +57,11 @@ export function getDidYouMeanSuggestion(value: string, candidates: readonly stri
 		return [...prefixMatches].sort((left, right) => left.length - right.length || left.localeCompare(right))[0];
 	}
 
+	const substringMatches = candidates.filter(candidate => candidate.toLowerCase().includes(normalizedValue));
+	if (substringMatches.length > 0) {
+		return [...substringMatches].sort((left, right) => left.length - right.length || left.localeCompare(right))[0];
+	}
+
 	let bestCandidate: string | undefined;
 	let bestDistance = Number.POSITIVE_INFINITY;
 	let bestPrefixScore = -1;

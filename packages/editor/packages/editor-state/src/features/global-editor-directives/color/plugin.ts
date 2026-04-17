@@ -190,6 +190,22 @@ if (import.meta.vitest) {
 			expect(result.errors[0].message).toContain("Did you mean 'text.code'?");
 		});
 
+		it('suggests supported color paths by substring', async () => {
+			const { resolveGlobalEditorDirectives } = await import('../registry');
+
+			const result = resolveGlobalEditorDirectives(
+				[
+					{
+						parsedDirectives: [{ prefix: '@', name: 'color', args: ['prefix'], rawRow: 1, isTrailing: false }],
+					},
+				],
+				{}
+			);
+
+			expect(result.errors).toHaveLength(1);
+			expect(result.errors[0].message).toContain("Did you mean 'text.basePrefix'?");
+		});
+
 		it('prioritizes invalid path suggestions over missing value errors', async () => {
 			const { resolveGlobalEditorDirectives } = await import('../registry');
 
