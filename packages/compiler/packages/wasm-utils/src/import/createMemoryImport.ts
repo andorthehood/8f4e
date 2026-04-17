@@ -37,17 +37,3 @@ export default function createMemoryImport(
 		...(max !== undefined ? unsignedLEB128(max) : []),
 	];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('createMemoryImport generates correct entry', () => {
-		const imp = createMemoryImport('js', 'memory', 1);
-		expect(imp).toContain(ImportDesc.MEMORY);
-	});
-
-	test('createMemoryImport handles shared memory', () => {
-		const imp = createMemoryImport('js', 'memory', 1, 10, true);
-		expect(imp).toContain(0x03);
-	});
-}

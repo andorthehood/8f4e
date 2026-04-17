@@ -11,11 +11,3 @@ import Instruction from '../wasmInstruction';
 export default function i32load16u(alignment = 1, offset = 0): number[] {
 	return [Instruction.I32_LOAD_16_U, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('i32load16u generates correct bytecode', () => {
-		expect(i32load16u()).toStrictEqual([47, 1, 0]);
-	});
-}

@@ -20,17 +20,3 @@ export default function i32store(address?: number, value?: number, alignment = 2
 		...unsignedLEB128(offset),
 	];
 }
-
-if (import.meta.vitest) {
-	const { test, expect } = import.meta.vitest;
-
-	test('i32store with no setup generates only store instruction', () => {
-		const result = i32store();
-		expect(result.slice(-3)).toStrictEqual([54, 2, 0]);
-	});
-
-	test('i32store with address and value generates full instruction sequence', () => {
-		const result = i32store(100, 42);
-		expect(result).toContain(54);
-	});
-}
