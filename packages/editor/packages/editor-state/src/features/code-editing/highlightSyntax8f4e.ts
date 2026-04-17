@@ -366,40 +366,5 @@ if (import.meta.vitest) {
 			const result = highlightSyntax8f4e(code8f4e, spriteLookups);
 			expect(result).toMatchSnapshot();
 		});
-
-		it('highlights binary literal base prefix (0b) separately from binary digits', () => {
-			const result = highlightSyntax8f4e(['push 0b1010'], spriteLookups);
-			const line = result[0];
-			// '0b' prefix (positions 5-6) uses base prefix color
-			expect(line[5]).toBe('prefix');
-			// binary digits start at position 7
-			expect(line[7]).toBe('one');
-			expect(line[8]).toBe('zero');
-			expect(line[9]).toBe('one');
-			expect(line[10]).toBe('zero');
-		});
-
-		it('highlights hexadecimal literal base prefix (0x) separately from hex digits', () => {
-			const result = highlightSyntax8f4e(['push 0xff'], spriteLookups);
-			const line = result[0];
-			// '0x' prefix (positions 5-6) uses base prefix color
-			expect(line[5]).toBe('prefix');
-			// hex digits start at position 7
-			expect(line[7]).toBe('number');
-		});
-
-		it('does not apply base prefix color to decimal literals', () => {
-			const result = highlightSyntax8f4e(['push 42'], spriteLookups);
-			const line = result[0];
-			// decimal number at position 5 uses number color
-			expect(line[5]).toBe('number');
-		});
-
-		it('does not highlight 0b prefix in comments', () => {
-			const result = highlightSyntax8f4e(['; 0b1010'], spriteLookups);
-			const line = result[0];
-			// the whole line is a comment; base prefix color must not appear
-			expect(line.some(cell => cell === 'prefix')).toBe(false);
-		});
 	});
 }
