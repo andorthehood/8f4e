@@ -161,8 +161,10 @@ function resolveMemoryDefaultValue(
 		}
 
 		default:
+			// Intermodular references and other non-resolvable forms should not reach this point —
+			// normalizeMemoryDeclaration strips them before parseMemoryInstructionArguments is called.
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
-				identifier: 'value' in arg ? (arg as { value: string }).value : '',
+				identifier: arg.type === 'identifier' || arg.type === 'constant-identifier' ? arg.value : '',
 			});
 	}
 }

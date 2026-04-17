@@ -3,8 +3,8 @@ title: 'TODO: Reduce duplicate memory declaration rule encoding between tokenize
 priority: Medium
 effort: 1-2 days
 created: 2026-04-03
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-17
 ---
 
 # TODO: Reduce duplicate memory declaration rule encoding between tokenizer and compiler
@@ -79,10 +79,10 @@ The preferred outcome is not necessarily less code, but less duplicated rule int
 
 ## Success Criteria
 
-- [ ] The tokenizer/compiler boundary for scalar memory declarations is easier to explain and verify.
-- [ ] Overlapping declaration rules are no longer independently re-encoded without a clear reason.
-- [ ] Current declaration behavior remains unchanged.
-- [ ] Tests make the cross-stage contract explicit.
+- [x] The tokenizer/compiler boundary for scalar memory declarations is easier to explain and verify.
+- [x] Overlapping declaration rules are no longer independently re-encoded without a clear reason.
+- [x] Current declaration behavior remains unchanged.
+- [x] Tests make the cross-stage contract explicit.
 
 ## Affected Components
 
