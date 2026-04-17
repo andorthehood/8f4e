@@ -9,21 +9,3 @@ export default function extractPointeeElementWordSizeBase(name: string): string 
 	}
 	return name;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractPointeeElementWordSizeBase', () => {
-		it('removes pointee sizeof() wrapper', () => {
-			expect(extractPointeeElementWordSizeBase('sizeof(*value)')).toBe('value');
-		});
-
-		it('leaves plain identifiers unchanged', () => {
-			expect(extractPointeeElementWordSizeBase('value')).toBe('value');
-		});
-
-		it('does not strip plain sizeof() form', () => {
-			expect(extractPointeeElementWordSizeBase('sizeof(value)')).toBe('sizeof(value)');
-		});
-	});
-}

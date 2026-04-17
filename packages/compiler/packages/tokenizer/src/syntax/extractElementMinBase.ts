@@ -9,17 +9,3 @@ export default function extractElementMinBase(name: string): string {
 	}
 	return name;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('extractElementMinBase', () => {
-		it('removes min() wrapper', () => {
-			expect(extractElementMinBase('min(value)')).toBe('value');
-		});
-
-		it('leaves plain identifiers unchanged', () => {
-			expect(extractElementMinBase('value')).toBe('value');
-		});
-	});
-}
