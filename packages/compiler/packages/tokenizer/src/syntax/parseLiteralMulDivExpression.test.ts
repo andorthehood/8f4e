@@ -128,4 +128,61 @@ describe('parseLiteralMulDivExpression', () => {
 			isInteger: false,
 		});
 	});
+
+	it('folds integer exponentiation', () => {
+		expect(parseLiteralMulDivExpression('2^16')).toEqual({
+			value: 65536,
+			isInteger: true,
+		});
+		expect(parseLiteralMulDivExpression('3^3')).toEqual({
+			value: 27,
+			isInteger: true,
+		});
+	});
+
+	it('folds hex operands in exponentiation', () => {
+		expect(parseLiteralMulDivExpression('0x10^2')).toEqual({
+			value: 256,
+			isInteger: true,
+		});
+	});
+
+	it('folds float exponent: result is float-typed', () => {
+		expect(parseLiteralMulDivExpression('2^0.5')).toEqual({
+			value: Math.sqrt(2),
+			isInteger: false,
+		});
+	});
+
+	it('folds negative exponent: result is float-typed', () => {
+		expect(parseLiteralMulDivExpression('2^-1')).toEqual({
+			value: 0.5,
+			isInteger: false,
+		});
+	});
+
+	it('propagates isFloat64 from lhs operand in exponentiation', () => {
+		expect(parseLiteralMulDivExpression('2f64^2')).toEqual({
+			value: 4,
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+
+	it('propagates isFloat64 from rhs operand in exponentiation', () => {
+		expect(parseLiteralMulDivExpression('2^2f64')).toEqual({
+			value: 4,
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+
+	it('returns null for chained exponentiation', () => {
+		expect(parseLiteralMulDivExpression('2^3^4')).toBeNull();
+	});
+
+	it('returns null for mixed exponentiation and other operators', () => {
+		expect(parseLiteralMulDivExpression('2^3*4')).toBeNull();
+		expect(parseLiteralMulDivExpression('4*2^3')).toBeNull();
+	});
 });
