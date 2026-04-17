@@ -213,3 +213,97 @@ test('constants block expressions are available through use', () => {
 
 	expect(result.compiledModules.test.memoryMap.output.default).toBe(4);
 });
+
+moduleTester(
+	'const: literal ^ literal folds to a literal value (2^16 = 65536)',
+	`module test
+const WIDTH 2^16
+int output WIDTH
+moduleEnd
+`,
+	[[{}, { output: 65536 }]]
+);
+
+moduleTester(
+	'const: constant ^ literal expression',
+	`module test
+const SIZE 4
+const TOTAL SIZE^3
+int output
+push &output
+push TOTAL
+store
+moduleEnd
+`,
+	[[{}, { output: 64 }]]
+);
+
+moduleTester(
+	'const: literal ^ constant expression',
+	`module test
+const EXP 8
+const RESULT 2^EXP
+int output
+push &output
+push RESULT
+store
+moduleEnd
+`,
+	[[{}, { output: 256 }]]
+);
+
+moduleTester(
+	'push: literal ^ constant expression',
+	`module test
+const EXP 4
+int output
+push &output
+push 2^EXP
+store
+moduleEnd
+`,
+	[[{}, { output: 16 }]]
+);
+
+moduleTester(
+	'init: constant ^ literal expression',
+	`module test
+const SIZE 3
+int foo
+init foo SIZE^2
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	[[{}, { output: 9, foo: 9 }]]
+);
+
+moduleTester(
+	'int[]: buffer size from constant exponentiation expression',
+	`module test
+const SIZE 2
+int[] buffer SIZE^3
+int output
+push &output
+push count(buffer)
+store
+moduleEnd
+`,
+	[[{}, { output: 8 }]]
+);
+
+moduleTester(
+	'const: sizeof(name)^literal',
+	`module test
+int32[] samples 4 0
+const TOTAL sizeof(samples)^2
+int output
+push &output
+push TOTAL
+store
+moduleEnd
+`,
+	[[{}, { output: 16 }]]
+);
