@@ -45,7 +45,7 @@ Example:
 - `fill.dialogBackground`
 - `fill.dialogDimmer`
 - `fill.highlightedCodeLine`
-- `fill.plotterTrace`
+- `fill.trace`
 - `fill.plotterBackground`
 - `fill.waveform`
 - `fill.scanLine`

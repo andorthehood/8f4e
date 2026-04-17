@@ -35,6 +35,7 @@ export const FILL_COLOR_NAMES = [
 	'dialogDimmer',
 	'highlightedCodeLine',
 	'trace',
+	'plotterBackground',
 	'waveform',
 	'scanLine',
 	'sliderThumb',

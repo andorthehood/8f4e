@@ -110,6 +110,7 @@ if (import.meta.vitest) {
 						parsedDirectives: [
 							{ prefix: '@', name: 'color', args: ['text.code', '#112233'], rawRow: 1, isTrailing: false },
 							{ prefix: '@', name: 'color', args: ['fill.wire', 'rgba(1,2,3,0.4)'], rawRow: 2, isTrailing: false },
+							{ prefix: '@', name: 'color', args: ['fill.plotterBackground', '#001122'], rawRow: 3, isTrailing: false },
 						],
 					},
 				],
@@ -118,6 +119,7 @@ if (import.meta.vitest) {
 
 			expect(result.resolved.colorScheme?.text.code).toBe('#112233');
 			expect(result.resolved.colorScheme?.fill.wire).toBe('rgba(1,2,3,0.4)');
+			expect(result.resolved.colorScheme?.fill.plotterBackground).toBe('#001122');
 			expect(result.errors).toEqual([]);
 		});
 

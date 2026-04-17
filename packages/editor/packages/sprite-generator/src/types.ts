@@ -55,6 +55,7 @@ export interface ColorScheme {
 		dialogDimmer: string;
 		highlightedCodeLine: string;
 		trace: string;
+		plotterBackground: string;
 		waveform: string;
 		scanLine: string;
 		sliderThumb: string;

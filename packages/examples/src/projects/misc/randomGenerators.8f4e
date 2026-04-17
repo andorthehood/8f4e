@@ -1,27 +1,18 @@
 8f4e/v1
 
-module notes
-; @pos 62 19
-; @home
-; Two different approaches
-; for pseudorandom generation:
-; a Linear Congruential
-; Generator (LCG)
-; and
-; an XORShift algorithm
-; implemented in 8f4e.
-moduleEnd
+constants env
+; @pos -84 26
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
 
-module projectConfig
-; @pos -84 2
-; @runtime WebWorkerLogicRuntime
-; ~sampleRate 50
-; @exportFileName randomGenerators
+const SAMPLE_RATE 50
+const INV_SAMPLE_RATE 0.02
 
-moduleEnd
+constantsEnd
 
 module XORShift
-; @pos 102 1
+; @pos 106 1
 
 int seed 69420
 float out
@@ -54,27 +45,14 @@ store
 
 moduleEnd
 
-constants env
-; @pos -84 26
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 2/19/2026, 2:47:12 PM
-
-const SAMPLE_RATE 50
-const INV_SAMPLE_RATE 0.02
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
-
 module lcg
-; @pos -10 1
+; @pos -11 1
 ; Linear congruential 
 ; generator
 
 const MULTIPLIER 1664525
 const INCREMENT 1013904223 
-const MODULUS 65536 ; 2^16
+const MODULUS 2^16
 int seed 69420
 
 float out
@@ -96,6 +74,26 @@ push MODULUS
 castToFloat
 div 
 store
+
+moduleEnd
+
+module notes
+; @pos 66 17
+; @home
+; Two different approaches
+; for pseudorandom generation:
+; a Linear Congruential
+; Generator (LCG)
+; and
+; an XORShift algorithm
+; implemented in 8f4e.
+moduleEnd
+
+module projectConfig
+; @pos -84 2
+; @runtime WebWorkerLogicRuntime
+; ~sampleRate 50
+; @exportFileName randomGenerators
 
 moduleEnd
 
@@ -130,7 +128,7 @@ store
 moduleEnd
 
 module scope2
-; @pos 137 1
+; @pos 142 1
 
 float* in &XORShift:out
 float[] buffer 64

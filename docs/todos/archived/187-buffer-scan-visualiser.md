@@ -28,7 +28,7 @@ scan <buffer> <pointer>
 - Position: drawn in the gap area below the `scan` instruction line.
 - Gap size: 2 lines (height = `2 * hGrid`).
 - Width: the scanline is 1 pixel (or 1 grid column) wide; choose a consistent sprite width that looks clean.
-- Color: reuse existing plotter colors (`plotterTrace` for scanline; `plotterBackground` if a background is needed).
+- Color: reuse existing plotter colors (`fill.trace` for scanline; `fill.plotterBackground` if a background is needed).
 - Pointer clamping: if the pointer is out of range, clamp it to the valid range `[0, bufferLength - 1]`.
 
 ## Data Flow
@@ -72,7 +72,7 @@ bufferScanners: Array<{
   - Determine buffer length from `buffer.memory.wordAlignedSize`.
   - Clamp pointer to `[0, bufferLength - 1]`.
   - Compute `x` offset within `width`: `Math.floor((clampedIndex / Math.max(bufferLength - 1, 1)) * (width - scanlineWidth))`.
-  - Draw scanline using `spriteLookups.plotter` and `plotterTrace`.
+  - Draw scanline using `spriteLookups.fillColors` and `fill.trace`.
 - Add `drawScanners` in `src/drawers/codeBlocks/index.ts` with the other decorators.
 
 ## Tests
