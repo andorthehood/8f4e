@@ -191,8 +191,8 @@ describe('parseConstantMulDivExpression', () => {
 		expect(parseConstantMulDivExpression('SIZE+1*2')).toBeNull();
 	});
 
-	it('does not count operators inside parentheses for + and -', () => {
-		// The + inside parens should not be counted as operator; sizeof(*ptr)+1 has one + outside
+	it('does not count * inside parentheses as a multiplication operator for + detection', () => {
+		// The * inside sizeof(*ptr) is inside parens — should not count as operator; the outer + wins
 		expect(parseConstantMulDivExpression('sizeof(*ptr)+1')).toEqual({
 			lhs: 'sizeof(*ptr)',
 			operator: '+',
