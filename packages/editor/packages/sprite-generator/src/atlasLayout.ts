@@ -16,6 +16,7 @@ export const TEXT_COLOR_NAMES = [
 	'dialogTitle',
 	'binaryZero',
 	'binaryOne',
+	'basePrefix',
 ] as const;
 
 export const FILL_COLOR_NAMES = [

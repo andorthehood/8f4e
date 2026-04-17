@@ -18,6 +18,7 @@ export default function highlightSyntaxNote<T>(
 		fontNumbers: T;
 		fontBinaryZero: T;
 		fontBinaryOne: T;
+		fontBasePrefix: T;
 	}
 ): T[][] {
 	return code.map(line => {
@@ -56,6 +57,7 @@ if (import.meta.vitest) {
 		fontNumbers: 'number',
 		fontBinaryZero: 'zero',
 		fontBinaryOne: 'one',
+		fontBasePrefix: 'prefix',
 	} as const;
 
 	describe('highlightSyntaxNote', () => {

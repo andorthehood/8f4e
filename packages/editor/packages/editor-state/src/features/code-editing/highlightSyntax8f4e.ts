@@ -145,6 +145,7 @@ export default function highlightSyntax8f4e<T>(
 		fontNumbers: T;
 		fontBinaryZero: T;
 		fontBinaryOne: T;
+		fontBasePrefix: T;
 	}
 ): T[][] {
 	const getCommentIndex = (line: string): number | undefined => {
@@ -179,6 +180,7 @@ export default function highlightSyntax8f4e<T>(
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const numberMatches = line.matchAll(/(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi);
 		const binaryNumberMatches = line.matchAll(/0b([01]+)/g);
+		const hexNumberMatches = line.matchAll(/0x([\da-f]+)/gi);
 
 		const codeColors = new Array(line.length).fill(undefined);
 		const isBeforeComment = (index: number) => typeof commentIndex === 'undefined' || index < commentIndex;
@@ -229,6 +231,8 @@ export default function highlightSyntax8f4e<T>(
 			const binaryZeros = binaryNumber.matchAll(/(0+)/g);
 			const binaryOnes = binaryNumber.matchAll(/(1+)/g);
 
+			codeColors[binaryNumberIndex] = spriteLookups.fontBasePrefix;
+
 			for (const match of binaryZeros) {
 				if (typeof match.index === 'number') {
 					codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryZero;
@@ -239,6 +243,15 @@ export default function highlightSyntax8f4e<T>(
 					codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryOne;
 				}
 			}
+		}
+
+		for (const hexNumberMatch of hexNumberMatches) {
+			if (typeof hexNumberMatch.index !== 'number' || !isBeforeComment(hexNumberMatch.index)) {
+				continue;
+			}
+
+			codeColors[hexNumberMatch.index] = spriteLookups.fontBasePrefix;
+			codeColors[hexNumberMatch.index + 2] = spriteLookups.fontNumbers;
 		}
 
 		highlightEditorDirective(line, codeColors, spriteLookups.fontCode, spriteLookups.fontCodeComment);
@@ -258,6 +271,7 @@ if (import.meta.vitest) {
 		fontNumbers: 'number',
 		fontBinaryZero: 'zero',
 		fontBinaryOne: 'one',
+		fontBasePrefix: 'prefix',
 	} as const;
 
 	describe('highlightSyntax8f4e', () => {
@@ -351,6 +365,41 @@ if (import.meta.vitest) {
 
 			const result = highlightSyntax8f4e(code8f4e, spriteLookups);
 			expect(result).toMatchSnapshot();
+		});
+
+		it('highlights binary literal base prefix (0b) separately from binary digits', () => {
+			const result = highlightSyntax8f4e(['push 0b1010'], spriteLookups);
+			const line = result[0];
+			// '0b' prefix (positions 5-6) uses base prefix color
+			expect(line[5]).toBe('prefix');
+			// binary digits start at position 7
+			expect(line[7]).toBe('one');
+			expect(line[8]).toBe('zero');
+			expect(line[9]).toBe('one');
+			expect(line[10]).toBe('zero');
+		});
+
+		it('highlights hexadecimal literal base prefix (0x) separately from hex digits', () => {
+			const result = highlightSyntax8f4e(['push 0xff'], spriteLookups);
+			const line = result[0];
+			// '0x' prefix (positions 5-6) uses base prefix color
+			expect(line[5]).toBe('prefix');
+			// hex digits start at position 7
+			expect(line[7]).toBe('number');
+		});
+
+		it('does not apply base prefix color to decimal literals', () => {
+			const result = highlightSyntax8f4e(['push 42'], spriteLookups);
+			const line = result[0];
+			// decimal number at position 5 uses number color
+			expect(line[5]).toBe('number');
+		});
+
+		it('does not highlight 0b prefix in comments', () => {
+			const result = highlightSyntax8f4e(['; 0b1010'], spriteLookups);
+			const line = result[0];
+			// the whole line is a comment; base prefix color must not appear
+			expect(line.some(cell => cell === 'prefix')).toBe(false);
 		});
 	});
 }

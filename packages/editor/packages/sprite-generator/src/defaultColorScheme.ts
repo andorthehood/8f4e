@@ -20,6 +20,7 @@ const defaultColorScheme: ColorScheme = {
 		dialogTitle: '#ffffff',
 		binaryZero: '#ffffff',
 		binaryOne: '#ffffff',
+		basePrefix: '#ffffff',
 	},
 	fill: {
 		menuItemBackground: '#000000',
