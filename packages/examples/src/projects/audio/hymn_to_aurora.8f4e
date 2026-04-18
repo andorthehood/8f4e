@@ -1,16 +1,6 @@
 8f4e/v1
 
 note
-; @pos 128 -56
-; @stop 3 5 left @hidden
-;                               _______|\
-; Here you can see the event   |          \
-; data scrolling through the   |          /
-; memory.                      `-------|/
-
-noteEnd
-
-note
 ; @pos 125 -69
 ; @stop 2 10 left @hidden
 
@@ -67,6 +57,16 @@ note
 noteEnd
 
 note
+; @pos 134 -55
+; @stop 3 5 left @hidden
+;                               _______|\
+; Here you can see the event   |          \
+; data scrolling through the   |          /
+; memory.                      `-------|/
+
+noteEnd
+
+note
 ; @pos 396 -41
 ; @stop 9 10 right @hidden
 ;   /|______  The instrument samples are
@@ -79,7 +79,7 @@ note
 noteEnd
 
 note
-; @pos 447 5
+; @pos 510 -32
 
 ; The four channel signals
 ; are mixed together here.
@@ -89,7 +89,7 @@ note
 noteEnd
 
 note
-; @pos 536 -14
+; @pos 561 -25
 
 ; Finally, the generated audio sample values
 ; are written into the output audio buffers
@@ -109,6 +109,14 @@ const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
+; 'patterns_ch0.bin'
+const ASSET_CH0_SIZE 6144
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 6144
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 6144
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 6144
 ; 'sample_1.bin'
 const ASSET_SAMPLE1_SIZE 9964
 ; 'sample_2.bin'
@@ -133,14 +141,6 @@ const ASSET_SAMPLE10_SIZE 9550
 const ASSET_SAMPLE11_SIZE 9906
 ; 'sample_12.bin'
 const ASSET_SAMPLE12_SIZE 9000
-; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 6144
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 6144
-; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 6144
-; 'patterns_ch0.bin'
-const ASSET_CH0_SIZE 6144
 
 constantsEnd
 
@@ -501,7 +501,7 @@ store
 moduleEnd
 
 module amp1
-; @pos 446 -70
+; @pos 540 -23
 ; @group ch0
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
@@ -519,7 +519,7 @@ store
 moduleEnd
 
 module amp2
-; @pos 449 -25
+; @pos 540 -5
 ; @group ch1
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
@@ -537,7 +537,7 @@ store
 moduleEnd
 
 module amp3
-; @pos 452 19
+; @pos 540 13
 ; @group ch2
 float* in &modSamplePlayer3:out
 int* volume &volume3:out
@@ -555,7 +555,7 @@ store
 moduleEnd
 
 module amp4
-; @pos 455 65
+; @pos 540 31
 ; @group ch3
 float* in &modSamplePlayer4:out
 int* volume &volume4:out
@@ -595,7 +595,7 @@ module assets
 moduleEnd
 
 module audiooutL
-; @pos 533 -4
+; @pos 631 -10
 use env
 
 float* in &mixer:outL
@@ -633,7 +633,7 @@ ifEnd
 moduleEnd
 
 module audiooutR
-; @pos 574 -4
+; @pos 673 -10
 use env
 
 float* in &mixer:outR
@@ -671,7 +671,7 @@ ifEnd
 moduleEnd
 
 module mixer
-; @pos 496 -2
+; @pos 593 -4
 float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
@@ -755,23 +755,22 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer1
-; @pos 396 -70
+; @pos 422 -7
 ; @group ch0
 use env
 
-float out; @w
 int* period &period1:out
-float _position 0.0; @w
 int* trigger &trigger1:out
-int _playing; @w
 int* sampleNumber &sampleNumber1:out
 int8* sampleAddress; @w
-int sampleSize; @w
 int8* playhead; @w
-
+int sampleSize; @w
 ; @wave sampleAddress sampleSize playhead
-
+float out; @w
 ; @hide
+
+float _position 
+int _playing
 
 push &sampleAddress
 push *sampleNumber
@@ -839,23 +838,22 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 399 -25
+; @pos 422 11
 ; @group ch1
 use env
 ; @stop 12 5
-float out; @w
 int*  period &period2:out 
-float _position ; @w
 int*  trigger &trigger2:out
-int   _playing ; @w
 int*  sampleNumber &sampleNumber2:out
 int8* sampleAddress ;@w
 int   sampleSize ; @w
 int8* playhead ; @w
-
 ; @wave sampleAddress sampleSize playhead
-
+float out ; @w
 ; @hide
+
+float _position
+int _playing
 
 push &sampleAddress
 push *sampleNumber
@@ -923,23 +921,22 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer3
-; @pos 401 19
+; @pos 472 -7
 ; @group ch2
 use env
 
-float out; @w
 int* period &period3:out
-float _position 0.0; @w
 int* trigger &trigger3:out
-int _playing; @w
 int* sampleNumber &sampleNumber3:out
 int8* sampleAddress; @w
 int sampleSize; @w
 int8* playhead; @w
-
 ; @wave sampleAddress sampleSize playhead
-
+float out ; @w
 ; @hide
+
+float _position
+int _playing
 
 push &sampleAddress
 push *sampleNumber
@@ -1024,23 +1021,22 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 404 65
+; @pos 472 11
 ; @group ch3
 use env
 
-float out; @w
 int* period &period4:out
-float _position 0.0; @w
 int* trigger &trigger4:out
-int _playing; @w
 int* sampleNumber &sampleNumber4:out
 int8* sampleAddress; @w
 int sampleSize; @w
 int8* playhead; @w
-
 ; @wave sampleAddress sampleSize playhead
-
+float out ; @w
 ; @hide
+
+float _position
+int _playing
 
 push &sampleAddress
 push *sampleNumber
@@ -1185,7 +1181,7 @@ ifEnd
 moduleEnd
 
 module period2
-; @pos 224 0
+; @pos 225 0
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1256,7 +1252,7 @@ module projectConfig
 moduleEnd
 
 module rowBuffer1
-; @pos 35 -13
+; @pos 35 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1279,7 +1275,6 @@ int* row &modRowCounter:out
 use env
 int[] data ASSET_CH0_SIZE/4
 ; @loadAsset ch0 &data
-
 local int loopCounter
 
 loop 16
@@ -1308,7 +1303,7 @@ loopEnd
 moduleEnd
 
 module rowBuffer2
-; @pos 71 -13
+; @pos 71 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1360,7 +1355,7 @@ loopEnd
 moduleEnd
 
 module rowBuffer3
-; @pos 107 -13
+; @pos 107 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1412,7 +1407,7 @@ loopEnd
 moduleEnd
 
 module rowBuffer4
-; @pos 143 -13
+; @pos 143 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1486,7 +1481,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 224 -22
+; @pos 225 -22
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1552,7 +1547,7 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 348 -62
+; @pos 371 -20
 ; @stop 10 3
 use env
 int8[] sample0 1
@@ -1595,7 +1590,7 @@ int8[] sample12 ASSET_SAMPLE12_SIZE
 moduleEnd
 
 module scope1
-; @pos 35 -29
+; @pos 35 -17
 float* in &amp1:out
 float[] buffer 64
 ; @plot &buffer 64         
@@ -1625,7 +1620,7 @@ moduleEnd
 
 
 module scope2
-; @pos 71 -29
+; @pos 71 -17
 float* in &amp2:out
 float[] buffer 64  
 ; @plot &buffer 64 @home   
@@ -1655,7 +1650,7 @@ moduleEnd
 
 
 module scope3
-; @pos 107 -29
+; @pos 107 -17
 float* in &amp3:out
 float[] buffer 64  
 ; @plot &buffer 64         
@@ -1685,7 +1680,7 @@ moduleEnd
 
 
 module scope4
-; @pos 143 -29
+; @pos 143 -17
 float* in &amp4:out
 float[] buffer 64  
 ; @plot &buffer 64         
@@ -1741,7 +1736,7 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 258 -22
+; @pos 259 -22
 ; @group ch1
 int* row &rowBuffer2:
 int* rowCounter &modRowCounter:out
@@ -1887,7 +1882,7 @@ ifEnd
 moduleEnd
 
 module volume2
-; @pos 301 -22
+; @pos 302 -22
 ; @group ch1
 use mod
 int* row &rowBuffer2:
