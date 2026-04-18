@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { getMemoryFlags } from '@8f4e/compiler-memory-layout';
+
+import { getMemoryFlags } from './getMemoryFlags';
 
 describe('getMemoryFlags', () => {
 	describe('for int8 base type', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isMemoryIdentifier } from './memoryIdentifier';
+import { isMemoryIdentifier } from './isMemoryIdentifier';
 
 import type { MemoryMap } from '../types';
 

@@ -1,8 +1,10 @@
 import { ArgumentType } from '@8f4e/tokenizer';
-import { parseMemoryInstructionArguments } from '@8f4e/compiler-memory-layout';
 import { describe, expect, it } from 'vitest';
 
-import type { Argument, CompilationContext } from '../types';
+import { parseMemoryInstructionArguments } from './parseMemoryInstructionArguments';
+
+import type { Argument } from '@8f4e/tokenizer';
+import type { PublicMemoryLayoutContext } from './types';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -20,10 +22,11 @@ describe('parseMemoryInstructionArguments', () => {
 				myVar: {
 					byteAddress: 100,
 					wordAlignedSize: 5,
-				} as unknown as CompilationContext['namespace']['memory'][string],
+				} as unknown as PublicMemoryLayoutContext['namespace']['memory'][string],
 			},
 		},
-	} as unknown as CompilationContext;
+		startingByteAddress: 0,
+	} as unknown as Pick<PublicMemoryLayoutContext, 'namespace' | 'startingByteAddress' | 'currentModuleWordAlignedSize'>;
 
 	it('parses literal argument as anonymous variable', () => {
 		const args: Argument[] = [{ type: ArgumentType.LITERAL, value: 123, isInteger: true }];

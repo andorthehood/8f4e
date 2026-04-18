@@ -1,3 +1,5 @@
+import { isMemoryIdentifier } from '@8f4e/compiler-memory-layout';
+
 import {
 	hasCollectedNamespaces,
 	isIntermoduleReferenceKind,
@@ -7,7 +9,6 @@ import {
 } from './helpers';
 
 import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '../../types';
-import { isMemoryIdentifier } from '../../utils/memoryIdentifier';
 import { ErrorCode, getError } from '../../compilerError';
 
 /**
