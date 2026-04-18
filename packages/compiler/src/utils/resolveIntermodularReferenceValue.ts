@@ -1,4 +1,4 @@
-import { getElementMaxValue, getElementMinValue } from './memoryData';
+import { getElementMaxValue, getElementMinValue } from '@8f4e/compiler-memory-layout';
 
 import type { AST, ArgumentIdentifier, CompilationContext } from '../types';
 

@@ -1,6 +1,7 @@
 import { f32const, f32load, f64const, f64load, i32const, i32load } from '@8f4e/compiler-wasm-utils';
 
-import type { DataStructure, StackItem } from '../../types';
+import type { DataStructure } from '@8f4e/compiler-memory-layout';
+import type { StackItem } from '../../types';
 
 export type PushValueKind = 'int32' | 'float32' | 'float64';
 

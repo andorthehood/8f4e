@@ -1,5 +1,6 @@
 import { compileToAST } from '@8f4e/tokenizer';
 import { createFunction, createLocalDeclaration, f32store, f64store, i32store, Type } from '@8f4e/compiler-wasm-utils';
+import { prepassNamespace, type Namespaces } from '@8f4e/compiler-memory-layout';
 
 import instructions, { Instruction } from './instructionCompilers';
 import {
@@ -9,14 +10,11 @@ import {
 	CompiledFunction,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
-	Namespaces,
 } from './types';
 import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
-import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
-
-export type { MemoryTypes, MemoryMap } from './types';
+import { applySemanticLine } from './semantic/buildNamespace';
 
 export function compileCodegenLine(line: AST[number], context: CompilationContext) {
 	const instruction = line.instruction as Instruction;

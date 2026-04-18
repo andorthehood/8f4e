@@ -1,7 +1,6 @@
 import { ArgumentType } from '@8f4e/tokenizer';
+import { parseMemoryInstructionArguments } from '@8f4e/compiler-memory-layout';
 import { describe, expect, it } from 'vitest';
-
-import parseMemoryInstructionArguments from './memoryInstructionParser';
 
 import type { Argument, CompilationContext } from '../types';
 

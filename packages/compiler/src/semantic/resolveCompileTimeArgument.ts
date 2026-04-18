@@ -1,19 +1,19 @@
 import { ArgumentType } from '@8f4e/tokenizer';
-
-import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
-
 import {
 	getDataStructureByteAddress,
 	getElementCount,
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
+	getEndByteAddress,
 	getMemoryStringLastByteAddress,
+	getModuleEndByteAddress,
 	getPointeeElementMaxValue,
 	getPointeeElementWordSize,
-} from '../utils/memoryData';
+	type Const,
+} from '@8f4e/compiler-memory-layout';
 
-import type { Argument, CompilationContext, CompileTimeOperand, Const } from '../types';
+import type { Argument, CompilationContext, CompileTimeOperand } from '../types';
 
 /**
  * Tries to resolve a single pre-classified compile-time operand to a `Const` value.

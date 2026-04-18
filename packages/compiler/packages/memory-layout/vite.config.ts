@@ -8,7 +8,7 @@ export default defineConfig({
 		emptyOutDir: false,
 		rollupOptions: {
 			...createEsLibConfig('./src/index.ts', 'dist').build?.rollupOptions,
-			external: ['@8f4e/tokenizer', '@8f4e/compiler-memory-layout', '@8f4e/compiler-wasm-utils'],
+			external: ['@8f4e/tokenizer'],
 		},
 	},
 });

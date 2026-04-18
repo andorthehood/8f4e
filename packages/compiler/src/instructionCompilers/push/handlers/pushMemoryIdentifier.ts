@@ -1,7 +1,7 @@
 import { i32const } from '@8f4e/compiler-wasm-utils';
+import { getDataStructure } from '@8f4e/compiler-memory-layout';
 
 import { saveByteCode } from '../../../utils/compilation';
-import { getDataStructure } from '../../../utils/memoryData';
 import { kindToStackItem, loadOpcode, resolveMemoryValueKind } from '../shared';
 
 import type { CompilationContext, PushIdentifierLine } from '../../../types';

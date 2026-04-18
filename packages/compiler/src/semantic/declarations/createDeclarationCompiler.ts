@@ -1,11 +1,16 @@
 import { getPointerDepth } from '@8f4e/tokenizer';
+import {
+	alignAbsoluteWordOffset,
+	getAbsoluteWordOffset,
+	getByteAddressFromWordOffset,
+	getMemoryFlags,
+	MemoryTypes,
+	parseMemoryInstructionArguments,
+} from '@8f4e/compiler-memory-layout';
 
-import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
-import getMemoryFlags from '../../utils/memoryFlags';
 import { withValidation } from '../../withValidation';
-import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
-import type { InstructionCompiler, MemoryTypes } from '../../types';
+import type { InstructionCompiler } from '../../types';
 
 type BaseType = Parameters<typeof getMemoryFlags>[0];
 
