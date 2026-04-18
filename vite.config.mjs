@@ -37,6 +37,7 @@ export default defineConfig(() => {
     ],
     build: {
       outDir: '../dist',
+      emptyOutDir: true,
       rollupOptions: {
         // Ensure proper module resolution for production
         external: []
