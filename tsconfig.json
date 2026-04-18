@@ -22,6 +22,7 @@
 		"@8f4e/web-ui": ["packages/editor/packages/web-ui/src/index.ts"],
 		"glugglug": ["packages/editor/packages/glugglug/src/index.ts"],
 		"@8f4e/tokenizer": ["packages/compiler/packages/tokenizer/src/index.ts"],
+		"@8f4e/compiler-memory-layout": ["packages/compiler/packages/memory-layout/src/index.ts"],
 		"@8f4e/compiler-wasm-utils": ["packages/compiler/packages/wasm-utils/src/index.ts"],
 		"@8f4e/compiler": ["packages/compiler/src/index.ts"],
 		"@8f4e/sprite-generator": ["packages/editor/packages/sprite-generator/src/index.ts"],

@@ -1,8 +1,14 @@
+import {
+	alignAbsoluteWordOffset,
+	getAbsoluteWordOffset,
+	getByteAddressFromWordOffset,
+	MemoryTypes,
+} from '@8f4e/compiler-memory-layout';
+
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
 import { withValidation } from '../../withValidation';
-import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
-import type { ArrayDeclarationLine, InstructionCompiler, MemoryTypes } from '../../types';
+import type { ArrayDeclarationLine, InstructionCompiler } from '../../types';
 
 function getElementWordSize(instruction: string): number {
 	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;

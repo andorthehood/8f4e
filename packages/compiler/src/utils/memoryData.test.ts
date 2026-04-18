@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-
 import {
 	getDataStructure,
 	getDataStructureByteAddress,
@@ -10,7 +9,7 @@ import {
 	getMemoryStringLastByteAddress,
 	getPointeeElementMaxValue,
 	getPointeeElementWordSize,
-} from './memoryData';
+} from '@8f4e/compiler-memory-layout';
 
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 

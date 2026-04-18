@@ -1,12 +1,12 @@
 import compile, {
 	compileCodegenLine,
-	collectNamespacesFromASTs,
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
 	type Module,
 	BLOCK_TYPE,
 } from '@8f4e/compiler';
+import { collectNamespacesFromASTs } from '@8f4e/compiler-memory-layout';
 
 import getBlockType from './shared/getBlockType';
 

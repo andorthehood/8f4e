@@ -1,8 +1,8 @@
 {
-	"name": "@8f4e/editor-state",
+	"name": "@8f4e/compiler-memory-layout",
 	"version": "1.0.0",
 	"private": true,
-	"description": "8f4e editor state management package",
+	"description": "8f4e public compiler memory layout package",
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -10,10 +10,6 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
-		},
-		"./testing": {
-			"types": "./dist/testing.d.ts",
-			"default": "./dist/testing.js"
 		}
 	},
 	"sideEffects": false,
@@ -28,13 +24,10 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
-		"glugglug": "*",
-		"@8f4e/sprite-generator": "*",
-		"@8f4e/compiler": "*",
-		"@8f4e/compiler-memory-layout": "*"
+		"@8f4e/tokenizer": "*"
 	},
 	"devDependencies": {
-		"@types/node": "^24.3.0",
-		"vitest": "4.0.13"
+		"@types/node": "^24.3.0"
 	}
 }
+

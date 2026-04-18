@@ -3,7 +3,7 @@ import { StateManager } from '@8f4e/state-manager';
 import findSliderWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '~/types';
-import type { DataStructure } from '@8f4e/compiler';
+import type { DataStructure } from '@8f4e/compiler-memory-layout';
 
 import { EventDispatcher } from '~/types';
 
