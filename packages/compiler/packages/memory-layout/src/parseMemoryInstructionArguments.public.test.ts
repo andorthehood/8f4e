@@ -1,24 +1,23 @@
-import { classifyIdentifier } from '@8f4e/tokenizer';
-import { parseMemoryInstructionArguments } from '@8f4e/compiler-memory-layout';
+import { ArgumentType, classifyIdentifier, type AST } from '@8f4e/tokenizer';
 import { describe, it, expect } from 'vitest';
 
-import { ArgumentType, type AST, type CompilationContext } from '../types';
+import { parseMemoryInstructionArguments } from './parseMemoryInstructionArguments';
+
+import type { PublicMemoryLayoutContext } from './types';
 
 describe('parseMemoryInstructionArguments', () => {
-	const createMockContext = (memory = {}, consts = {}): CompilationContext => ({
+	const createMockContext = (
+		memory = {},
+		consts = {}
+	): Pick<PublicMemoryLayoutContext, 'namespace' | 'startingByteAddress' | 'currentModuleWordAlignedSize'> => ({
 		namespace: {
 			memory,
 			consts,
-			locals: {},
 			namespaces: {},
 			functions: {},
 			moduleName: 'test',
 		},
-		byteCode: [],
-		stack: [],
-		blockStack: [],
 		startingByteAddress: 0,
-		mode: 'module',
 	});
 
 	const createLine = (lineNumber: number, instruction: AST[number]['instruction'], args: AST[number]['arguments']) => ({

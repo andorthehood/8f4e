@@ -1,7 +1,7 @@
 import { compileToAST } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 
-import { createPublicMemoryLayoutFromASTs } from './index';
+import { createPublicMemoryLayoutFromASTs } from './createPublicMemoryLayoutFromASTs';
 
 describe('createPublicMemoryLayoutFromASTs', () => {
 	it('creates public module memory layout from ASTs', () => {

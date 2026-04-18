@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
+
 import {
 	alignAbsoluteWordOffset,
 	getAbsoluteWordOffset,
 	getByteAddressFromWordOffset,
 	getEndByteAddress,
 	getModuleEndByteAddress,
-} from '@8f4e/compiler-memory-layout';
+} from '../index';
 
 describe('layoutAddresses', () => {
 	it('converts word offsets to byte addresses', () => {
