@@ -1,12 +1,12 @@
-import { isMemoryIdentifier } from '@8f4e/compiler-memory-layout';
-
 import {
 	hasCollectedNamespaces,
+	isMemoryIdentifier,
 	isIntermoduleReferenceKind,
+	type PublicMemoryLayoutContext,
 	validateIntermoduleAddressReference,
 	validateOrDeferCompileTimeExpression,
 	normalizeArgumentsAtIndexes,
-} from './helpers';
+} from '@8f4e/compiler-memory-layout';
 
 import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
@@ -19,11 +19,12 @@ import { ErrorCode, getError } from '../../compilerError';
  * Throws UNDECLARED_IDENTIFIER for unrecognized identifiers.
  */
 export default function normalizePush(line: PushLine, context: CompilationContext): CodegenPushLine {
-	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);
+	const publicMemoryContext = context as unknown as PublicMemoryLayoutContext;
+	const { line: normalized } = normalizeArgumentsAtIndexes(line, publicMemoryContext, [0]);
 
 	const argument = normalized.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+		const deferred = validateOrDeferCompileTimeExpression(argument, line, publicMemoryContext);
 		if (deferred) {
 			return normalized as CodegenPushLine;
 		}
@@ -32,11 +33,11 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 		const { value, referenceKind } = argument;
 		const { memory } = context.namespace;
 		const isIntermodule = isIntermoduleReferenceKind(referenceKind);
-		if (!hasCollectedNamespaces(context) && isIntermodule) {
+		if (!hasCollectedNamespaces(publicMemoryContext) && isIntermodule) {
 			return normalized as CodegenPushLine;
 		}
 		// Validate intermodule references first
-		validateIntermoduleAddressReference(argument, line, context);
+		validateIntermoduleAddressReference(argument, line, publicMemoryContext);
 		if (isIntermodule) {
 			return normalized as CodegenPushLine;
 		}

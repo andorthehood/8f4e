@@ -22,3 +22,9 @@ export { createPublicMemoryLayoutFromASTs } from './createPublicMemoryLayoutFrom
 export { normalizeLayoutLine } from './internal/normalizeLayoutLine';
 export { applySemanticLine } from './internal/applySemanticLine';
 export { tryResolveCompileTimeArgument } from './internal/tryResolveCompileTimeArgument';
+export { hasCollectedNamespaces } from './internal/hasCollectedNamespaces';
+export { isIntermoduleReferenceKind } from './internal/isIntermoduleReferenceKind';
+export { normalizeArgumentsAtIndexes } from './internal/normalizeArgumentsAtIndexes';
+export { validateIntermoduleAddressReference } from './internal/validateIntermoduleAddressReference';
+export { validateOrDeferCompileTimeExpression } from './internal/validateOrDeferCompileTimeExpression';
+export { validateOrDeferUnresolvedIdentifier } from './internal/validateOrDeferUnresolvedIdentifier';

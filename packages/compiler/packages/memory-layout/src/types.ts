@@ -71,8 +71,13 @@ export interface CompiledFunctionLookup {
 }
 
 export enum BLOCK_TYPE {
-	MODULE = 0,
-	CONSTANTS = 5,
+	MODULE,
+	LOOP,
+	CONDITION,
+	FUNCTION,
+	BLOCK,
+	CONSTANTS,
+	MAP,
 }
 
 export interface PublicMemoryLayoutContext {

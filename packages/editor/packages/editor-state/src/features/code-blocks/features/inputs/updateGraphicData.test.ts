@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes } from '@8f4e/compiler-memory-layout';
+import { MemoryTypes } from '@8f4e/compiler';
 
 import updateInputsGraphicData from './updateGraphicData';
 

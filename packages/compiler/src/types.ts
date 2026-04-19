@@ -46,6 +46,7 @@ import {
 	type LoopCapLine,
 } from '@8f4e/tokenizer';
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { BLOCK_TYPE } from '@8f4e/compiler-memory-layout';
 
 import type { Consts, DataStructure, MemoryMap, Namespaces } from '@8f4e/compiler-memory-layout';
 
@@ -119,6 +120,7 @@ export interface Module {
 
 // Re-export types from syntax subpath for backward compatibility
 export {
+	BLOCK_TYPE,
 	type AST,
 	type ASTLine,
 	ArgumentType,
@@ -292,16 +294,6 @@ export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 						: TLine extends ArrayDeclarationLine
 							? ArrayDeclarationLine
 							: TLine;
-
-export enum BLOCK_TYPE {
-	MODULE,
-	LOOP,
-	CONDITION,
-	FUNCTION,
-	BLOCK,
-	CONSTANTS,
-	MAP,
-}
 
 export interface MapRow {
 	keyValue: number;
