@@ -1,4 +1,5 @@
-import { isMemoryDeclarationInstruction } from './semantic/declarations';
+import { isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
+
 import { ArgumentType } from './types';
 
 import type { AST, Argument } from './types';

@@ -1,7 +1,8 @@
 import { ArgumentType } from '@8f4e/tokenizer';
-
-import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
-import applySemanticInstruction from './instructions';
+import {
+	applySemanticLine as applyPublicMemorySemanticLine,
+	type PublicMemoryLayoutContext,
+} from '@8f4e/compiler-memory-layout';
 
 import { ErrorCode, getError } from '../compilerError';
 import {
@@ -79,9 +80,5 @@ export function assertUniqueModuleIds(asts: AST[]): void {
 }
 
 export function applySemanticLine(line: AST[number], context: CompilationContext) {
-	if (!line.isSemanticOnly) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-	}
-
-	applySemanticInstruction(normalizeCompileTimeArguments(line as ParsedSemanticInstructionLine, context), context);
+	applyPublicMemorySemanticLine(line as ParsedSemanticInstructionLine, context as unknown as PublicMemoryLayoutContext);
 }

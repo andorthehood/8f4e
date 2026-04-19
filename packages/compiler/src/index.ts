@@ -67,7 +67,6 @@ export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export { assertUniqueModuleIds, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
-export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export {
