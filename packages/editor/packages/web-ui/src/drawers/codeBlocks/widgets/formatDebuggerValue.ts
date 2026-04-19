@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-memory-layout';
+import type { DataStructure } from '@8f4e/compiler';
 import type { MemoryViews } from '../../../types';
 
 // Hot render path: cache byte-to-hex conversion once so per-frame formatting avoids repeated allocations.
