@@ -37,11 +37,6 @@ That made the public layout phase callable from a separate package, but it did n
 - Not comparing removed compiler logic against added package logic before claiming completion.
 - Failing to distinguish a functional first extraction from a finished separation of ownership.
 
-```ts
-// misleading outcome
-export { prepassNamespace, collectNamespacesFromASTs, createPublicMemoryLayoutFromASTs };
-```
-
 This export made the public layout API available, but it did not prove that layout ownership had been cleanly extracted or that duplicated compiler helpers had been eliminated.
 
 ## Failure Pattern
