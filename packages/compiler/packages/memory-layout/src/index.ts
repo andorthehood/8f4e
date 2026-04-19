@@ -19,3 +19,6 @@ export { parseMemoryInstructionArguments } from './parseMemoryInstructionArgumen
 export { prepassNamespace } from './prepassNamespace';
 export { collectNamespacesFromASTs } from './collectNamespacesFromASTs';
 export { createPublicMemoryLayoutFromASTs } from './createPublicMemoryLayoutFromASTs';
+export { normalizeLayoutLine } from './internal/normalizeLayoutLine';
+export { applySemanticLine } from './internal/applySemanticLine';
+export { tryResolveCompileTimeArgument } from './internal/tryResolveCompileTimeArgument';

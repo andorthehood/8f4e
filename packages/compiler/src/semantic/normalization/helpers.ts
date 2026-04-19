@@ -1,4 +1,5 @@
-import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
+import { tryResolveCompileTimeArgument, type PublicMemoryLayoutContext } from '@8f4e/compiler-memory-layout';
+
 import {
 	ArgumentType,
 	type ReferenceKind,
@@ -95,7 +96,7 @@ export function normalizeArgument(argument: Argument, context: CompilationContex
 		return argument;
 	}
 
-	const resolved = tryResolveCompileTimeArgument(context, argument);
+	const resolved = tryResolveCompileTimeArgument(context as unknown as PublicMemoryLayoutContext, argument);
 
 	if (!resolved) {
 		return argument;

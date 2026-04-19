@@ -1,9 +1,9 @@
 import { ArgumentType } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 
-import { tryResolveCompileTimeArgument } from './resolveCompileTimeArgument';
+import { tryResolveCompileTimeArgument } from './tryResolveCompileTimeArgument';
 
-import type { CompilationContext } from '../types';
+import type { PublicMemoryLayoutContext } from '../types';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
@@ -30,7 +30,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		},
 		startingByteAddress: 24,
 		currentModuleWordAlignedSize: 5,
-	} as unknown as CompilationContext;
+	} as unknown as PublicMemoryLayoutContext;
 
 	it('resolves direct constants', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE'))).toEqual({
@@ -128,7 +128,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as PublicMemoryLayoutContext;
 
 		expect(tryResolveCompileTimeArgument(intermodularNamespace, parseArgument('2*sizeof(source:buffer)'))).toEqual({
 			value: 4,
@@ -203,7 +203,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as PublicMemoryLayoutContext;
 
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
 			value: 8,
@@ -234,7 +234,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as PublicMemoryLayoutContext;
 
 		// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
@@ -258,7 +258,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as PublicMemoryLayoutContext;
 
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
 			value: 12,
@@ -281,7 +281,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as PublicMemoryLayoutContext;
 
 		// End address = 12 + (3 - 1) * 4 = 12 + 8 = 20
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
@@ -310,7 +310,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as PublicMemoryLayoutContext;
 
 		expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:buffer'))).toBeUndefined();
 		expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
