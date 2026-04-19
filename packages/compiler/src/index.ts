@@ -64,6 +64,7 @@ export {
 	type CompilerDiagnosticContext,
 } from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
+export { MemoryTypes, type DataStructure } from '@8f4e/compiler-memory-layout';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export { assertUniqueModuleIds, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';

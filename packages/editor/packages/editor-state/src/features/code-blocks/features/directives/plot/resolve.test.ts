@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes, type DataStructure } from '@8f4e/compiler-memory-layout';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
 import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
