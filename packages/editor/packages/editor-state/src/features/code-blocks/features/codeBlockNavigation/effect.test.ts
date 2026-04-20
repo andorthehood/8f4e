@@ -119,7 +119,6 @@ describe('codeBlockNavigation', () => {
 
 		onNavigateCodeBlockHandler({ direction: 'left' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(leftBlock);
-		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
 	});
 
 	it('should navigate right when navigateCodeBlock event with right direction is dispatched', () => {
@@ -219,7 +218,12 @@ describe('codeBlockNavigation', () => {
 		expect(selectedBlock.cursor.row).toBe(0);
 		expect(selectedBlock.cursor.y).toBe(0);
 		expect(state.viewport.y).toBe(selectedBlock.y + selectedBlock.offsetY - state.viewport.height / 2);
-		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+		expect(events.dispatch).toHaveBeenCalledWith(
+			'viewportChanged',
+			expect.objectContaining({
+				y: state.viewport.y,
+			})
+		);
 	});
 
 	it('should move to the last line of the current block before navigating downward', () => {
@@ -237,7 +241,12 @@ describe('codeBlockNavigation', () => {
 		expect(state.viewport.y).toBe(
 			selectedBlock.y + selectedBlock.offsetY + 3 * state.viewport.hGrid - state.viewport.height / 2
 		);
-		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+		expect(events.dispatch).toHaveBeenCalledWith(
+			'viewportChanged',
+			expect.objectContaining({
+				y: state.viewport.y,
+			})
+		);
 	});
 
 	it('should select the bottom row of the block above after the current top row is highlighted', () => {
@@ -339,7 +348,13 @@ describe('codeBlockNavigation', () => {
 		expect(state.viewport.x).toBe(state.viewportAnimation.targetX);
 		expect(state.viewport.y).toBe(state.viewportAnimation.targetY);
 		expect(state.viewportAnimation.active).toBe(false);
-		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+		expect(events.dispatch).toHaveBeenCalledWith(
+			'viewportChanged',
+			expect.objectContaining({
+				x: state.viewport.x,
+				y: state.viewport.y,
+			})
+		);
 	});
 
 	it('should not change selection if no block found in direction', () => {
@@ -358,7 +373,13 @@ describe('codeBlockNavigation', () => {
 			const result = jumpToCodeBlock(state, 2, 'wrong-id', events);
 			expect(result).toBe(true);
 			expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
-			expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+			expect(events.dispatch).toHaveBeenCalledWith(
+				'viewportChanged',
+				expect.objectContaining({
+					x: state.viewport.x,
+					y: state.viewport.y,
+				})
+			);
 		});
 
 		it('should jump to code block by id when creationIndex does not match', () => {
@@ -448,7 +469,7 @@ describe('codeBlockNavigation', () => {
 			expect(state.viewport.y).toBe(32);
 		});
 
-		it('should dispatch viewportMoved after goHome changes the viewport', () => {
+		it('should dispatch viewportChanged after goHome changes the viewport', () => {
 			const homeBlock = createMockCodeBlock({
 				id: 'home-dispatch',
 				isHome: true,
@@ -461,7 +482,13 @@ describe('codeBlockNavigation', () => {
 
 			goHome(state, events);
 
-			expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
+			expect(events.dispatch).toHaveBeenCalledWith(
+				'viewportChanged',
+				expect.objectContaining({
+					x: state.viewport.x,
+					y: state.viewport.y,
+				})
+			);
 		});
 
 		it('should use a disabled home block if it is first', () => {

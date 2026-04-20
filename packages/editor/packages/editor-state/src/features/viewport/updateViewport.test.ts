@@ -6,7 +6,7 @@ import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('updateViewport', () => {
-	it('recomputes viewport geometry and dispatches viewport lifecycle events', () => {
+	it('recomputes viewport geometry and dispatches viewportChanged', () => {
 		const state = createMockState({
 			viewport: {
 				x: 0,
@@ -27,7 +27,6 @@ describe('updateViewport', () => {
 			x: 24,
 			y: 40,
 		});
-		expect(events.dispatch).toHaveBeenCalledWith('viewportMoved');
 	});
 
 	it('does not dispatch movement events when the viewport position is unchanged', () => {
