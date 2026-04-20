@@ -1,5 +1,4 @@
 import { getTargetModuleNamespace } from './getTargetModuleNamespace';
-import { hasResolvedModuleLayouts } from './hasResolvedModuleLayouts';
 
 import { getError } from '../getError';
 import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
@@ -11,14 +10,14 @@ export function validateIntermoduleAddressReference(
 	line: AST[number],
 	context: PublicMemoryLayoutContext
 ): void {
-	if (!hasResolvedModuleLayouts(context)) {
-		return;
-	}
-
 	if (identifier.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = identifier.targetModuleId;
-		if (!getTargetModuleNamespace(context, targetModuleId)) {
+		const discoveredModule = context.namespace.discoveredModules?.[targetModuleId];
+		if (!discoveredModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
+		}
+		if (!getTargetModuleNamespace(context, targetModuleId)) {
+			return;
 		}
 		return;
 	}
@@ -26,12 +25,16 @@ export function validateIntermoduleAddressReference(
 	if (identifier.referenceKind === 'intermodular-reference') {
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
-		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
-		if (!targetNamespace) {
+		const discoveredModule = context.namespace.discoveredModules?.[targetModuleId];
+		if (!discoveredModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
-		if (!targetNamespace.memory?.[targetMemoryId]) {
+		if (!discoveredModule.memoryIds[targetMemoryId]) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
+		}
+		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
+		if (!targetNamespace) {
+			return;
 		}
 		return;
 	}
@@ -44,12 +47,16 @@ export function validateIntermoduleAddressReference(
 	) {
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
-		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
-		if (!targetNamespace) {
+		const discoveredModule = context.namespace.discoveredModules?.[targetModuleId];
+		if (!discoveredModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
-		if (!targetNamespace.memory?.[targetMemoryId]) {
+		if (!discoveredModule.memoryIds[targetMemoryId]) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
+		}
+		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
+		if (!targetNamespace) {
+			return;
 		}
 	}
 }

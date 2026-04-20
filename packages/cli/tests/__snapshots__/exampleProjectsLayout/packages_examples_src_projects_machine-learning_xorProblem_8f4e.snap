@@ -14,17 +14,8 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "env",
-      "index": 0,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
       "id": "switches",
-      "index": 1,
+      "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 2,
@@ -33,7 +24,7 @@
     },
     {
       "id": "perceptron",
-      "index": 2,
+      "index": 1,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "wordAlignedSize": 3,
@@ -42,7 +33,7 @@
     },
     {
       "id": "activationFn",
-      "index": 3,
+      "index": 2,
       "byteAddress": 24,
       "wordAlignedAddress": 6,
       "wordAlignedSize": 2,
@@ -51,7 +42,7 @@
     },
     {
       "id": "perceptron2",
-      "index": 4,
+      "index": 3,
       "byteAddress": 32,
       "wordAlignedAddress": 8,
       "wordAlignedSize": 3,
@@ -60,7 +51,7 @@
     },
     {
       "id": "activationFn2",
-      "index": 5,
+      "index": 4,
       "byteAddress": 44,
       "wordAlignedAddress": 11,
       "wordAlignedSize": 2,
@@ -69,7 +60,7 @@
     },
     {
       "id": "perceptron3",
-      "index": 6,
+      "index": 5,
       "byteAddress": 52,
       "wordAlignedAddress": 13,
       "wordAlignedSize": 3,
@@ -78,7 +69,7 @@
     },
     {
       "id": "activationFn3",
-      "index": 7,
+      "index": 6,
       "byteAddress": 64,
       "wordAlignedAddress": 16,
       "wordAlignedSize": 2,
@@ -87,7 +78,7 @@
     },
     {
       "id": "notes",
-      "index": 8,
+      "index": 7,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "wordAlignedSize": 0,
@@ -96,7 +87,7 @@
     },
     {
       "id": "projectConfig",
-      "index": 9,
+      "index": 8,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "wordAlignedSize": 0,
@@ -105,7 +96,7 @@
     },
     {
       "id": "result",
-      "index": 10,
+      "index": 9,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "wordAlignedSize": 1,

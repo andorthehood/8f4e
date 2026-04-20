@@ -10,17 +10,8 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "env",
-      "index": 0,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
       "id": "sineLT",
-      "index": 1,
+      "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 256,
@@ -29,7 +20,7 @@
     },
     {
       "id": "dancer1",
-      "index": 2,
+      "index": 1,
       "byteAddress": 1028,
       "wordAlignedAddress": 257,
       "wordAlignedSize": 4,
@@ -38,7 +29,7 @@
     },
     {
       "id": "dancer2",
-      "index": 3,
+      "index": 2,
       "byteAddress": 1044,
       "wordAlignedAddress": 261,
       "wordAlignedSize": 4,
@@ -47,7 +38,7 @@
     },
     {
       "id": "dancer3",
-      "index": 4,
+      "index": 3,
       "byteAddress": 1060,
       "wordAlignedAddress": 265,
       "wordAlignedSize": 4,
@@ -56,7 +47,7 @@
     },
     {
       "id": "dancer4",
-      "index": 5,
+      "index": 4,
       "byteAddress": 1076,
       "wordAlignedAddress": 269,
       "wordAlignedSize": 5,
@@ -65,7 +56,7 @@
     },
     {
       "id": "projectConfig",
-      "index": 6,
+      "index": 5,
       "byteAddress": 1096,
       "wordAlignedAddress": 274,
       "wordAlignedSize": 0,

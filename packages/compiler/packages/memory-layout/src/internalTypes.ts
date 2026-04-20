@@ -7,18 +7,19 @@ import {
 	type Namespaces,
 } from '@8f4e/compiler-symbols';
 
-import type { MemoryMap, ModuleLayouts } from './types';
+import type { DiscoveredModuleLayouts, MemoryMap, ModuleLayouts } from './types';
 
 export {
 	MemoryTypes,
 	type DataStructure,
 	type ModuleLayout,
+	type DiscoveredModuleLayout,
 	type PublicMemoryLayout,
 	type PublicMemoryLayoutModule,
 	type PublicMemoryPassResult,
 	type PublicMemoryPlan,
 } from './types';
-export type { MemoryMap, ModuleLayouts } from './types';
+export type { DiscoveredModuleLayouts, MemoryMap, ModuleLayouts } from './types';
 
 export { BLOCK_TYPE, GLOBAL_ALIGNMENT_BOUNDARY, type CompiledFunctionLookup, type Const, type Consts, type Namespaces };
 
@@ -40,6 +41,7 @@ export interface PublicMemoryNamespace {
 	moduleName: string | undefined;
 	namespaces: Namespaces;
 	modules?: ModuleLayouts;
+	discoveredModules?: DiscoveredModuleLayouts;
 	functions?: CompiledFunctionLookup;
 }
 

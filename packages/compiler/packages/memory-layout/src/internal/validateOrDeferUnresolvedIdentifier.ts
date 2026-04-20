@@ -1,6 +1,5 @@
 import { ArgumentType, type AST, type Argument } from '@8f4e/tokenizer';
 
-import { hasResolvedModuleLayouts } from './hasResolvedModuleLayouts';
 import { isIntermoduleReferenceKind } from './isIntermoduleReferenceKind';
 import { validateIntermoduleAddressReference } from './validateIntermoduleAddressReference';
 
@@ -12,8 +11,15 @@ export function validateOrDeferUnresolvedIdentifier(
 	line: AST[number],
 	context: PublicMemoryLayoutContext
 ): boolean {
-	if (!hasResolvedModuleLayouts(context) && isIntermoduleReferenceKind(argument.referenceKind)) {
-		return true;
+	if (isIntermoduleReferenceKind(argument.referenceKind)) {
+		const targetModuleId = 'targetModuleId' in argument ? argument.targetModuleId : undefined;
+		if (
+			targetModuleId &&
+			!context.namespace.modules?.[targetModuleId] &&
+			context.namespace.discoveredModules?.[targetModuleId]
+		) {
+			return true;
+		}
 	}
 	validateIntermoduleAddressReference(argument, line, context);
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });

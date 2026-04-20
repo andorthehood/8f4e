@@ -15,35 +15,8 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "env",
-      "index": 0,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "math",
-      "index": 1,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "midiCodes",
-      "index": 2,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
       "id": "keyboard",
-      "index": 3,
+      "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 2,
@@ -52,7 +25,7 @@
     },
     {
       "id": "arEnv",
-      "index": 4,
+      "index": 1,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "wordAlignedSize": 7,
@@ -61,7 +34,7 @@
     },
     {
       "id": "janko",
-      "index": 5,
+      "index": 2,
       "byteAddress": 40,
       "wordAlignedAddress": 10,
       "wordAlignedSize": 2,
@@ -70,7 +43,7 @@
     },
     {
       "id": "midiLUT",
-      "index": 6,
+      "index": 3,
       "byteAddress": 48,
       "wordAlignedAddress": 12,
       "wordAlignedSize": 128,
@@ -79,7 +52,7 @@
     },
     {
       "id": "midiNote2Freq",
-      "index": 7,
+      "index": 4,
       "byteAddress": 560,
       "wordAlignedAddress": 140,
       "wordAlignedSize": 3,
@@ -88,7 +61,7 @@
     },
     {
       "id": "phaseAccumulator",
-      "index": 8,
+      "index": 5,
       "byteAddress": 572,
       "wordAlignedAddress": 143,
       "wordAlignedSize": 4,
@@ -97,7 +70,7 @@
     },
     {
       "id": "vca",
-      "index": 9,
+      "index": 6,
       "byteAddress": 588,
       "wordAlignedAddress": 147,
       "wordAlignedSize": 3,
@@ -106,7 +79,7 @@
     },
     {
       "id": "audioout",
-      "index": 10,
+      "index": 7,
       "byteAddress": 600,
       "wordAlignedAddress": 150,
       "wordAlignedSize": 130,
@@ -115,7 +88,7 @@
     },
     {
       "id": "projectConfig",
-      "index": 11,
+      "index": 8,
       "byteAddress": 1120,
       "wordAlignedAddress": 280,
       "wordAlignedSize": 0,
