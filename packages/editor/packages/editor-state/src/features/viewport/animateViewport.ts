@@ -4,6 +4,10 @@ import type { EventDispatcher, State } from '~/types';
 
 const scheduledFrames = new WeakMap<State, number>();
 
+function easeInOutCubic(progress: number): number {
+	return progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+}
+
 function clearScheduledFrame(state: State): void {
 	const frameId = scheduledFrames.get(state);
 	if (frameId === undefined) {
@@ -56,7 +60,7 @@ export default function animateViewport(state: State, x: number, y: number, even
 
 		const durationMs = Math.max(state.viewportAnimation.durationMs, 1);
 		const progress = Math.min(Math.max((frameTime - startTime) / durationMs, 0), 1);
-		const easedProgress = 1 - Math.pow(1 - progress, 3);
+		const easedProgress = easeInOutCubic(progress);
 		const nextX =
 			state.viewportAnimation.startX +
 			(state.viewportAnimation.targetX - state.viewportAnimation.startX) * easedProgress;
@@ -91,7 +95,7 @@ if (import.meta.vitest) {
 	const { createMockState } = await import('~/pureHelpers/testingUtils/testUtils');
 
 	describe('animateViewport', () => {
-		it('rounds intermediate animated viewport coordinates before updating state', () => {
+		it('starts slow and reaches the midpoint halfway through the animation', () => {
 			const callbacks: Array<(time: number) => void> = [];
 			const state = createMockState({
 				viewport: {
@@ -116,10 +120,15 @@ if (import.meta.vitest) {
 			animateViewport(state, 10, 10, events);
 
 			callbacks[0](0);
-			callbacks[1](50);
+			callbacks[1](25);
 
-			expect(state.viewport.x).toBe(9);
-			expect(state.viewport.y).toBe(9);
+			expect(state.viewport.x).toBe(1);
+			expect(state.viewport.y).toBe(1);
+
+			callbacks[2](50);
+
+			expect(state.viewport.x).toBe(5);
+			expect(state.viewport.y).toBe(5);
 		});
 
 		it('snaps to the exact target coordinates on the final frame', () => {
