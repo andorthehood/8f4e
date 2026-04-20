@@ -4,7 +4,6 @@ import { normalizeArgumentsAtIndexes } from './normalizeArgumentsAtIndexes';
 import { validateIntermoduleAddressReference } from './validateIntermoduleAddressReference';
 import { validateOrDeferCompileTimeExpression } from './validateOrDeferCompileTimeExpression';
 import { validateOrDeferUnresolvedIdentifier } from './validateOrDeferUnresolvedIdentifier';
-import { hasResolvedModuleLayouts } from './hasResolvedModuleLayouts';
 import { isIntermoduleReferenceKind } from './isIntermoduleReferenceKind';
 
 import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
@@ -72,10 +71,6 @@ export function normalizeCodegenLine(line: AST[number], context: PublicMemoryLay
 			const { value, referenceKind } = argument;
 			const { memory } = context.namespace;
 			const isIntermodule = isIntermoduleReferenceKind(referenceKind);
-
-			if (!hasResolvedModuleLayouts(context) && isIntermodule) {
-				return normalized;
-			}
 
 			validateIntermoduleAddressReference(argument, line, context);
 			if (isIntermodule) {

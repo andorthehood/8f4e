@@ -27,5 +27,6 @@ export { getAbsoluteWordOffset } from './addresses/getAbsoluteWordOffset';
 export { alignAbsoluteWordOffset } from './addresses/alignAbsoluteWordOffset';
 export { getMemoryFlags } from './getMemoryFlags';
 export { planPublicMemoryNamespace } from './planPublicMemoryNamespace';
+export { discoverPublicMemoryModulesFromASTs } from './discoverPublicMemoryModulesFromASTs';
 export { createPublicMemoryPassResultFromASTs } from './createPublicMemoryPassResultFromASTs';
 export { createPublicMemoryLayoutFromASTs } from './createPublicMemoryLayoutFromASTs';

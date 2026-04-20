@@ -9,6 +9,7 @@ import { parseMemoryInstructionArguments } from './parseMemoryInstructionArgumen
 import {
 	ErrorCode,
 	type CompiledFunctionLookup,
+	type DiscoveredModuleLayouts,
 	type ModuleLayout,
 	type Namespaces,
 	type PublicMemoryLayoutContext,
@@ -20,7 +21,8 @@ export function planPublicMemoryNamespace(
 	namespaces: Namespaces,
 	modules: Record<string, ModuleLayout>,
 	startingByteAddress = 0,
-	functions?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup,
+	discoveredModules?: DiscoveredModuleLayouts
 ): PublicMemoryPlan {
 	const firstLine = ast[0] as ModuleLine | ConstantsLine;
 	const namespaceId = firstLine.arguments[0].value;
@@ -33,6 +35,7 @@ export function planPublicMemoryNamespace(
 			consts: { ...(seededNamespace?.consts ?? {}) },
 			moduleName: namespaceId,
 			functions,
+			discoveredModules,
 		},
 		blockStack: [],
 		startingByteAddress,

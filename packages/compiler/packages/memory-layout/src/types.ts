@@ -46,6 +46,13 @@ export interface ModuleLayout {
 
 export type ModuleLayouts = Record<string, ModuleLayout>;
 
+export interface DiscoveredModuleLayout {
+	kind: 'module' | 'constants';
+	memoryIds: Record<string, true>;
+}
+
+export type DiscoveredModuleLayouts = Record<string, DiscoveredModuleLayout>;
+
 export interface PublicMemoryLayoutModule {
 	index: number;
 	id: string;

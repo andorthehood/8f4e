@@ -1,6 +1,5 @@
 import { ArgumentType, type AST, type Argument } from '@8f4e/tokenizer';
 
-import { hasResolvedModuleLayouts } from './hasResolvedModuleLayouts';
 import { validateIntermoduleAddressReference } from './validateIntermoduleAddressReference';
 
 import { getError } from '../getError';
@@ -11,7 +10,11 @@ export function validateOrDeferCompileTimeExpression(
 	line: AST[number],
 	context: PublicMemoryLayoutContext
 ): boolean {
-	if (!hasResolvedModuleLayouts(context) && argument.intermoduleIds.length > 0) {
+	if (
+		argument.intermoduleIds.some(
+			moduleId => !context.namespace.modules?.[moduleId] && context.namespace.discoveredModules?.[moduleId]
+		)
+	) {
 		return true;
 	}
 	if (argument.left.type === ArgumentType.IDENTIFIER) {

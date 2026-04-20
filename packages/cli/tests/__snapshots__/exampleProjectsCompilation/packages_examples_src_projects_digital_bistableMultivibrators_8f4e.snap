@@ -3,20 +3,6 @@
     "startingMemoryWordAddress": 0
   },
   "compiledModules": {
-    "env": {
-      "id": "env",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "memoryMap": {},
-      "wordAlignedSize": 0,
-      "index": 0
-    },
     "andGate": {
       "id": "andGate",
       "cycleFunction": [
@@ -68,7 +54,7 @@
           "wordAlignedSize": 1,
           "byteAddress": 4,
           "id": "in1",
-          "default": 60,
+          "default": 0,
           "type": "int*",
           "isPointingToPointer": false,
           "isInteger": true,
@@ -95,7 +81,7 @@
           "wordAlignedSize": 1,
           "byteAddress": 12,
           "id": "in2",
-          "default": 28,
+          "default": 0,
           "type": "int*",
           "isPointingToPointer": false,
           "isInteger": true,
@@ -104,7 +90,7 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 1
+      "index": 0
     },
     "buttons": {
       "id": "buttons",
@@ -145,7 +131,7 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 2
+      "index": 1
     },
     "negate": {
       "id": "negate",
@@ -211,7 +197,7 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 3
+      "index": 2
     },
     "norGate": {
       "id": "norGate",
@@ -264,7 +250,7 @@
           "wordAlignedSize": 1,
           "byteAddress": 32,
           "id": "in1",
-          "default": 48,
+          "default": 0,
           "type": "int*",
           "isPointingToPointer": false,
           "isInteger": true,
@@ -291,7 +277,7 @@
           "wordAlignedSize": 1,
           "byteAddress": 40,
           "id": "in2",
-          "default": 68,
+          "default": 0,
           "type": "int*",
           "isPointingToPointer": false,
           "isInteger": true,
@@ -300,7 +286,7 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 4
+      "index": 3
     },
     "norGate2": {
       "id": "norGate2",
@@ -380,7 +366,7 @@
           "wordAlignedSize": 1,
           "byteAddress": 52,
           "id": "in2",
-          "default": 600,
+          "default": 0,
           "type": "int*",
           "isPointingToPointer": false,
           "isInteger": true,
@@ -389,7 +375,7 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 5
+      "index": 4
     },
     "notes": {
       "id": "notes",
@@ -403,7 +389,7 @@
       "wordAlignedAddress": 14,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 6
+      "index": 5
     },
     "orGate": {
       "id": "orGate",
@@ -493,7 +479,7 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 7
+      "index": 6
     },
     "projectConfig": {
       "id": "projectConfig",
@@ -507,7 +493,7 @@
       "wordAlignedAddress": 17,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 8
+      "index": 7
     },
     "resetButton": {
       "id": "resetButton",
@@ -535,7 +521,7 @@
         }
       },
       "wordAlignedSize": 1,
-      "index": 9
+      "index": 8
     },
     "scope": {
       "id": "scope",
@@ -645,7 +631,7 @@
         }
       },
       "wordAlignedSize": 66,
-      "index": 10
+      "index": 9
     },
     "scope2": {
       "id": "scope2",
@@ -755,7 +741,7 @@
         }
       },
       "wordAlignedSize": 66,
-      "index": 11
+      "index": 10
     },
     "setButton": {
       "id": "setButton",
@@ -783,9 +769,9 @@
         }
       },
       "wordAlignedSize": 1,
-      "index": 12
+      "index": 11
     }
   },
-  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIPAQJqcwZtZW1vcnkCAwEBAx8eAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMKlQQeHAAQERASEBMQFBAVEBYQFxAYEBkQGhAbEBwQHQscABAEEAUQBhAHEAgQCRAKEAsQDBANEA4QDxAQCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLAgALIwBBCEEEKAIAKAIAQQwoAgAoAgBsQQFOBH9BAQVBAAs2AgALAgALGgBBHEEYKAIAKAIAQQBGBH9BAQVBAAs2AgALIwBBJEEgKAIAKAIAQSgoAgAoAgBqQQBGBH9BAQVBAAs2AgALIwBBMEEsKAIAKAIAQTQoAgAoAgBqQQBGBH9BAQVBAAs2AgALAgALJABBPEE4KAIAKAIAQcAAKAIAKAIAakEBTgR/QQEFQQALNgIACwIACwIACzkAQcwCQcwCKAIAQQRqNgIAQcwCKAIAQcgCSgRAQcwCQcwANgIAC0HMAigCAEHIACgCACgCADYCAAs5AEHUBEHUBCgCAEEEajYCAEHUBCgCAEHQBEoEQEHUBEHUAjYCAAtB1AQoAgBB0AIoAgAoAgA2AgALAgALAgALEABBBEE8NgIAQQxBHDYCAAsCAAsJAEEYQRQ2AgALEQBBIEEwNgIAQShBxAA2AgALEQBBLEEkNgIAQTRB2AQ2AgALAgALEQBBOEEINgIAQcAAQRA2AgALAgALAgALEwBByABBJDYCAEHMAkHMADYCAAsTAEHQAkEINgIAQdQEQdQCNgIACwIACw==",
+  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIPAQJqcwZtZW1vcnkCAwEBAx0cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAckBARpbml0AAAFY3ljbGUAAQhpbml0T25seQACBmJ1ZmZlcgADCuYDHBoAEBAQERASEBMQFBAVEBYQFxAYEBkQGhAbCxoAEAQQBRAGEAcQCBAJEAoQCxAMEA0QDhAPCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLIwBBCEEEKAIAKAIAQQwoAgAoAgBsQQFOBH9BAQVBAAs2AgALAgALGgBBHEEYKAIAKAIAQQBGBH9BAQVBAAs2AgALIwBBJEEgKAIAKAIAQSgoAgAoAgBqQQBGBH9BAQVBAAs2AgALIwBBMEEsKAIAKAIAQTQoAgAoAgBqQQBGBH9BAQVBAAs2AgALAgALJABBPEE4KAIAKAIAQcAAKAIAKAIAakEBTgR/QQEFQQALNgIACwIACwIACzkAQcwCQcwCKAIAQQRqNgIAQcwCKAIAQcgCSgRAQcwCQcwANgIAC0HMAigCAEHIACgCACgCADYCAAs5AEHUBEHUBCgCAEEEajYCAEHUBCgCAEHQBEoEQEHUBEHUAjYCAAtB1AQoAgBB0AIoAgAoAgA2AgALAgALAgALAgALCQBBGEEUNgIACwIACwkAQSxBJDYCAAsCAAsRAEE4QQg2AgBBwABBEDYCAAsCAAsCAAsTAEHIAEEkNgIAQcwCQcwANgIACxMAQdACQQg2AgBB1ARB1AI2AgALAgAL",
   "requiredMemoryBytes": 604
 }

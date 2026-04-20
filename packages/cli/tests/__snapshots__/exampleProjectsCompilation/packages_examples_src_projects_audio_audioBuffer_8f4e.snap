@@ -3,34 +3,6 @@
     "startingMemoryWordAddress": 0
   },
   "compiledModules": {
-    "env": {
-      "id": "env",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "memoryMap": {},
-      "wordAlignedSize": 0,
-      "index": 0
-    },
-    "math": {
-      "id": "math",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "memoryMap": {},
-      "wordAlignedSize": 0,
-      "index": 1
-    },
     "phaseAccumulator": {
       "id": "phaseAccumulator",
       "cycleFunction": [
@@ -188,7 +160,7 @@
         }
       },
       "wordAlignedSize": 4,
-      "index": 2
+      "index": 0
     },
     "audioout": {
       "id": "audioout",
@@ -296,7 +268,7 @@
         }
       },
       "wordAlignedSize": 130,
-      "index": 3
+      "index": 1
     },
     "notes": {
       "id": "notes",
@@ -310,7 +282,7 @@
       "wordAlignedAddress": 135,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 4
+      "index": 2
     },
     "projectConfig": {
       "id": "projectConfig",
@@ -324,9 +296,9 @@
       "wordAlignedAddress": 135,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 5
+      "index": 3
     }
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDEhEAAAAAAwAAAAAAAAAAAAAAAAckBARpbml0AAAFY3ljbGUAAQhpbml0T25seQACBmJ1ZmZlcgADCvsCEQ4AEAsQDBANEA4QDxAQCw4AEAUQBhAHEAgQCRAKCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAtdAQF9QQxBDCoCAEPbD8lAQQgoAgAqAgCUQcTYArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBDCoCAEPbD0lAXgRAQQxD2w9JwDgCAAtBEEEMKgIAEAQ4AgALNwBBmAQoAgBBFCgCACoCADgCAEGYBEGYBCgCAEEEajYCAEGYBCgCAEGUBEoEQEGYBEEYNgIACwsCAAsCAAsCAAsCAAsTAEEEQwAA3EM4AgBBCEEENgIACxEAQRRBEDYCAEGYBEEYNgIACwIACwIACw==",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDg0AAAAAAwAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMK5wINCgAQCRAKEAsQDAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAtdAQF9QQxBDCoCAEPbD8lAQQgoAgAqAgCUQcTYArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBDCoCAEPbD0lAXgRAQQxD2w9JwDgCAAtBEEEMKgIAEAQ4AgALNwBBmAQoAgBBFCgCACoCADgCAEGYBEGYBCgCAEEEajYCAEGYBCgCAEGUBEoEQEGYBEEYNgIACwsCAAsCAAsTAEEEQwAA3EM4AgBBCEEENgIACxEAQRRBEDYCAEGYBEEYNgIACwIACwIACw==",
   "requiredMemoryBytes": 540
 }

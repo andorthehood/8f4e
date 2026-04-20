@@ -3,20 +3,6 @@
     "startingMemoryWordAddress": 0
   },
   "compiledModules": {
-    "env": {
-      "id": "env",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "memoryMap": {},
-      "wordAlignedSize": 0,
-      "index": 0
-    },
     "switches": {
       "id": "switches",
       "cycleFunction": [
@@ -56,7 +42,7 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 1
+      "index": 0
     },
     "perceptron": {
       "id": "perceptron",
@@ -152,7 +138,7 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 2
+      "index": 1
     },
     "activationFn": {
       "id": "activationFn",
@@ -209,7 +195,7 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 3
+      "index": 2
     },
     "perceptron2": {
       "id": "perceptron2",
@@ -305,7 +291,7 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 4
+      "index": 3
     },
     "activationFn2": {
       "id": "activationFn2",
@@ -362,7 +348,7 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 5
+      "index": 4
     },
     "perceptron3": {
       "id": "perceptron3",
@@ -458,7 +444,7 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 6
+      "index": 5
     },
     "activationFn3": {
       "id": "activationFn3",
@@ -531,7 +517,7 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 7
+      "index": 6
     },
     "notes": {
       "id": "notes",
@@ -545,7 +531,7 @@
       "wordAlignedAddress": 18,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 8
+      "index": 7
     },
     "projectConfig": {
       "id": "projectConfig",
@@ -559,7 +545,7 @@
       "wordAlignedAddress": 18,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 9
+      "index": 8
     },
     "result": {
       "id": "result",
@@ -588,9 +574,9 @@
         }
       },
       "wordAlignedSize": 1,
-      "index": 10
+      "index": 9
     }
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDHBsAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHJAQEaW5pdAAABWN5Y2xlAAEIaW5pdE9ubHkAAgZidWZmZXIAAwrHAxsYABAQEBEQEhATEBQQFRAWEBcQGBAZEBoLGAAQBRAGEAcQCBAJEAoQCxAMEA0QDhAPCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLLAIBfQF9IAAhASABIAGLQwAAgD+SIQIgAkMAAAAAWwRAQwAAgD8hAgsgApULAgALAgALKgBBFEEMKAIAKgIAQ1bmIEGUQRAoAgAqAgBDxiUqwpSSQ4Are8CSOAIACxEAQRxBGCgCACoCABAEOAIACyoAQShBICgCACoCAEOqoIzClEEkKAIAKgIAQ2gcxkGUkkPbPQzBkjgCAAsRAEEwQSwoAgAqAgAQBDgCAAsqAEE8QTQoAgAqAgBDrkfeQJRBOCgCACoCAEOwrNRAlJJDqdnBQJI4AgALIQBBxABBwAAoAgAqAgAQBEMAAAA/XgR/QQEFQQALNgIACwIACwIACwIACwIACwwAQQRDAACAPzgCAAsQAEEMQQQ2AgBBEEEINgIACwkAQRhBFDYCAAsQAEEgQQQ2AgBBJEEINgIACwkAQSxBKDYCAAsQAEE0QRw2AgBBOEEwNgIACwoAQcAAQTw2AgALAgALAgALCwBByABBxAA2AgAL",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDGhkAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAByQEBGluaXQAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMKvQMZFgAQDxAQEBEQEhATEBQQFRAWEBcQGAsWABAFEAYQBxAIEAkQChALEAwQDRAOCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLLAIBfQF9IAAhASABIAGLQwAAgD+SIQIgAkMAAAAAWwRAQwAAgD8hAgsgApULAgALKgBBFEEMKAIAKgIAQ1bmIEGUQRAoAgAqAgBDxiUqwpSSQ4Are8CSOAIACxEAQRxBGCgCACoCABAEOAIACyoAQShBICgCACoCAEOqoIzClEEkKAIAKgIAQ2gcxkGUkkPbPQzBkjgCAAsRAEEwQSwoAgAqAgAQBDgCAAsqAEE8QTQoAgAqAgBDrkfeQJRBOCgCACoCAEOwrNRAlJJDqdnBQJI4AgALIQBBxABBwAAoAgAqAgAQBEMAAAA/XgR/QQEFQQALNgIACwIACwIACwIACwwAQQRDAACAPzgCAAsQAEEMQQQ2AgBBEEEINgIACwkAQRhBFDYCAAsQAEEgQQQ2AgBBJEEINgIACwkAQSxBKDYCAAsQAEE0QRw2AgBBOEEwNgIACwoAQcAAQTw2AgALAgALAgALCwBByABBxAA2AgAL",
   "requiredMemoryBytes": 76
 }

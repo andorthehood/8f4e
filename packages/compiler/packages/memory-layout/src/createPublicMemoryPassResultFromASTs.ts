@@ -1,6 +1,7 @@
 import { type AST, type ModuleLine } from '@8f4e/tokenizer';
 import { createSymbolPassResultFromASTs, type SymbolPassResult } from '@8f4e/compiler-symbols';
 
+import { discoverPublicMemoryModulesFromASTs } from './discoverPublicMemoryModulesFromASTs';
 import { planPublicMemoryNamespace } from './planPublicMemoryNamespace';
 import { GLOBAL_ALIGNMENT_BOUNDARY, type CompiledFunctionLookup } from './internalTypes';
 import { type PublicMemoryPlan, type PublicMemoryPassResult } from './types';
@@ -21,6 +22,7 @@ export function createPublicMemoryPassResultFromASTs(
 	const layoutAsts = options.layoutAsts ?? asts;
 	const symbolPassResult = options.symbolPassResult ?? createSymbolPassResultFromASTs(asts, compiledFunctions);
 	const namespaces = symbolPassResult.namespaces;
+	const discoveredModules = discoverPublicMemoryModulesFromASTs(layoutAsts, { symbolPassResult });
 	const modules: PublicMemoryPassResult['modules'] = {};
 	const modulePlans: Record<string, PublicMemoryPlan> = {};
 
@@ -34,7 +36,8 @@ export function createPublicMemoryPassResultFromASTs(
 			namespaces,
 			modules,
 			nextStartingByteAddress,
-			compiledFunctions
+			compiledFunctions,
+			discoveredModules
 		);
 		if (!isModuleAst) {
 			continue;

@@ -16,17 +16,8 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "env",
-      "index": 0,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
       "id": "andGate",
-      "index": 1,
+      "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 3,
@@ -35,7 +26,7 @@
     },
     {
       "id": "buttons",
-      "index": 2,
+      "index": 1,
       "byteAddress": 16,
       "wordAlignedAddress": 4,
       "wordAlignedSize": 2,
@@ -44,7 +35,7 @@
     },
     {
       "id": "negate",
-      "index": 3,
+      "index": 2,
       "byteAddress": 24,
       "wordAlignedAddress": 6,
       "wordAlignedSize": 2,
@@ -53,7 +44,7 @@
     },
     {
       "id": "norGate",
-      "index": 4,
+      "index": 3,
       "byteAddress": 32,
       "wordAlignedAddress": 8,
       "wordAlignedSize": 3,
@@ -62,7 +53,7 @@
     },
     {
       "id": "norGate2",
-      "index": 5,
+      "index": 4,
       "byteAddress": 44,
       "wordAlignedAddress": 11,
       "wordAlignedSize": 3,
@@ -71,7 +62,7 @@
     },
     {
       "id": "notes",
-      "index": 6,
+      "index": 5,
       "byteAddress": 56,
       "wordAlignedAddress": 14,
       "wordAlignedSize": 0,
@@ -80,7 +71,7 @@
     },
     {
       "id": "orGate",
-      "index": 7,
+      "index": 6,
       "byteAddress": 56,
       "wordAlignedAddress": 14,
       "wordAlignedSize": 3,
@@ -89,7 +80,7 @@
     },
     {
       "id": "projectConfig",
-      "index": 8,
+      "index": 7,
       "byteAddress": 68,
       "wordAlignedAddress": 17,
       "wordAlignedSize": 0,
@@ -98,7 +89,7 @@
     },
     {
       "id": "resetButton",
-      "index": 9,
+      "index": 8,
       "byteAddress": 68,
       "wordAlignedAddress": 17,
       "wordAlignedSize": 1,
@@ -107,7 +98,7 @@
     },
     {
       "id": "scope",
-      "index": 10,
+      "index": 9,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "wordAlignedSize": 66,
@@ -116,7 +107,7 @@
     },
     {
       "id": "scope2",
-      "index": 11,
+      "index": 10,
       "byteAddress": 336,
       "wordAlignedAddress": 84,
       "wordAlignedSize": 66,
@@ -125,7 +116,7 @@
     },
     {
       "id": "setButton",
-      "index": 12,
+      "index": 11,
       "byteAddress": 600,
       "wordAlignedAddress": 150,
       "wordAlignedSize": 1,
