@@ -32,7 +32,6 @@ export default function updateViewport(state: State, x: number, y: number, event
 			y: state.viewport.y,
 		};
 		events.dispatch<ViewportChangedEvent>('viewportChanged', event);
-		events.dispatch('viewportMoved');
 	}
 
 	return changed;
