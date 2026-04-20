@@ -21,30 +21,6 @@ note
 noteEnd
 
 note
-; @pos 171 12
-; @stop 5 5 @hidden
-; These four horizontal lanes are the four
-; playback channels of the MOD.
-noteEnd
-
-note
-; @pos 265 58
-; @stop 6 5 @hidden
-; Each channel reads row data, 
-; selects a sample, sets pitch and volume,
-; and produces one signal.
-noteEnd
-
-note
-; @pos 261 -35
-; @stop 4 10 bottom @hidden
-; These are the modules that extract the              /\
-; information from the rows. This particular song   /_  _\
-; is quite simple, it only has sample number, pitch  |  |
-; and volume data.                                   `--'
-noteEnd
-
-note
 ; @pos 450 -48
 ; @hidden
 ;                                  .
@@ -96,6 +72,30 @@ note
 ; so the operating system can play the sound.
 
 ; @stop 14 5 top @hidden
+noteEnd
+
+note
+; @pos 261 -35
+; @stop 4 10 bottom @hidden
+; These are the modules that extract the              /\
+; information from the rows. This particular song   /_  _\
+; is quite simple, it only has sample number, pitch  |  |
+; and volume data.                                   `--'
+noteEnd
+
+note
+; @pos 265 58
+; @stop 6 5 @hidden
+; Each channel reads row data, 
+; selects a sample, sets pitch and volume,
+; and produces one signal.
+noteEnd
+
+note
+; @pos 171 12
+; @stop 5 5 @hidden
+; These four horizontal lanes are the four
+; playback channels of the MOD.
 noteEnd
 
 constants env
@@ -464,7 +464,7 @@ mapEnd int
 functionEnd int
 
 module amigaTick
-; @pos -90 -13
+; @pos -119 -28
 use mod
 
 int tempo 125
@@ -698,7 +698,7 @@ store
 moduleEnd
 
 module modRowCounter
-; @pos -22 -13
+; @pos -51 -28
 use env
 int* trigger &amigaTick:out 
 int rowCounter -1
@@ -1121,7 +1121,7 @@ ifEnd
 moduleEnd
 
 module patternOrder
-; @pos -56 -13
+; @pos -85 -28
 ; @tab 6
 int	0x00
 int	0x00
@@ -1181,7 +1181,7 @@ ifEnd
 moduleEnd
 
 module period2
-; @pos 225 0
+; @pos 223 -3
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1223,7 +1223,7 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 224 89
+; @pos 223 89
 ; @group ch3
 int* row &rowBuffer4:
 int out
@@ -1252,7 +1252,7 @@ module projectConfig
 moduleEnd
 
 module rowBuffer1
-; @pos 35 -1
+; @pos 28 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1270,7 +1270,7 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 
-int* row &modRowCounter:out
+int* row &rowCount1:out
 ; @hide
 use env
 int[] data ASSET_CH0_SIZE/4
@@ -1303,7 +1303,7 @@ loopEnd
 moduleEnd
 
 module rowBuffer2
-; @pos 71 -1
+; @pos 64 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1321,7 +1321,7 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 
-int* row &modRowCounter:out
+int* row &rowCount1:out
 ; @hide
 use env
 int[] data ASSET_CH1_SIZE/4
@@ -1355,7 +1355,7 @@ loopEnd
 moduleEnd
 
 module rowBuffer3
-; @pos 107 -1
+; @pos 100 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1373,7 +1373,7 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 
-int* row &modRowCounter:out
+int* row &rowCount1:out
 ; @hide
 use env
 int[] data ASSET_CH2_SIZE/4
@@ -1407,7 +1407,7 @@ loopEnd
 moduleEnd
 
 module rowBuffer4
-; @pos 143 -1
+; @pos 136 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1425,7 +1425,7 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 
-int* row &modRowCounter:out
+int* row &rowCount1:out
 ; @hide
 use env
 int[] data ASSET_CH3_SIZE/4
@@ -1458,6 +1458,29 @@ loopEnd
 
 moduleEnd
 
+module rowCount1
+; @pos 8 25
+int* in &modRowCounter:out
+int out
+; We can afford some reading
+; and writing to memory 
+; for better aestethics. 
+push &out
+push *in
+store
+moduleEnd
+
+module rowCount2
+; @pos 172 -31
+int* in &modRowCounter:out
+int out
+
+push &out
+push *in
+store
+
+moduleEnd
+
 module sampleNumber1
 ; @pos 223 -71
 ; @group ch0
@@ -1481,7 +1504,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 225 -22
+; @pos 223 -25
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1525,7 +1548,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 224 67
+; @pos 223 67
 ; @group ch3
 int* row &rowBuffer4:
 int out
@@ -1547,7 +1570,7 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 371 -20
+; @pos 370 -13
 ; @stop 10 3
 use env
 int8[] sample0 1
@@ -1590,7 +1613,7 @@ int8[] sample12 ASSET_SAMPLE12_SIZE
 moduleEnd
 
 module scope1
-; @pos 35 -17
+; @pos 28 -17
 float* in &amp1:out
 float[] buffer 64
 ; @plot &buffer 64         
@@ -1620,7 +1643,7 @@ moduleEnd
 
 
 module scope2
-; @pos 71 -17
+; @pos 64 -17
 float* in &amp2:out
 float[] buffer 64  
 ; @plot &buffer 64 @home   
@@ -1650,7 +1673,7 @@ moduleEnd
 
 
 module scope3
-; @pos 107 -17
+; @pos 100 -17
 float* in &amp3:out
 float[] buffer 64  
 ; @plot &buffer 64         
@@ -1680,7 +1703,7 @@ moduleEnd
 
 
 module scope4
-; @pos 143 -17
+; @pos 136 -17
 float* in &amp4:out
 float[] buffer 64  
 ; @plot &buffer 64         
@@ -1713,7 +1736,7 @@ module trigger1
 ; @pos 257 -63
 ; @group ch0
 int* row &rowBuffer1:
-int* rowCounter &modRowCounter:out
+int* rowCounter &rowCount2:out
 int* period &period1:out
 int out
 
@@ -1736,10 +1759,10 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 259 -22
+; @pos 257 -25
 ; @group ch1
 int* row &rowBuffer2:
-int* rowCounter &modRowCounter:out
+int* rowCounter &rowCount2:out
 int* period &period2:out
 int out
 
@@ -1765,7 +1788,7 @@ module trigger3
 ; @pos 257 21
 ; @group ch2
 int* row &rowBuffer3:
-int* rowCounter &modRowCounter:out
+int* rowCounter &rowCount2:out
 int* period &period3:out
 int out
 
@@ -1788,10 +1811,10 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 258 67
+; @pos 257 67
 ; @group ch3
 int* row &rowBuffer4:
-int* rowCounter &modRowCounter:out
+int* rowCounter &rowCount2:out
 int* period &period4:out
 int out
 
@@ -1882,7 +1905,7 @@ ifEnd
 moduleEnd
 
 module volume2
-; @pos 302 -22
+; @pos 300 -25
 ; @group ch1
 use mod
 int* row &rowBuffer2:
@@ -1952,7 +1975,7 @@ ifEnd
 moduleEnd
 
 module volume4
-; @pos 301 67
+; @pos 300 67
 ; @group ch3
 use mod
 int* row &rowBuffer4:
