@@ -1,28 +1,26 @@
 8f4e/v1
 
 note
-; @pos 644 -21
+; @pos 648 -20
+; @stop 14 10 top @hidden
 
 ; Finally, the generated audio sample values
-; are written into the output audio buffers
+; are written to the output audio buffers
 ; so the operating system can play the sound.
-
-; @stop 14 5 top @hidden
 noteEnd
 
 note
-; @pos 588 -15
-
-; The four channel signals
-; are mixed together here.
-
-;                    --------->
-; @stop 13 5 left @hidden
+; @pos 584 -14
+; @stop 13 5 top @hidden                  
+;                            ;;;;;
+; The four channel signals ..:::::..
+; are mixed together here.  `:::::'
+;                             `:'
 noteEnd
 
 note
 ; @pos -25 -1
-; @stop 3 5 left @hidden             
+; @stop 3 10 left @hidden             
 ;                                    
 ;                                    .
 ; Here you can see the event   ......;;.
@@ -32,25 +30,29 @@ note
 noteEnd
 
 note
-; @pos 266 12
-; @stop 5 5 @hidden
+; @pos 416 41
+; @stop 9 10 right @hidden
 
-; These four horizontal lanes are the four
-; playback channels of the MOD.
+;     .        The instrument samples are
+;   .;;......  short recorded waveforms
+; .;;;;::::::  stored in these memory 
+;  `:;;::::::  slots.
+;    `:
+
 noteEnd
 
 note
-; @pos 261 -35
-; @stop 4 10 top @hidden
-;                                                     ;;;;;
-; These are the modules that extract the              ;;;;;
-; information from the rows. This particular song   ..;;;;;..
-; is quite simple, it only has sample number, pitch  `:::::'
-; and volume data.                                     `:'
-noteEnd 
+; @pos 416 30
+; @stop 10 10 bottom @hidden
+;                                          .   
+; The sample players read from these     .:;:.
+; buffers and advance through them at  .:;;;;;:.
+; different speeds to change pitch.      ;;;;;
+;                                        ;;;;;
+noteEnd
 
 note
-; @pos 421 30
+; @pos 404 -17
 ; @stop 11 5 top @hidden
 ;                         
 ; The samples are selected 
@@ -59,34 +61,40 @@ note
 noteEnd
 
 note
-; @pos 417 31
-; @stop 9 10 right @hidden
+; @pos 260 93
+; @stop 5 5 @hidden
 
-;     .        The instrument samples are
-;   .;;......  short recorded waveforms
-; .;;;;::::::  stored in these memory 
-;  `:;;::::::  slots.
-;    `:
-;
-; The sample players read from these
-; buffers and move through them at
-; different speeds to change pitch.
+; These four horizontal lanes represent
+; the fourplayback channels of the MOD.
 noteEnd
 
 note
-; @pos 28 -26
-; @stop 1 5 top @hidden
+; @pos 261 -36
+; @stop 4 10 top @hidden
+;                                                     ;;;;;
+; These modules are busy extracting the               ;;;;;
+; information from the rows. This particular song   ..;;;;;..
+; is quite simple, it only has sample number, pitch  `:::::'
+; and volume data.                                     `:'
+noteEnd 
+
+note
+; @pos 28 -29
+; @stop 1 10 top @hidden
 
 ; This patch is a bare-bones
 ; MOD player implemented in 8f4e.
+
+; It's playing 'Hymn to Aurora' 
+; by Horace Wimp 
 noteEnd
 
 note
-; @pos 70 -30
+; @pos 73 -30
 ; @stop 2 10 top @hidden
 
 ; MOD is a classic tracker music format
-; from the Amiga era.
+; from the 16-bit home-computer era.
 ; Tracker music is written as rows of events.
 ; Each row encodes what to do next, 
 ; such as which audio sample to play, 
@@ -459,7 +467,7 @@ mapEnd int
 functionEnd int
 
 module amigaTick
-; @pos -139 -28
+; @pos -141 -28
 use mod
 
 int tempo 125
@@ -590,7 +598,7 @@ module assets
 moduleEnd
 
 module audiooutL
-; @pos 631 -10
+; @pos 636 -10
 use env
 
 float* in &mixer:outL
@@ -628,7 +636,7 @@ ifEnd
 moduleEnd
 
 module audiooutR
-; @pos 673 -10
+; @pos 677 -10
 use env
 
 float* in &mixer:outR
@@ -706,7 +714,7 @@ store
 moduleEnd
 
 module modRowCounter
-; @pos -69 -28
+; @pos -71 -28
 use env
 int* trigger &amigaTick:out 
 int rowCounter -1
@@ -849,7 +857,7 @@ module modSamplePlayer2
 ; @pos 422 11
 ; @group ch1
 use env
-; @stop 12 10
+; @stop 12 20
 int*  period &period2:out 
 int*  trigger &trigger2:out
 int*  sampleNumber &sampleNumber2:out
@@ -1129,7 +1137,7 @@ ifEnd
 moduleEnd
 
 module patternOrder
-; @pos -105 -28
+; @pos -106 -28
 ; @tab 6
 int	0x00
 int	0x00
@@ -1435,19 +1443,19 @@ loopEnd
 moduleEnd
 
 module rowCount1
-; @pos 8 25
+; @pos 2 20
 int* in &modRowCounter:out
 int out
 ; We can afford some reading
 ; and writing to memory 
-; for better aestethics. 
+; for better aesthethics. 
 push &out
 push *in
 store
 moduleEnd
 
 module rowCount2
-; @pos 172 -31
+; @pos 170 -31
 int* in &modRowCounter:out
 int out
 
@@ -1951,7 +1959,7 @@ ifEnd
 moduleEnd
 
 module volume4
-; @pos 300 67
+; @pos 313 67
 ; @group ch3
 use mod
 int* row &rowBuffer4:
