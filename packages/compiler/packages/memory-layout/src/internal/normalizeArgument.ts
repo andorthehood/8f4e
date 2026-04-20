@@ -2,7 +2,7 @@ import { ArgumentType, type Argument } from '@8f4e/tokenizer';
 
 import { tryResolveCompileTimeArgument } from './tryResolveCompileTimeArgument';
 
-import type { PublicMemoryLayoutContext } from '../types';
+import type { PublicMemoryLayoutContext } from '../internalTypes';
 
 export function normalizeArgument(argument: Argument, context: PublicMemoryLayoutContext): Argument {
 	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {

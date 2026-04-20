@@ -3,7 +3,7 @@ import { ArgumentType, type Argument } from '@8f4e/tokenizer';
 import { evaluateConstantExpression } from './evaluateConstantExpression';
 import { resolveCompileTimeOperand } from './resolveCompileTimeOperand';
 
-import type { Const, PublicMemoryLayoutContext } from '../types';
+import type { Const, PublicMemoryLayoutContext } from '../internalTypes';
 
 export function tryResolveCompileTimeArgument(
 	context: PublicMemoryLayoutContext,

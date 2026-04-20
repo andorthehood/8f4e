@@ -1,6 +1,5 @@
-import type { PublicMemoryLayoutContext } from '../types';
+import type { PublicMemoryLayoutContext } from '../internalTypes';
 
 export function getTargetModuleNamespace(context: PublicMemoryLayoutContext, targetModuleId: string) {
-	const targetNamespace = context.namespace.namespaces[targetModuleId];
-	return targetNamespace?.kind === 'module' ? targetNamespace : undefined;
+	return context.namespace.modules?.[targetModuleId];
 }

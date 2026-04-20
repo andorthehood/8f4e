@@ -4,14 +4,16 @@ import { getMemoryItemOrThrow } from './getMemoryItemOrThrow';
 
 import { getEndByteAddress } from '../addresses/getEndByteAddress';
 import { getModuleEndByteAddress } from '../addresses/getModuleEndByteAddress';
-import { getError, type PublicMemoryLayoutErrorContext } from '../getError';
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { getError } from '../getError';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
+
+import type { CompileErrorContext } from '@8f4e/compiler-errors';
 
 export function resolveMemoryDefaultValue(
 	arg: NonNullable<ReturnType<typeof parseMemoryInstructionArgumentsShape>['secondArg']>,
 	lineForError: AST[number],
 	context: Pick<PublicMemoryLayoutContext, 'namespace' | 'startingByteAddress' | 'currentModuleWordAlignedSize'> &
-		PublicMemoryLayoutErrorContext
+		CompileErrorContext
 ): number {
 	switch (arg.type) {
 		case 'literal':

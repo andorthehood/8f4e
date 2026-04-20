@@ -1,0 +1,48 @@
+{
+	"name": "@8f4e/compiler-symbols",
+	"sourceRoot": "src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "nx:run-commands",
+			"outputs": ["{projectRoot}/dist"],
+			"dependsOn": ["^build"],
+			"options": {
+				"command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
+				"cwd": "{projectRoot}"
+			}
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "eslint src --fix",
+				"cwd": "{projectRoot}"
+			}
+		},
+		"dev": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "rm -rf dist && concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
+				"cwd": "{projectRoot}"
+			}
+		},
+		"test": {
+			"executor": "@nx/vitest:test",
+			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+			"dependsOn": ["^build"],
+			"options": {
+				"config": "{projectRoot}/vitest.config.ts",
+				"reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+			}
+		},
+		"typecheck": {
+			"executor": "nx:run-commands",
+			"dependsOn": ["^build"],
+			"options": {
+				"command": "tsc --noEmit",
+				"cwd": "{projectRoot}"
+			}
+		}
+	},
+	"tags": ["type:library", "scope:core"]
+}

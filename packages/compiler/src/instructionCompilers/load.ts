@@ -1,6 +1,5 @@
 import { i32load, i32load16s, i32load16u, i32load8s, i32load8u } from '@8f4e/compiler-wasm-utils';
 
-import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
@@ -28,9 +27,6 @@ const load: InstructionCompiler = withValidation(
 		context.stack.pop();
 		context.stack.push({ isInteger: true, isNonZero: false });
 		const instructions = instructionToByteCodeMap[line.instruction];
-		if (!instructions) {
-			throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-		}
 		return saveByteCode(context, instructions);
 	}
 );

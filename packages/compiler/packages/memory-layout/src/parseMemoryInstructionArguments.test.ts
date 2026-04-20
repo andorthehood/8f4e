@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { parseMemoryInstructionArguments } from './parseMemoryInstructionArguments';
 
 import type { Argument } from '@8f4e/tokenizer';
-import type { PublicMemoryLayoutContext } from './types';
+import type { PublicMemoryLayoutContext } from './internalTypes';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

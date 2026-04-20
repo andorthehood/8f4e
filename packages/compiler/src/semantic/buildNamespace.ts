@@ -1,17 +1,7 @@
 import { ArgumentType } from '@8f4e/tokenizer';
-import {
-	applySemanticLine as applyPublicMemorySemanticLine,
-	type PublicMemoryLayoutContext,
-} from '@8f4e/compiler-memory-layout';
 
 import { ErrorCode, getError } from '../compilerError';
-import {
-	type AST,
-	type CompilationContext,
-	type CompiledFunctionLookup,
-	type FunctionSignature,
-	type ParsedSemanticInstructionLine,
-} from '../types';
+import { type AST, type CompiledFunctionLookup, type FunctionSignature } from '../types';
 
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
@@ -23,14 +13,10 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 	const result: CompiledFunctionLookup = {};
 
 	for (const [index, ast] of asts.entries()) {
-		const functionLine = ast.find(line => line.instruction === 'function');
-		if (!functionLine || functionLine.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
-			continue;
-		}
-
-		const id = functionLine.arguments[0].value;
-		if (result[id]) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, functionLine, undefined, { identifier: id });
+		const functionLine = ast.find(line => line.instruction === 'function')!;
+		const idArgument = functionLine.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string };
+		if (result[idArgument.value]) {
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, functionLine, undefined, { identifier: idArgument.value });
 		}
 		const signature: FunctionSignature = {
 			parameters: ast.flatMap(line => {
@@ -50,8 +36,8 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 			);
 		}
 
-		result[id] = {
-			id,
+		result[idArgument.value] = {
+			id: idArgument.value,
 			signature,
 			body: [],
 			locals: [],
@@ -66,19 +52,11 @@ export function assertUniqueModuleIds(asts: AST[]): void {
 	const seenModuleIds = new Set<string>();
 
 	for (const ast of asts) {
-		const moduleLine = ast.find(line => line.instruction === 'module');
-		if (!moduleLine || moduleLine.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
-			continue;
+		const moduleLine = ast.find(line => line.instruction === 'module')!;
+		const id = moduleLine.arguments[0] as { type: ArgumentType.IDENTIFIER; value: string };
+		if (seenModuleIds.has(id.value)) {
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine, undefined, { identifier: id.value });
 		}
-
-		const id = moduleLine.arguments[0].value;
-		if (seenModuleIds.has(id)) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine, undefined, { identifier: id });
-		}
-		seenModuleIds.add(id);
+		seenModuleIds.add(id.value);
 	}
-}
-
-export function applySemanticLine(line: AST[number], context: CompilationContext) {
-	applyPublicMemorySemanticLine(line as ParsedSemanticInstructionLine, context as unknown as PublicMemoryLayoutContext);
 }

@@ -1,8 +1,9 @@
 import { getDataStructure } from './getDataStructure';
 
-import type { MemoryMap } from '../types';
-
-export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): number {
+export function getDataStructureByteAddress<TMemoryItem extends { byteAddress: number }>(
+	memoryMap: Record<string, TMemoryItem>,
+	id: string
+): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.byteAddress : 0;
 }

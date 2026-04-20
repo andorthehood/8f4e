@@ -1,0 +1,103 @@
+import { ArgumentType } from '@8f4e/tokenizer';
+import { describe, expect, it } from 'vitest';
+
+import { tryResolveCompileTimeArgument } from './tryResolveCompileTimeArgument';
+
+import type { SymbolResolutionContext } from '../types';
+
+const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
+
+describe('tryResolveCompileTimeArgument', () => {
+	const mockContext = {
+		namespace: {
+			consts: {
+				SIZE: { value: 16, isInteger: true },
+				PI64: { value: 3.14159, isInteger: false, isFloat64: true },
+			},
+			namespaces: {},
+		},
+		blockStack: [],
+	} as unknown as SymbolResolutionContext;
+
+	it('resolves direct constants', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE'))).toEqual({
+			value: 16,
+			isInteger: true,
+		});
+	});
+
+	it('resolves multiplication expression: constant * literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE*2'))).toEqual({
+			value: 32,
+			isInteger: true,
+		});
+	});
+
+	it('resolves division expression: constant / literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE/2'))).toEqual({
+			value: 8,
+			isInteger: true,
+		});
+	});
+
+	it('resolves literal * constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('2*SIZE'))).toEqual({
+			value: 32,
+			isInteger: true,
+		});
+	});
+
+	it('keeps float64 width for expression results', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64*2'))).toEqual({
+			value: 6.28318,
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+
+	it('returns undefined for unresolved or chained expressions', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('MISSING'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)*2'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(samples)*2'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&source:buffer'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('SIZE/2/2'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('SIZE*2/2'))).toBeUndefined();
+	});
+
+	it('resolves explicit compile-time expression nodes', () => {
+		expect(
+			tryResolveCompileTimeArgument(mockContext, {
+				type: ArgumentType.COMPILE_TIME_EXPRESSION,
+				left: parseCompileTimeOperand('2'),
+				operator: '*',
+				right: parseCompileTimeOperand('SIZE'),
+				intermoduleIds: [],
+			})
+		).toEqual({
+			value: 32,
+			isInteger: true,
+		});
+	});
+
+	it('resolves exponentiation expression: constant ^ literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE^2'))).toEqual({
+			value: 256,
+			isInteger: true,
+		});
+	});
+
+	it('resolves exponentiation expression: literal ^ constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('2^SIZE'))).toEqual({
+			value: 65536,
+			isInteger: true,
+		});
+	});
+
+	it('keeps float64 width for exponentiation results', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64^2'))).toEqual({
+			value: Math.pow(3.14159, 2),
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+});

@@ -25,3 +25,4 @@ Each ADR follows this structure:
 - [ADR-006: Lazy-Load Optional Runtime Implementations and Schemas](006-lazy-load-optional-runtime-implementations-and-schemas.md) - 2026-03-16
 - [ADR-007: Prefer Off-Main-Thread Runtime Execution](007-prefer-off-main-thread-runtime-execution.md) - 2026-03-16
 - [ADR-008: Provide a Syntax-Only Compiler Entry Point for Tooling](008-provide-a-syntax-only-compiler-entry-point-for-tooling.md) - 2026-03-16
+- [ADR-009: Separate Symbol Resolution, Public Memory Layout, and Codegen](009-separate-symbol-resolution-public-memory-layout-and-codegen.md) - 2026-04-19

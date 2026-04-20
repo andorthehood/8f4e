@@ -4,6 +4,7 @@
 - Path: `packages/compiler/packages/memory-layout`; source in `src/`, output in `dist/` (ESM).
 - Consumed via alias `@8f4e/compiler-memory-layout`.
 - Owns public module memory layout generation from tokenizer ASTs.
+- Owns memory metadata queries and validation that depend on laid-out or partially planned public memory facts, including `sizeof(...)`, `count(...)`, pointer/address metadata, and intermodule memory references.
 - This package must not depend on `@8f4e/compiler`; the compiler depends on this package.
 
 ## Build, Test, Dev
@@ -13,4 +14,4 @@
 ## Coding Style
 - TypeScript (strict). Follow root formatting: tabs, single quotes, semicolons, width 120.
 - Prefer AST/tokenizer-owned classifications over reparsing source strings.
-
+- Prefer pass-shaped APIs such as `planPublicMemoryNamespace` over exposing line-by-line compiler integration hooks.

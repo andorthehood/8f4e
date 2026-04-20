@@ -1,8 +1,8 @@
 import { getTargetModuleNamespace } from './getTargetModuleNamespace';
-import { hasCollectedNamespaces } from './hasCollectedNamespaces';
+import { hasResolvedModuleLayouts } from './hasResolvedModuleLayouts';
 
 import { getError } from '../getError';
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
 
 import type { AST, ArgumentIdentifier } from '@8f4e/tokenizer';
 
@@ -11,7 +11,7 @@ export function validateIntermoduleAddressReference(
 	line: AST[number],
 	context: PublicMemoryLayoutContext
 ): void {
-	if (!hasCollectedNamespaces(context)) {
+	if (!hasResolvedModuleLayouts(context)) {
 		return;
 	}
 

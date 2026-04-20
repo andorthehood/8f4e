@@ -1,5 +1,3 @@
-import type { MemoryMap } from '../types';
-
-export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
+export function isMemoryIdentifier<TMemoryItem>(memoryMap: Record<string, TMemoryItem>, name: string): boolean {
 	return Object.hasOwn(memoryMap, name);
 }

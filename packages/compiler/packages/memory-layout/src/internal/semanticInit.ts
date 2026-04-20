@@ -1,7 +1,7 @@
 import { ArgumentType, type InitLine } from '@8f4e/tokenizer';
 
 import { getError } from '../getError';
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
 
 export function semanticInit(line: InitLine, context: PublicMemoryLayoutContext) {
 	const targetIdentifier = line.arguments[0].value;

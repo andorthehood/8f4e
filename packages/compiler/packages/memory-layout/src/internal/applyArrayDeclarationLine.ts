@@ -6,7 +6,7 @@ import { alignAbsoluteWordOffset } from '../addresses/alignAbsoluteWordOffset';
 import { getAbsoluteWordOffset } from '../addresses/getAbsoluteWordOffset';
 import { getByteAddressFromWordOffset } from '../addresses/getByteAddressFromWordOffset';
 import { getError } from '../getError';
-import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY, MemoryTypes, type PublicMemoryLayoutContext } from '../types';
+import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY, MemoryTypes, type PublicMemoryLayoutContext } from '../internalTypes';
 
 export function applyArrayDeclarationLine(line: AST[number], context: PublicMemoryLayoutContext) {
 	const memoryId =

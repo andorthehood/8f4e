@@ -7,7 +7,8 @@ export default function resolveIntermodularReferenceValue(
 	line: AST[number],
 	context: CompilationContext
 ): number | undefined {
-	if (Object.keys(context.namespace.namespaces).length === 0) {
+	const modules = context.namespace.modules ?? {};
+	if (Object.keys(modules).length === 0) {
 		return undefined;
 	}
 
@@ -18,14 +19,10 @@ export default function resolveIntermodularReferenceValue(
 	if (identifier.referenceKind === 'intermodular-element-count') {
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
-		const targetNamespace = context.namespace.namespaces[targetModuleId];
-		const targetMemory = targetNamespace?.kind === 'module' ? targetNamespace.memory?.[targetMemoryId] : undefined;
+		const targetModule = modules[targetModuleId];
+		const targetMemory = targetModule?.memory[targetMemoryId];
 
-		if (targetNamespace?.kind !== 'module') {
-			return undefined;
-		}
-
-		if (!targetMemory) {
+		if (!targetModule || !targetMemory) {
 			return undefined;
 		}
 
@@ -35,14 +32,10 @@ export default function resolveIntermodularReferenceValue(
 	if (identifier.referenceKind === 'intermodular-element-word-size') {
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
-		const targetNamespace = context.namespace.namespaces[targetModuleId];
-		const targetMemory = targetNamespace?.kind === 'module' ? targetNamespace.memory?.[targetMemoryId] : undefined;
+		const targetModule = modules[targetModuleId];
+		const targetMemory = targetModule?.memory[targetMemoryId];
 
-		if (targetNamespace?.kind !== 'module') {
-			return undefined;
-		}
-
-		if (!targetMemory) {
+		if (!targetModule || !targetMemory) {
 			return undefined;
 		}
 
@@ -52,13 +45,12 @@ export default function resolveIntermodularReferenceValue(
 	if (identifier.referenceKind === 'intermodular-element-max') {
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
-		const targetModule = context.namespace.namespaces[targetModuleId];
-
-		if (targetModule?.kind !== 'module') {
+		const targetModule = modules[targetModuleId];
+		if (!targetModule) {
 			return undefined;
 		}
 
-		if (!targetModule.memory?.[targetMemoryId]) {
+		if (!targetModule.memory[targetMemoryId]) {
 			return undefined;
 		}
 
@@ -68,13 +60,12 @@ export default function resolveIntermodularReferenceValue(
 	if (identifier.referenceKind === 'intermodular-element-min') {
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
-		const targetModule = context.namespace.namespaces[targetModuleId];
-
-		if (targetModule?.kind !== 'module') {
+		const targetModule = modules[targetModuleId];
+		if (!targetModule) {
 			return undefined;
 		}
 
-		if (!targetModule.memory?.[targetMemoryId]) {
+		if (!targetModule.memory[targetMemoryId]) {
 			return undefined;
 		}
 

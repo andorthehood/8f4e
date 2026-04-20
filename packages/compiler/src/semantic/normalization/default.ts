@@ -1,9 +1,4 @@
-import {
-	type PublicMemoryLayoutContext,
-	validateOrDeferCompileTimeExpression,
-	validateOrDeferUnresolvedIdentifier,
-	normalizeArgumentsAtIndexes,
-} from '@8f4e/compiler-memory-layout';
+import { validateOrDeferCompileTimeExpression, validateOrDeferUnresolvedIdentifier } from './helpers';
 
 import { ArgumentType, type CompilationContext, type DefaultLine, type NormalizedDefaultLine } from '../../types';
 
@@ -16,22 +11,19 @@ export default function normalizeDefault(
 	line: DefaultLine,
 	context: CompilationContext
 ): NormalizedDefaultLine | DefaultLine {
-	const publicMemoryContext = context as unknown as PublicMemoryLayoutContext;
-	const { line: normalized } = normalizeArgumentsAtIndexes(line, publicMemoryContext, [0]);
-
-	const argument = normalized.arguments[0];
+	const argument = line.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferCompileTimeExpression(argument, line, publicMemoryContext);
+		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
 		if (deferred) {
-			return normalized as DefaultLine;
+			return line;
 		}
 	}
 	if (argument?.type === ArgumentType.IDENTIFIER) {
-		const deferred = validateOrDeferUnresolvedIdentifier(argument, line, publicMemoryContext);
+		const deferred = validateOrDeferUnresolvedIdentifier(argument, line, context);
 		if (deferred) {
-			return normalized as DefaultLine;
+			return line;
 		}
 	}
 
-	return normalized as NormalizedDefaultLine | DefaultLine;
+	return line as NormalizedDefaultLine | DefaultLine;
 }

@@ -1,4 +1,4 @@
-import type { Const } from '../types';
+import type { Const } from '../internalTypes';
 
 export function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: '*' | '/' | '^'): Const {
 	const value =

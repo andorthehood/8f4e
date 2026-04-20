@@ -24,10 +24,11 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
+		"@8f4e/compiler-errors": "*",
+		"@8f4e/compiler-symbols": "*",
 		"@8f4e/tokenizer": "*"
 	},
 	"devDependencies": {
 		"@types/node": "^24.3.0"
 	}
 }
-

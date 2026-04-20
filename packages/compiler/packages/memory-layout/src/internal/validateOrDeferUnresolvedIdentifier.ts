@@ -1,10 +1,10 @@
 import { ArgumentType, type AST, type Argument } from '@8f4e/tokenizer';
 
-import { hasCollectedNamespaces } from './hasCollectedNamespaces';
+import { hasResolvedModuleLayouts } from './hasResolvedModuleLayouts';
 import { isIntermoduleReferenceKind } from './isIntermoduleReferenceKind';
 import { validateIntermoduleAddressReference } from './validateIntermoduleAddressReference';
 
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
 import { getError } from '../getError';
 
 export function validateOrDeferUnresolvedIdentifier(
@@ -12,7 +12,7 @@ export function validateOrDeferUnresolvedIdentifier(
 	line: AST[number],
 	context: PublicMemoryLayoutContext
 ): boolean {
-	if (!hasCollectedNamespaces(context) && isIntermoduleReferenceKind(argument.referenceKind)) {
+	if (!hasResolvedModuleLayouts(context) && isIntermoduleReferenceKind(argument.referenceKind)) {
 		return true;
 	}
 	validateIntermoduleAddressReference(argument, line, context);

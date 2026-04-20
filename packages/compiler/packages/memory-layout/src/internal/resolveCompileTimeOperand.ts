@@ -11,7 +11,7 @@ import { getMemoryStringLastByteAddress } from '../memory-data/getMemoryStringLa
 import { getPointeeElementMaxValue } from '../memory-data/getPointeeElementMaxValue';
 import { getPointeeElementWordSize } from '../memory-data/getPointeeElementWordSize';
 
-import type { Const, PublicMemoryLayoutContext } from '../types';
+import type { Const, PublicMemoryLayoutContext } from '../internalTypes';
 
 export function resolveCompileTimeOperand(
 	operand: CompileTimeOperand,
@@ -27,7 +27,10 @@ export function resolveCompileTimeOperand(
 	}
 
 	if (operand.referenceKind === 'constant' || operand.referenceKind === 'plain') {
-		return namespace.consts[operand.value];
+		const resolvedConst = namespace.consts[operand.value];
+		if (resolvedConst) {
+			return resolvedConst;
+		}
 	}
 
 	const { memory } = namespace;
@@ -38,10 +41,7 @@ export function resolveCompileTimeOperand(
 		operand.referenceKind === 'intermodular-element-max' ||
 		operand.referenceKind === 'intermodular-element-min'
 	) {
-		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
+		const targetMemory = namespace.modules?.[operand.targetModuleId]?.memory;
 		if (!targetMemory || !Object.hasOwn(targetMemory, operand.targetMemoryId)) {
 			return undefined;
 		}
@@ -86,9 +86,9 @@ export function resolveCompileTimeOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-module-reference') {
-		const targetNamespace = namespace.namespaces[operand.targetModuleId];
+		const targetNamespace = namespace.modules?.[operand.targetModuleId];
 		if (
-			targetNamespace?.kind === 'module' &&
+			targetNamespace &&
 			typeof targetNamespace.byteAddress === 'number' &&
 			typeof targetNamespace.wordAlignedSize === 'number'
 		) {
@@ -103,12 +103,8 @@ export function resolveCompileTimeOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-module-nth-reference') {
-		const targetNamespace = namespace.namespaces[operand.targetModuleId];
-		if (
-			targetNamespace?.kind !== 'module' ||
-			typeof targetNamespace.byteAddress !== 'number' ||
-			!targetNamespace.memory
-		) {
+		const targetNamespace = namespace.modules?.[operand.targetModuleId];
+		if (!targetNamespace) {
 			return undefined;
 		}
 		const item = Object.values(targetNamespace.memory)[operand.targetMemoryIndex];
@@ -116,12 +112,16 @@ export function resolveCompileTimeOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-reference') {
-		const targetNamespace = namespace.namespaces[operand.targetModuleId];
-		if (targetNamespace?.kind !== 'module' || typeof targetNamespace.byteAddress !== 'number') {
+		const targetNamespace = namespace.modules?.[operand.targetModuleId];
+		if (!targetNamespace) {
 			return undefined;
 		}
 		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId];
-		if (targetMemory) {
+		if (
+			targetMemory &&
+			typeof targetMemory.byteAddress === 'number' &&
+			typeof targetMemory.wordAlignedSize === 'number'
+		) {
 			return {
 				value: operand.isEndAddress
 					? getEndByteAddress(targetMemory.byteAddress, targetMemory.wordAlignedSize)

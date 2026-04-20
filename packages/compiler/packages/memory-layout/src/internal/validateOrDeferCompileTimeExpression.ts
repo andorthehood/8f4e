@@ -1,17 +1,17 @@
 import { ArgumentType, type AST, type Argument } from '@8f4e/tokenizer';
 
-import { hasCollectedNamespaces } from './hasCollectedNamespaces';
+import { hasResolvedModuleLayouts } from './hasResolvedModuleLayouts';
 import { validateIntermoduleAddressReference } from './validateIntermoduleAddressReference';
 
 import { getError } from '../getError';
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
 
 export function validateOrDeferCompileTimeExpression(
 	argument: Extract<Argument, { type: ArgumentType.COMPILE_TIME_EXPRESSION }>,
 	line: AST[number],
 	context: PublicMemoryLayoutContext
 ): boolean {
-	if (!hasCollectedNamespaces(context) && argument.intermoduleIds.length > 0) {
+	if (!hasResolvedModuleLayouts(context) && argument.intermoduleIds.length > 0) {
 		return true;
 	}
 	if (argument.left.type === ArgumentType.IDENTIFIER) {

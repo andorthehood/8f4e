@@ -5,7 +5,7 @@ import { validateIntermoduleAddressReference } from './validateIntermoduleAddres
 import { validateOrDeferCompileTimeExpression } from './validateOrDeferCompileTimeExpression';
 import { validateOrDeferUnresolvedIdentifier } from './validateOrDeferUnresolvedIdentifier';
 
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
 import { getError } from '../getError';
 
 export function normalizeMemoryDeclaration(line: AST[number], context: PublicMemoryLayoutContext): AST[number] {

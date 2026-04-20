@@ -1,10 +1,6 @@
 import { ArgumentType, type Argument } from '@8f4e/tokenizer';
 
-export function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {
-	if (!argument) {
-		return [];
-	}
-
+export function getReferencedNamespaceIdsFromArgument(argument: Argument): string[] {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		return [...argument.intermoduleIds];
 	}
