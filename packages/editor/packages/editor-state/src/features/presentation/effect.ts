@@ -6,7 +6,7 @@ import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import type { StateManager } from '@8f4e/state-manager';
 import type { EventDispatcher, State } from '~/types';
 
-const PRESENTATION_DURATION_MS = 2000;
+const PRESENTATION_TRANSITION_DURATION_MS = 2000;
 
 function centerCurrentStop(
 	store: StateManager<State>,
@@ -30,6 +30,9 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	let stops = getPresentationStops(state.graphicHelper.codeBlocks);
 	let stopIndex = 0;
 	let timeoutId: ReturnType<typeof setTimeout> | undefined;
+	let returnToViewportTimeoutId: ReturnType<typeof setTimeout> | undefined;
+	let presentationStartViewport: { x: number; y: number } | undefined;
+	let isReturningToStartViewport = false;
 
 	function clearPresentationState(options: { preserveActiveStopIndex?: boolean } = {}): void {
 		if (!options.preserveActiveStopIndex) {
@@ -59,9 +62,30 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		timeoutId = undefined;
 	}
 
-	function exitPresentation(): void {
+	function clearReturnToViewportTimeout(): void {
+		if (!returnToViewportTimeoutId) {
+			return;
+		}
+
+		clearTimeout(returnToViewportTimeoutId);
+		returnToViewportTimeoutId = undefined;
+	}
+
+	function exitPresentation(options: { restoreStartViewport?: boolean } = {}): void {
 		clearScheduledAdvance();
-		stopViewportAnimation(state);
+		clearReturnToViewportTimeout();
+		isReturningToStartViewport = false;
+		if (options.restoreStartViewport && presentationStartViewport) {
+			isReturningToStartViewport = true;
+			store.set('graphicHelper.selectedCodeBlock', undefined);
+			animateViewport(state, presentationStartViewport.x, presentationStartViewport.y, events);
+			returnToViewportTimeoutId = setTimeout(() => {
+				isReturningToStartViewport = false;
+				returnToViewportTimeoutId = undefined;
+			}, PRESENTATION_TRANSITION_DURATION_MS);
+		} else {
+			stopViewportAnimation(state);
+		}
 		clearPresentationState();
 		if (state.editorMode === 'presentation') {
 			store.set('editorMode', 'view');
@@ -95,7 +119,12 @@ export default function presentation(store: StateManager<State>, events: EventDi
 				return;
 			}
 
-			stopIndex = (stopIndex + 1) % stops.length;
+			if (stopIndex >= stops.length - 1) {
+				exitPresentation({ restoreStartViewport: true });
+				return;
+			}
+
+			stopIndex += 1;
 			centerCurrentStop(store, state, events, stops[stopIndex]);
 			scheduleNextAdvance();
 		}, stops[stopIndex].seconds * 1000);
@@ -125,8 +154,11 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	function onPresentationChanged(editorMode: State['editorMode']): void {
 		clearScheduledAdvance();
 		if (editorMode !== 'presentation') {
-			stopViewportAnimation(state);
+			if (!isReturningToStartViewport) {
+				stopViewportAnimation(state);
+			}
 			clearPresentationState({ preserveActiveStopIndex: true });
+			presentationStartViewport = undefined;
 			return;
 		}
 
@@ -136,7 +168,11 @@ export default function presentation(store: StateManager<State>, events: EventDi
 			return;
 		}
 
-		state.viewportAnimation.durationMs = PRESENTATION_DURATION_MS;
+		presentationStartViewport = {
+			x: state.viewport.x,
+			y: state.viewport.y,
+		};
+		state.viewportAnimation.durationMs = PRESENTATION_TRANSITION_DURATION_MS;
 		stopIndex = Math.min(state.presentation.activeStopIndex, stops.length - 1);
 		centerCurrentStop(store, state, events, stops[stopIndex]);
 		scheduleNextAdvance();
@@ -166,6 +202,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 
 	return () => {
 		clearScheduledAdvance();
+		clearReturnToViewportTimeout();
 		stopViewportAnimation(state);
 		clearPresentationState();
 		store.unsubscribe('editorMode', onPresentationChanged);
