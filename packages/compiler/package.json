@@ -24,6 +24,8 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
+		"@8f4e/compiler-errors": "*",
+		"@8f4e/compiler-symbols": "*",
 		"@8f4e/compiler-memory-layout": "*",
 		"@8f4e/tokenizer": "*",
 		"@8f4e/compiler-wasm-utils": "*"

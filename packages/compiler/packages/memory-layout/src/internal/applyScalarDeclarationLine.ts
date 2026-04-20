@@ -8,7 +8,7 @@ import { getAbsoluteWordOffset } from '../addresses/getAbsoluteWordOffset';
 import { getByteAddressFromWordOffset } from '../addresses/getByteAddressFromWordOffset';
 import { getMemoryFlags } from '../getMemoryFlags';
 import { parseMemoryInstructionArguments } from '../parseMemoryInstructionArguments';
-import { MemoryTypes, type PublicMemoryLayoutContext } from '../types';
+import { MemoryTypes, type PublicMemoryLayoutContext } from '../internalTypes';
 
 export function applyScalarDeclarationLine(line: AST[number], context: PublicMemoryLayoutContext) {
 	const localWordOffset = context.currentModuleNextWordOffset ?? 0;

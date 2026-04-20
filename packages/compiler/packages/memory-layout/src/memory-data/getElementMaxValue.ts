@@ -1,8 +1,8 @@
 import { getDataStructure } from './getDataStructure';
 
-import type { MemoryMap } from '../types';
-
-export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
+export function getElementMaxValue<
+	TMemoryItem extends { elementWordSize: number; isInteger: boolean; isUnsigned: boolean },
+>(memoryMap: Record<string, TMemoryItem>, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem) return 0;
 	if (memoryItem.isInteger) {

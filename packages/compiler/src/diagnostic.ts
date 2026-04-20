@@ -8,7 +8,8 @@
 
 import { SyntaxRulesError } from '@8f4e/tokenizer';
 
-import type { CompilerDiagnostic, CompilerStageError } from './types';
+import type { CompileError } from '@8f4e/compiler-errors';
+import type { CompilerDiagnostic } from './types';
 
 const FALLBACK_LINE = {
 	lineNumberBeforeMacroExpansion: 0,
@@ -17,12 +18,13 @@ const FALLBACK_LINE = {
 
 const FALLBACK_CONTEXT = {} as const;
 
-function isCompilerStageError(value: unknown): value is CompilerStageError {
+function isCompileError(value: unknown): value is CompileError {
 	return (
 		value !== null &&
 		typeof value === 'object' &&
+		'stage' in value &&
+		typeof (value as { stage: unknown }).stage === 'string' &&
 		'code' in value &&
-		typeof (value as { code: unknown }).code === 'number' &&
 		'message' in value &&
 		typeof (value as { message: unknown }).message === 'string'
 	);
@@ -38,7 +40,7 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 		};
 	}
 
-	if (isCompilerStageError(error)) {
+	if (isCompileError(error)) {
 		return {
 			code: error.code,
 			message: error.message,

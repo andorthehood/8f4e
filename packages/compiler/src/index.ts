@@ -1,4 +1,5 @@
 import { compileToAST } from '@8f4e/tokenizer';
+import { createSymbolPassResultFromASTs, type Namespaces } from '@8f4e/compiler-symbols';
 import {
 	createCodeSection,
 	createFunction,
@@ -16,13 +17,14 @@ import {
 	i32store,
 	WASM_MEMORY_PAGE_SIZE,
 } from '@8f4e/compiler-wasm-utils';
-import { collectNamespacesFromASTs, type Namespaces } from '@8f4e/compiler-memory-layout';
+import { createPublicMemoryPassResultFromASTs, type PublicMemoryPassResult } from '@8f4e/compiler-memory-layout';
 
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 import { assertUniqueModuleIds, collectFunctionMetadataFromAsts } from './semantic/buildNamespace';
 import {
+	ArgumentType,
 	AST,
 	CompileOptions,
 	CompiledModule,
@@ -33,7 +35,6 @@ import {
 } from './types';
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
-
 export {
 	type CompiledModule,
 	type CompiledModuleLookup,
@@ -80,32 +81,51 @@ export {
 export { ErrorCode, getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
 
+function isModuleAst(ast: AST): boolean {
+	return ast.some(line => line.instruction === 'module');
+}
+
 export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
 	namespaces?: Namespaces,
+	publicMemoryPassResult?: PublicMemoryPassResult,
 	compiledFunctions?: CompiledFunctionLookup,
-	internalAllocator?: { nextByteAddress: number }
+	internalAllocator?: { nextByteAddress: number },
+	symbolPassResult = createSymbolPassResultFromASTs(modules.filter(isModuleAst), compiledFunctions)
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress ?? 0;
-	const ns: Namespaces =
-		namespaces ?? collectNamespacesFromASTs(modules, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, compiledFunctions);
+	const moduleAsts = modules.filter(isModuleAst);
+	const ns: Namespaces = namespaces ?? symbolPassResult.namespaces;
+	const resolvedPublicMemoryPassResult =
+		publicMemoryPassResult ??
+		createPublicMemoryPassResultFromASTs(moduleAsts, {
+			startingByteAddress: memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
+			compiledFunctions,
+			symbolPassResult,
+		});
+	const moduleLayouts = resolvedPublicMemoryPassResult.modules;
+	const modulePlans = resolvedPublicMemoryPassResult.modulePlans;
 	const allocator = internalAllocator ?? {
-		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
-			const byteAddress = namespace.byteAddress ?? 0;
-			const wordAlignedSize = namespace.wordAlignedSize ?? 0;
+		nextByteAddress: Object.values(moduleLayouts).reduce((max, module) => {
+			const byteAddress = module.byteAddress ?? 0;
+			const wordAlignedSize = module.wordAlignedSize ?? 0;
 			return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
 		}, 0),
 	};
 
-	return modules.map((ast, index) => {
+	return moduleAsts.map((ast, index) => {
+		const namespaceId = (ast[0].arguments[0] as { type: ArgumentType.IDENTIFIER; value: string }).value;
 		const module = compileModule(
 			ast,
 			ns,
+			moduleLayouts,
 			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			index,
+			modulePlans[namespaceId],
 			compiledFunctions,
-			allocator
+			allocator,
+			symbolPassResult
 		);
 		memoryAddress += module.wordAlignedSize;
 		return module;
@@ -190,13 +210,20 @@ export default function compile(
 
 	// Compile to AST with line metadata for error mapping.
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
-	assertUniqueModuleIds(astModules);
+	assertUniqueModuleIds(astModules.filter(isModuleAst));
 	const dependencyOrderedModules = sortModules(astModules);
+	const dependencyOrderedPhysicalModules = dependencyOrderedModules.filter(isModuleAst);
 
-	const namespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);
-
-	// Compile functions first with WASM indices and type registry
+	// Compile functions to AST early so symbol facts are available to all later stages
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
+	const symbolPassResult = createSymbolPassResultFromASTs([...dependencyOrderedModules, ...astFunctions]);
+	const publicMemoryPassResult = createPublicMemoryPassResultFromASTs(dependencyOrderedModules, {
+		startingByteAddress: GLOBAL_ALIGNMENT_BOUNDARY,
+		layoutAsts: dependencyOrderedModules,
+		symbolPassResult,
+	});
+	const namespaces = symbolPassResult.namespaces;
+	const publicMemoryModules = publicMemoryPassResult.modules;
 
 	// Collect pre-codegen function metadata so `call` target validation and
 	// function-body codegen can rely on the same registry before compilation finishes.
@@ -211,15 +238,19 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry, functionMetadata)
+		compileFunction(
+			ast,
+			namespaces,
+			publicMemoryModules,
+			EXPORTED_FUNCTION_COUNT + index,
+			functionTypeRegistry,
+			functionMetadata,
+			symbolPassResult
+		)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
-	const totalModuleBytes = Object.values(namespaces).reduce((max, namespace) => {
-		const byteAddress = namespace.byteAddress ?? 0;
-		const wordAlignedSize = namespace.wordAlignedSize ?? 0;
-		return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
-	}, 0);
-	const internalAllocator = { nextByteAddress: totalModuleBytes };
+
+	const internalAllocator = { nextByteAddress: publicMemoryPassResult.requiredPublicMemoryBytes };
 
 	// Extract the unique function types and type indices from the registry
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
@@ -227,14 +258,16 @@ export default function compile(
 
 	// Compile all modules in dependency order to preserve the established physical layout.
 	const compiledModules = compileModules(
-		dependencyOrderedModules,
+		dependencyOrderedPhysicalModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
 		},
 		namespaces,
+		publicMemoryPassResult,
 		compiledFunctionsMap,
-		internalAllocator
+		internalAllocator,
+		symbolPassResult
 	);
 
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);

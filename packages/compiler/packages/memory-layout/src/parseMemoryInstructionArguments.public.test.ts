@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 
 import { parseMemoryInstructionArguments } from './parseMemoryInstructionArguments';
 
-import type { PublicMemoryLayoutContext } from './types';
+import type { PublicMemoryLayoutContext } from './internalTypes';
 
 describe('parseMemoryInstructionArguments', () => {
 	const createMockContext = (

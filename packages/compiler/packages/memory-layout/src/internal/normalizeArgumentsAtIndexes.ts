@@ -1,7 +1,7 @@
 import { normalizeArgument } from './normalizeArgument';
 
 import type { AST } from '@8f4e/tokenizer';
-import type { PublicMemoryLayoutContext } from '../types';
+import type { PublicMemoryLayoutContext } from '../internalTypes';
 
 export function normalizeArgumentsAtIndexes(
 	line: AST[number],

@@ -1,8 +1,9 @@
 import { getDataStructure } from './getDataStructure';
 
-import type { MemoryMap } from '../types';
-
-export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
+export function getElementWordSize<TMemoryItem extends { elementWordSize: number }>(
+	memoryMap: Record<string, TMemoryItem>,
+	id: string
+): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.elementWordSize : 0;
 }

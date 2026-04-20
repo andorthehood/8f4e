@@ -1,17 +1,19 @@
 import { SyntaxErrorCode, SyntaxRulesError, parseMemoryInstructionArgumentsShape, type AST } from '@8f4e/tokenizer';
 
-import { getError, type PublicMemoryLayoutErrorContext } from './getError';
+import { getError } from './getError';
 import { resolveIdFromShape } from './internal/resolveIdFromShape';
 import { resolveMemoryDefaultValue } from './internal/resolveMemoryDefaultValue';
 import { resolveSplitByteTokens } from './internal/resolveSplitByteTokens';
-import { ErrorCode, type PublicMemoryLayoutContext } from './types';
+import { ErrorCode, type PublicMemoryLayoutContext } from './internalTypes';
+
+import type { CompileErrorContext } from '@8f4e/compiler-errors';
 
 const MAX_SPLIT_BYTE_WIDTH = 4;
 
 export function parseMemoryInstructionArguments(
 	line: AST[number],
 	context: Pick<PublicMemoryLayoutContext, 'namespace' | 'startingByteAddress' | 'currentModuleWordAlignedSize'> &
-		PublicMemoryLayoutErrorContext
+		CompileErrorContext
 ): { id: string; defaultValue: number } {
 	const { arguments: args, lineNumberAfterMacroExpansion } = line;
 	const lineForError = line;

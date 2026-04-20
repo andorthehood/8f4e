@@ -1,4 +1,4 @@
-import { BLOCK_TYPE, type PublicMemoryLayoutContext } from '../types';
+import { BLOCK_TYPE, type PublicMemoryLayoutContext } from '../internalTypes';
 
 export function isInstructionIsInsideBlock(
 	blockStack: PublicMemoryLayoutContext['blockStack'],

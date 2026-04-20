@@ -6,7 +6,8 @@ import compile, {
 	type Module,
 	BLOCK_TYPE,
 } from '@8f4e/compiler';
-import { collectNamespacesFromASTs } from '@8f4e/compiler-memory-layout';
+import { createPublicMemoryPassResultFromASTs } from '@8f4e/compiler-memory-layout';
+import { createSymbolPassResultFromASTs } from '@8f4e/compiler-symbols';
 
 import getBlockType from './shared/getBlockType';
 
@@ -165,7 +166,10 @@ export default function traceInstructionFlow(
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
 	const moduleAsts = compiledModules.map(module => module.ast).filter((ast): ast is AST => Array.isArray(ast));
-	const namespaces = collectNamespacesFromASTs(moduleAsts);
+	const symbolPassResult = createSymbolPassResultFromASTs(moduleAsts);
+	const publicMemoryPassResult = createPublicMemoryPassResultFromASTs(moduleAsts, { symbolPassResult });
+	const namespaces = symbolPassResult.namespaces;
+	const modules = publicMemoryPassResult.modules;
 	const blocks: BlockTrace[] = [];
 
 	for (const module of compiledModules) {
@@ -181,6 +185,7 @@ export default function traceInstructionFlow(
 				consts: { ...(namespaces[module.id]?.consts ?? {}) },
 				moduleName: module.id,
 				functions: compileResult.compiledFunctions,
+				modules,
 			},
 			locals: {},
 			internalResources: {},
@@ -219,6 +224,7 @@ export default function traceInstructionFlow(
 				consts: {},
 				moduleName: undefined,
 				functions: compileResult.compiledFunctions,
+				modules,
 			},
 			locals: {},
 			internalResources: {},

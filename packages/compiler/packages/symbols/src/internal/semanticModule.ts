@@ -1,8 +1,8 @@
-import { BLOCK_TYPE, type PublicMemoryLayoutContext } from '../types';
+import { BLOCK_TYPE, type SymbolResolutionContext } from '../types';
 
 import type { ModuleLine } from '@8f4e/tokenizer';
 
-export function semanticModule(line: ModuleLine, context: PublicMemoryLayoutContext) {
+export function semanticModule(line: ModuleLine, context: SymbolResolutionContext) {
 	const moduleId = line.arguments[0].value;
 	context.blockStack.push({
 		hasExpectedResult: false,

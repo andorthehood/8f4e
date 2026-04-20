@@ -1,8 +1,11 @@
 import { getDataStructure } from './getDataStructure';
 
-import type { MemoryMap } from '../types';
-
-export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
+export function getPointeeElementWordSize<
+	TMemoryItem extends {
+		pointeeBaseType?: 'int' | 'int8' | 'int8u' | 'int16' | 'int16u' | 'float' | 'float64';
+		isPointingToPointer: boolean;
+	},
+>(memoryMap: Record<string, TMemoryItem>, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem || !memoryItem.pointeeBaseType) return 0;
 	if (memoryItem.isPointingToPointer) return 4;

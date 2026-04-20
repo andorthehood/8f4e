@@ -46,9 +46,11 @@ import {
 	type LoopCapLine,
 } from '@8f4e/tokenizer';
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import { BLOCK_TYPE } from '@8f4e/compiler-memory-layout';
+import { BLOCK_TYPE } from '@8f4e/compiler-symbols';
 
-import type { Consts, DataStructure, MemoryMap, Namespaces } from '@8f4e/compiler-memory-layout';
+import type { CompileError } from '@8f4e/compiler-errors';
+import type { Consts, Namespaces } from '@8f4e/compiler-symbols';
+import type { DataStructure, MemoryMap, ModuleLayouts } from '@8f4e/compiler-memory-layout';
 
 export interface InternalResource {
 	id: string;
@@ -189,6 +191,7 @@ export interface Namespace {
 	consts: Consts;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
+	modules?: ModuleLayouts;
 	functions?: CompiledFunctionLookup;
 }
 
@@ -325,16 +328,7 @@ export type InstructionCompiler<TLine extends AST[number] = AST[number]> = ((
 ) => CompilationContext) &
 	((line: AST[number], context: CompilationContext) => CompilationContext);
 
-/**
- * Internal compiler-stage error shape returned by getError().
- * This is not the public cross-stage contract; consumers should use CompilerDiagnostic.
- */
-export interface CompilerStageError {
-	message: string;
-	line: Parameters<InstructionCompiler>[0];
-	context?: CompilationContext;
-	code: number;
-}
+export type CompilerStageError = CompileError;
 
 /**
  * The shared, serializable diagnostic shape exposed to all consumers of the compiler pipeline.

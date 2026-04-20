@@ -1,5 +1,6 @@
-import type { MemoryMap } from '../types';
-
-export function getDataStructure(memoryMap: MemoryMap, id: string) {
+export function getDataStructure<TMemoryItem>(
+	memoryMap: Record<string, TMemoryItem>,
+	id: string
+): TMemoryItem | undefined {
 	return memoryMap[id];
 }

@@ -1,6 +1,7 @@
-import { compileToAST } from '@8f4e/tokenizer';
+import { ArgumentType, compileToAST } from '@8f4e/tokenizer';
 import { createFunction, createLocalDeclaration, f32store, f64store, i32store, Type } from '@8f4e/compiler-wasm-utils';
-import { prepassNamespace, type Namespaces } from '@8f4e/compiler-memory-layout';
+import { type ModuleLayout, type PublicMemoryPlan } from '@8f4e/compiler-memory-layout';
+import { BLOCK_TYPE, type Namespaces, type SymbolPassResult } from '@8f4e/compiler-symbols';
 
 import instructions, { Instruction } from './instructionCompilers';
 import {
@@ -14,25 +15,47 @@ import {
 import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
-import { applySemanticLine } from './semantic/buildNamespace';
+
+function getNamespaceId(ast: AST): string | undefined {
+	const firstLine = ast[0];
+	if (
+		(firstLine?.instruction === 'module' || firstLine?.instruction === 'constants') &&
+		firstLine.arguments[0]?.type === ArgumentType.IDENTIFIER
+	) {
+		return firstLine.arguments[0].value;
+	}
+
+	return undefined;
+}
 
 export function compileCodegenLine(line: AST[number], context: CompilationContext) {
 	const instruction = line.instruction as Instruction;
-
-	if (!instructions[instruction]) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-	}
 	instructions[instruction](line, context);
 }
 
 export function compileLine(line: AST[number], context: CompilationContext) {
 	if (line.isSemanticOnly) {
-		applySemanticLine(line, context);
+		if (
+			line.instruction === 'const' ||
+			line.instruction === 'use' ||
+			line.instruction === 'module' ||
+			line.instruction === 'moduleEnd' ||
+			line.instruction === 'constants' ||
+			line.instruction === 'constantsEnd' ||
+			line.instruction === 'init'
+		) {
+			return;
+		}
+		compileCodegenLine(line, context);
 		return;
 	}
 
 	if (line.isMemoryDeclaration && context.mode === 'function') {
 		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
+	}
+
+	if (line.isMemoryDeclaration) {
+		return;
 	}
 
 	compileCodegenLine(line, context);
@@ -54,21 +77,27 @@ export function compileSegment(
 export function compileModule(
 	ast: AST,
 	namespaces: Namespaces,
+	modules: Record<string, ModuleLayout>,
 	startingByteAddress = 0,
 	index: number,
+	publicMemoryPlan: PublicMemoryPlan,
 	functions?: CompiledFunctionLookup,
-	internalAllocator = { nextByteAddress: 0 }
+	internalAllocator = { nextByteAddress: 0 },
+	symbolPassResult?: SymbolPassResult
 ): CompiledModule {
-	// Prepass establishes the memory layout (byte addresses, sizes) for this module.
-	// Semantic instructions (const, use, init, module/moduleEnd) are applied during
-	// the compilation loop below, so consts are not copied from the prepass context.
-	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
+	const resolvedPublicMemoryPlan = publicMemoryPlan;
+	const namespaceId = resolvedPublicMemoryPlan.moduleName ?? getNamespaceId(ast);
+	const seededNamespace = namespaceId ? namespaces[namespaceId] : undefined;
+	const constScopesForAst = symbolPassResult?.constScopesByAst.get(ast);
+	const moduleLineIndex = ast.findIndex(line => line.instruction === 'module');
+	const moduleEndLineIndex = ast.findIndex(line => line.instruction === 'moduleEnd');
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
-			memory: prepassContext.namespace.memory,
-			consts: {},
-			moduleName: undefined,
+			modules,
+			memory: resolvedPublicMemoryPlan.memory,
+			consts: { ...(seededNamespace?.consts ?? {}) },
+			moduleName: namespaceId,
 			functions,
 		},
 		locals: {},
@@ -78,28 +107,35 @@ export function compileModule(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		currentModuleNextWordOffset: prepassContext.currentModuleNextWordOffset,
-		currentModuleWordAlignedSize: prepassContext.currentModuleWordAlignedSize,
+		currentModuleNextWordOffset: resolvedPublicMemoryPlan.currentModuleNextWordOffset,
+		currentModuleWordAlignedSize: resolvedPublicMemoryPlan.currentModuleWordAlignedSize,
 		mode: 'module',
+		codeBlockId: undefined,
+		codeBlockType: undefined,
 	};
 
-	const normalizedAst = ast.map(originalLine => {
-		const line = normalizeCompileTimeArguments(originalLine, context);
-		if (line.isSemanticOnly) {
-			applySemanticLine(line, context);
-		} else if (!line.isMemoryDeclaration) {
-			compileCodegenLine(line, context);
+	const normalizedAst = resolvedPublicMemoryPlan.normalizedAst.map((originalLine, index) => {
+		if (moduleLineIndex >= 0 && index > moduleLineIndex && (moduleEndLineIndex < 0 || index <= moduleEndLineIndex)) {
+			if (!context.blockStack.some(block => block.blockType === BLOCK_TYPE.MODULE)) {
+				context.blockStack.unshift({
+					hasExpectedResult: false,
+					expectedResultIsInteger: false,
+					blockType: BLOCK_TYPE.MODULE,
+				});
+			}
+			context.codeBlockId = namespaceId;
+			context.codeBlockType = 'module';
 		}
+
+		const visibleConsts = constScopesForAst?.[index];
+		if (visibleConsts) {
+			context.namespace.consts = { ...visibleConsts };
+		}
+
+		const line = originalLine;
+		compileLine(line, context);
 		return line;
 	});
-
-	if (!context.namespace.moduleName) {
-		throw getError(
-			ErrorCode.MISSING_MODULE_ID,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'module', arguments: [] },
-			context
-		);
-	}
 
 	if (context.stack.length > 0) {
 		throw getError(
@@ -124,7 +160,7 @@ export function compileModule(
 	});
 
 	return {
-		id: context.namespace.moduleName,
+		id: context.namespace.moduleName as string,
 		cycleFunction: createFunction(
 			Object.values(context.locals).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : local.isFloat64 ? Type.F64 : Type.F32, 1);
@@ -146,13 +182,18 @@ export function compileModule(
 export function compileFunction(
 	ast: AST,
 	namespaces: Namespaces,
+	modules: Record<string, ModuleLayout>,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
-	functions?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup,
+	symbolPassResult?: SymbolPassResult
 ): CompiledFunction {
+	const constScopesForAst = symbolPassResult?.constScopesByAst.get(ast);
+	const symbolNormalizedAst = symbolPassResult?.normalizedAstsByAst.get(ast) ?? ast;
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
+			modules,
 			memory: {},
 			consts: {},
 			moduleName: undefined,
@@ -174,32 +215,22 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	};
 
-	const normalizedAst = ast.map(originalLine => {
+	const normalizedAst = symbolNormalizedAst.map((originalLine, index) => {
+		const visibleConsts = constScopesForAst?.[index];
+		if (visibleConsts) {
+			context.namespace.consts = { ...visibleConsts };
+		}
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
 		return line;
 	});
-
-	if (!context.currentFunctionId) {
-		throw getError(
-			ErrorCode.MISSING_FUNCTION_ID,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
-			context
-		);
-	}
-
-	if (!context.currentFunctionSignature) {
-		throw getError(
-			ErrorCode.INVALID_FUNCTION_SIGNATURE,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
-			context
-		);
-	}
+	const currentFunctionSignature = context.currentFunctionSignature as CompiledFunction['signature'];
+	const currentFunctionId = context.currentFunctionId as string;
 
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
 	// Regular locals declared with the 'local' instruction come after parameters
-	const parameterCount = context.currentFunctionSignature.parameters.length;
+	const parameterCount = currentFunctionSignature.parameters.length;
 	const localDeclarations = Object.entries(context.locals)
 		.filter(([, local]) => local.index >= parameterCount)
 		.map(([, local]) => ({
@@ -209,18 +240,18 @@ export function compileFunction(
 		}));
 
 	// Get the type index for this function's signature
-	const params = context.currentFunctionSignature.parameters.map(type =>
+	const params = currentFunctionSignature.parameters.map(type =>
 		type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32
 	);
-	const results = context.currentFunctionSignature.returns.map(type =>
+	const results = currentFunctionSignature.returns.map(type =>
 		type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32
 	);
 	const signature = JSON.stringify({ params, results });
 	const typeIndex = typeRegistry.signatureMap.get(signature);
 
 	return {
-		id: context.currentFunctionId,
-		signature: context.currentFunctionSignature,
+		id: currentFunctionId,
+		signature: currentFunctionSignature,
 		body: createFunction(
 			localDeclarations.map(local =>
 				createLocalDeclaration(local.isInteger ? Type.I32 : local.isFloat64 ? Type.F64 : Type.F32, local.count)

@@ -1,8 +1,9 @@
 import { getDataStructure } from './getDataStructure';
 
-import type { MemoryMap } from '../types';
-
-export function getElementCount(memoryMap: MemoryMap, id: string): number {
+export function getElementCount<TMemoryItem extends { numberOfElements: number }>(
+	memoryMap: Record<string, TMemoryItem>,
+	id: string
+): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.numberOfElements : 0;
 }

@@ -181,7 +181,8 @@ Supported operators:
 | `/`      | Division       | `SIZE/2`      |
 | `^`      | Exponentiation | `2^16`        |
 
-Each side can be a numeric literal, a constant name, or a metadata query such as `sizeof(name)` or `count(name)`.
+Each side can be a numeric literal, a constant name, or, outside `const` declarations, a metadata query such as
+`sizeof(name)` or `count(name)`.
 Exactly one operator is allowed; chained forms like `2^3^4` or `SIZE*2/4` are not valid.
 
 **Note**: `^` means exponentiation in compile-time expressions, not bitwise XOR (which is the runtime `xor` instruction).
@@ -191,11 +192,11 @@ Examples:
 ```
 const WIDTH  2^16          ; 65536
 const TOTAL  SIZE^2        ; SIZE squared
-const BYTES  sizeof(buf)^2 ; element word size squared
 const HALF   SIZE/2        ; integer or float division
 const DOUBLE SIZE*2        ; multiplication
 
 int[] buffer SIZE^2        ; allocate SIZE² elements
+int[] bytes  sizeof(buf)^2 ; layout metadata is allowed outside const declarations
 push 2^EXP                 ; push 2 raised to EXP
 ```
 

@@ -1,8 +1,21 @@
 import { test, expect } from 'vitest';
+import { SymbolResolutionErrorCode } from '@8f4e/compiler-symbols';
 
 import { moduleTester } from './testUtils';
 
 import compile from '../../src';
+
+function expectLayoutDependentConstError(fn: () => unknown) {
+	try {
+		fn();
+		throw new Error('Expected compile() to throw');
+	} catch (error) {
+		expect(error).toMatchObject({
+			stage: 'symbols',
+			code: SymbolResolutionErrorCode.LAYOUT_DEPENDENT_CONSTANT,
+		});
+	}
+}
 
 moduleTester(
 	'int[]: buffer size from constant division expression',
@@ -74,48 +87,21 @@ moduleEnd
 	[[{}, { output: 4, foo: 4 }]]
 );
 
-moduleTester(
-	'const: literal * sizeof(name)',
-	`module test
-int16[] samples 4 0
-const BYTE_SIZE 123*sizeof(samples)
-int output
-push &output
-push BYTE_SIZE
-store
-moduleEnd
-`,
-	[[{}, { output: 246 }]]
-);
+test('const rejects layout-dependent memory metadata expressions', () => {
+	expectLayoutDependentConstError(() =>
+		compile([{ code: ['module test', 'int16[] samples 4 0', 'const BYTE_SIZE sizeof(samples)*2', 'moduleEnd'] }], {
+			startingMemoryWordAddress: 0,
+		})
+	);
+});
 
-moduleTester(
-	'const: sizeof(name) * literal',
-	`module test
-int16[] samples 4 0
-const BYTE_SIZE sizeof(samples)*2
-int output
-push &output
-push BYTE_SIZE
-store
-moduleEnd
-`,
-	[[{}, { output: 4 }]]
-);
-
-moduleTester(
-	'const: constant * sizeof(name)',
-	`module test
-int16[] samples 4 0
-const SIZE 8
-const TOTAL SIZE*sizeof(samples)
-int output
-push &output
-push TOTAL
-store
-moduleEnd
-`,
-	[[{}, { output: 16 }]]
-);
+test('const rejects layout-dependent address references', () => {
+	expectLayoutDependentConstError(() =>
+		compile([{ code: ['module test', 'int16[] samples 4 0', 'const START &samples', 'moduleEnd'] }], {
+			startingMemoryWordAddress: 0,
+		})
+	);
+});
 
 moduleTester(
 	'push: sizeof(name) * literal',
@@ -294,16 +280,10 @@ moduleEnd
 	[[{}, { output: 8 }]]
 );
 
-moduleTester(
-	'const: sizeof(name)^literal',
-	`module test
-int32[] samples 4 0
-const TOTAL sizeof(samples)^2
-int output
-push &output
-push TOTAL
-store
-moduleEnd
-`,
-	[[{}, { output: 16 }]]
-);
+test('const rejects layout-dependent exponentiation expressions', () => {
+	expectLayoutDependentConstError(() =>
+		compile([{ code: ['module test', 'int32[] samples 4 0', 'const TOTAL sizeof(samples)^2', 'moduleEnd'] }], {
+			startingMemoryWordAddress: 0,
+		})
+	);
+});

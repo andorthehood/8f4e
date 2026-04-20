@@ -1,15 +1,16 @@
 import { combineSplitHexBytes } from './combineSplitHexBytes';
 
-import { getError, type PublicMemoryLayoutErrorContext } from '../getError';
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { getError } from '../getError';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
 
+import type { CompileErrorContext } from '@8f4e/compiler-errors';
 import type { AST, SplitByteToken } from '@8f4e/tokenizer';
 
 export function resolveSplitByteTokens(
 	tokens: SplitByteToken[],
 	maxBytes: number,
 	lineForError: AST[number],
-	context: Pick<PublicMemoryLayoutContext, 'namespace'> & PublicMemoryLayoutErrorContext
+	context: Pick<PublicMemoryLayoutContext, 'namespace'> & CompileErrorContext
 ): number {
 	if (tokens.length > maxBytes) {
 		throw getError(ErrorCode.SPLIT_HEX_TOO_MANY_BYTES, lineForError, context);

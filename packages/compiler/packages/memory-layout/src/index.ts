@@ -1,9 +1,15 @@
-export * from './types';
-export { getByteAddressFromWordOffset } from './addresses/getByteAddressFromWordOffset';
-export { getEndByteAddress } from './addresses/getEndByteAddress';
-export { getModuleEndByteAddress } from './addresses/getModuleEndByteAddress';
-export { getAbsoluteWordOffset } from './addresses/getAbsoluteWordOffset';
-export { alignAbsoluteWordOffset } from './addresses/alignAbsoluteWordOffset';
+export {
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	type DataStructure,
+	type MemoryMap,
+	type ModuleLayout,
+	type ModuleLayouts,
+	MemoryTypes,
+	type PublicMemoryLayout,
+	type PublicMemoryLayoutModule,
+	type PublicMemoryPassResult,
+	type PublicMemoryPlan,
+} from './types';
 export { getDataStructure } from './memory-data/getDataStructure';
 export { getDataStructureByteAddress } from './memory-data/getDataStructureByteAddress';
 export { getMemoryStringLastByteAddress } from './memory-data/getMemoryStringLastByteAddress';
@@ -14,17 +20,12 @@ export { getElementMaxValue } from './memory-data/getElementMaxValue';
 export { getPointeeElementMaxValue } from './memory-data/getPointeeElementMaxValue';
 export { getElementMinValue } from './memory-data/getElementMinValue';
 export { isMemoryIdentifier } from './memory-data/isMemoryIdentifier';
+export { getByteAddressFromWordOffset } from './addresses/getByteAddressFromWordOffset';
+export { getEndByteAddress } from './addresses/getEndByteAddress';
+export { getModuleEndByteAddress } from './addresses/getModuleEndByteAddress';
+export { getAbsoluteWordOffset } from './addresses/getAbsoluteWordOffset';
+export { alignAbsoluteWordOffset } from './addresses/alignAbsoluteWordOffset';
 export { getMemoryFlags } from './getMemoryFlags';
-export { parseMemoryInstructionArguments } from './parseMemoryInstructionArguments';
-export { prepassNamespace } from './prepassNamespace';
-export { collectNamespacesFromASTs } from './collectNamespacesFromASTs';
+export { planPublicMemoryNamespace } from './planPublicMemoryNamespace';
+export { createPublicMemoryPassResultFromASTs } from './createPublicMemoryPassResultFromASTs';
 export { createPublicMemoryLayoutFromASTs } from './createPublicMemoryLayoutFromASTs';
-export { normalizeLayoutLine } from './internal/normalizeLayoutLine';
-export { applySemanticLine } from './internal/applySemanticLine';
-export { tryResolveCompileTimeArgument } from './internal/tryResolveCompileTimeArgument';
-export { hasCollectedNamespaces } from './internal/hasCollectedNamespaces';
-export { isIntermoduleReferenceKind } from './internal/isIntermoduleReferenceKind';
-export { normalizeArgumentsAtIndexes } from './internal/normalizeArgumentsAtIndexes';
-export { validateIntermoduleAddressReference } from './internal/validateIntermoduleAddressReference';
-export { validateOrDeferCompileTimeExpression } from './internal/validateOrDeferCompileTimeExpression';
-export { validateOrDeferUnresolvedIdentifier } from './internal/validateOrDeferUnresolvedIdentifier';

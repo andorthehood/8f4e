@@ -4,7 +4,7 @@ import { normalizeArgumentsAtIndexes } from './normalizeArgumentsAtIndexes';
 import { validateIntermoduleAddressReference } from './validateIntermoduleAddressReference';
 import { validateOrDeferCompileTimeExpression } from './validateOrDeferCompileTimeExpression';
 
-import { ErrorCode, type PublicMemoryLayoutContext } from '../types';
+import { ErrorCode, type PublicMemoryLayoutContext } from '../internalTypes';
 import { getError } from '../getError';
 
 export function normalizeInit(line: InitLine, context: PublicMemoryLayoutContext): InitLine {

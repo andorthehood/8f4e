@@ -1,13 +1,15 @@
 import { parseMemoryInstructionArgumentsShape, type AST } from '@8f4e/tokenizer';
 
-import { getError, type PublicMemoryLayoutErrorContext } from '../getError';
-import { ErrorCode } from '../types';
+import { getError } from '../getError';
+import { ErrorCode } from '../internalTypes';
+
+import type { CompileErrorContext } from '@8f4e/compiler-errors';
 
 export function resolveIdFromShape(
 	firstArg: ReturnType<typeof parseMemoryInstructionArgumentsShape>['firstArg'],
 	lineNumberAfterMacroExpansion: number,
 	lineForError: AST[number],
-	context: PublicMemoryLayoutErrorContext
+	context: CompileErrorContext
 ): string {
 	switch (firstArg.type) {
 		case 'literal':
