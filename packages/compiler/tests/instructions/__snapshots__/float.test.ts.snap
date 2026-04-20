@@ -310,9 +310,10 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
-        "isInteger": false,
-        "type": "literal",
-        "value": 3.14159,
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "PI",
       },
     ],
     "instruction": "float",

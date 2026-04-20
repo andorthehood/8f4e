@@ -1,7 +1,5 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-symbols';
 
-import type { AST } from '@8f4e/tokenizer';
-
 export { GLOBAL_ALIGNMENT_BOUNDARY };
 
 export enum MemoryTypes {
@@ -68,7 +66,6 @@ export interface PublicMemoryLayout {
 }
 
 export interface PublicMemoryPlan {
-	normalizedAst: AST;
 	memory: MemoryMap;
 	moduleName: string | undefined;
 	currentModuleNextWordOffset: number;

@@ -28,11 +28,10 @@ export function createPublicMemoryPassResultFromASTs(
 
 	let nextStartingByteAddress = startingByteAddress;
 	for (const ast of layoutAsts) {
-		const normalizedAst = symbolPassResult.normalizedAstsByAst.get(ast) ?? ast;
-		const firstLine = normalizedAst[0];
+		const firstLine = ast[0];
 		const isModuleAst = firstLine.instruction === 'module';
 		const plan = planPublicMemoryNamespace(
-			normalizedAst,
+			ast,
 			namespaces,
 			modules,
 			nextStartingByteAddress,

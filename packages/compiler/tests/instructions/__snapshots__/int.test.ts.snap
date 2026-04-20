@@ -317,9 +317,10 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
         "value": 168,
       },
       {
-        "isInteger": true,
-        "type": "literal",
-        "value": 64,
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "LO",
       },
     ],
     "instruction": "int",
@@ -495,14 +496,16 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
   {
     "arguments": [
       {
-        "isInteger": true,
-        "type": "literal",
-        "value": 32,
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "HI",
       },
       {
-        "isInteger": true,
-        "type": "literal",
-        "value": 64,
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "LO",
       },
     ],
     "instruction": "int",
@@ -1748,9 +1751,10 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
         "value": "foo",
       },
       {
-        "isInteger": true,
-        "type": "literal",
-        "value": 32,
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "HI",
       },
       {
         "referenceKind": "constant",
@@ -2843,9 +2847,10 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
   {
     "arguments": [
       {
-        "isInteger": true,
-        "type": "literal",
-        "value": 100,
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "MY_VALUE",
       },
     ],
     "instruction": "int",

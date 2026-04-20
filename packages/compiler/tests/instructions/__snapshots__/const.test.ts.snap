@@ -116,9 +116,10 @@ exports[`const instruction > const with valid constant names > if the generated 
         "value": "output3",
       },
       {
-        "isInteger": true,
-        "type": "literal",
-        "value": 69,
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "TEST3",
       },
     ],
     "instruction": "int",

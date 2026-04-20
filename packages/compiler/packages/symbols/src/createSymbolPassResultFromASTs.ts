@@ -1,5 +1,4 @@
 import { collectConstScopesByAst } from './collectConstScopesByAst';
-import { collectNormalizedAstsByAst } from './collectNormalizedAstsByAst';
 import { collectSymbolNamespacesFromASTs } from './collectSymbolNamespacesFromASTs';
 
 import type { AST } from '@8f4e/tokenizer';
@@ -17,6 +16,5 @@ export function createSymbolPassResultFromASTs(
 	return {
 		namespaces,
 		constScopesByAst: collectConstScopesByAst(asts, namespaces, compiledFunctions),
-		normalizedAstsByAst: collectNormalizedAstsByAst(asts, namespaces, compiledFunctions),
 	};
 }
