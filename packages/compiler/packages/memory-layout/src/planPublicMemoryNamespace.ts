@@ -45,20 +45,26 @@ export function planPublicMemoryNamespace(
 		codeBlockId: namespaceId,
 	};
 
-	const normalizedAst = ast.map(originalLine => {
+	const normalizedScalarDeclarations: AST[number][] = [];
+	const normalizedInits: AST[number][] = [];
+
+	for (const originalLine of ast) {
 		if (originalLine.isSemanticOnly) {
 			const line = normalizeLayoutLine(originalLine, context);
 			if (line.instruction !== 'init') {
 				applySemanticInstruction(line, context);
+			} else {
+				normalizedInits.push(line);
 			}
-			return line;
+			continue;
 		}
 
 		if (!originalLine.isMemoryDeclaration) {
 			if (context.codeBlockType === 'constants') {
 				throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, originalLine, context);
 			}
-			return normalizeCodegenLine(originalLine, context);
+			normalizeCodegenLine(originalLine, context);
+			continue;
 		}
 
 		if (context.codeBlockType === 'constants') {
@@ -67,33 +73,28 @@ export function planPublicMemoryNamespace(
 
 		const line = normalizeLayoutLine(originalLine, context);
 		applyMemoryDeclarationLine(line, context);
-		return line;
-	});
+		if (!line.instruction.endsWith('[]')) {
+			normalizedScalarDeclarations.push(line);
+		}
+	}
 
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset ?? 0;
 
-	normalizedAst.forEach(line => {
-		if (!line.isMemoryDeclaration || line.instruction.endsWith('[]')) {
-			return;
-		}
-
+	for (const line of normalizedScalarDeclarations) {
 		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
 		const memoryItem = context.namespace.memory[id];
 		if (!memoryItem || memoryItem.numberOfElements !== 1) {
-			return;
+			continue;
 		}
 
 		memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
-	});
+	}
 
-	normalizedAst.forEach(line => {
-		if (line.instruction === 'init') {
-			applySemanticInstruction(line, context);
-		}
-	});
+	for (const line of normalizedInits) {
+		applySemanticInstruction(line, context);
+	}
 
 	return {
-		normalizedAst,
 		memory: context.namespace.memory,
 		moduleName: context.namespace.moduleName,
 		currentModuleNextWordOffset: context.currentModuleNextWordOffset ?? 0,

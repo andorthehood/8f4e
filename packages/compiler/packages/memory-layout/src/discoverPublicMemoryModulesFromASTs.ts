@@ -11,17 +11,16 @@ export function discoverPublicMemoryModulesFromASTs(
 	asts: AST[],
 	options: DiscoverPublicMemoryModulesFromASTsOptions = {}
 ): DiscoveredModuleLayouts {
-	const symbolPassResult = options.symbolPassResult ?? createSymbolPassResultFromASTs(asts);
+	void (options.symbolPassResult ?? createSymbolPassResultFromASTs(asts));
 	const discoveredModules: DiscoveredModuleLayouts = {};
 
 	for (const ast of asts) {
-		const normalizedAst = symbolPassResult.normalizedAstsByAst.get(ast) ?? ast;
-		const firstLine = normalizedAst[0] as ModuleLine | ConstantsLine;
+		const firstLine = ast[0] as ModuleLine | ConstantsLine;
 		const kind = firstLine.instruction === 'module' ? 'module' : 'constants';
 		const moduleName = firstLine.arguments[0].value;
 		const memoryIds: Record<string, true> = {};
 
-		for (const line of normalizedAst) {
+		for (const line of ast) {
 			if (!line.isMemoryDeclaration) {
 				continue;
 			}

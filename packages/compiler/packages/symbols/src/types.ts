@@ -24,7 +24,6 @@ export type Namespaces = Record<string, CollectedNamespace>;
 export interface SymbolPassResult {
 	readonly namespaces: Namespaces;
 	readonly constScopesByAst: ReadonlyMap<AST, ReadonlyArray<Consts>>;
-	readonly normalizedAstsByAst: ReadonlyMap<AST, AST>;
 }
 
 export interface CompiledFunctionLookup {

@@ -114,7 +114,7 @@ export function compileModule(
 		codeBlockType: undefined,
 	};
 
-	const normalizedAst = resolvedPublicMemoryPlan.normalizedAst.map((originalLine, index) => {
+	const compiledAst = ast.map((originalLine, index) => {
 		if (moduleLineIndex >= 0 && index > moduleLineIndex && (moduleEndLineIndex < 0 || index <= moduleEndLineIndex)) {
 			if (!context.blockStack.some(block => block.blockType === BLOCK_TYPE.MODULE)) {
 				context.blockStack.unshift({
@@ -132,7 +132,7 @@ export function compileModule(
 			context.namespace.consts = { ...visibleConsts };
 		}
 
-		const line = originalLine;
+		const line = normalizeCompileTimeArguments(originalLine, context);
 		compileLine(line, context);
 		return line;
 	});
@@ -172,7 +172,7 @@ export function compileModule(
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
-		ast: normalizedAst,
+		ast: compiledAst,
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
 		initOnlyExecution: context.initOnlyExecution,
@@ -189,7 +189,6 @@ export function compileFunction(
 	symbolPassResult?: SymbolPassResult
 ): CompiledFunction {
 	const constScopesForAst = symbolPassResult?.constScopesByAst.get(ast);
-	const symbolNormalizedAst = symbolPassResult?.normalizedAstsByAst.get(ast) ?? ast;
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
@@ -215,7 +214,7 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	};
 
-	const normalizedAst = symbolNormalizedAst.map((originalLine, index) => {
+	const compiledAst = ast.map((originalLine, index) => {
 		const visibleConsts = constScopesForAst?.[index];
 		if (visibleConsts) {
 			context.namespace.consts = { ...visibleConsts };
@@ -261,6 +260,6 @@ export function compileFunction(
 		locals: localDeclarations,
 		wasmIndex,
 		typeIndex,
-		ast: normalizedAst,
+		ast: compiledAst,
 	};
 }
