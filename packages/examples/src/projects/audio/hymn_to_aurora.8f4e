@@ -1,71 +1,7 @@
 8f4e/v1
 
 note
-; @pos 125 -69
-; @stop 2 10 left @hidden
-
-; MOD is a classic tracker music format
-; from the Amiga era.
-; Tracker music is written as rows of events.
-; Each row encodes what to do next, 
-; such as which audio sample to play, 
-; at what pitch, and which effect to apply.
-noteEnd
-
-note
-; @pos 179 -78
-; @stop 1 3 top @hidden
-
-; This patch is a bare-bones
-; MOD player implemented in 8f4e.
-noteEnd
-
-note
-; @pos 450 -48
-; @hidden
-;                                  .
-; The samples are selected by  ....;;.  
-; the sample players based on  ::::;;;;.
-; the sample number extracted  ::::;;:'
-; from the active row.             :'
-
-; @stop 11 5 left
-noteEnd
-
-note
-; @pos 134 -55
-; @stop 3 5 left @hidden
-;                               _______|\
-; Here you can see the event   |          \
-; data scrolling through the   |          /
-; memory.                      `-------|/
-
-noteEnd
-
-note
-; @pos 396 -41
-; @stop 9 10 right @hidden
-;   /|______  The instrument samples are
-; /         : short recorded waveforms
-; \   ______; stored in these memory 
-;   \|        slots.
-; The sample players read from these
-; buffers and move through them at
-; different speeds to change pitch.
-noteEnd
-
-note
-; @pos 510 -32
-
-; The four channel signals
-; are mixed together here.
-
-;                    --------->
-; @stop 13 5 left @hidden
-noteEnd
-
-note
-; @pos 561 -25
+; @pos 644 -21
 
 ; Finally, the generated audio sample values
 ; are written into the output audio buffers
@@ -75,27 +11,86 @@ note
 noteEnd
 
 note
-; @pos 261 -35
-; @stop 4 10 bottom @hidden
-; These are the modules that extract the              /\
-; information from the rows. This particular song   /_  _\
-; is quite simple, it only has sample number, pitch  |  |
-; and volume data.                                   `--'
+; @pos 588 -15
+
+; The four channel signals
+; are mixed together here.
+
+;                    --------->
+; @stop 13 5 left @hidden
 noteEnd
 
 note
-; @pos 265 58
-; @stop 6 5 @hidden
-; Each channel reads row data, 
-; selects a sample, sets pitch and volume,
-; and produces one signal.
+; @pos -25 -1
+; @stop 3 5 left @hidden             
+;                                    
+;                                    .
+; Here you can see the event   ......;;.
+; data scrolling through the   ::::::;;;;.
+; memory.                      ::::::;;:'
+;                                    :'
 noteEnd
 
 note
-; @pos 171 12
+; @pos 266 12
 ; @stop 5 5 @hidden
+
 ; These four horizontal lanes are the four
 ; playback channels of the MOD.
+noteEnd
+
+note
+; @pos 261 -35
+; @stop 4 10 top @hidden
+;                                                     ;;;;;
+; These are the modules that extract the              ;;;;;
+; information from the rows. This particular song   ..;;;;;..
+; is quite simple, it only has sample number, pitch  `:::::'
+; and volume data.                                     `:'
+noteEnd 
+
+note
+; @pos 421 30
+; @stop 11 5 top @hidden
+;                         
+; The samples are selected 
+; based on the sample number
+; extracted from the active row.
+noteEnd
+
+note
+; @pos 417 31
+; @stop 9 10 right @hidden
+
+;     .        The instrument samples are
+;   .;;......  short recorded waveforms
+; .;;;;::::::  stored in these memory 
+;  `:;;::::::  slots.
+;    `:
+;
+; The sample players read from these
+; buffers and move through them at
+; different speeds to change pitch.
+noteEnd
+
+note
+; @pos 28 -26
+; @stop 1 5 top @hidden
+
+; This patch is a bare-bones
+; MOD player implemented in 8f4e.
+noteEnd
+
+note
+; @pos 70 -30
+; @stop 2 10 top @hidden
+
+; MOD is a classic tracker music format
+; from the Amiga era.
+; Tracker music is written as rows of events.
+; Each row encodes what to do next, 
+; such as which audio sample to play, 
+; at what pitch, and which effect to apply.
 noteEnd
 
 constants env
@@ -464,7 +459,7 @@ mapEnd int
 functionEnd int
 
 module amigaTick
-; @pos -119 -28
+; @pos -139 -28
 use mod
 
 int tempo 125
@@ -685,6 +680,12 @@ push *in3
 add
 push 2.0
 div
+push *in2
+push *in4
+add
+push 4.0
+div
+add
 store
 
 push &outR
@@ -693,12 +694,19 @@ push *in4
 add
 push 2.0
 div
+
+push *in1
+push *in3
+add
+push 4.0
+div
+add
 store
 
 moduleEnd
 
 module modRowCounter
-; @pos -51 -28
+; @pos -69 -28
 use env
 int* trigger &amigaTick:out 
 int rowCounter -1
@@ -841,7 +849,7 @@ module modSamplePlayer2
 ; @pos 422 11
 ; @group ch1
 use env
-; @stop 12 5
+; @stop 12 10
 int*  period &period2:out 
 int*  trigger &trigger2:out
 int*  sampleNumber &sampleNumber2:out
@@ -1121,7 +1129,7 @@ ifEnd
 moduleEnd
 
 module patternOrder
-; @pos -85 -28
+; @pos -105 -28
 ; @tab 6
 int	0x00
 int	0x00
@@ -1261,33 +1269,25 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
 
 int* row &rowCount1:out
 ; @hide
 use env
-int[] data ASSET_CH0_SIZE/4
-; @loadAsset ch0 &data
+int[] _dat ASSET_CH0_SIZE/4
+; @loadAsset ch0 &_dat
 local int loopCounter
 
-loop 16
+loop 8
 push &this
 push loopCounter
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
-push &data
+push &_dat
 push *row
 push loopCounter
 add
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
 load
@@ -1312,34 +1312,26 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
 
 int* row &rowCount1:out
 ; @hide
 use env
-int[] data ASSET_CH1_SIZE/4
-; @loadAsset ch1 &data
+int[] _dat ASSET_CH1_SIZE/4
+; @loadAsset ch1 &_dat
 
 local int loopCounter
 
-loop 16
+loop 8
 push &this
 push loopCounter
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
-push &data
+push &_dat
 push *row
 push loopCounter
 add
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
 load
@@ -1364,34 +1356,26 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
 
 int* row &rowCount1:out
 ; @hide
 use env
-int[] data ASSET_CH2_SIZE/4
-; @loadAsset ch2 &data
+int[] _dat ASSET_CH2_SIZE/4
+; @loadAsset ch2 &_dat
 
 local int loopCounter
 
-loop 16
+loop 8
 push &this
 push loopCounter
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
-push &data
+push &_dat
 push *row
 push loopCounter
 add
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
 load
@@ -1416,34 +1400,26 @@ int ; @w 0x
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
 
 int* row &rowCount1:out
 ; @hide
 use env
-int[] data ASSET_CH3_SIZE/4
-; @loadAsset ch3 &data
+int[] _dat ASSET_CH3_SIZE/4
+; @loadAsset ch3 &_dat
 
 local int loopCounter
 
-loop 16
+loop 8
 push &this
 push loopCounter
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
-push &data
+push &_dat
 push *row
 push loopCounter
 add
-push sizeof(data)
+push sizeof(_dat)
 mul
 add
 load
@@ -1570,8 +1546,7 @@ ifEnd
 moduleEnd
 
 module samplePack
-; @pos 370 -13
-; @stop 10 3
+; @pos 370 -6
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -1867,6 +1842,7 @@ module ultimateSoundtrackerColors
 ; @color icons.outputConnector	#000
 ; @color icons.inputConnectorBackground	#369
 ; @color icons.inputConnector	#000
+; @color text.arrow	#369
 moduleEnd
 
 module volume1
