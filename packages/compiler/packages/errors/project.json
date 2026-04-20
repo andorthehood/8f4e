@@ -26,15 +26,6 @@
 				"cwd": "{projectRoot}"
 			}
 		},
-		"test": {
-			"executor": "@nx/vitest:test",
-			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-			"dependsOn": ["^build"],
-			"options": {
-				"config": "{projectRoot}/vitest.config.ts",
-				"reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
-			}
-		},
 		"typecheck": {
 			"executor": "nx:run-commands",
 			"dependsOn": ["^build"],
