@@ -19,34 +19,6 @@ const ASSET_CH2_SIZE 9984
 const ASSET_CH3_SIZE 9984
 ; 'patterns_ch4.bin'
 const ASSET_CH4_SIZE 9984
-; 'sample_1.pcm'
-const ASSET_SAMPLE1_SIZE 2104
-; 'sample_2.pcm'
-const ASSET_SAMPLE2_SIZE 4904
-; 'sample_3.pcm'
-const ASSET_SAMPLE3_SIZE 15938
-; 'sample_4.pcm'
-const ASSET_SAMPLE4_SIZE 11062
-; 'sample_5.pcm'
-const ASSET_SAMPLE5_SIZE 10276
-; 'sample_6.pcm'
-const ASSET_SAMPLE6_SIZE 16404
-; 'sample_7.pcm'
-const ASSET_SAMPLE7_SIZE 16016
-; 'sample_8.pcm'
-const ASSET_SAMPLE8_SIZE 4926
-; 'sample_10.pcm'
-const ASSET_SAMPLE10_SIZE 25774
-; 'sample_11.pcm'
-const ASSET_SAMPLE11_SIZE 52982
-; 'sample_12.pcm'
-const ASSET_SAMPLE12_SIZE 14260
-; 'sample_13.pcm'
-const ASSET_SAMPLE13_SIZE 30708
-; 'sample_14.pcm'
-const ASSET_SAMPLE14_SIZE 6970
-; 'sample_15.pcm'
-const ASSET_SAMPLE15_SIZE 62562
 ; 'sample_16.pcm'
 const ASSET_SAMPLE16_SIZE 9826
 ; 'sample_17.pcm'
@@ -79,6 +51,34 @@ const ASSET_SAMPLE29_SIZE 12636
 const ASSET_SAMPLE30_SIZE 22586
 ; 'sample_31.pcm'
 const ASSET_SAMPLE31_SIZE 20432
+; 'sample_1.pcm'
+const ASSET_SAMPLE1_SIZE 2104
+; 'sample_2.pcm'
+const ASSET_SAMPLE2_SIZE 4904
+; 'sample_3.pcm'
+const ASSET_SAMPLE3_SIZE 15938
+; 'sample_4.pcm'
+const ASSET_SAMPLE4_SIZE 11062
+; 'sample_5.pcm'
+const ASSET_SAMPLE5_SIZE 10276
+; 'sample_6.pcm'
+const ASSET_SAMPLE6_SIZE 16404
+; 'sample_7.pcm'
+const ASSET_SAMPLE7_SIZE 16016
+; 'sample_8.pcm'
+const ASSET_SAMPLE8_SIZE 4926
+; 'sample_10.pcm'
+const ASSET_SAMPLE10_SIZE 25774
+; 'sample_11.pcm'
+const ASSET_SAMPLE11_SIZE 52982
+; 'sample_12.pcm'
+const ASSET_SAMPLE12_SIZE 14260
+; 'sample_13.pcm'
+const ASSET_SAMPLE13_SIZE 30708
+; 'sample_14.pcm'
+const ASSET_SAMPLE14_SIZE 6970
+; 'sample_15.pcm'
+const ASSET_SAMPLE15_SIZE 62562
 
 constantsEnd
 
@@ -476,18 +476,6 @@ div
 
 functionEnd float
 
-function rowHasVolumeSlide
-; @pos 622 -113
-use mod
-param int row
-
-push row
-call maskEffect
-push VOLUME_SLIDE
-equal
-
-functionEnd int
-
 function rowShouldReloadVolume
 ; @pos 583 -113
 use mod
@@ -502,6 +490,38 @@ call maskEffect
 push SET_VOLUME
 equal
 or
+
+functionEnd int
+
+function rowVolumeSlideDelta
+; @pos 622 -113
+use mod
+param int row
+
+push row
+call maskEffect
+push VOLUME_SLIDE
+equal
+equalToZero
+if
+push 0
+return
+ifEnd
+
+push row
+call maskParamHi
+push 0
+greaterThan
+if
+push row
+call maskParamHi
+return
+ifEnd
+
+push 0
+push row
+call maskParamLo
+sub
 
 functionEnd int
 
@@ -1131,7 +1151,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer1
-; @pos 545 -6
+; @pos 545 -7
 ; @group ch1
 ; @home
 use env
@@ -1649,7 +1669,7 @@ int	0x26
 moduleEnd
 
 module period1
-; @pos 306 -71
+; @pos 306 -72
 ; @group ch1
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -1971,7 +1991,7 @@ store
 moduleEnd
 
 module sampleNumber1
-; @pos 272 -71
+; @pos 272 -72
 ; @group ch1
 int* row &rowBuffer1:
 int out
@@ -2059,7 +2079,7 @@ ifEnd
 moduleEnd
 
 module sampleOffset1
-; @pos 195 -71
+; @pos 195 -72
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2451,7 +2471,7 @@ store
 moduleEnd
 
 module tempo1
-; @pos 233 -71
+; @pos 233 -72
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2575,7 +2595,7 @@ ifEnd
 moduleEnd
 
 module trigger1
-; @pos 351 -71
+; @pos 351 -72
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -2713,16 +2733,13 @@ module ultimateSoundtrackerColors
 moduleEnd
 
 module volume1
-; @pos 390 -71
+; @pos 390 -72
 ; @group ch1
 use mod
 int* row &rowBuffer1:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int out ; @w
-int up ; @w
-int down ; @w
-int next ; @w
 ; @hide
 ; Reload base volume on
 ; tick 0 / row advance.
@@ -2747,41 +2764,13 @@ if
 push *tick
 risingEdge
 if
-push *row
-call rowHasVolumeSlide
-if
-push &up
-push *row
-call maskParamHi
-store
-
-push &down
-push *row
-call maskParamLo
-store
-
-push up
-push 0
-greaterThan
-if
-push &next
-push out
-push up
-add
-store
-else
-push &next
-push out
-push down
-sub
-store
-ifEnd
-
 push &out
-push next
+push out
+push *row
+call rowVolumeSlideDelta
+add
 call clampVolume
 store
-ifEnd
 ifEnd
 ifEnd
 
@@ -2795,10 +2784,7 @@ int* row &rowBuffer2:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int out ; @w
-int up ; @w
-int down ; @w
-int next ; @w
-; @hide
+
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowTrigger
@@ -2822,41 +2808,13 @@ if
 push *tick
 risingEdge
 if
-push *row
-call rowHasVolumeSlide
-if
-push &up
-push *row
-call maskParamHi
-store
-
-push &down
-push *row
-call maskParamLo
-store
-
-push up
-push 0
-greaterThan
-if
-push &next
-push out
-push up
-add
-store
-else
-push &next
-push out
-push down
-sub
-store
-ifEnd
-
 push &out
-push next
+push out
+push *row
+call rowVolumeSlideDelta
+add
 call clampVolume
 store
-ifEnd
 ifEnd
 ifEnd
 
@@ -2870,10 +2828,7 @@ int* row &rowBuffer3:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int out ; @w
-int up ; @w
-int down ; @w
-int next ; @w
-; @hide
+
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowTrigger
@@ -2897,41 +2852,13 @@ if
 push *tick
 risingEdge
 if
-push *row
-call rowHasVolumeSlide
-if
-push &up
-push *row
-call maskParamHi
-store
-
-push &down
-push *row
-call maskParamLo
-store
-
-push up
-push 0
-greaterThan
-if
-push &next
-push out
-push up
-add
-store
-else
-push &next
-push out
-push down
-sub
-store
-ifEnd
-
 push &out
-push next
+push out
+push *row
+call rowVolumeSlideDelta
+add
 call clampVolume
 store
-ifEnd
 ifEnd
 ifEnd
 
@@ -2945,10 +2872,7 @@ int* row &rowBuffer4:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int out ; @w
-int up ; @w
-int down ; @w
-int next ; @w
-; @hide
+
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowTrigger
@@ -2972,41 +2896,13 @@ if
 push *tick
 risingEdge
 if
-push *row
-call rowHasVolumeSlide
-if
-push &up
-push *row
-call maskParamHi
-store
-
-push &down
-push *row
-call maskParamLo
-store
-
-push up
-push 0
-greaterThan
-if
-push &next
-push out
-push up
-add
-store
-else
-push &next
-push out
-push down
-sub
-store
-ifEnd
-
 push &out
-push next
+push out
+push *row
+call rowVolumeSlideDelta
+add
 call clampVolume
 store
-ifEnd
 ifEnd
 ifEnd
 
