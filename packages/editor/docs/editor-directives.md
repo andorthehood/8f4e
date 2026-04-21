@@ -146,6 +146,21 @@ Range detection:
 - lengths can be literal counts, memory ids, or `count(buffer)`
 - if `minValue` and `maxValue` are specified, they override the type-derived defaults
 
+### `@meter`
+
+Render a horizontal level meter from a typed scalar memory value. The first argument is the memory id to read. You can optionally provide an explicit min/max range override.
+
+```txt
+; @meter <memoryId>
+; @meter <memoryId> <minValue> <maxValue>
+```
+
+Notes:
+
+- plain scalar memories are supported directly
+- pointer-based values and dereferenced ids still work when they resolve to a typed value
+- red still starts at a fixed 90% of the configured range
+
 ### `@wave`
 
 Draw a waveform over a typed absolute pointer range. The first argument provides the start pointer and element size metadata, the second argument is the element count, and the optional third argument is an absolute pointer in the same address space.
