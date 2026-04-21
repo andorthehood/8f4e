@@ -79,7 +79,7 @@ export const runtimeRegistry: RuntimeRegistry = {
 		return createMainThreadLogicRuntimeDef(getCodeBuffer, getMemory);
 	}),
 
-	AudioWorkletRuntime: createLazyRuntimeEntry('AudioWorkletRuntime', { sampleRate: 44100 }, async () => {
+	AudioWorkletRuntime: createLazyRuntimeEntry('AudioWorkletRuntime', { sampleRate: 48000 }, async () => {
 		const [{ createAudioWorkletRuntimeDef }, { default: audioWorkletUrl }] = await Promise.all([
 			import('@8f4e/runtime-audio-worklet/runtime-def'),
 			import('@8f4e/runtime-audio-worklet/worklet?url'),

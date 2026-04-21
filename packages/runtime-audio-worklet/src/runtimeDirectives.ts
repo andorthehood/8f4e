@@ -1,6 +1,6 @@
 import type { CodeError, State, ParsedDirectiveRecord } from '@8f4e/editor';
 
-const DEFAULT_SAMPLE_RATE = 44100;
+const DEFAULT_SAMPLE_RATE = 48000;
 const AUDIO_BUFFER_SIZE = 128;
 
 function resolveAudioWorkletRuntimeSettingsFromBlocks(
