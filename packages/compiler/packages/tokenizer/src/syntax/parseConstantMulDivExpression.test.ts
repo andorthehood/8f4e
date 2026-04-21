@@ -127,6 +127,14 @@ describe('parseConstantMulDivExpression', () => {
 		});
 	});
 
+	it('parses constant + constant', () => {
+		expect(parseConstantMulDivExpression('FOO+BAR')).toEqual({
+			lhs: 'FOO',
+			operator: '+',
+			rhs: 'BAR',
+		});
+	});
+
 	it('parses constant - literal', () => {
 		expect(parseConstantMulDivExpression('SIZE-1')).toEqual({
 			lhs: 'SIZE',
