@@ -36,6 +36,7 @@ export const FILL_COLOR_NAMES = [
 	'highlightedCodeLine',
 	'trace',
 	'plotterBackground',
+	'bars',
 	'waveform',
 	'meterGreen',
 	'meterYellow',

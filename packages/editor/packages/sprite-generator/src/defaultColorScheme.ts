@@ -40,6 +40,7 @@ const defaultColorScheme: ColorScheme = {
 		highlightedCodeLine: '#444444',
 		trace: '#ffffff',
 		plotterBackground: 'rgba(0,0,0,0)',
+		bars: '#ffffff',
 		waveform: 'rgba(255,255,255,0.45)',
 		meterGreen: '#00ff00',
 		meterYellow: '#ffff00',

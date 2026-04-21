@@ -47,6 +47,7 @@ Example:
 - `fill.highlightedCodeLine`
 - `fill.trace`
 - `fill.plotterBackground`
+- `fill.bars`
 - `fill.waveform`
 - `fill.meterGreen`
 - `fill.meterYellow`

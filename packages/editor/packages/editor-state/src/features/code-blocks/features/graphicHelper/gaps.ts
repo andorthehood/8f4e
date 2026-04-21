@@ -98,6 +98,7 @@ if (import.meta.vitest) {
 					sliders: [],
 					pianoKeyboards: [],
 					arrayPlotters: [],
+					arrayBars: [],
 					arrayMeters: [],
 					arrayWaves: [],
 					errorMessages: [{ message: ['Error'], x: 0, y: 0, lineNumber: 2 }],

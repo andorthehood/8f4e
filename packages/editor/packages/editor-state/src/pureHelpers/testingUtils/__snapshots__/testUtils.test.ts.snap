@@ -30,6 +30,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -79,6 +80,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -128,6 +130,7 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -177,6 +180,7 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -226,6 +230,7 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -275,6 +280,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -324,6 +330,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -373,6 +380,7 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -423,6 +431,7 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -475,6 +484,7 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -524,6 +534,7 @@ exports[`createMockCodeBlock > override behavior > should override id and offset
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],
@@ -573,6 +584,7 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "parsedDirectives": [],
   "textureCacheKey": "",
   "widgets": {
+    "arrayBars": [],
     "arrayMeters": [],
     "arrayPlotters": [],
     "arrayWaves": [],

@@ -85,6 +85,27 @@ export interface ArrayPlotter {
 	valueType: TypedValueKind;
 }
 
+export interface ArrayBars {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	minValue: number;
+	maxValue: number;
+	inverseValueRange: number;
+	staticBaseValueIndex?: number;
+	staticColumnLayout?: Array<{
+		x: number;
+		width: number;
+		sliceStart: number;
+		sliceEnd: number;
+	}>;
+	startAddress: MemoryIdentifier;
+	baseSampleShift: 0 | 1 | 2 | 3;
+	length: number | MemoryIdentifier;
+	valueType: TypedValueKind;
+}
+
 export interface ArrayMeter {
 	width: number;
 	height: number;
@@ -230,6 +251,7 @@ export interface CodeBlockGraphicData {
 		outputs: Output[];
 		debuggers: Debugger[];
 		arrayPlotters: ArrayPlotter[];
+		arrayBars: ArrayBars[];
 		arrayMeters: ArrayMeter[];
 		arrayWaves: ArrayWave[];
 		switches: Switch[];
