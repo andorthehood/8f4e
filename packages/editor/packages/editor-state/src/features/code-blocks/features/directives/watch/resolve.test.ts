@@ -6,6 +6,7 @@ import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculati
 import type { CodeBlockGraphicData, State } from '~/types';
 import type { DataStructure } from '@8f4e/compiler';
 
+import { getTabStopsByLine, getVisualLineWidth } from '~/features/code-editing/tabLayout';
 import {
 	createMockCodeBlock,
 	createMockState,
@@ -212,6 +213,34 @@ describe('watch directive widget resolution', () => {
 		runDirectiveResolution();
 
 		expect(findWidgetById(mockGraphicData.widgets.debuggers, 'myVar')).toBeDefined();
+	});
+
+	it('should position watch widgets using visual line width when tabs are present', () => {
+		mockGraphicData.code = ['; @tab 8 16', 'push\t1 ; @watch myVar'];
+		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
+			wordAlignedAddress: 5,
+			byteAddress: 20,
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'myVar',
+			isPointingToPointer: false,
+		};
+
+		runDirectiveResolution();
+
+		const debuggerWidget = findWidgetById(mockGraphicData.widgets.debuggers, 'myVar');
+		const lineNumberColumnWidth = mockGraphicData.lineNumberColumnWidth;
+		const tabStopsByLine = getTabStopsByLine(mockGraphicData.code);
+		const visualLineWidth = getVisualLineWidth(mockGraphicData.code[1], tabStopsByLine[1] || []);
+		const rawLengthX = mockState.viewport.vGrid * (3 + lineNumberColumnWidth + mockGraphicData.code[1].length);
+		const visualWidthX = mockState.viewport.vGrid * (3 + lineNumberColumnWidth + visualLineWidth);
+
+		expect(debuggerWidget?.x).toBe(visualWidthX);
+		expect(debuggerWidget?.x).toBeGreaterThan(rawLengthX);
 	});
 
 	it('should resolve inline watch directives for anonymous declarations', () => {
