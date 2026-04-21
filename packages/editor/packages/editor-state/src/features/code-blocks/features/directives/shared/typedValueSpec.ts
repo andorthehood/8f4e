@@ -102,6 +102,14 @@ export function resolveTypedValueSpec(startAddress: MemoryIdentifier): TypedValu
 	return getSampleSpecFromPointerMemory(startAddress);
 }
 
+export function resolveDirectOrPointerTypedValueSpec(startAddress: MemoryIdentifier): TypedValueSpec | undefined {
+	if (startAddress.showAddress) {
+		return getSampleSpecFromDirectMemory(startAddress);
+	}
+
+	return getSampleSpecFromPointerMemory(startAddress) ?? getSampleSpecFromDirectMemory(startAddress);
+}
+
 export function resolveElementCount(
 	length: string | number | undefined,
 	moduleId: string,

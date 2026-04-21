@@ -24,6 +24,7 @@ constants editorDirectives
 ; @ group <name> [nonstick]	Group blocks together for dragging behavior.
 ; @ hide	Collapse the rest of the block behind "...".
 ; @ home	Mark the block as the home/starting focus target.
+; @ meter <memoryId> [minValue] [maxValue]	Render a horizontal level meter.
 ; @ nth	Show the module's compile order number.
 ; @ opacity <0..1>	Set the block opacity.
 ; @ piano <pressedKeysListMemoryId> <pressedKeyCountMemoryId> [startingMidiNote]	Render a piano keyboard widget.

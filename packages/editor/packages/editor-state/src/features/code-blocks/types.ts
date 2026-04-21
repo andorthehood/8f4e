@@ -85,6 +85,26 @@ export interface ArrayPlotter {
 	valueType: TypedValueKind;
 }
 
+export interface ArrayMeter {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	minValue: number;
+	maxValue: number;
+	isBipolar: boolean;
+	amplitudeLimit: number;
+	inverseValueRange: number;
+	greenEndX: number;
+	yellowEndX: number;
+	overloadMarkerX: number;
+	overloadMarkerWidth: number;
+	staticValueIndex?: number;
+	memory: MemoryIdentifier;
+	baseSampleShift: 0 | 1 | 2 | 3;
+	valueType: TypedValueKind;
+}
+
 export interface Switch {
 	width: number;
 	height: number;
@@ -210,6 +230,7 @@ export interface CodeBlockGraphicData {
 		outputs: Output[];
 		debuggers: Debugger[];
 		arrayPlotters: ArrayPlotter[];
+		arrayMeters: ArrayMeter[];
 		arrayWaves: ArrayWave[];
 		switches: Switch[];
 		buttons: Switch[];
