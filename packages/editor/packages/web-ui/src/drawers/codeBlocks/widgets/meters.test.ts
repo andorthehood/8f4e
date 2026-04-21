@@ -4,6 +4,7 @@ import { createMockCodeBlock, createMockState } from '@8f4e/editor-state/testing
 import drawMeters from './meters';
 
 import type { Engine } from 'glugglug';
+import type { ArrayMeter } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../../types';
 
 function createMemoryViews({ float32 = [] }: { float32?: number[] } = {}): MemoryViews {
@@ -27,6 +28,39 @@ function createMockEngine(): Engine {
 	} as unknown as Engine;
 }
 
+function createMeterWidget(overrides: Partial<ArrayMeter> = {}): ArrayMeter {
+	return {
+		x: 0,
+		y: 0,
+		width: 20,
+		height: 6,
+		minValue: 0,
+		maxValue: 1,
+		isBipolar: false,
+		amplitudeLimit: 0,
+		inverseValueRange: 1,
+		greenEndX: 13,
+		yellowEndX: 18,
+		overloadMarkerX: 12,
+		overloadMarkerWidth: 8,
+		staticValueIndex: 0,
+		memory: {
+			showAddress: false,
+			showEndAddress: false,
+			bufferPointer: 0,
+			displayFormat: 'decimal',
+			memory: {
+				byteAddress: 0,
+				wordAlignedAddress: 0,
+				wordAlignedSize: 1,
+			},
+		} as never,
+		baseSampleShift: 2,
+		valueType: 'float32',
+		...overrides,
+	};
+}
+
 describe('drawMeters', () => {
 	it('renders a segmented horizontal meter based on the current value', () => {
 		const engine = createMockEngine();
@@ -39,29 +73,7 @@ describe('drawMeters', () => {
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
-				arrayMeters: [
-					{
-						x: 2,
-						y: 3,
-						width: 20,
-						height: 6,
-						minValue: 0,
-						maxValue: 1,
-						memory: {
-							showAddress: false,
-							showEndAddress: false,
-							bufferPointer: 0,
-							displayFormat: 'decimal',
-							memory: {
-								byteAddress: 0,
-								wordAlignedAddress: 0,
-								wordAlignedSize: 1,
-							},
-						},
-						baseSampleShift: 2,
-						valueType: 'float32',
-					},
-				],
+				arrayMeters: [createMeterWidget({ x: 2, y: 3 })],
 			} as never,
 		});
 
@@ -86,27 +98,13 @@ describe('drawMeters', () => {
 		const codeBlock = createMockCodeBlock({
 			widgets: {
 				arrayMeters: [
-					{
-						x: 0,
-						y: 0,
+					createMeterWidget({
 						width: 10,
 						height: 4,
-						minValue: 0,
-						maxValue: 1,
-						memory: {
-							showAddress: false,
-							showEndAddress: false,
-							bufferPointer: 0,
-							displayFormat: 'decimal',
-							memory: {
-								byteAddress: 0,
-								wordAlignedAddress: 0,
-								wordAlignedSize: 1,
-							},
-						},
-						baseSampleShift: 2,
-						valueType: 'float32',
-					},
+						greenEndX: 6,
+						yellowEndX: 9,
+						overloadMarkerX: 2,
+					}),
 				],
 			} as never,
 		});
@@ -131,27 +129,13 @@ describe('drawMeters', () => {
 		const codeBlock = createMockCodeBlock({
 			widgets: {
 				arrayMeters: [
-					{
-						x: 0,
-						y: 0,
+					createMeterWidget({
 						width: 12,
 						height: 4,
-						minValue: 0,
-						maxValue: 1,
-						memory: {
-							showAddress: false,
-							showEndAddress: false,
-							bufferPointer: 0,
-							displayFormat: 'decimal',
-							memory: {
-								byteAddress: 0,
-								wordAlignedAddress: 0,
-								wordAlignedSize: 1,
-							},
-						},
-						baseSampleShift: 2,
-						valueType: 'float32',
-					},
+						greenEndX: 8,
+						yellowEndX: 10,
+						overloadMarkerX: 4,
+					}),
 				],
 			} as never,
 		});
@@ -175,27 +159,18 @@ describe('drawMeters', () => {
 		const codeBlock = createMockCodeBlock({
 			widgets: {
 				arrayMeters: [
-					{
-						x: 0,
-						y: 0,
+					createMeterWidget({
 						width: 12,
 						height: 4,
 						minValue: -1,
 						maxValue: 1,
-						memory: {
-							showAddress: false,
-							showEndAddress: false,
-							bufferPointer: 0,
-							displayFormat: 'decimal',
-							memory: {
-								byteAddress: 0,
-								wordAlignedAddress: 0,
-								wordAlignedSize: 1,
-							},
-						},
-						baseSampleShift: 2,
-						valueType: 'float32',
-					},
+						isBipolar: true,
+						amplitudeLimit: 1,
+						inverseValueRange: 0.5,
+						greenEndX: 8,
+						yellowEndX: 10,
+						overloadMarkerX: 4,
+					}),
 				],
 			} as never,
 		});
@@ -219,27 +194,13 @@ describe('drawMeters', () => {
 		const codeBlock = createMockCodeBlock({
 			widgets: {
 				arrayMeters: [
-					{
-						x: 0,
-						y: 0,
-						width: 20,
-						height: 6,
+					createMeterWidget({
 						minValue: -1,
 						maxValue: 1,
-						memory: {
-							showAddress: false,
-							showEndAddress: false,
-							bufferPointer: 0,
-							displayFormat: 'decimal',
-							memory: {
-								byteAddress: 0,
-								wordAlignedAddress: 0,
-								wordAlignedSize: 1,
-							},
-						},
-						baseSampleShift: 2,
-						valueType: 'float32',
-					},
+						isBipolar: true,
+						amplitudeLimit: 1,
+						inverseValueRange: 0.5,
+					}),
 				],
 			} as never,
 		});
@@ -263,27 +224,13 @@ describe('drawMeters', () => {
 		const codeBlock = createMockCodeBlock({
 			widgets: {
 				arrayMeters: [
-					{
-						x: 0,
-						y: 0,
+					createMeterWidget({
 						width: 12,
 						height: 4,
-						minValue: 0,
-						maxValue: 1,
-						memory: {
-							showAddress: false,
-							showEndAddress: false,
-							bufferPointer: 0,
-							displayFormat: 'decimal',
-							memory: {
-								byteAddress: 0,
-								wordAlignedAddress: 0,
-								wordAlignedSize: 1,
-							},
-						},
-						baseSampleShift: 2,
-						valueType: 'float32',
-					},
+						greenEndX: 8,
+						yellowEndX: 10,
+						overloadMarkerX: 4,
+					}),
 				],
 			} as never,
 		});
