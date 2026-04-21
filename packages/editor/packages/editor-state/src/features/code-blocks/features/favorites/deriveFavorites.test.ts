@@ -35,6 +35,7 @@ function mockCodeBlock(
 			outputs: [],
 			debuggers: [],
 			arrayPlotters: [],
+			arrayMeters: [],
 			arrayWaves: [],
 			switches: [],
 			buttons: [],
