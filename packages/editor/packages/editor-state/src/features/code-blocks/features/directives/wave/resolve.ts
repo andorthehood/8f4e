@@ -31,7 +31,7 @@ function resolveWaveDirectiveWidget(
 
 	graphicData.widgets.arrayWaves.push({
 		width: graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
-		height: state.viewport.hGrid * 2,
+		height: state.viewport.hGrid * wave.heightRows,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
 		startAddress,

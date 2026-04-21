@@ -1,13 +1,19 @@
 import { describe, it, expect } from 'vitest';
 
 import { createWaveDirectiveData } from './data';
-import waveDirective from './plugin';
+import waveDirective, { wave2Directive } from './plugin';
 
 import { parseEditorDirectives } from '../utils';
 
 function parseWaveDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [waveDirective])
 		.map(directive => createWaveDirectiveData(directive.args, directive.rawRow))
+		.filter(result => result !== undefined);
+}
+
+function parseWaveDirectiveDataWithPlugins(code: string[]) {
+	return parseEditorDirectives(code, [waveDirective, wave2Directive])
+		.map(directive => createWaveDirectiveData(directive.args, directive.rawRow, directive.name === 'wave2' ? 4 : 2))
 		.filter(result => result !== undefined);
 }
 
@@ -21,6 +27,7 @@ describe('wave directive data', () => {
 				length: 16,
 				pointerMemoryId: 'playhead',
 				lineNumber: 0,
+				heightRows: 2,
 			},
 		]);
 	});
@@ -34,6 +41,7 @@ describe('wave directive data', () => {
 				length: 16,
 				pointerMemoryId: undefined,
 				lineNumber: 0,
+				heightRows: 2,
 			},
 		]);
 	});
@@ -47,6 +55,7 @@ describe('wave directive data', () => {
 				length: 'length',
 				pointerMemoryId: 'ptr1',
 				lineNumber: 0,
+				heightRows: 2,
 			},
 		]);
 	});
@@ -60,6 +69,7 @@ describe('wave directive data', () => {
 				length: 'count(buffer1)',
 				pointerMemoryId: 'ptr1',
 				lineNumber: 0,
+				heightRows: 2,
 			},
 		]);
 	});
@@ -73,12 +83,14 @@ describe('wave directive data', () => {
 				length: 8,
 				pointerMemoryId: 'ptr1',
 				lineNumber: 0,
+				heightRows: 2,
 			},
 			{
 				startAddressMemoryId: '&buffer2',
 				length: 'len2',
 				pointerMemoryId: 'ptr2',
 				lineNumber: 2,
+				heightRows: 2,
 			},
 		]);
 	});
@@ -100,6 +112,21 @@ describe('wave directive data', () => {
 				length: 32,
 				pointerMemoryId: 'testPointer',
 				lineNumber: 1,
+				heightRows: 2,
+			},
+		]);
+	});
+
+	it('should parse wave2 with doubled height', () => {
+		const result = parseWaveDirectiveDataWithPlugins(['; @wave2 bufferAddress 16 playhead']);
+
+		expect(result).toEqual([
+			{
+				startAddressMemoryId: 'bufferAddress',
+				length: 16,
+				pointerMemoryId: 'playhead',
+				lineNumber: 0,
+				heightRows: 4,
 			},
 		]);
 	});
