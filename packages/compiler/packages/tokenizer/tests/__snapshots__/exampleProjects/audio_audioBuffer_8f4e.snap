@@ -396,7 +396,7 @@
         "scope": "local"
       },
       {
-        "value": 44100,
+        "value": 48000,
         "type": "literal",
         "isInteger": true
       }
