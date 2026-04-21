@@ -1133,6 +1133,7 @@ moduleEnd
 module modSamplePlayer1
 ; @pos 545 -6
 ; @group ch1
+; @home
 use env
 ; @tab 6 20
 int*	period	&period1:out
@@ -2059,6 +2060,7 @@ moduleEnd
 
 module sampleOffset1
 ; @pos 195 -71
+; @group ch1
 use mod
 int* row &rowBuffer1:
 int out ;@w
@@ -2145,6 +2147,7 @@ moduleEnd
 
 module sampleOffset3
 ; @pos 196 21
+; @group ch3
 use mod
 int* row &rowBuffer3:
 int out ;@w
@@ -2188,6 +2191,7 @@ moduleEnd
 
 module sampleOffset4
 ; @pos 197 67
+; @group ch4
 use mod
 int* row &rowBuffer4:
 int out ;@w
@@ -2443,7 +2447,7 @@ moduleEnd
 
 module tempo1
 ; @pos 233 -71
-; @home
+; @group ch1
 use mod
 int* row &rowBuffer1:
 int* tempo &modTickClock:tempo
@@ -2505,7 +2509,7 @@ moduleEnd
 
 module tempo3
 ; @pos 235 21
-; @home
+; @group ch3
 use mod
 int* row &rowBuffer3:
 int* tempo &modTickClock:tempo
@@ -2536,7 +2540,7 @@ moduleEnd
 
 module tempo4
 ; @pos 237 67
-; @home
+; @group ch4
 use mod
 int* row &rowBuffer4:
 int* tempo &modTickClock:tempo
