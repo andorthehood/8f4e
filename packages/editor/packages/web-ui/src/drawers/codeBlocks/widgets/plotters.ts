@@ -9,6 +9,74 @@ function clamp(value: number, min: number, max: number): number {
 	return Math.max(min, Math.min(value, max));
 }
 
+function valueToY(
+	value: number,
+	minValue: number,
+	valueRange: number,
+	plotHeight: number,
+	pointHeight: number
+): number {
+	const normalizedValue = valueRange === 0 ? 0.5 : (value - minValue) / valueRange;
+	return clamp(
+		plotHeight - pointHeight - Math.round(normalizedValue * (plotHeight - pointHeight)),
+		0,
+		plotHeight - pointHeight
+	);
+}
+
+function drawSparsePlot(
+	engine: Engine,
+	values: ArrayLike<number>,
+	baseValueIndex: number,
+	width: number,
+	columnWidth: number,
+	plotHeight: number,
+	pointHeight: number,
+	minValue: number,
+	valueRange: number
+): void {
+	for (let i = 0; i < width; i++) {
+		const value = values[baseValueIndex + i];
+		const pointY = valueToY(value, minValue, valueRange, plotHeight, pointHeight);
+		engine.drawSprite(i * columnWidth, pointY, 'trace', columnWidth, pointHeight);
+	}
+}
+
+function drawDensePlot(
+	engine: Engine,
+	values: ArrayLike<number>,
+	baseValueIndex: number,
+	arrayLength: number,
+	columnCount: number,
+	plotHeight: number,
+	pointHeight: number,
+	minValue: number,
+	maxValue: number,
+	valueRange: number
+): void {
+	for (let column = 0; column < columnCount; column++) {
+		const sliceStart = Math.floor((column / columnCount) * arrayLength);
+		const sliceEnd = Math.max(sliceStart + 1, Math.floor(((column + 1) / columnCount) * arrayLength));
+		let sliceMin = Number.POSITIVE_INFINITY;
+		let sliceMax = Number.NEGATIVE_INFINITY;
+
+		for (let index = sliceStart; index < sliceEnd; index++) {
+			const sampleValue = values[baseValueIndex + index];
+			sliceMin = Math.min(sliceMin, sampleValue);
+			sliceMax = Math.max(sliceMax, sampleValue);
+		}
+
+		const clampedMin = clamp(sliceMin, minValue, maxValue);
+		const clampedMax = clamp(sliceMax, minValue, maxValue);
+		const minY = valueToY(clampedMin, minValue, valueRange, plotHeight, pointHeight);
+		const maxY = valueToY(clampedMax, minValue, valueRange, plotHeight, pointHeight);
+		const rectY = Math.min(minY, maxY);
+		const rectHeight = Math.max(pointHeight, Math.abs(maxY - minY) + pointHeight);
+
+		engine.drawSprite(column, rectY, 'trace', 1, rectHeight);
+	}
+}
+
 export default function drawer(
 	engine: Engine,
 	state: State,
@@ -39,16 +107,21 @@ export default function drawer(
 
 		engine.drawSprite(0, 0, 'plotterBackground', maxPlotterWidth, plotHeight);
 
-		for (let i = 0; i < width; i++) {
-			const value = values[baseValueIndex + i];
-			const normalizedValue = valueRange === 0 ? 0.5 : (value - minValue) / valueRange;
-			const pointY = clamp(
-				plotHeight - pointHeight - Math.round(normalizedValue * (plotHeight - pointHeight)),
-				0,
-				plotHeight - pointHeight
+		if (arrayLength > maxPlotterWidth) {
+			drawDensePlot(
+				engine,
+				values,
+				baseValueIndex,
+				arrayLength,
+				maxPlotterWidth,
+				plotHeight,
+				pointHeight,
+				minValue,
+				maxValue,
+				valueRange
 			);
-
-			engine.drawSprite(i * columnWidth, pointY, 'trace', columnWidth, pointHeight);
+		} else {
+			drawSparsePlot(engine, values, baseValueIndex, width, columnWidth, plotHeight, pointHeight, minValue, valueRange);
 		}
 
 		engine.endGroup();
