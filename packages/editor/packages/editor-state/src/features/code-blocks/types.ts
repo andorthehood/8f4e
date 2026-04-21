@@ -92,6 +92,14 @@ export interface ArrayMeter {
 	y: number;
 	minValue: number;
 	maxValue: number;
+	isBipolar: boolean;
+	amplitudeLimit: number;
+	inverseValueRange: number;
+	greenEndX: number;
+	yellowEndX: number;
+	overloadMarkerX: number;
+	overloadMarkerWidth: number;
+	staticValueIndex?: number;
 	memory: MemoryIdentifier;
 	baseSampleShift: 0 | 1 | 2 | 3;
 	valueType: TypedValueKind;
