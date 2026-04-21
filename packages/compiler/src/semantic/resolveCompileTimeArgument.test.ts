@@ -11,6 +11,7 @@ describe('tryResolveCompileTimeArgument', () => {
 	const mockContext = {
 		namespace: {
 			consts: {
+				BAR: { value: 5, isInteger: true },
 				SIZE: { value: 16, isInteger: true },
 				PI64: { value: 3.14159, isInteger: false, isFloat64: true },
 			},
@@ -183,6 +184,13 @@ describe('tryResolveCompileTimeArgument', () => {
 	it('resolves addition expression: constant + literal', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE+1'))).toEqual({
 			value: 17,
+			isInteger: true,
+		});
+	});
+
+	it('resolves addition expression: constant + constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE+BAR'))).toEqual({
+			value: 21,
 			isInteger: true,
 		});
 	});
