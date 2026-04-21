@@ -1174,7 +1174,6 @@ ifEnd
 ; Calculate read address
 push &playhead
 push _position
-round
 castToInt
 push sampleAddress
 add
@@ -1651,7 +1650,6 @@ moduleEnd
 module period1
 ; @pos 306 -71
 ; @group ch1
-; @nth
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
 int out
@@ -1711,6 +1709,7 @@ module period3
 ; @pos 307 21
 ; @group ch3
 int* row &rowBuffer3:
+int* sampleNumber &sampleNumber3:out
 int out
 
 ; @watch out
@@ -1723,6 +1722,13 @@ if
 push &out
 push *row
 call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
 store
 ifEnd 
 
@@ -1732,6 +1738,7 @@ module period4
 ; @pos 310 67
 ; @group ch4
 int* row &rowBuffer4:
+int* sampleNumber &sampleNumber4:out
 int out
 
 ; @watch out
@@ -1744,6 +1751,13 @@ if
 push &out
 push *row
 call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
 store
 ifEnd 
 
@@ -1958,7 +1972,6 @@ moduleEnd
 module sampleNumber1
 ; @pos 272 -71
 ; @group ch1
-; @nth
 int* row &rowBuffer1:
 int out
 int param
@@ -2051,7 +2064,6 @@ int* row &rowBuffer1:
 int out ;@w
 int memory ;@w
 int* rowCounter &rowCount2:out
-; @nth
 push &out
 push 0
 store
@@ -2219,7 +2231,6 @@ moduleEnd
 
 module samplePack
 ; @pos 493 -15
-; @nth
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -2433,7 +2444,6 @@ moduleEnd
 module tempo1
 ; @pos 233 -71
 ; @home
-; @nth
 use mod
 int* row &rowBuffer1:
 int* tempo &modTickClock:tempo
@@ -2558,7 +2568,6 @@ moduleEnd
 module trigger1
 ; @pos 351 -71
 ; @group ch1
-; @nth
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
 int* period &period1:out
