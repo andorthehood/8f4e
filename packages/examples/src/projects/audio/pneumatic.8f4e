@@ -512,38 +512,38 @@ param int sampleNumber
 
 push sampleNumber
 mapBegin int
-map 0	&samplePack:sample0
-map 1	&samplePack:sample1
-map 2	&samplePack:sample2
-map 3	&samplePack:sample3
-map 4	&samplePack:sample4
-map 5	&samplePack:sample5
-map 6	&samplePack:sample6
-map 7	&samplePack:sample7
-map 8	&samplePack:sample8
-map 9	&samplePack:sample0
-map 10	&samplePack:sample10
-map 11	&samplePack:sample11
-map 12	&samplePack:sample12
-map 13	&samplePack:sample13
-map 14	&samplePack:sample14
-map 15	&samplePack:sample15
-map 16	&samplePack:sample16
-map 17	&samplePack:sample17
-map 18	&samplePack:sample18
-map 19	&samplePack:sample19
-map 20	&samplePack:sample20
-map 21	&samplePack:sample21
-map 22	&samplePack:sample22
-map 23	&samplePack:sample23
-map 24	&samplePack:sample24
-map 25	&samplePack:sample25
-map 26	&samplePack:sample26
-map 27	&samplePack:sample27
-map 28	&samplePack:sample28
-map 29	&samplePack:sample29
-map 30	&samplePack:sample30
-map 31	&samplePack:sample31
+map 0	&samplePack1:sample0
+map 1	&samplePack1:sample1
+map 2	&samplePack1:sample2
+map 3	&samplePack1:sample3
+map 4	&samplePack1:sample4
+map 5	&samplePack1:sample5
+map 6	&samplePack1:sample6
+map 7	&samplePack1:sample7
+map 8	&samplePack1:sample8
+map 9	&samplePack1:sample0
+map 10	&samplePack1:sample10
+map 11	&samplePack1:sample11
+map 12	&samplePack1:sample12
+map 13	&samplePack1:sample13
+map 14	&samplePack1:sample14
+map 15	&samplePack1:sample15
+map 16	&samplePack2:sample16
+map 17	&samplePack2:sample17
+map 18	&samplePack2:sample18
+map 19	&samplePack2:sample19
+map 20	&samplePack2:sample20
+map 21	&samplePack2:sample21
+map 22	&samplePack2:sample22
+map 23	&samplePack2:sample23
+map 24	&samplePack2:sample24
+map 25	&samplePack2:sample25
+map 26	&samplePack2:sample26
+map 27	&samplePack2:sample27
+map 28	&samplePack2:sample28
+map 29	&samplePack2:sample29
+map 30	&samplePack2:sample30
+map 31	&samplePack2:sample31
 mapEnd int
 
 functionEnd int
@@ -1143,7 +1143,7 @@ int*	sampleNumber	&sampleNumber1:out
 int8*	sampleAddress	; @w
 int8*	playhead	; @w
 int	sampleSize	; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out; @w
 ; @hide
 
@@ -1236,7 +1236,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 545 14
+; @pos 545 16
 ; @group ch2
 use env
 ; @stop 12 20
@@ -1247,7 +1247,7 @@ int*  sampleNumber &sampleNumber2:out
 int8* sampleAddress ;@w
 int   sampleSize ; @w
 int8* playhead ; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
 
@@ -1340,7 +1340,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer3
-; @pos 596 -6
+; @pos 597 -6
 ; @group ch3
 use env
 
@@ -1351,7 +1351,7 @@ int* sampleNumber &sampleNumber3:out
 int8* sampleAddress; @w
 int sampleSize; @w
 int8* playhead; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
 
@@ -1444,7 +1444,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 595 14
+; @pos 597 16
 ; @group ch4
 use env
 
@@ -1455,7 +1455,7 @@ int* sampleNumber &sampleNumber4:out
 int8* sampleAddress; @w
 int sampleSize; @w
 int8* playhead; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
 
@@ -2233,8 +2233,8 @@ ifEnd
 
 moduleEnd
 
-module samplePack
-; @pos 493 -15
+module samplePack1
+; @pos 445 -16
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -2279,6 +2279,11 @@ int8[] sample14 ASSET_SAMPLE14_SIZE
 int8[] sample15 ASSET_SAMPLE15_SIZE
 ; @loadAsset sample15 &sample15
 ; @wave &sample15 count(sample15)
+moduleEnd
+
+module samplePack2
+; @pos 489 -15
+use env
 int8[] sample16 ASSET_SAMPLE16_SIZE
 ; @loadAsset sample16 &sample16
 ; @wave &sample16 count(sample16)
