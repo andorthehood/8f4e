@@ -19,6 +19,11 @@ function findOperatorOutsideParens(value: string): number {
 		} else if (ch === ')') {
 			depth--;
 		} else if ((ch === '+' || ch === '-' || ch === '*' || ch === '/' || ch === '^') && depth === 0) {
+			// Treat leading +/- and signed rhs numeric literals as part of the operand,
+			// not as the expression operator: -1/FOO, FOO/-1, FOO--1.
+			if ((ch === '+' || ch === '-') && (i === 0 || value[i - 1] === '+' || value[i - 1] === '-' || value[i - 1] === '*' || value[i - 1] === '/' || value[i - 1] === '^')) {
+				continue;
+			}
 			if (operatorIndex !== -1) {
 				return -2; // More than one operator outside parens
 			}
