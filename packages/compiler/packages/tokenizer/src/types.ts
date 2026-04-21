@@ -116,3 +116,4 @@ export type DefaultLine = ASTLineBase<
 
 export type LoopLine = ASTLineBase<'loop', [] | [ArgumentLiteral]>;
 export type LoopCapLine = ASTLineBase<'#loopCap', [ArgumentLiteral]>;
+export type FollowLine = ASTLineBase<'#follow', [ArgumentIdentifier]>;

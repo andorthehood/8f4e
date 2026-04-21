@@ -1,6 +1,7 @@
 import semanticConst from './const';
 import semanticUse from './use';
 import semanticInit from './init';
+import semanticFollow from './follow';
 import semanticModule from './module';
 import semanticConstants from './constants';
 import semanticModuleEnd from './moduleEnd';
@@ -18,6 +19,9 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 			return;
 		case 'init':
 			semanticInit(line, context);
+			return;
+		case '#follow':
+			semanticFollow(line, context);
 			return;
 		case 'module':
 			semanticModule(line, context);

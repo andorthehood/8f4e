@@ -8,6 +8,7 @@ describe('isSemanticOnlyInstruction', () => {
 		expect(isSemanticOnlyInstruction('const')).toBe(true);
 		expect(isSemanticOnlyInstruction('use')).toBe(true);
 		expect(isSemanticOnlyInstruction('init')).toBe(true);
+		expect(isSemanticOnlyInstruction('#follow')).toBe(true);
 	});
 
 	it('returns false for runtime/codegen instructions', () => {

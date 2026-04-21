@@ -151,6 +151,69 @@ moduleEnd
 
 The `#skipExecution` directive takes precedence, and the module code does not execute during either init or cycle. This allows you to temporarily disable a module that was previously marked as init-only without removing the `#initOnly` directive.
 
+### `#follow`
+
+Constrains module memory layout so the current module must be placed immediately after another module, with no module in between.
+
+**Scope:** Module blocks only
+
+**Syntax:** `#follow <moduleId>`
+
+**Usage:**
+```
+module foo
+int a 1
+moduleEnd
+
+module bar
+#follow foo
+int b 2
+moduleEnd
+```
+
+**Behavior:**
+- Forces the current module to be laid out immediately after the target module in final memory order
+- No unrelated module may appear between the target and the follower
+- Chained follow directives form a single contiguous segment, for example `a -> b -> c`
+- The final layout must still satisfy normal intermodule dependency ordering from memory declarations
+
+**Use Cases:**
+- Keep a group of related modules contiguous in memory
+- Express layout-sensitive adjacency directly in source instead of relying on incidental alphabetical order
+- Build explicit module chains whose physical order matters
+
+**Errors:**
+- Using `#follow` outside of a module block will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+- Following a missing module will result in `MODULE_FOLLOW_TARGET_NOT_FOUND`
+- Following the current module will result in `MODULE_FOLLOW_SELF`
+- Declaring more than one `#follow` target in the same module will result in `MODULE_FOLLOW_MULTIPLE_TARGETS`
+- If two modules both try to follow the same target, the compiler will throw `MODULE_FOLLOW_DUPLICATE_FOLLOWER`
+- Cycles in follow constraints will result in `MODULE_FOLLOW_CYCLE`
+- If a follow-chain would violate dependency ordering, the compiler will throw `MODULE_FOLLOW_DEPENDENCY_CONFLICT`
+
+**Example:**
+
+```
+module alpha
+int head 0
+moduleEnd
+
+module beta
+#follow alpha
+int middle 0
+moduleEnd
+
+module gamma
+#follow beta
+int tail 0
+moduleEnd
+```
+
+In this example:
+- `beta` must immediately follow `alpha`
+- `gamma` must immediately follow `beta`
+- the compiler treats the three modules as one contiguous layout segment: `alpha -> beta -> gamma`
+
 ## Module- and Function-Scoped Directives
 
 ### `#loopCap`
@@ -222,6 +285,6 @@ functionEnd
 
 If an unknown compiler directive is encountered, the compiler will throw an `UNRECOGNISED_INSTRUCTION` error.
 
-If a module-scoped directive like `#skipExecution` or `#initOnly` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
+If a module-scoped directive like `#skipExecution`, `#initOnly`, or `#follow` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
 
 If `#loopCap` is used outside of a module or function block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.

@@ -17,6 +17,7 @@ Modules are the primary unit of code organization in 8f4e. Each module:
 - Must have a unique name
 - Can contain memory declarations, constants, and executable code
 - Has its own namespace that can be imported by other modules using `use`
+- Can include module-scoped compiler directives such as `#skipExecution`, `#initOnly`, and `#follow`
 
 ### Example Module
 
@@ -60,3 +61,4 @@ moduleEnd
 
 - Every `module` instruction must have a corresponding `moduleEnd`
 - Code outside of module blocks is not allowed (except config and constants blocks)
+- Module-scoped compiler directives like `#follow targetModule` must appear inside the module block they affect
