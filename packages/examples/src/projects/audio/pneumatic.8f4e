@@ -19,6 +19,34 @@ const ASSET_CH2_SIZE 9984
 const ASSET_CH3_SIZE 9984
 ; 'patterns_ch4.bin'
 const ASSET_CH4_SIZE 9984
+; 'sample_1.pcm'
+const ASSET_SAMPLE1_SIZE 2104
+; 'sample_2.pcm'
+const ASSET_SAMPLE2_SIZE 4904
+; 'sample_3.pcm'
+const ASSET_SAMPLE3_SIZE 15938
+; 'sample_4.pcm'
+const ASSET_SAMPLE4_SIZE 11062
+; 'sample_5.pcm'
+const ASSET_SAMPLE5_SIZE 10276
+; 'sample_6.pcm'
+const ASSET_SAMPLE6_SIZE 16404
+; 'sample_7.pcm'
+const ASSET_SAMPLE7_SIZE 16016
+; 'sample_8.pcm'
+const ASSET_SAMPLE8_SIZE 4926
+; 'sample_10.pcm'
+const ASSET_SAMPLE10_SIZE 25774
+; 'sample_11.pcm'
+const ASSET_SAMPLE11_SIZE 52982
+; 'sample_12.pcm'
+const ASSET_SAMPLE12_SIZE 14260
+; 'sample_13.pcm'
+const ASSET_SAMPLE13_SIZE 30708
+; 'sample_14.pcm'
+const ASSET_SAMPLE14_SIZE 6970
+; 'sample_15.pcm'
+const ASSET_SAMPLE15_SIZE 62562
 ; 'sample_16.pcm'
 const ASSET_SAMPLE16_SIZE 9826
 ; 'sample_17.pcm'
@@ -51,34 +79,6 @@ const ASSET_SAMPLE29_SIZE 12636
 const ASSET_SAMPLE30_SIZE 22586
 ; 'sample_31.pcm'
 const ASSET_SAMPLE31_SIZE 20432
-; 'sample_1.pcm'
-const ASSET_SAMPLE1_SIZE 2104
-; 'sample_2.pcm'
-const ASSET_SAMPLE2_SIZE 4904
-; 'sample_3.pcm'
-const ASSET_SAMPLE3_SIZE 15938
-; 'sample_4.pcm'
-const ASSET_SAMPLE4_SIZE 11062
-; 'sample_5.pcm'
-const ASSET_SAMPLE5_SIZE 10276
-; 'sample_6.pcm'
-const ASSET_SAMPLE6_SIZE 16404
-; 'sample_7.pcm'
-const ASSET_SAMPLE7_SIZE 16016
-; 'sample_8.pcm'
-const ASSET_SAMPLE8_SIZE 4926
-; 'sample_10.pcm'
-const ASSET_SAMPLE10_SIZE 25774
-; 'sample_11.pcm'
-const ASSET_SAMPLE11_SIZE 52982
-; 'sample_12.pcm'
-const ASSET_SAMPLE12_SIZE 14260
-; 'sample_13.pcm'
-const ASSET_SAMPLE13_SIZE 30708
-; 'sample_14.pcm'
-const ASSET_SAMPLE14_SIZE 6970
-; 'sample_15.pcm'
-const ASSET_SAMPLE15_SIZE 62562
 
 constantsEnd
 
@@ -525,6 +525,18 @@ sub
 
 functionEnd int
 
+function sampleNumberCanLoop
+; @pos 334 -158
+use sampleMeta
+param int sampleNumber
+
+push sampleNumber
+call sampleNumberToRepeatLen
+push 2
+greaterThan
+
+functionEnd int
+
 function sampleNumberToAddr
 ; @pos 533 -181
 ; @tab 8
@@ -833,8 +845,7 @@ module amp1
 
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
-float out
-
+float out ; @meter
 push &out
 push *in
 push *volume
@@ -850,8 +861,7 @@ module amp2
 ; @pos 661 -4
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
-float out
-
+float out; @meter
 push &out
 push *in
 push *volume
@@ -864,11 +874,10 @@ store
 moduleEnd
 
 module amp3
-; @pos 661 14
+; @pos 662 13
 float* in &modSamplePlayer3:out
 int* volume &volume3:out
-float out
-
+float out ; @meter
 push &out
 push *in
 push *volume
@@ -881,11 +890,10 @@ store
 moduleEnd
 
 module amp4
-; @pos 661 32
+; @pos 662 30
 float* in &modSamplePlayer4:out
 int* volume &volume4:out
-float out
-
+float out; @meter
 push &out
 push *in
 push *volume
@@ -1014,13 +1022,14 @@ ifEnd
 moduleEnd
 
 module mixer
-; @pos 703 -9
+; @pos 704 -9
 float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
 float* in4 &amp4:out
-float outL
-float outR
+
+float outL ; @meter
+float outR ; @meter
 
 push &outL
 push *in1
@@ -1031,7 +1040,7 @@ div
 push *in2
 push *in4
 add
-push 4.0
+push 5.0
 div
 add
 store
@@ -1046,7 +1055,7 @@ div
 push *in1
 push *in3
 add
-push 4.0
+push 5.0
 div
 add
 store
@@ -1222,9 +1231,7 @@ store
 ifEnd
 
 push *sampleNumber
-call sampleNumberToRepeatLen
-push 2
-greaterThan
+call sampleNumberCanLoop
 
 push _position
 castToInt
@@ -1326,9 +1333,7 @@ store
 ifEnd
 
 push *sampleNumber
-call sampleNumberToRepeatLen
-push 2
-greaterThan
+call sampleNumberCanLoop
 
 push _position
 castToInt
@@ -1430,9 +1435,7 @@ store
 ifEnd
 
 push *sampleNumber
-call sampleNumberToRepeatLen
-push 2
-greaterThan
+call sampleNumberCanLoop
 
 push _position
 castToInt
@@ -1534,9 +1537,7 @@ store
 ifEnd
 
 push *sampleNumber
-call sampleNumberToRepeatLen
-push 2
-greaterThan
+call sampleNumberCanLoop
 
 push _position
 castToInt
@@ -2730,6 +2731,9 @@ module ultimateSoundtrackerColors
 ; @color icons.inputConnectorBackground	#369
 ; @color icons.inputConnector	#000
 ; @color text.arrow	#369
+; @color fill.meterGreen	#0f0
+; @color fill.meterYellow	#ff0
+; @color fill.meterRed	#f00
 moduleEnd
 
 module volume1
