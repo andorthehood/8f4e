@@ -72,6 +72,9 @@ describe('meter directive widget resolution', () => {
 		expect(mockGraphicData.widgets.arrayMeters[0].minValue).toBe(-1);
 		expect(mockGraphicData.widgets.arrayMeters[0].maxValue).toBe(1);
 		expect(mockGraphicData.widgets.arrayMeters[0].height).toBe(20);
+		expect(mockGraphicData.widgets.arrayMeters[0].isBipolar).toBe(true);
+		expect(mockGraphicData.widgets.arrayMeters[0].amplitudeLimit).toBe(1);
+		expect(mockGraphicData.widgets.arrayMeters[0].staticValueIndex).toBe(0);
 	});
 
 	it('uses explicit range overrides when provided', () => {
@@ -92,6 +95,14 @@ describe('meter directive widget resolution', () => {
 			y: 0,
 			minValue: 0,
 			maxValue: 1,
+			isBipolar: false,
+			amplitudeLimit: 0,
+			inverseValueRange: 1,
+			greenEndX: 0,
+			yellowEndX: 0,
+			overloadMarkerX: 0,
+			overloadMarkerWidth: 0,
+			staticValueIndex: 0,
 			memory: {
 				memory: { wordAlignedAddress: 0 } as DataStructure,
 				showAddress: false,
@@ -135,5 +146,6 @@ describe('meter directive widget resolution', () => {
 
 		expect(mockGraphicData.widgets.arrayMeters).toHaveLength(1);
 		expect(mockGraphicData.widgets.arrayMeters[0].memory.memory.id).toBe('out');
+		expect(mockGraphicData.widgets.arrayMeters[0].staticValueIndex).toBe(4);
 	});
 });

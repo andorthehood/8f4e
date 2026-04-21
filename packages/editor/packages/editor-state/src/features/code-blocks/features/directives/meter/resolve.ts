@@ -8,6 +8,9 @@ import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
+const GREEN_START_FACTOR = 0.75;
+const RED_THRESHOLD = 0.9;
+
 function resolveMeterDirectiveWidget(
 	meter: MeterDirectiveData,
 	graphicData: Parameters<DirectiveWidgetResolver>[0],
@@ -28,12 +31,31 @@ function resolveMeterDirectiveWidget(
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[meter.lineNumber] ?? meter.lineNumber;
 	const minValue = meter.minValueOverride ?? valueSpec.minValue;
 	const maxValue = meter.maxValueOverride ?? valueSpec.maxValue;
+	const width = graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid;
+	const isBipolar = minValue < 0 && maxValue > 0;
+	const amplitudeLimit = isBipolar ? Math.max(Math.abs(minValue), Math.abs(maxValue)) : 0;
+	const inverseValueRange = maxValue === minValue ? 0 : 1 / (maxValue - minValue);
+	const greenEndX = Math.floor(width * RED_THRESHOLD * GREEN_START_FACTOR);
+	const yellowEndX = Math.floor(width * RED_THRESHOLD);
+	const overloadMarkerWidth = Math.min(state.viewport.vGrid, width);
+	const staticValueIndex =
+		memory.showAddress || (!memory.memory.pointeeBaseType && !memory.memory.isPointingToPointer)
+			? (memory.memory.byteAddress >> valueSpec.baseSampleShift) + memory.bufferPointer
+			: undefined;
 
 	graphicData.widgets.arrayMeters.push({
-		width: graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
+		width,
 		height: state.viewport.hGrid,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
+		isBipolar,
+		amplitudeLimit,
+		inverseValueRange,
+		greenEndX,
+		yellowEndX,
+		overloadMarkerX: width - overloadMarkerWidth,
+		overloadMarkerWidth,
+		staticValueIndex,
 		memory,
 		baseSampleShift: valueSpec.baseSampleShift,
 		valueType: valueSpec.valueType,
