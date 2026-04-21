@@ -1,88 +1,5 @@
 8f4e/v1
 
-note
-; @pos 416 41
-; @stop 9 10 right @hidden
-
-;     .        The instrument samples are
-;   .;;......  short recorded waveforms
-; .;;;;::::::  stored in these memory 
-;  `:;;::::::  slots.
-;    `:
-
-noteEnd
-
-note
-; @pos 260 93
-; @stop 5 5 @hidden
-
-; These four horizontal lanes represent
-; the fourplayback channels of the MOD.
-noteEnd
-
-note
-; @pos 261 -36
-; @stop 4 10 top @hidden
-;                                                     ;;;;;
-; These modules are busy extracting the               ;;;;;
-; information from the rows. This particular song   ..;;;;;..
-; is quite simple, it only has sample number, pitch  `:::::'
-; and volume data.                                     `:'
-noteEnd 
-
-note
-; @pos 404 -17
-; @stop 11 5 top @hidden
-;                         
-; The samples are selected 
-; based on the sample number
-; extracted from the active row.
-noteEnd
-
-note
-; @pos 416 30
-; @stop 10 10 bottom @hidden
-;                                          .   
-; The sample players read from these     .:;:.
-; buffers and advance through them at  .:;;;;;:.
-; different speeds to change pitch.      ;;;;;
-;                                        ;;;;;
-noteEnd
-
-note
-; @pos 28 -29
-; @stop 1 10 top @hidden
-
-; This patch is a bare-bones
-; MOD player implemented in 8f4e.
-
-; It's playing 'Hymn to Aurora' 
-; by Horace Wimp 
-noteEnd
-
-note
-; @pos 73 -30
-; @stop 2 15 top @hidden
-
-; MOD is a classic tracker music format
-; from the 16-bit home-computer era.
-; Tracker music is written as rows of events.
-; Each row encodes what to do next, 
-; such as which audio sample to play, 
-; at what pitch, and which effect to apply.
-noteEnd
-
-note
-; @pos -25 -1
-; @stop 3 10 left @hidden             
-;                                    
-;                                    .
-; Here you can see the event   ......;;.
-; data scrolling through the   ::::::;;;;.
-; memory.                      ::::::;;:'
-;                                    :'
-noteEnd
-
 constants env
 ; @pos 96 -158
 ; @favorite
@@ -350,6 +267,60 @@ const S31_REPEAT_LENGTH	4020
 
 constantsEnd
 
+function clampVolume
+; @pos 549 -113
+param int value
+
+push value
+push 64
+greaterThan
+if
+push 64
+return
+ifEnd
+
+push 0
+push value
+greaterThan
+if
+push 0
+return
+ifEnd
+
+push value
+
+functionEnd int
+
+function loadRowVolume
+; @pos 515 -113
+use mod
+param int row
+
+push row
+call maskEffect
+push SET_VOLUME
+equal
+if
+push row
+call maskParam
+return
+ifEnd
+
+push row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push row
+call maskSampleNumber
+call sampleNumberToVolume
+return
+ifEnd
+
+push 0
+
+functionEnd int
+
 function maskEffect
 ; @pos 333 -128
 use mod
@@ -504,6 +475,35 @@ castToFloat
 div
 
 functionEnd float
+
+function rowHasVolumeSlide
+; @pos 622 -113
+use mod
+param int row
+
+push row
+call maskEffect
+push VOLUME_SLIDE
+equal
+
+functionEnd int
+
+function rowShouldReloadVolume
+; @pos 583 -113
+use mod
+param int row
+
+push row
+call maskSampleNumber
+push 0
+greaterThan
+push row
+call maskEffect
+push SET_VOLUME
+equal
+or
+
+functionEnd int
 
 function sampleNumberToAddr
 ; @pos 533 -181
@@ -812,7 +812,7 @@ module amp1
 ; @pos 661 -22
 
 float* in &modSamplePlayer1:out
-int* volume &volumeSlide1:out
+int* volume &volume1:out
 float out
 
 push &out
@@ -829,7 +829,7 @@ moduleEnd
 module amp2
 ; @pos 661 -4
 float* in &modSamplePlayer2:out
-int* volume &volumeSlide2:out
+int* volume &volume2:out
 float out
 
 push &out
@@ -846,7 +846,7 @@ moduleEnd
 module amp3
 ; @pos 661 14
 float* in &modSamplePlayer3:out
-int* volume &volumeSlide3:out
+int* volume &volume3:out
 float out
 
 push &out
@@ -863,7 +863,7 @@ moduleEnd
 module amp4
 ; @pos 661 32
 float* in &modSamplePlayer4:out
-int* volume &volumeSlide4:out
+int* volume &volume4:out
 float out
 
 push &out
@@ -1679,7 +1679,7 @@ ifEnd
 moduleEnd
 
 module period2
-; @pos 305 -24
+; @pos 308 -24
 ; @group ch2
 int* row &rowBuffer2:
 int* sampleNumber &sampleNumber2:out
@@ -1708,7 +1708,7 @@ ifEnd
 moduleEnd
 
 module period3
-; @pos 318 21
+; @pos 307 21
 ; @group ch3
 int* row &rowBuffer3:
 int out
@@ -1729,7 +1729,7 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 316 90
+; @pos 310 67
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -1979,7 +1979,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 271 -24
+; @pos 274 -24
 ; @group ch2
 int* row &rowBuffer2:
 int out
@@ -2001,7 +2001,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber3
-; @pos 284 21
+; @pos 273 21
 ; @group ch3
 int* row &rowBuffer3:
 int out
@@ -2023,7 +2023,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 316 68
+; @pos 276 67
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -2583,7 +2583,7 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 350 -24
+; @pos 353 -24
 ; @group ch2
 int* row &rowBuffer2:
 int* rowCounter &rowCount2:out
@@ -2609,7 +2609,7 @@ ifEnd
 moduleEnd
 
 module trigger3
-; @pos 364 22
+; @pos 354 21
 ; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -2635,7 +2635,7 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 350 68
+; @pos 356 67
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
@@ -2697,470 +2697,230 @@ moduleEnd
 module volume1
 ; @pos 390 -71
 ; @group ch1
-; @nth
 use mod
 int* row &rowBuffer1:
-int* sampleNumber &sampleNumber1:out
-int out
+int* tick &modTickClock:out
+int* rowTrigger &modRowClock:out
+int out ; @w
+int up ; @w
+int down ; @w
+int next ; @w
+; @hide
+; Reload base volume on
+; tick 0 / row advance.
+push *rowTrigger
+risingEdge
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
 
-; @watch out
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+risingEdge
+if
+push *row
+call rowHasVolumeSlide
+if
+push &up
+push *row
+call maskParamHi
+store
 
-; Load default volume
-push *sampleNumber
+push &down
+push *row
+call maskParamLo
+store
+
+push up
 push 0
 greaterThan
 if
-push &out
-push *sampleNumber
-call sampleNumberToVolume
+push &next
+push out
+push up
+add
+store
+else
+push &next
+push out
+push down
+sub
 store
 ifEnd
 
-; Load volume from effect
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
 push &out
-push *row
-call maskParam
+push next
+call clampVolume
 store
+ifEnd
+ifEnd
 ifEnd
 
 moduleEnd
 
 module volume2
-; @pos 389 -24
+; @pos 392 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
-int* sampleNumber &sampleNumber2:out
-int out
+int* tick &modTickClock:out
+int* rowTrigger &modRowClock:out
+int out ; @w
+int up ; @w
+int down ; @w
+int next ; @w
+; @hide
+; Reload base volume on
+; tick 0 / row advance.
+push *rowTrigger
+risingEdge
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
 
-; @watch out
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+risingEdge
+if
+push *row
+call rowHasVolumeSlide
+if
+push &up
+push *row
+call maskParamHi
+store
 
-; Load default volume
-push *sampleNumber
+push &down
+push *row
+call maskParamLo
+store
+
+push up
 push 0
 greaterThan
 if
-push &out
-push *sampleNumber
-call sampleNumberToVolume
+push &next
+push out
+push up
+add
+store
+else
+push &next
+push out
+push down
+sub
 store
 ifEnd
 
-; Load volume from effect
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
 push &out
-push *row
-call maskParam
+push next
+call clampVolume
 store
+ifEnd
+ifEnd
 ifEnd
 
 moduleEnd
 
 module volume3
-; @pos 403 22
+; @pos 393 21
 ; @group ch3
 use mod
 int* row &rowBuffer3:
-int* sampleNumber &sampleNumber3:out
-int out
+int* tick &modTickClock:out
+int* rowTrigger &modRowClock:out
+int out ; @w
+int up ; @w
+int down ; @w
+int next ; @w
+; @hide
+; Reload base volume on
+; tick 0 / row advance.
+push *rowTrigger
+risingEdge
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
 
-; @watch out
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+risingEdge
+if
+push *row
+call rowHasVolumeSlide
+if
+push &up
+push *row
+call maskParamHi
+store
 
-; Load default volume
-push *sampleNumber
+push &down
+push *row
+call maskParamLo
+store
+
+push up
 push 0
 greaterThan
 if
-push &out
-push *sampleNumber
-call sampleNumberToVolume
+push &next
+push out
+push up
+add
+store
+else
+push &next
+push out
+push down
+sub
 store
 ifEnd
 
-; Load volume from effect
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
 push &out
-push *row
-call maskParam
+push next
+call clampVolume
 store
+ifEnd
+ifEnd
 ifEnd
 
 moduleEnd
 
 module volume4
-; @pos 401 68
-; @group ch4
-use mod
-int* row &rowBuffer4:
-int* sampleNumber &sampleNumber4:out
-int out
-
-; @watch out
-
-; Load default volume
-push *sampleNumber
-push 0
-greaterThan
-if
-push &out
-push *sampleNumber
-call sampleNumberToVolume
-store
-ifEnd
-
-; Load volume from effect
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
-push &out
-push *row
-call maskParam
-store
-ifEnd
-
-moduleEnd
-
-module volumeSlide1
-; @pos 435 -71
-; @group ch1
-use mod
-int* row &rowBuffer1:
-int* tick &modTickClock:out
-int* rowTrigger &modRowClock:out
-int out ; @w
-int up ; @w
-int down ; @w
-int next ; @w
-; @hide
-; Reload base volume on
-; tick 0 / row advance.
-push *rowTrigger
-risingEdge
-if
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-call sampleNumberToVolume
-store
-ifEnd
-
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
-push &out
-push *row
-call maskParam
-store
-ifEnd
-ifEnd
-
-; Apply volume slide only on
-; later ticks in the row.
-push *rowTrigger
-equalToZero
-if
-push *tick
-risingEdge
-if
-push *row
-call maskEffect
-push VOLUME_SLIDE
-equal
-if
-push &up
-push *row
-call maskParamHi
-store
-
-push &down
-push *row
-call maskParamLo
-store
-
-push up
-push 0
-greaterThan
-if
-push &next
-push out
-push up
-add
-store
-else
-push &next
-push out
-push down
-sub
-store
-ifEnd
-
-push next
-push 64
-greaterThan
-if
-push &out
-push 64
-store
-else
-push 0
-push next
-greaterThan
-if
-push &out
-push 0
-store
-else
-push &out
-push next
-store
-ifEnd
-ifEnd
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-
-module volumeSlide2
-; @pos 434 -24
-; @group ch2
-use mod
-int* row &rowBuffer2:
-int* tick &modTickClock:out
-int* rowTrigger &modRowClock:out
-int out ; @w
-int up ; @w
-int down ; @w
-int next ; @w
-; @hide
-; Reload base volume on
-; tick 0 / row advance.
-push *rowTrigger
-risingEdge
-if
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-call sampleNumberToVolume
-store
-ifEnd
-
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
-push &out
-push *row
-call maskParam
-store
-ifEnd
-ifEnd
-
-; Apply volume slide only on
-; later ticks in the row.
-push *rowTrigger
-equalToZero
-if
-push *tick
-risingEdge
-if
-push *row
-call maskEffect
-push VOLUME_SLIDE
-equal
-if
-push &up
-push *row
-call maskParamHi
-store
-
-push &down
-push *row
-call maskParamLo
-store
-
-push up
-push 0
-greaterThan
-if
-push &next
-push out
-push up
-add
-store
-else
-push &next
-push out
-push down
-sub
-store
-ifEnd
-
-push next
-push 64
-greaterThan
-if
-push &out
-push 64
-store
-else
-push 0
-push next
-greaterThan
-if
-push &out
-push 0
-store
-else
-push &out
-push next
-store
-ifEnd
-ifEnd
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-
-module volumeSlide3
-; @pos 448 22
-; @group ch3
-use mod
-int* row &rowBuffer3:
-int* tick &modTickClock:out
-int* rowTrigger &modRowClock:out
-int out ; @w
-int up ; @w
-int down ; @w
-int next ; @w
-; @hide
-; Reload base volume on
-; tick 0 / row advance.
-push *rowTrigger
-risingEdge
-if
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-call sampleNumberToVolume
-store
-ifEnd
-
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
-push &out
-push *row
-call maskParam
-store
-ifEnd
-ifEnd
-
-; Apply volume slide only on
-; later ticks in the row.
-push *rowTrigger
-equalToZero
-if
-push *tick
-risingEdge
-if
-push *row
-call maskEffect
-push VOLUME_SLIDE
-equal
-if
-push &up
-push *row
-call maskParamHi
-store
-
-push &down
-push *row
-call maskParamLo
-store
-
-push up
-push 0
-greaterThan
-if
-push &next
-push out
-push up
-add
-store
-else
-push &next
-push out
-push down
-sub
-store
-ifEnd
-
-push next
-push 64
-greaterThan
-if
-push &out
-push 64
-store
-else
-push 0
-push next
-greaterThan
-if
-push &out
-push 0
-store
-else
-push &out
-push next
-store
-ifEnd
-ifEnd
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-
-module volumeSlide4
-; @pos 447 68
+; @pos 395 67
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -3177,25 +2937,11 @@ push *rowTrigger
 risingEdge
 if
 push *row
-call maskSampleNumber
-push 0
-greaterThan
+call rowShouldReloadVolume
 if
 push &out
 push *row
-call maskSampleNumber
-call sampleNumberToVolume
-store
-ifEnd
-
-push *row
-call maskEffect
-push SET_VOLUME
-equal
-if
-push &out
-push *row
-call maskParam
+call loadRowVolume
 store
 ifEnd
 ifEnd
@@ -3209,9 +2955,7 @@ push *tick
 risingEdge
 if
 push *row
-call maskEffect
-push VOLUME_SLIDE
-equal
+call rowHasVolumeSlide
 if
 push &up
 push *row
@@ -3240,27 +2984,10 @@ sub
 store
 ifEnd
 
-push next
-push 64
-greaterThan
-if
-push &out
-push 64
-store
-else
-push 0
-push next
-greaterThan
-if
-push &out
-push 0
-store
-else
 push &out
 push next
+call clampVolume
 store
-ifEnd
-ifEnd
 ifEnd
 ifEnd
 ifEnd
