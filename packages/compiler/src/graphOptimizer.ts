@@ -39,8 +39,14 @@ interface ModuleSortMetadata {
 }
 
 interface ModuleSegment {
+	headModuleId: string;
 	moduleIds: string[];
 	modules: ModuleSortMetadata[];
+	dependencyIds: string[];
+}
+
+interface FollowGraph {
+	followerByTarget: Map<string, ModuleSortMetadata>;
 }
 
 function extractIntermodularDependencies(ast: AST): string[] {
@@ -84,7 +90,17 @@ function getModuleSortMetadata(ast: AST, index: number): ModuleSortMetadata {
 	};
 }
 
-function createModuleSegments(regularMetadata: ModuleSortMetadata[]): ModuleSegment[] {
+function compareModulesAlphabetically(a: ModuleSortMetadata, b: ModuleSortMetadata): number {
+	if (a.moduleId < b.moduleId) return -1;
+	if (a.moduleId > b.moduleId) return 1;
+	return a.index - b.index;
+}
+
+function getModuleLine(module: ModuleSortMetadata): AST[number] {
+	return module.ast.find(line => line.instruction === 'module') ?? module.ast[0];
+}
+
+function buildFollowGraph(regularMetadata: ModuleSortMetadata[]): FollowGraph {
 	const modulesByIdMap = new Map<string, ModuleSortMetadata>();
 	const followerByTarget = new Map<string, ModuleSortMetadata>();
 
@@ -119,13 +135,44 @@ function createModuleSegments(regularMetadata: ModuleSortMetadata[]): ModuleSegm
 		followerByTarget.set(module.followTargetModuleId, module);
 	}
 
-	const heads = regularMetadata
-		.filter(module => !module.followTargetModuleId)
-		.sort((a, b) => {
-			if (a.moduleId < b.moduleId) return -1;
-			if (a.moduleId > b.moduleId) return 1;
-			return a.index - b.index;
-		});
+	return {
+		followerByTarget,
+	};
+}
+
+function getFollowChainHeads(regularMetadata: ModuleSortMetadata[]): ModuleSortMetadata[] {
+	return regularMetadata.filter(module => !module.followTargetModuleId).sort(compareModulesAlphabetically);
+}
+
+function createSegmentFromHead(
+	head: ModuleSortMetadata,
+	followerByTarget: Map<string, ModuleSortMetadata>,
+	assigned: Set<string>
+): ModuleSegment {
+	const modules: ModuleSortMetadata[] = [];
+	let current: ModuleSortMetadata | undefined = head;
+
+	while (current && !assigned.has(current.moduleId)) {
+		modules.push(current);
+		assigned.add(current.moduleId);
+		current = followerByTarget.get(current.moduleId);
+	}
+
+	return {
+		headModuleId: head.moduleId,
+		moduleIds: modules.map(module => module.moduleId),
+		modules,
+		dependencyIds: [],
+	};
+}
+
+function getCycleErrorModule(regularMetadata: ModuleSortMetadata[], assigned: Set<string>): ModuleSortMetadata {
+	return regularMetadata.find(module => !assigned.has(module.moduleId)) ?? regularMetadata[0];
+}
+
+function createModuleSegments(regularMetadata: ModuleSortMetadata[]): ModuleSegment[] {
+	const { followerByTarget } = buildFollowGraph(regularMetadata);
+	const heads = getFollowChainHeads(regularMetadata);
 	const segments: ModuleSegment[] = [];
 	const assigned = new Set<string>();
 
@@ -134,105 +181,130 @@ function createModuleSegments(regularMetadata: ModuleSortMetadata[]): ModuleSegm
 			continue;
 		}
 
-		const modules: ModuleSortMetadata[] = [];
-		let current: ModuleSortMetadata | undefined = head;
-
-		while (current && !assigned.has(current.moduleId)) {
-			modules.push(current);
-			assigned.add(current.moduleId);
-			current = followerByTarget.get(current.moduleId);
-		}
-
-		segments.push({
-			moduleIds: modules.map(module => module.moduleId),
-			modules,
-		});
+		segments.push(createSegmentFromHead(head, followerByTarget, assigned));
 	}
 
 	if (assigned.size !== regularMetadata.length) {
-		const cycleModule = regularMetadata.find(module => !assigned.has(module.moduleId));
-		throw getError(
-			ErrorCode.MODULE_FOLLOW_CYCLE,
-			cycleModule?.followLine ?? cycleModule?.ast[0] ?? regularMetadata[0].ast[0]
-		);
+		const cycleModule = getCycleErrorModule(regularMetadata, assigned);
+		throw getError(ErrorCode.MODULE_FOLLOW_CYCLE, cycleModule.followLine ?? getModuleLine(cycleModule));
 	}
 
 	return segments;
 }
 
-function validateSegmentDependencyOrder(segments: ModuleSegment[]): void {
-	for (const segment of segments) {
-		const positionByModuleId = new Map(segment.moduleIds.map((moduleId, index) => [moduleId, index]));
+function getConflictingDependencyId(
+	module: ModuleSortMetadata,
+	positionByModuleId: Map<string, number>
+): string | undefined {
+	const modulePosition = positionByModuleId.get(module.moduleId) ?? 0;
 
-		for (const module of segment.modules) {
-			const modulePosition = positionByModuleId.get(module.moduleId) ?? 0;
-			const conflictingDependency = module.referencedModuleIds.find(depId => {
-				const dependencyPosition = positionByModuleId.get(depId);
-				return dependencyPosition !== undefined && dependencyPosition > modulePosition;
-			});
+	return module.referencedModuleIds.find(depId => {
+		const dependencyPosition = positionByModuleId.get(depId);
+		return dependencyPosition !== undefined && dependencyPosition > modulePosition;
+	});
+}
 
-			if (conflictingDependency) {
-				throw getError(
-					ErrorCode.MODULE_FOLLOW_DEPENDENCY_CONFLICT,
-					module.followLine ?? module.ast.find(line => line.instruction === 'module') ?? module.ast[0],
-					undefined,
-					{ identifier: conflictingDependency }
-				);
-			}
+function validateSegmentDependencyOrder(segment: ModuleSegment): void {
+	const positionByModuleId = new Map(segment.moduleIds.map((moduleId, index) => [moduleId, index]));
+
+	for (const module of segment.modules) {
+		const conflictingDependency = getConflictingDependencyId(module, positionByModuleId);
+		if (!conflictingDependency) {
+			continue;
 		}
+
+		throw getError(ErrorCode.MODULE_FOLLOW_DEPENDENCY_CONFLICT, module.followLine ?? getModuleLine(module), undefined, {
+			identifier: conflictingDependency,
+		});
 	}
 }
 
-export default function sortModules(modules: AST[]): AST[] {
-	const metadata = modules.map((ast, index) => getModuleSortMetadata(ast, index));
-
-	const constantsBlocks = metadata.filter(m => m.isConstantsBlock).map(m => m.ast);
-	const regularMetadata = metadata.filter(m => !m.isConstantsBlock);
-	const segments = createModuleSegments(regularMetadata);
-	validateSegmentDependencyOrder(segments);
-
+function createSegmentLookup(segments: ModuleSegment[]): Map<string, ModuleSegment> {
 	const segmentByModuleId = new Map<string, ModuleSegment>();
+
 	for (const segment of segments) {
 		for (const moduleId of segment.moduleIds) {
 			segmentByModuleId.set(moduleId, segment);
 		}
 	}
 
-	const segmentDependencies = new Map<ModuleSegment, Set<ModuleSegment>>();
-	for (const segment of segments) {
-		const deps = new Set<ModuleSegment>();
-		for (const module of segment.modules) {
-			for (const depId of module.referencedModuleIds) {
-				const dependencySegment = segmentByModuleId.get(depId);
-				if (dependencySegment && dependencySegment !== segment) {
-					deps.add(dependencySegment);
-				}
+	return segmentByModuleId;
+}
+
+function collectDependencyIdsForSegment(
+	segment: ModuleSegment,
+	segmentByModuleId: Map<string, ModuleSegment>
+): string[] {
+	const dependencyIds = new Set<string>();
+
+	for (const module of segment.modules) {
+		for (const depId of module.referencedModuleIds) {
+			const dependencySegment = segmentByModuleId.get(depId);
+			if (dependencySegment && dependencySegment !== segment) {
+				dependencyIds.add(dependencySegment.headModuleId);
 			}
 		}
-		segmentDependencies.set(segment, deps);
 	}
 
+	return [...dependencyIds];
+}
+
+function attachSegmentDependencies(segments: ModuleSegment[]): ModuleSegment[] {
+	const segmentByModuleId = createSegmentLookup(segments);
+
+	return segments.map(segment => {
+		validateSegmentDependencyOrder(segment);
+		return {
+			...segment,
+			dependencyIds: collectDependencyIdsForSegment(segment, segmentByModuleId),
+		};
+	});
+}
+
+function createSegmentsByHeadId(segments: ModuleSegment[]): Map<string, ModuleSegment> {
+	return new Map(segments.map(segment => [segment.headModuleId, segment]));
+}
+
+function topologicallySortSegments(segments: ModuleSegment[]): ModuleSegment[] {
+	const segmentsByHeadId = createSegmentsByHeadId(segments);
 	const visited = new Set<ModuleSegment>();
 	const sorted: ModuleSegment[] = [];
 
 	function visit(segment: ModuleSegment): void {
 		if (visited.has(segment)) return;
 		visited.add(segment);
-		for (const dependencySegment of segmentDependencies.get(segment) ?? []) {
+		for (const dependencyId of segment.dependencyIds) {
+			const dependencySegment = segmentsByHeadId.get(dependencyId);
+			if (!dependencySegment) {
+				continue;
+			}
 			visit(dependencySegment);
 		}
 		sorted.push(segment);
 	}
 
-	const alphabeticalSegments = [...segments].sort((a, b) => {
-		if (a.moduleIds[0] < b.moduleIds[0]) return -1;
-		if (a.moduleIds[0] > b.moduleIds[0]) return 1;
-		return a.modules[0].index - b.modules[0].index;
-	});
-
-	for (const segment of alphabeticalSegments) {
+	for (const segment of [...segments].sort((a, b) => compareModulesAlphabetically(a.modules[0], b.modules[0]))) {
 		visit(segment);
 	}
 
-	return [...constantsBlocks, ...sorted.flatMap(segment => segment.modules.map(module => module.ast))];
+	return sorted;
+}
+
+function splitModuleMetadata(metadata: ModuleSortMetadata[]): {
+	constantsBlocks: AST[];
+	regularMetadata: ModuleSortMetadata[];
+} {
+	return {
+		constantsBlocks: metadata.filter(module => module.isConstantsBlock).map(module => module.ast),
+		regularMetadata: metadata.filter(module => !module.isConstantsBlock),
+	};
+}
+
+export default function sortModules(modules: AST[]): AST[] {
+	const metadata = modules.map((ast, index) => getModuleSortMetadata(ast, index));
+	const { constantsBlocks, regularMetadata } = splitModuleMetadata(metadata);
+	const segments = attachSegmentDependencies(createModuleSegments(regularMetadata));
+	const sortedSegments = topologicallySortSegments(segments);
+
+	return [...constantsBlocks, ...sortedSegments.flatMap(segment => segment.modules.map(module => module.ast))];
 }
