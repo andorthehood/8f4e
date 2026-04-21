@@ -54,6 +54,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		});
 	});
 
+	it('resolves division expression: signed literal / constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('-1/SIZE'))).toEqual({
+			value: -0.0625,
+			isInteger: false,
+		});
+	});
+
 	it('resolves literal * constant', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('2*SIZE'))).toEqual({
 			value: 32,

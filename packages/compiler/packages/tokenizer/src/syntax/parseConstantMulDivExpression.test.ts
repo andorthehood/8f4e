@@ -175,6 +175,22 @@ describe('parseConstantMulDivExpression', () => {
 		});
 	});
 
+	it('parses signed literal / constant', () => {
+		expect(parseConstantMulDivExpression('-1/FOO')).toEqual({
+			lhs: '-1',
+			operator: '/',
+			rhs: 'FOO',
+		});
+	});
+
+	it('parses constant / signed literal', () => {
+		expect(parseConstantMulDivExpression('FOO/-1')).toEqual({
+			lhs: 'FOO',
+			operator: '/',
+			rhs: '-1',
+		});
+	});
+
 	it('rejects unary minus (operator at start)', () => {
 		expect(parseConstantMulDivExpression('-SIZE')).toBeNull();
 	});
