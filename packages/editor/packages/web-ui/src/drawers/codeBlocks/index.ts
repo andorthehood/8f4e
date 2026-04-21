@@ -1,6 +1,7 @@
 import { Engine } from 'glugglug';
 
 import drawConnectors from './widgets/connectors';
+import drawBars from './widgets/bars';
 import drawMeters from './widgets/meters';
 import drawPlotters from './widgets/plotters';
 import drawWaves from './widgets/waves';
@@ -136,6 +137,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawButtons(engine, state, codeBlock, memoryViews);
 			drawSliders(engine, state, codeBlock, memoryViews);
 			drawConnectors(engine, state, codeBlock, memoryViews);
+			drawBars(engine, state, codeBlock, memoryViews);
 			drawMeters(engine, state, codeBlock, memoryViews);
 			drawPlotters(engine, state, codeBlock, memoryViews);
 			drawWaves(engine, state, codeBlock, memoryViews);
