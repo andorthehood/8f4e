@@ -79,6 +79,17 @@ note
 noteEnd
 
 note
+; @pos 28 -29
+; @stop 1 10 top @hidden
+
+; This patch is a bare-bones
+; MOD player implemented in 8f4e.
+
+; It's playing 'Hymn to Aurora' 
+; by Horace Wimp 
+noteEnd
+
+note
 ; @pos 73 -30
 ; @stop 2 15 top @hidden
 
@@ -90,17 +101,6 @@ note
 ; at what pitch, and which effect to apply.
 noteEnd
 
-note
-; @pos 28 -29
-; @stop 1 10 top @hidden
-
-; This patch is a bare-bones
-; MOD player implemented in 8f4e.
-
-; It's playing 'Hymn to Aurora' 
-; by Horace Wimp 
-noteEnd
-
 constants env
 ; @pos 141 -140
 ; @favorite
@@ -108,18 +108,10 @@ constants env
 ; Changes will be overwritten
 
 const SAMPLE_RATE 48000
-const INV_SAMPLE_RATE 0.000022675736961451248
+const INV_SAMPLE_RATE 0.000020833333333333333
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
-; 'patterns_ch0.bin'
-const ASSET_CH0_SIZE 6144
-; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 6144
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 6144
-; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 6144
 ; 'sample_1.bin'
 const ASSET_SAMPLE1_SIZE 9964
 ; 'sample_2.bin'
@@ -144,6 +136,14 @@ const ASSET_SAMPLE10_SIZE 9550
 const ASSET_SAMPLE11_SIZE 9906
 ; 'sample_12.bin'
 const ASSET_SAMPLE12_SIZE 9000
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 6144
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 6144
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 6144
+; 'patterns_ch4.bin'
+const ASSET_CH4_SIZE 6144
 
 constantsEnd
 
@@ -590,10 +590,10 @@ module assets
 ; @defAsset sample10	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_10.bin
 ; @defAsset sample11	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_11.bin
 ; @defAsset sample12	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_12.bin
-; @defAsset ch0	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch0.bin
 ; @defAsset ch1	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch1.bin
 ; @defAsset ch2	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch2.bin
 ; @defAsset ch3	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch3.bin
+; @defAsset ch4	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch4.bin
 
 moduleEnd
 
@@ -1140,7 +1140,7 @@ module patternOrder
 ; @pos -106 -28
 ; @tab 6
 int	0x00
-int	0x00
+int	0x02
 int	0x03
 int	0x04
 int	0x05
@@ -1281,8 +1281,8 @@ int ; @w 0x
 int* row &rowCount1:out
 ; @hide
 use env
-int[] _dat ASSET_CH0_SIZE/4
-; @loadAsset ch0 &_dat
+int[] _dat ASSET_CH1_SIZE/4
+; @loadAsset ch1 &_dat
 local int loopCounter
 
 loop 8
@@ -1312,50 +1312,6 @@ moduleEnd
 
 module rowBuffer2
 ; @pos 64 -1
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-int ; @w 0x
-
-int* row &rowCount1:out
-; @hide
-use env
-int[] _dat ASSET_CH1_SIZE/4
-; @loadAsset ch1 &_dat
-
-local int loopCounter
-
-loop 8
-push &this
-push loopCounter
-push sizeof(_dat)
-mul
-add
-push &_dat
-push *row
-push loopCounter
-add
-push sizeof(_dat)
-mul
-add
-load
-store
-
-push loopCounter
-push 1
-add
-localSet loopCounter
-
-loopEnd
-
-moduleEnd
-
-module rowBuffer3
-; @pos 100 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1398,8 +1354,8 @@ loopEnd
 
 moduleEnd
 
-module rowBuffer4
-; @pos 136 -1
+module rowBuffer3
+; @pos 100 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1414,6 +1370,50 @@ int* row &rowCount1:out
 use env
 int[] _dat ASSET_CH3_SIZE/4
 ; @loadAsset ch3 &_dat
+
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+
+module rowBuffer4
+; @pos 136 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH4_SIZE/4
+; @loadAsset ch4 &_dat
 
 local int loopCounter
 
@@ -1624,7 +1624,6 @@ store
 
 moduleEnd
 
-
 module scope2
 ; @pos 64 -17
 float* in &amp2:out
@@ -1653,7 +1652,6 @@ push *in
 store
 
 moduleEnd
-
 
 module scope3
 ; @pos 100 -17
@@ -1684,7 +1682,6 @@ store
 
 moduleEnd
 
-
 module scope4
 ; @pos 136 -17
 float* in &amp4:out
@@ -1713,7 +1710,6 @@ push *in
 store
 
 moduleEnd
-
 
 module trigger1
 ; @pos 257 -63
