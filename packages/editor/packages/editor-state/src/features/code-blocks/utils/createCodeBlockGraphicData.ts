@@ -74,6 +74,7 @@ export function createCodeBlockGraphicData(
 			sliders: [],
 			pianoKeyboards: [],
 			arrayPlotters: [],
+			arrayMeters: [],
 			arrayWaves: [],
 			errorMessages: [],
 		},

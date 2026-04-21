@@ -8,6 +8,7 @@ import homeDirective from './home/plugin';
 import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
+import meterDirective from './meter/plugin';
 import plotDirective from './plot/plugin';
 import waveDirective, { wave2Directive } from './wave/plugin';
 import sliderDirective from './slider/plugin';
@@ -37,6 +38,7 @@ export type {
 } from './types';
 
 export const directivePlugins: EditorDirectivePlugin[] = [
+	meterDirective,
 	plotDirective,
 	waveDirective,
 	wave2Directive,
@@ -143,9 +145,15 @@ if (import.meta.vitest) {
 		});
 
 		it('parses trailing-comment directives only for plugins that allow them', () => {
-			const result = parseEditorDirectives(['int foo 1 ; @watch', 'int bar 1 ; @plot buffer'], directivePlugins);
+			const result = parseEditorDirectives(
+				['int foo 1 ; @watch', 'float out ; @meter', 'int bar 1 ; @plot buffer'],
+				directivePlugins
+			);
 
-			expect(result).toEqual([{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' }]);
+			expect(result).toEqual([
+				{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' },
+				{ name: 'meter', rawRow: 1, args: [], sourceLine: 'float out ; @meter' },
+			]);
 		});
 
 		it('parses chained directives from a single full-line comment', () => {
@@ -169,6 +177,7 @@ if (import.meta.vitest) {
 				'; @disabled',
 				'; @home',
 				'; @favorite',
+				'; @meter level 0 1',
 				'; @plot &buffer count(buffer)',
 				'; @wave &buffer 16 pointer',
 				'moduleEnd',
@@ -183,11 +192,12 @@ if (import.meta.vitest) {
 				opacity: 1,
 			});
 			expect(result.layoutContributions).toEqual([
-				{ rawRow: 4, rows: 8 },
-				{ rawRow: 5, rows: 2 },
+				{ rawRow: 4, rows: 1 },
+				{ rawRow: 5, rows: 8 },
+				{ rawRow: 6, rows: 2 },
 			]);
 			expect(result.displayState).toEqual({});
-			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6]);
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
 		});
 
 		it('allocates double layout height for @wave2', () => {

@@ -48,6 +48,9 @@ Example:
 - `fill.trace`
 - `fill.plotterBackground`
 - `fill.waveform`
+- `fill.meterGreen`
+- `fill.meterYellow`
+- `fill.meterRed`
 - `fill.scanLine`
 - `fill.sliderThumb`
 - `fill.codeBlockHighlightLevel1`
