@@ -42,16 +42,6 @@ note
 noteEnd
 
 note
-; @pos 416 30
-; @stop 10 10 bottom @hidden
-;                                          .   
-; The sample players read from these     .:;:.
-; buffers and advance through them at  .:;;;;;:.
-; different speeds to change pitch.      ;;;;;
-;                                        ;;;;;
-noteEnd
-
-note
 ; @pos 73 -30
 ; @stop 2 15 top @hidden
 
@@ -73,6 +63,16 @@ note
 noteEnd
 
 note
+; @pos 416 30
+; @stop 10 10 bottom @hidden
+;                                          .   
+; The sample players read from these     .:;:.
+; buffers and advance through them at  .:;;;;;:.
+; different speeds to change pitch.      ;;;;;
+;                                        ;;;;;
+noteEnd
+
+note
 ; @pos -25 -1
 ; @stop 3 10 left @hidden             
 ;                                    
@@ -84,7 +84,7 @@ note
 noteEnd
 
 constants env
-; @pos 141 -140
+; @pos 96 -158
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -166,7 +166,7 @@ const ASSET_SAMPLE31_SIZE 20432
 constantsEnd
 
 constants mod
-; @pos 197 -140
+; @pos 232 -197
 ; @tab 30
 use env
 ; Row layout (little-endian)
@@ -225,7 +225,7 @@ const INVERT_LOOP	0xEF
 constantsEnd
 
 constants sampleMeta
-; @pos 493 -218
+; @pos 293 -264
 ; @tab 26
 const S01_VOLUME	64
 const S01_FINETUNE	1
@@ -351,7 +351,7 @@ const S31_REPEAT_LENGTH	4020
 constantsEnd
 
 function maskEffect
-; @pos 335 -128
+; @pos 333 -128
 use mod
 param int row
 
@@ -364,7 +364,7 @@ shiftRightUnsigned
 functionEnd int
 
 function maskParam
-; @pos 335 -110
+; @pos 401 -128
 use mod
 param int row
 
@@ -377,7 +377,7 @@ shiftRightUnsigned
 functionEnd int
 
 function maskPeriod
-; @pos 298 -110
+; @pos 367 -128
 use mod
 param int row
 
@@ -413,7 +413,7 @@ or
 functionEnd int
 
 function modFinetune
-; @pos 534 -120
+; @pos 484 -128
 const STEP 96.0
 
 const FT_P0 0/STEP
@@ -460,7 +460,7 @@ mapEnd float
 functionEnd float
 
 function period2Step
-; @pos 261 -128
+; @pos 450 -128
 param int period
 use mod
 use env
@@ -484,7 +484,7 @@ div
 functionEnd float
 
 function sampleNumberToAddr
-; @pos 412 -124
+; @pos 533 -181
 ; @tab 8
 param int sampleNumber
 
@@ -527,7 +527,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToFinetune
-; @pos 569 -119
+; @pos 493 -181
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -570,7 +570,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatLen
-; @pos 366 -170
+; @pos 334 -181
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -613,7 +613,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatOffset
-; @pos 411 -168
+; @pos 375 -181
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -656,7 +656,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToSize
-; @pos 451 -121
+; @pos 457 -181
 ; @tab 8
 use env
 param int sampleNumber
@@ -699,7 +699,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToVolume
-; @pos 452 -165
+; @pos 419 -181
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -741,12 +741,11 @@ map 31	S31_VOLUME
 mapEnd int
 functionEnd int
 
-module amigaTick
+module modTickClock
 ; @pos -143 -28
 use mod
 
 int tempo 120 ; @w
-int ticks 6   ; @w
 int out
 int counter
 
@@ -759,8 +758,6 @@ store
 push counter
 
 push SAMPLE_RATE
-push ticks
-mul
 push 5
 mul
 
@@ -790,9 +787,49 @@ store
 
 moduleEnd
 
+module modRowClock
+; @pos -107 -28
+use env
+int* tick &modTickClock:out
+int ticks 6   ; @w
+int out
+int counter
+
+push &out
+push 0
+store
+
+push *tick
+risingEdge
+if
+push counter
+push 1
+add
+push ticks
+ensureNonZero
+greaterOrEqual
+if
+push &counter
+push 0
+store
+
+push &out
+push 1
+store
+else
+push &counter
+push counter
+push 1
+add
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
 module amp1
 ; @pos 633 -22
-; @group ch0
+; @group ch1
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
 float out
@@ -810,7 +847,7 @@ moduleEnd
 
 module amp2
 ; @pos 633 -4
-; @group ch1
+; @group ch2
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
 float out
@@ -828,7 +865,7 @@ moduleEnd
 
 module amp3
 ; @pos 633 14
-; @group ch2
+; @group ch3
 float* in &modSamplePlayer3:out
 int* volume &volume3:out
 float out
@@ -837,7 +874,7 @@ push &out
 push *in
 push *volume
 castToFloat
-push 60004.0
+push 64.0
 div
 mul 
 store
@@ -846,7 +883,7 @@ moduleEnd
 
 module amp4
 ; @pos 633 32
-; @group ch3
+; @group ch4
 float* in &modSamplePlayer4:out
 int* volume &volume4:out
 float out
@@ -855,7 +892,7 @@ push &out
 push *in
 push *volume
 castToFloat
-push 60004.0
+push 64.0
 div
 mul 
 store
@@ -863,7 +900,7 @@ store
 moduleEnd
 
 module assets
-; @pos 33 -115
+; @pos -3 -116
 ; @tab 22
 ; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/pneumatic/sample_1.pcm
 ; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/pneumatic/sample_2.pcm
@@ -1021,9 +1058,9 @@ moduleEnd
 module modRowCounter
 ; @pos -71 -28
 use env
-int* trigger &amigaTick:out 
+int* trigger &modRowClock:out 
 int rowCounter -1
-int* patternPointer &patternOrder:8
+int* patternPointer &patternOrder:0
 int out ; @w
 
 ; @watch rowCounter
@@ -1065,11 +1102,11 @@ store
 ifEnd
 
 push patternPointer
-push &patternOrder:10
+push patternOrder:&
 greaterThan
 if
 push &patternPointer
-push &patternOrder:8
+push &patternOrder:
 store
 ifEnd
 
@@ -1077,18 +1114,124 @@ moduleEnd
 
 module modSamplePlayer1
 ; @pos 515 -6
-; @group ch0
+; @group ch1
 use env
-
-int* period &period1:out
-int* offset &sampleOffset1:out ; @w *
-int* trigger &trigger1:out
-int* sampleNumber &sampleNumber1:out
-int8* sampleAddress; @w
-int8* playhead; @w
-int sampleSize; @w
+; @nth
+; @tab 6 20
+int*	period	&period1:out
+int*	offset	&sampleOffset1:out
+int*	trigger	&trigger1:out
+int*	sampleNumber	&sampleNumber1:out
+int8*	sampleAddress	; @w
+int8*	playhead	; @w
+int	sampleSize	; @w
 ; @wave sampleAddress sampleSize playhead
 float out; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+round
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress) ; max value
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberToRepeatLen
+push 2
+greaterThan
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatLen
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module modSamplePlayer2
+; @pos 515 13
+; @group ch2
+use env
+; @stop 12 20
+int*  period &period2:out 
+int* offset &sampleOffset2:out ; @w *
+int*  trigger &trigger2:out
+int*  sampleNumber &sampleNumber2:out
+int8* sampleAddress ;@w
+int   sampleSize ; @w
+int8* playhead ; @w
+; @wave sampleAddress sampleSize playhead
+float out ; @w
 ; @hide
 
 float _position
@@ -1145,86 +1288,22 @@ add
 store
 ifEnd
 
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
 push *sampleNumber
-call sampleNumberToSize
+call sampleNumberToRepeatLen
+push 2
 greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
 
-moduleEnd
-
-module modSamplePlayer2
-; @pos 515 12
-; @group ch1
-use env
-; @stop 12 20
-int*  period &period2:out 
-int*  trigger &trigger2:out
-int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress ;@w
-int   sampleSize ; @w
-int8* playhead ; @w
-; @wave sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-risingEdge
-if
-push &_playing
-push 1
-store
-push &_position
-push 0
-store
-ifEnd
-
-; Calculate read address
-push &playhead
 push _position
 castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress) ; max value
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
+push *sampleNumber
+call sampleNumberToRepeatLen
+greaterThan
+and
 if
 push &_position
-push _position
-push *period
-call period2Step
-add
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
 store
 ifEnd
 
@@ -1245,10 +1324,11 @@ moduleEnd
 
 module modSamplePlayer3
 ; @pos 565 -6
-; @group ch2
+; @group ch3
 use env
 
 int* period &period3:out
+int* offset &sampleOffset3:out ; @w *
 int* trigger &trigger3:out
 int* sampleNumber &sampleNumber3:out
 int8* sampleAddress; @w
@@ -1278,7 +1358,8 @@ push &_playing
 push 1
 store
 push &_position
-push 0
+push *offset
+castToFloat
 store
 ifEnd
 
@@ -1324,7 +1405,9 @@ greaterThan
 and
 if
 push &_position
-push 0.0
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
 store
 ifEnd
 
@@ -1344,11 +1427,12 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 565 12
-; @group ch3
+; @pos 565 13
+; @group ch4
 use env
 
 int* period &period4:out
+int* offset &sampleOffset4:out ; @w *
 int* trigger &trigger4:out
 int* sampleNumber &sampleNumber4:out
 int8* sampleAddress; @w
@@ -1378,7 +1462,8 @@ push &_playing
 push 1
 store
 push &_position
-push 0
+push *offset
+castToFloat
 store
 ifEnd
 
@@ -1424,7 +1509,9 @@ greaterThan
 and
 if
 push &_position
-push 0.0
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
 store
 ifEnd
 
@@ -1500,7 +1587,8 @@ moduleEnd
 
 module period1
 ; @pos 304 -71
-; @group ch0
+; @group ch1
+; @nth
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
 int out
@@ -1529,7 +1617,7 @@ moduleEnd
 
 module period2
 ; @pos 318 -24
-; @group ch1
+; @group ch2
 int* row &rowBuffer2:
 int* sampleNumber &sampleNumber2:out
 int out
@@ -1558,7 +1646,7 @@ moduleEnd
 
 module period3
 ; @pos 318 21
-; @group ch2
+; @group ch3
 int* row &rowBuffer3:
 int out
 
@@ -1579,7 +1667,7 @@ moduleEnd
 
 module period4
 ; @pos 316 90
-; @group ch3
+; @group ch4
 int* row &rowBuffer4:
 int out
 
@@ -1599,7 +1687,7 @@ ifEnd
 moduleEnd
 
 module projectConfig
-; @pos 97 -125
+; @pos 9 -125
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @exportFileName pneumatic
@@ -1794,7 +1882,7 @@ store
 moduleEnd
 
 module rowCount2
-; @pos 174 -32
+; @pos 152 -33
 int* in &modRowCounter:out
 int out
 
@@ -1806,7 +1894,8 @@ moduleEnd
 
 module sampleNumber1
 ; @pos 270 -71
-; @group ch0
+; @group ch1
+; @nth
 int* row &rowBuffer1:
 int out
 int param
@@ -1828,7 +1917,7 @@ moduleEnd
 
 module sampleNumber2
 ; @pos 284 -24
-; @group ch1
+; @group ch2
 int* row &rowBuffer2:
 int out
 int param
@@ -1850,7 +1939,7 @@ moduleEnd
 
 module sampleNumber3
 ; @pos 284 21
-; @group ch2
+; @group ch3
 int* row &rowBuffer3:
 int out
 int param
@@ -1872,7 +1961,7 @@ moduleEnd
 
 module sampleNumber4
 ; @pos 316 68
-; @group ch3
+; @group ch4
 int* row &rowBuffer4:
 int out
 int param
@@ -1893,17 +1982,37 @@ ifEnd
 moduleEnd
 
 module sampleOffset1
-; @pos 200 -71
+; @pos 195 -71
 use mod
 int* row &rowBuffer1:
 int out ;@w
+int memory ;@w
 int* rowCounter &rowCount2:out
+; @nth
+push &out
+push 0
+store
 
 push *row
 call maskEffect
 push SAMPLE_OFFSET
 equal
 if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
 push &out
 push *row
 call maskParam
@@ -1911,11 +2020,143 @@ push 256
 mul
 store
 ifEnd
+ifEnd
+
+moduleEnd
+
+module sampleOffset2
+; @pos 209 -24
+; @group ch2
+use mod
+int* row &rowBuffer2:
+int out ;@w
+int memory ;@w
+int* rowCounter &rowCount2:out
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module sampleOffset3
+; @pos 196 21
+use mod
+int* row &rowBuffer3:
+int out ;@w
+int memory ;@w
+int* rowCounter &rowCount2:out
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module sampleOffset4
+; @pos 192 67
+use mod
+int* row &rowBuffer4:
+int out ;@w
+int memory ;@w
+int* rowCounter &rowCount2:out
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
 
 moduleEnd
 
 module samplePack
 ; @pos 465 -14
+; @nth
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -2129,10 +2370,11 @@ moduleEnd
 module tempo1
 ; @pos 234 -71
 ; @home
+; @nth
 use mod
 int* row &rowBuffer1:
-int* tempo &amigaTick:tempo
-int* ticks &amigaTick:ticks
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
 push *row
 call maskEffect
 push SET_SPEED
@@ -2159,11 +2401,11 @@ moduleEnd
 
 module tempo2
 ; @pos 248 -24
-; @home
+; @group ch2
 use mod
 int* row &rowBuffer2:
-int* tempo &amigaTick:tempo
-int* ticks &amigaTick:ticks
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
 push *row
 call maskEffect
 push SET_SPEED
@@ -2193,8 +2435,8 @@ module tempo3
 ; @home
 use mod
 int* row &rowBuffer3:
-int* tempo &amigaTick:tempo
-int* ticks &amigaTick:ticks
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
 push *row
 call maskEffect
 push SET_SPEED
@@ -2224,8 +2466,8 @@ module tempo4
 ; @home
 use mod
 int* row &rowBuffer4:
-int* tempo &amigaTick:tempo
-int* ticks &amigaTick:ticks
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
 push *row
 call maskEffect
 push SET_SPEED
@@ -2250,9 +2492,42 @@ ifEnd
 
 moduleEnd
 
+module tickCounter
+; @pos -84 -60
+
+int* tick &modTickClock:out
+int* notTick &modRowClock:out
+
+int tickCounter ; @w
+int notTickCounter ; @w
+
+push *tick
+risingEdge
+if
+ push &tickCounter
+push tickCounter 
+push 1
+ add
+store
+ifEnd
+
+push *notTick
+risingEdge
+if 
+push &notTickCounter
+push notTickCounter
+push 1
+add
+store
+ifEnd
+
+
+moduleEnd
+
 module trigger1
 ; @pos 351 -71
-; @group ch0
+; @group ch1
+; @nth
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
 int* period &period1:out
@@ -2278,7 +2553,7 @@ moduleEnd
 
 module trigger2
 ; @pos 363 -24
-; @group ch1
+; @group ch2
 int* row &rowBuffer2:
 int* rowCounter &rowCount2:out
 int* period &period2:out
@@ -2304,7 +2579,7 @@ moduleEnd
 
 module trigger3
 ; @pos 364 22
-; @group ch2
+; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
 int* period &period3:out
@@ -2330,7 +2605,7 @@ moduleEnd
 
 module trigger4
 ; @pos 350 68
-; @group ch3
+; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
 int* period &period4:out
@@ -2353,7 +2628,7 @@ ifEnd
 moduleEnd
 
 module ultimateSoundtrackerColors
-; @pos 534 -159
+; @pos 573 -174
 ; @tab 46
 ; @color fill.moduleBackground	#000
 ; @color fill.background	#000
@@ -2390,7 +2665,8 @@ moduleEnd
 
 module volume1
 ; @pos 393 -71
-; @group ch0
+; @group ch1
+; @nth
 use mod
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -2425,7 +2701,7 @@ moduleEnd
 
 module volume2
 ; @pos 402 -24
-; @group ch1
+; @group ch2
 use mod
 int* row &rowBuffer2:
 int* sampleNumber &sampleNumber2:out
@@ -2460,7 +2736,7 @@ moduleEnd
 
 module volume3
 ; @pos 403 22
-; @group ch2
+; @group ch3
 use mod
 int* row &rowBuffer3:
 int* sampleNumber &sampleNumber3:out
@@ -2495,7 +2771,7 @@ moduleEnd
 
 module volume4
 ; @pos 406 68
-; @group ch3
+; @group ch4
 use mod
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
