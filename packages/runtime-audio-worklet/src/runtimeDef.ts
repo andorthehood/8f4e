@@ -221,7 +221,7 @@ export function createAudioWorkletRuntimeDef(
 	return {
 		id: 'AudioWorkletRuntime',
 		defaults: {
-			sampleRate: 44100,
+			sampleRate: 48000,
 		},
 		schema: {
 			type: 'object',
