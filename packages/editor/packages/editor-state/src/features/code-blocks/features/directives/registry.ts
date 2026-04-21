@@ -9,6 +9,7 @@ import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
 import meterDirective from './meter/plugin';
+import barsDirective from './bars/plugin';
 import plotDirective from './plot/plugin';
 import waveDirective, { wave2Directive } from './wave/plugin';
 import sliderDirective from './slider/plugin';
@@ -39,6 +40,7 @@ export type {
 
 export const directivePlugins: EditorDirectivePlugin[] = [
 	meterDirective,
+	barsDirective,
 	plotDirective,
 	waveDirective,
 	wave2Directive,
@@ -129,7 +131,14 @@ if (import.meta.vitest) {
 	describe('directive registry', () => {
 		it('parses registered directives from code', () => {
 			const result = parseEditorDirectives(
-				['module foo', '; @plot &buffer count(buffer)', '; @slider gain 0 1 0.01', '; note', 'moduleEnd'],
+				[
+					'module foo',
+					'; @plot &buffer count(buffer)',
+					'; @bars &bins count(bins)',
+					'; @slider gain 0 1 0.01',
+					'; note',
+					'moduleEnd',
+				],
 				directivePlugins
 			);
 
@@ -140,7 +149,13 @@ if (import.meta.vitest) {
 					args: ['&buffer', 'count(buffer)'],
 					sourceLine: '; @plot &buffer count(buffer)',
 				},
-				{ name: 'slider', rawRow: 2, args: ['gain', '0', '1', '0.01'], sourceLine: '; @slider gain 0 1 0.01' },
+				{
+					name: 'bars',
+					rawRow: 2,
+					args: ['&bins', 'count(bins)'],
+					sourceLine: '; @bars &bins count(bins)',
+				},
+				{ name: 'slider', rawRow: 3, args: ['gain', '0', '1', '0.01'], sourceLine: '; @slider gain 0 1 0.01' },
 			]);
 		});
 
@@ -179,6 +194,7 @@ if (import.meta.vitest) {
 				'; @favorite',
 				'; @meter level 0 1',
 				'; @plot &buffer count(buffer)',
+				'; @bars &bins count(bins)',
 				'; @wave &buffer 16 pointer',
 				'moduleEnd',
 			];
@@ -194,10 +210,11 @@ if (import.meta.vitest) {
 			expect(result.layoutContributions).toEqual([
 				{ rawRow: 4, rows: 1 },
 				{ rawRow: 5, rows: 8 },
-				{ rawRow: 6, rows: 2 },
+				{ rawRow: 6, rows: 8 },
+				{ rawRow: 7, rows: 2 },
 			]);
 			expect(result.displayState).toEqual({});
-			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8]);
 		});
 
 		it('allocates double layout height for @wave2', () => {
