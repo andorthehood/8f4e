@@ -132,6 +132,7 @@ export function createMockCodeBlock(
 			sliders: [],
 			pianoKeyboards: [],
 			arrayPlotters: [],
+			arrayMeters: [],
 			arrayWaves: [],
 			errorMessages: [],
 		},
