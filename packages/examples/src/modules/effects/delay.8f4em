@@ -2,7 +2,7 @@
 
 module delay
 
-float[] buffer 44100
+float[] buffer 48000
 int length 4400
 float* in
 float out

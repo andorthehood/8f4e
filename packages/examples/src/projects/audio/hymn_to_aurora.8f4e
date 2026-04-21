@@ -10,15 +10,6 @@ note
 noteEnd
 
 note
-; @pos 584 -14
-; @stop 13 5 top @hidden                  
-;                            ;;;;;
-; The four channel signals ..:::::..
-; are mixed together here.  `:::::'
-;                             `:'
-noteEnd
-
-note
 ; @pos -25 -1
 ; @stop 3 10 left @hidden             
 ;                                    
@@ -79,6 +70,27 @@ note
 noteEnd 
 
 note
+; @pos 587 -14
+; @stop 13 5 top @hidden  
+;                            ;;;;;
+; The four channel signals ..:::::..
+; are mixed together here.  `:::::'
+;                             `:'
+noteEnd
+
+note
+; @pos 73 -30
+; @stop 2 15 top @hidden
+
+; MOD is a classic tracker music format
+; from the 16-bit home-computer era.
+; Tracker music is written as rows of events.
+; Each row encodes what to do next, 
+; such as which audio sample to play, 
+; at what pitch, and which effect to apply.
+noteEnd
+
+note
 ; @pos 28 -29
 ; @stop 1 10 top @hidden
 
@@ -89,25 +101,13 @@ note
 ; by Horace Wimp 
 noteEnd
 
-note
-; @pos 73 -30
-; @stop 2 10 top @hidden
-
-; MOD is a classic tracker music format
-; from the 16-bit home-computer era.
-; Tracker music is written as rows of events.
-; Each row encodes what to do next, 
-; such as which audio sample to play, 
-; at what pitch, and which effect to apply.
-noteEnd
-
 constants env
 ; @pos 141 -140
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
 
-const SAMPLE_RATE 44100
+const SAMPLE_RATE 48000
 const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
@@ -1262,7 +1262,7 @@ moduleEnd
 module projectConfig
 ; @pos 97 -125
 ; @runtime AudioWorkletRuntime
-; ~sampleRate 44100
+; ~sampleRate 48000
 ; @exportFileName hymn_to_aurora
 
 moduleEnd

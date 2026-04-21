@@ -180,7 +180,7 @@ defineMacroEnd
 module projectConfig
 ; @pos -94 1
 ; @runtime AudioWorkletRuntime
-; ~sampleRate 44100
+; ~sampleRate 48000
 ; @exportFileName jankoSynth
 
 moduleEnd
@@ -192,7 +192,7 @@ constants env
 ; Changes will be overwritten
 ; Last updated: 2/22/2026, 8:54:07 AM
 
-const SAMPLE_RATE 44100
+const SAMPLE_RATE 48000
 const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
