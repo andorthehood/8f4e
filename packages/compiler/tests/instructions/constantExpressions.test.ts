@@ -47,6 +47,20 @@ moduleEnd
 );
 
 moduleTester(
+	'const: signed literal / constant',
+	`module test
+const FOO 8
+const BAR -1/FOO
+float output
+push &output
+push BAR
+store
+moduleEnd
+`,
+	[[{}, { output: -0.125 }]]
+);
+
+moduleTester(
 	'push: constant expression',
 	`module test
 const SIZE 8

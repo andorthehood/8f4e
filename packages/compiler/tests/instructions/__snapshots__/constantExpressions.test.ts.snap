@@ -896,6 +896,155 @@ exports[`const: literal ^ literal folds to a literal value (2^16 = 65536) > if t
 }
 `;
 
+exports[`const: signed literal / constant > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": true,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "FOO",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 8,
+      },
+    ],
+    "instruction": "const",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": true,
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
+  },
+  {
+    "arguments": [
+      {
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "BAR",
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": -0.125,
+      },
+    ],
+    "instruction": "const",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": true,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "isMemoryDeclaration": true,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": -0.125,
+      },
+    ],
+    "instruction": "push",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": true,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
+  },
+]
+`;
+
+exports[`const: signed literal / constant > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    f32.const -0x1p-3 (;=-0.125;)
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`const: signed literal / constant > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
 exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
