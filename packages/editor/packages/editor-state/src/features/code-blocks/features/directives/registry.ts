@@ -9,7 +9,7 @@ import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
-import waveDirective from './wave/plugin';
+import waveDirective, { wave2Directive } from './wave/plugin';
 import sliderDirective from './slider/plugin';
 import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
@@ -39,6 +39,7 @@ export type {
 export const directivePlugins: EditorDirectivePlugin[] = [
 	plotDirective,
 	waveDirective,
+	wave2Directive,
 	sliderDirective,
 	pianoDirective,
 	buttonDirective,
@@ -187,6 +188,13 @@ if (import.meta.vitest) {
 			]);
 			expect(result.displayState).toEqual({});
 			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6]);
+		});
+
+		it('allocates double layout height for @wave2', () => {
+			const code = ['module foo', '; @wave2 &buffer 16 pointer', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			expect(result.layoutContributions).toEqual([{ rawRow: 1, rows: 4 }]);
 		});
 
 		it('ignores unregistered directives', () => {
