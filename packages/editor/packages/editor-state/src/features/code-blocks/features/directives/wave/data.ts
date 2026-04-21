@@ -3,9 +3,14 @@ export interface WaveDirectiveData {
 	length: number | string;
 	pointerMemoryId?: string;
 	lineNumber: number;
+	heightRows: number;
 }
 
-export function createWaveDirectiveData(args: string[], lineNumber: number): WaveDirectiveData | undefined {
+export function createWaveDirectiveData(
+	args: string[],
+	lineNumber: number,
+	heightRows = 2
+): WaveDirectiveData | undefined {
 	if (!args[0] || !args[1]) {
 		return undefined;
 	}
@@ -20,5 +25,6 @@ export function createWaveDirectiveData(args: string[], lineNumber: number): Wav
 		length: parsedLength,
 		pointerMemoryId: args[2],
 		lineNumber,
+		heightRows,
 	};
 }

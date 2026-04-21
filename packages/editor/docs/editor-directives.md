@@ -154,6 +154,14 @@ Draw a waveform over a typed absolute pointer range. The first argument provides
 ; @wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
 ```
 
+### `@wave2`
+
+Same as `@wave`, but rendered at double height.
+
+```txt
+; @wave2 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
+```
+
 ### `@slider`
 
 Render a slider bound to a memory id.
