@@ -18,6 +18,7 @@ import {
 	type ConstantsEndLine,
 	type CompileTimeOperand,
 	type DefaultLine,
+	type FollowLine,
 	type FunctionLine,
 	type InitLine,
 	type IfBlockMetadata,
@@ -178,6 +179,7 @@ export {
 	type ConstantsEndLine,
 	type CompileTimeOperand,
 	type DefaultLine,
+	type FollowLine,
 	type FunctionLine,
 	type InitLine,
 	type IfBlockMetadata,
@@ -267,6 +269,7 @@ export interface CompilationContext {
 	initOnlyExecution?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;
+	followTargetModuleId?: string;
 }
 
 export interface StackItem {
@@ -312,6 +315,7 @@ export type NormalizedSemanticInstructionLine =
 	| NormalizedConstLine
 	| UseLine
 	| NormalizedInitLine
+	| FollowLine
 	| ModuleLine
 	| ModuleEndLine
 	| ConstantsLine
@@ -320,6 +324,7 @@ export type ParsedSemanticInstructionLine =
 	| ConstLine
 	| UseLine
 	| InitLine
+	| FollowLine
 	| ModuleLine
 	| ModuleEndLine
 	| ConstantsLine

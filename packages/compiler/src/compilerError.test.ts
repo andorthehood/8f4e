@@ -47,4 +47,20 @@ describe('getError', () => {
 			`Duplicate identifier: same. Module and function IDs must be unique. (${ErrorCode.DUPLICATE_IDENTIFIER})`
 		);
 	});
+
+	it('includes the missing #follow target module when provided', () => {
+		const line = {
+			lineNumberBeforeMacroExpansion: 2,
+			lineNumberAfterMacroExpansion: 2,
+			instruction: '#follow',
+			arguments: [classifyIdentifier('missing')],
+			isSemanticOnly: true,
+		} as AST[number];
+
+		const error = getError(ErrorCode.MODULE_FOLLOW_TARGET_NOT_FOUND, line, undefined, { identifier: 'missing' });
+
+		expect(error.message).toBe(
+			`#follow target module was not found: missing. (${ErrorCode.MODULE_FOLLOW_TARGET_NOT_FOUND})`
+		);
+	});
 });

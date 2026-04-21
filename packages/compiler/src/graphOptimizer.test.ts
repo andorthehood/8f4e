@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { ErrorCode } from './compilerError';
 import sortModules, { getIdentifierValue } from './graphOptimizer';
 import { ArgumentType } from './types';
 
@@ -23,7 +24,7 @@ const compileTimeExpressionArgument = (lhs: string, operator: '*' | '/', rhs: st
 	};
 };
 
-const createModuleAst = (moduleId: string, references: string[] = []): AST => {
+const createModuleAst = (moduleId: string, references: string[] = [], followTargetModuleId?: string): AST => {
 	return [
 		{
 			lineNumberBeforeMacroExpansion: 1,
@@ -32,10 +33,21 @@ const createModuleAst = (moduleId: string, references: string[] = []): AST => {
 			arguments: [identifierArgument(moduleId)],
 			isSemanticOnly: true,
 		},
+		...(followTargetModuleId
+			? [
+					{
+						lineNumberBeforeMacroExpansion: 2,
+						lineNumberAfterMacroExpansion: 2,
+						instruction: '#follow',
+						arguments: [identifierArgument(followTargetModuleId)],
+						isSemanticOnly: true,
+					},
+				]
+			: []),
 		...references.map((reference, index) => {
 			return {
-				lineNumberBeforeMacroExpansion: index + 2,
-				lineNumberAfterMacroExpansion: index + 2,
+				lineNumberBeforeMacroExpansion: index + (followTargetModuleId ? 3 : 2),
+				lineNumberAfterMacroExpansion: index + (followTargetModuleId ? 3 : 2),
 				instruction: 'int',
 				arguments: [identifierArgument(`value${index}`), identifierArgument(reference)],
 			};
@@ -163,5 +175,61 @@ describe('sortModules', () => {
 		// must be resolved before alpha is laid out. zeta's push of &alpha: is a runtime
 		// instruction and must not create a false reverse dependency.
 		expect(sorted.map(getModuleId)).toEqual(['zeta', 'alpha']);
+	});
+
+	it('keeps follow chains contiguous with no module in between', () => {
+		const alpha = createModuleAst('alpha');
+		const beta = createModuleAst('beta', [], 'alpha');
+		const gamma = createModuleAst('gamma');
+
+		const sorted = sortModules([gamma, beta, alpha]);
+
+		expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta', 'gamma']);
+	});
+
+	it('supports multi-module follow chains as a contiguous segment', () => {
+		const alpha = createModuleAst('alpha');
+		const beta = createModuleAst('beta', [], 'alpha');
+		const gamma = createModuleAst('gamma', [], 'beta');
+		const delta = createModuleAst('delta');
+
+		const sorted = sortModules([delta, gamma, beta, alpha]);
+
+		expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta', 'gamma', 'delta']);
+	});
+
+	it('rejects #follow when the target module does not exist', () => {
+		const alpha = createModuleAst('alpha', [], 'missing');
+
+		expect(() => sortModules([alpha])).toThrow(`${ErrorCode.MODULE_FOLLOW_TARGET_NOT_FOUND}`);
+	});
+
+	it('rejects self-following modules', () => {
+		const alpha = createModuleAst('alpha', [], 'alpha');
+
+		expect(() => sortModules([alpha])).toThrow(`${ErrorCode.MODULE_FOLLOW_SELF}`);
+	});
+
+	it('rejects multiple modules following the same target', () => {
+		const alpha = createModuleAst('alpha');
+		const beta = createModuleAst('beta', [], 'alpha');
+		const gamma = createModuleAst('gamma', [], 'alpha');
+
+		expect(() => sortModules([alpha, beta, gamma])).toThrow(`${ErrorCode.MODULE_FOLLOW_DUPLICATE_FOLLOWER}`);
+	});
+
+	it('rejects cycles in follow constraints', () => {
+		const alpha = createModuleAst('alpha', [], 'beta');
+		const beta = createModuleAst('beta', [], 'alpha');
+
+		expect(() => sortModules([alpha, beta])).toThrow(`${ErrorCode.MODULE_FOLLOW_CYCLE}`);
+	});
+
+	it('rejects follow chains that conflict with dependency ordering', () => {
+		const alpha = createModuleAst('alpha', ['&gamma:value']);
+		const beta = createModuleAst('beta', [], 'alpha');
+		const gamma = createModuleAst('gamma', [], 'beta');
+
+		expect(() => sortModules([alpha, beta, gamma])).toThrow(`${ErrorCode.MODULE_FOLLOW_DEPENDENCY_CONFLICT}`);
 	});
 });

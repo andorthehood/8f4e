@@ -77,6 +77,7 @@ Active todo files are listed below.
 | 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The parser already handles some structural block state, but it does not yet cleanly generalize block pairing and top-level owning-block context well enough to route syntax diagnostics to code blocks reliably. |
 | 379 | Add exponentiation support to compile-time expressions | 🟡 | 4-8h | 2026-04-17 | Compile-time arithmetic supports single-operator multiplication and division, but not power-of-two sizing expressions like 2^16. |
 | 380 | Remove hardcoded AudioWorklet buffer size from runtime contract | 🟡 | 1-2d | 2026-04-21 | The AudioWorklet runtime currently injects `const AUDIO_BUFFER_SIZE 128` as a compile-time env constant even though the real render quantum is only observable at runtime inside the worklet. |
+| 381 | Add #follow module layout directive | 🟡 | 1-2d | 2026-04-21 | The compiler currently supports dependency-aware module ordering, but it cannot enforce that one module must be laid out immediately after another with no module in between. |
 
 ## Completed TODOs
 
