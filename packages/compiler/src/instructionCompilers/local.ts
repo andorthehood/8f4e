@@ -1,7 +1,8 @@
 import { ErrorCode, getError } from '../compilerError';
+import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, LocalDeclarationLine } from '../types';
+import type { FunctionValueType, InstructionCompiler, LocalDeclarationLine } from '../types';
 
 /**
  * Instruction compiler for `local`.
@@ -20,11 +21,10 @@ const local: InstructionCompiler<LocalDeclarationLine> = withValidation<LocalDec
 			throw getError(ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY, line, context, { identifier: nameArg.value });
 		}
 
-		context.locals[nameArg.value] = {
-			isInteger: typeArg.value === 'int',
-			...(typeArg.value === 'float64' ? { isFloat64: true } : {}),
-			index: Object.keys(context.locals).length,
-		};
+		context.locals[nameArg.value] = functionValueTypeToLocalBinding(
+			typeArg.value as FunctionValueType,
+			Object.keys(context.locals).length
+		);
 
 		return context;
 	}
