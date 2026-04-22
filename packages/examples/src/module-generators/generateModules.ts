@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import amigaPeriodIncrement from './amigaPeriodIncrement.ts';
 import expLookupTable from './expLookupTable.ts';
+import minBLEPLUT from './minBLEPLUT.ts';
 import midiFrequenciesLookupTable from './midiFreqLUT_12TET.ts';
 import sineLookupTable from './sineLookupTable.ts';
 
@@ -23,6 +24,10 @@ const generatedModules = [
 	{
 		fileName: 'lookup-tables/midiFreqLUT_12TET.8f4em',
 		code: midiFrequenciesLookupTable,
+	},
+	{
+		fileName: 'lookup-tables/minBLEPLUT.8f4em',
+		code: minBLEPLUT,
 	},
 	{
 		fileName: 'constants/amigaPeriodIncrement.8f4em',
