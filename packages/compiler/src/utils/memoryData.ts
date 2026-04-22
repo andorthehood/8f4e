@@ -2,9 +2,11 @@ import { getEndByteAddress } from '../semantic/layoutAddresses';
 
 import type { DataStructure, LocalBinding, MemoryMap } from '../types';
 
-type PointerMetadata =
+export type PointerMetadata =
 	| Pick<DataStructure, 'pointeeBaseType' | 'isPointingToPointer'>
 	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer'>;
+
+export type PointeeValueKind = 'int32' | 'float32' | 'float64';
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
 	return memoryMap[id];
@@ -41,6 +43,41 @@ export function getPointeeElementWordSizeFromMetadata(pointerMetadata: PointerMe
 
 export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
 	return getPointeeElementWordSizeFromMetadata(getDataStructure(memoryMap, id));
+}
+
+export function getPointeeElementIsIntegerFromMetadata(pointerMetadata: PointerMetadata | undefined): boolean {
+	if (!pointerMetadata?.pointeeBaseType) return false;
+	return (
+		!!pointerMetadata.isPointingToPointer ||
+		(pointerMetadata.pointeeBaseType !== 'float' && pointerMetadata.pointeeBaseType !== 'float64')
+	);
+}
+
+export function getPointeeValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): PointeeValueKind {
+	if (!pointerMetadata?.pointeeBaseType) return 'float32';
+	if (getPointeeElementIsIntegerFromMetadata(pointerMetadata)) return 'int32';
+	if (pointerMetadata.pointeeBaseType === 'float64') return 'float64';
+	return 'float32';
+}
+
+export function getDereferencedValueWordSizeFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
+	if (!pointerMetadata?.pointeeBaseType) return 0;
+	if (pointerMetadata.pointeeBaseType === 'float64') return 8;
+	if (pointerMetadata.pointeeBaseType === 'int8') return 1;
+	if (pointerMetadata.pointeeBaseType === 'int16') return 2;
+	return 4;
+}
+
+export function getDereferencedValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): PointeeValueKind {
+	if (!pointerMetadata?.pointeeBaseType) return 'float32';
+	if (
+		pointerMetadata.pointeeBaseType === 'int' ||
+		pointerMetadata.pointeeBaseType === 'int8' ||
+		pointerMetadata.pointeeBaseType === 'int16'
+	)
+		return 'int32';
+	if (pointerMetadata.pointeeBaseType === 'float64') return 'float64';
+	return 'float32';
 }
 
 export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
