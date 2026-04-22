@@ -144,6 +144,25 @@ describe('tryResolveCompileTimeArgument', () => {
 		});
 	});
 
+	it('treats max(*localDoublePointer) as an integer-valued pointer slot even for float pointees', () => {
+		const localPointerContext = {
+			...mockContext,
+			locals: {
+				floatPtrPtr: {
+					isInteger: true,
+					pointeeBaseType: 'float64',
+					isPointingToPointer: true,
+					index: 0,
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*floatPtrPtr)'))).toEqual({
+			value: 2147483647,
+			isInteger: true,
+		});
+	});
+
 	it('resolves explicit compile-time expression nodes', () => {
 		expect(
 			tryResolveCompileTimeArgument(mockContext, {
