@@ -148,7 +148,8 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		if (local?.pointeeBaseType) {
 			return {
 				value: getPointeeElementMaxValueFromMetadata(local),
-				isInteger: local.pointeeBaseType !== 'float' && local.pointeeBaseType !== 'float64',
+				isInteger:
+					!!local.isPointingToPointer || (local.pointeeBaseType !== 'float' && local.pointeeBaseType !== 'float64'),
 			};
 		}
 		return undefined;
