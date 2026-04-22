@@ -3,13 +3,17 @@ import { describe, expect, it } from 'vitest';
 import {
 	getDataStructure,
 	getDataStructureByteAddress,
+	getDereferencedValueKindFromMetadata,
+	getDereferencedValueWordSizeFromMetadata,
 	getElementCount,
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
 	getMemoryStringLastByteAddress,
+	getPointeeElementIsIntegerFromMetadata,
 	getPointeeElementMaxValue,
 	getPointeeElementWordSize,
+	getPointeeValueKindFromMetadata,
 } from './memoryData';
 
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
@@ -181,6 +185,50 @@ describe('memoryData utilities', () => {
 
 		it('returns 0 for non-existing identifier', () => {
 			expect(getPointeeElementWordSize(mockMemory, 'nonExisting')).toBe(0);
+		});
+	});
+
+	describe('pointee metadata helpers', () => {
+		it('classifies float64** pointees as integer pointer-slot values', () => {
+			const pointerMetadata = {
+				pointeeBaseType: 'float64',
+				isPointingToPointer: true,
+			} as const;
+
+			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(true);
+			expect(getPointeeValueKindFromMetadata(pointerMetadata)).toBe('int32');
+		});
+
+		it('classifies float64* pointees as float64 values', () => {
+			const pointerMetadata = {
+				pointeeBaseType: 'float64',
+				isPointingToPointer: false,
+			} as const;
+
+			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(false);
+			expect(getPointeeValueKindFromMetadata(pointerMetadata)).toBe('float64');
+		});
+
+		it('classifies float64** dereference results as float64 values', () => {
+			const pointerMetadata = {
+				pointeeBaseType: 'float64',
+				isPointingToPointer: true,
+			} as const;
+
+			expect(getDereferencedValueKindFromMetadata(pointerMetadata)).toBe('float64');
+			expect(getDereferencedValueWordSizeFromMetadata(pointerMetadata)).toBe(8);
+		});
+
+		it('classifies int16* pointees as int32 stack values', () => {
+			const pointerMetadata = {
+				pointeeBaseType: 'int16',
+				isPointingToPointer: false,
+			} as const;
+
+			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(true);
+			expect(getPointeeValueKindFromMetadata(pointerMetadata)).toBe('int32');
+			expect(getDereferencedValueKindFromMetadata(pointerMetadata)).toBe('int32');
+			expect(getDereferencedValueWordSizeFromMetadata(pointerMetadata)).toBe(2);
 		});
 	});
 
