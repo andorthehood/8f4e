@@ -1,5 +1,7 @@
 import { f32store, f64store, i32store } from '@8f4e/compiler-wasm-utils';
 
+import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
+
 import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
@@ -12,12 +14,13 @@ import type { InstructionCompiler } from '../types';
  */
 const store: InstructionCompiler = withValidation(
 	{
-		scope: 'module',
+		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 2,
 		operandTypes: ['int'],
 	},
 	(line, context) => {
+		assertFunctionMemoryIoAllowed(line, context);
 		const operand1Value = context.stack.pop()!;
 		const operand2Address = context.stack.pop()!;
 		void operand2Address;

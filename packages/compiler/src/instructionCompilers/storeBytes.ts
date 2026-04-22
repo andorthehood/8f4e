@@ -1,5 +1,7 @@
 import { i32store8 } from '@8f4e/compiler-wasm-utils';
 
+import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
+
 import { compileSegment } from '../compiler';
 import { ErrorCode } from '../compilerError';
 import { withValidation } from '../withValidation';
@@ -12,7 +14,7 @@ import type { InstructionCompiler, StoreBytesLine } from '../types';
  */
 const storeBytes: InstructionCompiler<StoreBytesLine> = withValidation<StoreBytesLine>(
 	{
-		scope: 'module',
+		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		validateOperands: (line: StoreBytesLine) => {
 			const count = line.arguments[0].value;
@@ -23,6 +25,7 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = withValidation<StoreByte
 		},
 	},
 	(line: StoreBytesLine, context) => {
+		assertFunctionMemoryIoAllowed(line, context);
 		const count = line.arguments[0].value;
 
 		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;

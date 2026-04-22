@@ -2,6 +2,8 @@
 
 For identifier prefixes and suffixes that expand memory identifiers, see [Identifier prefixes](../prefixes.md).
 
+In functions, memory instructions require the `#impure` compiler directive. Even in impure functions, memory access must be address-driven: functions still cannot reference module memory identifiers by name or declare their own memory.
+
 ### load
 
 The load instruction consumes an address from the stack and pushes the 32-bit integer value stored at that address.

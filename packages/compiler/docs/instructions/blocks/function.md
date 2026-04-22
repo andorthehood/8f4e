@@ -22,7 +22,30 @@ Functions are reusable code blocks that:
 - Can accept parameters using the `param` instruction
 - Can return values (specified in `functionEnd`)
 - Can be called from modules using the `call` instruction
-- Do not have access to module memory (they are pure functions)
+- Are pure by default
+- Can opt into explicit address-driven memory IO with `#impure`
+- Do not have direct access to module memory identifiers by name
+- Cannot declare their own memory
+
+### `#impure`
+
+Use `#impure` inside a function to allow explicit memory reads and writes through addresses already on the stack or passed via params/locals.
+
+```
+function fillBlepBuffer
+#impure
+param float* dst
+param float* src
+param float gain
+
+push dst
+push src
+loadFloat
+push gain
+mul
+store
+functionEnd
+```
 
 ### Example Function
 
