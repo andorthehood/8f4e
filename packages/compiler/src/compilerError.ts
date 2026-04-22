@@ -65,6 +65,7 @@ export enum ErrorCode {
 	RETURN_OUTSIDE_FUNCTION,
 	LOCAL_NAME_COLLISION_WITH_MEMORY,
 	DUPLICATE_IDENTIFIER,
+	INSTRUCTION_INVALID_OUTSIDE_LOOP,
 }
 
 interface ErrorDetails {
@@ -82,6 +83,13 @@ export function getError(
 			return {
 				code,
 				message: 'This instruction can only be used within a block or a module. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP:
+			return {
+				code,
+				message: 'This instruction can only be used within a loop. (' + code + ')',
 				line,
 				context,
 			};

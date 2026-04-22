@@ -162,6 +162,37 @@ loop 32
 loopEnd
 ```
 
+### loopIndex
+
+The `loopIndex` instruction pushes the current zero-based iteration index of the innermost active loop onto the stack.
+
+It can only be used inside a `loop` block. On the first visible iteration it pushes `0`, then `1`, `2`, and so on.
+
+#### Examples
+
+```
+loop
+ loopIndex
+ push 8
+ equal
+ branchIfTrue 1
+loopEnd
+```
+
+Using it as an array index:
+
+```
+float[] buffer 16
+
+loop
+ push &buffer
+ loopIndex
+ add
+ push 0.0
+ store
+loopEnd
+```
+
 ### loopEnd
 
 The loopEnd instruction ends a loop block and branches back to the start of the loop.
