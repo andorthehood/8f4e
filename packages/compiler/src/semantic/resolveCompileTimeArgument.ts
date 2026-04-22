@@ -10,7 +10,9 @@ import {
 	getElementWordSize,
 	getMemoryStringLastByteAddress,
 	getPointeeElementMaxValue,
+	getPointeeElementMaxValueFromMetadata,
 	getPointeeElementWordSize,
+	getPointeeElementWordSizeFromMetadata,
 } from '../utils/memoryData';
 
 import type { Argument, CompilationContext, CompileTimeOperand, Const } from '../types';
@@ -107,6 +109,10 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 				isInteger: true,
 			};
 		}
+		const local = context.locals[base];
+		if (local?.pointeeBaseType) {
+			return { value: getPointeeElementWordSizeFromMetadata(local), isInteger: true };
+		}
 		return undefined;
 	}
 
@@ -136,6 +142,14 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 			return {
 				value: getPointeeElementMaxValue(memory, base),
 				isInteger: !!memoryItem?.isInteger,
+			};
+		}
+		const local = context.locals[base];
+		if (local?.pointeeBaseType) {
+			return {
+				value: getPointeeElementMaxValueFromMetadata(local),
+				isInteger:
+					!!local.isPointingToPointer || (local.pointeeBaseType !== 'float' && local.pointeeBaseType !== 'float64'),
 			};
 		}
 		return undefined;

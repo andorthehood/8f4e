@@ -10,6 +10,8 @@ export default function pushLocal(line: PushIdentifierLine, context: Compilation
 	context.stack.push({
 		isInteger: local.isInteger,
 		...(local.isFloat64 ? { isFloat64: true } : {}),
+		...(local.pointeeBaseType ? { pointeeBaseType: local.pointeeBaseType } : {}),
+		...(local.isPointingToPointer ? { isPointingToPointer: true } : {}),
 		isNonZero: false,
 	});
 	return saveByteCode(context, localGet(local.index));

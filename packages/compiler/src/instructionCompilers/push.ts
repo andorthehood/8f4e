@@ -1,5 +1,6 @@
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
+import pushLocalPointer from './push/handlers/pushLocalPointer';
 import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
 import pushMemoryPointer from './push/handlers/pushMemoryPointer';
 import pushStringLiteral from './push/handlers/pushStringLiteral';
@@ -33,6 +34,8 @@ const push: InstructionCompiler<CodegenPushLine> = withValidation<CodegenPushLin
 					return pushMemoryIdentifier(identifierLine, context);
 				case IdentifierPushKind.MEMORY_POINTER:
 					return pushMemoryPointer(identifierLine, context);
+				case IdentifierPushKind.LOCAL_POINTER:
+					return pushLocalPointer(identifierLine, context);
 				case IdentifierPushKind.LOCAL:
 				default:
 					return pushLocal(identifierLine, context);
