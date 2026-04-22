@@ -1,7 +1,8 @@
 import { ErrorCode, getError } from '../compilerError';
+import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, ParamLine } from '../types';
+import type { FunctionValueType, InstructionCompiler, ParamLine } from '../types';
 
 /**
  * Instruction compiler for `param`.
@@ -32,7 +33,7 @@ const param: InstructionCompiler<ParamLine> = withValidation<ParamLine>(
 			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
 		}
 
-		const paramType = line.arguments[0].value as 'int' | 'float' | 'float64';
+		const paramType = line.arguments[0].value as FunctionValueType;
 		const paramName = line.arguments[1].value;
 
 		// Check for duplicate parameter names
@@ -44,11 +45,7 @@ const param: InstructionCompiler<ParamLine> = withValidation<ParamLine>(
 		// Parameters get local indices starting from 0
 		const paramIndex = Object.keys(context.locals).length;
 
-		context.locals[paramName] = {
-			isInteger: paramType === 'int',
-			...(paramType === 'float64' ? { isFloat64: true } : {}),
-			index: paramIndex,
-		};
+		context.locals[paramName] = functionValueTypeToLocalBinding(paramType, paramIndex);
 
 		// Add parameter type to the function signature being built
 		context.currentFunctionSignature!.parameters.push(paramType);

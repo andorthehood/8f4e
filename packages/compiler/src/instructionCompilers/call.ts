@@ -2,6 +2,7 @@ import { call as wasmCall } from '@8f4e/compiler-wasm-utils';
 
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
+import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 import { withValidation } from '../withValidation';
 
 import type { CallLine, InstructionCompiler } from '../types';
@@ -29,9 +30,7 @@ const call: InstructionCompiler<CallLine> = withValidation<CallLine>(
 		for (let i = 0; i < parameters.length; i++) {
 			const stackIndex = context.stack.length - parameters.length + i;
 			const stackItem = context.stack[stackIndex];
-			const expectedInteger = parameters[i] === 'int';
-			const expectedFloat64 = parameters[i] === 'float64';
-			if (stackItem.isInteger !== expectedInteger || !!stackItem.isFloat64 !== expectedFloat64) {
+			if (!stackItemMatchesFunctionValueType(stackItem, parameters[i])) {
 				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 			}
 		}
@@ -41,10 +40,7 @@ const call: InstructionCompiler<CallLine> = withValidation<CallLine>(
 
 		// Push return values onto stack
 		returns.forEach(returnType => {
-			context.stack.push({
-				isInteger: returnType === 'int',
-				...(returnType === 'float64' ? { isFloat64: true } : {}),
-			});
+			context.stack.push(functionValueTypeToStackItem(returnType));
 		});
 
 		// Emit WASM call instruction

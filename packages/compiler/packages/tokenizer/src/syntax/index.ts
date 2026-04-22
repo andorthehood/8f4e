@@ -46,6 +46,14 @@ export { default as hasElementMinPrefix } from './hasElementMinPrefix';
 export { default as extractElementMinBase } from './extractElementMinBase';
 export { default as hasElementWordSizePrefix } from './hasElementWordSizePrefix';
 export { default as extractElementWordSizeBase } from './extractElementWordSizeBase';
+export {
+	FUNCTION_TYPE_IDENTIFIERS,
+	POINTER_FUNCTION_TYPE_IDENTIFIERS,
+	SCALAR_TYPE_IDENTIFIERS,
+	type FunctionTypeIdentifier,
+	type PointerFunctionTypeIdentifier,
+	type ScalarTypeIdentifier,
+} from './functionTypeIdentifiers';
 export { default as hasPointeeElementWordSizePrefix } from './hasPointeeElementWordSizePrefix';
 export { default as extractPointeeElementWordSizeBase } from './extractPointeeElementWordSizeBase';
 export { default as hasPointeeElementMaxPrefix } from './hasPointeeElementMaxPrefix';
