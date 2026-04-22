@@ -201,6 +201,7 @@ loopEnd
 moduleEnd`,
 			[
 				`function readScaledBlep
+#impure
 param float* lut
 param int phaseIndex
 param float delta
@@ -232,5 +233,45 @@ functionEnd float`,
 		testModule.test();
 
 		expect(dataView.getFloat32(testModule.memoryMap.output.byteAddress, true)).toBeCloseTo(0.5, 6);
+	});
+
+	test('supports explicit loadFloat and store in impure functions with pointer params', async () => {
+		const testModule = await createTestModuleWithFunctions(
+			`module test
+float input 0
+float output 0
+float gain 0
+
+loop
+  push &output
+  push &input
+  push gain
+  call scaleInto
+loopEnd
+
+moduleEnd`,
+			[
+				`function scaleInto
+#impure
+param float* dst
+param float* src
+param float gain
+
+push dst
+push src
+loadFloat
+push gain
+mul
+store
+functionEnd`,
+			]
+		);
+
+		testModule.memory.set('input', 3.5);
+		testModule.memory.set('gain', 0.5);
+
+		testModule.test();
+
+		expect(testModule.memory.get('output')).toBeCloseTo(1.75, 6);
 	});
 });
