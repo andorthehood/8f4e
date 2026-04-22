@@ -59,6 +59,19 @@ add
 
 functionEnd int
 
+function blepQueuePtr
+; @pos 280 -92
+param float* buffer
+param int index
+
+push buffer
+push index
+push sizeof(*buffer)
+mul
+add
+
+functionEnd float*
+
 function positionToBlepPhaseIndex
 ; @pos 238 -107
 param float position
@@ -136,15 +149,11 @@ push buffer
 push sourceIndex
 push 1
 sub
-push sizeof(*buffer)
-mul
-add
+call blepQueuePtr
 
 push buffer
 push sourceIndex
-push sizeof(*buffer)
-mul
-add
+call blepQueuePtr
 loadFloat
 
 store
@@ -158,9 +167,7 @@ loopEnd
 
 push buffer
 push 15
-push sizeof(*buffer)
-mul
-add
+call blepQueuePtr
 push 0.0
 store
 
@@ -187,10 +194,14 @@ float out ; @w
 
 push &out
 push buffer
+push 0
+call blepQueuePtr
 loadFloat
 store
 
 push buffer
+push 0
+call blepQueuePtr
 push 0.0
 store
 
@@ -214,15 +225,11 @@ else
 loop 16
 push &blepBuffer
 push tapIndex
-push sizeof(*blepBuffer)
-mul
-add
+call blepQueuePtr
 
 push &blepBuffer
 push tapIndex
-push sizeof(*blepBuffer)
-mul
-add
+call blepQueuePtr
 loadFloat
 
 push &minBLEPLUT:0
@@ -273,7 +280,8 @@ int out ; @w
 ; @watch out
 
 push &out
-push 0
+push *position
+call positionToBlepPhaseIndex
 store
 
 moduleEnd
