@@ -1,5 +1,6 @@
 import { localGet } from '@8f4e/compiler-wasm-utils';
 
+import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../../utils/compilation';
 import { buildPointerDereferenceByteCode, kindToStackItem } from '../shared';
 
@@ -15,6 +16,7 @@ export default function pushLocalPointer(line: PushIdentifierLine, context: Comp
 	if (!local?.pointeeBaseType) {
 		return context;
 	}
+	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(local, localGet(local.index), 'pointer-value');
 	context.stack.push(kindToStackItem(dereference.kind, { isNonZero: false }));
 

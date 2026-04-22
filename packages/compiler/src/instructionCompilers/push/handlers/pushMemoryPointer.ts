@@ -1,5 +1,6 @@
 import { i32const } from '@8f4e/compiler-wasm-utils';
 
+import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../../utils/compilation';
 import { getDataStructure } from '../../../utils/memoryData';
 import { buildPointerDereferenceByteCode, kindToStackItem } from '../shared';
@@ -14,6 +15,7 @@ export default function pushMemoryPointer(line: PushIdentifierLine, context: Com
 	}
 	const base = argument.targetMemoryId;
 	const memoryItem = getDataStructure(memory, base)!;
+	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(memoryItem, i32const(memoryItem.byteAddress), 'pointer-slot');
 	context.stack.push(kindToStackItem(dereference.kind, { isNonZero: false }));
 

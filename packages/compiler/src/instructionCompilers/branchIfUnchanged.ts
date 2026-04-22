@@ -10,7 +10,7 @@ import type { BranchIfUnchangedLine, InstructionCompiler } from '../types';
  */
 const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = withValidation<BranchIfUnchangedLine>(
 	{
-		scope: 'moduleOrFunction',
+		scope: 'module',
 		minOperands: 1,
 	},
 	(line: BranchIfUnchangedLine, context) => {
