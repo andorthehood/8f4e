@@ -26,6 +26,7 @@ import loopIndex from './loopIndex';
 import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import equalToZero from './equalToZero';
+import notZero from './notZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
@@ -98,6 +99,7 @@ const instructions = {
 	loopEnd,
 	greaterOrEqualUnsigned,
 	equalToZero,
+	notZero,
 	shiftLeft,
 	shiftRight,
 	shiftRightUnsigned,

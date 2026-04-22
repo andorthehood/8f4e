@@ -285,6 +285,12 @@ enum WASMInstruction {
 	F32_EQ = 0x5b,
 
 	/**
+	 * Floating-Point Inequality
+	 * Type signature: (param f32, f32) (result i32)
+	 */
+	F32_NE = 0x5c,
+
+	/**
 	 * Floating-Point Less Than
 	 * Type signature: (param f32, f32) (result i32)
 	 */
@@ -313,6 +319,12 @@ enum WASMInstruction {
 	 * Type signature: (param f64, f64) (result i32)
 	 */
 	F64_EQ = 0x61,
+
+	/**
+	 * Floating-Point Inequality (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_NE = 0x62,
 
 	/**
 	 * Aadd.
