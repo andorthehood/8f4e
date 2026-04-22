@@ -536,6 +536,30 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
+	it('inlines sizeof(*localPointer) during push normalization', () => {
+		const context = {
+			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
+			locals: {
+				lut: {
+					isInteger: true,
+					pointeeBaseType: 'float',
+					index: 0,
+				},
+			},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'push',
+			arguments: [classifyIdentifier('sizeof(*lut)')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			arguments: [{ type: ArgumentType.LITERAL, value: 4, isInteger: true }],
+		});
+	});
+
 	it('throws UNDEFINED_FUNCTION for call with an undeclared function target', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {}, functions: {} },

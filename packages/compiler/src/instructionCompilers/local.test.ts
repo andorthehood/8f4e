@@ -68,4 +68,25 @@ describe('local instruction compiler', () => {
 		expect(thrownError).toBeDefined();
 		expect((thrownError as { code: number }).code).toBe(ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY);
 	});
+
+	it('adds a pointer local variable with pointee metadata', () => {
+		const context = createInstructionCompilerTestContext();
+
+		local(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'local',
+				arguments: [classifyIdentifier('float64**'), classifyIdentifier('cursor')],
+			} as AST[number],
+			context
+		);
+
+		expect(context.locals.cursor).toMatchObject({
+			isInteger: true,
+			pointeeBaseType: 'float64',
+			isPointingToPointer: true,
+			index: 0,
+		});
+	});
 });

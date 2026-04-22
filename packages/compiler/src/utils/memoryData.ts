@@ -1,6 +1,10 @@
 import { getEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { MemoryMap } from '../types';
+import type { DataStructure, LocalBinding, MemoryMap } from '../types';
+
+type PointerMetadata =
+	| Pick<DataStructure, 'pointeeBaseType' | 'isPointingToPointer'>
+	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer'>;
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
 	return memoryMap[id];
@@ -26,14 +30,17 @@ export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 	return memoryItem ? memoryItem.elementWordSize : 0;
 }
 
-export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
-	if (!memoryItem || !memoryItem.pointeeBaseType) return 0;
-	if (memoryItem.isPointingToPointer) return 4;
-	if (memoryItem.pointeeBaseType === 'float64') return 8;
-	if (memoryItem.pointeeBaseType === 'int8') return 1;
-	if (memoryItem.pointeeBaseType === 'int16') return 2;
+export function getPointeeElementWordSizeFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
+	if (!pointerMetadata?.pointeeBaseType) return 0;
+	if (pointerMetadata.isPointingToPointer) return 4;
+	if (pointerMetadata.pointeeBaseType === 'float64') return 8;
+	if (pointerMetadata.pointeeBaseType === 'int8') return 1;
+	if (pointerMetadata.pointeeBaseType === 'int16') return 2;
 	return 4;
+}
+
+export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
+	return getPointeeElementWordSizeFromMetadata(getDataStructure(memoryMap, id));
 }
 
 export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
@@ -66,27 +73,30 @@ export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
 	}
 }
 
-export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
-	if (!memoryItem || !memoryItem.pointeeBaseType) return 0;
+export function getPointeeElementMaxValueFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
+	if (!pointerMetadata?.pointeeBaseType) return 0;
 
 	// double pointers: pointee is a pointer slot (stored as i32)
-	if (memoryItem.isPointingToPointer) return 2147483647;
+	if (pointerMetadata.isPointingToPointer) return 2147483647;
 
 	// float64*: max float64
-	if (memoryItem.pointeeBaseType === 'float64') return 1.7976931348623157e308;
+	if (pointerMetadata.pointeeBaseType === 'float64') return 1.7976931348623157e308;
 
 	// int8*: max signed int8
-	if (memoryItem.pointeeBaseType === 'int8') return 127;
+	if (pointerMetadata.pointeeBaseType === 'int8') return 127;
 
 	// int16*: max signed int16
-	if (memoryItem.pointeeBaseType === 'int16') return 32767;
+	if (pointerMetadata.pointeeBaseType === 'int16') return 32767;
 
 	// int*: max signed int32
-	if (memoryItem.pointeeBaseType === 'int') return 2147483647;
+	if (pointerMetadata.pointeeBaseType === 'int') return 2147483647;
 
 	// float*: max float32
 	return 3.4028234663852886e38;
+}
+
+export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
+	return getPointeeElementMaxValueFromMetadata(getDataStructure(memoryMap, id));
 }
 
 export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
