@@ -1,10 +1,11 @@
-import { Type, createFunctionType } from '@8f4e/compiler-wasm-utils';
+import { createFunctionType } from '@8f4e/compiler-wasm-utils';
 
 import { ErrorCode, getError } from '../compilerError';
 import { ArgumentType, BLOCK_TYPE } from '../types';
+import { functionValueTypeToWasmType, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler } from '../types';
+import type { FunctionSignature, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `functionEnd`.
@@ -28,7 +29,7 @@ const functionEnd: InstructionCompiler = withValidation(
 				(
 					arg as {
 						type: ArgumentType.IDENTIFIER;
-						value: 'int' | 'float' | 'float64';
+						value: FunctionSignature['returns'][number];
 					}
 				).value
 		);
@@ -44,9 +45,7 @@ const functionEnd: InstructionCompiler = withValidation(
 
 		for (let i = 0; i < returnTypes.length; i++) {
 			const stackItem = context.stack[context.stack.length - returnTypes.length + i];
-			const expectedIsInteger = returnTypes[i] === 'int';
-			const expectedIsFloat64 = returnTypes[i] === 'float64';
-			if (stackItem.isInteger !== expectedIsInteger || !!stackItem.isFloat64 !== expectedIsFloat64) {
+			if (!stackItemMatchesFunctionValueType(stackItem, returnTypes[i])) {
 				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 			}
 		}
@@ -57,10 +56,8 @@ const functionEnd: InstructionCompiler = withValidation(
 
 			// Register type signature in the type registry if available
 			if (context.functionTypeRegistry) {
-				const params = context.currentFunctionSignature.parameters.map(type =>
-					type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32
-				);
-				const results = returnTypes.map(type => (type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32));
+				const params = context.currentFunctionSignature.parameters.map(functionValueTypeToWasmType);
+				const results = returnTypes.map(functionValueTypeToWasmType);
 
 				const signature = JSON.stringify({ params, results });
 
