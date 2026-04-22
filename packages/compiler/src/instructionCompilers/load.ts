@@ -1,5 +1,7 @@
 import { i32load, i32load16s, i32load16u, i32load8s, i32load8u } from '@8f4e/compiler-wasm-utils';
 
+import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
+
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
@@ -20,11 +22,12 @@ const instructionToByteCodeMap: Record<string, number[]> = {
 
 const load: InstructionCompiler = withValidation(
 	{
-		scope: 'module',
+		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
 	},
 	(line, context) => {
+		assertFunctionMemoryIoAllowed(line, context);
 		context.stack.pop();
 		context.stack.push({ isInteger: true, isNonZero: false });
 		const instructions = instructionToByteCodeMap[line.instruction];

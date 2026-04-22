@@ -6,7 +6,7 @@
  *   - type mismatches
  *   - invalid instruction in the current scope
  *   - stack mismatches or overflows
- *   - illegal memory access in pure functions
+ *   - function memory declarations or memory IO without the required directive
  *   - constant resolution failures
  *   - any error that cannot be detected from token/argument shape alone
  *
@@ -41,6 +41,7 @@ export enum ErrorCode {
 	STACK_MISMATCH_FUNCTION_RETURN,
 	TYPE_MISMATCH,
 	MEMORY_ACCESS_IN_PURE_FUNCTION,
+	IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO,
 	UNDEFINED_FUNCTION,
 	PARAM_AFTER_FUNCTION_BODY,
 	DUPLICATE_PARAMETER_NAME,
@@ -51,6 +52,7 @@ export enum ErrorCode {
 	NESTED_MACRO_DEFINITION,
 	NESTED_MACRO_CALL,
 	COMPILER_DIRECTIVE_INVALID_CONTEXT,
+	IMPURE_DIRECTIVE_INVALID_CONTEXT,
 	MIXED_FLOAT_WIDTH,
 	INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
 	SPLIT_HEX_TOO_MANY_BYTES,
@@ -221,7 +223,14 @@ export function getError(
 		case ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION:
 			return {
 				code,
-				message: 'Memory access is not allowed in pure functions. (' + code + ')',
+				message: 'Memory declarations are not allowed in functions. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO:
+			return {
+				code,
+				message: 'Memory IO in functions requires #impure. (' + code + ')',
 				line,
 				context,
 			};
@@ -295,6 +304,13 @@ export function getError(
 			return {
 				code,
 				message: 'This compiler directive can only be used within a module block. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.IMPURE_DIRECTIVE_INVALID_CONTEXT:
+			return {
+				code,
+				message: '#impure can only be used within a function block. (' + code + ')',
 				line,
 				context,
 			};
