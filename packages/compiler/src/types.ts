@@ -44,6 +44,7 @@ import {
 	type UseLine,
 	type WasmLine,
 	type LoopLine,
+	type LoopIndexLine,
 	type LoopCapLine,
 	type ImpureLine,
 } from '@8f4e/tokenizer';
@@ -205,6 +206,7 @@ export {
 	type UseLine,
 	type WasmLine,
 	type LoopLine,
+	type LoopIndexLine,
 	type LoopCapLine,
 	type ImpureLine,
 };
@@ -391,6 +393,7 @@ export type BlockStack = Array<{
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
 	blockType: BLOCK_TYPE;
+	loopCounterLocalName?: string;
 	mapState?: MapBlockState;
 }>;
 

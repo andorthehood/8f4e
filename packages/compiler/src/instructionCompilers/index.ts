@@ -22,6 +22,7 @@ import blockEnd from './blockEnd';
 import lessOrEqual from './lessOrEqual';
 import mul from './mul';
 import loop from './loop';
+import loopIndex from './loopIndex';
 import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import equalToZero from './equalToZero';
@@ -93,6 +94,7 @@ const instructions = {
 	lessOrEqual,
 	mul,
 	loop,
+	loopIndex,
 	loopEnd,
 	greaterOrEqualUnsigned,
 	equalToZero,

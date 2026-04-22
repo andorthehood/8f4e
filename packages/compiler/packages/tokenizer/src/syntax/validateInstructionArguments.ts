@@ -45,6 +45,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	default: { minArguments: 1, argumentTypes: ['compileTimeValue'] },
 	storeBytes: { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
 	loop: { argumentTypes: ['nonNegativeIntegerLiteral'] },
+	loopIndex: { maxArguments: 0 },
 	'#loopCap': { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
 	'#impure': { maxArguments: 0 },
 	module: { minArguments: 1, argumentTypes: ['identifier'] },

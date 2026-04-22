@@ -37,6 +37,7 @@ constants instructionSet
 ; if	Begin a conditional branch.
 ; ifEnd	End an if block.
 ; loop	Begin a loop.
+; loopIndex	Push the current zero-based loop iteration.
 ; loopEnd	End a loop.
 ; mapBegin	Begin a map/case block.
 ; map		Add a map case.
