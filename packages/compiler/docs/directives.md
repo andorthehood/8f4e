@@ -153,6 +153,34 @@ The `#skipExecution` directive takes precedence, and the module code does not ex
 
 ## Module- and Function-Scoped Directives
 
+### `#impure`
+
+Marks the current function as allowed to perform explicit memory IO.
+
+**Scope:** Function blocks only
+
+**Usage:**
+```
+function writeSample
+#impure
+param float* dst
+param float value
+push dst
+push value
+store
+functionEnd
+```
+
+**Behavior:**
+- Enables `load`, `load8s`, `load8u`, `load16s`, `load16u`, `loadFloat`, `store`, `storeBytes`, and pointer dereference forms such as `push *ptr` inside the current function
+- Only permits address-driven memory access
+- Does not allow direct module memory identifiers inside functions
+- Does not allow memory declarations inside functions
+
+**Errors:**
+- Using `#impure` outside a function block results in an `IMPURE_DIRECTIVE_INVALID_CONTEXT` error
+- Using memory IO in a function without `#impure` results in an `IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO` error
+
 ### `#loopCap`
 
 Sets the default loop cap for subsequent `loop` blocks in the current module or function block. The loop cap limits the maximum number of iterations to prevent infinite loops at runtime.
