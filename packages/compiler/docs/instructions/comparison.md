@@ -23,6 +23,17 @@ push 0
 equalToZero
 ```
 
+### notZero
+
+The notZero instruction retrieves a value from the stack, verifies if it is not zero, and then pushes a 1 onto the stack if it is true, or 0 if it is false.
+
+#### Examples
+
+```
+push 1
+notZero
+```
+
 ### greaterOrEqual
 
 The greaterOrEqual instruction obtains two values from the stack, checks if the first value is greater than or equal to the second value, and then pushes 1 onto the stack if it is true, or 0 if it is false.

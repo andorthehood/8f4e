@@ -1,0 +1,59 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`notZero instruction compiler > emits F64_NE against zero for float64 operands 1`] = `
+{
+  "byteCode": [
+    68,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    98,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`notZero instruction compiler > emits I32_NE against zero for integer operands 1`] = `
+{
+  "byteCode": [
+    65,
+    0,
+    71,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`notZero instruction compiler > emits float comparison segment 1`] = `
+{
+  "byteCode": [
+    67,
+    0,
+    0,
+    0,
+    0,
+    92,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
