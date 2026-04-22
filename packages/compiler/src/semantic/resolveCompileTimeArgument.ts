@@ -8,6 +8,7 @@ import {
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
+	getPointeeElementIsIntegerFromMetadata,
 	getMemoryStringLastByteAddress,
 	getPointeeElementMaxValue,
 	getPointeeElementMaxValueFromMetadata,
@@ -141,15 +142,14 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 			const memoryItem = memory[base];
 			return {
 				value: getPointeeElementMaxValue(memory, base),
-				isInteger: !!memoryItem?.isInteger,
+				isInteger: getPointeeElementIsIntegerFromMetadata(memoryItem),
 			};
 		}
 		const local = context.locals[base];
 		if (local?.pointeeBaseType) {
 			return {
 				value: getPointeeElementMaxValueFromMetadata(local),
-				isInteger:
-					!!local.isPointingToPointer || (local.pointeeBaseType !== 'float' && local.pointeeBaseType !== 'float64'),
+				isInteger: getPointeeElementIsIntegerFromMetadata(local),
 			};
 		}
 		return undefined;
