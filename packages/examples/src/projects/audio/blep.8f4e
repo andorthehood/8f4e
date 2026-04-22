@@ -16,14 +16,87 @@ const ASSET_AMEN_SIZE 9550
 
 constantsEnd
 
+constants math
+; @pos 383 -123
+
+const PI      3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU     6.283185307179586
+const HALF_PI 1.570796326794896
+const INV_PI  0.318309886183790
+const INV_TAU 0.159154943091895
+const PHI     1.618033988749895
+const DEG2RAD 0.017453292519943
+const RAD2DEG 57.29577951308232
+const SQRT2   1.414213562373095
+const SQRT1_2 0.707106781186547
+; Useful in FFT twiddle factors.
+const HANN_A0 0.5
+; For common window functions before FFT.
+const HAMMING_A0 0.54
+const HAMMING_A1 0.46
+const BLACKMAN_A0 0.42
+const BLACKMAN_A1 0.5
+const BLACKMAN_A2 0.08
+const LN2     0.693147180559945
+const LN10    2.302585092994046
+const LOG2E   1.442695040888963
+const LOG10E  0.434294481903251
+const E       2.718281828459045
+
+constantsEnd
+
+function addBlepAt
+; @pos 324 -121
+#impure
+param float* buffer
+param int index
+param float value
+
+; Accumulate one correction 
+; value into a queue slot.
+push buffer
+push index
+call blepQueuePtr
+
+push buffer
+push index
+call blepQueuePtr
+loadFloat
+
+push value
+add
+store
+
+functionEnd
+
+function blepQueuePtr
+; @pos 240 -105
+param float* buffer
+param int index
+
+; Compute the address of 
+; a queue slot from a base 
+; pointer and index.
+push buffer
+push index
+push sizeof(*buffer)
+mul
+add
+
+functionEnd float*
+
 function blepValueAt
-; @pos 314 -115
+; @pos 288 -121
 #impure
 param float* lut
 param int phaseIndex
 param int tapIndex
 param float delta
 
+; Look up one minBLEP tap 
+; for the selected phase 
+; and scale it by delta.
 push lut
 push phaseIndex
 push tapIndex
@@ -39,48 +112,54 @@ mul
 
 functionEnd float
 
-function nextBlepIndex
-; @pos 280 -112
-param int index
+function wrapAdd16
+; @pos 204 -121
+param int base
+param int offset
+local int sum
 
-push index
-push 1
+; Add an offset and wrap
+; the result into a 16-slot ring.
+push base
+push offset
 add
+localSet sum
+
+push sum
 push 16
-equal
+greaterOrEqual
 if
-push 0
+push sum
+push 16
+sub
 return
 ifEnd
 
-push index
-push 1
-add
+push sum
 
 functionEnd int
 
-function blepQueuePtr
-; @pos 280 -92
-param float* buffer
-param int index
+function frac
+; @pos 239 -141
+param float value
 
-push buffer
-push index
-push sizeof(*buffer)
-mul
-add
-
-functionEnd float*
-
-function positionToBlepPhaseIndex
-; @pos 238 -107
-param float position
-
-push position
-push position
+; Return the fractional part
+; of a positive float.
+push value
+push value
 castToInt
 castToFloat
 sub
+
+functionEnd float
+
+function positionToBlepPhaseIndex
+; @pos 239 -121
+param float position
+; Convert the fractional part of
+; the playhead into a 0..15 BLEP phase.
+push position
+call frac
 push 16.0
 mul
 castToInt
@@ -94,7 +173,7 @@ module assets
 moduleEnd
 
 module audioout
-; @pos 430 -83
+; @pos 337 -72
 ; ~audioOutput buffer 0 0
 ; ~audioOutput buffer 0 1
 use env
@@ -134,134 +213,26 @@ ifEnd
 
 moduleEnd
 
-module blepAdvance
-; @pos 334 -68
-float* correction &blepConsume:out
-float* buffer &blepInject:blepBuffer
-int sourceIndex ; @w
-
-push &sourceIndex
-push 1
-store
-
-loop 15
-push buffer
-push sourceIndex
-push 1
-sub
-call blepQueuePtr
-
-push buffer
-push sourceIndex
-call blepQueuePtr
-loadFloat
-
-store
-
-push &sourceIndex
-push sourceIndex
-push 1
-add
-store
-loopEnd
-
-push buffer
-push 15
-call blepQueuePtr
-push 0.0
-store
-
-moduleEnd
-
-module blepApply
-; @pos 334 -84
-float* raw &pcmPlayer8bit:out
-float* correction &blepConsume:out
-float out ; @w
-
-push &out
-push *raw
-push *correction
-add
-store
-
-moduleEnd
-
-module blepConsume
-; @pos 281 -72
-float* buffer &blepInject:blepBuffer
-float out ; @w
-
-push &out
-push buffer
-push 0
-call blepQueuePtr
-loadFloat
-store
-
-push buffer
-push 0
-call blepQueuePtr
-push 0.0
-store
-
-moduleEnd
-
-module blepInject
-; @pos 228 -67
-int* phaseIndex &blepPhaseIndex:out
-float* delta &sampleDelta:out
-int tapIndex ; @w
-float[] blepBuffer 16
-
-push &tapIndex
-push 0
-store
-
-push *delta
-equalToZero
-if
-else
-loop 16
-push &blepBuffer
-push tapIndex
-call blepQueuePtr
-
-push &blepBuffer
-push tapIndex
-call blepQueuePtr
-loadFloat
-
-push &minBLEPLUT:0
-push *phaseIndex
-push tapIndex
-push *delta
-call blepValueAt
-add
-store
-
-push &tapIndex
-push tapIndex
-push 1
-add
-store
-loopEnd
-ifEnd
-
-moduleEnd
-
 module blepLowpass
-; @pos 387 -80
-float* in &blepApply:out
+; @pos 288 -72
+float* in &blepRing:out
 float state 0.0 ; @w
 float out ; @w
+
+use math
+use env
+
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*4400
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const COEFFICIENT E^EXPONENT
 
 push &out
 push state
 push *in
 push state
 sub
-push 0.439
+push COEFFICIENT
 mul
 add
 store
@@ -272,16 +243,62 @@ store
 
 moduleEnd
 
-module blepPhaseIndex
-; @pos 177 -53
+module blepRing
+; @pos 236 -72
+float* raw &pcmPlayer8bit:out
 float* position &pcmPlayer8bit:position
-int out ; @w
+float* delta &sampleDelta:out
+int index 0 ; @w
+float out ; @w
+float[] blepBuffer 16
 
-; @watch out
-
-push &out
+; Inject the 16-tap BLEP kernel
+; only when the sample output changed.
+push *delta
+notZero
+if
+loop 16
+push &blepBuffer
+push index
+loopIndex
+call wrapAdd16
+push &minBLEPLUT:0
 push *position
 call positionToBlepPhaseIndex
+loopIndex
+push *delta
+call blepValueAt
+call addBlepAt
+loopEnd
+ifEnd
+
+; Read the correction sample
+; at the current ring position.
+; Mix the raw sample with the
+; current BLEP correction.
+push &out
+push *raw
+push &blepBuffer
+push index
+call blepQueuePtr
+loadFloat
+add
+store
+
+; Clear the consumed correction
+; at the current ring position.
+push &blepBuffer
+push index
+call blepQueuePtr
+push 0.0
+store
+
+; Advance the ring position
+; for the next output sample.
+push &index
+push index
+push 1
+call wrapAdd16
 store
 
 moduleEnd
@@ -570,7 +587,7 @@ int8[] buffer ASSET_AMEN_SIZE
 ; @loadAsset amen &buffer
 int8* playhead &buffer
 float position 0.0 ; @w
-float increment 0.40025212312 ; @w
+float increment 0.30025212312 ; @w
 float out
 
 ; @wave &buffer count(buffer) playhead
