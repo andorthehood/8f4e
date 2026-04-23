@@ -12,7 +12,7 @@ while IFS= read -r -d '' project; do
 	fi
 
 	wasm_output="${project%.8f4e}.wasm"
-	node "$CLI_PATH" "$project" --wasm-output "$wasm_output"
+	node "$CLI_PATH" compile "$project" --wasm-output "$wasm_output"
 	count=$((count + 1))
 done < <(find "$PROJECTS_DIR" -type f -name '*.8f4e' -print0)
 

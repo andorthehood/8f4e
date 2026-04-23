@@ -5,15 +5,15 @@ CLI for compiling `.8f4e` project files into runtime-ready exports.
 ## Usage
 
 ```bash
-cli path/to/project.8f4e --wasm-output path/to/module.wasm
+cli compile path/to/project.8f4e --wasm-output path/to/module.wasm
 ```
 
 ```bash
-cli path/to/project.8f4e --trace-output path/to/instruction-flow.json
+cli compile path/to/project.8f4e --trace-output path/to/instruction-flow.json
 ```
 
 ```bash
-cli path/to/project.8f4e --wasm-output path/to/module.wasm --trace-output path/to/instruction-flow.json
+cli compile path/to/project.8f4e --wasm-output path/to/module.wasm --trace-output path/to/instruction-flow.json
 ```
 
 ## Output
