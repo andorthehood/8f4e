@@ -1,5 +1,5 @@
 export interface SliderDirectiveData {
-	id: string;
+	memoryId: string;
 	lineNumber: number;
 	min: number | undefined;
 	max: number | undefined;
@@ -16,7 +16,7 @@ export function createSliderDirectiveData(args: string[], lineNumber: number): S
 	const parsedStep = args[3] !== undefined ? parseFloat(args[3]) : undefined;
 
 	return {
-		id: args[0],
+		memoryId: args[0],
 		lineNumber,
 		min: parsedMin !== undefined && !isNaN(parsedMin) ? parsedMin : undefined,
 		max: parsedMax !== undefined && !isNaN(parsedMax) ? parsedMax : undefined,

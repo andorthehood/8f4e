@@ -179,10 +179,10 @@ Same as `@wave`, but rendered at double height.
 
 ### `@slider`
 
-Render a slider bound to a memory id.
+Render a slider bound to a memory address.
 
 ```txt
-; @slider <memoryId> [min] [max] [step]
+; @slider <memoryAddress> [min] [max] [step]
 ```
 
 ### `@button`
