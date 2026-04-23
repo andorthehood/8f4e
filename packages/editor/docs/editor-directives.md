@@ -185,6 +185,20 @@ Render a slider bound to a memory address.
 ; @slider <memoryAddress> [min] [max] [step]
 ```
 
+### `@crossfade`
+
+Render a center-origin crossfade control bound to two float addresses. The left address is driven when the knob moves left, and the right address is driven when the knob moves right.
+
+```txt
+; @crossfade <leftFloatAddress> <rightFloatAddress>
+```
+
+Notes:
+
+- both arguments must be addresses such as `&dry` and `&wet`
+- both bound memories must resolve to float32 scalars
+- the written range is fixed to `0..1` on each side
+
 ### `@button`
 
 Render a momentary button bound to a memory id.

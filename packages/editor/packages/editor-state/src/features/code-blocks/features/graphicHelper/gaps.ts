@@ -96,6 +96,7 @@ if (import.meta.vitest) {
 					switches: [],
 					buttons: [],
 					sliders: [],
+					crossfades: [],
 					pianoKeyboards: [],
 					arrayPlotters: [],
 					arrayBars: [],

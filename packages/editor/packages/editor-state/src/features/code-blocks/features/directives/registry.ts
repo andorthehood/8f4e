@@ -13,6 +13,7 @@ import barsDirective from './bars/plugin';
 import plotDirective from './plot/plugin';
 import waveDirective, { wave2Directive } from './wave/plugin';
 import sliderDirective from './slider/plugin';
+import crossfadeDirective from './crossfade/plugin';
 import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
 import viewportDirective from './viewport/plugin';
@@ -45,6 +46,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	waveDirective,
 	wave2Directive,
 	sliderDirective,
+	crossfadeDirective,
 	pianoDirective,
 	buttonDirective,
 	switchDirective,
@@ -136,6 +138,7 @@ if (import.meta.vitest) {
 					'; @plot &buffer count(buffer)',
 					'; @bars &bins count(bins)',
 					'; @slider &gain 0 1 0.01',
+					'; @crossfade &dry &wet',
 					'; note',
 					'moduleEnd',
 				],
@@ -160,6 +163,12 @@ if (import.meta.vitest) {
 					rawRow: 3,
 					args: ['&gain', '0', '1', '0.01'],
 					sourceLine: '; @slider &gain 0 1 0.01',
+				},
+				{
+					name: 'crossfade',
+					rawRow: 4,
+					args: ['&dry', '&wet'],
+					sourceLine: '; @crossfade &dry &wet',
 				},
 			]);
 		});
@@ -200,6 +209,7 @@ if (import.meta.vitest) {
 				'; @meter level 0 1',
 				'; @plot &buffer count(buffer)',
 				'; @bars &bins count(bins)',
+				'; @crossfade &dry &wet',
 				'; @wave &buffer 16 pointer',
 				'moduleEnd',
 			];
@@ -217,9 +227,10 @@ if (import.meta.vitest) {
 				{ rawRow: 5, rows: 8 },
 				{ rawRow: 6, rows: 8 },
 				{ rawRow: 7, rows: 2 },
+				{ rawRow: 8, rows: 2 },
 			]);
 			expect(result.displayState).toEqual({});
-			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 		});
 
 		it('allocates double layout height for @wave2', () => {
