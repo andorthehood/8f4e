@@ -228,7 +228,7 @@ castToInt
 functionEnd int
 
 function wrapAdd16
-; @pos 179 -121
+; @pos 98 -136
 param int base
 param int offset
 local int sum
@@ -261,24 +261,18 @@ module assets
 moduleEnd
 
 module audioout
-; @pos 79 -73
+; @pos 165 -100
 ; ~audioOutput buffer 0 0
 ; ~audioOutput buffer 0 1
 use env
 
-float* in &blepLowpass:out
+float* in &mixer:out
 
 float[] buffer AUDIO_BUFFER_SIZE
 float* pointer &buffer
 
-; After BLEP    ;;;;;
-;             ..;;;;;..
-; Signal got   `:;;;:'
-; smoothed out.  `:'
-
-
 ; @plot &buffer count(buffer)
-
+; @hide
 ; Store the input value
 ; in the buffer
 push pointer
@@ -342,7 +336,7 @@ module blepSmoother
 ; @pos 216 -73
 float* raw &pcmPlayer:out
 float* readPosition &pcmPlayer:readPosition
-float* increment &speed:increment
+float* increment &params:increment
 float* delta &sampleDelta:out
 int index 0 ; @w
 float out ; @w
@@ -666,6 +660,27 @@ float	0.000000000000000000
 
 moduleEnd
 
+module mixer
+; @pos 116 -100
+
+float* originalIn &pcmPlayer:out
+float* smoothedIn &blepLowpass:out
+float* volOriginal &params:volOriginal
+float* volSmoothed &params:volSmoothed
+float out
+
+push &out
+push *originalIn
+push *volOriginal
+mul
+push *smoothedIn
+push *volSmoothed
+mul
+add
+store
+
+moduleEnd
+
 module notes
 ; @pos 11 -85
 ; Plays a 8-bit PCM audio sample with a
@@ -677,6 +692,21 @@ module notes
 ; routing it to audioout.
 moduleEnd
 
+module params
+; @pos 66 -93
+float increment 0.2 ; @w
+float volOriginal 0.0 ; @w
+float volSmoothed 1.0; @w
+; @home
+; You can change the playback speed 
+; by dragging this slider below.
+
+; @slider &increment
+
+; @crossfade &volOriginal &volSmoothed
+
+moduleEnd
+
 module pcmPlayer
 ; @pos 122 -73
 use env
@@ -686,7 +716,7 @@ int8[] buffer ASSET_AMEN_SIZE
 int8* playhead &buffer
 float position 0.0 ; @w
 float readPosition 0.0 ; @w
-float* increment &speed:increment
+float* increment &params:increment
 float out
 
 ; @wave &buffer count(buffer) playhead
@@ -747,8 +777,8 @@ moduleEnd
 module sampleDelta
 ; @pos 177 -73
 float* in &pcmPlayer:out
-float previous 0.0 ; @w
-float out ; @w
+float previous 0.0
+float out
 
 push &out
 push previous
@@ -762,8 +792,8 @@ store
 
 moduleEnd
 
-module scope
-; @pos 41 -69
+module scopeOriginal
+; @pos 44 -73
 
 float* in &pcmPlayer:out
 float[] buffer 128
@@ -798,14 +828,38 @@ ifEnd
 
 moduleEnd
 
-module speed
-; @pos 64 -88
-float increment 0.2 
-; @w increment
-; @home
-; You can change the playback speed 
-; by dragging this slider below.
+module scopeSmooth
+; @pos 82 -73
 
-; @slider &increment
+float* in &blepLowpass:out
+float[] buffer 128
+float* pointer &buffer
+
+; After BLEP    ;;;;;
+;             ..;;;;;..
+; Signal got   `:;;;:'
+; smoothed out.  `:'
+
+
+; @plot &buffer count(buffer)
+
+push pointer
+push *in
+store
+
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+push pointer
+push buffer& 
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
 
 moduleEnd
