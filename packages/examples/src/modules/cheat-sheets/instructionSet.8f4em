@@ -21,6 +21,7 @@ constants instructionSet
 ; Comparison
 ; equal	Compare two values for equality.
 ; equalToZero	Test whether the top value is zero.
+; notZero	Test whether the top value is non-zero.
 ; greaterOrEqual	Test whether left >= right.
 ; greaterOrEqualUnsigned	Unsigned greater-or-equal comparison.
 ; greaterThan	Test whether left > right.
@@ -37,6 +38,7 @@ constants instructionSet
 ; if	Begin a conditional branch.
 ; ifEnd	End an if block.
 ; loop	Begin a loop.
+; loopIndex	Push the current zero-based loop iteration.
 ; loopEnd	End a loop.
 ; mapBegin	Begin a map/case block.
 ; map		Add a map case.

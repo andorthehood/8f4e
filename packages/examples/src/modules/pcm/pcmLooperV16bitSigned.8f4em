@@ -23,7 +23,7 @@ push playhead
 castToInt
 push *length
 greaterThan
-if void
+if
 push &playhead
 push 0
 store

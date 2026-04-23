@@ -11,11 +11,11 @@ push &out
 push out
 push HIGH
 equal
-if int
+if
 push LOW
 else
 push HIGH
-ifEnd
+ifEnd int
 store
 
 moduleEnd

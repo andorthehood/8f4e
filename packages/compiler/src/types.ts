@@ -19,6 +19,7 @@ import {
 	type CompileTimeOperand,
 	type DefaultLine,
 	type FollowLine,
+	type FunctionTypeIdentifier,
 	type FunctionLine,
 	type InitLine,
 	type IfBlockMetadata,
@@ -44,7 +45,9 @@ import {
 	type UseLine,
 	type WasmLine,
 	type LoopLine,
+	type LoopIndexLine,
 	type LoopCapLine,
+	type ImpureLine,
 } from '@8f4e/tokenizer';
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
@@ -123,8 +126,8 @@ export interface CompiledModule {
 export type CompiledModuleLookup = Record<string, CompiledModule>;
 
 export interface FunctionSignature {
-	parameters: Array<'int' | 'float' | 'float64'>;
-	returns: Array<'int' | 'float' | 'float64'>;
+	parameters: FunctionValueType[];
+	returns: FunctionValueType[];
 }
 
 export interface FunctionTypeRegistry {
@@ -180,6 +183,7 @@ export {
 	type CompileTimeOperand,
 	type DefaultLine,
 	type FollowLine,
+	type FunctionTypeIdentifier,
 	type FunctionLine,
 	type InitLine,
 	type IfBlockMetadata,
@@ -205,7 +209,9 @@ export {
 	type UseLine,
 	type WasmLine,
 	type LoopLine,
+	type LoopIndexLine,
 	type LoopCapLine,
+	type ImpureLine,
 };
 
 export interface TestModule {
@@ -226,7 +232,15 @@ export interface TestModule {
 export type Const = { value: number; isInteger: boolean; isFloat64?: boolean };
 
 export type Consts = Record<string, Const>;
-export type LocalMap = Record<string, { isInteger: boolean; isFloat64?: boolean; index: number }>;
+export type FunctionValueType = FunctionTypeIdentifier;
+export interface LocalBinding {
+	isInteger: boolean;
+	isFloat64?: boolean;
+	pointeeBaseType?: DataStructure['pointeeBaseType'];
+	isPointingToPointer?: boolean;
+	index: number;
+}
+export type LocalMap = Record<string, LocalBinding>;
 export interface Namespace {
 	memory: MemoryMap;
 	consts: Consts;
@@ -263,6 +277,7 @@ export interface CompilationContext {
 	codeBlockType?: 'module' | 'function' | 'constants';
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
+	currentFunctionIsImpure?: boolean;
 	functionTypeRegistry?: FunctionTypeRegistry;
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
@@ -275,6 +290,8 @@ export interface CompilationContext {
 export interface StackItem {
 	isInteger: boolean;
 	isFloat64?: boolean;
+	pointeeBaseType?: DataStructure['pointeeBaseType'];
+	isPointingToPointer?: boolean;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
 	/** A flag for the memory opraions to check if the memory address is within the memory bounds. */
@@ -382,6 +399,7 @@ export type BlockStack = Array<{
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
 	blockType: BLOCK_TYPE;
+	loopCounterLocalName?: string;
 	mapState?: MapBlockState;
 }>;
 

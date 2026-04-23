@@ -43,6 +43,27 @@ describe('validateInstructionArguments', () => {
 		).toThrowError(SyntaxRulesError);
 	});
 
+	it('accepts pointer type identifiers for params, locals, and functionEnd', () => {
+		expect(() =>
+			validateInstructionArguments('param', [classifyIdentifier('float*'), classifyIdentifier('buffer')])
+		).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('local', [classifyIdentifier('int16**'), classifyIdentifier('cursor')])
+		).not.toThrow();
+		expect(() => validateInstructionArguments('functionEnd', [classifyIdentifier('float64*')])).not.toThrow();
+	});
+
+	it('still rejects pointer type identifiers where only scalar types are valid', () => {
+		expect(() => validateInstructionArguments('mapBegin', [classifyIdentifier('float*')])).toThrowError(
+			SyntaxRulesError
+		);
+	});
+
+	it('accepts bare #impure and rejects any arguments', () => {
+		expect(() => validateInstructionArguments('#impure', [])).not.toThrow();
+		expect(() => validateInstructionArguments('#impure', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
+	});
+
 	it('rejects too many result types for ifEnd', () => {
 		expect(() =>
 			validateInstructionArguments('ifEnd', [classifyIdentifier('int'), classifyIdentifier('float')])

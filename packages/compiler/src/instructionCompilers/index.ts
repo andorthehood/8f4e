@@ -22,9 +22,11 @@ import blockEnd from './blockEnd';
 import lessOrEqual from './lessOrEqual';
 import mul from './mul';
 import loop from './loop';
+import loopIndex from './loopIndex';
 import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import equalToZero from './equalToZero';
+import notZero from './notZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
@@ -56,6 +58,7 @@ import param from './param';
 import call from './call';
 import skipExecution from './skipExecution';
 import initOnly from './initOnly';
+import impure from './impure';
 import loopCap from './loopCap';
 import mapBegin from './mapBegin';
 import map from './map';
@@ -92,9 +95,11 @@ const instructions = {
 	lessOrEqual,
 	mul,
 	loop,
+	loopIndex,
 	loopEnd,
 	greaterOrEqualUnsigned,
 	equalToZero,
+	notZero,
 	shiftLeft,
 	shiftRight,
 	shiftRightUnsigned,
@@ -126,6 +131,7 @@ const instructions = {
 	call,
 	'#skipExecution': skipExecution,
 	'#initOnly': initOnly,
+	'#impure': impure,
 	'#loopCap': loopCap,
 	mapBegin,
 	map,

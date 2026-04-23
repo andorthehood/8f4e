@@ -10,7 +10,7 @@ float out
 push *in
 push out
 lessThan
-if void
+if
 push &out
 push *in
 store

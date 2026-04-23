@@ -6,7 +6,9 @@ The push instruction pushes a literal, constant, local, memory value, or address
 For identifier prefixes and suffixes that expand memory identifiers, see [Identifier prefixes](../prefixes.md).
 
 Float64 literals use the `f64` suffix; unsuffixed float literals default to float32.
-For constants, `push` also supports compile-time mul/div expressions with exactly one operator:
+For constants, `push` also supports compile-time expressions with exactly one operator:
+- `CONST+number`
+- `CONST-number`
 - `CONST*number`
 - `CONST/number`
 

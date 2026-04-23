@@ -146,6 +146,21 @@ Range detection:
 - lengths can be literal counts, memory ids, or `count(buffer)`
 - if `minValue` and `maxValue` are specified, they override the type-derived defaults
 
+### `@meter`
+
+Render a horizontal level meter from a typed scalar memory value. The first argument is the memory id to read. You can optionally provide an explicit min/max range override.
+
+```txt
+; @meter <memoryId>
+; @meter <memoryId> <minValue> <maxValue>
+```
+
+Notes:
+
+- plain scalar memories are supported directly
+- pointer-based values and dereferenced ids still work when they resolve to a typed value
+- red still starts at a fixed 90% of the configured range
+
 ### `@wave`
 
 Draw a waveform over a typed absolute pointer range. The first argument provides the start pointer and element size metadata, the second argument is the element count, and the optional third argument is an absolute pointer in the same address space.
@@ -154,13 +169,35 @@ Draw a waveform over a typed absolute pointer range. The first argument provides
 ; @wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
 ```
 
-### `@slider`
+### `@wave2`
 
-Render a slider bound to a memory id.
+Same as `@wave`, but rendered at double height.
 
 ```txt
-; @slider <memoryId> [min] [max] [step]
+; @wave2 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
 ```
+
+### `@slider`
+
+Render a slider bound to a memory address.
+
+```txt
+; @slider <memoryAddress> [min] [max] [step]
+```
+
+### `@crossfade`
+
+Render a center-origin crossfade control bound to two float addresses. The left address is driven when the knob moves left, and the right address is driven when the knob moves right.
+
+```txt
+; @crossfade <leftFloatAddress> <rightFloatAddress>
+```
+
+Notes:
+
+- both arguments must be addresses such as `&dry` and `&wet`
+- both bound memories must resolve to float32 scalars
+- the written range is fixed to `0..1` on each side
 
 ### `@button`
 
@@ -310,26 +347,34 @@ Use this to bookmark important modules, functions, or other blocks in large proj
 Mark a code block as the home block for initial viewport placement.
 
 ```txt
-; @home
+; @home [center|left|right|top|bottom]
 ```
 
-When a project loads, the viewport centers on the first code block containing the `@home` directive. If no code block contains `@home`, the viewport defaults to position `(0,0)`.
+When a project loads, the viewport moves to the first code block containing the `@home` directive. If no code block contains `@home`, the viewport defaults to position `(0,0)`.
 
 **Behavior:**
 
-- **Project Load**: On load, viewport centers on the first block with `@home` (determined by code block order).
+- **Project Load**: On load, viewport moves to the first block with `@home` (determined by code block order).
 - **Multiple @home**: If multiple blocks have `@home`, only the first one (by project order) is used.
 - **No @home**: If no blocks have `@home`, viewport defaults to `(0,0)`.
-- **During Editing**: Use the "Go @home" main menu action (right-click on empty space) to return the viewport to the home block at any time.
+- **Alignment**: Optional alignment hints match `@stop`: `center` (default), `left`, `right`, `top`, or `bottom`.
+- **During Editing**: Use the "Go @home" main menu action (right-click on empty space) to return the viewport to the home block at any time using the same alignment rule.
 
 **Format:**
-The canonical format is exactly: `; @home`
+The canonical formats are:
+
+- `; @home`
+- `; @home top`
+- `; @home bottom`
+- `; @home left`
+- `; @home right`
+- `; @home center`
 
 Example:
 
 ```txt
 module mainOscillator
-; @home
+; @home top
 ; @pos 50 30
 output out 1
 moduleEnd

@@ -3,8 +3,11 @@ import createStateManager from '@8f4e/state-manager';
 
 import graphicHelperEffect from './effect';
 
+import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
+
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import { EMPTY_DEFAULT_PROJECT } from '~/types';
 
 describe('graphic helper error mapping', () => {
 	it('maps typed compiler errors to function blocks', () => {
@@ -77,5 +80,54 @@ describe('graphic helper hidden directive', () => {
 
 		store.set('graphicHelper.selectedCodeBlock', otherBlock);
 		expect(hiddenBlock.hidden).toBe(true);
+	});
+});
+
+describe('graphic helper home directive', () => {
+	it('centers the initial viewport using the home alignment hint', () => {
+		const state = createMockState({
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+				codeBlocks: [
+					{
+						code: ['module home', '; @home top', '; @pos 10 20', 'moduleEnd'],
+					},
+				],
+			},
+			viewport: {
+				x: 0,
+				y: 0,
+				width: 200,
+				height: 200,
+				roundedWidth: 200,
+				roundedHeight: 200,
+				vGrid: 8,
+				hGrid: 16,
+			},
+			graphicHelper: {
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+				} as never,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		graphicHelperEffect(store, events);
+		store.set('initialProjectState', state.initialProjectState);
+
+		expect(state.graphicHelper.codeBlocks).toHaveLength(1);
+		const [homeBlock] = state.graphicHelper.codeBlocks;
+		expect(homeBlock.isHome).toBe(true);
+		expect(homeBlock.homeAlignment).toBe('top');
+		expect(centerViewportOnCodeBlock(state.viewport, homeBlock, { alignment: 'top' })).toEqual({
+			x: state.viewport.x,
+			y: state.viewport.y,
+		});
 	});
 });

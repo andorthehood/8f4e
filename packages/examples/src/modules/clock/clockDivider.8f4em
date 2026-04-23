@@ -10,7 +10,7 @@ int counter
 
 push *trigger
 risingEdge
-if void
+if
 push &counter
 push counter
 push 1
@@ -23,7 +23,7 @@ push *divider
 remainder
 push 0
 equal
-if void
+if
 push &out
 push *trigger
 store

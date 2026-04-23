@@ -1,12 +1,15 @@
 import { Engine } from 'glugglug';
 
 import drawConnectors from './widgets/connectors';
+import drawBars from './widgets/bars';
+import drawMeters from './widgets/meters';
 import drawPlotters from './widgets/plotters';
 import drawWaves from './widgets/waves';
 import drawDebuggers from './widgets/debuggers';
 import drawSwitches from './widgets/switches';
 import drawButtons from './widgets/buttons';
 import drawSliders from './widgets/sliders';
+import drawCrossfades from './widgets/crossfades';
 import drawErrorMessages from './widgets/errorMessages';
 import drawPianoKeyboards from './widgets/pianoKeyboards';
 import drawArrow from './drawArrow';
@@ -134,7 +137,10 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawSwitches(engine, state, codeBlock, memoryViews);
 			drawButtons(engine, state, codeBlock, memoryViews);
 			drawSliders(engine, state, codeBlock, memoryViews);
+			drawCrossfades(engine, state, codeBlock, memoryViews);
 			drawConnectors(engine, state, codeBlock, memoryViews);
+			drawBars(engine, state, codeBlock, memoryViews);
+			drawMeters(engine, state, codeBlock, memoryViews);
 			drawPlotters(engine, state, codeBlock, memoryViews);
 			drawWaves(engine, state, codeBlock, memoryViews);
 			drawDebuggers(engine, state, codeBlock, memoryViews);

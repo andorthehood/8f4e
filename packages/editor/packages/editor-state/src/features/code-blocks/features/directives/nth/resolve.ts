@@ -2,6 +2,7 @@ import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../type
 import type { NthDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import { getTabStopsByLine, getVisualLineWidth } from '~/features/code-editing/tabLayout';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
@@ -21,13 +22,16 @@ function resolveNthDirectiveWidget(
 	}
 
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[nth.lineNumber] ?? nth.lineNumber;
+	const tabStopsByLine = getTabStopsByLine(graphicData.code);
+	const visualLineWidth = getVisualLineWidth(
+		graphicData.code[nth.lineNumber] || '',
+		tabStopsByLine[nth.lineNumber] || []
+	);
 
 	graphicData.widgets.debuggers.push({
 		width: state.viewport.vGrid * 2,
 		height: state.viewport.hGrid,
-		x:
-			state.viewport.vGrid * (3 + graphicData.lineNumberColumnWidth) +
-			state.viewport.vGrid * graphicData.code[nth.lineNumber].length,
+		x: state.viewport.vGrid * (3 + graphicData.lineNumberColumnWidth + visualLineWidth),
 		y: gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid,
 		id: '__nth__',
 		showAddress: false,

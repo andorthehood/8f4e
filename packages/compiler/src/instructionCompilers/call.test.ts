@@ -93,4 +93,33 @@ describe('call instruction compiler', () => {
 			);
 		}).toThrowError();
 	});
+
+	it('tracks pointer return types on the stack', () => {
+		const context = createInstructionCompilerTestContext();
+		context.namespace.functions = {
+			addr: {
+				id: 'addr',
+				signature: { parameters: [], returns: ['float*'] },
+				body: [],
+				locals: [],
+				wasmIndex: 2,
+			},
+		} as CompilationContext['namespace']['functions'];
+
+		call(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'call',
+				arguments: [classifyIdentifier('addr')],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toHaveLength(1);
+		expect(context.stack[0]).toMatchObject({
+			isInteger: true,
+			pointeeBaseType: 'float',
+		});
+	});
 });

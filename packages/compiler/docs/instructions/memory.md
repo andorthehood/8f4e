@@ -2,6 +2,8 @@
 
 For identifier prefixes and suffixes that expand memory identifiers, see [Identifier prefixes](../prefixes.md).
 
+In functions, memory instructions require the `#impure` compiler directive. Even in impure functions, memory access must be address-driven: functions still cannot reference module memory identifiers by name or declare their own memory.
+
 ### load
 
 The load instruction consumes an address from the stack and pushes the 32-bit integer value stored at that address.
@@ -90,7 +92,7 @@ store
 ### init
 
 The init instruction sets the default value for a declared memory identifier or buffer element (for example `init bufferName[3] 42`).
-The value argument can also be a constant mul/div expression with exactly one operator (`CONST*number` or `CONST/number`).
+The value argument can also be a constant expression with exactly one operator (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
 
 #### Examples
 

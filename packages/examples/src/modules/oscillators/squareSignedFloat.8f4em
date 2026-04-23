@@ -24,7 +24,7 @@ store
 push counter
 push 1.0
 greaterThan
-if void
+if
 push &direction
 push -1.0
 store
@@ -33,7 +33,7 @@ ifEnd
 push counter
 push -1.0
 lessThan
-if void
+if
 push &direction
 push 1.0
 store
@@ -42,7 +42,7 @@ ifEnd
 push counter
 push 0.0
 greaterThan
-if void
+if
 push &out
 push 1.0
 store

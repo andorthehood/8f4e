@@ -25,10 +25,12 @@
 - Syntax/parser in-source tests live with `@8f4e/tokenizer`; compiler tests should focus on semantic and codegen behavior.
 - To update snapshots after intentional changes, use `npx nx run compiler:test -- --update`.
 
-## Pure Function Feature
+## Function Purity and `#impure`
 
 ### Overview
-The compiler now supports pure functions alongside modules. Pure functions are:
+The compiler now supports pure functions alongside modules. Functions are pure by default and may opt into explicit memory IO with `#impure`.
+- **Pure by default**: No memory IO, only stack and locals
+- **Impure by directive**: `#impure` allows explicit address-driven reads/writes
 - **Stateless**: No memory access, only stack and locals
 - **Reusable**: Can be called from multiple modules
 - **Type-safe**: Explicit signatures with int/float parameters and returns
@@ -57,7 +59,9 @@ moduleEnd
 ### Constraints
 - **Parameters**: Maximum 8, types must be `int` or `float`
 - **Returns**: Maximum 8, types must be `int` or `float`
-- **No memory access**: Cannot use `int`, `float`, `int*`, `float*`, `int**`, `float**`, buffers, `load`, `store`
+- **No memory declarations in functions**: Functions cannot declare `int`, `float`, pointers, or buffers
+- **Pure by default**: `load`, `store`, `storeBytes`, and pointer dereference require `#impure`
+- **No direct module memory namespace access**: Even impure functions still operate only on explicit addresses
 - **Stack-only operations**: Supports locals, constants, arithmetic, logic, control flow
 
 ### Allowed Instructions in Functions
@@ -65,7 +69,7 @@ moduleEnd
 - **Logic**: `and`, `or`, `xor`, `equal`, `equalToZero`, `greaterThan`, `lessThan`, `greaterOrEqual`, `lessOrEqual`
 - **Stack**: `push`, `dup`, `drop`, `swap`, `clearStack`
 - **Locals**: `local`, `localSet`
-- **Control flow**: `if`, `ifEnd`, `else`, `loop`, `loopEnd`, `block`, `blockEnd`, `branch`, `branchIfTrue`, `branchIfUnchanged`
+- **Control flow**: `if`, `ifEnd`, `else`, `loop`, `loopEnd`, `block`, `blockEnd`, `branch`, `branchIfTrue`
 - **Type conversion**: `castToInt`, `castToFloat`
 - **Bitwise**: `shiftLeft`, `shiftRight`, `shiftRightUnsigned`
 - **Constants**: `const` (can be defined at top level or in function body)

@@ -54,7 +54,7 @@ add
 load
 push 1
 equal
-if void
+if
   ; Prepare out address
 push &out0
 push pointer

@@ -60,7 +60,7 @@ describe('serializeDiagnostic', () => {
 			const result = serializeDiagnostic(compilerErr);
 
 			expect(result.code).toBe(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION);
-			expect(result.message).toContain('Memory access is not allowed in pure functions');
+			expect(result.message).toContain('Memory declarations are not allowed in functions');
 			expect(result.line).toEqual({
 				lineNumberBeforeMacroExpansion: 3,
 				lineNumberAfterMacroExpansion: 5,

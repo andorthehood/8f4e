@@ -8,9 +8,12 @@ import {
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
+	getPointeeElementIsIntegerFromMetadata,
 	getMemoryStringLastByteAddress,
 	getPointeeElementMaxValue,
+	getPointeeElementMaxValueFromMetadata,
 	getPointeeElementWordSize,
+	getPointeeElementWordSizeFromMetadata,
 } from '../utils/memoryData';
 
 import type { Argument, CompilationContext, CompileTimeOperand, Const } from '../types';
@@ -107,6 +110,10 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 				isInteger: true,
 			};
 		}
+		const local = context.locals[base];
+		if (local?.pointeeBaseType) {
+			return { value: getPointeeElementWordSizeFromMetadata(local), isInteger: true };
+		}
 		return undefined;
 	}
 
@@ -135,7 +142,14 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 			const memoryItem = memory[base];
 			return {
 				value: getPointeeElementMaxValue(memory, base),
-				isInteger: !!memoryItem?.isInteger,
+				isInteger: getPointeeElementIsIntegerFromMetadata(memoryItem),
+			};
+		}
+		const local = context.locals[base];
+		if (local?.pointeeBaseType) {
+			return {
+				value: getPointeeElementMaxValueFromMetadata(local),
+				isInteger: getPointeeElementIsIntegerFromMetadata(local),
 			};
 		}
 		return undefined;
@@ -251,13 +265,17 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	return undefined;
 }
 
-function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: '*' | '/' | '^'): Const {
+function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: '+' | '-' | '*' | '/' | '^'): Const {
 	const value =
-		operator === '*'
-			? lhsConst.value * rhsConst.value
-			: operator === '/'
-				? lhsConst.value / rhsConst.value
-				: Math.pow(lhsConst.value, rhsConst.value);
+		operator === '+'
+			? lhsConst.value + rhsConst.value
+			: operator === '-'
+				? lhsConst.value - rhsConst.value
+				: operator === '*'
+					? lhsConst.value * rhsConst.value
+					: operator === '/'
+						? lhsConst.value / rhsConst.value
+						: Math.pow(lhsConst.value, rhsConst.value);
 	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
 	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
 

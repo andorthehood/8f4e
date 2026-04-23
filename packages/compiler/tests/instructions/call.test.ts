@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 
-import { moduleTesterWithFunctions } from './testUtils';
+import { createTestModuleWithFunctions, moduleTesterWithFunctions } from './testUtils';
 
 import compile from '../../src';
 
@@ -180,3 +180,98 @@ functionEnd float64`,
 	],
 	[[{}, { output: 6.28318530717958 }]]
 );
+
+describe('call instruction (pointer params)', () => {
+	test('supports pointer params, local pointer dereference, and sizeof(*param)', async () => {
+		const testModule = await createTestModuleWithFunctions(
+			`module test
+float[] lut 32
+float output 0
+float delta 0
+
+loop
+  push &output
+  push &lut
+  push 0
+  push delta
+  call readScaledBlep
+  store
+loopEnd
+
+moduleEnd`,
+			[
+				`function readScaledBlep
+#impure
+param float* lut
+param int phaseIndex
+param float delta
+
+local float* lutPtr
+
+push lut
+push phaseIndex
+push sizeof(*lut)
+mul
+add
+localSet lutPtr
+
+push *lutPtr
+push delta
+mul
+functionEnd float`,
+			]
+		);
+
+		const lutBase = testModule.memoryMap.lut.byteAddress;
+		const dataView = new DataView(testModule.memory.buffer);
+
+		for (let i = 0; i < 16; i++) {
+			dataView.setFloat32(lutBase + i * 4, i + 1, true);
+		}
+		dataView.setFloat32(testModule.memoryMap.delta.byteAddress, 0.5, true);
+
+		testModule.test();
+
+		expect(dataView.getFloat32(testModule.memoryMap.output.byteAddress, true)).toBeCloseTo(0.5, 6);
+	});
+
+	test('supports explicit loadFloat and store in impure functions with pointer params', async () => {
+		const testModule = await createTestModuleWithFunctions(
+			`module test
+float input 0
+float output 0
+float gain 0
+
+loop
+  push &output
+  push &input
+  push gain
+  call scaleInto
+loopEnd
+
+moduleEnd`,
+			[
+				`function scaleInto
+#impure
+param float* dst
+param float* src
+param float gain
+
+push dst
+push src
+loadFloat
+push gain
+mul
+store
+functionEnd`,
+			]
+		);
+
+		testModule.memory.set('input', 3.5);
+		testModule.memory.set('gain', 0.5);
+
+		testModule.test();
+
+		expect(testModule.memory.get('output')).toBeCloseTo(1.75, 6);
+	});
+});

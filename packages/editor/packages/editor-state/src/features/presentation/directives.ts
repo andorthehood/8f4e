@@ -1,7 +1,10 @@
+import { parseViewportBlockAlignment } from '../viewport/blockAlignment';
+
 import type { CodeBlockGraphicData, ParsedDirectiveRecord } from '~/types';
+import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 export const PRESENTATION_DIRECTIVE_NAME = 'stop';
-export type PresentationStopAlignment = 'center' | 'left' | 'right' | 'top' | 'bottom';
+export type PresentationStopAlignment = ViewportBlockAlignment;
 
 export interface PresentationStop {
 	codeBlock: CodeBlockGraphicData;
@@ -27,18 +30,6 @@ function parsePositiveSeconds(value: string | undefined): number | undefined {
 	return seconds > 0 ? seconds : undefined;
 }
 
-function parseAlignment(value: string | undefined): PresentationStopAlignment | undefined {
-	if (!value) {
-		return 'center';
-	}
-
-	if (value === 'center' || value === 'left' || value === 'right' || value === 'top' || value === 'bottom') {
-		return value;
-	}
-
-	return undefined;
-}
-
 export function parsePresentationDirective(
 	parsedDirectives: ParsedDirectiveRecord[]
 ): { order: number; seconds: number; alignment: PresentationStopAlignment } | undefined {
@@ -51,7 +42,7 @@ export function parsePresentationDirective(
 
 	const order = parseStrictInteger(directive.args[0]);
 	const seconds = parsePositiveSeconds(directive.args[1]);
-	const alignment = parseAlignment(directive.args[2]);
+	const alignment = parseViewportBlockAlignment(directive.args[2]);
 	if (order === undefined || order < 0 || seconds === undefined || alignment === undefined) {
 		return undefined;
 	}

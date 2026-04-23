@@ -2,6 +2,7 @@ import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../type
 import type { WatchDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import { getTabStopsByLine, getVisualLineWidth } from '~/features/code-editing/tabLayout';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
@@ -22,13 +23,16 @@ function resolveWatchDirectiveWidget(
 	}
 
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[_debugger.lineNumber] ?? _debugger.lineNumber;
+	const tabStopsByLine = getTabStopsByLine(graphicData.code);
+	const visualLineWidth = getVisualLineWidth(
+		graphicData.code[_debugger.lineNumber] || '',
+		tabStopsByLine[_debugger.lineNumber] || []
+	);
 
 	graphicData.widgets.debuggers.push({
 		width: state.viewport.vGrid * 2,
 		height: state.viewport.hGrid,
-		x:
-			state.viewport.vGrid * (3 + graphicData.lineNumberColumnWidth) +
-			state.viewport.vGrid * graphicData.code[_debugger.lineNumber].length,
+		x: state.viewport.vGrid * (3 + graphicData.lineNumberColumnWidth + visualLineWidth),
 		y: gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid,
 		id: _debugger.id,
 		memory: memory.memory,

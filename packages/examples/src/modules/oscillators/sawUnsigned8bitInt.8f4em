@@ -30,7 +30,7 @@ push max(range8)
 push min(range8)
 sub
 greaterThan
-if void
+if
 push &out
 push 0
 store

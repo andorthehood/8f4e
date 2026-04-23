@@ -70,6 +70,38 @@ describe('param instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
+	it('registers a pointer function parameter with pointee metadata', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [
+				...createInstructionCompilerTestContext().blockStack,
+				{
+					blockType: BLOCK_TYPE.FUNCTION,
+					expectedResultIsInteger: false,
+					hasExpectedResult: false,
+				},
+			],
+			currentFunctionSignature: { parameters: [], returns: [] },
+			locals: {},
+		});
+
+		param(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'param',
+				arguments: [classifyIdentifier('float*'), classifyIdentifier('buffer')],
+			} as AST[number],
+			context
+		);
+
+		expect(context.locals.buffer).toMatchObject({
+			isInteger: true,
+			pointeeBaseType: 'float',
+			index: 0,
+		});
+		expect(context.currentFunctionSignature?.parameters).toEqual(['float*']);
+	});
+
 	it('throws when declared after locals', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [

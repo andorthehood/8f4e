@@ -21,7 +21,7 @@ int counter
 
 push *trigger
 risingEdge
-if void 
+if 
  ; Increment counter
 push &counter
 push counter
@@ -34,7 +34,7 @@ ifEnd
 push counter
 push *length
 greaterOrEqual
-if void
+if
 push &counter
 push 0
 store

@@ -1,8 +1,9 @@
-import { i32const, i32load, i32load16s, i32load8s } from '@8f4e/compiler-wasm-utils';
+import { i32const } from '@8f4e/compiler-wasm-utils';
 
+import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../../utils/compilation';
 import { getDataStructure } from '../../../utils/memoryData';
-import { kindToStackItem, loadOpcode, resolvePointerTargetValueKind } from '../shared';
+import { buildPointerDereferenceByteCode, kindToStackItem } from '../shared';
 
 import type { CompilationContext, PushIdentifierLine } from '../../../types';
 
@@ -14,22 +15,9 @@ export default function pushMemoryPointer(line: PushIdentifierLine, context: Com
 	}
 	const base = argument.targetMemoryId;
 	const memoryItem = getDataStructure(memory, base)!;
+	assertFunctionMemoryIoAllowed(line, context);
+	const dereference = buildPointerDereferenceByteCode(memoryItem, i32const(memoryItem.byteAddress), 'pointer-slot');
+	context.stack.push(kindToStackItem(dereference.kind, { isNonZero: false }));
 
-	const kind = resolvePointerTargetValueKind(memoryItem);
-	context.stack.push(kindToStackItem(kind, { isNonZero: false }));
-
-	// For int8* and int8**, use i32load8s (sign-extended 8-bit load) for the final dereference.
-	// For int16* and int16**, use i32load16s (sign-extended 16-bit load) for the final dereference.
-	const finalLoad =
-		memoryItem.pointeeBaseType === 'int8'
-			? i32load8s()
-			: memoryItem.pointeeBaseType === 'int16'
-				? i32load16s()
-				: loadOpcode[kind]();
-
-	return saveByteCode(context, [
-		...i32const(memoryItem.byteAddress),
-		...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
-		...finalLoad,
-	]);
+	return saveByteCode(context, dereference.byteCode);
 }

@@ -1,5 +1,6 @@
 import isConstantName from './isConstantName';
 import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
+import { FUNCTION_TYPE_IDENTIFIERS, SCALAR_TYPE_IDENTIFIERS } from './functionTypeIdentifiers';
 import { ArgumentType, type Argument } from './parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
@@ -11,6 +12,7 @@ type ArgumentShapeRule =
 	| 'compileTimeValue'
 	| 'mapValue'
 	| 'typeIdentifier'
+	| 'functionTypeIdentifier'
 	| 'ifResultType';
 
 type InstructionArgumentSpec = {
@@ -19,7 +21,8 @@ type InstructionArgumentSpec = {
 	argumentTypes?: ArgumentShapeRule[] | ArgumentShapeRule;
 };
 
-const supportedTypeIdentifiers = new Set(['int', 'float', 'float64']);
+const supportedScalarTypeIdentifiers: ReadonlySet<string> = new Set(SCALAR_TYPE_IDENTIFIERS);
+const supportedFunctionTypeIdentifiers: ReadonlySet<string> = new Set(FUNCTION_TYPE_IDENTIFIERS);
 const supportedIfResultTypeIdentifiers = new Set(['int', 'float']);
 
 const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>> = {
@@ -30,11 +33,11 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	wasm: { minArguments: 1, argumentTypes: ['literal'] },
 	block: { maxArguments: 0 },
 	blockEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
-	local: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
-	param: { minArguments: 2, argumentTypes: ['typeIdentifier', 'identifier'] },
+	local: { minArguments: 2, argumentTypes: ['functionTypeIdentifier', 'identifier'] },
+	param: { minArguments: 2, argumentTypes: ['functionTypeIdentifier', 'identifier'] },
 	localSet: { minArguments: 1, argumentTypes: ['identifier'] },
 	function: { minArguments: 1, argumentTypes: ['identifier'] },
-	functionEnd: { argumentTypes: 'typeIdentifier' },
+	functionEnd: { argumentTypes: 'functionTypeIdentifier' },
 	call: { minArguments: 1, argumentTypes: ['identifier'] },
 	mapBegin: { minArguments: 1, argumentTypes: ['typeIdentifier'] },
 	mapEnd: { minArguments: 1, argumentTypes: ['typeIdentifier'] },
@@ -42,8 +45,10 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	default: { minArguments: 1, argumentTypes: ['compileTimeValue'] },
 	storeBytes: { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
 	loop: { argumentTypes: ['nonNegativeIntegerLiteral'] },
+	loopIndex: { maxArguments: 0 },
 	'#loopCap': { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
 	'#follow': { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
+	'#impure': { maxArguments: 0 },
 	module: { minArguments: 1, argumentTypes: ['identifier'] },
 	constants: { minArguments: 1, argumentTypes: ['identifier'] },
 	use: { minArguments: 1, argumentTypes: ['identifier'] },
@@ -120,8 +125,13 @@ function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, inst
 			}
 			return;
 		case 'typeIdentifier':
-			if (argument.type !== ArgumentType.IDENTIFIER || !supportedTypeIdentifiers.has(argument.value)) {
+			if (argument.type !== ArgumentType.IDENTIFIER || !supportedScalarTypeIdentifiers.has(argument.value)) {
 				invalid(`Invalid argument for ${instruction}: expected type identifier (int, float, or float64).`);
+			}
+			return;
+		case 'functionTypeIdentifier':
+			if (argument.type !== ArgumentType.IDENTIFIER || !supportedFunctionTypeIdentifiers.has(argument.value)) {
+				invalid(`Invalid argument for ${instruction}: expected function type identifier.`);
 			}
 			return;
 		case 'ifResultType':
