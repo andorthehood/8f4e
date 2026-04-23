@@ -83,6 +83,41 @@ describe('graphic helper hidden directive', () => {
 	});
 });
 
+describe('graphic helper line numbers', () => {
+	it('renders blank line-number gutters for pointer declaration instructions', () => {
+		const pointerBlock = createMockCodeBlock({
+			code: ['module demo', 'int* ptr &buffer', 'float* out &buffer', 'push 1', 'moduleEnd'],
+		});
+		const state = createMockState({
+			graphicHelper: {
+				codeBlocks: [pointerBlock],
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+				} as never,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		graphicHelperEffect(store, events);
+		store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
+
+		const renderedLines = pointerBlock.codeToRender.map(line =>
+			line.map(cell => String.fromCharCode(Number(cell))).join('')
+		);
+
+		expect(renderedLines[0]?.slice(0, 2)).toBe('0 ');
+		expect(renderedLines[1]?.slice(0, 2)).toBe('  ');
+		expect(renderedLines[2]?.slice(0, 2)).toBe('  ');
+		expect(renderedLines[3]?.slice(0, 2)).toBe('3 ');
+	});
+});
+
 describe('graphic helper home directive', () => {
 	it('centers the initial viewport using the home alignment hint', () => {
 		const state = createMockState({

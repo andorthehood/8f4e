@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 import { getBlockType } from '@8f4e/tokenizer';
 import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
+import { getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
 
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
@@ -38,6 +39,24 @@ import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 import { isShaderNoteCode } from '../../../shader-effects/getShaderNoteMetadata';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
+
+function shouldRenderBlankLineNumber(sourceLine: string): boolean {
+	const instruction = sourceLine.match(/^\s*([^\s;]+)/)?.[1];
+	return instruction !== undefined && isMemoryDeclarationInstruction(instruction) && getPointerDepth(instruction) > 0;
+}
+
+function getLineNumberPrefix(
+	displayRow: number,
+	lineNumberColumnWidth: number,
+	sourceLine: string,
+	isPlaceholder: boolean
+): string {
+	if (!isPlaceholder && shouldRenderBlankLineNumber(sourceLine)) {
+		return ''.padStart(lineNumberColumnWidth + 1, ' ');
+	}
+
+	return `${displayRow}`.padStart(lineNumberColumnWidth, '0') + ' ';
+}
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
@@ -88,8 +107,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
-		graphicData.codeToRender = displayModel.lines.map(({ text, rawRow }, displayRow) => {
-			const prefix = `${displayRow}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ';
+		graphicData.codeToRender = displayModel.lines.map(({ text, rawRow, isPlaceholder }, displayRow) => {
+			const prefix = getLineNumberPrefix(displayRow, graphicData.lineNumberColumnWidth, text, isPlaceholder ?? false);
 			return [...prefix]
 				.map(char => char.charCodeAt(0) as number | string)
 				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
