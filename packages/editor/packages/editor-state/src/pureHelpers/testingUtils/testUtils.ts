@@ -130,6 +130,7 @@ export function createMockCodeBlock(
 			switches: [],
 			buttons: [],
 			sliders: [],
+			crossfades: [],
 			pianoKeyboards: [],
 			arrayPlotters: [],
 			arrayBars: [],

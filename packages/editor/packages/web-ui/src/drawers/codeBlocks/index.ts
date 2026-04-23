@@ -9,6 +9,7 @@ import drawDebuggers from './widgets/debuggers';
 import drawSwitches from './widgets/switches';
 import drawButtons from './widgets/buttons';
 import drawSliders from './widgets/sliders';
+import drawCrossfades from './widgets/crossfades';
 import drawErrorMessages from './widgets/errorMessages';
 import drawPianoKeyboards from './widgets/pianoKeyboards';
 import drawArrow from './drawArrow';
@@ -136,6 +137,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawSwitches(engine, state, codeBlock, memoryViews);
 			drawButtons(engine, state, codeBlock, memoryViews);
 			drawSliders(engine, state, codeBlock, memoryViews);
+			drawCrossfades(engine, state, codeBlock, memoryViews);
 			drawConnectors(engine, state, codeBlock, memoryViews);
 			drawBars(engine, state, codeBlock, memoryViews);
 			drawMeters(engine, state, codeBlock, memoryViews);
