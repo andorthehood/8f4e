@@ -1,7 +1,7 @@
 8f4e/v1
 
 constants env
-; @pos 21 -63
+; @pos -74 -54
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -17,7 +17,7 @@ const ASSET_AMEN_SIZE 9550
 constantsEnd
 
 constants math
-; @pos 383 -123
+; @pos -63 -102
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793
@@ -47,7 +47,7 @@ const E       2.718281828459045
 constantsEnd
 
 function addBlepAt
-; @pos 324 -121
+; @pos 372 -157
 #impure
 param float* buffer
 param int index
@@ -71,7 +71,7 @@ store
 functionEnd
 
 function blepQueuePtr
-; @pos 239 -107
+; @pos 141 -136
 param float* buffer
 param int index
 
@@ -87,7 +87,7 @@ add
 functionEnd float*
 
 function blepValueAtInterpolated
-; @pos 288 -121
+; @pos 330 -157
 #impure
 param float* lut
 param float phase
@@ -151,7 +151,7 @@ mul
 functionEnd float
 
 function blepValueAtNonInterpolated
-; @pos 288 -141
+; @pos 284 -138
 #impure
 param float* lut
 param int phaseIndex
@@ -177,7 +177,7 @@ mul
 functionEnd float
 
 function frac
-; @pos 239 -136
+; @pos 178 -136
 param float value
 
 ; Return the fractional part
@@ -191,7 +191,7 @@ sub
 functionEnd float
 
 function positionIncrementToBlepPhaseInterpolated
-; @pos 239 -121
+; @pos 223 -138
 param float position
 param float increment
 ; Convert the fractional part of
@@ -212,7 +212,7 @@ mul
 functionEnd float
 
 function positionIncrementToBlepPhaseNonInterpolated
-; @pos 239 -101
+; @pos 223 -116
 param float position
 param float increment
 ; Convert the fractional part of
@@ -228,7 +228,7 @@ castToInt
 functionEnd int
 
 function wrapAdd16
-; @pos 196 -121
+; @pos 179 -121
 param int base
 param int offset
 local int sum
@@ -261,7 +261,7 @@ module assets
 moduleEnd
 
 module audioout
-; @pos 312 -73
+; @pos 79 -73
 ; ~audioOutput buffer 0 0
 ; ~audioOutput buffer 0 1
 use env
@@ -270,6 +270,12 @@ float* in &blepLowpass:out
 
 float[] buffer AUDIO_BUFFER_SIZE
 float* pointer &buffer
+
+; After BLEP    ;;;;;
+;             ..;;;;;..
+; Signal got   `:;;;:'
+; smoothed out.  `:'
+
 
 ; @plot &buffer count(buffer)
 
@@ -302,8 +308,8 @@ ifEnd
 moduleEnd
 
 module blepLowpass
-; @pos 263 -73
-float* in &blepRing:out
+; @pos 274 -73
+float* in &blepSmoother:out
 float state 0.0 ; @w
 float out ; @w
 
@@ -332,11 +338,11 @@ store
 
 moduleEnd
 
-module blepRing
-; @pos 213 -73
-float* raw &pcmPlayer8bit:out
-float* readPosition &pcmPlayer8bit:readPosition
-float* increment &pcmPlayer8bit:increment
+module blepSmoother
+; @pos 216 -73
+float* raw &pcmPlayer:out
+float* readPosition &pcmPlayer:readPosition
+float* increment &speed:increment
 float* delta &sampleDelta:out
 int index 0 ; @w
 float out ; @w
@@ -661,17 +667,18 @@ float	0.000000000000000000
 moduleEnd
 
 module notes
-; @pos 21 -46
-; Loads an external 8-bit PCM asset into memory, 
-; continuously plays it with a looping playhead, 
-; and routes the normalized output into a single 
-; audioout buffer that is read by both left and 
-; right audio channels.
+; @pos 11 -85
+; Plays a 8-bit PCM audio sample with a
+; variable-speed floating-point playhead,
+; applies a minBLEP (minimum-band-limited
+; step) correction with a 16-sample ring
+; buffer to smooth sample discontinuities,
+; then low-pass filters the result before
+; routing it to audioout.
 moduleEnd
 
-module pcmPlayer8bit
-; @pos 119 -73
-; @home
+module pcmPlayer
+; @pos 122 -73
 use env
 
 int8[] buffer ASSET_AMEN_SIZE
@@ -679,7 +686,7 @@ int8[] buffer ASSET_AMEN_SIZE
 int8* playhead &buffer
 float position 0.0 ; @w
 float readPosition 0.0 ; @w
-float increment 0.30025212312 ; @w
+float* increment &speed:increment
 float out
 
 ; @wave &buffer count(buffer) playhead
@@ -711,7 +718,7 @@ store
 ; Advance the float position
 push &position
 push position
-push increment
+push *increment
 add
 store
 
@@ -733,13 +740,13 @@ module projectConfig
 ; @pos -53 -63
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName blep
+; @exportFileName minBLEP
 
 moduleEnd
 
 module sampleDelta
-; @pos 174 -73
-float* in &pcmPlayer8bit:out
+; @pos 177 -73
+float* in &pcmPlayer:out
 float previous 0.0 ; @w
 float out ; @w
 
@@ -752,5 +759,53 @@ store
 push &previous
 push *in
 store
+
+moduleEnd
+
+module scope
+; @pos 41 -69
+
+float* in &pcmPlayer:out
+float[] buffer 128
+float* pointer &buffer
+
+; Before BLEP    ;;;;;
+;              ..;;;;;..
+; You can see   `:;;;:'
+; how chunky the  `:'
+; signal is.
+        
+; @plot &buffer count(buffer)
+
+push pointer
+push *in
+store
+
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module speed
+; @pos 64 -88
+float increment 0.2 
+; @w increment
+; @home
+; You can change the playback speed 
+; by dragging this slider below.
+
+; @slider &increment
 
 moduleEnd
