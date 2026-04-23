@@ -347,26 +347,34 @@ Use this to bookmark important modules, functions, or other blocks in large proj
 Mark a code block as the home block for initial viewport placement.
 
 ```txt
-; @home
+; @home [center|left|right|top|bottom]
 ```
 
-When a project loads, the viewport centers on the first code block containing the `@home` directive. If no code block contains `@home`, the viewport defaults to position `(0,0)`.
+When a project loads, the viewport moves to the first code block containing the `@home` directive. If no code block contains `@home`, the viewport defaults to position `(0,0)`.
 
 **Behavior:**
 
-- **Project Load**: On load, viewport centers on the first block with `@home` (determined by code block order).
+- **Project Load**: On load, viewport moves to the first block with `@home` (determined by code block order).
 - **Multiple @home**: If multiple blocks have `@home`, only the first one (by project order) is used.
 - **No @home**: If no blocks have `@home`, viewport defaults to `(0,0)`.
-- **During Editing**: Use the "Go @home" main menu action (right-click on empty space) to return the viewport to the home block at any time.
+- **Alignment**: Optional alignment hints match `@stop`: `center` (default), `left`, `right`, `top`, or `bottom`.
+- **During Editing**: Use the "Go @home" main menu action (right-click on empty space) to return the viewport to the home block at any time using the same alignment rule.
 
 **Format:**
-The canonical format is exactly: `; @home`
+The canonical formats are:
+
+- `; @home`
+- `; @home top`
+- `; @home bottom`
+- `; @home left`
+- `; @home right`
+- `; @home center`
 
 Example:
 
 ```txt
 module mainOscillator
-; @home
+; @home top
 ; @pos 50 30
 output out 1
 moduleEnd

@@ -81,6 +81,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.disabled = directiveState.blockState.disabled;
 		graphicData.hidden = directiveState.blockState.hidden && state.graphicHelper.selectedCodeBlock !== graphicData;
 		graphicData.isHome = directiveState.blockState.isHome;
+		graphicData.homeAlignment = directiveState.blockState.homeAlignment;
 		graphicData.isFavorite = directiveState.blockState.isFavorite;
 		graphicData.opacity = directiveState.blockState.opacity;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
@@ -282,6 +283,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				disabled: directiveState.blockState.disabled,
 				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,
+				homeAlignment: directiveState.blockState.homeAlignment,
 				isFavorite: directiveState.blockState.isFavorite,
 				opacity: directiveState.blockState.opacity,
 				alwaysOnTop: directiveState.blockState.alwaysOnTop ?? false,
@@ -298,7 +300,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
 		if (homeBlock) {
-			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock);
+			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock, {
+				alignment: homeBlock.homeAlignment,
+			});
 			updateViewport(state, x, y, events);
 		} else {
 			updateViewport(state, 0, 0, events);

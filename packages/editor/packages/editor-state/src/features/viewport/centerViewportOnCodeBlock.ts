@@ -1,7 +1,7 @@
 import { Viewport } from './types';
 
+import type { ViewportBlockAlignment } from './blockAlignment';
 import type { Position } from '~/types';
-import type { PresentationStopAlignment } from '../presentation/directives';
 
 /**
  * Minimal positional data required for viewport centering
@@ -16,7 +16,7 @@ export interface CodeBlockBounds {
 }
 
 export interface CenterViewportOnCodeBlockOptions {
-	alignment?: PresentationStopAlignment;
+	alignment?: ViewportBlockAlignment;
 }
 
 /**
