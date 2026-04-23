@@ -20,6 +20,7 @@ constants instructionSet
 ;
 ; Comparison
 ; equal	Compare two values for equality.
+; notEqual	Compare two values for inequality.
 ; equalToZero	Test whether the top value is zero.
 ; notZero	Test whether the top value is non-zero.
 ; greaterOrEqual	Test whether left >= right.
@@ -34,6 +35,7 @@ constants instructionSet
 ; branch	Jump to a block or loop label.
 ; branchIfTrue	Branch when the condition is true.
 ; branchIfUnchanged	Branch when a value has not changed.
+; exitIfTrue	Exit the current module when the condition is true.
 ; else	Begin the else branch of an if block.
 ; if	Begin a conditional branch.
 ; ifEnd	End an if block.

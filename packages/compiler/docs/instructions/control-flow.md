@@ -68,6 +68,22 @@ block
 blockEnd
 ```
 
+### exitIfTrue
+
+The `exitIfTrue` instruction consumes an integer condition from the stack and exits the enclosing module immediately if the value is non-zero. Any values currently on the stack are dropped on the exit path. If the condition is zero, execution continues normally.
+
+It can only be used inside a `module`.
+
+#### Examples
+
+```
+push stopFlag
+exitIfTrue
+
+push 1
+store
+```
+
 ### else
 
 The else instruction begins the else branch of the current if block.
