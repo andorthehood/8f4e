@@ -697,7 +697,7 @@ module params
 float increment 0.2 ; @w
 float volOriginal 0.0 ; @w
 float volSmoothed 1.0; @w
-; @home
+; @home top
 ; You can change the playback speed 
 ; by dragging this slider below.
 

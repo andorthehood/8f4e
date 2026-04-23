@@ -1,6 +1,7 @@
 import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCodeBlockInDirection';
 import { deriveDirectiveState } from '../directives/registry';
 import animateViewport from '../../../viewport/animateViewport';
+import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 import centerViewportOnCodeBlockCursor from '../../../viewport/centerViewportOnCodeBlockCursor';
 import gapCalculator from '../../../code-editing/gapCalculator';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
@@ -228,7 +229,9 @@ export function goHome(stateSource: StateSource, events?: EventDispatcher): void
 
 	if (homeBlock) {
 		setSelectedCodeBlock(stateSource, homeBlock);
-		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, homeBlock);
+		const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock, {
+			alignment: homeBlock.homeAlignment,
+		});
 		animateViewport(state, x, y, events);
 	} else {
 		animateViewport(state, 0, 0, events);

@@ -219,6 +219,7 @@ if (import.meta.vitest) {
 				disabled: true,
 				hidden: false,
 				isHome: true,
+				homeAlignment: 'center',
 				isFavorite: true,
 				opacity: 1,
 			});
@@ -248,10 +249,27 @@ if (import.meta.vitest) {
 				disabled: false,
 				hidden: false,
 				isHome: true,
+				homeAlignment: 'center',
 				isFavorite: false,
 				opacity: 1,
 			});
 			expect(result.layoutContributions).toEqual([{ rawRow: 2, rows: 8 }]);
+		});
+
+		it('derives optional home alignment from @home', () => {
+			const code = ['module foo', '; @home bottom', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			expect(result.blockState.isHome).toBe(true);
+			expect(result.blockState.homeAlignment).toBe('bottom');
+		});
+
+		it('ignores invalid @home arguments', () => {
+			const code = ['module foo', '; @home middle', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			expect(result.blockState.isHome).toBe(false);
+			expect(result.blockState.homeAlignment).toBeUndefined();
 		});
 
 		it('collapses everything after @hide while unselected', () => {

@@ -6,6 +6,7 @@ import type { DataStructure } from '@8f4e/compiler';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type { ContextMenu } from '../menu/types';
+import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
  * Project-level code block structure for persistent storage.
@@ -331,6 +332,11 @@ export interface CodeBlockGraphicData {
 	 * Defaults to false.
 	 */
 	isHome: boolean;
+	/**
+	 * Optional viewport alignment hint derived from `; @home [center|left|right|top|bottom]`.
+	 * When omitted, home navigation falls back to centered placement.
+	 */
+	homeAlignment?: ViewportBlockAlignment;
 	/**
 	 * When true, marks this block as a favorite for quick navigation.
 	 * Derived from ; @favorite directive.
