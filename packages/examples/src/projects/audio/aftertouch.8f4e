@@ -1,0 +1,2966 @@
+8f4e/v1
+
+constants env
+; @pos 96 -158
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const INV_SAMPLE_RATE 0.000020833333333333333
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 9984
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 9984
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 9984
+; 'patterns_ch4.bin'
+const ASSET_CH4_SIZE 9984
+; 'sample_1.pcm'
+const ASSET_SAMPLE1_SIZE 2104
+; 'sample_2.pcm'
+const ASSET_SAMPLE2_SIZE 4904
+; 'sample_3.pcm'
+const ASSET_SAMPLE3_SIZE 15938
+; 'sample_4.pcm'
+const ASSET_SAMPLE4_SIZE 11062
+; 'sample_5.pcm'
+const ASSET_SAMPLE5_SIZE 10276
+; 'sample_6.pcm'
+const ASSET_SAMPLE6_SIZE 16404
+; 'sample_7.pcm'
+const ASSET_SAMPLE7_SIZE 16016
+; 'sample_8.pcm'
+const ASSET_SAMPLE8_SIZE 4926
+; 'sample_9.pcm'
+const ASSET_SAMPLE9_SIZE 4926
+; 'sample_10.pcm'
+const ASSET_SAMPLE10_SIZE 25774
+; 'sample_11.pcm'
+const ASSET_SAMPLE11_SIZE 52982
+; 'sample_12.pcm'
+const ASSET_SAMPLE12_SIZE 14260
+; 'sample_13.pcm'
+const ASSET_SAMPLE13_SIZE 30708
+; 'sample_14.pcm'
+const ASSET_SAMPLE14_SIZE 6970
+; 'sample_15.pcm'
+const ASSET_SAMPLE15_SIZE 62562
+; 'sample_16.pcm'
+const ASSET_SAMPLE16_SIZE 9826
+; 'sample_17.pcm'
+const ASSET_SAMPLE17_SIZE 4836
+; 'sample_18.pcm'
+const ASSET_SAMPLE18_SIZE 4906
+; 'sample_19.pcm'
+const ASSET_SAMPLE19_SIZE 64490
+; 'sample_20.pcm'
+const ASSET_SAMPLE20_SIZE 10132
+; 'sample_21.pcm'
+const ASSET_SAMPLE21_SIZE 37218
+; 'sample_22.pcm'
+const ASSET_SAMPLE22_SIZE 16426
+; 'sample_23.pcm'
+const ASSET_SAMPLE23_SIZE 10964
+; 'sample_24.pcm'
+const ASSET_SAMPLE24_SIZE 53156
+; 'sample_25.pcm'
+const ASSET_SAMPLE25_SIZE 4540
+; 'sample_26.pcm'
+const ASSET_SAMPLE26_SIZE 12602
+; 'sample_27.pcm'
+const ASSET_SAMPLE27_SIZE 52974
+; 'sample_28.pcm'
+
+constantsEnd
+
+constants math
+; @pos 741 -47
+
+const PI      3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU     6.283185307179586
+const HALF_PI 1.570796326794896
+const INV_PI  0.318309886183790
+const INV_TAU 0.159154943091895
+const PHI     1.618033988749895
+const DEG2RAD 0.017453292519943
+const RAD2DEG 57.29577951308232
+const SQRT2   1.414213562373095
+const SQRT1_2 0.707106781186547
+; Useful in FFT twiddle factors.
+const HANN_A0 0.5
+; For common window functions before FFT.
+const HAMMING_A0 0.54
+const HAMMING_A1 0.46
+const BLACKMAN_A0 0.42
+const BLACKMAN_A1 0.5
+const BLACKMAN_A2 0.08
+const LN2     0.693147180559945
+const LN10    2.302585092994046
+const LOG2E   1.442695040888963
+const LOG10E  0.434294481903251
+const E       2.718281828459045
+
+constantsEnd
+
+constants mod
+; @pos 232 -197
+; @tab 30
+use env
+; Row layout (little-endian)
+const SAMPLE_HI_NIBBLE	0x000000F0
+const PERIOD_HI	0x0000000F
+const PERIOD_LO	0x0000FF00
+const PERIOD_SHIFT	8
+const SAMPLE_LO_NIBBLE	0x00F00000
+const SAMPLE_LO_NIBBLE_SHIFT	20
+const EFFECT_NIBBLE	0x000F0000
+const EFFECT_NIBBLE_SHIFT	16
+const EFFECT_PARAM	0xFF000000
+const EFFECT_PARAM_SHIFT	24
+; AMIGA magic const
+const PAL_AMIGA_CLOCK	7093789.2
+; Default ticks per row
+const SPEED	6
+; PAL VBlank: ticks/sec = BPM * 2/5
+const TICKS_X5	SPEED*5
+const TICKS_HALF	TICKS_X5/2
+; Samples per row = ROW_SAMPLES / tempo
+const ROW_SAMPLES	SAMPLE_RATE*TICKS_HALF
+; Effects
+const ARPEGGIO	0x0
+const PITCH_SLIDE_UP	0x1
+const PITCH_SLIDE_DOWN	0x2
+const TONE_PORTAMENTO	0x3
+const VIBRATE	0x4
+const TONE_PORTA_VOL_SLIDE	0x5
+const VIBRATO_VOL_SLIDE	0x6
+const TREMOLO	0x7
+const SAMPLE_OFFSET	0x9
+const VOLUME_SLIDE	0xA
+const PATTERN_JUMP	0xB
+const SET_VOLUME	0xC
+const PATTERN_BREAK	0xD
+const EXTENDED_EFFECTS	0xE
+const SET_SPEED	0xF
+; Extended effects
+const SET_FILTER	0xE0
+const FINE_SLIDE_UP	0xE1
+const FINE_SLIDE_DOWN	0xE2
+const GLISSANDO_CONTROL	0xE3
+const SET_VIBRATO_WAVEFORM	0xE4
+const SET_FINETUNE	0xE5
+const PATTERN_LOOP	0xE6
+const SET_TREMOLO_WAVEFORM	0xE7
+const RETRIGGER_NOTE	0xE9
+const FINE_VOLUME_SLIDE_UP	0xEA
+const FINE_VOLUME_SLIDE_DOWN	0xEB
+const NOTE_CUT	0xEC
+const NOTE_DELAY	0xED
+const PATTERN_DELAY	0xEE
+const INVERT_LOOP	0xEF
+
+constantsEnd
+
+constants sampleMeta
+; @pos 293 -264
+; @tab 26
+const S01_VOLUME	37
+const S01_FINETUNE	0
+const S01_REPEAT_OFFSET	32812
+const S01_REPEAT_LENGTH	27552
+const S02_VOLUME	48
+const S02_FINETUNE	0
+const S02_REPEAT_OFFSET	42618
+const S02_REPEAT_LENGTH	13042
+const S03_VOLUME	48
+const S03_FINETUNE	0
+const S03_REPEAT_OFFSET	5940
+const S03_REPEAT_LENGTH	4528
+const S04_VOLUME	48
+const S04_FINETUNE	0
+const S04_REPEAT_OFFSET	30988
+const S04_REPEAT_LENGTH	15218
+const S05_VOLUME	32
+const S05_FINETUNE	0
+const S05_REPEAT_OFFSET	0
+const S05_REPEAT_LENGTH	2
+const S06_VOLUME	48
+const S06_FINETUNE	0
+const S06_REPEAT_OFFSET	0
+const S06_REPEAT_LENGTH	2
+const S07_VOLUME	48
+const S07_FINETUNE	0
+const S07_REPEAT_OFFSET	0
+const S07_REPEAT_LENGTH	2
+const S08_VOLUME	48
+const S08_FINETUNE	0
+const S08_REPEAT_OFFSET	0
+const S08_REPEAT_LENGTH	2
+const S09_VOLUME	48
+const S09_FINETUNE	0
+const S09_REPEAT_OFFSET	0
+const S09_REPEAT_LENGTH	2
+const S10_VOLUME	48
+const S10_FINETUNE	0
+const S10_REPEAT_OFFSET	0
+const S10_REPEAT_LENGTH	2
+const S11_VOLUME	48
+const S11_FINETUNE	0
+const S11_REPEAT_OFFSET	0
+const S11_REPEAT_LENGTH	2
+const S12_VOLUME	48
+const S12_FINETUNE	0
+const S12_REPEAT_OFFSET	0
+const S12_REPEAT_LENGTH	2
+const S13_VOLUME	48
+const S13_FINETUNE	0
+const S13_REPEAT_OFFSET	0
+const S13_REPEAT_LENGTH	2
+const S14_VOLUME	64
+const S14_FINETUNE	0
+const S14_REPEAT_OFFSET	0
+const S14_REPEAT_LENGTH	2
+const S15_VOLUME	64
+const S15_FINETUNE	0
+const S15_REPEAT_OFFSET	0
+const S15_REPEAT_LENGTH	2
+const S16_VOLUME	64
+const S16_FINETUNE	0
+const S16_REPEAT_OFFSET	0
+const S16_REPEAT_LENGTH	2
+const S17_VOLUME	64
+const S17_FINETUNE	0
+const S17_REPEAT_OFFSET	0
+const S17_REPEAT_LENGTH	2
+const S18_VOLUME	64
+const S18_FINETUNE	0
+const S18_REPEAT_OFFSET	0
+const S18_REPEAT_LENGTH	2
+const S19_VOLUME	64
+const S19_FINETUNE	0
+const S19_REPEAT_OFFSET	0
+const S19_REPEAT_LENGTH	2
+const S20_VOLUME	64
+const S20_FINETUNE	0
+const S20_REPEAT_OFFSET	0
+const S20_REPEAT_LENGTH	2
+const S21_VOLUME	64
+const S21_FINETUNE	0
+const S21_REPEAT_OFFSET	0
+const S21_REPEAT_LENGTH	2
+const S22_VOLUME	64
+const S22_FINETUNE	0
+const S22_REPEAT_OFFSET	0
+const S22_REPEAT_LENGTH	2
+const S23_VOLUME	64
+const S23_FINETUNE	0
+const S23_REPEAT_OFFSET	0
+const S23_REPEAT_LENGTH	2
+const S24_VOLUME	14
+const S24_FINETUNE	0
+const S24_REPEAT_OFFSET	25708
+const S24_REPEAT_LENGTH	3472
+const S25_VOLUME	64
+const S25_FINETUNE	0
+const S25_REPEAT_OFFSET	0
+const S25_REPEAT_LENGTH	2
+const S26_VOLUME	64
+const S26_FINETUNE	0
+const S26_REPEAT_OFFSET	0
+const S26_REPEAT_LENGTH	2
+const S27_VOLUME	64
+const S27_FINETUNE	0
+const S27_REPEAT_OFFSET	0
+const S27_REPEAT_LENGTH	2
+
+constantsEnd
+
+function clampVolume
+; @pos 549 -113
+param int value
+
+push value
+push 64
+greaterThan
+if
+push 64
+return
+ifEnd
+
+push 0
+push value
+greaterThan
+if
+push 0
+return
+ifEnd
+
+push value
+
+functionEnd int
+
+function loadRowVolume
+; @pos 515 -113
+use mod
+param int row
+
+push row
+call maskEffect
+push SET_VOLUME
+equal
+if
+push row
+call maskParam
+return
+ifEnd
+
+push row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push row
+call maskSampleNumber
+call sampleNumberToVolume
+return
+ifEnd
+
+push 0
+
+functionEnd int
+
+function maskEffect
+; @pos 333 -128
+use mod
+param int row
+
+push row
+push EFFECT_NIBBLE
+and
+push EFFECT_NIBBLE_SHIFT
+shiftRightUnsigned
+
+functionEnd int
+
+function maskParam
+; @pos 401 -128
+use mod
+param int row
+
+push row
+push EFFECT_PARAM
+and
+push EFFECT_PARAM_SHIFT
+shiftRightUnsigned
+
+functionEnd int
+
+function maskParamHi
+; @pos 401 -114
+param int row
+
+push row
+call maskParam
+push 4
+shiftRightUnsigned
+
+functionEnd int
+
+function maskParamLo
+; @pos 401 -103
+param int row
+
+push row
+call maskParam
+push 0xF
+and
+
+functionEnd int
+
+function maskPeriod
+; @pos 367 -128
+use mod
+param int row
+
+push row
+push PERIOD_HI
+and
+push PERIOD_SHIFT
+shiftLeft
+push row
+push PERIOD_LO
+and
+push PERIOD_SHIFT
+shiftRightUnsigned
+or
+
+functionEnd int
+
+function maskSampleNumber
+; @pos 297 -128
+use mod
+param int row
+
+push row
+push SAMPLE_HI_NIBBLE
+and
+push row
+push SAMPLE_LO_NIBBLE
+and
+push SAMPLE_LO_NIBBLE_SHIFT
+shiftRightUnsigned
+or
+
+functionEnd int
+
+function modFinetune
+; @pos 472 -128
+const STEP 96.0
+
+const FT_P0 0/STEP
+const FT_P1 1/STEP
+const FT_P2 2/STEP
+const FT_P3 3/STEP
+const FT_P4 4/STEP
+const FT_P5 5/STEP
+const FT_P6 6/STEP
+const FT_P7 7/STEP
+const FT_P8 8/STEP
+
+const FT_N0 0/STEP
+const FT_N1 -1/STEP
+const FT_N2 -2/STEP
+const FT_N3 -3/STEP
+const FT_N4 -4/STEP
+const FT_N5 -5/STEP
+const FT_N6 -6/STEP
+const FT_N7 -7/STEP
+const FT_N8 -8/STEP
+
+param int fineTune
+push fineTune
+mapBegin int
+map -8 2^FT_P8
+map -7 2^FT_P7
+map -6 2^FT_P6
+map -5 2^FT_P5
+map -4 2^FT_P4
+map -3 2^FT_P3
+map -2 2^FT_P2
+map -1 2^FT_P1
+map  0 2^FT_N0
+map  1 2^FT_N1
+map  2 2^FT_N2
+map  3 2^FT_N3
+map  4 2^FT_N4
+map  5 2^FT_N5
+map  6 2^FT_N6
+map  7 2^FT_N7
+mapEnd float
+
+functionEnd float
+
+function period2Step
+; @pos 436 -128
+param int period
+use mod
+use env
+
+push period
+equalToZero
+if
+push 0.0
+return
+ifEnd
+
+push PAL_AMIGA_CLOCK/2
+push period
+castToFloat
+ensureNonZero
+div
+push SAMPLE_RATE
+castToFloat
+div
+
+functionEnd float
+
+function rowShouldReloadVolume
+; @pos 583 -113
+use mod
+param int row
+
+push row
+call maskSampleNumber
+push 0
+greaterThan
+push row
+call maskEffect
+push SET_VOLUME
+equal
+or
+
+functionEnd int
+
+function rowVolumeSlideDelta
+; @pos 622 -113
+use mod
+param int row
+
+push row
+call maskEffect
+push VOLUME_SLIDE
+equal
+equalToZero
+if
+push 0
+return
+ifEnd
+
+push row
+call maskParamHi
+push 0
+greaterThan
+if
+push row
+call maskParamHi
+return
+ifEnd
+
+push 0
+push row
+call maskParamLo
+sub
+
+functionEnd int
+
+function sampleNumberCanLoop
+; @pos 334 -158
+use sampleMeta
+param int sampleNumber
+
+push sampleNumber
+call sampleNumberToRepeatLen
+push 2
+greaterThan
+
+functionEnd int
+
+function sampleNumberToAddr
+; @pos 533 -181
+; @tab 8
+param int sampleNumber
+
+push sampleNumber
+mapBegin int
+map 0	&samplePack1:sample0
+map 1	&samplePack1:sample1
+map 2	&samplePack1:sample2
+map 3	&samplePack1:sample3
+map 4	&samplePack1:sample4
+map 5	&samplePack1:sample5
+map 6	&samplePack1:sample6
+map 7	&samplePack1:sample7
+map 8	&samplePack1:sample8
+map 9	&samplePack1:sample9
+map 10	&samplePack1:sample10
+map 11	&samplePack1:sample11
+map 12	&samplePack1:sample12
+map 13	&samplePack1:sample13
+map 14	&samplePack1:sample14
+map 15	&samplePack1:sample15
+map 16	&samplePack2:sample16
+map 17	&samplePack2:sample17
+map 18	&samplePack2:sample18
+map 19	&samplePack2:sample19
+map 20	&samplePack2:sample20
+map 21	&samplePack2:sample21
+map 22	&samplePack2:sample22
+map 23	&samplePack2:sample23
+map 24	&samplePack2:sample24
+map 25	&samplePack2:sample25
+map 26	&samplePack2:sample26
+map 27	&samplePack2:sample27
+mapEnd int
+
+functionEnd int
+
+function sampleNumberToFinetune
+; @pos 493 -181
+; @tab 8
+use sampleMeta
+param int sampleNumber
+push sampleNumber
+mapBegin int
+map 0	0
+map 1	S01_FINETUNE
+map 2	S02_FINETUNE
+map 3	S03_FINETUNE
+map 4	S04_FINETUNE
+map 5	S05_FINETUNE
+map 6	S06_FINETUNE
+map 7	S07_FINETUNE
+map 8	S08_FINETUNE
+map 9	S09_FINETUNE
+map 10	S10_FINETUNE
+map 11	S11_FINETUNE
+map 12	S12_FINETUNE
+map 13	S13_FINETUNE
+map 14	S14_FINETUNE
+map 15	S15_FINETUNE
+map 16	S16_FINETUNE
+map 17	S17_FINETUNE
+map 18	S18_FINETUNE
+map 19	S19_FINETUNE
+map 20	S20_FINETUNE
+map 21	S21_FINETUNE
+map 22	S22_FINETUNE
+map 23	S23_FINETUNE
+map 24	S24_FINETUNE
+map 25	S25_FINETUNE
+map 26	S26_FINETUNE
+map 27	S27_FINETUNE
+mapEnd int
+
+functionEnd int
+
+function sampleNumberToRepeatEnd
+; @pos 376 -226
+; @tab 8
+use sampleMeta
+
+param int sampleNumber
+push sampleNumber
+mapBegin int
+map 0	2
+map 1	S01_REPEAT_LENGTH+S01_REPEAT_OFFSET
+map 2	S02_REPEAT_LENGTH+S02_REPEAT_OFFSET
+map 3	S03_REPEAT_LENGTH+S03_REPEAT_OFFSET
+map 4	S04_REPEAT_LENGTH+S04_REPEAT_OFFSET
+map 5	S05_REPEAT_LENGTH+S05_REPEAT_OFFSET
+map 6	S06_REPEAT_LENGTH+S06_REPEAT_OFFSET
+map 7	S07_REPEAT_LENGTH+S07_REPEAT_OFFSET
+map 8	S08_REPEAT_LENGTH+S08_REPEAT_OFFSET
+map 9	S09_REPEAT_LENGTH+S09_REPEAT_OFFSET
+map 10	S10_REPEAT_LENGTH+S10_REPEAT_OFFSET
+map 11	S11_REPEAT_LENGTH+S11_REPEAT_OFFSET
+map 12	S12_REPEAT_LENGTH+S12_REPEAT_OFFSET
+map 13	S13_REPEAT_LENGTH+S13_REPEAT_OFFSET
+map 14	S14_REPEAT_LENGTH+S14_REPEAT_OFFSET
+map 15	S15_REPEAT_LENGTH+S15_REPEAT_OFFSET
+map 16	S16_REPEAT_LENGTH+S16_REPEAT_OFFSET
+map 17	S17_REPEAT_LENGTH+S17_REPEAT_OFFSET
+map 18	S18_REPEAT_LENGTH+S18_REPEAT_OFFSET
+map 19	S19_REPEAT_LENGTH+S19_REPEAT_OFFSET
+map 20	S20_REPEAT_LENGTH+S20_REPEAT_OFFSET
+map 21	S21_REPEAT_LENGTH+S21_REPEAT_OFFSET
+map 22	S22_REPEAT_LENGTH+S22_REPEAT_OFFSET
+map 23	S23_REPEAT_LENGTH+S23_REPEAT_OFFSET
+map 24	S24_REPEAT_LENGTH+S24_REPEAT_OFFSET
+map 25	S25_REPEAT_LENGTH+S25_REPEAT_OFFSET
+map 26	S26_REPEAT_LENGTH+S26_REPEAT_OFFSET
+map 27	S27_REPEAT_LENGTH+S27_REPEAT_OFFSET
+mapEnd int
+
+functionEnd int
+
+function sampleNumberToRepeatLen
+; @pos 334 -193
+; @tab 8
+use sampleMeta
+
+param int sampleNumber
+push sampleNumber
+mapBegin int
+map 0	2
+map 1	S01_REPEAT_LENGTH
+map 2	S02_REPEAT_LENGTH
+map 3	S03_REPEAT_LENGTH
+map 4	S04_REPEAT_LENGTH
+map 5	S05_REPEAT_LENGTH
+map 6	S06_REPEAT_LENGTH
+map 7	S07_REPEAT_LENGTH
+map 8	S08_REPEAT_LENGTH
+map 9	S09_REPEAT_LENGTH
+map 10	S10_REPEAT_LENGTH
+map 11	S11_REPEAT_LENGTH
+map 12	S12_REPEAT_LENGTH
+map 13	S13_REPEAT_LENGTH
+map 14	S14_REPEAT_LENGTH
+map 15	S15_REPEAT_LENGTH
+map 16	S16_REPEAT_LENGTH
+map 17	S17_REPEAT_LENGTH
+map 18	S18_REPEAT_LENGTH
+map 19	S19_REPEAT_LENGTH
+map 20	S20_REPEAT_LENGTH
+map 21	S21_REPEAT_LENGTH
+map 22	S22_REPEAT_LENGTH
+map 23	S23_REPEAT_LENGTH
+map 24	S24_REPEAT_LENGTH
+map 25	S25_REPEAT_LENGTH
+map 26	S26_REPEAT_LENGTH
+map 27	S27_REPEAT_LENGTH
+mapEnd int
+
+functionEnd int
+
+function sampleNumberToRepeatOffset
+; @pos 375 -181
+; @tab 8
+use sampleMeta
+param int sampleNumber
+push sampleNumber
+mapBegin int
+map 0	2
+map 1	S01_REPEAT_OFFSET
+map 2	S02_REPEAT_OFFSET
+map 3	S03_REPEAT_OFFSET
+map 4	S04_REPEAT_OFFSET
+map 5	S05_REPEAT_OFFSET
+map 6	S06_REPEAT_OFFSET
+map 7	S07_REPEAT_OFFSET
+map 8	S08_REPEAT_OFFSET
+map 9	S09_REPEAT_OFFSET
+map 10	S10_REPEAT_OFFSET
+map 11	S11_REPEAT_OFFSET
+map 12	S12_REPEAT_OFFSET
+map 13	S13_REPEAT_OFFSET
+map 14	S14_REPEAT_OFFSET
+map 15	S15_REPEAT_OFFSET
+map 16	S16_REPEAT_OFFSET
+map 17	S17_REPEAT_OFFSET
+map 18	S18_REPEAT_OFFSET
+map 19	S19_REPEAT_OFFSET
+map 20	S20_REPEAT_OFFSET
+map 21	S21_REPEAT_OFFSET
+map 22	S22_REPEAT_OFFSET
+map 23	S23_REPEAT_OFFSET
+map 24	S24_REPEAT_OFFSET
+map 25	S25_REPEAT_OFFSET
+map 26	S26_REPEAT_OFFSET
+map 27	S27_REPEAT_OFFSET
+mapEnd int
+
+functionEnd int
+
+function sampleNumberToSize
+; @pos 457 -181
+; @tab 8
+use env
+param int sampleNumber
+
+push sampleNumber
+mapBegin int
+map 0	1
+map 1	ASSET_SAMPLE1_SIZE
+map 2	ASSET_SAMPLE2_SIZE
+map 3	ASSET_SAMPLE3_SIZE
+map 4	ASSET_SAMPLE4_SIZE
+map 5	ASSET_SAMPLE5_SIZE
+map 6	ASSET_SAMPLE6_SIZE
+map 7	ASSET_SAMPLE7_SIZE
+map 8	ASSET_SAMPLE8_SIZE
+map 9	ASSET_SAMPLE9_SIZE
+map 10	ASSET_SAMPLE10_SIZE
+map 11	ASSET_SAMPLE11_SIZE
+map 12	ASSET_SAMPLE12_SIZE
+map 13	ASSET_SAMPLE13_SIZE
+map 14	ASSET_SAMPLE14_SIZE
+map 15	ASSET_SAMPLE15_SIZE
+map 16	ASSET_SAMPLE16_SIZE
+map 17	ASSET_SAMPLE17_SIZE
+map 18	ASSET_SAMPLE18_SIZE
+map 19	ASSET_SAMPLE19_SIZE
+map 20	ASSET_SAMPLE20_SIZE
+map 21	ASSET_SAMPLE21_SIZE
+map 22	ASSET_SAMPLE22_SIZE
+map 23	ASSET_SAMPLE23_SIZE
+map 24	ASSET_SAMPLE24_SIZE
+map 25	ASSET_SAMPLE25_SIZE
+map 26	ASSET_SAMPLE26_SIZE
+map 27	ASSET_SAMPLE27_SIZE
+mapEnd int
+functionEnd int
+
+function sampleNumberToVolume
+; @pos 419 -181
+; @tab 8
+use sampleMeta
+param int sampleNumber
+
+push sampleNumber
+mapBegin int
+map 0	0
+map 1	S01_VOLUME
+map 2	S02_VOLUME
+map 3	S03_VOLUME
+map 4	S04_VOLUME
+map 5	S05_VOLUME
+map 6	S06_VOLUME
+map 7	S07_VOLUME
+map 8	S08_VOLUME
+map 9	S09_VOLUME
+map 10	S10_VOLUME
+map 11	S11_VOLUME
+map 12	S12_VOLUME
+map 13	S13_VOLUME
+map 14	S14_VOLUME
+map 15	S15_VOLUME
+map 16	S16_VOLUME
+map 17	S17_VOLUME
+map 18	S18_VOLUME
+map 19	S19_VOLUME
+map 20	S20_VOLUME
+map 21	S21_VOLUME
+map 22	S22_VOLUME
+map 23	S23_VOLUME
+map 24	S24_VOLUME
+map 25	S25_VOLUME
+map 26	S26_VOLUME
+map 27	S27_VOLUME
+mapEnd int
+functionEnd int
+
+module amp1
+; @pos 661 -22
+
+float* in &modSamplePlayer1:out
+int* volume &volume1:out
+float out ; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
+module amp2
+; @pos 661 -4
+float* in &modSamplePlayer2:out
+int* volume &volume2:out
+float out; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
+module amp3
+; @pos 662 13
+float* in &modSamplePlayer3:out
+int* volume &volume3:out
+float out ; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
+module amp4
+; @pos 662 30
+float* in &modSamplePlayer4:out
+int* volume &volume4:out
+float out; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 64.0
+div
+mul 
+store
+
+moduleEnd
+
+module assets
+; @pos -3 -116
+; @tab 22
+; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_1.pcm
+; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_2.pcm
+; @defAsset sample3	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_3.pcm
+; @defAsset sample4	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_4.pcm
+; @defAsset sample5	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_5.pcm
+; @defAsset sample6	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_6.pcm
+; @defAsset sample7	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_7.pcm
+; @defAsset sample8	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_8.pcm
+; @defAsset sample9	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_9.pcm
+; @defAsset sample10	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_10.pcm
+; @defAsset sample11	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_11.pcm
+; @defAsset sample12	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_12.pcm
+; @defAsset sample13	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_13.pcm
+; @defAsset sample14	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_14.pcm
+; @defAsset sample15	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_15.pcm
+; @defAsset sample16	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_16.pcm
+; @defAsset sample17	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_17.pcm
+; @defAsset sample18	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_18.pcm
+; @defAsset sample19	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_19.pcm
+; @defAsset sample20	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_20.pcm
+; @defAsset sample21	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_21.pcm
+; @defAsset sample22	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_22.pcm
+; @defAsset sample23	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_23.pcm
+; @defAsset sample24	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_24.pcm
+; @defAsset sample25	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_25.pcm
+; @defAsset sample26	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_26.pcm
+; @defAsset sample27	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_27.pcm
+; @defAsset ch1	https://static.llllllllllll.com/8f4e/mods/aftertouch/patterns_ch1.bin
+; @defAsset ch2	https://static.llllllllllll.com/8f4e/mods/aftertouch/patterns_ch2.bin
+; @defAsset ch3	https://static.llllllllllll.com/8f4e/mods/aftertouch/patterns_ch3.bin
+; @defAsset ch4	https://static.llllllllllll.com/8f4e/mods/aftertouch/patterns_ch4.bin
+
+moduleEnd
+
+module audiooutL
+; @pos 797 -10
+use env
+
+float* in &lowpassL:out
+float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 0
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer with the word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module audiooutR
+; @pos 839 -10
+use env
+
+float* in &lowpassR:out
+float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 1
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer with the word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer& 
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module lowpassL
+; @pos 744 -15
+float* in &mixer:outL
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*4400
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+
+module lowpassR
+; @pos 744 16
+float* in &mixer:outR
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*4400
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+
+module mixer
+; @pos 708 2
+float* in1 &amp1:out
+float* in2 &amp2:out
+float* in3 &amp3:out
+float* in4 &amp4:out
+
+float outL ; @meter
+float outR ; @meter
+
+push &outL
+push *in1
+push *in3
+add
+push 2.0
+div
+push *in2
+push *in4
+add
+push 5.0
+div
+add
+store
+
+push &outR
+push *in2
+push *in4
+add
+push 2.0
+div
+
+push *in1
+push *in3
+add
+push 5.0
+div
+add
+store
+
+moduleEnd
+
+module modRowClock
+; @pos -107 -28
+use env
+int* tick &modTickClock:out
+int ticks 6 ; @w
+int out
+int counter
+
+push &out
+push 0
+store
+
+push *tick
+risingEdge
+if
+push counter
+push 1
+add
+push ticks
+ensureNonZero
+greaterOrEqual
+if
+push &counter
+push 0
+store
+
+push &out
+push 1
+store
+else
+push &counter
+push counter
+push 1
+add
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module modRowCounter
+; @pos -71 -28
+use env
+int* trigger &modRowClock:out 
+int rowCounter -1
+int* patternPointer &patternOrder:0
+int out ; @w
+
+; @watch rowCounter
+; @watch out
+; @watch patternCounter
+
+; Advance the playhead
+push *trigger
+risingEdge
+if
+push &rowCounter
+push rowCounter
+push 1
+add
+store
+ifEnd
+
+push rowCounter
+push 64
+equal
+if
+push &rowCounter
+push 0
+store
+
+push &patternPointer
+push patternPointer
+push sizeof(*patternPointer)
+add
+store
+ifEnd
+
+push patternPointer
+push patternOrder:&
+greaterThan
+if
+push &patternPointer
+push &patternOrder:
+store
+ifEnd
+
+push &out
+push rowCounter
+push *patternPointer
+push 64
+mul
+add
+store
+
+moduleEnd
+
+module modSamplePlayer1
+; @pos 545 -7
+; @group ch1
+; @home
+use env
+; @tab 6 20
+int*	period	&period1:out
+int*	offset	&sampleOffset1:out
+int*	trigger	&trigger1:out
+int*	sampleNumber	&sampleNumber1:out
+int8*	sampleAddress	; @w
+int8*	playhead	; @w
+int	sampleSize	; @w
+; @wave2 sampleAddress sampleSize playhead
+float out; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress) ; max value
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module modSamplePlayer2
+; @pos 545 16
+; @group ch2
+use env
+; @stop 12 20
+int*  period &period2:out 
+int* offset &sampleOffset2:out ; @w *
+int*  trigger &trigger2:out
+int*  sampleNumber &sampleNumber2:out
+int8* sampleAddress ;@w
+int   sampleSize ; @w
+int8* playhead ; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress) ; max value
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module modSamplePlayer3
+; @pos 597 -6
+; @group ch3
+use env
+
+int* period &period3:out
+int* offset &sampleOffset3:out ; @w *
+int* trigger &trigger3:out
+int* sampleNumber &sampleNumber3:out
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module modSamplePlayer4
+; @pos 597 16
+; @group ch4
+use env
+
+int* period &period4:out
+int* offset &sampleOffset4:out ; @w *
+int* trigger &trigger4:out
+int* sampleNumber &sampleNumber4:out
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module modTickClock
+; @pos -175 -28
+use mod
+
+int tempo 125 ; @w
+int out
+int counter ; @w
+
+; @watch counter
+
+push &out
+push 0
+store
+
+push counter
+push 1
+add
+
+push SAMPLE_RATE
+push 5
+mul
+
+push tempo
+ensureNonZero
+push 2
+mul
+ensureNonZero
+div
+
+greaterOrEqual
+if
+push &counter
+push 0
+store
+
+push &out
+push 1
+store
+ifEnd
+
+push &counter
+push counter
+push 1
+add
+store
+
+moduleEnd
+
+module patternOrder
+; @pos -141 -28
+; @tab 6
+int	0x1b
+int	0x1c
+int	0x00
+int	0x01
+int	0x02
+int	0x03
+int	0x02
+int	0x04
+int	0x06
+int	0x07
+int	0x05
+int	0x08
+int	0x09
+int	0x0a
+int	0x09
+int	0x0b
+int	0x0c
+int	0x0d
+int	0x0c
+int	0x0d
+int	0x0e
+int	0x0f
+int	0x0e
+int	0x10
+int	0x11
+int	0x12
+int	0x11
+int	0x12
+int	0x11
+int	0x12
+int	0x11
+int	0x12
+int	0x13
+int	0x14
+int	0x13
+int	0x15
+int	0x16
+int	0x16
+int	0x17
+int	0x17
+int	0x18
+int	0x19
+int	0x18
+int	0x1a
+int	0x1d
+
+moduleEnd
+
+module period1
+; @pos 306 -72
+; @group ch1
+int* row &rowBuffer1:
+int* sampleNumber &sampleNumber1:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd 
+
+moduleEnd
+
+module period2
+; @pos 308 -24
+; @group ch2
+int* row &rowBuffer2:
+int* sampleNumber &sampleNumber2:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd 
+
+moduleEnd
+
+module period3
+; @pos 307 21
+; @group ch3
+int* row &rowBuffer3:
+int* sampleNumber &sampleNumber3:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd 
+
+moduleEnd
+
+module period4
+; @pos 308 66
+; @group ch4
+int* row &rowBuffer4:
+int* sampleNumber &sampleNumber4:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd 
+
+moduleEnd
+
+module projectConfig
+; @pos 9 -125
+; @runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @exportFileName aftertouch
+
+moduleEnd
+
+module rowBuffer1
+; @pos 28 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH1_SIZE/4
+; @loadAsset ch1 &_dat
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+
+module rowBuffer2
+; @pos 64 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH2_SIZE/4
+; @loadAsset ch2 &_dat
+
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+
+module rowBuffer3
+; @pos 100 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH3_SIZE/4
+; @loadAsset ch3 &_dat
+
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+
+module rowBuffer4
+; @pos 136 -1
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+int ; @w 0x
+
+int* row &rowCount1:out
+; @hide
+use env
+int[] _dat ASSET_CH4_SIZE/4
+; @loadAsset ch4 &_dat
+
+local int loopCounter
+
+loop 8
+push &this
+push loopCounter
+push sizeof(_dat)
+mul
+add
+push &_dat
+push *row
+push loopCounter
+add
+push sizeof(_dat)
+mul
+add
+load
+store
+
+push loopCounter
+push 1
+add
+localSet loopCounter
+
+loopEnd
+
+moduleEnd
+
+module rowCount1
+; @pos -2 19
+int* in &modRowCounter:out
+int out
+; We can afford some reading
+; and writing to memory 
+; for better aesthethics. 
+push &out
+push *in
+store
+moduleEnd
+
+module rowCount2
+; @pos 152 -33
+int* in &modRowCounter:out
+int out
+
+push &out
+push *in
+store
+
+moduleEnd
+
+module sampleNumber1
+; @pos 272 -72
+; @group ch1
+int* row &rowBuffer1:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+
+module sampleNumber2
+; @pos 274 -24
+; @group ch2
+int* row &rowBuffer2:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+
+module sampleNumber3
+; @pos 273 21
+; @group ch3
+int* row &rowBuffer3:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+
+module sampleNumber4
+; @pos 274 66
+; @group ch4
+int* row &rowBuffer4:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+
+module sampleOffset1
+; @pos 195 -72
+; @group ch1
+use mod
+int* row &rowBuffer1:
+int out ;@w
+int memory ;@w
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module sampleOffset2
+; @pos 196 -24
+; @group ch2
+use mod
+int* row &rowBuffer2:
+int out ;@w
+int memory ;@w
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module sampleOffset3
+; @pos 196 21
+; @group ch3
+use mod
+int* row &rowBuffer3:
+int out ;@w
+int memory ;@w
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module sampleOffset4
+; @pos 196 66
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int out ;@w
+int memory ;@w
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if 
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module samplePack1
+; @pos 445 -16
+use env
+int8[] sample0 1
+int8[] sample1 ASSET_SAMPLE1_SIZE
+; @loadAsset sample1 &sample1
+; @wave &sample1 count(sample1)
+int8[] sample2 ASSET_SAMPLE2_SIZE
+; @loadAsset sample2 &sample2
+; @wave &sample2 count(sample2)
+int8[] sample3 ASSET_SAMPLE3_SIZE
+; @loadAsset sample3 &sample3
+; @wave &sample3 count(sample3)
+int8[] sample4 ASSET_SAMPLE4_SIZE
+; @loadAsset sample4 &sample4
+; @wave &sample4 count(sample4)
+int8[] sample5 ASSET_SAMPLE5_SIZE
+; @loadAsset sample5 &sample5
+; @wave &sample5 count(sample5)
+int8[] sample6 ASSET_SAMPLE6_SIZE
+; @loadAsset sample6 &sample6
+; @wave &sample6 count(sample6)
+int8[] sample7 ASSET_SAMPLE7_SIZE
+; @loadAsset sample7 &sample7
+; @wave &sample7 count(sample7)
+int8[] sample8 ASSET_SAMPLE8_SIZE
+; @loadAsset sample8 &sample8
+; @wave &sample8 count(sample8)
+int8[] sample9 ASSET_SAMPLE9_SIZE
+; @loadAsset sample9 &sample9
+; @wave &sample9 count(sample9)
+int8[] sample10 ASSET_SAMPLE10_SIZE
+; @loadAsset sample10 &sample10
+; @wave &sample10 count(sample10)
+int8[] sample11 ASSET_SAMPLE11_SIZE
+; @loadAsset sample11 &sample11
+; @wave &sample11 count(sample11)
+int8[] sample12 ASSET_SAMPLE12_SIZE
+; @loadAsset sample12 &sample12
+; @wave &sample12 count(sample12)
+int8[] sample13 ASSET_SAMPLE13_SIZE
+; @loadAsset sample13 &sample13
+; @wave &sample13 count(sample13)
+int8[] sample14 ASSET_SAMPLE14_SIZE
+; @loadAsset sample14 &sample14
+; @wave &sample14 count(sample14)
+int8[] sample15 ASSET_SAMPLE15_SIZE
+; @loadAsset sample15 &sample15
+; @wave &sample15 count(sample15)
+moduleEnd
+
+module samplePack2
+; @pos 489 -15
+use env
+int8[] sample16 ASSET_SAMPLE16_SIZE
+; @loadAsset sample16 &sample16
+; @wave &sample16 count(sample16)
+int8[] sample17 ASSET_SAMPLE17_SIZE
+; @loadAsset sample17 &sample17
+; @wave &sample17 count(sample17)
+int8[] sample18 ASSET_SAMPLE18_SIZE
+; @loadAsset sample18 &sample18
+; @wave &sample18 count(sample18)
+int8[] sample19 ASSET_SAMPLE19_SIZE
+; @loadAsset sample19 &sample19
+; @wave &sample19 count(sample19)
+int8[] sample20 ASSET_SAMPLE20_SIZE
+; @loadAsset sample20 &sample20
+; @wave &sample20 count(sample20)
+int8[] sample21 ASSET_SAMPLE21_SIZE
+; @loadAsset sample21 &sample21
+; @wave &sample21 count(sample21)
+int8[] sample22 ASSET_SAMPLE22_SIZE
+; @loadAsset sample22 &sample22
+; @wave &sample22 count(sample22)
+int8[] sample23 ASSET_SAMPLE23_SIZE
+; @loadAsset sample23 &sample23
+; @wave &sample23 count(sample23)
+int8[] sample24 ASSET_SAMPLE24_SIZE
+; @loadAsset sample24 &sample24
+; @wave &sample24 count(sample24)
+int8[] sample25 ASSET_SAMPLE25_SIZE
+; @loadAsset sample25 &sample25
+; @wave &sample25 count(sample25)
+int8[] sample26 ASSET_SAMPLE26_SIZE
+; @loadAsset sample26 &sample26
+; @wave &sample26 count(sample26)
+int8[] sample27 ASSET_SAMPLE27_SIZE
+; @loadAsset sample27 &sample27
+; @wave &sample27 count(sample27)
+moduleEnd
+
+module scope1
+; @pos 28 -17
+float* in &amp1:out
+float[] buffer 64
+; @plot &buffer 64         
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+
+module scope2
+; @pos 64 -17
+float* in &amp2:out
+float[] buffer 64  
+; @plot &buffer 64   
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+
+module scope3
+; @pos 100 -17
+float* in &amp3:out
+float[] buffer 64  
+; @plot &buffer 64         
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+
+module scope4
+; @pos 136 -17
+float* in &amp4:out
+float[] buffer 64  
+; @plot &buffer 64         
+; @hide
+int bufferPointer &buffer
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+
+module tempo1
+; @pos 233 -72
+; @group ch1
+use mod
+int* row &rowBuffer1:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if 
+	push *row
+	call maskParam
+	push 32
+	greaterOrEqual
+		if 
+		push tempo
+		push *row
+		call maskParam
+		store
+		else
+		push ticks
+		push *row
+	call maskParam
+	store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+
+module tempo2
+; @pos 232 -24
+; @group ch2
+use mod
+int* row &rowBuffer2:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if 
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+
+module tempo3
+; @pos 232 21
+; @group ch3
+use mod
+int* row &rowBuffer3:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if 
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if 
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+
+module tempo4
+; @pos 233 66
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if 
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if 
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+
+module trigger1
+; @pos 351 -72
+; @group ch1
+int* row &rowBuffer1:
+int* rowCounter &rowCount2:out
+int* period &period1:out
+int out
+
+; @watch out
+
+push &out
+push 0
+store
+push *rowCounter
+hasChanged
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd   
+
+moduleEnd
+
+module trigger2
+; @pos 353 -24
+; @group ch2
+int* row &rowBuffer2:
+int* rowCounter &rowCount2:out
+int* period &period2:out
+int out
+
+; @watch out
+
+push &out
+push 0
+store
+push *rowCounter
+hasChanged
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd   
+
+moduleEnd
+
+module trigger3
+; @pos 354 21
+; @group ch3
+int* row &rowBuffer3:
+int* rowCounter &rowCount2:out
+int* period &period3:out
+int out
+
+; @watch out
+
+push &out
+push 0
+store
+push *rowCounter
+hasChanged
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd   
+
+moduleEnd
+
+module trigger4
+; @pos 354 66
+; @group ch4
+int* row &rowBuffer4:
+int* rowCounter &rowCount2:out
+int* period &period4:out
+int out
+
+push &out
+push 0
+store
+push *rowCounter
+hasChanged
+if
+push &out
+push *row
+call maskPeriod
+push 0
+greaterThan
+store
+ifEnd   
+
+moduleEnd
+
+module ultimateSoundtrackerColors
+; @pos 573 -174
+; @tab 46
+; @color fill.moduleBackground	#000
+; @color fill.background	#000
+; @color fill.backgroundDots	#036
+; @color fill.backgroundDots2	#630
+; @color fill.highlightedCodeLine	#036
+; @color fill.moduleBackgroundDragged	#000
+; @color text.instruction	#369
+; @color text.code	#c96
+; @color text.lineNumber	#630
+; @color text.codeComment	#963
+; @color text.numbers	#fc9
+; @color text.debugInfo	#369
+; @color fill.debugInfoBackground	#000
+; @color fill.wire	rgba(255,255,255,0.3)
+; @color fill.wireHighlighted	#fff
+; @color fill.menuItemBackground	#036
+; @color fill.menuItemBackgroundHighlighted	#fff
+; @color fill.errorMessageBackground	#900
+; @color fill.dialogBackground	#036
+; @color fill.dialogDimmer	#000
+; @color fill.codeBlockHighlightLevel1	#000a14
+; @color fill.codeBlockHighlightLevel2	#001429
+; @color fill.codeBlockHighlightLevel3	#001f3d
+; @color fill.trace	#0f0
+; @color fill.scanLine	#fc9
+; @color fill.waveform	#369
+; @color icons.outputConnectorBackground	#369
+; @color icons.outputConnector	#000
+; @color icons.inputConnectorBackground	#369
+; @color icons.inputConnector	#000
+; @color text.arrow	#369
+; @color fill.meterGreen	#0f0
+; @color fill.meterYellow	#ff0
+; @color fill.meterRed	#f00
+moduleEnd
+
+module volume1
+; @pos 390 -72
+; @group ch1
+use mod
+int* row &rowBuffer1:
+int* tick &modTickClock:out
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+; @hide
+; Reload base volume on
+; tick 0 / row advance.
+push *rowCounter
+hasChanged
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+risingEdge
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module volume2
+; @pos 392 -24
+; @group ch2
+use mod
+int* row &rowBuffer2:
+int* tick &modTickClock:out
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+
+; Reload base volume on
+; tick 0 / row advance.
+push *rowCounter
+hasChanged
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+risingEdge
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module volume3
+; @pos 393 21
+; @group ch3
+use mod
+int* row &rowBuffer3:
+int* tick &modTickClock:out
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+
+; Reload base volume on
+; tick 0 / row advance.
+push *rowCounter
+hasChanged
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+risingEdge
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
+module volume4
+; @pos 393 66
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int* tick &modTickClock:out
+int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
+int out ; @w
+
+; Reload base volume on
+; tick 0 / row advance.
+push *rowCounter
+hasChanged
+if
+push *row
+call rowShouldReloadVolume
+if
+push &out
+push *row
+call loadRowVolume
+store
+ifEnd
+ifEnd
+
+; Apply volume slide only on
+; later ticks in the row.
+push *rowTrigger
+equalToZero
+if
+push *tick
+risingEdge
+if
+push &out
+push out
+push *row
+call rowVolumeSlideDelta
+add
+call clampVolume
+store
+ifEnd
+ifEnd
+
+moduleEnd
