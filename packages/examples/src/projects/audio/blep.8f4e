@@ -1,7 +1,7 @@
 8f4e/v1
 
 constants env
-; @pos 32 -63
+; @pos 21 -63
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -71,7 +71,7 @@ store
 functionEnd
 
 function blepQueuePtr
-; @pos 240 -105
+; @pos 239 -107
 param float* buffer
 param int index
 
@@ -86,16 +86,80 @@ add
 
 functionEnd float*
 
-function blepValueAt
+function blepValueAtInterpolated
 ; @pos 288 -121
+#impure
+param float* lut
+param float phase
+param int tapIndex
+param float delta
+local int phaseIndex
+local int lutIndex
+local float phaseFrac
+local float sample0
+local float sample1
+
+; Look up one minBLEP tap 
+; for the selected phase,
+; interpolate between LUT phases,
+; and scale it by delta.
+push phase
+castToInt
+localSet phaseIndex
+
+push phase
+push phaseIndex
+castToFloat
+sub
+localSet phaseFrac
+
+push phaseIndex
+push tapIndex
+push 16
+mul
+add
+localSet lutIndex
+
+push lut
+push lutIndex
+push sizeof(*lut)
+mul
+add
+loadFloat
+localSet sample0
+
+push lut
+push lutIndex
+push 1
+add
+push sizeof(*lut)
+mul
+add
+loadFloat
+localSet sample1
+
+push sample0
+push sample1
+push sample0
+sub
+push phaseFrac
+mul
+add
+push delta
+mul
+
+functionEnd float
+
+function blepValueAtNonInterpolated
+; @pos 288 -141
 #impure
 param float* lut
 param int phaseIndex
 param int tapIndex
 param float delta
 
-; Look up one minBLEP tap 
-; for the selected phase 
+; Look up one minBLEP tap
+; for the selected phase
 ; and scale it by delta.
 push lut
 push phaseIndex
@@ -112,8 +176,59 @@ mul
 
 functionEnd float
 
+function frac
+; @pos 239 -136
+param float value
+
+; Return the fractional part
+; of a positive float.
+push value
+push value
+castToInt
+castToFloat
+sub
+
+functionEnd float
+
+function positionIncrementToBlepPhaseInterpolated
+; @pos 239 -121
+param float position
+param float increment
+; Convert the fractional part of
+; the current read position into
+; a 0..16 BLEP phase based on
+; where the discontinuity occurred
+; inside the output sample interval.
+push 1.0
+push position
+call frac
+push increment
+ensureNonZero 0.000001
+div
+sub
+push 16.0
+mul
+
+functionEnd float
+
+function positionIncrementToBlepPhaseNonInterpolated
+; @pos 239 -101
+param float position
+param float increment
+; Convert the fractional part of
+; the current read position into
+; a 0..15 BLEP phase based on
+; where the discontinuity occurred
+; inside the output sample interval.
+push position
+push increment
+call positionIncrementToBlepPhaseInterpolated
+castToInt
+
+functionEnd int
+
 function wrapAdd16
-; @pos 204 -121
+; @pos 196 -121
 param int base
 param int offset
 local int sum
@@ -139,33 +254,6 @@ push sum
 
 functionEnd int
 
-function frac
-; @pos 239 -141
-param float value
-
-; Return the fractional part
-; of a positive float.
-push value
-push value
-castToInt
-castToFloat
-sub
-
-functionEnd float
-
-function positionToBlepPhaseIndex
-; @pos 239 -121
-param float position
-; Convert the fractional part of
-; the playhead into a 0..15 BLEP phase.
-push position
-call frac
-push 16.0
-mul
-castToInt
-
-functionEnd int
-
 module assets
 ; @pos -107 -70
 ; @defAsset amen https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_10.bin
@@ -173,7 +261,7 @@ module assets
 moduleEnd
 
 module audioout
-; @pos 337 -72
+; @pos 312 -73
 ; ~audioOutput buffer 0 0
 ; ~audioOutput buffer 0 1
 use env
@@ -214,7 +302,7 @@ ifEnd
 moduleEnd
 
 module blepLowpass
-; @pos 288 -72
+; @pos 263 -73
 float* in &blepRing:out
 float state 0.0 ; @w
 float out ; @w
@@ -225,7 +313,8 @@ use env
 const MINUS_2_PI -2*PI
 const CUTOFF_TERM MINUS_2_PI*4400
 const EXPONENT CUTOFF_TERM/SAMPLE_RATE
-const COEFFICIENT E^EXPONENT
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
 
 push &out
 push state
@@ -244,9 +333,10 @@ store
 moduleEnd
 
 module blepRing
-; @pos 236 -72
+; @pos 213 -73
 float* raw &pcmPlayer8bit:out
-float* position &pcmPlayer8bit:position
+float* readPosition &pcmPlayer8bit:readPosition
+float* increment &pcmPlayer8bit:increment
 float* delta &sampleDelta:out
 int index 0 ; @w
 float out ; @w
@@ -263,11 +353,12 @@ push index
 loopIndex
 call wrapAdd16
 push &minBLEPLUT:0
-push *position
-call positionToBlepPhaseIndex
+push *readPosition
+push *increment
+call positionIncrementToBlepPhaseInterpolated
 loopIndex
 push *delta
-call blepValueAt
+call blepValueAtInterpolated
 call addBlepAt
 loopEnd
 ifEnd
@@ -570,7 +661,7 @@ float	0.000000000000000000
 moduleEnd
 
 module notes
-; @pos 33 -45
+; @pos 21 -46
 ; Loads an external 8-bit PCM asset into memory, 
 ; continuously plays it with a looping playhead, 
 ; and routes the normalized output into a single 
@@ -587,14 +678,21 @@ int8[] buffer ASSET_AMEN_SIZE
 ; @loadAsset amen &buffer
 int8* playhead &buffer
 float position 0.0 ; @w
+float readPosition 0.0 ; @w
 float increment 0.30025212312 ; @w
 float out
 
 ; @wave &buffer count(buffer) playhead
 
+; Capture the current read position
+; before advancing the playhead.
+push &readPosition
+push position
+store
+
 ; Calculate read address from float position
 push &playhead
-push position
+push readPosition
 castToInt
 push &buffer
 add
@@ -640,7 +738,7 @@ module projectConfig
 moduleEnd
 
 module sampleDelta
-; @pos 177 -73
+; @pos 174 -73
 float* in &pcmPlayer8bit:out
 float previous 0.0 ; @w
 float out ; @w
