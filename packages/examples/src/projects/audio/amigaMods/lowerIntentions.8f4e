@@ -2,7 +2,6 @@
 
 note fragmentShaderBackground
 ; @pos 755 -109
-; @home
 #version 300 es
 
 precision mediump float;
@@ -26,11 +25,13 @@ void main() {
  float aspect = u_resolution.x / max(u_resolution.y, 1.0);
  vec2 p = (uv - 0.5) * vec2(aspect, 1.0) * 1.0;
  float v = plasma(p);
- vec3 color = vec3(
-  0.5 + 0.5 * sin(3.0 * v + u_time * 0.2),
-  0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 2.1),
-  0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 4.2)
- );
+ float intensity = 0.55 + 0.45 * (0.5 + 0.5 * sin(3.0 * v + u_time * 0.2));
+ float tealMix = 0.5 + 0.5 * sin(2.0 * v + u_time * 0.12 + 1.2);
+ float cyanMix = 0.5 + 0.5 * sin(2.6 * v - u_time * 0.16 + 0.4);
+ vec3 blueColor = vec3(0.02, 0.18, intensity);
+ vec3 tealColor = vec3(0.0, intensity * 0.82, intensity);
+ vec3 cyanColor = vec3(0.08, intensity, intensity);
+ vec3 color = mix(mix(blueColor, tealColor, tealMix), cyanColor, cyanMix * 0.7);
  outColor = vec4(color, 1.0);
 }
 noteEnd
@@ -54,22 +55,6 @@ const ASSET_CH2_SIZE 6656
 const ASSET_CH3_SIZE 6656
 ; 'patterns_ch4.bin'
 const ASSET_CH4_SIZE 6656
-; 'sample_10.pcm'
-const ASSET_SAMPLE10_SIZE 14456
-; 'sample_11.pcm'
-const ASSET_SAMPLE11_SIZE 14352
-; 'sample_12.pcm'
-const ASSET_SAMPLE12_SIZE 17822
-; 'sample_13.pcm'
-const ASSET_SAMPLE13_SIZE 28508
-; 'sample_14.pcm'
-const ASSET_SAMPLE14_SIZE 3318
-; 'sample_15.pcm'
-const ASSET_SAMPLE15_SIZE 65534
-; 'sample_16.pcm'
-const ASSET_SAMPLE16_SIZE 48020
-; 'sample_17.pcm'
-const ASSET_SAMPLE17_SIZE 35098
 ; 'sample_1.pcm'
 const ASSET_SAMPLE1_SIZE 2812
 ; 'sample_2.pcm'
@@ -86,6 +71,22 @@ const ASSET_SAMPLE6_SIZE 57040
 const ASSET_SAMPLE7_SIZE 18354
 ; 'sample_9.pcm'
 const ASSET_SAMPLE9_SIZE 7026
+; 'sample_10.pcm'
+const ASSET_SAMPLE10_SIZE 14456
+; 'sample_11.pcm'
+const ASSET_SAMPLE11_SIZE 14352
+; 'sample_12.pcm'
+const ASSET_SAMPLE12_SIZE 17822
+; 'sample_13.pcm'
+const ASSET_SAMPLE13_SIZE 28508
+; 'sample_14.pcm'
+const ASSET_SAMPLE14_SIZE 3318
+; 'sample_15.pcm'
+const ASSET_SAMPLE15_SIZE 65534
+; 'sample_16.pcm'
+const ASSET_SAMPLE16_SIZE 48020
+; 'sample_17.pcm'
+const ASSET_SAMPLE17_SIZE 35098
 
 constantsEnd
 
@@ -962,7 +963,7 @@ ifEnd
 moduleEnd
 
 module colors
-; @pos 755 -74
+; @pos 756 -72
 ; @color text.lineNumber rgba(0,0,0,0.3)
 ; @color text.code rgba(255,255,255,0.8)
 ; @color text.instruction #ffffff
@@ -975,8 +976,16 @@ module colors
 ; @color fill.moduleBackgroundDragged rgba(255,255,255,0.2)
 ; @color fill.backgroundDots rgba(255,255,255,0.1)
 ; @color fill.backgroundDots2 rgba(255,255,255,0.3)
-; @color fill.menuItemBackground rgba(255,255,255,0.2)
+; @color fill.menuItemBackground rgba(255,255,255,0.5)
 ; @color fill.menuItemBackgroundHighlighted rgba(255,255,255,0.5)
+; @color fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
+; @color fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
+; @color fill.codeBlockHighlightLevel3 rgba(255,255,255,0.1)
+; @color fill.waveform rgba(255,255,255,0.6)
+; @color icons.inputConnectorBackground rgba(255,255,255,0.4)
+; @color icons.inputConnector #fff
+; @color icons.outputConnectorBackground rgba(255,255,255,0.4)
+; @color icons.outputConnector #fff
 moduleEnd
 
 module lowpassL
@@ -1184,7 +1193,7 @@ moduleEnd
 module modSamplePlayer1
 ; @pos 545 -6
 ; @group ch1
-; @home
+; @home top
 use env
 ; @tab 6 20
 int*	period	&period1:out
