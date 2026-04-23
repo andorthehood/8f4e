@@ -16,14 +16,14 @@ store
 
 push *trigger
 risingEdge
-if void
+if
  ; Read current pattern value:
  ; *(bufferIn + _offset)
 push bufferIn
 push _offset
 add
 load
-if void
+if
 push &out
 push 1
 store
@@ -42,7 +42,7 @@ push _offset
 add
 push bufferEndIn
 greaterThan
-if void
+if
 push &_offset
 push 0
 store

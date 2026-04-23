@@ -18,7 +18,7 @@ int* pointer &out0
 
 push *trigger
 risingEdge
-if void
+if
  ; Reset pointer
 push &pointer
 push &last

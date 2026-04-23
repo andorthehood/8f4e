@@ -9,10 +9,10 @@ param float x
 localGet x
 push 0.0
 greaterThan
-if float
+if
 push 1.0
 else
 push -1.0
-ifEnd
+ifEnd float
 
 functionEnd float

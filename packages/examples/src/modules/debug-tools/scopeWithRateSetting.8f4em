@@ -12,7 +12,7 @@ push SAMPLE_RATE
 push RATE
 div
 greaterThan
-if void
+if
 ; Increment pointer
 push &bufferPointer
 push bufferPointer
@@ -24,7 +24,7 @@ store
 push bufferPointer
 push buffer&
 greaterThan
-if void
+if
 push &bufferPointer
 push &buffer
 store

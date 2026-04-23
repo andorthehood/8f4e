@@ -44,7 +44,7 @@ add
 push bufferPointer
 push *lengthA
 lessThan
-if int
+if
 push bufferA  
 push bufferPointer
 push sizeof(bufferA)
@@ -58,7 +58,7 @@ sub
 push sizeof(bufferB)
 mul
 add
-ifEnd
+ifEnd int
 
 load ; value from src
 store ; value in dst

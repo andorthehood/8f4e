@@ -42,11 +42,11 @@ push 0b10000000
 push bitPointer
 shiftRight
 and
-if int
+if
 push HIGH
 else
 push LOW
-ifEnd 
+ifEnd int
 
 store
 

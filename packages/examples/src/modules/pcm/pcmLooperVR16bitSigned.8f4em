@@ -16,7 +16,7 @@ float* speed &defSpeed
 ; Reset playhead
 push *reset
 risingEdge
-if void
+if
 push &playhead
 push 0.0
 store
@@ -34,7 +34,7 @@ push playhead
 castToInt
 push *length
 greaterThan
-if void
+if
 push &playhead
 push 0
 store

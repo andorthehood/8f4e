@@ -33,7 +33,7 @@ store
 push playhead
 push buffer&
 greaterOrEqual
-if void
+if
 push &playhead
 push &buffer
 store

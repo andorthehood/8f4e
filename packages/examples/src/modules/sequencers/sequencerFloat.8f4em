@@ -19,7 +19,7 @@ float out
 ; Increment step pointer
 push *trigger
 risingEdge 
-if void
+if
 push &stepPointer
 push stepPointer
 push sizeof(step1)
@@ -31,7 +31,7 @@ ifEnd
 push stepPointer
 push &_last
 greaterThan
-if void
+if
 push &stepPointer
 push &step1
 store

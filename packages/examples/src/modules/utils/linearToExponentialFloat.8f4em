@@ -17,18 +17,18 @@ push &clamped
 push *in
 push 0.0
 lessThan
-if float
+if
 push 0.0
 else
 push *in
 push 1.0
 greaterThan
-if float
+if
 push 1.0
 else
 push *in
-ifEnd
-ifEnd
+ifEnd float
+ifEnd float
 store
 
 push &lutAddress
