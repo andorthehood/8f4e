@@ -63,6 +63,7 @@ export enum ErrorCode {
 	POINTEE_WORD_SIZE_ON_NON_POINTER,
 	POINTEE_ELEMENT_MAX_ON_NON_POINTER,
 	RETURN_OUTSIDE_FUNCTION,
+	EXIT_IF_TRUE_OUTSIDE_MODULE,
 	LOCAL_NAME_COLLISION_WITH_MEMORY,
 	DUPLICATE_IDENTIFIER,
 	INSTRUCTION_INVALID_OUTSIDE_LOOP,
@@ -413,6 +414,13 @@ export function getError(
 			return {
 				code,
 				message: 'earlyReturn can only be used inside a function, not in a module. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE:
+			return {
+				code,
+				message: 'exitIfTrue can only be used inside a module, not in a function. (' + code + ')',
 				line,
 				context,
 			};

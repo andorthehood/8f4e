@@ -16,6 +16,7 @@ import add from './add';
 import greaterThan from './greaterThan';
 import branch from './branch';
 import branchIfTrue from './branchIfTrue';
+import exitIfTrue from './exitIfTrue';
 import push from './push';
 import block from './block';
 import blockEnd from './blockEnd';
@@ -26,6 +27,7 @@ import loopIndex from './loopIndex';
 import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import equalToZero from './equalToZero';
+import notEqual from './notEqual';
 import notZero from './notZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
@@ -89,6 +91,7 @@ const instructions = {
 	greaterThan,
 	branch,
 	branchIfTrue,
+	exitIfTrue,
 	push,
 	block,
 	blockEnd,
@@ -99,6 +102,7 @@ const instructions = {
 	loopEnd,
 	greaterOrEqualUnsigned,
 	equalToZero,
+	notEqual,
 	notZero,
 	shiftLeft,
 	shiftRight,
