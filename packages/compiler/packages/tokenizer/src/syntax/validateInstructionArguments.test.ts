@@ -64,6 +64,11 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('#impure', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
 	});
 
+	it('accepts bare exitIfTrue and rejects any arguments', () => {
+		expect(() => validateInstructionArguments('exitIfTrue', [])).not.toThrow();
+		expect(() => validateInstructionArguments('exitIfTrue', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
+	});
+
 	it('rejects too many result types for ifEnd', () => {
 		expect(() =>
 			validateInstructionArguments('ifEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
