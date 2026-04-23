@@ -54,22 +54,6 @@ const ASSET_CH2_SIZE 6656
 const ASSET_CH3_SIZE 6656
 ; 'patterns_ch4.bin'
 const ASSET_CH4_SIZE 6656
-; 'sample_1.pcm'
-const ASSET_SAMPLE1_SIZE 2812
-; 'sample_2.pcm'
-const ASSET_SAMPLE2_SIZE 28726
-; 'sample_3.pcm'
-const ASSET_SAMPLE3_SIZE 58182
-; 'sample_4.pcm'
-const ASSET_SAMPLE4_SIZE 58708
-; 'sample_5.pcm'
-const ASSET_SAMPLE5_SIZE 28656
-; 'sample_6.pcm'
-const ASSET_SAMPLE6_SIZE 57040
-; 'sample_7.pcm'
-const ASSET_SAMPLE7_SIZE 18354
-; 'sample_9.pcm'
-const ASSET_SAMPLE9_SIZE 7026
 ; 'sample_10.pcm'
 const ASSET_SAMPLE10_SIZE 14456
 ; 'sample_11.pcm'
@@ -86,6 +70,22 @@ const ASSET_SAMPLE15_SIZE 65534
 const ASSET_SAMPLE16_SIZE 48020
 ; 'sample_17.pcm'
 const ASSET_SAMPLE17_SIZE 35098
+; 'sample_1.pcm'
+const ASSET_SAMPLE1_SIZE 2812
+; 'sample_2.pcm'
+const ASSET_SAMPLE2_SIZE 28726
+; 'sample_3.pcm'
+const ASSET_SAMPLE3_SIZE 58182
+; 'sample_4.pcm'
+const ASSET_SAMPLE4_SIZE 58708
+; 'sample_5.pcm'
+const ASSET_SAMPLE5_SIZE 28656
+; 'sample_6.pcm'
+const ASSET_SAMPLE6_SIZE 57040
+; 'sample_7.pcm'
+const ASSET_SAMPLE7_SIZE 18354
+; 'sample_9.pcm'
+const ASSET_SAMPLE9_SIZE 7026
 
 constantsEnd
 
@@ -315,6 +315,23 @@ shiftRightUnsigned
 
 functionEnd int
 
+function maskExtendedEffect
+; @pos 261 -128
+; Combine the main E effect
+; nibble with the extended
+; sub-effect nibble.
+param int row
+
+push row
+call maskEffect
+push 4
+shiftLeft
+push row
+call maskParamHi
+or
+
+functionEnd int
+
 function maskParam
 ; @pos 401 -128
 use mod
@@ -457,6 +474,40 @@ div
 
 functionEnd float
 
+function rowFineVolumeSlideDelta
+; @pos 659 -113
+; Apply EAx/EBx once on the
+; row where the new data
+; becomes visible.
+use mod
+param int row
+
+push row
+call maskExtendedEffect
+push FINE_VOLUME_SLIDE_UP
+equal
+if
+push row
+call maskParamLo
+return
+ifEnd
+
+push row
+call maskExtendedEffect
+push FINE_VOLUME_SLIDE_DOWN
+equal
+if
+push 0
+push row
+call maskParamLo
+sub
+return
+ifEnd
+
+push 0
+
+functionEnd int
+
 function rowShouldReloadVolume
 ; @pos 583 -113
 use mod
@@ -471,6 +522,33 @@ call maskEffect
 push SET_VOLUME
 equal
 or
+
+functionEnd int
+
+function rowVolumeAtRowStart
+; @pos 699 -113
+; Apply any row-start volume
+; reload first, then apply a
+; fine volume slide once.
+param int currentVolume
+param int row
+local int baseVolume
+
+push row
+call rowShouldReloadVolume
+if
+push row
+call loadRowVolume
+localSet baseVolume
+else
+push currentVolume
+localSet baseVolume
+ifEnd
+
+push baseVolume
+push row
+call rowFineVolumeSlideDelta
+add
 
 functionEnd int
 
@@ -507,7 +585,7 @@ sub
 functionEnd int
 
 function sampleNumberCanLoop
-; @pos 334 -158
+; @pos 506 -128
 use sampleMeta
 param int sampleNumber
 
@@ -533,12 +611,12 @@ map 5	&samplePack1:sample5
 map 6	&samplePack1:sample6
 map 7	&samplePack1:sample7
 map 9	&samplePack1:sample9
-map 10	&samplePack1:sample10
-map 11	&samplePack1:sample11
-map 12	&samplePack1:sample12
-map 13	&samplePack1:sample13
-map 14	&samplePack1:sample14
-map 15	&samplePack1:sample15
+map 10	&samplePack2:sample10
+map 11	&samplePack2:sample11
+map 12	&samplePack2:sample12
+map 13	&samplePack2:sample13
+map 14	&samplePack2:sample14
+map 15	&samplePack2:sample15
 map 16	&samplePack2:sample16
 map 17	&samplePack2:sample17
 default &samplePack1:
@@ -575,7 +653,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatEnd
-; @pos 376 -226
+; @pos 571 -181
 ; @tab 8
 use sampleMeta
 
@@ -604,7 +682,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatLen
-; @pos 334 -193
+; @pos 334 -181
 ; @tab 8
 use sampleMeta
 
@@ -884,7 +962,7 @@ ifEnd
 moduleEnd
 
 module colors
-; @pos 677 -100
+; @pos 755 -74
 ; @color text.lineNumber rgba(0,0,0,0.3)
 ; @color text.code rgba(255,255,255,0.8)
 ; @color text.instruction #ffffff
@@ -910,8 +988,9 @@ float out ; @w
 use math
 use env
 
+const FREQ 4400
 const MINUS_2_PI -2*PI
-const CUTOFF_TERM MINUS_2_PI*4400
+const CUTOFF_TERM MINUS_2_PI*FREQ
 const EXPONENT CUTOFF_TERM/SAMPLE_RATE
 const DECAY E^EXPONENT
 const COEFFICIENT 1-DECAY
@@ -933,7 +1012,7 @@ store
 moduleEnd
 
 module lowpassR
-; @pos 744 16
+; @pos 744 17
 float* in &mixer:outR
 float state 0.0 ; @w
 float out ; @w
@@ -941,8 +1020,9 @@ float out ; @w
 use math
 use env
 
+const FREQ 4400
 const MINUS_2_PI -2*PI
-const CUTOFF_TERM MINUS_2_PI*4400
+const CUTOFF_TERM MINUS_2_PI*FREQ
 const EXPONENT CUTOFF_TERM/SAMPLE_RATE
 const DECAY E^EXPONENT
 const COEFFICIENT 1-DECAY
@@ -1102,7 +1182,7 @@ store
 moduleEnd
 
 module modSamplePlayer1
-; @pos 545 -7
+; @pos 545 -6
 ; @group ch1
 ; @home
 use env
@@ -1307,7 +1387,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer3
-; @pos 597 -6
+; @pos 597 -5
 ; @group ch3
 use env
 
@@ -1611,7 +1691,7 @@ int	0x19
 moduleEnd
 
 module period1
-; @pos 306 -72
+; @pos 306 -71
 ; @group ch1
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -1669,7 +1749,7 @@ ifEnd
 moduleEnd
 
 module period3
-; @pos 307 21
+; @pos 306 22
 ; @group ch3
 int* row &rowBuffer3:
 int* sampleNumber &sampleNumber3:out
@@ -1698,7 +1778,7 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 308 66
+; @pos 307 68
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -1933,7 +2013,7 @@ store
 moduleEnd
 
 module sampleNumber1
-; @pos 272 -72
+; @pos 272 -71
 ; @group ch1
 int* row &rowBuffer1:
 int out
@@ -1977,7 +2057,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber3
-; @pos 273 21
+; @pos 272 22
 ; @group ch3
 int* row &rowBuffer3:
 int out
@@ -1999,7 +2079,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 274 66
+; @pos 273 68
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -2021,7 +2101,7 @@ ifEnd
 moduleEnd
 
 module sampleOffset1
-; @pos 195 -72
+; @pos 195 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2106,7 +2186,7 @@ ifEnd
 moduleEnd
 
 module sampleOffset3
-; @pos 196 21
+; @pos 195 22
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2149,7 +2229,7 @@ ifEnd
 moduleEnd
 
 module sampleOffset4
-; @pos 196 66
+; @pos 195 68
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2192,7 +2272,7 @@ ifEnd
 moduleEnd
 
 module samplePack1
-; @pos 445 -16
+; @pos 446 -4
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -2219,6 +2299,11 @@ int8[] sample7 ASSET_SAMPLE7_SIZE
 int8[] sample9 ASSET_SAMPLE9_SIZE
 ; @loadAsset sample9 &sample9
 ; @wave &sample9 count(sample9)
+moduleEnd
+
+module samplePack2
+; @pos 488 -3
+use env
 int8[] sample10 ASSET_SAMPLE10_SIZE
 ; @loadAsset sample10 &sample10
 ; @wave &sample10 count(sample10)
@@ -2237,11 +2322,6 @@ int8[] sample14 ASSET_SAMPLE14_SIZE
 int8[] sample15 ASSET_SAMPLE15_SIZE
 ; @loadAsset sample15 &sample15
 ; @wave &sample15 count(sample15)
-moduleEnd
-
-module samplePack2
-; @pos 489 -15
-use env
 int8[] sample16 ASSET_SAMPLE16_SIZE
 ; @loadAsset sample16 &sample16
 ; @wave &sample16 count(sample16)
@@ -2367,7 +2447,7 @@ store
 moduleEnd
 
 module tempo1
-; @pos 233 -72
+; @pos 233 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2445,7 +2525,7 @@ ifEnd
 moduleEnd
 
 module tempo3
-; @pos 232 21
+; @pos 231 22
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2484,7 +2564,7 @@ ifEnd
 moduleEnd
 
 module tempo4
-; @pos 233 66
+; @pos 232 68
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2523,7 +2603,7 @@ ifEnd
 moduleEnd
 
 module trigger1
-; @pos 351 -72
+; @pos 351 -71
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -2575,7 +2655,7 @@ ifEnd
 moduleEnd
 
 module trigger3
-; @pos 354 21
+; @pos 353 22
 ; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -2601,7 +2681,7 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 354 66
+; @pos 353 68
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
@@ -2625,7 +2705,7 @@ ifEnd
 moduleEnd
 
 module volume1
-; @pos 390 -72
+; @pos 390 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2639,14 +2719,11 @@ int out ; @w
 push *rowCounter
 hasChanged
 if
-push *row
-call rowShouldReloadVolume
-if
 push &out
+push out
 push *row
-call loadRowVolume
+call rowVolumeAtRowStart
 store
-ifEnd
 ifEnd
 
 ; Apply volume slide only on
@@ -2662,10 +2739,14 @@ push out
 push *row
 call rowVolumeSlideDelta
 add
-call clampVolume
 store
 ifEnd
 ifEnd
+
+push &out
+push out
+call clampVolume
+store
 
 moduleEnd
 
@@ -2684,14 +2765,11 @@ int out ; @w
 push *rowCounter
 hasChanged
 if
-push *row
-call rowShouldReloadVolume
-if
 push &out
+push out
 push *row
-call loadRowVolume
+call rowVolumeAtRowStart
 store
-ifEnd
 ifEnd
 
 ; Apply volume slide only on
@@ -2707,15 +2785,19 @@ push out
 push *row
 call rowVolumeSlideDelta
 add
-call clampVolume
 store
 ifEnd
 ifEnd
 
+push &out
+push out
+call clampVolume
+store
+
 moduleEnd
 
 module volume3
-; @pos 393 21
+; @pos 392 22
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2729,14 +2811,11 @@ int out ; @w
 push *rowCounter
 hasChanged
 if
-push *row
-call rowShouldReloadVolume
-if
 push &out
+push out
 push *row
-call loadRowVolume
+call rowVolumeAtRowStart
 store
-ifEnd
 ifEnd
 
 ; Apply volume slide only on
@@ -2752,15 +2831,19 @@ push out
 push *row
 call rowVolumeSlideDelta
 add
-call clampVolume
 store
 ifEnd
 ifEnd
 
+push &out
+push out
+call clampVolume
+store
+
 moduleEnd
 
 module volume4
-; @pos 393 66
+; @pos 392 68
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2774,14 +2857,11 @@ int out ; @w
 push *rowCounter
 hasChanged
 if
-push *row
-call rowShouldReloadVolume
-if
 push &out
+push out
 push *row
-call loadRowVolume
+call rowVolumeAtRowStart
 store
-ifEnd
 ifEnd
 
 ; Apply volume slide only on
@@ -2797,9 +2877,13 @@ push out
 push *row
 call rowVolumeSlideDelta
 add
-call clampVolume
 store
 ifEnd
 ifEnd
+
+push &out
+push out
+call clampVolume
+store
 
 moduleEnd
