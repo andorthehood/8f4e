@@ -1,4 +1,5 @@
 import type { CodeBlockDisplayModel } from '../graphicHelper/buildDisplayModel';
+import type { ViewportBlockAlignment } from '../../../viewport/blockAlignment';
 import type { CodeBlockGraphicData, State } from '~/types';
 
 export interface ParsedEditorDirective {
@@ -19,6 +20,8 @@ export interface DirectiveBlockState {
 	disabled: boolean;
 	hidden: boolean;
 	isHome: boolean;
+	/** Effective viewport alignment for `; @home [alignment]`. Present only when the block is a valid home block. */
+	homeAlignment?: ViewportBlockAlignment;
 	isFavorite: boolean;
 	/** Opacity set by `; @opacity <0..1>`. Defaults to 1 when absent or invalid. */
 	opacity: number;
