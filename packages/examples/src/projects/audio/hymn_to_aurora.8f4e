@@ -34,15 +34,6 @@ note
 noteEnd
 
 note
-; @pos 404 -17
-; @stop 11 5 top @hidden
-;                         
-; The samples are selected 
-; based on the sample number
-; extracted from the active row.
-noteEnd
-
-note
 ; @pos 260 93
 ; @stop 5 5 @hidden
 
@@ -72,6 +63,15 @@ note
 noteEnd
 
 note
+; @pos 701 -20
+; @stop 14 10 top @hidden
+
+; Finally, the generated audio sample values
+; are written to the output audio buffers
+; so the operating system can play the sound.
+noteEnd
+
+note
 ; @pos 73 -30
 ; @stop 2 15 top @hidden
 
@@ -84,21 +84,21 @@ note
 noteEnd
 
 note
+; @pos 404 -17
+; @stop 11 5 top @hidden
+;                         
+; The samples are selected 
+; based on the sample number
+; extracted from the active row.
+noteEnd
+
+note
 ; @pos 587 -14
 ; @stop 13 5 top @hidden  
 ;                            ;;;;;
 ; The four channel signals ..:::::..
 ; are mixed together here.  `:::::'
 ;                             `:'
-noteEnd
-
-note
-; @pos 701 -20
-; @stop 14 10 top @hidden
-
-; Finally, the generated audio sample values
-; are written to the output audio buffers
-; so the operating system can play the sound.
 noteEnd
 
 constants env
@@ -376,6 +376,18 @@ div
 
 functionEnd float
 
+function sampleNumberCanLoop
+; @pos 372 -168
+use sampleMeta
+param int sampleNumber
+
+push sampleNumber
+call sampleNumberToRepeatLen
+push 2
+greaterThan
+
+functionEnd int
+
 function sampleNumberToAddr
 ; @pos 371 -110
 ; @tab 8
@@ -396,6 +408,30 @@ map 9	&samplePack:sample9
 map 10	&samplePack:sample10
 map 11	&samplePack:sample11
 map 12	&samplePack:sample12
+mapEnd int
+
+functionEnd int
+
+function sampleNumberToRepeatEnd
+; @pos 415 -168
+; @tab 8
+use sampleMeta
+param int sampleNumber
+push sampleNumber
+mapBegin int
+map 0	2
+map 1	S01_REPEAT_LENGTH+S01_REPEAT_OFFSET
+map 2	S02_REPEAT_LENGTH+S02_REPEAT_OFFSET
+map 3	S03_REPEAT_LENGTH+S03_REPEAT_OFFSET
+map 4	S04_REPEAT_LENGTH+S04_REPEAT_OFFSET
+map 5	S05_REPEAT_LENGTH+S05_REPEAT_OFFSET
+map 6	S06_REPEAT_LENGTH+S06_REPEAT_OFFSET
+map 7	S07_REPEAT_LENGTH+S07_REPEAT_OFFSET
+map 8	S08_REPEAT_LENGTH+S08_REPEAT_OFFSET
+map 9	S09_REPEAT_LENGTH+S09_REPEAT_OFFSET
+map 10	S10_REPEAT_LENGTH+S10_REPEAT_OFFSET
+map 11	S11_REPEAT_LENGTH+S11_REPEAT_OFFSET
+map 12	S12_REPEAT_LENGTH+S12_REPEAT_OFFSET
 mapEnd int
 
 functionEnd int
@@ -534,11 +570,11 @@ store
 moduleEnd
 
 module amp1
-; @pos 540 -23
+; @pos 540 -24
 ; @group ch0
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
-float out
+float out ; @meter
 
 push &out
 push *in
@@ -556,7 +592,7 @@ module amp2
 ; @group ch1
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
-float out
+float out; @meter
 
 push &out
 push *in
@@ -570,11 +606,11 @@ store
 moduleEnd
 
 module amp3
-; @pos 540 13
+; @pos 540 14
 ; @group ch2
 float* in &modSamplePlayer3:out
 int* volume &volume3:out
-float out
+float out; @meter
 
 push &out
 push *in
@@ -588,11 +624,11 @@ store
 moduleEnd
 
 module amp4
-; @pos 540 31
+; @pos 540 33
 ; @group ch3
 float* in &modSamplePlayer4:out
 int* volume &volume4:out
-float out
+float out; @meter
 
 push &out
 push *in
@@ -771,8 +807,9 @@ float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
 float* in4 &amp4:out
-float outL
-float outR
+
+float outL ; @meter
+float outR; @meter
 
 push &outL
 push *in1
@@ -873,7 +910,7 @@ int* sampleNumber &sampleNumber1:out
 int8* sampleAddress; @w
 int8* playhead; @w
 int sampleSize; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out; @w
 ; @hide
 
@@ -930,6 +967,23 @@ add
 store
 ifEnd
 
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
 ; Stop playing
 ; when reaches buffer end
 push _position
@@ -946,7 +1000,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 422 11
+; @pos 422 13
 ; @group ch1
 use env
 ; @stop 12 20
@@ -956,7 +1010,7 @@ int*  sampleNumber &sampleNumber2:out
 int8* sampleAddress ;@w
 int   sampleSize ; @w
 int8* playhead ; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
 
@@ -1013,6 +1067,23 @@ add
 store
 ifEnd
 
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
 ; Stop playing
 ; when reaches buffer end
 push _position
@@ -1039,7 +1110,7 @@ int* sampleNumber &sampleNumber3:out
 int8* sampleAddress; @w
 int sampleSize; @w
 int8* playhead; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
 
@@ -1097,19 +1168,19 @@ store
 ifEnd
 
 push *sampleNumber
-call sampleNumberToRepeatLen
-push 2
-greaterThan
+call sampleNumberCanLoop
 
 push _position
 castToInt
 push *sampleNumber
-call sampleNumberToRepeatLen
+call sampleNumberToRepeatEnd
 greaterThan
 and
 if
 push &_position
-push 0.0
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
 store
 ifEnd
 
@@ -1129,7 +1200,7 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 472 11
+; @pos 472 13
 ; @group ch3
 use env
 
@@ -1139,7 +1210,7 @@ int* sampleNumber &sampleNumber4:out
 int8* sampleAddress; @w
 int sampleSize; @w
 int8* playhead; @w
-; @wave sampleAddress sampleSize playhead
+; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
 
@@ -1197,19 +1268,19 @@ store
 ifEnd
 
 push *sampleNumber
-call sampleNumberToRepeatLen
-push 2
-greaterThan
+call sampleNumberCanLoop
 
 push _position
 castToInt
 push *sampleNumber
-call sampleNumberToRepeatLen
+call sampleNumberToRepeatEnd
 greaterThan
 and
 if
 push &_position
-push 0.0
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
 store
 ifEnd
 
