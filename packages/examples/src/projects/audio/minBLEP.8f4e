@@ -10,10 +10,6 @@ const SAMPLE_RATE 48000
 const INV_SAMPLE_RATE 0.000020833333333333333
 const AUDIO_BUFFER_SIZE 128
 
-; Binary asset sizes in bytes
-; 'sample_10.bin'
-const ASSET_AMEN_SIZE 9550
-
 constantsEnd
 
 constants math
@@ -86,7 +82,7 @@ add
 
 functionEnd float*
 
-function blepValueAtInterpolated
+function blepValueAt
 ; @pos 330 -157
 #impure
 param float* lut
@@ -99,10 +95,11 @@ local float phaseFrac
 local float sample0
 local float sample1
 
-; Look up one minBLEP tap 
-; for the selected phase,
-; interpolate between LUT phases,
-; and scale it by delta.
+; Look up one minBLEP tap for
+; the selected phase, linearly
+; interpolate between adjacent
+; LUT phases, and scale it by
+; delta.
 push phase
 castToInt
 localSet phaseIndex
@@ -150,32 +147,6 @@ mul
 
 functionEnd float
 
-function blepValueAtNonInterpolated
-; @pos 284 -138
-#impure
-param float* lut
-param int phaseIndex
-param int tapIndex
-param float delta
-
-; Look up one minBLEP tap
-; for the selected phase
-; and scale it by delta.
-push lut
-push phaseIndex
-push tapIndex
-push 16
-mul
-add
-push sizeof(*lut)
-mul
-add
-loadFloat
-push delta
-mul
-
-functionEnd float
-
 function frac
 ; @pos 178 -136
 param float value
@@ -190,62 +161,61 @@ sub
 
 functionEnd float
 
-function positionIncrementToBlepPhaseInterpolated
-; @pos 223 -138
+function positionIncrementToBlepPhase
+; @pos 216 -136
 param float position
 param float increment
+local float phase
 ; Convert the fractional part of
 ; the current read position into
 ; a 0..16 BLEP phase based on
 ; where the discontinuity occurred
 ; inside the output sample interval.
-push 1.0
 push position
 call frac
 push increment
 ensureNonZero 0.000001
 div
-sub
 push 16.0
 mul
+localSet phase
+
+; Wrap the exact-boundary case
+; back to phase 0 so the LUT
+; stays in the valid 0..15 range.
+push phase
+push 16.0
+greaterOrEqual
+if
+push phase
+push 16.0
+sub
+return
+ifEnd
+
+push phase
 
 functionEnd float
 
-function positionIncrementToBlepPhaseNonInterpolated
-; @pos 223 -116
-param float position
-param float increment
-; Convert the fractional part of
-; the current read position into
-; a 0..15 BLEP phase based on
-; where the discontinuity occurred
-; inside the output sample interval.
-push position
-push increment
-call positionIncrementToBlepPhaseInterpolated
-castToInt
-
-functionEnd int
-
-function wrapAdd16
+function wrapAdd32
 ; @pos 98 -136
 param int base
 param int offset
 local int sum
 
 ; Add an offset and wrap
-; the result into a 16-slot ring.
+; the result into a 32-slot ring.
 push base
 push offset
 add
 localSet sum
 
 push sum
-push 16
+push 32
 greaterOrEqual
 if
 push sum
-push 16
+push 32
 sub
 return
 ifEnd
@@ -253,12 +223,6 @@ ifEnd
 push sum
 
 functionEnd int
-
-module assets
-; @pos -107 -70
-; @defAsset amen https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_10.bin
-
-moduleEnd
 
 module audioout
 ; @pos 165 -100
@@ -302,7 +266,7 @@ ifEnd
 moduleEnd
 
 module blepLowpass
-; @pos 274 -73
+; @pos 263 -73
 float* in &blepSmoother:out
 float state 0.0 ; @w
 float out ; @w
@@ -333,14 +297,15 @@ store
 moduleEnd
 
 module blepSmoother
-; @pos 216 -73
+; @pos 213 -73
 float* raw &pcmPlayer:out
-float* readPosition &pcmPlayer:readPosition
+float* position &pcmPlayer:readPosition
 float* increment &params:increment
 float* delta &sampleDelta:out
 int index 0 ; @w
+float correction ; @w
 float out ; @w
-float[] blepBuffer 16
+float[] blepBuffer 32
 
 ; Inject the 16-tap BLEP kernel
 ; only when the sample output changed.
@@ -351,28 +316,32 @@ loop 16
 push &blepBuffer
 push index
 loopIndex
-call wrapAdd16
+call wrapAdd32
 push &minBLEPLUT:0
-push *readPosition
+push *position
 push *increment
-call positionIncrementToBlepPhaseInterpolated
+call positionIncrementToBlepPhase
 loopIndex
 push *delta
-call blepValueAtInterpolated
+call blepValueAt
 call addBlepAt
 loopEnd
 ifEnd
 
 ; Read the correction sample
 ; at the current ring position.
-; Mix the raw sample with the
-; current BLEP correction.
-push &out
-push *raw
+push &correction
 push &blepBuffer
 push index
 call blepQueuePtr
 loadFloat
+store
+
+; Mix the raw sample with the
+; current BLEP correction.
+push &out
+push *raw
+push correction
 add
 store
 
@@ -389,13 +358,13 @@ store
 push &index
 push index
 push 1
-call wrapAdd16
+call wrapAdd32
 store
 
 moduleEnd
 
 module minBLEPLUT
-; @pos 301 0
+; @pos 390 -1
 ; @tab 7
 ; PT2 clone minBLEP 
 ; correction table
@@ -661,7 +630,7 @@ float	0.000000000000000000
 moduleEnd
 
 module mixer
-; @pos 116 -100
+; @pos 115 -103
 
 float* originalIn &pcmPlayer:out
 float* smoothedIn &blepLowpass:out
@@ -682,19 +651,65 @@ store
 moduleEnd
 
 module notes
-; @pos 11 -85
-; Plays a 8-bit PCM audio sample with a
-; variable-speed floating-point playhead,
+; @pos 15 -89
+; Plays a hardcoded one-cycle pulse
+; sample with a variable-speed
+; floating-point playhead,
 ; applies a minBLEP (minimum-band-limited
 ; step) correction with a 16-sample ring
-; buffer to smooth sample discontinuities,
+; 32-slot ring buffer to hold a
+; 16-tap minimum-band-limited-step
+; correction tail for sample
+; discontinuities,
 ; then low-pass filters the result before
 ; routing it to audioout.
 moduleEnd
 
+module packedPulseSample
+; @pos 429 19
+; One-cycle pulse sample packed
+; four bytes per 32-bit word.
+; Uses +/-32 amplitude so the
+; BLEP overshoot has headroom.
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+moduleEnd
+
 module params
 ; @pos 66 -93
-float increment 0.2 ; @w
+float increment 1.0 ; @w
 float volOriginal 0.0 ; @w
 float volSmoothed 1.0; @w
 ; @home top
@@ -711,15 +726,14 @@ module pcmPlayer
 ; @pos 122 -73
 use env
 
-int8[] buffer ASSET_AMEN_SIZE
-; @loadAsset amen &buffer
-int8* playhead &buffer
+int8* sample &packedPulseSample:0
+int8* playhead &packedPulseSample:0
 float position 0.0 ; @w
 float readPosition 0.0 ; @w
 float* increment &params:increment
 float out
 
-; @wave &buffer count(buffer) playhead
+; @wave &packedPulseSample:0 128 playhead
 
 ; Capture the current read position
 ; before advancing the playhead.
@@ -731,7 +745,7 @@ store
 push &playhead
 push readPosition
 castToInt
-push &buffer
+push sample
 add
 store
 
@@ -740,8 +754,7 @@ store
 push &out
 push *playhead
 castToFloat
-push max(buffer)
-castToFloat
+push 64.0
 div
 store
 
@@ -756,7 +769,7 @@ store
 ; when it reaches buffer end
 push position
 castToInt
-push count(buffer)
+push 128
 greaterOrEqual
 if
 push &position
@@ -767,7 +780,7 @@ ifEnd
 moduleEnd
 
 module projectConfig
-; @pos -53 -63
+; @pos -58 -63
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @exportFileName minBLEP
@@ -831,7 +844,7 @@ moduleEnd
 module scopeSmooth
 ; @pos 82 -73
 
-float* in &blepLowpass:out
+float* in &blepSmoother:out
 float[] buffer 128
 float* pointer &buffer
 
