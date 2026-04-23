@@ -441,7 +441,7 @@ describe('codeBlockNavigation', () => {
 				x: 100,
 				y: 100,
 				isHome: true,
-				cursorY: 32,
+				homeAlignment: 'center',
 			});
 			const secondHome = createMockCodeBlock({
 				id: 'home-2',
@@ -466,13 +466,43 @@ describe('codeBlockNavigation', () => {
 
 			expect(state.graphicHelper.selectedCodeBlock).toBe(firstHome);
 			expect(state.viewport.x).toBe(50);
-			expect(state.viewport.y).toBe(32);
+			expect(state.viewport.y).toBe(50);
+		});
+
+		it('should honor home alignment hints when centering the viewport', () => {
+			const homeBlock = createMockCodeBlock({
+				id: 'home-bottom',
+				x: 100,
+				y: 200,
+				width: 100,
+				height: 100,
+				isHome: true,
+				homeAlignment: 'bottom',
+			});
+			state = createMockState({
+				graphicHelper: { codeBlocks: [homeBlock] },
+				viewport: {
+					x: 0,
+					y: 0,
+					width: 200,
+					height: 200,
+					roundedWidth: 200,
+					roundedHeight: 200,
+				},
+			});
+
+			goHome(state);
+
+			expect(state.graphicHelper.selectedCodeBlock).toBe(homeBlock);
+			expect(state.viewport.x).toBe(50);
+			expect(state.viewport.y).toBe(100);
 		});
 
 		it('should dispatch viewportChanged after goHome changes the viewport', () => {
 			const homeBlock = createMockCodeBlock({
 				id: 'home-dispatch',
 				isHome: true,
+				homeAlignment: 'center',
 				x: 100,
 				y: 100,
 			});

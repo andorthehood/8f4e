@@ -39,7 +39,7 @@ greaterThan
 push *reset
 risingEdge
 or
-if void
+if
 push &playhead
 push &buffer
 push startPos

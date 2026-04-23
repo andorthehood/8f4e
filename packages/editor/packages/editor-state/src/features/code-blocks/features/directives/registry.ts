@@ -8,9 +8,12 @@ import homeDirective from './home/plugin';
 import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
+import meterDirective from './meter/plugin';
+import barsDirective from './bars/plugin';
 import plotDirective from './plot/plugin';
-import waveDirective from './wave/plugin';
+import waveDirective, { wave2Directive } from './wave/plugin';
 import sliderDirective from './slider/plugin';
+import crossfadeDirective from './crossfade/plugin';
 import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
 import viewportDirective from './viewport/plugin';
@@ -37,9 +40,13 @@ export type {
 } from './types';
 
 export const directivePlugins: EditorDirectivePlugin[] = [
+	meterDirective,
+	barsDirective,
 	plotDirective,
 	waveDirective,
+	wave2Directive,
 	sliderDirective,
+	crossfadeDirective,
 	pianoDirective,
 	buttonDirective,
 	switchDirective,
@@ -126,7 +133,15 @@ if (import.meta.vitest) {
 	describe('directive registry', () => {
 		it('parses registered directives from code', () => {
 			const result = parseEditorDirectives(
-				['module foo', '; @plot &buffer count(buffer)', '; @slider gain 0 1 0.01', '; note', 'moduleEnd'],
+				[
+					'module foo',
+					'; @plot &buffer count(buffer)',
+					'; @bars &bins count(bins)',
+					'; @slider &gain 0 1 0.01',
+					'; @crossfade &dry &wet',
+					'; note',
+					'moduleEnd',
+				],
 				directivePlugins
 			);
 
@@ -137,14 +152,37 @@ if (import.meta.vitest) {
 					args: ['&buffer', 'count(buffer)'],
 					sourceLine: '; @plot &buffer count(buffer)',
 				},
-				{ name: 'slider', rawRow: 2, args: ['gain', '0', '1', '0.01'], sourceLine: '; @slider gain 0 1 0.01' },
+				{
+					name: 'bars',
+					rawRow: 2,
+					args: ['&bins', 'count(bins)'],
+					sourceLine: '; @bars &bins count(bins)',
+				},
+				{
+					name: 'slider',
+					rawRow: 3,
+					args: ['&gain', '0', '1', '0.01'],
+					sourceLine: '; @slider &gain 0 1 0.01',
+				},
+				{
+					name: 'crossfade',
+					rawRow: 4,
+					args: ['&dry', '&wet'],
+					sourceLine: '; @crossfade &dry &wet',
+				},
 			]);
 		});
 
 		it('parses trailing-comment directives only for plugins that allow them', () => {
-			const result = parseEditorDirectives(['int foo 1 ; @watch', 'int bar 1 ; @plot buffer'], directivePlugins);
+			const result = parseEditorDirectives(
+				['int foo 1 ; @watch', 'float out ; @meter', 'int bar 1 ; @plot buffer'],
+				directivePlugins
+			);
 
-			expect(result).toEqual([{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' }]);
+			expect(result).toEqual([
+				{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' },
+				{ name: 'meter', rawRow: 1, args: [], sourceLine: 'float out ; @meter' },
+			]);
 		});
 
 		it('parses chained directives from a single full-line comment', () => {
@@ -168,7 +206,10 @@ if (import.meta.vitest) {
 				'; @disabled',
 				'; @home',
 				'; @favorite',
+				'; @meter level 0 1',
 				'; @plot &buffer count(buffer)',
+				'; @bars &bins count(bins)',
+				'; @crossfade &dry &wet',
 				'; @wave &buffer 16 pointer',
 				'moduleEnd',
 			];
@@ -178,15 +219,26 @@ if (import.meta.vitest) {
 				disabled: true,
 				hidden: false,
 				isHome: true,
+				homeAlignment: 'center',
 				isFavorite: true,
 				opacity: 1,
 			});
 			expect(result.layoutContributions).toEqual([
-				{ rawRow: 4, rows: 8 },
-				{ rawRow: 5, rows: 2 },
+				{ rawRow: 4, rows: 1 },
+				{ rawRow: 5, rows: 8 },
+				{ rawRow: 6, rows: 8 },
+				{ rawRow: 7, rows: 2 },
+				{ rawRow: 8, rows: 2 },
 			]);
 			expect(result.displayState).toEqual({});
-			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6]);
+			expect(result.displayModel.displayRowToRawRow).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+		});
+
+		it('allocates double layout height for @wave2', () => {
+			const code = ['module foo', '; @wave2 &buffer 16 pointer', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			expect(result.layoutContributions).toEqual([{ rawRow: 1, rows: 4 }]);
 		});
 
 		it('ignores unregistered directives', () => {
@@ -197,10 +249,27 @@ if (import.meta.vitest) {
 				disabled: false,
 				hidden: false,
 				isHome: true,
+				homeAlignment: 'center',
 				isFavorite: false,
 				opacity: 1,
 			});
 			expect(result.layoutContributions).toEqual([{ rawRow: 2, rows: 8 }]);
+		});
+
+		it('derives optional home alignment from @home', () => {
+			const code = ['module foo', '; @home bottom', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			expect(result.blockState.isHome).toBe(true);
+			expect(result.blockState.homeAlignment).toBe('bottom');
+		});
+
+		it('ignores invalid @home arguments', () => {
+			const code = ['module foo', '; @home middle', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+			expect(result.blockState.isHome).toBe(false);
+			expect(result.blockState.homeAlignment).toBeUndefined();
 		});
 
 		it('collapses everything after @hide while unselected', () => {

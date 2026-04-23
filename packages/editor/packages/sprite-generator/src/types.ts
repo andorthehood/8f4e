@@ -56,9 +56,15 @@ export interface ColorScheme {
 		highlightedCodeLine: string;
 		trace: string;
 		plotterBackground: string;
+		bars: string;
 		waveform: string;
+		meterGreen: string;
+		meterYellow: string;
+		meterRed: string;
 		scanLine: string;
-		sliderThumb: string;
+		track: string;
+		fill: string;
+		handle: string;
 		codeBlockHighlightLevel1: string;
 		codeBlockHighlightLevel2: string;
 		codeBlockHighlightLevel3: string;

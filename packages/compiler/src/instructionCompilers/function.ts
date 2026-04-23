@@ -27,6 +27,7 @@ const _function = function (line: FunctionLine, context: CompilationContext) {
 		parameters: [],
 		returns: [],
 	};
+	context.currentFunctionIsImpure = false;
 	context.mode = 'function';
 
 	// Initialize empty locals - parameters will be added by param instructions

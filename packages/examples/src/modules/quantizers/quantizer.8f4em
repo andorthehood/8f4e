@@ -33,7 +33,7 @@ store
 push _difference
 push _smallestDiff
 lessOrEqual
-if void
+if
   ; If it's actually smaller
   ; than the smallest difference,
   ; then update the smallest 

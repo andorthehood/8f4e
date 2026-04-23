@@ -1,0 +1,878 @@
+8f4e/v1
+
+constants env
+; @pos -74 -54
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const INV_SAMPLE_RATE 0.000020833333333333333
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+constants math
+; @pos -63 -102
+
+const PI      3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU     6.283185307179586
+const HALF_PI 1.570796326794896
+const INV_PI  0.318309886183790
+const INV_TAU 0.159154943091895
+const PHI     1.618033988749895
+const DEG2RAD 0.017453292519943
+const RAD2DEG 57.29577951308232
+const SQRT2   1.414213562373095
+const SQRT1_2 0.707106781186547
+; Useful in FFT twiddle factors.
+const HANN_A0 0.5
+; For common window functions before FFT.
+const HAMMING_A0 0.54
+const HAMMING_A1 0.46
+const BLACKMAN_A0 0.42
+const BLACKMAN_A1 0.5
+const BLACKMAN_A2 0.08
+const LN2     0.693147180559945
+const LN10    2.302585092994046
+const LOG2E   1.442695040888963
+const LOG10E  0.434294481903251
+const E       2.718281828459045
+
+constantsEnd
+
+function addBlepAt
+; @pos 372 -157
+#impure
+param float* buffer
+param int index
+param float value
+
+; Accumulate one correction 
+; value into a queue slot.
+push buffer
+push index
+call blepQueuePtr
+
+push buffer
+push index
+call blepQueuePtr
+loadFloat
+
+push value
+add
+store
+
+functionEnd
+
+function blepQueuePtr
+; @pos 141 -136
+param float* buffer
+param int index
+
+; Compute the address of 
+; a queue slot from a base 
+; pointer and index.
+push buffer
+push index
+push sizeof(*buffer)
+mul
+add
+
+functionEnd float*
+
+function blepValueAt
+; @pos 330 -157
+#impure
+param float* lut
+param float phase
+param int tapIndex
+param float delta
+local int phaseIndex
+local int lutIndex
+local float phaseFrac
+local float sample0
+local float sample1
+
+; Look up one minBLEP tap for
+; the selected phase, linearly
+; interpolate between adjacent
+; LUT phases, and scale it by
+; delta.
+push phase
+castToInt
+localSet phaseIndex
+
+push phase
+push phaseIndex
+castToFloat
+sub
+localSet phaseFrac
+
+push phaseIndex
+push tapIndex
+push 16
+mul
+add
+localSet lutIndex
+
+push lut
+push lutIndex
+push sizeof(*lut)
+mul
+add
+loadFloat
+localSet sample0
+
+push lut
+push lutIndex
+push 1
+add
+push sizeof(*lut)
+mul
+add
+loadFloat
+localSet sample1
+
+push sample0
+push sample1
+push sample0
+sub
+push phaseFrac
+mul
+add
+push delta
+mul
+
+functionEnd float
+
+function frac
+; @pos 178 -136
+param float value
+
+; Return the fractional part
+; of a positive float.
+push value
+push value
+castToInt
+castToFloat
+sub
+
+functionEnd float
+
+function positionIncrementToBlepPhase
+; @pos 216 -136
+param float position
+param float increment
+local float phase
+; Convert the fractional part of
+; the current read position into
+; a 0..16 BLEP phase based on
+; where the discontinuity occurred
+; inside the output sample interval.
+push position
+call frac
+push increment
+ensureNonZero 0.000001
+div
+push 16.0
+mul
+localSet phase
+
+; Wrap the exact-boundary case
+; back to phase 0 so the LUT
+; stays in the valid 0..15 range.
+push phase
+push 16.0
+greaterOrEqual
+if
+push phase
+push 16.0
+sub
+return
+ifEnd
+
+push phase
+
+functionEnd float
+
+function wrapAdd32
+; @pos 98 -136
+param int base
+param int offset
+local int sum
+
+; Add an offset and wrap
+; the result into a 32-slot ring.
+push base
+push offset
+add
+localSet sum
+
+push sum
+push 32
+greaterOrEqual
+if
+push sum
+push 32
+sub
+return
+ifEnd
+
+push sum
+
+functionEnd int
+
+module audioout
+; @pos 165 -100
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
+use env
+
+float* in &mixer:out
+
+float[] buffer AUDIO_BUFFER_SIZE
+float* pointer &buffer
+
+; @plot &buffer count(buffer)
+; @hide
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the word size
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer& 
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module blepLowpass
+; @pos 263 -73
+float* in &blepSmoother:out
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*4400
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+
+module blepSmoother
+; @pos 213 -73
+float* raw &pcmPlayer:out
+float* position &pcmPlayer:readPosition
+float* increment &params:increment
+float* delta &sampleDelta:out
+int index 0 ; @w
+float correction ; @w
+float out ; @w
+float[] blepBuffer 32
+
+; Inject the 16-tap BLEP kernel
+; only when the sample output changed.
+push *delta
+notZero
+if
+loop 16
+push &blepBuffer
+push index
+loopIndex
+call wrapAdd32
+push &minBLEPLUT:0
+push *position
+push *increment
+call positionIncrementToBlepPhase
+loopIndex
+push *delta
+call blepValueAt
+call addBlepAt
+loopEnd
+ifEnd
+
+; Read the correction sample
+; at the current ring position.
+push &correction
+push &blepBuffer
+push index
+call blepQueuePtr
+loadFloat
+store
+
+; Mix the raw sample with the
+; current BLEP correction.
+push &out
+push *raw
+push correction
+add
+store
+
+; Clear the consumed correction
+; at the current ring position.
+push &blepBuffer
+push index
+call blepQueuePtr
+push 0.0
+store
+
+; Advance the ring position
+; for the next output sample.
+push &index
+push index
+push 1
+call wrapAdd32
+store
+
+moduleEnd
+
+module minBLEPLUT
+; @pos 390 -1
+; @tab 7
+; PT2 clone minBLEP 
+; correction table
+; source: src/pt2_blep.c
+float	1.000047730261351742
+float	1.000070326525919429
+float	1.000026295486963424
+float	0.999910424773336803
+float	0.999715744379055860
+float	0.999433014919733909
+float	0.999050085771328589
+float	0.998551121919525109
+float	0.997915706233591937
+float	0.997117832692634098
+float	0.996124815495205596
+float	0.994896148570364014
+float	0.993382359323431774
+float	0.991523909003057091
+float	0.989250199364479221
+float	0.986478750833182483
+float	0.983114620682589258
+float	0.979050130425507592
+float	0.974164969358674693
+float	0.968326735771705471
+float	0.961391968634788374
+float	0.953207710646355677
+float	0.943613628528589099
+float	0.932444698727279864
+float	0.919534446669115102
+float	0.904718706053873278
+float	0.887839842029686910
+float	0.868751359331251916
+float	0.847322794437510796
+float	0.823444770447693375
+float	0.797034075604916459
+float	0.768038612100722995
+float	0.736442051783192775
+float	0.702268030364621043
+float	0.665583712234169456
+float	0.626502564400415074
+float	0.585186190589438104
+float	0.541845095055891846
+float	0.496738269945924404
+float	0.450171529567763740
+float	0.402494548939336450
+float	0.354096601546017020
+float	0.305401031227847564
+float	0.256858534249934656
+float	0.208939368513054252
+float	0.162124646097439151
+float	0.116896901459689992
+float	0.073730159227936173
+float	0.033079751373986221
+float	-0.004627847551233894
+float	-0.039004887382349467
+float	-0.069711629260494179
+float	-0.096464776709362487
+float	-0.119044790560825134
+float	-0.137301851759562277
+float	-0.151160268717908164
+float	-0.160621165999489918
+float	-0.165763337555641210
+float	-0.166742199141503622
+float	-0.163786829309547077
+float	-0.157195144771094669
+float	-0.147327312088839507
+float	-0.134597551740997606
+float	-0.119464540741507419
+float	-0.102420664473805989
+float	-0.083980405628003879
+float	-0.064668186778692058
+float	-0.045006002136687713
+float	-0.025501182606377806
+float	-0.006634636085273460
+float	0.011150108072625495
+float	0.027456744995838545
+float	0.041944658451493332
+float	0.054335772988313047
+float	0.064419613137017093
+float	0.072056443764197217
+float	0.077178424602408785
+float	0.079788772844964592
+float	0.079958988468210146
+float	0.077824255600564926
+float	0.073577187846729328
+float	0.067460134194076052
+float	0.059756303384108617
+float	0.050779997099921051
+float	0.040866264989502618
+float	0.030360306751458156
+float	0.019606947961234158
+float	0.008940507097049575
+float	-0.001324648208126466
+float	-0.010902586500777250
+float	-0.019543107356485005
+float	-0.027037657667711743
+float	-0.033223730539404389
+float	-0.037987660680654206
+float	-0.041265784496258708
+float	-0.043043987097204459
+float	-0.043355710312406585
+float	-0.042278543756813086
+float	-0.039929563528408617
+float	-0.036459618831699063
+float	-0.032046794692908200
+float	-0.026889298182776331
+float	-0.021198025763611534
+float	-0.015189070430455576
+float	-0.009076419455364113
+float	-0.003065077316892156
+float	0.002655175361548794
+float	0.007915206247809156
+float	0.012570993866018959
+float	0.016507022146950882
+float	0.019638542128970374
+float	0.021912677934460976
+float	0.023308395228452326
+float	0.023835389125096862
+float	0.023531983633596966
+float	0.022462165098004916
+float	0.020711896771322701
+float	0.018384880003473082
+float	0.015597939105523964
+float	0.012476211636472619
+float	0.009148323764166686
+float	0.005741721847351756
+float	0.002378317065490789
+float	-0.000829419425005380
+float	-0.003781796760683148
+float	-0.006394592475568153
+float	-0.008601029202315702
+float	-0.010353009833494400
+float	-0.011621609729198235
+float	-0.012396851839770070
+float	-0.012686815497510709
+float	-0.012516151297987357
+float	-0.011924092281628086
+float	-0.010962065062340150
+float	-0.009691013345942120
+float	-0.008178550345073605
+float	-0.006496056025074358
+float	-0.004715830178801837
+float	-0.002908403455554361
+float	-0.001140096220006421
+float	0.000529099845866712
+float	0.002047259427257062
+float	0.003371840725899813
+float	0.004470560830528139
+float	0.005321826318522163
+float	0.005914733331712991
+float	0.006248666963769691
+float	0.006332543236118748
+float	0.006183747823531678
+float	0.005826833745009316
+float	0.005292045316197639
+float	0.004613737750803969
+float	0.003828761006839943
+float	0.002974873016054368
+float	0.002089241623845964
+float	0.001207086791118089
+float	0.000360505313776119
+float	-0.000422490021201840
+float	-0.001118695810940624
+float	-0.001710197865787731
+float	-0.002184605984988852
+float	-0.002535053949380880
+float	-0.002759983640474954
+float	-0.002862739419386348
+float	-0.002851004510552685
+float	-0.002736115017663406
+float	-0.002532289317276391
+float	-0.002255810970882981
+float	-0.001924202080457771
+float	-0.001555421358101015
+float	-0.001167117308478277
+float	-0.000775962090624878
+float	-0.000397086112821088
+float	-0.000043627508742771
+float	0.000273595371614306
+float	0.000546286179945487
+float	0.000768750680536384
+float	0.000937862797633429
+float	0.001052928740415312
+float	0.001115464566897328
+float	0.001128904823558017
+float	0.001098261208043675
+float	0.001029750572351521
+float	0.000930411077785372
+float	0.000807724029027990
+float	0.000669256978018619
+float	0.000522341243078798
+float	0.000373794189875730
+float	0.000229693626208724
+float	0.000095208625460110
+float	-0.000025511844279470
+float	-0.000129393822077145
+float	-0.000214440509776958
+float	-0.000279687383686451
+float	-0.000325117484787396
+float	-0.000351545144152562
+float	-0.000360476947384594
+float	-0.000353958823942885
+float	-0.000334417806276330
+float	-0.000304506298090264
+float	-0.000266955691183075
+float	-0.000224444953912547
+float	-0.000179488462294700
+float	-0.000134345936549334
+float	-0.000090955956048890
+float	-0.000050893220267083
+float	-0.000015348557788786
+float	0.000014870297520588
+float	0.000039319915274268
+float	0.000057887658269860
+float	0.000070747063526119
+float	0.000078305819543210
+float	0.000081149939344862
+float	0.000079987451948008
+float	0.000075594520611004
+float	0.000068766382254997
+float	0.000060274927715552
+float	0.000050834144795034
+float	0.000041074060306238
+float	0.000031523273709852
+float	0.000022599698095010
+float	0.000014608732178952
+float	0.000007747790946751
+float	0.000002115927046159
+float	-0.000002272821614625
+float	-0.000005473727618615
+float	-0.000007594607649309
+float	-0.000008779148282948
+float	-0.000009191289914472
+float	-0.000009001415957148
+float	-0.000008374862616585
+float	-0.000007463035714496
+float	-0.000006397209079217
+float	-0.000005284894977679
+float	-0.000004208528817468
+float	-0.000003226102468093
+float	-0.000002373314390120
+float	-0.000001666778737493
+float	-0.000001107845639559
+float	-0.000000686624974760
+float	-0.000000385868818649
+float	-0.000000184445440433
+float	-0.000000060222272724
+float	0.000000007740724047
+float	0.000000037708832886
+float	0.000000044457942869
+float	0.000000039034296310
+float	0.000000028962932871
+float	0.000000018763994698
+float	0.000000010636937009
+float	0.000000005187099505
+float	0.000000002093670467
+float	0.000000000648951812
+float	0.000000000132018064
+float	0.000000000011591336
+float	0.000000000000000000
+float	0.000000000000000000
+
+moduleEnd
+
+module mixer
+; @pos 115 -103
+
+float* originalIn &pcmPlayer:out
+float* smoothedIn &blepLowpass:out
+float* volOriginal &params:volOriginal
+float* volSmoothed &params:volSmoothed
+float out
+
+push &out
+push *originalIn
+push *volOriginal
+mul
+push *smoothedIn
+push *volSmoothed
+mul
+add
+store
+
+moduleEnd
+
+module notes
+; @pos 15 -89
+; Plays a hardcoded one-cycle pulse
+; sample with a variable-speed
+; floating-point playhead,
+; applies a minBLEP (minimum-band-limited
+; step) correction with a 16-sample ring
+; 32-slot ring buffer to hold a
+; 16-tap minimum-band-limited-step
+; correction tail for sample
+; discontinuities,
+; then low-pass filters the result before
+; routing it to audioout.
+moduleEnd
+
+module packedPulseSample
+; @pos 429 19
+; One-cycle pulse sample packed
+; four bytes per 32-bit word.
+; Uses +/-32 amplitude so the
+; BLEP overshoot has headroom.
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0x20 0x20 0x20 0x20
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+int	0xE0 0xE0 0xE0 0xE0
+moduleEnd
+
+module params
+; @pos 66 -93
+float increment 1.0 ; @w
+float volOriginal 0.0 ; @w
+float volSmoothed 1.0; @w
+; @home top
+; You can change the playback speed 
+; by dragging this slider below.
+
+; @slider &increment
+
+; @crossfade &volOriginal &volSmoothed
+
+moduleEnd
+
+module pcmPlayer
+; @pos 122 -73
+use env
+
+int8* sample &packedPulseSample:0
+int8* playhead &packedPulseSample:0
+float position 0.0 ; @w
+float readPosition 0.0 ; @w
+float* increment &params:increment
+float out
+
+; @wave &packedPulseSample:0 128 playhead
+
+; Capture the current read position
+; before advancing the playhead.
+push &readPosition
+push position
+store
+
+; Calculate read address from float position
+push &playhead
+push readPosition
+castToInt
+push sample
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push 64.0
+div
+store
+
+; Advance the float position
+push &position
+push position
+push *increment
+add
+store
+
+; Reset position
+; when it reaches buffer end
+push position
+castToInt
+push 128
+greaterOrEqual
+if
+push &position
+push 0.0
+store
+ifEnd
+
+moduleEnd
+
+module projectConfig
+; @pos -58 -63
+; @runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @exportFileName minBLEP
+
+moduleEnd
+
+module sampleDelta
+; @pos 177 -73
+float* in &pcmPlayer:out
+float previous 0.0
+float out
+
+push &out
+push previous
+push *in
+sub
+store
+
+push &previous
+push *in
+store
+
+moduleEnd
+
+module scopeOriginal
+; @pos 44 -73
+
+float* in &pcmPlayer:out
+float[] buffer 128
+float* pointer &buffer
+
+; Before BLEP    ;;;;;
+;              ..;;;;;..
+; You can see   `:;;;:'
+; how chunky the  `:'
+; signal is.
+        
+; @plot &buffer count(buffer)
+
+push pointer
+push *in
+store
+
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module scopeSmooth
+; @pos 82 -73
+
+float* in &blepSmoother:out
+float[] buffer 128
+float* pointer &buffer
+
+; After BLEP    ;;;;;
+;             ..;;;;;..
+; Signal got   `:;;;:'
+; smoothed out.  `:'
+
+
+; @plot &buffer count(buffer)
+
+push pointer
+push *in
+store
+
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+push pointer
+push buffer& 
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd

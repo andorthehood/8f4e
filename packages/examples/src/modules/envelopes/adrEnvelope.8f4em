@@ -19,7 +19,7 @@ const	RELEASE 3
 ; Start ATTACK
 push	*trigger
 risingEdge
-if void
+if
 push	&_state
 push	ATTACK
 store
@@ -99,7 +99,7 @@ equal
 push	_counter
 equalToZero
 and
-if void
+if
 push	&_state
 push	RELEASE
 store
@@ -116,7 +116,7 @@ push	_counter
 push	0
 greaterThan
 and
-if void
+if
 push	&out
 push	_counter
 castToFloat

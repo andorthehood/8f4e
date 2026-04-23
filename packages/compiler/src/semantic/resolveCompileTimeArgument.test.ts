@@ -11,6 +11,7 @@ describe('tryResolveCompileTimeArgument', () => {
 	const mockContext = {
 		namespace: {
 			consts: {
+				BAR: { value: 5, isInteger: true },
 				SIZE: { value: 16, isInteger: true },
 				PI64: { value: 3.14159, isInteger: false, isFloat64: true },
 			},
@@ -50,6 +51,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE/2'))).toEqual({
 			value: 8,
 			isInteger: true,
+		});
+	});
+
+	it('resolves division expression: signed literal / constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('-1/SIZE'))).toEqual({
+			value: -0.0625,
+			isInteger: false,
 		});
 	});
 
@@ -136,6 +144,25 @@ describe('tryResolveCompileTimeArgument', () => {
 		});
 	});
 
+	it('treats max(*localDoublePointer) as an integer-valued pointer slot even for float pointees', () => {
+		const localPointerContext = {
+			...mockContext,
+			locals: {
+				floatPtrPtr: {
+					isInteger: true,
+					pointeeBaseType: 'float64',
+					isPointingToPointer: true,
+					index: 0,
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*floatPtrPtr)'))).toEqual({
+			value: 2147483647,
+			isInteger: true,
+		});
+	});
+
 	it('resolves explicit compile-time expression nodes', () => {
 		expect(
 			tryResolveCompileTimeArgument(mockContext, {
@@ -177,6 +204,71 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)^2'))).toEqual({
 			value: 4,
 			isInteger: true,
+		});
+	});
+
+	it('resolves addition expression: constant + literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE+1'))).toEqual({
+			value: 17,
+			isInteger: true,
+		});
+	});
+
+	it('resolves addition expression: constant + constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE+BAR'))).toEqual({
+			value: 21,
+			isInteger: true,
+		});
+	});
+
+	it('resolves subtraction expression: constant - literal', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE-1'))).toEqual({
+			value: 15,
+			isInteger: true,
+		});
+	});
+
+	it('resolves addition expression: literal + constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('1+SIZE'))).toEqual({
+			value: 17,
+			isInteger: true,
+		});
+	});
+
+	it('resolves subtraction expression: literal - constant', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('100-SIZE'))).toEqual({
+			value: 84,
+			isInteger: true,
+		});
+	});
+
+	it('resolves addition with sizeof: sizeof(name)+1', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)+1'))).toEqual({
+			value: 3,
+			isInteger: true,
+		});
+	});
+
+	it('resolves subtraction with sizeof: sizeof(name)-1', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)-1'))).toEqual({
+			value: 1,
+			isInteger: true,
+		});
+	});
+
+	it('keeps float64 width for addition results', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64+1'))).toEqual({
+			value: 3.14159 + 1,
+			isInteger: false,
+			isFloat64: true,
+		});
+	});
+
+	it('keeps float64 width for subtraction results', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64-1'))).toEqual({
+			value: 3.14159 - 1,
+			isInteger: false,
+			isFloat64: true,
 		});
 	});
 

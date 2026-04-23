@@ -264,7 +264,7 @@ describe('Pure Function Validation', () => {
 		];
 
 		expect(() => compile(modules, defaultOptions, functions)).toThrow(
-			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
+			/Memory declarations are not allowed in functions/i
 		);
 	});
 
@@ -281,9 +281,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow(
-			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
-		);
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory IO in functions requires #impure/i);
 	});
 
 	test('should reject store operations in functions', () => {
@@ -299,9 +297,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow(
-			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
-		);
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory IO in functions requires #impure/i);
 	});
 
 	test('should reject array declarations in functions', () => {
@@ -318,8 +314,65 @@ describe('Pure Function Validation', () => {
 		];
 
 		expect(() => compile(modules, defaultOptions, functions)).toThrow(
-			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
+			/Memory declarations are not allowed in functions/i
 		);
+	});
+
+	test('should reject pointer dereference in pure functions', () => {
+		const functions: Module[] = [
+			{
+				code: ['function invalid', 'param float* x', 'push *x', 'functionEnd float'],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory IO in functions requires #impure/i);
+	});
+
+	test('should allow load operations in impure functions', () => {
+		const functions: Module[] = [
+			{
+				code: ['function readValue', '#impure', 'param int x', 'push x', 'load', 'functionEnd int'],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions, functions)).not.toThrow();
+	});
+
+	test('should allow store operations in impure functions', () => {
+		const functions: Module[] = [
+			{
+				code: [
+					'function writeValue',
+					'#impure',
+					'param int x',
+					'param int y',
+					'push x',
+					'push y',
+					'store',
+					'functionEnd',
+				],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions, functions)).not.toThrow();
 	});
 
 	test('should reject functions with more than 8 parameters', () => {

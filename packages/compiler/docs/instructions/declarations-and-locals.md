@@ -4,14 +4,16 @@
 
 The const instruction declares a constant value that can be referenced elsewhere in the program.
 
-The right-hand side can also be a constant mul/div expression with exactly one operator:
+The right-hand side can also be a constant expression with exactly one operator:
+- `CONST+number`
+- `CONST-number`
 - `CONST*number`
 - `CONST/number`
 
 Rules:
 - Left-hand side must be an existing constant identifier.
 - Right-hand side must be a numeric literal.
-- Only one `*` or `/` operator is allowed per expression.
+- Only one `+`, `-`, `*`, or `/` operator is allowed per expression.
 
 #### Examples
 
@@ -37,7 +39,7 @@ Anonymous scalar declarations are supported in three forms:
 This bare zero-initialized form applies to scalar declarations only (including pointer variants such as `int*`). Array declarations (`int[]`) still require an element count.
 
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
-Constant mul/div expressions are also supported with the same one-operator rule (`CONST*number` or `CONST/number`).
+Constant expressions are also supported with the same one-operator rule (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
 
 A default value may also be expressed as a split-byte sequence: two to four adjacent byte-resolving tokens combined into a single 32-bit integer.
 Bytes are combined left-to-right as most-significant to least-significant.
@@ -145,7 +147,7 @@ The float instruction declares a 32-bit floating-point value in module memory. U
 A bare `float` (no arguments) allocates an anonymous `float` with default `0`. This zero-initialized form applies to scalar declarations only (including pointer variants such as `float*`).
 
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
-Constant mul/div expressions are also supported with the same one-operator rule (`CONST*number` or `CONST/number`).
+Constant expressions are also supported with the same one-operator rule (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
 
 #### Examples
 
@@ -165,7 +167,7 @@ float* endPtr samples&
 The int[] instruction declares a buffer of integers in module memory. Variants include `int8[]`, `int8u[]`, `int16[]`, `int16u[]`, `int32[]`, `int*[]`, and `int**[]`.
 
 Unsigned variants (`int8u[]`, `int16u[]`) interpret values as unsigned integers (0-255 for int8u, 0-65535 for int16u) in debuggers, plotters, and when using min/max prefixes.
-Buffer size arguments also support constant mul/div expressions with exactly one operator (`CONST*number` or `CONST/number`).
+Buffer size arguments also support constant expressions with exactly one operator (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
 
 #### Examples
 

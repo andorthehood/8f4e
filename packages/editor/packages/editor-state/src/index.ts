@@ -6,6 +6,7 @@ import codeEditing from './features/code-editing/effect';
 import _switch from './features/code-blocks/features/directives/switch/interaction';
 import button from './features/code-blocks/features/directives/button/interaction';
 import slider from './features/code-blocks/features/directives/slider/interaction';
+import crossfade from './features/code-blocks/features/directives/crossfade/interaction';
 import viewportDirectiveEffect from './features/code-blocks/features/directives/viewport/effect';
 import codeBlockCreator from './features/code-blocks/features/codeBlockCreator/effect';
 import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/effect';
@@ -72,6 +73,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	_switch(state, events);
 	button(state, events);
 	slider(store, events);
+	crossfade(store, events);
 	pianoKeyboard(store, events);
 	viewport(store, events);
 	contextMenu(store, events);
@@ -142,6 +144,7 @@ export type {
 	ArrayWave,
 	TypedValueKind,
 	Switch,
+	Crossfade,
 	Debugger,
 	Output,
 	Input,

@@ -13,7 +13,7 @@ int counter 10000
 ; Reset counter on trig
 push *trigger
 risingEdge
-if void
+if
 push &counter
 push 0
 store
@@ -21,11 +21,11 @@ ifEnd
 
 push *clock
 risingEdge
-if void
+if
 push counter
 push *lengthIn
 lessThan
-if void
+if
 push &out
   
   ; Calculate address

@@ -1,0 +1,14 @@
+8f4e/v1
+
+module main
+int counter
+float gain 0.5
+int8[] buffer 4
+
+push &counter
+push counter
+push 1
+add
+store
+
+moduleEnd

@@ -16,7 +16,7 @@ store
 push prevValue
 push *in
 equal
-if void
+if
 else
 push &trigOut
 push HIGH

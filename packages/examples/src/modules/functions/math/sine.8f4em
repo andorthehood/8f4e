@@ -14,7 +14,7 @@ use math
 localGet x
 push HALF_PI
 greaterThan
-if void
+if
 push PI
 localGet x
 sub
@@ -26,7 +26,7 @@ push HALF_PI
 push -1.0
 mul
 lessThan
-if void
+if
 push PI
 push -1.0
 mul

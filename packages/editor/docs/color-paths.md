@@ -47,9 +47,15 @@ Example:
 - `fill.highlightedCodeLine`
 - `fill.trace`
 - `fill.plotterBackground`
+- `fill.bars`
 - `fill.waveform`
+- `fill.meterGreen`
+- `fill.meterYellow`
+- `fill.meterRed`
 - `fill.scanLine`
-- `fill.sliderThumb`
+- `fill.track`
+- `fill.fill`
+- `fill.handle`
 - `fill.codeBlockHighlightLevel1`
 - `fill.codeBlockHighlightLevel2`
 - `fill.codeBlockHighlightLevel3`

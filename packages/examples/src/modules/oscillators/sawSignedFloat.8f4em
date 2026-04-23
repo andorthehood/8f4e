@@ -18,7 +18,7 @@ store
 push out
 push 1.0
 greaterThan
-if void
+if
 push &out
 push 0.0
 store

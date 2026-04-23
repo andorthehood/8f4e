@@ -90,6 +90,7 @@ describe('wave directive widget resolution', () => {
 		runDirectiveResolution();
 
 		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayWaves[0].height).toBe(32);
 	});
 
 	it('does not add a wave when dependencies cannot be resolved', () => {
@@ -142,6 +143,15 @@ describe('wave directive widget resolution', () => {
 
 		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
 		expect(mockGraphicData.widgets.arrayWaves[0].pointer).toBeUndefined();
+	});
+
+	it('renders wave2 at double height', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @wave2 bufferAddress 16 pointer1']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayWaves[0].height).toBe(64);
 	});
 
 	it('handles multiple wave directives', () => {

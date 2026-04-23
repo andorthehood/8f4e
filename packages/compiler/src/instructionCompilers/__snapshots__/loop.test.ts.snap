@@ -12,6 +12,7 @@ exports[`loop instruction compiler > compiles the loop segment with default cap 
       "blockType": 1,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
+      "loopCounterLocalName": "__infiniteLoopProtectionCounter2",
     },
   ],
   "byteCode": [
@@ -71,6 +72,7 @@ exports[`loop instruction compiler > compiles the loop segment with explicit cap
       "blockType": 1,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
+      "loopCounterLocalName": "__infiniteLoopProtectionCounter2",
     },
   ],
   "byteCode": [
@@ -129,6 +131,7 @@ exports[`loop instruction compiler > explicit argument overrides context.loopCap
       "blockType": 1,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
+      "loopCounterLocalName": "__infiniteLoopProtectionCounter2",
     },
   ],
   "byteCode": [
@@ -187,6 +190,7 @@ exports[`loop instruction compiler > uses context.loopCap when no argument is pr
       "blockType": 1,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
+      "loopCounterLocalName": "__infiniteLoopProtectionCounter2",
     },
   ],
   "byteCode": [

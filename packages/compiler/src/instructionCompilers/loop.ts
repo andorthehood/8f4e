@@ -19,12 +19,6 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 		argumentTypes: ['nonNegativeIntegerLiteral'],
 	},
 	(line, context) => {
-		context.blockStack.push({
-			expectedResultIsInteger: false,
-			hasExpectedResult: false,
-			blockType: BLOCK_TYPE.LOOP,
-		});
-
 		const capArg = line.arguments[0];
 		const effectiveCap =
 			capArg !== undefined && capArg.type === ArgumentType.LITERAL
@@ -34,6 +28,13 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 		const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumberAfterMacroExpansion;
 		const loopErrorSignalerName = '__loopErrorSignaler';
 		const loopErrorSignaler = allocateInternalResource(context, loopErrorSignalerName, 'int', -1);
+
+		context.blockStack.push({
+			expectedResultIsInteger: false,
+			hasExpectedResult: false,
+			blockType: BLOCK_TYPE.LOOP,
+			loopCounterLocalName: infiniteLoopProtectionCounterName,
+		});
 
 		return compileSegment(
 			[

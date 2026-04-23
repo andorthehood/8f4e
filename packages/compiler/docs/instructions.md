@@ -23,6 +23,7 @@
 - [Comparison](instructions/comparison.md)
   - [equal](instructions/comparison.md#equal)
   - [equalToZero](instructions/comparison.md#equaltozero)
+  - [notZero](instructions/comparison.md#notzero)
   - [greaterOrEqual](instructions/comparison.md#greaterorequal)
   - [greaterOrEqualUnsigned](instructions/comparison.md#greaterorequalunsigned)
   - [greaterThan](instructions/comparison.md#greaterthan)

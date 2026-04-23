@@ -6,6 +6,7 @@ import type { DataStructure } from '@8f4e/compiler';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type { ContextMenu } from '../menu/types';
+import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
  * Project-level code block structure for persistent storage.
@@ -85,6 +86,47 @@ export interface ArrayPlotter {
 	valueType: TypedValueKind;
 }
 
+export interface ArrayBars {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	minValue: number;
+	maxValue: number;
+	inverseValueRange: number;
+	staticBaseValueIndex?: number;
+	staticColumnLayout?: Array<{
+		x: number;
+		width: number;
+		sliceStart: number;
+		sliceEnd: number;
+	}>;
+	startAddress: MemoryIdentifier;
+	baseSampleShift: 0 | 1 | 2 | 3;
+	length: number | MemoryIdentifier;
+	valueType: TypedValueKind;
+}
+
+export interface ArrayMeter {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	minValue: number;
+	maxValue: number;
+	isBipolar: boolean;
+	amplitudeLimit: number;
+	inverseValueRange: number;
+	greenEndX: number;
+	yellowEndX: number;
+	overloadMarkerX: number;
+	overloadMarkerWidth: number;
+	staticValueIndex?: number;
+	memory: MemoryIdentifier;
+	baseSampleShift: 0 | 1 | 2 | 3;
+	valueType: TypedValueKind;
+}
+
 export interface Switch {
 	width: number;
 	height: number;
@@ -135,6 +177,20 @@ export interface Slider {
 	min: number;
 	max: number;
 	step?: number;
+}
+
+export interface Crossfade {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	leftId: string;
+	rightId: string;
+	leftWordAddress: number;
+	rightWordAddress: number;
+	handleWidth: number;
+	trackWidth: number;
+	centerX: number;
 }
 
 /**
@@ -210,10 +266,13 @@ export interface CodeBlockGraphicData {
 		outputs: Output[];
 		debuggers: Debugger[];
 		arrayPlotters: ArrayPlotter[];
+		arrayBars: ArrayBars[];
+		arrayMeters: ArrayMeter[];
 		arrayWaves: ArrayWave[];
 		switches: Switch[];
 		buttons: Switch[];
 		sliders: Slider[];
+		crossfades: Crossfade[];
 		pianoKeyboards: PianoKeyboard[];
 		errorMessages: Array<{
 			message: string[];
@@ -273,6 +332,11 @@ export interface CodeBlockGraphicData {
 	 * Defaults to false.
 	 */
 	isHome: boolean;
+	/**
+	 * Optional viewport alignment hint derived from `; @home [center|left|right|top|bottom]`.
+	 * When omitted, home navigation falls back to centered placement.
+	 */
+	homeAlignment?: ViewportBlockAlignment;
 	/**
 	 * When true, marks this block as a favorite for quick navigation.
 	 * Derived from ; @favorite directive.

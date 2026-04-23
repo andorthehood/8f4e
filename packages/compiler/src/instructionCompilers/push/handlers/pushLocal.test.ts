@@ -73,4 +73,25 @@ describe('pushLocal', () => {
 		expect(context.stack[0].isFloat64).toBeUndefined();
 		expect(context.stack[0].isInteger).toBe(false);
 	});
+
+	it('preserves pointer metadata on the stack item for a pointer local', () => {
+		const context = createInstructionCompilerTestContext({
+			locals: {
+				buffer: { isInteger: true, pointeeBaseType: 'float', index: 4 },
+			},
+		});
+
+		pushLocal(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'push',
+				arguments: [classifyIdentifier('buffer')],
+			} as PushIdentifierLine,
+			context
+		);
+
+		expect(context.byteCode).toEqual(localGet(4));
+		expect(context.stack).toEqual([{ isInteger: true, pointeeBaseType: 'float', isNonZero: false }]);
+	});
 });

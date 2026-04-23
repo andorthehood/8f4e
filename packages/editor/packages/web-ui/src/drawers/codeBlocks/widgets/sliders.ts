@@ -38,16 +38,16 @@ export default function drawer(
 
 		// Calculate normalized position (0..1)
 		const normalizedValue = Math.max(0, Math.min(1, (value - min) / (max - min)));
-		const thumbX = Math.floor(normalizedValue * (width - state.viewport.vGrid));
+		const handleWidth = Math.min(state.viewport.vGrid, width);
+		const trackWidth = Math.max(width - handleWidth, 1);
+		const handleX = Math.floor(normalizedValue * trackWidth);
 
 		engine.startGroup(x, y);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-		engine.drawSprite(0, 0, 'sliderThumb', thumbX, height);
-
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-		engine.drawText(thumbX, 0, '|');
-		engine.drawText(thumbX, state.viewport.hGrid, '|');
+		engine.drawSprite(0, 0, 'track', width, height);
+		engine.drawSprite(0, 0, 'fill', handleX + handleWidth, height);
+		engine.drawSprite(handleX, 0, 'handle', handleWidth, height);
 
 		engine.endGroup();
 	}

@@ -52,7 +52,7 @@ load
 
 push 1
 greaterOrEqual
-if void
+if
 push &out 
 push out
 push 0b10000000

@@ -118,4 +118,109 @@ describe('parseConstantMulDivExpression', () => {
 		expect(parseConstantMulDivExpression('SIZE^2*3')).toBeNull();
 		expect(parseConstantMulDivExpression('2*SIZE^3')).toBeNull();
 	});
+
+	it('parses constant + literal', () => {
+		expect(parseConstantMulDivExpression('SIZE+1')).toEqual({
+			lhs: 'SIZE',
+			operator: '+',
+			rhs: '1',
+		});
+	});
+
+	it('parses constant + constant', () => {
+		expect(parseConstantMulDivExpression('FOO+BAR')).toEqual({
+			lhs: 'FOO',
+			operator: '+',
+			rhs: 'BAR',
+		});
+	});
+
+	it('parses constant - literal', () => {
+		expect(parseConstantMulDivExpression('SIZE-1')).toEqual({
+			lhs: 'SIZE',
+			operator: '-',
+			rhs: '1',
+		});
+	});
+
+	it('parses literal + constant', () => {
+		expect(parseConstantMulDivExpression('1+SIZE')).toEqual({
+			lhs: '1',
+			operator: '+',
+			rhs: 'SIZE',
+		});
+	});
+
+	it('parses literal - constant', () => {
+		expect(parseConstantMulDivExpression('10-SIZE')).toEqual({
+			lhs: '10',
+			operator: '-',
+			rhs: 'SIZE',
+		});
+	});
+
+	it('parses metadata query + literal', () => {
+		expect(parseConstantMulDivExpression('sizeof(name)+1')).toEqual({
+			lhs: 'sizeof(name)',
+			operator: '+',
+			rhs: '1',
+		});
+	});
+
+	it('parses metadata query - literal', () => {
+		expect(parseConstantMulDivExpression('sizeof(name)-1')).toEqual({
+			lhs: 'sizeof(name)',
+			operator: '-',
+			rhs: '1',
+		});
+	});
+
+	it('parses signed literal / constant', () => {
+		expect(parseConstantMulDivExpression('-1/FOO')).toEqual({
+			lhs: '-1',
+			operator: '/',
+			rhs: 'FOO',
+		});
+	});
+
+	it('parses constant / signed literal', () => {
+		expect(parseConstantMulDivExpression('FOO/-1')).toEqual({
+			lhs: 'FOO',
+			operator: '/',
+			rhs: '-1',
+		});
+	});
+
+	it('rejects unary minus (operator at start)', () => {
+		expect(parseConstantMulDivExpression('-SIZE')).toBeNull();
+	});
+
+	it('rejects + at end', () => {
+		expect(parseConstantMulDivExpression('SIZE+')).toBeNull();
+	});
+
+	it('rejects - at end', () => {
+		expect(parseConstantMulDivExpression('SIZE-')).toBeNull();
+	});
+
+	it('rejects multiple + operators', () => {
+		expect(parseConstantMulDivExpression('SIZE+1+2')).toBeNull();
+	});
+
+	it('rejects mixed + and - operators', () => {
+		expect(parseConstantMulDivExpression('SIZE+1-2')).toBeNull();
+	});
+
+	it('rejects mixed + and * operators', () => {
+		expect(parseConstantMulDivExpression('SIZE+1*2')).toBeNull();
+	});
+
+	it('does not count * inside parentheses as a multiplication operator for + detection', () => {
+		// The * inside sizeof(*ptr) is inside parens — should not count as operator; the outer + wins
+		expect(parseConstantMulDivExpression('sizeof(*ptr)+1')).toEqual({
+			lhs: 'sizeof(*ptr)',
+			operator: '+',
+			rhs: '1',
+		});
+	});
 });
