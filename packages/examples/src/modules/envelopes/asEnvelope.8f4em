@@ -16,7 +16,7 @@ int attacking 0
 
 push *trigger
 risingEdge
-if void
+if
 
 push &attacking
 push 1
@@ -31,7 +31,7 @@ ifEnd
 push attacking
 push 0
 greaterThan
-if void
+if
 push &out
 push out
 push 0.001
@@ -42,7 +42,7 @@ ifEnd
 push out
 push 1.0
 greaterThan
-if void
+if
 push &attacking
 push 0
 store

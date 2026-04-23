@@ -9,7 +9,7 @@ int out
 
 push *trigger
 risingEdge
-if void
+if
 push &out
 push out
 push 1

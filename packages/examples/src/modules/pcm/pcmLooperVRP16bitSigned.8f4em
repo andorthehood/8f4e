@@ -19,7 +19,7 @@ int* startPos &defStartPos:out
 ; Reset playhead
 push *reset
 risingEdge
-if void
+if
 push &playhead
 push *startPos
 castToFloat
@@ -38,7 +38,7 @@ push playhead
 castToInt
 push *length
 greaterThan
-if void
+if
 push &playhead
 push 0
 store

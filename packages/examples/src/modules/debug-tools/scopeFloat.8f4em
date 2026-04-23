@@ -1,0 +1,29 @@
+8f4e/v1
+
+module scope
+
+float* in &pcmPlayer8bit:out
+float[] buffer 128
+float* pointer &buffer
+; @plot &buffer count(buffer)
+
+push pointer
+push *in
+store
+
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd

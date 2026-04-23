@@ -38,7 +38,7 @@ store
 push _bucket
 push count(rhythm)
 greaterOrEqual
-if void
+if
 push &_bucket
 push _bucket
 push count(rhythm)

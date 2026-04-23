@@ -21,7 +21,7 @@ float out7
 
 push *trigger
 risingEdge
-if void
+if
  ; Clear previous output
 push &out0
 push counter
@@ -43,7 +43,7 @@ ifEnd
 push counter
 push *length
 greaterOrEqual
-if void
+if
 push &counter
 push 0
 store

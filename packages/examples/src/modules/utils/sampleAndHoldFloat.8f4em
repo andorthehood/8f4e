@@ -10,7 +10,7 @@ float out
 
 push *trigger
 risingEdge
-if void
+if
 push &out
 push *in
 store
