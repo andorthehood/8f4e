@@ -1158,7 +1158,7 @@ module modRowClock
 ; @pos -107 -28
 use env
 int* tick &modTickClock:out
-int ticks 6   ; @w
+int ticks 6 ; @w
 int out
 int counter
 
@@ -1206,14 +1206,6 @@ int out ; @w
 ; @watch out
 ; @watch patternCounter
 
-push &out
-push rowCounter
-push *patternPointer
-push 64
-mul
-add
-store
-
 ; Advance the playhead
 push *trigger
 risingEdge
@@ -1248,6 +1240,14 @@ push &patternPointer
 push &patternOrder:
 store
 ifEnd
+
+push &out
+push rowCounter
+push *patternPointer
+push 64
+mul
+add
+store
 
 moduleEnd
 
@@ -1691,13 +1691,13 @@ div
 
 greaterOrEqual
 if
-    push &counter
-    push 0
-    store
+push &counter
+push 0
+store
 
-    push &out
-    push 1
-    store
+push &out
+push 1
+store
 ifEnd
 
 push &counter
@@ -1851,7 +1851,7 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 310 67
+; @pos 308 66
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -2152,7 +2152,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 276 67
+; @pos 274 66
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -2180,7 +2180,6 @@ use mod
 int* row &rowBuffer1:
 int out ;@w
 int memory ;@w
-int* rowCounter &rowCount2:out
 push &out
 push 0
 store
@@ -2223,7 +2222,6 @@ use mod
 int* row &rowBuffer2:
 int out ;@w
 int memory ;@w
-int* rowCounter &rowCount2:out
 
 push &out
 push 0
@@ -2267,7 +2265,6 @@ use mod
 int* row &rowBuffer3:
 int out ;@w
 int memory ;@w
-int* rowCounter &rowCount2:out
 
 push &out
 push 0
@@ -2305,13 +2302,12 @@ ifEnd
 moduleEnd
 
 module sampleOffset4
-; @pos 197 67
+; @pos 196 66
 ; @group ch4
 use mod
 int* row &rowBuffer4:
 int out ;@w
 int memory ;@w
-int* rowCounter &rowCount2:out
 
 push &out
 push 0
@@ -2602,7 +2598,7 @@ ifEnd
 moduleEnd
 
 module tempo2
-; @pos 235 -24
+; @pos 232 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -2617,20 +2613,20 @@ call maskEffect
 push SET_SPEED
 equal
 if 
-	push *row
-	call maskParam
-	push 32
-	greaterOrEqual
-		if 
-		push tempo
-		push *row
-		call maskParam
-		store
-		else
-		push ticks
-		push *row
-	call maskParam
-	store
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
 ifEnd
 ifEnd
 ifEnd
@@ -2638,7 +2634,7 @@ ifEnd
 moduleEnd
 
 module tempo3
-; @pos 235 21
+; @pos 232 21
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2653,20 +2649,20 @@ call maskEffect
 push SET_SPEED
 equal
 if 
-	push *row
-	call maskParam
-	push 32
-	greaterOrEqual
-		if 
-		push tempo
-		push *row
-		call maskParam
-		store
-		else
-		push ticks
-		push *row
-	call maskParam
-	store
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if 
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
 ifEnd
 ifEnd
 ifEnd
@@ -2674,7 +2670,7 @@ ifEnd
 moduleEnd
 
 module tempo4
-; @pos 237 67
+; @pos 233 66
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2689,20 +2685,20 @@ call maskEffect
 push SET_SPEED
 equal
 if 
-	push *row
-	call maskParam
-	push 32
-	greaterOrEqual
-		if 
-		push tempo
-		push *row
-		call maskParam
-		store
-		else
-		push ticks
-		push *row
-	call maskParam
-	store
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if 
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
 ifEnd
 ifEnd
 ifEnd
@@ -2788,7 +2784,7 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 356 67
+; @pos 354 66
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
@@ -2986,7 +2982,7 @@ ifEnd
 moduleEnd
 
 module volume4
-; @pos 395 67
+; @pos 393 66
 ; @group ch4
 use mod
 int* row &rowBuffer4:
