@@ -8,9 +8,9 @@ import compile, {
 	BLOCK_TYPE,
 } from '@8f4e/compiler';
 
-import getBlockType from './shared/getBlockType';
+import getBlockType from '../shared/getBlockType';
 
-import type { ProjectInput } from './shared/types';
+import type { ProjectInput } from '../shared/types';
 
 export interface InstructionTraceEntry {
 	lineNumber: number;
@@ -148,7 +148,7 @@ export default function traceInstructionFlow(
 
 	if (moduleBlocks.length === 0) {
 		return {
-			requiredMemoryBytes: 0, // No modules means no memory needed
+			requiredMemoryBytes: 0,
 			blocks: [],
 		};
 	}
@@ -223,13 +223,21 @@ export default function traceInstructionFlow(
 			locals: {},
 			internalResources: {},
 			internalAllocator: {
-				nextByteAddress: 0,
+				nextByteAddress: compileResult.requiredMemoryBytes,
 			},
 			byteCode: [],
 			stack: [],
-			blockStack: [],
+			blockStack: [
+				{
+					hasExpectedResult: false,
+					expectedResultIsInteger: false,
+					blockType: BLOCK_TYPE.FUNCTION,
+				},
+			],
 			startingByteAddress: 0,
 			mode: 'function',
+			codeBlockId: compiledFunction.id,
+			codeBlockType: 'function',
 		};
 
 		blocks.push(traceAst(compiledFunction.id, 'function', compiledFunction.ast, context));
