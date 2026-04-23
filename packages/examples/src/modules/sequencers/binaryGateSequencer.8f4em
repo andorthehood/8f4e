@@ -39,7 +39,7 @@ const LOW 0
 ; Increment step pointer
 push *trigger
 risingEdge
-if void
+if
 push &stepPointer
 push &step1
 push &last
@@ -70,11 +70,11 @@ push 0b10000000
 push bitPointer
 shiftRight
 and
-if int
+if
 push HIGH
 else
 push LOW
-ifEnd 
+ifEnd int
 
 store
 

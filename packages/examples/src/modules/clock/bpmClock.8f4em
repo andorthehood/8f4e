@@ -21,7 +21,7 @@ push bpm
 ensureNonZero
 div
 greaterThan
-if void
+if
 push &counter
 push 0
 store
