@@ -866,9 +866,9 @@ map 27	S27_VOLUME
 map 28	S28_VOLUME
 map 29	S29_VOLUME
 map 30	S30_VOLUME
-map 31	S31_VOLUME
-mapEnd int
-functionEnd int
+	map 31	S31_VOLUME
+	mapEnd int
+	functionEnd int
 
 module amp1
 ; @pos 661 -22
@@ -1664,9 +1664,9 @@ module modTickClock
 ; @pos -175 -28
 use mod
 
-int tempo 120 ; @w
+int tempo 125 ; @w
 int out
-int counter
+int counter ; @w
 
 ; @watch counter
 
@@ -1675,6 +1675,8 @@ push 0
 store
 
 push counter
+push 1
+add
 
 push SAMPLE_RATE
 push 5
@@ -1687,7 +1689,7 @@ mul
 ensureNonZero
 div
 
-greaterThan
+greaterOrEqual
 if
     push &counter
     push 0
@@ -2570,25 +2572,30 @@ use mod
 int* row &rowBuffer1:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
 push *row
 call maskEffect
 push SET_SPEED
 equal
 if 
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if 
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
+	push *row
+	call maskParam
+	push 32
+	greaterOrEqual
+		if 
+		push tempo
+		push *row
+		call maskParam
+		store
+		else
+		push ticks
+		push *row
+	call maskParam
+	store
+ifEnd
 ifEnd
 ifEnd
 
@@ -2601,25 +2608,30 @@ use mod
 int* row &rowBuffer2:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
 push *row
 call maskEffect
 push SET_SPEED
 equal
 if 
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if 
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
+	push *row
+	call maskParam
+	push 32
+	greaterOrEqual
+		if 
+		push tempo
+		push *row
+		call maskParam
+		store
+		else
+		push ticks
+		push *row
+	call maskParam
+	store
+ifEnd
 ifEnd
 ifEnd
 
@@ -2632,25 +2644,30 @@ use mod
 int* row &rowBuffer3:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
 push *row
 call maskEffect
 push SET_SPEED
 equal
 if 
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if 
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
+	push *row
+	call maskParam
+	push 32
+	greaterOrEqual
+		if 
+		push tempo
+		push *row
+		call maskParam
+		store
+		else
+		push ticks
+		push *row
+	call maskParam
+	store
+ifEnd
 ifEnd
 ifEnd
 
@@ -2663,25 +2680,30 @@ use mod
 int* row &rowBuffer4:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+push *rowCounter
+hasChanged
+if
 push *row
 call maskEffect
 push SET_SPEED
 equal
 if 
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if 
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
+	push *row
+	call maskParam
+	push 32
+	greaterOrEqual
+		if 
+		push tempo
+		push *row
+		call maskParam
+		store
+		else
+		push ticks
+		push *row
+	call maskParam
+	store
+ifEnd
 ifEnd
 ifEnd
 
@@ -2835,12 +2857,13 @@ use mod
 int* row &rowBuffer1:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
 int out ; @w
 ; @hide
 ; Reload base volume on
 ; tick 0 / row advance.
-push *rowTrigger
-risingEdge
+push *rowCounter
+hasChanged
 if
 push *row
 call rowShouldReloadVolume
@@ -2879,12 +2902,13 @@ use mod
 int* row &rowBuffer2:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
 int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
-push *rowTrigger
-risingEdge
+push *rowCounter
+hasChanged
 if
 push *row
 call rowShouldReloadVolume
@@ -2923,12 +2947,13 @@ use mod
 int* row &rowBuffer3:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
 int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
-push *rowTrigger
-risingEdge
+push *rowCounter
+hasChanged
 if
 push *row
 call rowShouldReloadVolume
@@ -2967,12 +2992,13 @@ use mod
 int* row &rowBuffer4:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
+int* rowCounter &rowCount2:out
 int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
-push *rowTrigger
-risingEdge
+push *rowCounter
+hasChanged
 if
 push *row
 call rowShouldReloadVolume
