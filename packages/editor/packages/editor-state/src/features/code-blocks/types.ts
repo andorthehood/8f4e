@@ -178,6 +178,20 @@ export interface Slider {
 	step?: number;
 }
 
+export interface Crossfade {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	leftId: string;
+	rightId: string;
+	leftWordAddress: number;
+	rightWordAddress: number;
+	handleWidth: number;
+	trackWidth: number;
+	centerX: number;
+}
+
 /**
  * A single parsed directive record found in a code block's raw lines.
  * Covers both editor directives (`; @name`) and runtime directives (`; ~name`).
@@ -257,6 +271,7 @@ export interface CodeBlockGraphicData {
 		switches: Switch[];
 		buttons: Switch[];
 		sliders: Slider[];
+		crossfades: Crossfade[];
 		pianoKeyboards: PianoKeyboard[];
 		errorMessages: Array<{
 			message: string[];

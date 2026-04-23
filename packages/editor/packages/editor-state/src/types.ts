@@ -23,6 +23,7 @@ import type {
 	TypedValueKind,
 	Switch,
 	Slider,
+	Crossfade,
 	PianoKeyboard,
 	GraphicHelper,
 } from './features/code-blocks/types';
@@ -85,6 +86,7 @@ export type {
 	TypedValueKind,
 	Switch,
 	Slider,
+	Crossfade,
 	PianoKeyboard,
 	GraphicHelper,
 };
