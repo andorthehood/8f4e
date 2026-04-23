@@ -135,7 +135,7 @@ if (import.meta.vitest) {
 					'module foo',
 					'; @plot &buffer count(buffer)',
 					'; @bars &bins count(bins)',
-					'; @slider gain 0 1 0.01',
+					'; @slider &gain 0 1 0.01',
 					'; note',
 					'moduleEnd',
 				],
@@ -155,7 +155,12 @@ if (import.meta.vitest) {
 					args: ['&bins', 'count(bins)'],
 					sourceLine: '; @bars &bins count(bins)',
 				},
-				{ name: 'slider', rawRow: 3, args: ['gain', '0', '1', '0.01'], sourceLine: '; @slider gain 0 1 0.01' },
+				{
+					name: 'slider',
+					rawRow: 3,
+					args: ['&gain', '0', '1', '0.01'],
+					sourceLine: '; @slider &gain 0 1 0.01',
+				},
 			]);
 		});
 

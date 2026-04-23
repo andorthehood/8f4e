@@ -2,6 +2,7 @@ import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../type
 import type { SliderDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
@@ -15,7 +16,7 @@ function resolveSliderDirectiveWidget(
 		return;
 	}
 
-	const memory = state.compiler.compiledModules[graphicData.moduleId]?.memoryMap[slider.id];
+	const memory = resolveMemoryIdentifier(state, graphicData.moduleId, slider.memoryId);
 
 	if (!memory) {
 		return;
@@ -25,7 +26,7 @@ function resolveSliderDirectiveWidget(
 	let max = slider.max;
 
 	if (min === undefined || max === undefined) {
-		if (memory.isInteger) {
+		if (memory.memory.isInteger) {
 			min = min ?? 0;
 			max = max ?? 127;
 		} else {
@@ -41,7 +42,7 @@ function resolveSliderDirectiveWidget(
 		height: state.viewport.hGrid * 2,
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
-		id: slider.id,
+		id: memory.memory.id,
 		min,
 		max,
 		step: slider.step,

@@ -20,7 +20,7 @@ describe('slider directive widget resolution', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			moduleId: 'test-block',
-			code: ['int mySlider 50', '; @slider mySlider'],
+			code: ['int mySlider 50', '; @slider &mySlider'],
 			width: 200,
 			gaps: new Map(),
 		});
@@ -69,7 +69,7 @@ describe('slider directive widget resolution', () => {
 	});
 
 	it('uses custom min, max, and step when provided', () => {
-		setMockCodeBlockCode(mockGraphicData, ['int mySlider 50', '; @slider mySlider 0 100 5']);
+		setMockCodeBlockCode(mockGraphicData, ['int mySlider 50', '; @slider &mySlider 0 100 5']);
 
 		runDirectiveResolution();
 
