@@ -47,6 +47,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	loop: { argumentTypes: ['nonNegativeIntegerLiteral'] },
 	loopIndex: { maxArguments: 0 },
 	'#loopCap': { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
+	'#follow': { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
 	'#impure': { maxArguments: 0 },
 	module: { minArguments: 1, argumentTypes: ['identifier'] },
 	constants: { minArguments: 1, argumentTypes: ['identifier'] },

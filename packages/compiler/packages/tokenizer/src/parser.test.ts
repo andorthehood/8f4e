@@ -57,6 +57,7 @@ describe('parseLine', () => {
 		expect(parseLine('use math', 0).isSemanticOnly).toBe(true);
 		expect(parseLine('module demo', 0).isSemanticOnly).toBe(true);
 		expect(parseLine('init value 1', 0).isSemanticOnly).toBe(true);
+		expect(parseLine('#follow base', 0).isSemanticOnly).toBe(true);
 	});
 
 	it('leaves runtime/codegen instructions unflagged', () => {

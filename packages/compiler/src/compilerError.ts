@@ -65,6 +65,12 @@ export enum ErrorCode {
 	RETURN_OUTSIDE_FUNCTION,
 	LOCAL_NAME_COLLISION_WITH_MEMORY,
 	DUPLICATE_IDENTIFIER,
+	MODULE_FOLLOW_TARGET_NOT_FOUND,
+	MODULE_FOLLOW_SELF,
+	MODULE_FOLLOW_DUPLICATE_FOLLOWER,
+	MODULE_FOLLOW_MULTIPLE_TARGETS,
+	MODULE_FOLLOW_CYCLE,
+	MODULE_FOLLOW_DEPENDENCY_CONFLICT,
 	INSTRUCTION_INVALID_OUTSIDE_LOOP,
 }
 
@@ -435,6 +441,71 @@ export function getError(
 					'Duplicate identifier' +
 					(details?.identifier ? `: ${details.identifier}` : '') +
 					'. Module and function IDs must be unique. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.MODULE_FOLLOW_TARGET_NOT_FOUND:
+			return {
+				code,
+				message:
+					'#follow target module was not found' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.MODULE_FOLLOW_SELF:
+			return {
+				code,
+				message:
+					'Modules cannot follow themselves' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.MODULE_FOLLOW_DUPLICATE_FOLLOWER:
+			return {
+				code,
+				message:
+					'Only one module may immediately follow a given module' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.MODULE_FOLLOW_MULTIPLE_TARGETS:
+			return {
+				code,
+				message:
+					'Each module may declare at most one #follow target' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.MODULE_FOLLOW_CYCLE:
+			return {
+				code,
+				message: 'Detected a cycle in #follow module layout constraints. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MODULE_FOLLOW_DEPENDENCY_CONFLICT:
+			return {
+				code,
+				message:
+					'#follow chain conflicts with dependency ordering; a module depends on another module that would be forced after it. (' +
 					code +
 					')',
 				line,
