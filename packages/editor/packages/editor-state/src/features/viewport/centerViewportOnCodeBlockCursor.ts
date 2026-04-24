@@ -1,3 +1,5 @@
+import roundToGrid from './roundToGrid';
+
 import type { Viewport } from './types';
 import type { CodeBlockBounds } from './centerViewportOnCodeBlock';
 import type { Position } from '~/types';
@@ -17,10 +19,11 @@ export default function centerViewportOnCodeBlockCursor<T extends CodeBlockCurso
 ): Position {
 	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
 	const highlightedLineY = codeBlock.y + codeBlock.offsetY + codeBlock.cursor.y;
+	const [x, y] = roundToGrid(blockCenterX - viewport.width / 2, highlightedLineY - viewport.height / 2, viewport);
 
 	return {
-		x: Math.round(blockCenterX - viewport.width / 2),
-		y: Math.round(highlightedLineY - viewport.height / 2),
+		x,
+		y,
 	};
 }
 
@@ -58,8 +61,8 @@ if (import.meta.vitest) {
 
 			const nextViewport = centerViewportOnCodeBlockCursor(viewport, codeBlock);
 
-			expect(nextViewport.x).toBe(-90);
-			expect(nextViewport.y).toBe(168);
+			expect(nextViewport.x).toBe(-88);
+			expect(nextViewport.y).toBe(176);
 			expect(viewport.x).toBe(0);
 			expect(viewport.y).toBe(0);
 		});
