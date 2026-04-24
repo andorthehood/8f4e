@@ -121,6 +121,12 @@ function writeBytes(view: DataView, data: DataStructure, bytes: Uint8Array): voi
 	target.set(bytes);
 }
 
+function readBytes(view: DataView, data: DataStructure): Uint8Array {
+	const lengthBytes = data.numberOfElements * data.elementWordSize;
+	const source = new Uint8Array(view.buffer, data.byteAddress, lengthBytes);
+	return Uint8Array.from(source);
+}
+
 function createWebAssemblyMemory(requiredMemoryBytes: number): WebAssemblyMemoryLike {
 	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / 65536));
 	return new (getWebAssemblyApi().Memory)({
@@ -154,6 +160,10 @@ export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): 
 		read(id: string): number | number[] {
 			const resolved = lookup.resolve(id);
 			return readValue(view, resolved.data);
+		},
+		readBytes(id: string): Uint8Array {
+			const resolved = lookup.resolve(id);
+			return readBytes(view, resolved.data);
 		},
 		write(id: string, value: number | number[]): void {
 			const resolved = lookup.resolve(id);
