@@ -214,6 +214,18 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
+	const centerViewportOnSelectedCodeBlock = function () {
+		const selectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+		if (!selectedCodeBlock) {
+			return;
+		}
+
+		const { x, y } = centerViewportOnCodeBlock(state.viewport, selectedCodeBlock, {
+			alignment: selectedCodeBlock.homeAlignment,
+		});
+		updateViewport(state, x, y, events);
+	};
+
 	const updateSelectedCodeBlock = function () {
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
@@ -319,6 +331,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
 		if (homeBlock) {
+			store.set('graphicHelper.selectedCodeBlock', homeBlock);
 			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock, {
 				alignment: homeBlock.homeAlignment,
 			});
@@ -393,6 +406,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	events.on('spriteSheetRerendered', () => {
 		state.graphicHelper.textureCacheEpoch += 1;
 		recomputePixelCoordinatesAndUpdateGraphics();
+		centerViewportOnSelectedCodeBlock();
 	});
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
