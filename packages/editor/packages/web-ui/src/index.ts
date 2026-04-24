@@ -5,9 +5,7 @@ import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
 import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
-import drawInfoOverlay from './drawers/infoOverlay';
 import drawModeOverlay from './drawers/modeOverlay';
-import drawConsoleOverlay from './drawers/consoleOverlay';
 import drawBackground from './drawers/drawBackground';
 
 import type { State } from '@8f4e/editor-state';
@@ -39,21 +37,8 @@ export default async function init(
 
 	engine.loadSpriteSheet(spriteData.canvas);
 
-	engine.render(function (timeToRender, fps, vertices, maxVertices) {
-		const shouldDrawInfoOverlay = state.globalEditorDirectives.infoOverlay ?? state.featureFlags.infoOverlay;
-
+	engine.render(function () {
 		drawBackground(engine, state);
-		if (state.featureFlags.consoleOverlay && state.featureFlags.editing) {
-			drawConsoleOverlay(engine, state);
-		}
-		if (shouldDrawInfoOverlay) {
-			drawInfoOverlay(engine, state, {
-				timeToRender,
-				fps,
-				vertices,
-				maxVertices,
-			});
-		}
 		drawCodeBlocks(engine, state, memoryViews);
 		drawConnections(engine, state, memoryViews);
 		drawContextMenu(engine, state);
