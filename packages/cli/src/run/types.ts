@@ -4,6 +4,7 @@ export interface RuntimeRunner {
 	initialize(): void;
 	runCycles(count: number): void;
 	read(id: string): number | number[];
+	readBytes(id: string): Uint8Array;
 	write(id: string, value: number | number[]): void;
 	writeBytes(id: string, bytes: Uint8Array): void;
 }

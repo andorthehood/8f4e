@@ -18,6 +18,7 @@ const tmpDir = path.join(testDir, '.tmp');
 const tracePath = path.join(tmpDir, 'audioBuffer.trace.json');
 const wasmPath = path.join(tmpDir, 'audioBuffer.wasm');
 const runOutPath = path.join(tmpDir, 'runtimeInspect.output.json');
+const captureOutPath = path.join(tmpDir, 'runtimeInspect.capture.bin');
 
 function execCli(args: string[]) {
 	return execFileAsync(process.execPath, [path.join(packageRoot, 'bin', 'cli.js'), ...args], {
@@ -113,5 +114,26 @@ describe('cli', () => {
 
 	it('fails when run is called without any --dump', async () => {
 		await expect(execCli(['run', runtimeFixturePath, '--cycles', '2'])).rejects.toThrow('Command failed');
+	});
+
+	it('captures raw buffer bytes across repeated cycle windows', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		await execCli([
+			'capture',
+			runtimeFixturePath,
+			'--buffer',
+			'buffer',
+			'--cycles',
+			'2',
+			'--repeat',
+			'3',
+			'--set-json',
+			'buffer=[1,2,3,-1]',
+			'--out',
+			captureOutPath,
+		]);
+
+		const bytes = await fs.readFile(captureOutPath);
+		expect([...bytes]).toEqual([1, 2, 3, 255, 1, 2, 3, 255, 1, 2, 3, 255]);
 	});
 });
