@@ -39,6 +39,42 @@ void main() {
 }
 noteEnd
 
+note
+; @pos 9 -126
+; Project Config
+; @runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @exportFileName lowerIntentions
+
+noteEnd
+
+note
+; @pos 9 -117
+; Assets
+; @tab 22
+; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_1.pcm
+; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_2.pcm
+; @defAsset sample3	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_3.pcm
+; @defAsset sample4	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_4.pcm
+; @defAsset sample5	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_5.pcm
+; @defAsset sample6	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_6.pcm
+; @defAsset sample7	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_7.pcm
+; @defAsset sample9	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_9.pcm
+; @defAsset sample10	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_10.pcm
+; @defAsset sample11	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_11.pcm
+; @defAsset sample12	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_12.pcm
+; @defAsset sample13	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_13.pcm
+; @defAsset sample14	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_14.pcm
+; @defAsset sample15	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_15.pcm
+; @defAsset sample16	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_16.pcm
+; @defAsset sample17	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_17.pcm
+; @defAsset ch1	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch1.bin
+; @defAsset ch2	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch2.bin
+; @defAsset ch3	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch3.bin
+; @defAsset ch4	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch4.bin
+
+noteEnd
+
 constants env
 ; @pos 126 -192
 ; @favorite
@@ -94,7 +130,7 @@ const ASSET_SAMPLE17_SIZE 35098
 constantsEnd
 
 constants math
-; @pos 181 -168
+; @pos 180 -168
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793
@@ -124,7 +160,7 @@ const E       2.718281828459045
 constantsEnd
 
 constants mod
-; @pos 232 -197
+; @pos 230 -192
 ; @tab 30
 use env
 ; Row layout (little-endian)
@@ -140,13 +176,8 @@ const EFFECT_PARAM	0xFF000000
 const EFFECT_PARAM_SHIFT	24
 ; AMIGA magic const
 const PAL_AMIGA_CLOCK	7093789.2
-; Default ticks per row
-const SPEED	6
-; PAL VBlank: ticks/sec = BPM * 2/5
-const TICKS_X5	SPEED*5
-const TICKS_HALF	TICKS_X5/2
-; Samples per row = ROW_SAMPLES / tempo
-const ROW_SAMPLES	SAMPLE_RATE*TICKS_HALF
+const DEFAULT_TEMPO	125
+const DEFAULT_TICKS	6
 ; Effects
 const ARPEGGIO	0x0
 const PITCH_SLIDE_UP	0x1
@@ -183,7 +214,7 @@ const INVERT_LOOP	0xEF
 constantsEnd
 
 constants sampleMeta
-; @pos 294 -208
+; @pos 291 -208
 ; @tab 26
 const S01_VOLUME	64
 const S01_FINETUNE	0
@@ -253,7 +284,7 @@ const S17_REPEAT_LENGTH	9634
 constantsEnd
 
 function clampVolume
-; @pos 549 -113
+; @pos 625 -137
 param int value
 
 push value
@@ -277,7 +308,7 @@ push value
 functionEnd int
 
 function loadRowVolume
-; @pos 515 -113
+; @pos 588 -143
 use mod
 param int row
 
@@ -307,7 +338,7 @@ push 0
 functionEnd int
 
 function maskEffect
-; @pos 333 -128
+; @pos 333 -105
 use mod
 param int row
 
@@ -320,7 +351,7 @@ shiftRightUnsigned
 functionEnd int
 
 function maskExtendedEffect
-; @pos 261 -128
+; @pos 331 -122
 ; Combine the main E effect
 ; nibble with the extended
 ; sub-effect nibble.
@@ -337,7 +368,7 @@ or
 functionEnd int
 
 function maskParam
-; @pos 401 -128
+; @pos 367 -124
 use mod
 param int row
 
@@ -372,7 +403,7 @@ and
 functionEnd int
 
 function maskPeriod
-; @pos 367 -128
+; @pos 367 -111
 use mod
 param int row
 
@@ -391,7 +422,7 @@ or
 functionEnd int
 
 function maskSampleNumber
-; @pos 297 -128
+; @pos 401 -131
 use mod
 param int row
 
@@ -408,7 +439,7 @@ or
 functionEnd int
 
 function modFinetune
-; @pos 472 -128
+; @pos 429 -199
 const STEP 96.0
 
 const FT_P0 0/STEP
@@ -455,7 +486,7 @@ mapEnd float
 functionEnd float
 
 function period2Step
-; @pos 436 -128
+; @pos 395 -188
 param int period
 use mod
 use env
@@ -530,7 +561,7 @@ or
 functionEnd int
 
 function rowVolumeAtRowStart
-; @pos 699 -113
+; @pos 659 -140
 ; Apply any row-start volume
 ; reload first, then apply a
 ; fine volume slide once.
@@ -589,7 +620,7 @@ sub
 functionEnd int
 
 function sampleNumberCanLoop
-; @pos 506 -128
+; @pos 392 -164
 use sampleMeta
 param int sampleNumber
 
@@ -601,7 +632,7 @@ greaterThan
 functionEnd int
 
 function sampleNumberToAddr
-; @pos 533 -181
+; @pos 623 -209
 ; @tab 8
 param int sampleNumber
 
@@ -629,7 +660,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToFinetune
-; @pos 493 -181
+; @pos 571 -209
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -686,7 +717,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatLen
-; @pos 334 -181
+; @pos 623 -181
 ; @tab 8
 use sampleMeta
 
@@ -715,7 +746,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatOffset
-; @pos 375 -181
+; @pos 491 -181
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -743,7 +774,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToSize
-; @pos 457 -181
+; @pos 535 -181
 ; @tab 8
 use env
 param int sampleNumber
@@ -771,7 +802,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToVolume
-; @pos 419 -181
+; @pos 497 -209
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -832,7 +863,7 @@ store
 moduleEnd
 
 module amp3
-; @pos 662 13
+; @pos 661 13
 float* in &modSamplePlayer3:out
 int* volume &volume3:out
 float out ; @meter
@@ -848,7 +879,7 @@ store
 moduleEnd
 
 module amp4
-; @pos 662 30
+; @pos 661 30
 float* in &modSamplePlayer4:out
 int* volume &volume4:out
 float out; @meter
@@ -863,34 +894,8 @@ store
 
 moduleEnd
 
-module assets
-; @pos -3 -116
-; @tab 22
-; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_1.pcm
-; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_2.pcm
-; @defAsset sample3	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_3.pcm
-; @defAsset sample4	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_4.pcm
-; @defAsset sample5	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_5.pcm
-; @defAsset sample6	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_6.pcm
-; @defAsset sample7	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_7.pcm
-; @defAsset sample9	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_9.pcm
-; @defAsset sample10	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_10.pcm
-; @defAsset sample11	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_11.pcm
-; @defAsset sample12	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_12.pcm
-; @defAsset sample13	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_13.pcm
-; @defAsset sample14	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_14.pcm
-; @defAsset sample15	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_15.pcm
-; @defAsset sample16	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_16.pcm
-; @defAsset sample17	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_17.pcm
-; @defAsset ch1	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch1.bin
-; @defAsset ch2	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch2.bin
-; @defAsset ch3	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch3.bin
-; @defAsset ch4	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch4.bin
-
-moduleEnd
-
 module audiooutL
-; @pos 797 -10
+; @pos 794 -10
 use env
 
 float* in &lowpassL:out
@@ -928,7 +933,7 @@ ifEnd
 moduleEnd
 
 module audiooutR
-; @pos 839 -10
+; @pos 835 -10
 use env
 
 float* in &lowpassR:out
@@ -967,26 +972,31 @@ moduleEnd
 
 module colors
 ; @pos 755 -70
-; @color text.lineNumber rgba(0,0,0,0.3)
+; @color text.lineNumber rgba(255,255,255,0.3)
 ; @color text.code rgba(255,255,255,0.8)
 ; @color text.instruction #ffffff
 ; @color text.numbers #ffffff
 ; @color text.codeComment rgba(255,255,255,0.5)
 ; @color text.menuItemTextHighlighted #ffffff
 ; @color text.debugInfo rgba(255,255,255,0.5)
+; @color text.dialogText #000
+; @color text.dialogTitle #000
+; @color text.menuItemText #000
 ; @color fill.moduleBackground rgba(255,255,255,0.2)
 ; @color fill.wire rgba(255,255,255,0.5)
 ; @color fill.highlightedCodeLine rgba(255,255,255,0.4)
 ; @color fill.moduleBackgroundDragged rgba(255,255,255,0.2)
 ; @color fill.backgroundDots rgba(255,255,255,0.1)
 ; @color fill.backgroundDots2 rgba(255,255,255,0.3)
-; @color fill.menuItemBackground rgba(255,255,255,0.2)
-; @color fill.menuItemBackgroundHighlighted rgba(255,255,255,0.5)
+; @color fill.menuItemBackground rgba(255,255,255,0.8)
+; @color fill.menuItemBackgroundHighlighted #000
 ; @color fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
 ; @color fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
 ; @color fill.codeBlockHighlightLevel3 rgba(255,255,255,0.1)
-; @color fill.waveform rgba(255,255,255,0.6)
+; @color fill.waveform rgba(255,255,255,0.8)
 ; @color fill.debugInfoBackground rgba(255,255,255,0.1)
+; @color fill.dialogDimmer rgba(255,255,255,0.2)
+; @color fill.dialogBackground rgba(255,255,255,0.8)
 ; @color icons.inputConnectorBackground rgba(255,255,255,0.4)
 ; @color icons.inputConnector #fff
 ; @color icons.outputConnectorBackground rgba(255,255,255,0.4)
@@ -994,7 +1004,7 @@ module colors
 moduleEnd
 
 module lowpassL
-; @pos 744 -15
+; @pos 743 -15
 float* in &mixer:outL
 float state 0.0 ; @w
 float out ; @w
@@ -1026,7 +1036,7 @@ store
 moduleEnd
 
 module lowpassR
-; @pos 744 17
+; @pos 743 17
 float* in &mixer:outR
 float state 0.0 ; @w
 float out ; @w
@@ -1058,7 +1068,7 @@ store
 moduleEnd
 
 module mixer
-; @pos 708 2
+; @pos 705 1
 float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
@@ -1099,7 +1109,7 @@ store
 moduleEnd
 
 module modRowClock
-; @pos -107 -28
+; @pos -141 -28
 use env
 int* tick &modTickClock:out
 int ticks 6 ; @w
@@ -1139,7 +1149,7 @@ ifEnd
 moduleEnd
 
 module modRowCounter
-; @pos -71 -28
+; @pos -68 -28
 use env
 int* trigger &modRowClock:out 
 int rowCounter -1
@@ -1198,7 +1208,7 @@ moduleEnd
 module modSamplePlayer1
 ; @pos 545 -6
 ; @group ch1
-; @home top
+; @home
 use env
 ; @tab 6 20
 int*	period	&period1:out
@@ -1653,7 +1663,7 @@ store
 moduleEnd
 
 module patternOrder
-; @pos -141 -28
+; @pos -102 -28
 ; @tab 6
 int	0x00
 int	0x01
@@ -1705,7 +1715,7 @@ int	0x19
 moduleEnd
 
 module period1
-; @pos 306 -71
+; @pos 308 -71
 ; @group ch1
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -1763,7 +1773,7 @@ ifEnd
 moduleEnd
 
 module period3
-; @pos 306 22
+; @pos 308 22
 ; @group ch3
 int* row &rowBuffer3:
 int* sampleNumber &sampleNumber3:out
@@ -1792,7 +1802,7 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 307 68
+; @pos 308 68
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -1817,14 +1827,6 @@ round
 castToInt
 store
 ifEnd 
-
-moduleEnd
-
-module projectConfig
-; @pos 9 -125
-; @runtime AudioWorkletRuntime
-; ~sampleRate 48000
-; @exportFileName lowerIntentions
 
 moduleEnd
 
@@ -2049,7 +2051,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 274 -24
+; @pos 272 -24
 ; @group ch2
 int* row &rowBuffer2:
 int out
@@ -2093,7 +2095,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 273 68
+; @pos 272 68
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -2157,7 +2159,7 @@ ifEnd
 moduleEnd
 
 module sampleOffset2
-; @pos 196 -24
+; @pos 195 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -2461,7 +2463,7 @@ store
 moduleEnd
 
 module tempo1
-; @pos 233 -71
+; @pos 231 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2500,7 +2502,7 @@ ifEnd
 moduleEnd
 
 module tempo2
-; @pos 232 -24
+; @pos 231 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -2578,7 +2580,7 @@ ifEnd
 moduleEnd
 
 module tempo4
-; @pos 232 68
+; @pos 231 68
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2617,7 +2619,7 @@ ifEnd
 moduleEnd
 
 module trigger1
-; @pos 351 -71
+; @pos 355 -71
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -2643,7 +2645,7 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 353 -24
+; @pos 355 -24
 ; @group ch2
 int* row &rowBuffer2:
 int* rowCounter &rowCount2:out
@@ -2669,7 +2671,7 @@ ifEnd
 moduleEnd
 
 module trigger3
-; @pos 353 22
+; @pos 355 22
 ; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -2695,7 +2697,7 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 353 68
+; @pos 355 68
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
@@ -2719,7 +2721,7 @@ ifEnd
 moduleEnd
 
 module volume1
-; @pos 390 -71
+; @pos 396 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2727,7 +2729,7 @@ int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
-; @hide
+; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowCounter
@@ -2765,15 +2767,14 @@ store
 moduleEnd
 
 module volume2
-; @pos 392 -24
+; @pos 396 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
-int out ; @w
-
+int out ; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowCounter
@@ -2811,15 +2812,14 @@ store
 moduleEnd
 
 module volume3
-; @pos 392 22
+; @pos 396 22
 ; @group ch3
 use mod
 int* row &rowBuffer3:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
-int out ; @w
-
+int out ; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowCounter
@@ -2857,15 +2857,14 @@ store
 moduleEnd
 
 module volume4
-; @pos 392 68
+; @pos 396 68
 ; @group ch4
 use mod
 int* row &rowBuffer4:
 int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
-int out ; @w
-
+int out ; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowCounter
