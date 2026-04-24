@@ -832,7 +832,7 @@ functionEnd int
 module amp1
 ; @pos 661 -22
 
-float* in &modSamplePlayer1:out
+float* in &samplePlayer1:out
 int* volume &volume1:out
 float out ; @meter
 push &out
@@ -848,7 +848,7 @@ moduleEnd
 
 module amp2
 ; @pos 661 -4
-float* in &modSamplePlayer2:out
+float* in &samplePlayer2:out
 int* volume &volume2:out
 float out; @meter
 push &out
@@ -864,7 +864,7 @@ moduleEnd
 
 module amp3
 ; @pos 661 13
-float* in &modSamplePlayer3:out
+float* in &samplePlayer3:out
 int* volume &volume3:out
 float out ; @meter
 push &out
@@ -880,7 +880,7 @@ moduleEnd
 
 module amp4
 ; @pos 661 30
-float* in &modSamplePlayer4:out
+float* in &samplePlayer4:out
 int* volume &volume4:out
 float out; @meter
 push &out
@@ -1103,560 +1103,6 @@ push *in3
 add
 push 5.0
 div
-add
-store
-
-moduleEnd
-
-module modRowClock
-; @pos -141 -28
-use env
-int* tick &modTickClock:out
-int ticks 6 ; @w
-int out
-int counter
-
-push &out
-push 0
-store
-
-push *tick
-risingEdge
-if
-push counter
-push 1
-add
-push ticks
-ensureNonZero
-greaterOrEqual
-if
-push &counter
-push 0
-store
-
-push &out
-push 1
-store
-else
-push &counter
-push counter
-push 1
-add
-store
-ifEnd
-ifEnd
-
-moduleEnd
-
-module modRowCounter
-; @pos -68 -28
-use env
-int* trigger &modRowClock:out 
-int rowCounter -1
-int* patternPointer &patternOrder:0
-int out ; @w
-
-; @watch rowCounter
-; @watch out
-; @watch patternCounter
-
-; Advance the playhead
-push *trigger
-risingEdge
-if
-push &rowCounter
-push rowCounter
-push 1
-add
-store
-ifEnd
-
-push rowCounter
-push 64
-equal
-if
-push &rowCounter
-push 0
-store
-
-push &patternPointer
-push patternPointer
-push sizeof(*patternPointer)
-add
-store
-ifEnd
-
-push patternPointer
-push patternOrder:&
-greaterThan
-if
-push &patternPointer
-push &patternOrder:
-store
-ifEnd
-
-push &out
-push rowCounter
-push *patternPointer
-push 64
-mul
-add
-store
-
-moduleEnd
-
-module modSamplePlayer1
-; @pos 545 -6
-; @group ch1
-; @home
-use env
-; @tab 6 20
-int*	period	&period1:out
-int*	offset	&sampleOffset1:out
-int*	trigger	&trigger1:out
-int*	sampleNumber	&sampleNumber1:out
-int8*	sampleAddress	; @w
-int8*	playhead	; @w
-int	sampleSize	; @w
-; @wave2 sampleAddress sampleSize playhead
-float out; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-risingEdge
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress) ; max value
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-
-module modSamplePlayer2
-; @pos 545 16
-; @group ch2
-use env
-; @stop 12 20
-int*  period &period2:out 
-int* offset &sampleOffset2:out ; @w *
-int*  trigger &trigger2:out
-int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress ;@w
-int   sampleSize ; @w
-int8* playhead ; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-risingEdge
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress) ; max value
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-
-module modSamplePlayer3
-; @pos 597 -5
-; @group ch3
-use env
-
-int* period &period3:out
-int* offset &sampleOffset3:out ; @w *
-int* trigger &trigger3:out
-int* sampleNumber &sampleNumber3:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-risingEdge
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress)
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-
-module modSamplePlayer4
-; @pos 597 16
-; @group ch4
-use env
-
-int* period &period4:out
-int* offset &sampleOffset4:out ; @w *
-int* trigger &trigger4:out
-int* sampleNumber &sampleNumber4:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-risingEdge
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress)
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-
-module modTickClock
-; @pos -175 -28
-use mod
-
-int tempo 125 ; @w
-int out
-int counter ; @w
-
-; @watch counter
-
-push &out
-push 0
-store
-
-push counter
-push 1
-add
-
-push SAMPLE_RATE
-push 5
-mul
-
-push tempo
-ensureNonZero
-push 2
-mul
-ensureNonZero
-div
-
-greaterOrEqual
-if
-push &counter
-push 0
-store
-
-push &out
-push 1
-store
-ifEnd
-
-push &counter
-push counter
-push 1
 add
 store
 
@@ -2005,9 +1451,49 @@ loopEnd
 
 moduleEnd
 
+module rowClock
+; @pos -141 -28
+use env
+int* tick &tickClock:out
+int ticks 6 ; @w
+int out
+int counter
+
+push &out
+push 0
+store
+
+push *tick
+risingEdge
+if
+push counter
+push 1
+add
+push ticks
+ensureNonZero
+greaterOrEqual
+if
+push &counter
+push 0
+store
+
+push &out
+push 1
+store
+else
+push &counter
+push counter
+push 1
+add
+store
+ifEnd
+ifEnd
+
+moduleEnd
+
 module rowCount1
 ; @pos -2 19
-int* in &modRowCounter:out
+int* in &rowCounter:out
 int out
 ; We can afford some reading
 ; and writing to memory 
@@ -2019,11 +1505,68 @@ moduleEnd
 
 module rowCount2
 ; @pos 152 -33
-int* in &modRowCounter:out
+int* in &rowCounter:out
 int out
 
 push &out
 push *in
+store
+
+moduleEnd
+
+module rowCounter
+; @pos -68 -28
+use env
+int* trigger &rowClock:out 
+int rowCounter -1
+int* patternPointer &patternOrder:0
+int out ; @w
+
+; @watch rowCounter
+; @watch out
+; @watch patternCounter
+
+; Advance the playhead
+push *trigger
+risingEdge
+if
+push &rowCounter
+push rowCounter
+push 1
+add
+store
+ifEnd
+
+push rowCounter
+push 64
+equal
+if
+push &rowCounter
+push 0
+store
+
+push &patternPointer
+push patternPointer
+push sizeof(*patternPointer)
+add
+store
+ifEnd
+
+push patternPointer
+push patternOrder:&
+greaterThan
+if
+push &patternPointer
+push &patternOrder:
+store
+ifEnd
+
+push &out
+push rowCounter
+push *patternPointer
+push 64
+mul
+add
 store
 
 moduleEnd
@@ -2346,6 +1889,411 @@ int8[] sample17 ASSET_SAMPLE17_SIZE
 ; @wave &sample17 count(sample17)
 moduleEnd
 
+module samplePlayer1
+; @pos 545 -5
+; @home
+use env
+; @tab 6 20
+int*	period	&period1:out
+int*	offset	&sampleOffset1:out
+int*	trigger	&trigger1:out
+int*	sampleNumber	&sampleNumber1:out
+int8*	sampleAddress	; @w
+int8*	playhead	; @w
+int	sampleSize	; @w
+; @wave2 sampleAddress sampleSize playhead
+float out; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress) ; max value
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module samplePlayer2
+; @pos 545 16
+use env
+; @stop 12 20
+int*  period &period2:out 
+int* offset &sampleOffset2:out ; @w *
+int*  trigger &trigger2:out
+int*  sampleNumber &sampleNumber2:out
+int8* sampleAddress ;@w
+int   sampleSize ; @w
+int8* playhead ; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress) ; max value
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module samplePlayer3
+; @pos 597 -4
+use env
+
+int* period &period3:out
+int* offset &sampleOffset3:out ; @w *
+int* trigger &trigger3:out
+int* sampleNumber &sampleNumber3:out
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
+module samplePlayer4
+; @pos 597 16
+use env
+
+int* period &period4:out
+int* offset &sampleOffset4:out ; @w *
+int* trigger &trigger4:out
+int* sampleNumber &sampleNumber4:out
+int8* sampleAddress; @w
+int sampleSize; @w
+int8* playhead; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+
 module scope1
 ; @pos 28 -17
 float* in &amp1:out
@@ -2467,8 +2415,8 @@ module tempo1
 ; @group ch1
 use mod
 int* row &rowBuffer1:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
+int* tempo &tickClock:tempo
+int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
 push *rowCounter
 hasChanged
@@ -2506,8 +2454,8 @@ module tempo2
 ; @group ch2
 use mod
 int* row &rowBuffer2:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
+int* tempo &tickClock:tempo
+int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
 push *rowCounter
 hasChanged
@@ -2545,8 +2493,8 @@ module tempo3
 ; @group ch3
 use mod
 int* row &rowBuffer3:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
+int* tempo &tickClock:tempo
+int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
 push *rowCounter
 hasChanged
@@ -2584,8 +2532,8 @@ module tempo4
 ; @group ch4
 use mod
 int* row &rowBuffer4:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
+int* tempo &tickClock:tempo
+int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
 push *rowCounter
 hasChanged
@@ -2615,6 +2563,54 @@ call maskParam
 store
 ifEnd
 ifEnd
+
+moduleEnd
+
+module tickClock
+; @pos -175 -28
+use mod
+
+int tempo 125 ; @w
+int out
+int counter ; @w
+
+; @watch counter
+
+push &out
+push 0
+store
+
+push counter
+push 1
+add
+
+push SAMPLE_RATE
+push 5
+mul
+
+push tempo
+ensureNonZero
+push 2
+mul
+ensureNonZero
+div
+
+greaterOrEqual
+if
+push &counter
+push 0
+store
+
+push &out
+push 1
+store
+ifEnd
+
+push &counter
+push counter
+push 1
+add
+store
 
 moduleEnd
 
@@ -2725,8 +2721,8 @@ module volume1
 ; @group ch1
 use mod
 int* row &rowBuffer1:
-int* tick &modTickClock:out
-int* rowTrigger &modRowClock:out
+int* tick &tickClock:out
+int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
 ; @meter out 0 80
@@ -2771,8 +2767,8 @@ module volume2
 ; @group ch2
 use mod
 int* row &rowBuffer2:
-int* tick &modTickClock:out
-int* rowTrigger &modRowClock:out
+int* tick &tickClock:out
+int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
 ; Reload base volume on
@@ -2816,8 +2812,8 @@ module volume3
 ; @group ch3
 use mod
 int* row &rowBuffer3:
-int* tick &modTickClock:out
-int* rowTrigger &modRowClock:out
+int* tick &tickClock:out
+int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
 ; Reload base volume on
@@ -2861,8 +2857,8 @@ module volume4
 ; @group ch4
 use mod
 int* row &rowBuffer4:
-int* tick &modTickClock:out
-int* rowTrigger &modRowClock:out
+int* tick &tickClock:out
+int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
 ; Reload base volume on
