@@ -1,11 +1,15 @@
 #!/usr/bin/env node
+import { getCaptureUsage, runCaptureCommand } from './capture/command';
 import { getCompileUsage, runCompileCommand } from './compile/command';
 import { getRunUsage, runRunCommand } from './run/command';
 
 function getUsage(): string {
-	return ['Usage:', `  ${getCompileUsage().replace('Usage: ', '')}`, `  ${getRunUsage().replace('Usage: ', '')}`].join(
-		'\n'
-	);
+	return [
+		'Usage:',
+		`  ${getCompileUsage().replace('Usage: ', '')}`,
+		`  ${getRunUsage().replace('Usage: ', '')}`,
+		`  ${getCaptureUsage().replace('Usage: ', '')}`,
+	].join('\n');
 }
 
 async function run(): Promise<void> {
@@ -23,6 +27,11 @@ async function run(): Promise<void> {
 
 	if (subcommand === 'run') {
 		await runRunCommand(args);
+		return;
+	}
+
+	if (subcommand === 'capture') {
+		await runCaptureCommand(args);
 		return;
 	}
 
