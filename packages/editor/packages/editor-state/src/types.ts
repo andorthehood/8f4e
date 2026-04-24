@@ -174,7 +174,7 @@ export interface FeatureFlags {
  */
 export type FeatureFlagsConfig = Partial<FeatureFlags>;
 
-export type EditorMode = 'view' | 'edit' | 'presentation' | 'recording';
+export type EditorMode = 'view' | 'edit' | 'presentation';
 
 // Callbacks interface contains all callback functions (top-level public API)
 export interface Callbacks {
