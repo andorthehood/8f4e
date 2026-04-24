@@ -69,25 +69,4 @@ describe('drawModeOverlay', () => {
 			"You're in view mode, press e to edit or p to present"
 		);
 	});
-
-	it('does not draw an overlay in recording mode', () => {
-		const engine = createMockEngine();
-		const state = createMockState({
-			featureFlags: {
-				modeToggling: true,
-			},
-			editorMode: 'recording',
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontDebugInfo: {},
-				} as never,
-			},
-		});
-
-		drawModeOverlay(engine, state);
-
-		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).not.toHaveBeenCalled();
-	});
 });

@@ -70,28 +70,8 @@ describe('editorMode', () => {
 		expect(state.featureFlags.codeLineSelection).toBe(false);
 	});
 
-	it('enters recording mode from view mode', () => {
-		const { emit, state } = setup();
-
-		emit('enterRecordingMode');
-
-		expect(state.editorMode).toBe('recording');
-		expect(state.featureFlags.editing).toBe(false);
-		expect(state.featureFlags.codeLineSelection).toBe(false);
-	});
-
 	it('returns to view mode from presentation mode', () => {
 		const { emit, state } = setup('presentation', false);
-
-		emit('exitToViewMode');
-
-		expect(state.editorMode).toBe('view');
-		expect(state.featureFlags.editing).toBe(false);
-		expect(state.featureFlags.codeLineSelection).toBe(false);
-	});
-
-	it('returns to view mode from recording mode', () => {
-		const { emit, state } = setup('recording', false);
 
 		emit('exitToViewMode');
 

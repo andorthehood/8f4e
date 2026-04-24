@@ -52,7 +52,7 @@ const defaultColorScheme: ColorScheme = {
 		codeBlockHighlightLevel1: '#111111',
 		codeBlockHighlightLevel2: '#222222',
 		codeBlockHighlightLevel3: '#333333',
-		recordingMatte: '#ffffff',
+		recordingMatte: 'rgba(0,0,0,0)',
 	},
 	icons: {
 		outputConnectorBackground: '#000000',

@@ -24,16 +24,6 @@ export default function editorMode(store: StateManager<State>, events: EventDisp
 		store.set('featureFlags.codeLineSelection', false);
 	}
 
-	function enterRecordingMode(): void {
-		if (state.editorMode !== 'view') {
-			return;
-		}
-
-		store.set('editorMode', 'recording');
-		store.set('featureFlags.editing', false);
-		store.set('featureFlags.codeLineSelection', false);
-	}
-
 	function exitToViewMode(): void {
 		if (state.editorMode === 'view') {
 			return;
@@ -46,6 +36,5 @@ export default function editorMode(store: StateManager<State>, events: EventDisp
 
 	events.on('enterEditMode', enterEditMode);
 	events.on('enterPresentationMode', enterPresentationMode);
-	events.on('enterRecordingMode', enterRecordingMode);
 	events.on('exitToViewMode', exitToViewMode);
 }
