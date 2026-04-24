@@ -68,6 +68,7 @@ export interface ColorScheme {
 		codeBlockHighlightLevel1: string;
 		codeBlockHighlightLevel2: string;
 		codeBlockHighlightLevel3: string;
+		recordingMatte: string;
 	};
 	icons: {
 		inputConnector: string;

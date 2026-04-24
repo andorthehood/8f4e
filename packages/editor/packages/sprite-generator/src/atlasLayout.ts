@@ -48,6 +48,7 @@ export const FILL_COLOR_NAMES = [
 	'codeBlockHighlightLevel1',
 	'codeBlockHighlightLevel2',
 	'codeBlockHighlightLevel3',
+	'recordingMatte',
 ] as const;
 
 const FONT_COLUMNS = 128;
