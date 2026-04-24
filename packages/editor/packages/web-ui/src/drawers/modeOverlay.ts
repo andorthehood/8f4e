@@ -27,6 +27,10 @@ export default function drawModeOverlay(engine: Engine, state: State): void {
 		return;
 	}
 
+	if (state.editorMode === 'recording') {
+		return;
+	}
+
 	const modeHint =
 		state.editorMode === 'edit'
 			? EDIT_MODE_HINT
