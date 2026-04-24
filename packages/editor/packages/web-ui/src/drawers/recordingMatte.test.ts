@@ -13,27 +13,20 @@ function createMockEngine(): Engine {
 }
 
 describe('drawRecordingMatte', () => {
-	it('does not draw outside recording mode', () => {
+	it('does not draw until sprite lookups are available', () => {
 		const engine = createMockEngine();
-		const state = createMockState({
-			editorMode: 'view',
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
-		});
+		const state = createMockState();
 
 		drawRecordingMatte(engine, state);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
 	});
 
-	it('draws a colorable matte around the viewport in recording mode', () => {
+	it('draws a colorable matte around the viewport', () => {
 		const engine = createMockEngine();
 		const fillColors = {};
 		const state = createMockState({
-			editorMode: 'recording',
+			editorMode: 'view',
 			viewport: {
 				width: 640,
 				height: 480,

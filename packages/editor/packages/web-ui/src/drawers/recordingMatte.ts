@@ -6,10 +6,6 @@ const HORIZONTAL_MATTE_GRID_CELLS = 2;
 const VERTICAL_MATTE_GRID_CELLS = 4;
 
 export default function drawRecordingMatte(engine: Engine, state: State): void {
-	if (state.editorMode !== 'recording') {
-		return;
-	}
-
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
