@@ -55,14 +55,6 @@ describe('drawRecordingMatte', () => {
 		);
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
 			2,
-			608,
-			0,
-			'recordingMatte',
-			32,
-			480
-		);
-		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
-			3,
 			0,
 			448,
 			'recordingMatte',
@@ -70,12 +62,57 @@ describe('drawRecordingMatte', () => {
 			32
 		);
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
+			3,
+			608,
+			32,
+			'recordingMatte',
+			32,
+			416
+		);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
 			4,
+			0,
+			32,
+			'recordingMatte',
+			32,
+			416
+		);
+	});
+
+	it('clamps matte strips so they do not overlap in small viewports', () => {
+		const engine = createMockEngine();
+		const state = createMockState({
+			viewport: {
+				width: 40,
+				height: 40,
+				vGrid: 8,
+				hGrid: 16,
+			},
+			graphicHelper: {
+				spriteLookups: {
+					fillColors: {},
+				} as never,
+			},
+		});
+
+		drawRecordingMatte(engine, state);
+
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
+			1,
 			0,
 			0,
 			'recordingMatte',
-			32,
-			480
+			40,
+			20
 		);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
+			2,
+			0,
+			20,
+			'recordingMatte',
+			40,
+			20
+		);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledTimes(2);
 	});
 });
