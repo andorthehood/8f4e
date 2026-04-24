@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, type Mock } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import graphicHelperEffect from './effect';
@@ -160,7 +160,119 @@ describe('graphic helper home directive', () => {
 		const [homeBlock] = state.graphicHelper.codeBlocks;
 		expect(homeBlock.isHome).toBe(true);
 		expect(homeBlock.homeAlignment).toBe('top');
+		expect(state.graphicHelper.selectedCodeBlock).toBe(homeBlock);
 		expect(centerViewportOnCodeBlock(state.viewport, homeBlock, { alignment: 'top' })).toEqual({
+			x: state.viewport.x,
+			y: state.viewport.y,
+		});
+	});
+
+	it('keeps the selected home block centered after a font grid change', () => {
+		const state = createMockState({
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+				codeBlocks: [
+					{
+						code: ['module home', '; @home', '; @pos 10 20', 'moduleEnd'],
+					},
+				],
+			},
+			viewport: {
+				x: 0,
+				y: 0,
+				width: 200,
+				height: 200,
+				roundedWidth: 200,
+				roundedHeight: 200,
+				vGrid: 8,
+				hGrid: 16,
+			},
+			graphicHelper: {
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+				} as never,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		graphicHelperEffect(store, events);
+		store.set('initialProjectState', state.initialProjectState);
+
+		const [homeBlock] = state.graphicHelper.codeBlocks;
+		expect(state.graphicHelper.selectedCodeBlock).toBe(homeBlock);
+
+		state.viewport.vGrid = 6;
+		state.viewport.hGrid = 12;
+		const spriteSheetRerenderedHandler = (events.on as Mock).mock.calls.find(
+			([eventName]) => eventName === 'spriteSheetRerendered'
+		)?.[1] as (() => void) | undefined;
+		spriteSheetRerenderedHandler?.();
+
+		expect({ x: homeBlock.x, y: homeBlock.y }).toEqual({
+			x: homeBlock.gridX * state.viewport.vGrid,
+			y: homeBlock.gridY * state.viewport.hGrid,
+		});
+		expect(centerViewportOnCodeBlock(state.viewport, homeBlock)).toEqual({
+			x: state.viewport.x,
+			y: state.viewport.y,
+		});
+	});
+
+	it('keeps the selected code block centered after a font grid change', () => {
+		const selectedBlock = createMockCodeBlock({
+			id: 'selected',
+			code: ['module selected', '; @pos 10 20', 'moduleEnd'],
+			gridX: 10,
+			gridY: 20,
+			x: 80,
+			y: 320,
+		});
+		const state = createMockState({
+			graphicHelper: {
+				codeBlocks: [selectedBlock],
+				selectedCodeBlock: selectedBlock,
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+				} as never,
+			},
+			viewport: {
+				x: 0,
+				y: 0,
+				width: 200,
+				height: 200,
+				roundedWidth: 200,
+				roundedHeight: 200,
+				vGrid: 8,
+				hGrid: 16,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		graphicHelperEffect(store, events);
+		state.viewport.vGrid = 6;
+		state.viewport.hGrid = 12;
+		const spriteSheetRerenderedHandler = (events.on as Mock).mock.calls.find(
+			([eventName]) => eventName === 'spriteSheetRerendered'
+		)?.[1] as (() => void) | undefined;
+		spriteSheetRerenderedHandler?.();
+
+		expect({ x: selectedBlock.x, y: selectedBlock.y }).toEqual({
+			x: selectedBlock.gridX * state.viewport.vGrid,
+			y: selectedBlock.gridY * state.viewport.hGrid,
+		});
+		expect(centerViewportOnCodeBlock(state.viewport, selectedBlock)).toEqual({
 			x: state.viewport.x,
 			y: state.viewport.y,
 		});
