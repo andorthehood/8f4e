@@ -69,6 +69,12 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 				events.dispatch('enterPresentationMode');
 				return;
 			}
+
+			if (state.editorMode === 'view' && key === 'r' && !event.altKey && !event.ctrlKey && !event.metaKey) {
+				event.preventDefault();
+				events.dispatch('enterRecordingMode');
+				return;
+			}
 		}
 
 		if (state.editorMode === 'presentation') {
@@ -82,6 +88,10 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 				events.dispatch('nextPresentationStop');
 			}
 
+			return;
+		}
+
+		if (state.editorMode === 'recording') {
 			return;
 		}
 

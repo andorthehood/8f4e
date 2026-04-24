@@ -52,6 +52,7 @@ export const minimalColorScheme: ColorScheme = {
 		codeBlockHighlightLevel1: '#333300',
 		codeBlockHighlightLevel2: '#333333',
 		codeBlockHighlightLevel3: '#003333',
+		recordingMatte: '#ffffff',
 	},
 	icons: {
 		inputConnector: '#ffffff',

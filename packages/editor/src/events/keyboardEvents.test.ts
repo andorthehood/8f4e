@@ -124,6 +124,17 @@ describe('keyboardEvents mode switching', () => {
 		cleanup();
 	});
 
+	it('enters recording mode when r is pressed in view mode', () => {
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('r');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('enterRecordingMode');
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
+
 	it('returns to view mode when Escape is pressed in edit mode', () => {
 		editorMode = 'edit';
 		const cleanup = keyboardEvents(events, store);
@@ -148,6 +159,18 @@ describe('keyboardEvents mode switching', () => {
 		cleanup();
 	});
 
+	it('returns to view mode when Escape is pressed in recording mode', () => {
+		editorMode = 'recording';
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('Escape');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).toHaveBeenCalledWith('exitToViewMode');
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
+
 	it('keeps i as text insertion while already in edit mode', () => {
 		editorMode = 'edit';
 		const cleanup = keyboardEvents(events, store);
@@ -161,6 +184,17 @@ describe('keyboardEvents mode switching', () => {
 
 	it('ignores text insertion while in presentation mode', () => {
 		editorMode = 'presentation';
+		const cleanup = keyboardEvents(events, store);
+		const event = createKeyboardEventLike('i');
+
+		mockWindow.emit('keydown', event);
+
+		expect(events.dispatch).not.toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('ignores text insertion while in recording mode', () => {
+		editorMode = 'recording';
 		const cleanup = keyboardEvents(events, store);
 		const event = createKeyboardEventLike('i');
 
