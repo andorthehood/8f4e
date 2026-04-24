@@ -217,7 +217,7 @@ describe('codeBlockNavigation', () => {
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
 		expect(selectedBlock.cursor.row).toBe(0);
 		expect(selectedBlock.cursor.y).toBe(0);
-		expect(state.viewport.y).toBe(selectedBlock.y + selectedBlock.offsetY - state.viewport.height / 2);
+		expect(state.viewport.y).toBe(-176);
 		expect(events.dispatch).toHaveBeenCalledWith(
 			'viewportChanged',
 			expect.objectContaining({
@@ -238,9 +238,7 @@ describe('codeBlockNavigation', () => {
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
 		expect(selectedBlock.cursor.row).toBe(3);
 		expect(selectedBlock.cursor.y).toBe(3 * state.viewport.hGrid);
-		expect(state.viewport.y).toBe(
-			selectedBlock.y + selectedBlock.offsetY + 3 * state.viewport.hGrid - state.viewport.height / 2
-		);
+		expect(state.viewport.y).toBe(-128);
 		expect(events.dispatch).toHaveBeenCalledWith(
 			'viewportChanged',
 			expect.objectContaining({
@@ -298,7 +296,9 @@ describe('codeBlockNavigation', () => {
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 
-		expect(state.viewport.y).toBe(rightBlock.y + rightBlock.offsetY + rightBlock.cursor.y - state.viewport.height / 2);
+		expect(Math.abs(state.viewport.x % state.viewport.vGrid)).toBe(0);
+		expect(Math.abs(state.viewport.y % state.viewport.hGrid)).toBe(0);
+		expect(state.viewport.y).toBe(-176);
 	});
 
 	it('should animate viewport when navigating between code blocks if animation callbacks are available', () => {
@@ -333,12 +333,8 @@ describe('codeBlockNavigation', () => {
 
 		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
 		expect(state.viewportAnimation.active).toBe(true);
-		expect(state.viewportAnimation.targetX).toBe(
-			rightBlock.x + rightBlock.offsetX + rightBlock.width / 2 - state.viewport.width / 2
-		);
-		expect(state.viewportAnimation.targetY).toBe(
-			rightBlock.y + rightBlock.offsetY + rightBlock.cursor.y - state.viewport.height / 2
-		);
+		expect(state.viewportAnimation.targetX).toBe(48);
+		expect(state.viewportAnimation.targetY).toBe(-96);
 		expect(state.viewport.x).toBe(0);
 		expect(state.viewport.y).toBe(0);
 
