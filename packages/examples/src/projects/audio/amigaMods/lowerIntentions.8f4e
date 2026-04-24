@@ -75,6 +75,17 @@ note
 
 noteEnd
 
+note
+; @pos 573 -18
+; @home top
+
+; MOD player by Andor Polgar (c)2026
+; The song is:
+; 'LowerIntentions' by Skope
+; from the demo group UpRough
+; (c)1998
+noteEnd
+
 constants env
 ; @pos 126 -192
 ; @favorite
@@ -214,7 +225,7 @@ const INVERT_LOOP	0xEF
 constantsEnd
 
 constants sampleMeta
-; @pos 291 -208
+; @pos 279 -208
 ; @tab 26
 const S01_VOLUME	64
 const S01_FINETUNE	0
@@ -830,7 +841,7 @@ mapEnd int
 functionEnd int
 
 module amp1
-; @pos 661 -22
+; @pos 661 -20
 
 float* in &samplePlayer1:out
 int* volume &volume1:out
@@ -847,7 +858,7 @@ store
 moduleEnd
 
 module amp2
-; @pos 661 -4
+; @pos 661 -2
 float* in &samplePlayer2:out
 int* volume &volume2:out
 float out; @meter
@@ -863,7 +874,7 @@ store
 moduleEnd
 
 module amp3
-; @pos 661 13
+; @pos 661 15
 float* in &samplePlayer3:out
 int* volume &volume3:out
 float out ; @meter
@@ -879,7 +890,7 @@ store
 moduleEnd
 
 module amp4
-; @pos 661 30
+; @pos 661 32
 float* in &samplePlayer4:out
 int* volume &volume4:out
 float out; @meter
@@ -895,7 +906,7 @@ store
 moduleEnd
 
 module audiooutL
-; @pos 794 -10
+; @pos 794 -6
 use env
 
 float* in &lowpassL:out
@@ -933,7 +944,7 @@ ifEnd
 moduleEnd
 
 module audiooutR
-; @pos 835 -10
+; @pos 835 -6
 use env
 
 float* in &lowpassR:out
@@ -1068,7 +1079,7 @@ store
 moduleEnd
 
 module mixer
-; @pos 705 1
+; @pos 705 6
 float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
@@ -1492,7 +1503,7 @@ ifEnd
 moduleEnd
 
 module rowCount1
-; @pos -2 19
+; @pos -10 20
 int* in &rowCounter:out
 int out
 ; We can afford some reading
@@ -1831,7 +1842,7 @@ ifEnd
 moduleEnd
 
 module samplePack1
-; @pos 446 -4
+; @pos 446 -7
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
@@ -1861,7 +1872,7 @@ int8[] sample9 ASSET_SAMPLE9_SIZE
 moduleEnd
 
 module samplePack2
-; @pos 488 -3
+; @pos 488 -7
 use env
 int8[] sample10 ASSET_SAMPLE10_SIZE
 ; @loadAsset sample10 &sample10
@@ -1890,8 +1901,7 @@ int8[] sample17 ASSET_SAMPLE17_SIZE
 moduleEnd
 
 module samplePlayer1
-; @pos 545 -5
-; @home
+; @pos 545 -4
 use env
 ; @tab 6 20
 int*	period	&period1:out
@@ -1994,14 +2004,14 @@ moduleEnd
 module samplePlayer2
 ; @pos 545 16
 use env
-; @stop 12 20
-int*  period &period2:out 
-int* offset &sampleOffset2:out ; @w *
-int*  trigger &trigger2:out
-int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress ;@w
-int   sampleSize ; @w
-int8* playhead ; @w
+; @tab 6 20
+int*	period	&period2:out 
+int*	offset	&sampleOffset2:out
+int*	trigger	&trigger2:out
+int*	sampleNumber	&sampleNumber2:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -2095,14 +2105,14 @@ moduleEnd
 module samplePlayer3
 ; @pos 597 -4
 use env
-
-int* period &period3:out
-int* offset &sampleOffset3:out ; @w *
-int* trigger &trigger3:out
-int* sampleNumber &sampleNumber3:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
+; @tab 6 20
+int*	period	&period3:out
+int*	offset	&sampleOffset3:out
+int*	trigger	&trigger3:out
+int*	sampleNumber	&sampleNumber3:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -2196,14 +2206,14 @@ moduleEnd
 module samplePlayer4
 ; @pos 597 16
 use env
-
-int* period &period4:out
-int* offset &sampleOffset4:out ; @w *
-int* trigger &trigger4:out
-int* sampleNumber &sampleNumber4:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
+; @tab 6 20
+int*	period	&period4:out
+int*	offset	&sampleOffset4:out
+int*	trigger	&trigger4:out
+int*	sampleNumber	&sampleNumber4:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
