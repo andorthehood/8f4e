@@ -101,6 +101,7 @@ export default function createDefaultState() {
 			durationMs: 500,
 		},
 		presentation: {
+			canPresent: false,
 			activeStopIndex: 0,
 			totalStops: 0,
 			remainingMs: 0,

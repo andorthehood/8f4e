@@ -34,6 +34,11 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	let presentationStartViewport: { x: number; y: number } | undefined;
 	let isReturningToStartViewport = false;
 
+	function refreshStops(): void {
+		stops = getPresentationStops(state.graphicHelper.codeBlocks);
+		state.presentation.canPresent = stops.length > 0;
+	}
+
 	function clearPresentationState(options: { preserveActiveStopIndex?: boolean } = {}): void {
 		if (!options.preserveActiveStopIndex) {
 			state.presentation.activeStopIndex = 0;
@@ -132,7 +137,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 
 	function syncStops(): void {
 		const currentStop = stops[stopIndex];
-		stops = getPresentationStops(state.graphicHelper.codeBlocks);
+		refreshStops();
 
 		if (state.editorMode !== 'presentation') {
 			return;
@@ -162,7 +167,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 			return;
 		}
 
-		stops = getPresentationStops(state.graphicHelper.codeBlocks);
+		refreshStops();
 		if (stops.length === 0) {
 			store.set('editorMode', 'view');
 			return;
@@ -199,6 +204,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	events.on('viewportResized', onViewportResized);
 	events.on('previousPresentationStop', onPreviousPresentationStop);
 	events.on('nextPresentationStop', onNextPresentationStop);
+	refreshStops();
 
 	return () => {
 		clearScheduledAdvance();

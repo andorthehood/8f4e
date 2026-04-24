@@ -72,6 +72,7 @@ describe('presentation effect', () => {
 				durationMs: 90,
 			},
 			presentation: {
+				canPresent: false,
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
@@ -110,6 +111,7 @@ describe('presentation effect', () => {
 		} as unknown as EventDispatcher;
 
 		const cleanup = presentation(store, events);
+		expect(state.presentation.canPresent).toBe(true);
 
 		store.set('editorMode', 'presentation');
 		scheduledFrame?.(16);
@@ -169,6 +171,7 @@ describe('presentation effect', () => {
 				durationMs: 90,
 			},
 			presentation: {
+				canPresent: false,
 				activeStopIndex: 0,
 				totalStops: 0,
 				remainingMs: 0,
@@ -577,10 +580,69 @@ describe('presentation effect', () => {
 		presentation(store, events);
 		store.set('editorMode', 'presentation');
 
+		expect(state.presentation.canPresent).toBe(false);
 		expect(store.set).toHaveBeenLastCalledWith('editorMode', 'view');
 		expect(events.dispatch).not.toHaveBeenCalled();
 		expect(state.presentation.totalStops).toBe(0);
 		expect(state.presentation.deadlineAt).toBeUndefined();
+	});
+
+	it('updates presentation availability when code blocks change', () => {
+		const codeBlockSubscribers: Array<(value: CodeBlockGraphicData[]) => void> = [];
+		const state = {
+			callbacks: {},
+			featureFlags: {},
+			editorMode: 'view',
+			graphicHelper: {
+				codeBlocks: [],
+			},
+			viewport: createMockViewport(0, 0, 300, 200),
+			viewportAnimation: {
+				startX: 0,
+				startY: 0,
+				targetX: 0,
+				targetY: 0,
+				active: false,
+				durationMs: 90,
+			},
+			presentation: {
+				canPresent: false,
+				activeStopIndex: 0,
+				totalStops: 0,
+				remainingMs: 0,
+				currentStopDurationMs: 0,
+				deadlineAt: undefined,
+			},
+		} as State;
+
+		const store = {
+			getState: () => state,
+			set: vi.fn(),
+			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
+				if (path === 'graphicHelper.codeBlocks') {
+					codeBlockSubscribers.push(callback as (value: CodeBlockGraphicData[]) => void);
+				}
+				return { selector: path, callback };
+			}),
+			unsubscribe: vi.fn(),
+		} as unknown as StateManager<State>;
+
+		const events = {
+			dispatch: vi.fn(),
+			on: vi.fn(),
+			off: vi.fn(),
+		} as unknown as EventDispatcher;
+
+		presentation(store, events);
+		expect(state.presentation.canPresent).toBe(false);
+
+		state.graphicHelper.codeBlocks = [createCodeBlock(1, 100, 200, 1, 5)];
+		codeBlockSubscribers.forEach(callback => callback(state.graphicHelper.codeBlocks));
+		expect(state.presentation.canPresent).toBe(true);
+
+		state.graphicHelper.codeBlocks = [];
+		codeBlockSubscribers.forEach(callback => callback(state.graphicHelper.codeBlocks));
+		expect(state.presentation.canPresent).toBe(false);
 	});
 
 	it('cancels viewport animation when presentation mode is exited externally', () => {

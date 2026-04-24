@@ -1,4 +1,5 @@
 export interface PresentationState {
+	canPresent: boolean;
 	activeStopIndex: number;
 	totalStops: number;
 	remainingMs: number;
