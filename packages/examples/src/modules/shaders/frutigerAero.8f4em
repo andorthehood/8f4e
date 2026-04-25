@@ -1,0 +1,51 @@
+8f4e/v1
+
+note fragmentShaderBackground
+#version 300 es
+
+precision mediump float;
+
+in vec2 v_screenCoord;
+uniform float u_time;
+out vec4 outColor;
+
+#define AQUA_TOP vec3(0.72, 0.86, 1.0)
+#define AQUA_MID vec3(0.35, 0.68, 1.0)
+#define AQUA_DEEP vec3(0.0, 0.22, 0.78)
+#define HIGHLIGHT vec3(1.0, 1.0, 1.0)
+#define SPEED 0.8
+#define CLOUD_BRIGHTNESS 0.14
+
+float hash(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+
+  return mix(
+    mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+    mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+    f.y
+  );
+}
+
+void main() {
+  vec2 uv = vec2(v_screenCoord.x, 1.0 - v_screenCoord.y);
+
+  float water = noise(uv * vec2(5.0, 9.0) + vec2(u_time * SPEED, 0.0));
+  water += noise(uv * vec2(16.0, 22.0) - vec2(u_time * SPEED * 0.7, 0.0)) * 0.35;
+
+  vec3 color = mix(AQUA_DEEP, AQUA_MID, uv.y);
+  color = mix(color, AQUA_TOP, smoothstep(0.45, 1.0, uv.y));
+  color += (water - 0.5) * CLOUD_BRIGHTNESS;
+
+  float gloss1 = smoothstep(0.025, 0.0, abs(uv.y - uv.x * 0.28 - 0.55));
+  float gloss2 = smoothstep(0.018, 0.0, abs(uv.y + uv.x * 0.18 - 0.72));
+  color = mix(color, HIGHLIGHT, gloss1 * 0.28 + gloss2 * 0.18);
+
+  outColor = vec4(color, 1.0);
+}
+noteEnd
