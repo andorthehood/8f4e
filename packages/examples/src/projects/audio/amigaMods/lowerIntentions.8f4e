@@ -1,44 +1,5 @@
 8f4e/v1
 
-note fragmentShaderBackground
-; @pos 755 -109
-#version 300 es
-
-precision mediump float;
-
-in vec2 v_screenCoord;
-uniform vec2 u_resolution;
-uniform float u_time;
-out vec4 outColor;
-
-float plasma(vec2 p) {
- float v = 0.0;
- v += sin(p.x + u_time * 0.6);
- v += sin(p.y + u_time * 0.7);
- v += sin(p.x + p.y + u_time * 0.4);
- v += sin(length(p) * 4.0 - u_time * 0.8);
- return v * 0.25;
-}
-
-void main() {
- vec2 uv = v_screenCoord;
- float aspect = u_resolution.x / max(u_resolution.y, 1.0);
- vec2 p = (uv - 0.5) * vec2(aspect, 1.0) * 1.0;
- float v = plasma(p);
- float intensity = 0.82 + 0.18 * (0.5 + 0.5 * sin(3.0 * v + u_time * 0.2));
- float skyMix = 0.5 + 0.5 * sin(1.8 * v + p.y * 2.4 + u_time * 0.12 + 1.2);
- float glowMix = 0.5 + 0.5 * sin(2.2 * v + p.x * 1.8 - p.y * 1.2 - u_time * 0.16 + 0.4);
- float skyBlend = smoothstep(0.12, 0.88, skyMix);
- float glowBlend = smoothstep(0.2, 0.92, glowMix);
- vec3 deepSky = vec3(0.01, 0.22, 0.95) * intensity;
- vec3 skyBlue = vec3(0.08, 0.5, 1.0) * intensity;
- vec3 brightCyan = vec3(0.0, 0.98, 1.0) * intensity;
- vec3 color = mix(deepSky, skyBlue, skyBlend);
- color = mix(color, brightCyan, glowBlend * 0.45);
- outColor = vec4(color, 1.0);
-}
-noteEnd
-
 note
 ; @pos 9 -126
 ; Project Config
@@ -84,6 +45,54 @@ note
 ; 'LowerIntentions' by Skope
 ; from the demo group UpRough
 ; (c)1998
+noteEnd
+
+note fragmentShaderBackground
+; @pos 755 -118
+#version 300 es
+
+precision mediump float;
+
+in vec2 v_screenCoord;
+uniform float u_time;
+out vec4 outColor;
+
+#define SKY_PIXELS 64.0
+#define CLOUD_SPEED 0.32
+#define CLOUD_SCALE vec2(3.0, 3.0)
+#define CLOUD_DENSITY 0.582
+#define CLOUD_THINNESS 0.45
+#define SKY_COLOR vec3(0.22, 0.55, 0.95)
+#define CLOUD_COLOR vec3(0.55, 0.78, 3.0)
+
+float hash(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float noise(vec2 p) {
+ vec2 i = floor(p);
+ vec2 f = fract(p);
+ f = f * f * (3.0 - 2.0 * f);
+
+ return mix(
+  mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+  mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+   f.y
+ );
+}
+
+void main() {
+ vec2 uv = vec2(v_screenCoord.x, 1.0 - v_screenCoord.y);
+ vec2 p = floor(uv * SKY_PIXELS) / SKY_PIXELS;
+ vec2 wind = vec2(u_time * CLOUD_SPEED, 0.0);
+
+ float n = noise(p * CLOUD_SCALE + wind);
+ n += noise(p * CLOUD_SCALE * 2.0 + wind * 0.5) * 0.5;
+
+ float cloud = smoothstep(CLOUD_DENSITY, CLOUD_DENSITY + CLOUD_THINNESS, n);
+
+ outColor = vec4(mix(SKY_COLOR, CLOUD_COLOR, cloud), 1.0);
+}
 noteEnd
 
 constants env
