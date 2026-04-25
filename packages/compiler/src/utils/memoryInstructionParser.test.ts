@@ -41,6 +41,36 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(result.defaultValue).toBe(123);
 	});
 
+	it('parses string literal argument as anonymous byte default', () => {
+		const args: Argument[] = [{ type: ArgumentType.STRING_LITERAL, value: 'e' }];
+		const result = parseMemoryInstructionArguments(
+			{
+				lineNumberBeforeMacroExpansion: 11,
+				lineNumberAfterMacroExpansion: 11,
+				instruction: 'int',
+				arguments: args,
+			},
+			mockContext
+		);
+		expect(result.id).toBe('__anonymous__11');
+		expect(result.defaultValue).toBe(101);
+	});
+
+	it('packs anonymous multi-character string literal defaults as split bytes', () => {
+		const args: Argument[] = [{ type: ArgumentType.STRING_LITERAL, value: 'AB' }];
+		const result = parseMemoryInstructionArguments(
+			{
+				lineNumberBeforeMacroExpansion: 12,
+				lineNumberAfterMacroExpansion: 12,
+				instruction: 'int',
+				arguments: args,
+			},
+			mockContext
+		);
+		expect(result.id).toBe('__anonymous__12');
+		expect(result.defaultValue).toBe(0x41420000);
+	});
+
 	it('parses identifier argument', () => {
 		const args: Argument[] = [classifyIdentifier('myId')];
 		const result = parseMemoryInstructionArguments(
@@ -99,6 +129,36 @@ describe('parseMemoryInstructionArguments', () => {
 		);
 		expect(result.id).toBe('myVar');
 		expect(result.defaultValue).toBe(99);
+	});
+
+	it('parses identifier with string literal default value', () => {
+		const args: Argument[] = [classifyIdentifier('myVar'), { type: ArgumentType.STRING_LITERAL, value: 'e' }];
+		const result = parseMemoryInstructionArguments(
+			{
+				lineNumberBeforeMacroExpansion: 41,
+				lineNumberAfterMacroExpansion: 41,
+				instruction: 'int',
+				arguments: args,
+			},
+			mockContext
+		);
+		expect(result.id).toBe('myVar');
+		expect(result.defaultValue).toBe(101);
+	});
+
+	it('packs identifier multi-character string literal defaults as split bytes', () => {
+		const args: Argument[] = [classifyIdentifier('myVar'), { type: ArgumentType.STRING_LITERAL, value: 'AB' }];
+		const result = parseMemoryInstructionArguments(
+			{
+				lineNumberBeforeMacroExpansion: 42,
+				lineNumberAfterMacroExpansion: 42,
+				instruction: 'int',
+				arguments: args,
+			},
+			mockContext
+		);
+		expect(result.id).toBe('myVar');
+		expect(result.defaultValue).toBe(0x41420000);
 	});
 
 	it('rejects unnormalized identifier defaults that were not folded earlier', () => {
