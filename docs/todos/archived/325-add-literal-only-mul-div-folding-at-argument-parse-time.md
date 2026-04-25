@@ -128,7 +128,7 @@ Explicit non-goals for this TODO:
 
 ## Related Items
 
-- **Related**: `docs/todos/281-add-plus-minus-support-to-constant-expressions.md`
+- **Related**: `docs/todos/archived/281-add-plus-minus-support-to-constant-expressions.md`
 
 ## Notes
 

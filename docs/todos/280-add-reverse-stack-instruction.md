@@ -93,7 +93,7 @@ reverse 3
 
 ## Related Items
 
-- **Related**: `docs/todos/277-add-storebytes-with-explicit-byte-count.md`
+- **Related**: `docs/todos/archived/277-add-storebytes-with-explicit-byte-count.md`
 - **Related**: `docs/todos/278-add-storewords-with-explicit-count-and-word-size.md`
 
 ## Notes

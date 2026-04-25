@@ -93,7 +93,7 @@ Keep this compile-time only. The `^` operator should not imply a new runtime sta
 
 ## Related Items
 
-- **Related**: `docs/todos/281-add-plus-minus-support-to-constant-expressions.md`
+- **Related**: `docs/todos/archived/281-add-plus-minus-support-to-constant-expressions.md`
 - **Related**: `docs/todos/archived/325-add-literal-only-mul-div-folding-at-argument-parse-time.md`
 - **Related**: `docs/todos/055-strength-reduction-compiler-optimization.md`
 

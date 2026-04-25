@@ -21,9 +21,7 @@ Active todo files are listed below.
 | 270 | Add float64 support for castToInt instruction | 🔴 | 1-3h | 2026-02-20 | castToInt is missing explicit float64 support in the compiler instruction path. |
 | 271 | Add float64 support for loadFloat instruction | 🔴 | 1-3h | 2026-02-20 | loadFloat is missing explicit float64 support in the compiler instruction path. |
 | 272 | Add float32/float64 width checks to localSet instruction | 🔴 | 1-3h | 2026-02-20 | localSet is missing explicit float64 support in the compiler instruction path. |
-| 277 | Add storeBytes with explicit byte count argument | 🔴 | 4-8h | 2026-02-23 | 8f4e currently lacks a byte-oriented contiguous write instruction. |
 | 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | storeBytes <count> covers contiguous byte writes, but there is no equivalent explicit instruction for contiguous multi-byte word writes. |
-| 279 | Extend push with compile-time string literals | 🔴 | 4-8h | 2026-02-23 | push currently accepts numeric literals and identifiers, but does not support string literals. This makes byte-sequence construction verbose because users must manually push each ASCII code. |
 | 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | 8f4e has dup, swap, drop, and clearStack, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for... |
 | 305 | Reuse WASM instance across incremental compiles | 🔴 | 3-6h | 2026-03-14 | The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed. |
 
@@ -49,9 +47,7 @@ Active todo files are listed below.
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
 | 261 | Update instruction test helpers for float64 and refactor call test | 🟡 | 2-4h | 2026-02-20 | packages/compiler/tests/instructions/testUtils.ts currently reads/writes all non-integer memory as float32 in shared helpers like moduleTesterWithFunctions. |
 | 274 | Consolidate defaultFeatureFlags into a single source of truth | 🟡 | 2-4h | 2026-02-21 | There are currently two defaultFeatureFlags definitions: |
-| 281 | Add Plus/Minus Support to Constant Expressions | 🟡 | 4-8h | 2026-02-23 | Compile-time constant expressions currently support only CONST*number and CONST/number with a single operator. This blocks simple offset-style expressions like SIZE+1 or SIZE-1 in const, declarations, push, and init. |
 | 291 | Add int64 support across compiler, runtime, and docs | 🟡 | 2-4d | 2026-03-09 | The language already has dedicated float64 support, including 64-bit memory allocation and type-aware compiler paths, but there is no equivalent int64 support. |
-| 293 | Add separate color for non-decimal literal base prefixes | 🟡 | 4-8h | 2026-03-09 | The editor currently highlights non-decimal numeric literals such as binary and hexadecimal values as a single token. That means the base prefix and the digits share the same color: |
 | 297 | Add url editor directive for clickable links | 🟡 | 4-8h | 2026-03-12 | The editor currently has no directive for attaching a clickable external link to a code block. |
 | 302 | Add jump editor directive for code block navigation | 🟡 | 4-8h | 2026-03-14 | The editor currently supports code block navigation through the context-menu jump flow, but there is no in-code directive for linking one code block to another. |
 | 307 | Optimize state-manager selector tokenization and subscription lookup | 🟡 | 3-6h | 2026-03-14 | The state manager currently does repeated string splitting and repeated path traversal during every set(...) call. |
@@ -65,17 +61,14 @@ Active todo files are listed below.
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
-| 361 | Replace showBinary/showHex booleans with a displayFormat union type | 🟢 | 1-2h | 2026-04-01 | `MemoryIdentifier` and `Debugger` use two separate booleans for a mutually exclusive three-way display choice; a `displayFormat` union eliminates the invalid combined state and scales to future formats. |
 | 364 | Centralize alwaysOnTop code block partition logic | 🟢 | 1-2h | 2026-04-03 | The `@alwaysOnTop` behavior currently reimplements the same z-order partitioning rules across creation, paste, drag, and load paths, which makes the behavior easy to drift and already leaves the single-block creation path inconsistent with multi-block paste. |
 | 016 | Runtime Loading UI Improvements | 🟢 | 2-3 days | 2025-08-26 | After implementing lazy loading for runtimes (TODO: 015), users will experience a delay when switching between runtime types. Currently, there's no visual feedback during this loading process, which could lead to... |
 | 057 | Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution | 🟢 | 8-12 hours | 2025-09-09 | The 8f4e project currently uses WebAssembly for executing compiled code with basic debugging capabilities (debug instruction parser exists). To enhance the development experience and enable advanced debugging features,... |
 | 203 | Use CodeBlock id instead of recomputing from code | 🟢 | 2-4 days | 2026-01-22 | The system frequently derives code block IDs by calling getCodeBlockId(code) during updates and rendering. This is redundant because CodeBlockGraphicData.id is intended to be the canonical ID. Recomputing on every... |
 | 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
-| 371 | Move block result type to blockEnd and drop explicit void | 🟡 | 4-8h | 2026-04-07 | The current `block` syntax puts the block result type on the opening instruction and requires explicit `void`, which does not match the desired end-declared block result style. |
 | 375 | Unify syntax and compiler error shapes | 🟡 | 4-8h | 2026-04-08 | Syntax errors currently expose location through `details` while compiler errors use `line` and `context`, which leaks internal stage differences into consumers and causes degraded editor diagnostics. |
 | 376 | Add ASCII scene renderer for editor snapshot tests | 🟡 | 1-2d | 2026-04-08 | The editor lacks a cheap whole-scene regression layer between raw object snapshots and expensive browser/image visual tests, leaving overlap, z-order, clipping, and text-grid composition bugs under-covered. |
 | 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The parser already handles some structural block state, but it does not yet cleanly generalize block pairing and top-level owning-block context well enough to route syntax diagnostics to code blocks reliably. |
-| 379 | Add exponentiation support to compile-time expressions | 🟡 | 4-8h | 2026-04-17 | Compile-time arithmetic supports single-operator multiplication and division, but not power-of-two sizing expressions like 2^16. |
 | 380 | Remove hardcoded AudioWorklet buffer size from runtime contract | 🟡 | 1-2d | 2026-04-21 | The AudioWorklet runtime currently injects `const AUDIO_BUFFER_SIZE 128` as a compile-time env constant even though the real render quantum is only observable at runtime inside the worklet. |
 
 ## Completed TODOs

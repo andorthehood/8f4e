@@ -65,7 +65,7 @@ After narrowing on `referenceKind`, all field accesses in `resolveCompileTimeArg
 
 ## Related Items
 
-- Related: `363-enforce-classifyidentifier-check-ordering.md`
+- Related: `docs/todos/archived/363-enforce-classifyidentifier-check-ordering.md`
 
 ## Notes
 

@@ -98,7 +98,7 @@ Recommended validation rules:
 ## Related Items
 
 - **Related**: `docs/todos/206-add-fraction-literals-to-compiler.md`
-- **Related**: `docs/todos/281-add-plus-minus-support-to-constant-expressions.md`
+- **Related**: `docs/todos/archived/281-add-plus-minus-support-to-constant-expressions.md`
 
 ## Notes
 
