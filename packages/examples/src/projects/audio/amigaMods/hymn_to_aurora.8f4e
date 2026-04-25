@@ -12,66 +12,6 @@ note
 noteEnd
 
 note
-; @pos 416 41
-; @stop 9 10 right @hidden
-
-;     .        The instrument samples are
-;   .;;......  short recorded waveforms
-; .;;;;::::::  stored in these memory 
-;  `:;;::::::  slots.
-;    `:
-
-noteEnd
-
-note
-; @pos 416 30
-; @stop 10 10 bottom @hidden
-;                                          .   
-; The sample players read from these     .:;:.
-; buffers and advance through them at  .:;;;;;:.
-; different speeds to change pitch.      ;;;;;
-;                                        ;;;;;
-noteEnd
-
-note
-; @pos 260 93
-; @stop 5 5 @hidden
-
-; These four horizontal lanes represent
-; the fourplayback channels of the MOD.
-noteEnd
-
-note
-; @pos 261 -36
-; @stop 4 10 top @hidden
-;                                                     ;;;;;
-; These modules are busy extracting the               ;;;;;
-; information from the rows. This particular song   ..;;;;;..
-; is quite simple, it only has sample number, pitch  `:::::'
-; and volume data.                                     `:'
-noteEnd 
-
-note
-; @pos 28 -29
-; @stop 1 10 top @hidden
-
-; This patch is a bare-bones
-; MOD player implemented in 8f4e.
-
-; It's playing 'Hymn to Aurora' 
-; by Horace Wimp 
-noteEnd
-
-note
-; @pos 701 -20
-; @stop 14 10 top @hidden
-
-; Finally, the generated audio sample values
-; are written to the output audio buffers
-; so the operating system can play the sound.
-noteEnd
-
-note
 ; @pos 73 -30
 ; @stop 2 15 top @hidden
 
@@ -93,13 +33,104 @@ note
 noteEnd
 
 note
-; @pos 587 -14
+; @pos 420 34
+; @stop 10 10 bottom @hidden
+;                                          .   
+; The sample players read from these     .:;:.
+; buffers and advance through them at  .:;;;;;:.
+; different speeds to change pitch.      ;;;;;
+;                                        ;;;;;
+noteEnd
+
+note
+; @pos 416 44
+; @stop 9 10 right @hidden
+
+;     .        The instrument samples are
+;   .;;......  short recorded waveforms
+; .;;;;::::::  stored in these memory 
+;  `:;;::::::  slots.
+;    `:
+
+noteEnd
+
+note
+; @pos 244 -36
+; @stop 4 10 top @hidden
+;                                                     ;;;;;
+; These modules are extracting the                    ;;;;;
+; information from the rows. This particular song   ..;;;;;..
+; is quite simple, it only has sample number, pitch  `:::::'
+; and volume data.                                     `:'
+noteEnd 
+
+note
+; @pos 267 74
+; @stop 5 5 @hidden
+
+; These four horizontal lanes represent
+; the fourplayback channels of the MOD.
+noteEnd
+
+note
+; @pos 587 -6
 ; @stop 13 5 top @hidden  
 ;                            ;;;;;
 ; The four channel signals ..:::::..
 ; are mixed together here.  `:::::'
 ;                             `:'
 noteEnd
+
+note
+; @pos 701 -20
+; @stop 14 10 top @hidden
+
+; Finally, the generated audio sample values
+; are written to the output audio buffers
+; so the operating system can play the sound.
+noteEnd
+
+note
+; @pos 28 -29
+; @stop 1 10 top @hidden
+
+; This patch is a bare-bones
+; MOD player implemented in 8f4e.
+
+; It's playing 'Hymn to Aurora' 
+; by Horace Wimp 
+noteEnd
+
+note fragmentShaderBackground
+; @pos 631 -151
+#version 300 es
+
+precision mediump float;
+
+in vec2 v_screenCoord;
+uniform vec2 u_resolution;
+uniform float u_time;
+out vec4 outColor;
+
+#define HORIZON 0.5
+
+void main() {
+  vec2 uv = vec2(v_screenCoord.x, 1.0 - v_screenCoord.y);
+  if (uv.y < HORIZON) {
+    outColor = vec4(0.0, 0.0, 0.0, 1.0);
+    return;
+  }
+
+  float z = 1.0 / max(uv.y - HORIZON, 0.001);
+  float x = (uv.x - 0.5) * (u_resolution.x / u_resolution.y) * z;
+  float y = z + u_time * 3.0;
+  float tile = mod(floor(x) + floor(y), 2.0);
+  float fade = smoothstep(0.0, 0.3, uv.y - HORIZON);
+  vec3 color = mix(vec3(0.0), vec3(0.0, 0.2, 1.0), tile) * fade;
+  outColor = vec4(color, 1.0);
+}
+noteEnd
+
 
 constants env
 ; @pos 91 -140
@@ -148,7 +179,7 @@ const ASSET_SAMPLE12_SIZE 9000
 constantsEnd
 
 constants math
-; @pos 146 -130
+; @pos 145 -124
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793
@@ -178,7 +209,7 @@ const E       2.718281828459045
 constantsEnd
 
 constants mod
-; @pos 197 -140
+; @pos 195 -153
 ; @tab 30
 use env
 ; Row layout (little-endian)
@@ -237,7 +268,7 @@ const INVERT_LOOP	0xEF
 constantsEnd
 
 constants sampleMeta
-; @pos 493 -143
+; @pos 256 -148
 ; @tab 26
 const S01_VOLUME	30
 const S01_FINETUNE	0
@@ -291,7 +322,7 @@ const S12_REPEAT_LENGTH	2
 constantsEnd
 
 function maskEffect
-; @pos 335 -128
+; @pos 348 -123
 use mod
 param int row
 
@@ -304,7 +335,7 @@ shiftRight
 functionEnd int
 
 function maskParam
-; @pos 335 -110
+; @pos 348 -110
 use mod
 param int row
 
@@ -317,7 +348,7 @@ shiftRight
 functionEnd int
 
 function maskPeriod
-; @pos 298 -110
+; @pos 314 -110
 use mod
 param int row
 
@@ -336,7 +367,7 @@ or
 functionEnd int
 
 function maskSampleNumber
-; @pos 297 -128
+; @pos 312 -127
 use mod
 param int row
 
@@ -353,7 +384,7 @@ or
 functionEnd int
 
 function period2Step
-; @pos 261 -128
+; @pos 348 -147
 param int period
 use mod
 use env
@@ -377,7 +408,7 @@ div
 functionEnd float
 
 function sampleNumberCanLoop
-; @pos 372 -168
+; @pos 311 -139
 use sampleMeta
 param int sampleNumber
 
@@ -389,7 +420,7 @@ greaterThan
 functionEnd int
 
 function sampleNumberToAddr
-; @pos 371 -110
+; @pos 459 -139
 ; @tab 8
 param int sampleNumber
 
@@ -413,7 +444,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatEnd
-; @pos 415 -168
+; @pos 407 -139
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -437,7 +468,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatLen
-; @pos 372 -139
+; @pos 411 -163
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -461,7 +492,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToRepeatOffset
-; @pos 415 -139
+; @pos 452 -163
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -485,7 +516,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToSize
-; @pos 415 -110
+; @pos 496 -163
 ; @tab 8
 use env
 param int sampleNumber
@@ -509,7 +540,7 @@ mapEnd int
 functionEnd int
 
 function sampleNumberToVolume
-; @pos 452 -110
+; @pos 496 -139
 ; @tab 8
 use sampleMeta
 param int sampleNumber
@@ -533,7 +564,7 @@ mapEnd int
 functionEnd int
 
 module amigaTick
-; @pos -141 -28
+; @pos -157 -28
 use mod
 
 int tempo 125
@@ -570,8 +601,7 @@ store
 moduleEnd
 
 module amp1
-; @pos 540 -24
-; @group ch0
+; @pos 542 -21
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
 float out ; @meter
@@ -588,8 +618,7 @@ store
 moduleEnd
 
 module amp2
-; @pos 540 -5
-; @group ch1
+; @pos 542 -3
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
 float out; @meter
@@ -606,8 +635,7 @@ store
 moduleEnd
 
 module amp3
-; @pos 540 14
-; @group ch2
+; @pos 542 15
 float* in &modSamplePlayer3:out
 int* volume &volume3:out
 float out; @meter
@@ -624,8 +652,7 @@ store
 moduleEnd
 
 module amp4
-; @pos 540 33
-; @group ch3
+; @pos 542 33
 float* in &modSamplePlayer4:out
 int* volume &volume4:out
 float out; @meter
@@ -642,7 +669,7 @@ store
 moduleEnd
 
 module assets
-; @pos -15 -116
+; @pos -13 -116
 ; @tab 22
 ; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_1.bin
 ; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_2.bin
@@ -702,7 +729,7 @@ ifEnd
 moduleEnd
 
 module audiooutR
-; @pos 731 -10
+; @pos 730 -10
 use env
 
 float* in &lowpassR:out
@@ -802,7 +829,7 @@ store
 moduleEnd
 
 module mixer
-; @pos 593 -4
+; @pos 594 3
 float* in1 &amp1:out
 float* in2 &amp2:out
 float* in3 &amp3:out
@@ -843,7 +870,7 @@ store
 moduleEnd
 
 module modRowCounter
-; @pos -71 -28
+; @pos -84 -28
 use env
 int* trigger &amigaTick:out 
 int rowCounter -1
@@ -901,15 +928,15 @@ moduleEnd
 
 module modSamplePlayer1
 ; @pos 422 -7
-; @group ch0
+; @tab 6 20
 use env
 
-int* period &period1:out
-int* trigger &trigger1:out
-int* sampleNumber &sampleNumber1:out
-int8* sampleAddress; @w
-int8* playhead; @w
-int sampleSize; @w
+int*	period	&period1:out
+int*	trigger	&trigger1:out
+int*	sampleNumber	&sampleNumber1:out
+int8*	sampleAddress	; @w
+int8*	playhead	; @w
+int	sampleSize	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out; @w
 ; @hide
@@ -1001,15 +1028,15 @@ moduleEnd
 
 module modSamplePlayer2
 ; @pos 422 13
-; @group ch1
+; @tab 6 20
 use env
 ; @stop 12 20
-int*  period &period2:out 
-int*  trigger &trigger2:out
-int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress ;@w
-int   sampleSize ; @w
-int8* playhead ; @w
+int*	period	&period2:out 
+int*	trigger	&trigger2:out
+int*	sampleNumber	&sampleNumber2:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -1100,16 +1127,16 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer3
-; @pos 472 -7
-; @group ch2
+; @pos 473 -7
+; @tab 6 20
 use env
 
-int* period &period3:out
-int* trigger &trigger3:out
-int* sampleNumber &sampleNumber3:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
+int*	period	&period3:out
+int*	trigger	&trigger3:out
+int*	sampleNumber	&sampleNumber3:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -1200,16 +1227,16 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 472 13
-; @group ch3
+; @pos 473 13
+; @tab 6 20
 use env
 
-int* period &period4:out
-int* trigger &trigger4:out
-int* sampleNumber &sampleNumber4:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
+int*	period	&period4:out
+int*	trigger	&trigger4:out
+int*	sampleNumber	&sampleNumber4:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -1300,7 +1327,7 @@ ifEnd
 moduleEnd
 
 module patternOrder
-; @pos -106 -28
+; @pos -119 -28
 ; @tab 6
 int	0x00
 int	0x02
@@ -1339,7 +1366,7 @@ int	0x0f
 moduleEnd
 
 module period1
-; @pos 223 -48
+; @pos 247 -64
 ; @group ch0
 int* row &rowBuffer1:
 int out
@@ -1360,7 +1387,7 @@ ifEnd
 moduleEnd
 
 module period2
-; @pos 223 -3
+; @pos 246 -26
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1381,7 +1408,7 @@ ifEnd
 moduleEnd
 
 module period3
-; @pos 223 43
+; @pos 246 11
 ; @group ch2
 int* row &rowBuffer3:
 int out
@@ -1402,7 +1429,7 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 223 89
+; @pos 246 49
 ; @group ch3
 int* row &rowBuffer4:
 int out
@@ -1423,7 +1450,7 @@ ifEnd
 moduleEnd
 
 module projectConfig
-; @pos 50 -125
+; @pos 51 -124
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @exportFileName hymn_to_aurora
@@ -1618,7 +1645,7 @@ store
 moduleEnd
 
 module rowCount2
-; @pos 170 -31
+; @pos 169 -34
 int* in &modRowCounter:out
 int out
 
@@ -1629,7 +1656,7 @@ store
 moduleEnd
 
 module sampleNumber1
-; @pos 223 -71
+; @pos 213 -64
 ; @group ch0
 int* row &rowBuffer1:
 int out
@@ -1651,7 +1678,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 223 -25
+; @pos 212 -26
 ; @group ch1
 int* row &rowBuffer2:
 int out
@@ -1673,7 +1700,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber3
-; @pos 223 21
+; @pos 212 11
 ; @group ch2
 int* row &rowBuffer3:
 int out
@@ -1695,7 +1722,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 223 67
+; @pos 212 49
 ; @group ch3
 int* row &rowBuffer4:
 int out
@@ -1875,7 +1902,7 @@ store
 moduleEnd
 
 module trigger1
-; @pos 257 -63
+; @pos 281 -64
 ; @group ch0
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -1901,7 +1928,7 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 257 -25
+; @pos 280 -26
 ; @group ch1
 int* row &rowBuffer2:
 int* rowCounter &rowCount2:out
@@ -1927,7 +1954,7 @@ ifEnd
 moduleEnd
 
 module trigger3
-; @pos 257 21
+; @pos 280 11
 ; @group ch2
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -1953,7 +1980,7 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 257 67
+; @pos 280 49
 ; @group ch3
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
@@ -1977,15 +2004,15 @@ ifEnd
 moduleEnd
 
 module ultimateSoundtrackerColors
-; @pos 537 -134
+; @pos 555 -151
 ; @tab 46
 ; @color fill.moduleBackground	#000
-; @color fill.background	#000
-; @color fill.backgroundDots	#036
-; @color fill.backgroundDots2	#630
-; @color fill.highlightedCodeLine	#036
+; @color fill.background	rgba(0,0,0,0)
+; @color fill.backgroundDots	#03f
+; @color fill.backgroundDots2	#000
+; @color fill.highlightedCodeLine	#006
 ; @color fill.moduleBackgroundDragged	#000
-; @color text.instruction	#369
+; @color text.instruction	#03f
 ; @color text.code	#c96
 ; @color text.lineNumber	#630
 ; @color text.codeComment	#963
@@ -1994,7 +2021,7 @@ module ultimateSoundtrackerColors
 ; @color fill.debugInfoBackground	#000
 ; @color fill.wire	rgba(255,255,255,0.3)
 ; @color fill.wireHighlighted	#fff
-; @color fill.menuItemBackground	#036
+; @color fill.menuItemBackground	#009
 ; @color fill.menuItemBackgroundHighlighted	#fff
 ; @color fill.errorMessageBackground	#900
 ; @color fill.dialogBackground	#036
@@ -2004,16 +2031,16 @@ module ultimateSoundtrackerColors
 ; @color fill.codeBlockHighlightLevel3	#001f3d
 ; @color fill.trace	#0f0
 ; @color fill.scanLine	#fc9
-; @color fill.waveform	#369
-; @color icons.outputConnectorBackground	#369
+; @color fill.waveform	#03f
+; @color icons.outputConnectorBackground	#03f
 ; @color icons.outputConnector	#000
-; @color icons.inputConnectorBackground	#369
+; @color icons.inputConnectorBackground	#03f
 ; @color icons.inputConnector	#000
-; @color text.arrow	#369
+; @color text.arrow	#fff
 moduleEnd
 
 module volume1
-; @pos 300 -72
+; @pos 320 -64
 ; @group ch0
 use mod
 int* row &rowBuffer1:
@@ -2048,7 +2075,7 @@ ifEnd
 moduleEnd
 
 module volume2
-; @pos 300 -25
+; @pos 319 -26
 ; @group ch1
 use mod
 int* row &rowBuffer2:
@@ -2083,7 +2110,7 @@ ifEnd
 moduleEnd
 
 module volume3
-; @pos 300 21
+; @pos 319 11
 ; @group ch2
 use mod
 int* row &rowBuffer3:
@@ -2118,7 +2145,7 @@ ifEnd
 moduleEnd
 
 module volume4
-; @pos 313 67
+; @pos 319 49
 ; @group ch3
 use mod
 int* row &rowBuffer4:
