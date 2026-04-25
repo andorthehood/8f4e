@@ -129,7 +129,7 @@ Likely API implication:
 
 ## Related Items
 
-- **Related**: `docs/todos/293-add-separate-color-for-non-decimal-literal-base-prefixes.md`
+- **Related**: `docs/todos/archived/293-add-separate-color-for-non-decimal-literal-base-prefixes.md`
 
 ## Notes
 

@@ -1,3 +1,9 @@
+---
+title: 'TODO: Extend CLI with runtime inspection run command'
+status: Completed
+completed: 2026-04-25
+---
+
 # Extend CLI with runtime inspection `run` command
 
 ## Goal

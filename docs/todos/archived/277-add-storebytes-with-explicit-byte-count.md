@@ -3,8 +3,8 @@ title: 'TODO: Add storeBytes with explicit byte count argument'
 priority: High
 effort: 4-8h
 created: 2026-02-23
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-25
 ---
 
 # TODO: Add storeBytes with explicit byte count argument
