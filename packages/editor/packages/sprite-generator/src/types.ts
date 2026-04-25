@@ -102,6 +102,7 @@ export const FONT_NAMES = [
 	'spleen6x12',
 	'ibmvga8x16',
 	'spleen8x16',
+	'templeos8x8',
 	'terminus8x16',
 	'terminus8x16bold',
 	'terminus10x18',
