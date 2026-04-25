@@ -122,7 +122,7 @@ This change is intentionally breaking at the source syntax level:
 
 ## Related Items
 
-- **Related**: `371-move-block-result-type-to-blockend-and-drop-explicit-void.md`
+- **Related**: `docs/todos/archived/371-move-block-result-type-to-blockend-and-drop-explicit-void.md`
 
 ## Notes
 

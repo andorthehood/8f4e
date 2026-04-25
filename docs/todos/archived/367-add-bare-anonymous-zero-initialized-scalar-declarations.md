@@ -3,8 +3,8 @@ title: 'TODO: Add bare anonymous zero-initialized scalar declarations'
 priority: Medium
 effort: 2-4h
 created: 2026-04-03
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-25
 ---
 
 # TODO: Add bare anonymous zero-initialized scalar declarations
@@ -118,7 +118,7 @@ Implementation approach:
 
 - **Related**: `356-consolidate-declaration-compilers-into-factory.md`
 - **Related**: `362-refactor-argumentidentifier-to-discriminated-union.md`
-- **Related**: `363-enforce-classifyidentifier-check-ordering.md`
+- **Related**: `docs/todos/archived/363-enforce-classifyidentifier-check-ordering.md`
 - **Related**: `archived/308-simplify-memory-instruction-default-value-resolution.md`
 
 ## Notes

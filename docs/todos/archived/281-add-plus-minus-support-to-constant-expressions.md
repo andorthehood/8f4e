@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-02-23
 issue: https://github.com/andorthehood/8f4e/issues/416
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-25
 ---
 
 # TODO: Add Plus/Minus Support to Constant Expressions
@@ -59,4 +59,3 @@ Supported forms should become:
 
 - **Parsing ambiguity**: `-` can also appear in numeric literals; parser rules must continue to distinguish operator vs literal sign.
 - **Backward compatibility**: Existing expression and error semantics should remain stable.
-

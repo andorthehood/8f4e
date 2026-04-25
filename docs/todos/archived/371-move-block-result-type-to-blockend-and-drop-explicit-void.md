@@ -3,8 +3,8 @@ title: 'TODO: Move block result type to blockEnd and drop explicit void'
 priority: Medium
 effort: 4-8h
 created: 2026-04-07
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-25
 ---
 
 # TODO: Move block result type to blockEnd and drop explicit void

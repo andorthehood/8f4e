@@ -79,7 +79,7 @@ Desired behavior:
 
 - **Related**: `docs/todos/372-make-push-local-equivalent-to-localget.md`
 - **Related**: `docs/todos/373-remove-localget-and-migrate-sources-to-push.md`
-- **Related**: `docs/todos/369-reduce-duplicate-memory-declaration-rule-encoding-between-tokenizer-and-compiler.md`
+- **Related**: `docs/todos/archived/369-reduce-duplicate-memory-declaration-rule-encoding-between-tokenizer-and-compiler.md`
 
 ## Notes
 

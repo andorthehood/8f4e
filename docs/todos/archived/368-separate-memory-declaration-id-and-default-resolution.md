@@ -3,8 +3,8 @@ title: 'TODO: Separate memory declaration id and default resolution'
 priority: Medium
 effort: 4-8h
 created: 2026-04-03
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-25
 ---
 
 # TODO: Separate memory declaration id and default resolution
@@ -99,7 +99,7 @@ The key goal is not to change user-visible behavior. The refactor should preserv
 
 ## Related Items
 
-- **Related**: `367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
+- **Related**: `docs/todos/archived/367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
 - **Related**: `356-consolidate-declaration-compilers-into-factory.md`
 - **Related**: `archived/308-simplify-memory-instruction-default-value-resolution.md`
 

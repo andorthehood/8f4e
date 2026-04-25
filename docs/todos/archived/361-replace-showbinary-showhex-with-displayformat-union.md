@@ -3,8 +3,8 @@ title: 'TODO: Replace showBinary/showHex booleans with a displayFormat union typ
 priority: Low
 effort: 1-2h
 created: 2026-04-01
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-25
 ---
 
 # TODO: Replace showBinary/showHex booleans with a displayFormat union type

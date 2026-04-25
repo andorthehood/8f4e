@@ -124,7 +124,7 @@ Implementation should introduce shared raw-index/visual-column mapping helpers a
 ## Related Items
 
 - **Related**: `docs/todos/240-add-align-row-context-menu-action.md`
-- **Related**: `docs/todos/293-add-separate-color-for-non-decimal-literal-base-prefixes.md`
+- **Related**: `docs/todos/archived/293-add-separate-color-for-non-decimal-literal-base-prefixes.md`
 - **Related**: `packages/editor/docs/editor-directives.md`
 
 ## Notes

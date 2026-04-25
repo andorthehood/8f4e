@@ -100,10 +100,10 @@ The preferred outcome is not necessarily less code, but less duplicated rule int
 
 ## Related Items
 
-- **Related**: `367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
-- **Related**: `368-separate-memory-declaration-id-and-default-resolution.md`
+- **Related**: `docs/todos/archived/367-add-bare-anonymous-zero-initialized-scalar-declarations.md`
+- **Related**: `docs/todos/archived/368-separate-memory-declaration-id-and-default-resolution.md`
 - **Related**: `362-refactor-argumentidentifier-to-discriminated-union.md`
-- **Related**: `363-enforce-classifyidentifier-check-ordering.md`
+- **Related**: `docs/todos/archived/363-enforce-classifyidentifier-check-ordering.md`
 
 ## Notes
 

@@ -3,8 +3,8 @@ title: 'TODO: Extend push with compile-time string literals'
 priority: High
 effort: 4-8h
 created: 2026-02-23
-status: Open
-completed: null
+status: Completed
+completed: 2026-04-25
 ---
 
 # TODO: Extend push with compile-time string literals
@@ -95,7 +95,7 @@ Semantics:
 
 ## Related Items
 
-- **Related**: `docs/todos/277-add-storebytes-with-explicit-byte-count.md`
+- **Related**: `docs/todos/archived/277-add-storebytes-with-explicit-byte-count.md`
 - **Related**: `docs/todos/278-add-storewords-with-explicit-count-and-word-size.md`
 
 ## Notes
