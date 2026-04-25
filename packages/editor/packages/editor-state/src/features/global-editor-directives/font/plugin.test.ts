@@ -27,6 +27,16 @@ describe('@font directive', () => {
 		expect(result.errors).toEqual([]);
 	});
 
+	it('resolves the imported templeos8x8 font', () => {
+		const result = resolveGlobalEditorDirectives(
+			[createParsedBlock(['module a', '; @font templeos8x8', 'moduleEnd'])],
+			{}
+		);
+
+		expect(result.resolved.font).toBe('templeos8x8');
+		expect(result.errors).toEqual([]);
+	});
+
 	it('resolves the renamed ibmvga8x16 font', () => {
 		const result = resolveGlobalEditorDirectives(
 			[createParsedBlock(['module a', '; @font ibmvga8x16', 'moduleEnd'])],
