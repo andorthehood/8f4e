@@ -7,7 +7,6 @@ import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
 import drawModeOverlay from './drawers/modeOverlay';
 import drawBackground from './drawers/drawBackground';
-import drawRecordingMatte from './drawers/recordingMatte';
 
 import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from './types';
@@ -45,7 +44,6 @@ export default async function init(
 		drawContextMenu(engine, state);
 		drawModeOverlay(engine, state);
 		drawDialog(engine, state);
-		drawRecordingMatte(engine, state);
 	});
 
 	return {
