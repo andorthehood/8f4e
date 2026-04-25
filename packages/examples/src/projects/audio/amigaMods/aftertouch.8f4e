@@ -52,7 +52,7 @@ void main() {
 noteEnd
 
 constants env
-; @pos 96 -158
+; @pos 108 -215
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -128,7 +128,7 @@ const ASSET_SAMPLE27_SIZE 40704
 constantsEnd
 
 constants math
-; @pos 741 -47
+; @pos 264 -169
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793
@@ -158,7 +158,7 @@ const E       2.718281828459045
 constantsEnd
 
 constants mod
-; @pos 232 -197
+; @pos 162 -198
 ; @tab 30
 use env
 ; Row layout (little-endian)
@@ -217,7 +217,7 @@ const INVERT_LOOP	0xEF
 constantsEnd
 
 constants sampleMeta
-; @pos 293 -264
+; @pos 223 -253
 ; @tab 26
 const S01_VOLUME	37
 const S01_FINETUNE	0
@@ -331,7 +331,7 @@ const S27_REPEAT_LENGTH	2
 constantsEnd
 
 function clampVolume
-; @pos 549 -113
+; @pos 609 -140
 param int value
 
 push value
@@ -355,7 +355,7 @@ push value
 functionEnd int
 
 function loadRowVolume
-; @pos 515 -113
+; @pos 609 -116
 use mod
 param int row
 
@@ -398,7 +398,7 @@ shiftRightUnsigned
 functionEnd int
 
 function maskParam
-; @pos 401 -128
+; @pos 299 -111
 use mod
 param int row
 
@@ -411,7 +411,7 @@ shiftRightUnsigned
 functionEnd int
 
 function maskParamHi
-; @pos 401 -114
+; @pos 367 -117
 param int row
 
 push row
@@ -422,7 +422,7 @@ shiftRightUnsigned
 functionEnd int
 
 function maskParamLo
-; @pos 401 -103
+; @pos 367 -128
 param int row
 
 push row
@@ -433,7 +433,7 @@ and
 functionEnd int
 
 function maskPeriod
-; @pos 367 -128
+; @pos 333 -115
 use mod
 param int row
 
@@ -516,7 +516,7 @@ mapEnd float
 functionEnd float
 
 function period2Step
-; @pos 436 -128
+; @pos 438 -128
 param int period
 use mod
 use env
@@ -540,7 +540,7 @@ div
 functionEnd float
 
 function rowShouldReloadVolume
-; @pos 583 -113
+; @pos 643 -133
 use mod
 param int row
 
@@ -557,7 +557,7 @@ or
 functionEnd int
 
 function rowVolumeSlideDelta
-; @pos 622 -113
+; @pos 643 -116
 use mod
 param int row
 
@@ -589,7 +589,7 @@ sub
 functionEnd int
 
 function sampleNumberCanLoop
-; @pos 334 -158
+; @pos 506 -128
 use sampleMeta
 param int sampleNumber
 
@@ -607,7 +607,6 @@ param int sampleNumber
 
 push sampleNumber
 mapBegin int
-map 0	&samplePack1:sample0
 map 1	&samplePack1:sample1
 map 2	&samplePack1:sample2
 map 3	&samplePack1:sample3
@@ -635,6 +634,7 @@ map 24	&samplePack2:sample24
 map 25	&samplePack2:sample25
 map 26	&samplePack2:sample26
 map 27	&samplePack2:sample27
+default &samplePack1:sample0
 mapEnd int
 
 functionEnd int
@@ -646,7 +646,6 @@ use sampleMeta
 param int sampleNumber
 push sampleNumber
 mapBegin int
-map 0	0
 map 1	S01_FINETUNE
 map 2	S02_FINETUNE
 map 3	S03_FINETUNE
@@ -674,19 +673,18 @@ map 24	S24_FINETUNE
 map 25	S25_FINETUNE
 map 26	S26_FINETUNE
 map 27	S27_FINETUNE
+default 0
 mapEnd int
 
 functionEnd int
 
 function sampleNumberToRepeatEnd
-; @pos 376 -226
+; @pos 571 -181
 ; @tab 8
 use sampleMeta
-
 param int sampleNumber
 push sampleNumber
 mapBegin int
-map 0	2
 map 1	S01_REPEAT_LENGTH+S01_REPEAT_OFFSET
 map 2	S02_REPEAT_LENGTH+S02_REPEAT_OFFSET
 map 3	S03_REPEAT_LENGTH+S03_REPEAT_OFFSET
@@ -714,19 +712,18 @@ map 24	S24_REPEAT_LENGTH+S24_REPEAT_OFFSET
 map 25	S25_REPEAT_LENGTH+S25_REPEAT_OFFSET
 map 26	S26_REPEAT_LENGTH+S26_REPEAT_OFFSET
 map 27	S27_REPEAT_LENGTH+S27_REPEAT_OFFSET
+default 2
 mapEnd int
 
 functionEnd int
 
 function sampleNumberToRepeatLen
-; @pos 334 -193
+; @pos 334 -181
 ; @tab 8
 use sampleMeta
-
 param int sampleNumber
 push sampleNumber
 mapBegin int
-map 0	2
 map 1	S01_REPEAT_LENGTH
 map 2	S02_REPEAT_LENGTH
 map 3	S03_REPEAT_LENGTH
@@ -754,6 +751,7 @@ map 24	S24_REPEAT_LENGTH
 map 25	S25_REPEAT_LENGTH
 map 26	S26_REPEAT_LENGTH
 map 27	S27_REPEAT_LENGTH
+default 2
 mapEnd int
 
 functionEnd int
@@ -765,7 +763,6 @@ use sampleMeta
 param int sampleNumber
 push sampleNumber
 mapBegin int
-map 0	2
 map 1	S01_REPEAT_OFFSET
 map 2	S02_REPEAT_OFFSET
 map 3	S03_REPEAT_OFFSET
@@ -793,6 +790,7 @@ map 24	S24_REPEAT_OFFSET
 map 25	S25_REPEAT_OFFSET
 map 26	S26_REPEAT_OFFSET
 map 27	S27_REPEAT_OFFSET
+default 2
 mapEnd int
 
 functionEnd int
@@ -802,10 +800,8 @@ function sampleNumberToSize
 ; @tab 8
 use env
 param int sampleNumber
-
 push sampleNumber
 mapBegin int
-map 0	1
 map 1	ASSET_SAMPLE1_SIZE
 map 2	ASSET_SAMPLE2_SIZE
 map 3	ASSET_SAMPLE3_SIZE
@@ -833,7 +829,9 @@ map 24	ASSET_SAMPLE24_SIZE
 map 25	ASSET_SAMPLE25_SIZE
 map 26	ASSET_SAMPLE26_SIZE
 map 27	ASSET_SAMPLE27_SIZE
+default 1
 mapEnd int
+
 functionEnd int
 
 function sampleNumberToVolume
@@ -841,10 +839,8 @@ function sampleNumberToVolume
 ; @tab 8
 use sampleMeta
 param int sampleNumber
-
 push sampleNumber
 mapBegin int
-map 0	0
 map 1	S01_VOLUME
 map 2	S02_VOLUME
 map 3	S03_VOLUME
@@ -872,7 +868,9 @@ map 24	S24_VOLUME
 map 25	S25_VOLUME
 map 26	S26_VOLUME
 map 27	S27_VOLUME
+default 0
 mapEnd int
+
 functionEnd int
 
 module amp1
@@ -941,7 +939,7 @@ store
 moduleEnd
 
 module assets
-; @pos -3 -116
+; @pos -21 -137
 ; @tab 22
 ; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_1.pcm
 ; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/aftertouch/sample_2.pcm
@@ -978,7 +976,7 @@ module assets
 moduleEnd
 
 module audiooutL
-; @pos 797 -10
+; @pos 798 -10
 use env
 
 float* in &lowpassL:out
@@ -1087,7 +1085,7 @@ module colors
 moduleEnd
 
 module lowpassL
-; @pos 746 -15
+; @pos 747 -15
 float* in &mixer:outL
 float state 0.0 ; @w
 float out ; @w
@@ -1791,7 +1789,7 @@ int	0x1d
 moduleEnd
 
 module period1
-; @pos 306 -72
+; @pos 303 -69
 ; @group ch1
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -1820,7 +1818,7 @@ ifEnd
 moduleEnd
 
 module period2
-; @pos 308 -24
+; @pos 303 -24
 ; @group ch2
 int* row &rowBuffer2:
 int* sampleNumber &sampleNumber2:out
@@ -1849,7 +1847,7 @@ ifEnd
 moduleEnd
 
 module period3
-; @pos 307 21
+; @pos 303 21
 ; @group ch3
 int* row &rowBuffer3:
 int* sampleNumber &sampleNumber3:out
@@ -1878,7 +1876,7 @@ ifEnd
 moduleEnd
 
 module period4
-; @pos 308 66
+; @pos 303 66
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -1907,7 +1905,7 @@ ifEnd
 moduleEnd
 
 module projectConfig
-; @pos 9 -125
+; @pos -21 -145
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @exportFileName aftertouch
@@ -2090,7 +2088,7 @@ loopEnd
 moduleEnd
 
 module rowCount1
-; @pos -2 19
+; @pos -11 19
 int* in &modRowCounter:out
 int out
 ; We can afford some reading
@@ -2113,7 +2111,7 @@ store
 moduleEnd
 
 module sampleNumber1
-; @pos 272 -72
+; @pos 269 -69
 ; @group ch1
 int* row &rowBuffer1:
 int out
@@ -2135,7 +2133,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber2
-; @pos 274 -24
+; @pos 269 -24
 ; @group ch2
 int* row &rowBuffer2:
 int out
@@ -2157,7 +2155,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber3
-; @pos 273 21
+; @pos 269 21
 ; @group ch3
 int* row &rowBuffer3:
 int out
@@ -2179,7 +2177,7 @@ ifEnd
 moduleEnd
 
 module sampleNumber4
-; @pos 274 66
+; @pos 269 66
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -2201,7 +2199,7 @@ ifEnd
 moduleEnd
 
 module sampleOffset1
-; @pos 195 -72
+; @pos 196 -69
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2580,7 +2578,7 @@ store
 moduleEnd
 
 module tempo1
-; @pos 233 -72
+; @pos 230 -69
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2619,7 +2617,7 @@ ifEnd
 moduleEnd
 
 module tempo2
-; @pos 232 -24
+; @pos 230 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -2658,7 +2656,7 @@ ifEnd
 moduleEnd
 
 module tempo3
-; @pos 232 21
+; @pos 230 21
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2697,7 +2695,7 @@ ifEnd
 moduleEnd
 
 module tempo4
-; @pos 233 66
+; @pos 230 66
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -2736,7 +2734,7 @@ ifEnd
 moduleEnd
 
 module trigger1
-; @pos 351 -72
+; @pos 348 -69
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -2762,7 +2760,7 @@ ifEnd
 moduleEnd
 
 module trigger2
-; @pos 353 -24
+; @pos 348 -24
 ; @group ch2
 int* row &rowBuffer2:
 int* rowCounter &rowCount2:out
@@ -2788,7 +2786,7 @@ ifEnd
 moduleEnd
 
 module trigger3
-; @pos 354 21
+; @pos 348 21
 ; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -2814,7 +2812,7 @@ ifEnd
 moduleEnd
 
 module trigger4
-; @pos 354 66
+; @pos 348 66
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
@@ -2838,7 +2836,7 @@ ifEnd
 moduleEnd
 
 module volume1
-; @pos 390 -72
+; @pos 387 -69
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -2846,7 +2844,7 @@ int* tick &modTickClock:out
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
-; @hide
+
 ; Reload base volume on
 ; tick 0 / row advance.
 push *rowCounter
@@ -2883,7 +2881,7 @@ ifEnd
 moduleEnd
 
 module volume2
-; @pos 392 -24
+; @pos 387 -24
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -2928,7 +2926,7 @@ ifEnd
 moduleEnd
 
 module volume3
-; @pos 393 21
+; @pos 387 21
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -2973,7 +2971,7 @@ ifEnd
 moduleEnd
 
 module volume4
-; @pos 393 66
+; @pos 387 66
 ; @group ch4
 use mod
 int* row &rowBuffer4:
