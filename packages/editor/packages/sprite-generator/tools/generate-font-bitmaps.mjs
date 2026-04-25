@@ -208,6 +208,7 @@ async function main() {
     { name: "spleen6x12", width: 6, height: 12 },
     { name: "terminus8x16", width: 8, height: 16 },
     { name: "spleen8x16", width: 8, height: 16 },
+    { name: "templeos8x8", width: 8, height: 8 },
     { name: "terminus8x16bold", width: 8, height: 16 },
     { name: "6x10", width: 6, height: 10 },
     { name: "terminus10x18", width: 10, height: 18 },

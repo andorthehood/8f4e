@@ -14,6 +14,7 @@
         "{projectRoot}/src/fonts/spleen6x12/generated",
         "{projectRoot}/src/fonts/terminus8x16/generated",
         "{projectRoot}/src/fonts/spleen8x16/generated",
+        "{projectRoot}/src/fonts/templeos8x8/generated",
         "{projectRoot}/src/fonts/terminus8x16bold/generated",
         "{projectRoot}/src/fonts/6x10/generated",
         "{projectRoot}/src/fonts/terminus10x18/generated",

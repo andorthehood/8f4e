@@ -132,6 +132,18 @@ const FONT_DEFINITIONS: Record<Config['font'], FontDefinition> = {
 			return { asciiMetadata, glyphsMetadata };
 		},
 	},
+	templeos8x8: {
+		characterWidth: 8,
+		characterHeight: 8,
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/templeos8x8/generated/ascii'),
+				import('./fonts/templeos8x8/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
+	},
 	spleen12x24: {
 		characterWidth: 12,
 		characterHeight: 24,

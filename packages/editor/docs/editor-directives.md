@@ -53,6 +53,7 @@ Supported fonts:
 - `spleen5x8`
 - `spleen6x12`
 - `spleen8x16`
+- `templeos8x8`
 - `spleen12x24`
 - `spleen16x32`
 
