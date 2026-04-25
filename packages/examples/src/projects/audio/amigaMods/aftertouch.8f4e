@@ -1,5 +1,56 @@
 8f4e/v1
 
+note fragmentShaderBackground
+; @pos 892 -111
+#version 300 es
+
+precision mediump float;
+
+in vec2 v_screenCoord;
+uniform float u_time;
+out vec4 outColor;
+
+#define AQUA_TOP vec3(0.72, 0.86, 1.0)
+#define AQUA_MID vec3(0.35, 0.68, 1.0)
+#define AQUA_DEEP vec3(0.0, 0.22, 0.78)
+#define HIGHLIGHT vec3(1.0, 1.0, 1.0)
+#define SPEED 0.8
+#define CLOUD_BRIGHTNESS 0.14
+
+float hash(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+
+  return mix(
+    mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+    mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+    f.y
+  );
+}
+
+void main() {
+  vec2 uv = vec2(v_screenCoord.x, 1.0 - v_screenCoord.y);
+
+  float water = noise(uv * vec2(5.0, 9.0) + vec2(u_time * SPEED, 0.0));
+  water += noise(uv * vec2(16.0, 22.0) - vec2(u_time * SPEED * 0.7, 0.0)) * 0.35;
+
+  vec3 color = mix(AQUA_DEEP, AQUA_MID, uv.y);
+  color = mix(color, AQUA_TOP, smoothstep(0.45, 1.0, uv.y));
+  color += (water - 0.5) * CLOUD_BRIGHTNESS;
+
+  float gloss1 = smoothstep(0.025, 0.0, abs(uv.y - uv.x * 0.28 - 0.55));
+  float gloss2 = smoothstep(0.018, 0.0, abs(uv.y + uv.x * 0.18 - 0.72));
+  color = mix(color, HIGHLIGHT, gloss1 * 0.28 + gloss2 * 0.18);
+
+  outColor = vec4(color, 1.0);
+}
+noteEnd
+
 constants env
 ; @pos 96 -158
 ; @favorite
@@ -12,68 +63,67 @@ const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
 ; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 9984
+const ASSET_CH1_SIZE 7680
 ; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 9984
+const ASSET_CH2_SIZE 7680
 ; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 9984
+const ASSET_CH3_SIZE 7680
 ; 'patterns_ch4.bin'
-const ASSET_CH4_SIZE 9984
+const ASSET_CH4_SIZE 7680
 ; 'sample_1.pcm'
-const ASSET_SAMPLE1_SIZE 2104
+const ASSET_SAMPLE1_SIZE 60370
 ; 'sample_2.pcm'
-const ASSET_SAMPLE2_SIZE 4904
+const ASSET_SAMPLE2_SIZE 55666
 ; 'sample_3.pcm'
-const ASSET_SAMPLE3_SIZE 15938
+const ASSET_SAMPLE3_SIZE 10470
 ; 'sample_4.pcm'
-const ASSET_SAMPLE4_SIZE 11062
+const ASSET_SAMPLE4_SIZE 46286
 ; 'sample_5.pcm'
-const ASSET_SAMPLE5_SIZE 10276
+const ASSET_SAMPLE5_SIZE 53602
 ; 'sample_6.pcm'
-const ASSET_SAMPLE6_SIZE 16404
+const ASSET_SAMPLE6_SIZE 4020
 ; 'sample_7.pcm'
-const ASSET_SAMPLE7_SIZE 16016
+const ASSET_SAMPLE7_SIZE 5024
 ; 'sample_8.pcm'
-const ASSET_SAMPLE8_SIZE 4926
+const ASSET_SAMPLE8_SIZE 5180
 ; 'sample_9.pcm'
-const ASSET_SAMPLE9_SIZE 4926
+const ASSET_SAMPLE9_SIZE 3660
 ; 'sample_10.pcm'
-const ASSET_SAMPLE10_SIZE 25774
+const ASSET_SAMPLE10_SIZE 2892
 ; 'sample_11.pcm'
-const ASSET_SAMPLE11_SIZE 52982
+const ASSET_SAMPLE11_SIZE 2136
 ; 'sample_12.pcm'
-const ASSET_SAMPLE12_SIZE 14260
+const ASSET_SAMPLE12_SIZE 2372
 ; 'sample_13.pcm'
-const ASSET_SAMPLE13_SIZE 30708
+const ASSET_SAMPLE13_SIZE 2024
 ; 'sample_14.pcm'
-const ASSET_SAMPLE14_SIZE 6970
+const ASSET_SAMPLE14_SIZE 5332
 ; 'sample_15.pcm'
-const ASSET_SAMPLE15_SIZE 62562
+const ASSET_SAMPLE15_SIZE 5596
 ; 'sample_16.pcm'
-const ASSET_SAMPLE16_SIZE 9826
+const ASSET_SAMPLE16_SIZE 5326
 ; 'sample_17.pcm'
-const ASSET_SAMPLE17_SIZE 4836
+const ASSET_SAMPLE17_SIZE 2652
 ; 'sample_18.pcm'
-const ASSET_SAMPLE18_SIZE 4906
+const ASSET_SAMPLE18_SIZE 5076
 ; 'sample_19.pcm'
-const ASSET_SAMPLE19_SIZE 64490
+const ASSET_SAMPLE19_SIZE 2370
 ; 'sample_20.pcm'
-const ASSET_SAMPLE20_SIZE 10132
+const ASSET_SAMPLE20_SIZE 4878
 ; 'sample_21.pcm'
-const ASSET_SAMPLE21_SIZE 37218
+const ASSET_SAMPLE21_SIZE 5510
 ; 'sample_22.pcm'
-const ASSET_SAMPLE22_SIZE 16426
+const ASSET_SAMPLE22_SIZE 2606
 ; 'sample_23.pcm'
-const ASSET_SAMPLE23_SIZE 10964
+const ASSET_SAMPLE23_SIZE 2644
 ; 'sample_24.pcm'
-const ASSET_SAMPLE24_SIZE 53156
+const ASSET_SAMPLE24_SIZE 29182
 ; 'sample_25.pcm'
-const ASSET_SAMPLE25_SIZE 4540
+const ASSET_SAMPLE25_SIZE 40704
 ; 'sample_26.pcm'
-const ASSET_SAMPLE26_SIZE 12602
+const ASSET_SAMPLE26_SIZE 40704
 ; 'sample_27.pcm'
-const ASSET_SAMPLE27_SIZE 52974
-; 'sample_28.pcm'
+const ASSET_SAMPLE27_SIZE 40704
 
 constantsEnd
 
@@ -826,7 +876,7 @@ mapEnd int
 functionEnd int
 
 module amp1
-; @pos 661 -22
+; @pos 662 -22
 
 float* in &modSamplePlayer1:out
 int* volume &volume1:out
@@ -843,7 +893,7 @@ store
 moduleEnd
 
 module amp2
-; @pos 661 -4
+; @pos 662 -4
 float* in &modSamplePlayer2:out
 int* volume &volume2:out
 float out; @meter
@@ -1003,8 +1053,41 @@ ifEnd
 
 moduleEnd
 
+module colors
+; @pos 821 -93
+; @color text.lineNumber rgba(255,255,255,0.3)
+; @color text.code rgba(255,255,255,0.8)
+; @color text.instruction #ffffff
+; @color text.numbers #ffffff
+; @color text.codeComment rgba(255,255,255,0.5)
+; @color text.menuItemTextHighlighted #ffffff
+; @color text.debugInfo rgba(255,255,255,0.5)
+; @color text.dialogText #000
+; @color text.dialogTitle #000
+; @color text.menuItemText #000
+; @color fill.moduleBackground rgba(255,255,255,0.2)
+; @color fill.wire rgba(255,255,255,0.5)
+; @color fill.highlightedCodeLine rgba(255,255,255,0.4)
+; @color fill.moduleBackgroundDragged rgba(255,255,255,0.2)
+; @color fill.backgroundDots rgba(255,255,255,0.1)
+; @color fill.backgroundDots2 rgba(255,255,255,0.3)
+; @color fill.menuItemBackground rgba(255,255,255,0.8)
+; @color fill.menuItemBackgroundHighlighted #000
+; @color fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
+; @color fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
+; @color fill.codeBlockHighlightLevel3 rgba(255,255,255,0.1)
+; @color fill.waveform rgba(255,255,255,0.8)
+; @color fill.debugInfoBackground rgba(255,255,255,0.1)
+; @color fill.dialogDimmer rgba(255,255,255,0.2)
+; @color fill.dialogBackground rgba(255,255,255,0.8)
+; @color icons.inputConnectorBackground rgba(255,255,255,0.4)
+; @color icons.inputConnector #fff
+; @color icons.outputConnectorBackground rgba(255,255,255,0.4)
+; @color icons.outputConnector #fff
+moduleEnd
+
 module lowpassL
-; @pos 744 -15
+; @pos 746 -15
 float* in &mixer:outL
 float state 0.0 ; @w
 float out ; @w
@@ -1035,7 +1118,7 @@ store
 moduleEnd
 
 module lowpassR
-; @pos 744 16
+; @pos 747 16
 float* in &mixer:outR
 float state 0.0 ; @w
 float out ; @w
@@ -1205,7 +1288,6 @@ moduleEnd
 
 module modSamplePlayer1
 ; @pos 545 -7
-; @group ch1
 ; @home
 use env
 ; @tab 6 20
@@ -1307,17 +1389,16 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer2
-; @pos 545 16
-; @group ch2
+; @pos 545 14
 use env
-; @stop 12 20
-int*  period &period2:out 
-int* offset &sampleOffset2:out ; @w *
-int*  trigger &trigger2:out
-int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress ;@w
-int   sampleSize ; @w
-int8* playhead ; @w
+; @tab 6 20
+int*	period	&period2:out 
+int*	offset	&sampleOffset2:out
+int*	trigger	&trigger2:out
+int*	sampleNumber	&sampleNumber2:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -1410,16 +1491,15 @@ moduleEnd
 
 module modSamplePlayer3
 ; @pos 597 -6
-; @group ch3
 use env
-
-int* period &period3:out
-int* offset &sampleOffset3:out ; @w *
-int* trigger &trigger3:out
-int* sampleNumber &sampleNumber3:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
+; @tab 6 20
+int*	period	&period3:out
+int*	offset	&sampleOffset3:out
+int*	trigger	&trigger3:out
+int*	sampleNumber	&sampleNumber3:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -1511,17 +1591,16 @@ ifEnd
 moduleEnd
 
 module modSamplePlayer4
-; @pos 597 16
-; @group ch4
+; @pos 597 14
 use env
-
-int* period &period4:out
-int* offset &sampleOffset4:out ; @w *
-int* trigger &trigger4:out
-int* sampleNumber &sampleNumber4:out
-int8* sampleAddress; @w
-int sampleSize; @w
-int8* playhead; @w
+; @tab 6 20
+int*	period	&period4:out
+int*	offset	&sampleOffset4:out
+int*	trigger	&trigger4:out
+int*	sampleNumber	&sampleNumber4:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
 ; @wave2 sampleAddress sampleSize playhead
 float out ; @w
 ; @hide
@@ -2417,7 +2496,7 @@ module scope2
 ; @pos 64 -17
 float* in &amp2:out
 float[] buffer 64  
-; @plot &buffer 64   
+; @plot &buffer 64         
 ; @hide
 int bufferPointer &buffer
 
@@ -2756,45 +2835,6 @@ greaterThan
 store
 ifEnd   
 
-moduleEnd
-
-module ultimateSoundtrackerColors
-; @pos 573 -174
-; @tab 46
-; @color fill.moduleBackground	#000
-; @color fill.background	#000
-; @color fill.backgroundDots	#036
-; @color fill.backgroundDots2	#630
-; @color fill.highlightedCodeLine	#036
-; @color fill.moduleBackgroundDragged	#000
-; @color text.instruction	#369
-; @color text.code	#c96
-; @color text.lineNumber	#630
-; @color text.codeComment	#963
-; @color text.numbers	#fc9
-; @color text.debugInfo	#369
-; @color fill.debugInfoBackground	#000
-; @color fill.wire	rgba(255,255,255,0.3)
-; @color fill.wireHighlighted	#fff
-; @color fill.menuItemBackground	#036
-; @color fill.menuItemBackgroundHighlighted	#fff
-; @color fill.errorMessageBackground	#900
-; @color fill.dialogBackground	#036
-; @color fill.dialogDimmer	#000
-; @color fill.codeBlockHighlightLevel1	#000a14
-; @color fill.codeBlockHighlightLevel2	#001429
-; @color fill.codeBlockHighlightLevel3	#001f3d
-; @color fill.trace	#0f0
-; @color fill.scanLine	#fc9
-; @color fill.waveform	#369
-; @color icons.outputConnectorBackground	#369
-; @color icons.outputConnector	#000
-; @color icons.inputConnectorBackground	#369
-; @color icons.inputConnector	#000
-; @color text.arrow	#369
-; @color fill.meterGreen	#0f0
-; @color fill.meterYellow	#ff0
-; @color fill.meterRed	#f00
 moduleEnd
 
 module volume1
