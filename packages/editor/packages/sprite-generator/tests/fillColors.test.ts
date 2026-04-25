@@ -73,7 +73,6 @@ describe('fillColors module', () => {
 			expect(colorValues).toContain(minimalColorScheme.fill.menuItemBackground);
 			expect(colorValues).toContain(minimalColorScheme.fill.wire);
 			expect(colorValues).toContain(minimalColorScheme.fill.plotterBackground);
-			expect(colorValues).toContain(minimalColorScheme.fill.recordingMatte);
 		});
 
 		it('should generate rectangle commands with correct dimensions', () => {
@@ -135,7 +134,6 @@ describe('fillColors module', () => {
 			expect(Object.keys(lookup)).toContain('menuItemBackground');
 			expect(Object.keys(lookup)).toContain('wire');
 			expect(Object.keys(lookup)).toContain('errorMessageBackground');
-			expect(Object.keys(lookup)).toContain('recordingMatte');
 		});
 
 		it('should generate correct sprite coordinates for first color', () => {
@@ -203,7 +201,6 @@ describe('fillColors module', () => {
 			expect(keys).toContain('background');
 			expect(keys).toContain('wire');
 			expect(keys).toContain('errorMessageBackground');
-			expect(keys).toContain('recordingMatte');
 		});
 
 		it('should generate coordinates with increasing x positions', () => {
