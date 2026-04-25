@@ -14,6 +14,22 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 		expect(result.firstArg).toEqual({ type: 'literal', value: 3 });
 	});
 
+	it('parses single-character string literal as a byte literal', () => {
+		const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.STRING_LITERAL, value: 'e' }]);
+		expect(result.firstArg).toEqual({ type: 'literal', value: 101 });
+	});
+
+	it('parses multi-character string literal as anonymous split-byte-tokens', () => {
+		const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.STRING_LITERAL, value: 'AB' }]);
+		expect(result.firstArg).toEqual({
+			type: 'split-byte-tokens',
+			tokens: [
+				{ type: 'literal', value: 65 },
+				{ type: 'literal', value: 66 },
+			],
+		});
+	});
+
 	it('parses intermodular reference argument', () => {
 		const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('&mod:id')]);
 		expect(result.firstArg).toEqual({
@@ -120,6 +136,30 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 		expect(result.secondArg).toEqual({ type: 'literal', value: 7 });
 	});
 
+	it('parses single-character string literal as a named declaration default', () => {
+		const result = parseMemoryInstructionArgumentsShape([
+			classifyIdentifier('foo'),
+			{ type: ArgumentType.STRING_LITERAL, value: 'e' },
+		]);
+		expect(result.firstArg).toEqual({ type: 'identifier', value: 'foo' });
+		expect(result.secondArg).toEqual({ type: 'literal', value: 101 });
+	});
+
+	it('parses multi-character string literal as a named split-byte default', () => {
+		const result = parseMemoryInstructionArgumentsShape([
+			classifyIdentifier('foo'),
+			{ type: ArgumentType.STRING_LITERAL, value: 'AB' },
+		]);
+		expect(result.firstArg).toEqual({ type: 'identifier', value: 'foo' });
+		expect(result.secondArg).toEqual({
+			type: 'split-byte-tokens',
+			tokens: [
+				{ type: 'literal', value: 65 },
+				{ type: 'literal', value: 66 },
+			],
+		});
+	});
+
 	it('parses single constant-style identifier as constant-identifier (rejected by semantic phase)', () => {
 		const result = parseMemoryInstructionArgumentsShape([classifyIdentifier('MY_CONST')]);
 		expect(result.firstArg).toEqual({ type: 'constant-identifier', value: 'MY_CONST' });
@@ -165,6 +205,22 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 			tokens: [
 				{ type: 'literal', value: 0xa8 },
 				{ type: 'identifier', value: 'HI' },
+			],
+		});
+	});
+
+	it('flattens string literals inside split-byte token sequences', () => {
+		const result = parseMemoryInstructionArgumentsShape([
+			classifyIdentifier('foo'),
+			{ type: ArgumentType.STRING_LITERAL, value: 'AB' },
+			{ type: ArgumentType.LITERAL, value: 0x43, isInteger: true, isHex: true },
+		]);
+		expect(result.secondArg).toEqual({
+			type: 'split-byte-tokens',
+			tokens: [
+				{ type: 'literal', value: 65 },
+				{ type: 'literal', value: 66 },
+				{ type: 'literal', value: 0x43 },
 			],
 		});
 	});

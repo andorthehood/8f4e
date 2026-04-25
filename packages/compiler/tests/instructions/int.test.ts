@@ -40,6 +40,32 @@ moduleEnd
 );
 
 moduleTester(
+	'int: with named single-character string default',
+	`module test
+int foo "e"
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	[[{}, { output: 101, foo: 101 }]]
+);
+
+moduleTester(
+	'int: with anonymous single-character string default',
+	`module test
+int "e"
+int output
+push &output
+push __anonymous__1
+store
+moduleEnd
+`,
+	[[{}, { output: 101 }]]
+);
+
+moduleTester(
 	'int: with constant identifier (anonymous allocation)',
 	`module test
 const MY_VALUE 100
@@ -155,6 +181,19 @@ moduleEnd
 `,
 	// 32=0x20, 64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
 	[[{}, { output: 0x20400000 | 0 }]]
+);
+
+moduleTester(
+	'int: named string split-byte default (2 bytes, right-padded)',
+	`module test
+int foo "AB"
+int output
+push &output
+push foo
+store
+moduleEnd
+`,
+	[[{}, { output: 0x41420000 | 0 }]]
 );
 
 moduleTester(

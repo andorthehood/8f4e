@@ -1,4 +1,4 @@
-import { ArgumentType, type Argument, type ArgumentLiteral } from './parseArgument';
+import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentStringLiteral } from './parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 
 /**
@@ -60,6 +60,18 @@ function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: Argument
 }
 
 /**
+ * Converts a decoded string literal into declaration bytes, matching `push "..."`
+ * string-literal byte semantics.
+ */
+function stringLiteralToBytes(arg: ArgumentStringLiteral): number[] {
+	return Array.from(arg.value, ch => ch.charCodeAt(0) & 0xff);
+}
+
+function isNonEmptyStringLiteral(arg: Argument): arg is ArgumentStringLiteral {
+	return arg.type === ArgumentType.STRING_LITERAL && arg.value.length > 0;
+}
+
+/**
  * Returns true when the argument can participate in a split-byte sequence:
  * either a byte-sized integer literal (0–255) or a plain or constant-style identifier.
  * Plain and constant-style identifiers are expected to be resolved as compile-time constants
@@ -67,6 +79,7 @@ function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: Argument
  */
 function isSplitByteCandidate(arg: Argument): boolean {
 	if (isByteLiteral(arg)) return true;
+	if (isNonEmptyStringLiteral(arg)) return true;
 	if (arg.type !== ArgumentType.IDENTIFIER) return false;
 	// Only plain and constant-style identifiers are valid split-byte participants.
 	// All other reference kinds (memory-reference, element-count, intermodular-*, etc.) are excluded.
@@ -76,11 +89,14 @@ function isSplitByteCandidate(arg: Argument): boolean {
 /**
  * Converts an argument known to be a valid split-byte candidate into a SplitByteToken.
  */
-function toSplitByteToken(arg: Argument): SplitByteToken {
+function toSplitByteTokens(arg: Argument): SplitByteToken[] {
 	if (arg.type === ArgumentType.LITERAL) {
-		return { type: 'literal', value: (arg as ArgumentLiteral).value };
+		return [{ type: 'literal', value: (arg as ArgumentLiteral).value }];
 	}
-	return { type: 'identifier', value: (arg as { value: string }).value };
+	if (arg.type === ArgumentType.STRING_LITERAL) {
+		return stringLiteralToBytes(arg).map(value => ({ type: 'literal', value }));
+	}
+	return [{ type: 'identifier', value: (arg as { value: string }).value }];
 }
 
 /**
@@ -93,7 +109,7 @@ function collectSplitByteTokens(args: Array<Argument>, start: number): SplitByte
 		if (!isSplitByteCandidate(args[i])) {
 			throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
 		}
-		tokens.push(toSplitByteToken(args[i]));
+		tokens.push(...toSplitByteTokens(args[i]));
 	}
 	return tokens;
 }
@@ -125,6 +141,19 @@ export function parseMemoryInstructionArgumentsShape(args: Array<Argument>): Par
 	const result: ParsedMemoryInstructionArguments = {
 		firstArg: classifyArgument(args[0]),
 	};
+
+	// Anonymous path — starts with a string literal. A single string literal becomes
+	// either a single literal byte or a packed split-byte sequence. When followed by
+	// more byte-resolving tokens, flatten all of them into one split-byte sequence.
+	if (args[0].type === ArgumentType.STRING_LITERAL) {
+		if (args[1]) {
+			if (!isSplitByteCandidate(args[1])) {
+				throw new SyntaxRulesError(SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS);
+			}
+			result.firstArg = { type: 'split-byte-tokens', tokens: collectSplitByteTokens(args, 0) };
+		}
+		return result;
+	}
 
 	// Case A: Anonymous path — starts with a byte-sized integer literal (0–255)
 	if (result.firstArg.type === 'literal' && isByteLiteral(args[0])) {
@@ -201,6 +230,20 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		return {
 			type: 'literal',
 			value: arg.value,
+		};
+	}
+
+	if (arg.type === ArgumentType.STRING_LITERAL) {
+		const bytes = stringLiteralToBytes(arg);
+		if (bytes.length <= 1) {
+			return {
+				type: 'literal',
+				value: bytes[0] ?? 0,
+			};
+		}
+		return {
+			type: 'split-byte-tokens',
+			tokens: bytes.map(value => ({ type: 'literal', value })),
 		};
 	}
 
