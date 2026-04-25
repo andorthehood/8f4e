@@ -35,11 +35,14 @@ Anonymous scalar declarations are supported in three forms:
 - **Bare implicit zero**: `int` allocates an anonymous `int` with default `0`
 - **Anonymous literal/value**: `int 42` allocates an anonymous `int` with default `42`
 - **Anonymous constant-style identifier**: `int FOO` allocates an anonymous `int` with default equal to constant `FOO`, where `FOO` is a declared `const`
+- **Anonymous string literal**: `int "e"` allocates an anonymous `int` with default equal to the byte value of `"e"` (`101`)
 
 This bare zero-initialized form applies to scalar declarations only (including pointer variants such as `int*`). Array declarations (`int[]`) still require an element count.
 
 Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
 Constant expressions are also supported with the same one-operator rule (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
+Quoted string literals are supported for scalar defaults and use the same byte encoding as `push "..."`.
+Single-character strings become their byte value. Multi-character strings are packed as split bytes; for example, `int "AB"` is equivalent to `int 0x41 0x42`.
 
 A default value may also be expressed as a split-byte sequence: two to four adjacent byte-resolving tokens combined into a single 32-bit integer.
 Bytes are combined left-to-right as most-significant to least-significant.
@@ -49,6 +52,7 @@ Split-byte tokens may be:
 - Integer literals in any numeric form (decimal `32`, hexadecimal `0x20`, etc.) as long as each resolves to an integer in the range `0–255`.
 - Literal-only `*` or `/` expressions such as `16*2` or `0x40/2`, as long as each folds to an integer in the range `0–255`.
 - Constants that resolve at compile time to an integer in the range `0–255`.
+- String literals. Their bytes are flattened into the surrounding split-byte sequence.
 - Mixed sequences of byte literals and byte-valued constants are also accepted.
 
 Non-byte-resolving forms are rejected in split-byte mode. Examples:
@@ -86,8 +90,12 @@ int colorAR   0xA8 0xFF
 int 0xA8 0xFF
 int colorDecimal 32 64
 int colorExpr 16*2 0x40/2
+int letter "e"
+int word "AB"
 int 32 64
 int 32
+int "e"
+int "AB"
 int colorFromConst HI LO
 int HI LO
 ```
