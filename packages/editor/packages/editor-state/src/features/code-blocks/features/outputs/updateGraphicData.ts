@@ -4,6 +4,8 @@ import type { CodeBlockGraphicData, Output, State } from '~/types';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
+const CONNECTOR_WIDTH_GRID_CELLS = 3;
+
 export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.outputs = [];
 	const moduleId = graphicData.moduleId;
@@ -18,7 +20,7 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 			return;
 		}
 
-		const width = state.viewport.vGrid * 2;
+		const width = state.viewport.vGrid * CONNECTOR_WIDTH_GRID_CELLS;
 		const height = state.viewport.hGrid;
 		const x = graphicData.width - 3 * state.viewport.vGrid;
 		const y = gapCalculator(output.lineNumber, graphicData.gaps) * state.viewport.hGrid;
@@ -28,8 +30,8 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 			height,
 			x,
 			y,
-			wireX: x + width / 2,
-			wireY: y + height / 2,
+			wireX: Math.round(x + width / 2),
+			wireY: Math.round(y + height / 2),
 			id: output.id,
 			codeBlock: graphicData,
 			calibratedMax: 0,
