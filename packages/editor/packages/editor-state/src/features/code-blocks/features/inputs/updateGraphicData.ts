@@ -18,11 +18,18 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 			return;
 		}
 
+		const width = state.viewport.vGrid * 2;
+		const height = state.viewport.hGrid;
+		const x = 0;
+		const y = gapCalculator(input.lineNumber, graphicData.gaps) * state.viewport.hGrid;
+
 		graphicData.widgets.inputs.push({
-			width: state.viewport.vGrid * 2,
-			height: state.viewport.hGrid,
-			x: 0,
-			y: gapCalculator(input.lineNumber, graphicData.gaps) * state.viewport.hGrid,
+			width,
+			height,
+			x,
+			y,
+			wireX: x + width / 2,
+			wireY: y + height / 2,
 			id: input.id,
 			wordAlignedAddress: memory.wordAlignedAddress,
 			codeBlock: graphicData,

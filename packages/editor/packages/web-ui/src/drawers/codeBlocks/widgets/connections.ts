@@ -3,6 +3,9 @@ import { Engine } from 'glugglug';
 import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../../types';
 
+const WIRE_SPRITE = 'wire';
+const WIRE_HIGHLIGHTED_SPRITE = 'wireHighlighted';
+
 export default function drawConnections(engine: Engine, state: State, memoryViews: MemoryViews): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
@@ -19,25 +22,25 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 			continue;
 		}
 
-		for (const { x, y, id } of codeBlock.widgets.inputs) {
-			const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[id];
+		for (const input of codeBlock.widgets.inputs) {
+			const outputAddress = memoryViews.int32[input.wordAlignedAddress];
 
-			if (!memory || memoryViews.int32[memory.wordAlignedAddress] === 0) {
+			if (outputAddress === 0) {
 				continue;
 			}
 
-			const output = state.graphicHelper.outputsByWordAddress.get(memoryViews.int32[memory.wordAlignedAddress]);
+			const output = state.graphicHelper.outputsByWordAddress.get(outputAddress);
 
 			if (!output) {
 				continue;
 			}
 
 			engine.drawLine(
-				codeBlock.x + codeBlock.offsetX + x + state.viewport.vGrid,
-				codeBlock.y + codeBlock.offsetY + y + state.viewport.hGrid / 2,
-				output.codeBlock.x + output.codeBlock.offsetX + output.x + state.viewport.vGrid,
-				output.codeBlock.y + output.codeBlock.offsetY + output.y + state.viewport.vGrid,
-				isSelected ? 'wireHighlighted' : 'wire',
+				codeBlock.x + codeBlock.offsetX + input.wireX,
+				codeBlock.y + codeBlock.offsetY + input.wireY,
+				output.codeBlock.x + output.codeBlock.offsetX + output.wireX,
+				output.codeBlock.y + output.codeBlock.offsetY + output.wireY,
+				isSelected ? WIRE_HIGHLIGHTED_SPRITE : WIRE_SPRITE,
 				state.globalEditorDirectives.wireThickness ?? 1
 			);
 		}

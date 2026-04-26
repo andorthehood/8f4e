@@ -35,6 +35,8 @@ export interface Input {
 	height: number;
 	x: number;
 	y: number;
+	wireX: number;
+	wireY: number;
 	id: string;
 	wordAlignedAddress: number;
 }
@@ -45,6 +47,8 @@ export interface Output {
 	height: number;
 	x: number;
 	y: number;
+	wireX: number;
+	wireY: number;
 	id: string;
 	calibratedMax: number;
 	calibratedMin: number;

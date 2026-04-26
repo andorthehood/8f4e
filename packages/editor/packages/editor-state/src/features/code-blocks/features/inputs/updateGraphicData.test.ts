@@ -73,6 +73,8 @@ describe('updateInputsGraphicData', () => {
 			height: 0,
 			x: 0,
 			y: 0,
+			wireX: 0,
+			wireY: 0,
 			id: 'oldInput',
 			wordAlignedAddress: 0,
 		});

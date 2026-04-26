@@ -38,8 +38,11 @@ export default function drawConnectors(
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 	}
 
-	for (const { x, y } of codeBlock.widgets.inputs) {
+	if (codeBlock.widgets.inputs.length > 0) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+	}
+
+	for (const { x, y } of codeBlock.widgets.inputs) {
 		engine.drawSprite(x, y, Icon.INPUT);
 	}
 }
