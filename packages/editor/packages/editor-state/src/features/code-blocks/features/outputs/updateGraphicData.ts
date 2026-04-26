@@ -18,11 +18,18 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 			return;
 		}
 
+		const width = state.viewport.vGrid * 2;
+		const height = state.viewport.hGrid;
+		const x = graphicData.width - 3 * state.viewport.vGrid;
+		const y = gapCalculator(output.lineNumber, graphicData.gaps) * state.viewport.hGrid;
+
 		const out: Output = {
-			width: state.viewport.vGrid * 2,
-			height: state.viewport.hGrid,
-			x: graphicData.width - 3 * state.viewport.vGrid,
-			y: gapCalculator(output.lineNumber, graphicData.gaps) * state.viewport.hGrid,
+			width,
+			height,
+			x,
+			y,
+			wireX: x + width / 2,
+			wireY: y + height / 2,
 			id: output.id,
 			codeBlock: graphicData,
 			calibratedMax: 0,
