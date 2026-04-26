@@ -46,22 +46,22 @@ describe('drawConnections', () => {
 		});
 		const input: Input = {
 			codeBlock: inputBlock,
-			width: 20,
+			width: 30,
 			height: 18,
 			x: 0,
 			y: 36,
-			wireX: 10,
+			wireX: 15,
 			wireY: 45,
 			id: 'in',
 			wordAlignedAddress: 2,
 		};
 		const output: Output = {
 			codeBlock: outputBlock,
-			width: 20,
+			width: 30,
 			height: 18,
 			x: 140,
 			y: 54,
-			wireX: 150,
+			wireX: 155,
 			wireY: 63,
 			id: 'out',
 			calibratedMax: 0,
@@ -111,7 +111,7 @@ describe('drawConnections', () => {
 		drawConnections(engine, state, createMemoryViews({ int32: [0, 0, 80] }));
 
 		expect(engine.startGroup).toHaveBeenCalledWith(-5, -9);
-		expect(engine.drawLine).toHaveBeenCalledWith(117, 256, 463, 480, 'wireHighlighted', 3);
+		expect(engine.drawLine).toHaveBeenCalledWith(122, 256, 468, 480, 'wireHighlighted', 3);
 		expect(engine.endGroup).toHaveBeenCalled();
 	});
 });
