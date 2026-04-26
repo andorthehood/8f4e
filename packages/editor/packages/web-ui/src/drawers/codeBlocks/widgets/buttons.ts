@@ -10,13 +10,11 @@ export default function drawButtons(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	for (const { x, y, id: debuggerId, onValue, offValue } of codeBlock.widgets.buttons) {
-		if (!state.graphicHelper.spriteLookups || !codeBlock.moduleId) {
-			continue;
-		}
+	if (!state.graphicHelper.spriteLookups) {
+		return;
+	}
 
-		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[debuggerId];
-		const { wordAlignedAddress = 0 } = memory || {};
+	for (const { x, y, wordAlignedAddress, onValue, offValue } of codeBlock.widgets.buttons) {
 		const value = memoryViews.int32[wordAlignedAddress] || 0;
 
 		if (value === onValue) {

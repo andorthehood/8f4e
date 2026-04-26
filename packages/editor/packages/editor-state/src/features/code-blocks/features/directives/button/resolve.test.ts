@@ -19,6 +19,7 @@ describe('button directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			code: ['; @button btn1 0 1'],
 			width: 100,
 			gaps: new Map(),
@@ -29,6 +30,24 @@ describe('button directive widget resolution', () => {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,
+				},
+			},
+			compiler: {
+				compiledModules: {
+					'test-block': {
+						memoryMap: {
+							btn1: {
+								id: 'btn1',
+								wordAlignedAddress: 5,
+								isInteger: true,
+							},
+							btn2: {
+								id: 'btn2',
+								wordAlignedAddress: 6,
+								isInteger: true,
+							},
+						},
+					},
 				},
 			},
 		});
@@ -61,6 +80,8 @@ describe('button directive widget resolution', () => {
 			x: 0,
 			y: 0,
 			id: 'oldButton',
+			wordAlignedAddress: 0,
+			isInteger: true,
 			onValue: 1,
 			offValue: 0,
 		});

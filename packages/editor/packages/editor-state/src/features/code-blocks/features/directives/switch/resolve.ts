@@ -2,6 +2,7 @@ import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../type
 import type { SwitchDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
@@ -11,6 +12,16 @@ function resolveSwitchDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
+	if (!graphicData.moduleId) {
+		return;
+	}
+
+	const memory = resolveMemoryIdentifier(state, graphicData.moduleId, _switch.id)?.memory;
+
+	if (!memory) {
+		return;
+	}
+
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[_switch.lineNumber] ?? _switch.lineNumber;
 
 	graphicData.widgets.switches.push({
@@ -19,6 +30,8 @@ function resolveSwitchDirectiveWidget(
 		x: graphicData.width - 4 * state.viewport.vGrid,
 		y: gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid,
 		id: _switch.id,
+		wordAlignedAddress: memory.wordAlignedAddress,
+		isInteger: memory.isInteger ?? true,
 		offValue: _switch.offValue,
 		onValue: _switch.onValue,
 	});

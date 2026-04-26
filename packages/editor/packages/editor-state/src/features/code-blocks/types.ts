@@ -137,6 +137,8 @@ export interface Switch {
 	x: number;
 	y: number;
 	id: string;
+	wordAlignedAddress: number;
+	isInteger: boolean;
 	offValue: number;
 	onValue: number;
 }
@@ -178,6 +180,10 @@ export interface Slider {
 	x: number;
 	y: number;
 	id: string;
+	wordAlignedAddress: number;
+	byteAddress: number;
+	isInteger: boolean;
+	isFloat64?: boolean;
 	min: number;
 	max: number;
 	step?: number;

@@ -2,6 +2,7 @@ import type { DirectiveDerivedState, DirectiveWidgetContribution } from '../type
 import type { ButtonDirectiveData } from './data';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
@@ -11,6 +12,16 @@ function resolveButtonDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
+	if (!graphicData.moduleId) {
+		return;
+	}
+
+	const memory = resolveMemoryIdentifier(state, graphicData.moduleId, button.id)?.memory;
+
+	if (!memory) {
+		return;
+	}
+
 	const displayRow = directiveState.displayModel.rawRowToDisplayRow[button.lineNumber] ?? button.lineNumber;
 
 	graphicData.widgets.buttons.push({
@@ -19,6 +30,8 @@ function resolveButtonDirectiveWidget(
 		x: graphicData.width - 4 * state.viewport.vGrid,
 		y: gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid,
 		id: button.id,
+		wordAlignedAddress: memory.wordAlignedAddress,
+		isInteger: memory.isInteger ?? true,
 		offValue: button.offValue,
 		onValue: button.onValue,
 	});

@@ -16,18 +16,7 @@ export default function drawSwitches(
 		return;
 	}
 
-	for (const { x, y, id: debuggerId, onValue, offValue } of codeBlock.widgets.switches) {
-		if (!codeBlock.moduleId) {
-			continue;
-		}
-
-		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[debuggerId];
-
-		if (!memory) {
-			continue;
-		}
-
-		const { wordAlignedAddress } = memory;
+	for (const { x, y, wordAlignedAddress, onValue, offValue } of codeBlock.widgets.switches) {
 		const value = memoryViews.int32[wordAlignedAddress] || 0;
 
 		if (value === onValue) {

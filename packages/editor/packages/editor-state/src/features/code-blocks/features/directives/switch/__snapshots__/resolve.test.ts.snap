@@ -4,9 +4,11 @@ exports[`switch directive widget resolution > should calculate correct dimension
 {
   "height": 16,
   "id": "sw1",
+  "isInteger": true,
   "offValue": 0,
   "onValue": 1,
   "width": 32,
+  "wordAlignedAddress": 5,
   "x": 68,
   "y": 0,
 }
@@ -17,18 +19,22 @@ exports[`switch directive widget resolution > should handle multiple switches 1`
   {
     "height": 16,
     "id": "sw1",
+    "isInteger": true,
     "offValue": 0,
     "onValue": 1,
     "width": 32,
+    "wordAlignedAddress": 5,
     "x": 68,
     "y": 0,
   },
   {
     "height": 16,
     "id": "sw2",
+    "isInteger": true,
     "offValue": 5,
     "onValue": 10,
     "width": 32,
+    "wordAlignedAddress": 6,
     "x": 68,
     "y": 16,
   },
@@ -39,9 +45,11 @@ exports[`switch directive widget resolution > should handle switches with custom
 {
   "height": 16,
   "id": "sw1",
+  "isInteger": true,
   "offValue": -5,
   "onValue": 100,
   "width": 32,
+  "wordAlignedAddress": 5,
   "x": 68,
   "y": 0,
 }
@@ -51,9 +59,11 @@ exports[`switch directive widget resolution > should position switches at correc
 {
   "height": 16,
   "id": "sw1",
+  "isInteger": true,
   "offValue": 0,
   "onValue": 1,
   "width": 32,
+  "wordAlignedAddress": 5,
   "x": 68,
   "y": 32,
 }

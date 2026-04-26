@@ -12,23 +12,14 @@ export default function _switch(state: State, events: EventDispatcher): () => vo
 			return;
 		}
 
-		if (!codeBlock.moduleId) {
-			return;
-		}
-
-		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[_switch.id];
-
-		if (!memory) {
-			return;
-		}
-		const value = state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress);
+		const value = state.callbacks?.getWordFromMemory?.(_switch.wordAlignedAddress);
 
 		if (value === _switch.offValue) {
-			state.callbacks?.setWordInMemory?.(memory.wordAlignedAddress, _switch.onValue, memory.isInteger ?? true);
+			state.callbacks?.setWordInMemory?.(_switch.wordAlignedAddress, _switch.onValue, _switch.isInteger);
 		} else if (value === _switch.onValue) {
-			state.callbacks?.setWordInMemory?.(memory.wordAlignedAddress, _switch.offValue, memory.isInteger ?? true);
+			state.callbacks?.setWordInMemory?.(_switch.wordAlignedAddress, _switch.offValue, _switch.isInteger);
 		} else {
-			state.callbacks?.setWordInMemory?.(memory.wordAlignedAddress, _switch.offValue, memory.isInteger ?? true);
+			state.callbacks?.setWordInMemory?.(_switch.wordAlignedAddress, _switch.offValue, _switch.isInteger);
 		}
 	};
 

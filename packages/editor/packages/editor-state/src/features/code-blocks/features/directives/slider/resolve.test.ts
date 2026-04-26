@@ -37,6 +37,7 @@ describe('slider directive widget resolution', () => {
 							mySlider: {
 								id: 'mySlider',
 								wordAlignedAddress: 0,
+								byteAddress: 0,
 								isInteger: true,
 								numberOfElements: 1,
 								elementWordSize: 1,
@@ -86,6 +87,9 @@ describe('slider directive widget resolution', () => {
 			x: 0,
 			y: 0,
 			id: 'oldSlider',
+			wordAlignedAddress: 0,
+			byteAddress: 0,
+			isInteger: true,
 			min: 0,
 			max: 100,
 		});

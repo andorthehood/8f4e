@@ -13,23 +13,13 @@ export default function drawer(
 		return;
 	}
 
-	for (const { x, y, width, height, id, min, max } of codeBlock.widgets.sliders) {
-		if (!codeBlock.moduleId) {
-			continue;
-		}
-
-		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[id];
-
-		if (!memory) {
-			continue;
-		}
-
-		// Read the current value from memory
-		const value = memory.isInteger
-			? memoryViews.int32[memory.wordAlignedAddress]
-			: memory.isFloat64
-				? memoryViews.float64[memory.byteAddress / 8]
-				: memoryViews.float32[memory.wordAlignedAddress];
+	for (const { x, y, width, height, wordAlignedAddress, byteAddress, isInteger, isFloat64, min, max } of codeBlock
+		.widgets.sliders) {
+		const value = isInteger
+			? memoryViews.int32[wordAlignedAddress]
+			: isFloat64
+				? memoryViews.float64[byteAddress / 8]
+				: memoryViews.float32[wordAlignedAddress];
 
 		// Handle edge case where min equals max
 		if (min === max) {
