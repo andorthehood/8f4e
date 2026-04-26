@@ -4,8 +4,8 @@ exports[`updateInputsGraphicData > should calculate correct dimensions and posit
 {
   "height": 16,
   "id": "input1",
-  "width": 16,
-  "wireX": 8,
+  "width": 24,
+  "wireX": 12,
   "wireY": 24,
   "wordAlignedAddress": 5,
   "x": 0,
@@ -20,8 +20,8 @@ exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
     {
       "height": 16,
       "id": "input1",
-      "width": 16,
-      "wireX": 8,
+      "width": 24,
+      "wireX": 12,
       "wireY": 24,
       "wordAlignedAddress": 5,
       "x": 0,
@@ -33,8 +33,8 @@ exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
     {
       "height": 16,
       "id": "input2",
-      "width": 16,
-      "wireX": 8,
+      "width": 24,
+      "wireX": 12,
       "wireY": 40,
       "wordAlignedAddress": 6,
       "x": 0,
@@ -48,8 +48,8 @@ exports[`updateInputsGraphicData > should position inputs at correct y coordinat
 {
   "height": 16,
   "id": "input1",
-  "width": 16,
-  "wireX": 8,
+  "width": 24,
+  "wireX": 12,
   "wireY": 40,
   "wordAlignedAddress": 5,
   "x": 0,

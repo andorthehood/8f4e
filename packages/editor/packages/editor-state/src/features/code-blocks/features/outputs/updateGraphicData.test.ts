@@ -194,4 +194,16 @@ describe('updateOutputsGraphicData', () => {
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 	});
+
+	it('should round wire coordinates to whole pixels', () => {
+		mockState.viewport.vGrid = 9;
+		mockState.viewport.hGrid = 17;
+		mockGraphicData.width = 90;
+
+		updateOutputsGraphicData(mockGraphicData, mockState);
+
+		const output = findWidgetById(mockGraphicData.widgets.outputs, 'output1');
+		expect(output?.wireX).toBe(77);
+		expect(output?.wireY).toBe(26);
+	});
 });

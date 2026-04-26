@@ -133,4 +133,15 @@ describe('updateInputsGraphicData', () => {
 		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 	});
+
+	it('should round wire coordinates to whole pixels', () => {
+		mockState.viewport.vGrid = 9;
+		mockState.viewport.hGrid = 17;
+
+		updateInputsGraphicData(mockGraphicData, mockState);
+
+		const input = findWidgetById(mockGraphicData.widgets.inputs, 'input1');
+		expect(input?.wireX).toBe(14);
+		expect(input?.wireY).toBe(26);
+	});
 });
