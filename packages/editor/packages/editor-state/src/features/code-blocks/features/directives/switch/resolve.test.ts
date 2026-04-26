@@ -19,6 +19,7 @@ describe('switch directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			code: ['; @switch sw1 0 1'],
 			width: 100,
 			gaps: new Map(),
@@ -29,6 +30,24 @@ describe('switch directive widget resolution', () => {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,
+				},
+			},
+			compiler: {
+				compiledModules: {
+					'test-block': {
+						memoryMap: {
+							sw1: {
+								id: 'sw1',
+								wordAlignedAddress: 5,
+								isInteger: true,
+							},
+							sw2: {
+								id: 'sw2',
+								wordAlignedAddress: 6,
+								isInteger: true,
+							},
+						},
+					},
 				},
 			},
 		});
@@ -61,6 +80,8 @@ describe('switch directive widget resolution', () => {
 			x: 0,
 			y: 0,
 			id: 'oldSwitch',
+			wordAlignedAddress: 0,
+			isInteger: true,
 			onValue: 1,
 			offValue: 0,
 		});

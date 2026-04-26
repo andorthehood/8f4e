@@ -3,14 +3,12 @@ import { StateManager } from '@8f4e/state-manager';
 import findSliderWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '~/types';
-import type { DataStructure } from '@8f4e/compiler';
 
 import { EventDispatcher } from '~/types';
 
 interface ActiveSlider {
 	slider: Slider;
 	codeBlock: CodeBlockGraphicData;
-	memory: Pick<DataStructure, 'wordAlignedAddress' | 'isInteger'>;
 }
 
 export default function slider(store: StateManager<State>, events: EventDispatcher): () => void {
@@ -20,7 +18,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 	const updateSliderValue = (x: number) => {
 		if (!activeSlider) return;
 
-		const { slider, codeBlock, memory } = activeSlider;
+		const { slider, codeBlock } = activeSlider;
 
 		// Calculate relative x position within the slider
 		const relativeX = x - (codeBlock.x + codeBlock.offsetX + slider.x - state.viewport.x);
@@ -41,9 +39,9 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 			!Number.isInteger(slider.min) ||
 			!Number.isInteger(slider.max) ||
 			(slider.step !== undefined && !Number.isInteger(slider.step));
-		const shouldWriteInteger = memory.isInteger && !hasFloatRange;
+		const shouldWriteInteger = slider.isInteger && !hasFloatRange;
 
-		state.callbacks?.setWordInMemory?.(memory.wordAlignedAddress, value, shouldWriteInteger);
+		state.callbacks?.setWordInMemory?.(slider.wordAlignedAddress, value, shouldWriteInteger);
 	};
 
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
@@ -53,18 +51,8 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 			return;
 		}
 
-		if (!codeBlock.moduleId) {
-			return;
-		}
-
-		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[slider.id];
-
-		if (!memory) {
-			return;
-		}
-
 		// Set active slider for drag handling
-		activeSlider = { slider, codeBlock, memory };
+		activeSlider = { slider, codeBlock };
 		state.graphicHelper.draggedCodeBlock = undefined;
 
 		// Update value on click
