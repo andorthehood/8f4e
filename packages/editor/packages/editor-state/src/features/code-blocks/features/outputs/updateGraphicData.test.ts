@@ -130,6 +130,8 @@ describe('updateOutputsGraphicData', () => {
 			height: 0,
 			x: 0,
 			y: 0,
+			wireX: 0,
+			wireY: 0,
 			id: 'oldOutput',
 			calibratedMax: 1,
 			calibratedMin: 0,
