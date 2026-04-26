@@ -1,13 +1,11 @@
 import findButtonWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import type { State, Switch, CodeBlockGraphicData } from '~/types';
-import type { DataStructure } from '@8f4e/compiler';
 
 import { EventDispatcher } from '~/types';
 
 export default function button(state: State, events: EventDispatcher): () => void {
 	let lastPushedButton: Switch | undefined;
-	let lastPushedButtonMemory: DataStructure | undefined;
 
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
 		lastPushedButton = findButtonWidgetAtViewportCoordinates(state, codeBlock, x, y);
@@ -16,31 +14,21 @@ export default function button(state: State, events: EventDispatcher): () => voi
 			return;
 		}
 
-		if (!codeBlock.moduleId) {
-			return;
-		}
-
-		lastPushedButtonMemory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[lastPushedButton.id];
-
-		if (!lastPushedButtonMemory) {
-			return;
-		}
-
 		state.callbacks?.setWordInMemory?.(
-			lastPushedButtonMemory.wordAlignedAddress,
+			lastPushedButton.wordAlignedAddress,
 			lastPushedButton.onValue,
-			lastPushedButtonMemory.isInteger ?? true
+			lastPushedButton.isInteger
 		);
 	};
 
 	const onMouseUp = function () {
-		if (!lastPushedButtonMemory || !lastPushedButton) {
+		if (!lastPushedButton) {
 			return;
 		}
 		state.callbacks?.setWordInMemory?.(
-			lastPushedButtonMemory.wordAlignedAddress,
+			lastPushedButton.wordAlignedAddress,
 			lastPushedButton.offValue,
-			lastPushedButtonMemory.isInteger ?? true
+			lastPushedButton.isInteger
 		);
 	};
 
