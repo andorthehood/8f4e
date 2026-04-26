@@ -41,14 +41,16 @@ describe('drawArrow', () => {
 		drawArrow(engine, createMockCodeBlock({ x: 1200, y: 384 }), state);
 		drawArrow(engine, createMockCodeBlock({ x: 512, y: 900 }), state);
 		drawArrow(engine, createMockCodeBlock({ x: -100, y: 384 }), state);
+		drawArrow(engine, createMockCodeBlock({ x: 1200, y: -100 }), state);
 
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			state.graphicHelper.spriteLookups?.fontArrow
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(512, 0, '^');
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(1016, 384, '>');
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(512, 752, 'V');
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(512, 752, 'v');
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(0, 384, '<');
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(1016, 24, '>');
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
 	});
 });
