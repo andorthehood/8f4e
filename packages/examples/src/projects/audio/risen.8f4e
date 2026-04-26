@@ -7,7 +7,7 @@ constants env
 ; Changes will be overwritten
 
 const SAMPLE_RATE 48000
-const INV_SAMPLE_RATE 0.000022675736961451248
+const INV_SAMPLE_RATE 0.000020833333333333333
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
@@ -35,8 +35,9 @@ const E	 2.718281828459045
 constantsEnd
 
 constants midiCodes
-; @pos -110 -56
+; @pos -146 -55
 ; @tab 12
+const SELAH	0
 const A0	21
 const A#0	22
 const BB0	22
@@ -191,8 +192,8 @@ const G9	127
 
 constantsEnd
 
-function sine
-; @pos 3 -8
+function sin
+; @pos 119 31
 ; Polynomial approximation 
 ; of the sine function with
 ; Taylor series (7th order)
@@ -257,7 +258,7 @@ mul
 functionEnd float
 
 module adsrEnv
-; @pos 43 -13
+; @pos 72 -12
 ; @tab 8
 use env
 
@@ -432,52 +433,8 @@ ifEnd
 
 moduleEnd
 
-module audioout
-; @pos 210 -22
-; @home
-use env
-
-float* in &reverb:out
-
-; Audio buffer
-float[] buffer AUDIO_BUFFER_SIZE
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer 
-; pointer by the
-; buffer word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-
 module carrier
-; @pos 133 -22
+; @pos 162 -19
 use env
 
 float* frequency &midiToFreq:out
@@ -486,8 +443,6 @@ float phase 0.0
 float out
 float ratio 2.0
 float* ampMod &adsrEnv:out 
-
-; @slider &modIndex 0 10.0
 
 use math
 
@@ -523,16 +478,55 @@ push *phaseMod
 add
 ; You can swap this call 
 ; with any periodic function
-call sine
+call sin
 push *ampMod
 mul
 store
 
 moduleEnd
 
+module godClock
+; @pos -110 -8
+use env
+
+const JIFFY_FREQ 1000
+
+int out
+int counter 
+
+; @w counter
+
+push &out
+push 0
+store
+
+push counter
+push 1
+add
+push SAMPLE_RATE
+push JIFFY_FREQ
+ensureNonZero
+div
+greaterOrEqual
+if
+push &counter
+push 0
+store
+push &out
+push 1
+store
+else
+push &counter
+push counter
+push 1
+add
+store
+ifEnd
+
+moduleEnd
+
 module midiLUT
-; @pos -148 16
-; @tab 8
+; @pos 0 -8
 float	8.1758
 float	8.6620
 float	9.1770
@@ -665,14 +659,14 @@ float	12543.8540
 moduleEnd
 
 module midiToFreq
-; @pos 7 -33
+; @pos 36 14
 
 float* start &midiLUT:
 float* note &midiLUT:
 int* in &sequencer:note
 float out
 
-; @debug out
+; @w out
 
 push &note
 push start
@@ -689,7 +683,7 @@ store
 moduleEnd
 
 module modulator
-; @pos 92 -22
+; @pos 119 -19
 use env
 use math
 
@@ -729,7 +723,7 @@ push &out
 push phase
 ; You can swap this call 
 ; with any periodic function
-call sine
+call sin
 push *ampMod
 mul
 store
@@ -744,8 +738,233 @@ module projectConfig
 
 moduleEnd
 
-module reverb
-; @pos 174 -22
+module scroll
+; @pos -74 -24
+use midiCodes
+; @tab 10 14 18
+; Packed as note,
+; start jiffies, 
+; end jiffies tens, 
+; end jiffies ones.
+int D4	0	18	1
+int E4	19	20	0
+int F4	19	38	2
+int F4	39	40	2
+int E4	39	16	0
+int E4	13	13	4
+int F4	13	13	4
+int D4	13	37	6
+int C4	39	22	0
+int D4	19	20	0
+int D4	19	20	0
+int E4	19	20	0
+int C4	19	14	0
+int G4	13	13	4
+int F4	13	13	4
+int D4	13	19	4
+int E4	19	20	0
+int F4	19	38	2
+int F4	39	40	2
+int E4	39	16	0
+int E4	13	13	4
+int F4	13	13	4
+int D4	13	37	6
+int C4	39	22	0
+int D4	19	20	0
+int D4	19	20	0
+int E4	19	20	0
+int C4	19	14	0
+int G4	13	13	4
+int F4	13	13	4
+int D4	13	19	4
+int C4	19	20	0
+int D4	19	38	2
+int E4	39	40	2
+int A3	39	22	0
+int A3	19	20	0
+int E4	19	14	0
+int E4	13	13	4
+int F4	13	13	4
+int E4	13	13	4
+int D4	13	13	4
+int G4	13	13	4
+int B3	13	13	4
+int D4	13	13	4
+int C4	13	13	4
+int F4	13	37	6
+int D4	39	22	0
+int C4	19	20	0
+int D4	19	38	2
+int E4	39	40	2
+int A3	39	22	0
+int A3	19	20	0
+int E4	19	14	0
+int E4	13	13	4
+int F4	13	13	4
+int E4	13	13	4
+int D4	13	13	4
+int G4	13	13	4
+int B3	13	13	4
+int D4	13	13	4
+int C4	13	13	4
+int F4	13	37	6
+int SELAH	39	3	9
+
+moduleEnd
+
+module sequencer
+; @pos -38 -8
+
+int* start &scroll:
+int* end scroll:&
+int* yad &scroll:
+int* tick &godClock:out
+int note
+int noteStart
+int noteEnd
+int noteOn
+
+; @w note
+; @w noteStart
+; @w noteEnd
+; @w noteOn
+
+push yad
+hasChanged
+if
+; Load note
+push &note
+push *yad
+push 0xff000000
+and
+push 24
+shiftRight
+store
+	
+; Load note start delta t
+push &noteStart
+push *yad
+push 0x00ff0000
+and
+push 16
+shiftRight
+store
+	
+; Load note end delta t
+push &noteEnd
+push *yad
+push 0x0000ff00
+and
+push 8
+shiftRight
+push 10
+mul
+push *yad
+push 0x000000ff
+and
+add
+store
+ifEnd
+
+; Decrement the counters
+push *tick
+risingEdge
+if
+push &noteStart
+push noteStart
+push 1
+sub
+store
+push &noteEnd
+push noteEnd
+push 1
+sub
+store
+ifEnd
+
+; Set noteOn based on
+; noteStart
+push &noteOn
+push note
+push 0
+greaterThan
+push noteStart
+push 0
+lessOrEqual
+mul
+store
+
+; Increment the yad
+; if the note ended
+push noteEnd
+push 0
+lessOrEqual
+if
+push &yad
+push yad
+push 4
+add
+store
+ifEnd
+
+; Wrap the yad
+push yad
+push end
+greaterThan
+if
+push &yad
+push start
+store
+ifEnd
+
+moduleEnd
+
+module shofar
+; @pos 243 -19
+; @home
+use env
+
+float* in &temple:out
+
+; Audio buffer
+float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the
+; buffer word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module temple
+; @pos 205 -19
 
 float* in &carrier:out
 float out
@@ -794,173 +1013,6 @@ ifEnd
 
 moduleEnd
 
-module risen
-; @pos -74 -24
-use midiCodes
-; @tab 8 14 18
-;	note	on	off
-int	D4	0	21
-int	E4	3	21
-int 	F4	3	45
-int  	F4	3	45
-int   	E4	3	13
-int   	E4	3	13
-int  	F4	1	15
-int 	D4	3	41 
-int	C4	7	21
-int	D4	7	21
-int 	D4	7	21
-int  	E4	7	21
-int   	C4	7	13
-int   	G4	3	13
-int  	F4	3	13
-int 	D4	3	21
-int	E4	3	21
-int	F4	3	45
-int 	F4	3	45
-int  	E4	3	13
-int   	E4	3	13
-int   	F4	1	15
-int  	D4	3	41
-int 	C4	7	21
-int	D4	3	21
-int	D4	3	21
-int 	E4	3	21
-int  	C4	3	13
-int   	G4	3	13
-int   	F4	3	13
-int  	D4	3	21
-int 	C4	3	21
-int	D4	3	45
-int	E4	3	45
-int 	A3	3	21
-int  	A3	3	21
-int   	E4	3	14
-int   	E4	2	14
-int  	F4	2	14
-int 	E4	2	14
-int	D4	2	14
-int	G4	2	14
-int 	B3	2	14
-int  	D4	2	14
-int   	C4	2	14
-int   	F4	2	46
-int  	D4	2	21
-int 	C4	3	21
-int	D4	3	45
-int	E4	3	45
-int 	A3	3	21
-int  	A3	3	21
-int   	E4	3	14
-int   	E4	2	14
-int  	F4	2	14
-int 	E4	2	14
-int	D4	2	14
-int	G4	2	14
-int 	B3	2	14
-int  	D4	2	14
-int   	C4	2	14
-int   	F4	2	46
-
-moduleEnd
-
-module sequencer
-; @pos -34 -24
-
-int* start &risen:
-int* end risen:&
-int* pointer &risen:
-int* tick &tick:out
-int note
-int noteStart
-int noteEnd
-int noteOn
-
-; @debug note
-; @debug noteStart
-; @debug noteEnd
-; @debug noteOn
-
-push pointer
-hasChanged
-if
-; Load note
-push &note
-push *pointer
-push 0xff000000
-and
-push 24
-shiftRight
-store
-
-; Load note start delta t
-push &noteStart
-push *pointer
-push 0x00ff0000
-and
-push 16
-shiftRight
-store
-
-; Load note end delta t
-push &noteEnd
-push *pointer
-push 0x0000ff00
-and 
-push 8
-shiftRight
-store
-ifEnd
-
-; Decrement the counters
-push *tick
-risingEdge
-if
-push &noteStart
-push noteStart
-push 1
-sub
-store
-push &noteEnd
-push noteEnd
-push 1
-sub
-store
-ifEnd
-
-; Set noteOn based on
-; noteStart
-push &noteOn
-push noteStart
-push -1
-lessOrEqual
-store
-
-; Increment the pointer
-; if the note ended
-push noteEnd
-push -1
-lessOrEqual
-if
-push &pointer
-push pointer
-push 4
-add
-store
-ifEnd
-
-; Wrap the pointer
-push pointer
-push end
-greaterThan
-if
-push &pointer
-push start
-store
-ifEnd
-
-moduleEnd
-
 module templeOS
 ; @pos -314 -38
 ; @tab 46
@@ -993,43 +1045,4 @@ module templeOS
 ; @color icons.outputConnector	#000000
 ; @color icons.inputConnectorBackground	#ffff55
 ; @color icons.inputConnector	#000000
-moduleEnd
-
-module tick
-; @pos -148 -24
-use env
-
-int bpm 6000
-int out
-int counter 
-
-; @debug counter
-
-push &out
-push 0
-store
-
-push counter
-push SAMPLE_RATE
-push 60
-mul
-push bpm
-ensureNonZero
-div
-greaterThan
-if
-push &counter
-push 0
-store
-push &out
-push 1
-store
-ifEnd
-
-push &counter
-push counter
-push 1
-add
-store
-
 moduleEnd
