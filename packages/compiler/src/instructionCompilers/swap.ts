@@ -25,6 +25,8 @@ const swap: InstructionCompiler = withValidation(
 		context.stack.push(operand1);
 
 		return compileSegment(
+			// compileSegment is needed here because `local` declarations require
+			// semantic pipeline processing to allocate both local variable indices.
 			[
 				`local ${operand1.isInteger ? 'int' : 'float'} ${tempAName}`,
 				`local ${operand2.isInteger ? 'int' : 'float'} ${tempBName}`,

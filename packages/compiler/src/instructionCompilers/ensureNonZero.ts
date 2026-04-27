@@ -38,6 +38,9 @@ const ensureNonZero: InstructionCompiler = withValidation(
 		const tempVariableName = '__ensureNonZero_temp_' + line.lineNumberAfterMacroExpansion;
 
 		if (operand.isInteger) {
+			// compileSegment is used here for complex conditional logic: there is no
+			// single wasm opcode sequence for "use fallback if zero"; the if/else/ifEnd
+			// control flow structure genuinely benefits from composed instruction semantics.
 			const ret = compileSegment(
 				[
 					`local int ${tempVariableName}`,
@@ -57,6 +60,7 @@ const ensureNonZero: InstructionCompiler = withValidation(
 			return ret;
 		} else {
 			const localType = operand.isFloat64 ? 'float64' : 'float';
+			// Same rationale as the integer branch: conditional fallback requires control flow.
 			const ret = compileSegment(
 				[
 					`local ${localType} ${tempVariableName}`,

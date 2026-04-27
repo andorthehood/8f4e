@@ -26,6 +26,9 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = withValida
 		const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumberAfterMacroExpansion;
 		const previousValue = allocateInternalResource(context, previousValueMemoryName, type);
 
+		// compileSegment is used here because branchIfUnchanged combines a memory load,
+		// equality comparison, conditional branch, and memory store; this multi-step
+		// pattern genuinely benefits from composed instruction semantics.
 		return compileSegment(
 			[
 				`local ${type} ${currentValueMemoryName}`,

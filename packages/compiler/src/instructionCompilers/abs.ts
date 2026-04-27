@@ -23,6 +23,8 @@ const abs: InstructionCompiler = withValidation(
 			context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 			const valueName = '__absify_value' + line.lineNumberAfterMacroExpansion;
 
+			// compileSegment is used here because i32 has no native abs opcode;
+			// the if/else/ifEnd control flow genuinely benefits from composed instruction semantics.
 			return compileSegment(
 				[
 					`local int ${valueName}`,
