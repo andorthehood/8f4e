@@ -62,6 +62,7 @@ export enum ErrorCode {
 	SPLIT_BYTE_CONSTANT_OUT_OF_RANGE,
 	POINTEE_WORD_SIZE_ON_NON_POINTER,
 	POINTEE_ELEMENT_MAX_ON_NON_POINTER,
+	POINTEE_END_ADDRESS_ON_NON_POINTER,
 	RETURN_OUTSIDE_FUNCTION,
 	EXIT_IF_TRUE_OUTSIDE_MODULE,
 	LOCAL_NAME_COLLISION_WITH_MEMORY,
@@ -403,6 +404,18 @@ export function getError(
 				code,
 				message:
 					'^*name can only be used with pointer-typed memory identifiers. ' +
+					(details?.identifier ? `"${details.identifier}" is not a pointer. ` : '') +
+					'(' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.POINTEE_END_ADDRESS_ON_NON_POINTER:
+			return {
+				code,
+				message:
+					'*name& can only be used with pointer-typed memory identifiers. ' +
 					(details?.identifier ? `"${details.identifier}" is not a pointer. ` : '') +
 					'(' +
 					code +
