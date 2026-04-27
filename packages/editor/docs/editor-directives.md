@@ -696,14 +696,14 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 
 ```json
 [
-  {
-    "code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
-    "gridCoordinates": { "x": 0, "y": 0 }
-  },
-  {
-    "code": ["module bar", "; @pos 17 14", "moduleEnd"],
-    "gridCoordinates": { "x": 12, "y": 4 }
-  }
+	{
+		"code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
+		"gridCoordinates": { "x": 0, "y": 0 }
+	},
+	{
+		"code": ["module bar", "; @pos 17 14", "moduleEnd"],
+		"gridCoordinates": { "x": 12, "y": 4 }
+	}
 ]
 ```
 
@@ -791,25 +791,6 @@ Select the runtime host the editor should load for the project.
 
 ```txt
 ; @runtime AudioWorkletRuntime
-```
-
-### `@disableAutoCompilation`
-
-Disable automatic program recompilation for the project.
-
-```txt
-; @disableAutoCompilation
-```
-
-- This directive takes no arguments
-- Duplicate declarations are allowed
-- The editor skips auto-compilation while this directive is present
-- Manual compilation and precompiled/runtime-ready loading paths still work
-
-**Example**:
-
-```txt
-; @disableAutoCompilation
 ```
 
 For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).
