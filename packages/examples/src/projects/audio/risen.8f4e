@@ -1,5 +1,23 @@
 8f4e/v1
 
+note fragmentShaderBackground
+; @pos -314 -3
+#version 300 es
+
+precision mediump float;
+
+in vec2 v_screenCoord;
+out vec4 outColor;
+
+void main() {
+  if (v_screenCoord.y > 0.5) {
+    outColor = vec4(0.3, 1.0, 1.0, 1.0);
+  } else {
+    outColor = vec4(1.0, 1.0, 0.3, 1.0);
+  }
+}
+noteEnd
+
 constants env
 ; @pos -242 -38
 ; @favorite
@@ -659,7 +677,7 @@ float	12543.8540
 moduleEnd
 
 module midiToFreq
-; @pos 36 14
+; @pos 36 13
 
 float* start &midiLUT:
 float* note &midiLUT:
@@ -924,7 +942,7 @@ module shofar
 ; @home
 use env
 
-float* in &temple:out
+float* in &churchReverb:out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE
@@ -963,7 +981,7 @@ ifEnd
 
 moduleEnd
 
-module temple
+module churchReverb
 ; @pos 205 -19
 
 float* in &carrier:out
@@ -1017,16 +1035,16 @@ module templeOS
 ; @pos -314 -38
 ; @tab 46
 ; @color fill.moduleBackground	#ffffff
-; @color fill.background	#55ffff
+; @color fill.background	rgba(0,0,0,0)
 ; @color fill.backgroundDots	#99cccc
 ; @color fill.backgroundDots2	#669999
 ; @color fill.highlightedCodeLine	#ffff55
 ; @color fill.moduleBackgroundDragged	#ffffff
-; @color text.instruction	#0000cc
+; @color text.instruction	#0000aa
 ; @color text.code	#000000
 ; @color text.lineNumber	#555555
 ; @color text.codeComment	#aaaaaa
-; @color text.numbers	#990099
+; @color text.numbers	#aa0000
 ; @color text.debugInfo	#aaaaaa
 ; @color fill.debugInfoBackground	#ffff55
 ; @color fill.wire	rgba(0,0,0,0.6)
@@ -1041,8 +1059,8 @@ module templeOS
 ; @color fill.plotterBackground	#000000
 ; @color fill.trace	#ffffff
 ; @color fill.scanLine	#55ffff
-; @color icons.outputConnectorBackground	#ffff55
+; @color icons.outputConnectorBackground	#ffffff
 ; @color icons.outputConnector	#000000
-; @color icons.inputConnectorBackground	#ffff55
+; @color icons.inputConnectorBackground	#ffffff
 ; @color icons.inputConnector	#000000
 moduleEnd
