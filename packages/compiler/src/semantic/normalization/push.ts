@@ -39,6 +39,20 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 		if (isIntermodule) {
 			return normalized as CodegenPushLine;
 		}
+		// *name& — pointee end-address: validate that the target is a pointer type
+		if (referenceKind === 'pointee-memory-reference') {
+			const targetId = argument.targetMemoryId;
+			const memoryItem = memory[targetId];
+			const localItem = context.locals[targetId];
+			if (!memoryItem && !localItem) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetId });
+			}
+			const isPointer = memoryItem ? !!memoryItem.pointeeBaseType : !!localItem?.pointeeBaseType;
+			if (!isPointer) {
+				throw getError(ErrorCode.POINTEE_END_ADDRESS_ON_NON_POINTER, line, context, { identifier: targetId });
+			}
+			return normalized as CodegenPushLine;
+		}
 		if (
 			!(referenceKind === 'plain' && isMemoryIdentifier(memory, value)) &&
 			!(referenceKind === 'memory-pointer' && isMemoryIdentifier(memory, argument.targetMemoryId)) &&
