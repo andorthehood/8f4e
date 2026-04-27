@@ -7,14 +7,12 @@ constants editorDirectives
 ;
 ; Global editor directives
 ; @ color <path> <value>	Override a named editor color.
-; @ disableAutoCompilation	Stop the editor from recompiling automatically.
+; @ config font <font>	Change the editor font.
 ; @ exportFileName <fileName>	Set the export file name for the project.
-; @ font <font>	Change the editor font.
 ; @ infoOverlay <on|off>	Show or hide the info overlay.
 ; @ keyCodeMemory <memoryId>	Store keyboard key codes in a module memory.
 ; @ keyPressedMemory <memoryId>	Store pressed-key state in a module memory.
 ; @ runtime <runtimeId>	Select the runtime backend for the project.
-; @ wireThickness <number>	Set the rendered wire thickness.
 ;
 ; Code block directives
 ; @ alwaysOnTop	Keep the block rendered above normal blocks.

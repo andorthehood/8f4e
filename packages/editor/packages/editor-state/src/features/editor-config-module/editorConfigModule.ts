@@ -46,7 +46,7 @@ export const DEFAULT_EDITOR_CONFIG_BLOCK: EditorConfigStorageBlock = {
 		'; get saved with the project.',
 		'',
 		'; Default editor font:',
-		'; @font ibmvga8x16',
+		'; @config font ibmvga8x16',
 		'moduleEnd',
 	],
 	disabled: false,

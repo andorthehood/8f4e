@@ -24,22 +24,32 @@ Examples:
 ; @watch counter
 ; @plot &audioBuffer lengthMemory
 ; @button gate0 0 1
-; @font ibmvga8x16
+; @config font ibmvga8x16
 ```
 
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
 
 ## Supported Directives
 
-### `@font`
+### `@config`
 
-Select the editor font used for rendering code blocks and UI text.
+Set editor configuration values.
 
 ```txt
-; @font <font>
+; @config <path> <value>
 ```
 
-Supported fonts:
+Supported paths:
+
+- `font` - editor font used for rendering code blocks and UI text.
+
+Examples:
+
+```txt
+; @config font ibmvga8x16
+```
+
+Supported `font` values:
 
 - `ibmvga8x16`
 - `terminus8x16`
@@ -74,18 +84,6 @@ Aliases:
 
 - `true` -> `on`
 - `false` -> `off`
-
-### `@wireThickness`
-
-Set the rendered wire thickness in pixels.
-
-```txt
-; @wireThickness <number>
-```
-
-Accepted values:
-
-- any number from `1` to `100`
 
 ### `@watch`
 
@@ -698,14 +696,14 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 
 ```json
 [
-  {
-    "code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
-    "gridCoordinates": { "x": 0, "y": 0 }
-  },
-  {
-    "code": ["module bar", "; @pos 17 14", "moduleEnd"],
-    "gridCoordinates": { "x": 12, "y": 4 }
-  }
+	{
+		"code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
+		"gridCoordinates": { "x": 0, "y": 0 }
+	},
+	{
+		"code": ["module bar", "; @pos 17 14", "moduleEnd"],
+		"gridCoordinates": { "x": 12, "y": 4 }
+	}
 ]
 ```
 
@@ -793,25 +791,6 @@ Select the runtime host the editor should load for the project.
 
 ```txt
 ; @runtime AudioWorkletRuntime
-```
-
-### `@disableAutoCompilation`
-
-Disable automatic program recompilation for the project.
-
-```txt
-; @disableAutoCompilation
-```
-
-- This directive takes no arguments
-- Duplicate declarations are allowed
-- The editor skips auto-compilation while this directive is present
-- Manual compilation and precompiled/runtime-ready loading paths still work
-
-**Example**:
-
-```txt
-; @disableAutoCompilation
 ```
 
 For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).
