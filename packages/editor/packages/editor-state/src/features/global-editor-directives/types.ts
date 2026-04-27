@@ -14,7 +14,7 @@ export interface ParsedGlobalEditorDirective {
 }
 
 export interface ResolvedGlobalEditorDirectives {
-	/** Selected editor font from `; @font <font>` directives */
+	/** Selected editor font from `; @config font <font>` directives */
 	font?: Font;
 	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
 	infoOverlay?: boolean;
@@ -30,7 +30,7 @@ export interface ResolvedGlobalEditorDirectives {
 	keyPressedMemoryId?: string;
 	/** Resolved editor color overrides merged on top of the default color scheme */
 	colorScheme?: ColorScheme;
-	/** Wire thickness in pixels from `; @wireThickness <number>` directives */
+	/** Wire thickness in pixels from `; @config wireThickness <number>` directives */
 	wireThickness?: number;
 }
 
