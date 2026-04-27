@@ -35,6 +35,8 @@ import extractElementMaxBase from './extractElementMaxBase';
 import hasElementMinPrefix from './hasElementMinPrefix';
 import extractElementMinBase from './extractElementMinBase';
 import isConstantName from './isConstantName';
+import hasPointeeMemoryReferenceEndSuffix from './hasPointeeMemoryReferenceEndSuffix';
+import extractPointeeMemoryReferenceEndBase from './extractPointeeMemoryReferenceEndBase';
 
 export enum ArgumentType {
 	LITERAL = 'literal',
@@ -52,6 +54,7 @@ export type ReferenceKind =
 	| 'constant'
 	| 'memory-pointer'
 	| 'memory-reference'
+	| 'pointee-memory-reference'
 	| 'element-count'
 	| 'element-word-size'
 	| 'element-max'
@@ -107,6 +110,10 @@ type PointeeElementMaxIdentifier = IdentifierBase<'pointee-element-max', 'local'
 	targetMemoryId: string;
 	isPointee: true;
 };
+type PointeeMemoryReferenceIdentifier = IdentifierBase<'pointee-memory-reference', 'local'> & {
+	targetMemoryId: string;
+	isPointee: true;
+};
 type IntermodularReferenceIdentifier = IdentifierBase<'intermodular-reference', 'intermodule'> & {
 	targetModuleId: string;
 	targetMemoryId: string;
@@ -142,6 +149,7 @@ export type ArgumentIdentifier =
 	| ConstantIdentifier
 	| MemoryPointerIdentifier
 	| MemoryReferenceIdentifier
+	| PointeeMemoryReferenceIdentifier
 	| ElementCountIdentifier
 	| ElementWordSizeIdentifier
 	| ElementMaxIdentifier
@@ -251,8 +259,10 @@ export function decodeStringLiteral(raw: string): string {
  *     because both start/end with & and the intermodular form must win.
  *  4. intermodular element-query forms (count/sizeof/…)   — before local element-query forms,
  *     because their pattern (e.g. count(mod:mem)) is a superset of the local form (count(name)).
- *  5. memory-reference (&name / name&)                    — after all intermodular forms.
- *  6. pointee element-query forms                         — before plain element-query forms,
+ *  5. pointee-memory-reference (*name&)                   — before memory-reference and memory-pointer,
+ *     because *name& ends with & (memory-reference) and starts with * (memory-pointer).
+ *  6. memory-reference (&name / name&)                    — after all intermodular and pointee forms.
+ *  7. pointee element-query forms                         — before plain element-query forms,
  *     because sizeof(*name) also starts with sizeof( and max(*name) also starts with max(.
  */
 export function classifyIdentifier(value: string): ArgumentIdentifier {
@@ -355,6 +365,19 @@ export function classifyIdentifier(value: string): ArgumentIdentifier {
 
 	// Local memory reference: &name (start) or name& (end).
 	// Checked after all intermodular forms since &mod: and &mod:mem also start with &.
+	// Pointee end-address (*name&) must be checked before this since *name& ends with &.
+	if (hasPointeeMemoryReferenceEndSuffix(value)) {
+		const targetMemoryId = extractPointeeMemoryReferenceEndBase(value);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'pointee-memory-reference',
+			scope: 'local',
+			targetMemoryId,
+			isPointee: true,
+		};
+	}
+
 	if (hasMemoryReferencePrefix(value)) {
 		const targetMemoryId = extractMemoryReferenceBase(value);
 		const isEndAddress = value.endsWith('&');

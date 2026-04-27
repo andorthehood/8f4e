@@ -25,6 +25,36 @@ int* moduleEnd this&
 
 ```
 
+## Pointee end address
+
+- `*name&` pushes the start byte address of the last word-aligned chunk covering the pointee allocation addressed by `name`.
+- Only valid for pointer-typed memory identifiers (`int*`, `float*`, `float64*`, `int8*`, `int16*`, `int**`, etc.).
+- `name&` keeps its existing meaning (end-address of the pointer slot itself).
+- Using `*name&` on a non-pointer identifier produces a compiler error.
+
+The offset added to the pointer value depends on the pointee element word size:
+
+| Pointer type     | `name&` (pointer slot end) | `*name&` (pointee end)            |
+|------------------|----------------------------|-----------------------------------|
+| `int* ptr`       | `byteAddress(ptr)`         | `load(ptr) + 0`                   |
+| `float* ptr`     | `byteAddress(ptr)`         | `load(ptr) + 0`                   |
+| `float64* ptr`   | `byteAddress(ptr)`         | `load(ptr) + 4`                   |
+| `int8* ptr`      | `byteAddress(ptr)`         | `load(ptr) + 0`                   |
+| `int16* ptr`     | `byteAddress(ptr)`         | `load(ptr) + 0`                   |
+| `int** ptr`      | `byteAddress(ptr)`         | `load(ptr) + 0`                   |
+
+```
+int target 123
+int* ptr &target
+push ptr&          ; end-address of the pointer slot (same as &ptr for a single-word pointer)
+push *ptr&         ; end-address of the int allocation pointed to by ptr (= load(ptr) + 0 = &target)
+
+float64 fval 0.0
+float64* fptr &fval
+push *fptr&        ; end-address of the float64 allocation (= load(fptr) + 4)
+```
+
+
 ## Pointer dereference
 
 - `*name` dereferences a pointer memory item and loads the value it points to (via `push`).

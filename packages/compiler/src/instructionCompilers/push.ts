@@ -1,8 +1,10 @@
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
 import pushLocalPointer from './push/handlers/pushLocalPointer';
+import pushLocalPointerEndAddress from './push/handlers/pushLocalPointerEndAddress';
 import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
 import pushMemoryPointer from './push/handlers/pushMemoryPointer';
+import pushMemoryPointerEndAddress from './push/handlers/pushMemoryPointerEndAddress';
 import pushStringLiteral from './push/handlers/pushStringLiteral';
 import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
@@ -34,8 +36,12 @@ const push: InstructionCompiler<CodegenPushLine> = withValidation<CodegenPushLin
 					return pushMemoryIdentifier(identifierLine, context);
 				case IdentifierPushKind.MEMORY_POINTER:
 					return pushMemoryPointer(identifierLine, context);
+				case IdentifierPushKind.MEMORY_POINTER_END_ADDRESS:
+					return pushMemoryPointerEndAddress(identifierLine, context);
 				case IdentifierPushKind.LOCAL_POINTER:
 					return pushLocalPointer(identifierLine, context);
+				case IdentifierPushKind.LOCAL_POINTER_END_ADDRESS:
+					return pushLocalPointerEndAddress(identifierLine, context);
 				case IdentifierPushKind.LOCAL:
 				default:
 					return pushLocal(identifierLine, context);
