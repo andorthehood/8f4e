@@ -34,7 +34,7 @@ describe('disableAutoCompilation feature', () => {
 
 		const helperModuleBlock = createMockCodeBlock({
 			id: 'editor-config',
-			code: ['module editorConfig', '; @font ibmvga8x16', 'moduleEnd'],
+			code: ['module editorConfig', '; @config font ibmvga8x16', 'moduleEnd'],
 			creationIndex: 1,
 			blockType: 'module',
 		});

@@ -24,22 +24,34 @@ Examples:
 ; @watch counter
 ; @plot &audioBuffer lengthMemory
 ; @button gate0 0 1
-; @font ibmvga8x16
+; @config font ibmvga8x16
 ```
 
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
 
 ## Supported Directives
 
-### `@font`
+### `@config`
 
-Select the editor font used for rendering code blocks and UI text.
+Set editor configuration values.
 
 ```txt
-; @font <font>
+; @config <path> <value>
 ```
 
-Supported fonts:
+Supported paths:
+
+- `font` - editor font used for rendering code blocks and UI text.
+- `wireThickness` - rendered wire thickness in pixels.
+
+Examples:
+
+```txt
+; @config font ibmvga8x16
+; @config wireThickness 3
+```
+
+Supported `font` values:
 
 - `ibmvga8x16`
 - `terminus8x16`
@@ -56,6 +68,10 @@ Supported fonts:
 - `templeos8x8`
 - `spleen12x24`
 - `spleen16x32`
+
+Accepted `wireThickness` values:
+
+- any number from `1` to `100`
 
 ### `@infoOverlay`
 
@@ -74,18 +90,6 @@ Aliases:
 
 - `true` -> `on`
 - `false` -> `off`
-
-### `@wireThickness`
-
-Set the rendered wire thickness in pixels.
-
-```txt
-; @wireThickness <number>
-```
-
-Accepted values:
-
-- any number from `1` to `100`
 
 ### `@watch`
 
