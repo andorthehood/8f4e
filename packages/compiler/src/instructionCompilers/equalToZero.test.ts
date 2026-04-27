@@ -27,7 +27,7 @@ describe('equalToZero instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('emits float comparison segment', () => {
+	it('emits F32_EQ for float32 operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false });
 

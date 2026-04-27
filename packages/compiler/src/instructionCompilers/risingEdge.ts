@@ -27,6 +27,9 @@ const risingEdge: InstructionCompiler = withValidation(
 		// Restore the operand for the segment so type checks apply to the original value.
 		context.stack.push(operand);
 
+		// compileSegment is used here because this instruction spans multiple memory accesses
+		// and conditional branches; the control-flow structure genuinely benefits from
+		// composed instruction semantics.
 		return compileSegment(
 			[
 				`local ${memoryType} ${currentValueName}`,

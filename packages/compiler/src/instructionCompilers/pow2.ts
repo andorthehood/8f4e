@@ -17,9 +17,17 @@ const pow2: InstructionCompiler = withValidation(
 		// Non-null assertion is safe: withValidation ensures 1 operand exists
 		context.stack.pop()!;
 
+		// Restore n's type for the segment so localSet can consume it.
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		return compileSegment(['push 2', 'push 1', 'sub', 'swap', 'shiftLeft'], context);
+		const tempName = '__pow2Temp' + line.lineNumberAfterMacroExpansion;
+
+		// Compute 2^n as (1 << n): save n, push 1, restore n, then shift left.
+		// Using a single local avoids the doubly-nested compileSegment that `swap` would introduce.
+		return compileSegment(
+			[`local int ${tempName}`, `localSet ${tempName}`, 'push 1', `push ${tempName}`, 'shiftLeft'],
+			context
+		);
 	}
 );
 

@@ -29,6 +29,9 @@ const cycle: InstructionCompiler = withValidation(
 		const startPositionName = '__pointerCycle_startPosition' + lineNumberAfterMacroExpansion;
 		const endPositionName = '__pointerCycle_endPosition' + lineNumberAfterMacroExpansion;
 
+		// compileSegment is used here because cycle combines multiple memory accesses,
+		// pointer arithmetic, and a conditional branch; the control-flow structure
+		// genuinely benefits from composed instruction semantics.
 		return compileSegment(
 			[
 				`local int ${pointerName}`,
