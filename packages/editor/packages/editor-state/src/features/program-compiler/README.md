@@ -12,7 +12,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 - **Error Mapping**: Maps compilation errors back to specific code blocks and line numbers
 - **Memory Management**: Tracks compiler-derived memory usage and handles memory recreation events
 - **Performance Tracking**: Measures and logs compilation time
-- **Auto-Compile Control**: Supports precompiled mode and disable-auto-compile paths
+- **Auto Compilation**: Recompiles changed compilable blocks automatically
 
 ## Compiler Options
 

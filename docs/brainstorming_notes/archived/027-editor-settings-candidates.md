@@ -26,7 +26,6 @@ Track editor-level settings we discussed as candidates for the editor config (no
 - Console/log overlay default visibility (on/off).
 - Mute toggle keybinding (global audio output mute).
 - Program start/stop keybinding (toggle runtime execution).
-- Auto-compilation toggle (enable/disable auto compile).
 - Force compile keybinding (manual compile trigger).
 
 ## Notes
