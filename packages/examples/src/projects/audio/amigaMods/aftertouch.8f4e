@@ -883,7 +883,7 @@ push &out
 push *in
 push *volume
 castToFloat
-push 64.0
+push 68.0
 div
 mul 
 store
@@ -899,7 +899,7 @@ push &out
 push *in
 push *volume
 castToFloat
-push 64.0
+push 68.0
 div
 mul 
 store
@@ -915,7 +915,7 @@ push &out
 push *in
 push *volume
 castToFloat
-push 64.0
+push 68.0
 div
 mul 
 store
@@ -931,7 +931,7 @@ push &out
 push *in
 push *volume
 castToFloat
-push 64.0
+push 68.0
 div
 mul 
 store
@@ -984,7 +984,7 @@ float[] buffer AUDIO_BUFFER_SIZE
 ; ~audioOutput buffer 0 0
 int pointer &buffer
 
-; @plot &buffer count(buffer)
+; @bars &buffer count(buffer)
 ; Store the input value
 ; in the buffer
 push pointer
@@ -1022,7 +1022,7 @@ float[] buffer AUDIO_BUFFER_SIZE
 ; ~audioOutput buffer 0 1
 int pointer &buffer
 
-; @plot &buffer count(buffer)
+; @bars &buffer count(buffer)
 ; Store the input value
 ; in the buffer
 push pointer
@@ -1052,7 +1052,7 @@ ifEnd
 moduleEnd
 
 module colors
-; @pos 821 -93
+; @pos 821 -94
 ; @color text.lineNumber rgba(255,255,255,0.3)
 ; @color text.code rgba(255,255,255,0.8)
 ; @color text.instruction #ffffff
@@ -1069,7 +1069,7 @@ module colors
 ; @color fill.moduleBackgroundDragged rgba(255,255,255,0.2)
 ; @color fill.backgroundDots rgba(255,255,255,0.1)
 ; @color fill.backgroundDots2 rgba(255,255,255,0.3)
-; @color fill.menuItemBackground rgba(255,255,255,0.8)
+; @color fill.menuItemBackground rgba(255,255,255,0.6)
 ; @color fill.menuItemBackgroundHighlighted #000
 ; @color fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
 ; @color fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
@@ -1078,6 +1078,7 @@ module colors
 ; @color fill.debugInfoBackground rgba(255,255,255,0.1)
 ; @color fill.dialogDimmer rgba(255,255,255,0.2)
 ; @color fill.dialogBackground rgba(255,255,255,0.8)
+; @color fill.bars rgba(255,255,255,0.8)
 ; @color icons.inputConnectorBackground rgba(255,255,255,0.4)
 ; @color icons.inputConnector #fff
 ; @color icons.outputConnectorBackground rgba(255,255,255,0.4)
@@ -1165,7 +1166,7 @@ div
 push *in2
 push *in4
 add
-push 5.0
+push 4.0
 div
 add
 store
@@ -1180,7 +1181,7 @@ div
 push *in1
 push *in3
 add
-push 5.0
+push 4.0
 div
 add
 store
