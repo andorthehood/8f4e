@@ -8,7 +8,6 @@ constants editorDirectives
 ; Global editor directives
 ; @ color <path> <value>	Override a named editor color.
 ; @ config font <font>	Change the editor font.
-; @ config wireThickness <number>	Set the rendered wire thickness.
 ; @ disableAutoCompilation	Stop the editor from recompiling automatically.
 ; @ exportFileName <fileName>	Set the export file name for the project.
 ; @ infoOverlay <on|off>	Show or hide the info overlay.

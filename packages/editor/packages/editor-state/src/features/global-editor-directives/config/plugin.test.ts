@@ -70,71 +70,15 @@ describe('@config directive', () => {
 		expect(result.errors[0].message).toContain("Did you mean 'terminus8x16bold'?");
 	});
 
-	it('resolves wireThickness', () => {
-		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['module a', '; @config wireThickness 3', 'moduleEnd'])],
-			{}
-		);
-
-		expect(result.resolved.wireThickness).toBe(3);
-		expect(result.errors).toEqual([]);
-	});
-
-	it('reports invalid wireThickness values', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				{
-					id: 'wires',
-					parsedDirectives: parseBlockDirectives([
-						'module a',
-						'; @config wireThickness 0',
-						'; @config wireThickness 101',
-						'moduleEnd',
-					]),
-				},
-			],
-			{}
-		);
-
-		expect(result.resolved.wireThickness).toBeUndefined();
-		expect(result.errors).toEqual([
-			{
-				lineNumber: 1,
-				message: "@config wireThickness: invalid value '0'",
-				codeBlockId: 'wires',
-			},
-			{
-				lineNumber: 2,
-				message: "@config wireThickness: invalid value '101'",
-				codeBlockId: 'wires',
-			},
-		]);
-	});
-
-	it('reports conflicting wireThickness values', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock(['module a', '; @config wireThickness 2', 'moduleEnd']),
-				createParsedBlock(['module b', '; @config wireThickness 4', 'moduleEnd']),
-			],
-			{}
-		);
-
-		expect(result.resolved.wireThickness).toBe(2);
-		expect(result.errors).toHaveLength(1);
-		expect(result.errors[0].message).toContain('conflicting values');
-	});
-
 	it('reports unknown config paths', () => {
 		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['module a', '; @config wireThicknes 4', 'moduleEnd'])],
+			[createParsedBlock(['module a', '; @config blockScale 4', 'moduleEnd'])],
 			{}
 		);
 
 		expect(result.resolved).toEqual({});
 		expect(result.errors).toHaveLength(1);
-		expect(result.errors[0].message).toContain("unknown config path 'wireThicknes'");
-		expect(result.errors[0].message).toContain("Did you mean 'wireThickness'?");
+		expect(result.errors[0].message).toContain("unknown config path 'blockScale'");
 	});
 
 	it('requires exactly a path and value', () => {
@@ -148,14 +92,10 @@ describe('@config directive', () => {
 		expect(result.errors.every(error => error.message.includes('requires exactly 2 arguments'))).toBe(true);
 	});
 
-	it('does not resolve removed top-level font and wireThickness directives', () => {
-		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['module a', '; @font 6x10', '; @wireThickness 4', 'moduleEnd'])],
-			{}
-		);
+	it('does not resolve removed top-level font directive', () => {
+		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 6x10', 'moduleEnd'])], {});
 
 		expect(result.resolved.font).toBeUndefined();
-		expect(result.resolved.wireThickness).toBeUndefined();
 		expect(result.errors).toEqual([]);
 	});
 });
