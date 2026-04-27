@@ -81,6 +81,50 @@ describe('drawPlotters', () => {
 		expect(drawSprite).toHaveBeenCalledWith(9, 0, 'trace', 3, 1);
 	});
 
+	it('matches sparse background width to the rendered trace width', () => {
+		const engine = createMockEngine();
+		const state = createMockState({
+			graphicHelper: {
+				spriteLookups: {
+					fillColors: {},
+				} as never,
+			},
+			viewport: {
+				hGrid: 4,
+				vGrid: 8,
+			},
+		});
+		const codeBlock = createMockCodeBlock({
+			width: 21,
+			widgets: {
+				arrayPlotters: [
+					{
+						x: 0,
+						y: 0,
+						startAddress: {
+							showAddress: true,
+							bufferPointer: 0,
+							memory: { byteAddress: 0, wordAlignedAddress: 0, wordAlignedSize: 4 },
+						},
+						baseSampleShift: 0,
+						length: 4,
+						valueType: 'int8',
+						minValue: 0,
+						maxValue: 3,
+						width: 0,
+						height: 0,
+					},
+				],
+			} as never,
+		});
+
+		drawPlotters(engine, state, codeBlock, createMemoryViews({ int8: [0, 1, 2, 3] }));
+
+		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
+		expect(drawSprite).toHaveBeenCalledWith(0, 0, 'plotterBackground', 12, 32);
+		expect(drawSprite).toHaveBeenCalledWith(9, 0, 'trace', 3, 1);
+	});
+
 	it('renders dense arrays as per-column min/max envelopes instead of truncating', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
