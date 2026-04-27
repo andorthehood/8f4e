@@ -41,7 +41,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 				output.codeBlock.x + output.codeBlock.offsetX + output.wireX,
 				output.codeBlock.y + output.codeBlock.offsetY + output.wireY,
 				isSelected ? WIRE_HIGHLIGHTED_SPRITE : WIRE_SPRITE,
-				state.globalEditorDirectives.wireThickness ?? 1
+				1
 			);
 		}
 	}
