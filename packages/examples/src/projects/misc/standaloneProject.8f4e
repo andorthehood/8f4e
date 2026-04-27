@@ -3,7 +3,6 @@
 module projectConfig
 ; @pos -14 8
 ; @runtime WebWorkerLogicRuntime
-; @disableAutoCompilation
 ; ~sampleRate 1
 
 moduleEnd

@@ -138,27 +138,6 @@ describe('projectImport', () => {
 			expect(mockState.initialProjectState).toEqual(project);
 		});
 
-		it('should clear compilation errors when loading a project', async () => {
-			vi.useFakeTimers();
-			projectImport(store, mockEvents);
-			compiler(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
-			const loadProjectCallback = loadProjectCall![1];
-
-			// Set some existing state
-			mockState.codeErrors.compilationErrors = [{ message: 'Error', lineNumber: 1, codeBlockId: '1' }];
-			mockState.compiler.isCompiling = true;
-
-			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
-			store.set('globalEditorDirectives.disableAutoCompilation', true);
-			await vi.runAllTimersAsync();
-			vi.useRealTimers();
-
-			expect(mockState.codeErrors.compilationErrors).toEqual([]);
-		});
-
 		it('should store initial project state after loading', () => {
 			projectImport(store, mockEvents);
 
@@ -169,65 +148,6 @@ describe('projectImport', () => {
 			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
 
 			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
-		});
-
-		it('should load runtime-ready project with pre-compiled WASM', async () => {
-			vi.useFakeTimers();
-			projectImport(store, mockEvents);
-			compiler(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
-			const loadProjectCallback = loadProjectCall![1];
-
-			const runtimeReadyProject: Project = {
-				...EMPTY_DEFAULT_PROJECT,
-				compiledWasm: 'AQIDBA==', // base64 for [1,2,3,4]
-				compiledModules: { mod: {} },
-				memorySnapshot: 'AQAAAA==', // base64 for minimal Int32Array
-			};
-
-			await Promise.resolve();
-			await Promise.resolve();
-
-			loadProjectCallback({ project: runtimeReadyProject });
-			store.set('globalEditorDirectives.disableAutoCompilation', true);
-			await vi.runAllTimersAsync();
-			vi.useRealTimers();
-
-			expect(
-				mockState.console.logs.some(
-					log => log.message.includes('Pre-compiled WASM loaded') && log.category === '[Loader]'
-				)
-			).toBe(true);
-			expect(mockState.compiler.compiledModules).toEqual(runtimeReadyProject.compiledModules);
-		});
-
-		it('should ignore invalid memory snapshots without crashing', async () => {
-			vi.useFakeTimers();
-			projectImport(store, mockEvents);
-			compiler(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
-			const loadProjectCallback = loadProjectCall![1];
-
-			const invalidProject: Project = {
-				...EMPTY_DEFAULT_PROJECT,
-				memorySnapshot: 'invalid-base64!!!',
-			};
-
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-			loadProjectCallback({ project: invalidProject });
-			store.set('globalEditorDirectives.disableAutoCompilation', true);
-			await vi.runAllTimersAsync();
-			vi.useRealTimers();
-
-			expect(consoleErrorSpy).not.toHaveBeenCalled();
-			expect(mockState.compiler.requiredMemoryBytes).toBe(0);
-
-			consoleErrorSpy.mockRestore();
 		});
 	});
 

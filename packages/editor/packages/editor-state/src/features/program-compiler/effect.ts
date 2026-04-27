@@ -2,7 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 import { type CompilerDiagnostic } from '@8f4e/compiler';
 
-import { error, log } from '../logger/logger';
+import { log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
 import type { CodeBlockGraphicData, State } from '~/types';
@@ -57,15 +57,16 @@ export default async function compiler(store: StateManager<State>, events: Event
 		store.set('compiler.lastCompilationStart', performance.now());
 
 		try {
+			if (!state.callbacks.compileCode) {
+				store.set('compiler.isCompiling', false);
+				return;
+			}
+
 			const compilerOptions = {
 				startingMemoryWordAddress: 0,
 			};
 
-			const result = await state.callbacks.compileCode?.(modules, compilerOptions, functions, macros);
-
-			if (!result) {
-				return;
-			}
+			const result = await state.callbacks.compileCode(modules, compilerOptions, functions, macros);
 
 			store.set('compiler.byteCodeSize', result.byteCodeSize);
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
@@ -106,44 +107,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 	function onRecompile() {
 		store.set('codeErrors.compilationErrors', []);
 
-		if (
-			state.initialProjectState?.memorySnapshot &&
-			(state.globalEditorDirectives.disableAutoCompilation === true || !state.callbacks.compileCode)
-		) {
-			try {
-				// state.compiler.allocatedMemoryBytes = state.compiler.memoryBuffer.byteLength;
-				log(state, 'Memory snapshot loaded and decoded successfully', 'Loader');
-			} catch (err) {
-				state.compiler.requiredMemoryBytes = 0;
-				state.compiler.allocatedMemoryBytes = 0;
-				console.error('[Loader] Failed to decode memory snapshot:', err);
-				error(state, 'Failed to decode memory snapshot', 'Loader');
-			}
-		}
-
-		// Check if project has pre-compiled WASM.
-		// If auto compilation is disabled or if there is no compilation callback provided then
-		// use the pre-compiled code.
-		if (
-			state.initialProjectState?.compiledWasm &&
-			state.initialProjectState.compiledModules &&
-			(state.globalEditorDirectives.disableAutoCompilation === true || !state.callbacks.compileCode)
-		) {
-			try {
-				state.compiler.compiledModules = state.initialProjectState.compiledModules;
-				store.set('codeErrors.compilationErrors', []);
-				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
-			} catch (err) {
-				state.compiler.compiledModules = {};
-				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
-				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
-			}
-			return;
-		}
-
-		// Check if compilation is disabled by config
-		if (state.globalEditorDirectives.disableAutoCompilation === true || !state.callbacks.compileCode) {
-			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
+		if (!state.callbacks.compileCode) {
 			return;
 		}
 
@@ -151,7 +115,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 	}
 
 	events.on('compileCode', onForceCompile);
-	store.subscribe('globalEditorDirectives.disableAutoCompilation', scheduleRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.disabled) {
 			return;

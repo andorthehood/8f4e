@@ -14,7 +14,7 @@ export interface ParsedGlobalEditorDirective {
 }
 
 export interface ResolvedGlobalEditorDirectives {
-	/** Selected editor font from `; @font <font>` directives */
+	/** Selected editor font from `; @config font <font>` directives */
 	font?: Font;
 	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
 	infoOverlay?: boolean;
@@ -22,16 +22,12 @@ export interface ResolvedGlobalEditorDirectives {
 	exportFileName?: string;
 	/** Selected runtime host from `; @runtime <id>` directives */
 	runtime?: string;
-	/** Disable automatic code compilation and rely on manual / precompiled paths */
-	disableAutoCompilation?: boolean;
 	/** Target memory for keyboard HID usage codes */
 	keyCodeMemoryId?: string;
 	/** Target memory for keyboard pressed-state flag */
 	keyPressedMemoryId?: string;
 	/** Resolved editor color overrides merged on top of the default color scheme */
 	colorScheme?: ColorScheme;
-	/** Wire thickness in pixels from `; @wireThickness <number>` directives */
-	wireThickness?: number;
 }
 
 export interface GlobalEditorDirectiveContext {
