@@ -102,16 +102,13 @@ describe('drawConnections', () => {
 					fillColors: {},
 				} as never,
 			},
-			globalEditorDirectives: {
-				wireThickness: 3,
-			},
 		});
 		const engine = createMockEngine();
 
 		drawConnections(engine, state, createMemoryViews({ int32: [0, 0, 80] }));
 
 		expect(engine.startGroup).toHaveBeenCalledWith(-5, -9);
-		expect(engine.drawLine).toHaveBeenCalledWith(122, 256, 468, 480, 'wireHighlighted', 3);
+		expect(engine.drawLine).toHaveBeenCalledWith(122, 256, 468, 480, 'wireHighlighted', 1);
 		expect(engine.endGroup).toHaveBeenCalled();
 	});
 });

@@ -42,13 +42,11 @@ Set editor configuration values.
 Supported paths:
 
 - `font` - editor font used for rendering code blocks and UI text.
-- `wireThickness` - rendered wire thickness in pixels.
 
 Examples:
 
 ```txt
 ; @config font ibmvga8x16
-; @config wireThickness 3
 ```
 
 Supported `font` values:
@@ -68,10 +66,6 @@ Supported `font` values:
 - `templeos8x8`
 - `spleen12x24`
 - `spleen16x32`
-
-Accepted `wireThickness` values:
-
-- any number from `1` to `100`
 
 ### `@infoOverlay`
 

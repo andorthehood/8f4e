@@ -10,21 +10,12 @@ import type {
 } from '../types';
 
 const ALLOWED_FONTS = new Set<Font>(FONT_NAMES);
-const CONFIG_PATHS = ['font', 'wireThickness'] as const;
+const CONFIG_PATHS = ['font'] as const;
 
 type ConfigPath = (typeof CONFIG_PATHS)[number];
 
 function isConfigPath(path: string): path is ConfigPath {
 	return (CONFIG_PATHS as readonly string[]).includes(path);
-}
-
-function parseWireThickness(rawValue: string): number | null {
-	const value = Number(rawValue);
-	if (!Number.isFinite(value) || value < 1 || value > 100) {
-		return null;
-	}
-
-	return value;
 }
 
 function reportError(
@@ -68,34 +59,6 @@ function applyFontConfig(
 	}
 }
 
-function applyWireThicknessConfig(
-	value: string,
-	directive: ParsedGlobalEditorDirective,
-	draft: GlobalEditorDirectiveResolutionResult,
-	context: GlobalEditorDirectiveContext
-): void {
-	const thickness = parseWireThickness(value);
-	if (thickness === null) {
-		reportError(draft, directive, context, `@config wireThickness: invalid value '${value}'`);
-		return;
-	}
-
-	const currentValue = draft.resolved.wireThickness;
-	if (currentValue === undefined) {
-		draft.resolved.wireThickness = thickness;
-		return;
-	}
-
-	if (currentValue !== thickness) {
-		reportError(
-			draft,
-			directive,
-			context,
-			`@config wireThickness: conflicting values '${currentValue}' and '${thickness}'`
-		);
-	}
-}
-
 export default createGlobalEditorDirectivePlugin('config', (directive, draft, context) => {
 	if (directive.args.length !== 2) {
 		reportError(draft, directive, context, '@config requires exactly 2 arguments: <path> <value>');
@@ -113,10 +76,5 @@ export default createGlobalEditorDirectivePlugin('config', (directive, draft, co
 		return;
 	}
 
-	if (path === 'font') {
-		applyFontConfig(value, directive, draft, context);
-		return;
-	}
-
-	applyWireThicknessConfig(value, directive, draft, context);
+	applyFontConfig(value, directive, draft, context);
 });
