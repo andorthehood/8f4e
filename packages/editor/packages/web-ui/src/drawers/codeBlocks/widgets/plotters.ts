@@ -101,13 +101,15 @@ export default function drawer(
 		const values = getTypedValueView(memoryViews, valueType);
 		const arrayLength =
 			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
-		const width = Math.min(arrayLength || startAddress.memory.wordAlignedSize, maxPlotterWidth);
+		const sampleCount = Math.min(arrayLength || startAddress.memory.wordAlignedSize, maxPlotterWidth);
 		const valueRange = maxValue - minValue;
-		const columnWidth = Math.max(1, Math.floor(maxPlotterWidth / Math.max(width, 1)));
+		const columnWidth = Math.max(1, Math.floor(maxPlotterWidth / Math.max(sampleCount, 1)));
+		const isDense = arrayLength > maxPlotterWidth;
+		const plotWidth = isDense ? maxPlotterWidth : sampleCount * columnWidth;
 
-		engine.drawSprite(0, 0, 'plotterBackground', maxPlotterWidth, plotHeight);
+		engine.drawSprite(0, 0, 'plotterBackground', plotWidth, plotHeight);
 
-		if (arrayLength > maxPlotterWidth) {
+		if (isDense) {
 			drawDensePlot(
 				engine,
 				values,
@@ -121,7 +123,17 @@ export default function drawer(
 				valueRange
 			);
 		} else {
-			drawSparsePlot(engine, values, baseValueIndex, width, columnWidth, plotHeight, pointHeight, minValue, valueRange);
+			drawSparsePlot(
+				engine,
+				values,
+				baseValueIndex,
+				sampleCount,
+				columnWidth,
+				plotHeight,
+				pointHeight,
+				minValue,
+				valueRange
+			);
 		}
 
 		engine.endGroup();
