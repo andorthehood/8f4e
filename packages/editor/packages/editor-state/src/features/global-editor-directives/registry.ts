@@ -1,12 +1,11 @@
 import colorDirective from './color/plugin';
+import configDirective from './config/plugin';
 import disableAutoCompilationDirective from './disableAutoCompilation/plugin';
 import exportFileNameDirective from './exportFileName/plugin';
-import fontDirective from './font/plugin';
 import infoOverlayDirective from './infoOverlay/plugin';
 import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
 import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import runtimeDirective from './runtime/plugin';
-import wireThicknessDirective from './wireThickness/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
 import type { CodeError, ParsedDirectiveRecord, CodeBlockType } from '~/types';
@@ -20,15 +19,14 @@ import type {
 import type { RuntimeRegistry } from '../runtime/types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
+	configDirective,
 	colorDirective,
-	fontDirective,
 	infoOverlayDirective,
 	exportFileNameDirective,
 	runtimeDirective,
 	disableAutoCompilationDirective,
 	keyCodeMemoryDirective,
 	keyPressedMemoryDirective,
-	wireThicknessDirective,
 ];
 
 export function resolveGlobalEditorDirectives(
@@ -42,7 +40,10 @@ export function resolveGlobalEditorDirectives(
 	plugins: GlobalEditorDirectivePlugin[] = globalEditorDirectivePlugins
 ): GlobalEditorDirectiveResolutionResult {
 	const pluginMap = new Map(plugins.map(plugin => [plugin.name, plugin]));
-	const draft: { resolved: ResolvedGlobalEditorDirectives; errors: CodeError[] } = {
+	const draft: {
+		resolved: ResolvedGlobalEditorDirectives;
+		errors: CodeError[];
+	} = {
 		resolved: {},
 		errors: [],
 	};
@@ -78,8 +79,20 @@ if (import.meta.vitest) {
 				[
 					{
 						parsedDirectives: [
-							{ prefix: '@', name: 'unknown', args: ['x'], rawRow: 0, isTrailing: false },
-							{ prefix: '@', name: 'exportFileName', args: ['demo'], rawRow: 1, isTrailing: false },
+							{
+								prefix: '@',
+								name: 'unknown',
+								args: ['x'],
+								rawRow: 0,
+								isTrailing: false,
+							},
+							{
+								prefix: '@',
+								name: 'exportFileName',
+								args: ['demo'],
+								rawRow: 1,
+								isTrailing: false,
+							},
 						],
 					},
 				],

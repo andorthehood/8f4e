@@ -20,12 +20,13 @@ renderers can replace it.
 - `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.
 - `docs/runtime-directives.md` - Runtime directive syntax (`; ~...`) and supported directives.
 
-## Color Config
+## Editor Config
 
-Configure colors with editor directives using `; @color <path> <value>`.
+Configure editor settings with `; @config <path> <value>`.
 
 - Global editor directives control editor presentation settings like `font`.
 - `; @infoOverlay on|off` controls whether the info overlay is shown for the project.
+- `; @color <path> <value>` controls individual color scheme entries.
 - Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).
 - Main groups are `text`, `fill`, and `icons`.
 
@@ -50,7 +51,7 @@ Example color overrides:
 Select the editor font with a global editor directive:
 
 ```txt
-; @font ibmvga8x16
+; @config font ibmvga8x16
 ```
 
 Supported fonts: `6x10`, `ibmvga8x16`, `terminus8x16`, `terminus8x16bold`, `terminus10x18`, `terminus10x18bold`, `kana12x13`, `terminus12x24`, `terminus12x24bold`, `spleen5x8`, `spleen6x12`, `spleen8x16`, `templeos8x8`, `spleen12x24`, `spleen16x32`.
