@@ -22,8 +22,6 @@ export interface ResolvedGlobalEditorDirectives {
 	exportFileName?: string;
 	/** Selected runtime host from `; @runtime <id>` directives */
 	runtime?: string;
-	/** Disable automatic code compilation and rely on manual / precompiled paths */
-	disableAutoCompilation?: boolean;
 	/** Target memory for keyboard HID usage codes */
 	keyCodeMemoryId?: string;
 	/** Target memory for keyboard pressed-state flag */

@@ -50,7 +50,7 @@ Keep `code-blocks` high level, but include a block types overview.
 - `editor-settings`: describe current scope (color scheme list + selection), persistent storage callbacks, and runtime update flow for schemes.
 - `logger`: describe how log entries are appended to `state.console.logs`, capped by maxLogs, and tagged with timestamp/category.
 - `menu`: explain context menu event flow (open, highlight, action dispatch), state fields touched, and how menus are built without enumerating menu contents.
-- `program-compiler`: document callback contract for `compileCode`, compiler options (memory size, env constants, ignored keywords), error mapping to code blocks, and the precompiled/disable-auto-compile paths.
+- `program-compiler`: document callback contract for `compileCode`, compiler options (memory size, env constants, ignored keywords), error mapping to code blocks, and automatic recompilation triggers.
 - `project-export`: describe serialize-to-project vs runtime-ready export (includes compiled data + memory snapshot + config), session saving, and WASM export.
 - `project-import`: describe initial load path (storage vs default), import-by-file and import-by-slug callbacks, and how initialProjectState is set.
 - `runtime`: document runtime registry location at project root, runtime selection from compiled config, and lifecycle (destroy/recreate) tied to compile updates.
