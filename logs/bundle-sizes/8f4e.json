@@ -21,5 +21,28 @@
 				"brotli": 51389
 			}
 		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-28T14:47:04.834Z",
+		"commit": "d04af7ea55b7b037d37102e6cc2b1a90fcf6a906",
+		"branch": "main",
+		"releaseTag": "app@0.1.1",
+		"packageName": "8f4e",
+		"projectName": "app",
+		"version": "0.1.1",
+		"bytes": {
+			"raw": 219710,
+			"gzip": 60532,
+			"brotli": 51404
+		},
+		"files": [
+			{
+				"path": "assets/index-DNLhRMoI.js",
+				"raw": 219710,
+				"gzip": 60532,
+				"brotli": 51404
+			}
+		]
 	}
 ]
