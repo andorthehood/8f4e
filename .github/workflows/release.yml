@@ -58,3 +58,5 @@ jobs:
           else
             npx nx release 0.1.0 --first-release --skip-publish
           fi
+
+          git push origin HEAD:main --follow-tags --no-verify --atomic
