@@ -25,6 +25,8 @@ const view = {
 
 vi.mock('@8f4e/editor-state', () => ({
 	default: vi.fn(() => store),
+	getEditorConfigColorSchemeOverrides: vi.fn(() => ({})),
+	getEditorConfigFont: vi.fn(() => 'ibmvga8x16'),
 }));
 
 vi.mock('@8f4e/web-ui', () => ({

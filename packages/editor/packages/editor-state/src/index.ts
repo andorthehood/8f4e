@@ -190,5 +190,5 @@ export type { Direction } from './features/code-blocks/utils/types';
 export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';
-export { getEditorConfigColorScheme } from './features/color/editorConfig';
+export { getEditorConfigColorSchemeOverrides } from './features/color/editorConfig';
 export { getEditorConfigFont } from './features/font/editorConfig';

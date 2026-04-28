@@ -1,6 +1,6 @@
-import { defaultColorScheme, type ColorScheme } from '@8f4e/sprite-generator';
+import { defaultColorScheme, type ColorSchemeOverrides } from '@8f4e/sprite-generator';
 
-import { getEditorConfigPath } from '../editor-config/paths';
+import { getEditorConfigPath, setPathValue } from '../editor-config/paths';
 import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
 import type { EditorConfig, EditorConfigValidator } from '../editor-config/types';
@@ -8,14 +8,6 @@ import type { State } from '~/types';
 import type { StateManager } from '@8f4e/state-manager';
 
 const COLOR_CONFIG_PREFIX = 'color.';
-
-export function createDefaultColorScheme(): ColorScheme {
-	return {
-		text: { ...defaultColorScheme.text },
-		fill: { ...defaultColorScheme.fill },
-		icons: { ...defaultColorScheme.icons },
-	};
-}
 
 function isValidColorValue(value: string): boolean {
 	if (value.length === 0) {
@@ -43,18 +35,6 @@ function collectColorPaths(value: Record<string, unknown>, prefix = ''): string[
 	return paths;
 }
 
-function applyColorOverride(colorScheme: ColorScheme, path: string, value: string): void {
-	let current: Record<string, unknown> = colorScheme as unknown as Record<string, unknown>;
-	const segments = path.split('.');
-
-	for (let i = 0; i < segments.length - 1; i++) {
-		const next = current[segments[i]];
-		current = next as Record<string, unknown>;
-	}
-
-	current[segments[segments.length - 1]] = value;
-}
-
 const COLOR_PATHS = collectColorPaths(defaultColorScheme as unknown as Record<string, unknown>);
 const COLOR_CONFIG_PATHS = COLOR_PATHS.map(path => `${COLOR_CONFIG_PREFIX}${path}`);
 
@@ -75,17 +55,17 @@ export const colorEditorConfigValidator: EditorConfigValidator = {
 	},
 };
 
-export function getEditorConfigColorScheme(config: EditorConfig): ColorScheme {
-	const colorScheme = createDefaultColorScheme();
+export function getEditorConfigColorSchemeOverrides(config: EditorConfig): ColorSchemeOverrides {
+	const colorSchemeOverrides: ColorSchemeOverrides = {};
 
 	for (const colorPath of COLOR_PATHS) {
 		const value = getEditorConfigPath(config, `${COLOR_CONFIG_PREFIX}${colorPath}`);
 		if (value && isValidColorValue(value)) {
-			applyColorOverride(colorScheme, colorPath, value);
+			setPathValue(colorSchemeOverrides as Record<string, unknown>, colorPath, value);
 		}
 	}
 
-	return colorScheme;
+	return colorSchemeOverrides;
 }
 
 export function registerColorEditorConfigValidator(store: StateManager<State>): void {

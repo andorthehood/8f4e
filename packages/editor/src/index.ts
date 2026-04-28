@@ -1,6 +1,6 @@
 import initState, {
 	Callbacks,
-	getEditorConfigColorScheme,
+	getEditorConfigColorSchemeOverrides,
 	getEditorConfigFont,
 	State,
 	RuntimeRegistry,
@@ -105,7 +105,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	// Generate sprite data and update state before initializing view
 	const spriteData = await generateSprite({
 		font: getEditorConfigFont(state.editorConfig),
-		colorScheme: getEditorConfigColorScheme(state.editorConfig),
+		colorScheme: getEditorConfigColorSchemeOverrides(state.editorConfig),
 	});
 
 	updateStateWithSpriteData(state, spriteData);
