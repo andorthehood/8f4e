@@ -1,11 +1,11 @@
 import type { StackItem } from '../types';
 
 export function areAllOperandsIntegers(...operands: StackItem[]): boolean {
-	return !operands.some(operand => !operand.isInteger);
+	return operands.every(operand => operand.isInteger);
 }
 
 export function areAllOperandsFloats(...operands: StackItem[]): boolean {
-	return !operands.some(operand => operand.isInteger);
+	return operands.every(operand => !operand.isInteger);
 }
 
 export function areAllOperandsFloat64(...operands: StackItem[]): boolean {
