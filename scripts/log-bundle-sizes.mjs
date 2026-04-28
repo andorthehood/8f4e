@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import { promisify } from "node:util";
 import fs from "node:fs/promises";
 import path from "node:path";
+import ts from "typescript";
 
 const gzipAsync = promisify(gzip);
 const brotliCompressAsync = promisify(brotliCompress);
@@ -179,7 +180,7 @@ Options:
 Notes:
   - Default packages: ${defaultPackages.join(", ")}
   - Run package builds before this script.
-  - Only declared main bundle files are measured, not emitted chunks.
+  - Declared main bundle files and their local runtime imports are measured, not emitted chunks.
   - Log entries contain numeric byte totals and measured file paths, for graphing.
   - Scoped packages use their package name as a nested path, e.g. logs/bundle-sizes/@8f4e/compiler.json.`);
 }
@@ -250,8 +251,118 @@ async function resolveBundleFiles(packageRoot, distRoot, packageJson) {
     }
   }
 
-  return [...bundlePaths].sort((a, b) =>
+  const files =
+    packageRoot === workspaceRoot
+      ? [...bundlePaths]
+      : await expandLocalRuntimeGraph(distRoot, [...bundlePaths]);
+
+  return files.sort((a, b) =>
     path.relative(distRoot, a).localeCompare(path.relative(distRoot, b)),
+  );
+}
+
+async function expandLocalRuntimeGraph(distRoot, entryPaths) {
+  const visited = new Set();
+  const pending = [...entryPaths];
+
+  while (pending.length > 0) {
+    const filePath = pending.pop();
+
+    if (!filePath || visited.has(filePath)) {
+      continue;
+    }
+
+    visited.add(filePath);
+
+    const sourceText = await fs.readFile(filePath, "utf8");
+    for (const specifier of getLocalRuntimeSpecifiers(sourceText, filePath)) {
+      const importedFilePath = await resolveRuntimeImport(
+        distRoot,
+        filePath,
+        specifier,
+      );
+
+      if (importedFilePath && !visited.has(importedFilePath)) {
+        pending.push(importedFilePath);
+      }
+    }
+  }
+
+  return [...visited];
+}
+
+function getLocalRuntimeSpecifiers(sourceText, filePath) {
+  const sourceFile = ts.createSourceFile(
+    filePath,
+    sourceText,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.JS,
+  );
+  const specifiers = [];
+
+  function visit(node) {
+    if (
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      node.moduleSpecifier &&
+      ts.isStringLiteral(node.moduleSpecifier)
+    ) {
+      collectRuntimeSpecifier(node.moduleSpecifier.text, specifiers);
+    }
+
+    if (
+      ts.isCallExpression(node) &&
+      node.expression.kind === ts.SyntaxKind.ImportKeyword &&
+      node.arguments.length === 1 &&
+      ts.isStringLiteral(node.arguments[0])
+    ) {
+      collectRuntimeSpecifier(node.arguments[0].text, specifiers);
+    }
+
+    ts.forEachChild(node, visit);
+  }
+
+  visit(sourceFile);
+  return specifiers;
+}
+
+function collectRuntimeSpecifier(specifier, specifiers) {
+  if (specifier.startsWith(".")) {
+    specifiers.push(specifier);
+  }
+}
+
+async function resolveRuntimeImport(distRoot, importerPath, specifier) {
+  const basePath = path.resolve(path.dirname(importerPath), specifier);
+  const candidates = [
+    basePath,
+    `${basePath}.js`,
+    `${basePath}.mjs`,
+    `${basePath}.cjs`,
+    path.join(basePath, "index.js"),
+    path.join(basePath, "index.mjs"),
+    path.join(basePath, "index.cjs"),
+  ];
+
+  for (const candidate of candidates) {
+    if (!isPathInside(candidate, distRoot) || !isRuntimeFile(candidate)) {
+      continue;
+    }
+
+    if (await pathIsFile(candidate)) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function isPathInside(filePath, rootPath) {
+  const relativePath = path.relative(rootPath, filePath);
+  return (
+    relativePath &&
+    !relativePath.startsWith("..") &&
+    !path.isAbsolute(relativePath)
   );
 }
 
@@ -479,6 +590,14 @@ async function pathExists(filePath) {
   try {
     await fs.access(filePath);
     return true;
+  } catch {
+    return false;
+  }
+}
+
+async function pathIsFile(filePath) {
+  try {
+    return (await fs.stat(filePath)).isFile();
   } catch {
     return false;
   }
