@@ -1,35 +1,35 @@
 {
-	"name": "@8f4e/editor-mcp",
-	"version": "0.1.0",
-	"private": true,
-	"description": "MCP bridge for the 8f4e editor using Playwright",
-	"type": "module",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"bin": {
-		"8f4e-editor-mcp": "dist/cli.js"
-	},
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
-		},
-		"./cli": "./dist/cli.js"
-	},
-	"sideEffects": false,
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/andorthehood/8f4e.git"
-	},
-	"author": "Andor Polgar",
-	"license": "MIT",
-	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.18.1",
-		"playwright": "^1.58.1",
-		"zod": "^3.25.76"
-	},
-	"devDependencies": {
-		"@types/node": "^24.3.0",
-		"vitest": "4.0.13"
-	}
+  "name": "@8f4e/editor-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP bridge for the 8f4e editor using Playwright",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "8f4e-editor-mcp": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./cli": "./dist/cli.js"
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andorthehood/8f4e.git"
+  },
+  "author": "Andor Polgar",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.1",
+    "playwright": "^1.58.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "vitest": "4.0.13"
+  }
 }
