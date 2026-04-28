@@ -8,7 +8,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "tsc",
+        "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
         "cwd": "{projectRoot}"
       }
     },
@@ -22,7 +22,7 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc --watch",
+        "command": "concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
         "cwd": "{projectRoot}"
       }
     },
@@ -34,14 +34,14 @@
         "cwd": "{projectRoot}"
       }
     },
-  "typecheck": {
-    "executor": "nx:run-commands",
-    "options": {
-      "command": "tsc --noEmit",
-      "cwd": "{projectRoot}"
-    },
-    "dependsOn": ["^build"]
-  }
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": ["^build"]
+    }
   },
   "tags": ["type:application", "scope:ui"]
 }

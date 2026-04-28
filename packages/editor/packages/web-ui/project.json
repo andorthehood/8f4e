@@ -5,29 +5,23 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": [
-        "{projectRoot}/dist"
-      ],
+      "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "tsc",
+        "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
         "cwd": "{projectRoot}"
       }
     },
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc --watch",
+        "command": "concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
         "cwd": "{projectRoot}"
       }
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "^build"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["^build"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
@@ -39,9 +33,7 @@
         "command": "tsc --noEmit",
         "cwd": "{projectRoot}"
       },
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "test:screenshot": {
       "executor": "nx:run-commands",
@@ -86,8 +78,5 @@
       }
     }
   },
-  "tags": [
-    "type:library",
-    "scope:ui"
-  ]
+  "tags": ["type:library", "scope:ui"]
 }
