@@ -74,24 +74,6 @@ Supported `font` values:
 - `spleen12x24`
 - `spleen16x32`
 
-### `@infoOverlay`
-
-Enable or disable the editor info overlay for the project.
-
-```txt
-; @infoOverlay <on|off>
-```
-
-Accepted values:
-
-- `on`
-- `off`
-
-Aliases:
-
-- `true` -> `on`
-- `false` -> `off`
-
 ### `@watch`
 
 Show a runtime debugger value for a memory id.
