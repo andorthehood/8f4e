@@ -1,0 +1,25 @@
+[
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-28T14:04:45.609Z",
+		"commit": "836414164d261c44df371e816b763fcb802955a6",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor@0.1.0",
+		"packageName": "@8f4e/editor",
+		"projectName": "@8f4e/editor",
+		"version": "0.1.0",
+		"bytes": {
+			"raw": 3717,
+			"gzip": 1110,
+			"brotli": 964
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 3717,
+				"gzip": 1110,
+				"brotli": 964
+			}
+		]
+	}
+]
