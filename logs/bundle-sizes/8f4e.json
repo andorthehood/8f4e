@@ -15,7 +15,7 @@
 		},
 		"files": [
 			{
-				"path": "assets/index-3GlDcctK.js",
+				"path": "index.js",
 				"raw": 219710,
 				"gzip": 60378,
 				"brotli": 51389
@@ -38,7 +38,7 @@
 		},
 		"files": [
 			{
-				"path": "assets/index-DNLhRMoI.js",
+				"path": "index.js",
 				"raw": 219710,
 				"gzip": 60532,
 				"brotli": 51404
@@ -61,7 +61,7 @@
 		},
 		"files": [
 			{
-				"path": "assets/index-PsfsM3sa.js",
+				"path": "index.js",
 				"raw": 219710,
 				"gzip": 60527,
 				"brotli": 51434
