@@ -1,5 +1,5 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { getEditorConfigColorScheme, getEditorConfigFont } from '@8f4e/editor-state';
+import { getEditorConfigColorSchemeOverrides, getEditorConfigFont } from '@8f4e/editor-state';
 
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
@@ -25,7 +25,7 @@ export function createSpriteSheetManager(
 	const rerenderSpriteSheet = async () => {
 		const spriteData = await generateSprite({
 			font: getEditorConfigFont(state.editorConfig),
-			colorScheme: getEditorConfigColorScheme(state.editorConfig),
+			colorScheme: getEditorConfigColorSchemeOverrides(state.editorConfig),
 		});
 
 		view.loadSpriteSheet(spriteData);

@@ -116,8 +116,12 @@ export const FONT_NAMES = [
 
 export type Font = (typeof FONT_NAMES)[number];
 
+export type ColorSchemeOverrides = {
+	[Section in keyof ColorScheme]?: Partial<ColorScheme[Section]>;
+};
+
 export interface Config {
-	colorScheme?: ColorScheme;
+	colorScheme?: ColorSchemeOverrides;
 	font: Font;
 }
 
