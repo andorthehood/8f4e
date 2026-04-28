@@ -1,4 +1,10 @@
-import initState, { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state';
+import initState, {
+	Callbacks,
+	getEditorConfigColorScheme,
+	getEditorConfigFont,
+	State,
+	RuntimeRegistry,
+} from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
@@ -98,8 +104,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = await generateSprite({
-		font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
-		colorScheme: state.colorScheme,
+		font: getEditorConfigFont(state.editorConfig),
+		colorScheme: getEditorConfigColorScheme(state.editorConfig),
 	});
 
 	updateStateWithSpriteData(state, spriteData);

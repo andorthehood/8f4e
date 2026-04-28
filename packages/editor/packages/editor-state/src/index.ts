@@ -14,7 +14,9 @@ import codeBlockNavigation from './features/code-blocks/features/codeBlockNaviga
 import compiler from './features/program-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
+import { registerColorEditorConfigValidator } from './features/color/editorConfig';
 import editorConfigModule from './features/editor-config-module/effect';
+import { registerFontEditorConfigValidator } from './features/font/editorConfig';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
 import projectExport from './features/project-export/effect';
@@ -63,6 +65,9 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	const store = createStateManager<State>(baseState);
 
 	const state = store.getState();
+
+	registerFontEditorConfigValidator(store);
+	registerColorEditorConfigValidator(store);
 
 	runtime(store, events);
 	editorMode(store, events);
@@ -168,6 +173,8 @@ export type {
 	ConsoleState,
 	CodeError,
 	MemoryAction,
+	EditorConfig,
+	EditorConfigEntry,
 } from './types';
 
 // Export EMPTY_DEFAULT_PROJECT as a value
@@ -183,3 +190,5 @@ export type { Direction } from './features/code-blocks/utils/types';
 export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';
+export { getEditorConfigColorScheme } from './features/color/editorConfig';
+export { getEditorConfigFont } from './features/font/editorConfig';

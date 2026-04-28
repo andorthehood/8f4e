@@ -23,9 +23,9 @@ Current issues:
 
 Move color configuration from project config to editor directives using:
 
-- `; @color <path> <value>`
-  - Example: `; @color text.code #cccccc`
-  - Example: `; @color fill.moduleBackground rgba(0,0,0,0.9)`
+- `; @config color.<path> <value>`
+  - Example: `; @config color.text.code #cccccc`
+  - Example: `; @config color.fill.moduleBackground rgba(0,0,0,0.9)`
 
 Rules:
 - Allowed in any block type.
@@ -43,12 +43,12 @@ Schema changes:
 
 - Do not keep project config color scheme as an active source of truth.
 - Do not keep array-based feedback scale in the final schema.
-- Do not hard-fail the editor on invalid `@color` directives.
+- Do not hard-fail the editor on invalid color config directives.
 
 ## Implementation Plan
 
 ### Step 1: Add color directive parser and application effect
-- Parse `; @color <path> <value>` directives from all code blocks.
+- Parse `; @config color.<path> <value>` directives from all code blocks.
 - Apply valid overrides to the runtime color scheme with last-write-wins behavior.
 - Log warnings for unknown paths or invalid values.
 
@@ -61,7 +61,7 @@ Schema changes:
 - Update effects/tests that currently read or write config color scheme.
 
 ### Step 4: Documentation and migration updates
-- Document `@color` in editor directives docs.
+- Document `@config color.<path>` in editor directives docs.
 - Update examples/projects to use directives for color customization.
 
 ## Validation Checkpoints (Optional)
@@ -74,10 +74,10 @@ Schema changes:
 
 ## Success Criteria
 
-- [ ] Color scheme customization is fully directive-driven via `; @color`.
+- [ ] Color scheme customization is fully directive-driven via `; @config color.<path>`.
 - [ ] Project config no longer contains `colorScheme`.
 - [ ] Feedback scale no longer uses arrays.
-- [ ] Duplicate `@color` paths resolve via last-write-wins.
+- [ ] Duplicate color config paths resolve via last-write-wins.
 - [ ] Invalid directives are warned and skipped without crashes.
 - [ ] Existing examples continue to render correctly after migration.
 
@@ -86,7 +86,7 @@ Schema changes:
 - `packages/editor/packages/editor-state/src/features/project-config` - remove color scheme config shape
 - `packages/editor/packages/editor-state` color application effects/types - apply directive overrides
 - `packages/editor/packages/sprite-generator` - feedback scale scalar field refactor
-- `packages/editor/docs/editor-directives.md` - document `@color`
+- `packages/editor/docs/editor-directives.md` - document `@config color.<path>`
 - `packages/examples/src/projects/*.8f4e` - migrate color customization
 
 ## Risks & Considerations
@@ -110,7 +110,7 @@ Schema changes:
 
 ## Notes
 
-- There are no built-in themes anymore; only explicit `@color` overrides are needed.
+- There are no built-in themes anymore; only explicit color config overrides are needed.
 
 ## Archive Instructions
 

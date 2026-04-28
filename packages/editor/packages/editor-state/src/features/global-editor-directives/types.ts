@@ -2,8 +2,8 @@
  * Types for global editor directives.
  * Editor directives use `; @<name> <args...>` syntax.
  */
-import type { ColorScheme, Font } from '@8f4e/sprite-generator';
 import type { CodeError } from '~/types';
+import type { EditorConfig, EditorConfigEntry } from '../editor-config/types';
 import type { CodeBlockType } from '../code-blocks/types';
 import type { RuntimeRegistry } from '../runtime/types';
 
@@ -14,8 +14,10 @@ export interface ParsedGlobalEditorDirective {
 }
 
 export interface ResolvedGlobalEditorDirectives {
-	/** Selected editor font from `; @config font <font>` directives */
-	font?: Font;
+	/** Raw editor config object from `; @config <path> <value>` directives */
+	config?: EditorConfig;
+	/** Source entries for config validation/error reporting */
+	configEntries?: EditorConfigEntry[];
 	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
 	infoOverlay?: boolean;
 	/** Export file base name from `; @exportFileName <value>` directives */
@@ -26,8 +28,6 @@ export interface ResolvedGlobalEditorDirectives {
 	keyCodeMemoryId?: string;
 	/** Target memory for keyboard pressed-state flag */
 	keyPressedMemoryId?: string;
-	/** Resolved editor color overrides merged on top of the default color scheme */
-	colorScheme?: ColorScheme;
 }
 
 export interface GlobalEditorDirectiveContext {
