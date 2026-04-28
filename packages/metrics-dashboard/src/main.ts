@@ -28,6 +28,10 @@ type TrackedLog = {
 	path: string;
 };
 
+type BundleSizeManifest = {
+	logs: TrackedLog[];
+};
+
 type Point = {
 	packageName: string;
 	label: string;
@@ -46,22 +50,6 @@ type Point = {
 	delta: number | null;
 	files: BundleFileEntry[];
 };
-
-const trackedLogs: TrackedLog[] = [
-	{ packageName: '8f4e', label: 'App', path: '8f4e.json' },
-	{ packageName: '@8f4e/editor', label: 'Editor', path: '@8f4e/editor.json' },
-	{
-		packageName: '@8f4e/editor-state',
-		label: 'Editor State',
-		path: '@8f4e/editor-state.json',
-	},
-	{
-		packageName: '@8f4e/compiler',
-		label: 'Compiler',
-		path: '@8f4e/compiler.json',
-	},
-	{ packageName: '@8f4e/web-ui', label: 'Web UI', path: '@8f4e/web-ui.json' },
-];
 
 const app = requireElement<HTMLDivElement>('#app');
 
@@ -106,6 +94,7 @@ app.innerHTML = `
 
 const state = {
 	metric: 'gzip' as SizeMetric,
+	trackedLogs: [] as TrackedLog[],
 	points: [] as Point[],
 };
 
@@ -124,7 +113,8 @@ init().catch((error: unknown) => {
 });
 
 async function init() {
-	state.points = await loadPoints();
+	state.trackedLogs = await loadTrackedLogs();
+	state.points = await loadPoints(state.trackedLogs);
 	render();
 
 	for (const button of metricButtons) {
@@ -137,7 +127,20 @@ async function init() {
 	window.addEventListener('resize', debounce(render, 100));
 }
 
-async function loadPoints() {
+async function loadTrackedLogs() {
+	const response = await fetch('bundle-sizes/manifest.json', {
+		cache: 'no-store',
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to load bundle size manifest: ${response.status}`);
+	}
+
+	const manifest = (await response.json()) as BundleSizeManifest;
+	return manifest.logs;
+}
+
+async function loadPoints(trackedLogs: TrackedLog[]) {
 	const pointGroups = await Promise.all(
 		trackedLogs.map(async log => {
 			const response = await fetch(`bundle-sizes/${log.path}`, {
@@ -368,7 +371,7 @@ function renderDelta(latestPoints: Point[]) {
 function renderPackageGrid(points: Point[]) {
 	packageGrid.replaceChildren();
 
-	for (const log of trackedLogs) {
+	for (const log of state.trackedLogs) {
 		const packagePoints = points.filter(point => point.packageName === log.packageName);
 		const latestPoint = packagePoints[packagePoints.length - 1] ?? null;
 		const card = document.createElement('article');
@@ -483,7 +486,7 @@ function createEmptyChart(message: string) {
 }
 
 function getLatestPoints(points: Point[]) {
-	return trackedLogs
+	return state.trackedLogs
 		.map(log => points.filter(point => point.packageName === log.packageName).at(-1))
 		.filter((point): point is Point => Boolean(point));
 }

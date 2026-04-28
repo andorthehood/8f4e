@@ -6,14 +6,17 @@ import { defineConfig, type Plugin } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(__dirname, '../..');
-const logsRoot = path.join(workspaceRoot, 'logs/bundle-sizes');
-const trackedLogPaths = [
-	'8f4e.json',
-	'@8f4e/editor.json',
-	'@8f4e/editor-state.json',
-	'@8f4e/compiler.json',
-	'@8f4e/web-ui.json',
-];
+const configPath = path.join(workspaceRoot, 'bundle-size.config.json');
+
+type BundleSizeConfig = {
+	outDir?: string;
+	packages: Record<
+		string,
+		{
+			label?: string;
+		}
+	>;
+};
 
 export default defineConfig({
 	plugins: [bundleSizeLogsPlugin()],
@@ -42,8 +45,11 @@ function bundleSizeLogsPlugin(): Plugin {
 				try {
 					const url = new URL(request.url, 'http://localhost');
 					const relativePath = decodeURIComponent(url.pathname.slice('/bundle-sizes/'.length));
-					const filePath = getLogFilePath(relativePath);
-					const content = await fs.readFile(filePath, 'utf8');
+					const config = await readBundleSizeConfig();
+					const content =
+						relativePath === 'manifest.json'
+							? JSON.stringify(createManifest(config), null, '\t')
+							: await fs.readFile(getLogFilePath(config, relativePath), 'utf8');
 
 					response.statusCode = 200;
 					response.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -60,11 +66,20 @@ function bundleSizeLogsPlugin(): Plugin {
 			});
 		},
 		async generateBundle() {
-			for (const logPath of trackedLogPaths) {
-				const content = await fs.readFile(getLogFilePath(logPath), 'utf8');
+			const config = await readBundleSizeConfig();
+			const manifest = createManifest(config);
+
+			this.emitFile({
+				type: 'asset',
+				fileName: 'bundle-sizes/manifest.json',
+				source: JSON.stringify(manifest, null, '\t'),
+			});
+
+			for (const log of manifest.logs) {
+				const content = await fs.readFile(getLogFilePath(config, log.path), 'utf8');
 				this.emitFile({
 					type: 'asset',
-					fileName: `bundle-sizes/${logPath}`,
+					fileName: `bundle-sizes/${log.path}`,
 					source: content,
 				});
 			}
@@ -76,7 +91,22 @@ function isFileNotFoundError(error: unknown) {
 	return typeof error === 'object' && error !== null && 'code' in error && error.code === 'ENOENT';
 }
 
-function getLogFilePath(relativePath: string) {
+async function readBundleSizeConfig(): Promise<BundleSizeConfig> {
+	return JSON.parse(await fs.readFile(configPath, 'utf8')) as BundleSizeConfig;
+}
+
+function createManifest(config: BundleSizeConfig) {
+	return {
+		logs: Object.entries(config.packages).map(([packageName, packageConfig]) => ({
+			packageName,
+			label: packageConfig.label ?? packageName,
+			path: getPackageLogRelativePath(packageName),
+		})),
+	};
+}
+
+function getLogFilePath(config: BundleSizeConfig, relativePath: string) {
+	const logsRoot = path.resolve(workspaceRoot, config.outDir ?? 'logs/bundle-sizes');
 	const filePath = path.resolve(logsRoot, relativePath);
 	const relativeToLogsRoot = path.relative(logsRoot, filePath);
 
@@ -85,4 +115,13 @@ function getLogFilePath(relativePath: string) {
 	}
 
 	return filePath;
+}
+
+function getPackageLogRelativePath(packageName: string) {
+	const pathSegments = packageName.split('/');
+	const fileName = `${pathSegments.pop()}.json`;
+	return path
+		.join(...pathSegments, fileName)
+		.split(path.sep)
+		.join('/');
 }

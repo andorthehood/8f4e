@@ -5,20 +5,13 @@ import { execFileSync } from "node:child_process";
 import { promisify } from "node:util";
 import fs from "node:fs/promises";
 import path from "node:path";
-import ts from "typescript";
 
 const gzipAsync = promisify(gzip);
 const brotliCompressAsync = promisify(brotliCompress);
 
 const workspaceRoot = process.cwd();
+const defaultConfigPath = "bundle-size.config.json";
 const defaultOutputDir = "logs/bundle-sizes";
-const defaultPackages = [
-  "8f4e",
-  "@8f4e/editor",
-  "@8f4e/editor-state",
-  "@8f4e/compiler",
-  "@8f4e/web-ui",
-];
 
 const options = parseArgs(process.argv.slice(2));
 
@@ -27,29 +20,38 @@ if (options.help) {
   process.exit(0);
 }
 
+const bundleSizeConfig = await readBundleSizeConfig(
+  options.configPath ?? defaultConfigPath,
+);
 const outputDir = path.resolve(
   workspaceRoot,
-  options.outputDir ?? defaultOutputDir,
+  options.outputDir ?? bundleSizeConfig.outDir ?? defaultOutputDir,
 );
-const packageFilter = new Set(
-  options.packages.length > 0 ? options.packages : defaultPackages,
-);
+const packageFilter =
+  options.packages.length > 0 ? new Set(options.packages) : null;
 const gitMetadata = getGitMetadata();
 const packageManifests = await findPackageManifests(workspaceRoot);
+const packageManifestsByName =
+  await getPackageManifestsByName(packageManifests);
 const packageResults = [];
 const skippedResults = [];
 
-for (const manifestPath of packageManifests) {
-  const packageRoot = path.dirname(manifestPath);
-  const packageJson = await readJson(manifestPath);
-  const packageName = packageJson.name;
-
-  if (
-    !packageName ||
-    (packageFilter.size > 0 && !packageFilter.has(packageName))
-  ) {
+for (const [packageName, packageConfig] of Object.entries(
+  bundleSizeConfig.packages,
+)) {
+  if (packageFilter && !packageFilter.has(packageName)) {
     continue;
   }
+
+  const manifestPath = packageManifestsByName.get(packageName);
+
+  if (!manifestPath) {
+    console.warn(`Skipping ${packageName}: no package.json found`);
+    continue;
+  }
+
+  const packageRoot = path.dirname(manifestPath);
+  const packageJson = await readJson(manifestPath);
 
   if (
     await hasLoggedPackageVersion(
@@ -65,7 +67,7 @@ for (const manifestPath of packageManifests) {
     continue;
   }
 
-  const distRoot = path.join(packageRoot, "dist");
+  const distRoot = path.resolve(workspaceRoot, packageConfig.distDir);
 
   if (!(await pathExists(distRoot))) {
     console.warn(
@@ -74,16 +76,12 @@ for (const manifestPath of packageManifests) {
     continue;
   }
 
-  const bundleFilePaths = await resolveBundleFiles(
-    packageRoot,
-    distRoot,
-    packageJson,
-  );
-  const files = await measureBundleFiles(distRoot, bundleFilePaths);
+  const bundleFiles = await resolveBundleFiles(distRoot, packageConfig.files);
+  const files = await measureBundleFiles(bundleFiles);
 
   if (files.length === 0) {
     console.warn(
-      `Skipping ${packageName}: no main bundle files found in ${path.relative(workspaceRoot, distRoot)}`,
+      `Skipping ${packageName}: no configured bundle files matched in ${path.relative(workspaceRoot, distRoot)}`,
     );
     continue;
   }
@@ -151,6 +149,7 @@ for (const result of skippedResults) {
 function parseArgs(args) {
   const parsed = {
     help: false,
+    configPath: undefined,
     outputDir: undefined,
     packages: [],
   };
@@ -160,6 +159,21 @@ function parseArgs(args) {
 
     if (arg === "--help" || arg === "-h") {
       parsed.help = true;
+      continue;
+    }
+
+    if (arg === "--config") {
+      const value = args[index + 1];
+      if (!value) {
+        throw new Error("--config requires a value");
+      }
+      parsed.configPath = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg.startsWith("--config=")) {
+      parsed.configPath = arg.slice("--config=".length);
       continue;
     }
 
@@ -205,14 +219,16 @@ function printHelp() {
 Appends bundle-size entries to logs/bundle-sizes/{package-name}.json.
 
 Options:
-  --out-dir <path>       Output directory. Default: ${defaultOutputDir}
-  --package <name>       Only log one package. Can be repeated. Overrides the default package list.
+  --config <path>        Config file. Default: ${defaultConfigPath}
+  --out-dir <path>       Output directory. Overrides config outDir.
+  --package <name>       Only log one configured package. Can be repeated.
   -h, --help             Show this help.
 
 Notes:
-  - Default packages: ${defaultPackages.join(", ")}
+  - Packages and file regexes are read from ${defaultConfigPath}.
   - Run package builds before this script.
-  - Declared main bundle files and their local runtime imports are measured, not emitted chunks.
+  - File patterns match paths relative to each configured distDir.
+  - The configured file name is stored in the log instead of hashed build paths.
   - Log entries contain numeric byte totals and measured file paths, for graphing.
   - Scoped packages use their package name as a nested path, e.g. logs/bundle-sizes/@8f4e/compiler.json.`);
 }
@@ -260,252 +276,96 @@ async function collectPackageManifests(dir, manifests) {
   }
 }
 
-async function resolveBundleFiles(packageRoot, distRoot, packageJson) {
-  const bundlePaths = new Set();
+async function getPackageManifestsByName(packageManifests) {
+  const manifestsByName = new Map();
 
-  for (const entryPath of getPackageEntryPaths(packageJson)) {
-    const distRelativePath = normalizeDistEntryPath(entryPath);
+  for (const manifestPath of packageManifests) {
+    const packageJson = await readJson(manifestPath);
 
-    if (!distRelativePath || !isRuntimeFile(distRelativePath)) {
-      continue;
-    }
-
-    const filePath = path.join(distRoot, ...distRelativePath.split("/"));
-
-    if (await pathExists(filePath)) {
-      bundlePaths.add(filePath);
+    if (packageJson.name) {
+      manifestsByName.set(packageJson.name, manifestPath);
     }
   }
 
-  if (bundlePaths.size === 0 && packageRoot === workspaceRoot) {
-    for (const filePath of await getViteHtmlModuleScripts(distRoot)) {
-      bundlePaths.add(filePath);
-    }
-  }
-
-  const files =
-    packageRoot === workspaceRoot
-      ? [...bundlePaths]
-      : await expandLocalRuntimeGraph(distRoot, [...bundlePaths]);
-
-  return files.sort((a, b) =>
-    path.relative(distRoot, a).localeCompare(path.relative(distRoot, b)),
-  );
+  return manifestsByName;
 }
 
-async function expandLocalRuntimeGraph(distRoot, entryPaths) {
-  const visited = new Set();
-  const pending = [...entryPaths];
+async function resolveBundleFiles(distRoot, fileRules) {
+  const distFilePaths = await collectDistRuntimeFiles(distRoot);
+  const bundleFiles = [];
 
-  while (pending.length > 0) {
-    const filePath = pending.pop();
+  for (const rule of fileRules) {
+    const pattern = new RegExp(rule.pattern);
+    const matches = distFilePaths.filter(({ relativePath }) =>
+      pattern.test(relativePath),
+    );
 
-    if (!filePath || visited.has(filePath)) {
-      continue;
-    }
-
-    visited.add(filePath);
-
-    const sourceText = await fs.readFile(filePath, "utf8");
-    for (const specifier of getLocalRuntimeSpecifiers(sourceText, filePath)) {
-      const importedFilePath = await resolveRuntimeImport(
-        distRoot,
-        filePath,
-        specifier,
+    if (matches.length === 0) {
+      console.warn(
+        `No files matched ${rule.pattern} in ${path.relative(workspaceRoot, distRoot)}`,
       );
-
-      if (importedFilePath && !visited.has(importedFilePath)) {
-        pending.push(importedFilePath);
-      }
-    }
-  }
-
-  return [...visited];
-}
-
-function getLocalRuntimeSpecifiers(sourceText, filePath) {
-  const sourceFile = ts.createSourceFile(
-    filePath,
-    sourceText,
-    ts.ScriptTarget.Latest,
-    true,
-    ts.ScriptKind.JS,
-  );
-  const specifiers = [];
-
-  function visit(node) {
-    if (
-      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-      node.moduleSpecifier &&
-      ts.isStringLiteral(node.moduleSpecifier)
-    ) {
-      collectRuntimeSpecifier(node.moduleSpecifier.text, specifiers);
-    }
-
-    if (
-      ts.isCallExpression(node) &&
-      node.expression.kind === ts.SyntaxKind.ImportKeyword &&
-      node.arguments.length === 1 &&
-      ts.isStringLiteral(node.arguments[0])
-    ) {
-      collectRuntimeSpecifier(node.arguments[0].text, specifiers);
-    }
-
-    ts.forEachChild(node, visit);
-  }
-
-  visit(sourceFile);
-  return specifiers;
-}
-
-function collectRuntimeSpecifier(specifier, specifiers) {
-  if (specifier.startsWith(".")) {
-    specifiers.push(specifier);
-  }
-}
-
-async function resolveRuntimeImport(distRoot, importerPath, specifier) {
-  const basePath = path.resolve(path.dirname(importerPath), specifier);
-  const candidates = [
-    basePath,
-    `${basePath}.js`,
-    `${basePath}.mjs`,
-    `${basePath}.cjs`,
-    path.join(basePath, "index.js"),
-    path.join(basePath, "index.mjs"),
-    path.join(basePath, "index.cjs"),
-  ];
-
-  for (const candidate of candidates) {
-    if (!isPathInside(candidate, distRoot) || !isRuntimeFile(candidate)) {
       continue;
     }
 
-    if (await pathIsFile(candidate)) {
-      return candidate;
+    if (matches.length > 1) {
+      throw new Error(
+        `Pattern ${rule.pattern} in ${path.relative(workspaceRoot, distRoot)} matched multiple files: ${matches
+          .map((match) => match.relativePath)
+          .join(", ")}`,
+      );
     }
+
+    bundleFiles.push({
+      name: rule.name,
+      filePath: matches[0].filePath,
+    });
   }
 
-  return null;
+  return bundleFiles.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function isPathInside(filePath, rootPath) {
-  const relativePath = path.relative(rootPath, filePath);
-  return (
-    relativePath &&
-    !relativePath.startsWith("..") &&
-    !path.isAbsolute(relativePath)
-  );
+async function collectDistRuntimeFiles(distRoot) {
+  const files = [];
+  await collectRuntimeFiles(distRoot, distRoot, files);
+  return files;
 }
 
-function getPackageEntryPaths(packageJson) {
-  const entries = [];
+async function collectRuntimeFiles(root, dir, files) {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
 
-  for (const field of ["main", "module", "browser"]) {
-    collectEntryPaths(packageJson[field], entries);
-  }
+  for (const entry of entries) {
+    const entryPath = path.join(dir, entry.name);
 
-  collectEntryPaths(packageJson.exports, entries);
-  collectEntryPaths(packageJson.bin, entries);
-
-  return entries;
-}
-
-function collectEntryPaths(value, entries) {
-  if (!value) {
-    return;
-  }
-
-  if (typeof value === "string") {
-    entries.push(value);
-    return;
-  }
-
-  if (Array.isArray(value)) {
-    for (const item of value) {
-      collectEntryPaths(item, entries);
-    }
-    return;
-  }
-
-  if (typeof value === "object") {
-    for (const item of Object.values(value)) {
-      collectEntryPaths(item, entries);
-    }
-  }
-}
-
-function normalizeDistEntryPath(entryPath) {
-  const cleanEntryPath = entryPath
-    .split(/[?#]/, 1)[0]
-    .replace(/\\/g, "/")
-    .replace(/^\.\//, "");
-
-  if (cleanEntryPath.startsWith("dist/")) {
-    return cleanEntryPath.slice("dist/".length);
-  }
-
-  return null;
-}
-
-async function getViteHtmlModuleScripts(distRoot) {
-  const indexHtmlPath = path.join(distRoot, "index.html");
-
-  if (!(await pathExists(indexHtmlPath))) {
-    return [];
-  }
-
-  const indexHtml = await fs.readFile(indexHtmlPath, "utf8");
-  const scriptRegex =
-    /<script\b(?=[^>]*\btype=["']module["'])(?=[^>]*\bsrc=["']([^"']+)["'])[^>]*>/gi;
-  const bundlePaths = [];
-
-  for (const match of indexHtml.matchAll(scriptRegex)) {
-    const distRelativePath = normalizeHtmlAssetPath(match[1]);
-
-    if (!distRelativePath || !isRuntimeFile(distRelativePath)) {
+    if (entry.isDirectory()) {
+      await collectRuntimeFiles(root, entryPath, files);
       continue;
     }
 
-    const filePath = path.join(distRoot, ...distRelativePath.split("/"));
+    if (!entry.isFile()) {
+      continue;
+    }
 
-    if (await pathExists(filePath)) {
-      bundlePaths.push(filePath);
+    const relativePath = path
+      .relative(root, entryPath)
+      .split(path.sep)
+      .join("/");
+
+    if (isRuntimeFile(relativePath)) {
+      files.push({ relativePath, filePath: entryPath });
     }
   }
-
-  return bundlePaths.sort((a, b) =>
-    path.relative(distRoot, a).localeCompare(path.relative(distRoot, b)),
-  );
 }
 
-function normalizeHtmlAssetPath(assetPath) {
-  const cleanAssetPath = assetPath
-    .split(/[?#]/, 1)[0]
-    .replace(/\\/g, "/")
-    .replace(/^\/+/, "");
-
-  if (
-    !cleanAssetPath ||
-    cleanAssetPath.startsWith("http://") ||
-    cleanAssetPath.startsWith("https://")
-  ) {
-    return null;
-  }
-
-  return cleanAssetPath;
-}
-
-async function measureBundleFiles(distRoot, filePaths) {
+async function measureBundleFiles(bundleFiles) {
   const files = [];
 
-  for (const filePath of filePaths) {
+  for (const { name, filePath } of bundleFiles) {
     const bytes = await fs.readFile(filePath);
     const gzipBytes = await gzipAsync(bytes);
     const brotliBytes = await brotliCompressAsync(bytes);
 
     files.push({
-      path: path.relative(distRoot, filePath).split(path.sep).join("/"),
+      path: name,
       raw: bytes.byteLength,
       gzip: gzipBytes.byteLength,
       brotli: brotliBytes.byteLength,
@@ -637,6 +497,62 @@ function runGit(args) {
   }
 }
 
+async function readBundleSizeConfig(configPath) {
+  const resolvedConfigPath = path.resolve(workspaceRoot, configPath);
+  const config = await readJson(resolvedConfigPath);
+
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    throw new Error(`${configPath} must contain an object`);
+  }
+
+  if (!config.packages || typeof config.packages !== "object") {
+    throw new Error(`${configPath} must define a packages object`);
+  }
+
+  for (const [packageName, packageConfig] of Object.entries(config.packages)) {
+    if (!packageConfig || typeof packageConfig !== "object") {
+      throw new Error(`${configPath}: ${packageName} must contain an object`);
+    }
+
+    if (typeof packageConfig.distDir !== "string" || !packageConfig.distDir) {
+      throw new Error(`${configPath}: ${packageName}.distDir must be a string`);
+    }
+
+    if (
+      !Array.isArray(packageConfig.files) ||
+      packageConfig.files.length === 0
+    ) {
+      throw new Error(
+        `${configPath}: ${packageName}.files must be a non-empty array`,
+      );
+    }
+
+    for (const fileRule of packageConfig.files) {
+      if (!fileRule || typeof fileRule !== "object") {
+        throw new Error(
+          `${configPath}: ${packageName}.files entries must be objects`,
+        );
+      }
+
+      if (typeof fileRule.name !== "string" || !fileRule.name) {
+        throw new Error(
+          `${configPath}: ${packageName}.files[].name must be a string`,
+        );
+      }
+
+      if (typeof fileRule.pattern !== "string" || !fileRule.pattern) {
+        throw new Error(
+          `${configPath}: ${packageName}.files[].pattern must be a string`,
+        );
+      }
+
+      new RegExp(fileRule.pattern);
+    }
+  }
+
+  return config;
+}
+
 async function readJson(filePath) {
   return JSON.parse(await fs.readFile(filePath, "utf8"));
 }
@@ -645,14 +561,6 @@ async function pathExists(filePath) {
   try {
     await fs.access(filePath);
     return true;
-  } catch {
-    return false;
-  }
-}
-
-async function pathIsFile(filePath) {
-  try {
-    return (await fs.stat(filePath)).isFile();
   } catch {
     return false;
   }
