@@ -1013,9 +1013,9 @@ moduleEnd
 
 module dx7colors
 ; @pos 2 51
-; @color text.instruction #33ffcc
-; @color icons.inputConnector #ff9999
-; @color icons.outputConnector #9999cc
+; @config color.text.instruction #33ffcc
+; @config color.icons.inputConnector #ff9999
+; @config color.icons.outputConnector #9999cc
 
 moduleEnd
 

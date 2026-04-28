@@ -1,4 +1,3 @@
-import colorDirective from './color/plugin';
 import configDirective from './config/plugin';
 import exportFileNameDirective from './exportFileName/plugin';
 import infoOverlayDirective from './infoOverlay/plugin';
@@ -19,7 +18,6 @@ import type { RuntimeRegistry } from '../runtime/types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
 	configDirective,
-	colorDirective,
 	infoOverlayDirective,
 	exportFileNameDirective,
 	runtimeDirective,

@@ -1,7 +1,6 @@
-import { defaultColorScheme } from '@8f4e/sprite-generator';
-
 import { resolveGlobalEditorDirectives } from './registry';
 
+import { validateEditorConfigEntries } from '../editor-config/validators';
 import deepEqual from '../../shared/utils/deepEqual';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -19,18 +18,20 @@ export default function globalEditorDirectivesEffect(store: StateManager<State>)
 	function resolve(): void {
 		const state = store.getState();
 		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks, state.runtimeRegistry);
-		const nextColorScheme = resolved.colorScheme ?? defaultColorScheme;
+		const { config, configEntries, ...globalEditorDirectives } = resolved;
+		const nextEditorConfig = config ?? {};
+		const nextErrors = [...errors, ...validateEditorConfigEntries(configEntries ?? [], state.editorConfigValidators)];
 
-		if (!deepEqual(resolved, state.globalEditorDirectives)) {
-			store.set('globalEditorDirectives', resolved);
+		if (!deepEqual(globalEditorDirectives, state.globalEditorDirectives)) {
+			store.set('globalEditorDirectives', globalEditorDirectives);
 		}
 
-		if (!deepEqual(nextColorScheme, state.colorScheme)) {
-			store.set('colorScheme', nextColorScheme);
+		if (!deepEqual(nextEditorConfig, state.editorConfig)) {
+			store.set('editorConfig', nextEditorConfig);
 		}
 
-		if (!deepEqual(errors, state.codeErrors.globalEditorDirectiveErrors)) {
-			store.set('codeErrors.globalEditorDirectiveErrors', errors);
+		if (!deepEqual(nextErrors, state.codeErrors.globalEditorDirectiveErrors)) {
+			store.set('codeErrors.globalEditorDirectiveErrors', nextErrors);
 		}
 	}
 

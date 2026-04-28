@@ -1,4 +1,5 @@
 import generateSprite from '@8f4e/sprite-generator';
+import { getEditorConfigColorScheme, getEditorConfigFont } from '@8f4e/editor-state';
 
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
@@ -23,8 +24,8 @@ export function createSpriteSheetManager(
 	const state = store.getState();
 	const rerenderSpriteSheet = async () => {
 		const spriteData = await generateSprite({
-			font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
-			colorScheme: state.colorScheme,
+			font: getEditorConfigFont(state.editorConfig),
+			colorScheme: getEditorConfigColorScheme(state.editorConfig),
 		});
 
 		view.loadSpriteSheet(spriteData);
@@ -36,6 +37,6 @@ export function createSpriteSheetManager(
 		events.dispatch('spriteSheetRerendered');
 	};
 
-	store.subscribe('colorScheme', rerenderSpriteSheet);
-	store.subscribe('globalEditorDirectives.font', rerenderSpriteSheet);
+	store.subscribe('editorConfig.font', rerenderSpriteSheet);
+	store.subscribe('editorConfig.color', rerenderSpriteSheet);
 }

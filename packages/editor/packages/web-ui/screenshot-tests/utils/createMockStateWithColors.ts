@@ -1,4 +1,5 @@
 import { createMockState } from '@8f4e/editor-state/testing';
+import { getEditorConfigColorScheme, getEditorConfigFont } from '@8f4e/editor-state';
 import generateSprite from '@8f4e/sprite-generator';
 
 import type { State } from '@8f4e/editor-state';
@@ -103,7 +104,9 @@ const defaultColorScheme = {
  */
 export default async function createMockStateWithColors(overrides: Partial<State> = {}): Promise<State> {
 	const state = createMockState({
-		colorScheme: defaultColorScheme,
+		editorConfig: {
+			color: defaultColorScheme,
+		},
 		featureFlags: {
 			contextMenu: true,
 			infoOverlay: false,
@@ -119,8 +122,8 @@ export default async function createMockStateWithColors(overrides: Partial<State
 
 	// Generate sprite data and populate state
 	const spriteData = await generateSprite({
-		font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
-		colorScheme: state.colorScheme,
+		font: getEditorConfigFont(state.editorConfig),
+		colorScheme: getEditorConfigColorScheme(state.editorConfig),
 	});
 
 	updateStateWithSpriteData(state, spriteData);

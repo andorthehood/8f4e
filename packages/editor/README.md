@@ -24,27 +24,27 @@ renderers can replace it.
 
 Configure editor settings with `; @config <path> <value>`.
 
-- Global editor directives control editor presentation settings like `font`.
+- Global editor directives control editor presentation settings like `font` and color overrides.
 - `; @infoOverlay on|off` controls whether the info overlay is shown for the project.
-- `; @color <path> <value>` controls individual color scheme entries.
+- `; @config color.<path> <value>` controls individual color scheme entries.
 - Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).
 - Main groups are `text`, `fill`, and `icons`.
 
 Example color overrides:
 
 ```txt
-; @color fill.moduleBackground #101820
-; @color fill.wire rgba(255,255,255,0.65)
-; @color text.instruction #b388ff
-; @color icons.feedbackScale0 #ff0000
-; @color icons.feedbackScale1 #cc0033
-; @color icons.feedbackScale2 #990066
-; @color icons.feedbackScale3 #660099
-; @color icons.feedbackScale4 #3300cc
-; @color icons.feedbackScale5 #0000ff
+; @config color.fill.moduleBackground #101820
+; @config color.fill.wire rgba(255,255,255,0.65)
+; @config color.text.instruction #b388ff
+; @config color.icons.feedbackScale0 #ff0000
+; @config color.icons.feedbackScale1 #cc0033
+; @config color.icons.feedbackScale2 #990066
+; @config color.icons.feedbackScale3 #660099
+; @config color.icons.feedbackScale4 #3300cc
+; @config color.icons.feedbackScale5 #0000ff
 ```
 
-- `docs/color-paths.md` - Configurable color paths for `; @color <path> <value>`.
+- `docs/color-paths.md` - Configurable color paths for `; @config color.<path> <value>`.
 
 ## Font
 

@@ -1,4 +1,3 @@
-import { defaultColorScheme } from '@8f4e/sprite-generator';
 import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
 
 import type { DirectiveDeriveOptions, DirectiveDerivedState } from '~/features/code-blocks/features/directives/types';
@@ -302,7 +301,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			positionOffsetters: true,
 		},
 		editorMode: 'edit',
-		colorScheme: defaultColorScheme,
+		editorConfig: {},
+		editorConfigValidators: {},
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },

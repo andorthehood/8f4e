@@ -6,7 +6,6 @@
 
 import type { Module, CompileOptions } from '@8f4e/compiler';
 import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
-import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	CodeBlock,
@@ -29,6 +28,7 @@ import type {
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
 import type { EditorConfigStorageBlock } from './features/editor-config-module/editorConfigModule';
+import type { EditorConfig, EditorConfigValidatorRegistry } from './features/editor-config/types';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
@@ -269,7 +269,8 @@ export interface State {
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;
 	editorMode: EditorMode;
-	colorScheme?: ColorScheme;
+	editorConfig: EditorConfig;
+	editorConfigValidators: EditorConfigValidatorRegistry;
 	historyStack: Project[];
 	initialProjectState?: Project;
 	redoStack: Project[];
@@ -311,3 +312,10 @@ export interface State {
 	viewportAnimation: ViewportAnimation;
 	presentation: PresentationState;
 }
+
+export type {
+	EditorConfig,
+	EditorConfigEntry,
+	EditorConfigValidator,
+	EditorConfigValidatorRegistry,
+} from './features/editor-config/types';
