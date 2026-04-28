@@ -1,0 +1,25 @@
+[
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-28T14:04:45.497Z",
+		"commit": "836414164d261c44df371e816b763fcb802955a6",
+		"branch": "main",
+		"releaseTag": "app@0.1.0",
+		"packageName": "8f4e",
+		"projectName": "app",
+		"version": "0.1.0",
+		"bytes": {
+			"raw": 219710,
+			"gzip": 60378,
+			"brotli": 51389
+		},
+		"files": [
+			{
+				"path": "assets/index-3GlDcctK.js",
+				"raw": 219710,
+				"gzip": 60378,
+				"brotli": 51389
+			}
+		]
+	}
+]

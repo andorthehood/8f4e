@@ -1,0 +1,25 @@
+[
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-28T14:04:45.794Z",
+		"commit": "836414164d261c44df371e816b763fcb802955a6",
+		"branch": "main",
+		"releaseTag": "@8f4e/web-ui@0.1.0",
+		"packageName": "@8f4e/web-ui",
+		"projectName": "@8f4e/web-ui",
+		"version": "0.1.0",
+		"bytes": {
+			"raw": 1629,
+			"gzip": 490,
+			"brotli": 416
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 1629,
+				"gzip": 490,
+				"brotli": 416
+			}
+		]
+	}
+]
