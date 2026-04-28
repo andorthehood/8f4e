@@ -1,6 +1,7 @@
 import { parse8f4eToProject } from '@8f4e/editor-state';
 
 import { getCodeBuffer } from './compiler-callback';
+import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
 
 import type { Project, EditorConfigStorageBlock } from '@8f4e/editor';
 
@@ -9,10 +10,6 @@ const STORAGE_KEYS = {
 	PROJECT: 'project_editor',
 	EDITOR_CONFIG_BLOCKS: 'editorConfigBlocks_editor',
 } as const;
-
-function getProjectRegistry() {
-	return import('./examples/projectRegistry');
-}
 
 // Implementation of storage callbacks using localStorage
 export async function loadSession(): Promise<Project | null> {
@@ -25,8 +22,7 @@ export async function loadSession(): Promise<Project | null> {
 			window.history.replaceState({}, '', cleanUrl);
 
 			console.log('Loading project from query param:', projectUrlFromQuery);
-			const projectRegistry = await getProjectRegistry();
-			return parse8f4eToProject(await projectRegistry.getProject(projectUrlFromQuery));
+			return parse8f4eToProject(await getProject(projectUrlFromQuery));
 		}
 
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
@@ -35,11 +31,10 @@ export async function loadSession(): Promise<Project | null> {
 			return JSON.parse(stored);
 		}
 
-		const projectRegistry = await getProjectRegistry();
-		const defaultProjectUrl = await projectRegistry.getDefaultProjectUrl();
+		const defaultProjectUrl = await getDefaultProjectUrl();
 		if (defaultProjectUrl) {
 			console.log(`Loading default project: ${defaultProjectUrl}`);
-			return parse8f4eToProject(await projectRegistry.getProject(defaultProjectUrl));
+			return parse8f4eToProject(await getProject(defaultProjectUrl));
 		}
 
 		return null;

@@ -11,14 +11,8 @@ import {
 	exportBinaryCode,
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
-
-function getModuleRegistry() {
-	return import('./examples/moduleRegistry');
-}
-
-function getProjectRegistry() {
-	return import('./examples/projectRegistry');
-}
+import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
+import { getListOfProjects, getProject } from './examples/projectRegistry';
 
 interface CanvasSize {
 	width: number;
@@ -55,11 +49,11 @@ async function init(options: InitOptions = {}) {
 		runtimeRegistry,
 		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {
-			getListOfModules: () => getModuleRegistry().then(r => r.getListOfModules()),
-			getModule: (slug: string) => getModuleRegistry().then(r => r.getModule(slug)),
-			getModuleDependencies: (slug: string) => getModuleRegistry().then(r => r.getModuleDependencies(slug)),
-			getListOfProjects: () => getProjectRegistry().then(r => r.getListOfProjects()),
-			getProject: (url: string) => getProjectRegistry().then(r => r.getProject(url)),
+			getListOfModules,
+			getModule,
+			getModuleDependencies,
+			getListOfProjects,
+			getProject,
 			compileCode: (modules, compilerOptions, functions, macros) =>
 				compileCode(modules, compilerOptions, functions, editor, macros),
 			loadSession,
