@@ -6,13 +6,12 @@ constants editorDirectives
 ; @tab 82
 ;
 ; Global editor directives
-; @ color <path> <value>	Override a named editor color.
+; @ config color.<path> <value>	Override a named editor color.
 ; @ config font <font>	Change the editor font.
-; @ exportFileName <fileName>	Set the export file name for the project.
-; @ infoOverlay <on|off>	Show or hide the info overlay.
+; @ config export.fileName <fileName>	Set the export file name for the project.
 ; @ keyCodeMemory <memoryId>	Store keyboard key codes in a module memory.
 ; @ keyPressedMemory <memoryId>	Store pressed-key state in a module memory.
-; @ runtime <runtimeId>	Select the runtime backend for the project.
+; @ config runtime <runtimeId>	Select the runtime backend for the project.
 ;
 ; Code block directives
 ; @ alwaysOnTop	Keep the block rendered above normal blocks.

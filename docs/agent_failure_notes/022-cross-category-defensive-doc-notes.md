@@ -13,11 +13,11 @@ When documenting a new feature in one category, the agent added a warning in a d
 
 ## Original Problem
 
-The runtime host selection was moved to the global editor directive `; @runtime <id>`.
+The runtime host selection was moved to editor config `; @config runtime <id>`.
 
 The agent then added this sentence to `packages/editor/docs/runtime-directives.md`:
 
-- "Runtime host selection is not a runtime directive. Use the global editor directive `; @runtime <id>` instead."
+- "Runtime host selection is not a runtime directive. Use editor config `; @config runtime <id>` instead."
 
 The user correctly objected that nobody had asked for that clarification and that it made the page feel like it was documenting what it is not about, rather than what it actually covers.
 
@@ -26,7 +26,7 @@ The user correctly objected that nobody had asked for that clarification and tha
 The agent tried to make the documentation "safer" by adding a defensive note to an unrelated document:
 
 ```md
-Runtime host selection is not a runtime directive. Use the global editor directive `; @runtime <id>` instead.
+Runtime host selection is not a runtime directive. Use editor config `; @config runtime <id>` instead.
 ```
 
 This is the same class of mistake as adding a note about array sorting to type-casting docs just to say sorting is not type casting.
@@ -39,7 +39,7 @@ When introducing a feature in one category, the agent pollutes another category'
 
 Keep documentation scoped to what the page actually owns:
 
-1. Document `@runtime` in `editor-directives.md`.
+1. Document `@config runtime` in `editor-directives.md`.
 2. Document actual runtime directives in `runtime-directives.md`.
 3. Do not add cross-category defensive disclaimers unless there is a proven recurring confusion that justifies it.
 

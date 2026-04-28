@@ -42,7 +42,7 @@ Examples of what should move to the centralized parsed-directive path:
 - directive registry / directive plugin application
 - favorite/home/disabled/group derivation
 - widget-producing directives such as `@plot`, `@scan`, `@slider`, `@button`, `@switch`, `@piano`
-- metadata directives such as `@color`, `@tab`, `@hide`, `@offset`
+- metadata directives such as color config, `@tab`, `@hide`, `@offset`
 
 ## Anti-Patterns
 

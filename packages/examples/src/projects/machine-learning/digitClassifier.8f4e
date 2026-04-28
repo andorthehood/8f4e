@@ -81,9 +81,9 @@ functionEnd float64
 module grid
 ; @pos -274 11
 ; @home 
-; @color text.binaryOne #f00
-; @color text.basePrefix #333
-; @color text.binaryZero #666
+; @config color.text.binaryOne #f00
+; @config color.text.basePrefix #333
+; @config color.text.binaryZero #666
 
 int row0 0b111
 int row1 0b100

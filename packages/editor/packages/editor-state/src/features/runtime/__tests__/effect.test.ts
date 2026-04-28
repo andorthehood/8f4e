@@ -15,7 +15,7 @@ describe('Runtime System', () => {
 			const mainRuntimeFactory = vi.fn(() => mainDestroyer);
 
 			const state = createMockState({
-				globalEditorDirectives: { runtime: 'AudioWorkletRuntime' },
+				editorConfig: { runtime: 'AudioWorkletRuntime' },
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
 						id: 'AudioWorkletRuntime',
@@ -47,7 +47,7 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('globalEditorDirectives', { runtime: 'MainThreadLogicRuntime' });
+			store.set('editorConfig.runtime', 'MainThreadLogicRuntime');
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -68,7 +68,7 @@ describe('Runtime System', () => {
 			const webWorkerRuntimeFactory = vi.fn(() => webWorkerDestroyer);
 
 			const state = createMockState({
-				globalEditorDirectives: { runtime: 'AudioWorkletRuntime' },
+				editorConfig: { runtime: 'AudioWorkletRuntime' },
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
 						id: 'AudioWorkletRuntime',
@@ -98,7 +98,7 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('globalEditorDirectives', { runtime: 'WebWorkerLogicRuntime' });
+			store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
 
 			await new Promise(resolve => setTimeout(resolve, 10));
 

@@ -1,10 +1,6 @@
-import colorDirective from './color/plugin';
 import configDirective from './config/plugin';
-import exportFileNameDirective from './exportFileName/plugin';
-import infoOverlayDirective from './infoOverlay/plugin';
 import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
 import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
-import runtimeDirective from './runtime/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
 import type { CodeError, ParsedDirectiveRecord, CodeBlockType } from '~/types';
@@ -19,10 +15,6 @@ import type { RuntimeRegistry } from '../runtime/types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
 	configDirective,
-	colorDirective,
-	infoOverlayDirective,
-	exportFileNameDirective,
-	runtimeDirective,
 	keyCodeMemoryDirective,
 	keyPressedMemoryDirective,
 ];
@@ -84,20 +76,13 @@ if (import.meta.vitest) {
 								rawRow: 0,
 								isTrailing: false,
 							},
-							{
-								prefix: '@',
-								name: 'exportFileName',
-								args: ['demo'],
-								rawRow: 1,
-								isTrailing: false,
-							},
 						],
 					},
 				],
 				{}
 			);
 
-			expect(result.resolved).toEqual({ exportFileName: 'demo' });
+			expect(result.resolved).toEqual({});
 			expect(result.errors).toEqual([]);
 		});
 	});

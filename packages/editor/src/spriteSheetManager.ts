@@ -23,8 +23,8 @@ export function createSpriteSheetManager(
 	const state = store.getState();
 	const rerenderSpriteSheet = async () => {
 		const spriteData = await generateSprite({
-			font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
-			colorScheme: state.colorScheme,
+			font: state.editorConfig.font,
+			colorScheme: state.editorConfig.color,
 		});
 
 		view.loadSpriteSheet(spriteData);
@@ -36,6 +36,6 @@ export function createSpriteSheetManager(
 		events.dispatch('spriteSheetRerendered');
 	};
 
-	store.subscribe('colorScheme', rerenderSpriteSheet);
-	store.subscribe('globalEditorDirectives.font', rerenderSpriteSheet);
+	store.subscribe('editorConfig.font', rerenderSpriteSheet);
+	store.subscribe('editorConfig.color', rerenderSpriteSheet);
 }
