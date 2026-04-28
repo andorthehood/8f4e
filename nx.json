@@ -48,6 +48,29 @@
       "unitTestRunner": "vitest"
     }
   },
+  "release": {
+    "projects": ["*"],
+    "projectsRelationship": "independent",
+    "releaseTag": {
+      "pattern": "{projectName}@{version}"
+    },
+    "version": {
+      "specifierSource": "conventional-commits",
+      "currentVersionResolver": "git-tag",
+      "fallbackCurrentVersionResolver": "disk",
+      "manifestRootsToUpdate": ["{projectRoot}"]
+    },
+    "changelog": {
+      "workspaceChangelog": false,
+      "projectChangelogs": false
+    },
+    "git": {
+      "commit": true,
+      "commitMessage": "chore(release): version packages",
+      "tag": true,
+      "push": true
+    }
+  },
   "nxCloudAccessToken": null,
   "defaultBase": "HEAD~1",
   "analytics": false
