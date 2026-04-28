@@ -68,7 +68,7 @@
       "commit": true,
       "commitMessage": "chore(release): version packages",
       "tag": true,
-      "push": true
+      "push": false
     }
   },
   "nxCloudAccessToken": null,
