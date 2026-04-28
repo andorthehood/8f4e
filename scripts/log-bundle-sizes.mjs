@@ -37,6 +37,7 @@ const packageFilter = new Set(
 const gitMetadata = getGitMetadata();
 const packageManifests = await findPackageManifests(workspaceRoot);
 const packageResults = [];
+const skippedResults = [];
 
 for (const manifestPath of packageManifests) {
   const packageRoot = path.dirname(manifestPath);
@@ -47,6 +48,20 @@ for (const manifestPath of packageManifests) {
     !packageName ||
     (packageFilter.size > 0 && !packageFilter.has(packageName))
   ) {
+    continue;
+  }
+
+  if (
+    await hasLoggedPackageVersion(
+      outputDir,
+      packageName,
+      packageJson.version ?? null,
+    )
+  ) {
+    skippedResults.push({
+      packageName,
+      version: packageJson.version ?? null,
+    });
     continue;
   }
 
@@ -96,6 +111,13 @@ for (const manifestPath of packageManifests) {
 }
 
 if (packageResults.length === 0) {
+  if (skippedResults.length > 0) {
+    console.log(
+      "No package bundle sizes were logged because all matching package versions already have entries.",
+    );
+    process.exit(0);
+  }
+
   console.error(
     "No package bundle sizes were logged. Build packages first, or pass package names that have dist output.",
   );
@@ -112,6 +134,16 @@ for (const result of packageResults) {
       `${result.bytes.brotli} brotli bytes`,
       `${result.files.length} files`,
       path.relative(workspaceRoot, logPath),
+    ].join(" | "),
+  );
+}
+
+for (const result of skippedResults) {
+  console.log(
+    [
+      result.packageName,
+      `version ${result.version ?? "unknown"} already logged`,
+      "skipped",
     ].join(" | "),
   );
 }
@@ -525,6 +557,29 @@ async function appendPackageEntry(outputRoot, packageName, entry) {
     logPath,
     `${JSON.stringify(existingEntries, null, "\t")}\n`,
   );
+}
+
+async function hasLoggedPackageVersion(outputRoot, packageName, version) {
+  if (!version) {
+    return false;
+  }
+
+  const logPath = getPackageLogPath(outputRoot, packageName);
+
+  if (!(await pathExists(logPath))) {
+    return false;
+  }
+
+  const existingEntries = await readJson(logPath);
+
+  if (!Array.isArray(existingEntries)) {
+    throw new Error(
+      `${path.relative(workspaceRoot, logPath)} must contain a JSON array`,
+    );
+  }
+
+  const latestEntry = existingEntries.at(-1);
+  return latestEntry?.version === version;
 }
 
 function getPackageLogPath(outputRoot, packageName) {
