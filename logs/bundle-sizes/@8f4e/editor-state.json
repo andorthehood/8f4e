@@ -1,0 +1,31 @@
+[
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-28T14:04:45.790Z",
+		"commit": "836414164d261c44df371e816b763fcb802955a6",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-state@0.1.0",
+		"packageName": "@8f4e/editor-state",
+		"projectName": "@8f4e/editor-state",
+		"version": "0.1.0",
+		"bytes": {
+			"raw": 153755,
+			"gzip": 38432,
+			"brotli": 32474
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 147881,
+				"gzip": 36286,
+				"brotli": 30636
+			},
+			{
+				"path": "testing.js",
+				"raw": 5874,
+				"gzip": 2146,
+				"brotli": 1838
+			}
+		]
+	}
+]

@@ -59,4 +59,12 @@ jobs:
             npx nx release 0.1.0 --first-release --skip-publish
           fi
 
+          npx nx run app:build
+          node scripts/log-bundle-sizes.mjs
+
+          if [[ -n "$(git status --porcelain -- logs/bundle-sizes)" ]]; then
+            git add logs/bundle-sizes
+            git commit -m "chore(release): record bundle sizes" --no-verify
+          fi
+
           git push origin HEAD:main --follow-tags --no-verify --atomic
