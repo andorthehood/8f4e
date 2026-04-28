@@ -11,7 +11,7 @@ const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
 ; 'amen-170bpm-8s.pcm'
-const ASSET_AMEN_SIZE 124516
+const ASSET_AMEN_SIZE 62258
 
 constantsEnd
 
@@ -81,7 +81,7 @@ int8[] buffer ASSET_AMEN_SIZE
 int8* playhead &buffer
 float out
 
-; @wave &buffer count(buffer) playhead
+; @wave2 &buffer count(buffer) playhead
 
 ; Read sample at playhead
 ; write it to output

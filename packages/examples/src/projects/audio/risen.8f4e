@@ -1,7 +1,50 @@
 8f4e/v1
 
+note
+; @pos -318 -39
+; @tab 51
+; @config color.fill.moduleBackground	#ffffff
+; @config color.fill.background	rgba(0,0,0,0)
+; @config color.fill.backgroundDots	#99cccc
+; @config color.fill.backgroundDots2	#669999
+; @config color.fill.highlightedCodeLine	#ffff55
+; @config color.fill.moduleBackgroundDragged	#ffffff
+; @config color.text.instruction	#0000aa
+; @config color.text.code	#000000
+; @config color.text.lineNumber	#555555
+; @config color.text.codeComment	#aaaaaa
+; @config color.text.numbers	#aa0000
+; @config color.text.debugInfo	#aaaaaa
+; @config color.fill.debugInfoBackground	#ffff55
+; @config color.fill.wire	rgba(0,0,0,0.6)
+; @config color.fill.wireHighlighted	#000000
+; @config color.fill.menuItemBackground	#0000aa
+; @config color.fill.menuItemBackgroundHighlighted	#ffffff
+; @config color.fill.dialogBackground	#0000aa
+; @config color.fill.dialogDimmer	#000000
+; @config color.fill.codeBlockHighlightLevel1	#eeeeee
+; @config color.fill.codeBlockHighlightLevel2	#dddddd
+; @config color.fill.codeBlockHighlightLevel3	#cccccc
+; @config color.fill.plotterBackground	#000000
+; @config color.fill.trace	#ffffff
+; @config color.fill.scanLine	#55ffff
+; @config color.icons.outputConnectorBackground	#ffffff
+; @config color.icons.outputConnector	#000000
+; @config color.icons.inputConnectorBackground	#ffffff
+; @config color.icons.inputConnector	#000000
+noteEnd
+
+note
+; @pos -242 -4
+; Project config
+
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @config export.fileName risen
+noteEnd
+
 note fragmentShaderBackground
-; @pos -314 -3
+; @pos -318 -5
 #version 300 es
 
 precision mediump float;
@@ -30,7 +73,7 @@ const AUDIO_BUFFER_SIZE 128
 constantsEnd
 
 constants math
-; @pos -242 -24
+; @pos -242 -26
 ; @tab 14
 const PI	 3.141592653589793
 const NEG_PI	-3.141592653589793
@@ -502,6 +545,56 @@ store
 
 moduleEnd
 
+module churchReverb
+; @pos 205 -19
+
+float* in &carrier:out
+float out
+
+const FEEDBACK 0.3
+const SIZE 10000
+
+float[] buffer SIZE
+int bufferPointer &buffer
+
+
+; Compute reverb output
+push &out
+push bufferPointer
+loadFloat
+push FEEDBACK
+mul
+push *in
+add
+store
+
+; Store the new sample
+; in the buffer
+push bufferPointer
+push &out
+loadFloat
+store
+
+; Advance buffer pointer
+push &bufferPointer
+push bufferPointer
+push sizeof(bufferPointer)
+add
+store
+
+; Wrap buffer pointer back
+; to start when reaches end
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
 module godClock
 ; @pos -110 -8
 use env
@@ -747,14 +840,6 @@ store
 
 moduleEnd
 
-module projectConfig
-; @pos -242 -1
-; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
-; @config export.fileName risen
-
-moduleEnd
-
 module scroll
 ; @pos -74 -24
 use midiCodes
@@ -978,88 +1063,4 @@ push &buffer
 store
 ifEnd
 
-moduleEnd
-
-module churchReverb
-; @pos 205 -19
-
-float* in &carrier:out
-float out
-
-const FEEDBACK 0.3
-const SIZE 10000
-
-float[] buffer SIZE
-int bufferPointer &buffer
-
-
-; Compute reverb output
-push &out
-push bufferPointer
-loadFloat
-push FEEDBACK
-mul
-push *in
-add
-store
-
-; Store the new sample 
-; in the buffer
-push bufferPointer
-push &out
-loadFloat
-store
-
-; Advance buffer pointer
-push &bufferPointer
-push bufferPointer
-push sizeof(bufferPointer)
-add
-store
-
-; Wrap buffer pointer back
-; to start when reaches end
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-
-module templeOS
-; @pos -314 -38
-; @tab 46
-; @config color.fill.moduleBackground	#ffffff
-; @config color.fill.background	rgba(0,0,0,0)
-; @config color.fill.backgroundDots	#99cccc
-; @config color.fill.backgroundDots2	#669999
-; @config color.fill.highlightedCodeLine	#ffff55
-; @config color.fill.moduleBackgroundDragged	#ffffff
-; @config color.text.instruction	#0000aa
-; @config color.text.code	#000000
-; @config color.text.lineNumber	#555555
-; @config color.text.codeComment	#aaaaaa
-; @config color.text.numbers	#aa0000
-; @config color.text.debugInfo	#aaaaaa
-; @config color.fill.debugInfoBackground	#ffff55
-; @config color.fill.wire	rgba(0,0,0,0.6)
-; @config color.fill.wireHighlighted	#000000
-; @config color.fill.menuItemBackground	#0000aa
-; @config color.fill.menuItemBackgroundHighlighted	#ffffff
-; @config color.fill.dialogBackground	#0000aa
-; @config color.fill.dialogDimmer	#000000
-; @config color.fill.codeBlockHighlightLevel1	#eeeeee
-; @config color.fill.codeBlockHighlightLevel2	#dddddd
-; @config color.fill.codeBlockHighlightLevel3	#cccccc
-; @config color.fill.plotterBackground	#000000
-; @config color.fill.trace	#ffffff
-; @config color.fill.scanLine	#55ffff
-; @config color.icons.outputConnectorBackground	#ffffff
-; @config color.icons.outputConnector	#000000
-; @config color.icons.inputConnectorBackground	#ffffff
-; @config color.icons.inputConnector	#000000
 moduleEnd
