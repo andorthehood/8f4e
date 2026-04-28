@@ -58,6 +58,8 @@ export { default as hasPointeeElementWordSizePrefix } from './hasPointeeElementW
 export { default as extractPointeeElementWordSizeBase } from './extractPointeeElementWordSizeBase';
 export { default as hasPointeeElementMaxPrefix } from './hasPointeeElementMaxPrefix';
 export { default as extractPointeeElementMaxBase } from './extractPointeeElementMaxBase';
+export { default as hasPointeeMemoryReferenceEndSuffix } from './hasPointeeMemoryReferenceEndSuffix';
+export { default as extractPointeeMemoryReferenceEndBase } from './extractPointeeMemoryReferenceEndBase';
 export { default as isIntermodularReference } from './isIntermodularReference';
 export { default as isIntermodularModuleReference } from './isIntermodularModuleReference';
 export { default as extractIntermodularModuleReferenceBase } from './extractIntermodularModuleReferenceBase';
