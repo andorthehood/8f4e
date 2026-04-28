@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { resolveSelectedRuntimeId } from '../global-editor-directives/runtime/plugin';
+import { registerRuntimeEditorConfigValidator, resolveSelectedRuntimeId } from './editorConfig';
+
 import { log, error } from '../logger/logger';
 
 import type { State, EventDispatcher } from '~/types';
@@ -9,6 +10,8 @@ import type { State, EventDispatcher } from '~/types';
 export type { RuntimeFactory } from '~/types';
 
 export default async function runtime(store: StateManager<State>, events: EventDispatcher) {
+	registerRuntimeEditorConfigValidator(store);
+
 	const state = store.getState();
 
 	let runtimeDestroyer: null | (() => void) = null;
@@ -22,7 +25,7 @@ export default async function runtime(store: StateManager<State>, events: EventD
 		}
 
 		const selectedRuntimeId = resolveSelectedRuntimeId(
-			state.globalEditorDirectives.runtime,
+			state.editorConfig.runtime,
 			state.runtimeRegistry,
 			state.defaultRuntimeId
 		);
@@ -87,5 +90,5 @@ export default async function runtime(store: StateManager<State>, events: EventD
 	}
 
 	store.subscribeToValue('compiler.isCompiling', false, initOrDestroyOrUpdateRuntime);
-	store.subscribe('globalEditorDirectives.runtime', onRuntimeSelectionChanged);
+	store.subscribe('editorConfig.runtime', onRuntimeSelectionChanged);
 }

@@ -13,7 +13,7 @@ moduleEnd
 
 module projectConfig
 ; @pos -9 -73
-; @runtime WebWorkerLogicRuntime
+; @config runtime WebWorkerLogicRuntime
 ; ~sampleRate 10
 ; @config export.fileName xorProblem
 

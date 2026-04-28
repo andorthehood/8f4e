@@ -3,7 +3,7 @@
 note
 ; @pos 9 -126
 ; Project Config
-; @runtime AudioWorkletRuntime
+; @config runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @config export.fileName lowerIntentions
 
