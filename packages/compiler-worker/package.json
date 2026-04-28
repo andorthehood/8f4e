@@ -1,34 +1,34 @@
 {
-	"name": "@8f4e/compiler-worker",
-	"version": "1.0.0",
-	"private": true,
-	"description": "8f4e compiler worker package",
-	"type": "module",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
-		},
-		"./types": {
-			"types": "./dist/types.d.ts",
-			"default": "./dist/types.js"
-		}
-	},
-	"sideEffects": false,
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/andorthehood/8f4e.git"
-	},
-	"author": "Andor Polgar",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/andorthehood/8f4e/issues"
-	},
-	"homepage": "https://github.com/andorthehood/8f4e#readme",
-	"dependencies": {
-		"@8f4e/compiler": "*"
-	},
-	"devDependencies": {}
+  "name": "@8f4e/compiler-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "8f4e compiler worker package",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    }
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andorthehood/8f4e.git"
+  },
+  "author": "Andor Polgar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andorthehood/8f4e/issues"
+  },
+  "homepage": "https://github.com/andorthehood/8f4e#readme",
+  "dependencies": {
+    "@8f4e/compiler": "*"
+  },
+  "devDependencies": {}
 }
