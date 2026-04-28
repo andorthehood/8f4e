@@ -93,7 +93,7 @@ module projectConfig
 ; @pos -84 2
 ; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
-; @exportFileName randomGenerators
+; @config export.fileName randomGenerators
 
 moduleEnd
 

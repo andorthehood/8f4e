@@ -15,6 +15,8 @@ import compiler from './features/program-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
 import editorConfigModule from './features/editor-config-module/effect';
+import color from './features/color/effect';
+import font from './features/font/effect';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
 import projectExport from './features/project-export/effect';
@@ -64,6 +66,10 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	const state = store.getState();
 
+	font(store);
+	color(store);
+	projectExport(store, events);
+
 	runtime(store, events);
 	editorMode(store, events);
 	presentation(store, events);
@@ -98,7 +104,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	viewportDirectiveEffect(store, events);
 	editorConfigModule(store, events);
 	codeEditing(store, events);
-	projectExport(store, events);
 	binaryAsset(store, events);
 	historyTracking(store, events);
 	dialog(store, events);
@@ -168,6 +173,8 @@ export type {
 	ConsoleState,
 	CodeError,
 	MemoryAction,
+	EditorConfig,
+	EditorConfigEntry,
 } from './types';
 
 // Export EMPTY_DEFAULT_PROJECT as a value

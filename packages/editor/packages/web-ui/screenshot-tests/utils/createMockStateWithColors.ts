@@ -15,80 +15,7 @@ function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
 }
 
 /**
- * Default color scheme for web-ui screenshot tests
- */
-const defaultColorScheme = {
-	text: {
-		lineNumber: 'rgba(51,51,51,255)',
-		debugInfo: 'rgba(51,51,51,255)',
-		arrow: '#ffffff',
-		instruction: 'rgba(136,126,203,255)',
-		codeComment: 'rgba(102,102,102,255)',
-		code: 'rgba(255,255,255,255)',
-		errorMessage: 'rgba(255,255,255,255)',
-		disabledCode: 'rgba(0,0,0,0.5)',
-		numbers: 'rgba(201,212,135,255)',
-		menuItemText: 'rgba(255,255,255,255)',
-		menuItemTextHighlighted: 'rgba(0,0,0,255)',
-		dialogText: '#ffffff',
-		dialogTitle: '#ffffff',
-		binaryZero: 'rgba(201,212,135,255)',
-		binaryOne: 'rgba(201,212,135,255)',
-	},
-	fill: {
-		menuItemBackground: 'rgba(0,0,0,255)',
-		menuItemBackgroundHighlighted: 'rgba(255,255,255,255)',
-		background: '#000000',
-		backgroundDots: '#333333',
-		backgroundDots2: '#444444',
-		debugInfoBackground: '#000000',
-		moduleBackground: '#000000',
-		moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
-		moduleBackgroundDisabled: 'rgba(0,0,0,0)',
-		wire: '#ffffff',
-		wireHighlighted: '#ffffff',
-		errorMessageBackground: '#cc0000',
-		dialogBackground: '#000000',
-		dialogDimmer: 'rgba(0,0,0,0.5)',
-		highlightedCodeLine: '#333333',
-		trace: '#66ff66',
-		plotterBackground: 'rgba(0,0,0,0)',
-		bars: 'rgba(102,255,102,0.45)',
-		waveform: 'rgba(102,255,102,0.45)',
-		scanLine: '#66ff66',
-		track: '#333333',
-		fill: '#ffffff',
-		handle: '#000000',
-		codeBlockHighlightLevel1: '#333300',
-		codeBlockHighlightLevel2: '#333333',
-		codeBlockHighlightLevel3: '#003333',
-	},
-	icons: {
-		outputConnectorBackground: '#003300',
-		inputConnectorBackground: '#003300',
-		switchBackground: '#003300',
-		inputConnector: '#ffffff',
-		outputConnector: '#ffffff',
-		feedbackScale0: '#ff0000',
-		feedbackScale1: '#cc0033',
-		feedbackScale2: '#990066',
-		feedbackScale3: '#660099',
-		feedbackScale4: '#3300cc',
-		feedbackScale5: '#0000ff',
-		pianoKeyWhite: '#ffffff',
-		pianoKeyWhiteHighlighted: '#ff0000',
-		pianoKeyWhitePressed: '#cccccc',
-		pianoKeyBlack: '#000000',
-		pianoKeyBlackHighlighted: '#ff0000',
-		pianoKeyBlackPressed: '#333333',
-		pianoKeyboardBackground: '#999999',
-		pianoKeyboardNote: '#ffffff',
-		pianoKeyboardNoteHighlighted: '#ff0000',
-	},
-};
-
-/**
- * Create a mock state for web-ui screenshot tests with default color scheme.
+ * Create a mock state for web-ui screenshot tests.
  * Extends the base createMockState from editor-state with web-ui specific defaults.
  * Also generates sprite data and populates spriteLookups, hGrid, and vGrid.
  *
@@ -103,7 +30,6 @@ const defaultColorScheme = {
  */
 export default async function createMockStateWithColors(overrides: Partial<State> = {}): Promise<State> {
 	const state = createMockState({
-		colorScheme: defaultColorScheme,
 		featureFlags: {
 			contextMenu: true,
 			infoOverlay: false,
@@ -119,8 +45,8 @@ export default async function createMockStateWithColors(overrides: Partial<State
 
 	// Generate sprite data and populate state
 	const spriteData = await generateSprite({
-		font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
-		colorScheme: state.colorScheme,
+		font: state.editorConfig.font,
+		colorScheme: state.editorConfig.color,
 	});
 
 	updateStateWithSpriteData(state, spriteData);

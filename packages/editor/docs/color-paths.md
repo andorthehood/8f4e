@@ -1,15 +1,15 @@
 # Color Paths
 
-Use these paths with:
+Use these paths as the suffix after `color.` with:
 
 ```txt
-; @color <path> <value>
+; @config color.<path> <value>
 ```
 
 Example:
 
 ```txt
-; @color fill.moduleBackground rgba(0,0,0,0.9)
+; @config color.fill.moduleBackground rgba(0,0,0,0.9)
 ```
 
 ## `text.*`

@@ -1883,7 +1883,7 @@ module projectConfig
 ; @pos 9 -125
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName pneumatic
+; @config export.fileName pneumatic
 
 moduleEnd
 
@@ -2810,40 +2810,40 @@ moduleEnd
 module ultimateSoundtrackerColors
 ; @pos 573 -174
 ; @tab 46
-; @color fill.moduleBackground	#000
-; @color fill.background	#000
-; @color fill.backgroundDots	#036
-; @color fill.backgroundDots2	#630
-; @color fill.highlightedCodeLine	#036
-; @color fill.moduleBackgroundDragged	#000
-; @color text.instruction	#369
-; @color text.code	#c96
-; @color text.lineNumber	#630
-; @color text.codeComment	#963
-; @color text.numbers	#fc9
-; @color text.debugInfo	#369
-; @color fill.debugInfoBackground	#000
-; @color fill.wire	rgba(255,255,255,0.3)
-; @color fill.wireHighlighted	#fff
-; @color fill.menuItemBackground	#036
-; @color fill.menuItemBackgroundHighlighted	#fff
-; @color fill.errorMessageBackground	#900
-; @color fill.dialogBackground	#036
-; @color fill.dialogDimmer	#000
-; @color fill.codeBlockHighlightLevel1	#000a14
-; @color fill.codeBlockHighlightLevel2	#001429
-; @color fill.codeBlockHighlightLevel3	#001f3d
-; @color fill.trace	#0f0
-; @color fill.scanLine	#fc9
-; @color fill.waveform	#369
-; @color icons.outputConnectorBackground	#369
-; @color icons.outputConnector	#000
-; @color icons.inputConnectorBackground	#369
-; @color icons.inputConnector	#000
-; @color text.arrow	#369
-; @color fill.meterGreen	#0f0
-; @color fill.meterYellow	#ff0
-; @color fill.meterRed	#f00
+; @config color.fill.moduleBackground	#000
+; @config color.fill.background	#000
+; @config color.fill.backgroundDots	#036
+; @config color.fill.backgroundDots2	#630
+; @config color.fill.highlightedCodeLine	#036
+; @config color.fill.moduleBackgroundDragged	#000
+; @config color.text.instruction	#369
+; @config color.text.code	#c96
+; @config color.text.lineNumber	#630
+; @config color.text.codeComment	#963
+; @config color.text.numbers	#fc9
+; @config color.text.debugInfo	#369
+; @config color.fill.debugInfoBackground	#000
+; @config color.fill.wire	rgba(255,255,255,0.3)
+; @config color.fill.wireHighlighted	#fff
+; @config color.fill.menuItemBackground	#036
+; @config color.fill.menuItemBackgroundHighlighted	#fff
+; @config color.fill.errorMessageBackground	#900
+; @config color.fill.dialogBackground	#036
+; @config color.fill.dialogDimmer	#000
+; @config color.fill.codeBlockHighlightLevel1	#000a14
+; @config color.fill.codeBlockHighlightLevel2	#001429
+; @config color.fill.codeBlockHighlightLevel3	#001f3d
+; @config color.fill.trace	#0f0
+; @config color.fill.scanLine	#fc9
+; @config color.fill.waveform	#369
+; @config color.icons.outputConnectorBackground	#369
+; @config color.icons.outputConnector	#000
+; @config color.icons.inputConnectorBackground	#369
+; @config color.icons.inputConnector	#000
+; @config color.text.arrow	#369
+; @config color.fill.meterGreen	#0f0
+; @config color.fill.meterYellow	#ff0
+; @config color.fill.meterRed	#f00
 moduleEnd
 
 module volume1

@@ -116,9 +116,13 @@ export const FONT_NAMES = [
 
 export type Font = (typeof FONT_NAMES)[number];
 
+export type ColorSchemeOverrides = {
+	[Section in keyof ColorScheme]?: Partial<ColorScheme[Section]>;
+};
+
 export interface Config {
-	colorScheme?: ColorScheme;
-	font: Font;
+	colorScheme?: ColorSchemeOverrides | Record<string, unknown>;
+	font?: string;
 }
 
 export type SpriteLookup<T extends string = string> = Record<T, SpriteCoordinates>;

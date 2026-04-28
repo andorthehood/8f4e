@@ -10,7 +10,7 @@ import type { State } from '@8f4e/editor-state';
  */
 export default async function createMockSpriteData(state: State): Promise<SpriteData> {
 	return generateSprite({
-		font: state.globalEditorDirectives.font ?? 'ibmvga8x16',
-		colorScheme: state.colorScheme,
+		font: state.editorConfig.font,
+		colorScheme: state.editorConfig.color,
 	});
 }

@@ -42,11 +42,16 @@ Set editor configuration values.
 Supported paths:
 
 - `font` - editor font used for rendering code blocks and UI text.
+- `color.<path>` - editor color scheme override. See [Color Paths](./color-paths.md) for the full list of color paths.
+- `export.fileName` - base file name used by editor export actions.
 
 Examples:
 
 ```txt
 ; @config font ibmvga8x16
+; @config export.fileName samplePlayer
+; @config color.text.code #cccccc
+; @config color.fill.moduleBackground rgba(0,0,0,0.9)
 ```
 
 Supported `font` values:
@@ -248,24 +253,6 @@ Apply code-block visual position offset from an integer memory value.
 Where:
 
 - `axis` is `x` or `y`.
-
-### `@color`
-
-Override a color in the editor color scheme.
-
-```txt
-; @color <path> <value>
-```
-
-Examples:
-
-```txt
-; @color text.code #cccccc
-; @color fill.moduleBackground rgba(0,0,0,0.9)
-; @color icons.feedbackScale3 #660099
-```
-
-See [Color Paths](./color-paths.md) for the full list of configurable color paths.
 
 ### `@tab`
 
@@ -696,14 +683,14 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 
 ```json
 [
-	{
-		"code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
-		"gridCoordinates": { "x": 0, "y": 0 }
-	},
-	{
-		"code": ["module bar", "; @pos 17 14", "moduleEnd"],
-		"gridCoordinates": { "x": 12, "y": 4 }
-	}
+  {
+    "code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
+    "gridCoordinates": { "x": 0, "y": 0 }
+  },
+  {
+    "code": ["module bar", "; @pos 17 14", "moduleEnd"],
+    "gridCoordinates": { "x": 12, "y": 4 }
+  }
 ]
 ```
 
@@ -755,23 +742,21 @@ Invalid clipboard content falls back to single-block paste behavior:
 - Directive parsing should be strict: plain comments like `; note` are not directives.
 - Unknown directives should be ignored by editor sub-parsers unless explicitly supported by that feature.
 
-### `@exportFileName`
+### Export file name
 
 Set the base file name used by editor export actions.
 
 ```txt
-; @exportFileName <value>
+; @config export.fileName <value>
 ```
 
 - `value` must be a non-empty single token (for example `samplePlayer` or `demo.wasm`)
-- Duplicate declarations with the same value are allowed
-- Declarations with conflicting values produce an editor error
 - The editor strips `.json`, `.wasm`, and `.8f4e` suffixes before appending the export format extension
 
 **Example**:
 
 ```txt
-; @exportFileName samplePlayer
+; @config export.fileName samplePlayer
 ```
 
 ### `@runtime`
