@@ -7,7 +7,6 @@ constants env
 ; Changes will be overwritten
 
 const SAMPLE_RATE 48000
-const INV_SAMPLE_RATE 0.000020833333333333333
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes

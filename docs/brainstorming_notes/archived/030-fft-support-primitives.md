@@ -4,7 +4,7 @@
 We want 8f4e to support Fourier-transform workflows with less boilerplate, better performance, and clearer user-level APIs.
 
 Recent changes already landed:
-- Env constants block generator now emits `INV_SAMPLE_RATE` alongside `SAMPLE_RATE`.
+- Env constants block generator emits `SAMPLE_RATE`.
 - `math` constants module now includes FFT/windowing helpers:
   - `SQRT1_2`
   - `HANN_A0`

@@ -79,7 +79,7 @@ Since the software is not released yet, it is acceptable to update example proje
 
 - `npx nx run-many --target=test --projects=editor,cli,compiler-worker`
 - `npx nx run-many --target=typecheck --projects=editor,cli,compiler-worker`
-- `rg -n "~sampleRate|runtimeSettings|SAMPLE_RATE|INV_SAMPLE_RATE" packages/editor packages/cli packages/examples docs`
+- `rg -n "~sampleRate|runtimeSettings|SAMPLE_RATE" packages/editor packages/cli packages/examples docs`
 
 ## Success Criteria
 

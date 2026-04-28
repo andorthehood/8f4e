@@ -76,7 +76,6 @@ constants env
 ; Last updated: 2/19/2026, 2:34:30 PM
 
 const SAMPLE_RATE 10
-const INV_SAMPLE_RATE 0.1
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd

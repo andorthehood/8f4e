@@ -18,7 +18,6 @@ The auto-generated `constants env` block is currently assembled in editor-state 
 That effect still owns runtime-specific values such as:
 
 - `SAMPLE_RATE`
-- `INV_SAMPLE_RATE`
 - `AUDIO_BUFFER_SIZE`
 
 This cuts across the ownership boundary that has been established elsewhere:
