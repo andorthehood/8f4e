@@ -10,7 +10,7 @@ function createParsedBlock(code: string[]) {
 }
 
 describe('@config directive', () => {
-	it('resolves config paths into a nested config object', () => {
+	it('records config entries for validation and resolution', () => {
 		const result = resolveGlobalEditorDirectives(
 			[
 				createParsedBlock([
@@ -24,39 +24,11 @@ describe('@config directive', () => {
 			{}
 		);
 
-		expect(result.resolved.config).toEqual({
-			font: '6x10',
-			color: {
-				text: { code: '#112233' },
-				fill: { wire: 'rgba(1,2,3,0.4)' },
-			},
-		});
 		expect(result.resolved.configEntries).toEqual([
 			{ path: 'font', value: '6x10', rawRow: 1, codeBlockId: 0 },
 			{ path: 'color.text.code', value: '#112233', rawRow: 2, codeBlockId: 0 },
 			{ path: 'color.fill.wire', value: 'rgba(1,2,3,0.4)', rawRow: 3, codeBlockId: 0 },
 		]);
-		expect(result.errors).toEqual([]);
-	});
-
-	it('uses last-write-wins for duplicate paths', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock([
-					'module a',
-					'; @config color.text.code #111111',
-					'; @config color.text.code #222222',
-					'moduleEnd',
-				]),
-			],
-			{}
-		);
-
-		expect(result.resolved.config).toEqual({
-			color: {
-				text: { code: '#222222' },
-			},
-		});
 		expect(result.errors).toEqual([]);
 	});
 
@@ -74,13 +46,11 @@ describe('@config directive', () => {
 			{}
 		);
 
-		expect(result.resolved.config).toEqual({
-			font: 'tiny',
-			blockScale: '4',
-			color: {
-				text: { code: '???' },
-			},
-		});
+		expect(result.resolved.configEntries).toEqual([
+			{ path: 'font', value: 'tiny', rawRow: 1, codeBlockId: 0 },
+			{ path: 'blockScale', value: '4', rawRow: 2, codeBlockId: 0 },
+			{ path: 'color.text.code', value: '???', rawRow: 3, codeBlockId: 0 },
+		]);
 		expect(result.errors).toEqual([]);
 	});
 
@@ -98,7 +68,7 @@ describe('@config directive', () => {
 	it('does not resolve removed top-level font directive', () => {
 		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 6x10', 'moduleEnd'])], {});
 
-		expect(result.resolved.config).toBeUndefined();
+		expect(result.resolved).toEqual({});
 		expect(result.errors).toEqual([]);
 	});
 
@@ -120,7 +90,7 @@ describe('@config directive', () => {
 			{}
 		);
 
-		expect(result.resolved.config).toBeUndefined();
+		expect(result.resolved).toEqual({});
 		expect(result.errors).toEqual([]);
 	});
 });

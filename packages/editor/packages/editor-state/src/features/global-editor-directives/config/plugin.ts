@@ -1,5 +1,4 @@
 import { createGlobalEditorDirectivePlugin } from '../utils';
-import { setEditorConfigPath } from '../../editor-config/paths';
 
 export default createGlobalEditorDirectivePlugin('config', (directive, draft, context) => {
 	if (directive.args.length !== 2) {
@@ -12,9 +11,6 @@ export default createGlobalEditorDirectivePlugin('config', (directive, draft, co
 	}
 
 	const [path, value] = directive.args;
-	const config = draft.resolved.config ?? {};
-	setEditorConfigPath(config, path, value);
-	draft.resolved.config = config;
 	draft.resolved.configEntries = [
 		...(draft.resolved.configEntries ?? []),
 		{

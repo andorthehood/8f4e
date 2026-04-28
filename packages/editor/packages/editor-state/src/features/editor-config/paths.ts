@@ -23,17 +23,3 @@ export function setPathValue(target: Record<string, unknown>, path: string, valu
 export function setEditorConfigPath(config: EditorConfig, path: string, value: string): void {
 	setPathValue(config, path, value);
 }
-
-export function getEditorConfigPath(config: EditorConfig, path: string): string | undefined {
-	let current: EditorConfig | string | undefined = config;
-
-	for (const segment of path.split('.')) {
-		if (!current || typeof current === 'string') {
-			return undefined;
-		}
-
-		current = current[segment];
-	}
-
-	return typeof current === 'string' ? current : undefined;
-}

@@ -4,7 +4,7 @@ module projectConfig
 ; @pos -106 13
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName audioLoopback
+; @config export.fileName audioLoopback
 
 moduleEnd
 

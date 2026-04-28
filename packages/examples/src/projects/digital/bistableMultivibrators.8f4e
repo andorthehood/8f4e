@@ -14,7 +14,7 @@ module projectConfig
 ; @pos -67 16
 ; @runtime WebWorkerLogicRuntime
 ; ~sampleRate 50
-; @exportFileName bistableMultivibrators
+; @config export.fileName bistableMultivibrators
 
 moduleEnd
 
