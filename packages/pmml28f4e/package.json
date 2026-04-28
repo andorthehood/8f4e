@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/pmml28f4e",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Convert PMML neural networks into 8f4e project files",
   "type": "module",
