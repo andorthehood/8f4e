@@ -14,6 +14,9 @@ type BundleSizeConfig = {
 		string,
 		{
 			label?: string;
+			files: Array<{
+				name: string;
+			}>;
 		}
 	>;
 };
@@ -101,6 +104,7 @@ function createManifest(config: BundleSizeConfig) {
 			packageName,
 			label: packageConfig.label ?? packageName,
 			path: getPackageLogRelativePath(packageName),
+			files: packageConfig.files.map(file => file.name),
 		})),
 	};
 }
