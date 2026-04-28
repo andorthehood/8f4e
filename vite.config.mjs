@@ -40,7 +40,19 @@ export default defineConfig(() => {
       emptyOutDir: true,
       rollupOptions: {
         // Ensure proper module resolution for production
-        external: []
+        external: [],
+        output: {
+          entryFileNames: 'assets/entries/[name]-[hash].js',
+          chunkFileNames: 'assets/chunks/[name]-[hash].js'
+        }
+      }
+    },
+    worker: {
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/workers/[name]-[hash].js',
+          chunkFileNames: 'assets/workers/chunks/[name]-[hash].js'
+        }
       }
     },
     publicDir: false, // Don't copy public dir since we need specific handling
