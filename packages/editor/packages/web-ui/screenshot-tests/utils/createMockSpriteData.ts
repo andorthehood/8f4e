@@ -1,5 +1,5 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { getEditorConfigColorScheme, getEditorConfigFont } from '@8f4e/editor-state';
+import { getEditorConfigColorSchemeOverrides, getEditorConfigFont } from '@8f4e/editor-state';
 
 import type { SpriteData } from '@8f4e/web-ui';
 import type { State } from '@8f4e/editor-state';
@@ -12,6 +12,6 @@ import type { State } from '@8f4e/editor-state';
 export default async function createMockSpriteData(state: State): Promise<SpriteData> {
 	return generateSprite({
 		font: getEditorConfigFont(state.editorConfig),
-		colorScheme: getEditorConfigColorScheme(state.editorConfig),
+		colorScheme: getEditorConfigColorSchemeOverrides(state.editorConfig),
 	});
 }

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
 	colorEditorConfigValidator,
-	getEditorConfigColorScheme,
+	getEditorConfigColorSchemeOverrides,
 	registerColorEditorConfigValidator,
 } from './editorConfig';
 
@@ -37,16 +37,18 @@ describe('color editor config', () => {
 		);
 	});
 
-	it('builds a color scheme from the path-shaped config object', () => {
-		const colorScheme = getEditorConfigColorScheme({
+	it('builds color scheme overrides from the path-shaped config object', () => {
+		const colorSchemeOverrides = getEditorConfigColorSchemeOverrides({
 			color: {
 				text: { code: '#112233' },
 				fill: { wire: 'rgba(1,2,3,0.4)' },
 			},
 		});
 
-		expect(colorScheme.text.code).toBe('#112233');
-		expect(colorScheme.fill.wire).toBe('rgba(1,2,3,0.4)');
+		expect(colorSchemeOverrides).toEqual({
+			text: { code: '#112233' },
+			fill: { wire: 'rgba(1,2,3,0.4)' },
+		});
 	});
 
 	it('registers its validator in the shared editor-config validator slot', () => {
