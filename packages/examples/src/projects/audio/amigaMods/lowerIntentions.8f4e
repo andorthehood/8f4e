@@ -992,35 +992,35 @@ moduleEnd
 
 module colors
 ; @pos 755 -70
-; @color text.lineNumber rgba(255,255,255,0.3)
-; @color text.code rgba(255,255,255,0.8)
-; @color text.instruction #ffffff
-; @color text.numbers #ffffff
-; @color text.codeComment rgba(255,255,255,0.5)
-; @color text.menuItemTextHighlighted #ffffff
-; @color text.debugInfo rgba(255,255,255,0.5)
-; @color text.dialogText #000
-; @color text.dialogTitle #000
-; @color text.menuItemText #000
-; @color fill.moduleBackground rgba(255,255,255,0.2)
-; @color fill.wire rgba(255,255,255,0.5)
-; @color fill.highlightedCodeLine rgba(255,255,255,0.4)
-; @color fill.moduleBackgroundDragged rgba(255,255,255,0.2)
-; @color fill.backgroundDots rgba(255,255,255,0.1)
-; @color fill.backgroundDots2 rgba(255,255,255,0.3)
-; @color fill.menuItemBackground rgba(255,255,255,0.8)
-; @color fill.menuItemBackgroundHighlighted #000
-; @color fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
-; @color fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
-; @color fill.codeBlockHighlightLevel3 rgba(255,255,255,0.1)
-; @color fill.waveform rgba(255,255,255,0.8)
-; @color fill.debugInfoBackground rgba(255,255,255,0.1)
-; @color fill.dialogDimmer rgba(255,255,255,0.2)
-; @color fill.dialogBackground rgba(255,255,255,0.8)
-; @color icons.inputConnectorBackground rgba(255,255,255,0.4)
-; @color icons.inputConnector #fff
-; @color icons.outputConnectorBackground rgba(255,255,255,0.4)
-; @color icons.outputConnector #fff
+; @config color.text.lineNumber rgba(255,255,255,0.3)
+; @config color.text.code rgba(255,255,255,0.8)
+; @config color.text.instruction #ffffff
+; @config color.text.numbers #ffffff
+; @config color.text.codeComment rgba(255,255,255,0.5)
+; @config color.text.menuItemTextHighlighted #ffffff
+; @config color.text.debugInfo rgba(255,255,255,0.5)
+; @config color.text.dialogText #000
+; @config color.text.dialogTitle #000
+; @config color.text.menuItemText #000
+; @config color.fill.moduleBackground rgba(255,255,255,0.2)
+; @config color.fill.wire rgba(255,255,255,0.5)
+; @config color.fill.highlightedCodeLine rgba(255,255,255,0.4)
+; @config color.fill.moduleBackgroundDragged rgba(255,255,255,0.2)
+; @config color.fill.backgroundDots rgba(255,255,255,0.1)
+; @config color.fill.backgroundDots2 rgba(255,255,255,0.3)
+; @config color.fill.menuItemBackground rgba(255,255,255,0.8)
+; @config color.fill.menuItemBackgroundHighlighted #000
+; @config color.fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
+; @config color.fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
+; @config color.fill.codeBlockHighlightLevel3 rgba(255,255,255,0.1)
+; @config color.fill.waveform rgba(255,255,255,0.8)
+; @config color.fill.debugInfoBackground rgba(255,255,255,0.1)
+; @config color.fill.dialogDimmer rgba(255,255,255,0.2)
+; @config color.fill.dialogBackground rgba(255,255,255,0.8)
+; @config color.icons.inputConnectorBackground rgba(255,255,255,0.4)
+; @config color.icons.inputConnector #fff
+; @config color.icons.outputConnectorBackground rgba(255,255,255,0.4)
+; @config color.icons.outputConnector #fff
 moduleEnd
 
 module lowpassL
