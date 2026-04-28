@@ -22,6 +22,8 @@ const dup: InstructionCompiler = withValidation(
 		const localType = operand.isInteger ? 'int' : operand.isFloat64 ? 'float64' : 'float';
 
 		return compileSegment(
+			// compileSegment is needed here because `local` and `localSet` require
+			// semantic pipeline processing to allocate the local variable index.
 			[`local ${localType} ${tempName}`, `localSet ${tempName}`, `push ${tempName}`, `push ${tempName}`],
 			context
 		);

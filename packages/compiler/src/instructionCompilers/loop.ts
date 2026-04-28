@@ -36,6 +36,10 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 			loopCounterLocalName: infiniteLoopProtectionCounterName,
 		});
 
+		// compileSegment is used here because loop initialization requires both a local
+		// variable declaration (which needs the semantic pipeline) and a block of
+		// instructions that set up the loop counter and infinite-loop guard; the
+		// overall structure genuinely benefits from composed instruction semantics.
 		return compileSegment(
 			[
 				`local int ${infiniteLoopProtectionCounterName}`,

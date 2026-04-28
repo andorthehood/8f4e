@@ -3,19 +3,12 @@
 exports[`pow2 instruction compiler > computes power of two 1`] = `
 {
   "byteCode": [
-    65,
-    2,
-    65,
-    1,
-    107,
     33,
     0,
-    33,
+    65,
     1,
     32,
     0,
-    32,
-    1,
     116,
   ],
   "stack": [
