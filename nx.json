@@ -49,7 +49,7 @@
     }
   },
   "release": {
-    "projects": ["*"],
+    "projects": ["*", "!glugglug"],
     "projectsRelationship": "independent",
     "releaseTag": {
       "pattern": "{projectName}@{version}"
