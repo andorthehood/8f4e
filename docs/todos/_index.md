@@ -70,6 +70,7 @@ Active todo files are listed below.
 | 376 | Add ASCII scene renderer for editor snapshot tests | 🟡 | 1-2d | 2026-04-08 | The editor lacks a cheap whole-scene regression layer between raw object snapshots and expensive browser/image visual tests, leaving overlap, z-order, clipping, and text-grid composition bugs under-covered. |
 | 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The parser already handles some structural block state, but it does not yet cleanly generalize block pairing and top-level owning-block context well enough to route syntax diagnostics to code blocks reliably. |
 | 380 | Remove hardcoded AudioWorklet buffer size from runtime contract | 🟡 | 1-2d | 2026-04-21 | The AudioWorklet runtime currently injects `const AUDIO_BUFFER_SIZE 128` as a compile-time env constant even though the real render quantum is only observable at runtime inside the worklet. |
+| 384 | Add compiler algorithmic regression metrics | 🟡 | 1-2d | 2026-04-28 | The compiler has snapshot coverage for structural outputs, but there is no release-level signal for algorithmic regressions where memory, allocation, or CPU sample cost grows faster than input size. |
 
 ## Completed TODOs
 
