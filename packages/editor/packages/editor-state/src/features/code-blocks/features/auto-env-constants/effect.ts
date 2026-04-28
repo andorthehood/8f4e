@@ -142,10 +142,10 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	// Ensure env block exists when project is loaded
 	store.subscribe('initialProjectState', ensureEnvBlockInProject);
 
-	// Update env block code in graphicHelper.codeBlocks when runtime directives or binary assets change.
+	// Update env block code in graphicHelper.codeBlocks when runtime config or binary assets change.
 	// This avoids the infinite loop caused by modifying initialProjectState.
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateEnvConstantsBlockInGraphicHelper);
-	store.subscribe('globalEditorDirectives.runtime', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('editorConfig.runtime', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('runtimeRegistry', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
 }

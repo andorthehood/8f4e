@@ -12,7 +12,7 @@ constants editorDirectives
 ; @ infoOverlay <on|off>	Show or hide the info overlay.
 ; @ keyCodeMemory <memoryId>	Store keyboard key codes in a module memory.
 ; @ keyPressedMemory <memoryId>	Store pressed-key state in a module memory.
-; @ runtime <runtimeId>	Select the runtime backend for the project.
+; @ config runtime <runtimeId>	Select the runtime backend for the project.
 ;
 ; Code block directives
 ; @ alwaysOnTop	Keep the block rendered above normal blocks.

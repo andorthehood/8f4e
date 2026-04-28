@@ -3,7 +3,15 @@ import type { Project } from '@8f4e/editor-state';
 const midiArpeggiator2: Project = {
 	codeBlocks: [
 		{
-			code: ['config', '; @pos -90 -12', '; @runtime WebWorkerMIDIRuntime', '; ~sampleRate 50', '', '', 'configEnd'],
+			code: [
+				'config',
+				'; @pos -90 -12',
+				'; @config runtime WebWorkerMIDIRuntime',
+				'; ~sampleRate 50',
+				'',
+				'',
+				'configEnd',
+			],
 		},
 		{
 			code: [

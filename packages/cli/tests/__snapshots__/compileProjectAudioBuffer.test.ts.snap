@@ -6,7 +6,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
     {
       "code": [
         "module projectConfig",
-        "; @runtime AudioWorkletRuntime",
+        "; @config runtime AudioWorkletRuntime",
         "; ~sampleRate 44100",
         "; @config export.fileName audioBuffer",
         "",

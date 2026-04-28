@@ -42,6 +42,7 @@ Set editor configuration values.
 Supported paths:
 
 - `font` - editor font used for rendering code blocks and UI text.
+- `runtime` - runtime host loaded for the project.
 - `color.<path>` - editor color scheme override. See [Color Paths](./color-paths.md) for the full list of color paths.
 - `export.fileName` - base file name used by editor export actions.
 
@@ -49,6 +50,7 @@ Examples:
 
 ```txt
 ; @config font ibmvga8x16
+; @config runtime AudioWorkletRuntime
 ; @config export.fileName samplePlayer
 ; @config color.text.code #cccccc
 ; @config color.fill.moduleBackground rgba(0,0,0,0.9)
@@ -683,14 +685,14 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 
 ```json
 [
-  {
-    "code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
-    "gridCoordinates": { "x": 0, "y": 0 }
-  },
-  {
-    "code": ["module bar", "; @pos 17 14", "moduleEnd"],
-    "gridCoordinates": { "x": 12, "y": 4 }
-  }
+	{
+		"code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
+		"gridCoordinates": { "x": 0, "y": 0 }
+	},
+	{
+		"code": ["module bar", "; @pos 17 14", "moduleEnd"],
+		"gridCoordinates": { "x": 12, "y": 4 }
+	}
 ]
 ```
 
@@ -759,23 +761,22 @@ Set the base file name used by editor export actions.
 ; @config export.fileName samplePlayer
 ```
 
-### `@runtime`
+### Runtime
 
 Select the runtime host the editor should load for the project.
 
 ```txt
-; @runtime <runtimeId>
+; @config runtime <runtimeId>
 ```
 
 - `runtimeId` must be a known runtime id such as `WebWorkerLogicRuntime`, `MainThreadLogicRuntime`, `AudioWorkletRuntime`, or `WebWorkerMIDIRuntime`
-- Duplicate declarations with the same value are allowed
-- Declarations with conflicting values produce an editor error
+- Duplicate declarations use normal config last-write-wins behavior
 - Unknown runtime ids produce an editor error and the editor falls back to the default runtime
 
 **Example**:
 
 ```txt
-; @runtime AudioWorkletRuntime
+; @config runtime AudioWorkletRuntime
 ```
 
 For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).

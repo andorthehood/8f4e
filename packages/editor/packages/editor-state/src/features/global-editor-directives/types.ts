@@ -18,8 +18,6 @@ export interface ResolvedGlobalEditorDirectives {
 	configEntries?: EditorConfigEntry[];
 	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
 	infoOverlay?: boolean;
-	/** Selected runtime host from `; @runtime <id>` directives */
-	runtime?: string;
 	/** Target memory for keyboard HID usage codes */
 	keyCodeMemoryId?: string;
 	/** Target memory for keyboard pressed-state flag */

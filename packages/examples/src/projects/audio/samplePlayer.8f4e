@@ -116,7 +116,7 @@ moduleEnd
 
 module projectConfig
 ; @pos -53 -63
-; @runtime AudioWorkletRuntime
+; @config runtime AudioWorkletRuntime
 ; ~sampleRate 44100
 ; @config export.fileName samplePlayer
 
