@@ -781,9 +781,9 @@ moduleEnd
 
 module projectConfig
 ; @pos -58 -63
-; @runtime AudioWorkletRuntime
+; @config runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName minBLEP
+; @config export.fileName minBLEP
 
 moduleEnd
 

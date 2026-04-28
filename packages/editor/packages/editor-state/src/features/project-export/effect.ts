@@ -2,16 +2,19 @@ import { StateManager } from '@8f4e/state-manager';
 
 import serializeToProject from './serializeToProject';
 import { serializeProjectTo8f4e } from './serializeTo8f4e';
+import { registerExportFileNameEditorConfigValidator } from './editorConfig';
 
 import type { State } from '~/types';
 
 import { EventDispatcher } from '~/types';
 
 export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
+	registerExportFileNameEditorConfigValidator(store);
+
 	const state = store.getState();
 
 	function getExportBaseName(): string {
-		const exportFileName = state.globalEditorDirectives.exportFileName;
+		const exportFileName = state.editorConfig.export?.fileName;
 		if (!exportFileName) {
 			return 'project';
 		}

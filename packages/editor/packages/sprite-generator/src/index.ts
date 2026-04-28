@@ -7,7 +7,7 @@ import generateBackground, { generateLookup as generateLookupForBackground } fro
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
 import { createAtlasLayout } from './atlasLayout';
-import { Command, Config, ColorScheme } from './types';
+import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
 import { fontMetadata as ascii8x16Metadata } from './fonts/ibmvga8x16/generated/ascii';
 import { fontMetadata as glyphs8x16Metadata } from './fonts/ibmvga8x16/generated/glyphs';
@@ -17,7 +17,7 @@ import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii';
 
 export { Icon } from './icons';
 export { FONT_NAMES } from './types';
-export type { ColorScheme, Font } from './types';
+export type { ColorScheme, ColorSchemeOverrides, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
 
@@ -39,7 +39,7 @@ type FontDefinition = {
 	loadMetadata: () => Promise<FontMetadataSet>;
 };
 
-const FONT_DEFINITIONS: Record<Config['font'], FontDefinition> = {
+const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 	attpc63008x16: {
 		characterWidth: 8,
 		characterHeight: 16,
@@ -264,7 +264,7 @@ function decodeFontData({ asciiMetadata, glyphsMetadata }: FontMetadataSet, defi
 }
 
 // ibmvga8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
-const fontCache: Partial<Record<Config['font'], FontData>> = {
+const fontCache: Partial<Record<Font, FontData>> = {
 	ibmvga8x16: decodeFontData(
 		{
 			asciiMetadata: ascii8x16Metadata,
@@ -274,8 +274,14 @@ const fontCache: Partial<Record<Config['font'], FontData>> = {
 	),
 };
 
+export const DEFAULT_FONT: Font = 'ibmvga8x16';
+
+function resolveFont(font: Config['font']): Font {
+	return FONT_NAMES.includes(font as Font) ? (font as Font) : DEFAULT_FONT;
+}
+
 // Lazily load and decode an alternate font, caching the result so it is decoded at most once.
-async function loadFont(font: Config['font']): Promise<FontData> {
+async function loadFont(font: Font): Promise<FontData> {
 	if (fontCache[font]) {
 		return fontCache[font]!;
 	}
@@ -296,18 +302,25 @@ export interface SpriteLookups extends FontLookups {
 	pianoKeys: Record<number, SpriteCoordinates>;
 }
 
+export function resolveColorScheme(overrides: Config['colorScheme'] = {}): ColorScheme {
+	const colorSchemeOverrides = overrides as ColorSchemeOverrides;
+	return {
+		text: { ...defaultColorScheme.text, ...colorSchemeOverrides.text },
+		fill: { ...defaultColorScheme.fill, ...colorSchemeOverrides.fill },
+		icons: { ...defaultColorScheme.icons, ...colorSchemeOverrides.icons },
+	};
+}
+
 export default async function generateSprite(config: Config): Promise<{
 	canvas: OffscreenCanvas;
 	spriteLookups: SpriteLookups;
 	characterWidth: number;
 	characterHeight: number;
 }> {
-	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = await loadFont(config.font);
+	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = await loadFont(resolveFont(config.font));
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 	const canvas = new OffscreenCanvas(layout.canvasWidth, layout.canvasHeight);
-
-	// Use default color scheme if none provided
-	const colorScheme = config.colorScheme || defaultColorScheme;
+	const colorScheme = resolveColorScheme(config.colorScheme);
 
 	const ctx = canvas.getContext('2d', {
 		alpha: true,

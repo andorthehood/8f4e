@@ -18,7 +18,7 @@ The AudioWorklet runtime still receives its buffer-routing configuration from pr
 
 That does not match the ownership model we now want:
 
-- runtime host selection is editor-owned via `; @runtime <id>`
+- runtime host selection is editor-owned via `; @config runtime <id>`
 - runtime-specific behavior should be authored as runtime directives
 - project config is being phased out entirely
 
@@ -55,10 +55,12 @@ moduleEnd
 ## Implementation Plan
 
 ### Step 1: Add runtime-specific directive plugin support
+
 - Extend the runtime-directives pipeline so runtimes can contribute their own directive plugins.
 - Keep generic runtime-directive scanning/resolution as the engine, but let AudioWorklet own the semantics of `~audioInput` and `~audioOutput`.
 
 ### Step 2: Implement AudioWorklet routing directives
+
 - Add AudioWorklet-owned runtime directive handlers for:
   - `~audioInput <bufferName> <input> <channel>`
   - `~audioOutput <bufferName> <output> <channel>`
@@ -68,21 +70,25 @@ moduleEnd
   - local buffer name argument
 
 ### Step 3: Store resolved routing in runtime-directive state
+
 - Add a runtime-owned resolved state shape for AudioWorklet routing, for example under:
   - `state.runtimeDirectives.audioWorklet.audioInputs`
   - `state.runtimeDirectives.audioWorklet.audioOutputs`
 - Keep `~sampleRate` alongside this in the runtime-directives system.
 
 ### Step 4: Remove AudioWorklet routing from project config
+
 - Stop reading `runtimeSettings.audioInputBuffers` and `runtimeSettings.audioOutputBuffers`.
 - Remove these fields from AudioWorklet runtime defaults and schema.
 - Remove any project-config compilation behavior that still expects these fields.
 
 ### Step 5: Update runtime consumers
+
 - Make the AudioWorklet runtime factory read its routing from resolved runtime directives instead of `compiledProjectConfig.runtimeSettings`.
 - Update info/debug overlays if they display AudioWorklet routing.
 
 ### Step 6: Update examples and tests
+
 - Migrate example projects away from stack-config AudioWorklet routing.
 - Replace old project-config-based routing tests with directive-based coverage.
 
@@ -118,7 +124,7 @@ moduleEnd
 ## Related Items
 
 - **Related**: `316-remove-runtime-packaging-concerns-from-cli.md`
-- **Related**: runtime selection migration to global editor directive `@runtime`
+- **Related**: runtime selection migration to editor config `@config runtime`
 
 ## Notes
 

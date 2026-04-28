@@ -2,12 +2,12 @@
 
 ## Purpose
 
-Manages the lifecycle of runtime instances that execute compiled 8f4e programs. Handles runtime selection from global editor directives, initialization, destruction, and recreation when configuration changes.
+Manages the lifecycle of runtime instances that execute compiled 8f4e programs. Handles runtime selection from editor config, initialization, destruction, and recreation when configuration changes.
 
 ## Key Behaviors
 
 - **Runtime Registry**: Looks up runtime factories from `state.runtimeRegistry` at project root
-- **Runtime Selection**: Determines which runtime to use from `state.globalEditorDirectives.runtime`
+- **Runtime Selection**: Determines which runtime to use from `state.editorConfig.runtime`
 - **Lifecycle Management**: Creates and destroys runtime instances as needed
 - **Runtime Switching**: Recreates runtime when configuration changes (e.g., switching from audio to MIDI runtime)
 - **Fallback Handling**: Falls back to default runtime ID if unknown runtime is requested
@@ -19,10 +19,10 @@ The runtime registry is located at the project root level (not in editor-state):
 
 ```typescript
 state.runtimeRegistry = {
-  'audio': { factory: audioRuntimeFactory },
-  'midi': { factory: midiRuntimeFactory },
-  // ... other runtimes
-}
+	audio: { factory: audioRuntimeFactory },
+	midi: { factory: midiRuntimeFactory },
+	// ... other runtimes
+};
 ```
 
 Each entry contains a `factory` function that creates and returns a destroyer function.
@@ -48,26 +48,25 @@ Each entry contains a `factory` function that creates and returns a destroyer fu
 
 - `state.runtimeRegistry` - Registry of available runtime factories
 - `state.defaultRuntimeId` - Fallback runtime identifier
-- `state.globalEditorDirectives.runtime` - Selected runtime id
+- `state.editorConfig.runtime` - Selected runtime id
 
 ## Integration Points
 
-- **Global Editor Directives**: Runtime selection comes from `; @runtime <id>`
+- **Editor Config**: Runtime selection comes from `; @config runtime <id>`
 - **Program Compiler**: Runtime initialization waits for compilation to complete
 - **Runtime Factories**: External runtime implementations register themselves in the registry
 
 ## Runtime Factory Contract
 
 ```typescript
-type RuntimeFactory = (
-  store: StateManager<State>,
-  events: EventDispatcher
-) => () => void;  // Returns destroyer function
+type RuntimeFactory = (store: StateManager<State>, events: EventDispatcher) => () => void;
+runtime; // Returns destroyer function
 ```
 
 ## Logging
 
 Runtime lifecycle events are logged:
+
 - "Requesting runtime: {runtime}"
 - "Loaded runtime from registry: {runtime}"
 - "Unknown runtime {runtime}, falling back to default: {default}"
