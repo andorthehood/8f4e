@@ -48,7 +48,10 @@ export function functionValueTypeToLocalBinding(type: FunctionValueType, index: 
 }
 
 export function functionValueTypeToStackItem(type: FunctionValueType): StackItem {
-	const binding = functionValueTypeToLocalBinding(type, 0);
+	return localBindingToStackItem(functionValueTypeToLocalBinding(type, 0));
+}
+
+function localBindingToStackItem(binding: LocalBinding): StackItem {
 	return {
 		isInteger: binding.isInteger,
 		...(binding.isFloat64 ? { isFloat64: true } : {}),
