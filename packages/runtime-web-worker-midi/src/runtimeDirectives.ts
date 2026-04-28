@@ -55,7 +55,7 @@ function resolveWebWorkerMIDIRuntimeSettingsFromBlocks(
 
 	return {
 		sampleRate,
-		envConstants: [`const SAMPLE_RATE ${sampleRate}`, `const INV_SAMPLE_RATE ${1 / sampleRate}`],
+		envConstants: [`const SAMPLE_RATE ${sampleRate}`],
 		errors,
 	};
 }

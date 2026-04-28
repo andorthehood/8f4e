@@ -53,7 +53,6 @@ constants env
 ; Changes will be overwritten
 
 const SAMPLE_RATE 50
-const INV_SAMPLE_RATE 0.02
 
 constantsEnd
 

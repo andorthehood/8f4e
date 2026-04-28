@@ -23,7 +23,7 @@ Set the project sample rate used for generated environment constants.
 - `value` must be a positive number (e.g. `44100`, `48000`, `50`)
 - Duplicate declarations with the same value are allowed
 - Declarations with conflicting values produce a compile error
-- The selected runtime uses the resolved value when contributing `SAMPLE_RATE` and `INV_SAMPLE_RATE` to the auto-managed `env` constants block
+- The selected runtime uses the resolved value when contributing `SAMPLE_RATE` to the auto-managed `env` constants block
 
 **Example**:
 

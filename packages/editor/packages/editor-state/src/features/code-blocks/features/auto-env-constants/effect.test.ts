@@ -41,7 +41,7 @@ function getRuntimeEnvConstants(
 ) {
 	const { sampleRate } = resolveSampleRateFromDirectives(codeBlocks);
 
-	return [`const SAMPLE_RATE ${sampleRate}`, `const INV_SAMPLE_RATE ${1 / sampleRate}`];
+	return [`const SAMPLE_RATE ${sampleRate}`];
 }
 
 function createGraphicEnvBlock(code: string[], overrides: Partial<CodeBlockGraphicData> = {}): CodeBlockGraphicData {
@@ -120,7 +120,7 @@ describe('autoEnvConstants', () => {
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 48000');
 		const invSampleRateLine = envBlock?.code.find(line => line.includes('INV_SAMPLE_RATE'));
-		expect(invSampleRateLine).toBe('const INV_SAMPLE_RATE 0.000020833333333333333');
+		expect(invSampleRateLine).toBeUndefined();
 	});
 
 	test('should only include AUDIO_BUFFER_SIZE when the selected runtime contributes it', () => {
@@ -186,7 +186,7 @@ describe('autoEnvConstants', () => {
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 44100');
 		const invSampleRateLine = envBlock?.code.find(line => line.includes('INV_SAMPLE_RATE'));
-		expect(invSampleRateLine).toBe('const INV_SAMPLE_RATE 0.000022675736961451248');
+		expect(invSampleRateLine).toBeUndefined();
 	});
 
 	test('should include binary asset sizes when available', () => {
@@ -314,12 +314,7 @@ describe('autoEnvConstants', () => {
 			...EMPTY_DEFAULT_PROJECT,
 			codeBlocks: [
 				{
-					code: [
-						'constants env',
-						'const SAMPLE_RATE 48000',
-						'const INV_SAMPLE_RATE 0.000020833333333333333',
-						'constantsEnd',
-					],
+					code: ['constants env', 'const SAMPLE_RATE 48000', 'constantsEnd'],
 					gridCoordinates: { x: 0, y: 0 },
 				},
 			],
