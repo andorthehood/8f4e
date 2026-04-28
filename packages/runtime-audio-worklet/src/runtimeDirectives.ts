@@ -56,11 +56,7 @@ function resolveAudioWorkletRuntimeSettingsFromBlocks(
 
 	return {
 		sampleRate,
-		envConstants: [
-			`const SAMPLE_RATE ${sampleRate}`,
-			`const INV_SAMPLE_RATE ${1 / sampleRate}`,
-			`const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`,
-		],
+		envConstants: [`const SAMPLE_RATE ${sampleRate}`, `const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`],
 		errors,
 	};
 }
