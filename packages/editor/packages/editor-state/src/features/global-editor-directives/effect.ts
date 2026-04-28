@@ -1,6 +1,6 @@
 import { resolveGlobalEditorDirectives } from './registry';
 
-import { validateEditorConfigEntries } from '../editor-config/validators';
+import { resolveEditorConfigEntries, validateEditorConfigEntries } from '../editor-config/validators';
 import deepEqual from '../../shared/utils/deepEqual';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -18,8 +18,8 @@ export default function globalEditorDirectivesEffect(store: StateManager<State>)
 	function resolve(): void {
 		const state = store.getState();
 		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks, state.runtimeRegistry);
-		const { config, configEntries, ...globalEditorDirectives } = resolved;
-		const nextEditorConfig = config ?? {};
+		const { configEntries, ...globalEditorDirectives } = resolved;
+		const nextEditorConfig = resolveEditorConfigEntries(configEntries ?? [], state.editorConfigValidators);
 		const nextErrors = [...errors, ...validateEditorConfigEntries(configEntries ?? [], state.editorConfigValidators)];
 
 		if (!deepEqual(globalEditorDirectives, state.globalEditorDirectives)) {

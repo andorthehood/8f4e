@@ -1,7 +1,9 @@
+import { setEditorConfigPath } from './paths';
+
 import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
 import type { CodeError } from '~/types';
-import type { EditorConfigEntry, EditorConfigValidator, EditorConfigValidatorRegistry } from './types';
+import type { EditorConfig, EditorConfigEntry, EditorConfigValidator, EditorConfigValidatorRegistry } from './types';
 
 export function getEditorConfigValidators(registry: EditorConfigValidatorRegistry): EditorConfigValidator[] {
 	return Object.values(registry).filter((validator): validator is EditorConfigValidator => Boolean(validator));
@@ -15,20 +17,27 @@ function getValidator(path: string, registry: EditorConfigValidatorRegistry): Ed
 	return getEditorConfigValidators(registry).find(validator => validator.matches(path));
 }
 
+function getEditorConfigEntryValidationMessage(
+	entry: EditorConfigEntry,
+	registry: EditorConfigValidatorRegistry
+): string | undefined {
+	const validator = getValidator(entry.path, registry);
+	return (
+		validator?.validate(entry) ??
+		(validator
+			? undefined
+			: `@config: unknown config path '${entry.path}'${formatDidYouMeanSuffix(entry.path, getEditorConfigKnownPaths(registry))}`)
+	);
+}
+
 export function validateEditorConfigEntries(
 	entries: EditorConfigEntry[],
 	registry: EditorConfigValidatorRegistry
 ): CodeError[] {
 	const errors: CodeError[] = [];
-	const knownPaths = getEditorConfigKnownPaths(registry);
 
 	for (const entry of entries) {
-		const validator = getValidator(entry.path, registry);
-		const message =
-			validator?.validate(entry) ??
-			(validator
-				? undefined
-				: `@config: unknown config path '${entry.path}'${formatDidYouMeanSuffix(entry.path, knownPaths)}`);
+		const message = getEditorConfigEntryValidationMessage(entry, registry);
 
 		if (!message) {
 			continue;
@@ -42,4 +51,21 @@ export function validateEditorConfigEntries(
 	}
 
 	return errors;
+}
+
+export function resolveEditorConfigEntries(
+	entries: EditorConfigEntry[],
+	registry: EditorConfigValidatorRegistry
+): EditorConfig {
+	const config: EditorConfig = {};
+
+	for (const entry of entries) {
+		if (getEditorConfigEntryValidationMessage(entry, registry)) {
+			continue;
+		}
+
+		setEditorConfigPath(config, entry.path, entry.value);
+	}
+
+	return config;
 }

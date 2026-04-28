@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { fontEditorConfigValidator, getEditorConfigFont, registerFontEditorConfigValidator } from './editorConfig';
+import font from './effect';
+import { fontEditorConfigValidator } from './editorConfig';
 
 import type { EditorConfigEntry } from '../editor-config/types';
 import type { State } from '~/types';
@@ -27,12 +28,6 @@ describe('font editor config', () => {
 		expect(error).toContain("Did you mean 'terminus8x16bold'?");
 	});
 
-	it('reads valid font values and falls back for invalid values', () => {
-		expect(getEditorConfigFont({ font: '6x10' })).toBe('6x10');
-		expect(getEditorConfigFont({ font: 'tiny' })).toBe('ibmvga8x16');
-		expect(getEditorConfigFont({})).toBe('ibmvga8x16');
-	});
-
 	it('registers its validator in the shared editor-config validator slot', () => {
 		const state = { editorConfigValidators: {} } as State;
 		const store = {
@@ -43,7 +38,7 @@ describe('font editor config', () => {
 			},
 		} as StateManager<State>;
 
-		registerFontEditorConfigValidator(store);
+		font(store);
 
 		expect(state.editorConfigValidators.font).toBe(fontEditorConfigValidator);
 	});

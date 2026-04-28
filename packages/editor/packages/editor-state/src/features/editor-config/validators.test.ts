@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getEditorConfigKnownPaths, validateEditorConfigEntries } from './validators';
+import { getEditorConfigKnownPaths, resolveEditorConfigEntries, validateEditorConfigEntries } from './validators';
 
 import type { EditorConfigEntry, EditorConfigValidatorRegistry } from './types';
 
@@ -52,5 +52,34 @@ describe('editor config validators', () => {
 		expect(errors).toHaveLength(1);
 		expect(errors[0].message).toContain("unknown config path 'fon'");
 		expect(errors[0].message).toContain("Did you mean 'font'?");
+	});
+
+	it('resolves valid entries into a path-shaped config object', () => {
+		expect(
+			resolveEditorConfigEntries(
+				[
+					entry('font', '6x10'),
+					entry('color.text.code', '#112233'),
+					entry('font', 'tiny'),
+					entry('unknown.path', 'value'),
+				],
+				registry
+			)
+		).toEqual({
+			font: '6x10',
+			color: {
+				text: { code: '#112233' },
+			},
+		});
+	});
+
+	it('uses last-write-wins for duplicate valid paths', () => {
+		expect(
+			resolveEditorConfigEntries([entry('color.text.code', '#111111'), entry('color.text.code', '#222222')], registry)
+		).toEqual({
+			color: {
+				text: { code: '#222222' },
+			},
+		});
 	});
 });

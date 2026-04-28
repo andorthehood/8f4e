@@ -47,7 +47,7 @@ Possible implementation shape:
 ## Anti-Patterns
 
 - Do not assume a selected-block edit can be resolved from that block alone.
-- Do not special-case `@exportFileName` in the effect; keep the optimization generic for future global editor directives.
+- Do not special-case any one global directive in the effect; keep the optimization generic for future global editor directives.
 - Do not duplicate parsing logic outside the global editor directive feature area.
 
 ## Implementation Plan
@@ -91,7 +91,7 @@ Possible implementation shape:
 ## Risks & Considerations
 
 - **Incorrect incremental merge**: conflict handling can become wrong if block-level contributions are underspecified.
-- **Feature lock-in**: the optimization should not assume only `@exportFileName` will ever exist.
+- **Feature lock-in**: the optimization should not assume a fixed set of global editor directives.
 - **Cache invalidation**: block identity and deletion/reordering behavior must be handled carefully.
 
 ## Notes
