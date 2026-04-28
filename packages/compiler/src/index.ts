@@ -30,6 +30,7 @@ import {
 	CompileOptions,
 	CompiledModule,
 	CompiledModuleLookup,
+	DataStructure,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
 	Module,
@@ -135,24 +136,10 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 			if (memory.numberOfElements > 1 && typeof memory.default === 'object') {
 				Object.entries(memory.default).forEach(([relativeWordAddress, value]) => {
 					const elementByteAddress = memory.byteAddress + parseInt(relativeWordAddress, 10) * memory.elementWordSize;
-					if (memory.elementWordSize === 8) {
-						instructions.push(...f64store(elementByteAddress, value));
-					} else {
-						instructions.push(
-							...(memory.isInteger ? i32store(elementByteAddress, value) : f32store(elementByteAddress, value))
-						);
-					}
+					instructions.push(...createMemoryDefaultStore(memory, elementByteAddress, value));
 				});
 			} else if (memory.numberOfElements === 1 && memory.default !== 0) {
-				if (memory.elementWordSize === 8) {
-					instructions.push(...f64store(memory.byteAddress, memory.default as number));
-				} else {
-					instructions.push(
-						...(memory.isInteger
-							? i32store(memory.byteAddress, memory.default as number)
-							: f32store(memory.byteAddress, memory.default as number))
-					);
-				}
+				instructions.push(...createMemoryDefaultStore(memory, memory.byteAddress, memory.default as number));
 			}
 		});
 
@@ -160,6 +147,14 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 
 		return createFunction([], instructions);
 	});
+}
+
+function createMemoryDefaultStore(memory: DataStructure, byteAddress: number, value: number) {
+	if (memory.elementWordSize === 8) {
+		return f64store(byteAddress, value);
+	}
+
+	return memory.isInteger ? i32store(byteAddress, value) : f32store(byteAddress, value);
 }
 
 function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
