@@ -141,7 +141,7 @@ describe('autoEnvConstants', () => {
 			},
 		});
 		store.set('defaultRuntimeId', 'AudioWorkletRuntime');
-		store.set('globalEditorDirectives.runtime', 'AudioWorkletRuntime');
+		store.set('editorConfig.runtime', 'AudioWorkletRuntime');
 		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
 
 		const audioWorkletEnvBlock = state.initialProjectState?.codeBlocks.find(block =>
@@ -180,7 +180,7 @@ describe('autoEnvConstants', () => {
 			}),
 			createGraphicEnvBlock(envCodeBlock?.code ?? []),
 		]);
-		store.set('globalEditorDirectives.runtime', 'WebWorkerLogicRuntime');
+		store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -276,7 +276,7 @@ describe('autoEnvConstants', () => {
 				blockType: 'module',
 			}),
 		]);
-		store.set('globalEditorDirectives.runtime', 'WebWorkerLogicRuntime');
+		store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
@@ -303,7 +303,7 @@ describe('autoEnvConstants', () => {
 				blockType: 'module',
 			}),
 		]);
-		store.set('globalEditorDirectives.runtime', 'WebWorkerLogicRuntime');
+		store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');

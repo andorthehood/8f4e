@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest'
 import createStateManager from '@8f4e/state-manager';
 
 import projectExport from '../effect';
+import { exportFileNameEditorConfigValidator } from '../editorConfig';
 
 import type { State } from '~/types';
 
@@ -28,6 +29,12 @@ describe('projectExport', () => {
 	});
 
 	describe('Event wiring', () => {
+		it('should register the export file name editor config validator', () => {
+			projectExport(store, mockEvents);
+
+			expect(mockState.editorConfigValidators.exportFileName).toBe(exportFileNameEditorConfigValidator);
+		});
+
 		it('should register exportProject event handler', () => {
 			projectExport(store, mockEvents);
 
@@ -116,7 +123,7 @@ describe('projectExport', () => {
 
 	describe('exportFileName', () => {
 		it('should use custom exportFileName as base for .8f4e export', async () => {
-			mockState.globalEditorDirectives.exportFileName = 'my-project';
+			mockState.editorConfig.export = { fileName: 'my-project' };
 
 			projectExport(store, mockEvents);
 
@@ -132,7 +139,7 @@ describe('projectExport', () => {
 		it('should use custom exportFileName as base for WASM export', async () => {
 			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);
 			mockState.callbacks.exportBinaryCode = mockExportBinaryCode;
-			mockState.globalEditorDirectives.exportFileName = 'my-project';
+			mockState.editorConfig.export = { fileName: 'my-project' };
 
 			projectExport(store, mockEvents);
 
@@ -147,7 +154,7 @@ describe('projectExport', () => {
 		it('should strip .wasm suffix from exportFileName to prevent double extension', async () => {
 			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);
 			mockState.callbacks.exportBinaryCode = mockExportBinaryCode;
-			mockState.globalEditorDirectives.exportFileName = 'demo.wasm';
+			mockState.editorConfig.export = { fileName: 'demo.wasm' };
 
 			projectExport(store, mockEvents);
 
@@ -160,7 +167,7 @@ describe('projectExport', () => {
 		});
 
 		it('should fall back to "project" base when exportFileName is undefined', async () => {
-			mockState.globalEditorDirectives.exportFileName = undefined;
+			mockState.editorConfig.export = undefined;
 
 			projectExport(store, mockEvents);
 
@@ -174,7 +181,7 @@ describe('projectExport', () => {
 		});
 
 		it('should fall back to "project" base when exportFileName is empty string', async () => {
-			mockState.globalEditorDirectives.exportFileName = '';
+			mockState.editorConfig.export = { fileName: '' };
 
 			projectExport(store, mockEvents);
 

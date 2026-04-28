@@ -8,7 +8,7 @@ const events = {
 
 const storeState = {
 	globalEditorDirectives: {},
-	colorScheme: undefined,
+	editorConfig: {},
 };
 
 const store = {
