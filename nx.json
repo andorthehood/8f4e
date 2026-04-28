@@ -58,6 +58,7 @@
       "specifierSource": "conventional-commits",
       "currentVersionResolver": "git-tag",
       "fallbackCurrentVersionResolver": "disk",
+      "updateDependents": "never",
       "manifestRootsToUpdate": ["{projectRoot}"]
     },
     "changelog": {
