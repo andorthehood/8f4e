@@ -54,7 +54,15 @@ jobs:
           set -euo pipefail
 
           if git tag --list '*@*' | grep -q .; then
-            npx nx release --skip-publish
+            release_projects="$(node scripts/resolve-release-projects.mjs)"
+
+            if [[ -z "$release_projects" ]]; then
+              echo "No package-scoped changes found since the latest project tags."
+              exit 0
+            fi
+
+            echo "Releasing projects: $release_projects"
+            npx nx release --projects="$release_projects" --skip-publish
           else
             npx nx release 0.1.0 --first-release --skip-publish
           fi
