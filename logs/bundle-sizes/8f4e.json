@@ -44,5 +44,28 @@
 				"brotli": 51404
 			}
 		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-28T15:11:13.841Z",
+		"commit": "b6042793633f742dee20672e0267bf3f055477ed",
+		"branch": "main",
+		"releaseTag": "app@0.1.2",
+		"packageName": "8f4e",
+		"projectName": "app",
+		"version": "0.1.2",
+		"bytes": {
+			"raw": 219710,
+			"gzip": 60527,
+			"brotli": 51434
+		},
+		"files": [
+			{
+				"path": "assets/index-PsfsM3sa.js",
+				"raw": 219710,
+				"gzip": 60527,
+				"brotli": 51434
+			}
+		]
 	}
 ]
