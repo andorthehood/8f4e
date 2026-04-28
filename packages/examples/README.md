@@ -6,3 +6,8 @@ Example modules and projects used by the editor and tooling. Exports example mod
 
 - `modules/`: reusable example modules.
 - `projects/`: complete example projects.
+
+## Hosted Examples
+
+- Modules are deployed to `https://static.llllllllllll.com/8f4e/example-modules/` with `registry.json`.
+- Projects are deployed to `https://static.llllllllllll.com/8f4e/example-projects/` with `registry.json`.

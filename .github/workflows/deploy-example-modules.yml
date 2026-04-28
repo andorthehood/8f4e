@@ -1,18 +1,16 @@
 ---
-name: Deploy Example Projects to DigitalOcean Spaces
+name: Deploy Example Modules to DigitalOcean Spaces
 
 on:
   push:
     branches: [main]
     paths:
-      - 'packages/examples/src/projects/**'
+      - 'packages/examples/src/modules/**'
       - 'packages/examples/src/module-generators/**'
-      - 'packages/examples/generate-project-wasm.sh'
       - 'packages/examples/generate-example-registries.mjs'
       - 'packages/examples/project.json'
       - 'packages/examples/package.json'
-      - 'packages/cli/**'
-      - '.github/workflows/deploy-example-projects.yml'
+      - '.github/workflows/deploy-example-modules.yml'
   workflow_dispatch:
 
 jobs:
@@ -36,16 +34,16 @@ jobs:
 
       - run: npx nx run @8f4e/examples:build
 
-      - name: Stage example project files
+      - name: Stage example module files
         run: |
           set -euo pipefail
-          mkdir -p "$GITHUB_WORKSPACE/upload/example-projects"
-          cd packages/examples/src/projects
-          find . -type f \( -name '*.8f4e' -o -name '*.wasm' \) \
-            -exec cp --parents {} "$GITHUB_WORKSPACE/upload/example-projects/" \;
-          cp "$GITHUB_WORKSPACE/packages/examples/dist/registries/example-projects.json" \
-            "$GITHUB_WORKSPACE/upload/example-projects/registry.json"
-          find "$GITHUB_WORKSPACE/upload/example-projects" -type f | sort
+          mkdir -p "$GITHUB_WORKSPACE/upload/example-modules"
+          cd packages/examples/src/modules
+          find . -type f -name '*.8f4em' \
+            -exec cp --parents {} "$GITHUB_WORKSPACE/upload/example-modules/" \;
+          cp "$GITHUB_WORKSPACE/packages/examples/dist/registries/example-modules.json" \
+            "$GITHUB_WORKSPACE/upload/example-modules/registry.json"
+          find "$GITHUB_WORKSPACE/upload/example-modules" -type f | sort
 
       - name: DigitalOcean Spaces Upload Action
         uses: BetaHuhn/do-spaces-action@v2.0.146
@@ -54,5 +52,5 @@ jobs:
           secret_key: ${{ secrets.DO_SPACES_SECRET_KEY }}
           space_name: ${{ env.DO_SPACES_BUCKET }}
           space_region: ${{ env.DO_SPACES_REGION }}
-          source: upload/example-projects
-          out_dir: 8f4e/example-projects
+          source: upload/example-modules
+          out_dir: 8f4e/example-modules

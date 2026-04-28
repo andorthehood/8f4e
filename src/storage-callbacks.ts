@@ -36,7 +36,7 @@ export async function loadSession(): Promise<Project | null> {
 		}
 
 		const projectRegistry = await getProjectRegistry();
-		const defaultProjectUrl = projectRegistry.getDefaultProjectUrl();
+		const defaultProjectUrl = await projectRegistry.getDefaultProjectUrl();
 		if (defaultProjectUrl) {
 			console.log(`Loading default project: ${defaultProjectUrl}`);
 			return parse8f4eToProject(await projectRegistry.getProject(defaultProjectUrl));

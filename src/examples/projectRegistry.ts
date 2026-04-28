@@ -1,16 +1,17 @@
-import { projectMetadata } from './exampleProjects';
+import { getExampleProjectMetadata } from './exampleProjects';
 
 import type { ProjectMetadata } from '@8f4e/editor-state';
 
 /**
  * Get list of projects with metadata only.
- * Returns hardcoded metadata without loading any project code.
+ * Returns hosted registry metadata without loading any project code.
  */
 export async function getListOfProjects(): Promise<ProjectMetadata[]> {
-	return projectMetadata;
+	return getExampleProjectMetadata();
 }
 
-export function getDefaultProjectUrl(): string | null {
+export async function getDefaultProjectUrl(): Promise<string | null> {
+	const projectMetadata = await getExampleProjectMetadata();
 	return projectMetadata.length > 0 ? projectMetadata[0].url : null;
 }
 
