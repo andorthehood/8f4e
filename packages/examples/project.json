@@ -8,7 +8,7 @@
 			"outputs": ["{projectRoot}/dist"],
 			"dependsOn": ["^build"],
 			"options": {
-				"command": "node ./src/module-generators/generateModules.ts && ./generate-project-wasm.sh",
+				"command": "node ./src/module-generators/generateModules.ts && ./generate-project-wasm.sh && node ./generate-example-registries.mjs",
 				"cwd": "{projectRoot}"
 			}
 		},
