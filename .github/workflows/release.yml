@@ -54,7 +54,7 @@ jobs:
           set -euo pipefail
 
           if git tag --list '*@*' | grep -q .; then
-            npx nx release --skip-publish --yes
+            npx nx release --skip-publish
           else
-            npx nx release 0.1.0 --first-release --skip-publish --yes
+            npx nx release 0.1.0 --first-release --skip-publish
           fi
