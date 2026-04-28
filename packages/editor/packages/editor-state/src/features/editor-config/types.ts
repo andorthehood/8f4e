@@ -1,7 +1,15 @@
-export type EditorConfigValue = string | EditorConfig;
+export type EditorConfigValue = string | EditorConfigObject;
 
-export interface EditorConfig {
+export interface EditorConfigObject {
 	[key: string]: EditorConfigValue | undefined;
+}
+
+export interface EditorConfig extends EditorConfigObject {
+	font?: string;
+	color?: EditorConfigObject;
+	export?: EditorConfigObject & {
+		fileName?: string;
+	};
 }
 
 export interface EditorConfigEntry {

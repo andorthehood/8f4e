@@ -1909,7 +1909,7 @@ module projectConfig
 ; @pos -21 -145
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName aftertouch
+; @config export.fileName aftertouch
 
 moduleEnd
 

@@ -5,7 +5,7 @@ note
 ; Project Config
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName lowerIntentions
+; @config export.fileName lowerIntentions
 
 noteEnd
 

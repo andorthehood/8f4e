@@ -121,8 +121,8 @@ export type ColorSchemeOverrides = {
 };
 
 export interface Config {
-	colorScheme?: ColorSchemeOverrides;
-	font: Font;
+	colorScheme?: ColorSchemeOverrides | Record<string, unknown>;
+	font?: string;
 }
 
 export type SpriteLookup<T extends string = string> = Record<T, SpriteCoordinates>;

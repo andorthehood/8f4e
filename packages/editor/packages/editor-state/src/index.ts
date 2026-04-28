@@ -14,9 +14,9 @@ import codeBlockNavigation from './features/code-blocks/features/codeBlockNaviga
 import compiler from './features/program-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
-import { registerColorEditorConfigValidator } from './features/color/editorConfig';
 import editorConfigModule from './features/editor-config-module/effect';
-import { registerFontEditorConfigValidator } from './features/font/editorConfig';
+import color from './features/color/effect';
+import font from './features/font/effect';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
 import projectExport from './features/project-export/effect';
@@ -66,8 +66,9 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	const state = store.getState();
 
-	registerFontEditorConfigValidator(store);
-	registerColorEditorConfigValidator(store);
+	font(store);
+	color(store);
+	projectExport(store, events);
 
 	runtime(store, events);
 	editorMode(store, events);
@@ -103,7 +104,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	viewportDirectiveEffect(store, events);
 	editorConfigModule(store, events);
 	codeEditing(store, events);
-	projectExport(store, events);
 	binaryAsset(store, events);
 	historyTracking(store, events);
 	dialog(store, events);
@@ -190,5 +190,3 @@ export type { Direction } from './features/code-blocks/utils/types';
 export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';
-export { getEditorConfigColorSchemeOverrides } from './features/color/editorConfig';
-export { getEditorConfigFont } from './features/font/editorConfig';

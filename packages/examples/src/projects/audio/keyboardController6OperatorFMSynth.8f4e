@@ -181,7 +181,7 @@ module projectConfig
 ; @pos -94 1
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName jankoSynth
+; @config export.fileName jankoSynth
 
 moduleEnd
 

@@ -752,7 +752,7 @@ module projectConfig
 ; @pos -242 -1
 ; @runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @exportFileName risen
+; @config export.fileName risen
 
 moduleEnd
 

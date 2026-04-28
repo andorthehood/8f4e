@@ -1,5 +1,4 @@
 import { createMockState } from '@8f4e/editor-state/testing';
-import { getEditorConfigColorSchemeOverrides, getEditorConfigFont } from '@8f4e/editor-state';
 import generateSprite from '@8f4e/sprite-generator';
 
 import type { State } from '@8f4e/editor-state';
@@ -46,8 +45,8 @@ export default async function createMockStateWithColors(overrides: Partial<State
 
 	// Generate sprite data and populate state
 	const spriteData = await generateSprite({
-		font: getEditorConfigFont(state.editorConfig),
-		colorScheme: getEditorConfigColorSchemeOverrides(state.editorConfig),
+		font: state.editorConfig.font,
+		colorScheme: state.editorConfig.color,
 	});
 
 	updateStateWithSpriteData(state, spriteData);

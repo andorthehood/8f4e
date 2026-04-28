@@ -1,9 +1,8 @@
-import { defaultColorScheme, type ColorSchemeOverrides } from '@8f4e/sprite-generator';
+import { defaultColorScheme } from '@8f4e/sprite-generator';
 
-import { getEditorConfigPath, setPathValue } from '../editor-config/paths';
 import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
-import type { EditorConfig, EditorConfigValidator } from '../editor-config/types';
+import type { EditorConfigValidator } from '../editor-config/types';
 import type { State } from '~/types';
 import type { StateManager } from '@8f4e/state-manager';
 
@@ -54,19 +53,6 @@ export const colorEditorConfigValidator: EditorConfigValidator = {
 		return undefined;
 	},
 };
-
-export function getEditorConfigColorSchemeOverrides(config: EditorConfig): ColorSchemeOverrides {
-	const colorSchemeOverrides: ColorSchemeOverrides = {};
-
-	for (const colorPath of COLOR_PATHS) {
-		const value = getEditorConfigPath(config, `${COLOR_CONFIG_PREFIX}${colorPath}`);
-		if (value && isValidColorValue(value)) {
-			setPathValue(colorSchemeOverrides as Record<string, unknown>, colorPath, value);
-		}
-	}
-
-	return colorSchemeOverrides;
-}
 
 export function registerColorEditorConfigValidator(store: StateManager<State>): void {
 	store.set('editorConfigValidators.color', colorEditorConfigValidator);
