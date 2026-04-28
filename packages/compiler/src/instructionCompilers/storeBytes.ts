@@ -42,6 +42,9 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = withValidation<StoreByte
 			);
 		}
 
+		// compileSegment is used here because the instruction builds the segment
+		// dynamically and needs the semantic pipeline for local variable allocation.
+		// The raw i32store8 opcodes are injected via `wasm N` entries.
 		compileSegment(lines, context);
 
 		// `wasm` opcodes do not update stack tracking. Each i32.store8 consumes addr+byte.

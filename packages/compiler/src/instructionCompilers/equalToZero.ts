@@ -1,6 +1,5 @@
-import { WASMInstruction, f64const } from '@8f4e/compiler-wasm-utils';
+import { WASMInstruction, f32const, f64const } from '@8f4e/compiler-wasm-utils';
 
-import { compileSegment } from '../compiler';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
@@ -26,8 +25,8 @@ const equalToZero: InstructionCompiler = withValidation(
 			context.stack.push({ isInteger: true, isNonZero: false });
 			return saveByteCode(context, [...f64const(0), WASMInstruction.F64_EQ]);
 		} else {
-			context.stack.push(operand);
-			return compileSegment(['push 0.0', 'equal'], context);
+			context.stack.push({ isInteger: true, isNonZero: false });
+			return saveByteCode(context, [...f32const(0), WASMInstruction.F32_EQ]);
 		}
 	}
 );
