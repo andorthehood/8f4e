@@ -26,6 +26,7 @@ type TrackedLog = {
 	packageName: string;
 	label: string;
 	path: string;
+	files: string[];
 };
 
 type BundleSizeManifest = {
@@ -163,10 +164,14 @@ function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 	const sortedEntries = [...entries].sort((a, b) => a.recordedAt.localeCompare(b.recordedAt));
 	const previousByMetric = new Map<SizeMetric, number>();
 	const points: Point[] = [];
+	const trackedFiles = new Set(log.files);
 
 	for (const entry of sortedEntries) {
+		const files = entry.files.filter(file => trackedFiles.has(file.path));
+		const bytes = sumFileBytes(files);
+
 		for (const metric of ['raw', 'gzip'] as const) {
-			const bytes = entry.bytes[metric];
+			const metricBytes = bytes[metric];
 			const previousBytes = previousByMetric.get(metric) ?? null;
 
 			points.push({
@@ -180,19 +185,29 @@ function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 				releaseIndex: 0,
 				releaseLabel: '',
 				metric,
-				bytes,
-				raw: entry.bytes.raw,
-				gzip: entry.bytes.gzip,
+				bytes: metricBytes,
+				raw: bytes.raw,
+				gzip: bytes.gzip,
 				previousBytes,
-				delta: previousBytes === null ? null : bytes - previousBytes,
-				files: entry.files,
+				delta: previousBytes === null ? null : metricBytes - previousBytes,
+				files,
 			});
 
-			previousByMetric.set(metric, bytes);
+			previousByMetric.set(metric, metricBytes);
 		}
 	}
 
 	return points;
+}
+
+function sumFileBytes(files: BundleFileEntry[]): Record<SizeMetric, number> {
+	return files.reduce(
+		(bytes, file) => ({
+			raw: bytes.raw + file.raw,
+			gzip: bytes.gzip + file.gzip,
+		}),
+		{ raw: 0, gzip: 0 }
+	);
 }
 
 function withReleaseIndexes(points: Point[]) {

@@ -66,26 +66,20 @@
 		"packageName": "@8f4e/editor-state",
 		"projectName": "@8f4e/editor-state",
 		"version": "0.1.2",
-		"bytes": {
-			"raw": 177226,
-			"gzip": 44100,
-			"brotli": 37546
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 147881,
-				"gzip": 36216,
-				"brotli": 30636
+			"bytes": {
+				"raw": 153755,
+				"gzip": 38350,
+				"brotli": 32474
 			},
-			{
-				"path": "parseBlockDirectives-BDHhs6KV.js",
-				"raw": 23471,
-				"gzip": 5750,
-				"brotli": 5072
-			},
-			{
-				"path": "testing.js",
+			"files": [
+				{
+					"path": "index.js",
+					"raw": 147881,
+					"gzip": 36216,
+					"brotli": 30636
+				},
+				{
+					"path": "testing.js",
 				"raw": 5874,
 				"gzip": 2134,
 				"brotli": 1838
