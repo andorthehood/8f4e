@@ -9,7 +9,6 @@ constants editorDirectives
 ; @ config color.<path> <value>	Override a named editor color.
 ; @ config font <font>	Change the editor font.
 ; @ config export.fileName <fileName>	Set the export file name for the project.
-; @ infoOverlay <on|off>	Show or hide the info overlay.
 ; @ keyCodeMemory <memoryId>	Store keyboard key codes in a module memory.
 ; @ keyPressedMemory <memoryId>	Store pressed-key state in a module memory.
 ; @ config runtime <runtimeId>	Select the runtime backend for the project.
