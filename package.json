@@ -25,7 +25,7 @@
     "@nx/js": "22.6.3",
     "@nx/vite": "22.6.3",
     "@playwright/test": "^1.56.1",
-    "@types/audioworklet": "^0.0.38",
+    "@types/audioworklet": "^0.0.98",
     "@types/mocha": "^10.0.8",
     "@types/node": "^24.3.0",
     "@types/offscreencanvas": "2019.7.0",
