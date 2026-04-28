@@ -24,6 +24,9 @@ const hasChanged: InstructionCompiler = withValidation(
 
 		context.stack.push({ isInteger: operand.isInteger, isNonZero: false });
 
+		// compileSegment is used here because hasChanged combines a memory load,
+		// equality check, logical inversion, and memory store; this multi-step
+		// pattern genuinely benefits from composed instruction semantics.
 		return compileSegment(
 			[
 				`local ${memoryType} ${currentValueName}`,
