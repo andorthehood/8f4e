@@ -1,5 +1,4 @@
 import configDirective from './config/plugin';
-import infoOverlayDirective from './infoOverlay/plugin';
 import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
 import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import { parseGlobalEditorDirectives } from './utils';
@@ -16,7 +15,6 @@ import type { RuntimeRegistry } from '../runtime/types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
 	configDirective,
-	infoOverlayDirective,
 	keyCodeMemoryDirective,
 	keyPressedMemoryDirective,
 ];

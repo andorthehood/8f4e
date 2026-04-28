@@ -16,8 +16,6 @@ export interface ParsedGlobalEditorDirective {
 export interface ResolvedGlobalEditorDirectives {
 	/** Source entries for config validation/error reporting */
 	configEntries?: EditorConfigEntry[];
-	/** Enable or disable the info overlay from `; @infoOverlay <on|off>` directives */
-	infoOverlay?: boolean;
 	/** Target memory for keyboard HID usage codes */
 	keyCodeMemoryId?: string;
 	/** Target memory for keyboard pressed-state flag */
