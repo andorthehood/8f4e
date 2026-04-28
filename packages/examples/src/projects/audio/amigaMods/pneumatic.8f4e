@@ -1881,7 +1881,7 @@ moduleEnd
 
 module projectConfig
 ; @pos 9 -125
-; @runtime AudioWorkletRuntime
+; @config runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @config export.fileName pneumatic
 

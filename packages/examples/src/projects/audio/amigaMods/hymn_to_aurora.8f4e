@@ -1451,7 +1451,7 @@ moduleEnd
 
 module projectConfig
 ; @pos 51 -124
-; @runtime AudioWorkletRuntime
+; @config runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @config export.fileName hymn_to_aurora
 

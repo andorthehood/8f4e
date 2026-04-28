@@ -26,6 +26,7 @@ Configure editor settings with `; @config <path> <value>`.
 
 - Global editor directives control editor presentation settings like `font` and color overrides.
 - `; @infoOverlay on|off` controls whether the info overlay is shown for the project.
+- `; @config runtime <runtimeId>` controls the runtime backend for the project.
 - `; @config export.fileName <value>` controls the base file name used by editor export actions.
 - `; @config color.<path> <value>` controls individual color scheme entries.
 - Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).

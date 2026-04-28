@@ -1,5 +1,6 @@
+import { resolveSelectedRuntimeId } from './editorConfig';
+
 import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
-import { resolveSelectedRuntimeId } from '../global-editor-directives/runtime/plugin';
 
 import type { State, CodeBlock } from '~/types';
 import type { RuntimeRegistryEntry } from './types';
@@ -10,7 +11,7 @@ function getSelectedRuntimeEntry(state: State): RuntimeRegistryEntry | undefined
 	}
 
 	const selectedRuntimeId = resolveSelectedRuntimeId(
-		state.globalEditorDirectives.runtime,
+		state.editorConfig.runtime,
 		state.runtimeRegistry,
 		state.defaultRuntimeId
 	);

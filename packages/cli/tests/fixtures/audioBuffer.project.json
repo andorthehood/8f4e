@@ -3,7 +3,7 @@
     {
       "code": [
         "module projectConfig",
-        "; @runtime AudioWorkletRuntime",
+        "; @config runtime AudioWorkletRuntime",
         "; ~sampleRate 44100",
         "; @config export.fileName audioBuffer",
         "",

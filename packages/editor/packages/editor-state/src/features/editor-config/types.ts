@@ -6,6 +6,7 @@ export interface EditorConfigObject {
 
 export interface EditorConfig extends EditorConfigObject {
 	font?: string;
+	runtime?: string;
 	color?: EditorConfigObject;
 	export?: EditorConfigObject & {
 		fileName?: string;

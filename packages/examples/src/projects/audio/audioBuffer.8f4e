@@ -2,7 +2,7 @@
 
 module projectConfig
 ; @pos -94 1
-; @runtime AudioWorkletRuntime
+; @config runtime AudioWorkletRuntime
 ; ~sampleRate 48000
 ; @config export.fileName audioBuffer
 
