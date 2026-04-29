@@ -168,6 +168,11 @@ export default function validateInstructionArguments(instruction: string, args: 
 			}
 			validateArgumentShape(argument, spec.argumentTypes[i], instruction);
 		}
+		if (isArrayDeclarationInstruction(instruction)) {
+			for (let i = spec.argumentTypes.length; i < args.length; i++) {
+				validateArgumentShape(args[i], 'compileTimeValue', instruction);
+			}
+		}
 		return;
 	}
 
