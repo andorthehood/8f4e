@@ -143,7 +143,6 @@ describe('piano directive widget resolution', () => {
 			startingNumber: 60,
 			pressedKeysListMemory: { wordAlignedAddress: 0 } as DataStructure,
 			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as DataStructure,
-			pressedKeys: new Set(),
 		};
 
 		runDirectiveResolution();

@@ -13,9 +13,11 @@ describe('pianoKeyboard interaction', () => {
 	let mockEvents: EventDispatcher;
 	let mockState: State;
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
+	let memoryStore: Map<number, number>;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
+		memoryStore = new Map();
 
 		mockState = createMockState({
 			graphicHelper: {
@@ -26,23 +28,8 @@ describe('pianoKeyboard interaction', () => {
 					y: 0,
 				},
 			},
-			compiler: {
-				compiledModules: {
-					'test-block': {
-						memoryMap: {
-							keys1: {
-								wordAlignedAddress: 5,
-								wordAlignedSize: 10,
-								id: 'keys1',
-								isInteger: true,
-							},
-							numKeys: {
-								wordAlignedAddress: 6,
-								id: 'numKeys',
-							},
-						},
-					},
-				},
+			callbacks: {
+				getWordFromMemory: vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0),
 			},
 		});
 
@@ -59,27 +46,12 @@ describe('pianoKeyboard interaction', () => {
 		} as unknown as EventDispatcher;
 	});
 
-	it('should register event listeners on initialization', () => {
-		const cleanup = pianoKeyboard(mockStore, mockEvents);
-
-		expect(mockEvents.on).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
-
-		cleanup();
-	});
-
-	it('should unregister event listeners on cleanup', () => {
-		const cleanup = pianoKeyboard(mockStore, mockEvents);
-		cleanup();
-
-		expect(mockEvents.off).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
-	});
-
-	it('should handle piano keyboard click', () => {
+	function createCodeBlockWithPiano() {
 		const codeBlock = createMockCodeBlock({
 			x: 100,
 			y: 50,
 			offsetX: 5,
-			code: ['module test-block', 'int[] keys1 10', 'int numKeys 0', '; @piano keys1 numKeys 48', 'moduleEnd'],
+			code: ['module test-block', 'int notes[] 10', 'int noteCount 0', '; @piano notes noteCount 48', 'moduleEnd'],
 		});
 		codeBlock.widgets.pianoKeyboards = [
 			{
@@ -98,37 +70,99 @@ describe('pianoKeyboard interaction', () => {
 				blackKeyGapWidth: 2.5,
 				blackKeyGapHeight: 40,
 				lineNumber: 3,
-				keys: [],
-				pressedKeys: new Set(),
+				keys: Array.from({ length: 24 }, (_, offset) => ({
+					offset,
+					x: offset * 10,
+					label: 'C',
+					labelX: offset * 10,
+					labelY: 0,
+					isBlack: false,
+					sprite: 'pianoKeyWhite',
+					pressedOverlayX: offset * 10,
+					pressedOverlayRows: [],
+					pressedOverlayFont: 'fontPianoKeyWhitePressedOverlay',
+				})),
 				pressedKeysListMemory: {
-					id: 'keys1',
+					id: 'notes',
 					wordAlignedAddress: 5,
 					wordAlignedSize: 10,
 					isInteger: true,
 				},
 				pressedNumberOfKeysMemory: {
-					id: 'numKeys',
-					wordAlignedAddress: 6,
+					id: 'noteCount',
+					wordAlignedAddress: 20,
 					wordAlignedSize: 1,
 					isInteger: true,
 				},
 				startingNumber: 48,
 			},
 		] as never;
-		const cleanup = pianoKeyboard(mockStore, mockEvents);
 
+		return codeBlock;
+	}
+
+	function clickKey(codeBlock: ReturnType<typeof createCodeBlockWithPiano>, keyOffset: number) {
 		onCallbacks.get('codeBlockClick')?.({
-			x: 100 + 5 + 20 + 2 * 10 + 1,
+			x: 100 + 5 + 20 + keyOffset * 10 + 1,
 			y: 50 + 40 + 1,
 			codeBlock,
 		});
+	}
+
+	it('registers event listeners on initialization', () => {
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		expect(mockEvents.on).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
+
+		cleanup();
+	});
+
+	it('unregisters event listeners on cleanup', () => {
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+		cleanup();
+
+		expect(mockEvents.off).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
+	});
+
+	it('adds a clicked key to init code based on the runtime memory state', () => {
+		const codeBlock = createCodeBlockWithPiano();
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
 
 		expect(mockStore.set).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', [
 			'module test-block',
-			'int[] keys1 10',
-			'int numKeys 1',
-			'; @piano keys1 numKeys 48',
-			'init keys1[0] 50',
+			'int notes[] 10',
+			'int noteCount 1',
+			'; @piano notes noteCount 48',
+			'init notes[0] 50',
+			'moduleEnd',
+		]);
+
+		cleanup();
+	});
+
+	it('removes a clicked key from init code based on the runtime memory state', () => {
+		const codeBlock = createCodeBlockWithPiano();
+		codeBlock.code = [
+			'module test-block',
+			'int notes[] 10',
+			'int noteCount 1',
+			'; @piano notes noteCount 48',
+			'init notes[0] 50',
+			'moduleEnd',
+		];
+		memoryStore.set(20, 1);
+		memoryStore.set(5, 50);
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
+
+		expect(mockStore.set).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', [
+			'module test-block',
+			'int notes[] 10',
+			'int noteCount 0',
+			'; @piano notes noteCount 48',
 			'moduleEnd',
 		]);
 

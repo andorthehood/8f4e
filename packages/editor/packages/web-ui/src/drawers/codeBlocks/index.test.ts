@@ -146,7 +146,6 @@ describe('drawModules', () => {
 						pressedOverlayFont: 'fontPianoKeyWhitePressedOverlay',
 					},
 				],
-				pressedKeys: new Set(),
 				pressedKeysListMemory: {
 					id: 'notes',
 					wordAlignedAddress: 0,
