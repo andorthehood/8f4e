@@ -76,7 +76,7 @@ describe('pianoKeyboard interaction', () => {
 					label: 'C',
 					labelX: offset * 10,
 					labelY: 0,
-					isBlack: false,
+					kind: 'white',
 					sprite: 'pianoKeyWhite',
 					pressedOverlayX: offset * 10,
 					pressedOverlayRows: [],
