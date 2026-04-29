@@ -322,9 +322,10 @@ export type ArrayDeclarationInstruction =
 	| 'float64[]'
 	| 'float64*[]'
 	| 'float64**[]';
+export type ArrayDeclarationInitializerArgument = ArgumentCompileTimeExpression | ArgumentIdentifier | ArgumentLiteral;
 export type ArrayDeclarationLine = Omit<AST[number], 'instruction' | 'arguments'> & {
 	instruction: ArrayDeclarationInstruction;
-	arguments: [ArgumentIdentifier, ArgumentLiteral, ...Argument[]];
+	arguments: [ArgumentIdentifier, ArgumentLiteral, ...ArrayDeclarationInitializerArgument[]];
 };
 export type NormalizedSemanticInstructionLine =
 	| NormalizedConstLine

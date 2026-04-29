@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import array from './array';
 
 import { ArgumentType } from '../../types';
+import { ErrorCode } from '../../compilerError';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
 import type { AST } from '../../types';
@@ -77,7 +78,8 @@ describe('array declaration compiler', () => {
 	it('rejects more inline initializer values than array elements', () => {
 		const context = createInstructionCompilerTestContext();
 
-		expect(() =>
+		let thrownError: unknown;
+		try {
 			array(
 				{
 					lineNumberBeforeMacroExpansion: 1,
@@ -92,8 +94,12 @@ describe('array declaration compiler', () => {
 					],
 				} as AST[number],
 				context
-			)
-		).toThrow('Array initializer contains more values than the declared element count.');
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(thrownError).toMatchObject({ code: ErrorCode.ARRAY_INITIALIZER_TOO_LONG });
 	});
 
 	it('creates an int8[] array with correct wordAlignedSize', () => {

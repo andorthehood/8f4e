@@ -16,7 +16,8 @@ import { ErrorCode, getError } from '../../compilerError';
  * Validates intermodule references in default/initializer values if present.
  */
 export default function normalizeMemoryDeclaration(line: AST[number], context: CompilationContext): AST[number] {
-	const normalizeIndexes = line.instruction.endsWith('[]')
+	const isArrayDeclaration = line.instruction.endsWith('[]');
+	const normalizeIndexes = isArrayDeclaration
 		? line.arguments.map((_, index) => index).filter(index => index > 0)
 		: [0, 1];
 	let { line: normalized } = normalizeArgumentsAtIndexes(line, context, normalizeIndexes);
@@ -37,15 +38,16 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 			// from the line. The deferred state is owned here rather than relying on
 			// parseMemoryInstructionArguments to fabricate a placeholder 0.
 			if (
-				argument.referenceKind === 'intermodular-module-reference' ||
-				argument.referenceKind === 'intermodular-reference'
+				!isArrayDeclaration &&
+				(argument.referenceKind === 'intermodular-module-reference' ||
+					argument.referenceKind === 'intermodular-reference')
 			) {
 				normalized = { ...normalized, arguments: [normalized.arguments[0]] };
 			}
 		}
 	}
 
-	if (line.instruction.endsWith('[]')) {
+	if (isArrayDeclaration) {
 		const elementCountArg = normalized.arguments[1];
 		if (elementCountArg?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 			const deferred = validateOrDeferCompileTimeExpression(elementCountArg, line, context);

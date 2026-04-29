@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'vitest';
+import compile from '@8f4e/compiler';
 
 import { createWasmInstance } from './instructions/testUtils';
-
-import compile from '../src/index';
 
 describe('array declaration inline initializers', () => {
 	test('initializes int[] elements from trailing declaration values', async () => {
