@@ -43,8 +43,7 @@ export default function resolveMemoryIdentifier(
 	}
 
 	if (/(\S+):(\S+)/.test(memoryIdentifier)) {
-		moduleId = memoryIdentifier.split(':')[0];
-		memoryIdentifier = memoryIdentifier.split(':')[1];
+		[moduleId, memoryIdentifier] = memoryIdentifier.split(':');
 	}
 
 	if (/.+\[(\d+)\]/.test(memoryIdentifier)) {
