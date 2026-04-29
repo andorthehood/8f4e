@@ -69,15 +69,6 @@ const defaultColorScheme: ColorScheme = {
 		feedbackScale3: '#660099',
 		feedbackScale4: '#3300cc',
 		feedbackScale5: '#0000ff',
-		pianoKeyWhite: '#000000',
-		pianoKeyWhiteHighlighted: '#ff0000',
-		pianoKeyWhitePressed: '#000000',
-		pianoKeyBlack: '#ffffff',
-		pianoKeyBlackHighlighted: '#ff0000',
-		pianoKeyBlackPressed: '#ffffff',
-		pianoKeyboardBackground: '#000000',
-		pianoKeyboardNote: '#000000',
-		pianoKeyboardNoteHighlighted: '#ff0000',
 	},
 };
 
