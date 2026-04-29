@@ -50,6 +50,16 @@ describe('updateOutputsGraphicData', () => {
 		expect(findWidgetById(mockGraphicData.widgets.outputs, 'output1')).toBeDefined();
 	});
 
+	it('should add output when declaration has a default value', () => {
+		mockGraphicData.code = ['module test-block', 'int output1 0'];
+
+		updateOutputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.outputs.length).toBe(1);
+		expect(findWidgetById(mockGraphicData.widgets.outputs, 'output1')).toBeDefined();
+		expect(mockState.graphicHelper.outputsByWordAddress.get(20)?.id).toBe('output1');
+	});
+
 	it('should calculate correct dimensions and position', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
