@@ -69,15 +69,6 @@ export const minimalColorScheme: ColorScheme = {
 		feedbackScale3: '#660099',
 		feedbackScale4: '#3300cc',
 		feedbackScale5: '#0000ff',
-		pianoKeyWhite: '#ffffff',
-		pianoKeyWhiteHighlighted: '#ff0000',
-		pianoKeyWhitePressed: '#cccccc',
-		pianoKeyBlack: '#000000',
-		pianoKeyBlackHighlighted: '#ff0000',
-		pianoKeyBlackPressed: '#333333',
-		pianoKeyboardBackground: '#999999',
-		pianoKeyboardNote: '#ffffff',
-		pianoKeyboardNoteHighlighted: '#ff0000',
 	},
 };
 

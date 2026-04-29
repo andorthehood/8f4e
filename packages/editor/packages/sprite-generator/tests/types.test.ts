@@ -150,15 +150,6 @@ describe('Types and Enums', () => {
 			expect(iconKeys).toContain('feedbackScale3');
 			expect(iconKeys).toContain('feedbackScale4');
 			expect(iconKeys).toContain('feedbackScale5');
-			expect(iconKeys).toContain('pianoKeyWhite');
-			expect(iconKeys).toContain('pianoKeyWhiteHighlighted');
-			expect(iconKeys).toContain('pianoKeyWhitePressed');
-			expect(iconKeys).toContain('pianoKeyBlack');
-			expect(iconKeys).toContain('pianoKeyBlackHighlighted');
-			expect(iconKeys).toContain('pianoKeyBlackPressed');
-			expect(iconKeys).toContain('pianoKeyboardBackground');
-			expect(iconKeys).toContain('pianoKeyboardNote');
-			expect(iconKeys).toContain('pianoKeyboardNoteHighlighted');
 		});
 
 		it('should have scalar feedbackScale fields', () => {
