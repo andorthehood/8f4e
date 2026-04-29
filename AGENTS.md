@@ -37,8 +37,12 @@
 - Commit messages: Use Conventional Commits.
 - Features: `feat(package-name): <summary>` for package-specific changes, or `feat: <summary>` for non-package-specific changes.
 - Fixes: `fix(package-name): <summary>` for package-specific changes, or `fix: <summary>` for non-package-specific changes.
-- Refactoring/maintenance: `chore(package-name): <summary>` for package-specific changes, or `chore: <summary>` for non-package-specific changes.
-- Documentation-only changes: `docs: <summary>`.
+- Release semantics are driven by Conventional Commits: `fix` triggers a patch release, `feat` triggers a minor release, and breaking changes (`!` or `BREAKING CHANGE`) trigger a major release. Nx release also bumps dependent packages automatically.
+- For refactors, cleanup, dependency updates, and other maintenance that should be released, use `fix(...)` unless the change is truly feature-level.
+- Use `chore(...)` only for work that should not cause a package release, such as repository maintenance with no shipped package impact.
+- Use a non-release `chore(...)` scope, such as `chore(ci): ...` or `chore(tooling): ...`, for release workflow/configuration-only changes unless the change should intentionally release packages.
+- Documentation-only changes: `docs: <summary>` or `docs(scope): <summary>`. These should not cause package releases.
+- Generated release commits use `chore(release): ...`; do not use that scope for hand-written maintenance commits.
 - PRs: Include summary, rationale, and test notes; link issues; add screenshots/gifs for UI/editor changes; update `docs/` when behavior or APIs change.
 
 ## Security & Configuration Tips
