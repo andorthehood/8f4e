@@ -41,6 +41,8 @@ test('font color rendering', async () => {
 		'fontMenuItemText',
 		'fontMenuItemTextHighlighted',
 		'fontNumbers',
+		'fontPianoKeyWhitePressedOverlay',
+		'fontPianoKeyBlackPressedOverlay',
 	];
 
 	colors.forEach((colorName, index) => {
