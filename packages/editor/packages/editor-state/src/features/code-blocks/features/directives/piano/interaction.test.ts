@@ -51,7 +51,7 @@ describe('pianoKeyboard interaction', () => {
 			x: 100,
 			y: 50,
 			offsetX: 5,
-			code: ['module test-block', 'int notes[] 10', 'int noteCount 0', '; @piano notes noteCount 48', 'moduleEnd'],
+			code: ['module test-block', 'int[] notes 10', 'int noteCount 0', '; @piano notes noteCount 48', 'moduleEnd'],
 		});
 		codeBlock.widgets.pianoKeyboards = [
 			{
@@ -86,12 +86,14 @@ describe('pianoKeyboard interaction', () => {
 					id: 'notes',
 					wordAlignedAddress: 5,
 					wordAlignedSize: 10,
+					numberOfElements: 10,
 					isInteger: true,
 				},
 				pressedNumberOfKeysMemory: {
 					id: 'noteCount',
 					wordAlignedAddress: 20,
 					wordAlignedSize: 1,
+					numberOfElements: 1,
 					isInteger: true,
 				},
 				startingNumber: 48,
@@ -124,7 +126,7 @@ describe('pianoKeyboard interaction', () => {
 		expect(mockEvents.off).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
 	});
 
-	it('adds a clicked key to init code based on the runtime memory state', () => {
+	it('adds a clicked key to the array default values based on the runtime memory state', () => {
 		const codeBlock = createCodeBlockWithPiano();
 		const cleanup = pianoKeyboard(mockStore, mockEvents);
 
@@ -132,24 +134,22 @@ describe('pianoKeyboard interaction', () => {
 
 		expect(mockStore.set).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', [
 			'module test-block',
-			'int notes[] 10',
+			'int[] notes 10 50',
 			'int noteCount 1',
 			'; @piano notes noteCount 48',
-			'init notes[0] 50',
 			'moduleEnd',
 		]);
 
 		cleanup();
 	});
 
-	it('removes a clicked key from init code based on the runtime memory state', () => {
+	it('removes a clicked key from the array default values based on the runtime memory state', () => {
 		const codeBlock = createCodeBlockWithPiano();
 		codeBlock.code = [
 			'module test-block',
-			'int notes[] 10',
+			'int[] notes 10 50',
 			'int noteCount 1',
 			'; @piano notes noteCount 48',
-			'init notes[0] 50',
 			'moduleEnd',
 		];
 		memoryStore.set(20, 1);
@@ -160,7 +160,7 @@ describe('pianoKeyboard interaction', () => {
 
 		expect(mockStore.set).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', [
 			'module test-block',
-			'int notes[] 10',
+			'int[] notes 10',
 			'int noteCount 0',
 			'; @piano notes noteCount 48',
 			'moduleEnd',
