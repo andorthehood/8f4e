@@ -16,7 +16,7 @@
 
 ## Coding Style
 - TypeScript (strict). ESLint + `@typescript-eslint` and `import/order`.
-- Prettier: tabs, single quotes, semi, width 120, trailing commas.
+- Use ESLint as the fixer (`npx eslint --fix <files>`); it owns formatting rules such as tabs, single quotes, semicolons, width 120, and trailing commas.
 
 ## Testing
 - Vitest (via Nx). Keep narrow unit tests colocated with the source under test using `*.test.ts` or `__tests__/`.

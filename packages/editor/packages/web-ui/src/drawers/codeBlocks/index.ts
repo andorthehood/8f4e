@@ -121,8 +121,6 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					if (state.featureFlags.editing && state.graphicHelper.selectedCodeBlock === codeBlock) {
 						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 					}
-
-					drawPianoKeyboards(engine, state, codeBlock, memoryViews);
 				},
 				// Enable caching only when the block is NOT selected
 				state.graphicHelper.selectedCodeBlock !== codeBlock,
@@ -138,6 +136,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawButtons(engine, state, codeBlock, memoryViews);
 			drawSliders(engine, state, codeBlock, memoryViews);
 			drawCrossfades(engine, state, codeBlock, memoryViews);
+			drawPianoKeyboards(engine, state, codeBlock, memoryViews);
 			drawConnectors(engine, state, codeBlock, memoryViews);
 			drawBars(engine, state, codeBlock, memoryViews);
 			drawMeters(engine, state, codeBlock, memoryViews);

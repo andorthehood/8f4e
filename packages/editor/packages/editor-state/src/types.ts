@@ -24,6 +24,11 @@ import type {
 	Slider,
 	Crossfade,
 	PianoKeyboard,
+	PianoKeyboardKey,
+	PianoKeyboardWhiteKey,
+	PianoKeyboardBlackKey,
+	PianoKeySprite,
+	PianoPressedOverlayFont,
 	GraphicHelper,
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
@@ -88,6 +93,11 @@ export type {
 	Slider,
 	Crossfade,
 	PianoKeyboard,
+	PianoKeyboardKey,
+	PianoKeyboardWhiteKey,
+	PianoKeyboardBlackKey,
+	PianoKeySprite,
+	PianoPressedOverlayFont,
 	GraphicHelper,
 };
 

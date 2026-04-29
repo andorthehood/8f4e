@@ -9,7 +9,7 @@
 - From package directory: use `npx nx run runtime-main-thread-logic:<target>` (e.g., `npx nx run runtime-main-thread-logic:dev`).
 
 ## Coding Style
-- TypeScript strict. ESLint rules and Prettier per root config.
+- TypeScript strict. Use ESLint as the fixer (`npx eslint --fix <files>`) per root config.
 - Keep browser-side logic separated from worker/audio code paths.
 
 ## Testing

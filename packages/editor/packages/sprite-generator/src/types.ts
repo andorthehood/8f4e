@@ -37,6 +37,8 @@ export interface ColorScheme {
 		binaryZero: string;
 		binaryOne: string;
 		basePrefix: string;
+		pianoKeyWhitePressedOverlay: string;
+		pianoKeyBlackPressedOverlay: string;
 	};
 	fill: {
 		menuItemBackground: string;
@@ -68,6 +70,8 @@ export interface ColorScheme {
 		codeBlockHighlightLevel1: string;
 		codeBlockHighlightLevel2: string;
 		codeBlockHighlightLevel3: string;
+		pianoKeyWhite: string;
+		pianoKeyBlack: string;
 	};
 	icons: {
 		inputConnector: string;
@@ -81,15 +85,6 @@ export interface ColorScheme {
 		feedbackScale3: string;
 		feedbackScale4: string;
 		feedbackScale5: string;
-		pianoKeyWhite: string;
-		pianoKeyWhiteHighlighted: string;
-		pianoKeyWhitePressed: string;
-		pianoKeyBlack: string;
-		pianoKeyBlackHighlighted: string;
-		pianoKeyBlackPressed: string;
-		pianoKeyboardBackground: string;
-		pianoKeyboardNote: string;
-		pianoKeyboardNoteHighlighted: string;
 	};
 }
 

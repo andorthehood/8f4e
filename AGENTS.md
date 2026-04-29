@@ -20,8 +20,7 @@
 
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.
-- Formatting: Prettier (tabs, single quotes, semi, trailing commas, width 120).
-- Linting: ESLint (`eslint:recommended`, `@typescript-eslint`, `import/order`).
+- Formatting/linting: use ESLint as the fixer (`npx eslint --fix <files>`). ESLint owns the repo formatting rules (tabs, single quotes, semicolons, trailing commas, width 120); do not run standalone formatters.
 - Imports: Prefer workspace aliases `@8f4e/<package>`.
 - Files/dirs: kebab-case for packages, `.ts` for sources; keep `src/` clean and cohesive by domain.
 
