@@ -13,6 +13,10 @@ const rootProjectFiles = new Set([
   "tsconfig.build.json",
 ]);
 const rootProjectDirs = ["src/", "docs/"];
+const versionExemptCommitSubjectPatterns = [
+  /^docs(?:\([^)]+\))?!?:/,
+  /^chore\(release\)!?:/,
+];
 const options = parseArgs(process.argv.slice(2));
 const projects = await findReleaseProjects(workspaceRoot);
 const releaseProjects = resolveReleaseProjects(projects, options);
@@ -121,7 +125,7 @@ function resolveReleaseProjects(projects, options) {
       continue;
     }
 
-    for (const filePath of getChangedFiles(baseRef, options.head)) {
+    for (const filePath of getVersionableChangedFiles(baseRef, options.head)) {
       const owner = findProjectOwner(projects, filePath);
 
       if (owner?.name === project.name) {
@@ -169,11 +173,42 @@ function getLatestProjectTag(projectName) {
   );
 }
 
-function getChangedFiles(baseRef, headRef) {
-  return runGit(["diff", "--name-only", `${baseRef}..${headRef}`])
+function getVersionableChangedFiles(baseRef, headRef) {
+  const changedFiles = new Set();
+
+  for (const commit of getCommits(baseRef, headRef)) {
+    if (isVersionExemptCommit(commit.subject)) {
+      continue;
+    }
+
+    for (const filePath of getCommitChangedFiles(commit.hash)) {
+      changedFiles.add(filePath);
+    }
+  }
+
+  return [...changedFiles];
+}
+
+function getCommits(baseRef, headRef) {
+  return runGit(["log", "--format=%H%x00%s", `${baseRef}..${headRef}`])
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [hash, subject] = line.split("\0");
+      return { hash, subject };
+    });
+}
+
+function getCommitChangedFiles(commitHash) {
+  return runGit(["show", "--format=", "--name-only", "--find-renames", commitHash])
     .split("\n")
     .map((filePath) => filePath.trim())
     .filter(Boolean);
+}
+
+function isVersionExemptCommit(subject) {
+  return versionExemptCommitSubjectPatterns.some((pattern) => pattern.test(subject));
 }
 
 function runGit(args) {
