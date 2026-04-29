@@ -62,7 +62,7 @@ jobs:
             fi
 
             echo "Releasing projects: $release_projects"
-            npx nx release --projects="$release_projects" --skip-publish
+            npx nx release patch --projects="$release_projects" --skip-publish
           else
             npx nx release 0.1.0 --first-release --skip-publish
           fi
