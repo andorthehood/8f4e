@@ -126,6 +126,23 @@ describe('parseLine', () => {
 		expect(thrownError?.line?.lineNumberAfterMacroExpansion).toBe(8);
 		expect(thrownError?.line?.instruction).toBe('push');
 	});
+
+	it('parses array declarations with more than seven initializer values', () => {
+		const result = parseLine('int[] notes 12 48 50 53 55 57 60 62 64', 0);
+
+		expect(result.instruction).toBe('int[]');
+		expect(result.arguments).toHaveLength(10);
+		expect(result.arguments.slice(2)).toEqual([
+			{ type: ArgumentType.LITERAL, value: 48, isInteger: true },
+			{ type: ArgumentType.LITERAL, value: 50, isInteger: true },
+			{ type: ArgumentType.LITERAL, value: 53, isInteger: true },
+			{ type: ArgumentType.LITERAL, value: 55, isInteger: true },
+			{ type: ArgumentType.LITERAL, value: 57, isInteger: true },
+			{ type: ArgumentType.LITERAL, value: 60, isInteger: true },
+			{ type: ArgumentType.LITERAL, value: 62, isInteger: true },
+			{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
+		]);
+	});
 });
 
 describe('compileToAST', () => {

@@ -67,6 +67,7 @@ export enum ErrorCode {
 	LOCAL_NAME_COLLISION_WITH_MEMORY,
 	DUPLICATE_IDENTIFIER,
 	INSTRUCTION_INVALID_OUTSIDE_LOOP,
+	ARRAY_INITIALIZER_TOO_LONG,
 }
 
 interface ErrorDetails {
@@ -445,6 +446,13 @@ export function getError(
 					'. Module and function IDs must be unique. (' +
 					code +
 					')',
+				line,
+				context,
+			};
+		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
+			return {
+				code,
+				message: 'Array initializer contains more values than the declared element count. (' + code + ')',
 				line,
 				context,
 			};

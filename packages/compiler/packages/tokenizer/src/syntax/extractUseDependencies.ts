@@ -9,7 +9,8 @@ export default function extractUseDependencies(source: string): string[] {
 	const seen = new Set<string>();
 
 	for (const line of source.split(/\r?\n/)) {
-		const [, instruction, dependency] = line.match(instructionParser) || [];
+		const [, instruction, argumentText = ''] = line.match(instructionParser) || [];
+		const dependency = argumentText.trim().split(/\s+/)[0];
 		if (instruction !== 'use' || !dependency || seen.has(dependency)) {
 			continue;
 		}
