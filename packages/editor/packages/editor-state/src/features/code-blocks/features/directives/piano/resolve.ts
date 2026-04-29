@@ -114,7 +114,6 @@ function resolvePianoDirectiveWidget(
 			state.viewport.hGrid,
 			pianoKeyboard.startingNumber
 		),
-		pressedKeys: pianoKeyboard.pressedKeys,
 		pressedKeysListMemory: memoryIdentifierKeysList.memory,
 		pressedNumberOfKeysMemory: memoryIdentifierNumberOfKeys.memory,
 		startingNumber: pianoKeyboard.startingNumber,

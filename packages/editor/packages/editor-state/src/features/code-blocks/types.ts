@@ -160,7 +160,6 @@ export interface PianoKeyboard {
 	blackKeyGapHeight: number;
 	lineNumber: number;
 	keys: PianoKeyboardKey[];
-	pressedKeys: Set<number>;
 	pressedKeysListMemory: DataStructure;
 	pressedNumberOfKeysMemory: DataStructure;
 	startingNumber: number;

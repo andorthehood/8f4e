@@ -4,14 +4,44 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { MemoryViews } from '../../../types';
 
-function getPressedKeyOffsets(
+type PianoKeyboardData = CodeBlockGraphicData['widgets']['pianoKeyboards'][number];
+type PianoKeyboardKey = PianoKeyboardData['keys'][number];
+type PressedOverlayFont = PianoKeyboardKey['pressedOverlayFont'];
+
+function setPressedOverlayLookup(engine: Engine, spriteLookups: SpriteLookups, font: PressedOverlayFont): void {
+	engine.setSpriteLookup(spriteLookups[font]);
+}
+
+function drawPressedKey(engine: Engine, spriteLookups: SpriteLookups, key: PianoKeyboardKey): void {
+	setPressedOverlayLookup(engine, spriteLookups, key.pressedOverlayFont);
+	for (const y of key.pressedOverlayRows) {
+		engine.drawText(key.pressedOverlayX, y, '//');
+	}
+}
+
+function drawPressedKeyOffset(
+	engine: Engine,
+	spriteLookups: SpriteLookups,
+	keys: PianoKeyboardData['keys'],
+	keyOffset: number
+): void {
+	const key = keys[keyOffset];
+	if (!key) {
+		return;
+	}
+
+	drawPressedKey(engine, spriteLookups, key);
+}
+
+function drawRuntimePressedKeys(
+	engine: Engine,
+	spriteLookups: SpriteLookups,
+	keys: PianoKeyboardData['keys'],
 	pressedKeysListMemory: CodeBlockGraphicData['widgets']['pianoKeyboards'][number]['pressedKeysListMemory'],
 	pressedNumberOfKeysMemory: CodeBlockGraphicData['widgets']['pianoKeyboards'][number]['pressedNumberOfKeysMemory'],
 	startingNumber: number,
-	keyCount: number,
 	memoryViews: MemoryViews
-): Set<number> {
-	const pressedKeys = new Set<number>();
+): void {
 	const memoryBuffer = pressedKeysListMemory.isInteger ? memoryViews.int32 : memoryViews.float32;
 	const numberOfKeys = Math.max(0, memoryViews.int32[pressedNumberOfKeysMemory.wordAlignedAddress] || 0);
 	const readableKeys = Math.min(numberOfKeys, pressedKeysListMemory.wordAlignedSize);
@@ -20,19 +50,10 @@ function getPressedKeyOffsets(
 		const keyValue = memoryBuffer[pressedKeysListMemory.wordAlignedAddress + i];
 		const keyOffset = Math.trunc(keyValue - startingNumber);
 
-		if (keyOffset >= 0 && keyOffset < keyCount) {
-			pressedKeys.add(keyOffset);
+		if (keyOffset >= 0 && keyOffset < keys.length) {
+			drawPressedKeyOffset(engine, spriteLookups, keys, keyOffset);
 		}
 	}
-
-	return pressedKeys;
-}
-
-type PressedOverlayFont =
-	CodeBlockGraphicData['widgets']['pianoKeyboards'][number]['keys'][number]['pressedOverlayFont'];
-
-function setPressedOverlayLookup(engine: Engine, spriteLookups: SpriteLookups, font: PressedOverlayFont): void {
-	engine.setSpriteLookup(spriteLookups[font]);
 }
 
 export default function drawer(
@@ -44,6 +65,7 @@ export default function drawer(
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
+	const spriteLookups = state.graphicHelper.spriteLookups;
 
 	for (const {
 		x,
@@ -59,22 +81,12 @@ export default function drawer(
 		blackKeyGapWidth,
 		blackKeyGapHeight,
 		keys,
-		pressedKeys: sourcePressedKeys,
 		pressedKeysListMemory,
 		pressedNumberOfKeysMemory,
 		startingNumber,
 	} of codeBlock.widgets.pianoKeyboards) {
-		const pressedKeys = getPressedKeyOffsets(
-			pressedKeysListMemory,
-			pressedNumberOfKeysMemory,
-			startingNumber,
-			keys.length,
-			memoryViews
-		);
-		sourcePressedKeys.forEach(key => pressedKeys.add(key));
-
 		engine.startGroup(x, y);
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+		engine.setSpriteLookup(spriteLookups.fillColors);
 
 		for (const key of keys) {
 			if (key.isBlack) {
@@ -86,16 +98,17 @@ export default function drawer(
 			}
 		}
 
-		for (const key of keys) {
-			if (pressedKeys.has(key.offset)) {
-				setPressedOverlayLookup(engine, state.graphicHelper.spriteLookups, key.pressedOverlayFont);
-				for (const y of key.pressedOverlayRows) {
-					engine.drawText(key.pressedOverlayX, y, '//');
-				}
-			}
-		}
+		drawRuntimePressedKeys(
+			engine,
+			spriteLookups,
+			keys,
+			pressedKeysListMemory,
+			pressedNumberOfKeysMemory,
+			startingNumber,
+			memoryViews
+		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+		engine.setSpriteLookup(spriteLookups.fontCode);
 		for (const key of keys) {
 			engine.drawText(key.labelX, key.labelY, key.label);
 		}

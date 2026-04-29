@@ -67,7 +67,6 @@ function createPianoKeyboard(overrides: Partial<PianoKeyboard> = {}): PianoKeybo
 		blackKeyGapHeight: 8,
 		lineNumber: 0,
 		keys: createPianoKeyboardKeys(),
-		pressedKeys: new Set(),
 		pressedKeysListMemory: {
 			id: 'notes',
 			wordAlignedAddress: 4,
@@ -129,7 +128,7 @@ describe('drawPianoKeyboards', () => {
 		expect(drawText).not.toHaveBeenCalledWith(2, 20, '//');
 	});
 
-	it('uses source-derived pressed keys when runtime memory has no pressed count yet', () => {
+	it('does not draw pressed overlays when runtime memory has no pressed count', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			viewport: {
@@ -147,7 +146,7 @@ describe('drawPianoKeyboards', () => {
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
-				pianoKeyboards: [createPianoKeyboard({ pressedKeys: new Set([2]) })],
+				pianoKeyboards: [createPianoKeyboard()],
 			} as never,
 		});
 
@@ -157,10 +156,36 @@ describe('drawPianoKeyboards', () => {
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 
 		expect(drawSprite).toHaveBeenCalledWith(4, 4, 'pianoKeyWhite', 2, 20);
-		expect(drawText).toHaveBeenCalledWith(4, 4, '//');
-		expect(drawText).toHaveBeenCalledWith(4, 8, '//');
-		expect(drawText).toHaveBeenCalledWith(4, 12, '//');
-		expect(drawText).toHaveBeenCalledWith(4, 16, '//');
-		expect(drawText).toHaveBeenCalledWith(4, 20, '//');
+		expect(drawText).not.toHaveBeenCalledWith(expect.any(Number), expect.any(Number), '//');
+	});
+
+	it('draws duplicate runtime notes directly without normalizing pressed keys', () => {
+		const engine = createMockEngine();
+		const state = createMockState({
+			viewport: {
+				vGrid: 1,
+				hGrid: 4,
+			},
+			graphicHelper: {
+				spriteLookups: {
+					fillColors: {},
+					fontCode: {},
+					fontPianoKeyWhitePressedOverlay: {},
+					fontPianoKeyBlackPressedOverlay: {},
+				} as never,
+			},
+		});
+		const codeBlock = createMockCodeBlock({
+			widgets: {
+				pianoKeyboards: [createPianoKeyboard()],
+			} as never,
+		});
+
+		drawPianoKeyboards(engine, state, codeBlock, createMemoryViews({ int32: [0, 2, 0, 0, 48, 48] }));
+
+		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
+		const slashCalls = drawText.mock.calls.filter(call => call[2] === '//');
+
+		expect(slashCalls.filter(call => call[0] === 0)).toHaveLength(10);
 	});
 });
