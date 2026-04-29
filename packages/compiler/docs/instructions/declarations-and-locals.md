@@ -180,7 +180,7 @@ Trailing values initialize array elements from index 0 onward. Omitted elements 
 
 #### Examples
 
-```
+```text
 int[] values 4 48 50 53
 int[] halfValues SIZE/2
 int8u[] unsignedBytes 256
@@ -194,7 +194,7 @@ Trailing values initialize array elements from index 0 onward, matching `int[]`.
 
 #### Examples
 
-```
+```text
 float[] samples 4 0.0 0.25 0.5 0.75
 ```
 
