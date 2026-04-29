@@ -110,6 +110,9 @@ describe('Types and Enums', () => {
 			expect(textKeys).toContain('dialogTitle');
 			expect(textKeys).toContain('binaryZero');
 			expect(textKeys).toContain('binaryOne');
+			expect(textKeys).toContain('basePrefix');
+			expect(textKeys).toContain('pianoKeyWhitePressedOverlay');
+			expect(textKeys).toContain('pianoKeyBlackPressedOverlay');
 		});
 
 		it('should have all required fill color properties', () => {

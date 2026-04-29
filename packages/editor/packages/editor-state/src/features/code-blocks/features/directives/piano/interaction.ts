@@ -3,7 +3,6 @@ import { StateManager } from '@8f4e/state-manager';
 import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
-import insertCodeAfterLine from '../../../utils/codeParsers/insertCodeAfterLine';
 import replaceCode from '../../../utils/codeParsers/replaceCode';
 
 import type { State } from '~/types';
@@ -28,6 +27,22 @@ function removeCode(code: string[], pressedKeysListMemoryId: string) {
 	return replaceCode(code, pattern, []);
 }
 
+function escapeRegExp(text: string): string {
+	return text.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function findPressedNumberOfKeysMemoryLineNumber(code: string[], memoryId: string): number {
+	const regexp = new RegExp(`^\\s*int\\s+${escapeRegExp(memoryId)}\\s+`);
+
+	return code.findIndex(line => regexp.test(line));
+}
+
+function insertCodeAfterLineNumber(code: string[], lineNumber: number, codeToInsert: string[]): string[] {
+	const indexToInsert = lineNumber + 1;
+
+	return [...code.slice(0, indexToInsert), ...codeToInsert, ...code.slice(indexToInsert)];
+}
+
 export default function pianoKeyboard(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	const onCodeBlockClick = function ({ x, y, codeBlock }: CodeBlockClickEvent) {
@@ -37,7 +52,8 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const key = Math.floor((x - (codeBlock.x - state.viewport.x)) / keyboard.keyWidth);
+		const keyboardViewportX = codeBlock.x + codeBlock.offsetX + keyboard.x - state.viewport.x;
+		const key = Math.floor((x - keyboardViewportX) / keyboard.keyWidth);
 
 		if (keyboard.pressedKeys.has(key)) {
 			keyboard.pressedKeys.delete(key);
@@ -48,16 +64,27 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 			keyboard.pressedKeys.add(key);
 		}
 
-		const pressedNumberOfKeysMemoryLineNumber = codeBlock.code.findIndex(line => {
-			line.startsWith('int ' + keyboard.pressedNumberOfKeysMemory.id);
-		});
+		const pressedNumberOfKeysMemoryLineNumber = findPressedNumberOfKeysMemoryLineNumber(
+			codeBlock.code,
+			keyboard.pressedNumberOfKeysMemory.id
+		);
+
+		if (pressedNumberOfKeysMemoryLineNumber === -1) {
+			return;
+		}
 
 		codeBlock.code[pressedNumberOfKeysMemoryLineNumber] =
 			'int ' + keyboard.pressedNumberOfKeysMemory.id + ' ' + keyboard.pressedKeys.size;
 
-		codeBlock.code = insertCodeAfterLine(
-			`piano ${keyboard.pressedKeysListMemory.id} ${keyboard.pressedNumberOfKeysMemory.id}`,
-			removeCode(codeBlock.code, keyboard.pressedKeysListMemory.id),
+		const codeWithoutPressedKeyInitializers = removeCode(codeBlock.code, keyboard.pressedKeysListMemory.id);
+
+		if (!codeWithoutPressedKeyInitializers[keyboard.lineNumber]) {
+			return;
+		}
+
+		codeBlock.code = insertCodeAfterLineNumber(
+			codeWithoutPressedKeyInitializers,
+			keyboard.lineNumber,
 			generateCode(
 				keyboard.pressedKeys,
 				keyboard.pressedKeysListMemory.id,

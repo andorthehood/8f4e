@@ -17,6 +17,8 @@ export const TEXT_COLOR_NAMES = [
 	'binaryZero',
 	'binaryOne',
 	'basePrefix',
+	'pianoKeyWhitePressedOverlay',
+	'pianoKeyBlackPressedOverlay',
 ] as const;
 
 export const FILL_COLOR_NAMES = [
@@ -48,6 +50,8 @@ export const FILL_COLOR_NAMES = [
 	'codeBlockHighlightLevel1',
 	'codeBlockHighlightLevel2',
 	'codeBlockHighlightLevel3',
+	'pianoKeyWhite',
+	'pianoKeyBlack',
 ] as const;
 
 const FONT_COLUMNS = 128;

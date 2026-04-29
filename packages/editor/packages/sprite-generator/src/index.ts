@@ -14,6 +14,7 @@ import { fontMetadata as glyphs8x16Metadata } from './fonts/ibmvga8x16/generated
 import defaultColorScheme from './defaultColorScheme';
 
 import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii';
+import type { FillSpriteColorName } from './fillColors';
 
 export { Icon } from './icons';
 export { FONT_NAMES } from './types';
@@ -295,7 +296,7 @@ async function loadFont(font: Font): Promise<FontData> {
 }
 
 export interface SpriteLookups extends FontLookups {
-	fillColors: Record<keyof ColorScheme['fill'], SpriteCoordinates>;
+	fillColors: Record<FillSpriteColorName, SpriteCoordinates>;
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;

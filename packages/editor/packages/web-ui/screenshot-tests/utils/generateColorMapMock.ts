@@ -15,6 +15,8 @@ export function generateColorMapWithAllColors(spriteLookups: SpriteLookups) {
 		[spriteLookups.fontMenuItemText],
 		[spriteLookups.fontMenuItemTextHighlighted],
 		[spriteLookups.fontNumbers],
+		[spriteLookups.fontPianoKeyWhitePressedOverlay],
+		[spriteLookups.fontPianoKeyBlackPressedOverlay],
 	];
 }
 

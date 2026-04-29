@@ -28,6 +28,9 @@ Example:
 - `text.dialogText`
 - `text.binaryZero`
 - `text.binaryOne`
+- `text.basePrefix`
+- `text.pianoKeyWhitePressedOverlay`
+- `text.pianoKeyBlackPressedOverlay`
 
 ## `fill.*`
 
@@ -59,6 +62,8 @@ Example:
 - `fill.codeBlockHighlightLevel1`
 - `fill.codeBlockHighlightLevel2`
 - `fill.codeBlockHighlightLevel3`
+- `fill.pianoKeyWhite`
+- `fill.pianoKeyBlack`
 
 ## `icons.*`
 
@@ -67,15 +72,6 @@ Example:
 - `icons.inputConnectorBackground`
 - `icons.outputConnectorBackground`
 - `icons.switchBackground`
-- `icons.pianoKeyWhite`
-- `icons.pianoKeyWhiteHighlighted`
-- `icons.pianoKeyWhitePressed`
-- `icons.pianoKeyBlack`
-- `icons.pianoKeyBlackHighlighted`
-- `icons.pianoKeyBlackPressed`
-- `icons.pianoKeyboardBackground`
-- `icons.pianoKeyboardNote`
-- `icons.pianoKeyboardNoteHighlighted`
 
 ## Feedback Scale Entries
 
