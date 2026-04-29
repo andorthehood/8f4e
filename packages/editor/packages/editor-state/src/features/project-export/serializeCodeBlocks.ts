@@ -16,13 +16,7 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 	const codeBlocksCopy = [...codeBlocks];
 
 	return codeBlocksCopy
-		.filter(codeBlock => {
-			// Exclude editor config blocks from project export
-			if (isEditorConfigBlock(codeBlock)) {
-				return false;
-			}
-			return true;
-		})
+		.filter(codeBlock => !isEditorConfigBlock(codeBlock))
 		.sort((codeBlockA, codeBlockB) => {
 			if (codeBlockA.id > codeBlockB.id) {
 				return 1;
