@@ -276,7 +276,7 @@ describe('font module', () => {
 
 		it('should produce only as many unique rows as there are distinct colors', () => {
 			const { uniqueRows } = buildFontLayout(minimalColorScheme.text);
-			// minimalColorScheme has 15 roles but only 7 distinct text colors
+			// minimalColorScheme has several text roles sharing the same colors.
 			const uniqueColorValues = [...new Set(Object.values(minimalColorScheme.text))];
 			expect(uniqueRows.length).toBe(uniqueColorValues.length);
 		});
@@ -322,6 +322,8 @@ describe('font module', () => {
 			expect(lookups.fontBinaryOne).toBeDefined();
 			expect(lookups.fontCodeComment).toBeDefined();
 			expect(lookups.fontBasePrefix).toBeDefined();
+			expect(lookups.fontPianoKeyWhitePressedOverlay).toBeDefined();
+			expect(lookups.fontPianoKeyBlackPressedOverlay).toBeDefined();
 		});
 
 		it('should generate correct lookups for 6x10 characters', () => {

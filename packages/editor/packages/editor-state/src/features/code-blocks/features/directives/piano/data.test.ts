@@ -1,22 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import { createPianoDirectiveData } from './data';
 import pianoDirective from './plugin';
 
 import { parseEditorDirectives } from '../utils';
-
-// Mock parsePressedKeys
-vi.mock('./parsePressedKeys', () => ({
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	default: vi.fn((_code, memoryId, _startingNumber) => {
-		const keys = new Set<number>();
-		if (memoryId === 'keys1') {
-			keys.add(0);
-			keys.add(2);
-		}
-		return keys;
-	}),
-}));
 
 function parsePianoDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [pianoDirective]).map(directive =>
@@ -36,7 +23,6 @@ describe('piano directive data', () => {
 				pressedNumberOfKeysMemoryId: 'numKeys',
 				pressedKeysListMemoryId: 'keys1',
 				startingNumber: 60,
-				pressedKeys: expect.any(Set),
 			},
 		]);
 	});
@@ -52,7 +38,6 @@ describe('piano directive data', () => {
 				pressedNumberOfKeysMemoryId: 'numKeys',
 				pressedKeysListMemoryId: 'keys1',
 				startingNumber: 0,
-				pressedKeys: expect.any(Set),
 			},
 		]);
 	});
