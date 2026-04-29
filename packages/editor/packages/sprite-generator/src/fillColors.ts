@@ -3,6 +3,8 @@ import { SpriteCoordinates } from 'glugglug';
 import { createAtlasLayout, FILL_COLOR_NAMES } from './atlasLayout';
 import { ColorScheme, Command, DrawingCommand } from './types';
 
+export type FillSpriteColorName = (typeof FILL_COLOR_NAMES)[number];
+
 export enum Icon {
 	INPUT,
 	SWITCH_OFF,
@@ -42,5 +44,5 @@ export const generateLookup = function (characterWidth: number, characterHeight:
 				spriteHeight: characterHeight,
 			},
 		])
-	) as Record<keyof ColorScheme['fill'], SpriteCoordinates>;
+	) as Record<FillSpriteColorName, SpriteCoordinates>;
 };

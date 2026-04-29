@@ -6,7 +6,7 @@ import type { State } from '~/types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { EventDispatcher } from '~/types';
 
-import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('pianoKeyboard interaction', () => {
 	let mockStore: StateManager<State>;
@@ -75,11 +75,62 @@ describe('pianoKeyboard interaction', () => {
 	});
 
 	it('should handle piano keyboard click', () => {
-		// This test requires a more complex setup with actual helper functions
-		// Skipping for now as it involves complex mocking of multiple dependencies
+		const codeBlock = createMockCodeBlock({
+			x: 100,
+			y: 50,
+			offsetX: 5,
+			code: ['module test-block', 'int[] keys1 10', 'int numKeys 0', '; @piano keys1 numKeys 48', 'moduleEnd'],
+		});
+		codeBlock.widgets.pianoKeyboards = [
+			{
+				x: 20,
+				y: 40,
+				width: 240,
+				height: 100,
+				keyWidth: 10,
+				keyY: 20,
+				keyHeight: 80,
+				blackKeyHeight: 40,
+				blackKeySideY: 60,
+				blackKeySideHeight: 40,
+				blackKeyGapXOffset: 3.75,
+				blackKeyGapY: 60,
+				blackKeyGapWidth: 2.5,
+				blackKeyGapHeight: 40,
+				lineNumber: 3,
+				keys: [],
+				pressedKeys: new Set(),
+				pressedKeysListMemory: {
+					id: 'keys1',
+					wordAlignedAddress: 5,
+					wordAlignedSize: 10,
+					isInteger: true,
+				},
+				pressedNumberOfKeysMemory: {
+					id: 'numKeys',
+					wordAlignedAddress: 6,
+					wordAlignedSize: 1,
+					isInteger: true,
+				},
+				startingNumber: 48,
+			},
+		] as never;
 		const cleanup = pianoKeyboard(mockStore, mockEvents);
 
-		expect(mockEvents.on).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
+		onCallbacks.get('codeBlockClick')?.({
+			x: 100 + 5 + 20 + 2 * 10 + 1,
+			y: 50 + 40 + 1,
+			codeBlock,
+		});
+
+		expect(mockStore.set).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', [
+			'module test-block',
+			'int[] keys1 10',
+			'int numKeys 1',
+			'; @piano keys1 numKeys 48',
+			'init keys1[0] 50',
+			'moduleEnd',
+		]);
 
 		cleanup();
 	});
