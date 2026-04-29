@@ -47,6 +47,15 @@ describe('updateInputsGraphicData', () => {
 		expect(findWidgetById(mockGraphicData.widgets.inputs, 'input1')).toBeDefined();
 	});
 
+	it('should add input when pointer declaration has a default reference', () => {
+		mockGraphicData.code = ['module test-block', 'int* input1 &source:output1'];
+
+		updateInputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.inputs.length).toBe(1);
+		expect(findWidgetById(mockGraphicData.widgets.inputs, 'input1')).toBeDefined();
+	});
+
 	it('should calculate correct dimensions and position', () => {
 		updateInputsGraphicData(mockGraphicData, mockState);
 
