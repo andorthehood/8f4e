@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import array from './array';
 
 import { ArgumentType } from '../../types';
+import { ErrorCode } from '../../compilerError';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
 import type { AST } from '../../types';
@@ -24,6 +25,81 @@ describe('array declaration compiler', () => {
 		);
 
 		expect(context.namespace.memory).toMatchSnapshot();
+	});
+
+	it('stores inline initializer values as array defaults', () => {
+		const context = createInstructionCompilerTestContext();
+
+		array(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'int[]',
+				arguments: [
+					classifyIdentifier('notes'),
+					{ type: ArgumentType.LITERAL, value: 10, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 48, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 50, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 53, isInteger: true },
+				],
+			} as AST[number],
+			context
+		);
+
+		expect(context.namespace.memory['notes'].default).toEqual({
+			0: 48,
+			1: 50,
+			2: 53,
+		});
+	});
+
+	it('truncates inline initializer values for integer arrays', () => {
+		const context = createInstructionCompilerTestContext();
+
+		array(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'int[]',
+				arguments: [
+					classifyIdentifier('values'),
+					{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 1.9, isInteger: false },
+				],
+			} as AST[number],
+			context
+		);
+
+		expect(context.namespace.memory['values'].default).toEqual({
+			0: 1,
+		});
+	});
+
+	it('rejects more inline initializer values than array elements', () => {
+		const context = createInstructionCompilerTestContext();
+
+		let thrownError: unknown;
+		try {
+			array(
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'int[]',
+					arguments: [
+						classifyIdentifier('values'),
+						{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+						{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(thrownError).toMatchObject({ code: ErrorCode.ARRAY_INITIALIZER_TOO_LONG });
 	});
 
 	it('creates an int8[] array with correct wordAlignedSize', () => {

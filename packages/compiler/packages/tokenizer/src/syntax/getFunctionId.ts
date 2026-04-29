@@ -7,9 +7,9 @@ import instructionParser from './instructionParser';
  */
 export default function getFunctionId(code: string[]) {
 	for (let i = 0; i < code.length; i++) {
-		const [, instruction, ...args] = code[i].match(instructionParser) || [];
+		const [, instruction, argumentText = ''] = code[i].match(instructionParser) || [];
 		if (instruction === 'function') {
-			return args[0] || '';
+			return argumentText.trim().split(/\s+/)[0] || '';
 		}
 	}
 	return '';

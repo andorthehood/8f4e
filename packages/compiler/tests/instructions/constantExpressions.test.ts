@@ -91,7 +91,7 @@ moduleEnd
 moduleTester(
 	'const: literal * sizeof(name)',
 	`module test
-int16[] samples 4 0
+int16[] samples 4
 const BYTE_SIZE 123*sizeof(samples)
 int output
 push &output
@@ -105,7 +105,7 @@ moduleEnd
 moduleTester(
 	'const: sizeof(name) * literal',
 	`module test
-int16[] samples 4 0
+int16[] samples 4
 const BYTE_SIZE sizeof(samples)*2
 int output
 push &output
@@ -119,7 +119,7 @@ moduleEnd
 moduleTester(
 	'const: constant * sizeof(name)',
 	`module test
-int16[] samples 4 0
+int16[] samples 4
 const SIZE 8
 const TOTAL SIZE*sizeof(samples)
 int output
@@ -134,7 +134,7 @@ moduleEnd
 moduleTester(
 	'push: sizeof(name) * literal',
 	`module test
-int16[] samples 4 0
+int16[] samples 4
 int output
 push &output
 push sizeof(samples)*4
@@ -147,7 +147,7 @@ moduleEnd
 moduleTester(
 	'push: constant * sizeof(name)',
 	`module test
-int16[] samples 4 0
+int16[] samples 4
 const SIZE 8
 int output
 push &output
@@ -161,7 +161,7 @@ moduleEnd
 moduleTester(
 	'push: literal * sizeof(name)',
 	`module test
-int16[] samples 4 0
+int16[] samples 4
 int output
 push &output
 push 123*sizeof(samples)
@@ -187,7 +187,7 @@ moduleEnd
 moduleTester(
 	'int[]: buffer size from sizeof expression',
 	`module test
-int16[] samples 4 0
+int16[] samples 4
 int[] buffer sizeof(samples)*2
 int output
 push &output
@@ -201,7 +201,7 @@ moduleEnd
 moduleTester(
 	'int[]: buffer size from count expression',
 	`module test
-int[] source 8 0
+int[] source 8
 int[] dest count(source)*2
 int output
 push &output
@@ -311,7 +311,7 @@ moduleEnd
 moduleTester(
 	'const: sizeof(name)^literal',
 	`module test
-int32[] samples 4 0
+int32[] samples 4
 const TOTAL sizeof(samples)^2
 int output
 push &output

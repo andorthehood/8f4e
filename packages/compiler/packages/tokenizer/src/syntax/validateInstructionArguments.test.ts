@@ -93,6 +93,34 @@ describe('validateInstructionArguments', () => {
 		).not.toThrow();
 	});
 
+	it('accepts inline array initializer values', () => {
+		expect(() =>
+			validateInstructionArguments('int[]', [
+				classifyIdentifier('values'),
+				{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 48, isInteger: true },
+				classifyIdentifier('NOTE'),
+				{
+					type: ArgumentType.COMPILE_TIME_EXPRESSION,
+					left: parseCompileTimeOperand('NOTE'),
+					operator: '+',
+					right: parseCompileTimeOperand('1'),
+					intermoduleIds: [],
+				},
+			])
+		).not.toThrow();
+	});
+
+	it('rejects non compile-time inline array initializer values', () => {
+		expect(() =>
+			validateInstructionArguments('int[]', [
+				classifyIdentifier('values'),
+				{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
+				{ type: ArgumentType.STRING_LITERAL, value: 'AB' },
+			])
+		).toThrowError(SyntaxRulesError);
+	});
+
 	it('rejects any argument for block', () => {
 		expect(() => validateInstructionArguments('block', [classifyIdentifier('int')])).toThrowError(SyntaxRulesError);
 		expect(() => validateInstructionArguments('block', [classifyIdentifier('float')])).toThrowError(SyntaxRulesError);

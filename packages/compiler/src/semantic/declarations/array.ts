@@ -1,14 +1,40 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
+import { ErrorCode, getError } from '../../compilerError';
 import { withValidation } from '../../withValidation';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
-
-import type { ArrayDeclarationLine, InstructionCompiler, MemoryTypes } from '../../types';
+import {
+	ArgumentType,
+	type ArrayDeclarationLine,
+	type CompilationContext,
+	type InstructionCompiler,
+	type MemoryTypes,
+} from '../../types';
 
 function getElementWordSize(instruction: string): number {
 	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;
 	if (instruction.includes('8')) return 1;
 	if (instruction.includes('16')) return 2;
 	return 4;
+}
+
+function createArrayDefaultValues(
+	line: ArrayDeclarationLine,
+	context: CompilationContext,
+	numberOfElements: number,
+	isInteger: boolean
+) {
+	const initializerArguments = line.arguments.slice(2);
+	if (initializerArguments.length > numberOfElements) {
+		throw getError(ErrorCode.ARRAY_INITIALIZER_TOO_LONG, line, context);
+	}
+
+	return initializerArguments.reduce<Record<string, number>>((defaults, argument, index) => {
+		if (argument.type !== ArgumentType.LITERAL) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		}
+		defaults[index] = isInteger ? Math.trunc(argument.value) : argument.value;
+		return defaults;
+	}, {});
 }
 
 /**
@@ -27,6 +53,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 		const elementWordSize = getElementWordSize(line.instruction);
 		const isUnsigned = line.instruction.endsWith('u[]');
 		const numberOfElements = elementCountArg.value;
+		const isInteger = line.instruction.startsWith('int') || line.instruction.includes('*');
 
 		// Apply 8-byte alignment for float64[] arrays: round up absolute word offset to even
 		// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.
@@ -47,8 +74,8 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 			id: memoryId,
 			// Convert the word-grid offset back to a byte address for wasm load/store instructions.
 			byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
-			default: {},
-			isInteger: line.instruction.startsWith('int') || line.instruction.includes('*'),
+			default: createArrayDefaultValues(line, context, numberOfElements, isInteger),
+			isInteger,
 			isPointingToPointer: line.instruction.includes('**'),
 			...(line.instruction.includes('*')
 				? {
