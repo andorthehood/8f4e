@@ -15,6 +15,18 @@ describe('parseOutputs', () => {
 		]);
 	});
 
+	it('should parse named declarations with default values', () => {
+		const code = ['int myOutput 0'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myOutput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse float instruction', () => {
 		const code = ['float myOutput'];
 		const result = parseOutputs(code);
@@ -77,6 +89,18 @@ describe('parseOutputs', () => {
 
 	it('should parse int[] instruction', () => {
 		const code = ['int[] myOutput'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myOutput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse arrays with inline initializers', () => {
+		const code = ['int[] myOutput 4 48 50 53'];
 		const result = parseOutputs(code);
 
 		expect(result).toEqual([

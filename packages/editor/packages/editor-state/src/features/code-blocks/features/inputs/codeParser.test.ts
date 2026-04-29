@@ -15,6 +15,18 @@ describe('parseInputs', () => {
 		]);
 	});
 
+	it('should parse named pointer declarations with default references', () => {
+		const code = ['int* myInput &source:out'];
+		const result = parseInputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myInput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse float* instruction', () => {
 		const code = ['float* myInput'];
 		const result = parseInputs(code);
