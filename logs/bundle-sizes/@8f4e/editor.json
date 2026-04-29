@@ -90,5 +90,28 @@
 				"brotli": 3617
 			}
 		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-29T22:01:57.766Z",
+		"commit": "351da439d3068816c858e3d7c5b33a0e9016166a",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor@0.1.4",
+		"packageName": "@8f4e/editor",
+		"projectName": "@8f4e/editor",
+		"version": "0.1.4",
+		"bytes": {
+			"raw": 13319,
+			"gzip": 4273,
+			"brotli": 3617
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 13319,
+				"gzip": 4273,
+				"brotli": 3617
+			}
+		]
 	}
 ]
