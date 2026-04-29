@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/runtime-web-worker-midi",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "description": "8f4e web worker MIDI runtime package",
   "type": "module",
