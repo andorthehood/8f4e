@@ -2,11 +2,13 @@ import type { EditorConfig } from './types';
 
 export function setPathValue(target: Record<string, unknown>, path: string, value: string): void {
 	const segments = path.split('.');
+	const leafSegment = segments[segments.length - 1];
 	let current = target;
 
 	for (let i = 0; i < segments.length - 1; i++) {
 		const segment = segments[i];
 		const existing = current[segment];
+
 		if (!existing || typeof existing !== 'object' || Array.isArray(existing)) {
 			const next: Record<string, unknown> = {};
 			current[segment] = next;
@@ -17,7 +19,7 @@ export function setPathValue(target: Record<string, unknown>, path: string, valu
 		current = existing as Record<string, unknown>;
 	}
 
-	current[segments[segments.length - 1]] = value;
+	current[leafSegment] = value;
 }
 
 export function setEditorConfigPath(config: EditorConfig, path: string, value: string): void {
