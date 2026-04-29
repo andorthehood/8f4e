@@ -40,7 +40,7 @@ The cycle instruction increments a pointer by one word and wraps it to a start a
 #### Examples
 
 ```
-int[] buffer 4 0
+int[] buffer 4
 int* ptr &buffer
 push &ptr
 push &buffer[0]
