@@ -5,7 +5,6 @@ import generateFillColors, { generateLookup as generateLookupForFillColors } fro
 import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
-import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
 import { createAtlasLayout } from './atlasLayout';
 import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
@@ -19,7 +18,6 @@ import type { FillSpriteColorName } from './fillColors';
 export { Icon } from './icons';
 export { FONT_NAMES } from './types';
 export type { ColorScheme, ColorSchemeOverrides, Font } from './types';
-export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
 
 type FontData = {
@@ -300,7 +298,6 @@ export interface SpriteLookups extends FontLookups {
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;
-	pianoKeys: Record<number, SpriteCoordinates>;
 }
 
 export function resolveColorScheme(overrides: Config['colorScheme'] = {}): ColorScheme {
@@ -334,7 +331,6 @@ export default async function generateSprite(config: Config): Promise<{
 		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, colorScheme.fill),
 		...generateIcons(asciiBitmap, glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
-		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {
@@ -373,7 +369,6 @@ export default async function generateSprite(config: Config): Promise<{
 			feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),
-			pianoKeys: generateLookupForPianoKeys(characterWidth, characterHeight),
 		},
 	};
 }

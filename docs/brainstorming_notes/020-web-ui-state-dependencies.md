@@ -4,7 +4,7 @@ This note captures which editor-state fields the `@8f4e/web-ui` package reads or
 
 ## State surface used by `@8f4e/web-ui`
 
-- `state.graphicHelper.spriteLookups` (read + write); expects lookups like `fillColors`, `fontLineNumber`, `fontMenuItemText`, `fontMenuItemTextHighlighted`, `background`, `icons`, `fontNumbers`, `fontCode`, `feedbackScale`, `plotter`, `pianoKeys`
+- `state.graphicHelper.spriteLookups` (read + write); expects lookups like `fillColors`, `fontLineNumber`, `fontMenuItemText`, `fontMenuItemTextHighlighted`, `background`, `icons`, `fontNumbers`, `fontCode`, `feedbackScale`, `plotter`
 - `state.graphicHelper.viewport` (read + write): `x`, `y`, `width`, `height`, `roundedWidth`, `roundedHeight`, `hGrid`, `vGrid`, `center.{x,y}`, `borderLineCoordinates.{top|right|bottom|left}.{startX,startY,endX,endY}`
 - `state.graphicHelper.codeBlocks` (iterated for rendering)
 - `state.graphicHelper.selectedCodeBlock`, `state.graphicHelper.draggedCodeBlock`
