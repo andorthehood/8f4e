@@ -324,7 +324,7 @@ export type ArrayDeclarationInstruction =
 	| 'float64**[]';
 export type ArrayDeclarationLine = Omit<AST[number], 'instruction' | 'arguments'> & {
 	instruction: ArrayDeclarationInstruction;
-	arguments: [ArgumentIdentifier, ArgumentLiteral];
+	arguments: [ArgumentIdentifier, ArgumentLiteral, ...Argument[]];
 };
 export type NormalizedSemanticInstructionLine =
 	| NormalizedConstLine

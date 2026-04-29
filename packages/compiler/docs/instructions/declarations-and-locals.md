@@ -164,7 +164,7 @@ const MAX_GAIN 2
 float
 float gain 0.75
 float halfGain MAX_GAIN/2
-float[] samples 4 0.0
+float[] samples 4 0.0 0.25 0.5 0.75
 float*
 float* ptr &samples
 float* endPtr samples&
@@ -176,11 +176,12 @@ The int[] instruction declares a buffer of integers in module memory. Variants i
 
 Unsigned variants (`int8u[]`, `int16u[]`) interpret values as unsigned integers (0-255 for int8u, 0-65535 for int16u) in debuggers, plotters, and when using min/max prefixes.
 Buffer size arguments also support constant expressions with exactly one operator (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
+Trailing values initialize array elements from index 0 onward. Omitted elements remain zero-initialized, and the initializer list must not be longer than the declared element count.
 
 #### Examples
 
 ```
-int[] values 4 0
+int[] values 4 48 50 53
 int[] halfValues SIZE/2
 int8u[] unsignedBytes 256
 int16u[] unsignedShorts 128
@@ -189,11 +190,12 @@ int16u[] unsignedShorts 128
 ### float[]
 
 The float[] instruction declares a buffer of floating-point values in module memory. Variants include `float*[]` and `float**[]`.
+Trailing values initialize array elements from index 0 onward, matching `int[]`.
 
 #### Examples
 
 ```
-float[] samples 4 0.0
+float[] samples 4 0.0 0.25 0.5 0.75
 ```
 
 ### local

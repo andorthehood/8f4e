@@ -14,6 +14,8 @@ import {
 	f32store,
 	f64store,
 	i32store,
+	i32store16,
+	i32store8,
 	WASM_MEMORY_PAGE_SIZE,
 } from '@8f4e/compiler-wasm-utils';
 
@@ -152,6 +154,14 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 function createMemoryDefaultStore(memory: DataStructure, byteAddress: number, value: number) {
 	if (memory.elementWordSize === 8) {
 		return f64store(byteAddress, value);
+	}
+
+	if (memory.isInteger && memory.elementWordSize === 1) {
+		return i32store8(byteAddress, Math.trunc(value));
+	}
+
+	if (memory.isInteger && memory.elementWordSize === 2) {
+		return i32store16(byteAddress, Math.trunc(value));
 	}
 
 	return memory.isInteger ? i32store(byteAddress, value) : f32store(byteAddress, value);

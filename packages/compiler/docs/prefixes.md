@@ -17,7 +17,7 @@ Examples:
 int value 1
 push &value
 
-int8[] buffer 4 0
+int8[] buffer 4
 push &buffer[0]
 
 int* moduleStart &this
@@ -45,7 +45,7 @@ push *ptr
 Example:
 
 ```
-int[] buffer 4 0
+int[] buffer 4
 push count(buffer)
 ```
 
@@ -235,7 +235,7 @@ moduleEnd
 module sourceModule
 int  a 0      ; item 0
 int  b 0      ; item 1
-int[] c 10 0  ; item 2 — the whole array counts as one slot
+int[] c 10    ; item 2 — the whole array counts as one slot
 moduleEnd
 
 module targetModule
