@@ -66,20 +66,49 @@
 		"packageName": "@8f4e/editor-state",
 		"projectName": "@8f4e/editor-state",
 		"version": "0.1.2",
-			"bytes": {
-				"raw": 153755,
-				"gzip": 38350,
-				"brotli": 32474
+		"bytes": {
+			"raw": 153755,
+			"gzip": 38350,
+			"brotli": 32474
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 147881,
+				"gzip": 36216,
+				"brotli": 30636
 			},
-			"files": [
-				{
-					"path": "index.js",
-					"raw": 147881,
-					"gzip": 36216,
-					"brotli": 30636
-				},
-				{
-					"path": "testing.js",
+			{
+				"path": "testing.js",
+				"raw": 5874,
+				"gzip": 2134,
+				"brotli": 1838
+			}
+		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-29T14:55:48.088Z",
+		"commit": "0ede3674277dbafd5b62cdd734adf4b9d585ea8f",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor-state@0.1.3",
+		"packageName": "@8f4e/editor-state",
+		"projectName": "@8f4e/editor-state",
+		"version": "0.1.3",
+		"bytes": {
+			"raw": 155442,
+			"gzip": 38838,
+			"brotli": 32879
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 149568,
+				"gzip": 36704,
+				"brotli": 31041
+			},
+			{
+				"path": "testing.js",
 				"raw": 5874,
 				"gzip": 2134,
 				"brotli": 1838
