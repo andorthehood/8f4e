@@ -5,7 +5,6 @@ import generateFillColors, { generateLookup as generateLookupForFillColors } fro
 import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
-import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
 import { createAtlasLayout } from './atlasLayout';
 import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
@@ -14,11 +13,11 @@ import { fontMetadata as glyphs8x16Metadata } from './fonts/ibmvga8x16/generated
 import defaultColorScheme from './defaultColorScheme';
 
 import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii';
+import type { FillSpriteColorName } from './fillColors';
 
 export { Icon } from './icons';
 export { FONT_NAMES } from './types';
 export type { ColorScheme, ColorSchemeOverrides, Font } from './types';
-export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
 
 type FontData = {
@@ -295,11 +294,10 @@ async function loadFont(font: Font): Promise<FontData> {
 }
 
 export interface SpriteLookups extends FontLookups {
-	fillColors: Record<keyof ColorScheme['fill'], SpriteCoordinates>;
+	fillColors: Record<FillSpriteColorName, SpriteCoordinates>;
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;
-	pianoKeys: Record<number, SpriteCoordinates>;
 }
 
 export function resolveColorScheme(overrides: Config['colorScheme'] = {}): ColorScheme {
@@ -333,7 +331,6 @@ export default async function generateSprite(config: Config): Promise<{
 		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, colorScheme.fill),
 		...generateIcons(asciiBitmap, glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
-		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {
@@ -372,7 +369,6 @@ export default async function generateSprite(config: Config): Promise<{
 			feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),
-			pianoKeys: generateLookupForPianoKeys(characterWidth, characterHeight),
 		},
 	};
 }

@@ -10,7 +10,7 @@
 - Screenshot tests: `npx nx run sprite-generator:test:screenshot` and variants (:ui, :update, :headed, :debug).
 
 ## Coding Style
-- TypeScript; ESLint + Prettier per root config. Keep pure, deterministic functions.
+- TypeScript; use ESLint as the fixer (`npx eslint --fix <files>`) per root config. Keep pure, deterministic functions.
 
 ## Testing
 - Vitest (via Nx). Prefer unit tests and golden/snapshot tests for outputs.

@@ -19,6 +19,7 @@ describe('piano directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			code: ['; @piano keys1 numKeys 60'],
 			gaps: new Map(),
 		});
@@ -77,11 +78,40 @@ describe('piano directive widget resolution', () => {
 		expect(mockGraphicData.widgets.pianoKeyboards).toHaveLength(1);
 	});
 
+	it('resolves memory through moduleId rather than code block id', () => {
+		mockGraphicData.id = 'module_test-block';
+		mockGraphicData.moduleId = 'test-block';
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.pianoKeyboards).toHaveLength(1);
+	});
+
 	it('sets the minimum grid width during directive preparation', () => {
 		const directiveState = deriveDirectiveStateForMockCodeBlock(mockGraphicData);
 		runBeforeGraphicDataWidthCalculation(mockGraphicData, mockState, directiveState);
 
 		expect(mockGraphicData.minGridWidth).toBe(48);
+	});
+
+	it('precomputes fixed key geometry', () => {
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.pianoKeyboards[0]).toMatchObject({
+			height: 96,
+			keyWidth: 16,
+			keyY: 16,
+			keyHeight: 80,
+			blackKeyHeight: 48,
+			blackKeySideY: 64,
+			blackKeySideHeight: 32,
+			blackKeyGapXOffset: 6,
+			blackKeyGapY: 64,
+			blackKeyGapWidth: 4,
+			blackKeyGapHeight: 32,
+		});
+		expect(mockGraphicData.widgets.pianoKeyboards[0].keys[0].pressedOverlayRows).toEqual([16, 32, 48, 64, 80]);
+		expect(mockGraphicData.widgets.pianoKeyboards[0].keys[1].pressedOverlayRows).toEqual([16, 32, 48]);
 	});
 
 	it('does not add a piano keyboard when memory cannot be resolved', () => {
@@ -99,10 +129,20 @@ describe('piano directive widget resolution', () => {
 			width: 0,
 			height: 0,
 			keyWidth: 8,
+			keyY: 0,
+			keyHeight: 0,
+			blackKeyHeight: 0,
+			blackKeySideY: 0,
+			blackKeySideHeight: 0,
+			blackKeyGapXOffset: 0,
+			blackKeyGapY: 0,
+			blackKeyGapWidth: 0,
+			blackKeyGapHeight: 0,
+			lineNumber: 0,
+			keys: [],
 			startingNumber: 60,
 			pressedKeysListMemory: { wordAlignedAddress: 0 } as DataStructure,
 			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as DataStructure,
-			pressedKeys: new Set(),
 		};
 
 		runDirectiveResolution();

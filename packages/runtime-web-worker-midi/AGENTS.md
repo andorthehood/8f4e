@@ -9,7 +9,7 @@
 - From package directory: use `npx nx run runtime-web-worker-midi:<target>` (e.g., `npx nx run runtime-web-worker-midi:dev`).
 
 ## Coding Style
-- TypeScript with ESLint/Prettier. Keep worker code pure and messages versioned.
+- TypeScript with ESLint as the fixer (`npx eslint --fix <files>`). Keep worker code pure and messages versioned.
 
 ## Testing
 - Vitest (via Nx). Unit test MIDI message parsing and routing; mock timers.

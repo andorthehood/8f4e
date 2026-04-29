@@ -21,6 +21,8 @@ export const minimalColorScheme: ColorScheme = {
 		binaryZero: '#c9d487',
 		binaryOne: '#c9d487',
 		basePrefix: '#c9d487',
+		pianoKeyWhitePressedOverlay: '#000000',
+		pianoKeyBlackPressedOverlay: '#ffffff',
 	},
 	fill: {
 		menuItemBackground: '#000000',
@@ -52,6 +54,8 @@ export const minimalColorScheme: ColorScheme = {
 		codeBlockHighlightLevel1: '#333300',
 		codeBlockHighlightLevel2: '#333333',
 		codeBlockHighlightLevel3: '#003333',
+		pianoKeyWhite: '#ffffff',
+		pianoKeyBlack: '#000000',
 	},
 	icons: {
 		inputConnector: '#ffffff',
@@ -65,15 +69,6 @@ export const minimalColorScheme: ColorScheme = {
 		feedbackScale3: '#660099',
 		feedbackScale4: '#3300cc',
 		feedbackScale5: '#0000ff',
-		pianoKeyWhite: '#ffffff',
-		pianoKeyWhiteHighlighted: '#ff0000',
-		pianoKeyWhitePressed: '#cccccc',
-		pianoKeyBlack: '#000000',
-		pianoKeyBlackHighlighted: '#ff0000',
-		pianoKeyBlackPressed: '#333333',
-		pianoKeyboardBackground: '#999999',
-		pianoKeyboardNote: '#ffffff',
-		pianoKeyboardNoteHighlighted: '#ff0000',
 	},
 };
 
