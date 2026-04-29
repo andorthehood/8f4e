@@ -46,6 +46,25 @@ describe('array declaration inline initializers', () => {
 		expect(memory[start + 2]).toBe(53);
 	});
 
+	test('supports hexadecimal initializer values', async () => {
+		const result = compile(
+			[
+				{
+					code: ['module test', 'int[] foo 2 0x01 0x02', 'moduleEnd'],
+				},
+			],
+			{ disableSharedMemory: true }
+		);
+		const { init, memory } = await createWasmInstance(result.codeBuffer);
+		const foo = result.compiledModules.test.memoryMap.foo;
+		const start = foo.wordAlignedAddress;
+
+		init();
+
+		expect(memory[start]).toBe(1);
+		expect(memory[start + 1]).toBe(2);
+	});
+
 	test('uses narrow stores for int8[] and int16[] initializer values', async () => {
 		const result = compile(
 			[
