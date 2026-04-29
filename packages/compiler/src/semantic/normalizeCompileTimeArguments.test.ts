@@ -384,6 +384,35 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(result.arguments[0]).toEqual(classifyIdentifier('ptr'));
 	});
 
+	it('does not strip array declaration element count arguments', () => {
+		const context = {
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {
+					source: {
+						kind: 'module',
+						consts: {},
+						memory: {
+							buffer: { numberOfElements: 4, elementWordSize: 4, isInteger: true },
+						},
+					},
+				},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: AST[number] = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'int[]',
+			isMemoryDeclaration: true,
+			arguments: [classifyIdentifier('buffer'), classifyIdentifier('&source:buffer')],
+		};
+
+		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
+	});
+
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with unresolved compile-time-expression default', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
