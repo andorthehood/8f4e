@@ -3,7 +3,6 @@ import { StateManager } from '@8f4e/state-manager';
 import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 import { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
-import replaceCode from '../../../utils/codeParsers/replaceCode';
 
 import type { CodeBlockGraphicData, PianoKeyboard, State } from '~/types';
 
@@ -13,24 +12,6 @@ import { EventDispatcher } from '~/types';
 // UI key press -> edits code -> runtime updates memory -> UI reflects memory.
 // Pressed keys may also come from another program writing the pressed-key memory buffer,
 // so rendering must never treat code or interaction state as the source of truth.
-function generateCode(
-	pressedKeys: Set<number>,
-	pressedKeysListMemoryId: string,
-	isInteger: boolean,
-	startingNumber: number
-) {
-	return Array.from(pressedKeys).flatMap((key, index) => {
-		const value = key + startingNumber;
-		return [`init ${pressedKeysListMemoryId}[${index}] ${isInteger ? value : `${value}.0`}`];
-	});
-}
-
-function removeCode(code: string[], pressedKeysListMemoryId: string) {
-	const pattern = [`init ${pressedKeysListMemoryId}[:index] :key`];
-
-	return replaceCode(code, pattern, []);
-}
-
 function escapeRegExp(text: string): string {
 	return text.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -41,10 +22,49 @@ function findPressedNumberOfKeysMemoryLineNumber(code: string[], memoryId: strin
 	return code.findIndex(line => regexp.test(line));
 }
 
-function insertCodeAfterLineNumber(code: string[], lineNumber: number, codeToInsert: string[]): string[] {
-	const indexToInsert = lineNumber + 1;
+function formatMemoryValue(value: number, isInteger: boolean): string {
+	return isInteger ? `${value}` : `${value}.0`;
+}
 
-	return [...code.slice(0, indexToInsert), ...codeToInsert, ...code.slice(indexToInsert)];
+function createArrayDeclarationRegexp(memoryId: string): RegExp {
+	return new RegExp(
+		`^(?<prefix>\\s*(?:int8u?|int16u?|int32|int|float64|float)\\*{0,2}\\[\\]\\s+${escapeRegExp(
+			memoryId
+		)}\\s+)(?<elementCount>\\S+)(?:\\s+[^;]*?)?(?<comment>\\s*;.*)?\\s*$`
+	);
+}
+
+function findPressedKeysListMemoryLineNumber(code: string[], memoryId: string): number {
+	const regexp = createArrayDeclarationRegexp(memoryId);
+
+	return code.findIndex(line => regexp.test(line));
+}
+
+function updatePressedKeysListMemoryDefaultValues(
+	code: string[],
+	pressedKeysListMemoryId: string,
+	pressedKeys: Set<number>,
+	isInteger: boolean,
+	startingNumber: number
+): string[] | undefined {
+	const lineNumber = findPressedKeysListMemoryLineNumber(code, pressedKeysListMemoryId);
+	if (lineNumber === -1) {
+		return undefined;
+	}
+
+	const line = code[lineNumber];
+	const groups = createArrayDeclarationRegexp(pressedKeysListMemoryId).exec(line)?.groups;
+	if (!groups?.prefix || !groups.elementCount) {
+		return undefined;
+	}
+
+	const defaultValues = Array.from(pressedKeys).map(key => formatMemoryValue(key + startingNumber, isInteger));
+	const serializedDefaultValues = defaultValues.length > 0 ? ` ${defaultValues.join(' ')}` : '';
+
+	const updatedCode = [...code];
+	updatedCode[lineNumber] = `${groups.prefix}${groups.elementCount}${serializedDefaultValues}${groups.comment ?? ''}`;
+
+	return updatedCode;
 }
 
 function readRuntimePressedKeys(state: State, keyboard: PianoKeyboard): Set<number> {
@@ -56,7 +76,7 @@ function readRuntimePressedKeys(state: State, keyboard: PianoKeyboard): Set<numb
 	}
 
 	const numberOfKeys = Math.max(0, getWordFromMemory(keyboard.pressedNumberOfKeysMemory.wordAlignedAddress) || 0);
-	const readableKeys = Math.min(numberOfKeys, keyboard.pressedKeysListMemory.wordAlignedSize);
+	const readableKeys = Math.min(numberOfKeys, keyboard.pressedKeysListMemory.numberOfElements);
 
 	for (let i = 0; i < readableKeys; i++) {
 		const keyValue = getWordFromMemory(keyboard.pressedKeysListMemory.wordAlignedAddress + i);
@@ -99,7 +119,7 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 		if (pressedKeys.has(key)) {
 			pressedKeys.delete(key);
 		} else {
-			if (pressedKeys.size === keyboard.pressedKeysListMemory.wordAlignedSize) {
+			if (pressedKeys.size === keyboard.pressedKeysListMemory.numberOfElements) {
 				return;
 			}
 			pressedKeys.add(key);
@@ -114,25 +134,22 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		codeBlock.code[pressedNumberOfKeysMemoryLineNumber] =
+		const updatedCode = [...codeBlock.code];
+		updatedCode[pressedNumberOfKeysMemoryLineNumber] =
 			'int ' + keyboard.pressedNumberOfKeysMemory.id + ' ' + pressedKeys.size;
 
-		const codeWithoutPressedKeyInitializers = removeCode(codeBlock.code, keyboard.pressedKeysListMemory.id);
-
-		if (!codeWithoutPressedKeyInitializers[keyboard.lineNumber]) {
+		const codeWithUpdatedDefaults = updatePressedKeysListMemoryDefaultValues(
+			updatedCode,
+			keyboard.pressedKeysListMemory.id,
+			pressedKeys,
+			keyboard.pressedKeysListMemory.isInteger,
+			keyboard.startingNumber
+		);
+		if (!codeWithUpdatedDefaults) {
 			return;
 		}
 
-		codeBlock.code = insertCodeAfterLineNumber(
-			codeWithoutPressedKeyInitializers,
-			keyboard.lineNumber,
-			generateCode(
-				pressedKeys,
-				keyboard.pressedKeysListMemory.id,
-				keyboard.pressedKeysListMemory.isInteger,
-				keyboard.startingNumber
-			)
-		);
+		codeBlock.code = codeWithUpdatedDefaults;
 
 		store.set('graphicHelper.selectedCodeBlock.code', codeBlock.code);
 	};
