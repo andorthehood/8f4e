@@ -8,6 +8,28 @@ import {
 import { ArgumentType, type AST, type CompilationContext } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
+function requireResolvedArrayValue(
+	argument: AST[number]['arguments'][number] | undefined,
+	line: AST[number],
+	context: CompilationContext
+) {
+	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+		if (deferred) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
+				identifier: `${argument.left.value}${argument.operator}${argument.right.value}`,
+			});
+		}
+	}
+
+	if (argument?.type === ArgumentType.IDENTIFIER) {
+		const deferred = validateOrDeferUnresolvedIdentifier(argument, line, context);
+		if (deferred) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
+		}
+	}
+}
+
 /**
  * Normalizes compile-time arguments for memory declaration instructions
  * (int, float, float64, array types, pointer types, etc.).
@@ -22,7 +44,8 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 		: [0, 1];
 	let { line: normalized } = normalizeArgumentsAtIndexes(line, context, normalizeIndexes);
 
-	for (const index of [0, 1]) {
+	const scalarValidationIndexes = isArrayDeclaration ? [0] : [0, 1];
+	for (const index of scalarValidationIndexes) {
 		const argument = normalized.arguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 			const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
@@ -48,38 +71,10 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 	}
 
 	if (isArrayDeclaration) {
-		const elementCountArg = normalized.arguments[1];
-		if (elementCountArg?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-			const deferred = validateOrDeferCompileTimeExpression(elementCountArg, line, context);
-			if (deferred) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-					identifier: `${elementCountArg.left.value}${elementCountArg.operator}${elementCountArg.right.value}`,
-				});
-			}
-		}
-		if (elementCountArg?.type === ArgumentType.IDENTIFIER) {
-			const deferred = validateOrDeferUnresolvedIdentifier(elementCountArg, line, context);
-			if (deferred) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: elementCountArg.value });
-			}
-		}
+		requireResolvedArrayValue(normalized.arguments[1], line, context);
 
 		for (let index = 2; index < normalized.arguments.length; index++) {
-			const initializerArg = normalized.arguments[index];
-			if (initializerArg?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-				const deferred = validateOrDeferCompileTimeExpression(initializerArg, line, context);
-				if (deferred) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-						identifier: `${initializerArg.left.value}${initializerArg.operator}${initializerArg.right.value}`,
-					});
-				}
-			}
-			if (initializerArg?.type === ArgumentType.IDENTIFIER) {
-				const deferred = validateOrDeferUnresolvedIdentifier(initializerArg, line, context);
-				if (deferred) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: initializerArg.value });
-				}
-			}
+			requireResolvedArrayValue(normalized.arguments[index], line, context);
 		}
 	}
 
