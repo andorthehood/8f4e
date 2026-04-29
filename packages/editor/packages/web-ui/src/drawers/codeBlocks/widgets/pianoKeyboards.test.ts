@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state/testing';
 
 import drawPianoKeyboards from './pianoKeyboards';
@@ -29,22 +30,51 @@ function createMockEngine(): Engine {
 	} as unknown as Engine;
 }
 
+function createMockMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+	return {
+		id: 'memory',
+		numberOfElements: 1,
+		elementWordSize: 1,
+		type: MemoryTypes.int,
+		byteAddress: 0,
+		wordAlignedSize: 1,
+		wordAlignedAddress: 0,
+		default: 0,
+		isInteger: true,
+		isPointingToPointer: false,
+		isUnsigned: false,
+		...overrides,
+	};
+}
+
 function createPianoKeyboardKeys(): PianoKeyboard['keys'] {
 	return Array.from({ length: 24 }, (_, offset) => {
 		const isBlack = [1, 3, 6, 8, 10].includes(offset % 12);
-		const sprite = isBlack ? 'pianoKeyBlack' : 'pianoKeyWhite';
-
-		return {
+		const baseKey = {
 			offset,
 			x: offset * 2,
 			label: isBlack ? 'C#' : 'C',
 			labelX: offset * 2,
 			labelY: 0,
-			isBlack,
-			sprite,
 			pressedOverlayX: offset * 2,
-			pressedOverlayRows: isBlack ? [4, 8, 12] : [4, 8, 12, 16, 20],
-			pressedOverlayFont: isBlack ? 'fontPianoKeyBlackPressedOverlay' : 'fontPianoKeyWhitePressedOverlay',
+		};
+
+		if (isBlack) {
+			return {
+				...baseKey,
+				kind: 'black',
+				sprite: 'pianoKeyBlack',
+				pressedOverlayRows: [4, 8, 12],
+				pressedOverlayFont: 'fontPianoKeyBlackPressedOverlay',
+			};
+		}
+
+		return {
+			...baseKey,
+			kind: 'white',
+			sprite: 'pianoKeyWhite',
+			pressedOverlayRows: [4, 8, 12, 16, 20],
+			pressedOverlayFont: 'fontPianoKeyWhitePressedOverlay',
 		};
 	});
 }
@@ -67,16 +97,18 @@ function createPianoKeyboard(overrides: Partial<PianoKeyboard> = {}): PianoKeybo
 		blackKeyGapHeight: 8,
 		lineNumber: 0,
 		keys: createPianoKeyboardKeys(),
-		pressedKeysListMemory: {
+		pressedKeysListMemory: createMockMemory({
 			id: 'notes',
+			byteAddress: 16,
 			wordAlignedAddress: 4,
 			wordAlignedSize: 12,
-			isInteger: true,
-		} as never,
-		pressedNumberOfKeysMemory: {
+			numberOfElements: 12,
+		}),
+		pressedNumberOfKeysMemory: createMockMemory({
 			id: 'notesCount',
+			byteAddress: 4,
 			wordAlignedAddress: 1,
-		} as never,
+		}),
 		startingNumber: 48,
 		...overrides,
 	};

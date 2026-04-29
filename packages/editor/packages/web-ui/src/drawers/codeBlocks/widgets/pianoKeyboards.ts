@@ -89,7 +89,7 @@ export default function drawer(
 		engine.setSpriteLookup(spriteLookups.fillColors);
 
 		for (const key of keys) {
-			if (key.isBlack) {
+			if (key.kind === 'black') {
 				engine.drawSprite(key.x, keyY, key.sprite, keyWidth, blackKeyHeight);
 				engine.drawSprite(key.x, blackKeySideY, 'pianoKeyWhite', keyWidth, blackKeySideHeight);
 				engine.drawSprite(key.x + blackKeyGapXOffset, blackKeyGapY, key.sprite, blackKeyGapWidth, blackKeyGapHeight);

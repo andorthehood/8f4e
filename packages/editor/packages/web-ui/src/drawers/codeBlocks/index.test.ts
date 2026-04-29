@@ -139,7 +139,7 @@ describe('drawModules', () => {
 						label: 'C',
 						labelX: 0,
 						labelY: 0,
-						isBlack: false,
+						kind: 'white',
 						sprite: 'pianoKeyWhite',
 						pressedOverlayX: 0,
 						pressedOverlayRows: [16],

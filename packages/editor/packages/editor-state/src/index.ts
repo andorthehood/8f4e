@@ -155,6 +155,8 @@ export type {
 	Input,
 	PianoKeyboard,
 	PianoKeyboardKey,
+	PianoKeyboardWhiteKey,
+	PianoKeyboardBlackKey,
 	PianoKeySprite,
 	PianoPressedOverlayFont,
 	ContextMenu,

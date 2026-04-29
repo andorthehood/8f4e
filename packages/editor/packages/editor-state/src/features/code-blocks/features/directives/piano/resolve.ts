@@ -37,20 +37,32 @@ function createPianoKeyboardKeys(
 	return Array.from({ length: KEY_COUNT }, (_, offset) => {
 		const note = getNoteIndex(startingNumber + offset);
 		const isBlack = BLACK_KEYS.has(note);
-		const sprite = isBlack ? 'pianoKeyBlack' : 'pianoKeyWhite';
 		const x = offset * keyWidth;
-
-		return {
+		const baseKey = {
 			offset,
 			x,
 			label: NOTE_LABELS[note],
 			labelX: x,
 			labelY: 0,
-			isBlack,
-			sprite,
 			pressedOverlayX: x,
-			pressedOverlayRows: isBlack ? blackKeyPressedOverlayRows : whiteKeyPressedOverlayRows,
-			pressedOverlayFont: isBlack ? 'fontPianoKeyBlackPressedOverlay' : 'fontPianoKeyWhitePressedOverlay',
+		};
+
+		if (isBlack) {
+			return {
+				...baseKey,
+				kind: 'black',
+				sprite: 'pianoKeyBlack',
+				pressedOverlayRows: blackKeyPressedOverlayRows,
+				pressedOverlayFont: 'fontPianoKeyBlackPressedOverlay',
+			};
+		}
+
+		return {
+			...baseKey,
+			kind: 'white',
+			sprite: 'pianoKeyWhite',
+			pressedOverlayRows: whiteKeyPressedOverlayRows,
+			pressedOverlayFont: 'fontPianoKeyWhitePressedOverlay',
 		};
 	});
 }

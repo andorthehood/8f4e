@@ -168,18 +168,29 @@ export interface PianoKeyboard {
 export type PianoKeySprite = 'pianoKeyWhite' | 'pianoKeyBlack';
 export type PianoPressedOverlayFont = 'fontPianoKeyWhitePressedOverlay' | 'fontPianoKeyBlackPressedOverlay';
 
-export interface PianoKeyboardKey {
+interface PianoKeyboardKeyBase {
 	offset: number;
 	x: number;
 	label: string;
 	labelX: number;
 	labelY: number;
-	isBlack: boolean;
-	sprite: PianoKeySprite;
 	pressedOverlayX: number;
 	pressedOverlayRows: number[];
-	pressedOverlayFont: PianoPressedOverlayFont;
 }
+
+export interface PianoKeyboardWhiteKey extends PianoKeyboardKeyBase {
+	kind: 'white';
+	sprite: 'pianoKeyWhite';
+	pressedOverlayFont: 'fontPianoKeyWhitePressedOverlay';
+}
+
+export interface PianoKeyboardBlackKey extends PianoKeyboardKeyBase {
+	kind: 'black';
+	sprite: 'pianoKeyBlack';
+	pressedOverlayFont: 'fontPianoKeyBlackPressedOverlay';
+}
+
+export type PianoKeyboardKey = PianoKeyboardWhiteKey | PianoKeyboardBlackKey;
 
 export type TypedValueKind = 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'float32' | 'float64';
 
