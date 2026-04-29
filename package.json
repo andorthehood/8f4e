@@ -41,7 +41,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.5.0",
     "husky": "7.0.4",
-    "lint-staged": "12.1.4",
+    "lint-staged": "12.5.0",
     "nx": "22.6.3",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
