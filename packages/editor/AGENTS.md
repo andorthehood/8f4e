@@ -10,7 +10,7 @@
 - Ensure `dist/` exists before root `vite build` after API changes.
 
 ## Coding Style
-- TypeScript (ESM). ESLint (`@typescript-eslint`, `import/order`). Prettier defaults (tabs, single quotes, semi, width 120).
+- TypeScript (ESM). Use ESLint as the fixer (`npx eslint --fix <files>`); it owns formatting and import-order rules.
 - Prefer alias imports for internal packages.
 
 ## Testing

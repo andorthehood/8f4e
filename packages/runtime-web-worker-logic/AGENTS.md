@@ -9,7 +9,7 @@
 - From package directory: use `npx nx run runtime-web-worker-logic:<target>` (e.g., `npx nx run runtime-web-worker-logic:dev`).
 
 ## Coding Style
-- TypeScript + ESLint + Prettier (repo defaults). Avoid DOM APIs in worker code.
+- TypeScript + ESLint (`npx eslint --fix <files>` for fixes). Avoid DOM APIs in worker code.
 
 ## Testing
 - Vitest (via Nx). Test message handling and utilities; mock `postMessage`.
