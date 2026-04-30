@@ -107,6 +107,3 @@
   - [fallingEdge](instructions/signal-helpers.md#fallingedge)
   - [hasChanged](instructions/signal-helpers.md#haschanged)
   - [cycle](instructions/signal-helpers.md#cycle)
-
-- [Low-level](instructions/low-level.md)
-  - [wasm](instructions/low-level.md#wasm)

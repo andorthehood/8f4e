@@ -43,7 +43,6 @@ import {
 	type ReferenceKind,
 	type StoreBytesLine,
 	type UseLine,
-	type WasmLine,
 	type LoopLine,
 	type LoopIndexLine,
 	type LoopCapLine,
@@ -245,7 +244,6 @@ export {
 	type ReferenceKind,
 	type StoreBytesLine,
 	type UseLine,
-	type WasmLine,
 	type LoopLine,
 	type LoopIndexLine,
 	type LoopCapLine,
@@ -596,7 +594,6 @@ export type Instruction =
 	| 'cycle'
 	| 'abs'
 	| 'equal'
-	| 'wasm'
 	| 'branchIfUnchanged'
 	| 'pow2'
 	| 'sqrt'

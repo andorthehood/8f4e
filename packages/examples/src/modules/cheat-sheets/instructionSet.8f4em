@@ -109,8 +109,5 @@ constants instructionSet
 ; fallingEdge	Detect a falling edge.
 ; hasChanged	Detect whether a value changed.
 ; cycle	Wrap a value around a range or cycle.
-;
-; Low-level
-; wasm	Emit a raw WebAssembly opcode.
 
 constantsEnd
