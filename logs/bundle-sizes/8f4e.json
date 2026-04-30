@@ -251,5 +251,28 @@
 				"brotli": 51816
 			}
 		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-30T15:30:36.480Z",
+		"commit": "1ee771e502c901340dd8e00f7a60ed3642adc2b6",
+		"branch": "main",
+		"releaseTag": "app@0.1.11",
+		"packageName": "8f4e",
+		"projectName": "app",
+		"version": "0.1.11",
+		"bytes": {
+			"raw": 221250,
+			"gzip": 61312,
+			"brotli": 51847
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 221250,
+				"gzip": 61312,
+				"brotli": 51847
+			}
+		]
 	}
 ]
