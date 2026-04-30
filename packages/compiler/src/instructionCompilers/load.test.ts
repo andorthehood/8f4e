@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import load from './load';
 
@@ -12,7 +13,7 @@ describe('load instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			isSafeMemoryAddress: true,
+			memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
 		});
 
 		load(
@@ -31,12 +32,11 @@ describe('load instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('loads from an unsafe memory address without extra bounds checks', () => {
+	it('loads from an unsafe memory address with a bounds guard', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			isSafeMemoryAddress: false,
 		});
 
 		load(
@@ -53,5 +53,47 @@ describe('load instruction compiler', () => {
 			stack: context.stack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
+	});
+
+	it('guards when address metadata is shorter than the access width', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push({
+			isInteger: true,
+			isNonZero: false,
+			memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'test' },
+		});
+
+		load(
+			{
+				lineNumberBeforeMacroExpansion: 3,
+				lineNumberAfterMacroExpansion: 3,
+				instruction: 'load',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
+	});
+
+	it('does not guard when an explicit clamp proves the access width is safe', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push({
+			isInteger: true,
+			isNonZero: false,
+			safeMemoryAccessByteWidth: 4,
+		});
+
+		load(
+			{
+				lineNumberBeforeMacroExpansion: 4,
+				lineNumberAfterMacroExpansion: 4,
+				instruction: 'load',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
 	});
 });

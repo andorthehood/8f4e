@@ -2,21 +2,100 @@ import { ArgumentType } from '@8f4e/tokenizer';
 
 import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
 
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import {
-	getDataStructureByteAddress,
 	getElementCount,
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
 	getPointeeElementIsIntegerFromMetadata,
-	getMemoryStringLastByteAddress,
 	getPointeeElementMaxValue,
 	getPointeeElementMaxValueFromMetadata,
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
 } from '../utils/memoryData';
 
-import type { Argument, CompilationContext, CompileTimeOperand, Const } from '@8f4e/compiler-types';
+import type {
+	Argument,
+	CompilationContext,
+	CompileTimeOperand,
+	Const,
+	DataStructure,
+	MemoryAddressRange,
+} from '@8f4e/compiler-types';
+
+function getWordAlignedByteLength(wordAlignedSize: number): number {
+	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
+}
+
+function getEndAddressSafeByteLength(wordAlignedSize: number): number {
+	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
+}
+
+function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
+	return {
+		value: memoryItem.byteAddress,
+		isInteger: true,
+		memoryAddress: {
+			source: 'memory-start',
+			byteAddress: memoryItem.byteAddress,
+			safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
+			...(moduleId ? { moduleId } : {}),
+			...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
+		},
+	};
+}
+
+function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
+	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
+	return {
+		value: byteAddress,
+		isInteger: true,
+		memoryAddress: {
+			source: 'memory-end',
+			byteAddress,
+			safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
+			...(moduleId ? { moduleId } : {}),
+			...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
+		},
+	};
+}
+
+function moduleAddressConst(
+	source: 'module-start' | 'module-end',
+	byteAddress: number,
+	wordAlignedSize: number,
+	moduleId?: string
+): Const {
+	return {
+		value: byteAddress,
+		isInteger: true,
+		memoryAddress: {
+			source,
+			byteAddress,
+			safeByteLength:
+				source === 'module-start'
+					? getWordAlignedByteLength(wordAlignedSize)
+					: getEndAddressSafeByteLength(wordAlignedSize),
+			...(moduleId ? { moduleId } : {}),
+		},
+	};
+}
+
+function shiftMemoryAddressRange(
+	memoryAddress: MemoryAddressRange,
+	byteOffset: number
+): MemoryAddressRange | undefined {
+	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > memoryAddress.safeByteLength) {
+		return undefined;
+	}
+
+	return {
+		...memoryAddress,
+		byteAddress: memoryAddress.byteAddress + byteOffset,
+		safeByteLength: memoryAddress.safeByteLength - byteOffset,
+	};
+}
 
 /**
  * Tries to resolve a single pre-classified compile-time operand to a `Const` value.
@@ -194,7 +273,12 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 			const value = operand.isEndAddress
 				? getModuleEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
 				: targetNamespace.byteAddress;
-			return { value, isInteger: true };
+			return moduleAddressConst(
+				operand.isEndAddress ? 'module-end' : 'module-start',
+				value,
+				targetNamespace.wordAlignedSize,
+				targetModuleId
+			);
 		}
 		return undefined;
 	}
@@ -213,7 +297,16 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		const items = Object.values(targetNamespace.memory);
 		const item = items[operand.targetMemoryIndex];
 		if (item) {
-			return { value: item.byteAddress, isInteger: true };
+			return {
+				...memoryStartAddressConst(item, targetModuleId),
+				memoryAddress: {
+					source: 'module-nth-memory-start',
+					byteAddress: item.byteAddress,
+					safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
+					moduleId: targetModuleId,
+					...(item.id ? { memoryId: item.id } : {}),
+				},
+			};
 		}
 		return undefined;
 	}
@@ -229,10 +322,9 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		}
 		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId];
 		if (targetMemory) {
-			const value = operand.isEndAddress
-				? getEndByteAddress(targetMemory.byteAddress, targetMemory.wordAlignedSize)
-				: targetMemory.byteAddress;
-			return { value, isInteger: true };
+			return operand.isEndAddress
+				? memoryEndAddressConst(targetMemory, targetModuleId)
+				: memoryStartAddressConst(targetMemory, targetModuleId);
 		}
 		return undefined;
 	}
@@ -243,21 +335,28 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		const base = operand.targetMemoryId;
 		if (base === 'this') {
 			if (!operand.isEndAddress) {
-				return { value: context.startingByteAddress, isInteger: true };
+				return moduleAddressConst(
+					'module-start',
+					context.startingByteAddress,
+					context.currentModuleWordAlignedSize ?? 0,
+					context.namespace.moduleName
+				);
 			}
 			if (typeof context.currentModuleWordAlignedSize === 'number') {
+				const byteAddress = getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
 				return {
-					value: getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize),
-					isInteger: true,
+					...moduleAddressConst(
+						'module-end',
+						byteAddress,
+						context.currentModuleWordAlignedSize,
+						context.namespace.moduleName
+					),
 				};
 			}
 			return undefined;
 		}
 		if (Object.hasOwn(memory, base)) {
-			const value = operand.isEndAddress
-				? getMemoryStringLastByteAddress(memory, base)
-				: getDataStructureByteAddress(memory, base);
-			return { value, isInteger: true };
+			return operand.isEndAddress ? memoryEndAddressConst(memory[base]) : memoryStartAddressConst(memory[base]);
 		}
 		return undefined;
 	}
@@ -278,11 +377,20 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 						: Math.pow(lhsConst.value, rhsConst.value);
 	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
 	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
+	const memoryAddress =
+		isInteger && operator === '+' && lhsConst.memoryAddress && rhsConst.isInteger
+			? shiftMemoryAddressRange(lhsConst.memoryAddress, rhsConst.value)
+			: isInteger && operator === '+' && rhsConst.memoryAddress && lhsConst.isInteger
+				? shiftMemoryAddressRange(rhsConst.memoryAddress, lhsConst.value)
+				: isInteger && operator === '-' && lhsConst.memoryAddress && rhsConst.isInteger
+					? shiftMemoryAddressRange(lhsConst.memoryAddress, -rhsConst.value)
+					: undefined;
 
 	return {
 		value,
 		isInteger,
 		...(isFloat64 ? { isFloat64: true } : {}),
+		...(memoryAddress ? { memoryAddress } : {}),
 	};
 }
 

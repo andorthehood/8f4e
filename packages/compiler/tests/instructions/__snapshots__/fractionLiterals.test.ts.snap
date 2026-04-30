@@ -56,6 +56,12 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 0,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 0,
       },
@@ -185,6 +191,12 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -329,6 +341,12 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -473,6 +491,12 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -617,6 +641,12 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -746,6 +776,12 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 0,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 0,
       },

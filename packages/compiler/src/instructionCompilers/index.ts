@@ -67,6 +67,7 @@ import map from './map';
 import _default from './default';
 import mapEnd from './mapEnd';
 import storeBytes from './storeBytes';
+import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
 const instructions = {
 	and,
@@ -76,6 +77,9 @@ const instructions = {
 	load16u: load,
 	load8s: load,
 	load16s: load,
+	clampAddress,
+	clampModuleAddress,
+	clampGlobalAddress,
 	localSet,
 	else: _else,
 	if: _if,

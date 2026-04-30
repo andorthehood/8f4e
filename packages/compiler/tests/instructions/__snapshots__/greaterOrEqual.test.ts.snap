@@ -66,6 +66,12 @@ exports[`greaterOrEqual (float) > if the generated AST, WAT and memory map match
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 8,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 8,
       },
@@ -259,6 +265,12 @@ exports[`greaterOrEqual (int) > if the generated AST, WAT and memory map match t
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 8,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 8,
       },

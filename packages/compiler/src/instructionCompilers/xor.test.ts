@@ -26,4 +26,24 @@ describe('xor instruction compiler', () => {
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
+
+	it('keeps known integer metadata when xor-ing known integer operands', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 6 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 3 }
+		);
+
+		xor(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'xor',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 5 }]);
+	});
 });

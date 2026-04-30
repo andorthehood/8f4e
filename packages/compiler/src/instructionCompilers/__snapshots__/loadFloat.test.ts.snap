@@ -16,12 +16,41 @@ exports[`loadFloat instruction compiler > loads from a safe memory address 1`] =
 }
 `;
 
-exports[`loadFloat instruction compiler > loads from an unsafe memory address without extra bounds checks 1`] = `
+exports[`loadFloat instruction compiler > loads from an unsafe memory address with a bounds guard 1`] = `
 {
   "byteCode": [
+    33,
+    0,
+    32,
+    0,
+    63,
+    0,
+    65,
+    1,
+    107,
+    65,
+    16,
+    116,
+    65,
+    252,
+    255,
+    3,
+    106,
+    77,
+    4,
+    125,
+    32,
+    0,
     42,
     2,
     0,
+    5,
+    67,
+    0,
+    0,
+    0,
+    0,
+    11,
   ],
   "stack": [
     {

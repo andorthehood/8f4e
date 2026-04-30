@@ -131,6 +131,12 @@ exports[`const instruction > const with valid constant names > if the generated 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 0,
+          "memoryId": "output1",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 0,
       },
@@ -167,6 +173,12 @@ exports[`const instruction > const with valid constant names > if the generated 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output2",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
