@@ -1,6 +1,7 @@
 import { ArgumentType, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-types';
 
 import { ErrorCode, getError } from '../compilerError';
+import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '../consts';
 
 import type { ArgumentRule } from './types';
 
@@ -38,6 +39,14 @@ export function validateArgumentByRule(
 			}
 			if (argument.value < 0) {
 				throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+			}
+			break;
+		case 'memoryAccessWidthLiteral':
+			if (argument.type !== ArgumentType.LITERAL) {
+				throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+			}
+			if (!Number.isInteger(argument.value) || !SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS.includes(argument.value)) {
+				throw getError(ErrorCode.INVALID_ACCESS_WIDTH, line, context);
 			}
 			break;
 	}

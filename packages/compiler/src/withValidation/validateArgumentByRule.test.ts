@@ -44,4 +44,26 @@ describe('validateArgumentByRule', () => {
 			)
 		).toThrow(`${ErrorCode.EXPECTED_VALUE}`);
 	});
+
+	it('accepts supported memory access widths', () => {
+		expect(() =>
+			validateArgumentByRule(
+				{ type: ArgumentType.LITERAL, value: 8, isInteger: true },
+				'memoryAccessWidthLiteral',
+				line,
+				context
+			)
+		).not.toThrow();
+	});
+
+	it('rejects unsupported memory access widths', () => {
+		expect(() =>
+			validateArgumentByRule(
+				{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+				'memoryAccessWidthLiteral',
+				line,
+				context
+			)
+		).toThrow(`${ErrorCode.INVALID_ACCESS_WIDTH}`);
+	});
 });
