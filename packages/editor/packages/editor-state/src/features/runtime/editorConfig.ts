@@ -1,9 +1,7 @@
 import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
-import type { EditorConfigValidator } from '@8f4e/editor-state-types';
-import type { State } from '@8f4e/editor-state-types';
+import type { EditorConfigValidator, RuntimeRegistry, Runtimes, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import type { RuntimeRegistry, Runtimes } from '@8f4e/editor-state-types';
 
 export const RUNTIME_CONFIG_PATH = 'runtime';
 
@@ -34,11 +32,10 @@ export function createRuntimeEditorConfigValidator(store: StateManager<State>): 
 		matches: path => path === RUNTIME_CONFIG_PATH,
 		validate: entry => {
 			const { runtimeRegistry } = store.getState();
+			const runtimeIds = Object.keys(runtimeRegistry);
+
 			if (!(entry.value in runtimeRegistry)) {
-				return `@config runtime: unknown runtime '${entry.value}'${formatDidYouMeanSuffix(
-					entry.value,
-					Object.keys(runtimeRegistry)
-				)}`;
+				return `@config runtime: unknown runtime '${entry.value}'${formatDidYouMeanSuffix(entry.value, runtimeIds)}`;
 			}
 
 			return undefined;
