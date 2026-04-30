@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import store from './store';
 
@@ -10,7 +11,11 @@ describe('store instruction compiler', () => {
 	it('stores to a safe memory address', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true },
+			{
+				isInteger: true,
+				isNonZero: false,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+			},
 			{ isInteger: true, isNonZero: false }
 		);
 
@@ -30,12 +35,9 @@ describe('store instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('stores to an unsafe memory address without extra bounds checks', () => {
+	it('stores to an unsafe memory address with a bounds guard', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push(
-			{ isInteger: true, isNonZero: false, isSafeMemoryAddress: false },
-			{ isInteger: true, isNonZero: false }
-		);
+		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
 		store(
 			{
@@ -56,7 +58,11 @@ describe('store instruction compiler', () => {
 	it('emits f64.store (opcode 57) for float64 value at safe address', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true },
+			{
+				isInteger: true,
+				isNonZero: false,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 8, memoryId: 'test' },
+			},
 			{ isInteger: false, isFloat64: true, isNonZero: false }
 		);
 
@@ -79,7 +85,11 @@ describe('store instruction compiler', () => {
 	it('emits f32.store (opcode 56) for float32 value at safe address, not f64.store', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true },
+			{
+				isInteger: true,
+				isNonZero: false,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+			},
 			{ isInteger: false, isNonZero: false }
 		);
 
@@ -99,10 +109,7 @@ describe('store instruction compiler', () => {
 
 	it('emits f64.store for float64 value at unsafe address', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push(
-			{ isInteger: true, isNonZero: false, isSafeMemoryAddress: false },
-			{ isInteger: false, isFloat64: true, isNonZero: false }
-		);
+		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isFloat64: true, isNonZero: false });
 
 		store(
 			{
@@ -117,5 +124,29 @@ describe('store instruction compiler', () => {
 		expect(context.byteCode).toContain(57); // F64_STORE opcode
 		expect(context.byteCode).not.toContain(56); // no F32_STORE
 		expect(context.stack).toHaveLength(0);
+	});
+
+	it('does not guard when an explicit clamp proves the access width is safe', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{
+				isInteger: true,
+				isNonZero: false,
+				safeMemoryAccessByteWidth: 4,
+			},
+			{ isInteger: true, isNonZero: false }
+		);
+
+		store(
+			{
+				lineNumberBeforeMacroExpansion: 6,
+				lineNumberAfterMacroExpansion: 6,
+				instruction: 'store',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
 	});
 });

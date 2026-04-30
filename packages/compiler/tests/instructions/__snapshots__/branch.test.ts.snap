@@ -62,6 +62,12 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 0,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 0,
       },

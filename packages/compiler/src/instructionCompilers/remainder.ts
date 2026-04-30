@@ -2,9 +2,10 @@ import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
+import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler, StackItem } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `remainder`.
@@ -19,13 +20,25 @@ const remainder: InstructionCompiler = withValidation(
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 2 operands exist
 		const operand1 = context.stack.pop()!;
-		context.stack.pop()!; // Pop second operand (not used since type is already validated)
+		const operand2 = context.stack.pop()!;
 
 		if (!operand1.isNonZero) {
 			throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
 		}
 
-		context.stack.push({ isInteger: true, isNonZero: false });
+		const integerMetadata: Partial<StackItem> = deriveKnownIntegerValue(operand2, operand1, (dividend, divisor) => {
+			if (divisor === 0) {
+				return undefined;
+			}
+
+			return (dividend % divisor) | 0;
+		});
+
+		context.stack.push({
+			isInteger: true,
+			isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
+			...integerMetadata,
+		});
 		return saveByteCode(context, [WASMInstruction.I32_REM_S]);
 	}
 );

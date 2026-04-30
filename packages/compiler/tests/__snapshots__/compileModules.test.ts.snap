@@ -49,6 +49,12 @@ exports[`compiler > compileModules 1`] = `
           },
           {
             "isInteger": true,
+            "memoryAddress": {
+              "byteAddress": 0,
+              "memoryId": "defaultValue",
+              "safeByteLength": 4,
+              "source": "memory-start",
+            },
             "type": "literal",
             "value": 0,
           },
@@ -124,6 +130,12 @@ exports[`compiler > compileModules 1`] = `
         "arguments": [
           {
             "isInteger": true,
+            "memoryAddress": {
+              "byteAddress": 8,
+              "memoryId": "out",
+              "safeByteLength": 4,
+              "source": "memory-start",
+            },
             "type": "literal",
             "value": 8,
           },

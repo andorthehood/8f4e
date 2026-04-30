@@ -66,6 +66,12 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 8,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 8,
       },

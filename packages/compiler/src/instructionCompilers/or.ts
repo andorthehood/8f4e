@@ -1,9 +1,10 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
+import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler, StackItem } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `or`.
@@ -20,10 +21,19 @@ const or: InstructionCompiler = withValidation(
 		// We need to access operand values to track isNonZero for the OR operation
 		const operand2 = context.stack.pop()!;
 		const operand1 = context.stack.pop()!;
+		const integerMetadata: Partial<StackItem> = deriveKnownIntegerValue(
+			operand1,
+			operand2,
+			(value1, value2) => value1 | value2
+		);
 
 		context.stack.push({
 			isInteger: true,
-			isNonZero: operand1.isNonZero || operand2.isNonZero,
+			isNonZero:
+				integerMetadata.knownIntegerValue !== undefined
+					? integerMetadata.knownIntegerValue !== 0
+					: Boolean(operand1.isNonZero || operand2.isNonZero),
+			...integerMetadata,
 		});
 		return saveByteCode(context, [WASMInstruction.I32_OR]);
 	}

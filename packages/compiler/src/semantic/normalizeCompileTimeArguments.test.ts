@@ -229,7 +229,19 @@ describe('normalizeCompileTimeArguments', () => {
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual({
 			...line,
-			arguments: [{ type: ArgumentType.LITERAL, value: 16, isInteger: true }],
+			arguments: [
+				{
+					type: ArgumentType.LITERAL,
+					value: 16,
+					isInteger: true,
+					memoryAddress: {
+						source: 'module-start',
+						byteAddress: 16,
+						safeByteLength: 12,
+						moduleId: 'test',
+					},
+				},
+			],
 		});
 	});
 
@@ -249,7 +261,19 @@ describe('normalizeCompileTimeArguments', () => {
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual({
 			...line,
-			arguments: [{ type: ArgumentType.LITERAL, value: 24, isInteger: true }],
+			arguments: [
+				{
+					type: ArgumentType.LITERAL,
+					value: 24,
+					isInteger: true,
+					memoryAddress: {
+						source: 'module-end',
+						byteAddress: 24,
+						safeByteLength: 4,
+						moduleId: 'test',
+					},
+				},
+			],
 		});
 	});
 
@@ -509,7 +533,19 @@ describe('normalizeCompileTimeArguments', () => {
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual({
 			...line,
-			arguments: [{ type: ArgumentType.LITERAL, value: 12, isInteger: true }],
+			arguments: [
+				{
+					type: ArgumentType.LITERAL,
+					value: 12,
+					isInteger: true,
+					memoryAddress: {
+						source: 'memory-start',
+						byteAddress: 12,
+						safeByteLength: 16,
+						memoryId: 'buffer',
+					},
+				},
+			],
 		});
 	});
 
@@ -546,7 +582,19 @@ describe('normalizeCompileTimeArguments', () => {
 
 		expect(normalizeCompileTimeArguments(line, context)).toEqual({
 			...line,
-			arguments: [{ type: ArgumentType.LITERAL, value: 24, isInteger: true }],
+			arguments: [
+				{
+					type: ArgumentType.LITERAL,
+					value: 24,
+					isInteger: true,
+					memoryAddress: {
+						source: 'memory-end',
+						byteAddress: 24,
+						safeByteLength: 4,
+						memoryId: 'buffer',
+					},
+				},
+			],
 		});
 	});
 

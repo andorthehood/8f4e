@@ -9,6 +9,11 @@ export const LOGIC_LOW = 0;
 // divisible by 8, enabling safe Float64Array / DataView access. Any required alignment gap
 // (0 or 1 word) is absorbed into the float64 entry's wordAlignedSize.
 export const GLOBAL_ALIGNMENT_BOUNDARY = 4;
+export const SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS = [1, 2, GLOBAL_ALIGNMENT_BOUNDARY, GLOBAL_ALIGNMENT_BOUNDARY * 2];
+export const BYTE_MEMORY_ACCESS_WIDTH = SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS[0];
+export const HALF_WORD_MEMORY_ACCESS_WIDTH = SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS[1];
+export const WORD_MEMORY_ACCESS_WIDTH = GLOBAL_ALIGNMENT_BOUNDARY;
+export const DOUBLE_WORD_MEMORY_ACCESS_WIDTH = SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS[3];
 export const HEADER = [0x00, 0x61, 0x73, 0x6d];
 export const VERSION = [0x01, 0x00, 0x00, 0x00];
 // Number of exported WASM functions (init, cycle, initOnly, buffer)

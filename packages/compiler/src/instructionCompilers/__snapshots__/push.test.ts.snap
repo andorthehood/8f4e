@@ -52,6 +52,7 @@ exports[`push instruction compiler > pushes a literal value 1`] = `
     {
       "isInteger": true,
       "isNonZero": true,
+      "knownIntegerValue": 5,
     },
   ],
 }
@@ -90,6 +91,7 @@ exports[`push instruction compiler > pushes a normalized literal value 1`] = `
     {
       "isInteger": true,
       "isNonZero": true,
+      "knownIntegerValue": 42,
     },
   ],
 }

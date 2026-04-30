@@ -17,6 +17,8 @@
  *   before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
+import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from './consts';
+
 import type { AST, CompilationContext, CompilerStageError } from '@8f4e/compiler-types';
 
 export enum ErrorCode {
@@ -68,6 +70,9 @@ export enum ErrorCode {
 	DUPLICATE_IDENTIFIER,
 	INSTRUCTION_INVALID_OUTSIDE_LOOP,
 	ARRAY_INITIALIZER_TOO_LONG,
+	ADDRESS_RANGE_REQUIRED,
+	INVALID_ACCESS_WIDTH,
+	ADDRESS_RANGE_TOO_SMALL,
 }
 
 interface ErrorDetails {
@@ -155,6 +160,27 @@ export function getError(
 			return {
 				code,
 				message: 'Expected value, got an identifier. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.ADDRESS_RANGE_REQUIRED:
+			return {
+				code,
+				message: 'This instruction requires address range metadata. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.INVALID_ACCESS_WIDTH:
+			return {
+				code,
+				message: `Access width must be ${SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS.join(', ')} bytes. (${code})`,
+				line,
+				context,
+			};
+		case ErrorCode.ADDRESS_RANGE_TOO_SMALL:
+			return {
+				code,
+				message: 'Access width is larger than the address range. (' + code + ')',
 				line,
 				context,
 			};

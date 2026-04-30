@@ -51,6 +51,12 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -65,6 +71,12 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 0,
+          "memoryId": "input",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 0,
       },
