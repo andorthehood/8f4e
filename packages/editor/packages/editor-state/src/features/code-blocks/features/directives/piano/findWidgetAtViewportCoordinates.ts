@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, PianoKeyboard, State } from '~/types';
+import type { CodeBlockGraphicData, PianoKeyboard, State } from '@8f4e/editor-state-types';
 
 /**
  * Finds the piano keyboard widget inside a code block that encloses the provided viewport-relative point.

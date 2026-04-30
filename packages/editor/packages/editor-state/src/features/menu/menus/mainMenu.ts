@@ -1,4 +1,4 @@
-import type { MenuGenerator } from '~/types';
+import type { MenuGenerator } from '@8f4e/editor-state-types';
 
 export const mainMenu: MenuGenerator = state => [
 	...(state.featureFlags.editing

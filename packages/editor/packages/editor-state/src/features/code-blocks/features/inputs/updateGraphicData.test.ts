@@ -3,7 +3,7 @@ import { MemoryTypes } from '@8f4e/compiler';
 
 import updateInputsGraphicData from './updateGraphicData';
 
-import type { CodeBlockGraphicData, State } from '~/types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 

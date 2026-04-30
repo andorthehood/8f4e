@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import codeBlockNavigation, { goHome, jumpToCodeBlock, navigateToCodeBlockInDirection } from './effect';
 
-import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '~/types';
+import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';

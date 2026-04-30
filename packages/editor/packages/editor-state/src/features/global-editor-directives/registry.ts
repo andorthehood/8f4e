@@ -3,15 +3,15 @@ import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
 import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
-import type { CodeError, ParsedDirectiveRecord, CodeBlockType } from '~/types';
+import type { CodeError, ParsedDirectiveRecord, CodeBlockType } from '@8f4e/editor-state-types';
 import type {
 	GlobalEditorDirectiveContext,
 	GlobalEditorDirectiveResolutionResult,
 	GlobalEditorDirectivePlugin,
 	ParsedGlobalEditorDirective,
 	ResolvedGlobalEditorDirectives,
-} from './types';
-import type { RuntimeRegistry } from '../runtime/types';
+} from '@8f4e/editor-state-types';
+import type { RuntimeRegistry } from '@8f4e/editor-state-types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
 	configDirective,

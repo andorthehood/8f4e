@@ -5,7 +5,7 @@ import codeBlockDragger from './effect';
 
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 
-import type { State, InternalMouseEvent, EventDispatcher } from '~/types';
+import type { State, InternalMouseEvent, EventDispatcher } from '@8f4e/editor-state-types';
 
 describe('codeBlockDragger', () => {
 	let state: State;

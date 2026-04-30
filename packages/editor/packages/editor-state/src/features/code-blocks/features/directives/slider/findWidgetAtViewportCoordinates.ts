@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, State, Slider } from '~/types';
+import type { CodeBlockGraphicData, State, Slider } from '@8f4e/editor-state-types';
 
 /**
  * Performs a hit test against slider decorations inside a code block using viewport-relative coordinates.

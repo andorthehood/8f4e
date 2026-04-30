@@ -1,7 +1,5 @@
-import { Viewport } from './types';
-
-import type { ViewportBlockAlignment } from './blockAlignment';
-import type { Position } from '~/types';
+import type { Viewport } from '@8f4e/editor-state-types';
+import type { Position, ViewportBlockAlignment } from '@8f4e/editor-state-types';
 
 /**
  * Minimal positional data required for viewport centering

@@ -1,15 +1,6 @@
 import { getModuleId } from '@8f4e/tokenizer';
 
-import type { CodeBlockGraphicData } from '~/types';
-
-export interface EditorConfigStorageBlock {
-	code: string[];
-	disabled?: boolean;
-	gridCoordinates?: {
-		x: number;
-		y: number;
-	};
-}
+import type { CodeBlockGraphicData, EditorConfigStorageBlock } from '@8f4e/editor-state-types';
 
 const EDITOR_CONFIG_MODULE_ID = 'editorConfig';
 

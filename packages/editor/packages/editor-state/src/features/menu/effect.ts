@@ -4,9 +4,9 @@ import * as menus from './menus';
 
 import findCodeBlockAtViewportCoordinates from '../code-blocks/utils/finders/findCodeBlockAtViewportCoordinates';
 
-import type { ContextMenuItem, State } from '~/types';
+import type { ContextMenuItem, State } from '@8f4e/editor-state-types';
+import type { EventDispatcher } from '@8f4e/editor-state-types';
 
-import { EventDispatcher } from '~/types';
 import roundToGrid from '~/features/viewport/roundToGrid';
 
 interface MouseEvent {

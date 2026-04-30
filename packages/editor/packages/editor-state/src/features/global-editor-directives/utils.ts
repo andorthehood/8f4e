@@ -1,5 +1,5 @@
-import type { GlobalEditorDirectivePlugin, ParsedGlobalEditorDirective } from './types';
-import type { ParsedDirectiveRecord } from '~/types';
+import type { GlobalEditorDirectivePlugin, ParsedGlobalEditorDirective } from '@8f4e/editor-state-types';
+import type { ParsedDirectiveRecord } from '@8f4e/editor-state-types';
 
 export function createGlobalEditorDirectivePlugin(
 	name: string,

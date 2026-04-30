@@ -1,6 +1,6 @@
 import { getExampleProjectMetadata } from './exampleProjects';
 
-import type { ProjectMetadata } from '@8f4e/editor-state';
+import type { ProjectMetadata } from '@8f4e/editor-state-types';
 
 /**
  * Get list of projects with metadata only.

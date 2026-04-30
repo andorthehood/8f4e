@@ -1,4 +1,4 @@
-import { ContextMenu } from '@8f4e/editor-state';
+import type { ContextMenu } from '@8f4e/editor-state-types';
 
 export default function generateContextMenuMock(): ContextMenu {
 	return {

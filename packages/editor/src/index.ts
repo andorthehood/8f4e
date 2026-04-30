@@ -1,4 +1,4 @@
-import initState, { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state';
+import initState from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
@@ -12,6 +12,7 @@ import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 import type { PostProcessEffect, BackgroundEffect } from 'glugglug';
+import type { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state-types';
 
 // Re-export types that consumers might need
 export type {
@@ -34,7 +35,7 @@ export type {
 	EditorMode,
 	JSONSchemaLike,
 	EditorConfigStorageBlock,
-} from '@8f4e/editor-state';
+} from '@8f4e/editor-state-types';
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';
 

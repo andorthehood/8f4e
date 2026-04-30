@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, State } from '~/types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 
 /**
  * Searches all code blocks (topmost first) for the one that contains the viewport-relative coordinates.

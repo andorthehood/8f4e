@@ -1,4 +1,4 @@
-import type { Direction } from '../code-blocks/utils/types';
+import type { Direction } from '@8f4e/editor-state-types';
 
 export type MoveDirection = Direction | 'jump';
 

@@ -4,7 +4,7 @@ import upsertPos from '../directives/pos/upsert';
 import { worldPositionToAnchoredPos } from '../directives/viewport/resolve';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '~/types';
+import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '@8f4e/editor-state-types';
 
 export interface CodeBlockClickEvent {
 	x: number;

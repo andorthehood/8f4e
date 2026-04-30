@@ -1,7 +1,7 @@
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 function updateParsedDirectivesForBlock(block: State['graphicHelper']['codeBlocks'][number] | undefined): void {
 	if (!block) {

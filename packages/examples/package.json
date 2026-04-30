@@ -21,6 +21,6 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
     "@8f4e/cli": "*",
-    "@8f4e/editor-state": "*"
+    "@8f4e/editor-state-types": "*"
   }
 }
