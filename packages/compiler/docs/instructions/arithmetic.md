@@ -48,6 +48,38 @@ push 0.7    ; stack: [ 4, 0.5, 0.7 ]
 add         ; stack: [ 4, 0.35 ]
 ```
 
+### min
+
+The "min" instruction retrieves two numbers of the same type from the stack and stores the smaller value back onto the stack.
+
+#### Examples
+
+```
+push 10
+push 3
+min       ; stack: [ 3 ]
+
+push 0.5
+push 0.7
+min       ; stack: [ 0.5 ]
+```
+
+### max
+
+The "max" instruction retrieves two numbers of the same type from the stack and stores the larger value back onto the stack.
+
+#### Examples
+
+```
+push 10
+push 3
+max       ; stack: [ 10 ]
+
+push 0.5
+push 0.7
+max       ; stack: [ 0.7 ]
+```
+
 ### remainder
 
 The "remainder" instruction retrieves two integer operands from the stack, divides the first operand by the second operand, and then computes the remainder of this division. It then stores the remainder back onto the stack. 
