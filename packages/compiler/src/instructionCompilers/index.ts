@@ -15,7 +15,6 @@ import greaterOrEqual from './greaterOrEqual';
 import add from './add';
 import min from './min';
 import max from './max';
-import clamp from './clamp';
 import greaterThan from './greaterThan';
 import branch from './branch';
 import branchIfTrue from './branchIfTrue';
@@ -96,7 +95,6 @@ const instructions = {
 	add,
 	min,
 	max,
-	clamp,
 	greaterThan,
 	branch,
 	branchIfTrue,

@@ -7,7 +7,6 @@
 
 - [Arithmetic instructions](instructions/arithmetic.md)
   - [add](instructions/arithmetic.md#add)
-  - [clamp](instructions/arithmetic.md#clamp)
   - [div](instructions/arithmetic.md#div)
   - [min](instructions/arithmetic.md#min)
   - [max](instructions/arithmetic.md#max)
