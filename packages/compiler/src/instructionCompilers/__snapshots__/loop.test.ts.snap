@@ -83,11 +83,11 @@ exports[`loop instruction compiler > compiles the loop segment with default cap 
       "index": 0,
       "isInteger": true,
     },
-    "__memoryGuardAddr_13": {
+    "__memoryGuardAddr_6": {
       "index": 1,
       "isInteger": true,
     },
-    "__memoryGuardValue_13": {
+    "__memoryGuardValue_6": {
       "index": 2,
       "isInteger": true,
     },
@@ -178,11 +178,11 @@ exports[`loop instruction compiler > compiles the loop segment with explicit cap
       "index": 0,
       "isInteger": true,
     },
-    "__memoryGuardAddr_13": {
+    "__memoryGuardAddr_6": {
       "index": 1,
       "isInteger": true,
     },
-    "__memoryGuardValue_13": {
+    "__memoryGuardValue_6": {
       "index": 2,
       "isInteger": true,
     },
@@ -273,11 +273,11 @@ exports[`loop instruction compiler > explicit argument overrides context.loopCap
       "index": 0,
       "isInteger": true,
     },
-    "__memoryGuardAddr_13": {
+    "__memoryGuardAddr_6": {
       "index": 1,
       "isInteger": true,
     },
-    "__memoryGuardValue_13": {
+    "__memoryGuardValue_6": {
       "index": 2,
       "isInteger": true,
     },
@@ -369,11 +369,11 @@ exports[`loop instruction compiler > uses context.loopCap when no argument is pr
       "index": 0,
       "isInteger": true,
     },
-    "__memoryGuardAddr_13": {
+    "__memoryGuardAddr_6": {
       "index": 1,
       "isInteger": true,
     },
-    "__memoryGuardValue_13": {
+    "__memoryGuardValue_6": {
       "index": 2,
       "isInteger": true,
     },
