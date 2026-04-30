@@ -1,4 +1,4 @@
-import type { ContextMenuItem } from '~/types';
+import type { ContextMenuItem } from '@8f4e/editor-state-types';
 
 export interface CategoryItem {
 	title: string;

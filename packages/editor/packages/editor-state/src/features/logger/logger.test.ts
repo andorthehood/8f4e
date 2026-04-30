@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import { log, warn, error, info } from './logger';
 
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 

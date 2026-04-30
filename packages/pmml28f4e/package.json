@@ -28,6 +28,7 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
     "@8f4e/editor-state": "*",
+    "@8f4e/editor-state-types": "*",
     "commander": "^14.0.3",
     "fast-xml-parser": "^5.7.0"
   },

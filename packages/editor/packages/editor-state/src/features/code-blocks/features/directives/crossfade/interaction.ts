@@ -2,10 +2,9 @@ import { StateManager } from '@8f4e/state-manager';
 
 import findCrossfadeWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
-import type { State, CodeBlockGraphicData, Crossfade, InternalMouseEvent } from '~/types';
+import type { State, CodeBlockGraphicData, Crossfade, InternalMouseEvent } from '@8f4e/editor-state-types';
 import type { DataStructure } from '@8f4e/compiler';
-
-import { EventDispatcher } from '~/types';
+import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 interface ActiveCrossfade {
 	crossfade: Crossfade;

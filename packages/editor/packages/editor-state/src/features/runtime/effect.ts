@@ -4,10 +4,7 @@ import { registerRuntimeEditorConfigValidator, resolveSelectedRuntimeId } from '
 
 import { log, error } from '../logger/logger';
 
-import type { State, EventDispatcher } from '~/types';
-
-// Re-export types for convenience
-export type { RuntimeFactory } from '~/types';
+import type { State, EventDispatcher } from '@8f4e/editor-state-types';
 
 export default async function runtime(store: StateManager<State>, events: EventDispatcher) {
 	registerRuntimeEditorConfigValidator(store);

@@ -19,7 +19,7 @@ import {
 } from '../code-blocks/utils/finders/findFirstFreeCodeBlockGridY';
 import upsertPos from '../code-blocks/features/directives/pos/upsert';
 
-import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 export default function editorConfigModule(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();

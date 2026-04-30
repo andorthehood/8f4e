@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import deriveFavorites from './deriveFavorites';
 
-import type { CodeBlockGraphicData } from '../../types';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 // Helper to create a minimal mock code block
 function mockCodeBlock(

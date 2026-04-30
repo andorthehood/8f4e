@@ -38,7 +38,7 @@ import updateViewport from '../../../viewport/updateViewport';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 import { isShaderNoteCode } from '../../../shader-effects/getShaderNoteMetadata';
 
-import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
+import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
 
 function shouldRenderBlankLineNumber(sourceLine: string): boolean {
 	const instruction = sourceLine.match(/^\s*([^\s;]+)/)?.[1];

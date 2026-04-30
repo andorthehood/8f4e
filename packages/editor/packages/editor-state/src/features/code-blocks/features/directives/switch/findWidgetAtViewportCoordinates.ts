@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, State, Switch } from '~/types';
+import type { CodeBlockGraphicData, State, Switch } from '@8f4e/editor-state-types';
 
 /**
  * Performs a hit test against switch decorations inside a code block using viewport-relative coordinates.

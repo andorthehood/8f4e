@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, Switch, State } from '~/types';
+import type { CodeBlockGraphicData, Switch, State } from '@8f4e/editor-state-types';
 
 /**
  * Locates the button overlay within a code block that intersects the provided viewport-relative coordinates.

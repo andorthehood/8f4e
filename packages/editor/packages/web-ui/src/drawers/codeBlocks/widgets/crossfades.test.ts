@@ -4,7 +4,7 @@ import { createMockCodeBlock, createMockState } from '@8f4e/editor-state/testing
 import drawCrossfades from './crossfades';
 
 import type { Engine } from 'glugglug';
-import type { Crossfade } from '@8f4e/editor-state';
+import type { Crossfade } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../../types';
 
 function createMemoryViews({ float32 = [] }: { float32?: number[] } = {}): MemoryViews {

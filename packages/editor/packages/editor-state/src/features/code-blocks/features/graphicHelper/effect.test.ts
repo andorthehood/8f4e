@@ -7,7 +7,7 @@ import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlo
 
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
-import { EMPTY_DEFAULT_PROJECT } from '~/types';
+import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 
 describe('graphic helper error mapping', () => {
 	it('maps typed compiler errors to function blocks', () => {

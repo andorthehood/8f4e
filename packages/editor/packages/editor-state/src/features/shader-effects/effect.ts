@@ -5,7 +5,7 @@ import { isShaderNoteCode } from './getShaderNoteMetadata';
 
 import { log } from '../logger/logger';
 
-import type { EventDispatcher, State } from '~/types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 
 /**
  * Effect that keeps post-process and background effects in sync with shader code blocks.

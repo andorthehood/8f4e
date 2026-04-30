@@ -4,9 +4,8 @@ import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewport
 
 import { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
 
-import type { CodeBlockGraphicData, PianoKeyboard, State } from '~/types';
-
-import { EventDispatcher } from '~/types';
+import type { CodeBlockGraphicData, PianoKeyboard, State } from '@8f4e/editor-state-types';
+import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 // Data flow must stay one-way:
 // UI key press -> edits code -> runtime updates memory -> UI reflects memory.

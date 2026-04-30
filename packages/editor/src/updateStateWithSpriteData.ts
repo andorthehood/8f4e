@@ -1,4 +1,4 @@
-import type { State } from '@8f4e/editor-state';
+import type { State } from '@8f4e/editor-state-types';
 import type { SpriteData } from '@8f4e/web-ui';
 
 /**

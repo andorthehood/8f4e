@@ -1,7 +1,7 @@
 import generateSprite from '@8f4e/sprite-generator';
 
 import type { SpriteData } from '@8f4e/web-ui';
-import type { State } from '@8f4e/editor-state';
+import type { State } from '@8f4e/editor-state-types';
 
 /**
  * Generate sprite data for testing

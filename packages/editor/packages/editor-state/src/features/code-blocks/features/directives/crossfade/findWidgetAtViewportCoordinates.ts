@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, Crossfade, State } from '~/types';
+import type { CodeBlockGraphicData, Crossfade, State } from '@8f4e/editor-state-types';
 
 export default function findCrossfadeWidgetAtViewportCoordinates(
 	state: State,

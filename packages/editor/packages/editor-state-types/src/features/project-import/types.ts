@@ -20,14 +20,6 @@ export interface Project {
 }
 
 /**
- * Default empty project structure used when no project is loaded from storage.
- */
-export const EMPTY_DEFAULT_PROJECT: Project = {
-	codeBlocks: [],
-	compiledModules: {},
-};
-
-/**
  * Module metadata for listing.
  */
 export interface ModuleMetadata {

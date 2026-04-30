@@ -1,4 +1,4 @@
-import type { Project } from '@8f4e/editor-state';
+import type { Project } from '@8f4e/editor-state-types';
 
 const ericSaiteGenerator: Project = {
 	codeBlocks: [

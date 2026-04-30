@@ -5,9 +5,8 @@ import { type CompilerDiagnostic } from '@8f4e/compiler';
 import { log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
-import type { CodeBlockGraphicData, State } from '~/types';
-
-import { EventDispatcher } from '~/types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 /**
  * Converts code blocks into separate arrays for modules, functions, and macros, sorted by creationIndex.

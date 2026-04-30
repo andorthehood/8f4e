@@ -1,4 +1,4 @@
-import type { ViewportAnchor } from '../types';
+import type { ViewportAnchor } from '@8f4e/editor-state-types';
 
 export interface ViewportAnchoredPositionInput {
 	anchor: ViewportAnchor;

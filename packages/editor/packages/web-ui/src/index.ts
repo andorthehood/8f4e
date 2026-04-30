@@ -8,7 +8,7 @@ import drawDialog from './drawers/dialog';
 import drawModeOverlay from './drawers/modeOverlay';
 import drawBackground from './drawers/drawBackground';
 
-import type { State } from '@8f4e/editor-state';
+import type { State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from './types';
 
 // Re-export types

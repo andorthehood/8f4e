@@ -1,4 +1,4 @@
-import type { CodeBlock, Project } from '@8f4e/editor-state';
+import type { CodeBlock, Project } from '@8f4e/editor-state-types';
 import type { PmmlNeuralNetwork, PmmlNeuralLayer, PmmlNeuron } from './pmml';
 
 const DEFAULT_GRID_SPACING_X = 40;

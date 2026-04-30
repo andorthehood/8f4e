@@ -1,6 +1,6 @@
 import roundToGrid from './roundToGrid';
 
-import type { Position, State } from '~/types';
+import type { Position, State } from '@8f4e/editor-state-types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 

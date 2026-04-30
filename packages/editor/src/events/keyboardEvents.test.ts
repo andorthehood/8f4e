@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import keyboardEvents from './keyboardEvents';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '@8f4e/editor-state';
+import type { State } from '@8f4e/editor-state-types';
 import type { EventDispatcher } from '.';
 
 type WindowListener = (event: KeyboardEvent) => void;

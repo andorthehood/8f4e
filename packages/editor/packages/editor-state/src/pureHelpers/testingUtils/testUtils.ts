@@ -1,11 +1,11 @@
 import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
 
-import type { DirectiveDeriveOptions, DirectiveDerivedState } from '~/features/code-blocks/features/directives/types';
-import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
+import type { DirectiveDeriveOptions, DirectiveDerivedState } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { Viewport } from '@8f4e/editor-state-types';
 
 import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
 import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
-import { Viewport } from '~/features/viewport/types';
 
 /**
  * Deep partial type that makes all properties and nested properties optional

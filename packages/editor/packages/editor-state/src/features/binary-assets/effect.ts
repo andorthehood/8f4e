@@ -3,7 +3,7 @@ import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
 import { info } from '../logger/logger';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { State, EventDispatcher } from '~/types';
+import type { State, EventDispatcher } from '@8f4e/editor-state-types';
 
 import resolveBinaryAssetTarget from '~/pureHelpers/resolveBinaryAssetTarget';
 

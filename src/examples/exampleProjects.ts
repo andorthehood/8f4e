@@ -1,6 +1,6 @@
 import { fetchRegistryJson } from './fetchRegistry';
 
-import type { ProjectMetadata } from '@8f4e/editor-state';
+import type { ProjectMetadata } from '@8f4e/editor-state-types';
 
 const EXAMPLE_PROJECTS_REGISTRY_URL = 'https://static.llllllllllll.com/8f4e/example-projects/registry.json';
 

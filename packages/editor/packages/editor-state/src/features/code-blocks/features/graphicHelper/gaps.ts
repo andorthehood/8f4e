@@ -1,7 +1,7 @@
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { type DirectiveDerivedState } from '../directives/registry';
 
-import type { CodeBlockGraphicData } from '~/types';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 function getDisplayRow(rawRow: number, directiveState: DirectiveDerivedState): number | undefined {
 	return directiveState.displayModel.rawRowToDisplayRow[rawRow];

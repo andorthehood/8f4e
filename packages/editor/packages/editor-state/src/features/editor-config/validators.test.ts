@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { getEditorConfigKnownPaths, resolveEditorConfigEntries, validateEditorConfigEntries } from './validators';
 
-import type { EditorConfigEntry, EditorConfigValidatorRegistry } from './types';
+import type { EditorConfigEntry, EditorConfigValidatorRegistry } from '@8f4e/editor-state-types';
 
 function entry(path: string, value: string): EditorConfigEntry {
 	return {

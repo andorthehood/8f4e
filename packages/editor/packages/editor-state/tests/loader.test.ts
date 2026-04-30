@@ -5,9 +5,9 @@ import compiler from '../src/features/program-compiler/effect';
 import projectImport from '../src/features/project-import/effect';
 import { createMockState } from '../src/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
-import { EMPTY_DEFAULT_PROJECT } from '../src/types';
+import { EMPTY_DEFAULT_PROJECT } from '../src/features/project-import/emptyDefaultProject';
 
-import type { State, Project } from '../src/types';
+import type { State, Project } from '@8f4e/editor-state-types';
 
 describe('Loader - Project loading', () => {
 	let mockState: State;

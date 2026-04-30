@@ -6,7 +6,7 @@ import { moveCaret } from './moveCaret';
 import { getRawIndexForVisualColumn, getTabStopsByLine, getVisualColumnForRawIndex } from './tabLayout';
 import type from './type';
 
-import { EventDispatcher, MoveCaretEvent, InsertTextEvent, State } from '~/types';
+import type { EventDispatcher, MoveCaretEvent, InsertTextEvent, State } from '@8f4e/editor-state-types';
 
 export default function codeEditing(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();

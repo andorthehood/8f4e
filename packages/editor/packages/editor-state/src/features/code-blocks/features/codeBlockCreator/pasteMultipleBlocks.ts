@@ -13,7 +13,7 @@ import { renameInterModuleReferences } from '../../utils/renameInterModuleRefere
 import { hasDirective } from '../directives/utils';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State } from '~/types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 
 /**
  * Updates inter-module references in code when pasting multiple blocks.
