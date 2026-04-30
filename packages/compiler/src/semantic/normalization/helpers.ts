@@ -5,6 +5,7 @@ import {
 	type Argument,
 	type ArgumentIdentifier,
 	type CompilationContext,
+	type NormalizedArgumentLiteral,
 } from '@8f4e/compiler-types';
 
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
@@ -89,7 +90,10 @@ export function validateIntermoduleAddressReference(
 	}
 }
 
-export function normalizeArgument(argument: Argument, context: CompilationContext): Argument {
+export function normalizeArgument(
+	argument: Argument,
+	context: CompilationContext
+): Argument | NormalizedArgumentLiteral {
 	// tryResolveCompileTimeArgument returns undefined for non-IDENTIFIER and non-COMPILE_TIME_EXPRESSION
 	// types, so we short-circuit here to avoid unnecessary work.
 	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
@@ -102,12 +106,15 @@ export function normalizeArgument(argument: Argument, context: CompilationContex
 		return argument;
 	}
 
-	return {
-		type: ArgumentType.LITERAL,
+	const literal: NormalizedArgumentLiteral = {
+		type: ArgumentType.LITERAL as ArgumentType.LITERAL,
 		value: resolved.value,
 		isInteger: resolved.isInteger,
 		...(resolved.isFloat64 ? { isFloat64: true } : {}),
+		...(resolved.memoryAddress ? { memoryAddress: resolved.memoryAddress } : {}),
 	};
+
+	return literal;
 }
 
 /**

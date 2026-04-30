@@ -12,7 +12,7 @@ describe('loadFloat instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			isSafeMemoryAddress: true,
+			memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
 		});
 
 		loadFloat(
@@ -36,7 +36,6 @@ describe('loadFloat instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			isSafeMemoryAddress: false,
 		});
 
 		loadFloat(
