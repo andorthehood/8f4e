@@ -31,10 +31,10 @@
     "@types/offscreencanvas": "2019.7.3",
     "@typescript-eslint/eslint-plugin": "^8.50.0",
     "@typescript-eslint/parser": "^8.50.0",
-    "@vitest/browser": "4.0.13",
-    "@vitest/browser-playwright": "4.0.13",
-    "@vitest/coverage-v8": "4.0.13",
-    "@vitest/ui": "4.0.13",
+    "@vitest/browser": "4.1.5",
+    "@vitest/browser-playwright": "4.1.5",
+    "@vitest/coverage-v8": "4.1.5",
+    "@vitest/ui": "4.1.5",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.2",
     "eslint-plugin-import": "^2.31.0",
@@ -50,7 +50,7 @@
     "vite": "^7.3.2",
     "vite-plugin-glsl": "^1.5.1",
     "vite-plugin-static-copy": "^3.1.2",
-    "vitest": "4.0.13",
+    "vitest": "4.1.5",
     "wabt": "^1.0.29"
   },
   "workspaces": [
