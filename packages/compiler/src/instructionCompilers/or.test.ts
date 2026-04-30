@@ -26,4 +26,24 @@ describe('or instruction compiler', () => {
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
+
+	it('keeps known integer metadata when or-ing known integer operands', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 3 }
+		);
+
+		or(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'or',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 7 }]);
+	});
 });

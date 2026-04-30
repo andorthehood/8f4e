@@ -38,4 +38,39 @@ describe('compileSegment', () => {
 			},
 		]);
 	});
+
+	it('keeps address metadata when adding a computed in-range byte offset', () => {
+		const context = createInstructionCompilerTestContext({
+			namespace: {
+				memory: {
+					arr: {
+						id: 'arr',
+						numberOfElements: 16,
+						elementWordSize: 4,
+						wordAlignedAddress: 0,
+						wordAlignedSize: 16,
+						byteAddress: 0,
+						default: 0,
+						isInteger: true,
+						isPointingToPointer: false,
+						isUnsigned: false,
+						type: 'int',
+					},
+				},
+				consts: {},
+			} as never,
+		});
+
+		compileSegment(['push &arr', 'push 2', 'push sizeof(arr)', 'mul', 'add'], context);
+
+		expect(context.stack).toEqual([
+			{
+				isInteger: true,
+				isNonZero: true,
+				knownIntegerValue: 8,
+				memoryAddress: { source: 'memory-start', byteAddress: 8, safeByteLength: 56, memoryId: 'arr' },
+				memoryAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 64, memoryId: 'arr' },
+			},
+		]);
+	});
 });
