@@ -19,13 +19,14 @@ The runtime registry is located at the project root level (not in editor-state):
 
 ```typescript
 state.runtimeRegistry = {
-	audio: { factory: audioRuntimeFactory },
-	logic: { factory: logicRuntimeFactory },
-	// ... other runtimes
+	AudioWorkletRuntime: { factory: audioWorkletRuntimeFactory },
+	WebWorkerRuntime: { factory: webWorkerRuntimeFactory },
+	MainThreadRuntime: { factory: mainThreadRuntimeFactory },
 };
 ```
 
-Each entry contains a `factory` function that creates and returns a destroyer function.
+The keys in `state.runtimeRegistry` are the runtime IDs used by `; @config runtime <runtimeId>`, so those
+strings must match exactly. Each entry contains a `factory` function that creates and returns a destroyer function.
 
 ## Runtime Lifecycle
 
@@ -52,7 +53,7 @@ Each entry contains a `factory` function that creates and returns a destroyer fu
 
 ## Integration Points
 
-- **Editor Config**: Runtime selection comes from `; @config runtime <id>`
+- **Editor Config**: Runtime selection comes from `; @config runtime <runtimeId>`
 - **Program Compiler**: Runtime initialization waits for compilation to complete
 - **Runtime Factories**: External runtime implementations register themselves in the registry
 
