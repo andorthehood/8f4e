@@ -1,4 +1,4 @@
-import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler';
+import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-types';
 
 export interface ProjectCodeBlock {
 	code: string[];

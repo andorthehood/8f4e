@@ -1,10 +1,15 @@
 import {
+	ArgumentType,
+	type CompilationContext,
+	type DefaultLine,
+	type NormalizedDefaultLine,
+} from '@8f4e/compiler-types';
+
+import {
 	validateOrDeferCompileTimeExpression,
 	validateOrDeferUnresolvedIdentifier,
 	normalizeArgumentsAtIndexes,
 } from './helpers';
-
-import { ArgumentType, type CompilationContext, type DefaultLine, type NormalizedDefaultLine } from '../../types';
 
 /**
  * Normalizes compile-time arguments for the `default` instruction.

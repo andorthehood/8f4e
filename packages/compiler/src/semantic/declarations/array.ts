@@ -1,14 +1,15 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
-import { ErrorCode, getError } from '../../compilerError';
-import { withValidation } from '../../withValidation';
-import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import {
 	ArgumentType,
 	type ArrayDeclarationLine,
 	type CompilationContext,
 	type InstructionCompiler,
 	type MemoryTypes,
-} from '../../types';
+} from '@8f4e/compiler-types';
+
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
+import { ErrorCode, getError } from '../../compilerError';
+import { withValidation } from '../../withValidation';
+import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
 function getElementWordSize(instruction: string): number {
 	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;

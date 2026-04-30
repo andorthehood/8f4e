@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import resolveIntermodularReferenceValue from './resolveIntermodularReferenceValue';
 
-import type { AST, CompilationContext } from '../types';
+import type { AST, CompilationContext } from '@8f4e/compiler-types';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

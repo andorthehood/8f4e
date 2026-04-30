@@ -1,7 +1,7 @@
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `dup`.

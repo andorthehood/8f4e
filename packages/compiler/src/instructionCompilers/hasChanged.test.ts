@@ -4,7 +4,7 @@ import hasChanged from './hasChanged';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('hasChanged instruction compiler', () => {
 	it('compiles the change detector segment', () => {

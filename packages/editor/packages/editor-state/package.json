@@ -28,10 +28,10 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
+    "@8f4e/compiler-types": "*",
     "@8f4e/editor-state-types": "*",
-    "glugglug": "*",
     "@8f4e/sprite-generator": "*",
-    "@8f4e/compiler": "*"
+    "glugglug": "*"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

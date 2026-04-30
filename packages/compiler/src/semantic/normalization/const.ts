@@ -1,6 +1,7 @@
+import { ArgumentType, type CompilationContext, type ConstLine, type NormalizedConstLine } from '@8f4e/compiler-types';
+
 import { normalizeArgumentsAtIndexes } from './helpers';
 
-import { ArgumentType, type CompilationContext, type ConstLine, type NormalizedConstLine } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
 // Throws UNDECLARED_IDENTIFIER when the value cannot be folded to a literal.

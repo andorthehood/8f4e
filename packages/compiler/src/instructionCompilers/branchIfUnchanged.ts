@@ -2,7 +2,7 @@ import { compileSegment } from '../compiler';
 import { allocateInternalResource } from '../utils/internalResources';
 import { withValidation } from '../withValidation';
 
-import type { BranchIfUnchangedLine, InstructionCompiler } from '../types';
+import type { BranchIfUnchangedLine, InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `branchIfUnchanged`.

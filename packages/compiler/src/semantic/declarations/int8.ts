@@ -1,6 +1,6 @@
 import createDeclarationCompiler from './createDeclarationCompiler';
 
-import type { InstructionCompiler } from '../../types';
+import type { InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `int8*`, `int8**`.

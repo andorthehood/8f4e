@@ -4,7 +4,7 @@ import store from './store';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('store instruction compiler', () => {
 	it('stores to a safe memory address', () => {

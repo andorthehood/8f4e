@@ -1,0 +1,33 @@
+{
+  "name": "@8f4e/compiler-types",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared public types for the 8f4e compiler contract",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andorthehood/8f4e.git"
+  },
+  "author": "Andor Polgar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andorthehood/8f4e/issues"
+  },
+  "homepage": "https://github.com/andorthehood/8f4e#readme",
+  "dependencies": {
+    "@8f4e/compiler-wasm-utils": "*",
+    "@8f4e/tokenizer": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0"
+  }
+}

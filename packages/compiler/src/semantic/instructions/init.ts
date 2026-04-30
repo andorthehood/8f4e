@@ -1,5 +1,6 @@
+import { ArgumentType, type CompilationContext, type NormalizedInitLine } from '@8f4e/compiler-types';
+
 import { ErrorCode, getError } from '../../compilerError';
-import { ArgumentType, type CompilationContext, type NormalizedInitLine } from '../../types';
 
 export default function semanticInit(line: NormalizedInitLine, context: CompilationContext) {
 	const targetIdentifier = line.arguments[0].value;

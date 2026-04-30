@@ -4,7 +4,7 @@ import clearStack from './clearStack';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('clearStack instruction compiler', () => {
 	it('drops all stack values', () => {

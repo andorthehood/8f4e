@@ -1,7 +1,7 @@
 import { ErrorCode } from '../compilerError';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, LoopCapLine } from '../types';
+import type { InstructionCompiler, LoopCapLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `#loopCap` compiler directive.

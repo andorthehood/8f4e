@@ -2,30 +2,7 @@ import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenize
 
 import { ErrorCode, getError } from '../compilerError';
 
-import type { Instruction } from '../instructionCompilers';
-import type { AST, Module } from '../types';
-
-/**
- * Represents an expanded source line with metadata for error mapping.
- */
-export interface ExpandedLine {
-	/** The actual source code line */
-	line: string;
-	/** The original line number where this line appears (or was expanded to) */
-	callSiteLineNumber: number;
-	/** The macro ID if this line was expanded from a macro, undefined otherwise */
-	macroId?: string;
-}
-
-/**
- * Represents a parsed macro definition.
- */
-export interface MacroDefinition {
-	name: string;
-	body: string[];
-	/** Line number where the macro is defined (for error reporting) */
-	definitionLineNumber: number;
-}
+import type { AST, ExpandedLine, Instruction, MacroDefinition, Module } from '@8f4e/compiler-types';
 
 /**
  * Parse macro definitions from macro modules.

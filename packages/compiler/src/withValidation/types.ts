@@ -1,4 +1,4 @@
-import type { AST, CompilationContext } from '../types';
+import type { AST, CompilationContext } from '@8f4e/compiler-types';
 
 export type OperandRule = 'int' | 'float' | 'matching';
 export type ArgumentRule = 'literal' | 'identifier' | 'integerLiteral' | 'nonNegativeIntegerLiteral';

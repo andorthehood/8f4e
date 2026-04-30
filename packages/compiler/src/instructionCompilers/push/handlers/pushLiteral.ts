@@ -1,7 +1,7 @@
 import { saveByteCode } from '../../../utils/compilation';
 import { constOpcode, kindToStackItem, resolveArgumentValueKind } from '../shared';
 
-import type { ArgumentLiteral, CompilationContext } from '../../../types';
+import type { ArgumentLiteral, CompilationContext } from '@8f4e/compiler-types';
 
 export default function pushLiteral(argument: ArgumentLiteral, context: CompilationContext): CompilationContext {
 	const kind = resolveArgumentValueKind(argument);

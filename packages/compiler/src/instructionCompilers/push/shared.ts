@@ -15,7 +15,7 @@ import {
 	type PointerMetadata,
 } from '../../utils/memoryData';
 
-import type { DataStructure, StackItem } from '../../types';
+import type { DataStructure, StackItem } from '@8f4e/compiler-types';
 
 export type PushValueKind = 'int32' | 'float32' | 'float64';
 type PointerValueSource = 'pointer-slot' | 'pointer-value';

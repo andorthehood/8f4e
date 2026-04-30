@@ -3,7 +3,7 @@ import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 import { getError } from '../compilerError';
 import { areAllOperandsFloats, areAllOperandsIntegers } from '../utils/operandTypes';
 
-import type { CompilationContext, InstructionCompiler, StackItem } from '../types';
+import type { CompilationContext, InstructionCompiler, StackItem } from '@8f4e/compiler-types';
 import type { OperandRule } from './types';
 
 export function validateOperandTypes(

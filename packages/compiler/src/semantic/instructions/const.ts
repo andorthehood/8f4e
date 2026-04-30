@@ -1,4 +1,4 @@
-import { type CompilationContext, type NormalizedConstLine } from '../../types';
+import { type CompilationContext, type NormalizedConstLine } from '@8f4e/compiler-types';
 
 /**
  * Applies a fully normalized `const` declaration to the compilation context.

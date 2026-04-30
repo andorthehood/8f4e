@@ -4,7 +4,7 @@ import swap from './swap';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('swap instruction compiler', () => {
 	it('swaps the top two stack values', () => {

@@ -1,6 +1,7 @@
+import { BLOCK_TYPE, type CompilationContext, type ConstantsEndLine } from '@8f4e/compiler-types';
+
 import { ErrorCode, getError } from '../../compilerError';
 import { isInstructionIsInsideBlock } from '../../utils/blockStack';
-import { BLOCK_TYPE, type CompilationContext, type ConstantsEndLine } from '../../types';
 
 export default function semanticConstantsEnd(line: ConstantsEndLine, context: CompilationContext) {
 	if (!isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS)) {

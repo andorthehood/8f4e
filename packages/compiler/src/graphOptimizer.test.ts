@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType } from '@8f4e/compiler-types';
 
 import sortModules, { getIdentifierValue } from './graphOptimizer';
-import { ArgumentType } from './types';
 
-import type { AST } from './types';
+import type { AST } from '@8f4e/compiler-types';
 
 const { classifyIdentifier, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 

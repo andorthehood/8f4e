@@ -1,6 +1,6 @@
 import { saveByteCode } from '../utils/compilation';
 
-import type { CompilationContext, InstructionCompiler, WasmLine } from '../types';
+import type { CompilationContext, InstructionCompiler, WasmLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `wasm`.

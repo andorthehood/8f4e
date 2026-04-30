@@ -4,7 +4,7 @@ import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../../utils/compilation';
 import { buildPointerDereferenceByteCode, kindToStackItem } from '../shared';
 
-import type { CompilationContext, PushIdentifierLine } from '../../../types';
+import type { CompilationContext, PushIdentifierLine } from '@8f4e/compiler-types';
 
 export default function pushLocalPointer(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
 	const argument = line.arguments[0];

@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../compilerError';
 
-import type { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '@8f4e/compiler-types';
 
 export default function assertFunctionMemoryIoAllowed(
 	line: Parameters<InstructionCompiler>[0],

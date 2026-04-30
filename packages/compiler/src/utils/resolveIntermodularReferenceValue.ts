@@ -1,6 +1,6 @@
 import { getElementMaxValue, getElementMinValue } from './memoryData';
 
-import type { AST, ArgumentIdentifier, CompilationContext } from '../types';
+import type { AST, ArgumentIdentifier, CompilationContext } from '@8f4e/compiler-types';
 
 export default function resolveIntermodularReferenceValue(
 	identifier: ArgumentIdentifier,

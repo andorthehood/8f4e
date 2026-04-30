@@ -1,11 +1,11 @@
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import { compileSegment } from '../compiler';
-import { ArgumentType, BLOCK_TYPE } from '../types';
 import { allocateInternalResource } from '../utils/internalResources';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, LoopLine } from '../types';
+import type { InstructionCompiler, LoopLine } from '@8f4e/compiler-types';
 
 const DEFAULT_LOOP_CAP = 1000;
 
