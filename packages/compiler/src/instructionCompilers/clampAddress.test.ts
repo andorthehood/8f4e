@@ -77,6 +77,36 @@ describe('clamp address instruction compilers', () => {
 		]);
 	});
 
+	it('clamps known negative addresses to the lower range bound', () => {
+		const context = createInstructionCompilerTestContext();
+		const shiftedRange: MemoryAddressRange = {
+			source: 'memory-start',
+			byteAddress: 64,
+			safeByteLength: 128,
+			memoryId: 'arr',
+		};
+		context.stack.push({
+			isInteger: true,
+			isNonZero: true,
+			knownIntegerValue: -1,
+			clampAddressRange: shiftedRange,
+		});
+
+		clampAddress(createLine('clampAddress'), context);
+
+		expect(context.stack).toEqual([
+			{
+				isInteger: true,
+				isNonZero: true,
+				knownIntegerValue: 64,
+				clampAddressRange: shiftedRange,
+				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+			},
+		]);
+		expect(context.byteCode).toContain(WASMInstruction.I32_LT_S);
+		expect(context.byteCode).not.toContain(WASMInstruction.I32_LT_U);
+	});
+
 	it('throws when clampAddress has no address range metadata', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false });
