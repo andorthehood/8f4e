@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/runtime-web-worker-midi",
+  "name": "@8f4e/runtime-web-worker",
   "version": "0.1.12",
   "private": true,
-  "description": "8f4e web worker MIDI runtime package",
+  "description": "8f4e web worker runtime package",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,10 +27,7 @@
     "url": "https://github.com/andorthehood/8f4e/issues"
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
-  "dependencies": {
-    "@8f4e/compiler": "*",
-    "@8f4e/compiler-types": "*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^24.3.0"
   },

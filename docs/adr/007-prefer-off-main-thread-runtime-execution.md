@@ -17,12 +17,12 @@ This is especially problematic for:
 
 The repository already contains multiple specialized execution targets:
 
-- web worker logic runtime
+- web worker runtime
 - audio worklet runtime
 - web worker MIDI runtime
-- main-thread logic runtime as an available but non-default option
+- main-thread runtime as an available but non-default option
 
-The application default runtime is `WebWorkerLogicRuntime`.
+The application default runtime is `WebWorkerRuntime`.
 
 ## Decision
 

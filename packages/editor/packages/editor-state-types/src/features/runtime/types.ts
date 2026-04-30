@@ -41,7 +41,7 @@ export type RuntimeDirectiveResolver = (
  * Each entry defines a runtime's id, default configuration, schema, and factory function.
  */
 export interface RuntimeRegistryEntry {
-	/** Unique identifier for this runtime (e.g., 'WebWorkerLogicRuntime') */
+	/** Unique identifier for this runtime (e.g., 'WebWorkerRuntime') */
 	id: string;
 	/** Default configuration object for this runtime */
 	defaults: Record<string, unknown>;
@@ -62,16 +62,16 @@ export interface RuntimeRegistryEntry {
 export type RuntimeRegistry = Record<string, RuntimeRegistryEntry>;
 
 /**
- * WebWorker-based logic runtime configuration.
+ * WebWorker-based runtime configuration.
  */
-export interface WebWorkerLogicRuntime {
+export interface WebWorkerRuntime {
 	sampleRate: number;
 }
 
 /**
- * Main thread logic runtime configuration.
+ * Main thread runtime configuration.
  */
-export interface MainThreadLogicRuntime {
+export interface MainThreadRuntime {
 	sampleRate: number;
 }
 
@@ -86,24 +86,9 @@ export interface AudioWorkletRuntime {
 }
 
 /**
- * WebWorker-based MIDI runtime configuration.
- */
-export interface WebWorkerMIDIRuntime {
-	sampleRate: number;
-}
-
-/**
  * Union of all runtime configuration types.
  */
-export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
-
-/**
- * MIDI input/output state.
- */
-export interface Midi {
-	outputs: MIDIOutput[];
-	inputs: MIDIInput[];
-}
+export type Runtimes = WebWorkerRuntime | MainThreadRuntime | AudioWorkletRuntime;
 
 /**
  * Runtime execution statistics.

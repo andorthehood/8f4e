@@ -44,12 +44,10 @@ import type {
 	RuntimeFactory,
 	RuntimeRegistryEntry,
 	RuntimeRegistry,
-	WebWorkerLogicRuntime,
-	MainThreadLogicRuntime,
+	WebWorkerRuntime,
+	MainThreadRuntime,
 	AudioWorkletRuntime,
-	WebWorkerMIDIRuntime,
 	Runtimes,
-	Midi,
 	RuntimeStats,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
@@ -120,12 +118,10 @@ export type {
 	RuntimeRegistryEntry,
 	RuntimeRegistry,
 	JSONSchemaLike,
-	WebWorkerLogicRuntime,
-	MainThreadLogicRuntime,
+	WebWorkerRuntime,
+	MainThreadRuntime,
 	AudioWorkletRuntime,
-	WebWorkerMIDIRuntime,
 	Runtimes,
-	Midi,
 	RuntimeStats,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
@@ -272,7 +268,6 @@ export interface Options {
 // State interface - complete editor state tree (top-level public API)
 export interface State {
 	compiler: Compiler;
-	midi: Midi;
 	graphicHelper: GraphicHelper;
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;

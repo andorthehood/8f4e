@@ -1,4 +1,4 @@
-# @8f4e/runtime-main-thread-logic
+# @8f4e/runtime-main-thread
 
 Main-thread runtime logic for hosting 8f4e programs. Used when execution happens on the UI thread (non-worker environments) and when coordinating editor state with runtime updates.
 
