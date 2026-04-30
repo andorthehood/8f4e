@@ -44,7 +44,6 @@ const instructionsToHighlight = [
 	'add',
 	'min',
 	'max',
-	'clamp',
 	'greaterThan',
 	'branch',
 	'branchIfTrue',

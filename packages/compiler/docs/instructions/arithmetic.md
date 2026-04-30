@@ -32,24 +32,6 @@ push 3.0
 div
 ```
 
-### clamp
-
-The "clamp" instruction retrieves three numbers of the same type from the stack: a value, a minimum, and a maximum. It stores the value constrained to the inclusive minimum/maximum range back onto the stack.
-
-#### Examples
-
-```
-push 12
-push 0
-push 10
-clamp     ; stack: [ 10 ]
-
-push -0.5
-push 0.0
-push 1.0
-clamp     ; stack: [ 0.0 ]
-```
-
 ### mul
 
 The "mul" instruction retrieves two numbers of the same type from the stack, multiplies them together, and then stores the result back onto the stack.
