@@ -1,10 +1,10 @@
 # Testing Utilities
 
-The `@8f4e/editor-state` package exports testing utilities that can be used in tests for this package and other packages. These utilities are **framework-agnostic** and work with any testing framework (Vitest, Jest, Playwright, etc.).
+Testing utilities for editor state consumers live in the dedicated `@8f4e/editor-state-testing` package. These utilities are **framework-agnostic** and work with any testing framework (Vitest, Jest, Playwright, etc.).
 
 ## Usage
 
-Import the testing utilities using the `/testing` sub-path export:
+Import the testing utilities from the dedicated testing package:
 
 ```typescript
 import {
@@ -12,14 +12,14 @@ import {
   createMockCodeBlock,
   createMockViewport,
   createMockEventDispatcher,
-} from '@8f4e/editor-state/testing';
+} from '@8f4e/editor-state-testing';
 ```
 
 ## Example: Using in web-ui tests
 
 ```typescript
 // Works with any testing framework (Vitest, Playwright, Jest, etc.)
-import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
+import { createMockState, createMockCodeBlock } from '@8f4e/editor-state-testing';
 
 describe('MyComponent', () => {
   it('should render with mock state', () => {
