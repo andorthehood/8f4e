@@ -2,12 +2,8 @@ import { createSet } from './set';
 import { createSubscribe } from './subscribe';
 import { createSubscribeToValue } from './subscribeToValue';
 import { createUnsubscribe } from './unsubscribe';
-import { createWaitForChange } from './waitForChange';
-import { createWaitForValue } from './waitForValue';
 
 import type { Path, PathValue, Subscription, Matcher } from './types';
-
-export type { Path, PathValue, Subscription, Matcher };
 
 export interface StateManager<State> {
 	getState: () => State;
@@ -22,11 +18,6 @@ export interface StateManager<State> {
 		callback: (value: PathValue<State, P>) => void
 	) => Subscription<State, P>;
 	unsubscribe: <P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void) => void;
-	waitForChange: <P extends Path<State>>(selector: P) => Promise<PathValue<State, P>>;
-	waitForValue: <P extends Path<State>>(
-		selector: P,
-		expectedValue: PathValue<State, P>
-	) => Promise<PathValue<State, P>>;
 }
 
 function createStateManager<State>(state: State): StateManager<State> {
@@ -36,8 +27,6 @@ function createStateManager<State>(state: State): StateManager<State> {
 	const subscribe = createSubscribe(subscriptions);
 	const subscribeToValue = createSubscribeToValue(subscriptions);
 	const unsubscribe = createUnsubscribe(subscriptions);
-	const waitForChange = createWaitForChange(subscribe, unsubscribe);
-	const waitForValue = createWaitForValue(state, subscribe, unsubscribe);
 
 	return {
 		getState: () => state,
@@ -45,8 +34,6 @@ function createStateManager<State>(state: State): StateManager<State> {
 		subscribe,
 		subscribeToValue,
 		unsubscribe,
-		waitForChange,
-		waitForValue,
 	};
 }
 
