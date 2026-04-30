@@ -26,4 +26,24 @@ describe('shiftRightUnsigned instruction compiler', () => {
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
+
+	it('keeps known integer metadata when shifting known integer operands right as unsigned', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: -8 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 1 }
+		);
+
+		shiftRightUnsigned(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'shiftRightUnsigned',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 2147483644 }]);
+	});
 });

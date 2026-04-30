@@ -26,4 +26,24 @@ describe('shiftLeft instruction compiler', () => {
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
+
+	it('keeps known integer metadata when shifting known integer operands left', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 2 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }
+		);
+
+		shiftLeft(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'shiftLeft',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 8 }]);
+	});
 });
