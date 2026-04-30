@@ -3,20 +3,15 @@ import { ArgumentType } from '@8f4e/compiler-types';
 
 import { getOrCreateMemoryGuardLocal, linearLastValidStartAddress } from './memoryAccessGuard';
 
-import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS, WORD_MEMORY_ACCESS_WIDTH } from '../consts';
-import { ErrorCode, getError } from '../compilerError';
+import { WORD_MEMORY_ACCESS_WIDTH } from '../consts';
 
 import type { AST, CompilationContext, MemoryAddressRange, StackItem } from '@8f4e/compiler-types';
 
 const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
 
-export function getClampAccessByteWidth(line: AST[number], context: CompilationContext): number {
+export function getClampAccessByteWidth(line: AST[number]): number {
 	const argument = line.arguments[0];
-	const value = argument?.type === ArgumentType.LITERAL ? argument.value : DEFAULT_ACCESS_BYTE_WIDTH;
-	if (!Number.isInteger(value) || !SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS.includes(value)) {
-		throw getError(ErrorCode.INVALID_ACCESS_WIDTH, line, context);
-	}
-	return value;
+	return argument?.type === ArgumentType.LITERAL ? argument.value : DEFAULT_ACCESS_BYTE_WIDTH;
 }
 
 export function getModuleAddressRange(context: CompilationContext): MemoryAddressRange {

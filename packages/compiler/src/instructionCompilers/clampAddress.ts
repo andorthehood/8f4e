@@ -18,7 +18,7 @@ function clampToRange(
 	operand: StackItem,
 	range: MemoryAddressRange
 ) {
-	const accessByteWidth = getClampAccessByteWidth(line, context);
+	const accessByteWidth = getClampAccessByteWidth(line);
 	if (range.safeByteLength < accessByteWidth) {
 		throw getError(ErrorCode.ADDRESS_RANGE_TOO_SMALL, line, context);
 	}
@@ -36,7 +36,7 @@ export const clampAddress: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
-		argumentTypes: 'nonNegativeIntegerLiteral',
+		argumentTypes: 'memoryAccessWidthLiteral',
 	},
 	(line, context) => {
 		const operand = context.stack.pop()!;
@@ -54,7 +54,7 @@ export const clampModuleAddress: InstructionCompiler = withValidation(
 		scope: 'module',
 		minOperands: 1,
 		operandTypes: 'int',
-		argumentTypes: 'nonNegativeIntegerLiteral',
+		argumentTypes: 'memoryAccessWidthLiteral',
 	},
 	(line, context) => {
 		const operand = context.stack.pop()!;
@@ -67,11 +67,11 @@ export const clampGlobalAddress: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
-		argumentTypes: 'nonNegativeIntegerLiteral',
+		argumentTypes: 'memoryAccessWidthLiteral',
 	},
 	(line, context) => {
 		const operand = context.stack.pop()!;
-		const accessByteWidth = getClampAccessByteWidth(line, context);
+		const accessByteWidth = getClampAccessByteWidth(line);
 		context.stack.push(getClampedAddressStackItem(operand, undefined, accessByteWidth));
 
 		return saveByteCode(context, clampAddressByteCode(context, line, 0, linearUpperByteAddressCode(accessByteWidth)));
