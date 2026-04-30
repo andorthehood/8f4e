@@ -1,24 +1,24 @@
 // Import the types from the editor
-import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
+import createMainThreadRuntime from '@8f4e/runtime-main-thread';
 import { StateManager } from '@8f4e/state-manager';
 
 import {
-	getMainThreadLogicRuntimeEnvConstantsFromBlocks,
-	resolveMainThreadLogicRuntimeDirectives,
-	resolveMainThreadLogicRuntimeDirectivesFromBlocks,
+	getMainThreadRuntimeEnvConstantsFromBlocks,
+	resolveMainThreadRuntimeDirectives,
+	resolveMainThreadRuntimeDirectivesFromBlocks,
 } from './runtimeDirectives';
 
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
-// Main Thread Logic Runtime Factory
-export function mainThreadLogicRuntimeFactory(
+// Main Thread Runtime Factory
+export function mainThreadRuntimeFactory(
 	store: StateManager<State>,
 	events: EventDispatcher,
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null
 ) {
 	const state = store.getState();
-	let runtime: ReturnType<typeof createMainThreadLogicRuntime> | undefined;
+	let runtime: ReturnType<typeof createMainThreadRuntime> | undefined;
 
 	function onInitialized() {
 		events.dispatch('runtimeInitialized');
@@ -51,14 +51,14 @@ export function mainThreadLogicRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
-		const sampleRate = resolveMainThreadLogicRuntimeDirectives(state).sampleRate;
+		const sampleRate = resolveMainThreadRuntimeDirectives(state).sampleRate;
 		if (sampleRate === undefined) {
 			return;
 		}
 		runtime.init(memory, sampleRate, getCodeBuffer());
 	}
 
-	runtime = createMainThreadLogicRuntime(onInitialized, onStats, onError);
+	runtime = createMainThreadRuntime(onInitialized, onStats, onError);
 	syncCodeAndSettingsWithRuntime();
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
@@ -76,12 +76,12 @@ export function mainThreadLogicRuntimeFactory(
  * Create a runtime definition with injected callbacks.
  * This allows the host to provide getCodeBuffer and getMemory implementations.
  */
-export function createMainThreadLogicRuntimeDef(
+export function createMainThreadRuntimeDef(
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null
 ): RuntimeRegistryEntry {
 	return {
-		id: 'MainThreadLogicRuntime',
+		id: 'MainThreadRuntime',
 		defaults: {
 			sampleRate: 50,
 		},
@@ -92,10 +92,10 @@ export function createMainThreadLogicRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
-		resolveRuntimeDirectives: codeBlocks => resolveMainThreadLogicRuntimeDirectivesFromBlocks(codeBlocks),
-		getEnvConstants: codeBlocks => getMainThreadLogicRuntimeEnvConstantsFromBlocks(codeBlocks),
+		resolveRuntimeDirectives: codeBlocks => resolveMainThreadRuntimeDirectivesFromBlocks(codeBlocks),
+		getEnvConstants: codeBlocks => getMainThreadRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
-			return mainThreadLogicRuntimeFactory(store, events, getCodeBuffer, getMemory);
+			return mainThreadRuntimeFactory(store, events, getCodeBuffer, getMemory);
 		},
 	};
 }

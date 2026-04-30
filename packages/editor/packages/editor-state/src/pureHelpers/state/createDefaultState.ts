@@ -12,10 +12,6 @@ export default function createDefaultState() {
 			byteCodeSize: 0,
 			hasMemoryBeenReinitialized: false,
 		},
-		midi: {
-			inputs: [],
-			outputs: [],
-		},
 		graphicHelper: {
 			codeBlocks: [],
 			viewportAnchoredCodeBlocks: [],

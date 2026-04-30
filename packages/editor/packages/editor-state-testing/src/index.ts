@@ -223,14 +223,14 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			loadSession: createMockAsyncFunction(null),
 		},
 		runtimeRegistry: {
-			WebWorkerLogicRuntime: {
-				id: 'WebWorkerLogicRuntime',
+			WebWorkerRuntime: {
+				id: 'WebWorkerRuntime',
 				defaults: defaultRuntimeSettings,
 				schema: { type: 'object', properties: {} },
 				factory: mockRuntimeFactory,
 			},
 		},
-		defaultRuntimeId: 'WebWorkerLogicRuntime',
+		defaultRuntimeId: 'WebWorkerRuntime',
 		graphicHelper: {
 			codeBlocks: [],
 			viewportAnchoredCodeBlocks: [],
@@ -249,10 +249,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			showHiddenCodeBlocks: false,
 			postProcessEffects: [],
 			backgroundEffects: [],
-		},
-		midi: {
-			outputs: [],
-			inputs: [],
 		},
 		featureFlags: {
 			contextMenu: true,

@@ -1,13 +1,13 @@
 import createModule from './createModule';
 
-export interface MainThreadLogicRuntime {
+export interface MainThreadRuntime {
 	init: (memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) => Promise<void>;
 	start: () => void;
 	stop: () => void;
 	isRunning: () => boolean;
 }
 
-export default function createMainThreadLogicRuntime(
+export default function createMainThreadRuntime(
 	onInitialized: () => void,
 	onStats: (stats: {
 		timerPrecisionPercentage: number;
@@ -16,7 +16,7 @@ export default function createMainThreadLogicRuntime(
 		timerExpectedIntervalTimeMs: number;
 	}) => void,
 	onError: (error: unknown) => void
-): MainThreadLogicRuntime {
+): MainThreadRuntime {
 	let interval: ReturnType<typeof setInterval> | undefined;
 	let statsInterval: ReturnType<typeof setInterval> | undefined;
 	let timeToExecuteLoopMs = 0;

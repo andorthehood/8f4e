@@ -80,17 +80,6 @@ export default function generateContextMenuMock(): ContextMenu {
 				close: true,
 				disabled: false,
 			},
-			{
-				divider: true,
-			},
-			{
-				title: '................... MIDI Info >',
-				action: 'openSubMenu',
-				payload: {
-					menu: 'midiInfoMenu',
-				},
-				close: false,
-			},
 		],
 		open: true,
 		x: 552,

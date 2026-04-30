@@ -13,7 +13,7 @@ Manages the lifecycle of code blocks in the editor: creation, selection, drag op
 - **Block Widgets**: Derives interactive elements from code annotations:
   - Inputs/Outputs for audio routing
   - Buttons and Switches for interactive controls
-  - Piano keyboard for MIDI input
+  - Piano keyboard for note input
   - Debuggers for runtime inspection
   - Plotters for visualization
 
@@ -44,7 +44,7 @@ This feature contains several subfeatures under `features/` that handle specific
 - `graphicHelper` - Visual properties computation
 - `inputs` - Audio input routing
 - `outputs` - Audio output routing
-- `pianoKeyboard` - MIDI keyboard interface
+- `pianoKeyboard` - Piano keyboard interface
 - `switches` - Toggle switch controls
 
 ## Events & Callbacks

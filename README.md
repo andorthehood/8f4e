@@ -27,9 +27,8 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
     ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
     ├── <a href="./packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a>     ┐ 
-    ├── <a href="./packages/runtime-main-thread-logic/README.md">runtime-main-thread-logic</a> │ (Various runtime environments 
-    ├── <a href="./packages/runtime-web-worker-logic/README.md">runtime-web-worker-logic</a>  │ for different execution contexts)
-    ├── <a href="./packages/runtime-web-worker-midi/README.md">runtime-web-worker-midi</a>   ┘
+    ├── <a href="./packages/runtime-main-thread/README.md">runtime-main-thread</a> │ (Various runtime environments 
+    ├── <a href="./packages/runtime-web-worker/README.md">runtime-web-worker</a>  ┘ for different execution contexts)
     ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project files)
     ├── <a href="./packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
     ├── <a href="./packages/pmml28f4e/README.md">pmml28f4e</a> (tool to convert PMML neural networks to 8f4e projects)

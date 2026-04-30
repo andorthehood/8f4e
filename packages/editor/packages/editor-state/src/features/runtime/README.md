@@ -9,7 +9,7 @@ Manages the lifecycle of runtime instances that execute compiled 8f4e programs. 
 - **Runtime Registry**: Looks up runtime factories from `state.runtimeRegistry` at project root
 - **Runtime Selection**: Determines which runtime to use from `state.editorConfig.runtime`
 - **Lifecycle Management**: Creates and destroys runtime instances as needed
-- **Runtime Switching**: Recreates runtime when configuration changes (e.g., switching from audio to MIDI runtime)
+- **Runtime Switching**: Recreates runtime when configuration changes (e.g., switching from logic to audio runtime)
 - **Fallback Handling**: Falls back to default runtime ID if unknown runtime is requested
 - **Initialization Locking**: Prevents concurrent initialization attempts
 
@@ -19,13 +19,14 @@ The runtime registry is located at the project root level (not in editor-state):
 
 ```typescript
 state.runtimeRegistry = {
-	audio: { factory: audioRuntimeFactory },
-	midi: { factory: midiRuntimeFactory },
-	// ... other runtimes
+	AudioWorkletRuntime: { factory: audioWorkletRuntimeFactory },
+	WebWorkerRuntime: { factory: webWorkerRuntimeFactory },
+	MainThreadRuntime: { factory: mainThreadRuntimeFactory },
 };
 ```
 
-Each entry contains a `factory` function that creates and returns a destroyer function.
+The keys in `state.runtimeRegistry` are the runtime IDs used by `; @config runtime <runtimeId>`, so those
+strings must match exactly. Each entry contains a `factory` function that creates and returns a destroyer function.
 
 ## Runtime Lifecycle
 
@@ -52,7 +53,7 @@ Each entry contains a `factory` function that creates and returns a destroyer fu
 
 ## Integration Points
 
-- **Editor Config**: Runtime selection comes from `; @config runtime <id>`
+- **Editor Config**: Runtime selection comes from `; @config runtime <runtimeId>`
 - **Program Compiler**: Runtime initialization waits for compilation to complete
 - **Runtime Factories**: External runtime implementations register themselves in the registry
 
