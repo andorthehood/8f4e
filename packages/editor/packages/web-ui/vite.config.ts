@@ -8,6 +8,6 @@ export default defineConfig(
 		formats: ['es'],
 		fileName: () => 'index.js',
 		emptyOutDir: false,
-		external: ['@8f4e/editor-state', '@8f4e/sprite-generator', 'glugglug'],
+		external: ['@8f4e/sprite-generator', 'glugglug'],
 	})
 );

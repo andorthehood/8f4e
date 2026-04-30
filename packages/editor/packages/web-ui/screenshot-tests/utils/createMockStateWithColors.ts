@@ -1,4 +1,4 @@
-import { createMockState } from '@8f4e/editor-state/testing';
+import { createMockState } from '@8f4e/editor-state-testing';
 import generateSprite from '@8f4e/sprite-generator';
 
 import type { State } from '@8f4e/editor-state-types';

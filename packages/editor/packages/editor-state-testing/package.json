@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/editor-state",
-  "version": "0.1.9",
+  "name": "@8f4e/editor-state-testing",
+  "version": "0.1.0",
   "private": true,
-  "description": "8f4e editor state management package",
+  "description": "Framework-agnostic testing utilities for editor state consumers",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,10 +24,8 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/compiler-types": "*",
     "@8f4e/editor-state-types": "*",
-    "@8f4e/sprite-generator": "*",
-    "glugglug": "*"
+    "@8f4e/tokenizer": "*"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
