@@ -2,6 +2,7 @@ import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import { compileSegment } from '../compiler';
+import { saveByteCode } from '../utils/compilation';
 import { allocateInternalResource } from '../utils/internalResources';
 import { withValidation } from '../withValidation';
 
@@ -36,23 +37,14 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 			loopCounterLocalName: infiniteLoopProtectionCounterName,
 		});
 
-		// compileSegment is used here because loop initialization requires both a local
-		// variable declaration (which needs the semantic pipeline) and a block of
-		// instructions that set up the loop counter and infinite-loop guard; the
-		// overall structure genuinely benefits from composed instruction semantics.
+		compileSegment(
+			[`local int ${infiniteLoopProtectionCounterName}`, 'push 0', `localSet ${infiniteLoopProtectionCounterName}`],
+			context
+		);
+		saveByteCode(context, [WASMInstruction.BLOCK, Type.VOID, WASMInstruction.LOOP, Type.VOID]);
+
 		return compileSegment(
 			[
-				`local int ${infiniteLoopProtectionCounterName}`,
-
-				'push 0',
-				`localSet ${infiniteLoopProtectionCounterName}`,
-
-				`wasm ${WASMInstruction.BLOCK}`,
-				`wasm ${Type.VOID}`,
-
-				`wasm ${WASMInstruction.LOOP}`,
-				`wasm ${Type.VOID}`,
-
 				`push ${infiniteLoopProtectionCounterName}`,
 				`push ${effectiveCap}`,
 				'greaterOrEqual',

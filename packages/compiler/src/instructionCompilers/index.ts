@@ -45,7 +45,6 @@ import swap from './swap';
 import cycle from './cycle';
 import abs from './abs';
 import equal from './equal';
-import wasm from './wasm';
 import branchIfUnchanged from './branchIfUnchanged';
 import shiftLeft from './shiftLeft';
 import pow2 from './pow2';
@@ -125,7 +124,6 @@ const instructions = {
 	cycle,
 	abs,
 	equal,
-	wasm,
 	branchIfUnchanged,
 	pow2,
 	sqrt,

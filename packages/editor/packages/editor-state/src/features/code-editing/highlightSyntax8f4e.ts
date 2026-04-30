@@ -103,7 +103,6 @@ const instructionsToHighlight = [
 	'abs',
 	'use',
 	'equal',
-	'wasm',
 	'branchIfUnchanged',
 	'init',
 	'pow2',
