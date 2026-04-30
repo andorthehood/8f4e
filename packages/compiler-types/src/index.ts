@@ -267,9 +267,18 @@ export interface TestModule {
 	ast: AST;
 }
 
-export type Const = { value: number; isInteger: boolean; isFloat64?: boolean };
+export interface MemoryAddressRange {
+	source: 'memory-start' | 'memory-end' | 'module-start' | 'module-end' | 'module-nth-memory-start';
+	byteAddress: number;
+	safeByteLength: number;
+	moduleId?: string;
+	memoryId?: string;
+}
+
+export type Const = { value: number; isInteger: boolean; isFloat64?: boolean; memoryAddress?: MemoryAddressRange };
 
 export type Consts = Record<string, Const>;
+export type NormalizedArgumentLiteral = ArgumentLiteral & { memoryAddress?: MemoryAddressRange };
 export type FunctionValueType = FunctionTypeIdentifier;
 export interface LocalBinding {
 	isInteger: boolean;
@@ -331,20 +340,22 @@ export interface StackItem {
 	isPointingToPointer?: boolean;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
-	/** A flag for the memory opraions to check if the memory address is within the memory bounds. */
-	isSafeMemoryAddress?: boolean;
+	/** Proven byte range for memory operations when this stack value is known to be an address. */
+	memoryAddress?: MemoryAddressRange;
 }
 
 export type Stack = StackItem[];
 
-export type ResolvedMapValueArgument = ArgumentLiteral | ArgumentStringLiteral;
+export type ResolvedMapValueArgument = NormalizedArgumentLiteral | ArgumentStringLiteral;
 export type NormalizedMapLine = Omit<MapLine, 'arguments'> & {
 	arguments: [ResolvedMapValueArgument, ResolvedMapValueArgument];
 };
-export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & { arguments: [ArgumentLiteral] };
-export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & { arguments: [ArgumentIdentifier, ArgumentLiteral] };
+export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & { arguments: [NormalizedArgumentLiteral] };
+export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral];
+};
 export type NormalizedInitLine = Omit<InitLine, 'arguments'> & {
-	arguments: [ArgumentIdentifier, ArgumentLiteral | ArgumentIdentifier];
+	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral | ArgumentIdentifier];
 };
 export type ArrayDeclarationInstruction =
 	| 'float[]'
@@ -361,7 +372,10 @@ export type ArrayDeclarationInstruction =
 	| 'float64[]'
 	| 'float64*[]'
 	| 'float64**[]';
-export type ArrayDeclarationInitializerArgument = ArgumentCompileTimeExpression | ArgumentIdentifier | ArgumentLiteral;
+export type ArrayDeclarationInitializerArgument =
+	| ArgumentCompileTimeExpression
+	| ArgumentIdentifier
+	| NormalizedArgumentLiteral;
 export type ArrayDeclarationLine = Omit<AST[number], 'instruction' | 'arguments'> & {
 	instruction: ArrayDeclarationInstruction;
 	arguments: [ArgumentIdentifier, ArgumentLiteral, ...ArrayDeclarationInitializerArgument[]];
@@ -384,8 +398,9 @@ export type ParsedSemanticInstructionLine =
 	| ConstantsEndLine;
 export type ParsedLocalVariableAccessLine = TokenizedLocalVariableAccessLine;
 export type CodegenLocalSetLine = LocalSetLine;
+export type CodegenArgumentLiteral = NormalizedArgumentLiteral;
 export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
-	arguments: [ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral];
+	arguments: [CodegenArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral];
 };
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
 export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine

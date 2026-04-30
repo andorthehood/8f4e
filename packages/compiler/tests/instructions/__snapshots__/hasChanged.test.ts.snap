@@ -51,6 +51,12 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -281,6 +287,12 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },

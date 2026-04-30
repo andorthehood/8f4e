@@ -66,6 +66,12 @@ exports[`sub (int) > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 8,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 8,
       },

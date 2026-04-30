@@ -44,6 +44,12 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 0,
+          "memoryId": "counter",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 0,
       },
@@ -267,6 +273,12 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 0,
+          "memoryId": "counter",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 0,
       },
