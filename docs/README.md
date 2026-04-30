@@ -120,7 +120,13 @@ int bar 20
 
 All variables in 8f4e are public. There is no concept of variable visibility.
 
-The language is not memory safe. Pointers can reference any location within the program’s memory space, but the visual wires help developers see where pointers are pointing. Memory items are allocated on a 32-bit grid — every memory item starts at an address that is a multiple of 4 bytes.
+Memory safety is optional. Raw pointers can reference any location within the program's memory space, the visual wires help developers see where pointers are pointing.
+
+When you want checked addressing, use address-aware values such as `&foo`, keep pointer arithmetic within the proven safe range, or explicitly clamp the address with `clampAddress`, `clampModuleAddress`, or `clampGlobalAddress` before loading or storing.
+
+The compiler tracks proven safe address ranges where it can. Load and store instructions can omit runtime guards when the address is known to be safe; otherwise they emit guarded memory access. 
+
+Memory items are allocated on a 32-bit grid — every memory item starts at an address that is a multiple of 4 bytes.
 
 ```
 int* pointer
