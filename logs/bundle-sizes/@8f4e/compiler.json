@@ -205,5 +205,28 @@
 				"brotli": 17455
 			}
 		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-04-30T15:30:36.917Z",
+		"commit": "1ee771e502c901340dd8e00f7a60ed3642adc2b6",
+		"branch": "main",
+		"releaseTag": "@8f4e/compiler@0.2.0",
+		"packageName": "@8f4e/compiler",
+		"projectName": "@8f4e/compiler",
+		"version": "0.2.0",
+		"bytes": {
+			"raw": 110291,
+			"gzip": 22800,
+			"brotli": 19320
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 110291,
+				"gzip": 22800,
+				"brotli": 19320
+			}
+		]
 	}
 ]
