@@ -136,7 +136,8 @@ storeBytes 5
 The clampAddress instruction consumes an address and clamps it to the tracked address range carried by that stack value.
 It pushes the clamped address back onto the stack and marks it safe for the requested access width, so later load and store instructions can avoid emitting their own runtime guard.
 
-The optional argument is the access width in bytes. If omitted, it defaults to `4`.
+The optional argument is the access width in bytes. If omitted, it defaults to the global alignment boundary, currently `4` bytes.
+Supported access widths are `1`, `2`, `4`, and `8`; compile-time expressions such as `sizeof(buffer)` are accepted when they resolve to one of those widths.
 The compiler reports an error if the input address does not carry address range metadata, because there is no known range to clamp against.
 
 The last valid address is `rangeEnd - accessWidth`. If the tracked range is shorter than the requested access width, the compiler reports an error because there is no address in that range that can safely satisfy the requested access.
@@ -164,7 +165,7 @@ load8u
 ### clampModuleAddress
 
 The clampModuleAddress instruction consumes an address and clamps it to the current module memory range.
-It is available inside modules and uses the same optional access-width argument as clampAddress, defaulting to `4` bytes.
+It is available inside modules and uses the same optional access-width argument as clampAddress, defaulting to the global alignment boundary.
 
 #### Examples
 
@@ -179,7 +180,7 @@ load
 The clampGlobalAddress instruction consumes an address and clamps it to the whole WebAssembly linear memory.
 It is useful when the address did not come from a tracked 8f4e memory declaration but should still be made non-trapping before a memory access.
 
-The optional argument is the access width in bytes and defaults to `4`. The last valid start address is based on the current WebAssembly memory size at runtime.
+The optional argument is the access width in bytes and defaults to the global alignment boundary. Supported widths are `1`, `2`, `4`, and `8`, including compile-time expressions such as `sizeof(buffer)` when they resolve to one of those values. The last valid start address is based on the current WebAssembly memory size at runtime.
 
 #### Examples
 

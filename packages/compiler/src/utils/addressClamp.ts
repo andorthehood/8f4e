@@ -3,16 +3,17 @@ import { ArgumentType } from '@8f4e/compiler-types';
 
 import { getOrCreateMemoryGuardLocal, linearLastValidStartAddress } from './memoryAccessGuard';
 
+import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS, WORD_MEMORY_ACCESS_WIDTH } from '../consts';
 import { ErrorCode, getError } from '../compilerError';
 
 import type { AST, CompilationContext, MemoryAddressRange, StackItem } from '@8f4e/compiler-types';
 
-const DEFAULT_ACCESS_BYTE_WIDTH = 4;
+const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
 
 export function getClampAccessByteWidth(line: AST[number], context: CompilationContext): number {
 	const argument = line.arguments[0];
 	const value = argument?.type === ArgumentType.LITERAL ? argument.value : DEFAULT_ACCESS_BYTE_WIDTH;
-	if (!Number.isInteger(value) || value < 1) {
+	if (!Number.isInteger(value) || !SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS.includes(value)) {
 		throw getError(ErrorCode.INVALID_ACCESS_WIDTH, line, context);
 	}
 	return value;
@@ -22,7 +23,7 @@ export function getModuleAddressRange(context: CompilationContext): MemoryAddres
 	return {
 		source: 'module-start',
 		byteAddress: context.startingByteAddress,
-		safeByteLength: Math.max(0, (context.currentModuleWordAlignedSize ?? 0) * 4),
+		safeByteLength: Math.max(0, (context.currentModuleWordAlignedSize ?? 0) * WORD_MEMORY_ACCESS_WIDTH),
 		...(context.namespace.moduleName ? { moduleId: context.namespace.moduleName } : {}),
 	};
 }

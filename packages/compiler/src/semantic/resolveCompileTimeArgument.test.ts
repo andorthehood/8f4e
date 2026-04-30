@@ -452,4 +452,92 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		});
 	});
+
+	it('keeps address metadata when adding an in-range integer offset to an address expression', () => {
+		const addressContext = {
+			...mockContext,
+			namespace: {
+				...mockContext.namespace,
+				memory: {
+					arr: {
+						id: 'arr',
+						byteAddress: 16,
+						wordAlignedSize: 4,
+						numberOfElements: 4,
+						elementWordSize: 4,
+						isInteger: true,
+					},
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr+4'))).toEqual({
+			value: 20,
+			isInteger: true,
+			memoryAddress: {
+				source: 'memory-start',
+				byteAddress: 20,
+				safeByteLength: 12,
+				memoryId: 'arr',
+			},
+		});
+	});
+
+	it('keeps address metadata when adding an address expression to an integer offset', () => {
+		const addressContext = {
+			...mockContext,
+			namespace: {
+				...mockContext.namespace,
+				memory: {
+					arr: {
+						id: 'arr',
+						byteAddress: 16,
+						wordAlignedSize: 4,
+						numberOfElements: 4,
+						elementWordSize: 4,
+						isInteger: true,
+					},
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('4+&arr'))).toEqual({
+			value: 20,
+			isInteger: true,
+			memoryAddress: {
+				source: 'memory-start',
+				byteAddress: 20,
+				safeByteLength: 12,
+				memoryId: 'arr',
+			},
+		});
+	});
+
+	it('drops address metadata when address expression arithmetic leaves the known safe range', () => {
+		const addressContext = {
+			...mockContext,
+			namespace: {
+				...mockContext.namespace,
+				memory: {
+					arr: {
+						id: 'arr',
+						byteAddress: 16,
+						wordAlignedSize: 4,
+						numberOfElements: 4,
+						elementWordSize: 4,
+						isInteger: true,
+					},
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr+1024'))).toEqual({
+			value: 1040,
+			isInteger: true,
+		});
+		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr-4'))).toEqual({
+			value: 12,
+			isInteger: true,
+		});
+	});
 });

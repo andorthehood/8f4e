@@ -17,6 +17,8 @@
  *   before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
+import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from './consts';
+
 import type { AST, CompilationContext, CompilerStageError } from '@8f4e/compiler-types';
 
 export enum ErrorCode {
@@ -171,7 +173,7 @@ export function getError(
 		case ErrorCode.INVALID_ACCESS_WIDTH:
 			return {
 				code,
-				message: 'Access width must be a positive integer. (' + code + ')',
+				message: `Access width must be ${SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS.join(', ')} bytes. (${code})`,
 				line,
 				context,
 			};
