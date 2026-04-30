@@ -8,10 +8,6 @@ const listOfWebApisToCheck = [
 		checker: () => typeof AudioWorklet !== 'undefined',
 	},
 	{
-		name: 'WebMIDIApi',
-		checker: () => typeof navigator.requestMIDIAccess === 'function',
-	},
-	{
 		name: 'WebAssembly',
 		checker: () => typeof WebAssembly === 'object' && typeof WebAssembly.instantiate === 'function',
 	},
