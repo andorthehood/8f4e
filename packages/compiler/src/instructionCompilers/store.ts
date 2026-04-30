@@ -4,6 +4,7 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
 import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
+import { guardedStore, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
@@ -23,11 +24,20 @@ const store: InstructionCompiler = withValidation(
 		assertFunctionMemoryIoAllowed(line, context);
 		const operand1Value = context.stack.pop()!;
 		const operand2Address = context.stack.pop()!;
-		void operand2Address;
+		const instructions = operand1Value.isInteger ? i32store() : operand1Value.isFloat64 ? f64store() : f32store();
+		const accessByteWidth = operand1Value.isFloat64 ? 8 : 4;
+		if (isSafeMemoryAccess(operand2Address, accessByteWidth)) {
+			return saveByteCode(context, instructions);
+		}
 
 		return saveByteCode(
 			context,
-			operand1Value.isInteger ? i32store() : operand1Value.isFloat64 ? f64store() : f32store()
+			guardedStore(context, {
+				value: operand1Value,
+				accessByteWidth,
+				lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+				storeByteCode: instructions,
+			})
 		);
 	}
 );

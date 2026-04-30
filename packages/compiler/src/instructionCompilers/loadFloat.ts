@@ -1,8 +1,9 @@
-import { f32load } from '@8f4e/compiler-wasm-utils';
+import { f32load, Type } from '@8f4e/compiler-wasm-utils';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
 import { saveByteCode } from '../utils/compilation';
+import { guardedLoad, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
@@ -19,9 +20,22 @@ const loadFloat: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		assertFunctionMemoryIoAllowed(line, context);
-		context.stack.pop();
+		const address = context.stack.pop()!;
 		context.stack.push({ isInteger: false, isNonZero: false });
-		return saveByteCode(context, f32load());
+		const instructions = f32load();
+		if (isSafeMemoryAccess(address, 4)) {
+			return saveByteCode(context, instructions);
+		}
+
+		return saveByteCode(
+			context,
+			guardedLoad(context, {
+				accessByteWidth: 4,
+				lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+				resultType: Type.F32,
+				loadByteCode: instructions,
+			})
+		);
 	}
 );
 

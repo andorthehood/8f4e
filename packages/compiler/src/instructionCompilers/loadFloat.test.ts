@@ -31,7 +31,7 @@ describe('loadFloat instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('loads from an unsafe memory address without extra bounds checks', () => {
+	it('loads from an unsafe memory address with a bounds guard', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
 			isInteger: true,
