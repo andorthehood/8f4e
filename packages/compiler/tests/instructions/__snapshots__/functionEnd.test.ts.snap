@@ -44,7 +44,7 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -244,7 +244,7 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -442,7 +442,7 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,

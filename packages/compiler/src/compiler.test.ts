@@ -33,8 +33,8 @@ describe('compileSegment', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 4,
-				memoryAddress: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
-				memoryAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+				safeAddressRange: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+				clampAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 			},
 		]);
 	});
@@ -68,8 +68,8 @@ describe('compileSegment', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 8,
-				memoryAddress: { source: 'memory-start', byteAddress: 8, safeByteLength: 56, memoryId: 'arr' },
-				memoryAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 64, memoryId: 'arr' },
+				safeAddressRange: { source: 'memory-start', byteAddress: 8, safeByteLength: 56, memoryId: 'arr' },
+				clampAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 64, memoryId: 'arr' },
 			},
 		]);
 	});
@@ -103,8 +103,8 @@ describe('compileSegment', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 4,
-				memoryAddress: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
-				memoryAddressRange: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+				safeAddressRange: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+				clampAddressRange: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
 			},
 		]);
 	});
@@ -138,7 +138,7 @@ describe('compileSegment', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 15,
-				memoryAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 16, memoryId: 'bytes' },
+				clampAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 16, memoryId: 'bytes' },
 				safeMemoryAccessByteWidth: 1,
 			},
 		]);

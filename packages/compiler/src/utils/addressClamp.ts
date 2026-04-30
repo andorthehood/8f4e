@@ -45,7 +45,7 @@ export function getClampedAddressStackItem(
 		isInteger: true,
 		isNonZero: knownIntegerValue !== undefined ? knownIntegerValue !== 0 : false,
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
-		...(range ? { memoryAddressRange: range } : {}),
+		...(range ? { clampAddressRange: range } : {}),
 		...(safeMemoryAccessByteWidth > 0 ? { safeMemoryAccessByteWidth } : {}),
 	};
 }
