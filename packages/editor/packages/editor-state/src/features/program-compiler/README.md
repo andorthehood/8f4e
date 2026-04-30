@@ -30,15 +30,12 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 - **Functions**: Includes `function` block types
 - **Excluded**: `note` and `unknown` blocks are not passed to WASM compiler
 
-## Events & Callbacks
+## Subscriptions & Callbacks
 
-### Events Listened To
+### Subscriptions
 
-- `forceCompile` - Triggers immediate compilation
-
-### Events Dispatched
-
-- `loadBinaryFilesIntoMemory` - Triggered when WASM memory is recreated
+- `graphicHelper.selectedCodeBlock.code` - Schedules compilation when the selected compilable block changes
+- `graphicHelper.selectedCodeBlockForProgrammaticEdit.code` - Schedules compilation when programmatic edits change a compilable block
 
 ### Callbacks Used
 
