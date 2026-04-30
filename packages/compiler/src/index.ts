@@ -42,7 +42,16 @@ import type {
 	Namespaces,
 } from '@8f4e/compiler-types';
 
-export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
+export {
+	I16_SIGNED_LARGEST_NUMBER,
+	I16_SIGNED_SMALLEST_NUMBER,
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS,
+	BYTE_MEMORY_ACCESS_WIDTH,
+	HALF_WORD_MEMORY_ACCESS_WIDTH,
+	WORD_MEMORY_ACCESS_WIDTH,
+	DOUBLE_WORD_MEMORY_ACCESS_WIDTH,
+} from './consts';
 export { default as instructions } from './instructionCompilers';
 export {
 	prepassNamespace,

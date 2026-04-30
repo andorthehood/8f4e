@@ -9,6 +9,7 @@ type ArgumentShapeRule =
 	| 'constantIdentifier'
 	| 'literal'
 	| 'nonNegativeIntegerLiteral'
+	| 'nonNegativeCompileTimeValue'
 	| 'compileTimeValue'
 	| 'mapValue'
 	| 'typeIdentifier'
@@ -45,9 +46,9 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	map: { minArguments: 2, argumentTypes: ['mapValue', 'mapValue'] },
 	default: { minArguments: 1, argumentTypes: ['compileTimeValue'] },
 	storeBytes: { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
-	clampAddress: { maxArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
-	clampModuleAddress: { maxArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
-	clampGlobalAddress: { maxArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
+	clampAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
+	clampModuleAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
+	clampGlobalAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
 	loop: { argumentTypes: ['nonNegativeIntegerLiteral'] },
 	loopIndex: { maxArguments: 0 },
 	'#loopCap': { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
@@ -107,6 +108,11 @@ function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, inst
 		case 'nonNegativeIntegerLiteral':
 			if (argument.type !== ArgumentType.LITERAL || !argument.isInteger || argument.value < 0) {
 				invalid(`Invalid argument for ${instruction}: expected non-negative integer literal.`);
+			}
+			return;
+		case 'nonNegativeCompileTimeValue':
+			if (!isCompileTimeValue(argument) || (argument.type === ArgumentType.LITERAL && argument.value < 0)) {
+				invalid(`Invalid argument for ${instruction}: expected non-negative compile-time value.`);
 			}
 			return;
 		case 'compileTimeValue':

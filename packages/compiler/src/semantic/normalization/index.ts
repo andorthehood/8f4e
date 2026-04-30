@@ -1,4 +1,5 @@
 import normalizeCall from './call';
+import normalizeClampAddress from './clampAddress';
 import normalizeConst from './const';
 import normalizeDefault from './default';
 import normalizeInit from './init';
@@ -11,6 +12,9 @@ import type { AST, CompilationContext, NormalizedLine } from '@8f4e/compiler-typ
 
 const instructionNormalizers = {
 	call: normalizeCall,
+	clampAddress: normalizeClampAddress,
+	clampGlobalAddress: normalizeClampAddress,
+	clampModuleAddress: normalizeClampAddress,
 	const: normalizeConst,
 	default: normalizeDefault,
 	init: normalizeInit,
