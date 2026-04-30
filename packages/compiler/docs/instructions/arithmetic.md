@@ -32,6 +32,24 @@ push 3.0
 div
 ```
 
+### clamp
+
+The "clamp" instruction retrieves three numbers of the same type from the stack: a value, a minimum, and a maximum. It stores the value constrained to the inclusive minimum/maximum range back onto the stack.
+
+#### Examples
+
+```
+push 12
+push 0
+push 10
+clamp     ; stack: [ 10 ]
+
+push -0.5
+push 0.0
+push 1.0
+clamp     ; stack: [ 0.0 ]
+```
+
 ### mul
 
 The "mul" instruction retrieves two numbers of the same type from the stack, multiplies them together, and then stores the result back onto the stack.
@@ -46,6 +64,38 @@ mul       ; stack: [ 4 ]
 push 0.5    ; stack: [ 4, 0.5 ]
 push 0.7    ; stack: [ 4, 0.5, 0.7 ]
 add         ; stack: [ 4, 0.35 ]
+```
+
+### min
+
+The "min" instruction retrieves two numbers of the same type from the stack and stores the smaller value back onto the stack.
+
+#### Examples
+
+```
+push 10
+push 3
+min       ; stack: [ 3 ]
+
+push 0.5
+push 0.7
+min       ; stack: [ 0.5 ]
+```
+
+### max
+
+The "max" instruction retrieves two numbers of the same type from the stack and stores the larger value back onto the stack.
+
+#### Examples
+
+```
+push 10
+push 3
+max       ; stack: [ 10 ]
+
+push 0.5
+push 0.7
+max       ; stack: [ 0.7 ]
 ```
 
 ### remainder
