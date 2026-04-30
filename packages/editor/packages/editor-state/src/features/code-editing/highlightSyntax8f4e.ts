@@ -42,6 +42,8 @@ const instructionsToHighlight = [
 	'local',
 	'greaterOrEqual',
 	'add',
+	'min',
+	'max',
 	'greaterThan',
 	'branch',
 	'branchIfTrue',

@@ -475,6 +475,18 @@ enum WASMInstruction {
 	F32_DIV = 0x95,
 
 	/**
+	 * Floating-point minimum.
+	 * Type signature: (param f32 f32) (result f32)
+	 */
+	F32_MIN = 0x96,
+
+	/**
+	 * Floating-point maximum.
+	 * Type signature: (param f32 f32) (result f32)
+	 */
+	F32_MAX = 0x97,
+
+	/**
 	 * Floating-point addition.
 	 * Type signature: (param f64 f64) (result f64)
 	 */
@@ -497,6 +509,18 @@ enum WASMInstruction {
 	 * Type signature: (param f64 f64) (result f64)
 	 */
 	F64_DIV = 0xa3,
+
+	/**
+	 * Floating-point minimum.
+	 * Type signature: (param f64 f64) (result f64)
+	 */
+	F64_MIN = 0xa4,
+
+	/**
+	 * Floating-point maximum.
+	 * Type signature: (param f64 f64) (result f64)
+	 */
+	F64_MAX = 0xa5,
 
 	/**
 	 * Round to nearest integer value, ties to even.
