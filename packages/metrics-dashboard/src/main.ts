@@ -314,13 +314,13 @@ function renderOverview(points: Point[]) {
 				tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
 			},
 			y: {
+				domain: getByteDomain(points),
 				label: `${metricLabel(state.metric)} bytes`,
 				grid: true,
 				tickFormat: formatCompactBytes,
 			},
 			color: { legend: true },
 			marks: [
-				Plot.ruleY([0]),
 				...(hasTrend
 					? [
 							Plot.lineY(points, {
@@ -429,12 +429,12 @@ function createPackageChart(container: HTMLElement, points: Point[]) {
 			tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
 		},
 		y: {
+			domain: getByteDomain(points),
 			label: `${metricLabel(state.metric)} bytes`,
 			grid: true,
 			tickFormat: formatCompactBytes,
 		},
 		marks: [
-			Plot.ruleY([0]),
 			...(hasTrend
 				? [
 						Plot.lineY(points, {
@@ -520,6 +520,21 @@ function getReleaseLabels(points: Point[]) {
 
 function hasMultipleSnapshots(points: Point[]) {
 	return new Set(points.map(point => point.releaseIndex)).size > 1;
+}
+
+function getByteDomain(points: Point[]): [number, number] | undefined {
+	const values = points.map(point => point.bytes).filter(Number.isFinite);
+
+	if (values.length === 0) {
+		return;
+	}
+
+	const min = Math.min(...values);
+	const max = Math.max(...values);
+	const spread = max - min;
+	const padding = Math.max(spread * 0.12, max * 0.01, 1);
+
+	return [Math.max(0, Math.floor(min - padding)), Math.ceil(max + padding)];
 }
 
 function formatBytes(bytes: number) {
