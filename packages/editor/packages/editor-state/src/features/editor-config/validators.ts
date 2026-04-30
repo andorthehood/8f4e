@@ -69,7 +69,9 @@ export function resolveEditorConfigEntries(
 			continue;
 		}
 
-		setEditorConfigPath(config, entry.path, entry.value);
+		const validator = getValidator(entry.path, registry);
+
+		setEditorConfigPath(config, entry.path, validator?.parse?.(entry) ?? entry.value);
 	}
 
 	return config;

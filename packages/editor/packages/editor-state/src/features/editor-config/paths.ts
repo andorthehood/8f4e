@@ -1,6 +1,6 @@
-import type { EditorConfig } from '@8f4e/editor-state-types';
+import type { EditorConfig, EditorConfigValue } from '@8f4e/editor-state-types';
 
-export function setPathValue(target: Record<string, unknown>, path: string, value: string): void {
+export function setPathValue(target: Record<string, unknown>, path: string, value: EditorConfigValue): void {
 	const segments = path.split('.');
 	const leafSegment = segments[segments.length - 1];
 	let current = target;
@@ -22,6 +22,6 @@ export function setPathValue(target: Record<string, unknown>, path: string, valu
 	current[leafSegment] = value;
 }
 
-export function setEditorConfigPath(config: EditorConfig, path: string, value: string): void {
+export function setEditorConfigPath(config: EditorConfig, path: string, value: EditorConfigValue): void {
 	setPathValue(config, path, value);
 }

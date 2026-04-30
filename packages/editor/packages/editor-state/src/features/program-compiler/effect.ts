@@ -1,6 +1,8 @@
 import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 
+import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
+
 import { log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
@@ -43,8 +45,12 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 
 export default function compiler(store: StateManager<State>) {
 	const state = store.getState();
-	const RECOMPILE_DEBOUNCE_DELAY = 500;
-	const scheduleRecompile = debounceTrailing(onRecompile, RECOMPILE_DEBOUNCE_DELAY);
+	registerRecompileDebounceDelayEditorConfigValidator(store);
+
+	const scheduleRecompile = debounceTrailing(
+		onRecompile,
+		() => state.editorConfig.recompileDebounceDelay ?? DEFAULT_RECOMPILE_DEBOUNCE_DELAY
+	);
 
 	async function onForceCompile() {
 		scheduleRecompile.cancel();
