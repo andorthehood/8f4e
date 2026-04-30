@@ -1,0 +1,40 @@
+import { describe, expect, it } from 'vitest';
+
+import { compileSegment } from './compiler';
+import createInstructionCompilerTestContext from './utils/testUtils';
+
+describe('compileSegment', () => {
+	it('keeps address metadata when adding a constant in-range byte offset', () => {
+		const context = createInstructionCompilerTestContext({
+			namespace: {
+				memory: {
+					arr: {
+						id: 'arr',
+						numberOfElements: 32,
+						elementWordSize: 4,
+						wordAlignedAddress: 0,
+						wordAlignedSize: 32,
+						byteAddress: 0,
+						default: 0,
+						isInteger: true,
+						isPointingToPointer: false,
+						isUnsigned: false,
+						type: 'int',
+					},
+				},
+				consts: { OFFSET: { value: 4, isInteger: true } },
+			} as never,
+		});
+
+		compileSegment(['push &arr', 'push OFFSET', 'add'], context);
+
+		expect(context.stack).toEqual([
+			{
+				isInteger: true,
+				isNonZero: true,
+				knownIntegerValue: 4,
+				memoryAddress: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+			},
+		]);
+	});
+});

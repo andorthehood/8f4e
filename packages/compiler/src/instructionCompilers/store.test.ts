@@ -34,7 +34,7 @@ describe('store instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('stores to an unsafe memory address without extra bounds checks', () => {
+	it('stores to an unsafe memory address with a bounds guard', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 

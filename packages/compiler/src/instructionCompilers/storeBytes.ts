@@ -1,9 +1,10 @@
-import { i32store8 } from '@8f4e/compiler-wasm-utils';
+import { i32store8, localGet, localSet } from '@8f4e/compiler-wasm-utils';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
-import { compileSegment } from '../compiler';
 import { ErrorCode } from '../compilerError';
+import { saveByteCode } from '../utils/compilation';
+import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-types';
@@ -29,30 +30,31 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = withValidation<StoreByte
 		const count = line.arguments[0].value;
 
 		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-		const tempAddrVar = `__storeBytesAddr_${lineNumberAfterMacroExpansion}`;
-		const tempByteVar = `__storeBytesByte_${lineNumberAfterMacroExpansion}`;
-
-		const lines = [`local int ${tempAddrVar}`, `local int ${tempByteVar}`, `localSet ${tempAddrVar}`];
+		const address = context.stack.pop()!;
+		const addressIsSafe = isSafeMemoryAccess(address, count);
 		for (let i = 0; i < count; i++) {
-			lines.push(
-				`localSet ${tempByteVar}`,
-				`push ${tempAddrVar}`,
-				`push ${tempByteVar}`,
-				...i32store8(undefined, undefined, 0, i).map(b => `wasm ${b}`)
-			);
-		}
-
-		// compileSegment is used here because the instruction builds the segment
-		// dynamically and needs the semantic pipeline for local variable allocation.
-		// The raw i32store8 opcodes are injected via `wasm N` entries.
-		compileSegment(lines, context);
-
-		// `wasm` opcodes do not update stack tracking. Each i32.store8 consumes addr+byte.
-		for (let i = 0; i < count * 2; i++) {
 			context.stack.pop();
 		}
 
-		return context;
+		const tempAddrLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesAddr_${lineNumberAfterMacroExpansion}`, {
+			isInteger: true,
+		});
+		const tempByteLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesByte_${lineNumberAfterMacroExpansion}`, {
+			isInteger: true,
+		});
+
+		const byteCode = [...localSet(tempAddrLocal.index)];
+		for (let i = 0; i < count; i++) {
+			const storeByteCode = i32store8(undefined, undefined, 0, i);
+			byteCode.push(
+				...localSet(tempByteLocal.index),
+				...(addressIsSafe
+					? [...localGet(tempAddrLocal.index), ...localGet(tempByteLocal.index), ...storeByteCode]
+					: guardedStoreFromLocals(tempAddrLocal.index, tempByteLocal.index, i + 1, storeByteCode))
+			);
+		}
+
+		return saveByteCode(context, byteCode);
 	}
 );
 
