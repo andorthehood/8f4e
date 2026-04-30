@@ -44,12 +44,31 @@ class Main extends AudioWorkletProcessor {
 	memoryBuffer: Float32Array = new Float32Array(128).fill(0);
 	audioOutputBuffers = [] as { channel: number; output: number; audioBufferWordAddress: number }[];
 	audioInputBuffers = [] as { channel: number; input: number; audioBufferWordAddress: number }[];
+	audioBufferSize: number | undefined;
 
 	static get parameterDescriptors() {
 		return [{ name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1 }];
 	}
 
+	private reportAudioBufferSize(inputs: Float32Array[][], outputs: Float32Array[][]) {
+		const audioBufferSize = outputs[0]?.[0]?.length ?? inputs[0]?.[0]?.length;
+
+		if (!audioBufferSize || audioBufferSize === this.audioBufferSize) {
+			return;
+		}
+
+		this.audioBufferSize = audioBufferSize;
+		this.port.postMessage({
+			type: 'runtimeValues',
+			payload: {
+				audioBufferSize,
+			},
+		});
+	}
+
 	process(inputs: Float32Array[][], outputs: Float32Array[][]) {
+		this.reportAudioBufferSize(inputs, outputs);
+
 		for (let i = 0; i < this.audioInputBuffers.length; i++) {
 			const input = inputs[this.audioInputBuffers[i].input];
 			if (!input) {
