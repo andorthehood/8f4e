@@ -65,7 +65,7 @@ moduleEnd
 - **Stack-only operations**: Supports locals, constants, arithmetic, logic, control flow
 
 ### Allowed Instructions in Functions
-- **Arithmetic**: `add`, `sub`, `mul`, `div`, `remainder`, `abs`, `sqrt`, `pow2`, `round`
+- **Arithmetic**: `add`, `sub`, `mul`, `div`, `remainder`, `min`, `max`, `clamp`, `abs`, `sqrt`, `pow2`, `round`
 - **Logic**: `and`, `or`, `xor`, `equal`, `equalToZero`, `greaterThan`, `lessThan`, `greaterOrEqual`, `lessOrEqual`
 - **Stack**: `push`, `dup`, `drop`, `swap`, `clearStack`
 - **Locals**: `local`, `localSet`
