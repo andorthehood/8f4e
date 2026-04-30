@@ -2,6 +2,7 @@ import { i32load, i32load16s, i32load16u, i32load8s, i32load8u, Type } from '@8f
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
+import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '../consts';
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { guardedLoad, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
@@ -22,11 +23,11 @@ const instructionToByteCodeMap: Record<string, number[]> = {
 };
 
 const instructionToAccessByteWidthMap: Record<string, number> = {
-	load: 4,
-	load8s: 1,
-	load8u: 1,
-	load16s: 2,
-	load16u: 2,
+	load: WORD_MEMORY_ACCESS_WIDTH,
+	load8s: BYTE_MEMORY_ACCESS_WIDTH,
+	load8u: BYTE_MEMORY_ACCESS_WIDTH,
+	load16s: HALF_WORD_MEMORY_ACCESS_WIDTH,
+	load16u: HALF_WORD_MEMORY_ACCESS_WIDTH,
 };
 
 const load: InstructionCompiler = withValidation(

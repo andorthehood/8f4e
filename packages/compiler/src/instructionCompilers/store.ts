@@ -2,6 +2,7 @@ import { f32store, f64store, i32store } from '@8f4e/compiler-wasm-utils';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
+import { DOUBLE_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '../consts';
 import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { guardedStore, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
@@ -25,7 +26,7 @@ const store: InstructionCompiler = withValidation(
 		const operand1Value = context.stack.pop()!;
 		const operand2Address = context.stack.pop()!;
 		const instructions = operand1Value.isInteger ? i32store() : operand1Value.isFloat64 ? f64store() : f32store();
-		const accessByteWidth = operand1Value.isFloat64 ? 8 : 4;
+		const accessByteWidth = operand1Value.isFloat64 ? DOUBLE_WORD_MEMORY_ACCESS_WIDTH : WORD_MEMORY_ACCESS_WIDTH;
 		if (isSafeMemoryAccess(operand2Address, accessByteWidth)) {
 			return saveByteCode(context, instructions);
 		}

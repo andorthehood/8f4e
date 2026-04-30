@@ -15,7 +15,14 @@ import {
 	getPointeeElementWordSizeFromMetadata,
 } from '../utils/memoryData';
 
-import type { Argument, CompilationContext, CompileTimeOperand, Const, DataStructure } from '@8f4e/compiler-types';
+import type {
+	Argument,
+	CompilationContext,
+	CompileTimeOperand,
+	Const,
+	DataStructure,
+	MemoryAddressRange,
+} from '@8f4e/compiler-types';
 
 function getWordAlignedByteLength(wordAlignedSize: number): number {
 	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
@@ -72,6 +79,21 @@ function moduleAddressConst(
 					: getEndAddressSafeByteLength(wordAlignedSize),
 			...(moduleId ? { moduleId } : {}),
 		},
+	};
+}
+
+function shiftMemoryAddressRange(
+	memoryAddress: MemoryAddressRange,
+	byteOffset: number
+): MemoryAddressRange | undefined {
+	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > memoryAddress.safeByteLength) {
+		return undefined;
+	}
+
+	return {
+		...memoryAddress,
+		byteAddress: memoryAddress.byteAddress + byteOffset,
+		safeByteLength: memoryAddress.safeByteLength - byteOffset,
 	};
 }
 
@@ -355,11 +377,20 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 						: Math.pow(lhsConst.value, rhsConst.value);
 	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
 	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
+	const memoryAddress =
+		isInteger && operator === '+' && lhsConst.memoryAddress && rhsConst.isInteger
+			? shiftMemoryAddressRange(lhsConst.memoryAddress, rhsConst.value)
+			: isInteger && operator === '+' && rhsConst.memoryAddress && lhsConst.isInteger
+				? shiftMemoryAddressRange(rhsConst.memoryAddress, lhsConst.value)
+				: isInteger && operator === '-' && lhsConst.memoryAddress && rhsConst.isInteger
+					? shiftMemoryAddressRange(lhsConst.memoryAddress, -rhsConst.value)
+					: undefined;
 
 	return {
 		value,
 		isInteger,
 		...(isFloat64 ? { isFloat64: true } : {}),
+		...(memoryAddress ? { memoryAddress } : {}),
 	};
 }
 

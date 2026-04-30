@@ -4,6 +4,7 @@ import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import { ErrorCode } from '../compilerError';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -30,7 +31,7 @@ function createLine(
 }
 
 describe('clamp address instruction compilers', () => {
-	it('clamps to tracked address range metadata using 4-byte accesses by default', () => {
+	it('clamps to tracked address range metadata using the global alignment boundary by default', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
 			isInteger: true,
@@ -45,9 +46,9 @@ describe('clamp address instruction compilers', () => {
 			{
 				isInteger: true,
 				isNonZero: true,
-				knownIntegerValue: 124,
+				knownIntegerValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
 				memoryAddressRange: range,
-				safeMemoryAccessByteWidth: 4,
+				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
 		expect(context.byteCode).toContain(WASMInstruction.SELECT);
@@ -109,7 +110,7 @@ describe('clamp address instruction compilers', () => {
 					safeByteLength: 32,
 					moduleId: 'osc',
 				},
-				safeMemoryAccessByteWidth: 4,
+				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
 		expect(context.byteCode).toContain(WASMInstruction.SELECT);
@@ -126,7 +127,7 @@ describe('clamp address instruction compilers', () => {
 			{
 				isInteger: true,
 				isNonZero: false,
-				safeMemoryAccessByteWidth: 4,
+				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
 		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
@@ -138,6 +139,15 @@ describe('clamp address instruction compilers', () => {
 		context.stack.push({ isInteger: true, isNonZero: false, memoryAddressRange: range });
 
 		expect(() => clampAddress(createLine('clampAddress', 0), context)).toThrow(
+			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
+		);
+	});
+
+	it('rejects unsupported access widths', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push({ isInteger: true, isNonZero: false, memoryAddressRange: range });
+
+		expect(() => clampAddress(createLine('clampAddress', 3), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
 		);
 	});
