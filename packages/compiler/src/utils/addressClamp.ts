@@ -66,7 +66,7 @@ export function clampAddressByteCode(
 		...localGet(addressLocal.index),
 		...localGet(addressLocal.index),
 		...i32const(lowerByteAddress),
-		WASMInstruction.I32_LT_U,
+		WASMInstruction.I32_LT_S,
 		WASMInstruction.SELECT,
 		...localSet(addressLocal.index),
 		...upperByteAddressCode,
