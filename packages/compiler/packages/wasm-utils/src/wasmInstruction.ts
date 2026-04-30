@@ -165,6 +165,13 @@ enum WASMInstruction {
 	I32_STORE16 = 0x3b,
 
 	/**
+	 * Return the current memory size in WebAssembly pages.
+	 * The following memory index immediate is currently always 0.
+	 * Type signature: (param) (result i32)
+	 */
+	MEMORY_SIZE = 0x3f,
+
+	/**
 	 * Store a 32-bit float to memory.
 	 * Type signature: (param i32 f32) (result)
 	 */

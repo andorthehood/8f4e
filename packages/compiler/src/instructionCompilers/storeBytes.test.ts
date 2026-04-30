@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ArgumentType } from '@8f4e/compiler-types';
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import storeBytes from './storeBytes';
 
@@ -77,6 +78,32 @@ describe('storeBytes instruction compiler', () => {
 		);
 
 		expect(context.byteCode.filter(b => b === 0x3a)).toHaveLength(2);
+	});
+
+	it('guards byte stores when address metadata is shorter than the byte count', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: false },
+			{ isInteger: true, isNonZero: false },
+			{
+				isInteger: true,
+				isNonZero: false,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 1, memoryId: 'test' },
+			}
+		);
+
+		storeBytes(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'storeBytes',
+				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
+			} as AST[number],
+			context
+		);
+
+		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
+		expect(context.stack).toHaveLength(0);
 	});
 
 	it('compiles storeBytes 0 (address-only pop) and leaves an empty stack', () => {

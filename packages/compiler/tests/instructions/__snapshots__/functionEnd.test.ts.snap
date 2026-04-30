@@ -132,7 +132,7 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
     i32.const 3
     i32.add)
   (func (;5;) (type 0)
-    (local i32)
+    (local i32 i32 i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -143,7 +143,22 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
         if  ;; label = @3
           i32.const 8
           i32.const 3
-          i32.store
+          local.set 2
+          local.set 1
+          local.get 1
+          memory.size
+          i32.const 1
+          i32.sub
+          i32.const 16
+          i32.shl
+          i32.const 65532
+          i32.add
+          i32.le_u
+          if  ;; label = @4
+            local.get 1
+            local.get 2
+            i32.store
+          end
           br 2 (;@1;)
         end
         local.get 0
@@ -315,7 +330,7 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
   (func (;4;) (type 3) (result f32)
     f32.const 0x1.91eb86p+1 (;=3.14;))
   (func (;5;) (type 0)
-    (local i32)
+    (local i32 i32 i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -326,7 +341,22 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
         if  ;; label = @3
           i32.const 8
           i32.const 3
-          i32.store
+          local.set 2
+          local.set 1
+          local.get 1
+          memory.size
+          i32.const 1
+          i32.sub
+          i32.const 16
+          i32.shl
+          i32.const 65532
+          i32.add
+          i32.le_u
+          if  ;; label = @4
+            local.get 1
+            local.get 2
+            i32.store
+          end
           br 2 (;@1;)
         end
         local.get 0
@@ -498,7 +528,7 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
   (func (;4;) (type 3) (result i32)
     i32.const 42)
   (func (;5;) (type 0)
-    (local i32)
+    (local i32 i32 i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -509,7 +539,22 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
         if  ;; label = @3
           i32.const 8
           i32.const 3
-          i32.store
+          local.set 2
+          local.set 1
+          local.get 1
+          memory.size
+          i32.const 1
+          i32.sub
+          i32.const 16
+          i32.shl
+          i32.const 65532
+          i32.add
+          i32.le_u
+          if  ;; label = @4
+            local.get 1
+            local.get 2
+            i32.store
+          end
           br 2 (;@1;)
         end
         local.get 0
