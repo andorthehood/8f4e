@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createMockCodeBlock, createMockState } from '@8f4e/editor-state/testing';
+import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 
 import drawMeters from './meters';
 

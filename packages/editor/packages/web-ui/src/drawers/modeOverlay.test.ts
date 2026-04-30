@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createMockState } from '@8f4e/editor-state/testing';
+import { createMockState } from '@8f4e/editor-state-testing';
 
 import drawModeOverlay from './modeOverlay';
 

@@ -17,17 +17,6 @@ const baseConfig = createLibConfig({
 
 export default defineConfig({
 	...baseConfig,
-	build: {
-		...baseConfig.build,
-		lib: {
-			...baseConfig.build?.lib,
-			entry: {
-				index: resolve(__dirname, './src/index.ts'),
-				testing: resolve(__dirname, './src/testing.ts'),
-			},
-			fileName: (_format, entryName) => `${entryName}.js`,
-		},
-	},
 	resolve: {
 		alias: {
 			'~': resolve(__dirname, './src'),

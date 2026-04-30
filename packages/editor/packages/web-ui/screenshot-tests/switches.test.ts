@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import init from '@8f4e/web-ui';
-import { createMockCodeBlock } from '@8f4e/editor-state/testing';
+import { createMockCodeBlock } from '@8f4e/editor-state-testing';
 
 import createMockStateWithColors from './utils/createMockStateWithColors';
 import createCanvas from './utils/createCanvas';
