@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/runtime-main-thread",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "8f4e main thread runtime package",
   "type": "module",
