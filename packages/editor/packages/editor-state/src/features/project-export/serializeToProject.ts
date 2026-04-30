@@ -1,6 +1,6 @@
 import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
 
-import type { Project, State } from '~/types';
+import type { Project, State } from '@8f4e/editor-state-types';
 
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 

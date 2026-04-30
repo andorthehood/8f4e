@@ -1,6 +1,6 @@
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
-import type { Project } from '~/types';
+import type { Project } from '@8f4e/editor-state-types';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
 	// Find first non-empty line (must be opener)

@@ -1,5 +1,5 @@
 import type { StateManager } from '@8f4e/state-manager';
-import type { EventDispatcher, State } from '~/types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 
 export default function editorMode(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();

@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest';
 import color from './effect';
 import { colorEditorConfigValidator } from './editorConfig';
 
-import type { EditorConfigEntry } from '../editor-config/types';
-import type { State } from '~/types';
+import type { EditorConfigEntry } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 
 function entry(path: string, value: string): EditorConfigEntry {

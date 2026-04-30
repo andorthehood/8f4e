@@ -16,7 +16,7 @@ import drawArrow from './drawArrow';
 import drawBlockHighlights from './widgets/blockHighlights';
 import drawSelectedOutline from './drawSelectedOutline';
 
-import type { State } from '@8f4e/editor-state';
+import type { State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../types';
 
 const corner = '+';

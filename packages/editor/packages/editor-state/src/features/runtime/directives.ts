@@ -2,8 +2,8 @@ import { resolveSelectedRuntimeId } from './editorConfig';
 
 import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
 
-import type { State, CodeBlock } from '~/types';
-import type { RuntimeRegistryEntry } from './types';
+import type { State, CodeBlock } from '@8f4e/editor-state-types';
+import type { RuntimeRegistryEntry } from '@8f4e/editor-state-types';
 
 function getSelectedRuntimeEntry(state: State): RuntimeRegistryEntry | undefined {
 	if (!state.runtimeRegistry || Object.keys(state.runtimeRegistry).length === 0) {

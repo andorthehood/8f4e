@@ -2,8 +2,8 @@ import { Engine } from 'glugglug';
 
 import { calculateArrowPlacement } from './arrowPlacement';
 
-import type { State } from '@8f4e/editor-state';
-import type { CodeBlockGraphicData } from '@8f4e/editor-state';
+import type { State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 const ARROW_CHARACTERS = {
 	top: '^',

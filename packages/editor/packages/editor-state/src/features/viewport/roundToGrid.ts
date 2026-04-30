@@ -1,4 +1,4 @@
-import type { Viewport } from '~/features/viewport/types';
+import type { Viewport } from '@8f4e/editor-state-types';
 
 /**
  * Rounds pixel coordinates to the nearest grid lines.

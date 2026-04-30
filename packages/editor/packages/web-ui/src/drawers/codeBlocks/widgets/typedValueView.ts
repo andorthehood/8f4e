@@ -1,5 +1,5 @@
 import type { MemoryViews } from '../../../types';
-import type { MemoryIdentifier, TypedValueKind } from '@8f4e/editor-state';
+import type { MemoryIdentifier, TypedValueKind } from '@8f4e/editor-state-types';
 
 export function getBaseValueIndex(
 	startAddress: MemoryIdentifier,

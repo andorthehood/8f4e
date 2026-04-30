@@ -6,9 +6,9 @@ import centerViewportOnCodeBlockCursor from '../../../viewport/centerViewportOnC
 import gapCalculator from '../../../code-editing/gapCalculator';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 
-import type { Direction } from '../../utils/types';
+import type { Direction } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import type { State, EventDispatcher, NavigateCodeBlockEvent } from '~/types';
+import type { State, EventDispatcher, NavigateCodeBlockEvent } from '@8f4e/editor-state-types';
 
 type StateSource = StateManager<State> | State;
 

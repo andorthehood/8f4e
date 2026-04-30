@@ -2,7 +2,7 @@ import parsePos from '../directives/pos/data';
 import { resolveRuntimeEnvConstants } from '../../../runtime/directives';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';
+import type { State, CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 const AUTO_ENV_CONSTANTS_BLOCK_NAME = 'env';
 const AUTO_ENV_CONSTANTS_BLOCK_ID = `constants_${AUTO_ENV_CONSTANTS_BLOCK_NAME}`;

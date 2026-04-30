@@ -1,4 +1,4 @@
-import type { EditorConfig } from './types';
+import type { EditorConfig } from '@8f4e/editor-state-types';
 
 export function setPathValue(target: Record<string, unknown>, path: string, value: string): void {
 	const segments = path.split('.');

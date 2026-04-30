@@ -1,8 +1,8 @@
 import roundToGrid from './roundToGrid';
 
-import type { Viewport } from './types';
+import type { Viewport } from '@8f4e/editor-state-types';
 import type { CodeBlockBounds } from './centerViewportOnCodeBlock';
-import type { Position } from '~/types';
+import type { Position } from '@8f4e/editor-state-types';
 
 export interface CodeBlockCursorBounds extends CodeBlockBounds {
 	cursor: {

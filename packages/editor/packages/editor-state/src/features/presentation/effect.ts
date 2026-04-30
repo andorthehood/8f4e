@@ -4,7 +4,7 @@ import animateViewport, { stopViewportAnimation } from '../viewport/animateViewp
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { EventDispatcher, State } from '~/types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 
 const PRESENTATION_TRANSITION_DURATION_MS = 2000;
 

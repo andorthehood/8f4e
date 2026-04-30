@@ -3,11 +3,11 @@ import createStateManager from '@8f4e/state-manager';
 
 import autoEnvConstants from './effect';
 
-import type { State, Project, CodeBlockGraphicData } from '~/types';
+import type { State, Project, CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
-import { EMPTY_DEFAULT_PROJECT } from '~/types';
+import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 
 const AUTO_ENV_BLOCK_ID = 'constants_env';
 const PROJECT_WITH_SAMPLE_RATE_DIRECTIVE: Project = {

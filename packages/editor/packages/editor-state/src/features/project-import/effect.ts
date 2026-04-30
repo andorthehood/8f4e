@@ -4,9 +4,10 @@ import { parse8f4eToProject } from './parse8f4e';
 
 import { warn, error } from '../logger/logger';
 
-import type { Project, State } from '~/types';
+import type { Project, State } from '@8f4e/editor-state-types';
+import type { EventDispatcher } from '@8f4e/editor-state-types';
 
-import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '~/types';
+import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();

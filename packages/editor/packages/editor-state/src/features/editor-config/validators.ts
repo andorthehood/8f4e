@@ -2,8 +2,13 @@ import { setEditorConfigPath } from './paths';
 
 import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
-import type { CodeError } from '~/types';
-import type { EditorConfig, EditorConfigEntry, EditorConfigValidator, EditorConfigValidatorRegistry } from './types';
+import type { CodeError } from '@8f4e/editor-state-types';
+import type {
+	EditorConfig,
+	EditorConfigEntry,
+	EditorConfigValidator,
+	EditorConfigValidatorRegistry,
+} from '@8f4e/editor-state-types';
 
 export function getEditorConfigValidators(registry: EditorConfigValidatorRegistry): EditorConfigValidator[] {
 	return Object.values(registry).filter((validator): validator is EditorConfigValidator => Boolean(validator));

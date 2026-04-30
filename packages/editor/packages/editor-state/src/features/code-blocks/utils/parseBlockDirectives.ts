@@ -1,6 +1,6 @@
 import { parseDirectiveLineRecords } from '../features/directives/utils';
 
-import type { ParsedDirectiveRecord } from '~/types';
+import type { ParsedDirectiveRecord } from '@8f4e/editor-state-types';
 
 /**
  * Scans every line of a code block's raw source and returns a flat array of

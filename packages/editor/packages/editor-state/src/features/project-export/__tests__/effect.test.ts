@@ -4,7 +4,7 @@ import createStateManager from '@8f4e/state-manager';
 import projectExport from '../effect';
 import { exportFileNameEditorConfigValidator } from '../editorConfig';
 
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';

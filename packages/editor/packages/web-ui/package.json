@@ -24,11 +24,12 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/editor-state": "*",
+    "@8f4e/editor-state-types": "*",
     "@8f4e/sprite-generator": "*",
     "glugglug": "*"
   },
   "devDependencies": {
+    "@8f4e/editor-state": "*",
     "@vitest/browser": "4.0.13",
     "@vitest/browser-playwright": "4.0.13",
     "playwright": "^1.56.1",

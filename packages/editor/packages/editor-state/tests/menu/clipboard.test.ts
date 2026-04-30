@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { mainMenu, moduleMenu } from '../../src/features/menu/menus';
 import { createMockState, createMockCodeBlock } from '../../src/pureHelpers/testingUtils/testUtils';
 
-import type { State } from '../../src/types';
+import type { State } from '@8f4e/editor-state-types';
 
 describe('menus - clipboard callback disabled state', () => {
 	describe('mainMenu', () => {

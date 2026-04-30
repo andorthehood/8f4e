@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData } from '~/types';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 /**
  * Gets all existing group names in the code blocks

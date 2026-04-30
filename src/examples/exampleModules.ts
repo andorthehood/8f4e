@@ -1,6 +1,6 @@
 import { fetchRegistryJson } from './fetchRegistry';
 
-import type { ModuleMetadata } from '@8f4e/editor-state';
+import type { ModuleMetadata } from '@8f4e/editor-state-types';
 
 const EXAMPLE_MODULES_REGISTRY_URL = 'https://static.llllllllllll.com/8f4e/example-modules/registry.json';
 

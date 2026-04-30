@@ -1,6 +1,6 @@
 import { extractElementCountBase, hasElementCountPrefix } from '@8f4e/tokenizer';
 
-import type { MemoryIdentifier, State, TypedValueKind } from '~/types';
+import type { MemoryIdentifier, State, TypedValueKind } from '@8f4e/editor-state-types';
 
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 

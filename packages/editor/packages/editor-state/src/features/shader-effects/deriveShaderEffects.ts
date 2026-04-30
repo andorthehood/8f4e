@@ -2,7 +2,7 @@ import extractShaderSource from './extractShaderSource';
 import getShaderNoteMetadata from './getShaderNoteMetadata';
 
 import type { BackgroundEffect, PostProcessEffect } from 'glugglug';
-import type { CodeBlockGraphicData, CodeError } from '~/types';
+import type { CodeBlockGraphicData, CodeError } from '@8f4e/editor-state-types';
 
 /**
  * Derives post-process and background effects from targeted shader notes.

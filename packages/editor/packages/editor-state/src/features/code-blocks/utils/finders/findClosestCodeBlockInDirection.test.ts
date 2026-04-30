@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
 
-import type { CodeBlockGraphicData } from '~/types';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 

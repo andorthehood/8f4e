@@ -1,6 +1,6 @@
 import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
 
-import type { EventDispatcher, State } from '~/types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 
 export interface ViewportChangedEvent {
 	previousX: number;

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import editorMode from './effect';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { EventDispatcher, State } from '~/types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 
 describe('editorMode', () => {
 	function setup(editorModeValue: State['editorMode'] = 'view', editing = false) {

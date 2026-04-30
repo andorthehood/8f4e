@@ -3,7 +3,7 @@ import { resolveRuntimeDirectiveState } from './directives';
 import deepEqual from '../../shared/utils/deepEqual';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 export default function runtimeDirectiveErrorsEffect(store: StateManager<State>): void {
 	function updateErrors(): void {

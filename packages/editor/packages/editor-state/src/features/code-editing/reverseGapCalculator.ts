@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData } from '~/types';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 /**
  * Converts a physical row index (which includes gap rows inserted for decorations) back into a logical row.

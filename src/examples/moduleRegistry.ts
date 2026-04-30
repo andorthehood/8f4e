@@ -2,7 +2,7 @@ import { extractUseDependencies } from '@8f4e/tokenizer';
 
 import { getExampleModuleManifest, getExampleModuleMetadata } from './exampleModules';
 
-import type { ModuleMetadata } from '@8f4e/editor-state';
+import type { ModuleMetadata } from '@8f4e/editor-state-types';
 
 // Cache for loaded modules to avoid redundant loading
 const loadedModulesCache: Record<string, string> = {};

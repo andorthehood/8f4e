@@ -1,6 +1,6 @@
 import { buildCategoryTree, getNodeAtPath, nodeToMenuItems } from '../categoryTree';
 
-import type { MenuGenerator } from '~/types';
+import type { MenuGenerator } from '@8f4e/editor-state-types';
 import type { CategoryItem } from '../categoryTree';
 
 export const projectMenu: MenuGenerator = async (state, payload = {}) => {
@@ -10,7 +10,7 @@ export const projectMenu: MenuGenerator = async (state, payload = {}) => {
 	}
 	const projects = await state.callbacks.getListOfProjects();
 
-	const categoryItems: CategoryItem[] = projects.map((project: import('~/types').ProjectMetadata) => ({
+	const categoryItems: CategoryItem[] = projects.map((project: import('@8f4e/editor-state-types').ProjectMetadata) => ({
 		title: project.title,
 		slug: project.url,
 		category: project.category,

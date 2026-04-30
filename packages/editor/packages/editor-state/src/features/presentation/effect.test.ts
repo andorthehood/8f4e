@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import presentation from './effect';
 
-import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 
 import { createMockViewport } from '~/pureHelpers/testingUtils/testUtils';

@@ -23,13 +23,13 @@ import { parseEditorDirectives, normalizeEditorDirectiveRecords } from './utils'
 import buildDisplayModel from '../graphicHelper/buildDisplayModel';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 
-import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '~/types';
+import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
 import type {
 	DirectiveDeriveOptions,
 	DirectiveDerivedState,
 	DirectiveDerivedStateDraft,
 	EditorDirectivePlugin,
-} from './types';
+} from '@8f4e/editor-state-types';
 
 export type {
 	ParsedEditorDirective,
@@ -37,7 +37,7 @@ export type {
 	DirectiveBlockState,
 	DirectiveDerivedState,
 	ViewportAnchor,
-} from './types';
+} from '@8f4e/editor-state-types';
 
 export const directivePlugins: EditorDirectivePlugin[] = [
 	meterDirective,

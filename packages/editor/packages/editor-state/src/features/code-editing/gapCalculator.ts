@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData } from '~/types';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 /**
  * Calculates the physical row index by adding the size of every gap that starts before the logical row.

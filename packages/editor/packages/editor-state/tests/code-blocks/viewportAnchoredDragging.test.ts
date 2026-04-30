@@ -5,7 +5,7 @@ import codeBlockDragger from '../../src/features/code-blocks/features/codeBlockD
 import { createCodeBlockGraphicData } from '../../src/features/code-blocks/utils/createCodeBlockGraphicData';
 import { createMockState } from '../../src/pureHelpers/testingUtils/testUtils';
 
-import type { State, InternalMouseEvent, EventDispatcher } from '../../src/types';
+import type { State, InternalMouseEvent, EventDispatcher } from '@8f4e/editor-state-types';
 
 describe('viewport-anchored dragging', () => {
 	let state: State;

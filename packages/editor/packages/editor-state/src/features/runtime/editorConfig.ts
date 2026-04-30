@@ -1,9 +1,9 @@
 import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
-import type { EditorConfigValidator } from '../editor-config/types';
-import type { State } from '~/types';
+import type { EditorConfigValidator } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import type { RuntimeRegistry, Runtimes } from './types';
+import type { RuntimeRegistry, Runtimes } from '@8f4e/editor-state-types';
 
 export const RUNTIME_CONFIG_PATH = 'runtime';
 

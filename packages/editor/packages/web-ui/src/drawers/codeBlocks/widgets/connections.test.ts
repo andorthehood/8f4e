@@ -4,7 +4,7 @@ import { createMockCodeBlock, createMockState } from '@8f4e/editor-state/testing
 import drawConnections from './connections';
 
 import type { Engine } from 'glugglug';
-import type { Input, Output } from '@8f4e/editor-state';
+import type { Input, Output } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../../types';
 
 function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryViews {

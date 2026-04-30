@@ -1,4 +1,4 @@
-import type { State, LogMessage } from '~/types';
+import type { State, LogMessage } from '@8f4e/editor-state-types';
 
 type LogLevel = LogMessage['level'];
 

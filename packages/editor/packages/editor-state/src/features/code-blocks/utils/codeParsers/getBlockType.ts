@@ -1,4 +1,4 @@
-import type { CodeBlockType } from '~/types';
+import type { CodeBlockType } from '@8f4e/editor-state-types';
 
 import { BLOCK_DELIMITERS, getCloserKeyword, getOpenerKeyword } from '~/features/project-format';
 

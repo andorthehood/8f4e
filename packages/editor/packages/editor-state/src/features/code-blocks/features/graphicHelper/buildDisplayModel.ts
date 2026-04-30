@@ -1,22 +1,10 @@
-export interface DisplayLine {
-	rawRow: number;
-	text: string;
-	isPlaceholder?: boolean;
-}
+import type { BuildDisplayModelOptions, CodeBlockDisplayModel, DisplayLine } from '@8f4e/editor-state-types';
 
-export interface CodeBlockDisplayModel {
-	lines: DisplayLine[];
-	displayRowToRawRow: number[];
-	rawRowToDisplayRow: Array<number | undefined>;
-	isCollapsed: boolean;
-}
-
-export interface BuildDisplayModelOptions {
-	hideAfterRawRow?: number;
-	isExpandedForEditing?: boolean;
-}
-
-function getVisibleRawRows(code: string[], hideAfterRawRow: number | undefined, isExpandedForEditing: boolean): number[] {
+function getVisibleRawRows(
+	code: string[],
+	hideAfterRawRow: number | undefined,
+	isExpandedForEditing: boolean
+): number[] {
 	if (hideAfterRawRow === undefined || isExpandedForEditing) {
 		return code.map((_, rawRow) => rawRow);
 	}
@@ -35,11 +23,7 @@ function shouldShowCollapsedPlaceholder(
 	hideAfterRawRow: number | undefined,
 	isExpandedForEditing: boolean
 ): hideAfterRawRow is number {
-	return (
-		hideAfterRawRow !== undefined &&
-		!isExpandedForEditing &&
-		hideAfterRawRow < code.length - 1
-	);
+	return hideAfterRawRow !== undefined && !isExpandedForEditing && hideAfterRawRow < code.length - 1;
 }
 
 export default function buildDisplayModel(

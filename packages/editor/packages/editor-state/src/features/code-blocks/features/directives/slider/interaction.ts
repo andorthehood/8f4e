@@ -2,9 +2,8 @@ import { StateManager } from '@8f4e/state-manager';
 
 import findSliderWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
-import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '~/types';
-
-import { EventDispatcher } from '~/types';
+import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '@8f4e/editor-state-types';
+import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 interface ActiveSlider {
 	slider: Slider;

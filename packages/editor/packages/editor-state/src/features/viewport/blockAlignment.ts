@@ -1,4 +1,4 @@
-export type ViewportBlockAlignment = 'center' | 'left' | 'right' | 'top' | 'bottom';
+import type { ViewportBlockAlignment } from '@8f4e/editor-state-types';
 
 export function parseViewportBlockAlignment(value: string | undefined): ViewportBlockAlignment | undefined {
 	if (!value) {

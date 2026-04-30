@@ -3,7 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import editorConfigModule from './effect';
 
-import { EMPTY_DEFAULT_PROJECT } from '~/types';
+import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 

@@ -5,7 +5,7 @@ import codeBlockCreator from './effect';
 
 import groupCopier from '../group/copier/effect';
 
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';

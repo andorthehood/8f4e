@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '~/types';
+import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
 
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 

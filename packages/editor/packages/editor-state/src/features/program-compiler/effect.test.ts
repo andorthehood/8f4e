@@ -3,7 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import compilerEffect from './effect';
 
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';

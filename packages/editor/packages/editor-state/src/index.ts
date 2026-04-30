@@ -43,7 +43,7 @@ import runtimeDirectiveErrorsEffect from './features/runtime/directiveErrorsEffe
 import editorMode from './features/editor-mode/effect';
 import presentation from './features/presentation/effect';
 
-import type { Options, State, EventDispatcher } from './types';
+import type { Options, State, EventDispatcher } from '@8f4e/editor-state-types';
 
 // Function to create default state
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
@@ -115,75 +115,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	return store;
 }
 
-// Export all types from types module
-export type {
-	State,
-	CodeBlockGraphicData,
-	CodeBlockType,
-	ParsedDirectiveRecord,
-	Project,
-	Options,
-	CompilationResult,
-	EditorConfigStorageBlock,
-	CodeBlock,
-	ProjectViewport,
-	GridCoordinates,
-	Size,
-	Position,
-	ContextMenuItem,
-	MenuGenerator,
-	Compiler,
-	Midi,
-	GraphicHelper,
-	BinaryAsset,
-	Callbacks,
-	ModuleMetadata,
-	ProjectMetadata,
-	Runtimes,
-	WebWorkerLogicRuntime,
-	MainThreadLogicRuntime,
-	AudioWorkletRuntime,
-	WebWorkerMIDIRuntime,
-	MemoryIdentifier,
-	ArrayPlotter,
-	ArrayWave,
-	TypedValueKind,
-	Switch,
-	Crossfade,
-	Debugger,
-	Output,
-	Input,
-	PianoKeyboard,
-	PianoKeyboardKey,
-	PianoKeyboardWhiteKey,
-	PianoKeyboardBlackKey,
-	PianoKeySprite,
-	PianoPressedOverlayFont,
-	ContextMenu,
-	RuntimeFactory,
-	RuntimeRegistry,
-	RuntimeRegistryEntry,
-	JSONSchemaLike,
-	FeatureFlags,
-	FeatureFlagsConfig,
-	EditorMode,
-	EventDispatcher,
-	ResolvedGlobalEditorDirectives,
-	InternalMouseEvent,
-	InternalKeyboardEvent,
-	NavigateCodeBlockEvent,
-	MoveCaretEvent,
-	InsertTextEvent,
-	LogMessage,
-	ConsoleState,
-	CodeError,
-	MemoryAction,
-	EditorConfig,
-	EditorConfigEntry,
-} from './types';
-
 // Export EMPTY_DEFAULT_PROJECT as a value
-export { EMPTY_DEFAULT_PROJECT } from './types';
+export { EMPTY_DEFAULT_PROJECT } from './features/project-import/emptyDefaultProject';
 
 // Export .8f4e format helpers
 export { serializeProjectTo8f4e } from './features/project-export/serializeTo8f4e';
@@ -191,7 +124,6 @@ export { parse8f4eToProject } from './features/project-import/parse8f4e';
 
 // Export helper functions
 export { default as findClosestCodeBlockInDirection } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';
-export type { Direction } from './features/code-blocks/utils/types';
 export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';

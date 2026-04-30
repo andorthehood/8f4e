@@ -1,6 +1,6 @@
 import { isEditorConfigBlock } from '../editor-config-module/editorConfigModule';
 
-import type { CodeBlock, CodeBlockGraphicData } from '~/types';
+import type { CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 

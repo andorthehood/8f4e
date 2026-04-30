@@ -4,11 +4,11 @@ import createStateManager from '@8f4e/state-manager';
 import projectImport from '../effect';
 import compiler from '../../program-compiler/effect';
 
-import type { State, Project } from '~/types';
+import type { State, Project } from '@8f4e/editor-state-types';
 
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
-import { EMPTY_DEFAULT_PROJECT } from '~/types';
+import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 
 describe('projectImport', () => {
 	let mockState: State;

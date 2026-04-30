@@ -1,6 +1,6 @@
 import deriveFavorites from '../../code-blocks/features/favorites/deriveFavorites';
 
-import type { MenuGenerator } from '~/types';
+import type { MenuGenerator } from '@8f4e/editor-state-types';
 
 /**
  * Generates a submenu for favorited code blocks.

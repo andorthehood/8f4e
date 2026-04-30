@@ -1,6 +1,6 @@
 import updateViewport from './updateViewport';
 
-import type { EventDispatcher, State } from '~/types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 
 const scheduledFrames = new WeakMap<State, number>();
 

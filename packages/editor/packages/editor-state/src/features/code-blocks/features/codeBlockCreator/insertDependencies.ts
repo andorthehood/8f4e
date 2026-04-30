@@ -4,7 +4,7 @@ import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 interface InsertDependenciesParams {
 	dependencies: string[];

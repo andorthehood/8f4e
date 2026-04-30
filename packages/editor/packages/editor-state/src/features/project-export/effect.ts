@@ -4,9 +4,8 @@ import serializeToProject from './serializeToProject';
 import { serializeProjectTo8f4e } from './serializeTo8f4e';
 import { registerExportFileNameEditorConfigValidator } from './editorConfig';
 
-import type { State } from '~/types';
-
-import { EventDispatcher } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
+import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
 	registerExportFileNameEditorConfigValidator(store);

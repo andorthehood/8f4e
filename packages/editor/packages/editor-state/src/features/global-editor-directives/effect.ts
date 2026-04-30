@@ -4,7 +4,7 @@ import { resolveEditorConfigEntries, validateEditorConfigEntries } from '../edit
 import deepEqual from '../../shared/utils/deepEqual';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '~/types';
+import type { State } from '@8f4e/editor-state-types';
 
 /**
  * Global-editor-directives effect.
