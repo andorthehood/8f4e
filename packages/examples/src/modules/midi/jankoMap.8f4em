@@ -3,7 +3,7 @@
 function jankoMap
 param int keycode
 use midiCodes
-localGet keycode
+push keycode
 mapBegin int
 map 45 C3  ; Maps HID
 map 31 C#3 ; keycodes

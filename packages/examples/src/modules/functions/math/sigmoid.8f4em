@@ -6,7 +6,7 @@ function sigmoid
 ; mapped to [0, 1]
 param float x
 
-localGet x
+push x
 dup
 abs
 push 1.0
