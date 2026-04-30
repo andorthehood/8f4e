@@ -130,3 +130,61 @@ push 111
 push &buffer
 storeBytes 5
 ```
+
+### clampAddress
+
+The clampAddress instruction consumes an address and clamps it to the tracked address range carried by that stack value.
+It pushes the clamped address back onto the stack and marks it safe for the requested access width, so later load and store instructions can avoid emitting their own runtime guard.
+
+The optional argument is the access width in bytes. If omitted, it defaults to `4`.
+The compiler reports an error if the input address does not carry address range metadata, because there is no known range to clamp against.
+
+The last valid address is `rangeEnd - accessWidth`. If the tracked range is shorter than the requested access width, the compiler reports an error because there is no address in that range that can safely satisfy the requested access.
+
+#### Examples
+
+```
+int[] buffer 32
+push &buffer
+push 1024
+add
+clampAddress
+load
+```
+
+```
+int8[] bytes 16
+push &bytes
+push 1024
+add
+clampAddress 1
+load8u
+```
+
+### clampModuleAddress
+
+The clampModuleAddress instruction consumes an address and clamps it to the current module memory range.
+It is available inside modules and uses the same optional access-width argument as clampAddress, defaulting to `4` bytes.
+
+#### Examples
+
+```
+push 999999
+clampModuleAddress
+load
+```
+
+### clampGlobalAddress
+
+The clampGlobalAddress instruction consumes an address and clamps it to the whole WebAssembly linear memory.
+It is useful when the address did not come from a tracked 8f4e memory declaration but should still be made non-trapping before a memory access.
+
+The optional argument is the access width in bytes and defaults to `4`. The last valid start address is based on the current WebAssembly memory size at runtime.
+
+#### Examples
+
+```
+push externalAddress
+clampGlobalAddress
+load
+```

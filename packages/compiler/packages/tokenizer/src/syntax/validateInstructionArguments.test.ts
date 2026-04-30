@@ -134,6 +134,22 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('blockEnd', [])).not.toThrow();
 	});
 
+	it('accepts optional non-negative integer access widths for address clamps', () => {
+		expect(() => validateInstructionArguments('clampAddress', [])).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('clampModuleAddress', [{ type: ArgumentType.LITERAL, value: 4, isInteger: true }])
+		).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('clampGlobalAddress', [{ type: ArgumentType.LITERAL, value: -1, isInteger: true }])
+		).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('clampAddress', [
+				{ type: ArgumentType.LITERAL, value: 4, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 4, isInteger: true },
+			])
+		).toThrowError(SyntaxRulesError);
+	});
+
 	it('accepts blockEnd with int or float', () => {
 		expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('int')])).not.toThrow();
 		expect(() => validateInstructionArguments('blockEnd', [classifyIdentifier('float')])).not.toThrow();

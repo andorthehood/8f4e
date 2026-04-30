@@ -26,10 +26,13 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 			: operand2.memoryAddress && operand1.knownIntegerValue !== undefined
 				? shiftMemoryAddressRange(operand2.memoryAddress, operand1.knownIntegerValue)
 				: undefined;
+	const memoryAddressRange =
+		operand1.memoryAddressRange ?? operand1.memoryAddress ?? operand2.memoryAddressRange ?? operand2.memoryAddress;
 
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
 		...(memoryAddress ? { memoryAddress } : {}),
+		...(memoryAddressRange ? { memoryAddressRange } : {}),
 	};
 }
 
@@ -42,9 +45,11 @@ export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem)
 		operand1.memoryAddress && operand2.knownIntegerValue !== undefined
 			? shiftMemoryAddressRange(operand1.memoryAddress, -operand2.knownIntegerValue)
 			: undefined;
+	const memoryAddressRange = operand1.memoryAddressRange ?? operand1.memoryAddress;
 
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
 		...(memoryAddress ? { memoryAddress } : {}),
+		...(memoryAddressRange ? { memoryAddressRange } : {}),
 	};
 }
