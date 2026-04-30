@@ -71,8 +71,8 @@ All packages in `packages/` (including nested directories) are automatically det
 - `@8f4e/compiler`
 - `@8f4e/compiler-worker`
 - `@8f4e/runtime-audio-worklet`
-- `@8f4e/runtime-main-thread-logic`
-- `@8f4e/runtime-web-worker-logic`
+- `@8f4e/runtime-main-thread`
+- `@8f4e/runtime-web-worker`
 
 ## Configuration
 

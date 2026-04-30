@@ -1,5 +1,5 @@
-import { createWebWorkerLogicRuntimeDef } from '@8f4e/runtime-web-worker-logic/runtime-def';
-import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
+import { createWebWorkerRuntimeDef } from '@8f4e/runtime-web-worker/runtime-def';
+import WebWorkerRuntime from '@8f4e/runtime-web-worker?worker';
 
 import { getCodeBuffer, getMemory } from './compiler-callback';
 
@@ -9,7 +9,7 @@ import type { RuntimeRegistry, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4
  * Default runtime ID for the application.
  * This is used as the fallback when no runtime is specified or when an unknown runtime is requested.
  */
-export const DEFAULT_RUNTIME_ID = 'WebWorkerLogicRuntime';
+export const DEFAULT_RUNTIME_ID = 'WebWorkerRuntime';
 
 /**
  * Creates a lazy runtime registry entry that defers loading the runtime implementation and schema
@@ -67,16 +67,16 @@ function createLazyRuntimeEntry(
 /**
  * Runtime registry for the application.
  * Maps runtime IDs to their configuration entries including defaults, schemas, and factory functions.
- * The default runtime (WebWorkerLogicRuntime) is loaded eagerly; optional runtimes are lazy-loaded
+ * The default runtime (WebWorkerRuntime) is loaded eagerly; optional runtimes are lazy-loaded
  * on first selection. Each optional runtime starts with a minimal stub schema and replaces it with
  * the full schema after loading.
  */
 export const runtimeRegistry: RuntimeRegistry = {
-	WebWorkerLogicRuntime: createWebWorkerLogicRuntimeDef(getCodeBuffer, getMemory, WebWorkerLogicRuntime),
+	WebWorkerRuntime: createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime),
 
-	MainThreadLogicRuntime: createLazyRuntimeEntry('MainThreadLogicRuntime', { sampleRate: 50 }, async () => {
-		const { createMainThreadLogicRuntimeDef } = await import('@8f4e/runtime-main-thread-logic/runtime-def');
-		return createMainThreadLogicRuntimeDef(getCodeBuffer, getMemory);
+	MainThreadRuntime: createLazyRuntimeEntry('MainThreadRuntime', { sampleRate: 50 }, async () => {
+		const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
+		return createMainThreadRuntimeDef(getCodeBuffer, getMemory);
 	}),
 
 	AudioWorkletRuntime: createLazyRuntimeEntry('AudioWorkletRuntime', { sampleRate: 48000 }, async () => {
