@@ -106,7 +106,7 @@ describe('projectImport', () => {
 	describe('loadProject', () => {
 		it('should load project without config reset plumbing', async () => {
 			projectImport(store, mockEvents);
-			compiler(store, mockEvents);
+			compiler(store);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -123,7 +123,7 @@ describe('projectImport', () => {
 
 		it('should load new project without config state', async () => {
 			projectImport(store, mockEvents);
-			compiler(store, mockEvents);
+			compiler(store);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');

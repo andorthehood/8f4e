@@ -22,7 +22,7 @@ describe('Loader - Project loading', () => {
 
 	it('should load project without config reset plumbing', async () => {
 		projectImport(store, mockEvents);
-		compiler(store, mockEvents);
+		compiler(store);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -41,7 +41,7 @@ describe('Loader - Project loading', () => {
 
 	it('should load new project without config state', async () => {
 		projectImport(store, mockEvents);
-		compiler(store, mockEvents);
+		compiler(store);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;

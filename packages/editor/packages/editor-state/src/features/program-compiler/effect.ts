@@ -6,7 +6,6 @@ import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
 import type { CompilerDiagnostic } from '@8f4e/compiler-types';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 /**
  * Converts code blocks into separate arrays for modules, functions, and macros, sorted by creationIndex.
@@ -42,7 +41,7 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	return { modules, functions, macros };
 }
 
-export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
+export default function compiler(store: StateManager<State>) {
 	const state = store.getState();
 	const RECOMPILE_DEBOUNCE_DELAY = 500;
 	const scheduleRecompile = debounceTrailing(onRecompile, RECOMPILE_DEBOUNCE_DELAY);
@@ -113,7 +112,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 		onForceCompile();
 	}
 
-	events.on('compileCode', onForceCompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.disabled) {
 			return;
