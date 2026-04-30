@@ -86,16 +86,9 @@ export interface AudioWorkletRuntime {
 }
 
 /**
- * WebWorker-based MIDI runtime configuration.
- */
-export interface WebWorkerMIDIRuntime {
-	sampleRate: number;
-}
-
-/**
  * Union of all runtime configuration types.
  */
-export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
+export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime;
 
 /**
  * MIDI input/output state.

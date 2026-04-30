@@ -13,5 +13,4 @@ export default defineWorkspace([
 	'packages/runtime-audio-worklet/vitest.config.ts',
 	'packages/runtime-main-thread-logic/vitest.config.ts',
 	'packages/runtime-web-worker-logic/vitest.config.ts',
-	'packages/runtime-web-worker-midi/vitest.config.ts',
 ]);
