@@ -1,0 +1,138 @@
+8f4e/v1
+
+constants env
+; @pos 32 -63
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 44100
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'amen-170bpm-8s.pcm'
+const ASSET_AMEN_SIZE 62258
+
+constantsEnd
+
+module assets
+; @pos -107 -70
+; @defAsset amen https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
+
+moduleEnd
+
+module audioout
+; @pos 140 -63
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
+use env
+
+float* in &pcmPlayer8bit:out
+
+float[] buffer AUDIO_BUFFER_SIZE
+float* pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the word size
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module notes
+; @pos 33 -45
+; Loads an external 8-bit PCM asset into memory, 
+; continuously plays it with a looping playhead, 
+; and routes the normalized output into a single 
+; audioout buffer that is read by both left and 
+; right audio channels. The player accepts a 
+; floating point speed input that advances the 
+; playhead by fractional sample steps.
+moduleEnd
+
+module pcmPlayer8bit
+; @pos 91 -63
+; @home
+use env
+
+int8[] buffer ASSET_AMEN_SIZE
+; @loadAsset amen &buffer
+float defSpeed 1
+float* speed &defSpeed
+float position
+int8* playhead &buffer
+float out
+
+; @slider &defSpeed 0.25 4 0.01
+; @wave2 &buffer count(buffer) playhead
+
+; Calculate read address
+push &playhead
+push position
+castToInt
+push &buffer
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(buffer)
+castToFloat
+div
+store
+
+; Advance the playhead by
+; the floating speed step
+push &position
+push position
+push *speed
+add
+store
+
+; Reset playhead
+; when reaches buffer end
+push position
+castToInt
+push count(buffer)
+greaterOrEqual
+if
+push &position
+push 0.0
+store
+ifEnd
+
+moduleEnd
+
+module projectConfig
+; @pos -53 -63
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 44100
+; @config export.fileName samplePlayerVariableSpeed
+
+moduleEnd
