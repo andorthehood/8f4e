@@ -33,7 +33,11 @@ describe('storeBytes instruction compiler', () => {
 			{ isInteger: true, isNonZero: false },
 			{ isInteger: true, isNonZero: false },
 			{ isInteger: true, isNonZero: false },
-			{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true }
+			{
+				isInteger: true,
+				isNonZero: false,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 3, memoryId: 'test' },
+			}
 		);
 
 		storeBytes(
@@ -55,7 +59,11 @@ describe('storeBytes instruction compiler', () => {
 		context.stack.push(
 			{ isInteger: true, isNonZero: false },
 			{ isInteger: true, isNonZero: false },
-			{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true }
+			{
+				isInteger: true,
+				isNonZero: false,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'test' },
+			}
 		);
 
 		storeBytes(
@@ -76,7 +84,7 @@ describe('storeBytes instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			isSafeMemoryAddress: true,
+			memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 0, memoryId: 'test' },
 		});
 
 		storeBytes(
