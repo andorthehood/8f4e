@@ -751,7 +751,7 @@ Select the runtime host the editor should load for the project.
 ; @config runtime <runtimeId>
 ```
 
-- `runtimeId` must be a known runtime id such as `WebWorkerLogicRuntime`, `MainThreadLogicRuntime`, `AudioWorkletRuntime`, or `WebWorkerMIDIRuntime`
+- `runtimeId` must be a known runtime id such as `WebWorkerLogicRuntime`, `MainThreadLogicRuntime`, or `AudioWorkletRuntime`
 - Duplicate declarations use normal config last-write-wins behavior
 - Unknown runtime ids produce an editor error and the editor falls back to the default runtime
 

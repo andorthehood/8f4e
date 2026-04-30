@@ -29,7 +29,6 @@ export type {
 	WebWorkerLogicRuntime,
 	MainThreadLogicRuntime,
 	AudioWorkletRuntime,
-	WebWorkerMIDIRuntime,
 	FeatureFlags,
 	FeatureFlagsConfig,
 	EditorMode,

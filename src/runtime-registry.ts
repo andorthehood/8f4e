@@ -86,12 +86,4 @@ export const runtimeRegistry: RuntimeRegistry = {
 		]);
 		return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
 	}),
-
-	WebWorkerMIDIRuntime: createLazyRuntimeEntry('WebWorkerMIDIRuntime', { sampleRate: 50 }, async () => {
-		const [{ createWebWorkerMIDIRuntimeDef }, { default: WebWorkerMIDIRuntime }] = await Promise.all([
-			import('@8f4e/runtime-web-worker-midi/runtime-def'),
-			import('@8f4e/runtime-web-worker-midi?worker'),
-		]);
-		return createWebWorkerMIDIRuntimeDef(getCodeBuffer, getMemory, WebWorkerMIDIRuntime);
-	}),
 };

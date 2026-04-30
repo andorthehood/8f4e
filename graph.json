@@ -1,6 +1,165 @@
 {
   "graph": {
     "nodes": {
+      "@8f4e/editor-state-testing": {
+        "name": "@8f4e/editor-state-testing",
+        "type": "lib",
+        "data": {
+          "root": "packages/editor/packages/editor-state-testing",
+          "name": "@8f4e/editor-state-testing",
+          "tags": [
+            "npm:private",
+            "type:library",
+            "scope:editor"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "Framework-agnostic testing utilities for editor state consumers",
+            "js": {
+              "packageName": "@8f4e/editor-state-testing",
+              "packageVersion": "0.2.3",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                }
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "tsc",
+                "cwd": "packages/editor/packages/editor-state-testing"
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "config": "packages/editor/packages/editor-state-testing/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/editor/packages/editor-state-testing"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/editor/packages/editor-state-testing"
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "src",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/editor-state-types": {
+        "name": "@8f4e/editor-state-types",
+        "type": "lib",
+        "data": {
+          "root": "packages/editor/packages/editor-state-types",
+          "name": "@8f4e/editor-state-types",
+          "tags": [
+            "npm:private",
+            "type:library",
+            "scope:editor"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "Shared public types for the 8f4e editor state model",
+            "js": {
+              "packageName": "@8f4e/editor-state-types",
+              "packageVersion": "0.2.5",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                }
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "rm -rf dist && tsc",
+                "cwd": "packages/editor/packages/editor-state-types"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/editor/packages/editor-state-types"
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "src",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
       "@8f4e/sprite-generator": {
         "name": "@8f4e/sprite-generator",
         "type": "lib",
@@ -13,17 +172,11 @@
             "scope:graphics"
           ],
           "metadata": {
-            "targetGroups": {
-              "NPM Scripts": [
-                "test:screenshot:headed",
-                "test:screenshot:debug",
-                "dev:test"
-              ]
-            },
+            "targetGroups": {},
             "description": "8f4e sprite generator package",
             "js": {
               "packageName": "@8f4e/sprite-generator",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.5",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -35,50 +188,30 @@
             }
           },
           "targets": {
-            "test:screenshot:headed": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:screenshot:headed"
-              },
-              "metadata": {
-                "scriptContent": "playwright test --headed",
-                "runCommand": "npm run test:screenshot:headed"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:screenshot:debug": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:screenshot:debug"
-              },
-              "metadata": {
-                "scriptContent": "playwright test --debug",
-                "runCommand": "npm run test:screenshot:debug"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "dev:test": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "dev:test"
-              },
-              "metadata": {
-                "scriptContent": "vite --config screenshot-tests/vite.config.ts",
-                "runCommand": "npm run dev:test"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
             "generate-fonts": {
               "executor": "nx:run-commands",
               "outputs": [
-                "{projectRoot}/src/fonts/8x16/generated",
-                "{projectRoot}/src/fonts/6x10/generated"
+                "{projectRoot}/src/fonts/attpc63008x16/generated",
+                "{projectRoot}/src/fonts/ibmvga8x16/generated",
+                "{projectRoot}/src/fonts/nix8810m168x16/generated",
+                "{projectRoot}/src/fonts/olivettithin8x16/generated",
+                "{projectRoot}/src/fonts/spleen5x8/generated",
+                "{projectRoot}/src/fonts/spleen6x12/generated",
+                "{projectRoot}/src/fonts/terminus8x16/generated",
+                "{projectRoot}/src/fonts/spleen8x16/generated",
+                "{projectRoot}/src/fonts/templeos8x8/generated",
+                "{projectRoot}/src/fonts/terminus8x16bold/generated",
+                "{projectRoot}/src/fonts/6x10/generated",
+                "{projectRoot}/src/fonts/terminus10x18/generated",
+                "{projectRoot}/src/fonts/terminus10x18bold/generated",
+                "{projectRoot}/src/fonts/kana12x13/generated",
+                "{projectRoot}/src/fonts/spleen12x24/generated",
+                "{projectRoot}/src/fonts/terminus12x24/generated",
+                "{projectRoot}/src/fonts/terminus12x24bold/generated",
+                "{projectRoot}/src/fonts/spleen16x32/generated"
               ],
               "options": {
-                "command": "node tools/generate-font-bitmaps.mjs",
+                "command": "node --experimental-transform-types tools/generate-font-bitmaps.mjs",
                 "cwd": "packages/editor/packages/sprite-generator"
               },
               "configurations": {},
@@ -120,7 +253,7 @@
               "cache": false
             },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
               ],
@@ -135,8 +268,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -184,6 +316,33 @@
               },
               "configurations": {},
               "parallelism": true
+            },
+            "test:screenshot:headed": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "playwright test --headed",
+                "cwd": "packages/editor/packages/sprite-generator"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test:screenshot:debug": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "playwright test --debug",
+                "cwd": "packages/editor/packages/sprite-generator"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "dev:test": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "vite --config screenshot-tests/vite.config.ts",
+                "cwd": "packages/editor/packages/sprite-generator"
+              },
+              "configurations": {},
+              "parallelism": true
             }
           },
           "sourceRoot": "src",
@@ -203,15 +362,11 @@
             "scope:editor"
           ],
           "metadata": {
-            "targetGroups": {
-              "NPM Scripts": [
-                "coverage"
-              ]
-            },
+            "targetGroups": {},
             "description": "8f4e state manager package",
             "js": {
               "packageName": "@8f4e/state-manager",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.5",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -223,18 +378,6 @@
             }
           },
           "targets": {
-            "coverage": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "coverage"
-              },
-              "metadata": {
-                "scriptContent": "jest --coverage src",
-                "runCommand": "npm run coverage"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
             "build": {
               "executor": "nx:run-commands",
               "outputs": [
@@ -263,13 +406,10 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
               ],
@@ -281,8 +421,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -291,6 +430,115 @@
               "options": {
                 "command": "tsc --noEmit",
                 "cwd": "packages/editor/packages/state-manager"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "src",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/compiler-wasm-utils": {
+        "name": "@8f4e/compiler-wasm-utils",
+        "type": "lib",
+        "data": {
+          "root": "packages/compiler/packages/wasm-utils",
+          "name": "@8f4e/compiler-wasm-utils",
+          "tags": [
+            "npm:private",
+            "type:library",
+            "scope:core"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "8f4e WASM encoding utilities package",
+            "js": {
+              "packageName": "@8f4e/compiler-wasm-utils",
+              "packageVersion": "0.1.5",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                }
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
+                "cwd": "packages/compiler/packages/wasm-utils"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/compiler/packages/wasm-utils"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "dev": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "rm -rf dist && concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
+                "cwd": "packages/compiler/packages/wasm-utils"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "cache": false
+            },
+            "test": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "config": "packages/compiler/packages/wasm-utils/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/compiler/packages/wasm-utils"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/compiler/packages/wasm-utils"
               },
               "configurations": {},
               "parallelism": true,
@@ -318,15 +566,11 @@
             "scope:editor"
           ],
           "metadata": {
-            "targetGroups": {
-              "NPM Scripts": [
-                "coverage"
-              ]
-            },
+            "targetGroups": {},
             "description": "8f4e editor state management package",
             "js": {
               "packageName": "@8f4e/editor-state",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.13",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -338,25 +582,13 @@
             }
           },
           "targets": {
-            "coverage": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "coverage"
-              },
-              "metadata": {
-                "scriptContent": "jest --coverage src",
-                "runCommand": "npm run coverage"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
             "build": {
               "executor": "nx:run-commands",
               "outputs": [
                 "{projectRoot}/dist"
               ],
               "options": {
-                "command": "tsc",
+                "command": "tsc --emitDeclarationOnly && vite build",
                 "cwd": "packages/editor/packages/editor-state"
               },
               "configurations": {},
@@ -370,21 +602,8 @@
               ],
               "cache": true
             },
-            "dev": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "tsc --watch",
-                "cwd": "packages/editor/packages/editor-state"
-              },
-              "configurations": {},
-              "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "cache": false
-            },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
               ],
@@ -396,8 +615,132 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
+              ],
+              "cache": true
+            },
+            "test-update": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "config": "packages/editor/packages/editor-state/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/editor/packages/editor-state",
+                "updateSnapshot": true
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/editor/packages/editor-state"
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "src",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/tokenizer": {
+        "name": "@8f4e/tokenizer",
+        "type": "lib",
+        "data": {
+          "root": "packages/compiler/packages/tokenizer",
+          "name": "@8f4e/tokenizer",
+          "tags": [
+            "npm:private",
+            "type:library",
+            "scope:core"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "8f4e source-to-AST parser package",
+            "js": {
+              "packageName": "@8f4e/tokenizer",
+              "packageVersion": "0.1.7",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                }
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
+                "cwd": "packages/compiler/packages/tokenizer"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src tests --fix",
+                "cwd": "packages/compiler/packages/tokenizer"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "dev": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "rm -rf dist && concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
+                "cwd": "packages/compiler/packages/tokenizer"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "cache": false
+            },
+            "test": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "config": "packages/compiler/packages/tokenizer/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/compiler/packages/tokenizer"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
               ],
               "cache": true
             },
@@ -405,7 +748,7 @@
               "executor": "nx:run-commands",
               "options": {
                 "command": "tsc --noEmit",
-                "cwd": "packages/editor/packages/editor-state"
+                "cwd": "packages/compiler/packages/tokenizer"
               },
               "configurations": {},
               "parallelism": true,
@@ -437,11 +780,15 @@
             "description": "8f4e main thread logic runtime package",
             "js": {
               "packageName": "@8f4e/runtime-main-thread-logic",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.12",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
                   "default": "./dist/index.js"
+                },
+                "./runtime-def": {
+                  "types": "./dist/runtimeDef.d.ts",
+                  "default": "./dist/runtimeDef.js"
                 }
               },
               "packageMain": "dist/index.js",
@@ -458,11 +805,25 @@
                 "command": "tsc",
                 "cwd": "packages/runtime-main-thread-logic"
               },
-              "configurations": {},
-              "parallelism": true,
               "dependsOn": [
                 "^build"
               ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/runtime-main-thread-logic"
+              },
+              "configurations": {},
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^default"
@@ -477,25 +838,10 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
-            "bundle": {
-              "executor": "nx:run-commands",
-              "outputs": [
-                "{projectRoot}/bundle"
-              ],
-              "options": {
-                "command": "vite build",
-                "cwd": "packages/runtime-main-thread-logic"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
               ],
@@ -507,8 +853,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -518,6 +863,9 @@
                 "command": "tsc --noEmit",
                 "cwd": "packages/runtime-main-thread-logic"
               },
+              "dependsOn": [
+                "^build"
+              ],
               "configurations": {},
               "parallelism": true,
               "inputs": [
@@ -548,11 +896,15 @@
             "description": "8f4e web worker logic runtime package",
             "js": {
               "packageName": "@8f4e/runtime-web-worker-logic",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.12",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
                   "default": "./dist/index.js"
+                },
+                "./runtime-def": {
+                  "types": "./dist/runtimeDef.d.ts",
+                  "default": "./dist/runtimeDef.js"
                 }
               },
               "packageMain": "dist/index.js",
@@ -569,11 +921,25 @@
                 "command": "tsc",
                 "cwd": "packages/runtime-web-worker-logic"
               },
-              "configurations": {},
-              "parallelism": true,
               "dependsOn": [
                 "^build"
               ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/runtime-web-worker-logic"
+              },
+              "configurations": {},
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^default"
@@ -588,13 +954,10 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
               ],
@@ -606,8 +969,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -617,6 +979,9 @@
                 "command": "tsc --noEmit",
                 "cwd": "packages/runtime-web-worker-logic"
               },
+              "dependsOn": [
+                "^build"
+              ],
               "configurations": {},
               "parallelism": true,
               "inputs": [
@@ -674,9 +1039,6 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
             "build": {
@@ -712,8 +1074,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -722,105 +1083,6 @@
               "options": {
                 "command": "tsc --noEmit",
                 "cwd": "packages/editor/packages/glugglug"
-              },
-              "configurations": {},
-              "parallelism": true,
-              "inputs": [
-                "default",
-                "^default"
-              ],
-              "cache": true
-            }
-          },
-          "sourceRoot": "src",
-          "projectType": "library",
-          "implicitDependencies": []
-        }
-      },
-      "@8f4e/runtime-web-worker-midi": {
-        "name": "@8f4e/runtime-web-worker-midi",
-        "type": "lib",
-        "data": {
-          "root": "packages/runtime-web-worker-midi",
-          "name": "@8f4e/runtime-web-worker-midi",
-          "tags": [
-            "npm:private",
-            "type:runtime",
-            "scope:midi"
-          ],
-          "metadata": {
-            "targetGroups": {},
-            "description": "8f4e web worker MIDI runtime package",
-            "js": {
-              "packageName": "@8f4e/runtime-web-worker-midi",
-              "packageVersion": "1.0.0",
-              "packageExports": {
-                ".": {
-                  "types": "./dist/index.d.ts",
-                  "default": "./dist/index.js"
-                }
-              },
-              "packageMain": "dist/index.js",
-              "isInPackageManagerWorkspaces": true
-            }
-          },
-          "targets": {
-            "build": {
-              "executor": "nx:run-commands",
-              "outputs": [
-                "{projectRoot}/dist"
-              ],
-              "options": {
-                "command": "tsc",
-                "cwd": "packages/runtime-web-worker-midi"
-              },
-              "configurations": {},
-              "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "default",
-                "^default"
-              ],
-              "cache": true
-            },
-            "dev": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "tsc --watch",
-                "cwd": "packages/runtime-web-worker-midi"
-              },
-              "configurations": {},
-              "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "cache": false
-            },
-            "test": {
-              "executor": "@nx/vite:test",
-              "outputs": [
-                "{workspaceRoot}/coverage/{projectRoot}"
-              ],
-              "options": {
-                "config": "packages/runtime-web-worker-midi/vitest.config.ts",
-                "reportsDirectory": "coverage/packages/runtime-web-worker-midi"
-              },
-              "configurations": {},
-              "parallelism": true,
-              "inputs": [
-                "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
-              ],
-              "cache": true
-            },
-            "typecheck": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "tsc --noEmit",
-                "cwd": "packages/runtime-web-worker-midi"
               },
               "configurations": {},
               "parallelism": true,
@@ -850,18 +1112,13 @@
           "metadata": {
             "targetGroups": {
               "NPM Scripts": [
-                "test:ui",
-                "test:run",
-                "test:coverage",
-                "test:screenshot:headed",
-                "test:screenshot:debug",
-                "dev:test"
+                "test:browser"
               ]
             },
             "description": "8f4e web UI package - canvas renderer for the editor",
             "js": {
               "packageName": "@8f4e/web-ui",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.12",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -873,74 +1130,14 @@
             }
           },
           "targets": {
-            "test:ui": {
+            "test:browser": {
               "executor": "nx:run-script",
               "options": {
-                "script": "test:ui"
+                "script": "test:browser"
               },
               "metadata": {
-                "scriptContent": "vitest --ui",
-                "runCommand": "npm run test:ui"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:run": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:run"
-              },
-              "metadata": {
-                "scriptContent": "vitest run",
-                "runCommand": "npm run test:run"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:coverage": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:coverage"
-              },
-              "metadata": {
-                "scriptContent": "vitest run --coverage",
-                "runCommand": "npm run test:coverage"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:screenshot:headed": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:screenshot:headed"
-              },
-              "metadata": {
-                "scriptContent": "playwright test --headed",
-                "runCommand": "npm run test:screenshot:headed"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:screenshot:debug": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:screenshot:debug"
-              },
-              "metadata": {
-                "scriptContent": "playwright test --debug",
-                "runCommand": "npm run test:screenshot:debug"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "dev:test": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "dev:test"
-              },
-              "metadata": {
-                "scriptContent": "vite --config screenshot-tests/vite.config.ts",
-                "runCommand": "npm run dev:test"
+                "scriptContent": "vitest --config=vitest.browser.config.ts",
+                "runCommand": "npm run test:browser"
               },
               "configurations": {},
               "parallelism": true
@@ -951,7 +1148,7 @@
                 "{projectRoot}/dist"
               ],
               "options": {
-                "command": "tsc",
+                "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
                 "cwd": "packages/editor/packages/web-ui"
               },
               "configurations": {},
@@ -968,20 +1165,20 @@
             "dev": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "tsc --watch",
+                "command": "concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
                 "cwd": "packages/editor/packages/web-ui"
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "dependsOn": [
+                "^build"
               ],
               "options": {
                 "config": "packages/editor/packages/web-ui/vitest.config.ts",
@@ -991,8 +1188,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -1002,6 +1198,9 @@
                 "command": "tsc --noEmit",
                 "cwd": "packages/editor/packages/web-ui"
               },
+              "dependsOn": [
+                "^build"
+              ],
               "configurations": {},
               "parallelism": true,
               "inputs": [
@@ -1036,6 +1235,33 @@
               },
               "configurations": {},
               "parallelism": true
+            },
+            "test:screenshot:headed": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "playwright test --headed",
+                "cwd": "packages/editor/packages/web-ui"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test:screenshot:debug": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "playwright test --debug",
+                "cwd": "packages/editor/packages/web-ui"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "dev:test": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "vite --config screenshot-tests/vite.config.ts",
+                "cwd": "packages/editor/packages/web-ui"
+              },
+              "configurations": {},
+              "parallelism": true
             }
           },
           "sourceRoot": "src",
@@ -1059,11 +1285,18 @@
             "description": "8f4e audio worklet runtime package",
             "js": {
               "packageName": "@8f4e/runtime-audio-worklet",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.12",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
                   "default": "./dist/index.js"
+                },
+                "./runtime-def": {
+                  "types": "./dist/runtimeDef.d.ts",
+                  "default": "./dist/runtimeDef.js"
+                },
+                "./worklet": {
+                  "default": "./dist/worklet/index.js"
                 }
               },
               "packageMain": "dist/index.js",
@@ -1077,14 +1310,32 @@
                 "{projectRoot}/dist"
               ],
               "options": {
-                "command": "npm run build",
+                "commands": [
+                  "vite build -c vite.config.worklet.ts",
+                  "tsc"
+                ],
+                "cwd": "packages/runtime-audio-worklet",
+                "parallel": false
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
                 "cwd": "packages/runtime-audio-worklet"
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "inputs": [
                 "default",
                 "^default"
@@ -1094,18 +1345,15 @@
             "dev": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "npm run dev",
+                "command": "vite build -c vite.config.worklet.ts --watch",
                 "cwd": "packages/runtime-audio-worklet"
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
               ],
@@ -1117,8 +1365,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -1128,6 +1375,9 @@
                 "command": "tsc --noEmit",
                 "cwd": "packages/runtime-audio-worklet"
               },
+              "dependsOn": [
+                "^build"
+              ],
               "configurations": {},
               "parallelism": true,
               "inputs": [
@@ -1139,6 +1389,88 @@
           },
           "sourceRoot": "src",
           "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/metrics-dashboard": {
+        "name": "@8f4e/metrics-dashboard",
+        "type": "app",
+        "data": {
+          "root": "packages/metrics-dashboard",
+          "name": "@8f4e/metrics-dashboard",
+          "tags": [
+            "npm:private",
+            "type:application",
+            "scope:tooling"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "Local dashboard for 8f4e release metrics",
+            "js": {
+              "packageName": "@8f4e/metrics-dashboard",
+              "packageVersion": "0.2.5",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "vite build",
+                "cwd": "packages/metrics-dashboard"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "vite --host 0.0.0.0 --port 3001",
+                "cwd": "packages/metrics-dashboard"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "preview": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "vite preview --host 0.0.0.0 --port 3001",
+                "cwd": "packages/metrics-dashboard"
+              },
+              "dependsOn": [
+                "build"
+              ],
+              "configurations": {},
+              "parallelism": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/metrics-dashboard"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "packages/metrics-dashboard/src",
+          "projectType": "application",
           "implicitDependencies": []
         }
       },
@@ -1158,7 +1490,7 @@
             "description": "8f4e compiler worker package",
             "js": {
               "packageName": "@8f4e/compiler-worker",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.9",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -1190,6 +1522,20 @@
               ],
               "cache": true
             },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/compiler-worker"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
             "dev": {
               "executor": "nx:run-commands",
               "options": {
@@ -1198,13 +1544,10 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
               ],
@@ -1216,8 +1559,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -1227,6 +1569,316 @@
                 "command": "tsc --noEmit",
                 "cwd": "packages/compiler-worker"
               },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "src",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/compiler-types": {
+        "name": "@8f4e/compiler-types",
+        "type": "lib",
+        "data": {
+          "root": "packages/compiler-types",
+          "name": "@8f4e/compiler-types",
+          "tags": [
+            "npm:private",
+            "type:library",
+            "scope:core"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "Shared public types for the 8f4e compiler contract",
+            "js": {
+              "packageName": "@8f4e/compiler-types",
+              "packageVersion": "0.2.3",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                }
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "rm -rf dist && tsc",
+                "cwd": "packages/compiler-types"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/compiler-types"
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "packages/compiler-types/src",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/editor-mcp": {
+        "name": "@8f4e/editor-mcp",
+        "type": "lib",
+        "data": {
+          "root": "packages/editor-mcp",
+          "name": "@8f4e/editor-mcp",
+          "tags": [
+            "npm:private",
+            "type:tooling",
+            "scope:ui"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "MCP bridge for the 8f4e editor using Playwright",
+            "js": {
+              "packageName": "@8f4e/editor-mcp",
+              "packageVersion": "0.1.4",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                },
+                "./cli": "./dist/cli.js"
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "vite build && tsc -p tsconfig.build.json",
+                "cwd": "packages/editor-mcp"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/editor-mcp"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/editor-mcp"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "dependsOn": [
+                "build"
+              ],
+              "options": {
+                "config": "packages/editor-mcp/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/editor-mcp"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "projectType": "library",
+          "sourceRoot": "src",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/pmml28f4e": {
+        "name": "@8f4e/pmml28f4e",
+        "type": "lib",
+        "data": {
+          "root": "packages/pmml28f4e",
+          "name": "@8f4e/pmml28f4e",
+          "tags": [
+            "npm:private",
+            "type:tooling",
+            "scope:conversion"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "Convert PMML neural networks into 8f4e project files",
+            "js": {
+              "packageName": "@8f4e/pmml28f4e",
+              "packageVersion": "0.1.11",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                }
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "tsc --emitDeclarationOnly && vite build && chmod +x dist/cli.js",
+                "cwd": "packages/pmml28f4e"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/pmml28f4e"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "dev": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "vite build --watch",
+                "cwd": "packages/pmml28f4e"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "cache": false
+            },
+            "test": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "config": "packages/pmml28f4e/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/pmml28f4e"
+              },
+              "dependsOn": [
+                "^build",
+                "build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "test-update": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "config": "packages/pmml28f4e/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/pmml28f4e",
+                "update": true
+              },
+              "dependsOn": [
+                "^build",
+                "build"
+              ],
+              "configurations": {},
+              "parallelism": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/pmml28f4e"
+              },
+              "dependsOn": [
+                "^build"
+              ],
               "configurations": {},
               "parallelism": true,
               "inputs": [
@@ -1253,15 +1905,11 @@
             "scope:core"
           ],
           "metadata": {
-            "targetGroups": {
-              "NPM Scripts": [
-                "coverage"
-              ]
-            },
+            "targetGroups": {},
             "description": "8f4e compiler package",
             "js": {
               "packageName": "@8f4e/compiler",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.2.2",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -1273,32 +1921,34 @@
             }
           },
           "targets": {
-            "coverage": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "coverage"
-              },
-              "metadata": {
-                "scriptContent": "vitest run --coverage",
-                "runCommand": "npm run coverage"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
             "build": {
               "executor": "nx:run-commands",
               "outputs": [
                 "{projectRoot}/dist"
               ],
+              "dependsOn": [
+                "^build"
+              ],
               "options": {
-                "command": "tsc",
+                "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
                 "cwd": "packages/compiler"
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
+              "inputs": [
+                "default",
+                "^default"
               ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/compiler"
+              },
+              "configurations": {},
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^default"
@@ -1308,20 +1958,20 @@
             "dev": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "tsc --watch",
+                "command": "rm -rf dist && concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
                 "cwd": "packages/compiler"
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
             },
             "test": {
-              "executor": "@nx/vite:test",
+              "executor": "@nx/vitest:test",
               "outputs": [
                 "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "dependsOn": [
+                "^build"
               ],
               "options": {
                 "config": "packages/compiler/vitest.config.ts",
@@ -1331,8 +1981,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -1356,6 +2005,186 @@
           "implicitDependencies": []
         }
       },
+      "@8f4e/examples": {
+        "name": "@8f4e/examples",
+        "type": "lib",
+        "data": {
+          "root": "packages/examples",
+          "name": "@8f4e/examples",
+          "tags": [
+            "npm:private",
+            "type:library",
+            "scope:examples"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "8f4e example modules and projects",
+            "js": {
+              "packageName": "@8f4e/examples",
+              "packageVersion": "0.1.11",
+              "packageExports": {
+                "./modules/*": "./src/modules/*",
+                "./projects/*": "./src/projects/*"
+              },
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "dependsOn": [
+                "^build"
+              ],
+              "options": {
+                "command": "node ./src/module-generators/generateModules.ts && ./generate-project-wasm.sh && node ./generate-example-registries.mjs",
+                "cwd": "packages/examples"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/examples"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "dev": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node ./src/module-generators/generateModules.ts && tsc --watch",
+                "cwd": "packages/examples"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "cache": false
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --project tsconfig.typecheck.json --noEmit",
+                "cwd": "packages/examples"
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "sourceRoot": "src",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
+      },
+      "@8f4e/config": {
+        "name": "@8f4e/config",
+        "type": "lib",
+        "data": {
+          "root": "packages/config",
+          "name": "@8f4e/config",
+          "tags": [
+            "npm:private",
+            "type:config",
+            "scope:tooling"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "Shared tooling configuration for 8f4e workspace",
+            "js": {
+              "packageName": "@8f4e/config",
+              "packageVersion": "0.1.4",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                },
+                "./ts": {
+                  "types": "./dist/ts/index.d.ts",
+                  "default": "./dist/ts/index.js"
+                },
+                "./vitest": {
+                  "types": "./dist/vitest/index.d.ts",
+                  "default": "./dist/vitest/index.js"
+                },
+                "./vite": {
+                  "types": "./dist/vite/index.d.ts",
+                  "default": "./dist/vite/index.js"
+                },
+                "./eslint": {
+                  "types": "./dist/eslint/index.d.ts",
+                  "default": "./dist/eslint/index.js"
+                },
+                "./tsconfig.base.json": "./tsconfig.base.json",
+                "./tsconfig.node.json": "./tsconfig.node.json",
+                "./tsconfig.dom.json": "./tsconfig.dom.json",
+                "./tsconfig.webworker.json": "./tsconfig.webworker.json"
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/config"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "tsc",
+                "cwd": "packages/config"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "projectType": "library",
+          "sourceRoot": "src",
+          "implicitDependencies": []
+        }
+      },
       "@8f4e/editor": {
         "name": "@8f4e/editor",
         "type": "app",
@@ -1372,7 +2201,7 @@
             "description": "8f4e editor package",
             "js": {
               "packageName": "@8f4e/editor",
-              "packageVersion": "0.0.7",
+              "packageVersion": "0.1.12",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -1390,7 +2219,7 @@
                 "{projectRoot}/dist"
               ],
               "options": {
-                "command": "tsc",
+                "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
                 "cwd": "packages/editor"
               },
               "configurations": {},
@@ -1404,30 +2233,29 @@
               ],
               "cache": true
             },
-            "dev": {
+            "lint": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "tsc --watch",
+                "command": "eslint src --fix",
                 "cwd": "packages/editor"
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
+              "inputs": [
+                "default",
+                "^default"
               ],
-              "cache": false
+              "cache": true
             },
-            "bundle": {
+            "dev": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{projectRoot}/bundle"
-              ],
               "options": {
-                "command": "vite build",
+                "command": "concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
                 "cwd": "packages/editor"
               },
               "configurations": {},
-              "parallelism": true
+              "parallelism": true,
+              "cache": false
             },
             "test": {
               "executor": "nx:run-commands",
@@ -1442,8 +2270,7 @@
               "parallelism": true,
               "inputs": [
                 "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
+                "^default"
               ],
               "cache": true
             },
@@ -1453,6 +2280,9 @@
                 "command": "tsc --noEmit",
                 "cwd": "packages/editor"
               },
+              "dependsOn": [
+                "^build"
+              ],
               "configurations": {},
               "parallelism": true,
               "inputs": [
@@ -1467,6 +2297,113 @@
           "implicitDependencies": [
             "@8f4e/state-manager"
           ]
+        }
+      },
+      "@8f4e/cli": {
+        "name": "@8f4e/cli",
+        "type": "lib",
+        "data": {
+          "root": "packages/cli",
+          "name": "@8f4e/cli",
+          "tags": [
+            "npm:private",
+            "type:tooling",
+            "scope:core"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "CLI for compiling 8f4e projects",
+            "js": {
+              "packageName": "@8f4e/cli",
+              "packageVersion": "0.1.8",
+              "packageExports": {
+                ".": {
+                  "types": "./dist/index.d.ts",
+                  "default": "./dist/index.js"
+                },
+                "./cli": "./dist/cli.js"
+              },
+              "packageMain": "dist/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "outputs": [
+                "{projectRoot}/dist"
+              ],
+              "options": {
+                "command": "vite build && tsc -p tsconfig.build.json",
+                "cwd": "packages/cli"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": "packages/cli"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "@nx/vitest:test",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "dependsOn": [
+                "^build",
+                "build"
+              ],
+              "options": {
+                "config": "packages/cli/vitest.config.ts",
+                "reportsDirectory": "coverage/packages/cli"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "dependsOn": [
+                "^build"
+              ],
+              "options": {
+                "command": "tsc --noEmit",
+                "cwd": "packages/cli"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            }
+          },
+          "projectType": "library",
+          "sourceRoot": "src",
+          "implicitDependencies": []
         }
       },
       "app": {
@@ -1484,25 +2421,13 @@
             "targetGroups": {
               "NPM Scripts": [
                 "preinstall",
-                "build:affected",
-                "bundle:editor",
-                "bundle:runtime-main-thread-logic",
-                "dev:watch-packages",
-                "lint",
-                "test",
-                "test:affected",
-                "test:screenshot",
-                "test:screenshot:update",
-                "test:screenshot:ui",
-                "typecheck:affected",
-                "graph",
                 "prepare"
               ]
             },
             "description": "8f4e",
             "js": {
               "packageName": "8f4e",
-              "packageVersion": "1.0.0",
+              "packageVersion": "0.1.13",
               "isInPackageManagerWorkspaces": false
             }
           },
@@ -1515,156 +2440,6 @@
               "metadata": {
                 "scriptContent": "git submodule update --init --recursive",
                 "runCommand": "npm run preinstall"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "build:affected": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "build:affected"
-              },
-              "metadata": {
-                "scriptContent": "npx nx affected --target=build --base=main",
-                "runCommand": "npm run build:affected"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "bundle:editor": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "bundle:editor"
-              },
-              "metadata": {
-                "scriptContent": "npx nx run editor:bundle",
-                "runCommand": "npm run bundle:editor"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "bundle:runtime-main-thread-logic": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "bundle:runtime-main-thread-logic"
-              },
-              "metadata": {
-                "scriptContent": "npx nx run runtime-main-thread-logic:bundle",
-                "runCommand": "npm run bundle:runtime-main-thread-logic"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "dev:watch-packages": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "dev:watch-packages"
-              },
-              "metadata": {
-                "scriptContent": "npx nx watch --all --includeDependentProjects -- npx nx run \\$NX_PROJECT_NAME:build",
-                "runCommand": "npm run dev:watch-packages"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "lint": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "lint"
-              },
-              "metadata": {
-                "scriptContent": "npx eslint . --ext .ts --fix",
-                "runCommand": "npm run lint"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test"
-              },
-              "metadata": {
-                "scriptContent": "npx nx run-many --target=test --all --exclude=@8f4e/web-ui --exclude=app",
-                "runCommand": "npm run test"
-              },
-              "configurations": {},
-              "parallelism": true,
-              "inputs": [
-                "default",
-                "^default",
-                "{workspaceRoot}/vitest.preset.ts"
-              ],
-              "cache": true
-            },
-            "test:affected": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:affected"
-              },
-              "metadata": {
-                "scriptContent": "npx nx affected --target=test --base=main",
-                "runCommand": "npm run test:affected"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:screenshot": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:screenshot"
-              },
-              "metadata": {
-                "scriptContent": "npx nx run web-ui:test:screenshot",
-                "runCommand": "npm run test:screenshot"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:screenshot:update": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:screenshot:update"
-              },
-              "metadata": {
-                "scriptContent": "npx nx run web-ui:test:screenshot:update",
-                "runCommand": "npm run test:screenshot:update"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "test:screenshot:ui": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "test:screenshot:ui"
-              },
-              "metadata": {
-                "scriptContent": "npx nx run web-ui:test:screenshot:ui",
-                "runCommand": "npm run test:screenshot:ui"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "typecheck:affected": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "typecheck:affected"
-              },
-              "metadata": {
-                "scriptContent": "npx nx affected --target=typecheck --base=main",
-                "runCommand": "npm run typecheck:affected"
-              },
-              "configurations": {},
-              "parallelism": true
-            },
-            "graph": {
-              "executor": "nx:run-script",
-              "options": {
-                "script": "graph"
-              },
-              "metadata": {
-                "scriptContent": "npx nx graph",
-                "runCommand": "npm run graph"
               },
               "configurations": {},
               "parallelism": true
@@ -1693,15 +2468,30 @@
             "dev": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "vite",
+                "commands": [
+                  "nx run-many --target=build --all && nx watch --all -- nx run-many --target=build --all",
+                  "vite"
+                ],
+                "parallel": true,
                 "cwd": ""
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
               "cache": false
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint src --fix",
+                "cwd": ""
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
             },
             "build": {
               "executor": "nx:run-commands",
@@ -1752,6 +2542,32 @@
                 "^default"
               ],
               "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "vitest run --config vitest.config.ts",
+                "cwd": ""
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^default"
+              ],
+              "cache": true
+            },
+            "kill-dev": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "lsof -ti tcp:3000 | xargs -r kill",
+                "cwd": ""
+              },
+              "configurations": {},
+              "parallelism": true
             }
           },
           "sourceRoot": "src",
@@ -1759,25 +2575,86 @@
           "implicitDependencies": [
             "@8f4e/compiler-worker",
             "@8f4e/runtime-web-worker-logic",
-            "@8f4e/runtime-web-worker-midi",
             "@8f4e/runtime-audio-worklet"
           ]
         }
       }
     },
     "dependencies": {
+      "@8f4e/editor-state-testing": [
+        {
+          "source": "@8f4e/editor-state-testing",
+          "target": "@8f4e/editor-state-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor-state-testing",
+          "target": "@8f4e/tokenizer",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor-state-testing",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/editor-state-types": [
+        {
+          "source": "@8f4e/editor-state-types",
+          "target": "@8f4e/compiler-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor-state-types",
+          "target": "@8f4e/sprite-generator",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor-state-types",
+          "target": "@8f4e/state-manager",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor-state-types",
+          "target": "glugglug",
+          "type": "static"
+        }
+      ],
       "@8f4e/sprite-generator": [
         {
           "source": "@8f4e/sprite-generator",
           "target": "glugglug",
           "type": "static"
+        },
+        {
+          "source": "@8f4e/sprite-generator",
+          "target": "@8f4e/config",
+          "type": "static"
         }
       ],
-      "@8f4e/state-manager": [],
+      "@8f4e/state-manager": [
+        {
+          "source": "@8f4e/state-manager",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/compiler-wasm-utils": [
+        {
+          "source": "@8f4e/compiler-wasm-utils",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
       "@8f4e/editor-state": [
         {
           "source": "@8f4e/editor-state",
-          "target": "glugglug",
+          "target": "@8f4e/compiler-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor-state",
+          "target": "@8f4e/editor-state-types",
           "type": "static"
         },
         {
@@ -1787,29 +2664,81 @@
         },
         {
           "source": "@8f4e/editor-state",
-          "target": "@8f4e/compiler",
+          "target": "glugglug",
           "type": "static"
         },
         {
           "source": "@8f4e/editor-state",
           "target": "@8f4e/state-manager",
           "type": "static"
-        }
-      ],
-      "@8f4e/runtime-main-thread-logic": [],
-      "@8f4e/runtime-web-worker-logic": [],
-      "glugglug": [],
-      "@8f4e/runtime-web-worker-midi": [
+        },
         {
-          "source": "@8f4e/runtime-web-worker-midi",
-          "target": "@8f4e/compiler",
+          "source": "@8f4e/editor-state",
+          "target": "@8f4e/tokenizer",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor-state",
+          "target": "@8f4e/config",
           "type": "static"
         }
       ],
+      "@8f4e/tokenizer": [
+        {
+          "source": "@8f4e/tokenizer",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/runtime-main-thread-logic": [
+        {
+          "source": "@8f4e/runtime-main-thread-logic",
+          "target": "@8f4e/editor",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/runtime-main-thread-logic",
+          "target": "@8f4e/state-manager",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/runtime-main-thread-logic",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/runtime-web-worker-logic": [
+        {
+          "source": "@8f4e/runtime-web-worker-logic",
+          "target": "@8f4e/editor",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/runtime-web-worker-logic",
+          "target": "@8f4e/state-manager",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/runtime-web-worker-logic",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "glugglug": [],
       "@8f4e/web-ui": [
         {
           "source": "@8f4e/web-ui",
-          "target": "glugglug",
+          "target": "@8f4e/editor-state-testing",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/web-ui",
+          "target": "@8f4e/compiler-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/web-ui",
+          "target": "@8f4e/editor-state-types",
           "type": "static"
         },
         {
@@ -1819,19 +2748,126 @@
         },
         {
           "source": "@8f4e/web-ui",
-          "target": "@8f4e/editor-state",
+          "target": "glugglug",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/web-ui",
+          "target": "@8f4e/config",
           "type": "static"
         }
       ],
-      "@8f4e/runtime-audio-worklet": [],
+      "@8f4e/runtime-audio-worklet": [
+        {
+          "source": "@8f4e/runtime-audio-worklet",
+          "target": "@8f4e/editor",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/runtime-audio-worklet",
+          "target": "@8f4e/state-manager",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/runtime-audio-worklet",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/metrics-dashboard": [],
       "@8f4e/compiler-worker": [
         {
           "source": "@8f4e/compiler-worker",
           "target": "@8f4e/compiler",
           "type": "static"
+        },
+        {
+          "source": "@8f4e/compiler-worker",
+          "target": "@8f4e/compiler-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/compiler-worker",
+          "target": "@8f4e/config",
+          "type": "static"
         }
       ],
-      "@8f4e/compiler": [],
+      "@8f4e/compiler-types": [
+        {
+          "source": "@8f4e/compiler-types",
+          "target": "@8f4e/compiler-wasm-utils",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/compiler-types",
+          "target": "@8f4e/tokenizer",
+          "type": "static"
+        }
+      ],
+      "@8f4e/editor-mcp": [
+        {
+          "source": "@8f4e/editor-mcp",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/pmml28f4e": [
+        {
+          "source": "@8f4e/pmml28f4e",
+          "target": "@8f4e/editor-state",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/pmml28f4e",
+          "target": "@8f4e/editor-state-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/pmml28f4e",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/compiler": [
+        {
+          "source": "@8f4e/compiler",
+          "target": "@8f4e/compiler-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/compiler",
+          "target": "@8f4e/tokenizer",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/compiler",
+          "target": "@8f4e/tokenizer",
+          "type": "dynamic"
+        },
+        {
+          "source": "@8f4e/compiler",
+          "target": "@8f4e/compiler-wasm-utils",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/compiler",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/examples": [
+        {
+          "source": "@8f4e/examples",
+          "target": "@8f4e/cli",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/examples",
+          "target": "@8f4e/editor-state-types",
+          "type": "static"
+        }
+      ],
+      "@8f4e/config": [],
       "@8f4e/editor": [
         {
           "source": "@8f4e/editor",
@@ -1840,7 +2876,17 @@
         },
         {
           "source": "@8f4e/editor",
-          "target": "@8f4e/compiler",
+          "target": "@8f4e/editor-state",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor",
+          "target": "@8f4e/editor-state-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/editor",
+          "target": "@8f4e/tokenizer",
           "type": "static"
         },
         {
@@ -1865,7 +2911,24 @@
         },
         {
           "source": "@8f4e/editor",
-          "target": "@8f4e/editor-state",
+          "target": "@8f4e/config",
+          "type": "static"
+        }
+      ],
+      "@8f4e/cli": [
+        {
+          "source": "@8f4e/cli",
+          "target": "@8f4e/compiler",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/cli",
+          "target": "@8f4e/compiler-types",
+          "type": "static"
+        },
+        {
+          "source": "@8f4e/cli",
+          "target": "@8f4e/config",
           "type": "static"
         }
       ],
@@ -1882,17 +2945,12 @@
         },
         {
           "source": "app",
-          "target": "@8f4e/runtime-web-worker-midi",
-          "type": "implicit"
-        },
-        {
-          "source": "app",
           "target": "@8f4e/runtime-audio-worklet",
           "type": "implicit"
         },
         {
           "source": "app",
-          "target": "@8f4e/sprite-generator",
+          "target": "@8f4e/config",
           "type": "static"
         },
         {
@@ -1902,18 +2960,43 @@
         },
         {
           "source": "app",
-          "target": "@8f4e/editor",
-          "type": "static"
-        },
-        {
-          "source": "app",
           "target": "@8f4e/editor-state",
           "type": "static"
         },
         {
           "source": "app",
-          "target": "@8f4e/runtime-main-thread-logic",
+          "target": "@8f4e/editor",
           "type": "static"
+        },
+        {
+          "source": "app",
+          "target": "@8f4e/compiler-types",
+          "type": "static"
+        },
+        {
+          "source": "app",
+          "target": "@8f4e/editor-state-types",
+          "type": "static"
+        },
+        {
+          "source": "app",
+          "target": "@8f4e/tokenizer",
+          "type": "static"
+        },
+        {
+          "source": "app",
+          "target": "@8f4e/runtime-web-worker-logic",
+          "type": "static"
+        },
+        {
+          "source": "app",
+          "target": "@8f4e/runtime-main-thread-logic",
+          "type": "dynamic"
+        },
+        {
+          "source": "app",
+          "target": "@8f4e/runtime-audio-worklet",
+          "type": "dynamic"
         }
       ]
     }
