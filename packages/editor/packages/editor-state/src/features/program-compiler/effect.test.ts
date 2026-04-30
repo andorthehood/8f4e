@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
+import { recompileDebounceDelayEditorConfigValidator } from './editorConfig';
 import compilerEffect from './effect';
 
 import type { State } from '@8f4e/editor-state-types';
@@ -50,7 +51,7 @@ describe('program compiler effect', () => {
 		vi.useRealTimers();
 	});
 
-	async function triggerProgrammaticCompile(): Promise<void> {
+	async function triggerProgrammaticCompile(delayMs = 500): Promise<void> {
 		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
 			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
@@ -58,7 +59,7 @@ describe('program compiler effect', () => {
 		expect(programmaticChangeCall).toBeDefined();
 
 		programmaticChangeCall![1]();
-		await vi.advanceTimersByTimeAsync(500);
+		await vi.advanceTimersByTimeAsync(delayMs);
 	}
 
 	it('stores code block type for compiler errors', async () => {
@@ -91,5 +92,42 @@ describe('program compiler effect', () => {
 				message: 'Too many arguments for if.',
 			},
 		]);
+	});
+
+	it('registers the recompile debounce delay editor config validator', () => {
+		compilerEffect(store);
+
+		expect(mockState.editorConfigValidators.recompileDebounceDelay).toBe(recompileDebounceDelayEditorConfigValidator);
+	});
+
+	it('uses the configured recompile debounce delay', async () => {
+		mockState.editorConfig.recompileDebounceDelay = 120;
+		compilerEffect(store);
+		const programmaticChangeCall = subscribeSpy.mock.calls.find(
+			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+		);
+		expect(programmaticChangeCall).toBeDefined();
+
+		programmaticChangeCall![1]();
+		await vi.advanceTimersByTimeAsync(119);
+		expect(mockCompileCode).not.toHaveBeenCalled();
+
+		await vi.advanceTimersByTimeAsync(1);
+		expect(mockCompileCode).toHaveBeenCalledTimes(1);
+	});
+
+	it('uses the default recompile debounce delay when the config value is absent', async () => {
+		compilerEffect(store);
+		const programmaticChangeCall = subscribeSpy.mock.calls.find(
+			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+		);
+		expect(programmaticChangeCall).toBeDefined();
+
+		programmaticChangeCall![1]();
+		await vi.advanceTimersByTimeAsync(499);
+		expect(mockCompileCode).not.toHaveBeenCalled();
+
+		await vi.advanceTimersByTimeAsync(1);
+		expect(mockCompileCode).toHaveBeenCalledTimes(1);
 	});
 });

@@ -2,12 +2,14 @@ export type DebouncedTrailing<T extends (...args: unknown[]) => void> = ((...arg
 	cancel: () => void;
 };
 
+type DelayMs = number | (() => number);
+
 /**
  * Creates a trailing-edge debounce wrapper.
  */
 export default function debounceTrailing<T extends (...args: unknown[]) => void>(
 	fn: T,
-	delayMs: number
+	delayMs: DelayMs
 ): DebouncedTrailing<T> {
 	let timeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -16,10 +18,13 @@ export default function debounceTrailing<T extends (...args: unknown[]) => void>
 			clearTimeout(timeout);
 		}
 
-		timeout = setTimeout(() => {
-			timeout = null;
-			fn(...args);
-		}, delayMs);
+		timeout = setTimeout(
+			() => {
+				timeout = null;
+				fn(...args);
+			},
+			typeof delayMs === 'function' ? delayMs() : delayMs
+		);
 	};
 
 	debounced.cancel = () => {
