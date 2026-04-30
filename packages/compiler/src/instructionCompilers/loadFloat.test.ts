@@ -12,7 +12,7 @@ describe('loadFloat instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			isSafeMemoryAddress: true,
+			memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
 		});
 
 		loadFloat(
@@ -31,12 +31,11 @@ describe('loadFloat instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('loads from an unsafe memory address without extra bounds checks', () => {
+	it('loads from an unsafe memory address with a bounds guard', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			isSafeMemoryAddress: false,
 		});
 
 		loadFloat(

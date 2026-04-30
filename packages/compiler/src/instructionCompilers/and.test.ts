@@ -43,4 +43,24 @@ describe('and instruction compiler', () => {
 			);
 		}).toThrowError();
 	});
+
+	it('keeps known integer metadata when and-ing known integer operands', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 6 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 3 }
+		);
+
+		and(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'and',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }]);
+	});
 });

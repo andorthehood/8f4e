@@ -43,4 +43,24 @@ describe('remainder instruction compiler', () => {
 			);
 		}).toThrowError();
 	});
+
+	it('keeps known integer metadata when taking the remainder of known integer operands', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 9 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+		);
+
+		remainder(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'remainder',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 1 }]);
+	});
 });

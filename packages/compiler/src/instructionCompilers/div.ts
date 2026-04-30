@@ -2,10 +2,11 @@ import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
+import { deriveKnownIntegerValue, I32_MIN } from '../utils/knownIntegerValue';
 import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler, StackItem } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `div`.
@@ -32,11 +33,21 @@ const div: InstructionCompiler = withValidation(
 
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
+		const integerMetadata: Partial<StackItem> = isInteger
+			? deriveKnownIntegerValue(operand2, operand1, (dividend, divisor) => {
+					if (divisor === 0 || (dividend === I32_MIN && divisor === -1)) {
+						return undefined;
+					}
+
+					return Math.trunc(dividend / divisor) | 0;
+				})
+			: {};
 
 		context.stack.push({
 			isInteger,
 			...(isFloat64 ? { isFloat64: true } : {}),
-			isNonZero: true,
+			isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
+			...integerMetadata,
 		});
 		return saveByteCode(context, [
 			isInteger ? WASMInstruction.I32_DIV_S : isFloat64 ? WASMInstruction.F64_DIV : WASMInstruction.F32_DIV,

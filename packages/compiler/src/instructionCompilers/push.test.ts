@@ -48,6 +48,43 @@ describe('push instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
+	it('tracks address range metadata on normalized address literals', () => {
+		const context = createInstructionCompilerTestContext();
+
+		push(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'push',
+				arguments: [
+					{
+						type: ArgumentType.LITERAL,
+						value: 12,
+						isInteger: true,
+						memoryAddress: {
+							source: 'memory-start',
+							byteAddress: 12,
+							safeByteLength: 16,
+							memoryId: 'buffer',
+						},
+					},
+				],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack[0]).toMatchObject({
+			isInteger: true,
+			isNonZero: true,
+			memoryAddress: {
+				source: 'memory-start',
+				byteAddress: 12,
+				safeByteLength: 16,
+				memoryId: 'buffer',
+			},
+		});
+	});
+
 	it('expands a string literal into per-byte i32.const pushes', () => {
 		const context = createInstructionCompilerTestContext();
 

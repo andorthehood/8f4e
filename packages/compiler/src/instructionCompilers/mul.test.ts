@@ -86,4 +86,24 @@ describe('mul instruction compiler', () => {
 			);
 		}).toThrowError();
 	});
+
+	it('keeps known integer metadata when multiplying known integer operands', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 2 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+		);
+
+		mul(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'mul',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 8 }]);
+	});
 });

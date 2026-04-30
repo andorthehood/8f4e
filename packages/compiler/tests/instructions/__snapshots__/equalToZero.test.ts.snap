@@ -51,6 +51,12 @@ exports[`equalToZero > if the generated AST, WAT and memory map match the snapsh
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },

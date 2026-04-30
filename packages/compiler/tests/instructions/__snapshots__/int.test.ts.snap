@@ -44,6 +44,12 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -183,6 +189,12 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -347,6 +359,12 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -530,6 +548,12 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -673,6 +697,12 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -818,6 +848,12 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -950,6 +986,12 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -1122,6 +1164,12 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 12,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 12,
       },
@@ -1350,6 +1398,12 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -1516,6 +1570,12 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 12,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 12,
       },
@@ -1784,6 +1844,12 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -1955,6 +2021,12 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -2104,6 +2176,12 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -2263,6 +2341,12 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -2414,6 +2498,12 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -2577,6 +2667,12 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -2720,6 +2816,12 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -2858,6 +2960,12 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -2995,6 +3103,12 @@ exports[`int: with anonymous single-character string default > if the generated 
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -3153,6 +3267,12 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -3291,6 +3411,12 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -3435,6 +3561,12 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
@@ -3578,6 +3710,12 @@ exports[`int: with named single-character string default > if the generated AST,
     "arguments": [
       {
         "isInteger": true,
+        "memoryAddress": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
         "type": "literal",
         "value": 4,
       },
