@@ -1,7 +1,7 @@
 ---
 title: Agent Success Note - Verified review feedback against compiler phases
-agent: Codex
-model: GPT-5
+agent: Codex App Version 26.422.71525 (2210)
+model: GPT-5.5 (high)
 date: 2026-04-30
 ---
 
