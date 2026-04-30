@@ -99,7 +99,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	globalEditorDirectivesEffect(store);
 	runtimeDirectiveErrorsEffect(store);
-	compiler(store, events);
+	compiler(store);
 	graphicHelper(store, events);
 	viewportDirectiveEffect(store, events);
 	editorConfigModule(store, events);

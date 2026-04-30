@@ -65,13 +65,6 @@ export const mainMenu: MenuGenerator = state => [
 	},
 	{ divider: true },
 	{
-		title: 'Compile Code',
-		action: 'compileCode',
-		close: true,
-		disabled: !state.callbacks.compileCode,
-	},
-	{ divider: true },
-	{
 		title: 'Clear Binary Asset Cache',
 		action: 'clearBinaryAssetCache',
 		close: true,

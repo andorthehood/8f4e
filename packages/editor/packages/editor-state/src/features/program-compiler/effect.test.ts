@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import compilerEffect from './effect';
@@ -6,15 +6,16 @@ import compilerEffect from './effect';
 import type { State } from '@8f4e/editor-state-types';
 
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('program compiler effect', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
-	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let mockCompileCode: MockInstance;
+	let subscribeSpy: MockInstance;
 
 	beforeEach(() => {
+		vi.useFakeTimers();
+
 		mockCompileCode = vi.fn().mockRejectedValue({
 			message: 'Memory access is not allowed in pure functions. (19)',
 			line: { lineNumberBeforeMacroExpansion: 2 },
@@ -30,25 +31,38 @@ describe('program compiler effect', () => {
 			},
 		});
 
-		mockState.graphicHelper.codeBlocks.push(
-			createMockCodeBlock({
-				id: 'function_helper',
-				code: ['function helper', 'push 1', 'functionEnd'],
-				creationIndex: 0,
-				blockType: 'function',
-			})
-		);
+		const helperBlock = createMockCodeBlock({
+			id: 'function_helper',
+			code: ['function helper', 'push 1', 'functionEnd'],
+			creationIndex: 0,
+			blockType: 'function',
+		});
 
-		mockEvents = createMockEventDispatcherWithVitest();
+		mockState.graphicHelper.codeBlocks.push(helperBlock);
+		mockState.graphicHelper.selectedCodeBlockForProgrammaticEdit = helperBlock;
+
 		store = createStateManager(mockState);
+		subscribeSpy = vi.spyOn(store, 'subscribe') as MockInstance;
 	});
 
+	afterEach(() => {
+		subscribeSpy.mockRestore();
+		vi.useRealTimers();
+	});
+
+	async function triggerProgrammaticCompile(): Promise<void> {
+		compilerEffect(store);
+		const programmaticChangeCall = subscribeSpy.mock.calls.find(
+			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+		);
+		expect(programmaticChangeCall).toBeDefined();
+
+		programmaticChangeCall![1]();
+		await vi.advanceTimersByTimeAsync(500);
+	}
+
 	it('stores code block type for compiler errors', async () => {
-		compilerEffect(store, mockEvents);
-		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const compileCodeCall = onCalls.find(call => call[0] === 'compileCode');
-		expect(compileCodeCall).toBeDefined();
-		await compileCodeCall![1]();
+		await triggerProgrammaticCompile();
 
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
@@ -67,11 +81,7 @@ describe('program compiler effect', () => {
 			context: {},
 		});
 
-		compilerEffect(store, mockEvents);
-		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const compileCodeCall = onCalls.find(call => call[0] === 'compileCode');
-		expect(compileCodeCall).toBeDefined();
-		await compileCodeCall![1]();
+		await triggerProgrammaticCompile();
 
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
