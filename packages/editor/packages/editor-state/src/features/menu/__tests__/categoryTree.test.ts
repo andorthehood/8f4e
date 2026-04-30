@@ -31,7 +31,7 @@ describe('categoryTree', () => {
 		it('should build a flat tree for single-level categories', () => {
 			const items: CategoryItem[] = [
 				{ title: 'Item A', slug: 'a', category: 'Audio' },
-				{ title: 'Item B', slug: 'b', category: 'MIDI' },
+				{ title: 'Item B', slug: 'b', category: 'Visuals' },
 				{ title: 'Item C', slug: 'c', category: 'Audio' },
 			];
 
@@ -39,16 +39,16 @@ describe('categoryTree', () => {
 
 			expect(tree.children.size).toBe(2);
 			expect(tree.children.has('Audio')).toBe(true);
-			expect(tree.children.has('MIDI')).toBe(true);
+			expect(tree.children.has('Visuals')).toBe(true);
 
 			const audioNode = tree.children.get('Audio')!;
 			expect(audioNode.items).toHaveLength(2);
 			expect(audioNode.items[0].slug).toBe('a');
 			expect(audioNode.items[1].slug).toBe('c');
 
-			const midiNode = tree.children.get('MIDI')!;
-			expect(midiNode.items).toHaveLength(1);
-			expect(midiNode.items[0].slug).toBe('b');
+			const visualsNode = tree.children.get('Visuals')!;
+			expect(visualsNode.items).toHaveLength(1);
+			expect(visualsNode.items[0].slug).toBe('b');
 		});
 
 		it('should build nested tree for multi-level categories', () => {
