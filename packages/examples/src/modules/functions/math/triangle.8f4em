@@ -9,7 +9,7 @@ param float x
 use math
 
 push 1.0
-localGet x
+push x
 abs
 push INV_PI
 mul

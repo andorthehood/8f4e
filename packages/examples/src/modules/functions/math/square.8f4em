@@ -6,7 +6,7 @@ function square
 ; Output range: [-1, 1]
 param float x
 
-localGet x
+push x
 push 0.0
 greaterThan
 if

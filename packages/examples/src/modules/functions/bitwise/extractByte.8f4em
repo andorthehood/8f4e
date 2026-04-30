@@ -6,8 +6,8 @@ function extractByte
 param int word
 param int byteIndex
 
-localGet word
-localGet byteIndex
+push word
+push byteIndex
 push 3
 shiftLeft
 shiftRightUnsigned

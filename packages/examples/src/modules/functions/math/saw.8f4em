@@ -8,7 +8,7 @@ param float x
 
 use math
 
-localGet x
+push x
 push INV_PI
 mul
 
