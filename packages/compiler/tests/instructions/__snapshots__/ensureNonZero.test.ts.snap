@@ -51,7 +51,7 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -214,7 +214,7 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,

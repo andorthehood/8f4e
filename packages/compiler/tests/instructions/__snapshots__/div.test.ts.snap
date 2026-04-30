@@ -66,7 +66,7 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -283,7 +283,7 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,

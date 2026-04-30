@@ -50,7 +50,7 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -188,7 +188,7 @@ exports[`float: bare anonymous zero-initialized allocation > if the generated AS
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -352,7 +352,7 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -496,7 +496,7 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,

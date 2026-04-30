@@ -51,7 +51,7 @@ exports[`abs (float) > if the generated AST, WAT and memory map match the snapsh
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -205,7 +205,7 @@ exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,

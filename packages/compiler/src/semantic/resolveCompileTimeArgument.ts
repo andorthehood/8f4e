@@ -36,7 +36,7 @@ function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): 
 	return {
 		value: memoryItem.byteAddress,
 		isInteger: true,
-		memoryAddress: {
+		safeAddressRange: {
 			source: 'memory-start',
 			byteAddress: memoryItem.byteAddress,
 			safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
@@ -51,7 +51,7 @@ function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Co
 	return {
 		value: byteAddress,
 		isInteger: true,
-		memoryAddress: {
+		safeAddressRange: {
 			source: 'memory-end',
 			byteAddress,
 			safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
@@ -70,7 +70,7 @@ function moduleAddressConst(
 	return {
 		value: byteAddress,
 		isInteger: true,
-		memoryAddress: {
+		safeAddressRange: {
 			source,
 			byteAddress,
 			safeByteLength:
@@ -82,18 +82,18 @@ function moduleAddressConst(
 	};
 }
 
-function shiftMemoryAddressRange(
-	memoryAddress: MemoryAddressRange,
+function shiftSafeAddressRange(
+	safeAddressRange: MemoryAddressRange,
 	byteOffset: number
 ): MemoryAddressRange | undefined {
-	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > memoryAddress.safeByteLength) {
+	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > safeAddressRange.safeByteLength) {
 		return undefined;
 	}
 
 	return {
-		...memoryAddress,
-		byteAddress: memoryAddress.byteAddress + byteOffset,
-		safeByteLength: memoryAddress.safeByteLength - byteOffset,
+		...safeAddressRange,
+		byteAddress: safeAddressRange.byteAddress + byteOffset,
+		safeByteLength: safeAddressRange.safeByteLength - byteOffset,
 	};
 }
 
@@ -299,7 +299,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		if (item) {
 			return {
 				...memoryStartAddressConst(item, targetModuleId),
-				memoryAddress: {
+				safeAddressRange: {
 					source: 'module-nth-memory-start',
 					byteAddress: item.byteAddress,
 					safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
@@ -377,20 +377,20 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 						: Math.pow(lhsConst.value, rhsConst.value);
 	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
 	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
-	const memoryAddress =
-		isInteger && operator === '+' && lhsConst.memoryAddress && rhsConst.isInteger
-			? shiftMemoryAddressRange(lhsConst.memoryAddress, rhsConst.value)
-			: isInteger && operator === '+' && rhsConst.memoryAddress && lhsConst.isInteger
-				? shiftMemoryAddressRange(rhsConst.memoryAddress, lhsConst.value)
-				: isInteger && operator === '-' && lhsConst.memoryAddress && rhsConst.isInteger
-					? shiftMemoryAddressRange(lhsConst.memoryAddress, -rhsConst.value)
+	const safeAddressRange =
+		isInteger && operator === '+' && lhsConst.safeAddressRange && rhsConst.isInteger
+			? shiftSafeAddressRange(lhsConst.safeAddressRange, rhsConst.value)
+			: isInteger && operator === '+' && rhsConst.safeAddressRange && lhsConst.isInteger
+				? shiftSafeAddressRange(rhsConst.safeAddressRange, lhsConst.value)
+				: isInteger && operator === '-' && lhsConst.safeAddressRange && rhsConst.isInteger
+					? shiftSafeAddressRange(lhsConst.safeAddressRange, -rhsConst.value)
 					: undefined;
 
 	return {
 		value,
 		isInteger,
 		...(isFloat64 ? { isFloat64: true } : {}),
-		...(memoryAddress ? { memoryAddress } : {}),
+		...(safeAddressRange ? { safeAddressRange } : {}),
 	};
 }
 

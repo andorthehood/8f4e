@@ -44,7 +44,7 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -257,7 +257,7 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -517,7 +517,7 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 12,
           "memoryId": "output",
           "safeByteLength": 4,

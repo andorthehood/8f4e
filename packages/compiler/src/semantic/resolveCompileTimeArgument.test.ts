@@ -300,7 +300,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
 			value: 8,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'memory-start',
 				byteAddress: 8,
 				safeByteLength: 16,
@@ -338,7 +338,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
 			value: 20,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'memory-end',
 				byteAddress: 20,
 				safeByteLength: 4,
@@ -367,7 +367,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
 			value: 12,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'module-start',
 				byteAddress: 12,
 				safeByteLength: 12,
@@ -397,7 +397,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
 			value: 20,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'module-end',
 				byteAddress: 20,
 				safeByteLength: 4,
@@ -436,7 +436,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&this'))).toEqual({
 			value: 24,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'module-start',
 				byteAddress: 24,
 				safeByteLength: 20,
@@ -445,7 +445,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('this&'))).toEqual({
 			value: 40,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'module-end',
 				byteAddress: 40,
 				safeByteLength: 4,
@@ -474,7 +474,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr+4'))).toEqual({
 			value: 20,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'memory-start',
 				byteAddress: 20,
 				safeByteLength: 12,
@@ -504,7 +504,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('4+&arr'))).toEqual({
 			value: 20,
 			isInteger: true,
-			memoryAddress: {
+			safeAddressRange: {
 				source: 'memory-start',
 				byteAddress: 20,
 				safeByteLength: 12,

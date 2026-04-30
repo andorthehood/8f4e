@@ -58,7 +58,7 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "counter",
           "safeByteLength": 4,
@@ -266,7 +266,7 @@ exports[`#loopCap does not affect loops declared before it > if the generated AS
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "counter",
           "safeByteLength": 4,
@@ -361,7 +361,7 @@ exports[`#loopCap does not affect loops declared before it > if the generated AS
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "counter2",
           "safeByteLength": 4,
@@ -614,7 +614,7 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "counter",
           "safeByteLength": 4,
@@ -827,7 +827,7 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "counter",
           "safeByteLength": 4,
@@ -1026,7 +1026,7 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "counter",
           "safeByteLength": 4,
@@ -1240,7 +1240,7 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "outerCounter",
           "safeByteLength": 4,
@@ -1319,7 +1319,7 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "innerCounter",
           "safeByteLength": 4,
@@ -1574,7 +1574,7 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "counter",
           "safeByteLength": 4,

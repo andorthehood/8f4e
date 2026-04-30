@@ -131,7 +131,7 @@ exports[`const instruction > const with valid constant names > if the generated 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output1",
           "safeByteLength": 4,
@@ -173,7 +173,7 @@ exports[`const instruction > const with valid constant names > if the generated 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output2",
           "safeByteLength": 4,

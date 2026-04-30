@@ -14,7 +14,7 @@ describe('store instruction compiler', () => {
 			{
 				isInteger: true,
 				isNonZero: false,
-				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+				safeAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
 			},
 			{ isInteger: true, isNonZero: false }
 		);
@@ -61,7 +61,7 @@ describe('store instruction compiler', () => {
 			{
 				isInteger: true,
 				isNonZero: false,
-				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 8, memoryId: 'test' },
+				safeAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 8, memoryId: 'test' },
 			},
 			{ isInteger: false, isFloat64: true, isNonZero: false }
 		);
@@ -88,7 +88,7 @@ describe('store instruction compiler', () => {
 			{
 				isInteger: true,
 				isNonZero: false,
-				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+				safeAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
 			},
 			{ isInteger: false, isNonZero: false }
 		);

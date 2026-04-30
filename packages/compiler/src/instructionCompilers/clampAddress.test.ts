@@ -37,7 +37,7 @@ describe('clamp address instruction compilers', () => {
 			isInteger: true,
 			isNonZero: true,
 			knownIntegerValue: 1024,
-			memoryAddressRange: range,
+			clampAddressRange: range,
 		});
 
 		clampAddress(createLine('clampAddress'), context);
@@ -47,7 +47,7 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
-				memoryAddressRange: range,
+				clampAddressRange: range,
 				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
@@ -61,7 +61,7 @@ describe('clamp address instruction compilers', () => {
 			isInteger: true,
 			isNonZero: true,
 			knownIntegerValue: 1024,
-			memoryAddressRange: range,
+			clampAddressRange: range,
 		});
 
 		clampAddress(createLine('clampAddress', 1), context);
@@ -71,7 +71,7 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 127,
-				memoryAddressRange: range,
+				clampAddressRange: range,
 				safeMemoryAccessByteWidth: 1,
 			},
 		]);
@@ -104,7 +104,7 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 92,
-				memoryAddressRange: {
+				clampAddressRange: {
 					source: 'module-start',
 					byteAddress: 64,
 					safeByteLength: 32,
@@ -136,7 +136,7 @@ describe('clamp address instruction compilers', () => {
 
 	it('rejects zero access width', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false, memoryAddressRange: range });
+		context.stack.push({ isInteger: true, isNonZero: false, clampAddressRange: range });
 
 		expect(() => clampAddress(createLine('clampAddress', 0), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
@@ -145,7 +145,7 @@ describe('clamp address instruction compilers', () => {
 
 	it('rejects unsupported access widths', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false, memoryAddressRange: range });
+		context.stack.push({ isInteger: true, isNonZero: false, clampAddressRange: range });
 
 		expect(() => clampAddress(createLine('clampAddress', 3), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
@@ -157,7 +157,7 @@ describe('clamp address instruction compilers', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			memoryAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },
+			clampAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },
 		});
 
 		expect(() => clampAddress(createLine('clampAddress'), context)).toThrow(
