@@ -37,7 +37,7 @@ noteEnd
 
 module projectConfig
 ; @pos -114 36
-; @config runtime WebWorkerLogicRuntime
+; @config runtime WebWorkerRuntime
 ; ~sampleRate 50
 
 moduleEnd

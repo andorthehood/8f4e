@@ -140,8 +140,8 @@ All package `tsconfig.json` files were updated to:
 - `packages/compiler/tsconfig.json`
 - `packages/compiler-worker/tsconfig.json`
 - `packages/runtime-audio-worklet/tsconfig.json`
-- `packages/runtime-main-thread-logic/tsconfig.json`
-- `packages/runtime-web-worker-logic/tsconfig.json`
+- `packages/runtime-main-thread/tsconfig.json`
+- `packages/runtime-web-worker/tsconfig.json`
 - `packages/runtime-web-worker-midi/tsconfig.json`
 - `packages/editor/tsconfig.json`
 - `packages/editor/packages/editor-state/tsconfig.json`

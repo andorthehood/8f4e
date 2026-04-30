@@ -30,8 +30,8 @@
 		"@8f4e/sprite-generator": ["packages/editor/packages/sprite-generator/src/index.ts"],
 		"@8f4e/state-manager": ["packages/editor/packages/state-manager/src/index.ts"],
 		"@8f4e/runtime-audio-worklet": ["packages/runtime-audio-worklet/src/index.ts"],
-		"@8f4e/runtime-web-worker-logic": ["packages/runtime-web-worker-logic/src/index.ts"],
-		"@8f4e/runtime-main-thread-logic": ["packages/runtime-main-thread-logic/src/index.ts"],
+		"@8f4e/runtime-web-worker": ["packages/runtime-web-worker/src/index.ts"],
+		"@8f4e/runtime-main-thread": ["packages/runtime-main-thread/src/index.ts"],
 		"@8f4e/examples": ["packages/examples/src/index.ts"],
 		"@8f4e/examples/*": ["packages/examples/src/*"]
 	}

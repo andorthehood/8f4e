@@ -3,15 +3,15 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import {
-	getWebWorkerLogicRuntimeEnvConstantsFromBlocks,
-	resolveWebWorkerLogicRuntimeDirectives,
-	resolveWebWorkerLogicRuntimeDirectivesFromBlocks,
+	getWebWorkerRuntimeEnvConstantsFromBlocks,
+	resolveWebWorkerRuntimeDirectives,
+	resolveWebWorkerRuntimeDirectivesFromBlocks,
 } from './runtimeDirectives';
 
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
-// WebWorker Logic Runtime Factory
-export function webWorkerLogicRuntimeFactory(
+// WebWorker Runtime Factory
+export function webWorkerRuntimeFactory(
 	store: StateManager<State>,
 	events: EventDispatcher,
 	getCodeBuffer: () => Uint8Array,
@@ -46,7 +46,7 @@ export function webWorkerLogicRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
-		const sampleRate = resolveWebWorkerLogicRuntimeDirectives(state).sampleRate;
+		const sampleRate = resolveWebWorkerRuntimeDirectives(state).sampleRate;
 		if (sampleRate === undefined) {
 			return;
 		}
@@ -82,13 +82,13 @@ export function webWorkerLogicRuntimeFactory(
  * Create a runtime definition with injected callbacks.
  * This allows the host to provide getCodeBuffer and getMemory implementations.
  */
-export function createWebWorkerLogicRuntimeDef(
+export function createWebWorkerRuntimeDef(
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null,
 	WorkerConstructor: new () => Worker
 ): RuntimeRegistryEntry {
 	return {
-		id: 'WebWorkerLogicRuntime',
+		id: 'WebWorkerRuntime',
 		defaults: {
 			sampleRate: 50,
 		},
@@ -99,10 +99,10 @@ export function createWebWorkerLogicRuntimeDef(
 			},
 			additionalProperties: false,
 		} as JSONSchemaLike,
-		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerLogicRuntimeDirectivesFromBlocks(codeBlocks),
-		getEnvConstants: codeBlocks => getWebWorkerLogicRuntimeEnvConstantsFromBlocks(codeBlocks),
+		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerRuntimeDirectivesFromBlocks(codeBlocks),
+		getEnvConstants: codeBlocks => getWebWorkerRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
-			return webWorkerLogicRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
+			return webWorkerRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},
 	};
 }

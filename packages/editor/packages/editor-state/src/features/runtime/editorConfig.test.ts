@@ -11,8 +11,8 @@ import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 
 const runtimeRegistry = {
-	WebWorkerLogicRuntime: {
-		id: 'WebWorkerLogicRuntime',
+	WebWorkerRuntime: {
+		id: 'WebWorkerRuntime',
 		defaults: { sampleRate: 60 },
 	},
 	AudioWorkletRuntime: {
@@ -23,20 +23,16 @@ const runtimeRegistry = {
 
 describe('runtime editor config', () => {
 	it('resolves selected runtime ids with default fallback', () => {
-		expect(resolveSelectedRuntimeId('AudioWorkletRuntime', runtimeRegistry, 'WebWorkerLogicRuntime')).toBe(
+		expect(resolveSelectedRuntimeId('AudioWorkletRuntime', runtimeRegistry, 'WebWorkerRuntime')).toBe(
 			'AudioWorkletRuntime'
 		);
-		expect(resolveSelectedRuntimeId('UnknownRuntime', runtimeRegistry, 'WebWorkerLogicRuntime')).toBe(
-			'WebWorkerLogicRuntime'
-		);
-		expect(resolveSelectedRuntimeId('toString', runtimeRegistry, 'WebWorkerLogicRuntime')).toBe(
-			'WebWorkerLogicRuntime'
-		);
-		expect(resolveSelectedRuntimeId(undefined, runtimeRegistry, 'WebWorkerLogicRuntime')).toBe('WebWorkerLogicRuntime');
+		expect(resolveSelectedRuntimeId('UnknownRuntime', runtimeRegistry, 'WebWorkerRuntime')).toBe('WebWorkerRuntime');
+		expect(resolveSelectedRuntimeId('toString', runtimeRegistry, 'WebWorkerRuntime')).toBe('WebWorkerRuntime');
+		expect(resolveSelectedRuntimeId(undefined, runtimeRegistry, 'WebWorkerRuntime')).toBe('WebWorkerRuntime');
 	});
 
 	it('reads defaults for the selected runtime', () => {
-		expect(getSelectedRuntimeDefaults('AudioWorkletRuntime', runtimeRegistry, 'WebWorkerLogicRuntime')).toEqual({
+		expect(getSelectedRuntimeDefaults('AudioWorkletRuntime', runtimeRegistry, 'WebWorkerRuntime')).toEqual({
 			sampleRate: 44100,
 		});
 	});
