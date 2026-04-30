@@ -1,8 +1,8 @@
 import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
+import { type AST } from '@8f4e/compiler-types';
 
 import { ErrorCode, getError } from './compilerError';
-import { type AST } from './types';
 
 describe('getError', () => {
 	it('includes the undeclared identifier when provided', () => {

@@ -16,7 +16,7 @@ import {
 	getPointeeElementWordSizeFromMetadata,
 } from '../utils/memoryData';
 
-import type { Argument, CompilationContext, CompileTimeOperand, Const } from '../types';
+import type { Argument, CompilationContext, CompileTimeOperand, Const } from '@8f4e/compiler-types';
 
 /**
  * Tries to resolve a single pre-classified compile-time operand to a `Const` value.

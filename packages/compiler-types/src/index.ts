@@ -49,7 +49,8 @@ import {
 	type LoopCapLine,
 	type ImpureLine,
 } from '@8f4e/tokenizer';
-import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+
+import type { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 export enum MemoryTypes {
 	'int',
@@ -150,6 +151,44 @@ export type CompiledFunctionLookup = Record<string, CompiledFunction>;
 
 export type MemoryBuffer = Int32Array;
 
+export type MemoryReinitReason =
+	| { kind: 'no-instance' }
+	| { kind: 'memory-size-changed'; prevBytes: number; nextBytes: number }
+	| { kind: 'memory-structure-changed' };
+
+export type MemoryAction = { action: 'reused' } | { action: 'recreated'; reason: MemoryReinitReason };
+
+export type GetOrCreateMemoryResult = {
+	memoryRef: WebAssembly.Memory;
+	memoryAction: MemoryAction;
+};
+
+export type GetOrCreateWasmInstanceResult = {
+	wasmInstanceRef: WebAssembly.Instance;
+	hasWasmInstanceBeenReset: boolean;
+};
+
+export type CompileAndUpdateMemoryResult = {
+	codeBuffer: Uint8Array;
+	compiledModules: CompiledModuleLookup;
+	compiledFunctions?: CompiledFunctionLookup;
+	requiredMemoryBytes: number;
+	allocatedMemoryBytes: number;
+	memoryRef: WebAssembly.Memory;
+	hasWasmInstanceBeenReset: boolean;
+	memoryAction: MemoryAction;
+	initOnlyReran: boolean;
+};
+
+export type MemoryValueChange = {
+	wordAlignedSize: number;
+	wordAlignedAddress: number;
+	value: number | Record<string, number>;
+	isInteger: boolean;
+	isFloat64?: boolean;
+	elementWordSize: number;
+};
+
 export interface Connection {
 	fromModuleId: string;
 	fromConnectorId: string;
@@ -161,7 +200,7 @@ export interface Module {
 	code: string[];
 }
 
-// Re-export types from syntax subpath for backward compatibility
+// Export the tokenized AST shapes that form the compiler's public input contract.
 export {
 	type AST,
 	type ASTLine,
@@ -453,4 +492,91 @@ export interface CompileOptions {
 	bufferSize?: number;
 	/** Buffer generation strategy: 'loop' (default, smaller code size) or 'unrolled' (potentially faster). */
 	bufferStrategy?: 'loop' | 'unrolled';
+}
+
+export type Instruction =
+	| 'and'
+	| 'or'
+	| 'load'
+	| 'load8u'
+	| 'load16u'
+	| 'load8s'
+	| 'load16s'
+	| 'localSet'
+	| 'else'
+	| 'if'
+	| 'ifEnd'
+	| 'lessThan'
+	| 'store'
+	| 'sub'
+	| 'div'
+	| 'xor'
+	| 'local'
+	| 'greaterOrEqual'
+	| 'add'
+	| 'greaterThan'
+	| 'branch'
+	| 'branchIfTrue'
+	| 'exitIfTrue'
+	| 'push'
+	| 'block'
+	| 'blockEnd'
+	| 'lessOrEqual'
+	| 'mul'
+	| 'loop'
+	| 'loopIndex'
+	| 'loopEnd'
+	| 'greaterOrEqualUnsigned'
+	| 'equalToZero'
+	| 'notEqual'
+	| 'notZero'
+	| 'shiftLeft'
+	| 'shiftRight'
+	| 'shiftRightUnsigned'
+	| 'remainder'
+	| 'castToInt'
+	| 'castToFloat'
+	| 'castToFloat64'
+	| 'drop'
+	| 'clearStack'
+	| 'risingEdge'
+	| 'fallingEdge'
+	| 'hasChanged'
+	| 'dup'
+	| 'swap'
+	| 'cycle'
+	| 'abs'
+	| 'equal'
+	| 'wasm'
+	| 'branchIfUnchanged'
+	| 'pow2'
+	| 'sqrt'
+	| 'loadFloat'
+	| 'round'
+	| 'ensureNonZero'
+	| 'function'
+	| 'functionEnd'
+	| 'return'
+	| 'param'
+	| 'call'
+	| '#skipExecution'
+	| '#initOnly'
+	| '#impure'
+	| '#loopCap'
+	| 'mapBegin'
+	| 'map'
+	| 'default'
+	| 'mapEnd'
+	| 'storeBytes';
+
+export interface ExpandedLine {
+	line: string;
+	callSiteLineNumber: number;
+	macroId?: string;
+}
+
+export interface MacroDefinition {
+	name: string;
+	body: string[];
+	definitionLineNumber: number;
 }

@@ -4,7 +4,7 @@ import { saveByteCode } from '../../../utils/compilation';
 import { getDataStructure } from '../../../utils/memoryData';
 import { kindToStackItem, loadOpcode, resolveMemoryValueKind } from '../shared';
 
-import type { CompilationContext, PushIdentifierLine } from '../../../types';
+import type { CompilationContext, PushIdentifierLine } from '@8f4e/compiler-types';
 
 export default function pushMemoryIdentifier(
 	line: PushIdentifierLine,

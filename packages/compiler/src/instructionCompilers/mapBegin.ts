@@ -1,7 +1,8 @@
-import { BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
+
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, MapBeginLine } from '../types';
+import type { InstructionCompiler, MapBeginLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `mapBegin`.

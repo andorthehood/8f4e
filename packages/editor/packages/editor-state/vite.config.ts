@@ -12,7 +12,7 @@ const baseConfig = createLibConfig({
 	formats: ['es'],
 	fileName: () => 'index.js',
 	emptyOutDir: false,
-	external: ['@8f4e/compiler', '@8f4e/sprite-generator', '@8f4e/state-manager', 'glugglug'],
+	external: ['@8f4e/compiler-types', '@8f4e/sprite-generator', '@8f4e/state-manager', 'glugglug'],
 });
 
 export default defineConfig({

@@ -1,7 +1,8 @@
-import { isMemoryDeclarationInstruction } from './semantic/declarations';
-import { ArgumentType } from './types';
+import { ArgumentType } from '@8f4e/compiler-types';
 
-import type { AST, Argument } from './types';
+import { isMemoryDeclarationInstruction } from './semantic/declarations';
+
+import type { AST, Argument } from '@8f4e/compiler-types';
 
 function getIntermodularReferenceModules(argument: Argument | undefined): string[] {
 	if (!argument) {

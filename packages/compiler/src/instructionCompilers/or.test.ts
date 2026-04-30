@@ -4,7 +4,7 @@ import or from './or';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('or instruction compiler', () => {
 	it('emits I32_OR and tracks non-zero state', () => {

@@ -1,6 +1,6 @@
-import { BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
-import type { CompilationContext } from '../types';
+import type { CompilationContext } from '@8f4e/compiler-types';
 
 export default function createInstructionCompilerTestContext(
 	overrides: Partial<CompilationContext> = {}

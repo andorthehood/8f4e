@@ -1,6 +1,6 @@
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, NormalizedDefaultLine } from '../types';
+import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `default`.

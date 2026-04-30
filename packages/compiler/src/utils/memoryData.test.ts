@@ -18,7 +18,7 @@ import {
 
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
-import type { MemoryMap } from '../types';
+import type { MemoryMap } from '@8f4e/compiler-types';
 
 describe('memoryData utilities', () => {
 	const mockMemory: MemoryMap = {

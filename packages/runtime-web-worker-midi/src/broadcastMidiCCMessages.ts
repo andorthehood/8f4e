@@ -1,6 +1,6 @@
 import { Event } from './midiEnums';
 
-import type { MemoryBuffer } from '@8f4e/compiler';
+import type { MemoryBuffer } from '@8f4e/compiler-types';
 import type { MidiCCModuleAddresses } from './types';
 
 const previousValues = new Map<string, number>();

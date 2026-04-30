@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, CodeError } from '@8f4e/editor';
-import type { CompiledModuleLookup, MemoryBuffer } from '@8f4e/compiler';
+import type { CompiledModuleLookup, MemoryBuffer } from '@8f4e/compiler-types';
 import type { MidiCCModuleAddresses, MidiModuleAddresses } from './types';
 
 interface MidiNoteRoute {

@@ -1,6 +1,6 @@
-import { validateArgumentByRule } from './validateArgumentByRule';
+import { type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-types';
 
-import { type CompilationContext, type InstructionCompiler } from '../types';
+import { validateArgumentByRule } from './validateArgumentByRule';
 
 import type { ArgumentRule } from './types';
 

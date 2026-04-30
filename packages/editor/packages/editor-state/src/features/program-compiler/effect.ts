@@ -1,10 +1,10 @@
 import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
-import { type CompilerDiagnostic } from '@8f4e/compiler';
 
 import { log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
+import type { CompilerDiagnostic } from '@8f4e/compiler-types';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { EventDispatcher } from '@8f4e/editor-state-types';
 

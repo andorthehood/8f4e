@@ -1,6 +1,6 @@
 import { getEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { DataStructure, LocalBinding, MemoryMap } from '../types';
+import type { DataStructure, LocalBinding, MemoryMap } from '@8f4e/compiler-types';
 
 export type PointerMetadata =
 	| Pick<DataStructure, 'pointeeBaseType' | 'isPointingToPointer'>

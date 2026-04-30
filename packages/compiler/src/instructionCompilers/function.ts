@@ -1,8 +1,9 @@
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
+
 import { ErrorCode, getError } from '../compilerError';
-import { BLOCK_TYPE } from '../types';
 import { isInstructionInsideFunction, isInstructionIsInsideAModule } from '../utils/blockStack';
 
-import type { CompilationContext, FunctionLine, InstructionCompiler } from '../types';
+import type { CompilationContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-types';
 
 // Note: This instruction does not use withValidation because it requires inverted scope validation:
 // it must NOT be inside a module or function, which is the opposite of the standard scope rules

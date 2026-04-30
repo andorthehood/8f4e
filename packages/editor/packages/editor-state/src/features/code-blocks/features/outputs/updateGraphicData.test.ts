@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes } from '@8f4e/compiler';
+import { MemoryTypes } from '@8f4e/compiler-types';
 
 import updateOutputsGraphicData from './updateGraphicData';
 
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { DataStructure } from '@8f4e/compiler';
+import type { DataStructure } from '@8f4e/compiler-types';
 
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 

@@ -3,7 +3,7 @@ import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/tokenizer';
 
 import getMemoryFlags from './memoryFlags';
 
-import type { FunctionValueType, LocalBinding, StackItem } from '../types';
+import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-types';
 
 type PointerFunctionValueType = Extract<FunctionValueType, `${string}*`>;
 

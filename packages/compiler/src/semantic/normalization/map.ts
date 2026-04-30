@@ -1,10 +1,10 @@
+import { ArgumentType, type CompilationContext, type MapLine, type NormalizedMapLine } from '@8f4e/compiler-types';
+
 import {
 	validateOrDeferCompileTimeExpression,
 	validateOrDeferUnresolvedIdentifier,
 	normalizeArgumentsAtIndexes,
 } from './helpers';
-
-import { ArgumentType, type CompilationContext, type MapLine, type NormalizedMapLine } from '../../types';
 
 /**
  * Normalizes compile-time arguments for the `map` instruction.

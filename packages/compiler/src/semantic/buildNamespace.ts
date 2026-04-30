@@ -1,12 +1,4 @@
 import { ArgumentType } from '@8f4e/tokenizer';
-
-import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
-import { applyMemoryDeclarationLine } from './declarations';
-import applySemanticInstruction from './instructions';
-
-import { ErrorCode, getError } from '../compilerError';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
-import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import {
 	type AST,
 	type CompilationContext,
@@ -15,7 +7,15 @@ import {
 	type Namespaces,
 	type Argument,
 	type ParsedSemanticInstructionLine,
-} from '../types';
+} from '@8f4e/compiler-types';
+
+import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
+import { applyMemoryDeclarationLine } from './declarations';
+import applySemanticInstruction from './instructions';
+
+import { ErrorCode, getError } from '../compilerError';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 /**
  * Scans function ASTs and collects pre-codegen function metadata.

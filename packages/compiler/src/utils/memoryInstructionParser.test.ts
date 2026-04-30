@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import parseMemoryInstructionArguments from './memoryInstructionParser';
 
-import type { Argument, CompilationContext } from '../types';
+import type { Argument, CompilationContext } from '@8f4e/compiler-types';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

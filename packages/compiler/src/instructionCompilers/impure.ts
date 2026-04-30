@@ -1,7 +1,8 @@
-import { ErrorCode, getError } from '../compilerError';
-import { BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
-import type { ImpureLine, InstructionCompiler } from '../types';
+import { ErrorCode, getError } from '../compilerError';
+
+import type { ImpureLine, InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `#impure` compiler directive.

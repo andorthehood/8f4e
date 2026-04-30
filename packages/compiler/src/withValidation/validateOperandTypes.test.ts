@@ -4,7 +4,7 @@ import { validateOperandTypes } from './validateOperandTypes';
 
 import { ErrorCode } from '../compilerError';
 
-import type { CompilationContext, InstructionCompiler } from '../types';
+import type { CompilationContext, InstructionCompiler } from '@8f4e/compiler-types';
 
 const line: Parameters<InstructionCompiler>[0] = {
 	lineNumberBeforeMacroExpansion: 1,

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-types';
 
 import { validateArgumentByRule } from './validateArgumentByRule';
 
 import { ErrorCode } from '../compilerError';
-import { ArgumentType, type CompilationContext, type InstructionCompiler } from '../types';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

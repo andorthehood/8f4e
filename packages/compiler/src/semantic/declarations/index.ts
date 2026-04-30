@@ -5,7 +5,7 @@ import int from './int';
 import int8 from './int8';
 import int16 from './int16';
 
-import type { AST, CompilationContext, InstructionCompiler } from '../../types';
+import type { AST, CompilationContext, InstructionCompiler } from '@8f4e/compiler-types';
 
 export const declarationCompilers = {
 	int,

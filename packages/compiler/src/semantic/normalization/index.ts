@@ -7,7 +7,7 @@ import normalizeMap from './map';
 import normalizeMemoryDeclaration from './memoryDeclaration';
 import normalizePush from './push';
 
-import type { AST, CompilationContext, NormalizedLine } from '../../types';
+import type { AST, CompilationContext, NormalizedLine } from '@8f4e/compiler-types';
 
 const instructionNormalizers = {
 	call: normalizeCall,

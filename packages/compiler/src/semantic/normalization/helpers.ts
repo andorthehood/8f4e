@@ -1,4 +1,3 @@
-import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 import {
 	ArgumentType,
 	type ReferenceKind,
@@ -6,7 +5,9 @@ import {
 	type Argument,
 	type ArgumentIdentifier,
 	type CompilationContext,
-} from '../../types';
+} from '@8f4e/compiler-types';
+
+import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 import { ErrorCode, getError } from '../../compilerError';
 
 export function hasCollectedNamespaces(context: CompilationContext): boolean {

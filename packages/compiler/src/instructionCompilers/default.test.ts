@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import _default from './default';
 
-import { ArgumentType, BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('default instruction compiler', () => {
 	it('records a default value', () => {

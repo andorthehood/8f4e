@@ -5,7 +5,7 @@ import { saveByteCode } from '../../../utils/compilation';
 import { getDataStructure } from '../../../utils/memoryData';
 import { buildPointerDereferenceByteCode, kindToStackItem } from '../shared';
 
-import type { CompilationContext, PushIdentifierLine } from '../../../types';
+import type { CompilationContext, PushIdentifierLine } from '@8f4e/compiler-types';
 
 export default function pushMemoryPointer(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
 	const memory = context.namespace.memory;

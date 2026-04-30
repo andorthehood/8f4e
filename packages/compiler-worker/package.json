@@ -10,10 +10,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./types": {
-      "types": "./dist/types.d.ts",
-      "default": "./dist/types.js"
     }
   },
   "sideEffects": false,
@@ -28,7 +24,8 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/compiler": "*"
+    "@8f4e/compiler": "*",
+    "@8f4e/compiler-types": "*"
   },
   "devDependencies": {}
 }

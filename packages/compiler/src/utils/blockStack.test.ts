@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import {
 	isInstructionInsideFunction,
@@ -7,9 +8,7 @@ import {
 	isInstructionIsInsideBlock,
 } from './blockStack';
 
-import { BLOCK_TYPE } from '../types';
-
-import type { BlockStack } from '../types';
+import type { BlockStack } from '@8f4e/compiler-types';
 
 describe('blockStack utilities', () => {
 	const mockModuleBlock: BlockStack[number] = {

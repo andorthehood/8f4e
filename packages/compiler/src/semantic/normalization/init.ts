@@ -1,10 +1,11 @@
+import { ArgumentType, type CompilationContext, type InitLine, type NormalizedInitLine } from '@8f4e/compiler-types';
+
 import {
 	validateIntermoduleAddressReference,
 	validateOrDeferCompileTimeExpression,
 	normalizeArgumentsAtIndexes,
 } from './helpers';
 
-import { ArgumentType, type CompilationContext, type InitLine, type NormalizedInitLine } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
 /**
