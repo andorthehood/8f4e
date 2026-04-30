@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import store from './store';
 
@@ -123,5 +124,29 @@ describe('store instruction compiler', () => {
 		expect(context.byteCode).toContain(57); // F64_STORE opcode
 		expect(context.byteCode).not.toContain(56); // no F32_STORE
 		expect(context.stack).toHaveLength(0);
+	});
+
+	it('does not guard when an explicit clamp proves the access width is safe', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{
+				isInteger: true,
+				isNonZero: false,
+				safeMemoryAccessByteWidth: 4,
+			},
+			{ isInteger: true, isNonZero: false }
+		);
+
+		store(
+			{
+				lineNumberBeforeMacroExpansion: 6,
+				lineNumberAfterMacroExpansion: 6,
+				instruction: 'store',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
 	});
 });
