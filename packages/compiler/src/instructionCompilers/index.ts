@@ -13,6 +13,8 @@ import xor from './xor';
 import local from './local';
 import greaterOrEqual from './greaterOrEqual';
 import add from './add';
+import min from './min';
+import max from './max';
 import greaterThan from './greaterThan';
 import branch from './branch';
 import branchIfTrue from './branchIfTrue';
@@ -91,6 +93,8 @@ const instructions = {
 	local,
 	greaterOrEqual,
 	add,
+	min,
+	max,
 	greaterThan,
 	branch,
 	branchIfTrue,

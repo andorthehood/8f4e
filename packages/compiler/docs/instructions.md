@@ -8,6 +8,8 @@
 - [Arithmetic instructions](instructions/arithmetic.md)
   - [add](instructions/arithmetic.md#add)
   - [div](instructions/arithmetic.md#div)
+  - [min](instructions/arithmetic.md#min)
+  - [max](instructions/arithmetic.md#max)
   - [mul](instructions/arithmetic.md#mul)
   - [remainder](instructions/arithmetic.md#remainder)
   - [sub](instructions/arithmetic.md#sub)
