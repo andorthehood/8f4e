@@ -49,6 +49,7 @@ import type {
 	AudioWorkletRuntime,
 	Runtimes,
 	RuntimeStats,
+	RuntimeValuesByRuntimeId,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
 	JSONSchemaLike,
@@ -123,6 +124,7 @@ export type {
 	AudioWorkletRuntime,
 	Runtimes,
 	RuntimeStats,
+	RuntimeValuesByRuntimeId,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
 };
@@ -283,6 +285,7 @@ export interface State {
 	console: ConsoleState;
 	runtime: {
 		stats: RuntimeStats;
+		values: RuntimeValuesByRuntimeId;
 	};
 	/** Runtime registry for configurable runtime schemas */
 	runtimeRegistry: RuntimeRegistry;

@@ -36,6 +36,9 @@ export type RuntimeDirectiveResolver = (
 	errors: CodeError[];
 };
 
+export type RuntimeValueMap = Record<string, unknown>;
+export type RuntimeValuesByRuntimeId = Record<string, RuntimeValueMap>;
+
 /**
  * Runtime registry entry describing a runtime configuration.
  * Each entry defines a runtime's id, default configuration, schema, and factory function.

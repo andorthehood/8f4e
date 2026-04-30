@@ -26,6 +26,7 @@ export type {
 	RuntimeFactory,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
+	RuntimeValuesByRuntimeId,
 	WebWorkerRuntime,
 	MainThreadRuntime,
 	AudioWorkletRuntime,
