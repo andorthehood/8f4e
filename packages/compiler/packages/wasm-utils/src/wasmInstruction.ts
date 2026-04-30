@@ -526,6 +526,12 @@ enum WASMInstruction {
 	 * Type signature: (param f32) (result f64)
 	 */
 	F64_PROMOTE_F32 = 0xbb,
+
+	/**
+	 * Miscellaneous instruction prefix.
+	 * The next unsigned LEB128 value selects a WASMMiscInstruction sub-opcode.
+	 */
+	MISC = 0xfc,
 }
 
 export default WASMInstruction;
