@@ -4,8 +4,7 @@ import { parse8f4eToProject } from './parse8f4e';
 
 import { warn, error } from '../logger/logger';
 
-import type { Project, State } from '@8f4e/editor-state-types';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
+import type { EventDispatcher, Project, State } from '@8f4e/editor-state-types';
 
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 
@@ -21,7 +20,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.callbacks
 			.loadSession()
 			.then(localProject => {
-				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
+				loadProject({ project: localProject ?? EMPTY_DEFAULT_PROJECT });
 			})
 			.catch(err => {
 				console.warn('Failed to load project from storage:', err);
