@@ -4,7 +4,7 @@ import load from './load';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('load instruction compiler', () => {
 	it('loads from a safe memory address', () => {

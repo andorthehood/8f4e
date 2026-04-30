@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import { convertExpandedLinesToCode, expandMacros, parseMacroDefinitions } from './macroExpansion';
 
-import type { Module } from '../types';
+import type { Module } from '@8f4e/compiler-types';
 
 describe('parseMacroDefinitions', () => {
 	test('should parse a simple macro definition', () => {

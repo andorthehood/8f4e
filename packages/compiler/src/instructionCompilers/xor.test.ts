@@ -4,7 +4,7 @@ import xor from './xor';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('xor instruction compiler', () => {
 	it('emits I32_XOR for integer operands', () => {

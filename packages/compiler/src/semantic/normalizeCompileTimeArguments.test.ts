@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { classifyIdentifier, parseArgument } from '@8f4e/tokenizer';
+import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-types';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 
-import { ArgumentType, type AST, type CompilationContext } from '../types';
 import { ErrorCode } from '../compilerError';
 
 describe('normalizeCompileTimeArguments', () => {

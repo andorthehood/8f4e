@@ -1,7 +1,8 @@
-import { ErrorCode, getError } from '../compilerError';
-import { BLOCK_TYPE } from '../types';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
-import type { InstructionCompiler } from '../types';
+import { ErrorCode, getError } from '../compilerError';
+
+import type { InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `#initOnly` compiler directive.

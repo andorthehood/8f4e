@@ -1,4 +1,4 @@
-import type { ArgumentIdentifier, LocalMap, Namespace } from '../../types';
+import type { ArgumentIdentifier, LocalMap, Namespace } from '@8f4e/compiler-types';
 
 export const enum IdentifierPushKind {
 	MEMORY_IDENTIFIER,

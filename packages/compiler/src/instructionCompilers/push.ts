@@ -1,3 +1,5 @@
+import { ArgumentType } from '@8f4e/compiler-types';
+
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
 import pushLocalPointer from './push/handlers/pushLocalPointer';
@@ -6,10 +8,9 @@ import pushMemoryPointer from './push/handlers/pushMemoryPointer';
 import pushStringLiteral from './push/handlers/pushStringLiteral';
 import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
-import { ArgumentType } from '../types';
 import { withValidation } from '../withValidation';
 
-import type { CodegenPushLine, InstructionCompiler, PushIdentifierLine } from '../types';
+import type { CodegenPushLine, InstructionCompiler, PushIdentifierLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `push`.

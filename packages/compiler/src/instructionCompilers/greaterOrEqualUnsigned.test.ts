@@ -4,7 +4,7 @@ import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('greaterOrEqualUnsigned instruction compiler', () => {
 	it('emits I32_GE_U for integer operands', () => {

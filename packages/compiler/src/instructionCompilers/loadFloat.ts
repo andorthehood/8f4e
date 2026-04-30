@@ -5,7 +5,7 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `loadFloat`.

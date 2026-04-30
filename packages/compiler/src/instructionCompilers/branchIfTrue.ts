@@ -3,7 +3,7 @@ import { br_if } from '@8f4e/compiler-wasm-utils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
-import type { BranchIfTrueLine, InstructionCompiler } from '../types';
+import type { BranchIfTrueLine, InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `branchIfTrue`.

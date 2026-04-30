@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType } from '@8f4e/compiler-types';
 
 import branchIfUnchanged from './branchIfUnchanged';
 
-import { ArgumentType } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('branchIfUnchanged instruction compiler', () => {
 	it('compiles the unchanged check segment', () => {

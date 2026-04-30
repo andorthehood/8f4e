@@ -2,7 +2,7 @@
  * Types for code-blocks feature - manages code block entities, rendering, and interactions.
  */
 
-import type { DataStructure } from '@8f4e/compiler';
+import type { DataStructure } from '@8f4e/compiler-types';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type { ContextMenu } from '../menu/types';

@@ -1,12 +1,12 @@
 import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, it, expect, beforeEach } from 'vitest';
+import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import { withValidation } from './withValidation';
 
 import { ErrorCode } from '../compilerError';
-import { ArgumentType, BLOCK_TYPE } from '../types';
 
-import type { AST, CompilationContext, InstructionCompiler } from '../types';
+import type { AST, CompilationContext, InstructionCompiler } from '@8f4e/compiler-types';
 
 function createMockContext(): CompilationContext {
 	return {

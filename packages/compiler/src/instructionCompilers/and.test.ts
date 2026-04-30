@@ -4,7 +4,7 @@ import and from './and';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('and instruction compiler', () => {
 	it('emits I32_AND for integer operands', () => {

@@ -1,6 +1,6 @@
 import { createMemoryLookup } from './memoryLookup';
 
-import type { DataStructure } from '@8f4e/compiler';
+import type { DataStructure } from '@8f4e/compiler-types';
 import type { CreateRuntimeRunnerOptions, RuntimeRunner, MemoryLookup } from './types';
 
 type WebAssemblyMemoryLike = {

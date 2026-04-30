@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { BLOCK_TYPE, type InstructionCompiler } from '@8f4e/compiler-types';
 
 import { withValidation } from './withValidation';
-
-import { BLOCK_TYPE, type InstructionCompiler } from '../types';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

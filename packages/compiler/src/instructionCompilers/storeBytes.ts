@@ -6,7 +6,7 @@ import { compileSegment } from '../compiler';
 import { ErrorCode } from '../compilerError';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, StoreBytesLine } from '../types';
+import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `storeBytes`.

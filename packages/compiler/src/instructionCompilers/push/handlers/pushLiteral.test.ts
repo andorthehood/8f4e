@@ -1,12 +1,12 @@
 import { f64const, i32const } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
+import { ArgumentType } from '@8f4e/compiler-types';
 
 import pushLiteral from './pushLiteral';
 
-import { ArgumentType } from '../../../types';
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 
-import type { ArgumentLiteral } from '../../../types';
+import type { ArgumentLiteral } from '@8f4e/compiler-types';
 
 describe('pushLiteral', () => {
 	it('emits i32.const for integer literals and updates stack metadata', () => {

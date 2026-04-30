@@ -2,7 +2,7 @@
  * Types for project import/export feature - project serialization and metadata.
  */
 
-import type { CompiledModuleLookup } from '@8f4e/compiler';
+import type { CompiledModuleLookup } from '@8f4e/compiler-types';
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlock } from '../code-blocks/types';
 

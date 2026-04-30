@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler-types';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state/testing';
 
 import drawPianoKeyboards from './pianoKeyboards';

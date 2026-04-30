@@ -2,7 +2,7 @@ import { ErrorCode, getError } from '../compilerError';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 import { withValidation } from '../withValidation';
 
-import type { FunctionValueType, InstructionCompiler, LocalDeclarationLine } from '../types';
+import type { FunctionValueType, InstructionCompiler, LocalDeclarationLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `local`.

@@ -4,7 +4,7 @@ import notZero from './notZero';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('notZero instruction compiler', () => {
 	it('emits I32_NE against zero for integer operands', () => {

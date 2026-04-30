@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-types';
 
 import { validateScope } from './validateScope';
 
 import { ErrorCode } from '../compilerError';
-import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '../types';
 
 const line: Parameters<InstructionCompiler>[0] = {
 	lineNumberBeforeMacroExpansion: 1,

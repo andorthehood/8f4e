@@ -1,8 +1,14 @@
 import { compileToAST } from '@8f4e/tokenizer';
 import { createFunction, createLocalDeclaration, f32store, f64store, i32store, Type } from '@8f4e/compiler-wasm-utils';
 
-import instructions, { Instruction } from './instructionCompilers';
-import {
+import instructions from './instructionCompilers';
+import { ErrorCode, getError } from './compilerError';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
+import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
+import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
+import { functionValueTypeToWasmType } from './utils/functionValueType';
+
+import type {
 	AST,
 	CompilationContext,
 	CompiledModule,
@@ -10,14 +16,8 @@ import {
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
 	Namespaces,
-} from './types';
-import { ErrorCode, getError } from './compilerError';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
-import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
-import { functionValueTypeToWasmType } from './utils/functionValueType';
-
-export type { MemoryTypes, MemoryMap } from './types';
+	Instruction,
+} from '@8f4e/compiler-types';
 
 export function compileCodegenLine(line: AST[number], context: CompilationContext) {
 	const instruction = line.instruction as Instruction;

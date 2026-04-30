@@ -1,5 +1,6 @@
+import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-types';
+
 import { ErrorCode, getError } from '../compilerError';
-import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '../types';
 import {
 	isInstructionInsideFunction,
 	isInstructionInsideModuleOrFunction,

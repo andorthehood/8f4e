@@ -6,7 +6,7 @@ import semanticConstants from './constants';
 import semanticModuleEnd from './moduleEnd';
 import semanticConstantsEnd from './constantsEnd';
 
-import type { CompilationContext, NormalizedSemanticInstructionLine } from '../../types';
+import type { CompilationContext, NormalizedSemanticInstructionLine } from '@8f4e/compiler-types';
 
 export default function applySemanticInstruction(line: NormalizedSemanticInstructionLine, context: CompilationContext) {
 	switch (line.instruction) {

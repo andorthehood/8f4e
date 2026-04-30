@@ -1,6 +1,7 @@
+import { BLOCK_TYPE, type CompilationContext, type ModuleEndLine } from '@8f4e/compiler-types';
+
 import { ErrorCode, getError } from '../../compilerError';
 import { isInstructionIsInsideAModule } from '../../utils/blockStack';
-import { BLOCK_TYPE, type CompilationContext, type ModuleEndLine } from '../../types';
 
 export default function semanticModuleEnd(line: ModuleEndLine, context: CompilationContext) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

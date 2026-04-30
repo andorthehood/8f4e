@@ -1,4 +1,5 @@
-import { type CompilationContext, type ParsedLocalVariableAccessLine } from '../../types';
+import { type CompilationContext, type ParsedLocalVariableAccessLine } from '@8f4e/compiler-types';
+
 import { ErrorCode, getError } from '../../compilerError';
 
 /**

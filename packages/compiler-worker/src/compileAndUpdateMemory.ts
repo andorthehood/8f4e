@@ -1,9 +1,15 @@
-import compile, { CompileOptions, CompiledModuleLookup, Module, deriveEffectiveMemorySize } from '@8f4e/compiler';
+import compile, { deriveEffectiveMemorySize } from '@8f4e/compiler';
 
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
 
-import type { CompileAndUpdateMemoryResult, GetOrCreateWasmInstanceResult } from './types';
+import type {
+	CompileAndUpdateMemoryResult,
+	CompileOptions,
+	CompiledModuleLookup,
+	GetOrCreateWasmInstanceResult,
+	Module,
+} from '@8f4e/compiler-types';
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
 

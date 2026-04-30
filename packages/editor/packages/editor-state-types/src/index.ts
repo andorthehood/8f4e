@@ -4,8 +4,7 @@
  * and re-exporting them for backward compatibility and public API stability.
  */
 
-import type { Module, CompileOptions } from '@8f4e/compiler';
-import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
+import type { CompileOptions, MemoryAction as CompilerMemoryAction, Module } from '@8f4e/compiler-types';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	CodeBlock,

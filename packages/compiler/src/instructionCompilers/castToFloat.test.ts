@@ -4,7 +4,7 @@ import castToFloat from './castToFloat';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('castToFloat instruction compiler', () => {
 	it('converts int operand to float', () => {

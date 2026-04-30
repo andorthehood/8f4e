@@ -4,7 +4,7 @@ import block from './block';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('block instruction compiler', () => {
 	it('emits a typed block for float', () => {

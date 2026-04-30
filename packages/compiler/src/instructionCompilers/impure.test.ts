@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import impure from './impure';
 
-import { BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('impure instruction compiler', () => {
 	it('sets currentFunctionIsImpure when in function context', () => {

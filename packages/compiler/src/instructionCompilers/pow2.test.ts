@@ -4,7 +4,7 @@ import pow2 from './pow2';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('pow2 instruction compiler', () => {
 	it('computes power of two', () => {

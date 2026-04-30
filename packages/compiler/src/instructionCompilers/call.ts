@@ -5,7 +5,7 @@ import { saveByteCode } from '../utils/compilation';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 import { withValidation } from '../withValidation';
 
-import type { CallLine, InstructionCompiler } from '../types';
+import type { CallLine, InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `call`.

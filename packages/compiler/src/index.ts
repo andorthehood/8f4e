@@ -27,7 +27,10 @@ import {
 	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
 } from './semantic/buildNamespace';
-import {
+import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
+import sortModules from './graphOptimizer';
+
+import type {
 	AST,
 	CompileOptions,
 	CompiledModule,
@@ -37,47 +40,9 @@ import {
 	FunctionTypeRegistry,
 	Module,
 	Namespaces,
-} from './types';
-import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
-import sortModules from './graphOptimizer';
+} from '@8f4e/compiler-types';
 
-export {
-	MemoryTypes,
-	type DataStructure,
-	type MemoryMap,
-	type CompiledModule,
-	type CompiledModuleLookup,
-	type CompiledFunction,
-	type CompiledFunctionLookup,
-	type FunctionSignature,
-	type MemoryBuffer,
-	type Connection,
-	type Module,
-	ArgumentType,
-	type ArgumentLiteral,
-	type ArgumentIdentifier,
-	type Argument,
-	type AST,
-	type TestModule,
-	type Const,
-	type Consts,
-	type Namespace,
-	type Namespaces,
-	type CompilationContext,
-	type CompilationMode,
-	type StackItem,
-	type Stack,
-	BLOCK_TYPE,
-	type BlockStack,
-	type InstructionCompiler,
-	type CompilerStageError,
-	type CompileOptions,
-	type CompilerDiagnostic,
-	type CompilerDiagnosticLine,
-	type CompilerDiagnosticContext,
-} from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export {
 	prepassNamespace,
@@ -88,13 +53,7 @@ export {
 export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
-export {
-	parseMacroDefinitions,
-	expandMacros,
-	convertExpandedLinesToCode,
-	type MacroDefinition,
-	type ExpandedLine,
-} from './utils/macroExpansion';
+export { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 export { ErrorCode, getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
 

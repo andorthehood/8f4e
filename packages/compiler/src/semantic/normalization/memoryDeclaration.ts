@@ -1,3 +1,5 @@
+import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-types';
+
 import {
 	validateIntermoduleAddressReference,
 	validateOrDeferCompileTimeExpression,
@@ -5,7 +7,6 @@ import {
 	normalizeArgumentsAtIndexes,
 } from './helpers';
 
-import { ArgumentType, type AST, type CompilationContext } from '../../types';
 import { ErrorCode, getError } from '../../compilerError';
 
 function requireResolvedArrayValue(

@@ -5,7 +5,7 @@ import pushLocal from './pushLocal';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 
-import type { PushIdentifierLine } from '../../../types';
+import type { PushIdentifierLine } from '@8f4e/compiler-types';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

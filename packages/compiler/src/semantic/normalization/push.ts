@@ -1,3 +1,5 @@
+import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '@8f4e/compiler-types';
+
 import {
 	hasCollectedNamespaces,
 	isIntermoduleReferenceKind,
@@ -6,7 +8,6 @@ import {
 	normalizeArgumentsAtIndexes,
 } from './helpers';
 
-import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '../../types';
 import { isMemoryIdentifier } from '../../utils/memoryIdentifier';
 import { ErrorCode, getError } from '../../compilerError';
 

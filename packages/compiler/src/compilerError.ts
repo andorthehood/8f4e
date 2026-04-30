@@ -17,7 +17,7 @@
  *   before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
-import type { AST, CompilationContext, CompilerStageError } from './types';
+import type { AST, CompilationContext, CompilerStageError } from '@8f4e/compiler-types';
 
 export enum ErrorCode {
 	INSUFFICIENT_OPERANDS,

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType } from '@8f4e/compiler-types';
 
 import storeBytes from './storeBytes';
 
-import { ArgumentType } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('storeBytes instruction compiler', () => {
 	it('throws INSUFFICIENT_OPERANDS when stack has fewer than count+1 items', () => {

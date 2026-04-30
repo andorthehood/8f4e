@@ -4,7 +4,7 @@ import lessThan from './lessThan';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('lessThan instruction compiler', () => {
 	it('emits I32_LT_S for integer operands', () => {

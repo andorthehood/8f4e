@@ -8,7 +8,7 @@
 
 import { SyntaxRulesError } from '@8f4e/tokenizer';
 
-import type { CompilerDiagnostic, CompilerStageError } from './types';
+import type { CompilerDiagnostic, CompilerStageError } from '@8f4e/compiler-types';
 
 const FALLBACK_LINE = {
 	lineNumberBeforeMacroExpansion: 0,

@@ -1,11 +1,11 @@
 import { WASMInstruction, i32const, localGet } from '@8f4e/compiler-wasm-utils';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import { ErrorCode, getError } from '../compilerError';
-import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, LoopIndexLine } from '../types';
+import type { InstructionCompiler, LoopIndexLine } from '@8f4e/compiler-types';
 
 const loopIndex: InstructionCompiler<LoopIndexLine> = withValidation<LoopIndexLine>(
 	{

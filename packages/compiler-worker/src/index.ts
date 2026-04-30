@@ -1,6 +1,8 @@
-import { CompileOptions, Module, serializeDiagnostic } from '@8f4e/compiler';
+import { serializeDiagnostic } from '@8f4e/compiler';
 
 import compileAndUpdateMemory from './compileAndUpdateMemory';
+
+import type { CompileOptions, Module } from '@8f4e/compiler-types';
 
 async function compile(modules: Module[], compilerOptions: CompileOptions, functions?: Module[], macros?: Module[]) {
 	try {

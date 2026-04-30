@@ -1,4 +1,4 @@
-import type { StackItem } from '../types';
+import type { StackItem } from '@8f4e/compiler-types';
 
 export function areAllOperandsIntegers(...operands: StackItem[]): boolean {
 	return operands.every(operand => operand.isInteger);

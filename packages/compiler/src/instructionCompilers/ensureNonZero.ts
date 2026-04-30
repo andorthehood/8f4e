@@ -1,8 +1,9 @@
+import { ArgumentType } from '@8f4e/compiler-types';
+
 import { compileSegment } from '../compiler';
-import { ArgumentType } from '../types';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `ensureNonZero`.

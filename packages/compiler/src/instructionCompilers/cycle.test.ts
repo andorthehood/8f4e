@@ -4,7 +4,7 @@ import cycle from './cycle';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('cycle instruction compiler', () => {
 	it('compiles the cycle segment', () => {

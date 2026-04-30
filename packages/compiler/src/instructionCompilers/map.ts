@@ -1,8 +1,9 @@
+import { ArgumentType } from '@8f4e/compiler-types';
+
 import { ErrorCode, getError } from '../compilerError';
-import { ArgumentType } from '../types';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, NormalizedMapLine } from '../types';
+import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `map`.

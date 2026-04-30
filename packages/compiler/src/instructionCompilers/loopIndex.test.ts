@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { i32const, localGet, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import loopIndex from './loopIndex';
 
 import { ErrorCode } from '../compilerError';
-import { BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '../types';
+import type { AST } from '@8f4e/compiler-types';
 
 describe('loopIndex instruction compiler', () => {
 	it('reads the nearest active loop counter as a zero-based index', () => {

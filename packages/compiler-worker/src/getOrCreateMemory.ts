@@ -1,8 +1,6 @@
-import { CompiledModuleLookup } from '@8f4e/compiler';
-
 import didProgramOrMemoryStructureChange from './didProgramOrMemoryStructureChange';
 
-import type { GetOrCreateMemoryResult, MemoryAction } from './types';
+import type { CompiledModuleLookup, GetOrCreateMemoryResult, MemoryAction } from '@8f4e/compiler-types';
 
 let memoryRefCache: WebAssembly.Memory | null = null;
 let currentMemorySize = 0;

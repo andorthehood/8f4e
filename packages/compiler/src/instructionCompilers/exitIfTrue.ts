@@ -5,7 +5,7 @@ import { isInstructionInsideFunction } from '../utils/blockStack';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
-import type { ExitIfTrueLine, InstructionCompiler } from '../types';
+import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-types';
 
 /**
  * Instruction compiler for `exitIfTrue`.

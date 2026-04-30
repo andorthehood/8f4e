@@ -1,11 +1,11 @@
 import { WASMInstruction, f32const, f64const, i32const, localGet, localSet } from '@8f4e/compiler-wasm-utils';
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import { ErrorCode, getError } from '../compilerError';
-import { BLOCK_TYPE } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
-import type { InstructionCompiler, MapEndLine } from '../types';
+import type { InstructionCompiler, MapEndLine } from '@8f4e/compiler-types';
 
 type MapKind = 'int32' | 'float32' | 'float64';
 

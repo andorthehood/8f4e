@@ -1,7 +1,8 @@
-import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
+import compile from '@8f4e/compiler';
 
 import getBlockType from '../shared/getBlockType';
 
+import type { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler-types';
 import type { ProjectCodeBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
