@@ -5,12 +5,16 @@ import type { StateManager } from '@8f4e/state-manager';
 
 export const RUNTIME_CONFIG_PATH = 'runtime';
 
+function isRegisteredRuntimeId(runtimeRegistry: RuntimeRegistry, runtimeId: string): boolean {
+	return Object.prototype.hasOwnProperty.call(runtimeRegistry, runtimeId);
+}
+
 export function resolveSelectedRuntimeId(
 	requestedRuntimeId: string | undefined,
 	runtimeRegistry: RuntimeRegistry,
 	defaultRuntimeId: string
 ): string {
-	if (requestedRuntimeId && requestedRuntimeId in runtimeRegistry) {
+	if (requestedRuntimeId && isRegisteredRuntimeId(runtimeRegistry, requestedRuntimeId)) {
 		return requestedRuntimeId;
 	}
 
@@ -34,7 +38,7 @@ export function createRuntimeEditorConfigValidator(store: StateManager<State>): 
 			const { runtimeRegistry } = store.getState();
 			const runtimeIds = Object.keys(runtimeRegistry);
 
-			if (!(entry.value in runtimeRegistry)) {
+			if (!isRegisteredRuntimeId(runtimeRegistry, entry.value)) {
 				return `@config runtime: unknown runtime '${entry.value}'${formatDidYouMeanSuffix(entry.value, runtimeIds)}`;
 			}
 

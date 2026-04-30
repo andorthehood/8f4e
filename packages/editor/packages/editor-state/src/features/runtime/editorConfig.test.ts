@@ -29,6 +29,9 @@ describe('runtime editor config', () => {
 		expect(resolveSelectedRuntimeId('UnknownRuntime', runtimeRegistry, 'WebWorkerLogicRuntime')).toBe(
 			'WebWorkerLogicRuntime'
 		);
+		expect(resolveSelectedRuntimeId('toString', runtimeRegistry, 'WebWorkerLogicRuntime')).toBe(
+			'WebWorkerLogicRuntime'
+		);
 		expect(resolveSelectedRuntimeId(undefined, runtimeRegistry, 'WebWorkerLogicRuntime')).toBe('WebWorkerLogicRuntime');
 	});
 
@@ -61,5 +64,14 @@ describe('runtime editor config', () => {
 				codeBlockId: 'config',
 			})
 		).toContain("Did you mean 'AudioWorkletRuntime'?");
+
+		expect(
+			validator.validate({
+				path: RUNTIME_CONFIG_PATH,
+				value: 'toString',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBe("@config runtime: unknown runtime 'toString'");
 	});
 });
