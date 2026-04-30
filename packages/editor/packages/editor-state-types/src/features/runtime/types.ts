@@ -91,14 +91,6 @@ export interface AudioWorkletRuntime {
 export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime;
 
 /**
- * MIDI input/output state.
- */
-export interface Midi {
-	outputs: MIDIOutput[];
-	inputs: MIDIInput[];
-}
-
-/**
  * Runtime execution statistics.
  */
 export interface RuntimeStats {

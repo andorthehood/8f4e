@@ -78,6 +78,4 @@ export const mainMenu: MenuGenerator = state => [
 		close: true,
 		disabled: !state.callbacks.exportBinaryCode,
 	},
-	{ divider: true },
-	{ title: 'MIDI Info', action: 'openSubMenu', payload: { menu: 'midiInfoMenu' }, close: false },
 ];

@@ -48,7 +48,6 @@ import type {
 	MainThreadLogicRuntime,
 	AudioWorkletRuntime,
 	Runtimes,
-	Midi,
 	RuntimeStats,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
@@ -123,7 +122,6 @@ export type {
 	MainThreadLogicRuntime,
 	AudioWorkletRuntime,
 	Runtimes,
-	Midi,
 	RuntimeStats,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
@@ -270,7 +268,6 @@ export interface Options {
 // State interface - complete editor state tree (top-level public API)
 export interface State {
 	compiler: Compiler;
-	midi: Midi;
 	graphicHelper: GraphicHelper;
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;
