@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Type extraction defeated by compatibility re-export
-agent: Codex
-model: GPT-5
+agent: Codex App Version 26.422.71525 (2210)
+model: GPT-5.5 (High)
 date: 2026-04-30
 ---
 
