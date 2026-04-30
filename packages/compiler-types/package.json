@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/compiler-types",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Shared public types for the 8f4e compiler contract",
   "type": "module",
