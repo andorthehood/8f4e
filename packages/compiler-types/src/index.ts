@@ -340,6 +340,8 @@ export interface StackItem {
 	isPointingToPointer?: boolean;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
+	/** Exact integer value when the compiler can still prove it at this stack position. */
+	knownIntegerValue?: number;
 	/** Proven byte range for memory operations when this stack value is known to be an address. */
 	memoryAddress?: MemoryAddressRange;
 }
