@@ -103,4 +103,44 @@ describe('div instruction compiler', () => {
 			);
 		}).toThrowError();
 	});
+
+	it('keeps known integer metadata when dividing known integer operands', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 8 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+		);
+
+		div(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'div',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }]);
+	});
+
+	it('marks known zero integer division results as zero', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 1 },
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }
+		);
+
+		div(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'div',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false, knownIntegerValue: 0 }]);
+	});
 });
