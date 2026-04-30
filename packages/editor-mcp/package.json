@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/editor-mcp",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "private": true,
   "description": "MCP bridge for the 8f4e editor using Playwright",
   "type": "module",
