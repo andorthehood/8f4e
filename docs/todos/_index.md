@@ -71,6 +71,8 @@ Active todo files are listed below.
 | 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The parser already handles some structural block state, but it does not yet cleanly generalize block pairing and top-level owning-block context well enough to route syntax diagnostics to code blocks reliably. |
 | 380 | Remove hardcoded AudioWorklet buffer size from runtime contract | 🟡 | 1-2d | 2026-04-21 | The AudioWorklet runtime currently injects `const AUDIO_BUFFER_SIZE 128` as a compile-time env constant even though the real render quantum is only observable at runtime inside the worklet. |
 | 384 | Add compiler algorithmic regression metrics | 🟡 | 1-2d | 2026-04-28 | The compiler has snapshot coverage for structural outputs, but there is no release-level signal for algorithmic regressions where memory, allocation, or CPU sample cost grows faster than input size. |
+| 385 | Guard i32.div_s signed overflow | 🟡 | 2-4h | 2026-04-30 | Integer `div` prevents divide-by-zero, but raw WebAssembly `i32.div_s` can still trap on `-2147483648 / -1`; define and implement the 8f4e behavior for that edge case. |
+| 386 | Guard i32.rem_s divisor zero | 🟡 | 2-4h | 2026-04-30 | WebAssembly has no non-trapping integer remainder instruction; make divisor-zero behavior explicit and covered so `remainder` cannot unexpectedly produce a runtime trap. |
 
 ## Completed TODOs
 
