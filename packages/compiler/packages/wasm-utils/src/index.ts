@@ -16,6 +16,7 @@ export { default as createVector } from './encoding/createVector';
 export { default as encodeString } from './encoding/encodeString';
 export { default as ieee754 } from './encoding/ieee754';
 export { default as ieee754_64 } from './encoding/ieee754_64';
+export { default as prefixedInstruction } from './encoding/prefixedInstruction';
 export { default as signedLEB128 } from './encoding/signedLEB128';
 export { default as unsignedLEB128 } from './encoding/unsignedLEB128';
 export { default as createExportSection } from './export/createExportSection';
@@ -54,3 +55,4 @@ export { default as createFunctionSection } from './typeFunction/createFunctionS
 export { default as createFunctionType } from './typeFunction/createFunctionType';
 export { default as createTypeSection } from './typeFunction/createTypeSection';
 export { default as WASMInstruction } from './wasmInstruction';
+export { default as WASMMiscInstruction } from './wasmMiscInstruction';
