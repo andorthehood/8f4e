@@ -51,7 +51,7 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -303,7 +303,7 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -555,7 +555,7 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -772,7 +772,7 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1024,7 +1024,7 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1311,7 +1311,7 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1542,7 +1542,7 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1757,7 +1757,7 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1934,7 +1934,7 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,

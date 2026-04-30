@@ -51,7 +51,7 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -134,7 +134,7 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,

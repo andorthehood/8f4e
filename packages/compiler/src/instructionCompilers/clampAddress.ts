@@ -40,7 +40,7 @@ export const clampAddress: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		const operand = context.stack.pop()!;
-		const range = operand.memoryAddressRange ?? operand.memoryAddress;
+		const range = operand.clampAddressRange ?? operand.safeAddressRange;
 		if (!range) {
 			throw getError(ErrorCode.ADDRESS_RANGE_REQUIRED, line, context);
 		}

@@ -111,7 +111,7 @@ export function normalizeArgument(
 		value: resolved.value,
 		isInteger: resolved.isInteger,
 		...(resolved.isFloat64 ? { isFloat64: true } : {}),
-		...(resolved.memoryAddress ? { memoryAddress: resolved.memoryAddress } : {}),
+		...(resolved.safeAddressRange ? { safeAddressRange: resolved.safeAddressRange } : {}),
 	};
 
 	return literal;

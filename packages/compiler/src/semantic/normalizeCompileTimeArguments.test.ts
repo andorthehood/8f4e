@@ -234,7 +234,7 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 16,
 					isInteger: true,
-					memoryAddress: {
+					safeAddressRange: {
 						source: 'module-start',
 						byteAddress: 16,
 						safeByteLength: 12,
@@ -266,7 +266,7 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 24,
 					isInteger: true,
-					memoryAddress: {
+					safeAddressRange: {
 						source: 'module-end',
 						byteAddress: 24,
 						safeByteLength: 4,
@@ -538,7 +538,7 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 12,
 					isInteger: true,
-					memoryAddress: {
+					safeAddressRange: {
 						source: 'memory-start',
 						byteAddress: 12,
 						safeByteLength: 16,
@@ -587,7 +587,7 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 24,
 					isInteger: true,
-					memoryAddress: {
+					safeAddressRange: {
 						source: 'memory-end',
 						byteAddress: 24,
 						safeByteLength: 4,

@@ -96,7 +96,7 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -264,7 +264,7 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -419,7 +419,7 @@ exports[`const: expression from another constant > if the generated AST, WAT and
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -574,7 +574,7 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -742,7 +742,7 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -992,7 +992,7 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1147,7 +1147,7 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1315,7 +1315,7 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 16,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1498,7 +1498,7 @@ exports[`init: constant ^ literal expression > if the generated AST, WAT and mem
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1683,7 +1683,7 @@ exports[`init: constant expression > if the generated AST, WAT and memory map ma
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 4,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -1853,7 +1853,7 @@ exports[`int[]: buffer size from constant division expression > if the generated
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 16,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -2021,7 +2021,7 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 32,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -2189,7 +2189,7 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 64,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -2357,7 +2357,7 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 96,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -2538,7 +2538,7 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 24,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -2719,7 +2719,7 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -2867,7 +2867,7 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -3002,7 +3002,7 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -3137,7 +3137,7 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -3285,7 +3285,7 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 0,
           "memoryId": "output",
           "safeByteLength": 4,
@@ -3420,7 +3420,7 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
     "arguments": [
       {
         "isInteger": true,
-        "memoryAddress": {
+        "safeAddressRange": {
           "byteAddress": 8,
           "memoryId": "output",
           "safeByteLength": 4,
