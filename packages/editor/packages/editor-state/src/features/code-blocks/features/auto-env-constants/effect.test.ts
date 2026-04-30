@@ -67,8 +67,8 @@ describe('autoEnvConstants', () => {
 		const baseState = {
 			...createDefaultState(),
 			runtimeRegistry: {
-				WebWorkerLogicRuntime: {
-					id: 'WebWorkerLogicRuntime',
+				WebWorkerRuntime: {
+					id: 'WebWorkerRuntime',
 					defaults: { sampleRate: 50 },
 					schema: { type: 'object', properties: {} },
 					resolveRuntimeDirectives: codeBlocks => resolveSampleRateFromDirectives(codeBlocks),
@@ -76,7 +76,7 @@ describe('autoEnvConstants', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerLogicRuntime',
+			defaultRuntimeId: 'WebWorkerRuntime',
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
 			},
@@ -180,7 +180,7 @@ describe('autoEnvConstants', () => {
 			}),
 			createGraphicEnvBlock(envCodeBlock?.code ?? []),
 		]);
-		store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
+		store.set('editorConfig.runtime', 'WebWorkerRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -276,7 +276,7 @@ describe('autoEnvConstants', () => {
 				blockType: 'module',
 			}),
 		]);
-		store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
+		store.set('editorConfig.runtime', 'WebWorkerRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
@@ -303,7 +303,7 @@ describe('autoEnvConstants', () => {
 				blockType: 'module',
 			}),
 		]);
-		store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
+		store.set('editorConfig.runtime', 'WebWorkerRuntime');
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');

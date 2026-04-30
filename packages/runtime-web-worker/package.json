@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/runtime-main-thread-logic",
+  "name": "@8f4e/runtime-web-worker",
   "version": "0.1.12",
   "private": true,
-  "description": "8f4e main thread logic runtime package",
+  "description": "8f4e web worker runtime package",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,8 +29,7 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "^24.3.0",
-    "vite": "^7.3.2"
+    "@types/node": "^24.3.0"
   },
   "peerDependencies": {
     "@8f4e/editor": "*",

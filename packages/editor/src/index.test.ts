@@ -79,14 +79,14 @@ describe('editor init', () => {
 
 		await init(canvas, {
 			runtimeRegistry: {
-				WebWorkerLogicRuntime: {
-					id: 'WebWorkerLogicRuntime',
+				WebWorkerRuntime: {
+					id: 'WebWorkerRuntime',
 					defaults: {},
 					schema: { type: 'object' },
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerLogicRuntime',
+			defaultRuntimeId: 'WebWorkerRuntime',
 			callbacks: {
 				loadSession: async () => null,
 			},
