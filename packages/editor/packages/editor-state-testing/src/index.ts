@@ -285,6 +285,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				timerDriftMs: 0,
 				timerExpectedIntervalTimeMs: 0,
 			},
+			values: {},
 		},
 		globalEditorDirectives: {},
 		dialog: {

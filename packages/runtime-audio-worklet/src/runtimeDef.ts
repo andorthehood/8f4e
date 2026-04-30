@@ -8,6 +8,7 @@ import {
 	resolveAudioWorkletRuntimeDirectives,
 	resolveAudioWorkletRuntimeDirectivesFromBlocks,
 } from './runtimeDirectives';
+import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runtimeValues';
 
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
@@ -119,6 +120,9 @@ export function audioWorkletRuntimeFactory(
 				case 'initialized':
 					events.dispatch('runtimeInitialized', typedData.payload);
 					break;
+				case 'runtimeValues':
+					storeAudioWorkletRuntimeValues(store, state, typedData.payload);
+					break;
 			}
 		};
 
@@ -219,7 +223,7 @@ export function createAudioWorkletRuntimeDef(
 	audioWorkletUrl: string
 ): RuntimeRegistryEntry {
 	return {
-		id: 'AudioWorkletRuntime',
+		id: AUDIO_WORKLET_RUNTIME_ID,
 		defaults: {
 			sampleRate: 48000,
 		},
