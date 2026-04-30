@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/runtime-main-thread-logic",
+  "name": "@8f4e/runtime-main-thread",
   "sourceRoot": "src",
   "projectType": "library",
   "targets": {

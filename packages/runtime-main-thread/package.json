@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/runtime-main-thread-logic",
+  "name": "@8f4e/runtime-main-thread",
   "version": "0.1.12",
   "private": true,
-  "description": "8f4e main thread logic runtime package",
+  "description": "8f4e main thread runtime package",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

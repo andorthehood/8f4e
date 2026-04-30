@@ -2,7 +2,7 @@ import type { CodeError, State, ParsedDirectiveRecord } from '@8f4e/editor';
 
 const DEFAULT_SAMPLE_RATE = 50;
 
-function resolveWebWorkerLogicRuntimeSettingsFromBlocks(
+function resolveWebWorkerRuntimeSettingsFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
 	const errors: CodeError[] = [];
@@ -60,22 +60,22 @@ function resolveWebWorkerLogicRuntimeSettingsFromBlocks(
 	};
 }
 
-export function resolveWebWorkerLogicRuntimeDirectives(state: State) {
-	const { sampleRate, errors } = resolveWebWorkerLogicRuntimeSettingsFromBlocks(state.graphicHelper.codeBlocks);
+export function resolveWebWorkerRuntimeDirectives(state: State) {
+	const { sampleRate, errors } = resolveWebWorkerRuntimeSettingsFromBlocks(state.graphicHelper.codeBlocks);
 
 	return { sampleRate, errors };
 }
 
-export function resolveWebWorkerLogicRuntimeDirectivesFromBlocks(
+export function resolveWebWorkerRuntimeDirectivesFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ) {
-	const { sampleRate, errors } = resolveWebWorkerLogicRuntimeSettingsFromBlocks(codeBlocks);
+	const { sampleRate, errors } = resolveWebWorkerRuntimeSettingsFromBlocks(codeBlocks);
 
 	return { sampleRate, errors };
 }
 
-export function getWebWorkerLogicRuntimeEnvConstantsFromBlocks(
+export function getWebWorkerRuntimeEnvConstantsFromBlocks(
 	codeBlocks: Array<{ parsedDirectives: ParsedDirectiveRecord[]; id?: string | number }>
 ): string[] {
-	return resolveWebWorkerLogicRuntimeSettingsFromBlocks(codeBlocks).envConstants;
+	return resolveWebWorkerRuntimeSettingsFromBlocks(codeBlocks).envConstants;
 }

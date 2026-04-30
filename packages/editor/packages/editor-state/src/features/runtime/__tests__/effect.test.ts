@@ -23,8 +23,8 @@ describe('Runtime System', () => {
 						schema: { type: 'object', properties: {} },
 						factory: audioRuntimeFactory,
 					},
-					MainThreadLogicRuntime: {
-						id: 'MainThreadLogicRuntime',
+					MainThreadRuntime: {
+						id: 'MainThreadRuntime',
 						defaults: { sampleRate: 60 },
 						schema: { type: 'object', properties: {} },
 						factory: mainRuntimeFactory,
@@ -47,7 +47,7 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('editorConfig.runtime', 'MainThreadLogicRuntime');
+			store.set('editorConfig.runtime', 'MainThreadRuntime');
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -76,8 +76,8 @@ describe('Runtime System', () => {
 						schema: { type: 'object', properties: {} },
 						factory: audioRuntimeFactory,
 					},
-					WebWorkerLogicRuntime: {
-						id: 'WebWorkerLogicRuntime',
+					WebWorkerRuntime: {
+						id: 'WebWorkerRuntime',
 						defaults: { sampleRate: 50 },
 						schema: { type: 'object', properties: {} },
 						factory: webWorkerRuntimeFactory,
@@ -98,7 +98,7 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('editorConfig.runtime', 'WebWorkerLogicRuntime');
+			store.set('editorConfig.runtime', 'WebWorkerRuntime');
 
 			await new Promise(resolve => setTimeout(resolve, 10));
 
