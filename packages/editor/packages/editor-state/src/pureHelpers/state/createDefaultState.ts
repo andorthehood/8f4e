@@ -58,6 +58,7 @@ export default function createDefaultState() {
 				timerDriftMs: 0,
 				timerExpectedIntervalTimeMs: 0,
 			},
+			values: {},
 		},
 		dialog: {
 			show: false,
