@@ -563,7 +563,6 @@ export type Instruction =
 	| 'add'
 	| 'min'
 	| 'max'
-	| 'clamp'
 	| 'greaterThan'
 	| 'branch'
 	| 'branchIfTrue'

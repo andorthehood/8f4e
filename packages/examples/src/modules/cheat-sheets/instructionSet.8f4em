@@ -5,7 +5,6 @@ constants instructionSet
 ;
 ; Arithmetic
 ; add	Add the top two stack values.
-; clamp	Limit value between min and max.
 ; div	Divide the second stack value by the top value.
 ; min	Keep the smaller of the top two stack values.
 ; max	Keep the larger of the top two stack values.
