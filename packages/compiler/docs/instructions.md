@@ -67,6 +67,9 @@
   - [loadFloat](instructions/memory.md#loadfloat)
   - [store](instructions/memory.md#store)
   - [storeBytes](instructions/memory.md#storebytes)
+  - [clampAddress](instructions/memory.md#clampaddress)
+  - [clampModuleAddress](instructions/memory.md#clampmoduleaddress)
+  - [clampGlobalAddress](instructions/memory.md#clampglobaladdress)
   - [init](instructions/memory.md#init)
 
 - [Declarations and locals](instructions/declarations-and-locals.md)

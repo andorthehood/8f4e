@@ -75,4 +75,25 @@ describe('load instruction compiler', () => {
 
 		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
 	});
+
+	it('does not guard when an explicit clamp proves the access width is safe', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push({
+			isInteger: true,
+			isNonZero: false,
+			safeMemoryAccessByteWidth: 4,
+		});
+
+		load(
+			{
+				lineNumberBeforeMacroExpansion: 4,
+				lineNumberAfterMacroExpansion: 4,
+				instruction: 'load',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
+	});
 });

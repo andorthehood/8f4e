@@ -46,12 +46,14 @@ export function getOrCreateMemoryGuardLocal(
 }
 
 export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number): boolean {
-	return (address.memoryAddress?.safeByteLength ?? 0) >= accessByteWidth;
+	return (
+		(address.memoryAddress?.safeByteLength ?? 0) >= accessByteWidth ||
+		(address.safeMemoryAccessByteWidth ?? 0) >= accessByteWidth
+	);
 }
 
-function addressWithinMemoryBounds(addressLocalIndex: number, accessByteWidth: number): number[] {
+export function linearLastValidStartAddress(accessByteWidth: number): number[] {
 	return [
-		...localGet(addressLocalIndex),
 		WASMInstruction.MEMORY_SIZE,
 		0x00,
 		...i32const(1),
@@ -60,8 +62,11 @@ function addressWithinMemoryBounds(addressLocalIndex: number, accessByteWidth: n
 		WASMInstruction.I32_SHL,
 		...i32const(WASM_MEMORY_PAGE_SIZE - accessByteWidth),
 		WASMInstruction.I32_ADD,
-		WASMInstruction.I32_LE_U,
 	];
+}
+
+function addressWithinMemoryBounds(addressLocalIndex: number, accessByteWidth: number): number[] {
+	return [...localGet(addressLocalIndex), ...linearLastValidStartAddress(accessByteWidth), WASMInstruction.I32_LE_U];
 }
 
 function zeroValue(type: Type.I32 | Type.F32 | Type.F64): number[] {

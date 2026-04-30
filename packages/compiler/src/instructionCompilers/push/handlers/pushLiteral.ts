@@ -9,7 +9,9 @@ export default function pushLiteral(argument: CodegenArgumentLiteral, context: C
 		kindToStackItem(kind, {
 			isNonZero: argument.value !== 0,
 			...(argument.isInteger && Number.isInteger(argument.value) ? { knownIntegerValue: argument.value } : {}),
-			...(argument.memoryAddress ? { memoryAddress: argument.memoryAddress } : {}),
+			...(argument.memoryAddress
+				? { memoryAddress: argument.memoryAddress, memoryAddressRange: argument.memoryAddress }
+				: {}),
 		})
 	);
 	return saveByteCode(context, constOpcode[kind](argument.value));

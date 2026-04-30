@@ -344,6 +344,10 @@ export interface StackItem {
 	knownIntegerValue?: number;
 	/** Proven byte range for memory operations when this stack value is known to be an address. */
 	memoryAddress?: MemoryAddressRange;
+	/** Range an address can be clamped to when pointer arithmetic leaves the proven safe range. */
+	memoryAddressRange?: MemoryAddressRange;
+	/** Proven access width after an explicit address clamp. */
+	safeMemoryAccessByteWidth?: number;
 }
 
 export type Stack = StackItem[];
@@ -519,6 +523,9 @@ export type Instruction =
 	| 'load16u'
 	| 'load8s'
 	| 'load16s'
+	| 'clampAddress'
+	| 'clampModuleAddress'
+	| 'clampGlobalAddress'
 	| 'localSet'
 	| 'else'
 	| 'if'

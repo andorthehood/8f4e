@@ -115,6 +115,7 @@ describe('add instruction compiler', () => {
 				isNonZero: true,
 				knownIntegerValue: 4,
 				memoryAddress: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+				memoryAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 			},
 		]);
 	});
@@ -141,6 +142,13 @@ describe('add instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 1024 }]);
+		expect(context.stack).toEqual([
+			{
+				isInteger: true,
+				isNonZero: true,
+				knownIntegerValue: 1024,
+				memoryAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+			},
+		]);
 	});
 });
