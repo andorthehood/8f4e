@@ -86,4 +86,61 @@ describe('add instruction compiler', () => {
 			);
 		}).toThrowError();
 	});
+
+	it('keeps address metadata when adding a known in-range byte offset', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{
+				isInteger: true,
+				isNonZero: false,
+				knownIntegerValue: 0,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+			},
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+		);
+
+		add(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'add',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([
+			{
+				isInteger: true,
+				isNonZero: true,
+				knownIntegerValue: 4,
+				memoryAddress: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+			},
+		]);
+	});
+
+	it('drops address metadata when adding a known out-of-range byte offset', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{
+				isInteger: true,
+				isNonZero: false,
+				knownIntegerValue: 0,
+				memoryAddress: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+			},
+			{ isInteger: true, isNonZero: true, knownIntegerValue: 1024 }
+		);
+
+		add(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'add',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 1024 }]);
+	});
 });

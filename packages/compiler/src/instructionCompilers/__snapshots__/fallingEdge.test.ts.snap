@@ -40,6 +40,7 @@ exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`
     {
       "isInteger": true,
       "isNonZero": false,
+      "knownIntegerValue": 0,
     },
   ],
 }

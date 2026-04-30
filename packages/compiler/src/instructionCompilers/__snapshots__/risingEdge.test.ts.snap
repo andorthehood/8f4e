@@ -40,6 +40,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] 
     {
       "isInteger": true,
       "isNonZero": false,
+      "knownIntegerValue": 0,
     },
   ],
 }
@@ -85,6 +86,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment for 
     {
       "isInteger": true,
       "isNonZero": false,
+      "knownIntegerValue": 0,
     },
   ],
 }
