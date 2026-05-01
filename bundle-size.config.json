@@ -54,6 +54,16 @@
           "pattern": "^index\\.js$"
         }
       ]
+    },
+    "@8f4e/sprite-generator": {
+      "label": "Sprite Generator",
+      "distDir": "packages/editor/packages/sprite-generator/dist",
+      "files": [
+        {
+          "name": "index.js",
+          "pattern": "^index\\.js$"
+        }
+      ]
     }
   }
 }

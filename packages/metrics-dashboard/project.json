@@ -6,6 +6,12 @@
 		"build": {
 			"executor": "nx:run-commands",
 			"outputs": ["{projectRoot}/dist"],
+			"inputs": [
+				"default",
+				"^default",
+				"{workspaceRoot}/bundle-size.config.json",
+				"{workspaceRoot}/logs/bundle-sizes/**/*"
+			],
 			"options": {
 				"command": "vite build",
 				"cwd": "{projectRoot}"
