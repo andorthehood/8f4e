@@ -2,6 +2,7 @@ import { editorEnvironmentPluginRegistry } from './registry';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { MemoryViews } from '@8f4e/web-ui';
 import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEntry } from './types';
 
 interface ActivePlugin {
@@ -12,6 +13,7 @@ interface ActivePlugin {
 interface EditorEnvironmentPluginManagerOptions {
 	window: Window;
 	navigator: Navigator;
+	memoryViews: MemoryViews;
 	registry?: EditorEnvironmentPluginRegistryEntry[];
 }
 
@@ -101,6 +103,7 @@ export function createEditorEnvironmentPluginManager(
 					events,
 					window: options.window,
 					navigator: options.navigator,
+					memoryViews: options.memoryViews,
 					setErrors: errors => setPluginErrors(entry.id, errors),
 				};
 
