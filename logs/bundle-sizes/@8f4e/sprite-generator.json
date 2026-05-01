@@ -1,1 +1,25 @@
-[]
+[
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-05-01T10:19:29.154Z",
+		"commit": "ec9e8d7758ae4ba42633f37ac40443ca284f6c66",
+		"branch": "main",
+		"releaseTag": "@8f4e/sprite-generator@1.0.3",
+		"packageName": "@8f4e/sprite-generator",
+		"projectName": "@8f4e/sprite-generator",
+		"version": "1.0.3",
+		"bytes": {
+			"raw": 12293,
+			"gzip": 1649,
+			"brotli": 1460
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 12293,
+				"gzip": 1649,
+				"brotli": 1460
+			}
+		]
+	}
+]
