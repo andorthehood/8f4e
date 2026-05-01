@@ -101,7 +101,6 @@ constants instructionSet
 ;
 ; Math helpers
 ; abs	Absolute value.
-; pow2	Raise 2 to the power of the top value.
 ; sqrt	Square root.
 ; round	Round to the nearest integer value.
 ; ensureNonZero	Replace zero with a safe non-zero value.
@@ -110,6 +109,5 @@ constants instructionSet
 ; risingEdge	Detect a rising edge.
 ; fallingEdge	Detect a falling edge.
 ; hasChanged	Detect whether a value changed.
-; cycle	Wrap a value around a range or cycle.
 
 constantsEnd

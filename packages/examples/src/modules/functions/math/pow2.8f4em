@@ -1,0 +1,12 @@
+8f4e/v1
+
+function pow2
+; Raises 2 to the power 
+; of an integer exponent.
+param int exponent
+
+push 1
+push exponent
+shiftLeft
+
+functionEnd int

@@ -11,17 +11,6 @@ push -5
 abs
 ```
 
-### pow2
-
-The pow2 instruction computes 2 raised to the power of an integer exponent.
-
-#### Examples
-
-```
-push 3
-pow2
-```
-
 ### sqrt
 
 The sqrt instruction computes the square root of a floating-point value.

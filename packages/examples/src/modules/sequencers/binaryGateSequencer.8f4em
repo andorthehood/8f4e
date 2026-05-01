@@ -41,9 +41,21 @@ push *trigger
 risingEdge
 if
 push &stepPointer
-push &step1
+push &stepPointer
+load
+push sizeof(step1)
+add
+store
+
+push &stepPointer
+load
 push &last
-cycle
+greaterThan
+if
+push &stepPointer
+push &step1
+store
+ifEnd
 ifEnd
 
 push &bitPointer
