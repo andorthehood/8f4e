@@ -103,10 +103,10 @@ export async function importProject(): Promise<Project> {
 }
 
 export async function exportProject(data: string, fileName: string): Promise<void> {
-	const blob = new Blob([data], { type: 'application/json' });
+	const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
 	await saveBlobWithPickerFallback(blob, fileName, {
 		description: '8f4e Project',
-		accept: { 'application/json': ['.8f4e', '.json'] },
+		accept: { 'text/plain': ['.8f4e'] },
 	});
 }
 

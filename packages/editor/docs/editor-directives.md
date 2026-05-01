@@ -735,7 +735,7 @@ Set the base file name used by editor export actions.
 ```
 
 - `value` must be a non-empty single token (for example `samplePlayer` or `demo.wasm`)
-- The editor strips `.json`, `.wasm`, and `.8f4e` suffixes before appending the export format extension
+- The editor strips `.wasm` and `.8f4e` suffixes before appending the export format extension
 
 **Example**:
 

@@ -36,9 +36,6 @@ if (import.meta.vitest) {
 						}),
 					],
 				},
-				compiler: {
-					compiledModules: { mod: {} },
-				},
 				binaryAssets: [],
 				viewport: {
 					x: 40,
