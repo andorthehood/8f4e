@@ -11,21 +11,7 @@ This note captures a static code-review pass for likely memory churners. These a
 
 ### 1. Post-process uniform uploads in the render loop
 
-File: `/Users/andorpolgar/git/8f4e/packages/editor/packages/glugglug/src/postProcess/PostProcessManager.ts`
-
-Relevant lines:
-
-- `Object.entries(this.effect.uniforms)` around line 144
-- `this.sharedBuffer.slice(mapping.offset, mapping.offset + size)` around line 148
-
-Why this looks expensive:
-
-- `Object.entries(...)` allocates an array of entries every frame when post-processing is active.
-- `Float32Array.prototype.slice(...)` allocates a fresh typed array for every uniform upload.
-
-Why it matters:
-
-- This is in the true render path, so even modest per-frame churn can translate into steady GC pressure.
+Resolved: the custom uniform-buffer feature was removed from glugglug, so this allocation path no longer exists.
 
 ## Strong edit-path churners
 
