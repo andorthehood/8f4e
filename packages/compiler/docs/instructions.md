@@ -99,7 +99,6 @@
 
 - [Math helpers](instructions/math-helpers.md)
   - [abs](instructions/math-helpers.md#abs)
-  - [pow2](instructions/math-helpers.md#pow2)
   - [sqrt](instructions/math-helpers.md#sqrt)
   - [round](instructions/math-helpers.md#round)
   - [ensureNonZero](instructions/math-helpers.md#ensurenonzero)
@@ -108,4 +107,3 @@
   - [risingEdge](instructions/signal-helpers.md#risingedge)
   - [fallingEdge](instructions/signal-helpers.md#fallingedge)
   - [hasChanged](instructions/signal-helpers.md#haschanged)
-  - [cycle](instructions/signal-helpers.md#cycle)
