@@ -1,58 +1,10 @@
+import defaultColorScheme from './defaultColorScheme';
+
 import type { SpriteCoordinates } from 'glugglug';
+import type { ColorScheme } from './types';
 
-export const TEXT_COLOR_NAMES = [
-	'lineNumber',
-	'debugInfo',
-	'arrow',
-	'instruction',
-	'codeComment',
-	'code',
-	'errorMessage',
-	'disabledCode',
-	'numbers',
-	'menuItemText',
-	'menuItemTextHighlighted',
-	'dialogText',
-	'dialogTitle',
-	'binaryZero',
-	'binaryOne',
-	'basePrefix',
-	'pianoKeyWhitePressedOverlay',
-	'pianoKeyBlackPressedOverlay',
-] as const;
-
-export const FILL_COLOR_NAMES = [
-	'menuItemBackground',
-	'menuItemBackgroundHighlighted',
-	'background',
-	'backgroundDots',
-	'debugInfoBackground',
-	'moduleBackground',
-	'moduleBackgroundDragged',
-	'moduleBackgroundDisabled',
-	'wire',
-	'wireHighlighted',
-	'errorMessageBackground',
-	'dialogBackground',
-	'dialogDimmer',
-	'highlightedCodeLine',
-	'trace',
-	'plotterBackground',
-	'bars',
-	'waveform',
-	'meterGreen',
-	'meterYellow',
-	'meterRed',
-	'scanLine',
-	'track',
-	'fill',
-	'handle',
-	'codeBlockHighlightLevel1',
-	'codeBlockHighlightLevel2',
-	'codeBlockHighlightLevel3',
-	'pianoKeyWhite',
-	'pianoKeyBlack',
-] as const;
+export const TEXT_COLOR_NAMES = Object.keys(defaultColorScheme.text) as Array<keyof ColorScheme['text']>;
+export const FILL_COLOR_NAMES = Object.keys(defaultColorScheme.fill) as Array<keyof ColorScheme['fill']>;
 
 const FONT_COLUMNS = 128;
 const BACKGROUND_COLUMNS = 64;
