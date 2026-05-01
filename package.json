@@ -66,7 +66,7 @@
   },
   "overrides": {
     "nx": {
-      "minimatch": "10.2.3"
+      "minimatch": "10.2.5"
     },
     "@nx/js": {
       "picomatch": "4.0.4"
@@ -75,7 +75,7 @@
       "picomatch": "4.0.4"
     },
     "@nx/devkit": {
-      "minimatch": "10.2.3"
+      "minimatch": "10.2.5"
     },
     "@nx/workspace": {
       "picomatch": "4.0.4"
