@@ -52,8 +52,8 @@ vi.mock('./events/keyboardEvents', () => ({
 	default: vi.fn(() => () => {}),
 }));
 
-vi.mock('./events/keyboardMemoryEvents', () => ({
-	default: vi.fn(() => () => {}),
+vi.mock('./editorEnvironmentPlugins/manager', () => ({
+	createEditorEnvironmentPluginManager: vi.fn(() => () => {}),
 }));
 
 vi.mock('./spriteSheetManager', () => ({

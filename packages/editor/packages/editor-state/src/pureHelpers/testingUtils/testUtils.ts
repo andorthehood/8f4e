@@ -306,6 +306,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		codeErrors: {
 			compilationErrors: [],
 			globalEditorDirectiveErrors: [],
+			editorEnvironmentPluginErrors: {},
 			shaderErrors: [],
 			runtimeDirectiveErrors: [],
 		},

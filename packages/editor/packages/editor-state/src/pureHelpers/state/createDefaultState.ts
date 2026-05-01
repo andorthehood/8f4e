@@ -43,6 +43,7 @@ export default function createDefaultState() {
 		codeErrors: {
 			compilationErrors: [],
 			globalEditorDirectiveErrors: [],
+			editorEnvironmentPluginErrors: {},
 			shaderErrors: [],
 			runtimeDirectiveErrors: [],
 		},
