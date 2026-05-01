@@ -111,7 +111,7 @@ export function createEditorEnvironmentPluginManager(
 					setErrors: errors => setPluginErrors(entry.id, errors),
 				};
 
-				const dispose = await pluginModule.default.start(context);
+				const dispose = await pluginModule.default(context);
 				const latestPlugin = activePlugins.get(entry.id);
 
 				if (disposed || !latestPlugin || latestPlugin.token !== activePlugin.token) {

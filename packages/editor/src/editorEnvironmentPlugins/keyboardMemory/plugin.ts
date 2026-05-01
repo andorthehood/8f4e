@@ -1,9 +1,110 @@
-import keyboardMemoryEvents from './keyboardMemoryEvents';
+import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
 
-import type { EditorEnvironmentPlugin } from '../types';
+import type { State } from '@8f4e/editor-state-types';
+import type { EditorEnvironmentPluginContext } from '../types';
 
-const keyboardMemoryPlugin: EditorEnvironmentPlugin = {
-	start: ({ store, window }) => keyboardMemoryEvents(store, window),
-};
+function resolveWordAlignedAddress(state: State, memoryId?: string): number | undefined {
+	if (!memoryId) {
+		return undefined;
+	}
 
-export default keyboardMemoryPlugin;
+	const separatorIndex = memoryId.indexOf(':');
+	if (separatorIndex <= 0 || separatorIndex >= memoryId.length - 1) {
+		return undefined;
+	}
+
+	const moduleId = memoryId.slice(0, separatorIndex);
+	const memoryName = memoryId.slice(separatorIndex + 1);
+	const compiledModule = state.compiler.compiledModules[moduleId];
+	return compiledModule?.memoryMap[memoryName]?.wordAlignedAddress;
+}
+
+function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefined, value: number): void {
+	if (wordAlignedAddress === undefined) {
+		return;
+	}
+	state.callbacks.setWordInMemory?.(wordAlignedAddress, value, true);
+}
+
+export default function keyboardMemoryPlugin({
+	store,
+	window: targetWindow,
+}: EditorEnvironmentPluginContext): () => void {
+	const pressOrder: number[] = [];
+
+	function upsertPressedKeyCode(keyCode: number): void {
+		const existingIndex = pressOrder.indexOf(keyCode);
+		if (existingIndex !== -1) {
+			pressOrder.splice(existingIndex, 1);
+		}
+		pressOrder.push(keyCode);
+	}
+
+	function removePressedKeyCode(keyCode: number): void {
+		const existingIndex = pressOrder.indexOf(keyCode);
+		if (existingIndex !== -1) {
+			pressOrder.splice(existingIndex, 1);
+		}
+	}
+
+	function getLatestPressedKeyCode(): number | undefined {
+		return pressOrder[pressOrder.length - 1];
+	}
+
+	function onKeydown(event: KeyboardEvent): void {
+		const hidUsageId = eventCodeToUsbHidUsageId(event.code) ?? 0;
+		upsertPressedKeyCode(hidUsageId);
+
+		const state = store.getState();
+		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.globalEditorDirectives.keyCodeMemoryId);
+		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
+			state,
+			state.globalEditorDirectives.keyPressedMemoryId
+		);
+
+		writeIntegerToMemory(state, keyCodeWordAlignedAddress, hidUsageId);
+		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 1);
+	}
+
+	function onKeyup(event: KeyboardEvent): void {
+		const hidUsageId = eventCodeToUsbHidUsageId(event.code) ?? 0;
+		removePressedKeyCode(hidUsageId);
+
+		const state = store.getState();
+		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.globalEditorDirectives.keyCodeMemoryId);
+		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
+			state,
+			state.globalEditorDirectives.keyPressedMemoryId
+		);
+
+		const latestPressedKeyCode = getLatestPressedKeyCode();
+		if (latestPressedKeyCode === undefined) {
+			writeIntegerToMemory(state, keyPressedWordAlignedAddress, 0);
+			return;
+		}
+
+		writeIntegerToMemory(state, keyCodeWordAlignedAddress, latestPressedKeyCode);
+		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 1);
+	}
+
+	function onBlur(): void {
+		pressOrder.length = 0;
+
+		const state = store.getState();
+		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
+			state,
+			state.globalEditorDirectives.keyPressedMemoryId
+		);
+		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 0);
+	}
+
+	targetWindow.addEventListener('keydown', onKeydown);
+	targetWindow.addEventListener('keyup', onKeyup);
+	targetWindow.addEventListener('blur', onBlur);
+
+	return () => {
+		targetWindow.removeEventListener('keydown', onKeydown);
+		targetWindow.removeEventListener('keyup', onKeyup);
+		targetWindow.removeEventListener('blur', onBlur);
+	};
+}

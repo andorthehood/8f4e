@@ -52,7 +52,7 @@ describe('editor environment plugin manager', () => {
 	it('lazy-loads a plugin when one of its editor directives appears', async () => {
 		const dispose = vi.fn();
 		const start = vi.fn(() => dispose);
-		const load = vi.fn(async () => ({ default: { start } }));
+		const load = vi.fn(async () => ({ default: start }));
 		const registry: EditorEnvironmentPluginRegistryEntry[] = [
 			{
 				id: 'test-plugin',
@@ -94,7 +94,7 @@ describe('editor environment plugin manager', () => {
 			{
 				id: 'test-plugin',
 				editorDirectives: ['testDirective'],
-				load: vi.fn(async () => ({ default: { start } })),
+				load: vi.fn(async () => ({ default: start })),
 			},
 		];
 		const store = createStateManager(createState([createCodeBlockWithEditorDirective('testDirective')]));
@@ -125,7 +125,7 @@ describe('editor environment plugin manager', () => {
 			{
 				id: 'test-plugin',
 				editorDirectives: ['testDirective'],
-				load: vi.fn(async () => ({ default: { start } })),
+				load: vi.fn(async () => ({ default: start })),
 			},
 		];
 		const store = createStateManager(createState([createCodeBlockWithEditorDirective('testDirective')]));
@@ -148,10 +148,10 @@ describe('editor environment plugin manager', () => {
 
 	it('ignores a stale plugin import if the directive disappears before loading finishes', async () => {
 		const start = vi.fn();
-		let resolveLoad: (value: { default: { start: typeof start } }) => void = () => {};
+		let resolveLoad: (value: { default: typeof start }) => void = () => {};
 		const load = vi.fn(
 			() =>
-				new Promise<{ default: { start: typeof start } }>(resolve => {
+				new Promise<{ default: typeof start }>(resolve => {
 					resolveLoad = resolve;
 				})
 		);
@@ -173,7 +173,7 @@ describe('editor environment plugin manager', () => {
 		store.set('graphicHelper.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
 		store.set('graphicHelper.codeBlocks', []);
 
-		resolveLoad({ default: { start } });
+		resolveLoad({ default: start });
 		await flushPromises();
 
 		expect(start).not.toHaveBeenCalled();
