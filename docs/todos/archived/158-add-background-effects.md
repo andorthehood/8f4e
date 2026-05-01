@@ -20,8 +20,8 @@ Add a single background effect inside glugglug that renders one full-screen quad
 ## Implementation Plan
 
 ### Step 1: Add background effect type and manager
-- Define `BackgroundEffect` (vertex/fragment shaders, optional uniforms) aligned with `PostProcessEffect` — no `name` or `enabled` field.
-- Implement `BackgroundEffectManager` with its own shared uniform buffer and a fallback shader that outputs transparent pixels.
+- Define `BackgroundEffect` (vertex/fragment shaders) aligned with `PostProcessEffect` — no `name` or `enabled` field.
+- Implement `BackgroundEffectManager`.
 - Provide standard uniforms `u_time` and `u_resolution`; no `u_renderTexture`.
 
 ### Step 2: Render pipeline integration
@@ -30,7 +30,7 @@ Add a single background effect inside glugglug that renders one full-screen quad
 - Alpha blending is enabled for the background pass; no per-effect blending config.
 
 ### Step 3: Public API surface
-- Add engine/renderer methods: `setBackgroundEffect`, `clearBackgroundEffect`, `updateBackgroundUniforms`, `getBackgroundBuffer`.
+- Add engine/renderer methods: `setBackgroundEffect`, `clearBackgroundEffect`.
 - Export `BackgroundEffect` type from glugglug index.
 
 ## Success Criteria
