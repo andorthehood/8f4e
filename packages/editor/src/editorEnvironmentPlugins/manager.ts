@@ -55,16 +55,11 @@ export function createEditorEnvironmentPluginManager(
 
 	function setPluginErrors(pluginId: string, errors: CodeError[]): void {
 		const state = store.getState();
-		const currentErrors = state.codeErrors.editorEnvironmentPluginErrors ?? {};
-		const nextErrors = { ...currentErrors };
+		const nextErrors = state.codeErrors.editorDirectiveErrors
+			.filter(error => error.ownerId !== pluginId)
+			.concat(errors.map(error => ({ ...error, ownerId: pluginId })));
 
-		if (errors.length === 0) {
-			delete nextErrors[pluginId];
-		} else {
-			nextErrors[pluginId] = errors;
-		}
-
-		store.set('codeErrors.editorEnvironmentPluginErrors', nextErrors);
+		store.set('codeErrors.editorDirectiveErrors', nextErrors);
 	}
 
 	function disposePlugin(entry: EditorEnvironmentPluginRegistryEntry): void {
