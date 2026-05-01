@@ -48,7 +48,7 @@ Handles loading projects into the editor from various sources: persistent storag
 
 - `state.initialProjectState` - Initial project loaded on startup
 - `state.graphicHelper` - Updated with loaded code blocks and viewport
-- `state.binaryAssets` - Updated with loaded binary assets
+- `state.binaryAssets` - Runtime asset metadata populated by the editor environment binary-assets plugin when asset directives are active
 
 ## Integration Points
 
@@ -79,5 +79,5 @@ Handles loading projects into the editor from various sources: persistent storag
 
 - Import callbacks are optional (graceful degradation to defaults)
 - Project validation is minimal (assumes well-formed JSON)
-- Binary asset files must be available at their referenced paths
+- Binary asset fetching and memory loading are handled by the lazy editor environment binary-assets plugin, triggered by `@defAsset` / `@loadAsset` directives
 - Import does not validate WASM bytecode compatibility

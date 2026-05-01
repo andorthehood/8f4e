@@ -64,13 +64,6 @@ export const mainMenu: MenuGenerator = state => [
 		disabled: !state.callbacks.getListOfProjects,
 	},
 	{ divider: true },
-	{
-		title: 'Clear Binary Asset Cache',
-		action: 'clearBinaryAssetCache',
-		close: true,
-		disabled: !state.callbacks.clearBinaryAssetCache,
-	},
-	{ divider: true },
 	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
 	{
 		title: 'Export WebAssembly',

@@ -24,7 +24,6 @@ This document catalogs Web APIs currently used in the 8f4e project that may have
 **Browser Support**: Chrome/Edge 86+, Safari/Firefox: Not supported
 
 **Usage Locations**:
-- `packages/editor/src/state/effects/binaryAssets.ts`: `showOpenFilePicker()`
 - `packages/editor/src/state/effects/menu/menus.ts`: `FileSystemFileHandle` operations
 
 **Context**: Used for advanced file picking and OPFS (Origin Private File System) operations
