@@ -34,15 +34,6 @@ export default function generateContextMenuMock(): ContextMenu {
 				divider: true,
 			},
 			{
-				title: '...... Clear Binary Asset Cache',
-				action: 'clearBinaryAssetCache',
-				close: true,
-				disabled: false,
-			},
-			{
-				divider: true,
-			},
-			{
 				title: '................... New Project',
 				action: 'new',
 				close: true,
