@@ -3,8 +3,8 @@ title: 'TODO: Add lazy editor environment plugins'
 priority: Medium
 effort: 1-2d
 created: 2026-05-01
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-01
 ---
 
 # TODO: Add lazy editor environment plugins
@@ -42,9 +42,9 @@ interface EditorEnvironmentPluginRegistryEntry {
 	load: () => Promise<{ default: EditorEnvironmentPlugin }>;
 }
 
-interface EditorEnvironmentPlugin {
-	start: (context: EditorEnvironmentPluginContext) => void | (() => void) | Promise<void | (() => void)>;
-}
+type EditorEnvironmentPlugin = (
+	context: EditorEnvironmentPluginContext
+) => void | (() => void) | Promise<void | (() => void)>;
 ```
 
 Example registry entry:
@@ -53,7 +53,7 @@ Example registry entry:
 {
 	id: 'keyboard-memory',
 	editorDirectives: ['keyPressedMemory', 'keyCodeMemory'],
-	load: () => import('./editor-environment-plugins/keyboard-memory/plugin'),
+	load: () => import('./keyboardMemory/plugin'),
 }
 ```
 
@@ -65,19 +65,20 @@ Example registry entry:
 - Guard async load races. If a directive disappears before the dynamic import resolves, the loaded plugin must not remain active.
 - Use the name `editor environment plugin` to avoid overloading the existing runtime terminology.
 - Migrate keyboard memory as the first plugin without changing keyboard behavior.
+- Migrate binary asset loading as a follow-up plugin triggered by `@defAsset` / `@loadAsset`.
 
 ## Implementation Plan
 
 ### Step 1: Add plugin types and registry
 
 - Add editor-local types for `EditorEnvironmentPlugin`, `EditorEnvironmentPluginContext`, and `EditorEnvironmentPluginRegistryEntry`.
-- Add a registry file with a lazy `keyboard-memory` entry.
+- Add a registry file with lazy `keyboard-memory` and `binary-assets` entries.
 - Ensure the registry file imports only types and dynamic import functions, not plugin implementations.
 
 ### Step 2: Add the plugin lifecycle manager
 
 - Create a manager in `packages/editor/src` that receives the store, event dispatcher, browser globals, and registry.
-- Derive active directive names from raw `parsedDirectives` on `state.graphicHelper.codeBlocks` and selected/programmatic selected block edits.
+- Derive active directive names from raw `parsedDirectives` on `state.graphicHelper.codeBlocks` and the currently edited selected block.
 - Start plugins whose configured directive names are present.
 - Dispose plugins whose configured directive names are absent.
 - Track an activation generation/token per plugin so stale async imports cannot leave a plugin active after directives disappear.
@@ -85,7 +86,7 @@ Example registry entry:
 
 ### Step 3: Add plugin-owned error plumbing
 
-- Add an editor-environment plugin error bucket to state, for example:
+- Use the shared editor directive error bucket for plugin-owned directive diagnostics:
 
 ```ts
 codeErrors: {
@@ -94,7 +95,7 @@ codeErrors: {
 ```
 
 - Include those errors in the code-block error rendering path.
-- Provide plugin context helpers so each plugin can set or clear only errors with its own `ownerId`.
+- Provide plugin context helpers so each plugin can set or clear only errors with its own generic `ownerId`.
 - Clear a plugin's errors when that plugin is disposed.
 
 ### Step 4: Move keyboard memory behind the plugin boundary
@@ -108,13 +109,21 @@ codeErrors: {
   - `blur` clears the pressed flag
   - unresolved memory ids are ignored silently
 
-### Step 5: Test the lifecycle and bundle boundary
+### Step 5: Move binary assets behind the plugin boundary
+
+- Remove the always-on binary asset effect from editor-state initialization.
+- Move browser fetching, Cache API access, directive parsing, and memory writes into `packages/editor/src/editorEnvironmentPlugins/binaryAssets`.
+- Keep `state.binaryAssets` as shared metadata for generated environment constants and UI/state consumers.
+- Remove the manual “Clear Binary Asset Cache” menu entry and callback surface.
+
+### Step 6: Test the lifecycle and bundle boundary
 
 - Unit test that the manager loads keyboard memory only when `keyPressedMemory` or `keyCodeMemory` appears.
 - Unit test that the plugin is disposed when matching directives are removed.
 - Unit test the async race where a directive appears, import starts, directive disappears, and the import resolves later.
 - Preserve the current keyboard memory behavior tests after moving the code.
-- Check the built output to confirm keyboard-memory implementation code is split out of the initial editor chunk.
+- Preserve binary asset directive parsing and memory loading behavior tests after moving the code.
+- Check the built output to confirm keyboard-memory and binary-assets implementation code are split out of the initial editor chunk.
 
 ## Validation Checkpoints
 
@@ -122,32 +131,34 @@ codeErrors: {
 - `npx nx run editor:test`
 - `npx nx run editor:typecheck`
 - `npx nx run app:build`
-- Inspect the Vite build output to confirm the keyboard-memory plugin is emitted as a lazy chunk rather than bundled into the initial editor code.
+- Inspect the Vite build output to confirm the keyboard-memory and binary-assets plugins are emitted as lazy chunks rather than bundled into the initial editor code.
 
 ## Success Criteria
 
-- [ ] Projects without `@keyPressedMemory` or `@keyCodeMemory` do not load or mount keyboard-memory browser event code.
-- [ ] Projects with either keyboard memory directive lazy-load the keyboard-memory plugin and preserve current behavior.
-- [ ] Removing the directives disposes keyboard browser subscriptions.
-- [ ] Plugin-owned errors can be surfaced and cleared without mixing them into unrelated directive/compiler/runtime error buckets.
-- [ ] The plugin registry can be extended for MIDI without changing the lifecycle manager.
-- [ ] The registry file remains lightweight and does not statically import plugin implementations.
+- [x] Projects without `@keyPressedMemory` or `@keyCodeMemory` do not load or mount keyboard-memory browser event code.
+- [x] Projects with either keyboard memory directive lazy-load the keyboard-memory plugin and preserve current behavior.
+- [x] Removing the directives disposes keyboard browser subscriptions.
+- [x] Projects without `@defAsset` or `@loadAsset` do not load or mount binary asset browser loading code.
+- [x] Projects with binary asset directives lazy-load the binary-assets plugin and preserve current behavior.
+- [x] Plugin-owned errors can be surfaced and cleared without mixing them into unrelated directive/compiler/runtime error buckets.
+- [x] The plugin registry can be extended for MIDI without changing the lifecycle manager.
+- [x] The registry file remains lightweight and does not statically import plugin implementations.
 
 ## Affected Components
 
 - `packages/editor/src/index.ts` - remove unconditional keyboard-memory setup and wire plugin manager lifecycle.
-- `packages/editor/src/events/keyboardMemoryEvents.ts` - move or wrap as the first lazy plugin implementation.
-- `packages/editor/src/events/keyboardMemoryEvents.test.ts` - preserve behavior coverage after the move.
-- `packages/editor/packages/editor-state-types/src/index.ts` - add plugin error state shape if error bucket is added to global state.
-- `packages/editor/packages/editor-state/src/pureHelpers/state/createDefaultState.ts` - add default plugin error state.
-- `packages/editor/packages/editor-state/src/features/code-blocks/features/graphicHelper/effect.ts` - include plugin errors in rendered code-block diagnostics.
+- `packages/editor/src/editorEnvironmentPlugins/keyboardMemory` - keyboard-memory plugin implementation and tests.
+- `packages/editor/src/editorEnvironmentPlugins/binaryAssets` - binary-assets plugin implementation and tests.
+- `packages/editor/packages/editor-state-types/src/index.ts` - expose the shared editor directive error bucket and remove binary asset callback hooks.
+- `packages/editor/packages/editor-state/src/pureHelpers/state/createDefaultState.ts` - initialize the shared editor directive error bucket.
+- `packages/editor/packages/editor-state/src/features/code-blocks/features/graphicHelper/effect.ts` - include editor directive errors in rendered code-block diagnostics.
 
 ## Risks & Considerations
 
 - **Bundle boundary leakage**: importing plugin implementation code from the registry or index file will defeat lazy loading.
 - **Directive scan cost**: scanning all raw parsed directives is acceptable for the first pass, but TODO 315 may later make global directive recomputation more incremental.
 - **Async races**: dynamic imports are async and cannot be cancelled, so the manager must guard stale imports explicitly.
-- **Error ownership**: plugin-owned validation should not duplicate existing global directive resolution unless the plugin has custom formatting rules.
+- **Error ownership**: plugin-owned validation should use `ownerId` so plugin diagnostics can be replaced or cleared without disturbing other editor directive errors.
 - **Module caching**: dynamic imports remove the code from the initial bundle, but loaded modules are not unloaded by the browser after first import. Disposal still needs to clean up listeners and browser resources.
 
 ## Related Items

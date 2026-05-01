@@ -21,7 +21,6 @@ import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
 import projectExport from './features/project-export/effect';
 import viewport from './features/viewport/effect';
-import binaryAsset from './features/binary-assets/effect';
 import runtime from './features/runtime/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import shaderEffectsDeriver from './features/shader-effects/effect';
@@ -104,7 +103,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	viewportDirectiveEffect(store, events);
 	editorConfigModule(store, events);
 	codeEditing(store, events);
-	binaryAsset(store, events);
 	historyTracking(store, events);
 	dialog(store, events);
 
