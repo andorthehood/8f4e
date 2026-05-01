@@ -47,6 +47,7 @@ describe('editor environment plugin manager', () => {
 	} as EventDispatcher;
 	const windowMock = {} as Window;
 	const navigatorMock = {} as Navigator;
+	const memoryViewsMock = {} as EditorEnvironmentPluginContext['memoryViews'];
 
 	it('lazy-loads a plugin when one of its editor directives appears', async () => {
 		const dispose = vi.fn();
@@ -64,6 +65,7 @@ describe('editor environment plugin manager', () => {
 		const cleanup = createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			memoryViews: memoryViewsMock,
 			registry,
 		});
 
@@ -80,6 +82,7 @@ describe('editor environment plugin manager', () => {
 				events,
 				window: windowMock,
 				navigator: navigatorMock,
+				memoryViews: memoryViewsMock,
 			})
 		);
 
@@ -101,6 +104,7 @@ describe('editor environment plugin manager', () => {
 		createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			memoryViews: memoryViewsMock,
 			registry,
 		});
 		await flushPromises();
@@ -132,6 +136,7 @@ describe('editor environment plugin manager', () => {
 		createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			memoryViews: memoryViewsMock,
 			registry,
 		});
 		await flushPromises();
@@ -164,6 +169,7 @@ describe('editor environment plugin manager', () => {
 		createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			memoryViews: memoryViewsMock,
 			registry,
 		});
 

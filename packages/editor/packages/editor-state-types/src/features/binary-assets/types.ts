@@ -1,10 +1,11 @@
 /**
- * Types for binary-assets feature - binary file loading and management.
+ * Types for binary asset metadata shared through editor state.
  */
 
 /**
- * Binary asset metadata stored in editor-state.
- * Tracks fetch and load status independently.
+ * Binary asset metadata populated by the editor environment binary-assets plugin.
+ * Editor-state stores this data for UI, export, and generated environment constants,
+ * but does not fetch assets or write them into runtime memory.
  */
 export interface BinaryAsset {
 	/** Optional config-provided identifier for generated constants */

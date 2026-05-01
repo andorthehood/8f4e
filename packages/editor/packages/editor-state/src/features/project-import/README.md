@@ -48,6 +48,7 @@ Handles loading projects into the editor from persistent storage, `.8f4e` file u
 
 - `state.initialProjectState` - Initial project loaded on startup
 - `state.graphicHelper` - Populated from loaded code blocks
+- `state.binaryAssets` - Runtime asset metadata populated by the editor environment binary-assets plugin when asset directives are active
 
 ## Integration Points
 
@@ -71,4 +72,4 @@ Handles loading projects into the editor from persistent storage, `.8f4e` file u
 
 - Import callbacks are optional (graceful degradation to defaults)
 - Project validation is minimal beyond `.8f4e` parser checks
-- Binary asset files must be available at their referenced paths
+- Binary asset fetching and memory loading are handled by the lazy editor environment binary-assets plugin, triggered by `@defAsset` / `@loadAsset` directives

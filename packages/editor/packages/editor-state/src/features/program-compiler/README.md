@@ -56,7 +56,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 ## Integration Points
 
-- **Binary Assets**: Triggers asset loading when memory is recreated
+- **Binary Assets**: Exposes memory recreation state used by the editor environment binary-assets plugin to reload assets
 - **Runtime**: Runtime selection affects environment constants
 - **Runtime**: Compiled modules are consumed by runtime implementations and editor widgets
 
@@ -73,7 +73,7 @@ The compiler reports memory state:
 - **`recreated`**: WASM memory was newly created or resized
 - **`reused`**: Existing memory was reused
 
-When memory is recreated, binary assets must be reloaded.
+When memory is recreated, `state.compiler.hasMemoryBeenReinitialized` is updated. The editor environment binary-assets plugin observes that state and reloads active assets into memory when needed.
 
 ## References
 

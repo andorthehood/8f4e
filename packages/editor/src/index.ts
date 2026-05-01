@@ -2,7 +2,6 @@ import initState from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
-import { clearBinaryAssetCache, fetchBinaryAssets, loadBinaryAssetIntoMemory } from './binaryAssets';
 import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
@@ -62,9 +61,6 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const events = initEvents();
 	let store: ReturnType<typeof initState>;
 
-	// Create in-memory store for fetched binary assets
-	const binaryAssetStore = new Map<string, ArrayBuffer>();
-
 	store = initState(events, {
 		...options,
 		callbacks: {
@@ -79,9 +75,6 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 				}
 				memoryViews.float32[wordAlignedAddress] = value;
 			},
-			fetchBinaryAssets: urls => fetchBinaryAssets(urls, binaryAssetStore),
-			loadBinaryAssetIntoMemory: asset => loadBinaryAssetIntoMemory(asset, binaryAssetStore, memoryViews),
-			clearBinaryAssetCache,
 			readClipboardText: async () => {
 				return await navigator.clipboard.readText();
 			},
@@ -99,6 +92,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const cleanupEditorEnvironmentPlugins = createEditorEnvironmentPluginManager(store, events, {
 		window: browserWindow as Window,
 		navigator: browserWindow?.navigator ?? globalThis.navigator,
+		memoryViews,
 	});
 
 	// Generate sprite data and update state before initializing view

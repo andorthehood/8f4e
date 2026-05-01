@@ -6,4 +6,9 @@ export const editorEnvironmentPluginRegistry: EditorEnvironmentPluginRegistryEnt
 		editorDirectives: ['keyPressedMemory', 'keyCodeMemory'],
 		load: () => import('./keyboardMemory/plugin'),
 	},
+	{
+		id: 'binary-assets',
+		editorDirectives: ['defAsset', 'loadAsset'],
+		load: () => import('./binaryAssets/plugin'),
+	},
 ];
