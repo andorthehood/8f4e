@@ -1,4 +1,4 @@
-import keyboardMemoryEvents from '../../events/keyboardMemoryEvents';
+import keyboardMemoryEvents from './keyboardMemoryEvents';
 
 import type { EditorEnvironmentPlugin } from '../types';
 
