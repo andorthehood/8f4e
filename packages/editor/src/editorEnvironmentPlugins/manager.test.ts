@@ -13,8 +13,7 @@ function createState(codeBlocks: CodeBlockGraphicData[] = []): State {
 		},
 		codeErrors: {
 			compilationErrors: [],
-			globalEditorDirectiveErrors: [],
-			editorEnvironmentPluginErrors: {},
+			editorDirectiveErrors: [],
 			shaderErrors: [],
 			runtimeDirectiveErrors: [],
 		},
@@ -137,13 +136,11 @@ describe('editor environment plugin manager', () => {
 		});
 		await flushPromises();
 
-		expect(store.getState().codeErrors.editorEnvironmentPluginErrors).toEqual({
-			'test-plugin': [pluginError],
-		});
+		expect(store.getState().codeErrors.editorDirectiveErrors).toEqual([{ ...pluginError, ownerId: 'test-plugin' }]);
 
 		store.set('graphicHelper.codeBlocks', []);
 
-		expect(store.getState().codeErrors.editorEnvironmentPluginErrors).toEqual({});
+		expect(store.getState().codeErrors.editorDirectiveErrors).toEqual([]);
 	});
 
 	it('ignores a stale plugin import if the directive disappears before loading finishes', async () => {

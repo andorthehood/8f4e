@@ -346,8 +346,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	function updateErrorMessages() {
 		const codeErrors = [
 			...state.codeErrors.compilationErrors,
-			...state.codeErrors.globalEditorDirectiveErrors,
-			...Object.values(state.codeErrors.editorEnvironmentPluginErrors).flat(),
+			...state.codeErrors.editorDirectiveErrors,
 			...state.codeErrors.shaderErrors,
 			...state.codeErrors.runtimeDirectiveErrors,
 		];

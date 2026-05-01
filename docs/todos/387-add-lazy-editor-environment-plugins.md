@@ -89,12 +89,12 @@ Example registry entry:
 
 ```ts
 codeErrors: {
-	editorEnvironmentPluginErrors: Record<string, CodeError[]>;
+	editorDirectiveErrors: CodeError[];
 }
 ```
 
 - Include those errors in the code-block error rendering path.
-- Provide plugin context helpers so each plugin can set or clear only its own errors.
+- Provide plugin context helpers so each plugin can set or clear only errors with its own `ownerId`.
 - Clear a plugin's errors when that plugin is disposed.
 
 ### Step 4: Move keyboard memory behind the plugin boundary
