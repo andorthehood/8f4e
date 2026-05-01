@@ -1,7 +1,7 @@
-import type { CompiledModuleLookup } from '@8f4e/compiler-types';
+import type { CompiledModuleMetadataLookup } from '@8f4e/compiler-types';
 import type { MemoryLookup, ResolvedMemoryReference } from './types';
 
-export function createMemoryLookup(compiledModules: CompiledModuleLookup): MemoryLookup {
+export function createMemoryLookup(compiledModules: CompiledModuleMetadataLookup): MemoryLookup {
 	const qualified = new Map<string, ResolvedMemoryReference>();
 	const byBareId = new Map<string, ResolvedMemoryReference | null>();
 

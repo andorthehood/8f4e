@@ -34,7 +34,8 @@ import type {
 	AST,
 	CompileOptions,
 	CompiledModule,
-	CompiledModuleLookup,
+	CompiledModuleMetadata,
+	CompiledModuleMetadataLookup,
 	DataStructure,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
@@ -135,14 +136,33 @@ function createMemoryDefaultStore(memory: DataStructure, byteAddress: number, va
 	return memory.isInteger ? i32store(byteAddress, value) : f32store(byteAddress, value);
 }
 
-function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
-	const strippedModules: CompiledModuleLookup = {};
-	for (const [id, module] of Object.entries(compiledModules)) {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { ast, ...moduleWithoutAST } = module;
-		strippedModules[id] = moduleWithoutAST as CompiledModule;
+function createCompiledModuleMetadata(
+	module: CompiledModule,
+	{ includeAST }: { includeAST?: boolean } = {}
+): CompiledModuleMetadata {
+	const metadata: CompiledModuleMetadata = {
+		id: module.id,
+		index: module.index,
+		byteAddress: module.byteAddress,
+		wordAlignedAddress: module.wordAlignedAddress,
+		memoryMap: module.memoryMap,
+		wordAlignedSize: module.wordAlignedSize,
+		skipExecutionInCycle: module.skipExecutionInCycle,
+		initOnlyExecution: module.initOnlyExecution,
+	};
+
+	return includeAST ? { ...metadata, ast: module.ast } : metadata;
+}
+
+function createCompiledModuleMetadataLookup(
+	compiledModules: CompiledModule[],
+	{ includeAST }: { includeAST?: boolean } = {}
+): CompiledModuleMetadataLookup {
+	const metadataLookup: CompiledModuleMetadataLookup = {};
+	for (const module of compiledModules) {
+		metadataLookup[module.id] = createCompiledModuleMetadata(module, { includeAST });
 	}
-	return strippedModules;
+	return metadataLookup;
 }
 
 export default function compile(
@@ -152,7 +172,7 @@ export default function compile(
 	macros?: Module[]
 ): {
 	codeBuffer: Uint8Array;
-	compiledModules: CompiledModuleLookup;
+	compiledModules: CompiledModuleMetadataLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	requiredMemoryBytes: number;
 } {
@@ -273,11 +293,7 @@ export default function compile(
 	// Create buffer function (includes locals and body)
 	const bufferFunction = createBufferFunctionBody(bufferSize, bufferStrategy, 1);
 
-	// Strip AST from final result if not requested
-	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
-	const finalCompiledModules = options.includeAST
-		? compiledModulesMap
-		: stripASTFromCompiledModules(compiledModulesMap);
+	const finalCompiledModules = createCompiledModuleMetadataLookup(compiledModules, { includeAST: options.includeAST });
 
 	// Round up to whole wasm pages (64 KiB each); memory cannot be imported with fractional pages.
 	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));

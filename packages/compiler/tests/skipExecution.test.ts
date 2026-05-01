@@ -40,10 +40,6 @@ moduleEnd
 		expect(result.compiledModules.normalModule).toBeDefined();
 		expect(result.compiledModules.skippedModule).toBeDefined();
 
-		// Verify both modules have cycle functions
-		expect(result.compiledModules.normalModule.cycleFunction).toBeDefined();
-		expect(result.compiledModules.skippedModule.cycleFunction).toBeDefined();
-
 		// Verify both modules have memory maps
 		expect(result.compiledModules.normalModule.memoryMap.counter).toBeDefined();
 		expect(result.compiledModules.skippedModule.memoryMap.counter).toBeDefined();

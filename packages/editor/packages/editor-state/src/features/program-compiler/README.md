@@ -45,7 +45,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 ### State Touched
 
 - `state.compiler.isCompiling` - Boolean flag during compilation
-- `state.compiler.compiledModules` - Compiled module bytecode
+- `state.compiler.compiledModules` - Compiled module metadata and memory layout
 - `state.compiler.compiledFunctions` - Compiled function bytecode
 - `state.compiler.byteCodeSize` - Total bytecode size in bytes
 - `state.compiler.requiredMemoryBytes` - Bytes required by the compiler's static memory plan

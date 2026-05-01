@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { CompiledModuleLookup, Module } from '@8f4e/compiler-types';
+import type { CompiledModuleMetadataLookup, Module } from '@8f4e/compiler-types';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
 describe('compileAndUpdateMemory init-only reruns', () => {
@@ -27,7 +27,7 @@ moduleEnd
 		},
 	];
 
-	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
+	const getAddresses = (compiledModules: CompiledModuleMetadataLookup) => ({
 		base: compiledModules.setup.memoryMap.base.byteAddress / 4,
 		derived: compiledModules.setup.memoryMap.derived.byteAddress / 4,
 	});

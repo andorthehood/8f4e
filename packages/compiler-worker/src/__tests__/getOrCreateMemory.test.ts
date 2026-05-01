@@ -3,11 +3,12 @@ import { describe, it, expect } from 'vitest';
 import getOrCreateMemory from '../getOrCreateMemory';
 
 describe('getOrCreateMemory', () => {
-	// Helper to create a minimal CompiledModuleLookup for testing
 	const createMockCompiledModules = () => ({
 		module1: {
-			cycleFunction: 'function loop() {}',
-			initFunctionBody: 'init body',
+			id: 'module1',
+			index: 0,
+			byteAddress: 0,
+			wordAlignedAddress: 0,
 			wordAlignedSize: 100,
 			memoryMap: {},
 		},
@@ -53,8 +54,10 @@ describe('getOrCreateMemory', () => {
 			const compiledModules2 = {
 				...createMockCompiledModules(),
 				module2: {
-					cycleFunction: 'function loop2() {}',
-					initFunctionBody: 'init body 2',
+					id: 'module2',
+					index: 1,
+					byteAddress: 400,
+					wordAlignedAddress: 100,
 					wordAlignedSize: 200,
 					memoryMap: {},
 				},
@@ -90,8 +93,10 @@ describe('getOrCreateMemory', () => {
 			const compiledModules2 = {
 				...createMockCompiledModules(),
 				module2: {
-					cycleFunction: 'function loop2() {}',
-					initFunctionBody: 'init body 2',
+					id: 'module2',
+					index: 1,
+					byteAddress: 400,
+					wordAlignedAddress: 100,
 					wordAlignedSize: 200,
 					memoryMap: {},
 				},

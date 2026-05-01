@@ -2,7 +2,7 @@ import compile from '@8f4e/compiler';
 
 import getBlockType from '../shared/getBlockType';
 
-import type { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler-types';
+import type { CompileOptions, CompiledModuleMetadataLookup, Module } from '@8f4e/compiler-types';
 import type { ProjectCodeBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
@@ -12,7 +12,7 @@ interface CompileProjectModulesOptions {
 }
 
 interface CompileProjectModulesResult {
-	compiledModules?: CompiledModuleLookup;
+	compiledModules?: CompiledModuleMetadataLookup;
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
 }

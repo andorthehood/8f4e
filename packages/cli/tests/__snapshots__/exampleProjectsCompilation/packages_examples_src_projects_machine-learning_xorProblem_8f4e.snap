@@ -5,26 +5,15 @@
   "compiledModules": {
     "env": {
       "id": "env",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {},
-      "wordAlignedSize": 0,
-      "index": 0
+      "wordAlignedSize": 0
     },
     "switches": {
       "id": "switches",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 1,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {
@@ -55,57 +44,11 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 2,
-      "index": 1
+      "wordAlignedSize": 2
     },
     "perceptron": {
       "id": "perceptron",
-      "cycleFunction": [
-        42,
-        0,
-        65,
-        20,
-        65,
-        12,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        67,
-        86,
-        230,
-        32,
-        65,
-        148,
-        65,
-        16,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        67,
-        198,
-        37,
-        42,
-        194,
-        148,
-        146,
-        67,
-        128,
-        43,
-        123,
-        192,
-        146,
-        56,
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 2,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "memoryMap": {
@@ -151,32 +94,11 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 3,
-      "index": 2
+      "wordAlignedSize": 3
     },
     "activationFn": {
       "id": "activationFn",
-      "cycleFunction": [
-        17,
-        0,
-        65,
-        28,
-        65,
-        24,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        16,
-        4,
-        56,
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 3,
       "byteAddress": 24,
       "wordAlignedAddress": 6,
       "memoryMap": {
@@ -208,57 +130,11 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 2,
-      "index": 3
+      "wordAlignedSize": 2
     },
     "perceptron2": {
       "id": "perceptron2",
-      "cycleFunction": [
-        42,
-        0,
-        65,
-        40,
-        65,
-        32,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        67,
-        170,
-        160,
-        140,
-        194,
-        148,
-        65,
-        36,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        67,
-        104,
-        28,
-        198,
-        65,
-        148,
-        146,
-        67,
-        219,
-        61,
-        12,
-        193,
-        146,
-        56,
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 4,
       "byteAddress": 32,
       "wordAlignedAddress": 8,
       "memoryMap": {
@@ -304,32 +180,11 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 3,
-      "index": 4
+      "wordAlignedSize": 3
     },
     "activationFn2": {
       "id": "activationFn2",
-      "cycleFunction": [
-        17,
-        0,
-        65,
-        48,
-        65,
-        44,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        16,
-        4,
-        56,
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 5,
       "byteAddress": 44,
       "wordAlignedAddress": 11,
       "memoryMap": {
@@ -361,57 +216,11 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 2,
-      "index": 5
+      "wordAlignedSize": 2
     },
     "perceptron3": {
       "id": "perceptron3",
-      "cycleFunction": [
-        42,
-        0,
-        65,
-        60,
-        65,
-        52,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        67,
-        174,
-        71,
-        222,
-        64,
-        148,
-        65,
-        56,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        67,
-        176,
-        172,
-        212,
-        64,
-        148,
-        146,
-        67,
-        169,
-        217,
-        193,
-        64,
-        146,
-        56,
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 6,
       "byteAddress": 52,
       "wordAlignedAddress": 13,
       "memoryMap": {
@@ -457,48 +266,11 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 3,
-      "index": 6
+      "wordAlignedSize": 3
     },
     "activationFn3": {
       "id": "activationFn3",
-      "cycleFunction": [
-        33,
-        0,
-        65,
-        196,
-        0,
-        65,
-        192,
-        0,
-        40,
-        2,
-        0,
-        42,
-        2,
-        0,
-        16,
-        4,
-        67,
-        0,
-        0,
-        0,
-        63,
-        94,
-        4,
-        127,
-        65,
-        1,
-        5,
-        65,
-        0,
-        11,
-        54,
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 7,
       "byteAddress": 64,
       "wordAlignedAddress": 16,
       "memoryMap": {
@@ -530,45 +302,27 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 2,
-      "index": 7
+      "wordAlignedSize": 2
     },
     "notes": {
       "id": "notes",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 8,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "memoryMap": {},
-      "wordAlignedSize": 0,
-      "index": 8
+      "wordAlignedSize": 0
     },
     "projectConfig": {
       "id": "projectConfig",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 9,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "memoryMap": {},
-      "wordAlignedSize": 0,
-      "index": 9
+      "wordAlignedSize": 0
     },
     "result": {
       "id": "result",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "initFunctionBody": [],
+      "index": 10,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "memoryMap": {
@@ -587,8 +341,7 @@
           "isUnsigned": false
         }
       },
-      "wordAlignedSize": 1,
-      "index": 10
+      "wordAlignedSize": 1
     }
   },
   "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDHBsAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHJAQEaW5pdAAABWN5Y2xlAAEIaW5pdE9ubHkAAgZidWZmZXIAAwrHAxsYABAQEBEQEhATEBQQFRAWEBcQGBAZEBoLGAAQBRAGEAcQCBAJEAoQCxAMEA0QDhAPCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLLAIBfQF9IAAhASABIAGLQwAAgD+SIQIgAkMAAAAAWwRAQwAAgD8hAgsgApULAgALAgALKgBBFEEMKAIAKgIAQ1bmIEGUQRAoAgAqAgBDxiUqwpSSQ4Are8CSOAIACxEAQRxBGCgCACoCABAEOAIACyoAQShBICgCACoCAEOqoIzClEEkKAIAKgIAQ2gcxkGUkkPbPQzBkjgCAAsRAEEwQSwoAgAqAgAQBDgCAAsqAEE8QTQoAgAqAgBDrkfeQJRBOCgCACoCAEOwrNRAlJJDqdnBQJI4AgALIQBBxABBwAAoAgAqAgAQBEMAAAA/XgR/QQEFQQALNgIACwIACwIACwIACwIACwwAQQRDAACAPzgCAAsQAEEMQQQ2AgBBEEEINgIACwkAQRhBFDYCAAsQAEEgQQQ2AgBBJEEINgIACwkAQSxBKDYCAAsQAEE0QRw2AgBBOEEwNgIACwoAQcAAQTw2AgALAgALAgALCwBByABBxAA2AgAL",

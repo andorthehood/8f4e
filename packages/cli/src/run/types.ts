@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, DataStructure } from '@8f4e/compiler-types';
+import type { CompiledModuleMetadataLookup, DataStructure } from '@8f4e/compiler-types';
 
 export interface RuntimeRunner {
 	initialize(): void;
@@ -22,6 +22,6 @@ export interface MemoryLookup {
 
 export interface CreateRuntimeRunnerOptions {
 	compiledWasmBase64: string;
-	compiledModules: CompiledModuleLookup;
+	compiledModules: CompiledModuleMetadataLookup;
 	requiredMemoryBytes: number;
 }
