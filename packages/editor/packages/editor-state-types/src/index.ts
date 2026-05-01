@@ -38,7 +38,7 @@ import type { ResolvedGlobalEditorDirectives } from './features/global-editor-di
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
 import type { Compiler, CompilationResult } from './features/program-compiler/types';
-import type { Project, ModuleMetadata, ProjectMetadata } from './features/project-import/types';
+import type { Project } from './features/project-import/types';
 import type { PresentationState } from './features/presentation/types';
 import type {
 	RuntimeFactory,
@@ -139,7 +139,7 @@ export type { BinaryAsset };
 export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
 
 // Re-export project-import types
-export type { Project, ModuleMetadata, ProjectMetadata };
+export type { Project };
 
 // Feature Flags types (top-level public API)
 export interface FeatureFlags {
@@ -185,10 +185,24 @@ export type EditorMode = 'view' | 'edit' | 'presentation';
 // Callbacks interface contains all callback functions (top-level public API)
 export interface Callbacks {
 	// Module and project loading callbacks
-	getListOfModules?: () => Promise<ModuleMetadata[]>;
+	getListOfModules?: () => Promise<
+		Array<{
+			slug: string;
+			title: string;
+			description?: string;
+			category: string;
+			dependencies?: string[];
+		}>
+	>;
 	getModule?: (slug: string) => Promise<string>;
 	getModuleDependencies?: (slug: string) => Promise<string[]>;
-	getListOfProjects?: () => Promise<ProjectMetadata[]>;
+	getListOfProjects?: () => Promise<
+		Array<{
+			url: string;
+			title: string;
+			category: string;
+		}>
+	>;
 	getProject?: (url: string) => Promise<string>;
 
 	// Compilation callback

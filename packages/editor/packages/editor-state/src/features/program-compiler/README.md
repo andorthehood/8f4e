@@ -58,7 +58,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 - **Binary Assets**: Exposes memory recreation state used by the editor environment binary-assets plugin to reload assets
 - **Runtime**: Runtime selection affects environment constants
-- **Project Export**: Compiled modules are included in runtime-ready exports
+- **Runtime**: Compiled modules are consumed by runtime implementations and editor widgets
 
 ## Error Handling
 

@@ -11,7 +11,6 @@ const execFileAsync = promisify(execFile);
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDir, '..');
 const fixturePath = path.join(testDir, 'fixtures', 'minimal.8f4e');
-const jsonFixturePath = path.join(testDir, 'fixtures', 'audioBuffer.project.json');
 const runtimeFixturePath = path.join(testDir, 'fixtures', 'runtimeInspect.8f4e');
 const runtimeBytesPath = path.join(testDir, 'fixtures', 'runtimeBytes.bin');
 const tmpDir = path.join(testDir, '.tmp');
@@ -56,10 +55,12 @@ describe('cli', () => {
 		await expect(execCli(['compile', fixturePath])).rejects.toThrow('Command failed');
 	});
 
-	it('rejects JSON input files for compile', async () => {
+	it('rejects non-.8f4e input files for compile', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
+		const invalidProjectPath = path.join(tmpDir, 'invalid-project.txt');
+		await fs.writeFile(invalidProjectPath, 'module main\nmoduleEnd\n');
 
-		await expect(execCli(['compile', jsonFixturePath, '--wasm-output', wasmPath])).rejects.toThrow('Command failed');
+		await expect(execCli(['compile', invalidProjectPath, '--wasm-output', wasmPath])).rejects.toThrow('Command failed');
 	});
 
 	it('runs cycles, applies sets, and dumps requested ids as JSON', async () => {

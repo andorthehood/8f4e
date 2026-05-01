@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Handles loading projects into the editor from various sources: persistent storage, file uploads, direct project URLs, and default templates. Manages the initial project state and coordinates with import callbacks.
+Handles loading projects into the editor from persistent storage, `.8f4e` file uploads, direct project URLs, and default templates. Manages the initial project state and coordinates with import callbacks.
 
 ## Key Behaviors
 
@@ -20,11 +20,11 @@ Handles loading projects into the editor from various sources: persistent storag
 
 ### File Import
 - User-triggered file picker for `.8f4e` project files
-- Parses and validates project JSON
+- Parses `.8f4e` text into the project structure
 
-### Slug Import
+### URL Import
 - Loads projects by shareable URL identifier
-- Uses `importProjectBySlug` callback for remote fetching
+- Uses the `getProject` callback for remote fetching
 
 ### Default Template
 - Fallback when no saved project or specified import
@@ -35,19 +35,19 @@ Handles loading projects into the editor from various sources: persistent storag
 ### Events Listened To
 
 - `loadProject` - Loads a project object into editor state
-- File import events (implementation-specific)
-- Slug import events (implementation-specific)
+- `importProject` - Imports a `.8f4e` project from disk
+- `loadProjectByUrl` - Loads and parses a `.8f4e` project from a URL
 
 ### Callbacks Used
 
-- `state.callbacks.loadProjectFromStorage()` - Retrieves saved project
-- `state.callbacks.importProjectFile()` - Opens file picker and parses project
-- `state.callbacks.importProjectBySlug(slug)` - Fetches project by identifier
+- `state.callbacks.loadSession()` - Retrieves the locally saved project object
+- `state.callbacks.importProject()` - Opens file picker and parses `.8f4e` text
+- `state.callbacks.getProject(url)` - Fetches `.8f4e` text by URL
 
 ### State Touched
 
 - `state.initialProjectState` - Initial project loaded on startup
-- `state.graphicHelper` - Updated with loaded code blocks and viewport
+- `state.graphicHelper` - Populated from loaded code blocks
 - `state.binaryAssets` - Runtime asset metadata populated by the editor environment binary-assets plugin when asset directives are active
 
 ## Integration Points
@@ -60,15 +60,8 @@ Handles loading projects into the editor from various sources: persistent storag
 
 1. Attempt to load from storage (if available)
 2. If storage load fails, use default project
-3. Convert grid coordinates to pixel coordinates for viewport
-4. Initialize code blocks with proper positioning
-5. Trigger initial compilation (if auto-compile enabled)
-
-## Coordinate Conversion
-
-- **Imported Projects**: Grid coordinates from serialized format
-- **Editor State**: Converted to pixel coordinates
-- Conversion: `pixelCoord = gridCoord * gridSize`
+3. Initialize code blocks from the project structure
+4. Trigger initial compilation if enabled
 
 ## References
 
@@ -78,6 +71,5 @@ Handles loading projects into the editor from various sources: persistent storag
 ## Notes & Limitations
 
 - Import callbacks are optional (graceful degradation to defaults)
-- Project validation is minimal (assumes well-formed JSON)
+- Project validation is minimal beyond `.8f4e` parser checks
 - Binary asset fetching and memory loading are handled by the lazy editor environment binary-assets plugin, triggered by `@defAsset` / `@loadAsset` directives
-- Import does not validate WASM bytecode compatibility
