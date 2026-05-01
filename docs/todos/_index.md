@@ -73,6 +73,7 @@ Active todo files are listed below.
 | 384 | Add compiler algorithmic regression metrics | 🟡 | 1-2d | 2026-04-28 | The compiler has snapshot coverage for structural outputs, but there is no release-level signal for algorithmic regressions where memory, allocation, or CPU sample cost grows faster than input size. |
 | 385 | Guard i32.div_s signed overflow | 🟡 | 2-4h | 2026-04-30 | Integer `div` prevents divide-by-zero, but raw WebAssembly `i32.div_s` can still trap on `-2147483648 / -1`; define and implement the 8f4e behavior for that edge case. |
 | 386 | Guard i32.rem_s divisor zero | 🟡 | 2-4h | 2026-04-30 | WebAssembly has no non-trapping integer remainder instruction; make divisor-zero behavior explicit and covered so `remainder` cannot unexpectedly produce a runtime trap. |
+| 387 | Add lazy editor environment plugins | 🟡 | 1-2d | 2026-05-01 | Add a directive-triggered lazy plugin system so keyboard memory, and later MIDI, load browser integration code only when a project asks for it. |
 
 ## Completed TODOs
 
