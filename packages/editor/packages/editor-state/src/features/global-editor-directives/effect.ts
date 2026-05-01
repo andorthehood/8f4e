@@ -4,7 +4,16 @@ import { resolveEditorConfigEntries, validateEditorConfigEntries } from '../edit
 import deepEqual from '../../shared/utils/deepEqual';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '@8f4e/editor-state-types';
+import type { CodeError, State } from '@8f4e/editor-state-types';
+
+const GLOBAL_EDITOR_DIRECTIVES_ERROR_OWNER_ID = 'global-editor-directives';
+
+function withOwnerId(errors: CodeError[]): CodeError[] {
+	return errors.map(error => ({
+		...error,
+		ownerId: GLOBAL_EDITOR_DIRECTIVES_ERROR_OWNER_ID,
+	}));
+}
 
 /**
  * Global-editor-directives effect.
@@ -12,7 +21,7 @@ import type { State } from '@8f4e/editor-state-types';
  * Scans all code blocks in `graphicHelper.codeBlocks` for global `; @<name>`
  * editor directives and updates `state.globalEditorDirectives` with the resolved values.
  *
- * Conflicting directive values are written to `state.codeErrors.globalEditorDirectiveErrors`.
+ * Conflicting directive values are written to `state.codeErrors.editorDirectiveErrors`.
  */
 export default function globalEditorDirectivesEffect(store: StateManager<State>): void {
 	function resolve(): void {
@@ -30,8 +39,18 @@ export default function globalEditorDirectivesEffect(store: StateManager<State>)
 			store.set('editorConfig', nextEditorConfig);
 		}
 
-		if (!deepEqual(nextErrors, state.codeErrors.globalEditorDirectiveErrors)) {
-			store.set('codeErrors.globalEditorDirectiveErrors', nextErrors);
+		const nextOwnedErrors = withOwnerId(nextErrors);
+		const currentOwnerErrors = state.codeErrors.editorDirectiveErrors.filter(
+			error => error.ownerId === GLOBAL_EDITOR_DIRECTIVES_ERROR_OWNER_ID
+		);
+
+		if (!deepEqual(nextOwnedErrors, currentOwnerErrors)) {
+			store.set(
+				'codeErrors.editorDirectiveErrors',
+				state.codeErrors.editorDirectiveErrors
+					.filter(error => error.ownerId !== GLOBAL_EDITOR_DIRECTIVES_ERROR_OWNER_ID)
+					.concat(nextOwnedErrors)
+			);
 		}
 	}
 

@@ -70,4 +70,6 @@ export interface CodeError {
 	message: string;
 	codeBlockId: string | number;
 	codeBlockType?: 'module' | 'function' | 'constants';
+	/** Optional producer id for shared error buckets that contain errors from multiple owners. */
+	ownerId?: string;
 }
