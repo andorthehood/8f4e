@@ -1,44 +1,65 @@
+import fetchBinaryAssets from './fetchBinaryAssets';
+import loadBinaryAssetIntoMemory from './loadBinaryAssetIntoMemory';
 import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
 
-import { info } from '../logger/logger';
+import type { BinaryAsset, State } from '@8f4e/editor-state-types';
+import type { EditorEnvironmentPluginContext } from '../types';
 
-import type { StateManager } from '@8f4e/state-manager';
-import type { State, EventDispatcher } from '@8f4e/editor-state-types';
-
-import resolveBinaryAssetTarget from '~/pureHelpers/resolveBinaryAssetTarget';
-
-export default function binaryAssets(store: StateManager<State>, events: EventDispatcher): () => void {
-	let lastLoadSignature = '';
-
-	function resolveMemoryId(memoryRef: string, moduleId?: string): string | undefined {
-		if (!memoryRef.startsWith('&')) {
-			return undefined;
-		}
-
-		const withoutPrefix = memoryRef.slice(1);
-		if (withoutPrefix.length === 0) {
-			return undefined;
-		}
-
-		if (withoutPrefix.includes(':')) {
-			return withoutPrefix;
-		}
-
-		if (!moduleId) {
-			return undefined;
-		}
-
-		return `${moduleId}:${withoutPrefix}`;
+function resolveMemoryId(memoryRef: string, moduleId?: string): string | undefined {
+	if (!memoryRef.startsWith('&')) {
+		return undefined;
 	}
 
+	const withoutPrefix = memoryRef.slice(1);
+	if (withoutPrefix.length === 0) {
+		return undefined;
+	}
+
+	if (withoutPrefix.includes(':')) {
+		return withoutPrefix;
+	}
+
+	if (!moduleId) {
+		return undefined;
+	}
+
+	return `${moduleId}:${withoutPrefix}`;
+}
+
+function resolveBinaryAssetTarget(
+	state: State,
+	memoryId: string
+): { memoryId: string; byteAddress: number; memoryByteLength: number } | null {
+	const [moduleId, memoryName] = memoryId.split(':');
+	if (!moduleId || !memoryName) {
+		return null;
+	}
+
+	const memory = state.compiler.compiledModules[moduleId]?.memoryMap[memoryName];
+	if (!memory) {
+		return null;
+	}
+
+	return {
+		memoryId,
+		byteAddress: memory.byteAddress,
+		memoryByteLength: memory.wordAlignedSize * 4,
+	};
+}
+
+export default function binaryAssetsPlugin({
+	store,
+	memoryViews,
+	setErrors,
+}: EditorEnvironmentPluginContext): () => void {
+	const assetStore = new Map<string, ArrayBuffer>();
+	let disposed = false;
+	let lastLoadSignature = '';
+	let fetchGeneration = 0;
+
 	async function fetchAssetsFromDirectives(): Promise<void> {
+		const generation = ++fetchGeneration;
 		const state = store.getState();
-
-		if (!state.callbacks.fetchBinaryAssets) {
-			console.warn('Missing required callback: fetchBinaryAssets');
-			return;
-		}
-
 		const parsed = parseBinaryAssetDirectives(state.graphicHelper.codeBlocks);
 		const loadRequests = parsed.loadDirectives
 			.map(loadDirective => {
@@ -70,13 +91,12 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 			return;
 		}
 		lastLoadSignature = nextLoadSignature;
+		setErrors([]);
 
 		if (loadRequests.length === 0) {
 			store.set('binaryAssets', []);
 			return;
 		}
-
-		info(state, 'Fetching binary assets...', 'BinaryAssets');
 
 		const uniqueUrls: string[] = [];
 
@@ -87,44 +107,40 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 		}
 
 		try {
-			const fetchedAssets = await state.callbacks.fetchBinaryAssets(uniqueUrls);
-			const nextAssets = loadRequests
-				.map(asset => {
-					const fetched = fetchedAssets.find(candidate => candidate.url === asset.url);
-					if (!fetched) {
-						console.warn('Binary asset metadata missing for url:', asset.url);
-						return null;
-					}
+			const fetchedAssets = await fetchBinaryAssets(uniqueUrls, assetStore);
+			if (disposed || generation !== fetchGeneration) {
+				return;
+			}
 
-					return {
-						...fetched,
-						id: asset.id,
-						memoryId: asset.memoryId,
-						loadedIntoMemory: false,
-					};
-				})
-				.filter((asset): asset is NonNullable<typeof asset> => asset !== null);
+			const nextAssets: BinaryAsset[] = [];
+			for (const asset of loadRequests) {
+				const fetched = fetchedAssets.find(candidate => candidate.url === asset.url);
+				if (!fetched) {
+					console.warn('Binary asset metadata missing for url:', asset.url);
+					continue;
+				}
 
-			info(state, 'Binary assets fetched successfully', 'BinaryAssets');
+				nextAssets.push({
+					...fetched,
+					id: asset.id,
+					memoryId: asset.memoryId,
+					loadedIntoMemory: false,
+				});
+			}
 
 			store.set('binaryAssets', nextAssets);
 		} catch (error) {
-			console.error('Failed to fetch binary assets:', error);
+			if (!disposed && generation === fetchGeneration) {
+				console.error('Failed to fetch binary assets:', error);
+			}
 		}
 	}
 
-	async function onLoadBinaryFilesIntoMemory() {
+	async function onLoadBinaryFilesIntoMemory(): Promise<void> {
 		const state = store.getState();
 		const allOfTheAssetsHaveBeenLoaded = !state.binaryAssets.some(asset => !asset.loadedIntoMemory);
 
 		if (!state.compiler.hasMemoryBeenReinitialized && allOfTheAssetsHaveBeenLoaded) {
-			return;
-		}
-
-		info(state, 'Loading binary assets into memory...', 'BinaryAssets');
-
-		if (!state.callbacks.loadBinaryAssetIntoMemory) {
-			console.warn('Missing required callback: loadBinaryAssetIntoMemory');
 			return;
 		}
 
@@ -142,7 +158,7 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 			try {
 				asset.byteAddress = resolved.byteAddress;
 				asset.memoryByteLength = resolved.memoryByteLength;
-				await state.callbacks.loadBinaryAssetIntoMemory(asset);
+				await loadBinaryAssetIntoMemory(asset, assetStore, memoryViews);
 				asset.loadedIntoMemory = true;
 			} catch (error) {
 				console.error('Failed to load binary asset into memory:', asset.url, error);
@@ -150,33 +166,23 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 		}
 	}
 
-	async function onClearBinaryAssetCache() {
-		const state = store.getState();
-		if (!state.callbacks.clearBinaryAssetCache) {
-			console.warn('No clearBinaryAssetCache callback provided');
-			return;
-		}
-
-		try {
-			await state.callbacks.clearBinaryAssetCache();
-		} catch (error) {
-			console.error('Failed to clear binary asset cache:', error);
-		}
-	}
-
 	store.subscribe('graphicHelper.codeBlocks', fetchAssetsFromDirectives);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', fetchAssetsFromDirectives);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', fetchAssetsFromDirectives);
 	store.subscribe('binaryAssets', onLoadBinaryFilesIntoMemory);
 	store.subscribe('compiler.hasMemoryBeenReinitialized', onLoadBinaryFilesIntoMemory);
-	events.on('clearBinaryAssetCache', onClearBinaryAssetCache);
+
+	void fetchAssetsFromDirectives();
+	void onLoadBinaryFilesIntoMemory();
 
 	return () => {
+		disposed = true;
+		fetchGeneration++;
 		store.unsubscribe('graphicHelper.codeBlocks', fetchAssetsFromDirectives);
 		store.unsubscribe('graphicHelper.selectedCodeBlock.code', fetchAssetsFromDirectives);
-		store.unsubscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', fetchAssetsFromDirectives);
 		store.unsubscribe('binaryAssets', onLoadBinaryFilesIntoMemory);
 		store.unsubscribe('compiler.hasMemoryBeenReinitialized', onLoadBinaryFilesIntoMemory);
-		events.off('clearBinaryAssetCache', onClearBinaryAssetCache);
+		assetStore.clear();
+		setErrors([]);
+		store.set('binaryAssets', []);
 	};
 }

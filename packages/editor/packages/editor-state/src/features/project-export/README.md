@@ -19,7 +19,7 @@ Serializes editor state to exportable project formats. Provides two export modes
 Creates a minimal project file for saving:
 - Code blocks with grid coordinates
 - Viewport state
-- Binary assets
+- Asset directives remain embedded in code blocks
 - Optionally includes compiled modules
 
 ### Runtime-Ready Export (`serializeToRuntimeReadyProject`)
@@ -35,7 +35,6 @@ Creates a complete export with compiled data:
 Serializes from:
 - `state.graphicHelper.codeBlocks` - Code block data
 - `state.graphicHelper.viewport` - Viewport position and grid settings
-- `state.binaryAssets` - Binary asset references
 - `state.compiler.compiledModules` - Compiled WASM bytecode
 
 ## Integration Points
@@ -54,7 +53,6 @@ The project structure is defined by the serialization functions:
   viewport: {
     gridCoordinates: { x, y }       // Grid position, not pixels
   },
-  binaryAssets: Array<BinaryAsset>,
   compiledModules?: Array<Module>,  // Optional in basic mode
   // postProcessEffects are derived, not persisted
 }
@@ -77,4 +75,4 @@ The project structure is defined by the serialization functions:
 - Post-process effects are derived from shader blocks and not persisted
 - Grid coordinate conversion may lose sub-grid precision
 - Compiled data is excluded from history snapshots to save memory
-- Binary assets are stored by reference, not embedded
+- Binary assets are declared in code blocks with editor directives and loaded by the lazy editor environment plugin; exported projects do not embed binary payloads
