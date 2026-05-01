@@ -1,18 +1,18 @@
-import { getExampleProjectMetadata } from './exampleProjects';
+import { getExampleProjectRegistry } from './exampleProjects';
 
-import type { ProjectMetadata } from '@8f4e/editor-state-types';
+import type { ExampleProjectRegistryEntry } from './exampleProjects';
 
 /**
  * Get list of projects with metadata only.
  * Returns hosted registry metadata without loading any project code.
  */
-export async function getListOfProjects(): Promise<ProjectMetadata[]> {
-	return getExampleProjectMetadata();
+export async function getListOfProjects(): Promise<ExampleProjectRegistryEntry[]> {
+	return getExampleProjectRegistry();
 }
 
 export async function getDefaultProjectUrl(): Promise<string | null> {
-	const projectMetadata = await getExampleProjectMetadata();
-	return projectMetadata.length > 0 ? projectMetadata[0].url : null;
+	const projects = await getExampleProjectRegistry();
+	return projects.length > 0 ? projects[0].url : null;
 }
 
 /**

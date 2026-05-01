@@ -17,7 +17,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		if (!exportFileName) {
 			return 'project';
 		}
-		return exportFileName.replace(/\.(json|wasm|8f4e)$/, '');
+		return exportFileName.replace(/\.(wasm|8f4e)$/, '');
 	}
 
 	function onExportProject() {

@@ -4,17 +4,20 @@ import { promises as fs } from 'fs';
 
 import { describe, expect, it } from 'vitest';
 
+import parse8f4eToProject from '../src/shared/parse8f4e';
+
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDir, '..');
-const fixturePath = path.join(testDir, 'fixtures', 'audioBuffer.project.json');
+const repoRoot = path.resolve(packageRoot, '..', '..');
+const fixturePath = path.join(repoRoot, 'packages/examples/src/projects/audio/audioBuffer.8f4e');
 
 async function loadAudioBufferProject() {
 	const raw = await fs.readFile(fixturePath, 'utf8');
-	return JSON.parse(raw) as { codeBlocks: { code: string[]; disabled?: boolean }[] };
+	return parse8f4eToProject(raw);
 }
 
 describe('compileProject (audioBuffer example)', () => {
-	it('compiles build artifacts without runtime-ready config packaging', async () => {
+	it('compiles build artifacts without config packaging', async () => {
 		const project = await loadAudioBufferProject();
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
 		const { outputProject } = cliModule.compileProject(project);

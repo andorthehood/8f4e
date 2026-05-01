@@ -2,46 +2,42 @@
 
 ## Purpose
 
-Serializes editor state to exportable project formats. Provides two export modes: basic serialization for file saving and runtime-ready exports that include compiled data and memory snapshots.
+Serializes editor state for session persistence and project file export.
 
 ## Key Behaviors
 
-- **Project Serialization**: Converts editor state to JSON-compatible project format
-- **Coordinate Conversion**: Transforms pixel coordinates to grid coordinates for persistence
-- **Runtime-Ready Export**: Includes compiled modules and memory snapshots
-- **Session Saving**: Supports saving current session state
-- **WASM Export**: Enables export of compiled WASM modules
+- **Session JSON Serialization**: `serializeToProject` converts editor code blocks to the JSON-safe session structure
+- **Session Saving**: Saves current session state through the local/session storage callbacks
+- **`.8f4e` Export**: Converts the session project structure to the `.8f4e` file format for project downloads
+- **WASM Export**: Exports compiled WASM modules through the separate WASM export path
 
-## Export Modes
+## Export
 
-### Basic Serialization (`serializeToProject`)
+### Session JSON Serialization (`serializeToProject`)
 
-Creates a minimal project file for saving:
-- Code blocks with grid coordinates
-- Viewport state
+`serializeToProject` creates the JSON representation used for session saving and persistence. It is not the exported `.8f4e` file format.
+
+Includes:
+- Code blocks
 - Asset directives remain embedded in code blocks
-- Optionally includes compiled modules
 
-### Runtime-Ready Export (`serializeToRuntimeReadyProject`)
+### `.8f4e` Project Export
 
-Creates a complete export with compiled data:
-- Everything from basic serialization
-- Compiled modules and functions
-- Memory snapshot
-- Ready for immediate execution
+Project file export first calls `serializeToProject` to collect the current code blocks, then passes that structure to `serializeProjectTo8f4e` to produce the `.8f4e` file content. This path is used for project downloads, while JSON output from `serializeToProject` is intended for session persistence only.
+
+### WASM Export
+
+WASM export is separate from project serialization and writes compiled binary modules through the configured `exportBinaryCode` callback.
 
 ## State Sources
 
 Serializes from:
 - `state.graphicHelper.codeBlocks` - Code block data
-- `state.graphicHelper.viewport` - Viewport position and grid settings
-- `state.compiler.compiledModules` - Compiled WASM bytecode
 
 ## Integration Points
 
 - **Edit History**: Uses basic serialization for undo/redo snapshots
 - **Project Import**: Exported projects are loaded through project import feature
-- **Program Compiler**: Includes compiled modules in runtime-ready exports
 
 ## Project Schema
 
@@ -49,30 +45,18 @@ The project structure is defined by the serialization functions:
 
 ```typescript
 {
-  codeBlocks: Array<CodeBlock>,     // With grid coordinates
-  viewport: {
-    gridCoordinates: { x, y }       // Grid position, not pixels
-  },
-  compiledModules?: Array<Module>,  // Optional in basic mode
-  // postProcessEffects are derived, not persisted
+  codeBlocks: Array<CodeBlock>,
 }
 ```
 
-## Coordinate Systems
-
-- **Editor State**: Uses pixel coordinates for viewport
-- **Serialized Project**: Uses grid coordinates for portability
-- Conversion: `gridCoord = Math.round(pixelCoord / gridSize)`
-
 ## References
 
-- [`serializeToProject.ts`](./serializeToProject.ts) - Basic serialization
-- [`serializeToRuntimeReadyProject.ts`](./serializeToRuntimeReadyProject.ts) - Runtime-ready export
+- [`serializeToProject.ts`](./serializeToProject.ts) - Session JSON structure serialization
+- [`serializeTo8f4e.ts`](./serializeTo8f4e.ts) - `.8f4e` file serialization
 - Project import counterpart: See `project-import` feature
 
 ## Notes & Limitations
 
 - Post-process effects are derived from shader blocks and not persisted
-- Grid coordinate conversion may lose sub-grid precision
 - Compiled data is excluded from history snapshots to save memory
 - Binary assets are declared in code blocks with editor directives and loaded by the lazy editor environment plugin; exported projects do not embed binary payloads
