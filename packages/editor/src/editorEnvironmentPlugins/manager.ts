@@ -35,8 +35,6 @@ function getActiveEditorDirectiveNames(state: State): Set<string> {
 	}
 
 	getDirectiveNamesFromBlock(state.graphicHelper.selectedCodeBlock, names);
-	getDirectiveNamesFromBlock(state.graphicHelper.selectedCodeBlockForProgrammaticEdit, names);
-	getDirectiveNamesFromBlock(state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger, names);
 
 	return names;
 }
@@ -160,8 +158,6 @@ export function createEditorEnvironmentPluginManager(
 
 	store.subscribe('graphicHelper.codeBlocks', syncPlugins);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', syncPlugins);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', syncPlugins);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', syncPlugins);
 
 	syncPlugins();
 
@@ -169,8 +165,6 @@ export function createEditorEnvironmentPluginManager(
 		disposed = true;
 		store.unsubscribe('graphicHelper.codeBlocks', syncPlugins);
 		store.unsubscribe('graphicHelper.selectedCodeBlock.code', syncPlugins);
-		store.unsubscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', syncPlugins);
-		store.unsubscribe('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', syncPlugins);
 
 		for (const entry of registry) {
 			disposePlugin(entry);
