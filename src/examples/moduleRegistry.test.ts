@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const moduleMetadata = {
+const moduleRegistryEntry = {
 	slug: 'adrEnvelope',
 	title: 'ADR Envelope',
 	category: 'Envelopes',
@@ -14,13 +14,13 @@ describe('moduleRegistry', () => {
 		vi.unstubAllGlobals();
 	});
 
-	it('fetches module metadata from the hosted registry', async () => {
-		const fetchMock = vi.fn(async () => new Response(JSON.stringify({ modules: [moduleMetadata] })));
+	it('fetches module entries from the hosted registry', async () => {
+		const fetchMock = vi.fn(async () => new Response(JSON.stringify({ modules: [moduleRegistryEntry] })));
 		vi.stubGlobal('fetch', fetchMock);
 
 		const { getListOfModules } = await import('./moduleRegistry');
 
-		await expect(getListOfModules()).resolves.toEqual([moduleMetadata]);
+		await expect(getListOfModules()).resolves.toEqual([moduleRegistryEntry]);
 		expect(fetchMock).toHaveBeenCalledWith(
 			expect.stringMatching('https://static.llllllllllll.com/8f4e/example-modules/registry.json\\?_t=\\d+'),
 			{ cache: 'no-store' }
@@ -33,7 +33,7 @@ describe('moduleRegistry', () => {
 			const url = String(request);
 
 			if (url.startsWith('https://static.llllllllllll.com/8f4e/example-modules/registry.json')) {
-				return new Response(JSON.stringify({ modules: [moduleMetadata] }));
+				return new Response(JSON.stringify({ modules: [moduleRegistryEntry] }));
 			}
 
 			return new Response(moduleSource);
@@ -42,8 +42,8 @@ describe('moduleRegistry', () => {
 
 		const { getModule } = await import('./moduleRegistry');
 
-		await expect(getModule(moduleMetadata.slug)).resolves.toBe(moduleSource);
-		expect(fetchMock).toHaveBeenCalledWith(expect.stringMatching(`${moduleMetadata.url}\\?_t=\\d+`), {
+		await expect(getModule(moduleRegistryEntry.slug)).resolves.toBe(moduleSource);
+		expect(fetchMock).toHaveBeenCalledWith(expect.stringMatching(`${moduleRegistryEntry.url}\\?_t=\\d+`), {
 			cache: 'no-store',
 		});
 	});

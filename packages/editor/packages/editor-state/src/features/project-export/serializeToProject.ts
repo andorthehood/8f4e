@@ -5,9 +5,9 @@ import type { Project, State } from '@8f4e/editor-state-types';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
- * Serializes current runtime state to Project format for saving to file.
+ * Serializes current runtime state to the JSON-safe Project shape used for session persistence.
  * @param state Current editor state
- * @returns Project object ready for `.8f4e` export and session persistence
+ * @returns Project object ready for session persistence or `.8f4e` conversion
  */
 export default function serializeToProject(state: State): Project {
 	const { graphicHelper } = state;
@@ -35,9 +35,6 @@ if (import.meta.vitest) {
 							y: 30,
 						}),
 					],
-				},
-				compiler: {
-					compiledModules: { mod: {} },
 				},
 				binaryAssets: [],
 				viewport: {

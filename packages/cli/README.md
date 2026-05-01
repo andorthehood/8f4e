@@ -1,6 +1,6 @@
 # @8f4e/cli
 
-CLI for compiling `.8f4e` project files into runtime-ready exports.
+CLI for compiling `.8f4e` project files into WebAssembly artifacts and runtime inspection output.
 
 ## Usage
 
