@@ -6,12 +6,13 @@ import getOrCreateMemory from './getOrCreateMemory';
 import type {
 	CompileAndUpdateMemoryResult,
 	CompileOptions,
-	CompiledModuleLookup,
+	CompiledModuleMetadataLookup,
 	GetOrCreateWasmInstanceResult,
 	Module,
 } from '@8f4e/compiler-types';
 
-let previousCompiledModules: CompiledModuleLookup | undefined;
+let previousCompiledModules: CompiledModuleMetadataLookup | undefined;
+let previousCodeBufferLength: number | undefined;
 
 let wasmInstanceRef: WebAssembly.Instance | null = null;
 
@@ -51,7 +52,13 @@ export default async function compileAndUpdateMemory(
 	const allocatedMemoryBytes = deriveEffectiveMemorySize(requiredMemoryBytes);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
-	const { memoryRef, memoryAction } = getOrCreateMemory(allocatedMemoryBytes, compiledModules, previousCompiledModules);
+	const { memoryRef, memoryAction } = getOrCreateMemory(
+		allocatedMemoryBytes,
+		compiledModules,
+		previousCompiledModules,
+		codeBuffer.length,
+		previousCodeBufferLength
+	);
 
 	const memoryWasRecreated = memoryAction.action === 'recreated';
 	const { wasmInstanceRef, hasWasmInstanceBeenReset } = await getOrCreateWasmInstanceRef(
@@ -119,6 +126,7 @@ export default async function compileAndUpdateMemory(
 	}
 
 	previousCompiledModules = compiledModules;
+	previousCodeBufferLength = codeBuffer.length;
 
 	return {
 		codeBuffer,

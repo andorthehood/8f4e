@@ -1,10 +1,10 @@
 import compareObject from './compareObject';
 
-import type { CompiledModuleLookup, MemoryValueChange } from '@8f4e/compiler-types';
+import type { CompiledModuleMetadataLookup, MemoryValueChange } from '@8f4e/compiler-types';
 
 export default function getMemoryValueChanges(
-	compiledModules: CompiledModuleLookup,
-	previous: CompiledModuleLookup | undefined
+	compiledModules: CompiledModuleMetadataLookup,
+	previous: CompiledModuleMetadataLookup | undefined
 ): MemoryValueChange[] {
 	const changes: MemoryValueChange[] = [];
 
