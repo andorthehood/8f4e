@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import keyboardMemoryEvents from './keyboardMemoryEvents';
+import keyboardMemoryPlugin from './plugin';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { State } from '@8f4e/editor-state-types';
@@ -42,7 +42,7 @@ function createKeyboardEventLike(code: string, key: string, keyCode: number): Ke
 	return { code, key, keyCode } as KeyboardEvent;
 }
 
-describe('keyboardMemoryEvents', () => {
+describe('keyboardMemoryPlugin', () => {
 	const originalWindow = globalThis.window;
 	let mockWindow: MockWindow;
 
@@ -81,7 +81,13 @@ describe('keyboardMemoryEvents', () => {
 			getState: () => state,
 		} as unknown as StateManager<State>;
 
-		const cleanup = keyboardMemoryEvents(store);
+		const cleanup = keyboardMemoryPlugin({
+			store,
+			events: {} as never,
+			window: mockWindow as unknown as Window,
+			navigator: {} as Navigator,
+			setErrors: () => {},
+		});
 
 		mockWindow.emit('keydown', createKeyboardEventLike('KeyA', 'a', 65));
 		mockWindow.emit('keydown', createKeyboardEventLike('KeyB', 'b', 66));
@@ -122,7 +128,13 @@ describe('keyboardMemoryEvents', () => {
 			getState: () => state,
 		} as unknown as StateManager<State>;
 
-		const cleanup = keyboardMemoryEvents(store);
+		const cleanup = keyboardMemoryPlugin({
+			store,
+			events: {} as never,
+			window: mockWindow as unknown as Window,
+			navigator: {} as Navigator,
+			setErrors: () => {},
+		});
 
 		mockWindow.emit('keydown', createKeyboardEventLike('Unidentified', 'c', 67));
 		mockWindow.emit('blur', createKeyboardEventLike('', '', 0));

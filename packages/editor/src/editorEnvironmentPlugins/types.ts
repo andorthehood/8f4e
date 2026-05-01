@@ -9,9 +9,9 @@ export interface EditorEnvironmentPluginContext {
 	setErrors: (errors: CodeError[]) => void;
 }
 
-export interface EditorEnvironmentPlugin {
-	start: (context: EditorEnvironmentPluginContext) => void | (() => void) | Promise<void | (() => void)>;
-}
+export type EditorEnvironmentPlugin = (
+	context: EditorEnvironmentPluginContext
+) => void | (() => void) | Promise<void | (() => void)>;
 
 export interface EditorEnvironmentPluginRegistryEntry {
 	id: string;
