@@ -1,7 +1,7 @@
 import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
 
-import type { StateManager } from '@8f4e/state-manager';
 import type { State } from '@8f4e/editor-state-types';
+import type { EditorEnvironmentPluginContext } from '../types';
 
 function resolveWordAlignedAddress(state: State, memoryId?: string): number | undefined {
 	if (!memoryId) {
@@ -26,7 +26,10 @@ function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefin
 	state.callbacks.setWordInMemory?.(wordAlignedAddress, value, true);
 }
 
-export default function keyboardMemoryEvents(store: StateManager<State>): () => void {
+export default function keyboardMemoryPlugin({
+	store,
+	window: targetWindow,
+}: EditorEnvironmentPluginContext): () => void {
 	const pressOrder: number[] = [];
 
 	function upsertPressedKeyCode(keyCode: number): void {
@@ -95,13 +98,13 @@ export default function keyboardMemoryEvents(store: StateManager<State>): () => 
 		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 0);
 	}
 
-	window.addEventListener('keydown', onKeydown);
-	window.addEventListener('keyup', onKeyup);
-	window.addEventListener('blur', onBlur);
+	targetWindow.addEventListener('keydown', onKeydown);
+	targetWindow.addEventListener('keyup', onKeyup);
+	targetWindow.addEventListener('blur', onBlur);
 
 	return () => {
-		window.removeEventListener('keydown', onKeydown);
-		window.removeEventListener('keyup', onKeyup);
-		window.removeEventListener('blur', onBlur);
+		targetWindow.removeEventListener('keydown', onKeydown);
+		targetWindow.removeEventListener('keyup', onKeyup);
+		targetWindow.removeEventListener('blur', onBlur);
 	};
 }

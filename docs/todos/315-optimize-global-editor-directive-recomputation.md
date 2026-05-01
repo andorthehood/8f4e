@@ -62,7 +62,7 @@ Possible implementation shape:
 
 ### Step 3: Merge cached contributions into global state
 - Resolve the final `globalEditorDirectives` object from cached block summaries
-- Rebuild `globalEditorDirectiveErrors` from the merged result
+- Rebuild the global-directive-owned entries in `editorDirectiveErrors` from the merged result
 
 ### Step 4: Add focused tests
 - Cover unchanged-project edits

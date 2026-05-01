@@ -42,7 +42,7 @@ export default function createDefaultState() {
 		binaryAssets: [],
 		codeErrors: {
 			compilationErrors: [],
-			globalEditorDirectiveErrors: [],
+			editorDirectiveErrors: [],
 			shaderErrors: [],
 			runtimeDirectiveErrors: [],
 		},
