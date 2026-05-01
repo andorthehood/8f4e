@@ -296,6 +296,7 @@ export interface State {
 	codeErrors: {
 		compilationErrors: CodeError[];
 		globalEditorDirectiveErrors: CodeError[];
+		editorEnvironmentPluginErrors: Record<string, CodeError[]>;
 		shaderErrors: CodeError[];
 		runtimeDirectiveErrors: CodeError[];
 	};
