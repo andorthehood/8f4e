@@ -8,8 +8,6 @@ import generateIcons, { Icon, generateLookup as generateLookupForIcons } from '.
 import { createAtlasLayout } from './atlasLayout';
 import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
-import { fontMetadata as ascii8x16Metadata } from './fonts/ibmvga8x16/generated/ascii';
-import { fontMetadata as glyphs8x16Metadata } from './fonts/ibmvga8x16/generated/glyphs';
 import defaultColorScheme from './defaultColorScheme';
 
 import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii';
@@ -66,10 +64,14 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 	ibmvga8x16: {
 		characterWidth: 8,
 		characterHeight: 16,
-		loadMetadata: async () => ({
-			asciiMetadata: ascii8x16Metadata,
-			glyphsMetadata: glyphs8x16Metadata,
-		}),
+		loadMetadata: async () => {
+			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+				import('./fonts/ibmvga8x16/generated/ascii'),
+				import('./fonts/ibmvga8x16/generated/glyphs'),
+			]);
+
+			return { asciiMetadata, glyphsMetadata };
+		},
 	},
 	nix8810m168x16: {
 		characterWidth: 8,
@@ -262,16 +264,8 @@ function decodeFontData({ asciiMetadata, glyphsMetadata }: FontMetadataSet, defi
 	};
 }
 
-// ibmvga8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
-const fontCache: Partial<Record<Font, FontData>> = {
-	ibmvga8x16: decodeFontData(
-		{
-			asciiMetadata: ascii8x16Metadata,
-			glyphsMetadata: glyphs8x16Metadata,
-		},
-		FONT_DEFINITIONS.ibmvga8x16
-	),
-};
+// Fonts are loaded on first use and cached so each bitmap is decoded at most once.
+const fontCache: Partial<Record<Font, FontData>> = {};
 
 export const DEFAULT_FONT: Font = 'ibmvga8x16';
 
@@ -279,7 +273,6 @@ function resolveFont(font: Config['font']): Font {
 	return FONT_NAMES.includes(font as Font) ? (font as Font) : DEFAULT_FONT;
 }
 
-// Lazily load and decode an alternate font, caching the result so it is decoded at most once.
 async function loadFont(font: Font): Promise<FontData> {
 	if (fontCache[font]) {
 		return fontCache[font]!;
