@@ -1,10 +1,20 @@
-import type { CompiledModuleLookup } from '@8f4e/compiler-types';
+import type { CompiledModuleMetadataLookup } from '@8f4e/compiler-types';
 
 export default function didProgramOrMemoryStructureChange(
-	compiledModules: CompiledModuleLookup,
-	previous: CompiledModuleLookup | undefined
+	compiledModules: CompiledModuleMetadataLookup,
+	previous: CompiledModuleMetadataLookup | undefined,
+	codeBufferLength?: number,
+	previousCodeBufferLength?: number
 ) {
 	if (!previous) {
+		return true;
+	}
+
+	if (
+		codeBufferLength !== undefined &&
+		previousCodeBufferLength !== undefined &&
+		codeBufferLength !== previousCodeBufferLength
+	) {
 		return true;
 	}
 
@@ -18,14 +28,6 @@ export default function didProgramOrMemoryStructureChange(
 	for (const [id, compiledModule] of Object.entries(compiledModules)) {
 		const previousModule = previous[id];
 		if (!previousModule) {
-			return true;
-		}
-
-		if (compiledModule.cycleFunction.length !== previousModule.cycleFunction.length) {
-			return true;
-		}
-
-		if (compiledModule.initFunctionBody.length !== previousModule.initFunctionBody.length) {
 			return true;
 		}
 

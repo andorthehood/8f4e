@@ -1,4 +1,4 @@
-import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-types';
+import type { CompileOptions, CompiledFunctionLookup, CompiledModuleMetadataLookup } from '@8f4e/compiler-types';
 
 export interface ProjectCodeBlock {
 	code: string[];
@@ -20,7 +20,7 @@ export interface CompileProjectOptions {
 export interface CompileProjectResult {
 	outputProject: Record<string, unknown>;
 	compilerOptions?: CompileOptions;
-	compiledModules?: CompiledModuleLookup;
+	compiledModules?: CompiledModuleMetadataLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;

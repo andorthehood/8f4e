@@ -124,6 +124,8 @@ export interface CompiledModule {
 }
 
 export type CompiledModuleLookup = Record<string, CompiledModule>;
+export type CompiledModuleMetadata = Omit<CompiledModule, 'initFunctionBody' | 'cycleFunction'>;
+export type CompiledModuleMetadataLookup = Record<string, CompiledModuleMetadata>;
 
 export interface FunctionSignature {
 	parameters: FunctionValueType[];
@@ -169,7 +171,7 @@ export type GetOrCreateWasmInstanceResult = {
 
 export type CompileAndUpdateMemoryResult = {
 	codeBuffer: Uint8Array;
-	compiledModules: CompiledModuleLookup;
+	compiledModules: CompiledModuleMetadataLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	requiredMemoryBytes: number;
 	allocatedMemoryBytes: number;

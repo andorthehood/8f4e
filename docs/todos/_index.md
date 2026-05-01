@@ -74,6 +74,7 @@ Active todo files are listed below.
 | 385 | Guard i32.div_s signed overflow | 🟡 | 2-4h | 2026-04-30 | Integer `div` prevents divide-by-zero, but raw WebAssembly `i32.div_s` can still trap on `-2147483648 / -1`; define and implement the 8f4e behavior for that edge case. |
 | 386 | Guard i32.rem_s divisor zero | 🟡 | 2-4h | 2026-04-30 | WebAssembly has no non-trapping integer remainder instruction; make divisor-zero behavior explicit and covered so `remainder` cannot unexpectedly produce a runtime trap. |
 | 387 | Add lazy editor environment plugins | 🟢 | 1-2d | 2026-05-01 | Added a directive-triggered lazy plugin system so keyboard memory and binary asset loading only load browser integration code when a project asks for it. |
+| 388 | Add compiled code signatures for incremental reuse | 🟡 | 2-4h | 2026-05-01 | The compiler worker needs a robust way to tell whether executable WebAssembly output changed between incremental compiles. |
 
 ## Completed TODOs
 
