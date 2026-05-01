@@ -44,12 +44,10 @@ import fallingEdge from './fallingEdge';
 import hasChanged from './hasChanged';
 import dup from './dup';
 import swap from './swap';
-import cycle from './cycle';
 import abs from './abs';
 import equal from './equal';
 import branchIfUnchanged from './branchIfUnchanged';
 import shiftLeft from './shiftLeft';
-import pow2 from './pow2';
 import sqrt from './sqrt';
 import loadFloat from './loadFloat';
 import round from './round';
@@ -125,11 +123,9 @@ const instructions = {
 	hasChanged,
 	dup,
 	swap,
-	cycle,
 	abs,
 	equal,
 	branchIfUnchanged,
-	pow2,
 	sqrt,
 	loadFloat,
 	round,

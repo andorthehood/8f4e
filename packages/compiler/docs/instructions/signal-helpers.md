@@ -32,18 +32,3 @@ The hasChanged instruction returns 1 when the current value differs from the pre
 push 1
 hasChanged
 ```
-
-### cycle
-
-The cycle instruction increments a pointer by one word and wraps it to a start address when it exceeds the end address.
-
-#### Examples
-
-```
-int[] buffer 4
-int* ptr &buffer
-push &ptr
-push &buffer[0]
-push &buffer[3]
-cycle
-```
