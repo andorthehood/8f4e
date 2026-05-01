@@ -13,7 +13,7 @@ npx nx run @8f4e/pmml28f4e:build
 ## CLI
 
 ```
-pmml28f4e <input.pmml> [--out project.json] [--pretty] [--name "Project Name"]
+pmml28f4e <input.pmml> [--out project.8f4e] [--pretty] [--name "Project Name"]
 ```
 
 ## API

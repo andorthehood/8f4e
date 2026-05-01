@@ -1,8 +1,8 @@
 import { extractUseDependencies } from '@8f4e/tokenizer';
 
-import { getExampleModuleManifest, getExampleModuleMetadata } from './exampleModules';
+import { getExampleModuleManifest, getExampleModuleRegistry } from './exampleModules';
 
-import type { ModuleMetadata } from '@8f4e/editor-state-types';
+import type { ExampleModuleRegistryEntry } from './exampleModules';
 
 // Cache for loaded modules to avoid redundant loading
 const loadedModulesCache: Record<string, string> = {};
@@ -12,8 +12,8 @@ const moduleDependencyCache: Record<string, string[]> = {};
  * Get list of modules with metadata only.
  * Returns hosted registry metadata without loading any module code.
  */
-export async function getListOfModules(): Promise<ModuleMetadata[]> {
-	return getExampleModuleMetadata();
+export async function getListOfModules(): Promise<ExampleModuleRegistryEntry[]> {
+	return getExampleModuleRegistry();
 }
 
 async function inferModuleDependenciesFromCode(slug: string, code: string): Promise<string[]> {

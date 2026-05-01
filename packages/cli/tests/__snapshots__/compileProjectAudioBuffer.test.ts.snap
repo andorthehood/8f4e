@@ -1,25 +1,37 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`compileProject (audioBuffer example) > compiles build artifacts without runtime-ready config packaging 1`] = `
+exports[`compileProject (audioBuffer example) > compiles build artifacts without config packaging 1`] = `
 {
   "codeBlocks": [
     {
       "code": [
         "module projectConfig",
+        "; @pos -94 1",
         "; @config runtime AudioWorkletRuntime",
-        "; ~sampleRate 44100",
+        "; ~sampleRate 48000",
         "; @config export.fileName audioBuffer",
         "",
         "moduleEnd",
       ],
-      "gridCoordinates": {
-        "x": -87,
-        "y": 1,
-      },
+    },
+    {
+      "code": [
+        "module notes",
+        "; @pos 131 7",
+        "; A minimal audio synthesis example ",
+        "; that generates a sine wave ",
+        "; (phaseAccumulator + sine)",
+        "; and writes each sample into a ",
+        "; fixed-size circular audio buffer",
+        "; (audioout)",
+        "moduleEnd",
+      ],
     },
     {
       "code": [
         "module audioout",
+        "; @pos 88 1",
+        "; @home",
         "; ~audioOutput buffer 0 0",
         "use env",
         "",
@@ -29,7 +41,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "float[] buffer AUDIO_BUFFER_SIZE",
         "int pointer &buffer",
         "",
-        "; @plot buffer -2 2",
+        "; @plot &buffer count(buffer)",
         "",
         "; Store the input value",
         "; in the buffer",
@@ -53,38 +65,33 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "push buffer&",
         "greaterThan",
         "if",
-        " push &pointer",
-        " push &buffer",
-        " store",
+        "push &pointer",
+        "push &buffer",
+        "store",
         "ifEnd",
         "",
         "moduleEnd",
       ],
-      "gridCoordinates": {
-        "x": 88,
-        "y": 1,
-      },
     },
     {
       "code": [
         "constants env",
+        "; @pos -49 1",
+        "; @favorite",
         "; Auto-generated environment constants",
         "; Changes will be overwritten",
-        "; Last updated: 1/19/2026, 9:24:55 PM",
+        "; Last updated: 2/19/2026, 1:23:48 PM",
         "",
-        "const SAMPLE_RATE 44100",
+        "const SAMPLE_RATE 48000",
         "const AUDIO_BUFFER_SIZE 128",
         "",
         "constantsEnd",
       ],
-      "gridCoordinates": {
-        "x": -42,
-        "y": 1,
-      },
     },
     {
       "code": [
         "constants math",
+        "; @pos -49 15",
         "",
         "const PI      3.141592653589793",
         "const NEG_PI -3.141592653589793",
@@ -105,14 +112,11 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "constantsEnd",
       ],
-      "gridCoordinates": {
-        "x": -42,
-        "y": 14,
-      },
     },
     {
       "code": [
         "module phaseAccumulator",
+        "; @pos 46 1",
         "use env",
         "",
         "float defaultFreq 440",
@@ -155,14 +159,11 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "moduleEnd",
       ],
-      "gridCoordinates": {
-        "x": 46,
-        "y": 1,
-      },
     },
     {
       "code": [
         "function sine",
+        "; @pos 7 1",
         "; Polynomial approximation ",
         "; of the sine function with",
         "; Taylor series (7th order)",
@@ -226,10 +227,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "functionEnd float",
       ],
-      "gridCoordinates": {
-        "x": 7,
-        "y": 1,
-      },
     },
   ],
   "compiledModules": {
@@ -407,6 +404,22 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
     },
+    "notes": {
+      "byteAddress": 540,
+      "cycleFunction": [
+        2,
+        0,
+        11,
+      ],
+      "id": "notes",
+      "index": 4,
+      "initFunctionBody": [],
+      "initOnlyExecution": undefined,
+      "memoryMap": {},
+      "skipExecutionInCycle": undefined,
+      "wordAlignedAddress": 135,
+      "wordAlignedSize": 0,
+    },
     "phaseAccumulator": {
       "byteAddress": 4,
       "cycleFunction": [
@@ -436,8 +449,8 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         0,
         148,
         65,
-        196,
-        216,
+        128,
+        247,
         2,
         178,
         33,
@@ -576,7 +589,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         11,
       ],
       "id": "projectConfig",
-      "index": 4,
+      "index": 5,
       "initFunctionBody": [],
       "initOnlyExecution": undefined,
       "memoryMap": {},
@@ -585,12 +598,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedSize": 0,
     },
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDEA8AAAAAAwAAAAAAAAAAAAAHJAQEaW5pdAAABWN5Y2xlAAEIaW5pdE9ubHkAAgZidWZmZXIAAwqRAw8MABAKEAsQDBANEA4LDAAQBRAGEAcQCBAJCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAtdAQF9QQxBDCoCAEPbD8lAQQgoAgAqAgCUQcTYArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBDCoCAEPbD0lAXgRAQQxD2w9JwDgCAAtBEEEMKgIAEAQ4AgALVwIBfwF9QZgEKAIAQRQoAgAqAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATgCAAULQZgEQZgEKAIAQQRqNgIAQZgEKAIAQZQESgRAQZgEQRg2AgALCwIACwIACwIACxMAQQRDAADcQzgCAEEIQQQ2AgALEQBBFEEQNgIAQZgEQRg2AgALAgAL",
-  "viewport": {
-    "gridCoordinates": {
-      "x": -44,
-      "y": 0,
-    },
-  },
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDEhEAAAAAAwAAAAAAAAAAAAAAAAckBARpbml0AAAFY3ljbGUAAQhpbml0T25seQACBmJ1ZmZlcgADCpsDEQ4AEAsQDBANEA4QDxAQCw4AEAUQBhAHEAgQCRAKCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLagIBfQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAhAiACIAKUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAsCAAtdAQF9QQxBDCoCAEPbD8lAQQgoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBDCoCAEPbD0lAXgRAQQxD2w9JwDgCAAtBEEEMKgIAEAQ4AgALVwIBfwF9QZgEKAIAQRQoAgAqAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATgCAAULQZgEQZgEKAIAQQRqNgIAQZgEKAIAQZQESgRAQZgEQRg2AgALCwIACwIACwIACwIACxMAQQRDAADcQzgCAEEIQQQ2AgALEQBBFEEQNgIAQZgEQRg2AgALAgALAgAL",
 }
 `;

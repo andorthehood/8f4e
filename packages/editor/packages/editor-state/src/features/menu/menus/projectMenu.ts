@@ -1,16 +1,16 @@
 import { buildCategoryTree, getNodeAtPath, nodeToMenuItems } from '../categoryTree';
 
-import type { MenuGenerator } from '@8f4e/editor-state-types';
+import type { MenuGenerator, State } from '@8f4e/editor-state-types';
 import type { CategoryItem } from '../categoryTree';
 
-export const projectMenu: MenuGenerator = async (state, payload = {}) => {
+export const projectMenu: MenuGenerator<State> = async (state, payload = {}) => {
 	const { path = [] } = payload as { path?: string[] };
 	if (!state.callbacks.getListOfProjects || !state.callbacks.getProject) {
 		return [];
 	}
 	const projects = await state.callbacks.getListOfProjects();
 
-	const categoryItems: CategoryItem[] = projects.map((project: import('@8f4e/editor-state-types').ProjectMetadata) => ({
+	const categoryItems: CategoryItem[] = projects.map(project => ({
 		title: project.title,
 		slug: project.url,
 		category: project.category,
