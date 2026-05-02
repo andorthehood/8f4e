@@ -9,7 +9,7 @@ export default function drawContextMenu(engine: Engine, state: State): void {
 		return;
 	}
 
-	engine.startGroup(x, y);
+	engine.startGroup(x - state.viewport.x, y - state.viewport.y);
 	for (let i = 0; i < items.length; i++) {
 		engine.startGroup(0, i * state.viewport.hGrid);
 		if (i === highlightedItem && !items[i].disabled && !items[i].divider) {

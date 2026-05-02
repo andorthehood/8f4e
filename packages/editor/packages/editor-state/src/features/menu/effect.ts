@@ -54,10 +54,19 @@ function decorateMenu(menuItems: ContextMenuItem[]) {
 	});
 }
 
+function getMenuViewportPosition(state: State): { x: number; y: number } {
+	const { x, y } = state.graphicHelper.contextMenu;
+	return {
+		x: x - state.viewport.x,
+		y: y - state.viewport.y,
+	};
+}
+
 export default function contextMenu(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	const onMouseMove = (event: MouseEvent) => {
-		const { itemWidth, x, y } = state.graphicHelper.contextMenu;
+		const { itemWidth } = state.graphicHelper.contextMenu;
+		const { x, y } = getMenuViewportPosition(state);
 		state.graphicHelper.contextMenu.highlightedItem = getHighlightedMenuItem(
 			event.x - x,
 			event.y - y,
@@ -106,7 +115,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 
 		state.graphicHelper.contextMenu.highlightedItem = 0;
 
-		const [roundedX, roundedY] = roundToGrid(x, y, state.viewport);
+		const [roundedX, roundedY] = roundToGrid(x + state.viewport.x, y + state.viewport.y, state.viewport);
 		state.graphicHelper.contextMenu.x = roundedX;
 		state.graphicHelper.contextMenu.y = roundedY;
 
