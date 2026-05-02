@@ -33,6 +33,9 @@ export interface MenuStackEntry {
 	payload?: unknown;
 }
 
+/**
+ * Context menu position is stored in editor/world coordinates so it tracks viewport movement.
+ */
 export interface ContextMenu extends Position {
 	highlightedItem: number;
 	itemWidth: number;
