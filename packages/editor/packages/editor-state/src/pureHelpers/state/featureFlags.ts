@@ -12,9 +12,11 @@ export const defaultFeatureFlags: FeatureFlags = {
 	viewportDragging: true,
 	editing: false,
 	modeToggling: true,
+	modeOverlay: true,
 	historyTracking: true,
 	consoleOverlay: true,
 	positionOffsetters: true,
+	offscreenBlockArrows: true,
 };
 
 /**

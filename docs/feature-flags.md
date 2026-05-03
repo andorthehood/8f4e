@@ -10,6 +10,8 @@ The feature flags system allows you to enable/disable specific editor functional
 - `moduleDragging: boolean` - Enable/disable dragging and repositioning of code block modules
 - `viewportDragging: boolean` - Enable/disable panning/scrolling of the editor viewport
 - `editing: boolean` - Enable/disable all editing functionality (create, edit, delete, save)
+- `modeOverlay: boolean` - Enable/disable the mode hint overlay at the top of the viewport
+- `offscreenBlockArrows: boolean` - Enable/disable arrows that point toward off-screen code blocks
 
 ## Usage Examples
 
@@ -106,6 +108,19 @@ const state = init(events, project, {
     infoOverlay: true,      // Also show info overlay
     // Other features remain enabled
   }
+});
+```
+
+### Clean Export Rendering
+
+Screenshots can render one frame with visual guide features disabled while preserving the editor's stored feature flags:
+
+```typescript
+view.renderFrame({
+  featureFlags: {
+    modeOverlay: false,
+    offscreenBlockArrows: false,
+  },
 });
 ```
 

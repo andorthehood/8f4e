@@ -50,6 +50,8 @@ describe('Feature Flags Integration', () => {
 		expect(result).toHaveProperty('viewportDragging');
 		expect(result).toHaveProperty('editing');
 		expect(result).toHaveProperty('modeToggling');
+		expect(result).toHaveProperty('modeOverlay');
+		expect(result).toHaveProperty('offscreenBlockArrows');
 
 		// Should merge correctly
 		expect(result.contextMenu).toBe(false);
@@ -59,6 +61,8 @@ describe('Feature Flags Integration', () => {
 		expect(result.viewportDragging).toBe(true);
 		expect(result.editing).toBe(false);
 		expect(result.modeToggling).toBe(true);
+		expect(result.modeOverlay).toBe(true);
+		expect(result.offscreenBlockArrows).toBe(true);
 	});
 
 	test('should preserve defaults when no mode is configured through feature flags', () => {

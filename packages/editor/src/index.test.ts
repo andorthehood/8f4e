@@ -133,7 +133,12 @@ describe('editor init', () => {
 
 		await initStateOptions.callbacks.exportCanvasScreenshot?.('project.png');
 
-		expect(view.renderFrame).toHaveBeenCalledTimes(1);
+		expect(view.renderFrame).toHaveBeenCalledWith({
+			featureFlags: {
+				modeOverlay: false,
+				offscreenBlockArrows: false,
+			},
+		});
 		expect(canvas.toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/png');
 		expect(exportCanvasScreenshot).toHaveBeenCalledWith(screenshotBlob, 'project.png');
 	});

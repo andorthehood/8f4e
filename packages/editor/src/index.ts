@@ -103,7 +103,12 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			},
 			exportCanvasScreenshot: exportCanvasScreenshot
 				? async (fileName: string) => {
-						view.renderFrame();
+						view.renderFrame({
+							featureFlags: {
+								modeOverlay: false,
+								offscreenBlockArrows: false,
+							},
+						});
 						await exportCanvasScreenshot(await getCanvasPngBlob(canvas), fileName);
 					}
 				: undefined,
