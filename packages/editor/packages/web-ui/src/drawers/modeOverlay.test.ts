@@ -69,4 +69,25 @@ describe('drawModeOverlay', () => {
 			"You're in view mode, press e to edit or p to present"
 		);
 	});
+
+	it('does not draw when the mode overlay feature is disabled', () => {
+		const engine = createMockEngine();
+		const state = createMockState({
+			featureFlags: {
+				modeOverlay: false,
+				modeToggling: true,
+			},
+			editorMode: 'view',
+			graphicHelper: {
+				spriteLookups: {
+					fillColors: {},
+					fontDebugInfo: {},
+				} as never,
+			},
+		});
+
+		drawModeOverlay(engine, state);
+
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).not.toHaveBeenCalled();
+	});
 });

@@ -188,4 +188,42 @@ describe('drawModules', () => {
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(0, 16, '//');
 	});
+
+	it('can skip off-screen arrow indicators', () => {
+		const offscreenBlock = createMockCodeBlock({
+			x: 1200,
+			y: 384,
+			width: 100,
+			height: 80,
+		});
+		const state = createMockState({
+			graphicHelper: {
+				codeBlocks: [offscreenBlock],
+				spriteLookups: {
+					fontArrow: {},
+				} as never,
+			},
+			viewport: {
+				width: 1024,
+				height: 768,
+				vGrid: 8,
+				hGrid: 16,
+				center: { x: 512, y: 384 },
+				borderLineCoordinates: {
+					top: { startX: 0, startY: 0, endX: 1024, endY: 0 },
+					right: { startX: 1024, startY: 0, endX: 1024, endY: 768 },
+					bottom: { startX: 0, startY: 768, endX: 1024, endY: 768 },
+					left: { startX: 0, startY: 0, endX: 0, endY: 768 },
+				},
+			},
+			featureFlags: {
+				offscreenBlockArrows: false,
+			},
+		});
+		const engine = createMockEngine();
+
+		drawModules(engine, state, createMemoryViews());
+
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).not.toHaveBeenCalled();
+	});
 });

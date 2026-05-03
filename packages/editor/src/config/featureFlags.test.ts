@@ -35,6 +35,8 @@ describe('Feature Flags Configuration', () => {
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
 		expect(defaultFeatureFlags.editing).toBe(false);
 		expect(defaultFeatureFlags.modeToggling).toBe(true);
+		expect(defaultFeatureFlags.modeOverlay).toBe(true);
+		expect(defaultFeatureFlags.offscreenBlockArrows).toBe(true);
 	});
 
 	test('validateFeatureFlags should preserve enabled flags when disabled flags are specified', () => {
@@ -50,6 +52,8 @@ describe('Feature Flags Configuration', () => {
 		expect(result.viewportDragging).toBe(true);
 		expect(result.editing).toBe(false);
 		expect(result.modeToggling).toBe(true);
+		expect(result.modeOverlay).toBe(true);
+		expect(result.offscreenBlockArrows).toBe(true);
 	});
 
 	test('validateFeatureFlags should preserve inactive editing unless explicitly enabled', () => {
@@ -88,5 +92,16 @@ describe('Feature Flags Configuration', () => {
 		expect(result.infoOverlay).toBe(false);
 		expect(result.viewportDragging).toBe(true);
 		expect(result.editing).toBe(false);
+	});
+
+	test('validateFeatureFlags should allow disabling visual overlay flags', () => {
+		const result = validateFeatureFlags({
+			modeOverlay: false,
+			offscreenBlockArrows: false,
+		});
+
+		expect(result.modeOverlay).toBe(false);
+		expect(result.offscreenBlockArrows).toBe(false);
+		expect(result.modeToggling).toBe(true);
 	});
 });

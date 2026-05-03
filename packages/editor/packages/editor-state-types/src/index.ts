@@ -164,6 +164,9 @@ export interface FeatureFlags {
 	/** Enable/disable keyboard toggling between view/edit modes (e/Escape) */
 	modeToggling: boolean;
 
+	/** Enable/disable the mode hint overlay at the top of the viewport */
+	modeOverlay: boolean;
+
 	/** Enable/disable history tracking for undo/redo functionality */
 	historyTracking?: boolean;
 
@@ -172,6 +175,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable position offsetters that allow code blocks to be moved via memory values */
 	positionOffsetters: boolean;
+
+	/** Enable/disable arrows that point toward off-screen code blocks */
+	offscreenBlockArrows: boolean;
 }
 
 /**
