@@ -84,20 +84,21 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 
 	const onMouseDown = (event: MouseEvent) => {
 		const { highlightedItem, items } = state.graphicHelper.contextMenu;
+		const item = items[highlightedItem];
 
-		if (items[highlightedItem]) {
-			if (items[highlightedItem].selector) {
-				store.set(items[highlightedItem].selector, items[highlightedItem].value);
-			} else if (items[highlightedItem].action) {
-				events.dispatch(items[highlightedItem].action, {
-					...items[highlightedItem].payload,
+		if (item) {
+			if (item.close) {
+				close();
+			}
+
+			if (item.selector) {
+				store.set(item.selector, item.value);
+			} else if (item.action) {
+				events.dispatch(item.action, {
+					...item.payload,
 					x: event.x,
 					y: event.y,
 				});
-			}
-
-			if (items[highlightedItem].close) {
-				close();
 			}
 		} else {
 			close();

@@ -20,6 +20,7 @@ const view = {
 	loadSpriteSheet: vi.fn(),
 	loadPostProcessEffect: vi.fn(),
 	loadBackgroundEffect: vi.fn(),
+	renderFrame: vi.fn(),
 	clearCache: vi.fn(),
 };
 
@@ -71,6 +72,7 @@ describe('editor init', () => {
 		events.off.mockClear();
 		store.getState.mockClear();
 		view.resize.mockClear();
+		view.renderFrame.mockClear();
 	});
 
 	it('sizes the viewport before loading the session', async () => {
@@ -98,5 +100,41 @@ describe('editor init', () => {
 			['loadSession'],
 		]);
 		expect(view.resize).toHaveBeenCalledWith(640, 480);
+	});
+
+	it('renders one fresh frame before exporting a canvas screenshot', async () => {
+		const { default: init } = await import('./index');
+		const { default: initState } = await import('@8f4e/editor-state');
+		const screenshotBlob = new Blob(['png'], { type: 'image/png' });
+		const exportCanvasScreenshot = vi.fn().mockResolvedValue(undefined);
+		const canvas = {
+			width: 640,
+			height: 480,
+			toBlob: vi.fn((callback: (blob: Blob | null) => void) => callback(screenshotBlob)),
+		} as unknown as HTMLCanvasElement;
+
+		await init(canvas, {
+			runtimeRegistry: {
+				WebWorkerRuntime: {
+					id: 'WebWorkerRuntime',
+					defaults: {},
+					schema: { type: 'object' },
+					factory: () => () => {},
+				},
+			},
+			defaultRuntimeId: 'WebWorkerRuntime',
+			callbacks: {
+				loadSession: async () => null,
+				exportCanvasScreenshot,
+			},
+		});
+
+		const initStateOptions = vi.mocked(initState).mock.calls.at(-1)![1];
+
+		await initStateOptions.callbacks.exportCanvasScreenshot?.('project.png');
+
+		expect(view.renderFrame).toHaveBeenCalledTimes(1);
+		expect(canvas.toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/png');
+		expect(exportCanvasScreenshot).toHaveBeenCalledWith(screenshotBlob, 'project.png');
 	});
 });
