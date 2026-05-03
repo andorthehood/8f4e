@@ -9,7 +9,7 @@ const examplesBaseUrl = 'https://static.llllllllllll.com/8f4e';
 const moduleBaseUrl = `${examplesBaseUrl}/example-modules`;
 const projectBaseUrl = `${examplesBaseUrl}/example-projects`;
 
-const moduleUpperCaseWords = new Set(['lsb', 'msb', 'midi', 'pcm', 'cga', 'xor']);
+const moduleUpperCaseWords = new Set(['lsb', 'msb', 'midi', 'pcm', 'cga', 'crt', 'xor']);
 const modulePreserveCaseWords = new Set(['8bit', '16bit', '32bit']);
 const projectUpperCaseWords = new Set(['lt', 'fm', 'xor']);
 
