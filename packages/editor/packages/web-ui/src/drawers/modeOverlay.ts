@@ -23,7 +23,7 @@ export default function drawModeOverlay(engine: Engine, state: State): void {
 		return;
 	}
 
-	if (!state.featureFlags.modeToggling) {
+	if (!state.featureFlags.modeOverlay || !state.featureFlags.modeToggling) {
 		return;
 	}
 

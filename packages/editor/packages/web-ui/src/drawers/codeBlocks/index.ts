@@ -145,7 +145,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawDebuggers(engine, state, codeBlock, memoryViews);
 
 			engine.endGroup();
-		} else {
+		} else if (state.featureFlags.offscreenBlockArrows) {
 			// Module is off-screen, draw arrow indicators
 			drawArrow(engine, codeBlock, state);
 		}
