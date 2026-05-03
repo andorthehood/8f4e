@@ -39,4 +39,35 @@ describe('contextMenu effect', () => {
 
 		expect(state.graphicHelper.contextMenu.highlightedItem).toBe(1);
 	});
+
+	it('closes the menu before dispatching closeable actions', async () => {
+		const state = createMockState({
+			callbacks: { exportCanvasScreenshot: async () => {} },
+		});
+		const store = createStateManager(state as State);
+		const events = createMockEventDispatcherWithVitest();
+		let menuWasOpenWhenScreenshotDispatched: boolean | undefined;
+
+		(events.dispatch as unknown as MockInstance).mockImplementation(action => {
+			if (action === 'exportCanvasScreenshot') {
+				menuWasOpenWhenScreenshotDispatched = state.graphicHelper.contextMenu.open;
+			}
+		});
+
+		contextMenu(store, events);
+
+		const onCalls = (events.on as unknown as MockInstance).mock.calls;
+		const onContextMenu = onCalls.find(call => call[0] === 'contextmenu')![1];
+
+		await onContextMenu({ x: 100, y: 112 });
+
+		state.graphicHelper.contextMenu.highlightedItem = state.graphicHelper.contextMenu.items.findIndex(
+			item => item.action === 'exportCanvasScreenshot'
+		);
+
+		const onMouseDown = (events.on as unknown as MockInstance).mock.calls.find(call => call[0] === 'mousedown')![1];
+		onMouseDown({ x: 100, y: 112 });
+
+		expect(menuWasOpenWhenScreenshotDispatched).toBe(false);
+	});
 });

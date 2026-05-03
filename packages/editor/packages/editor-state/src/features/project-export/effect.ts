@@ -74,6 +74,19 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		});
 	}
 
+	function onExportCanvasScreenshot() {
+		if (!state.callbacks.exportCanvasScreenshot) {
+			console.warn('No exportCanvasScreenshot callback provided');
+			return;
+		}
+
+		const fileName = `${getExportBaseName()}.png`;
+
+		state.callbacks.exportCanvasScreenshot(fileName).catch(error => {
+			console.error('Failed to export canvas screenshot:', error);
+		});
+	}
+
 	store.subscribe('graphicHelper.codeBlocks', onSaveSession);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveSession);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
@@ -81,4 +94,5 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	events.on('saveSession', onSaveSession);
 	events.on('exportProject', onExportProject);
 	events.on('exportWasm', onExportWasm);
+	events.on('exportCanvasScreenshot', onExportCanvasScreenshot);
 }
