@@ -20,6 +20,7 @@ import font from './features/font/effect';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
 import projectExport from './features/project-export/effect';
+import canvasScreenshot from './features/canvas-screenshot/effect';
 import viewport from './features/viewport/effect';
 import runtime from './features/runtime/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
@@ -68,6 +69,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	font(store);
 	color(store);
 	projectExport(store, events);
+	canvasScreenshot(store, events);
 
 	runtime(store, events);
 	editorMode(store, events);

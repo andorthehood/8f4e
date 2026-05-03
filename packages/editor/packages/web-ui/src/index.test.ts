@@ -57,7 +57,7 @@ vi.mock('./drawers/modeOverlay', () => ({
 }));
 
 describe('web-ui init', () => {
-	it('applies feature flag overrides to one-shot render frames', async () => {
+	it('renders one frame with the current state on demand', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState();
 		const memoryViews = {
@@ -77,23 +77,11 @@ describe('web-ui init', () => {
 			characterHeight: 16,
 		});
 
-		view.renderFrame({
-			featureFlags: {
-				modeOverlay: false,
-				offscreenBlockArrows: false,
-			},
-		});
+		view.renderFrame();
 
 		const frameState = mocks.drawCodeBlocks.mock.calls.at(-1)?.[1];
 
-		expect(frameState).not.toBe(state);
-		expect(frameState.featureFlags).toEqual({
-			...state.featureFlags,
-			modeOverlay: false,
-			offscreenBlockArrows: false,
-		});
-		expect(state.featureFlags.modeOverlay).toBe(true);
-		expect(state.featureFlags.offscreenBlockArrows).toBe(true);
+		expect(frameState).toBe(state);
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(mocks.engine, frameState);
 	});
 });
