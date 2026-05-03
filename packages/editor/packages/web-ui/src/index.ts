@@ -8,7 +8,7 @@ import drawDialog from './drawers/dialog';
 import drawModeOverlay from './drawers/modeOverlay';
 import drawBackground from './drawers/drawBackground';
 
-import type { FeatureFlagsConfig, State } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from './types';
 
 // Re-export types
@@ -21,10 +21,6 @@ export interface SpriteData {
 	characterHeight: number;
 }
 
-export interface RenderFrameOptions {
-	featureFlags?: FeatureFlagsConfig;
-}
-
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement,
@@ -35,34 +31,23 @@ export default async function init(
 	loadSpriteSheet: (spriteData: SpriteData) => void;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
 	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
-	renderFrame: (options?: RenderFrameOptions) => void;
+	renderFrame: () => void;
 	clearCache: () => void;
 }> {
 	const engine = new Engine(canvas, { caching: true });
 
 	engine.loadSpriteSheet(spriteData.canvas);
 
-	const drawFrame = ({ featureFlags }: RenderFrameOptions = {}) => {
-		const frameState =
-			featureFlags === undefined
-				? state
-				: {
-						...state,
-						featureFlags: {
-							...state.featureFlags,
-							...featureFlags,
-						},
-					};
-
-		drawBackground(engine, frameState);
-		drawCodeBlocks(engine, frameState, memoryViews);
-		drawConnections(engine, frameState, memoryViews);
-		drawContextMenu(engine, frameState);
-		drawModeOverlay(engine, frameState);
-		drawDialog(engine, frameState);
+	const drawFrame = () => {
+		drawBackground(engine, state);
+		drawCodeBlocks(engine, state, memoryViews);
+		drawConnections(engine, state, memoryViews);
+		drawContextMenu(engine, state);
+		drawModeOverlay(engine, state);
+		drawDialog(engine, state);
 	};
 
-	engine.render(() => drawFrame());
+	engine.render(drawFrame);
 
 	return {
 		resize: (width, height) => {
@@ -85,8 +70,8 @@ export default async function init(
 				engine.clearBackgroundEffect();
 			}
 		},
-		renderFrame: options => {
-			engine.renderFrame(() => drawFrame(options));
+		renderFrame: () => {
+			engine.renderFrame(drawFrame);
 		},
 		clearCache: () => {
 			engine.clearAllCache();

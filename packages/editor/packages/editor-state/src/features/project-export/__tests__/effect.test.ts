@@ -51,14 +51,6 @@ describe('projectExport', () => {
 			expect(saveSessionCall).toBeDefined();
 		});
 
-		it('should register exportCanvasScreenshot event handler', () => {
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportCanvasScreenshotCall = onCalls.find(call => call[0] === 'exportCanvasScreenshot');
-			expect(exportCanvasScreenshotCall).toBeDefined();
-		});
-
 		it('should subscribe to code changes for auto-saving', () => {
 			const subscribeSpy = vi.spyOn(store, 'subscribe');
 
@@ -157,21 +149,6 @@ describe('projectExport', () => {
 			exportWasmCallback();
 
 			expect(mockExportBinaryCode).toHaveBeenCalledWith('my-project.wasm');
-		});
-
-		it('should use custom exportFileName as base for screenshot export', async () => {
-			const mockExportCanvasScreenshot = vi.fn().mockResolvedValue(undefined);
-			mockState.callbacks.exportCanvasScreenshot = mockExportCanvasScreenshot;
-			mockState.editorConfig.export = { fileName: 'my-project' };
-
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportCanvasScreenshotCallback = onCalls.find(call => call[0] === 'exportCanvasScreenshot')![1];
-
-			exportCanvasScreenshotCallback();
-
-			expect(mockExportCanvasScreenshot).toHaveBeenCalledWith('my-project.png');
 		});
 
 		it('should strip .wasm suffix from exportFileName to prevent double extension', async () => {

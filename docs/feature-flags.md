@@ -113,16 +113,8 @@ const state = init(events, project, {
 
 ### Clean Export Rendering
 
-Screenshots can render one frame with visual guide features disabled while preserving the editor's stored feature flags:
-
-```typescript
-view.renderFrame({
-  featureFlags: {
-    modeOverlay: false,
-    offscreenBlockArrows: false,
-  },
-});
-```
+Screenshot export temporarily disables visual guide features such as `modeOverlay` and `offscreenBlockArrows` through
+editor-state before rendering the capture frame.
 
 Console overlay features:
 - Displays internal editor logs on the right side of the screen
