@@ -51,15 +51,35 @@ export interface Editor {
 
 interface Options {
 	featureFlags?: Partial<State['featureFlags']>;
-	callbacks: Omit<Callbacks, 'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText'>;
+	callbacks: Omit<
+		Callbacks,
+		'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText' | 'exportCanvasScreenshot'
+	> & {
+		exportCanvasScreenshot?: (blob: Blob, fileName: string) => Promise<void>;
+	};
 	runtimeRegistry: RuntimeRegistry;
 	defaultRuntimeId: string;
+}
+
+async function getCanvasPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
+	return new Promise<Blob>((resolve, reject) => {
+		canvas.toBlob(result => {
+			if (!result) {
+				reject(new Error('Failed to encode canvas as PNG'));
+				return;
+			}
+
+			resolve(result);
+		}, 'image/png');
+	});
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
 	const { memoryViews, updateMemoryViews } = createMemoryViewManager(new ArrayBuffer(0));
 	const events = initEvents();
 	let store: ReturnType<typeof initState>;
+	let view: Awaited<ReturnType<typeof initView>>;
+	const exportCanvasScreenshot = options.callbacks.exportCanvasScreenshot;
 
 	store = initState(events, {
 		...options,
@@ -81,6 +101,12 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			writeClipboardText: async (text: string) => {
 				await navigator.clipboard.writeText(text);
 			},
+			exportCanvasScreenshot: exportCanvasScreenshot
+				? async (fileName: string) => {
+						view.renderFrame();
+						await exportCanvasScreenshot(await getCanvasPngBlob(canvas), fileName);
+					}
+				: undefined,
 			requestAnimationFrame: callback => window.requestAnimationFrame(callback),
 			cancelAnimationFrame: id => window.cancelAnimationFrame(id),
 		},
@@ -103,7 +129,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	updateStateWithSpriteData(state, spriteData);
 
-	const view = await initView(state, canvas, memoryViews, spriteData);
+	view = await initView(state, canvas, memoryViews, spriteData);
 
 	createSpriteSheetManager(store, view, events);
 

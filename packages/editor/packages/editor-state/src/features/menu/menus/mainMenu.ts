@@ -71,4 +71,10 @@ export const mainMenu: MenuGenerator = state => [
 		close: true,
 		disabled: !state.callbacks.exportBinaryCode,
 	},
+	{
+		title: 'Take Screenshot',
+		action: 'exportCanvasScreenshot',
+		close: true,
+		disabled: !state.callbacks.exportCanvasScreenshot,
+	},
 ];

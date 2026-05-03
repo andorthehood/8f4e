@@ -31,20 +31,23 @@ export default async function init(
 	loadSpriteSheet: (spriteData: SpriteData) => void;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
 	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
+	renderFrame: () => void;
 	clearCache: () => void;
 }> {
 	const engine = new Engine(canvas, { caching: true });
 
 	engine.loadSpriteSheet(spriteData.canvas);
 
-	engine.render(function () {
+	const drawFrame = () => {
 		drawBackground(engine, state);
 		drawCodeBlocks(engine, state, memoryViews);
 		drawConnections(engine, state, memoryViews);
 		drawContextMenu(engine, state);
 		drawModeOverlay(engine, state);
 		drawDialog(engine, state);
-	});
+	};
+
+	engine.render(drawFrame);
 
 	return {
 		resize: (width, height) => {
@@ -66,6 +69,9 @@ export default async function init(
 			} else {
 				engine.clearBackgroundEffect();
 			}
+		},
+		renderFrame: () => {
+			engine.renderFrame(drawFrame);
 		},
 		clearCache: () => {
 			engine.clearAllCache();

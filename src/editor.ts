@@ -9,6 +9,7 @@ import {
 	importProject,
 	exportProject,
 	exportBinaryCode,
+	exportCanvasScreenshot,
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
@@ -63,6 +64,7 @@ async function init(options: InitOptions = {}) {
 			importProject,
 			exportProject,
 			exportBinaryCode,
+			exportCanvasScreenshot,
 		},
 	});
 
