@@ -11,11 +11,11 @@ import {
 	createTypeSection,
 	Type,
 	call,
-	f32store,
-	f64store,
-	i32store,
-	i32store16,
-	i32store8,
+	i32const,
+	memoryInit,
+	createDataCountSection,
+	createDataSection,
+	createPassiveDataSegment,
 	WASM_MEMORY_PAGE_SIZE,
 } from '@8f4e/compiler-wasm-utils';
 
@@ -38,6 +38,7 @@ import type {
 	DataStructure,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
+	InternalResource,
 	Module,
 	Namespaces,
 } from '@8f4e/compiler-types';
@@ -98,41 +99,94 @@ export function compileModules(
 	});
 }
 
-export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {
-	return compiledModules.map(module => {
-		const instructions: number[] = [];
-
-		Object.values(module.memoryMap).forEach(memory => {
-			if (memory.numberOfElements > 1 && typeof memory.default === 'object') {
-				Object.entries(memory.default).forEach(([relativeWordAddress, value]) => {
-					const elementByteAddress = memory.byteAddress + parseInt(relativeWordAddress, 10) * memory.elementWordSize;
-					instructions.push(...createMemoryDefaultStore(memory, elementByteAddress, value));
-				});
-			} else if (memory.numberOfElements === 1 && memory.default !== 0) {
-				instructions.push(...createMemoryDefaultStore(memory, memory.byteAddress, memory.default as number));
-			}
-		});
-
-		instructions.push(...module.initFunctionBody);
-
-		return createFunction([], instructions);
-	});
+export interface InitialMemoryDataSegment {
+	byteAddress: number;
+	bytes: Uint8Array;
 }
 
-function createMemoryDefaultStore(memory: DataStructure, byteAddress: number, value: number) {
-	if (memory.elementWordSize === 8) {
-		return f64store(byteAddress, value);
-	}
-
+function writeDefaultValue(
+	view: DataView,
+	memory: Pick<DataStructure, 'isInteger' | 'isUnsigned' | 'elementWordSize'>,
+	byteAddress: number,
+	value: number
+) {
 	if (memory.isInteger && memory.elementWordSize === 1) {
-		return i32store8(byteAddress, Math.trunc(value));
+		if (memory.isUnsigned) {
+			view.setUint8(byteAddress, Math.trunc(value));
+		} else {
+			view.setInt8(byteAddress, Math.trunc(value));
+		}
+		return;
 	}
 
 	if (memory.isInteger && memory.elementWordSize === 2) {
-		return i32store16(byteAddress, Math.trunc(value));
+		if (memory.isUnsigned) {
+			view.setUint16(byteAddress, Math.trunc(value), true);
+		} else {
+			view.setInt16(byteAddress, Math.trunc(value), true);
+		}
+		return;
 	}
 
-	return memory.isInteger ? i32store(byteAddress, value) : f32store(byteAddress, value);
+	if (memory.elementWordSize === 8 && !memory.isInteger) {
+		view.setFloat64(byteAddress, value, true);
+		return;
+	}
+
+	if (memory.isInteger) {
+		view.setInt32(byteAddress, Math.trunc(value), true);
+		return;
+	}
+
+	view.setFloat32(byteAddress, value, true);
+}
+
+function writeInternalResourceDefault(view: DataView, resource: InternalResource) {
+	if (resource.storageType === 'float64') {
+		view.setFloat64(resource.byteAddress, resource.default, true);
+		return;
+	}
+
+	if (resource.storageType === 'float') {
+		view.setFloat32(resource.byteAddress, resource.default, true);
+		return;
+	}
+
+	view.setInt32(resource.byteAddress, Math.trunc(resource.default), true);
+}
+
+export function createInitialMemoryDataSegments(
+	compiledModules: CompiledModule[],
+	requiredMemoryBytes: number
+): InitialMemoryDataSegment[] {
+	const bytes = new Uint8Array(requiredMemoryBytes);
+	const view = new DataView(bytes.buffer);
+
+	for (const module of compiledModules) {
+		for (const memory of Object.values(module.memoryMap)) {
+			if (memory.numberOfElements > 1 && typeof memory.default === 'object') {
+				for (const [elementIndex, value] of Object.entries(memory.default)) {
+					writeDefaultValue(
+						view,
+						memory,
+						memory.byteAddress + parseInt(elementIndex, 10) * memory.elementWordSize,
+						value
+					);
+				}
+				continue;
+			}
+
+			if (typeof memory.default === 'number') {
+				writeDefaultValue(view, memory, memory.byteAddress, memory.default);
+			}
+		}
+
+		for (const resource of Object.values(module.internalResources ?? {})) {
+			writeInternalResourceDefault(view, resource);
+		}
+	}
+
+	return [{ byteAddress: 0, bytes }];
 }
 
 function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
@@ -256,15 +310,16 @@ export default function compile(
 	);
 	const initOnlyFunction = createFunction([], initOnlyModuleCalls);
 
+	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules, requiredMemoryBytes);
 	const memoryInitiatorFunction = [
-		// First, call all memory initialization functions
-		...compiledModules
-			.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
-			.flat(),
-		// Then, call init-only module cycle functions
+		...initialMemoryDataSegments.flatMap((segment, index) => [
+			...i32const(segment.byteAddress),
+			...i32const(0),
+			...i32const(segment.bytes.length),
+			...memoryInit(index, 0),
+		]),
 		...initOnlyModuleCalls,
 	];
-	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
 
 	// Apply defaults for buffer options
 	const bufferSize = options.bufferSize ?? 128;
@@ -295,21 +350,14 @@ export default function compile(
 			...createImportSection([
 				createMemoryImport('js', 'memory', memorySizePages, memorySizePages, !options.disableSharedMemory),
 			]),
-			...createFunctionSection([
-				0x00,
-				0x00,
-				0x00,
-				0x00,
-				...userFunctionSignatureIndices,
-				...functionSignatures,
-				...functionSignatures,
-			]),
+			...createFunctionSection([0x00, 0x00, 0x00, 0x00, ...userFunctionSignatureIndices, ...functionSignatures]),
 			...createExportSection([
 				createFunctionExport('init', 0x00),
 				createFunctionExport('cycle', 0x01),
 				createFunctionExport('initOnly', 0x02),
 				createFunctionExport('buffer', 0x03),
 			]),
+			...createDataCountSection(initialMemoryDataSegments.length),
 			...createCodeSection([
 				createFunction([], memoryInitiatorFunction),
 				createFunction([], cycleFunction),
@@ -317,8 +365,8 @@ export default function compile(
 				bufferFunction,
 				...compiledFunctions.map(func => func.body),
 				...cycleFunctions,
-				...memoryInitiatorFunctions,
 			]),
+			...createDataSection(initialMemoryDataSegments.map(segment => createPassiveDataSegment(segment.bytes))),
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
