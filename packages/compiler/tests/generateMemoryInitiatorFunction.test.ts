@@ -3,14 +3,21 @@ import { describe, test, expect } from 'vitest';
 
 import modules from './__fixtures__/modules';
 
-import { compileModules, generateMemoryInitiatorFunctions } from '../src';
+import { compileModules, createInitialMemoryDataSegments } from '../src';
+
+function serializeSegments(segments: ReturnType<typeof createInitialMemoryDataSegments>) {
+	return segments.map(segment => ({
+		byteAddress: segment.byteAddress,
+		bytes: Array.from(segment.bytes),
+	}));
+}
 
 describe('compiler', () => {
-	test('generateMemoryInitiatorFunction', () => {
+	test('createInitialMemoryDataSegments', () => {
 		const astModules = modules.map(({ code }) => compileToAST(code));
 		const compiledModules = compileModules(astModules, {
 			startingMemoryWordAddress: 0,
 		});
-		expect(generateMemoryInitiatorFunctions(compiledModules)).toMatchSnapshot();
+		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toMatchSnapshot();
 	});
 });
