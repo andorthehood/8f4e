@@ -29,6 +29,7 @@ type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> 
 	arguments: Arguments;
 	isSemanticOnly?: boolean;
 	isMemoryDeclaration?: boolean;
+	hasExplicitMemoryDefault?: boolean;
 	ifBlock?: IfBlockMetadata;
 	ifEndBlock?: IfEndBlockMetadata;
 	blockBlock?: BlockBlockMetadata;

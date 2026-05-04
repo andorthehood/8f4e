@@ -25,6 +25,7 @@ describe('parseLine', () => {
 				lineNumberAfterMacroExpansion: 1,
 				isSemanticOnly: false,
 				isMemoryDeclaration: true,
+				hasExplicitMemoryDefault: true,
 			},
 		],
 		[
@@ -61,6 +62,14 @@ describe('parseLine', () => {
 	it('leaves runtime/codegen instructions unflagged', () => {
 		expect(parseLine('push 1', 0).isSemanticOnly).toBe(false);
 		expect(parseLine('int value 1', 0).isSemanticOnly).toBe(false);
+	});
+
+	it('marks explicit memory defaults from source syntax', () => {
+		expect(parseLine('int value', 0).hasExplicitMemoryDefault).toBe(false);
+		expect(parseLine('int value 0', 0).hasExplicitMemoryDefault).toBe(true);
+		expect(parseLine('int 0', 0).hasExplicitMemoryDefault).toBe(true);
+		expect(parseLine('int[] buffer 4', 0).hasExplicitMemoryDefault).toBe(false);
+		expect(parseLine('int[] buffer 4 0', 0).hasExplicitMemoryDefault).toBe(true);
 	});
 
 	it('rejects wrong arity and raw argument shape in tokenizer', () => {

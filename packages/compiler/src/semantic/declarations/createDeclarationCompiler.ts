@@ -56,6 +56,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 					byteAddress: getByteAddressFromWordOffset(context.startingByteAddress, localWordOffset),
 					id,
 					default: finalDefault,
+					hasExplicitDefault: line.hasExplicitMemoryDefault === true,
 					type: line.instruction as unknown as MemoryTypes,
 					...flags,
 				};
@@ -76,6 +77,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 					byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 					id,
 					default: finalDefault,
+					hasExplicitDefault: line.hasExplicitMemoryDefault === true,
 					type: line.instruction as unknown as MemoryTypes,
 					...flags,
 				};
