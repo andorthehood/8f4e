@@ -39,7 +39,7 @@ describe('createInitialMemoryDataSegments', () => {
 			}),
 		];
 
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules, 36))).toEqual([
+		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([
 			{
 				byteAddress: 0,
 				bytes: [0, 0, 0, 0],
@@ -69,7 +69,7 @@ describe('createInitialMemoryDataSegments', () => {
 			}),
 		];
 
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules, 16))).toEqual([
+		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([
 			{
 				byteAddress: 12,
 				bytes: [0, 0, 0, 0],
