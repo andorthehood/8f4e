@@ -1,3 +1,4 @@
+import materializeByteChunks from './materializeByteChunks';
 import writeDefaultValue from './writeDefaultValue';
 
 import type { InitialMemoryDataSegmentCandidate } from './types';
@@ -27,32 +28,53 @@ export default function createMemoryDataSegmentCandidate(memory: DataStructure):
 }
 
 function createArrayDataSegmentCandidates(memory: DataStructure): InitialMemoryDataSegmentCandidate[] {
-	return Object.entries(memory.default as Record<string, number>)
-		.sort(([leftIndex], [rightIndex]) => parseInt(leftIndex, 10) - parseInt(rightIndex, 10))
-		.reduce<InitialMemoryDataSegmentCandidate[]>((segments, [elementIndex, value]) => {
-			const bytes = createDefaultValueBytes(memory, value);
-			if (bytes.every(byte => byte === 0)) {
-				return segments;
-			}
+	const segments: InitialMemoryDataSegmentCandidate[] = [];
+	let runByteAddress = 0;
+	let runByteLength = 0;
+	let runChunks: Uint8Array[] = [];
+	let nextRunByteAddress: number | undefined;
 
-			const byteAddress = memory.byteAddress + parseInt(elementIndex, 10) * memory.elementWordSize;
-			const previousSegment = segments.at(-1);
-			if (!previousSegment || previousSegment.byteAddress + previousSegment.bytes.length !== byteAddress) {
-				segments.push({
-					byteAddress,
-					bytes,
-					sourceKind: 'array',
-				});
-				return segments;
-			}
+	const flushRun = () => {
+		if (runChunks.length === 0) {
+			return;
+		}
 
-			const mergedBytes = new Uint8Array(previousSegment.bytes.length + bytes.length);
-			mergedBytes.set(previousSegment.bytes, 0);
-			mergedBytes.set(bytes, previousSegment.bytes.length);
-			previousSegment.bytes = mergedBytes;
+		segments.push({
+			byteAddress: runByteAddress,
+			bytes: materializeByteChunks(runChunks, runByteLength),
+			sourceKind: 'array',
+		});
+		runByteLength = 0;
+		runChunks = [];
+		nextRunByteAddress = undefined;
+	};
 
-			return segments;
-		}, []);
+	for (const { elementIndex, value } of Object.entries(memory.default as Record<string, number>)
+		.map(([elementIndex, value]) => ({
+			elementIndex: parseInt(elementIndex, 10),
+			value,
+		}))
+		.sort((left, right) => left.elementIndex - right.elementIndex)) {
+		const bytes = createDefaultValueBytes(memory, value);
+		if (bytes.every(byte => byte === 0)) {
+			flushRun();
+			continue;
+		}
+
+		const byteAddress = memory.byteAddress + elementIndex * memory.elementWordSize;
+		if (nextRunByteAddress !== byteAddress) {
+			flushRun();
+			runByteAddress = byteAddress;
+		}
+
+		runChunks.push(bytes);
+		runByteLength += bytes.length;
+		nextRunByteAddress = byteAddress + bytes.length;
+	}
+
+	flushRun();
+
+	return segments;
 }
 
 function createDefaultValueBytes(memory: DataStructure, value: number): Uint8Array {

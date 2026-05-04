@@ -1,3 +1,5 @@
+import materializeByteChunks from './materializeByteChunks';
+
 import type { InitialMemoryDataSegment } from './types';
 
 export const MAX_ZERO_GAP_BYTES_TO_MERGE = 32;
@@ -5,28 +7,43 @@ export const MAX_ZERO_GAP_BYTES_TO_MERGE = 32;
 export default function mergeAdjacentInitialMemoryDataSegments(
 	segments: InitialMemoryDataSegment[]
 ): InitialMemoryDataSegment[] {
-	return [...segments]
-		.sort((left, right) => left.byteAddress - right.byteAddress)
-		.reduce<InitialMemoryDataSegment[]>((mergedSegments, segment) => {
-			const previousSegment = mergedSegments.at(-1);
-			const previousSegmentEnd = previousSegment
-				? previousSegment.byteAddress + previousSegment.bytes.length
-				: undefined;
-			const gapByteLength = previousSegmentEnd === undefined ? 0 : segment.byteAddress - previousSegmentEnd;
+	const mergedSegments: InitialMemoryDataSegment[] = [];
+	let segmentByteAddress = 0;
+	let segmentByteLength = 0;
+	let segmentChunks: Array<Uint8Array | number> = [];
+	let nextSegmentByteAddress: number | undefined;
 
-			if (!previousSegment || gapByteLength > MAX_ZERO_GAP_BYTES_TO_MERGE) {
-				mergedSegments.push({
-					byteAddress: segment.byteAddress,
-					bytes: segment.bytes.slice(),
-				});
-				return mergedSegments;
-			}
+	const flushSegment = () => {
+		if (segmentChunks.length === 0) {
+			return;
+		}
 
-			const mergedBytes = new Uint8Array(previousSegment.bytes.length + gapByteLength + segment.bytes.length);
-			mergedBytes.set(previousSegment.bytes, 0);
-			mergedBytes.set(segment.bytes, previousSegment.bytes.length + gapByteLength);
-			previousSegment.bytes = mergedBytes;
+		mergedSegments.push({
+			byteAddress: segmentByteAddress,
+			bytes: materializeByteChunks(segmentChunks, segmentByteLength),
+		});
+		segmentByteLength = 0;
+		segmentChunks = [];
+		nextSegmentByteAddress = undefined;
+	};
 
-			return mergedSegments;
-		}, []);
+	for (const segment of [...segments].sort((left, right) => left.byteAddress - right.byteAddress)) {
+		const gapByteLength = nextSegmentByteAddress === undefined ? 0 : segment.byteAddress - nextSegmentByteAddress;
+
+		if (segmentChunks.length === 0 || gapByteLength > MAX_ZERO_GAP_BYTES_TO_MERGE) {
+			flushSegment();
+			segmentByteAddress = segment.byteAddress;
+		} else if (gapByteLength > 0) {
+			segmentChunks.push(gapByteLength);
+			segmentByteLength += gapByteLength;
+		}
+
+		segmentChunks.push(segment.bytes);
+		segmentByteLength += segment.bytes.length;
+		nextSegmentByteAddress = segment.byteAddress + segment.bytes.length;
+	}
+
+	flushSegment();
+
+	return mergedSegments;
 }
