@@ -12,6 +12,7 @@ import {
 	Type,
 	call,
 	i32const,
+	memoryFill,
 	memoryInit,
 	createDataCountSection,
 	createDataSection,
@@ -223,6 +224,9 @@ export default function compile(
 
 	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules);
 	const memoryInitiatorFunction = [
+		...(requiredMemoryBytes > 0
+			? [...i32const(0), ...i32const(0), ...i32const(requiredMemoryBytes), ...memoryFill(0)]
+			: []),
 		...initialMemoryDataSegments.flatMap((segment, index) => [
 			...i32const(segment.byteAddress),
 			...i32const(0),

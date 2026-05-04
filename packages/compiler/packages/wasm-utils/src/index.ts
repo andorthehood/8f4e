@@ -1,4 +1,5 @@
 export { default as call } from './call/call';
+export { default as memoryFill } from './bulkMemory/memoryFill';
 export { default as memoryInit } from './bulkMemory/memoryInit';
 export { default as createCodeSection } from './codeSection/createCodeSection';
 export { default as createFunction } from './codeSection/createFunction';

@@ -24,6 +24,13 @@ enum WASMMiscInstruction {
 	 * Stack: destination memory offset, source data offset, byte count.
 	 */
 	MEMORY_INIT = 0x08,
+
+	/**
+	 * Bulk-memory fill of linear memory with a byte value.
+	 * Full instruction encoding: 0xfc 0x0b <memidx>
+	 * Stack: destination memory offset, fill byte value, byte count.
+	 */
+	MEMORY_FILL = 0x0b,
 }
 
 export default WASMMiscInstruction;
