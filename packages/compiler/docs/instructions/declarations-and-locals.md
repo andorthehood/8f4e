@@ -177,6 +177,7 @@ The int[] instruction declares a buffer of integers in module memory. Variants i
 Unsigned variants (`int8u[]`, `int16u[]`) interpret values as unsigned integers (0-255 for int8u, 0-65535 for int16u) in debuggers, plotters, and when using min/max prefixes.
 Buffer size arguments also support constant expressions with exactly one operator (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
 Trailing values initialize array elements from index 0 onward. Omitted elements remain zero-initialized, and the initializer list must not be longer than the declared element count.
+The compiler may encode these initializer values sparsely in WebAssembly passive data segments; this does not change the runtime memory image after `init()`.
 
 #### Examples
 
