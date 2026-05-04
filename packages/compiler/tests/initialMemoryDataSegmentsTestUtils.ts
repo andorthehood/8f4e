@@ -34,13 +34,15 @@ export function createInternalResource(
 }
 
 export function createCompiledModule(overrides: Partial<CompiledModule>): CompiledModule {
+	const byteAddress = overrides.byteAddress ?? 0;
+
 	return {
 		index: 0,
 		initFunctionBody: [],
 		cycleFunction: [],
 		id: 'test',
-		byteAddress: 0,
-		wordAlignedAddress: 0,
+		byteAddress,
+		wordAlignedAddress: byteAddress / 4,
 		memoryMap: {},
 		wordAlignedSize: 0,
 		...overrides,
