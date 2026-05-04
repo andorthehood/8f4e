@@ -10,7 +10,7 @@ import validateInstructionArguments from './syntax/validateInstructionArguments'
 import { hashSource } from './cache';
 
 import type { AST, ASTLine, BlockBlockResultType, IfBlockResultType, ParsedLineMetadata } from './types';
-import type { ASTCache } from './cache';
+import type { InternalASTCache } from './cache';
 
 type BlockStartInstruction = 'if' | 'block' | 'loop' | 'function' | 'module' | 'constants' | 'mapBegin';
 type BlockEndInstruction = 'ifEnd' | 'blockEnd' | 'loopEnd' | 'functionEnd' | 'moduleEnd' | 'constantsEnd' | 'mapEnd';
@@ -172,7 +172,7 @@ export function parseLine(
 export function compileToAST(
 	code: string[],
 	lineMetadata?: ParsedLineMetadata,
-	cache?: ASTCache,
+	cache?: InternalASTCache,
 	cacheKey?: string
 ): AST {
 	const hash = cache && cacheKey !== undefined ? hashSource(code, lineMetadata) : undefined;
