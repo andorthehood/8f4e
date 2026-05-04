@@ -7,11 +7,13 @@ import type {
 	CompileAndUpdateMemoryResult,
 	CompileOptions,
 	CompiledModuleLookup,
+	CompilerCache,
 	GetOrCreateWasmInstanceResult,
 	Module,
 } from '@8f4e/compiler-types';
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
+let compilerCache: CompilerCache | undefined;
 
 let wasmInstanceRef: WebAssembly.Instance | null = null;
 
@@ -42,12 +44,14 @@ export default async function compileAndUpdateMemory(
 	functions?: Module[],
 	macros?: Module[]
 ): Promise<CompileAndUpdateMemoryResult> {
-	const { codeBuffer, compiledModules, requiredMemoryBytes, compiledFunctions } = compile(
+	const { codeBuffer, compiledModules, requiredMemoryBytes, compiledFunctions, cache } = compile(
 		modules,
 		compilerOptions,
 		functions,
-		macros
+		macros,
+		compilerCache
 	);
+	compilerCache = cache;
 	const allocatedMemoryBytes = deriveEffectiveMemorySize(requiredMemoryBytes);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
@@ -126,6 +130,7 @@ export default async function compileAndUpdateMemory(
 		compiledFunctions,
 		requiredMemoryBytes,
 		allocatedMemoryBytes,
+		astCacheStats: { ...cache.ast.stats },
 		memoryRef,
 		hasWasmInstanceBeenReset,
 		memoryAction,
