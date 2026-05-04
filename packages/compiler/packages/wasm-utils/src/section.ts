@@ -6,6 +6,8 @@ export enum Section {
 	MEMORY = 0x05,
 	EXPORT = 0x07,
 	CODE = 0x0a,
+	DATA = 0x0b,
+	DATA_COUNT = 0x0c,
 }
 
 export enum NameSection {
@@ -28,5 +30,6 @@ export type FunctionType = number[];
 export type FunctionName = number[];
 export type LocalName = number[];
 export type Import = number[];
+export type DataSegment = number[];
 
 export default Section;

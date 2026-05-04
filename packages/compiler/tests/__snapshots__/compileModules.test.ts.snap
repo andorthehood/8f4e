@@ -366,6 +366,7 @@ exports[`compiler > compileModules 1`] = `
     "index": 0,
     "initFunctionBody": [],
     "initOnlyExecution": undefined,
+    "internalResources": undefined,
     "memoryMap": {
       "defaultValue": {
         "byteAddress": 0,
