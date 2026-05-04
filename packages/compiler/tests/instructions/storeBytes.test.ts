@@ -98,8 +98,7 @@ describe('storeBytes with count 0 drops the address', () => {
 	test('storeBytes 0 compiles and leaves memory unchanged', async () => {
 		const ast = compileToAST(
 			`module storeBytes0
-int dest
-init dest 42
+int dest 42
 push &dest
 storeBytes 0
 moduleEnd`.split('\n')

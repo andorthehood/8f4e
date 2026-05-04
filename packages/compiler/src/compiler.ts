@@ -63,7 +63,7 @@ export function compileModule(
 	internalAllocator = { nextByteAddress: 0 }
 ): CompiledModule {
 	// Prepass establishes the memory layout (byte addresses, sizes) for this module.
-	// Semantic instructions (const, use, init, module/moduleEnd) are applied during
+	// Semantic instructions (const, use, module/moduleEnd) are applied during
 	// the compilation loop below, so consts are not copied from the prepass context.
 	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
 	const context: CompilationContext = {

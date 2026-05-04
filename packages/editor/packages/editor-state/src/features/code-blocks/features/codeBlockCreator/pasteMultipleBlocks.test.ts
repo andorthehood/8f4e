@@ -4,30 +4,30 @@ import { updateInterModuleReferences } from './pasteMultipleBlocks';
 
 describe('updateInterModuleReferences', () => {
 	it('should update start address references (&module:memory)', () => {
-		const code = ['init buffer &oscillator:wave 256'];
+		const code = ['float* buffer &oscillator:wave'];
 		const idMapping = new Map([['oscillator', 'oscillator2']]);
 
 		const result = updateInterModuleReferences(code, idMapping);
 
-		expect(result[0]).toBe('init buffer &oscillator2:wave 256');
+		expect(result[0]).toBe('float* buffer &oscillator2:wave');
 	});
 
 	it('should update end address references (module:memory&)', () => {
-		const code = ['init buffer oscillator:wave& 256'];
+		const code = ['float* buffer oscillator:wave&'];
 		const idMapping = new Map([['oscillator', 'oscillator2']]);
 
 		const result = updateInterModuleReferences(code, idMapping);
 
-		expect(result[0]).toBe('init buffer oscillator2:wave& 256');
+		expect(result[0]).toBe('float* buffer oscillator2:wave&');
 	});
 
 	it('should update module end address references (module:&)', () => {
-		const code = ['init buffer oscillator:& 256'];
+		const code = ['int buffer oscillator:&'];
 		const idMapping = new Map([['oscillator', 'oscillator2']]);
 
 		const result = updateInterModuleReferences(code, idMapping);
 
-		expect(result[0]).toBe('init buffer oscillator2:& 256');
+		expect(result[0]).toBe('int buffer oscillator2:&');
 	});
 
 	it('should update element count references (count(module:memory))', () => {
@@ -92,31 +92,31 @@ describe('updateInterModuleReferences', () => {
 	});
 
 	it('should not modify code when mapping is empty', () => {
-		const code = ['init buffer &oscillator:wave 256'];
+		const code = ['float* buffer &oscillator:wave'];
 		const idMapping = new Map<string, string>();
 
 		const result = updateInterModuleReferences(code, idMapping);
 
-		expect(result[0]).toBe('init buffer &oscillator:wave 256');
+		expect(result[0]).toBe('float* buffer &oscillator:wave');
 	});
 
 	it('should not update partial matches', () => {
-		const code = ['init buffer &oscillatorMain:wave 256', 'push count(oscillatorMain:buffer)'];
+		const code = ['float* buffer &oscillatorMain:wave', 'push count(oscillatorMain:buffer)'];
 		const idMapping = new Map([['oscillator', 'oscillator2']]);
 
 		const result = updateInterModuleReferences(code, idMapping);
 
 		// Should not change oscillatorMain to oscillator2Main
-		expect(result[0]).toBe('init buffer &oscillatorMain:wave 256');
+		expect(result[0]).toBe('float* buffer &oscillatorMain:wave');
 		expect(result[1]).toBe('push count(oscillatorMain:buffer)');
 	});
 
 	it('should handle special regex characters in IDs', () => {
-		const code = ['init buffer &test:data 256'];
+		const code = ['float* buffer &test:data'];
 		const idMapping = new Map([['test', 'test2']]);
 
 		const result = updateInterModuleReferences(code, idMapping);
 
-		expect(result[0]).toBe('init buffer &test2:data 256');
+		expect(result[0]).toBe('float* buffer &test2:data');
 	});
 });

@@ -59,7 +59,6 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 		minArguments: 2,
 		argumentTypes: ['constantIdentifier', 'compileTimeValue'],
 	},
-	init: { minArguments: 2, argumentTypes: ['identifier', 'compileTimeValue'] },
 	if: { maxArguments: 0 },
 	ifEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
 };

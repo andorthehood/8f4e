@@ -848,7 +848,6 @@ int* note &sequencer:note
 int[] notes 1
 int noteCount 1
 ; @piano notes noteCount 0
-init notes[0] 23
 ; @watch notes[0]
 push &noteCount
 push 1

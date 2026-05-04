@@ -2,7 +2,6 @@ import normalizeCall from './call';
 import normalizeClampAddress from './clampAddress';
 import normalizeConst from './const';
 import normalizeDefault from './default';
-import normalizeInit from './init';
 import normalizeLocalVariableAccess from './localVariable';
 import normalizeMap from './map';
 import normalizeMemoryDeclaration from './memoryDeclaration';
@@ -17,7 +16,6 @@ const instructionNormalizers = {
 	clampModuleAddress: normalizeClampAddress,
 	const: normalizeConst,
 	default: normalizeDefault,
-	init: normalizeInit,
 	localSet: normalizeLocalVariableAccess,
 	map: normalizeMap,
 	push: normalizePush,

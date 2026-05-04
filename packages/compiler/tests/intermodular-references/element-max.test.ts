@@ -131,10 +131,10 @@ describe('inter-module references - element max', () => {
 		expect(targetModule.memoryMap['maxValue'].default).toBe(255);
 	});
 
-	test('resolves element max reference in init instruction', () => {
+	test('resolves element max reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue', 'init maxValue max(sourceModule:buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -145,7 +145,7 @@ describe('inter-module references - element max', () => {
 
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['maxValue']).toBeDefined();
-		// maxValue should be set to the element max value via init instruction
+		// maxValue should be set to the element max value via declaration default
 		expect(targetModule.memoryMap['maxValue'].default).toBe(2147483647);
 	});
 
@@ -163,13 +163,13 @@ describe('inter-module references - element max', () => {
 		}).toThrow();
 	});
 
-	test('rejects multi-dot element max reference in init instruction', () => {
+	test('rejects multi-dot element max reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int maxValue', 'init maxValue max(sourceModule:buffer.extra)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int maxValue max(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
-		// Should throw because multi-dot references are rejected in init as well
+		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,

@@ -131,10 +131,10 @@ describe('inter-module references - element min', () => {
 		expect(targetModule.memoryMap['minValue'].default).toBe(0);
 	});
 
-	test('resolves element min reference in init instruction', () => {
+	test('resolves element min reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue', 'init minValue min(sourceModule:buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -145,7 +145,7 @@ describe('inter-module references - element min', () => {
 
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['minValue']).toBeDefined();
-		// minValue should be set to the element min value via init instruction
+		// minValue should be set to the element min value via declaration default
 		expect(targetModule.memoryMap['minValue'].default).toBe(-2147483648);
 	});
 
@@ -163,13 +163,13 @@ describe('inter-module references - element min', () => {
 		}).toThrow();
 	});
 
-	test('rejects multi-dot element min reference in init instruction', () => {
+	test('rejects multi-dot element min reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int minValue', 'init minValue min(sourceModule:buffer.extra)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
-		// Should throw because multi-dot references are rejected in init as well
+		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,

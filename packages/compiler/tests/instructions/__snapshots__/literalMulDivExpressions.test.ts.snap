@@ -270,171 +270,6 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
 }
 `;
 
-exports[`init: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
-[
-  {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "test",
-      },
-    ],
-    "instruction": "module",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": true,
-    "lineNumberAfterMacroExpansion": 0,
-    "lineNumberBeforeMacroExpansion": 0,
-  },
-  {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "foo",
-      },
-    ],
-    "instruction": "int",
-    "isMemoryDeclaration": true,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
-  },
-  {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "foo",
-      },
-      {
-        "isInteger": true,
-        "type": "literal",
-        "value": 12,
-      },
-    ],
-    "instruction": "init",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": true,
-    "lineNumberAfterMacroExpansion": 3,
-    "lineNumberBeforeMacroExpansion": 3,
-  },
-  {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "output",
-      },
-    ],
-    "instruction": "int",
-    "isMemoryDeclaration": true,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 5,
-    "lineNumberBeforeMacroExpansion": 5,
-  },
-  {
-    "arguments": [
-      {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
-        },
-        "type": "literal",
-        "value": 4,
-      },
-    ],
-    "instruction": "push",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 6,
-    "lineNumberBeforeMacroExpansion": 6,
-  },
-  {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "foo",
-      },
-    ],
-    "instruction": "push",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 7,
-    "lineNumberBeforeMacroExpansion": 7,
-  },
-  {
-    "arguments": [],
-    "instruction": "store",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 8,
-    "lineNumberBeforeMacroExpansion": 8,
-  },
-  {
-    "arguments": [],
-    "instruction": "moduleEnd",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": true,
-    "lineNumberAfterMacroExpansion": 10,
-    "lineNumberBeforeMacroExpansion": 10,
-  },
-]
-`;
-
-exports[`init: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 4
-    i32.const 0
-    i32.load
-    i32.store)
-  (export "test" (func 0)))
-"
-`;
-
-exports[`init: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
-{
-  "foo": {
-    "byteAddress": 0,
-    "default": 12,
-    "elementWordSize": 4,
-    "id": "foo",
-    "isInteger": true,
-    "isPointingToPointer": false,
-    "isUnsigned": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
-  },
-  "output": {
-    "byteAddress": 4,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "output",
-    "isInteger": true,
-    "isPointingToPointer": false,
-    "isUnsigned": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
-  },
-}
-`;
-
 exports[`int[]: buffer size from literal multiplication expression > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
@@ -578,6 +413,156 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 8,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`memory declaration: literal-only multiplication expression default > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": true,
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "foo",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 12,
+      },
+    ],
+    "instruction": "int",
+    "isMemoryDeclaration": true,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "isMemoryDeclaration": true,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "safeAddressRange": {
+          "byteAddress": 4,
+          "memoryId": "output",
+          "safeByteLength": 4,
+          "source": "memory-start",
+        },
+        "type": "literal",
+        "value": 4,
+      },
+    ],
+    "instruction": "push",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "foo",
+      },
+    ],
+    "instruction": "push",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": false,
+    "lineNumberAfterMacroExpansion": 7,
+    "lineNumberBeforeMacroExpansion": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "isMemoryDeclaration": false,
+    "isSemanticOnly": true,
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
+  },
+]
+`;
+
+exports[`memory declaration: literal-only multiplication expression default > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`memory declaration: literal-only multiplication expression default > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "foo": {
+    "byteAddress": 0,
+    "default": 12,
+    "elementWordSize": 4,
+    "id": "foo",
+    "isInteger": true,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
 }

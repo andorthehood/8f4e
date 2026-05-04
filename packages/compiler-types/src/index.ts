@@ -21,7 +21,6 @@ import {
 	type ExitIfTrueLine,
 	type FunctionTypeIdentifier,
 	type FunctionLine,
-	type InitLine,
 	type IfBlockMetadata,
 	type IfBlockResultType,
 	type IfEndBlockMetadata,
@@ -222,7 +221,6 @@ export {
 	type DefaultLine,
 	type ExitIfTrueLine,
 	type FunctionLine,
-	type InitLine,
 	type IfBlockMetadata,
 	type IfBlockResultType,
 	type IfEndBlockMetadata,
@@ -383,9 +381,6 @@ export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & { arguments
 export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral];
 };
-export type NormalizedInitLine = Omit<InitLine, 'arguments'> & {
-	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral | ArgumentIdentifier];
-};
 export type ArrayDeclarationInstruction =
 	| 'float[]'
 	| 'int[]'
@@ -412,7 +407,6 @@ export type ArrayDeclarationLine = Omit<AST[number], 'instruction' | 'arguments'
 export type NormalizedSemanticInstructionLine =
 	| NormalizedConstLine
 	| UseLine
-	| NormalizedInitLine
 	| ModuleLine
 	| ModuleEndLine
 	| ConstantsLine
@@ -420,7 +414,6 @@ export type NormalizedSemanticInstructionLine =
 export type ParsedSemanticInstructionLine =
 	| ConstLine
 	| UseLine
-	| InitLine
 	| ModuleLine
 	| ModuleEndLine
 	| ConstantsLine
@@ -434,19 +427,17 @@ export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
 export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 	? NormalizedConstLine
-	: TLine extends InitLine
-		? NormalizedInitLine
-		: TLine extends DefaultLine
-			? NormalizedDefaultLine | DefaultLine
-			: TLine extends MapLine
-				? NormalizedMapLine | MapLine
-				: TLine extends LocalSetLine
-					? CodegenLocalSetLine
-					: TLine extends PushLine
-						? CodegenPushLine
-						: TLine extends ArrayDeclarationLine
-							? ArrayDeclarationLine
-							: TLine;
+	: TLine extends DefaultLine
+		? NormalizedDefaultLine | DefaultLine
+		: TLine extends MapLine
+			? NormalizedMapLine | MapLine
+			: TLine extends LocalSetLine
+				? CodegenLocalSetLine
+				: TLine extends PushLine
+					? CodegenPushLine
+					: TLine extends ArrayDeclarationLine
+						? ArrayDeclarationLine
+						: TLine;
 
 export enum BLOCK_TYPE {
 	MODULE,

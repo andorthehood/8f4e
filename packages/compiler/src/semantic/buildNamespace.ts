@@ -194,10 +194,6 @@ function shouldDeferNamespaceCollection(
 
 function toNamespaceDiscoveryAst(ast: AST): AST {
 	return ast.flatMap(line => {
-		if (line.instruction === 'init') {
-			return [];
-		}
-
 		if (
 			line.isMemoryDeclaration &&
 			!line.instruction.endsWith('[]') &&

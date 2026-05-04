@@ -97,10 +97,6 @@ export type ConstLine = ASTLineBase<
 	'const',
 	[ArgumentIdentifier, ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression]
 >;
-export type InitLine = ASTLineBase<
-	'init',
-	[ArgumentIdentifier, ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression]
->;
 
 export type MapValueArgument =
 	| ArgumentLiteral
