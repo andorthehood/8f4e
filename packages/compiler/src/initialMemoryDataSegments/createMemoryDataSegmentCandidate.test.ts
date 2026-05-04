@@ -1,0 +1,38 @@
+import { describe, expect, test } from 'vitest';
+
+import createMemoryDataSegmentCandidate from './createMemoryDataSegmentCandidate';
+
+import { createMemory } from '../../tests/initialMemoryDataSegmentsTestUtils';
+
+describe('createMemoryDataSegmentCandidate', () => {
+	test('creates scalar candidates with encoded default bytes', () => {
+		const candidate = createMemoryDataSegmentCandidate(
+			createMemory({
+				id: 'scalar',
+				byteAddress: 12,
+				default: 2.9,
+			})
+		);
+
+		expect(candidate.byteAddress).toBe(12);
+		expect(candidate.sourceKind).toBe('scalar');
+		expect(Array.from(candidate.bytes)).toEqual([2, 0, 0, 0]);
+	});
+
+	test('creates array candidates with sparse initializer defaults encoded in place', () => {
+		const candidate = createMemoryDataSegmentCandidate(
+			createMemory({
+				id: 'array',
+				byteAddress: 16,
+				numberOfElements: 3,
+				default: {
+					1: 2,
+				},
+			})
+		);
+
+		expect(candidate.byteAddress).toBe(16);
+		expect(candidate.sourceKind).toBe('array');
+		expect(Array.from(candidate.bytes)).toEqual([0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]);
+	});
+});
