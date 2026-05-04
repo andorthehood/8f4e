@@ -126,7 +126,7 @@ export function compileModule(
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
-		internalResources,
+		...(internalResources ? { internalResources } : {}),
 		wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		ast: normalizedAst,
 		index,
