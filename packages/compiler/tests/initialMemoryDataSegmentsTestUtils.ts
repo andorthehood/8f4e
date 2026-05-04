@@ -1,6 +1,5 @@
 import { MemoryTypes } from '@8f4e/compiler-types';
 
-import type { InitialMemoryDataSegmentCandidate } from '../src/initialMemoryDataSegments';
 import type { CompiledModule, DataStructure, InternalResource } from '@8f4e/compiler-types';
 
 export function createMemory(
@@ -13,6 +12,7 @@ export function createMemory(
 		wordAlignedSize: 1,
 		wordAlignedAddress: overrides.byteAddress / 4,
 		default: 0,
+		hasExplicitDefault: false,
 		isInteger: true,
 		isPointingToPointer: false,
 		isUnsigned: false,
@@ -43,17 +43,6 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 		wordAlignedAddress: 0,
 		memoryMap: {},
 		wordAlignedSize: 0,
-		...overrides,
-	};
-}
-
-export function createCandidate(
-	overrides: Partial<InitialMemoryDataSegmentCandidate>
-): InitialMemoryDataSegmentCandidate {
-	return {
-		byteAddress: 0,
-		bytes: new Uint8Array(),
-		sourceKind: 'scalar',
 		...overrides,
 	};
 }

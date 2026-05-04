@@ -3,8 +3,14 @@ import writeDefaultValue from './writeDefaultValue';
 import type { InitialMemoryDataSegmentCandidate } from './types';
 import type { DataStructure } from '@8f4e/compiler-types';
 
-export default function createMemoryDataSegmentCandidate(memory: DataStructure): InitialMemoryDataSegmentCandidate {
+export default function createMemoryDataSegmentCandidate(
+	memory: DataStructure
+): InitialMemoryDataSegmentCandidate | undefined {
 	const isArray = memory.numberOfElements > 1;
+	if (isArray && memory.hasExplicitDefault !== true) {
+		return undefined;
+	}
+
 	const bytes = new Uint8Array(isArray ? memory.numberOfElements * memory.elementWordSize : memory.elementWordSize);
 	const view = new DataView(bytes.buffer);
 
