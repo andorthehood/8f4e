@@ -98,19 +98,6 @@ push 10
 store
 ```
 
-### init
-
-The init instruction sets the default value for a declared memory identifier or buffer element (for example `init bufferName[3] 42`).
-The value argument can also be a constant expression with exactly one operator (`CONST+number`, `CONST-number`, `CONST*number`, or `CONST/number`).
-
-#### Examples
-
-```
-const SIZE 8
-int value
-init value SIZE/2
-```
-
 ### storeBytes
 
 The storeBytes instruction pops a destination address from the top of the stack, then pops `N` byte values and writes them contiguously to memory in pop order (first pop → `dst + 0`). Each value is truncated to a byte before storing.

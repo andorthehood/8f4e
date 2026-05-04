@@ -277,26 +277,6 @@ describe('normalizeCompileTimeArguments', () => {
 		});
 	});
 
-	it('throws UNDECLARED_IDENTIFIER when an init default remains an unresolved compile-time expression', () => {
-		const context = {
-			namespace: {
-				memory: { target: { numberOfElements: 1, elementWordSize: 4, isInteger: true } },
-				consts: {},
-				moduleName: 'test',
-				namespaces: {},
-			},
-			locals: {},
-		} as unknown as CompilationContext;
-		const line: AST[number] = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
-			instruction: 'init',
-			arguments: [classifyIdentifier('target'), parseArgument('2*MISSING')],
-		};
-
-		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
-	});
-
 	it('throws UNDECLARED_IDENTIFIER for localSet with an undeclared local', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
@@ -327,26 +307,6 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
 			arguments: [classifyIdentifier('&otherModule:missingMemory')],
-		};
-
-		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
-	});
-
-	it('throws UNDECLARED_IDENTIFIER for init with undeclared intermodule module reference', () => {
-		const context = {
-			namespace: {
-				memory: { target: { numberOfElements: 1, elementWordSize: 4, isInteger: true } },
-				consts: {},
-				moduleName: 'test',
-				namespaces: { knownModule: { kind: 'module', consts: {}, memory: {} } },
-			},
-			locals: {},
-		} as unknown as CompilationContext;
-		const line: AST[number] = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
-			instruction: 'init',
-			arguments: [classifyIdentifier('target'), classifyIdentifier('&missingModule:')],
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);

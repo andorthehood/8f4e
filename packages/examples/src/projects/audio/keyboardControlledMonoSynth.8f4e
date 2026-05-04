@@ -1,197 +1,15 @@
 8f4e/v1
 
-module projectConfig
-; @pos -94 1
-; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
-; @config export.fileName jankoSynth
-
-moduleEnd
-
-module arEnv
-; @pos 286 57
-; Attack-Release (AR)
-; Envelope Generator
-
-float dAttack 0.0001
-float dRelease 0.0001
-
-int* trigger &keyboard:keyPressed
-
-float* attackRate &dAttack
-float* releaseRate &dRelease
-float out
-
-int attacking 0
-
-push *trigger
-risingEdge
-if
-push &attacking
-push 1
-store
-ifEnd
-
-push attacking
-push 0
-greaterThan
-if
-push &out
-push out
-push *attackRate
-add
-store
-else
-push &out
-push out
-push *releaseRate
-sub
-store
-ifEnd
-
-push out
-push 1.0
-greaterThan
-if
-push &attacking
-push 0
-store
-ifEnd
-
-push out
-push 0.0
-lessThan
-if
-push &out
-push 0.0
-store
-ifEnd
-
-moduleEnd
-
-module audioout
-; @pos 424 44
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
-use env
-
-float* in &vca:out
-
-; Audio buffer
-float[] buffer AUDIO_BUFFER_SIZE
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer 
-; pointer by the
-; buffer word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-
 constants env
 ; @pos 2 60
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/21/2026, 7:28:14 PM
 
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
-
-module janko
-; @pos 176 35
-; @home
-; Converts HID keycodes to MIDI note numbers              .---------.
-; based on the Janko layout                               |  Enter  |
-;                                                         |       | |
-;.----------+---+---+---+---+---+---+---+---+---+---+---+-+-+  <--' |
-;| CapsLock | C#| D#| F | G | A | B | C#| D#| F | G | A | B |       |
-;+--------+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+---+-------+
-;| Shift  | C | D | E | F#| G#| A#| C | D | E | F#| G#|    Shift    |
-;'--------+---+---+---+---+---+---+---+---+---+---+---+-------------'
-;
-; @group janko
-int* in &keyboard:keyCode; Keycode
-int out ; MIDI note number
-push &out
-push *in
-call jankoMap
-
-; @watch out
-store
-moduleEnd
-
-function jankoMap
-; @pos 210 48
-; @group janko
-param int keycode
-use midiCodes
-push keycode
-mapBegin int
-map 53 C3  ; Maps HID
-map 4  C#3 ; keycodes
-map 29 D3  ; to MIDI note
-map 22 D#3 ; numbers
-map 27 E3  ; based on
-map 7  F3  ; the Janko
-map 6  F#3 ; piano layout
-map 9  G3  ; 
-map 25 G#3 ; These key 
-map 10 A3  ; positions
-map 5  A#3 ; are based on
-map 11 B3  ; my Apple
-map 17 C4  ; Magic 
-map 13 C#4 ; Keyboard's
-map 16 D4  ; layout, feel
-map 14 D#4 ; free to
-map 54 E4  ; adjust them
-map 15 F4  ; to your own.
-map 55 F#4
-map 51 G4
-map 56 G#4
-map 52 A4
-map 49 B4
-mapEnd int 
-functionEnd int
-
-module keyboard
-; @pos 138 45
-; @keyPressedMemory keyPressed
-; @keyCodeMemory keyCode
-
-int keyPressed
-int keyCode
-
-; @watch keyPressed
-; @watch keyCode
-
-moduleEnd
 
 constants math
 ; @pos 57 60
@@ -372,208 +190,42 @@ const G9  127
 
 constantsEnd
 
-module midiLUT
-; @pos 249 57
-
-float[] notes 128
-init notes[0] 8.1758
-init notes[1] 8.6620
-init notes[2] 9.1770
-init notes[3] 9.7227
-init notes[4] 10.3009
-init notes[5] 10.9134
-init notes[6] 11.5623
-init notes[7] 12.2499
-init notes[8] 12.9783
-init notes[9] 13.7500
-init notes[10] 14.5676
-init notes[11] 15.4339
-init notes[12] 16.3516
-init notes[13] 17.3239
-init notes[14] 18.3540
-init notes[15] 19.4454
-init notes[16] 20.6017
-init notes[17] 21.8268
-init notes[18] 23.1247
-init notes[19] 24.4997
-init notes[20] 25.9565
-init notes[21] 27.5000
-init notes[22] 29.1352
-init notes[23] 30.8677
-init notes[24] 32.7032
-init notes[25] 34.6478
-init notes[26] 36.7081
-init notes[27] 38.8909
-init notes[28] 41.2034
-init notes[29] 43.6535
-init notes[30] 46.2493
-init notes[31] 48.9994
-init notes[32] 51.9131
-init notes[33] 55.0000
-init notes[34] 58.2705
-init notes[35] 61.7354
-init notes[36] 65.4064
-init notes[37] 69.2957
-init notes[38] 73.4162
-init notes[39] 77.7817
-init notes[40] 82.4069
-init notes[41] 87.3071
-init notes[42] 92.4986
-init notes[43] 97.9989
-init notes[44] 103.8262
-init notes[45] 110.0000
-init notes[46] 116.5409
-init notes[47] 123.4708
-init notes[48] 130.8128
-init notes[49] 138.5913
-init notes[50] 146.8324
-init notes[51] 155.5635
-init notes[52] 164.8138
-init notes[53] 174.6141
-init notes[54] 184.9972
-init notes[55] 195.9977
-init notes[56] 207.6523
-init notes[57] 220.0000
-init notes[58] 233.0819
-init notes[59] 246.9417
-init notes[60] 261.6256
-init notes[61] 277.1826
-init notes[62] 293.6648
-init notes[63] 311.1270
-init notes[64] 329.6276
-init notes[65] 349.2282
-init notes[66] 369.9944
-init notes[67] 391.9954
-init notes[68] 415.3047
-init notes[69] 440.0000
-init notes[70] 466.1638
-init notes[71] 493.8833
-init notes[72] 523.2511
-init notes[73] 554.3653
-init notes[74] 587.3295
-init notes[75] 622.2540
-init notes[76] 659.2551
-init notes[77] 698.4565
-init notes[78] 739.9888
-init notes[79] 783.9909
-init notes[80] 830.6094
-init notes[81] 880.0000
-init notes[82] 932.3275
-init notes[83] 987.7666
-init notes[84] 1046.5023
-init notes[85] 1108.7305
-init notes[86] 1174.6591
-init notes[87] 1244.5079
-init notes[88] 1318.5102
-init notes[89] 1396.9129
-init notes[90] 1479.9777
-init notes[91] 1567.9817
-init notes[92] 1661.2188
-init notes[93] 1760.0000
-init notes[94] 1864.6550
-init notes[95] 1975.5332
-init notes[96] 2093.0045
-init notes[97] 2217.4610
-init notes[98] 2349.3181
-init notes[99] 2489.0159
-init notes[100] 2637.0205
-init notes[101] 2793.8259
-init notes[102] 2959.9554
-init notes[103] 3135.9635
-init notes[104] 3322.4376
-init notes[105] 3520.0000
-init notes[106] 3729.3101
-init notes[107] 3951.0664
-init notes[108] 4186.0090
-init notes[109] 4434.9221
-init notes[110] 4698.6363
-init notes[111] 4978.0317
-init notes[112] 5274.0409
-init notes[113] 5587.6517
-init notes[114] 5919.9108
-init notes[115] 6271.9270
-init notes[116] 6644.8752
-init notes[117] 7040.0000
-init notes[118] 7458.6202
-init notes[119] 7902.1328
-init notes[120] 8372.0181
-init notes[121] 8869.8442
-init notes[122] 9397.2726
-init notes[123] 9956.0635
-init notes[124] 10548.0818
-init notes[125] 11175.3034
-init notes[126] 11839.8215
-init notes[127] 12543.8540
-
-moduleEnd
-
-module midiNote2Freq
-; @pos 286 36
-
-int* in &janko:out
-float out
-float* notes &midiLUT:notes
-
-; @watch out
-
-push &out
-push notes
-push *in
-push 4
-mul
-add
-loadFloat
-store
-
-moduleEnd
-
-module phaseAccumulator
-; @pos 331 38
-use env
-
-float defaultFreq 440
-float* frequency &midiNote2Freq:out
-float phase
-float out
-
-use math
-
-; Advance phase by
-; TAU * frequency / SAMPLE_RATE
-push &phase
-push phase
-push TAU
-push *frequency
-mul
-push SAMPLE_RATE
-castToFloat
-ensureNonZero
-div
-add
-store 
-
-; Wrap phase when it exceeds PI
-push phase
-push PI
-greaterThan
-if
-push &phase
-push NEG_PI
-store
-ifEnd
-
-push &out
-push phase
-; You can swap this call 
-; with any periodic function
-call sine
-store
-
-moduleEnd
+function jankoMap
+; @pos 210 48
+; @group janko
+param int keycode
+use midiCodes
+push keycode
+mapBegin int
+map 53 C3  ; Maps HID
+map 4  C#3 ; keycodes
+map 29 D3  ; to MIDI note
+map 22 D#3 ; numbers
+map 27 E3  ; based on
+map 7  F3  ; the Janko
+map 6  F#3 ; piano layout
+map 9  G3  ;
+map 25 G#3 ; These key
+map 10 A3  ; positions
+map 5  A#3 ; are based on
+map 11 B3  ; my Apple
+map 17 C4  ; Magic
+map 13 C#4 ; Keyboard's
+map 16 D4  ; layout, feel
+map 14 D#4 ; free to
+map 54 E4  ; adjust them
+map 15 F4  ; to your own.
+map 55 F#4
+map 51 G4
+map 56 G#4
+map 52 A4
+map 49 B4
+mapEnd int
+functionEnd int
 
 function sine
 ; @pos 132 60
-; Polynomial approximation 
+; Polynomial approximation
 ; of the sine function with
 ; Taylor series (7th order)
 ; Only works in the range of
@@ -635,6 +287,353 @@ push x
 mul
 
 functionEnd float
+
+module arEnv
+; @pos 286 57
+; Attack-Release (AR)
+; Envelope Generator
+
+float dAttack 0.0001
+float dRelease 0.0001
+
+int* trigger &keyboard:keyPressed
+
+float* attackRate &dAttack
+float* releaseRate &dRelease
+float out
+
+int attacking 0
+
+push *trigger
+risingEdge
+if
+push &attacking
+push 1
+store
+ifEnd
+
+push attacking
+push 0
+greaterThan
+if
+push &out
+push out
+push *attackRate
+add
+store
+else
+push &out
+push out
+push *releaseRate
+sub
+store
+ifEnd
+
+push out
+push 1.0
+greaterThan
+if
+push &attacking
+push 0
+store
+ifEnd
+
+push out
+push 0.0
+lessThan
+if
+push &out
+push 0.0
+store
+ifEnd
+
+moduleEnd
+
+module audioout
+; @pos 424 44
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
+use env
+
+float* in &vca:out
+
+; Audio buffer
+float[] buffer AUDIO_BUFFER_SIZE
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer
+; pointer by the
+; buffer word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module janko
+; @pos 176 35
+; @home
+; Converts HID keycodes to MIDI note numbers              .---------.
+; based on the Janko layout                               |  Enter  |
+;                                                         |       | |
+;.----------+---+---+---+---+---+---+---+---+---+---+---+-+-+  <--' |
+;| CapsLock | C#| D#| F | G | A | B | C#| D#| F | G | A | B |       |
+;+--------+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+---+-------+
+;| Shift  | C | D | E | F#| G#| A#| C | D | E | F#| G#|    Shift    |
+;'--------+---+---+---+---+---+---+---+---+---+---+---+-------------'
+;
+; @group janko
+int* in &keyboard:keyCode; Keycode
+int out ; MIDI note number
+push &out
+push *in
+call jankoMap
+
+; @watch out
+store
+moduleEnd
+
+module keyboard
+; @pos 138 45
+; @keyPressedMemory keyPressed
+; @keyCodeMemory keyCode
+
+int keyPressed
+int keyCode
+
+; @watch keyPressed
+; @watch keyCode
+
+moduleEnd
+
+module midiLUT
+; @pos 249 59
+; @tab 7 18
+float	8.1758	; 0
+float	8.6620	; 1
+float	9.1770	; 2
+float	9.7227	; 3
+float	10.3009	; 4
+float	10.9134	; 5
+float	11.5623	; 6
+float	12.2499	; 7
+float	12.9783	; 8
+float	13.7500	; 9
+float	14.5676	; 10
+float	15.4339	; 11
+float	16.3516	; 12
+float	17.3239	; 13
+float	18.3540	; 14
+float	19.4454	; 15
+float	20.6017	; 16
+float	21.8268	; 17
+float	23.1247	; 18
+float	24.4997	; 19
+float	25.9565	; 20
+float	27.5000	; 21
+float	29.1352	; 22
+float	30.8677	; 23
+float	32.7032	; 24
+float	34.6478	; 25
+float	36.7081	; 26
+float	38.8909	; 27
+float	41.2034	; 28
+float	43.6535	; 29
+float	46.2493	; 30
+float	48.9994	; 31
+float	51.9131	; 32
+float	55.0000	; 33
+float	58.2705	; 34
+float	61.7354	; 35
+float	65.4064	; 36
+float	69.2957	; 37
+float	73.4162	; 38
+float	77.7817	; 39
+float	82.4069	; 40
+float	87.3071	; 41
+float	92.4986	; 42
+float	97.9989	; 43
+float	103.8262	; 44
+float	110.0000	; 45
+float	116.5409	; 46
+float	123.4708	; 47
+float	130.8128	; 48
+float	138.5913	; 49
+float	146.8324	; 50
+float	155.5635	; 51
+float	164.8138	; 52
+float	174.6141	; 53
+float	184.9972	; 54
+float	195.9977	; 55
+float	207.6523	; 56
+float	220.0000	; 57
+float	233.0819	; 58
+float	246.9417	; 59
+float	261.6256	; 60
+float	277.1826	; 61
+float	293.6648	; 62
+float	311.1270	; 63
+float	329.6276	; 64
+float	349.2282	; 65
+float	369.9944	; 66
+float	391.9954	; 67
+float	415.3047	; 68
+float	440.0000	; 69
+float	466.1638	; 70
+float	493.8833	; 71
+float	523.2511	; 72
+float	554.3653	; 73
+float	587.3295	; 74
+float	622.2540	; 75
+float	659.2551	; 76
+float	698.4565	; 77
+float	739.9888	; 78
+float	783.9909	; 79
+float	830.6094	; 80
+float	880.0000	; 81
+float	932.3275	; 82
+float	987.7666	; 83
+float	1046.5023	; 84
+float	1108.7305	; 85
+float	1174.6591	; 86
+float	1244.5079	; 87
+float	1318.5102	; 88
+float	1396.9129	; 89
+float	1479.9777	; 90
+float	1567.9817	; 91
+float	1661.2188	; 92
+float	1760.0000	; 93
+float	1864.6550	; 94
+float	1975.5332	; 95
+float	2093.0045	; 96
+float	2217.4610	; 97
+float	2349.3181	; 98
+float	2489.0159	; 99
+float	2637.0205	; 100
+float	2793.8259	; 101
+float	2959.9554	; 102
+float	3135.9635	; 103
+float	3322.4376	; 104
+float	3520.0000	; 105
+float	3729.3101	; 106
+float	3951.0664	; 107
+float	4186.0090	; 108
+float	4434.9221	; 109
+float	4698.6363	; 110
+float	4978.0317	; 111
+float	5274.0409	; 112
+float	5587.6517	; 113
+float	5919.9108	; 114
+float	6271.9270	; 115
+float	6644.8752	; 116
+float	7040.0000	; 117
+float	7458.6202	; 118
+float	7902.1328	; 119
+float	8372.0181	; 120
+float	8869.8442	; 121
+float	9397.2726	; 122
+float	9956.0635	; 123
+float	10548.0818	; 124
+float	11175.3034	; 125
+float	11839.8215	; 126
+float	12543.8540	; 127
+
+moduleEnd
+
+
+module midiNote2Freq
+; @pos 286 36
+
+int* in &janko:out
+float out
+float* notes &midiLUT:
+
+; @watch out
+
+push &out
+push notes
+push *in
+push 4
+mul
+add
+loadFloat
+store
+
+moduleEnd
+
+module phaseAccumulator
+; @pos 331 38
+use env
+
+float defaultFreq 440
+float* frequency &midiNote2Freq:out
+float phase
+float out
+
+use math
+
+; Advance phase by
+; TAU * frequency / SAMPLE_RATE
+push &phase
+push phase
+push TAU
+push *frequency
+mul
+push SAMPLE_RATE
+castToFloat
+ensureNonZero
+div
+add
+store
+
+; Wrap phase when it exceeds PI
+push phase
+push PI
+greaterThan
+if
+push &phase
+push NEG_PI
+store
+ifEnd
+
+push &out
+push phase
+; You can swap this call
+; with any periodic function
+call sine
+store
+
+moduleEnd
+
+module projectConfig
+; @pos -94 1
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @config export.fileName keyboardControlledMonoSynth
+
+moduleEnd
 
 module vca
 ; @pos 380 45

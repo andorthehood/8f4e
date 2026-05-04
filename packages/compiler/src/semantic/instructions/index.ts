@@ -1,6 +1,5 @@
 import semanticConst from './const';
 import semanticUse from './use';
-import semanticInit from './init';
 import semanticModule from './module';
 import semanticConstants from './constants';
 import semanticModuleEnd from './moduleEnd';
@@ -15,9 +14,6 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 			return;
 		case 'use':
 			semanticUse(line, context);
-			return;
-		case 'init':
-			semanticInit(line, context);
 			return;
 		case 'module':
 			semanticModule(line, context);

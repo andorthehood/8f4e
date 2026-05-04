@@ -74,11 +74,10 @@ moduleEnd
 );
 
 moduleTester(
-	'init: constant expression',
+	'memory declaration: constant expression default',
 	`module test
 const SIZE 8
-int foo
-init foo SIZE/2
+int foo SIZE/2
 int output
 push &output
 push foo
@@ -280,11 +279,10 @@ moduleEnd
 );
 
 moduleTester(
-	'init: constant ^ literal expression',
+	'memory declaration: constant ^ literal expression default',
 	`module test
 const SIZE 3
-int foo
-init foo SIZE^2
+int foo SIZE^2
 int output
 push &output
 push foo

@@ -24,10 +24,10 @@ describe('inter-module references - element count', () => {
 		expect(targetModule.memoryMap['size'].default).toBe(10);
 	});
 
-	test('resolves element count reference in init instruction', () => {
+	test('resolves element count reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'float[] data 7 0.0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int count', 'init count count(sourceModule:data)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int count count(sourceModule:data)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -59,13 +59,13 @@ describe('inter-module references - element count', () => {
 		}).toThrow();
 	});
 
-	test('rejects multi-dot element count reference in init instruction', () => {
+	test('rejects multi-dot element count reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int count', 'init count count(sourceModule:buffer.extra)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int count count(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
-		// Should throw because multi-dot references are rejected in init as well
+		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,

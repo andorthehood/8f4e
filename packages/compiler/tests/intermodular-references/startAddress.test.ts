@@ -23,10 +23,10 @@ describe('inter-module references - start address', () => {
 		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['buffer'].byteAddress);
 	});
 
-	test('resolves start-address reference in init instruction', () => {
+	test('resolves start-address reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'float[] buffer 5 0.0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'float* ptr', 'init ptr &sourceModule:buffer', 'moduleEnd'] },
+			{ code: ['module targetModule', 'float* ptr &sourceModule:buffer', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {

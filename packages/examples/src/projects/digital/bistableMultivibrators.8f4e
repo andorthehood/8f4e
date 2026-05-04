@@ -1,34 +1,24 @@
 8f4e/v1
 
-module notes
-; @pos 45 5
-; Demonstrates a bistable SR latch 
-; (multivibrator) built from feedback 
-; logic gates, with set/reset button 
-; inputs and scope buffers that 
-; visualize both latch state and 
-; derived gate output over time.
-moduleEnd
+constants env
+; @pos -30 16
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
 
-module projectConfig
-; @pos -67 16
-; @config runtime WebWorkerRuntime
-; ~sampleRate 50
-; @config export.fileName bistableMultivibrators
+const SAMPLE_RATE 50
 
-moduleEnd
+constantsEnd
 
 module andGate
-; @pos 243 32
+; @pos 244 32
 
-         ;   .---.
-int* in1 ; --+    '   
-int out  ;   | AND |---
-int* in2 ; --+    .
-         ;   '---'
+                     ;   .---.
+int* in1 &orGate:out ; --+    '
+int out              ;   | AND |---
+int* in2 &negate:out ; --+    .
+                     ;   '---'
 
-init in1 &orGate:out
-init in2 &negate:out
 push &out
 push *in1
 push *in2
@@ -53,24 +43,12 @@ int set
 int reset
                ; Push this button
                ; to set the state
-; @button set 0 1 ; of the latch  -->  
+; @button set 0 1 ; of the latch  -->
 
                  ; Push this button
 ; @button reset 0 1 ; to reset   --->
 
 moduleEnd
-
-constants env
-; @pos -30 16
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 2/19/2026, 1:45:45 PM
-
-const SAMPLE_RATE 50
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
 
 module negate
 ; @pos 207 33
@@ -92,17 +70,14 @@ store
 moduleEnd
 
 module norGate
-; @pos 95 36
+; @pos 95 34
 
-         ;   .---.
-int* in1 ; --+    '
-int out  ;   ) NOR |O--- 
-int* in2 ; --+    .
-         ;   '---'
+                          ;   .---.
+int* in1 &norGate2:out    ; --+    '
+int out                   ;   ) NOR |O---
+int* in2 &resetButton:out ; --+    .
+                          ;   '---'
 ; @watch out
-
-init in1 &norGate2:out
-init in2 &resetButton:out
 
 push &out
 push *in1
@@ -122,16 +97,13 @@ moduleEnd
 module norGate2
 ; @pos 95 8
 
-         ;   .---.
-int* in1 ; --+    '   
-int out  ;   ) NOR |O--- 
-int* in2 ; --+    .
-         ;   '---'
-
+                        ;   .---.
+int* in1 &norGate:out   ; --+    '
+int out                 ;   ) NOR |O---
+int* in2 &setButton:out ; --+    .
+                        ;   '---'
 ; @watch out
 
-init in1 &norGate:out
-init in2 &setButton:out
 push &out
 push *in1
 push *in2
@@ -139,7 +111,7 @@ add
 push 0
 equal
 if
-push 1 
+push 1
 else
 push 0
 ifEnd int
@@ -147,17 +119,25 @@ store
 
 moduleEnd
 
+module notes
+; @pos 45 5
+; Demonstrates a bistable SR latch
+; (multivibrator) built from feedback
+; logic gates, with set/reset button
+; inputs and scope buffers that
+; visualize both latch state and
+; derived gate output over time.
+moduleEnd
+
 module orGate
 ; @pos 243 6
 
-         ;   .---.
-int* in1 ; --+    '   
-int out  ;   ) OR  |---
-int* in2 ; --+    .
-         ;   '---'
+                      ;   .---.
+int* in1 &andGate:out ; --+    '
+int out               ;   ) OR  |---
+int* in2 &buttons:set ; --+    .
+                      ;   '---'
 
-init in1 &andGate:out
-init in2 &buttons:set
 push &out
 push *in1
 push *in2
@@ -173,18 +153,26 @@ store
 
 moduleEnd
 
+module projectConfig
+; @pos -67 16
+; @config runtime WebWorkerRuntime
+; ~sampleRate 50
+; @config export.fileName bistableMultivibrators
+
+moduleEnd
+
 module resetButton
 ; @pos 45 27
 
 int out
                ; Push this button
                ; to reset the state
-; @button out 0 1 ; of the SR latch -->  
+; @button out 0 1 ; of the SR latch -->
 
 moduleEnd
 
 module scope
-; @pos 131 26
+; @pos 150 21
 
 int* in &norGate:out
 int[] buffer 64
@@ -214,7 +202,7 @@ store
 moduleEnd
 
 module scope2
-; @pos 279 19
+; @pos 292 17
 
 int* in &andGate:out
 int[] buffer 64
@@ -250,6 +238,6 @@ module setButton
 int out
                ; Push this button
                ; to set the state
-; @button out 0 1 ; of the SR latch -->  
+; @button out 0 1 ; of the SR latch -->
 
 moduleEnd

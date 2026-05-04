@@ -80,8 +80,8 @@ if (import.meta.vitest) {
 				],
 			],
 			[
-				[`init buffer[11] 301`],
-				[`init buffer[:index] :key`],
+				[`push buffer[11] 301`],
+				[`push buffer[:index] :key`],
 				[
 					{
 						index: '11',
