@@ -2,7 +2,12 @@
  * Types for program-compiler feature - WebAssembly compilation and management.
  */
 
-import type { CompileAndUpdateMemoryResult, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-types';
+import type {
+	ASTCacheStats,
+	CompileAndUpdateMemoryResult,
+	CompiledFunctionLookup,
+	CompiledModuleLookup,
+} from '@8f4e/compiler-types';
 
 /**
  * Compiler state tracking compilation progress and results.
@@ -15,6 +20,7 @@ export interface Compiler {
 	compiledModules: CompiledModuleLookup;
 	requiredMemoryBytes: number;
 	allocatedMemoryBytes: number;
+	astCacheStats: ASTCacheStats;
 	compiledFunctions?: CompiledFunctionLookup;
 	hasMemoryBeenReinitialized: boolean;
 }
