@@ -221,7 +221,7 @@ export default function compile(
 	);
 	const initOnlyFunction = createFunction([], initOnlyModuleCalls);
 
-	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules, requiredMemoryBytes);
+	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules);
 	const memoryInitiatorFunction = [
 		...initialMemoryDataSegments.flatMap((segment, index) => [
 			...i32const(segment.byteAddress),
