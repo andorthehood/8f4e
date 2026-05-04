@@ -94,6 +94,25 @@ describe('program compiler effect', () => {
 		]);
 	});
 
+	it('stores AST cache stats from successful compilation results', async () => {
+		mockCompileCode.mockResolvedValue({
+			codeBuffer: new Uint8Array([0x00]),
+			compiledModules: {},
+			compiledFunctions: {},
+			requiredMemoryBytes: 0,
+			allocatedMemoryBytes: 65536,
+			astCacheStats: { hits: 4, misses: 2 },
+			hasWasmInstanceBeenReset: false,
+			memoryAction: { action: 'reused' },
+			initOnlyReran: false,
+			byteCodeSize: 1,
+		});
+
+		await triggerProgrammaticCompile();
+
+		expect(mockState.compiler.astCacheStats).toEqual({ hits: 4, misses: 2 });
+	});
+
 	it('registers the recompile debounce delay editor config validator', () => {
 		compilerEffect(store);
 

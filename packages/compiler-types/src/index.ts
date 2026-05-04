@@ -1,6 +1,7 @@
 import {
 	type AST,
 	type ASTCache,
+	type ASTCacheStats,
 	type ASTLine,
 	ArgumentType,
 	type Argument,
@@ -175,6 +176,7 @@ export type CompileAndUpdateMemoryResult = {
 	compiledFunctions?: CompiledFunctionLookup;
 	requiredMemoryBytes: number;
 	allocatedMemoryBytes: number;
+	astCacheStats: ASTCacheStats;
 	memoryRef: WebAssembly.Memory;
 	hasWasmInstanceBeenReset: boolean;
 	memoryAction: MemoryAction;
@@ -217,6 +219,7 @@ export interface Module {
 export {
 	type AST,
 	type ASTCache,
+	type ASTCacheStats,
 	type ASTLine,
 	ArgumentType,
 	type Argument,
