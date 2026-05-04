@@ -104,6 +104,10 @@ export interface InitialMemoryDataSegment {
 	bytes: Uint8Array;
 }
 
+interface InitialMemoryDataSegmentCandidate extends InitialMemoryDataSegment {
+	sourceKind: 'scalar' | 'array' | 'internal-resource';
+}
+
 function writeDefaultValue(
 	view: DataView,
 	memory: Pick<DataStructure, 'isInteger' | 'isUnsigned' | 'elementWordSize'>,
@@ -155,38 +159,104 @@ function writeInternalResourceDefault(view: DataView, resource: InternalResource
 	view.setInt32(resource.byteAddress, Math.trunc(resource.default), true);
 }
 
+function createMemoryDataSegmentCandidate(memory: DataStructure): InitialMemoryDataSegmentCandidate {
+	const isArray = memory.numberOfElements > 1 && typeof memory.default === 'object';
+	const bytes = new Uint8Array(isArray ? memory.numberOfElements * memory.elementWordSize : memory.elementWordSize);
+	const view = new DataView(bytes.buffer);
+
+	if (isArray && typeof memory.default === 'object') {
+		for (const [elementIndex, value] of Object.entries(memory.default)) {
+			writeDefaultValue(view, memory, parseInt(elementIndex, 10) * memory.elementWordSize, value);
+		}
+	} else if (typeof memory.default === 'number') {
+		writeDefaultValue(view, memory, 0, memory.default);
+	}
+
+	return {
+		byteAddress: memory.byteAddress,
+		bytes,
+		sourceKind: isArray ? 'array' : 'scalar',
+	};
+}
+
+function createInternalResourceDataSegmentCandidate(resource: InternalResource): InitialMemoryDataSegmentCandidate {
+	const bytes = new Uint8Array(resource.elementWordSize);
+	const view = new DataView(bytes.buffer);
+	writeInternalResourceDefault(view, {
+		...resource,
+		byteAddress: 0,
+	});
+
+	return {
+		byteAddress: resource.byteAddress,
+		bytes,
+		sourceKind: 'internal-resource',
+	};
+}
+
+function isAllZeroBytes(bytes: Uint8Array): boolean {
+	return bytes.every(byte => byte === 0);
+}
+
+function shouldKeepInitialMemoryDataSegmentCandidate(candidate: InitialMemoryDataSegmentCandidate): boolean {
+	if (candidate.sourceKind === 'array') {
+		return !isAllZeroBytes(candidate.bytes);
+	}
+
+	return true;
+}
+
+function assertInitialMemoryDataSegmentCandidateIsWithinRequiredMemory(
+	candidate: InitialMemoryDataSegmentCandidate,
+	requiredMemoryBytes: number
+) {
+	if (candidate.byteAddress + candidate.bytes.length > requiredMemoryBytes) {
+		throw new RangeError(
+			`Initial memory data segment at byte ${candidate.byteAddress} exceeds required memory size ${requiredMemoryBytes}`
+		);
+	}
+}
+
+function mergeAdjacentInitialMemoryDataSegments(segments: InitialMemoryDataSegment[]): InitialMemoryDataSegment[] {
+	return [...segments]
+		.sort((left, right) => left.byteAddress - right.byteAddress)
+		.reduce<InitialMemoryDataSegment[]>((mergedSegments, segment) => {
+			const previousSegment = mergedSegments.at(-1);
+
+			if (!previousSegment || previousSegment.byteAddress + previousSegment.bytes.length !== segment.byteAddress) {
+				mergedSegments.push({
+					byteAddress: segment.byteAddress,
+					bytes: segment.bytes.slice(),
+				});
+				return mergedSegments;
+			}
+
+			const mergedBytes = new Uint8Array(previousSegment.bytes.length + segment.bytes.length);
+			mergedBytes.set(previousSegment.bytes, 0);
+			mergedBytes.set(segment.bytes, previousSegment.bytes.length);
+			previousSegment.bytes = mergedBytes;
+
+			return mergedSegments;
+		}, []);
+}
+
 export function createInitialMemoryDataSegments(
 	compiledModules: CompiledModule[],
 	requiredMemoryBytes: number
 ): InitialMemoryDataSegment[] {
-	const bytes = new Uint8Array(requiredMemoryBytes);
-	const view = new DataView(bytes.buffer);
+	const segmentCandidates = compiledModules.flatMap(module => [
+		...Object.values(module.memoryMap).map(createMemoryDataSegmentCandidate),
+		...Object.values(module.internalResources ?? {}).map(createInternalResourceDataSegmentCandidate),
+	]);
 
-	for (const module of compiledModules) {
-		for (const memory of Object.values(module.memoryMap)) {
-			if (memory.numberOfElements > 1 && typeof memory.default === 'object') {
-				for (const [elementIndex, value] of Object.entries(memory.default)) {
-					writeDefaultValue(
-						view,
-						memory,
-						memory.byteAddress + parseInt(elementIndex, 10) * memory.elementWordSize,
-						value
-					);
-				}
-				continue;
-			}
+	const retainedSegments = segmentCandidates.flatMap(candidate => {
+		assertInitialMemoryDataSegmentCandidateIsWithinRequiredMemory(candidate, requiredMemoryBytes);
+		return shouldKeepInitialMemoryDataSegmentCandidate(candidate)
+			? [{ byteAddress: candidate.byteAddress, bytes: candidate.bytes }]
+			: [];
+	});
 
-			if (typeof memory.default === 'number') {
-				writeDefaultValue(view, memory, memory.byteAddress, memory.default);
-			}
-		}
-
-		for (const resource of Object.values(module.internalResources ?? {})) {
-			writeInternalResourceDefault(view, resource);
-		}
-	}
-
-	return [{ byteAddress: 0, bytes }];
+	return mergeAdjacentInitialMemoryDataSegments(retainedSegments);
 }
 
 function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
@@ -357,7 +427,7 @@ export default function compile(
 				createFunctionExport('initOnly', 0x02),
 				createFunctionExport('buffer', 0x03),
 			]),
-			...createDataCountSection(initialMemoryDataSegments.length),
+			...(initialMemoryDataSegments.length > 0 ? createDataCountSection(initialMemoryDataSegments.length) : []),
 			...createCodeSection([
 				createFunction([], memoryInitiatorFunction),
 				createFunction([], cycleFunction),
@@ -366,7 +436,9 @@ export default function compile(
 				...compiledFunctions.map(func => func.body),
 				...cycleFunctions,
 			]),
-			...createDataSection(initialMemoryDataSegments.map(segment => createPassiveDataSegment(segment.bytes))),
+			...(initialMemoryDataSegments.length > 0
+				? createDataSection(initialMemoryDataSegments.map(segment => createPassiveDataSegment(segment.bytes)))
+				: []),
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
