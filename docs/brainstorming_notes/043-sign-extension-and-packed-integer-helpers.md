@@ -172,4 +172,4 @@ It also pairs with `int8*` and `int16*` pointer metadata, because pointer derefe
 
 This is not a large language feature.
 
-It is a small primitive that makes packed integer code clearer and cheaper. If 8f4e grows more byte-oriented asset, protocol, pixel, or audio workflows, explicit sign-extension helpers would keep that code readable while mapping directly to efficient WebAssembly instructions.
+It is a small primitive that makes packed integer code clearer and cheaper. If 8f4e grows more byte-oriented assets, protocol, pixel, or audio workflows, explicit sign-extension helpers would keep that code readable while mapping directly to efficient WebAssembly instructions.

@@ -73,12 +73,12 @@ High-level behavior:
 
 ## Success Criteria
 
-- [ ] `compile()` returns an opaque cache object.
-- [ ] `compile()` accepts a previously returned cache object as an optional argument.
-- [ ] Unchanged expanded modules and functions skip `compileToAST()`.
-- [ ] Changed expanded modules and functions are reparsed.
-- [ ] Macro line metadata remains correct when cache hits occur.
-- [ ] Semantic analysis, namespace collection, sorting, normalization, and codegen still run every compile.
+- [x] `compile()` returns an opaque cache object.
+- [x] `compile()` accepts a previously returned cache object as an optional argument.
+- [x] Unchanged expanded modules and functions skip `compileToAST()`.
+- [x] Changed expanded modules and functions are reparsed.
+- [x] Macro line metadata remains correct when cache hits occur.
+- [x] Semantic analysis, namespace collection, sorting, normalization, and codegen still run every compile.
 
 ## Affected Components
 
