@@ -7,8 +7,10 @@ import isValidInstruction from './syntax/isValidInstruction';
 import { ArgumentType, parseArgument } from './syntax/parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
+import { hashSource } from './cache';
 
 import type { AST, ASTLine, BlockBlockResultType, IfBlockResultType, ParsedLineMetadata } from './types';
+import type { ASTCache } from './cache';
 
 type BlockStartInstruction = 'if' | 'block' | 'loop' | 'function' | 'module' | 'constants' | 'mapBegin';
 type BlockEndInstruction = 'ifEnd' | 'blockEnd' | 'loopEnd' | 'functionEnd' | 'moduleEnd' | 'constantsEnd' | 'mapEnd';
@@ -167,7 +169,22 @@ export function parseLine(
 	}
 }
 
-export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata): AST {
+export function compileToAST(
+	code: string[],
+	lineMetadata?: ParsedLineMetadata,
+	cache?: ASTCache,
+	cacheKey?: string
+): AST {
+	const hash = cache && cacheKey !== undefined ? hashSource(code, lineMetadata) : undefined;
+	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
+	if (cached && hash !== undefined && cached.hash === hash) {
+		cache!.stats.hits++;
+		return cached.ast;
+	}
+	if (cache && cacheKey !== undefined) {
+		cache.stats.misses++;
+	}
+
 	const ast: AST = [];
 	const blockStack: OpenBlock[] = [];
 
@@ -292,6 +309,10 @@ export function compileToAST(code: string[], lineMetadata?: ParsedLineMetadata):
 			lineNumberAfterMacroExpansion: openLine.lineNumberAfterMacroExpansion,
 			instruction: openBlock.instruction,
 		});
+	}
+
+	if (cache && cacheKey !== undefined && hash !== undefined) {
+		cache.entries.set(cacheKey, { hash, ast });
 	}
 
 	return ast;

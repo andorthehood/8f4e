@@ -8,6 +8,7 @@ export default function createDefaultState() {
 			lastCompilationStart: 0,
 			requiredMemoryBytes: 0,
 			allocatedMemoryBytes: 0,
+			astCacheStats: { hits: 0, misses: 0 },
 			compiledModules: {},
 			byteCodeSize: 0,
 			hasMemoryBeenReinitialized: false,

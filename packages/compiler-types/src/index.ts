@@ -1,5 +1,7 @@
 import {
 	type AST,
+	type ASTCache,
+	type ASTCacheStats,
 	type ASTLine,
 	ArgumentType,
 	type Argument,
@@ -174,10 +176,23 @@ export type CompileAndUpdateMemoryResult = {
 	compiledFunctions?: CompiledFunctionLookup;
 	requiredMemoryBytes: number;
 	allocatedMemoryBytes: number;
+	astCacheStats: ASTCacheStats;
 	memoryRef: WebAssembly.Memory;
 	hasWasmInstanceBeenReset: boolean;
 	memoryAction: MemoryAction;
 	initOnlyReran: boolean;
+};
+
+export interface CompilerCache {
+	ast: ASTCache;
+}
+
+export type CompileResult = {
+	codeBuffer: Uint8Array;
+	compiledModules: CompiledModuleLookup;
+	compiledFunctions?: CompiledFunctionLookup;
+	requiredMemoryBytes: number;
+	cache: CompilerCache;
 };
 
 export type MemoryValueChange = {
@@ -203,6 +218,8 @@ export interface Module {
 // Export the tokenized AST shapes that form the compiler's public input contract.
 export {
 	type AST,
+	type ASTCache,
+	type ASTCacheStats,
 	type ASTLine,
 	ArgumentType,
 	type Argument,

@@ -31,6 +31,7 @@ export async function compileCode(
 						codeBuffer: data.payload.codeBuffer,
 						requiredMemoryBytes: data.payload.requiredMemoryBytes,
 						allocatedMemoryBytes: data.payload.allocatedMemoryBytes,
+						astCacheStats: data.payload.astCacheStats,
 						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
 						memoryAction: data.payload.memoryAction,
 						compiledFunctions: data.payload.compiledFunctions,

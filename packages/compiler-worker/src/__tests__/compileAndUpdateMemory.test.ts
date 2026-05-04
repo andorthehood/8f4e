@@ -53,6 +53,7 @@ moduleEnd
 		expect(exportKeys).toContain('initOnly');
 		expect(firstResult.compiledModules.setup.initOnlyExecution).toBe(true);
 		expect(firstResult.initOnlyReran).toBe(false);
+		expect(firstResult.astCacheStats).toEqual({ hits: 0, misses: 1 });
 		expect(memoryView[addresses.base]).toBe(1);
 		expect(memoryView[addresses.derived]).toBe(2);
 
@@ -60,6 +61,7 @@ moduleEnd
 		const updatedMemory = new Int32Array(secondResult.memoryRef.buffer);
 
 		expect(secondResult.initOnlyReran).toBe(true);
+		expect(secondResult.astCacheStats).toEqual({ hits: 0, misses: 2 });
 		expect(updatedMemory[addresses.base]).toBe(10);
 		expect(updatedMemory[addresses.derived]).toBe(11);
 	});
@@ -79,6 +81,7 @@ moduleEnd
 		const secondMemory = new Int32Array(secondResult.memoryRef.buffer);
 
 		expect(secondResult.initOnlyReran).toBe(false);
+		expect(secondResult.astCacheStats).toEqual({ hits: 1, misses: 1 });
 		expect(secondMemory[addresses.base]).toBe(5);
 		expect(secondMemory[addresses.derived]).toBe(4);
 	});

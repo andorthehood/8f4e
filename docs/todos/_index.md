@@ -82,6 +82,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 391 | Add compiler AST cache for incremental compiles | 2026-05-04 | `compile()` now returns and accepts an opaque AST cache for unchanged expanded module and function inputs. |
 | 329 | Replace literal-only const collection with semantic namespace prepass | 2026-03-27 | Replaced `collectConstants(ast)` bootstrap with semantic namespace prepass. |
 | 330 | Centralize compile-time folding as an AST normalization pass | 2026-03-27 | Compile-time folding now runs as a semantic normalization pass before codegen. |
 | 331 | Delete duplicate downstream compile-time resolution paths | 2026-03-27 | Removed duplicate downstream compile-time resolution, including old `push` metadata fallbacks. |

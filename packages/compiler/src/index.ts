@@ -1,4 +1,4 @@
-import { compileToAST } from '@8f4e/tokenizer';
+import { compileToAST, createASTCache } from '@8f4e/tokenizer';
 import {
 	createCodeSection,
 	createFunction,
@@ -35,9 +35,11 @@ import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 import type {
 	AST,
 	CompileOptions,
+	CompileResult,
 	CompiledModule,
 	CompiledModuleLookup,
 	CompiledFunctionLookup,
+	CompilerCache,
 	FunctionTypeRegistry,
 	Module,
 	Namespaces,
@@ -111,17 +113,19 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 	return strippedModules;
 }
 
+function createCompilerCache(): CompilerCache {
+	return {
+		ast: createASTCache(),
+	};
+}
+
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
 	functions?: Module[],
-	macros?: Module[]
-): {
-	codeBuffer: Uint8Array;
-	compiledModules: CompiledModuleLookup;
-	compiledFunctions?: CompiledFunctionLookup;
-	requiredMemoryBytes: number;
-} {
+	macros?: Module[],
+	cache = createCompilerCache()
+): CompileResult {
 	// Parse and expand macros if provided
 	const macroDefinitions = macros ? parseMacroDefinitions(macros) : new Map();
 
@@ -143,14 +147,18 @@ export default function compile(
 			: (functions?.map(func => ({ code: func.code, lineMetadata: undefined })) ?? []);
 
 	// Compile to AST with line metadata for error mapping.
-	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
+	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
+		compileToAST(code, lineMetadata, cache.ast, `module:${index}`)
+	);
 	assertUniqueModuleIds(astModules);
 	const dependencyOrderedModules = sortModules(astModules);
 
 	const namespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
+	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
+		compileToAST(code, lineMetadata, cache.ast, `function:${index}`)
+	);
 
 	// Collect pre-codegen function metadata so `call` target validation and
 	// function-body codegen can rely on the same registry before compilation finishes.
@@ -288,5 +296,6 @@ export default function compile(
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
 		requiredMemoryBytes,
+		cache,
 	};
 }
