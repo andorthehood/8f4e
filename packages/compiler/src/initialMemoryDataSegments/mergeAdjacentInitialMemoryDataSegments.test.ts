@@ -5,7 +5,7 @@ import mergeAdjacentInitialMemoryDataSegments from './mergeAdjacentInitialMemory
 import { serializeSegments } from '../../tests/initialMemoryDataSegmentsTestUtils';
 
 describe('mergeAdjacentInitialMemoryDataSegments', () => {
-	test('sorts segments and merges only adjacent ranges', () => {
+	test('sorts segments and merges adjacent ranges with small zero gaps', () => {
 		const segments = mergeAdjacentInitialMemoryDataSegments([
 			{ byteAddress: 8, bytes: new Uint8Array([3]) },
 			{ byteAddress: 0, bytes: new Uint8Array([1, 2]) },
@@ -15,11 +15,39 @@ describe('mergeAdjacentInitialMemoryDataSegments', () => {
 		expect(serializeSegments(segments)).toEqual([
 			{
 				byteAddress: 0,
-				bytes: [1, 2, 4],
+				bytes: [1, 2, 4, 0, 0, 0, 0, 0, 3],
+			},
+		]);
+	});
+
+	test('merges across zero gaps up to 32 bytes', () => {
+		const segments = mergeAdjacentInitialMemoryDataSegments([
+			{ byteAddress: 0, bytes: new Uint8Array([1]) },
+			{ byteAddress: 33, bytes: new Uint8Array([2]) },
+		]);
+
+		expect(serializeSegments(segments)).toEqual([
+			{
+				byteAddress: 0,
+				bytes: [1, ...new Array(32).fill(0), 2],
+			},
+		]);
+	});
+
+	test('keeps ranges separate when the zero gap is larger than 32 bytes', () => {
+		const segments = mergeAdjacentInitialMemoryDataSegments([
+			{ byteAddress: 0, bytes: new Uint8Array([1]) },
+			{ byteAddress: 34, bytes: new Uint8Array([2]) },
+		]);
+
+		expect(serializeSegments(segments)).toEqual([
+			{
+				byteAddress: 0,
+				bytes: [1],
 			},
 			{
-				byteAddress: 8,
-				bytes: [3],
+				byteAddress: 34,
+				bytes: [2],
 			},
 		]);
 	});
