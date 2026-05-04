@@ -50,6 +50,33 @@ describe('createMemoryDataSegmentCandidate', () => {
 		expect(candidate).toBeUndefined();
 	});
 
+	test('skips implicit zero scalar candidates', () => {
+		const candidate = createMemoryDataSegmentCandidate(
+			createMemory({
+				id: 'scalar',
+				byteAddress: 12,
+				default: 0,
+			})
+		);
+
+		expect(candidate).toBeUndefined();
+	});
+
+	test('creates explicit zero scalar candidates', () => {
+		const candidate = createMemoryDataSegmentCandidate(
+			createMemory({
+				id: 'scalar',
+				byteAddress: 12,
+				hasExplicitDefault: true,
+				default: 0,
+			})
+		);
+
+		expect(candidate?.byteAddress).toBe(12);
+		expect(candidate?.sourceKind).toBe('scalar');
+		expect(Array.from(candidate?.bytes ?? [])).toEqual([0, 0, 0, 0]);
+	});
+
 	test('creates explicit zero-filled array candidates', () => {
 		const candidate = createMemoryDataSegmentCandidate(
 			createMemory({

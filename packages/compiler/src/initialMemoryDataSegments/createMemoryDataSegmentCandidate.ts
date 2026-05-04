@@ -10,6 +10,9 @@ export default function createMemoryDataSegmentCandidate(
 	if (isArray && memory.hasExplicitDefault !== true) {
 		return undefined;
 	}
+	if (!isArray && memory.hasExplicitDefault !== true && memory.default === 0) {
+		return undefined;
+	}
 
 	const bytes = new Uint8Array(isArray ? memory.numberOfElements * memory.elementWordSize : memory.elementWordSize);
 	const view = new DataView(bytes.buffer);

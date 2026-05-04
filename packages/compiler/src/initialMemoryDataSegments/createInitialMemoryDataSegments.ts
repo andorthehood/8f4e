@@ -11,7 +11,10 @@ export default function createInitialMemoryDataSegments(compiledModules: Compile
 			const candidate = createMemoryDataSegmentCandidate(memory);
 			return candidate ? [candidate] : [];
 		}),
-		...Object.values(module.internalResources ?? {}).map(createInternalResourceDataSegmentCandidate),
+		...Object.values(module.internalResources ?? {}).flatMap(resource => {
+			const candidate = createInternalResourceDataSegmentCandidate(resource);
+			return candidate ? [candidate] : [];
+		}),
 	]);
 
 	return mergeAdjacentInitialMemoryDataSegments(segmentCandidates);
