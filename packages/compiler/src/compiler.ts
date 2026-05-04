@@ -1,5 +1,5 @@
 import { compileToAST } from '@8f4e/tokenizer';
-import { createFunction, createLocalDeclaration, f32store, f64store, i32store, Type } from '@8f4e/compiler-wasm-utils';
+import { createFunction, createLocalDeclaration, Type } from '@8f4e/compiler-wasm-utils';
 
 import instructions from './instructionCompilers';
 import { ErrorCode, getError } from './compilerError';
@@ -112,19 +112,7 @@ export function compileModule(
 		);
 	}
 
-	const internalResourceInitBody = Object.values(context.internalResources).flatMap(resource => {
-		if (resource.default === 0) {
-			return [];
-		}
-
-		if (resource.storageType === 'float64') {
-			return f64store(resource.byteAddress, resource.default);
-		}
-
-		return resource.storageType === 'int'
-			? i32store(resource.byteAddress, resource.default)
-			: f32store(resource.byteAddress, resource.default);
-	});
+	const internalResources = Object.keys(context.internalResources).length > 0 ? context.internalResources : undefined;
 
 	return {
 		id: context.namespace.moduleName,
@@ -134,10 +122,11 @@ export function compileModule(
 			}),
 			context.byteCode
 		),
-		initFunctionBody: internalResourceInitBody,
+		initFunctionBody: [],
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
+		internalResources,
 		wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		ast: normalizedAst,
 		index,
