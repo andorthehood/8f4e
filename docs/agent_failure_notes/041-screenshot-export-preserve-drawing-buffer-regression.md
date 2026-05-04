@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Screenshot export preserveDrawingBuffer regression
-agent: Codex App
-model: GPT-5
+agent: Codex App Version 26.429.30905 (2345)
+model: GPT-5.5 (high)
 date: 2026-05-03
 ---
 
