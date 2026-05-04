@@ -1,5 +1,39 @@
 import type { CompiledModuleLookup } from '@8f4e/compiler-types';
 
+function didInternalResourcesChange(
+	compiledModule: CompiledModuleLookup[string],
+	previousModule: CompiledModuleLookup[string]
+): boolean {
+	const resources = compiledModule.internalResources ?? {};
+	const previousResources = previousModule.internalResources ?? {};
+	const resourceKeys = Object.keys(resources);
+	const previousResourceKeys = Object.keys(previousResources);
+
+	if (resourceKeys.length !== previousResourceKeys.length) {
+		return true;
+	}
+
+	for (const [id, resource] of Object.entries(resources)) {
+		const previousResource = previousResources[id];
+		if (!previousResource) {
+			return true;
+		}
+
+		if (
+			resource.byteAddress !== previousResource.byteAddress ||
+			resource.wordAlignedAddress !== previousResource.wordAlignedAddress ||
+			resource.wordAlignedSize !== previousResource.wordAlignedSize ||
+			resource.elementWordSize !== previousResource.elementWordSize ||
+			resource.default !== previousResource.default ||
+			resource.storageType !== previousResource.storageType
+		) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 export default function didProgramOrMemoryStructureChange(
 	compiledModules: CompiledModuleLookup,
 	previous: CompiledModuleLookup | undefined
@@ -30,6 +64,10 @@ export default function didProgramOrMemoryStructureChange(
 		}
 
 		if (compiledModule.wordAlignedSize !== previousModule.wordAlignedSize) {
+			return true;
+		}
+
+		if (didInternalResourcesChange(compiledModule, previousModule)) {
 			return true;
 		}
 	}

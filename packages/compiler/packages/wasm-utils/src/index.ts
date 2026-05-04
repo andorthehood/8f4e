@@ -1,4 +1,6 @@
 export { default as call } from './call/call';
+export { default as memoryFill } from './bulkMemory/memoryFill';
+export { default as memoryInit } from './bulkMemory/memoryInit';
 export { default as createCodeSection } from './codeSection/createCodeSection';
 export { default as createFunction } from './codeSection/createFunction';
 export { default as createLocalDeclaration } from './codeSection/createLocalDeclaration';
@@ -11,6 +13,9 @@ export { default as br } from './controlFlow/br';
 export { default as br_if } from './controlFlow/br_if';
 export { default as ifelse } from './controlFlow/ifelse';
 export { default as loop } from './controlFlow/loop';
+export { default as createDataCountSection } from './data/createDataCountSection';
+export { default as createDataSection } from './data/createDataSection';
+export { default as createPassiveDataSegment } from './data/createPassiveDataSegment';
 export { deriveEffectiveMemorySize } from './deriveEffectiveMemorySize';
 export { default as createVector } from './encoding/createVector';
 export { default as encodeString } from './encoding/encodeString';
@@ -44,6 +49,7 @@ export type {
 	FunctionName,
 	LocalName,
 	Import,
+	DataSegment,
 } from './section';
 export { default as f32store } from './store/f32store';
 export { default as f64store } from './store/f64store';

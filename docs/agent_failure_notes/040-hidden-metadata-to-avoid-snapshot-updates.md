@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Hidden metadata to avoid snapshot updates
-agent: Codex
-model: GPT-5
+agent: Codex App
+model: GPT-5.5 (high)
 date: 2026-04-30
 ---
 

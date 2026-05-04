@@ -67,6 +67,34 @@ describe('getOrCreateMemory', () => {
 			});
 		});
 
+		it('should report "memory-structure-changed" reason when internal resources change', () => {
+			const compiledModules1 = createMockCompiledModules();
+			getOrCreateMemory(65536, compiledModules1);
+
+			const compiledModules2 = {
+				module1: {
+					...compiledModules1.module1,
+					internalResources: {
+						__hidden: {
+							id: '__hidden',
+							byteAddress: 400,
+							wordAlignedAddress: 100,
+							wordAlignedSize: 1,
+							elementWordSize: 4,
+							default: -1,
+							storageType: 'int',
+						},
+					},
+				},
+			};
+			const result = getOrCreateMemory(65536, compiledModules2, compiledModules1);
+
+			expect(result.memoryAction).toEqual({
+				action: 'recreated',
+				reason: { kind: 'memory-structure-changed' },
+			});
+		});
+
 		it('should report "reused" action when memory is reused', () => {
 			// First call creates initial memory
 			const compiledModules1 = createMockCompiledModules();
