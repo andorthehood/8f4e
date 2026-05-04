@@ -115,9 +115,9 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
     i32.const 0
     i32.const 12
     memory.fill
-    i32.const 4
-    i32.const 0
     i32.const 8
+    i32.const 0
+    i32.const 4
     memory.init 0)
   (func (;1;) (type 0)
     call 5)
@@ -183,7 +183,7 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3))
-  (data (;0;) "\\00\\00\\00\\00\\ff\\ff\\ff\\ff"))
+  (data (;0;) "\\ff\\ff\\ff\\ff"))
 "
 `;
 
@@ -321,9 +321,9 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
     i32.const 0
     i32.const 12
     memory.fill
-    i32.const 4
-    i32.const 0
     i32.const 8
+    i32.const 0
+    i32.const 4
     memory.init 0)
   (func (;1;) (type 0)
     call 5)
@@ -387,7 +387,7 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3))
-  (data (;0;) "\\00\\00\\00\\00\\ff\\ff\\ff\\ff"))
+  (data (;0;) "\\ff\\ff\\ff\\ff"))
 "
 `;
 
@@ -525,9 +525,9 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
     i32.const 0
     i32.const 12
     memory.fill
-    i32.const 4
-    i32.const 0
     i32.const 8
+    i32.const 0
+    i32.const 4
     memory.init 0)
   (func (;1;) (type 0)
     call 5)
@@ -591,7 +591,7 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3))
-  (data (;0;) "\\00\\00\\00\\00\\ff\\ff\\ff\\ff"))
+  (data (;0;) "\\ff\\ff\\ff\\ff"))
 "
 `;
 

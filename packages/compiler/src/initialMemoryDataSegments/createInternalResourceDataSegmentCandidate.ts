@@ -5,7 +5,11 @@ import type { InternalResource } from '@8f4e/compiler-types';
 
 export default function createInternalResourceDataSegmentCandidate(
 	resource: InternalResource
-): InitialMemoryDataSegmentCandidate {
+): InitialMemoryDataSegmentCandidate | undefined {
+	if (resource.default === 0) {
+		return undefined;
+	}
+
 	const bytes = new Uint8Array(resource.elementWordSize);
 	const view = new DataView(bytes.buffer);
 	writeInternalResourceDefault(view, {
