@@ -1,4 +1,4 @@
-import { compileToAST, createASTCache } from '@8f4e/tokenizer';
+import { compileToAST, createASTCache, type InternalASTCache } from '@8f4e/tokenizer';
 import {
 	createCodeSection,
 	createFunction,
@@ -113,7 +113,11 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 	return strippedModules;
 }
 
-function createCompilerCache(): CompilerCache {
+interface InternalCompilerCache {
+	ast: InternalASTCache;
+}
+
+function createCompilerCache(): InternalCompilerCache {
 	return {
 		ast: createASTCache(),
 	};
@@ -124,8 +128,9 @@ export default function compile(
 	options: CompileOptions,
 	functions?: Module[],
 	macros?: Module[],
-	cache = createCompilerCache()
+	cache: CompilerCache = createCompilerCache()
 ): CompileResult {
+	const internalCache = cache as InternalCompilerCache;
 	// Parse and expand macros if provided
 	const macroDefinitions = macros ? parseMacroDefinitions(macros) : new Map();
 
@@ -148,7 +153,7 @@ export default function compile(
 
 	// Compile to AST with line metadata for error mapping.
 	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
-		compileToAST(code, lineMetadata, cache.ast, `module:${index}`)
+		compileToAST(code, lineMetadata, internalCache.ast, `module:${index}`)
 	);
 	assertUniqueModuleIds(astModules);
 	const dependencyOrderedModules = sortModules(astModules);
@@ -157,7 +162,7 @@ export default function compile(
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
-		compileToAST(code, lineMetadata, cache.ast, `function:${index}`)
+		compileToAST(code, lineMetadata, internalCache.ast, `function:${index}`)
 	);
 
 	// Collect pre-codegen function metadata so `call` target validation and

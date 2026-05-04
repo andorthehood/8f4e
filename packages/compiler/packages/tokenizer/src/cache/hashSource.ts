@@ -19,7 +19,11 @@ export default function hashSource(code: string[], lineMetadata: ParsedLineMetad
 	hash = appendHashInput(hash, `${lineMetadata?.length ?? 0}\0`);
 	if (lineMetadata) {
 		for (const metadata of lineMetadata) {
-			hash = appendHashInput(hash, `${metadata.callSiteLineNumber}\0${metadata.macroId ?? ''}\0`);
+			if (metadata === undefined) {
+				hash = appendHashInput(hash, `0\0\0`);
+			} else {
+				hash = appendHashInput(hash, `${metadata.callSiteLineNumber}\0${metadata.macroId ?? ''}\0`);
+			}
 		}
 	}
 
