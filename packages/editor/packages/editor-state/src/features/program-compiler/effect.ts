@@ -77,6 +77,7 @@ export default function compiler(store: StateManager<State>) {
 			store.set('compiler.compiledModules', result.compiledModules);
 			store.set('compiler.requiredMemoryBytes', result.requiredMemoryBytes);
 			store.set('compiler.allocatedMemoryBytes', result.allocatedMemoryBytes);
+			store.set('compiler.astCacheStats', result.astCacheStats);
 			store.set('compiler.isCompiling', false);
 			store.set('compiler.compilationTime', performance.now() - state.compiler.lastCompilationStart);
 			store.set('codeErrors.compilationErrors', []);
