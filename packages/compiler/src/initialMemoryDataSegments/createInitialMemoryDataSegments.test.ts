@@ -10,26 +10,24 @@ import {
 } from '../../tests/initialMemoryDataSegmentsTestUtils';
 
 describe('createInitialMemoryDataSegments', () => {
-	test('skips zero-filled arrays while retaining scalar defaults', () => {
+	test('skips implicit arrays while retaining scalar and explicit array defaults', () => {
 		const compiledModules = [
 			createCompiledModule({
 				memoryMap: {
 					scalarZero: createMemory({ id: 'scalarZero', byteAddress: 0, default: 0 }),
-					zeroArray: createMemory({
-						id: 'zeroArray',
+					implicitArray: createMemory({
+						id: 'implicitArray',
 						byteAddress: 4,
 						numberOfElements: 4,
 						wordAlignedSize: 4,
-						default: {
-							0: 0,
-							2: 0,
-						},
+						default: {},
 					}),
-					nonZeroArray: createMemory({
-						id: 'nonZeroArray',
+					explicitArray: createMemory({
+						id: 'explicitArray',
 						byteAddress: 20,
 						numberOfElements: 3,
 						wordAlignedSize: 3,
+						hasExplicitDefault: true,
 						default: {
 							1: 2,
 						},
@@ -47,6 +45,30 @@ describe('createInitialMemoryDataSegments', () => {
 			{
 				byteAddress: 20,
 				bytes: [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			},
+		]);
+	});
+
+	test('retains explicit zero-filled array defaults', () => {
+		const compiledModules = [
+			createCompiledModule({
+				memoryMap: {
+					zeroArray: createMemory({
+						id: 'zeroArray',
+						byteAddress: 0,
+						numberOfElements: 2,
+						wordAlignedSize: 2,
+						hasExplicitDefault: true,
+						default: { 0: 0 },
+					}),
+				},
+			}),
+		];
+
+		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([
+			{
+				byteAddress: 0,
+				bytes: [0, 0, 0, 0, 0, 0, 0, 0],
 			},
 		]);
 	});
