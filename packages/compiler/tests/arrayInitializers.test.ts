@@ -1,7 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import compile from '@8f4e/compiler';
 
 import { createWasmInstance } from './instructions/testUtils';
+
+import compile from '../src';
 
 describe('array declaration inline initializers', () => {
 	test('initializes int[] elements from trailing declaration values', async () => {
@@ -85,5 +86,67 @@ describe('array declaration inline initializers', () => {
 		expect(dataView.getInt16(shorts.byteAddress, true)).toBe(1000);
 		expect(dataView.getInt16(shorts.byteAddress + 2, true)).toBe(2000);
 		expect(dataView.getInt16(shorts.byteAddress + 4, true)).toBe(3000);
+	});
+
+	test('does not emit full passive data images for large sparse array initializers', async () => {
+		const result = compile(
+			[
+				{
+					code: ['module test', 'int[] huge 1000000 1', 'moduleEnd'],
+				},
+			],
+			{ disableSharedMemory: true }
+		);
+		const { init, memory } = await createWasmInstance(result.codeBuffer, {
+			memorySizePages: Math.ceil(result.requiredMemoryBytes / (64 * 1024)),
+		});
+		const huge = result.compiledModules.test.memoryMap.huge;
+		const start = huge.wordAlignedAddress;
+
+		init();
+
+		expect(result.codeBuffer.byteLength).toBeLessThan(10_000);
+		expect(memory[start]).toBe(1);
+		expect(memory[start + 1]).toBe(0);
+		expect(memory[start + 999_999]).toBe(0);
+	});
+
+	test('init clears implicit arrays before restoring passive data defaults', async () => {
+		const result = compile(
+			[
+				{
+					code: [
+						'module test',
+						'int[] scratch 4',
+						'int marker 123',
+						'loop',
+						'push &scratch',
+						'push 99',
+						'store',
+						'push &marker',
+						'push 456',
+						'store',
+						'loopEnd',
+						'moduleEnd',
+					],
+				},
+			],
+			{ disableSharedMemory: true }
+		);
+		const { init, cycle, memory } = await createWasmInstance(result.codeBuffer);
+		const scratch = result.compiledModules.test.memoryMap.scratch;
+		const marker = result.compiledModules.test.memoryMap.marker;
+
+		init();
+		expect(memory[scratch.wordAlignedAddress]).toBe(0);
+		expect(memory[marker.wordAlignedAddress]).toBe(123);
+
+		cycle();
+		expect(memory[scratch.wordAlignedAddress]).toBe(99);
+		expect(memory[marker.wordAlignedAddress]).toBe(456);
+
+		init();
+		expect(memory[scratch.wordAlignedAddress]).toBe(0);
+		expect(memory[marker.wordAlignedAddress]).toBe(123);
 	});
 });
