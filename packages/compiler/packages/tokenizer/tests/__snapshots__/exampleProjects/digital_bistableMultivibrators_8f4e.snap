@@ -87,7 +87,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 17,
@@ -102,7 +103,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 18,
@@ -126,7 +128,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 21,
@@ -319,7 +322,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 42,
@@ -334,7 +338,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 50,
@@ -381,7 +386,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 56,
@@ -396,7 +402,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 58,
@@ -574,7 +581,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 76,
@@ -589,7 +597,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 77,
@@ -613,7 +622,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 81,
@@ -815,7 +825,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 101,
@@ -830,7 +841,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 102,
@@ -854,7 +866,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 106,
@@ -1079,7 +1092,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 136,
@@ -1094,7 +1108,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 137,
@@ -1118,7 +1133,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 140,
@@ -1334,7 +1350,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 171,
@@ -1381,7 +1398,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 177,
@@ -1401,7 +1419,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 178,
@@ -1424,7 +1443,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 182,
@@ -1681,7 +1701,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 207,
@@ -1701,7 +1722,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 208,
@@ -1724,7 +1746,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 212,
@@ -1972,7 +1995,8 @@
       }
     ],
     "isSemanticOnly": false,
-    "isMemoryDeclaration": true
+    "isMemoryDeclaration": true,
+    "hasExplicitMemoryDefault": false
   },
   {
     "lineNumberBeforeMacroExpansion": 242,

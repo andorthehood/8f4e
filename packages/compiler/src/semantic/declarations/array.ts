@@ -76,6 +76,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = withValidation<ArrayDec
 			// Convert the word-grid offset back to a byte address for wasm load/store instructions.
 			byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 			default: createArrayDefaultValues(line, context, numberOfElements, isInteger),
+			hasExplicitDefault: line.hasExplicitMemoryDefault === true,
 			isInteger,
 			isPointingToPointer: line.instruction.includes('**'),
 			...(line.instruction.includes('*')
