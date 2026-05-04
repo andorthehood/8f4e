@@ -14,8 +14,20 @@ describe('createInternalResourceDataSegmentCandidate', () => {
 			})
 		);
 
-		expect(candidate.byteAddress).toBe(32);
-		expect(candidate.sourceKind).toBe('internal-resource');
-		expect(Array.from(candidate.bytes)).toEqual([3, 0, 0, 0]);
+		expect(candidate?.byteAddress).toBe(32);
+		expect(candidate?.sourceKind).toBe('internal-resource');
+		expect(Array.from(candidate?.bytes ?? [])).toEqual([3, 0, 0, 0]);
+	});
+
+	test('skips zero-valued internal resource candidates', () => {
+		const candidate = createInternalResourceDataSegmentCandidate(
+			createInternalResource({
+				id: 'resource',
+				byteAddress: 32,
+				default: 0,
+			})
+		);
+
+		expect(candidate).toBeUndefined();
 	});
 });
