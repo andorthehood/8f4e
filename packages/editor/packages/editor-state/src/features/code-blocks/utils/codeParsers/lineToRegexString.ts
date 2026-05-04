@@ -22,7 +22,7 @@ if (import.meta.vitest) {
 		});
 
 		it('escapes square brackets', () => {
-			expect(lineToRegexString('init buffer[1] :value')).toContain('buffer\\[1\\]');
+			expect(lineToRegexString('push buffer[1] :value')).toContain('buffer\\[1\\]');
 		});
 	});
 }

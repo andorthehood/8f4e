@@ -108,11 +108,10 @@ moduleEnd
 );
 
 moduleTester(
-	'init: literal-only multiplication expression',
+	'memory declaration: literal-only multiplication expression default',
 	`module test
 
-int foo
-init foo 4*3
+int foo 4*3
 
 int output
 push &output

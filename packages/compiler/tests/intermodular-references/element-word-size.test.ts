@@ -45,10 +45,10 @@ describe('inter-module references - element word size', () => {
 		expect(targetModule.memoryMap['size'].default).toBe(4); // float is 4 bytes
 	});
 
-	test('resolves element word size reference in init instruction', () => {
+	test('resolves element word size reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int elemSize', 'init elemSize sizeof(sourceModule:buffer)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int elemSize sizeof(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
 		const result = compile(modules, {
@@ -80,13 +80,13 @@ describe('inter-module references - element word size', () => {
 		}).toThrow();
 	});
 
-	test('rejects multi-dot element word size reference in init instruction', () => {
+	test('rejects multi-dot element word size reference in memory declaration default', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int size', 'init size sizeof(sourceModule:buffer.extra)', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int size sizeof(sourceModule:buffer.extra)', 'moduleEnd'] },
 		];
 
-		// Should throw because multi-dot references are rejected in init as well
+		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
 			compile(modules, {
 				startingMemoryWordAddress: 0,
