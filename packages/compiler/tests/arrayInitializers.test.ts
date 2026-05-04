@@ -88,6 +88,29 @@ describe('array declaration inline initializers', () => {
 		expect(dataView.getInt16(shorts.byteAddress + 4, true)).toBe(3000);
 	});
 
+	test('does not emit full passive data images for large sparse array initializers', async () => {
+		const result = compile(
+			[
+				{
+					code: ['module test', 'int[] huge 1000000 1', 'moduleEnd'],
+				},
+			],
+			{ disableSharedMemory: true }
+		);
+		const { init, memory } = await createWasmInstance(result.codeBuffer, {
+			memorySizePages: Math.ceil(result.requiredMemoryBytes / (64 * 1024)),
+		});
+		const huge = result.compiledModules.test.memoryMap.huge;
+		const start = huge.wordAlignedAddress;
+
+		init();
+
+		expect(result.codeBuffer.byteLength).toBeLessThan(10_000);
+		expect(memory[start]).toBe(1);
+		expect(memory[start + 1]).toBe(0);
+		expect(memory[start + 999_999]).toBe(0);
+	});
+
 	test('init clears implicit arrays before restoring passive data defaults', async () => {
 		const result = compile(
 			[
