@@ -29,16 +29,15 @@ import {
 } from './semantic/buildNamespace';
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
+import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 
 import type {
 	AST,
 	CompileOptions,
 	CompiledModule,
 	CompiledModuleLookup,
-	DataStructure,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
-	InternalResource,
 	Module,
 	Namespaces,
 } from '@8f4e/compiler-types';
@@ -66,6 +65,8 @@ export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 export { ErrorCode, getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
+export { createInitialMemoryDataSegments };
+export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
 
 export function compileModules(
 	modules: AST[],
@@ -97,166 +98,6 @@ export function compileModules(
 		memoryAddress += module.wordAlignedSize;
 		return module;
 	});
-}
-
-export interface InitialMemoryDataSegment {
-	byteAddress: number;
-	bytes: Uint8Array;
-}
-
-interface InitialMemoryDataSegmentCandidate extends InitialMemoryDataSegment {
-	sourceKind: 'scalar' | 'array' | 'internal-resource';
-}
-
-function writeDefaultValue(
-	view: DataView,
-	memory: Pick<DataStructure, 'isInteger' | 'isUnsigned' | 'elementWordSize'>,
-	byteAddress: number,
-	value: number
-) {
-	if (memory.isInteger && memory.elementWordSize === 1) {
-		if (memory.isUnsigned) {
-			view.setUint8(byteAddress, Math.trunc(value));
-		} else {
-			view.setInt8(byteAddress, Math.trunc(value));
-		}
-		return;
-	}
-
-	if (memory.isInteger && memory.elementWordSize === 2) {
-		if (memory.isUnsigned) {
-			view.setUint16(byteAddress, Math.trunc(value), true);
-		} else {
-			view.setInt16(byteAddress, Math.trunc(value), true);
-		}
-		return;
-	}
-
-	if (memory.elementWordSize === 8 && !memory.isInteger) {
-		view.setFloat64(byteAddress, value, true);
-		return;
-	}
-
-	if (memory.isInteger) {
-		view.setInt32(byteAddress, Math.trunc(value), true);
-		return;
-	}
-
-	view.setFloat32(byteAddress, value, true);
-}
-
-function writeInternalResourceDefault(view: DataView, resource: InternalResource) {
-	if (resource.storageType === 'float64') {
-		view.setFloat64(resource.byteAddress, resource.default, true);
-		return;
-	}
-
-	if (resource.storageType === 'float') {
-		view.setFloat32(resource.byteAddress, resource.default, true);
-		return;
-	}
-
-	view.setInt32(resource.byteAddress, Math.trunc(resource.default), true);
-}
-
-function createMemoryDataSegmentCandidate(memory: DataStructure): InitialMemoryDataSegmentCandidate {
-	const isArray = memory.numberOfElements > 1 && typeof memory.default === 'object';
-	const bytes = new Uint8Array(isArray ? memory.numberOfElements * memory.elementWordSize : memory.elementWordSize);
-	const view = new DataView(bytes.buffer);
-
-	if (isArray && typeof memory.default === 'object') {
-		for (const [elementIndex, value] of Object.entries(memory.default)) {
-			writeDefaultValue(view, memory, parseInt(elementIndex, 10) * memory.elementWordSize, value);
-		}
-	} else if (typeof memory.default === 'number') {
-		writeDefaultValue(view, memory, 0, memory.default);
-	}
-
-	return {
-		byteAddress: memory.byteAddress,
-		bytes,
-		sourceKind: isArray ? 'array' : 'scalar',
-	};
-}
-
-function createInternalResourceDataSegmentCandidate(resource: InternalResource): InitialMemoryDataSegmentCandidate {
-	const bytes = new Uint8Array(resource.elementWordSize);
-	const view = new DataView(bytes.buffer);
-	writeInternalResourceDefault(view, {
-		...resource,
-		byteAddress: 0,
-	});
-
-	return {
-		byteAddress: resource.byteAddress,
-		bytes,
-		sourceKind: 'internal-resource',
-	};
-}
-
-function isAllZeroBytes(bytes: Uint8Array): boolean {
-	return bytes.every(byte => byte === 0);
-}
-
-function shouldKeepInitialMemoryDataSegmentCandidate(candidate: InitialMemoryDataSegmentCandidate): boolean {
-	if (candidate.sourceKind === 'array') {
-		return !isAllZeroBytes(candidate.bytes);
-	}
-
-	return true;
-}
-
-function assertInitialMemoryDataSegmentCandidateIsWithinRequiredMemory(
-	candidate: InitialMemoryDataSegmentCandidate,
-	requiredMemoryBytes: number
-) {
-	if (candidate.byteAddress + candidate.bytes.length > requiredMemoryBytes) {
-		throw new RangeError(
-			`Initial memory data segment at byte ${candidate.byteAddress} exceeds required memory size ${requiredMemoryBytes}`
-		);
-	}
-}
-
-function mergeAdjacentInitialMemoryDataSegments(segments: InitialMemoryDataSegment[]): InitialMemoryDataSegment[] {
-	return [...segments]
-		.sort((left, right) => left.byteAddress - right.byteAddress)
-		.reduce<InitialMemoryDataSegment[]>((mergedSegments, segment) => {
-			const previousSegment = mergedSegments.at(-1);
-
-			if (!previousSegment || previousSegment.byteAddress + previousSegment.bytes.length !== segment.byteAddress) {
-				mergedSegments.push({
-					byteAddress: segment.byteAddress,
-					bytes: segment.bytes.slice(),
-				});
-				return mergedSegments;
-			}
-
-			const mergedBytes = new Uint8Array(previousSegment.bytes.length + segment.bytes.length);
-			mergedBytes.set(previousSegment.bytes, 0);
-			mergedBytes.set(segment.bytes, previousSegment.bytes.length);
-			previousSegment.bytes = mergedBytes;
-
-			return mergedSegments;
-		}, []);
-}
-
-export function createInitialMemoryDataSegments(
-	compiledModules: CompiledModule[],
-	requiredMemoryBytes: number
-): InitialMemoryDataSegment[] {
-	const segmentCandidates = compiledModules.flatMap(module => [
-		...Object.values(module.memoryMap).map(createMemoryDataSegmentCandidate),
-		...Object.values(module.internalResources ?? {}).map(createInternalResourceDataSegmentCandidate),
-	]);
-
-	const retainedSegments = segmentCandidates.flatMap(candidate => {
-		assertInitialMemoryDataSegmentCandidateIsWithinRequiredMemory(candidate, requiredMemoryBytes);
-		return shouldKeepInitialMemoryDataSegmentCandidate(candidate)
-			? [{ byteAddress: candidate.byteAddress, bytes: candidate.bytes }]
-			: [];
-	});
-
-	return mergeAdjacentInitialMemoryDataSegments(retainedSegments);
 }
 
 function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
