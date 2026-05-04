@@ -7,10 +7,7 @@ import type { CompiledModule } from '@8f4e/compiler-types';
 
 export default function createInitialMemoryDataSegments(compiledModules: CompiledModule[]): InitialMemoryDataSegment[] {
 	const segmentCandidates = compiledModules.flatMap(module => [
-		...Object.values(module.memoryMap).flatMap(memory => {
-			const candidate = createMemoryDataSegmentCandidate(memory);
-			return candidate ? [candidate] : [];
-		}),
+		...Object.values(module.memoryMap).flatMap(memory => createMemoryDataSegmentCandidate(memory)),
 		...Object.values(module.internalResources ?? {}).flatMap(resource => {
 			const candidate = createInternalResourceDataSegmentCandidate(resource);
 			return candidate ? [candidate] : [];

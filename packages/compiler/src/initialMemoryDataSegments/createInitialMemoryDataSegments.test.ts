@@ -51,7 +51,7 @@ describe('createInitialMemoryDataSegments', () => {
 		]);
 	});
 
-	test('retains explicit zero-filled array defaults', () => {
+	test('skips explicit zero-filled array defaults', () => {
 		const compiledModules = [
 			createCompiledModule({
 				memoryMap: {
@@ -67,12 +67,7 @@ describe('createInitialMemoryDataSegments', () => {
 			}),
 		];
 
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([
-			{
-				byteAddress: 0,
-				bytes: [0, 0, 0, 0, 0, 0, 0, 0],
-			},
-		]);
+		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([]);
 	});
 
 	test('skips zero-filled internal resource defaults', () => {
