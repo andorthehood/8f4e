@@ -75,6 +75,7 @@ Active todo files are listed below.
 | 386 | Guard i32.rem_s divisor zero | 🟡 | 2-4h | 2026-04-30 | WebAssembly has no non-trapping integer remainder instruction; make divisor-zero behavior explicit and covered so `remainder` cannot unexpectedly produce a runtime trap. |
 | 387 | Add lazy editor environment plugins | 🟢 | 1-2d | 2026-05-01 | Added a directive-triggered lazy plugin system so keyboard memory and binary asset loading only load browser integration code when a project asks for it. |
 | 388 | Add PixelCode font to sprite-generator | 🟢 | 4-8h | 2026-05-02 | Add PixelCode as a bundled sprite-generator font with generated bitmap metadata, selectable font registration, visual/test coverage, and OFL attribution. |
+| 389 | Add EagleSpCGA Alt3 8x8 font to sprite-generator | 🟢 | 4-8h | 2026-05-04 | Add EagleSpCGA Alt3 8x8 as a bundled sprite-generator font with generated bitmap metadata, selectable font registration, visual/test coverage, and attribution. |
 
 ## Completed TODOs
 
