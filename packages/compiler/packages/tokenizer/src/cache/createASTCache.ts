@@ -1,6 +1,6 @@
-import type { InternalASTCache } from './types';
+import type { ASTCache } from './types';
 
-export default function createASTCache(): InternalASTCache {
+export default function createASTCache(): ASTCache {
 	return {
 		entries: new Map(),
 		stats: {
