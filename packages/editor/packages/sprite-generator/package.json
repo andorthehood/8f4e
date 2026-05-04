@@ -27,6 +27,6 @@
     "glugglug": "*"
   },
   "devDependencies": {
-    "vite": "^7.3.2"
+    "vite": "^8.0.0"
   }
 }
