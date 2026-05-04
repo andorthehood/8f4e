@@ -35,6 +35,7 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int[]',
+				hasExplicitMemoryDefault: true,
 				arguments: [
 					classifyIdentifier('notes'),
 					{ type: ArgumentType.LITERAL, value: 10, isInteger: true },
@@ -51,6 +52,7 @@ describe('array declaration compiler', () => {
 			1: 50,
 			2: 53,
 		});
+		expect(context.namespace.memory['notes'].hasExplicitDefault).toBe(true);
 	});
 
 	it('truncates inline initializer values for integer arrays', () => {

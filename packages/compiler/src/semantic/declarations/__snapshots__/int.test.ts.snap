@@ -6,6 +6,7 @@ exports[`int instruction compiler > creates an int memory entry 1`] = `
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
+    "hasExplicitDefault": false,
     "id": "counter",
     "isInteger": true,
     "isPointingToPointer": false,

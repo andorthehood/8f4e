@@ -1,4 +1,5 @@
 import instructionParser from './syntax/instructionParser';
+import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
 import isComment from './syntax/isComment';
 import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
 import isSemanticOnlyInstruction from './syntax/isSemanticOnlyInstruction';
@@ -54,6 +55,29 @@ function getIfResultType(line: ASTLine): IfBlockResultType {
 
 function getBlockEndResultType(line: ASTLine): BlockBlockResultType {
 	return getResultTypeFromFirstArgument(line);
+}
+
+function hasExplicitMemoryDefault(instruction: string, args: ASTLine['arguments']): boolean | undefined {
+	if (!isMemoryDeclarationInstruction(instruction)) {
+		return undefined;
+	}
+
+	if (isArrayDeclarationInstruction(instruction)) {
+		return args.length > 2;
+	}
+
+	if (args.length === 0) {
+		return false;
+	}
+
+	const firstArg = args[0];
+	if (firstArg.type !== ArgumentType.IDENTIFIER) {
+		return true;
+	}
+	if (firstArg.referenceKind === 'constant') {
+		return true;
+	}
+	return args.length > 1;
 }
 
 /**
@@ -115,15 +139,21 @@ export function parseLine(
 		instruction = first;
 		const parsedArguments = args.map(parseArgument);
 		validateInstructionArguments(instruction, parsedArguments);
-
-		return {
+		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
+		const parsedLine: ASTLine = {
 			lineNumberBeforeMacroExpansion,
 			lineNumberAfterMacroExpansion,
 			instruction,
 			arguments: parsedArguments,
 			isSemanticOnly: isSemanticOnlyInstruction(instruction),
-			isMemoryDeclaration: isMemoryDeclarationInstruction(instruction),
+			isMemoryDeclaration,
 		};
+
+		if (isMemoryDeclaration) {
+			parsedLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
+		}
+
+		return parsedLine;
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
 			throw new SyntaxRulesError(error.code, error.message, {

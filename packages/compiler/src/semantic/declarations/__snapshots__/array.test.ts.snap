@@ -6,6 +6,7 @@ exports[`array declaration compiler > creates a memory array entry 1`] = `
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
+    "hasExplicitDefault": false,
     "id": "values",
     "isInteger": true,
     "isPointingToPointer": false,

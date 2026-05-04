@@ -74,6 +74,7 @@ export interface DataStructure {
 	wordAlignedSize: number;
 	wordAlignedAddress: number;
 	default: number | Record<string, number>;
+	hasExplicitDefault?: boolean;
 	// lineNumber: number;
 	isInteger: boolean;
 	isFloat64?: boolean;
@@ -116,6 +117,7 @@ export interface CompiledModule {
 	byteAddress: number;
 	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
+	internalResources?: InternalResourceMap;
 	wordAlignedSize: number;
 	ast?: AST;
 	skipExecutionInCycle?: boolean;
