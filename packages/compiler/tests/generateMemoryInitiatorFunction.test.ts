@@ -18,10 +18,6 @@ describe('compiler', () => {
 		const compiledModules = compileModules(astModules, {
 			startingMemoryWordAddress: 0,
 		});
-		const requiredMemoryBytes = compiledModules.reduce(
-			(max, module) => Math.max(max, module.byteAddress + module.wordAlignedSize * 4),
-			0
-		);
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules, requiredMemoryBytes))).toMatchSnapshot();
+		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toMatchSnapshot();
 	});
 });
