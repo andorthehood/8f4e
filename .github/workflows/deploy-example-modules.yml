@@ -19,9 +19,7 @@ jobs:
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_R2_BUCKET: ${{ vars.CLOUDFLARE_R2_BUCKET }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: auto
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
       - uses: actions/checkout@v6
@@ -51,8 +49,12 @@ jobs:
       - name: Upload example modules to Cloudflare R2
         run: |
           set -euo pipefail
-          aws s3 sync upload/example-modules \
-            "s3://${CLOUDFLARE_R2_BUCKET}/8f4e/example-modules" \
-            --endpoint-url "https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com" \
-            --delete \
-            --cache-control "public, max-age=604800"
+
+          cd upload/example-modules
+          find . -type f | while IFS= read -r file; do
+            key="8f4e/example-modules/${file#./}"
+            npx wrangler r2 object put "${CLOUDFLARE_R2_BUCKET}/${key}" \
+              --file "$file" \
+              --remote \
+              --cache-control "public, max-age=604800"
+          done
