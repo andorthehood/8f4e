@@ -61,7 +61,7 @@ jobs:
           set -euo pipefail
           cd upload/example-projects
           find . -type f | while IFS= read -r file; do
-            key="8f4e/example-projects/${file#./}"
+            key="example-projects/${file#./}"
             npx wrangler r2 object put "${CLOUDFLARE_R2_BUCKET}/${key}" \
               --file "$file" \
               --remote \
