@@ -21,7 +21,6 @@ jobs:
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_R2_BUCKET: ${{ vars.CLOUDFLARE_R2_BUCKET }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
       - uses: actions/checkout@v6
@@ -49,14 +48,18 @@ jobs:
           find "$GITHUB_WORKSPACE/upload/example-projects" -type f | sort
 
       - name: Upload example projects to Cloudflare R2
-        run: |
-          set -euo pipefail
-
-          cd upload/example-projects
-          find . -type f | while IFS= read -r file; do
-            key="8f4e/example-projects/${file#./}"
-            npx wrangler r2 object put "${CLOUDFLARE_R2_BUCKET}/${key}" \
-              --file "$file" \
-              --remote \
-              --cache-control "public, max-age=604800"
-          done
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: whoami
+          postCommands: |
+            set -euo pipefail
+            cd upload/example-projects
+            find . -type f | while IFS= read -r file; do
+              key="8f4e/example-projects/${file#./}"
+              wrangler r2 object put "${CLOUDFLARE_R2_BUCKET}/${key}" \
+                --file "$file" \
+                --remote \
+                --cache-control "public, max-age=604800"
+            done
