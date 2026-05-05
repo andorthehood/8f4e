@@ -11,7 +11,6 @@
 - `npx nx run app:dev`: Builds packages (watch) and starts Vite dev server on `http://localhost:3000`.
 - `npx nx run app:serve`: Serves the production build via `vite preview`.
 - `npx nx run app:build`: Vite production build to `dist/` for the root app.
-- `npx nx run app:build-github-pages`: Vite production build to `dist/` for the custom-domain GitHub Pages site.
 - `npx nx run-many --target=build --all`: Build all packages/libs.
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
 - `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.

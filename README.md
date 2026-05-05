@@ -1,5 +1,3 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/21e4864c-e37c-4039-85a0-baf88a997c6b/deploy-status)](https://app.netlify.com/sites/8f4e/deploys)
-
 # 8f4e 
 
 8f4e is a stack oriented programming language and live code editor that I created to perform generative music at algorave events. This monorepo contains the compiler, specialised runtimes, and the code of a browser-based visual code editor I designed specifically for the 8f4e language.
