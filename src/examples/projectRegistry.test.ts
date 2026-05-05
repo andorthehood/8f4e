@@ -4,7 +4,7 @@ const projectRegistryEntry = {
 	title: 'Audio Buffer',
 	category: 'Audio',
 	path: 'audio/audioBuffer.8f4e',
-	url: 'https://static.llllllllllll.com/8f4e/example-projects/audio/audioBuffer.8f4e',
+	url: 'https://static.8f4e.com/example-projects/audio/audioBuffer.8f4e',
 };
 
 describe('projectRegistry', () => {
@@ -22,7 +22,7 @@ describe('projectRegistry', () => {
 		await expect(getListOfProjects()).resolves.toEqual([projectRegistryEntry]);
 		await expect(getDefaultProjectUrl()).resolves.toBe(projectRegistryEntry.url);
 		expect(fetchMock).toHaveBeenCalledWith(
-			expect.stringMatching('https://static.llllllllllll.com/8f4e/example-projects/registry.json\\?_t=\\d+'),
+			expect.stringMatching('https://static.8f4e.com/example-projects/registry.json\\?_t=\\d+'),
 			{ cache: 'no-store' }
 		);
 	});

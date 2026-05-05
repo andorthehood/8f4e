@@ -1,6 +1,6 @@
 import { fetchRegistryJson } from './fetchRegistry';
 
-const EXAMPLE_MODULES_REGISTRY_URL = 'https://static.llllllllllll.com/8f4e/example-modules/registry.json';
+const EXAMPLE_MODULES_REGISTRY_URL = 'https://static.8f4e.com/example-modules/registry.json';
 
 export interface ExampleModuleRegistryEntry {
 	slug: string;

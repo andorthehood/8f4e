@@ -5,7 +5,7 @@ const moduleRegistryEntry = {
 	title: 'ADR Envelope',
 	category: 'Envelopes',
 	path: 'envelopes/adrEnvelope.8f4em',
-	url: 'https://static.llllllllllll.com/8f4e/example-modules/envelopes/adrEnvelope.8f4em',
+	url: 'https://static.8f4e.com/example-modules/envelopes/adrEnvelope.8f4em',
 };
 
 describe('moduleRegistry', () => {
@@ -22,7 +22,7 @@ describe('moduleRegistry', () => {
 
 		await expect(getListOfModules()).resolves.toEqual([moduleRegistryEntry]);
 		expect(fetchMock).toHaveBeenCalledWith(
-			expect.stringMatching('https://static.llllllllllll.com/8f4e/example-modules/registry.json\\?_t=\\d+'),
+			expect.stringMatching('https://static.8f4e.com/example-modules/registry.json\\?_t=\\d+'),
 			{ cache: 'no-store' }
 		);
 	});
@@ -32,7 +32,7 @@ describe('moduleRegistry', () => {
 		const fetchMock = vi.fn(async request => {
 			const url = String(request);
 
-			if (url.startsWith('https://static.llllllllllll.com/8f4e/example-modules/registry.json')) {
+			if (url.startsWith('https://static.8f4e.com/example-modules/registry.json')) {
 				return new Response(JSON.stringify({ modules: [moduleRegistryEntry] }));
 			}
 

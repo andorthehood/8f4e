@@ -1,6 +1,6 @@
 import { fetchRegistryJson } from './fetchRegistry';
 
-const EXAMPLE_PROJECTS_REGISTRY_URL = 'https://static.llllllllllll.com/8f4e/example-projects/registry.json';
+const EXAMPLE_PROJECTS_REGISTRY_URL = 'https://static.8f4e.com/example-projects/registry.json';
 
 export interface ExampleProjectRegistryEntry {
 	url: string;

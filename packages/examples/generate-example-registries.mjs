@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const packageRoot = dirname(fileURLToPath(import.meta.url));
 const outputDirectory = resolve(packageRoot, 'dist/registries');
 
-const examplesBaseUrl = 'https://static.llllllllllll.com/8f4e';
+const examplesBaseUrl = 'https://static.8f4e.com';
 const moduleBaseUrl = `${examplesBaseUrl}/example-modules`;
 const projectBaseUrl = `${examplesBaseUrl}/example-projects`;
 
