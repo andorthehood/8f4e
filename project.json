@@ -35,15 +35,6 @@
       },
       "dependsOn": ["typecheck", "^build"]
     },
-    "build-github-pages": {
-      "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/dist"],
-      "options": {
-        "command": "vite build",
-        "cwd": "{workspaceRoot}"
-      },
-      "dependsOn": ["typecheck", "^build"]
-    },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
