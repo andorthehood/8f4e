@@ -54,7 +54,7 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           command: whoami
           postCommands: |
-            set -euo pipefail
+            set -eu
             cd upload/example-projects
             find . -type f | while IFS= read -r file; do
               key="8f4e/example-projects/${file#./}"
