@@ -1,5 +1,5 @@
 ---
-name: Deploy Example Modules to DigitalOcean Spaces
+name: Deploy Example Modules to Cloudflare R2
 
 on:
   push:
@@ -17,8 +17,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}
-      DO_SPACES_REGION: ${{ vars.DO_SPACES_REGION }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_R2_BUCKET: ${{ vars.CLOUDFLARE_R2_BUCKET }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
 
     steps:
       - uses: actions/checkout@v6
@@ -45,12 +48,11 @@ jobs:
             "$GITHUB_WORKSPACE/upload/example-modules/registry.json"
           find "$GITHUB_WORKSPACE/upload/example-modules" -type f | sort
 
-      - name: DigitalOcean Spaces Upload Action
-        uses: BetaHuhn/do-spaces-action@v2.0.146
-        with:
-          access_key: ${{ secrets.DO_SPACES_ACCESS_KEY }}
-          secret_key: ${{ secrets.DO_SPACES_SECRET_KEY }}
-          space_name: ${{ env.DO_SPACES_BUCKET }}
-          space_region: ${{ env.DO_SPACES_REGION }}
-          source: upload/example-modules
-          out_dir: 8f4e/example-modules
+      - name: Upload example modules to Cloudflare R2
+        run: |
+          set -euo pipefail
+          aws s3 sync upload/example-modules \
+            "s3://${CLOUDFLARE_R2_BUCKET}/8f4e/example-modules" \
+            --endpoint-url "https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --delete \
+            --cache-control "public, max-age=604800"

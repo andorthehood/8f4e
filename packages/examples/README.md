@@ -9,5 +9,5 @@ Example modules and projects used by the editor and tooling. Exports example mod
 
 ## Hosted Examples
 
-- Modules are deployed to `https://static.llllllllllll.com/8f4e/example-modules/` with `registry.json`.
-- Projects are deployed to `https://static.llllllllllll.com/8f4e/example-projects/` with `registry.json`.
+- Modules are deployed to Cloudflare R2 at `https://static.llllllllllll.com/8f4e/example-modules/` with `registry.json`.
+- Projects are deployed to Cloudflare R2 at `https://static.llllllllllll.com/8f4e/example-projects/` with `registry.json`.
