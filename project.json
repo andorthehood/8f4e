@@ -39,7 +39,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist"],
       "options": {
-        "command": "vite build --base=/8f4e/",
+        "command": "vite build",
         "cwd": "{workspaceRoot}"
       },
       "dependsOn": ["typecheck", "^build"]
