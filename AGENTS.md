@@ -10,6 +10,7 @@
 ## Agent Skills
 - Reusable, vendor-neutral agent guidance lives in `docs/agent_skills/`.
 - When validating human or automated review comments before making code changes, use `docs/agent_skills/validate-review-comments.md`.
+- When prepending or inserting document text, use `docs/agent_skills/context-aware-document-inserts.md` to preserve reading order and avoid unexplained forward references.
 
 ## Build, Test, and Development Commands (Nx-first)
 - `npx nx run app:dev`: Builds packages (watch) and starts Vite dev server on `http://localhost:3000`.
