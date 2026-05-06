@@ -31,6 +31,14 @@ export default defineConfig(() => {
           {
             src: '_headers',
             dest: ''
+          },
+          {
+            src: '_redirects',
+            dest: ''
+          },
+          {
+            src: 'blocked.html',
+            dest: ''
           }
         ]
       })
