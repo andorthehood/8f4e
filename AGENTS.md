@@ -7,6 +7,10 @@
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
 
+## Agent Skills
+- Reusable, vendor-neutral agent guidance lives in `docs/agent_skills/`.
+- When validating human or automated review comments before making code changes, use `docs/agent_skills/validate-review-comments.md`.
+
 ## Build, Test, and Development Commands (Nx-first)
 - `npx nx run app:dev`: Builds packages (watch) and starts Vite dev server on `http://localhost:3000`.
 - `npx nx run app:serve`: Serves the production build via `vite preview`.
