@@ -3,12 +3,12 @@ import { parse8f4eToProject } from '@8f4e/editor-state';
 import { getCodeBuffer } from './compiler-callback';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
 
-import type { Project, EditorConfigStorageBlock } from '@8f4e/editor';
+import type { Project, BrowserLocalNoteStorageBlock } from '@8f4e/editor';
 
 // Storage key constants
 const STORAGE_KEYS = {
 	PROJECT: 'project_editor',
-	EDITOR_CONFIG_BLOCKS: 'editorConfigBlocks_editor',
+	BROWSER_LOCAL_NOTES: 'browserLocalNotes_editor',
 } as const;
 
 // Implementation of storage callbacks using localStorage
@@ -53,21 +53,21 @@ export async function saveSession(project: Project): Promise<void> {
 	}
 }
 
-export async function loadEditorConfigBlocks(): Promise<EditorConfigStorageBlock[] | null> {
+export async function loadBrowserLocalNotes(): Promise<BrowserLocalNoteStorageBlock[] | null> {
 	try {
-		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS);
+		const stored = localStorage.getItem(STORAGE_KEYS.BROWSER_LOCAL_NOTES);
 		return stored ? JSON.parse(stored) : null;
 	} catch (error) {
-		console.error('Failed to load editor config blocks from localStorage:', error);
+		console.error('Failed to load browser-local notes from localStorage:', error);
 		return null;
 	}
 }
 
-export async function saveEditorConfigBlocks(blocks: EditorConfigStorageBlock[]): Promise<void> {
+export async function saveBrowserLocalNotes(blocks: BrowserLocalNoteStorageBlock[]): Promise<void> {
 	try {
-		localStorage.setItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS, JSON.stringify(blocks));
+		localStorage.setItem(STORAGE_KEYS.BROWSER_LOCAL_NOTES, JSON.stringify(blocks));
 	} catch (error) {
-		console.error('Failed to save editor config blocks to localStorage:', error);
+		console.error('Failed to save browser-local notes to localStorage:', error);
 		throw error;
 	}
 }

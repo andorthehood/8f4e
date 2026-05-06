@@ -1,4 +1,4 @@
-export interface EditorConfigStorageBlock {
+export interface BrowserLocalNoteStorageBlock {
 	code: string[];
 	disabled?: boolean;
 	gridCoordinates?: {

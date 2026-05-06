@@ -1,4 +1,4 @@
-import { isEditorConfigBlock } from '../editor-config-module/editorConfigModule';
+import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
 
 import type { CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
@@ -8,7 +8,7 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
  * Converts graphic data code blocks to simplified project structure for serialization.
  * Position is stored in @pos directive within code, not in separate gridCoordinates field.
  * Disabled state is stored in @disabled directive within code, not in separate disabled field.
- * Excludes editor config blocks from the exported project.
+ * Excludes browser-local notes from the exported project.
  * @param codeBlocks Array of code blocks with full graphic data
  * @returns Array of simplified code blocks suitable for file format
  */
@@ -16,7 +16,7 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 	const codeBlocksCopy = [...codeBlocks];
 
 	return codeBlocksCopy
-		.filter(codeBlock => !isEditorConfigBlock(codeBlock))
+		.filter(codeBlock => !isBrowserLocalNoteBlock(codeBlock))
 		.sort((codeBlockA, codeBlockB) => {
 			if (codeBlockA.id > codeBlockB.id) {
 				return 1;
@@ -71,6 +71,30 @@ if (import.meta.vitest) {
 
 			expect(result[0]).not.toHaveProperty('disabled');
 			expect(result[0].code).toEqual(['code']);
+		});
+
+		it('excludes browser-local notes from the exported project', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				createMockCodeBlock({
+					id: 'local',
+					blockType: 'note',
+					code: ['note local.editorConfig', '; @config font ibmvga8x16', 'noteEnd'],
+				}),
+				createMockCodeBlock({
+					id: 'project-note',
+					blockType: 'note',
+					code: ['note', 'project note', 'noteEnd'],
+				}),
+				createMockCodeBlock({
+					id: 'shader-note',
+					blockType: 'note',
+					code: ['note fragmentShaderPostprocess', 'void main() {}', 'noteEnd'],
+				}),
+			];
+
+			const result = convertGraphicDataToProjectStructure(blocks);
+
+			expect(result.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
 		});
 	});
 }
