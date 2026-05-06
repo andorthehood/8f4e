@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-types';
 
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
@@ -96,7 +97,7 @@ export default function compiler(store: StateManager<State>) {
 				wasmByteCodeBytes: result.byteCodeSize,
 				requiredMemoryBytes: result.requiredMemoryBytes,
 				allocatedMemoryBytes: result.allocatedMemoryBytes,
-				allocatedPages: result.allocatedMemoryBytes / 65536,
+				allocatedPages: result.allocatedMemoryBytes / WASM_MEMORY_PAGE_SIZE,
 				memoryUsagePercent,
 				astCacheHits: result.astCacheStats.hits,
 				astCacheMisses: result.astCacheStats.misses,
