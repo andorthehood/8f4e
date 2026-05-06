@@ -38,6 +38,7 @@ describe('info directive widget resolution', () => {
 				y: 32,
 				id: 'foo',
 				rowCount: 3,
+				keyColumnWidth: 3,
 			},
 		]);
 	});

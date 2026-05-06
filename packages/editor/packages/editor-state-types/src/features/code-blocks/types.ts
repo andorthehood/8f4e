@@ -76,6 +76,7 @@ export interface InfoPanel {
 	y: number;
 	id: string;
 	rowCount: number;
+	keyColumnWidth: number;
 }
 
 export interface MemoryIdentifier {

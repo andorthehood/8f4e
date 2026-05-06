@@ -38,7 +38,7 @@ describe('drawInfoPanels', () => {
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
-				infoPanels: [{ x: 24, y: 32, width: 216, height: 48, id: 'foo', rowCount: 3 }],
+				infoPanels: [{ x: 24, y: 32, width: 216, height: 48, id: 'foo', rowCount: 3, keyColumnWidth: 3 }],
 			} as never,
 		});
 
@@ -70,7 +70,7 @@ describe('drawInfoPanels', () => {
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
-				infoPanels: [{ x: 24, y: 32, width: 216, height: 48, id: 'missing', rowCount: 3 }],
+				infoPanels: [{ x: 24, y: 32, width: 216, height: 48, id: 'missing', rowCount: 3, keyColumnWidth: 3 }],
 			} as never,
 		});
 

@@ -35,26 +35,6 @@ function truncateToCells(value: string, maxCells: number): string {
 	return value.slice(0, maxCells - 1) + '~';
 }
 
-function getKeyColumnWidth(info: InfoRecord, rowCount: number): number {
-	let renderedRows = 0;
-	let keyColumnWidth = -1;
-
-	for (const key in info) {
-		if (!Object.prototype.hasOwnProperty.call(info, key) || !isRenderableInfoValue(info[key])) {
-			continue;
-		}
-
-		keyColumnWidth = Math.max(keyColumnWidth, key.length);
-		renderedRows += 1;
-
-		if (renderedRows >= rowCount) {
-			break;
-		}
-	}
-
-	return keyColumnWidth;
-}
-
 function hasInfoRecord(info: InfoRecord | undefined): info is InfoRecord {
 	if (!info || typeof info !== 'object' || Array.isArray(info)) {
 		return false;
@@ -77,13 +57,7 @@ export default function drawInfoPanels(engine: Engine, state: State, codeBlock: 
 			continue;
 		}
 
-		const keyColumnWidth = getKeyColumnWidth(info, panel.rowCount);
-
-		if (keyColumnWidth < 0) {
-			continue;
-		}
-
-		const valueColumn = keyColumnWidth + 2;
+		const valueColumn = panel.keyColumnWidth + 2;
 		const panelCells = Math.max(0, Math.floor(panel.width / state.viewport.vGrid));
 		let renderedRows = 0;
 
@@ -99,13 +73,13 @@ export default function drawInfoPanels(engine: Engine, state: State, codeBlock: 
 			}
 
 			const y = renderedRows * state.viewport.hGrid;
-			const truncatedKey = truncateToCells(key, Math.max(0, keyColumnWidth));
+			const truncatedKey = truncateToCells(key, panel.keyColumnWidth);
 			const truncatedValue = truncateToCells(formatInfoValue(value), panelCells - valueColumn);
 
 			engine.setSpriteLookup(spriteLookups.fontCodeComment);
 			engine.drawText(0, y, truncatedKey);
 			engine.setSpriteLookup(spriteLookups.fontCode);
-			engine.drawText(keyColumnWidth * state.viewport.vGrid, y, ':');
+			engine.drawText(panel.keyColumnWidth * state.viewport.vGrid, y, ':');
 			engine.setSpriteLookup(spriteLookups.fontNumbers);
 			engine.drawText(valueColumn * state.viewport.vGrid, y, truncatedValue);
 			renderedRows += 1;
