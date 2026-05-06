@@ -49,7 +49,6 @@ import type {
 	MainThreadRuntime,
 	AudioWorkletRuntime,
 	Runtimes,
-	RuntimeStats,
 	RuntimeValuesByRuntimeId,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
@@ -125,7 +124,6 @@ export type {
 	MainThreadRuntime,
 	AudioWorkletRuntime,
 	Runtimes,
-	RuntimeStats,
 	RuntimeValuesByRuntimeId,
 	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
@@ -310,7 +308,6 @@ export interface State {
 	/** Console state for internal logging */
 	console: ConsoleState;
 	runtime: {
-		stats: RuntimeStats;
 		values: RuntimeValuesByRuntimeId;
 	};
 	/** Runtime registry for configurable runtime schemas */

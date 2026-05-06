@@ -27,12 +27,13 @@ export function webWorkerRuntimeFactory(
 				events.dispatch('runtimeInitialized');
 				break;
 			case 'stats':
-				state.runtime.stats = {
-					timerPrecisionPercentage: data.payload.timerPrecisionPercentage,
-					timeToExecuteLoopMs: data.payload.timeToExecuteLoopMs,
-					timerDriftMs: data.payload.timerDriftMs,
-					timerExpectedIntervalTimeMs: data.payload.timerExpectedIntervalTimeMs,
-				};
+				{
+					const runtimeInfo = state.info.runtime ?? (state.info.runtime = {});
+					runtimeInfo.timerPrecisionPercentage = data.payload.timerPrecisionPercentage;
+					runtimeInfo.timeToExecuteLoopMs = data.payload.timeToExecuteLoopMs;
+					runtimeInfo.timerDriftMs = data.payload.timerDriftMs;
+					runtimeInfo.timerExpectedIntervalTimeMs = data.payload.timerExpectedIntervalTimeMs;
+				}
 				break;
 		}
 	}

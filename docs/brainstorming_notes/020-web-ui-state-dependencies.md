@@ -17,7 +17,7 @@ This note captures which editor-state fields the `@8f4e/web-ui` package reads or
 - `state.featureFlags.{consoleOverlay,infoOverlay}`
 - `state.compiler.{compiledModules,compilationTime,byteCodeSize,allocatedMemorySize}`
 - `state.compiledConfig.{memorySizeBytes,runtimeSettings,selectedRuntime}`
-- `state.runtime.stats.{timerExpectedIntervalTimeMs,timeToExecuteLoopMs,timerPrecisionPercentage,timerDriftMs}`
+- `state.info.runtime.{timerExpectedIntervalTimeMs,timeToExecuteLoopMs,timerPrecisionPercentage,timerDriftMs}`
 - `state.storageQuota.{usedBytes,totalBytes}`
 
 ## State fields written by `@8f4e/web-ui`
