@@ -1,5 +1,5 @@
 import { createInfoDirectiveData } from './data';
-import { getInfoEntryCount } from './entries';
+import { getInfoLayout } from './entries';
 import { createInfoDirectiveWidgetContribution } from './resolve';
 
 import { createDirectivePlugin } from '../utils';
@@ -12,10 +12,10 @@ export default createDirectivePlugin(
 			return;
 		}
 
-		const rowCount = getInfoEntryCount(draft.state, info.id);
-		if (rowCount > 0) {
-			draft.layoutContributions.push({ rawRow: directive.rawRow, rows: rowCount });
-			draft.widgets.push(createInfoDirectiveWidgetContribution(info));
+		const layout = getInfoLayout(draft.state, info.id);
+		if (layout.rowCount > 0) {
+			draft.layoutContributions.push({ rawRow: directive.rawRow, rows: layout.rowCount });
+			draft.widgets.push(createInfoDirectiveWidgetContribution(info, layout));
 		}
 	},
 	{
