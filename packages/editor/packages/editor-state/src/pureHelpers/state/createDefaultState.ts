@@ -60,12 +60,6 @@ export default function createDefaultState() {
 		},
 		globalEditorDirectives: {},
 		runtime: {
-			stats: {
-				timeToExecuteLoopMs: 0,
-				timerPrecisionPercentage: 0,
-				timerDriftMs: 0,
-				timerExpectedIntervalTimeMs: 0,
-			},
 			values: {},
 		},
 		dialog: {

@@ -92,13 +92,3 @@ export interface AudioWorkletRuntime {
  * Union of all runtime configuration types.
  */
 export type Runtimes = WebWorkerRuntime | MainThreadRuntime | AudioWorkletRuntime;
-
-/**
- * Runtime execution statistics.
- */
-export interface RuntimeStats {
-	timerPrecisionPercentage: number;
-	timeToExecuteLoopMs: number;
-	timerDriftMs: number;
-	timerExpectedIntervalTimeMs: number;
-}
