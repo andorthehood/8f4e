@@ -21,6 +21,11 @@ function getCompilerInfoNumber(state: State, key: string): number {
 	return typeof value === 'number' ? value : 0;
 }
 
+function getRuntimeInfoNumber(state: State, key: string): number {
+	const value = state.info.runtime?.[key];
+	return typeof value === 'number' ? value : 0;
+}
+
 export default function drawInfoOverlay(
 	engine: Engine,
 	state: State,
@@ -92,11 +97,12 @@ export default function drawInfoOverlay(
 	debugText.push('');
 	debugText.push('Runtime: ' + selectedRuntimeId);
 
-	if (state.runtime.stats.timerExpectedIntervalTimeMs) {
-		debugText.push('Loop interval: ' + state.runtime.stats.timerExpectedIntervalTimeMs + ' ms');
-		debugText.push('Loop time: ' + state.runtime.stats.timeToExecuteLoopMs.toFixed(2) + 'ms');
-		debugText.push('Timer accuracy: ' + state.runtime.stats.timerPrecisionPercentage.toFixed(2) + '%');
-		debugText.push('Timer drift: ' + state.runtime.stats.timerDriftMs.toFixed(2) + 'ms');
+	const timerExpectedIntervalTimeMs = getRuntimeInfoNumber(state, 'timerExpectedIntervalTimeMs');
+	if (timerExpectedIntervalTimeMs) {
+		debugText.push('Loop interval: ' + timerExpectedIntervalTimeMs + ' ms');
+		debugText.push('Loop time: ' + getRuntimeInfoNumber(state, 'timeToExecuteLoopMs').toFixed(2) + 'ms');
+		debugText.push('Timer accuracy: ' + getRuntimeInfoNumber(state, 'timerPrecisionPercentage').toFixed(2) + '%');
+		debugText.push('Timer drift: ' + getRuntimeInfoNumber(state, 'timerDriftMs').toFixed(2) + 'ms');
 	}
 
 	if (state.storageQuota.usedBytes > 0 && state.storageQuota.totalBytes > 0) {

@@ -290,12 +290,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			maxLogs: 100,
 		},
 		runtime: {
-			stats: {
-				timeToExecuteLoopMs: 0,
-				timerPrecisionPercentage: 0,
-				timerDriftMs: 0,
-				timerExpectedIntervalTimeMs: 0,
-			},
 			values: {},
 		},
 		globalEditorDirectives: {},

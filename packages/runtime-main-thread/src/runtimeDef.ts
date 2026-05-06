@@ -30,12 +30,11 @@ export function mainThreadRuntimeFactory(
 		timerDriftMs: number;
 		timerExpectedIntervalTimeMs: number;
 	}) {
-		state.runtime.stats = {
-			timerPrecisionPercentage: stats.timerPrecisionPercentage,
-			timeToExecuteLoopMs: stats.timeToExecuteLoopMs,
-			timerDriftMs: stats.timerDriftMs,
-			timerExpectedIntervalTimeMs: stats.timerExpectedIntervalTimeMs,
-		};
+		const runtimeInfo = state.info.runtime ?? (state.info.runtime = {});
+		runtimeInfo.timerPrecisionPercentage = stats.timerPrecisionPercentage;
+		runtimeInfo.timeToExecuteLoopMs = stats.timeToExecuteLoopMs;
+		runtimeInfo.timerDriftMs = stats.timerDriftMs;
+		runtimeInfo.timerExpectedIntervalTimeMs = stats.timerExpectedIntervalTimeMs;
 	}
 
 	function onError(error: unknown) {
