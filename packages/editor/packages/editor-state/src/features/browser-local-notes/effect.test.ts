@@ -13,6 +13,12 @@ function getPopulateHandler(events: ReturnType<typeof createMockEventDispatcherW
 	return handler;
 }
 
+function getEventHandler(events: ReturnType<typeof createMockEventDispatcherWithVitest>, eventName: string) {
+	const handler = events.on.mock.calls.find(([candidate]) => candidate === eventName)?.[1];
+	expect(handler).toBeTypeOf('function');
+	return handler;
+}
+
 describe('browser-local note placement', () => {
 	it('moves colliding browser-local notes to the first free y positions for their x span', async () => {
 		const existingTopBlock = createMockCodeBlock({
@@ -192,6 +198,47 @@ describe('browser-local note persistence', () => {
 		expect(saveBrowserLocalNotes).not.toHaveBeenCalled();
 	});
 
+	it('does not overwrite stored local notes when project code blocks are replaced during project load', async () => {
+		let storedBlocks = [
+			{
+				code: ['note local.scratchpad', 'keep me', 'noteEnd'],
+				gridCoordinates: { x: 10, y: 20 },
+			},
+		];
+		const loadBrowserLocalNotes = vi.fn(async () => storedBlocks);
+		const saveBrowserLocalNotes = vi.fn(async nextBlocks => {
+			storedBlocks = nextBlocks;
+		});
+		const state = createMockState({
+			initialProjectState: { ...EMPTY_DEFAULT_PROJECT },
+			callbacks: {
+				loadBrowserLocalNotes,
+				saveBrowserLocalNotes,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		browserLocalNotes(store, events);
+		const populateBrowserLocalNotes = getPopulateHandler(events);
+		await populateBrowserLocalNotes();
+		saveBrowserLocalNotes.mockClear();
+
+		store.set('graphicHelper.codeBlocks', [
+			createMockCodeBlock({
+				code: ['module projectOnly', 'moduleEnd'],
+			}),
+		]);
+		expect(saveBrowserLocalNotes).not.toHaveBeenCalled();
+
+		await populateBrowserLocalNotes();
+
+		expect(state.graphicHelper.codeBlocks.map(block => block.code[0])).toEqual([
+			'module projectOnly',
+			'note local.scratchpad',
+		]);
+	});
+
 	it('saves browser-local notes when a local note is edited without compiler triggers', async () => {
 		const saveBrowserLocalNotes = vi.fn(async () => undefined);
 		const state = createMockState({
@@ -250,7 +297,9 @@ describe('browser-local note persistence', () => {
 		await getPopulateHandler(events)();
 		saveBrowserLocalNotes.mockClear();
 
+		const codeBlock = state.graphicHelper.codeBlocks[0];
 		store.set('graphicHelper.codeBlocks', []);
+		getEventHandler(events, 'deleteCodeBlock')({ codeBlock });
 
 		expect(saveBrowserLocalNotes).toHaveBeenCalledWith([]);
 	});
