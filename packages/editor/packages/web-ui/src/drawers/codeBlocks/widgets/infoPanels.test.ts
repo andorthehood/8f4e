@@ -79,4 +79,37 @@ describe('drawInfoPanels', () => {
 		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		expect(drawSprite).not.toHaveBeenCalled();
 	});
+
+	it('does not render overflowing values when no value cells are available', () => {
+		const engine = createMockEngine();
+		const state = createMockState({
+			info: {
+				foo: {
+					longKey: 'overflow',
+				},
+			},
+			graphicHelper: {
+				spriteLookups: {
+					fillColors: {},
+					fontCode: {},
+					fontCodeComment: {},
+					fontNumbers: {},
+				} as never,
+			},
+		});
+		const codeBlock = createMockCodeBlock({
+			widgets: {
+				infoPanels: [{ x: 24, y: 32, width: 72, height: 16, id: 'foo', rowCount: 1, keyColumnWidth: 7 }],
+			} as never,
+		});
+
+		drawInfoPanels(engine, state, codeBlock);
+
+		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
+
+		expect(drawText).toHaveBeenCalledWith(0, 0, 'longKey');
+		expect(drawText).toHaveBeenCalledWith(56, 0, ':');
+		expect(drawText).toHaveBeenCalledWith(72, 0, '');
+		expect(drawText).not.toHaveBeenCalledWith(72, 0, 'overflow');
+	});
 });
