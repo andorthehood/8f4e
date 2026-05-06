@@ -33,7 +33,7 @@ import type {
 	GraphicHelper,
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
-import type { EditorConfigStorageBlock } from './features/editor-config-module/types';
+import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type { EditorConfig, EditorConfigValidatorRegistry } from './features/editor-config/types';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
@@ -109,8 +109,8 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 // Re-export program-compiler types
 export type { Compiler, CompilationResult };
 
-// Re-export helper-module storage types
-export type { EditorConfigStorageBlock };
+// Re-export browser-local note storage types
+export type { BrowserLocalNoteStorageBlock };
 
 // Re-export global-editor-directives types
 export type { ResolvedGlobalEditorDirectives };
@@ -228,8 +228,8 @@ export interface Callbacks {
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;
 	saveSession?: (project: Project) => Promise<void>;
-	loadEditorConfigBlocks?: () => Promise<EditorConfigStorageBlock[] | null>;
-	saveEditorConfigBlocks?: (blocks: EditorConfigStorageBlock[]) => Promise<void>;
+	loadBrowserLocalNotes?: () => Promise<BrowserLocalNoteStorageBlock[] | null>;
+	saveBrowserLocalNotes?: (blocks: BrowserLocalNoteStorageBlock[]) => Promise<void>;
 
 	// File handling callbacks
 	importProject?: () => Promise<Project>;
@@ -358,8 +358,8 @@ export type * from './features/code-blocks/utils/types';
 export type * from './features/code-blocks/features/directives/types';
 export type * from './features/code-blocks/features/graphicHelper/buildDisplayModel';
 export type * from './features/code-editing/types';
+export type * from './features/browser-local-notes/types';
 export type * from './features/editor-config/types';
-export type * from './features/editor-config-module/types';
 export type * from './features/global-editor-directives/types';
 export type * from './features/logger/types';
 export type * from './features/menu/types';

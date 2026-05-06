@@ -14,7 +14,7 @@ import codeBlockNavigation from './features/code-blocks/features/codeBlockNaviga
 import compiler from './features/program-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
-import editorConfigModule from './features/editor-config-module/effect';
+import browserLocalNotes from './features/browser-local-notes/effect';
 import color from './features/color/effect';
 import font from './features/font/effect';
 import projectImport from './features/project-import/effect';
@@ -103,7 +103,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	compiler(store);
 	graphicHelper(store, events);
 	viewportDirectiveEffect(store, events);
-	editorConfigModule(store, events);
+	browserLocalNotes(store, events);
 	codeEditing(store, events);
 	historyTracking(store, events);
 	dialog(store, events);
