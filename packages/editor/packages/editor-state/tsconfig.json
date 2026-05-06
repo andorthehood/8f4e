@@ -3,12 +3,11 @@
 	"compilerOptions": {
 		"outDir": "dist",
 		"rootDir": "src",
-		"baseUrl": "src",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
 		"types": ["vitest/importMeta"],
 		"paths": {
-			"~/*": ["*"]
+			"~/*": ["./src/*"]
 		}
 	},
 	"include": ["src/**/*.ts"],
