@@ -6,7 +6,7 @@ replaceable by renderers for other platforms.
 
 ## API
 
-### `init(state, canvas, memoryViews, spriteData)`
+### `init(state, canvas, memoryViews, spriteData, options?)`
 
 Initializes the web UI renderer.
 
@@ -15,6 +15,8 @@ Initializes the web UI renderer.
 - `canvas: HTMLCanvasElement` - The canvas element to render to
 - `memoryViews: MemoryViews` - Memory view interfaces for rendering code blocks
 - `spriteData: SpriteData` - Pre-generated sprite sheet and lookups from `@8f4e/sprite-generator`
+- `options.onRenderStats` - Optional callback for sampled render statistics
+- `options.renderStatsIntervalFrames` - Optional frame interval for `onRenderStats` (defaults to 60)
 
 **Returns:** An object with methods to control the renderer:
 - `resize(width, height)` - Resize the canvas
@@ -22,6 +24,23 @@ Initializes the web UI renderer.
 - `loadPostProcessEffect(effect)` - Load a post-process effect
 - `loadBackgroundEffect(effect)` - Load a background effect
 - `clearCache()` - Clear the rendering cache
+
+### `RenderStats`
+
+Type emitted by `options.onRenderStats`:
+```typescript
+interface RenderStats {
+  timeToRenderMs: number;
+  fps: number; // Calculated over the sampled frame interval
+  quadCount: number;
+  vertexCount: number;
+  maxVertices: number;
+  vertexUsagePercent: number;
+  graphicLoadPercent: number;
+  cacheItemCount: number;
+  cacheMaxItems: number;
+}
+```
 
 ### `SpriteData`
 

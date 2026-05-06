@@ -1,5 +1,5 @@
 import initState from '@8f4e/editor-state';
-import initView, { MemoryViews } from '@8f4e/web-ui';
+import initView, { type MemoryViews, type RenderStats } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
 import initEvents from './events';
@@ -11,7 +11,7 @@ import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 import type { PostProcessEffect, BackgroundEffect } from 'glugglug';
-import type { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state-types';
+import type { Callbacks, InfoRecord, State, RuntimeRegistry } from '@8f4e/editor-state-types';
 
 // Re-export types that consumers might need
 export type {
@@ -59,6 +59,7 @@ interface Options {
 	};
 	runtimeRegistry: RuntimeRegistry;
 	defaultRuntimeId: string;
+	renderStatsIntervalFrames?: number;
 }
 
 async function getCanvasPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
@@ -72,6 +73,20 @@ async function getCanvasPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 			resolve(result);
 		}, 'image/png');
 	});
+}
+
+function toGraphicsInfoRecord(stats: RenderStats): InfoRecord {
+	return {
+		timeToRenderMs: stats.timeToRenderMs,
+		fps: stats.fps,
+		quadCount: stats.quadCount,
+		vertexCount: stats.vertexCount,
+		maxVertices: stats.maxVertices,
+		vertexUsagePercent: stats.vertexUsagePercent,
+		graphicLoadPercent: stats.graphicLoadPercent,
+		cacheItemCount: stats.cacheItemCount,
+		cacheMaxItems: stats.cacheMaxItems,
+	};
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
@@ -129,7 +144,12 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	updateStateWithSpriteData(state, spriteData);
 
-	view = await initView(state, canvas, memoryViews, spriteData);
+	view = await initView(state, canvas, memoryViews, spriteData, {
+		renderStatsIntervalFrames: options.renderStatsIntervalFrames,
+		onRenderStats: stats => {
+			store.set('info.graphics', toGraphicsInfoRecord(stats));
+		},
+	});
 
 	createSpriteSheetManager(store, view, events);
 

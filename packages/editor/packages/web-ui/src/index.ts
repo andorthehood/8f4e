@@ -21,11 +21,29 @@ export interface SpriteData {
 	characterHeight: number;
 }
 
+export interface RenderStats {
+	timeToRenderMs: number;
+	fps: number;
+	quadCount: number;
+	vertexCount: number;
+	maxVertices: number;
+	vertexUsagePercent: number;
+	graphicLoadPercent: number;
+	cacheItemCount: number;
+	cacheMaxItems: number;
+}
+
+export interface WebUiOptions {
+	onRenderStats?: (stats: RenderStats) => void;
+	renderStatsIntervalFrames?: number;
+}
+
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement,
 	memoryViews: MemoryViews,
-	spriteData: SpriteData
+	spriteData: SpriteData,
+	options: WebUiOptions = {}
 ): Promise<{
 	resize: (width: number, height: number) => void;
 	loadSpriteSheet: (spriteData: SpriteData) => void;
@@ -35,16 +53,55 @@ export default async function init(
 	clearCache: () => void;
 }> {
 	const engine = new Engine(canvas, { caching: true });
+	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
+	let renderedFrameCount = 0;
+	let statsSampleStartFrameCount = 0;
+	let statsSampleStartTime = performance.now();
 
 	engine.loadSpriteSheet(spriteData.canvas);
 
-	const drawFrame = () => {
+	function getSampledFps(): number {
+		const now = performance.now();
+		const elapsedMs = now - statsSampleStartTime;
+		const sampledFrameCount = renderedFrameCount - statsSampleStartFrameCount;
+		statsSampleStartTime = now;
+		statsSampleStartFrameCount = renderedFrameCount;
+		return elapsedMs > 0 ? Math.round((sampledFrameCount * 1000) / elapsedMs) : 0;
+	}
+
+	function emitRenderStats(timeToRenderMs: number, vertexCount: number, maxVertices: number): void {
+		if (!options.onRenderStats) {
+			return;
+		}
+
+		renderedFrameCount++;
+		if (renderedFrameCount % renderStatsIntervalFrames !== 0) {
+			return;
+		}
+
+		const cacheStats = engine.getCacheStats();
+		const fps = getSampledFps();
+		options.onRenderStats({
+			timeToRenderMs,
+			fps,
+			quadCount: Math.floor(vertexCount / 6),
+			vertexCount,
+			maxVertices,
+			vertexUsagePercent: maxVertices > 0 ? (vertexCount / maxVertices) * 100 : 0,
+			graphicLoadPercent: fps > 0 ? (timeToRenderMs / (1000 / fps)) * 100 : 0,
+			cacheItemCount: cacheStats.itemCount,
+			cacheMaxItems: cacheStats.maxItems,
+		});
+	}
+
+	const drawFrame = (timeToRenderMs = 0, vertexCount = 0, maxVertices = 0) => {
 		drawBackground(engine, state);
 		drawCodeBlocks(engine, state, memoryViews);
 		drawConnections(engine, state, memoryViews);
 		drawContextMenu(engine, state);
 		drawModeOverlay(engine, state);
 		drawDialog(engine, state);
+		emitRenderStats(timeToRenderMs, vertexCount, maxVertices);
 	};
 
 	engine.render(drawFrame);
