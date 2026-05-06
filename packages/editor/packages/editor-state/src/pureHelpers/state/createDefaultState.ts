@@ -3,15 +3,8 @@ import { defaultFeatureFlags } from './featureFlags';
 export default function createDefaultState() {
 	return {
 		compiler: {
-			compilationTime: 0,
 			isCompiling: false,
-			lastCompilationStart: 0,
-			requiredMemoryBytes: 0,
-			allocatedMemoryBytes: 0,
-			astCacheStats: { hits: 0, misses: 0 },
 			compiledModules: {},
-			byteCodeSize: 0,
-			hasMemoryBeenReinitialized: false,
 		},
 		graphicHelper: {
 			codeBlocks: [],
@@ -32,6 +25,20 @@ export default function createDefaultState() {
 			selectedCodeBlockForProgrammaticEdit: undefined,
 			postProcessEffects: [],
 			backgroundEffects: [],
+		},
+		info: {
+			compiler: {
+				isCompiling: false,
+				compilationTimeMs: 0,
+				wasmByteCodeBytes: 0,
+				requiredMemoryBytes: 0,
+				allocatedMemoryBytes: 0,
+				allocatedPages: 0,
+				memoryUsagePercent: 0,
+				astCacheHits: 0,
+				astCacheMisses: 0,
+				memoryReinitialized: false,
+			},
 		},
 		featureFlags: defaultFeatureFlags,
 		editorMode: 'view' as const,
