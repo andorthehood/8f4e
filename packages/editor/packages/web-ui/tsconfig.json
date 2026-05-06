@@ -1,5 +1,5 @@
 {
-	"extends": "@8f4e/config/tsconfig.node.json",
+	"extends": "@8f4e/config/tsconfig.dom.json",
 	"compilerOptions": {
 		"outDir": "dist",
 		"rootDir": "src"
