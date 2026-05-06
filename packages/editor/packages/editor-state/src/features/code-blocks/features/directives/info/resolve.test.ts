@@ -40,4 +40,24 @@ describe('info directive widget resolution', () => {
 			},
 		]);
 	});
+
+	it('uses rounded float values when calculating panel width', () => {
+		const state = createMockState({
+			info: {
+				foo: {
+					value: 1.234567,
+				},
+			},
+		});
+		const graphicData = createMockCodeBlock({
+			code: ['module foo', '; @info foo', 'moduleEnd'],
+			lineNumberColumnWidth: 1,
+			gaps: new Map([[1, { size: 1 }]]),
+		});
+		const directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, { state });
+
+		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
+
+		expect(graphicData.minGridWidth).toBe(17);
+	});
 });
