@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 
 import {
@@ -62,5 +62,62 @@ describe('info directive widget resolution', () => {
 		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
 
 		expect(graphicData.minGridWidth).toBe(17);
+	});
+
+	it('updates the code block cache timestamp when the rendered info row count changes', () => {
+		const state = createMockState({
+			info: {
+				foo: {
+					a: 1,
+				},
+			},
+		});
+		const graphicData = createMockCodeBlock({
+			code: ['module foo', '; @info foo', 'moduleEnd'],
+			lastUpdated: 1000,
+		});
+		const dateNow = vi.spyOn(Date, 'now').mockReturnValue(2000);
+
+		let directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, { state });
+		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
+		expect(graphicData.lastUpdated).toBe(1000);
+
+		state.info.foo = {
+			a: 1,
+			b: 2,
+		};
+		directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, { state });
+		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
+
+		expect(graphicData.lastUpdated).toBe(2000);
+		dateNow.mockRestore();
+	});
+
+	it('does not update the code block cache timestamp when the rendered info row count is unchanged', () => {
+		const state = createMockState({
+			info: {
+				foo: {
+					a: 1,
+				},
+			},
+		});
+		const graphicData = createMockCodeBlock({
+			code: ['module foo', '; @info foo', 'moduleEnd'],
+			lastUpdated: 1000,
+		});
+		const dateNow = vi.spyOn(Date, 'now').mockReturnValue(2000);
+
+		let directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, { state });
+		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
+
+		state.info.foo = {
+			a: 2,
+		};
+		directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, { state });
+		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
+
+		expect(graphicData.lastUpdated).toBe(1000);
+		expect(dateNow).not.toHaveBeenCalled();
+		dateNow.mockRestore();
 	});
 });

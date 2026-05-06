@@ -6,6 +6,27 @@ import gapCalculator from '~/features/code-editing/gapCalculator';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
+const rowCountsByGraphicData = new WeakMap<Parameters<DirectiveWidgetResolver>[0], Map<string, number>>();
+
+function trackInfoRowCount(
+	info: InfoDirectiveData,
+	layout: InfoLayout,
+	graphicData: Parameters<DirectiveWidgetResolver>[0]
+): void {
+	let rowCounts = rowCountsByGraphicData.get(graphicData);
+	if (!rowCounts) {
+		rowCounts = new Map<string, number>();
+		rowCountsByGraphicData.set(graphicData, rowCounts);
+	}
+
+	const previousRowCount = rowCounts.get(info.id);
+	if (previousRowCount !== undefined && previousRowCount !== layout.rowCount) {
+		graphicData.lastUpdated = Date.now();
+	}
+
+	rowCounts.set(info.id, layout.rowCount);
+}
+
 function resolveInfoDirectiveWidget(
 	info: InfoDirectiveData,
 	layout: InfoLayout,
@@ -38,6 +59,7 @@ export function createInfoDirectiveWidgetContribution(
 ): DirectiveWidgetContribution {
 	return {
 		beforeGraphicDataWidthCalculation: graphicData => {
+			trackInfoRowCount(info, layout, graphicData);
 			if (layout.maxEntryWidth > 0) {
 				graphicData.minGridWidth = Math.max(
 					graphicData.minGridWidth ?? 0,
