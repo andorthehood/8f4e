@@ -25,7 +25,7 @@ import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-
 export default function browserLocalNotes(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 	let lastSavedBrowserLocalNotes = '';
-	let browserLocalNotesPopulated = false;
+	let browserLocalNotesLoaded = false;
 
 	async function populateBrowserLocalNotes() {
 		if (!state.initialProjectState || !state.callbacks.loadBrowserLocalNotes) {
@@ -101,15 +101,16 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 			}
 
 			state.graphicHelper.nextCodeBlockCreationIndex = creationIndex;
-			browserLocalNotesPopulated = true;
+			browserLocalNotesLoaded = true;
 			store.set('graphicHelper.codeBlocks', nextCodeBlocks);
+			saveBrowserLocalNotes();
 		} catch (err) {
 			console.warn('Failed to load browser-local notes from storage:', err);
 		}
 	}
 
 	function saveBrowserLocalNotes() {
-		if (!browserLocalNotesPopulated || !state.callbacks.saveBrowserLocalNotes) {
+		if (!browserLocalNotesLoaded || !state.callbacks.saveBrowserLocalNotes) {
 			return;
 		}
 
@@ -121,10 +122,6 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 
 		lastSavedBrowserLocalNotes = nextSnapshot;
 		state.callbacks.saveBrowserLocalNotes(serializedBlocks);
-	}
-
-	function onInitialProjectStateChanged() {
-		browserLocalNotesPopulated = false;
 	}
 
 	function saveSelectedBrowserLocalNote() {
@@ -151,9 +148,21 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 		saveBrowserLocalNotes();
 	}
 
+	function saveAfterLocalNoteDelete({ codeBlock }: { codeBlock: CodeBlockGraphicData }) {
+		if (!isBrowserLocalNoteBlock(codeBlock)) {
+			return;
+		}
+
+		saveBrowserLocalNotes();
+	}
+
+	function saveAfterGroupDelete() {
+		saveBrowserLocalNotes();
+	}
+
 	events.on('projectCodeBlocksPopulated', populateBrowserLocalNotes);
-	store.subscribe('initialProjectState', onInitialProjectStateChanged);
-	store.subscribe('graphicHelper.codeBlocks', saveBrowserLocalNotes);
+	events.on('deleteCodeBlock', saveAfterLocalNoteDelete);
+	events.on('deleteGroup', saveAfterGroupDelete);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', saveSelectedBrowserLocalNote);
 	store.subscribe(
 		'graphicHelper.selectedCodeBlockForProgrammaticEdit.code',
