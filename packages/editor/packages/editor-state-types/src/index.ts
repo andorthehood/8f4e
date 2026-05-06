@@ -34,6 +34,7 @@ import type {
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
+import type { DialogContent, DialogState, DialogButton } from './features/dialog/types';
 import type { EditorConfig, EditorConfigValidatorRegistry } from './features/editor-config/types';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
@@ -110,6 +111,9 @@ export type { Compiler, CompilationResult };
 
 // Re-export browser-local note storage types
 export type { BrowserLocalNoteStorageBlock };
+
+// Re-export dialog types
+export type { DialogButton, DialogContent, DialogState };
 
 // Re-export global-editor-directives types
 export type { ResolvedGlobalEditorDirectives };
@@ -322,21 +326,8 @@ export interface State {
 		shaderErrors: CodeError[];
 		runtimeDirectiveErrors: CodeError[];
 	};
-	dialog: {
-		show: boolean;
-		text: string;
-		wrappedText: string[];
-		title: string;
-		buttons: Array<{
-			title: string;
-			action: string;
-			payload?: unknown;
-		}>;
-		width: number;
-		height: number;
-		x: number;
-		y: number;
-	};
+	dialog: DialogState;
+	dialogStack: DialogContent[];
 	viewport: Viewport;
 	viewportAnimation: ViewportAnimation;
 	presentation: PresentationState;
