@@ -23,7 +23,7 @@ describe('drawInfoPanels', () => {
 				foo: {
 					a: 1,
 					bar: 'foo',
-					foo: 'something longer',
+					foo: 1.234567,
 				},
 			},
 			graphicHelper: {
@@ -51,7 +51,7 @@ describe('drawInfoPanels', () => {
 		expect(drawText).toHaveBeenCalledWith(24, 0, ':');
 		expect(drawText).toHaveBeenCalledWith(40, 0, '1');
 		expect(drawText).toHaveBeenCalledWith(0, 32, 'foo');
-		expect(drawText).toHaveBeenCalledWith(40, 32, 'something longer');
+		expect(drawText).toHaveBeenCalledWith(40, 32, '1.2346');
 	});
 
 	it('skips missing info records', () => {

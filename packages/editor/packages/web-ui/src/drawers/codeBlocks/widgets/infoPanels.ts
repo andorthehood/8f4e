@@ -7,7 +7,16 @@ function formatInfoValue(value: unknown): string {
 		return value;
 	}
 
-	if (typeof value === 'number' || typeof value === 'boolean' || value === null || value === undefined) {
+	if (typeof value === 'number') {
+		if (!Number.isFinite(value) || Number.isInteger(value)) {
+			return String(value);
+		}
+
+		const roundedValue = Math.round(value * 10000) / 10000;
+		return String(Object.is(roundedValue, -0) ? 0 : roundedValue);
+	}
+
+	if (typeof value === 'boolean' || value === null || value === undefined) {
 		return String(value);
 	}
 
