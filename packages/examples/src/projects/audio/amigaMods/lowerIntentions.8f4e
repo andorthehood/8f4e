@@ -13,26 +13,26 @@ note
 ; @pos 9 -117
 ; Assets
 ; @tab 22
-; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_1.pcm
-; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_2.pcm
-; @defAsset sample3	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_3.pcm
-; @defAsset sample4	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_4.pcm
-; @defAsset sample5	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_5.pcm
-; @defAsset sample6	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_6.pcm
-; @defAsset sample7	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_7.pcm
-; @defAsset sample9	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_9.pcm
-; @defAsset sample10	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_10.pcm
-; @defAsset sample11	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_11.pcm
-; @defAsset sample12	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_12.pcm
-; @defAsset sample13	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_13.pcm
-; @defAsset sample14	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_14.pcm
-; @defAsset sample15	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_15.pcm
-; @defAsset sample16	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_16.pcm
-; @defAsset sample17	https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_17.pcm
-; @defAsset ch1	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch1.bin
-; @defAsset ch2	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch2.bin
-; @defAsset ch3	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch3.bin
-; @defAsset ch4	https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch4.bin
+; @defAsset sample1	https://static.8f4e.com/assets/mods/lowerintentions/sample_1.pcm
+; @defAsset sample2	https://static.8f4e.com/assets/mods/lowerintentions/sample_2.pcm
+; @defAsset sample3	https://static.8f4e.com/assets/mods/lowerintentions/sample_3.pcm
+; @defAsset sample4	https://static.8f4e.com/assets/mods/lowerintentions/sample_4.pcm
+; @defAsset sample5	https://static.8f4e.com/assets/mods/lowerintentions/sample_5.pcm
+; @defAsset sample6	https://static.8f4e.com/assets/mods/lowerintentions/sample_6.pcm
+; @defAsset sample7	https://static.8f4e.com/assets/mods/lowerintentions/sample_7.pcm
+; @defAsset sample9	https://static.8f4e.com/assets/mods/lowerintentions/sample_9.pcm
+; @defAsset sample10	https://static.8f4e.com/assets/mods/lowerintentions/sample_10.pcm
+; @defAsset sample11	https://static.8f4e.com/assets/mods/lowerintentions/sample_11.pcm
+; @defAsset sample12	https://static.8f4e.com/assets/mods/lowerintentions/sample_12.pcm
+; @defAsset sample13	https://static.8f4e.com/assets/mods/lowerintentions/sample_13.pcm
+; @defAsset sample14	https://static.8f4e.com/assets/mods/lowerintentions/sample_14.pcm
+; @defAsset sample15	https://static.8f4e.com/assets/mods/lowerintentions/sample_15.pcm
+; @defAsset sample16	https://static.8f4e.com/assets/mods/lowerintentions/sample_16.pcm
+; @defAsset sample17	https://static.8f4e.com/assets/mods/lowerintentions/sample_17.pcm
+; @defAsset ch1	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch1.bin
+; @defAsset ch2	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch2.bin
+; @defAsset ch3	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch3.bin
+; @defAsset ch4	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch4.bin
 
 noteEnd
 
