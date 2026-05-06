@@ -24,12 +24,16 @@ function formatInfoValue(value: string | number | boolean): string {
 }
 
 function truncateToCells(value: string, maxCells: number): string {
-	if (maxCells <= 0 || value.length <= maxCells) {
+	if (maxCells <= 0) {
+		return '';
+	}
+
+	if (value.length <= maxCells) {
 		return value;
 	}
 
-	if (maxCells <= 1) {
-		return value.slice(0, maxCells);
+	if (maxCells === 1) {
+		return '~';
 	}
 
 	return value.slice(0, maxCells - 1) + '~';
