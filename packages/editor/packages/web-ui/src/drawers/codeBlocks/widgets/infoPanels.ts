@@ -2,29 +2,25 @@ import { Engine } from 'glugglug';
 
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
 
-function formatInfoValue(value: unknown): string {
+function isRenderableInfoValue(value: unknown): value is string | number | boolean {
+	return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
+}
+
+function formatInfoValue(value: string | number | boolean): string {
 	if (typeof value === 'string') {
 		return value;
 	}
 
-	if (typeof value === 'number') {
-		if (!Number.isFinite(value) || Number.isInteger(value)) {
-			return String(value);
-		}
-
-		const roundedValue = Math.round(value * 10000) / 10000;
-		return String(Object.is(roundedValue, -0) ? 0 : roundedValue);
-	}
-
-	if (typeof value === 'boolean' || value === null || value === undefined) {
+	if (typeof value === 'boolean') {
 		return String(value);
 	}
 
-	try {
-		return JSON.stringify(value);
-	} catch {
+	if (!Number.isFinite(value) || Number.isInteger(value)) {
 		return String(value);
 	}
+
+	const roundedValue = Math.round(value * 10000) / 10000;
+	return String(Object.is(roundedValue, -0) ? 0 : roundedValue);
 }
 
 function truncateToCells(value: string, maxCells: number): string {
@@ -39,12 +35,32 @@ function truncateToCells(value: string, maxCells: number): string {
 	return value.slice(0, maxCells - 1) + '~';
 }
 
-function getInfoEntries(info: InfoRecord | undefined): Array<[string, string]> {
-	if (!info || typeof info !== 'object' || Array.isArray(info)) {
-		return [];
+function getKeyColumnWidth(info: InfoRecord, rowCount: number): number {
+	let renderedRows = 0;
+	let keyColumnWidth = -1;
+
+	for (const key in info) {
+		if (!Object.prototype.hasOwnProperty.call(info, key) || !isRenderableInfoValue(info[key])) {
+			continue;
+		}
+
+		keyColumnWidth = Math.max(keyColumnWidth, key.length);
+		renderedRows += 1;
+
+		if (renderedRows >= rowCount) {
+			break;
+		}
 	}
 
-	return Object.entries(info).map(([key, value]) => [key, formatInfoValue(value)]);
+	return keyColumnWidth;
+}
+
+function hasInfoRecord(info: InfoRecord | undefined): info is InfoRecord {
+	if (!info || typeof info !== 'object' || Array.isArray(info)) {
+		return false;
+	}
+
+	return true;
 }
 
 export default function drawInfoPanels(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
@@ -55,31 +71,49 @@ export default function drawInfoPanels(engine: Engine, state: State, codeBlock: 
 	}
 
 	for (const panel of codeBlock.widgets.infoPanels) {
-		const entries = getInfoEntries(state.info[panel.id]).slice(0, panel.rowCount);
-		if (entries.length === 0) {
+		const info = state.info[panel.id];
+
+		if (!hasInfoRecord(info)) {
 			continue;
 		}
 
-		const keyColumnWidth = entries.reduce((max, [key]) => Math.max(max, key.length), 0);
+		const keyColumnWidth = getKeyColumnWidth(info, panel.rowCount);
+
+		if (keyColumnWidth < 0) {
+			continue;
+		}
+
 		const valueColumn = keyColumnWidth + 2;
 		const panelCells = Math.max(0, Math.floor(panel.width / state.viewport.vGrid));
+		let renderedRows = 0;
 
 		engine.startGroup(panel.x, panel.y);
 		engine.setSpriteLookup(spriteLookups.fillColors);
 		engine.drawSprite(0, 0, 'plotterBackground', panel.width, panel.height);
 
-		entries.forEach(([key, value], row) => {
-			const y = row * state.viewport.hGrid;
+		for (const key in info) {
+			const value = info[key];
+
+			if (!Object.prototype.hasOwnProperty.call(info, key) || !isRenderableInfoValue(value)) {
+				continue;
+			}
+
+			const y = renderedRows * state.viewport.hGrid;
 			const truncatedKey = truncateToCells(key, Math.max(0, keyColumnWidth));
-			const truncatedValue = truncateToCells(value, panelCells - valueColumn);
+			const truncatedValue = truncateToCells(formatInfoValue(value), panelCells - valueColumn);
 
 			engine.setSpriteLookup(spriteLookups.fontCodeComment);
-			engine.drawText(0, y, truncatedKey.padEnd(keyColumnWidth, ' '));
+			engine.drawText(0, y, truncatedKey);
 			engine.setSpriteLookup(spriteLookups.fontCode);
 			engine.drawText(keyColumnWidth * state.viewport.vGrid, y, ':');
 			engine.setSpriteLookup(spriteLookups.fontNumbers);
 			engine.drawText(valueColumn * state.viewport.vGrid, y, truncatedValue);
-		});
+			renderedRows += 1;
+
+			if (renderedRows >= panel.rowCount) {
+				break;
+			}
+		}
 
 		engine.endGroup();
 	}

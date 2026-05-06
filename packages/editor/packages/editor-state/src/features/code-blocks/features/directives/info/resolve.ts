@@ -1,4 +1,4 @@
-import { getInfoEntryCount } from './entries';
+import { getInfoEntryCount, getInfoRecord, isRenderableInfoValue } from './entries';
 
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import type { InfoDirectiveData } from './data';
@@ -7,29 +7,21 @@ import gapCalculator from '~/features/code-editing/gapCalculator';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
-function formatInfoValue(value: unknown): string {
+function formatInfoValue(value: string | number | boolean): string {
 	if (typeof value === 'string') {
 		return value;
 	}
 
-	if (typeof value === 'number') {
-		if (!Number.isFinite(value) || Number.isInteger(value)) {
-			return String(value);
-		}
-
-		const roundedValue = Math.round(value * 10000) / 10000;
-		return String(Object.is(roundedValue, -0) ? 0 : roundedValue);
-	}
-
-	if (typeof value === 'boolean' || value === null || value === undefined) {
+	if (typeof value === 'boolean') {
 		return String(value);
 	}
 
-	try {
-		return JSON.stringify(value);
-	} catch {
+	if (!Number.isFinite(value) || Number.isInteger(value)) {
 		return String(value);
 	}
+
+	const roundedValue = Math.round(value * 10000) / 10000;
+	return String(Object.is(roundedValue, -0) ? 0 : roundedValue);
 }
 
 function resolveInfoDirectiveWidget(
@@ -61,11 +53,20 @@ function resolveInfoDirectiveWidget(
 export function createInfoDirectiveWidgetContribution(info: InfoDirectiveData): DirectiveWidgetContribution {
 	return {
 		beforeGraphicDataWidthCalculation: (graphicData, state) => {
-			const record = state.info[info.id];
-			const entries = record && typeof record === 'object' && !Array.isArray(record) ? Object.entries(record) : [];
-			const maxEntryWidth = entries.reduce((max, [key, value]) => {
-				return Math.max(max, key.length + 2 + formatInfoValue(value).length);
-			}, 0);
+			const record = getInfoRecord(state, info.id);
+			let maxEntryWidth = 0;
+
+			if (record) {
+				for (const key in record) {
+					const value = record[key];
+
+					if (!Object.prototype.hasOwnProperty.call(record, key) || !isRenderableInfoValue(value)) {
+						continue;
+					}
+
+					maxEntryWidth = Math.max(maxEntryWidth, key.length + 2 + formatInfoValue(value).length);
+				}
+			}
 
 			if (maxEntryWidth > 0) {
 				graphicData.minGridWidth = Math.max(

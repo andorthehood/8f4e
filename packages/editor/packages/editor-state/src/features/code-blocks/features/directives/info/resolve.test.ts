@@ -15,6 +15,7 @@ describe('info directive widget resolution', () => {
 					a: 1,
 					bar: 'foo',
 					foo: 'something longer',
+					skipped: { nested: true },
 				},
 			},
 		});
@@ -46,6 +47,7 @@ describe('info directive widget resolution', () => {
 			info: {
 				foo: {
 					value: 1.234567,
+					skipped: { nested: true },
 				},
 			},
 		});
