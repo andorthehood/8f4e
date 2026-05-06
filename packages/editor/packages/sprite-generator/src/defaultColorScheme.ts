@@ -11,6 +11,8 @@ const defaultColorScheme: ColorScheme = {
 		instruction: '#ffffff',
 		codeComment: '#666666',
 		code: '#cccccc',
+		infoKey: '#999999',
+		infoValue: '#cccccc',
 		errorMessage: '#ffffff',
 		disabledCode: '#999999',
 		numbers: '#ffffff',

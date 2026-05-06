@@ -33,6 +33,8 @@ test('font color rendering', async () => {
 		'fontArrow',
 		'fontCode',
 		'fontCodeComment',
+		'fontInfoKey',
+		'fontInfoValue',
 		'fontErrorMessage',
 		'fontDialogText',
 		'fontDialogTitle',

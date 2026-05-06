@@ -80,11 +80,11 @@ export default function drawInfoPanels(engine: Engine, state: State, codeBlock: 
 			const truncatedKey = truncateToCells(key, panel.keyColumnWidth);
 			const truncatedValue = truncateToCells(formatInfoValue(value), panelCells - valueColumn);
 
-			engine.setSpriteLookup(spriteLookups.fontCodeComment);
+			engine.setSpriteLookup(spriteLookups.fontInfoKey);
 			engine.drawText(0, y, truncatedKey);
-			engine.setSpriteLookup(spriteLookups.fontCode);
+			engine.setSpriteLookup(spriteLookups.fontInfoKey);
 			engine.drawText(panel.keyColumnWidth * state.viewport.vGrid, y, ':');
-			engine.setSpriteLookup(spriteLookups.fontNumbers);
+			engine.setSpriteLookup(spriteLookups.fontInfoValue);
 			engine.drawText(valueColumn * state.viewport.vGrid, y, truncatedValue);
 			renderedRows += 1;
 
