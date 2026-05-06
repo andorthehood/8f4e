@@ -111,26 +111,26 @@ ASSET_DIR="/tmp/8f4e-lowerintentions-assets"
 mkdir -p "$ASSET_DIR"
 
 for url in \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch1.bin" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch2.bin" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch3.bin" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/patterns_ch4.bin" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_1.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_2.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_3.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_4.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_5.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_6.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_7.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_9.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_10.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_11.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_12.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_13.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_14.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_15.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_16.pcm" \
-  "https://static.llllllllllll.com/8f4e/mods/lowerintentions/sample_17.pcm"
+  "https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch1.bin" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch2.bin" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch3.bin" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch4.bin" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_1.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_2.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_3.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_4.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_5.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_6.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_7.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_9.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_10.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_11.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_12.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_13.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_14.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_15.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_16.pcm" \
+  "https://static.8f4e.com/assets/mods/lowerintentions/sample_17.pcm"
 do
   curl -fsSL "$url" -o "$ASSET_DIR/$(basename "$url")"
 done
