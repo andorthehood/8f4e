@@ -23,6 +23,7 @@ describe('drawInfoPanels', () => {
 				foo: {
 					a: 1,
 					bar: 'foo',
+					skip: { nested: true },
 					foo: 1.234567,
 				},
 			},
@@ -47,11 +48,12 @@ describe('drawInfoPanels', () => {
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 
 		expect(drawSprite).toHaveBeenCalledWith(0, 0, 'plotterBackground', 216, 48);
-		expect(drawText).toHaveBeenCalledWith(0, 0, 'a  ');
+		expect(drawText).toHaveBeenCalledWith(0, 0, 'a');
 		expect(drawText).toHaveBeenCalledWith(24, 0, ':');
 		expect(drawText).toHaveBeenCalledWith(40, 0, '1');
 		expect(drawText).toHaveBeenCalledWith(0, 32, 'foo');
 		expect(drawText).toHaveBeenCalledWith(40, 32, '1.2346');
+		expect(drawText).not.toHaveBeenCalledWith(0, 32, 'skip');
 	});
 
 	it('skips missing info records', () => {

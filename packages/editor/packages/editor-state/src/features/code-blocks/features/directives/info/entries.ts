@@ -10,6 +10,23 @@ export function getInfoRecord(state: Pick<State, 'info'> | undefined, id: string
 	return record;
 }
 
+export function isRenderableInfoValue(value: unknown): value is string | number | boolean {
+	return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
+}
+
 export function getInfoEntryCount(state: Pick<State, 'info'> | undefined, id: string): number {
-	return Object.keys(getInfoRecord(state, id) ?? {}).length;
+	const record = getInfoRecord(state, id);
+	let count = 0;
+
+	if (!record) {
+		return count;
+	}
+
+	for (const key in record) {
+		if (Object.prototype.hasOwnProperty.call(record, key) && isRenderableInfoValue(record[key])) {
+			count += 1;
+		}
+	}
+
+	return count;
 }
