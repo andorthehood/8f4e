@@ -856,22 +856,22 @@ moduleEnd
 module assets
 ; @pos -13 -116
 ; @tab 22
-; @defAsset sample1	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_1.bin
-; @defAsset sample2	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_2.bin
-; @defAsset sample3	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_3.bin
-; @defAsset sample4	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_4.bin
-; @defAsset sample5	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_5.bin
-; @defAsset sample6	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_6.bin
-; @defAsset sample7	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_7.bin
-; @defAsset sample8	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_8.bin
-; @defAsset sample9	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_9.bin
-; @defAsset sample10	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_10.bin
-; @defAsset sample11	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_11.bin
-; @defAsset sample12	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/sample_12.bin
-; @defAsset ch1	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch1.bin
-; @defAsset ch2	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch2.bin
-; @defAsset ch3	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch3.bin
-; @defAsset ch4	https://static.llllllllllll.com/8f4e/mods/hymn_to_aurora/patterns_ch4.bin
+; @defAsset sample1	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_1.bin
+; @defAsset sample2	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_2.bin
+; @defAsset sample3	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_3.bin
+; @defAsset sample4	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_4.bin
+; @defAsset sample5	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_5.bin
+; @defAsset sample6	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_6.bin
+; @defAsset sample7	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_7.bin
+; @defAsset sample8	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_8.bin
+; @defAsset sample9	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_9.bin
+; @defAsset sample10	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_10.bin
+; @defAsset sample11	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_11.bin
+; @defAsset sample12	https://static.8f4e.com/assets/mods/hymn_to_aurora/sample_12.bin
+; @defAsset ch1	https://static.8f4e.com/assets/mods/hymn_to_aurora/patterns_ch1.bin
+; @defAsset ch2	https://static.8f4e.com/assets/mods/hymn_to_aurora/patterns_ch2.bin
+; @defAsset ch3	https://static.8f4e.com/assets/mods/hymn_to_aurora/patterns_ch3.bin
+; @defAsset ch4	https://static.8f4e.com/assets/mods/hymn_to_aurora/patterns_ch4.bin
 
 moduleEnd
 
