@@ -70,6 +70,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	color(store);
 	projectExport(store, events);
 	canvasScreenshot(store, events);
+	dialog(store, events);
 
 	runtime(store, events);
 	editorMode(store, events);
@@ -106,7 +107,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	browserLocalNotes(store, events);
 	codeEditing(store, events);
 	historyTracking(store, events);
-	dialog(store, events);
 
 	events.on('consoleLog', event => {
 		console.log(event);

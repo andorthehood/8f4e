@@ -12,6 +12,8 @@ import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runt
 
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
+const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
+
 // AudioWorklet Runtime Factory
 export function audioWorkletRuntimeFactory(
 	store: StateManager<State>,
@@ -30,6 +32,19 @@ export function audioWorkletRuntimeFactory(
 	let mediaStream: any | null = null;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let mediaStreamSource: any | null = null;
+
+	function showAudioPermissionDialog(text: string) {
+		events.dispatch('addDialog', {
+			id: AUDIO_PERMISSION_DIALOG_ID,
+			text,
+			title: 'Audio Permission',
+			buttons: [{ title: 'OK', action: 'close' }],
+		});
+	}
+
+	function hideAudioPermissionDialog() {
+		events.dispatch('removeDialog', { id: AUDIO_PERMISSION_DIALOG_ID });
+	}
 
 	function syncCodeAndSettingsWithRuntime() {
 		const audioRoutes = resolveAudioWorkletRouting(state.graphicHelper.codeBlocks);
@@ -94,7 +109,7 @@ export function audioWorkletRuntimeFactory(
 			return;
 		}
 
-		store.set('dialog', { ...state.dialog, show: false });
+		hideAudioPermissionDialog();
 
 		// @ts-expect-error - AudioContext not available in worker context during build
 		audioContext = new AudioContext({
@@ -179,13 +194,9 @@ export function audioWorkletRuntimeFactory(
 		}
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
-			store.set('dialog', {
-				...state.dialog,
-				show: true,
-				text: 'Sample rate changed. Click anywhere to restart audio playback at the new sample rate.',
-				title: 'Audio Permission',
-				buttons: [{ title: 'OK', action: 'close' }],
-			});
+			showAudioPermissionDialog(
+				'Sample rate changed. Click anywhere to restart audio playback at the new sample rate.'
+			);
 			return;
 		}
 
@@ -195,13 +206,9 @@ export function audioWorkletRuntimeFactory(
 	store.subscribe('graphicHelper.codeBlocks', onRuntimeDirectivesChanged);
 
 	if (!audioContext) {
-		store.set('dialog', {
-			...state.dialog,
-			show: true,
-			text: 'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.',
-			title: 'Audio Permission',
-			buttons: [{ title: 'OK', action: 'close' }],
-		});
+		showAudioPermissionDialog(
+			'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.'
+		);
 	}
 
 	return () => {
@@ -210,6 +217,7 @@ export function audioWorkletRuntimeFactory(
 		events.off('mousedown', initAudioContext);
 
 		tearDownAudioContext();
+		hideAudioPermissionDialog();
 	};
 }
 

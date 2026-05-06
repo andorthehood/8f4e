@@ -294,7 +294,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		},
 		globalEditorDirectives: {},
 		dialog: {
-			show: false,
+			id: '',
 			text: '',
 			wrappedText: [''],
 			title: '',
@@ -304,6 +304,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			x: 0,
 			y: 0,
 		},
+		dialogStack: [],
 		viewport: {
 			x: 0,
 			y: 0,

@@ -63,7 +63,7 @@ export default function createDefaultState() {
 			values: {},
 		},
 		dialog: {
-			show: false,
+			id: '',
 			text: '',
 			wrappedText: [''],
 			title: '',
@@ -73,6 +73,7 @@ export default function createDefaultState() {
 			x: 0,
 			y: 0,
 		},
+		dialogStack: [],
 		viewport: {
 			x: 0,
 			y: 0,
