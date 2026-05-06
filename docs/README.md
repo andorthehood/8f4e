@@ -6,6 +6,7 @@ Its primary target is the WebAssembly virtual machine, as I wanted an efficient 
 
 ## Table of Contents
 
+- [Self-Hosting The 8f4e Editor](self-hosting.md)
 - [Stack Oriented Execution Model](#stack-oriented-execution-model)
 - [Instruction Reference](#instruction-reference)
 - [Memory Access and Pointers](#memory-access-and-pointers)
