@@ -36,7 +36,6 @@ function createState({
 			],
 		},
 		compiler: {
-			hasMemoryBeenReinitialized: true,
 			compiledModules: {
 				samples: {
 					memoryMap: {

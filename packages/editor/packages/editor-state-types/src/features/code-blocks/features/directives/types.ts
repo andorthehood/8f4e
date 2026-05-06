@@ -62,10 +62,12 @@ export interface DirectiveDerivedState {
 
 export interface DirectiveDerivedStateDraft extends DirectiveDerivedState {
 	sourceCode: string[];
+	state?: State;
 }
 
 export interface DirectiveDeriveOptions {
 	isExpandedForEditing?: boolean;
+	state?: State;
 }
 
 export interface EditorDirectivePlugin {

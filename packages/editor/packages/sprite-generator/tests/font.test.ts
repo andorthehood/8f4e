@@ -312,6 +312,8 @@ describe('font module', () => {
 			expect(lookups.fontArrow).toBeDefined();
 			expect(lookups.fontInstruction).toBeDefined();
 			expect(lookups.fontCode).toBeDefined();
+			expect(lookups.fontInfoKey).toBeDefined();
+			expect(lookups.fontInfoValue).toBeDefined();
 			expect(lookups.fontErrorMessage).toBeDefined();
 			expect(lookups.fontNumbers).toBeDefined();
 			expect(lookups.fontMenuItemText).toBeDefined();

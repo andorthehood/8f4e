@@ -215,6 +215,8 @@ export interface Module {
 	code: string[];
 }
 
+export { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
+
 // Export the tokenized AST shapes that form the compiler's public input contract.
 export {
 	type AST,

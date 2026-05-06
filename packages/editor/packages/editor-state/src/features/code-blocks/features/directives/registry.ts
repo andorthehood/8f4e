@@ -16,6 +16,7 @@ import sliderDirective from './slider/plugin';
 import crossfadeDirective from './crossfade/plugin';
 import switchDirective from './switch/plugin';
 import watchDirective from './watch/plugin';
+import infoDirective from './info/plugin';
 import viewportDirective from './viewport/plugin';
 import alwaysOnTopDirective from './alwaysOnTop/plugin';
 import { parseEditorDirectives, normalizeEditorDirectiveRecords } from './utils';
@@ -51,6 +52,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	buttonDirective,
 	switchDirective,
 	watchDirective,
+	infoDirective,
 	nthDirective,
 	disabledDirective,
 	homeDirective,
@@ -83,6 +85,7 @@ export function deriveDirectiveState(
 		displayModel: buildDisplayModel(code),
 		layoutContributions: [],
 		widgets: [],
+		state: options.state,
 	};
 
 	for (const directive of directives) {
@@ -139,6 +142,7 @@ if (import.meta.vitest) {
 					'; @bars &bins count(bins)',
 					'; @slider &gain 0 1 0.01',
 					'; @crossfade &dry &wet',
+					'; @info foo',
 					'; note',
 					'moduleEnd',
 				],
@@ -169,6 +173,12 @@ if (import.meta.vitest) {
 					rawRow: 4,
 					args: ['&dry', '&wet'],
 					sourceLine: '; @crossfade &dry &wet',
+				},
+				{
+					name: 'info',
+					rawRow: 5,
+					args: ['foo'],
+					sourceLine: '; @info foo',
 				},
 			]);
 		});
@@ -239,6 +249,23 @@ if (import.meta.vitest) {
 			const result = deriveDirectiveState(code, parseBlockDirectives(code));
 
 			expect(result.layoutContributions).toEqual([{ rawRow: 1, rows: 4 }]);
+		});
+
+		it('allocates one info layout row per state.info key', () => {
+			const code = ['module foo', '; @info foo', 'moduleEnd'];
+			const result = deriveDirectiveState(code, parseBlockDirectives(code), {
+				state: {
+					info: {
+						foo: {
+							a: 1,
+							bar: 'foo',
+							foo: 'something longer',
+						},
+					},
+				} as unknown as State,
+			});
+
+			expect(result.layoutContributions).toEqual([{ rawRow: 1, rows: 3 }]);
 		});
 
 		it('ignores unregistered directives', () => {

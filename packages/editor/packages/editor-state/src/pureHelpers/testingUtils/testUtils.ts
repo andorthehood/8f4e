@@ -135,6 +135,7 @@ export function createMockCodeBlock(
 			arrayBars: [],
 			arrayMeters: [],
 			arrayWaves: [],
+			infoPanels: [],
 			errorMessages: [],
 		},
 	};
@@ -236,7 +237,7 @@ export function createMockEventDispatcher(): EventDispatcher {
  *
  * @example
  * const state = createMockState();
- * const state = createMockState({ compiler: { compilationTime: 123 } });
+ * const state = createMockState({ info: { compiler: { compilationTimeMs: 123 } } });
  * const state = createMockState({ callbacks: { setWordInMemory: () => {} } });
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
@@ -246,14 +247,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const defaults: State = {
 		compiler: {
 			isCompiling: false,
-			compilationTime: 0,
-			lastCompilationStart: 0,
-			requiredMemoryBytes: 0,
-			allocatedMemoryBytes: 0,
-			astCacheStats: { hits: 0, misses: 0 },
 			compiledModules: {},
-			byteCodeSize: 0,
-			hasMemoryBeenReinitialized: false,
 		},
 		callbacks: {
 			loadSession: createMockAsyncFunction(null),
@@ -285,6 +279,20 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			showHiddenCodeBlocks: false,
 			postProcessEffects: [],
 			backgroundEffects: [],
+		},
+		info: {
+			compiler: {
+				isCompiling: false,
+				compilationTimeMs: 0,
+				wasmByteCodeBytes: 0,
+				requiredMemoryBytes: 0,
+				allocatedMemoryBytes: 0,
+				allocatedPages: 0,
+				memoryUsagePercent: 0,
+				astCacheHits: 0,
+				astCacheMisses: 0,
+				memoryReinitialized: false,
+			},
 		},
 		featureFlags: {
 			contextMenu: true,
