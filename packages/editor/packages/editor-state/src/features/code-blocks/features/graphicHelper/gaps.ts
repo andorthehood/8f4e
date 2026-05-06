@@ -102,6 +102,7 @@ if (import.meta.vitest) {
 					arrayBars: [],
 					arrayMeters: [],
 					arrayWaves: [],
+					infoPanels: [],
 					errorMessages: [{ message: ['Error'], x: 0, y: 0, lineNumber: 2 }],
 				},
 			});

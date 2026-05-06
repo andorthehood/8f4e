@@ -6,6 +6,7 @@ import drawMeters from './widgets/meters';
 import drawPlotters from './widgets/plotters';
 import drawWaves from './widgets/waves';
 import drawDebuggers from './widgets/debuggers';
+import drawInfoPanels from './widgets/infoPanels';
 import drawSwitches from './widgets/switches';
 import drawButtons from './widgets/buttons';
 import drawSliders from './widgets/sliders';
@@ -142,6 +143,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawMeters(engine, state, codeBlock, memoryViews);
 			drawPlotters(engine, state, codeBlock, memoryViews);
 			drawWaves(engine, state, codeBlock, memoryViews);
+			drawInfoPanels(engine, state, codeBlock);
 			drawDebuggers(engine, state, codeBlock, memoryViews);
 
 			engine.endGroup();

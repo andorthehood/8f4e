@@ -38,12 +38,12 @@ describe('editor-state testing utilities', () => {
 
 	it('deep merges state overrides without sharing default collections', () => {
 		const state = createMockState({
-			compiler: { compilationTime: 120 },
+			info: { compiler: { compilationTimeMs: 120 } },
 			viewport: { width: 400 },
 		});
 		const secondState = createMockState();
 
-		expect(state.compiler.compilationTime).toBe(120);
+		expect(state.info.compiler?.compilationTimeMs).toBe(120);
 		expect(state.viewport.width).toBe(400);
 		expect(state.viewport.height).toBe(768);
 		expect(state.graphicHelper.outputsByWordAddress).not.toBe(secondState.graphicHelper.outputsByWordAddress);
