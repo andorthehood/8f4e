@@ -33,7 +33,7 @@ export type {
 	FeatureFlagsConfig,
 	EditorMode,
 	JSONSchemaLike,
-	EditorConfigStorageBlock,
+	BrowserLocalNoteStorageBlock,
 } from '@8f4e/editor-state-types';
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';
