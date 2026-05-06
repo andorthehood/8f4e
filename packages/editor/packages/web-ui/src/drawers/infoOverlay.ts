@@ -16,6 +16,11 @@ function formatBytes(bytes: number): string {
 	}
 }
 
+function getCompilerInfoNumber(state: State, key: string): number {
+	const value = state.info.compiler?.[key];
+	return typeof value === 'number' ? value : 0;
+}
+
 export default function drawInfoOverlay(
 	engine: Engine,
 	state: State,
@@ -58,20 +63,26 @@ export default function drawInfoOverlay(
 
 	// Compiler stats
 	debugText.push('');
-	debugText.push('Compilation time: ' + state.compiler.compilationTime.toFixed(2) + 'ms');
-	debugText.push('WASM byte code size: ' + formatBytes(state.compiler.byteCodeSize));
+	const compilationTimeMs = getCompilerInfoNumber(state, 'compilationTimeMs');
+	const wasmByteCodeBytes = getCompilerInfoNumber(state, 'wasmByteCodeBytes');
+	const requiredMemoryBytes = getCompilerInfoNumber(state, 'requiredMemoryBytes');
+	const allocatedMemoryBytes = getCompilerInfoNumber(state, 'allocatedMemoryBytes');
+	const memoryUsagePercent = getCompilerInfoNumber(state, 'memoryUsagePercent');
 
-	if (state.compiler.allocatedMemoryBytes > 0) {
+	debugText.push('Compilation time: ' + compilationTimeMs.toFixed(2) + 'ms');
+	debugText.push('WASM byte code size: ' + formatBytes(wasmByteCodeBytes));
+
+	if (allocatedMemoryBytes > 0) {
 		debugText.push(
 			'Memory usage: ' +
-				formatBytes(state.compiler.requiredMemoryBytes) +
+				formatBytes(requiredMemoryBytes) +
 				' / ' +
-				formatBytes(state.compiler.allocatedMemoryBytes) +
+				formatBytes(allocatedMemoryBytes) +
 				' (' +
-				Math.round((state.compiler.requiredMemoryBytes / state.compiler.allocatedMemoryBytes) * 100) +
+				memoryUsagePercent +
 				'%)'
 		);
-		debugText.push('Allocated pages: ' + state.compiler.allocatedMemoryBytes / 65536);
+		debugText.push('Allocated pages: ' + allocatedMemoryBytes / 65536);
 	}
 
 	// Runtime stats

@@ -69,6 +69,15 @@ export interface Debugger {
 	text?: string;
 }
 
+export interface InfoPanel {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	id: string;
+	rowCount: number;
+}
+
 export interface MemoryIdentifier {
 	memory: DataStructure;
 	showAddress: boolean;
@@ -316,6 +325,7 @@ export interface CodeBlockGraphicData {
 		arrayBars: ArrayBars[];
 		arrayMeters: ArrayMeter[];
 		arrayWaves: ArrayWave[];
+		infoPanels: InfoPanel[];
 		switches: Switch[];
 		buttons: Switch[];
 		sliders: Slider[];
