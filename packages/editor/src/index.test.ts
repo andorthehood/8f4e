@@ -9,10 +9,19 @@ const events = {
 const storeState = {
 	globalEditorDirectives: {},
 	editorConfig: {},
+	info: {},
 };
 
 const store = {
 	getState: vi.fn(() => storeState),
+	set: vi.fn((path: string, value: unknown) => {
+		if (path === 'info.graphics') {
+			storeState.info = {
+				...storeState.info,
+				graphics: value,
+			};
+		}
+	}),
 };
 
 const view = {
@@ -71,8 +80,10 @@ describe('editor init', () => {
 		events.on.mockClear();
 		events.off.mockClear();
 		store.getState.mockClear();
+		store.set.mockClear();
 		view.resize.mockClear();
 		view.renderFrame.mockClear();
+		storeState.info = {};
 	});
 
 	it('sizes the viewport before loading the session', async () => {
@@ -136,5 +147,53 @@ describe('editor init', () => {
 		expect(view.renderFrame).toHaveBeenCalledWith();
 		expect(canvas.toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/png');
 		expect(exportCanvasScreenshot).toHaveBeenCalledWith(screenshotBlob, 'project.png');
+	});
+
+	it('commits sampled render stats into info.graphics', async () => {
+		const { default: init } = await import('./index');
+		const { default: initView } = await import('@8f4e/web-ui');
+		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
+
+		await init(canvas, {
+			runtimeRegistry: {
+				WebWorkerRuntime: {
+					id: 'WebWorkerRuntime',
+					defaults: {},
+					schema: { type: 'object' },
+					factory: () => () => {},
+				},
+			},
+			defaultRuntimeId: 'WebWorkerRuntime',
+			renderStatsIntervalFrames: 12,
+			callbacks: {
+				loadSession: async () => null,
+			},
+		});
+
+		const viewOptions = vi.mocked(initView).mock.calls.at(-1)![4]!;
+		viewOptions.onRenderStats?.({
+			timeToRenderMs: 10,
+			fps: 50,
+			quadCount: 25,
+			vertexCount: 150,
+			maxVertices: 300,
+			vertexUsagePercent: 50,
+			graphicLoadPercent: 50,
+			cacheItemCount: 3,
+			cacheMaxItems: 50,
+		});
+
+		expect(viewOptions.renderStatsIntervalFrames).toBe(12);
+		expect(store.set).toHaveBeenCalledWith('info.graphics', {
+			timeToRenderMs: 10,
+			fps: 50,
+			quadCount: 25,
+			vertexCount: 150,
+			maxVertices: 300,
+			vertexUsagePercent: 50,
+			graphicLoadPercent: 50,
+			cacheItemCount: 3,
+			cacheMaxItems: 50,
+		});
 	});
 });
