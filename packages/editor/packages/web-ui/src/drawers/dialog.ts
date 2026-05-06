@@ -5,9 +5,7 @@ import type { State } from '@8f4e/editor-state-types';
 const DIALOG_CORNER = '+';
 
 export default function drawDialog(engine: Engine, state: State): void {
-	const { show } = state.dialog;
-
-	if (!show || !state.graphicHelper.spriteLookups) {
+	if (state.dialogStack.length === 0 || !state.graphicHelper.spriteLookups) {
 		return;
 	}
 
