@@ -1,0 +1,25 @@
+# Drawer Best Practices
+
+Drawers run in the render loop, so keep their work predictable and allocation-light.
+
+## Render Hot Path
+
+- Prefer plain `for` loops or `for...of` loops over creating temporary arrays with `map`, `filter`, `reduce`, `slice`, or `Object.entries` in drawer render paths.
+- Avoid building intermediate objects or tuples while drawing. Read from the state model directly when possible.
+- If a drawer needs multiple passes, use direct loops for each pass instead of materializing a reusable array unless profiling shows the allocation is worth it.
+- Keep formatting helpers small and deterministic. They can return strings, but they should not allocate larger helper structures per frame.
+- Skip unsupported data early. Drawers should render only the value types they explicitly support instead of stringifying arbitrary objects.
+
+This keeps memory churn low and gives the garbage collector less work during interactive rendering.
+
+## State And Drawing
+
+- Treat editor state as immutable input. Drawers should not mutate `state`, code block graphic data, memory views, or sprite lookup tables.
+- Resolve layout-heavy data before drawing when it naturally belongs in editor-state graphic data.
+- Use viewport grid sizes for placement and dimensions so drawer output stays aligned with the rest of the code block renderer.
+- Exit early when required sprite lookups, widgets, memory views, or renderable data are missing.
+
+## Tests
+
+- Add focused unit tests for new drawer behavior, especially value formatting, truncation, skipped values, and draw call placement.
+- Add or update screenshot tests when a drawer changes visible layout, sprite selection, colors, or geometry.
