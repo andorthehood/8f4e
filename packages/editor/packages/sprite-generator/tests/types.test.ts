@@ -102,6 +102,8 @@ describe('Types and Enums', () => {
 			expect(textKeys).toContain('instruction');
 			expect(textKeys).toContain('codeComment');
 			expect(textKeys).toContain('code');
+			expect(textKeys).toContain('infoKey');
+			expect(textKeys).toContain('infoValue');
 			expect(textKeys).toContain('errorMessage');
 			expect(textKeys).toContain('numbers');
 			expect(textKeys).toContain('menuItemText');

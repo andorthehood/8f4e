@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-types';
 
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
@@ -7,7 +8,7 @@ import { log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
 import type { CompilerDiagnostic } from '@8f4e/compiler-types';
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
 
 /**
  * Converts code blocks into separate arrays for modules, functions, and macros, sorted by creationIndex.
@@ -52,17 +53,26 @@ export default function compiler(store: StateManager<State>) {
 		() => state.editorConfig.recompileDebounceDelay ?? DEFAULT_RECOMPILE_DEBOUNCE_DELAY
 	);
 
+	function setCompilerInfo(partial: InfoRecord): void {
+		store.set('info.compiler', {
+			...(state.info.compiler ?? {}),
+			...partial,
+		});
+	}
+
 	async function onForceCompile() {
 		scheduleRecompile.cancel();
 
 		const { modules, functions, macros } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
+		const compilationStart = performance.now();
 
 		store.set('compiler.isCompiling', true);
-		store.set('compiler.lastCompilationStart', performance.now());
+		setCompilerInfo({ isCompiling: true });
 
 		try {
 			if (!state.callbacks.compileCode) {
 				store.set('compiler.isCompiling', false);
+				setCompilerInfo({ isCompiling: false });
 				return;
 			}
 
@@ -71,31 +81,42 @@ export default function compiler(store: StateManager<State>) {
 			};
 
 			const result = await state.callbacks.compileCode(modules, compilerOptions, functions, macros);
+			const compilationTimeMs = performance.now() - compilationStart;
+			const memoryUsagePercent =
+				result.allocatedMemoryBytes === 0
+					? 0
+					: Math.round((result.requiredMemoryBytes / result.allocatedMemoryBytes) * 100);
+			const memoryReinitialized = result.memoryAction.action === 'recreated';
 
-			store.set('compiler.byteCodeSize', result.byteCodeSize);
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
 			store.set('compiler.compiledModules', result.compiledModules);
-			store.set('compiler.requiredMemoryBytes', result.requiredMemoryBytes);
-			store.set('compiler.allocatedMemoryBytes', result.allocatedMemoryBytes);
-			store.set('compiler.astCacheStats', result.astCacheStats);
 			store.set('compiler.isCompiling', false);
-			store.set('compiler.compilationTime', performance.now() - state.compiler.lastCompilationStart);
+			setCompilerInfo({
+				isCompiling: false,
+				compilationTimeMs,
+				wasmByteCodeBytes: result.byteCodeSize,
+				requiredMemoryBytes: result.requiredMemoryBytes,
+				allocatedMemoryBytes: result.allocatedMemoryBytes,
+				allocatedPages: result.allocatedMemoryBytes / WASM_MEMORY_PAGE_SIZE,
+				memoryUsagePercent,
+				astCacheHits: result.astCacheStats.hits,
+				astCacheMisses: result.astCacheStats.misses,
+				memoryReinitialized,
+			});
 			store.set('codeErrors.compilationErrors', []);
 
-			if (result.memoryAction.action === 'recreated') {
+			if (memoryReinitialized) {
 				log(state, 'WASM Memory instance was (re)created', 'Compiler');
 				log(state, 'Memory was (re)initialized', 'Compiler');
-				store.set('compiler.hasMemoryBeenReinitialized', true);
-			} else {
-				store.set('compiler.hasMemoryBeenReinitialized', false);
 			}
 
-			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
+			log(state, 'Compilation succeeded in ' + compilationTimeMs.toFixed(2) + 'ms', 'Compiler');
 			console.log('[Compiler] Compilation succeeded with config:', compilerOptions);
 		} catch (error) {
 			log(state, 'Compilation failed', 'Compiler');
 
 			store.set('compiler.isCompiling', false);
+			setCompilerInfo({ isCompiling: false });
 			const diagnostic = error as CompilerDiagnostic;
 
 			store.set('codeErrors.compilationErrors', [

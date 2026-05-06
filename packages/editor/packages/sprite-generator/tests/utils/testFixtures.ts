@@ -11,6 +11,8 @@ export const minimalColorScheme: ColorScheme = {
 		instruction: '#887ecb',
 		codeComment: '#666666',
 		code: '#ffffff',
+		infoKey: '#66ccff',
+		infoValue: '#ffd166',
 		errorMessage: '#ffffff',
 		disabledCode: 'rgba(0,0,0,0.5)',
 		numbers: '#c9d487',

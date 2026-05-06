@@ -94,7 +94,7 @@ describe('program compiler effect', () => {
 		]);
 	});
 
-	it('stores AST cache stats from successful compilation results', async () => {
+	it('stores compilation stats in state.info.compiler from successful compilation results', async () => {
 		mockCompileCode.mockResolvedValue({
 			codeBuffer: new Uint8Array([0x00]),
 			compiledModules: {},
@@ -110,7 +110,18 @@ describe('program compiler effect', () => {
 
 		await triggerProgrammaticCompile();
 
-		expect(mockState.compiler.astCacheStats).toEqual({ hits: 4, misses: 2 });
+		expect(mockState.info.compiler).toMatchObject({
+			isCompiling: false,
+			compilationTimeMs: expect.any(Number),
+			wasmByteCodeBytes: 1,
+			requiredMemoryBytes: 0,
+			allocatedMemoryBytes: 65536,
+			allocatedPages: 1,
+			memoryUsagePercent: 0,
+			astCacheHits: 4,
+			astCacheMisses: 2,
+			memoryReinitialized: false,
+		});
 	});
 
 	it('registers the recompile debounce delay editor config validator', () => {

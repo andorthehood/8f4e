@@ -41,3 +41,7 @@ The web-ui package reads from the editor state but does **not** mutate it (excep
 viewport adjustments during the render loop). The sprite lookups, grid sizes, and other sprite-related
 data must be provided by the caller via the `spriteData` parameter and updated when
 `reloadSpriteSheet()` is called.
+
+## Docs
+
+- [Drawer best practices](docs/drawer-best-practices.md)

@@ -27,6 +27,8 @@ export interface ColorScheme {
 		instruction: string;
 		codeComment: string;
 		code: string;
+		infoKey: string;
+		infoValue: string;
 		errorMessage: string;
 		disabledCode: string;
 		numbers: string;

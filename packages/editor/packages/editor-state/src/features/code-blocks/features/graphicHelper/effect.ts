@@ -94,6 +94,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const spriteLookups = state.graphicHelper.spriteLookups;
 		const directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, {
 			isExpandedForEditing: shouldExpandCodeBlockForEditing(graphicData),
+			state,
 		});
 		const displayModel = directiveState.displayModel;
 
@@ -411,6 +412,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
+	store.subscribe('info', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock', onSelectedCodeBlockChanged);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);

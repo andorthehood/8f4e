@@ -14,6 +14,7 @@ import type {
 	Input,
 	Output,
 	Debugger,
+	InfoPanel,
 	MemoryIdentifier,
 	ArrayPlotter,
 	ArrayBars,
@@ -83,6 +84,7 @@ export type {
 	Input,
 	Output,
 	Debugger,
+	InfoPanel,
 	MemoryIdentifier,
 	ArrayPlotter,
 	ArrayBars,
@@ -140,6 +142,10 @@ export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
 
 // Re-export project-import types
 export type { Project };
+
+export type InfoValue = unknown;
+export type InfoRecord = Record<string, InfoValue>;
+export type InfoState = Record<string, InfoRecord | undefined>;
 
 // Feature Flags types (top-level public API)
 export interface FeatureFlags {
@@ -289,6 +295,8 @@ export interface Options {
 export interface State {
 	compiler: Compiler;
 	graphicHelper: GraphicHelper;
+	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
+	info: InfoState;
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;
 	editorMode: EditorMode;
