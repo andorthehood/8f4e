@@ -6,7 +6,7 @@ Drawers run in the render loop, so keep their work predictable and allocation-li
 
 - Prefer plain `for` loops or `for...of` loops over creating temporary arrays with `map`, `filter`, `reduce`, `slice`, or `Object.entries` in drawer render paths.
 - Avoid building intermediate objects or tuples while drawing. Read from the state model directly when possible.
-- If a drawer needs multiple passes, use direct loops for each pass instead of materializing a reusable array unless profiling shows the allocation is worth it.
+- Use temporary allocations only when they save enough repeated looping to be a net win. If a drawer needs multiple passes, prefer direct loops unless materializing a reusable array clearly reduces work.
 - Keep formatting helpers small and deterministic. They can return strings, but they should not allocate larger helper structures per frame.
 - Skip unsupported data early. Drawers should render only the value types they explicitly support instead of stringifying arbitrary objects.
 
