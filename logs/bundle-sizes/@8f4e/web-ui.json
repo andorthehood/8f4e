@@ -412,5 +412,28 @@
 				"brotli": 5898
 			}
 		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-05-06T19:46:24.564Z",
+		"commit": "fb0446056a0eb3fd77afbab3e10d20a65e64c24c",
+		"branch": "main",
+		"releaseTag": "@8f4e/web-ui@1.0.8",
+		"packageName": "@8f4e/web-ui",
+		"projectName": "@8f4e/web-ui",
+		"version": "1.0.8",
+		"bytes": {
+			"raw": 27135,
+			"gzip": 7442,
+			"brotli": 6539
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 27135,
+				"gzip": 7442,
+				"brotli": 6539
+			}
+		]
 	}
 ]
