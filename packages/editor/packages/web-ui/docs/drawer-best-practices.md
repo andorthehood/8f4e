@@ -12,6 +12,14 @@ Drawers run in the render loop, so keep their work predictable and allocation-li
 
 This keeps memory churn low and gives the garbage collector less work during interactive rendering.
 
+## Allocation Placement
+
+- Prefer doing unavoidable allocation outside the render loop whenever possible.
+- Precompute lookup tables at module scope for stable conversions. For example, `formatDebuggerValue.ts` builds `HEX_BYTE_LOOKUP` once instead of rebuilding hex strings from scratch for every byte on every frame.
+- Put layout-heavy or geometry-heavy data in graphic data before rendering when the data naturally belongs there. For example, piano keyboard widgets draw precomputed key geometry and pressed-overlay rows instead of deriving that shape in the drawer.
+- Use renderer-level caching for stable draw groups when available. The code block drawer uses `engine.cacheGroup` so unselected block textures can be reused across frames.
+- Keep per-frame allocations only when they avoid enough repeated looping or recalculation to justify the extra garbage collector pressure.
+
 ## State And Drawing
 
 - Treat editor state as immutable input. Drawers should not mutate `state`, code block graphic data, memory views, or sprite lookup tables.
