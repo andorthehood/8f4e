@@ -43,6 +43,7 @@ import {
 	type PushLine,
 	type ReferenceKind,
 	type StoreBytesLine,
+	type MemoryCopyLine,
 	type UseLine,
 	type LoopLine,
 	type LoopIndexLine,
@@ -262,6 +263,7 @@ export {
 	type PushLine,
 	type ReferenceKind,
 	type StoreBytesLine,
+	type MemoryCopyLine,
 	type UseLine,
 	type LoopLine,
 	type LoopIndexLine,
@@ -402,6 +404,9 @@ export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & { arguments
 export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral];
 };
+export type NormalizedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
+	arguments: [NormalizedArgumentLiteral];
+};
 export type ArrayDeclarationInstruction =
 	| 'float[]'
 	| 'int[]'
@@ -456,9 +461,11 @@ export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 				? CodegenLocalSetLine
 				: TLine extends PushLine
 					? CodegenPushLine
-					: TLine extends ArrayDeclarationLine
-						? ArrayDeclarationLine
-						: TLine;
+					: TLine extends MemoryCopyLine
+						? NormalizedMemoryCopyLine | MemoryCopyLine
+						: TLine extends ArrayDeclarationLine
+							? ArrayDeclarationLine
+							: TLine;
 
 export enum BLOCK_TYPE {
 	MODULE,
@@ -625,7 +632,8 @@ export type Instruction =
 	| 'map'
 	| 'default'
 	| 'mapEnd'
-	| 'storeBytes';
+	| 'storeBytes'
+	| 'memoryCopy';
 
 export interface ExpandedLine {
 	line: string;

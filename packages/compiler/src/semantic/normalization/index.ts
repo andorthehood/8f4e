@@ -4,6 +4,7 @@ import normalizeConst from './const';
 import normalizeDefault from './default';
 import normalizeLocalVariableAccess from './localVariable';
 import normalizeMap from './map';
+import normalizeMemoryCopy from './memoryCopy';
 import normalizeMemoryDeclaration from './memoryDeclaration';
 import normalizePush from './push';
 
@@ -18,6 +19,7 @@ const instructionNormalizers = {
 	default: normalizeDefault,
 	localSet: normalizeLocalVariableAccess,
 	map: normalizeMap,
+	memoryCopy: normalizeMemoryCopy,
 	push: normalizePush,
 } as const;
 

@@ -45,6 +45,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	map: { minArguments: 2, argumentTypes: ['mapValue', 'mapValue'] },
 	default: { minArguments: 1, argumentTypes: ['compileTimeValue'] },
 	storeBytes: { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
+	memoryCopy: { minArguments: 1, maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
 	clampAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
 	clampModuleAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
 	clampGlobalAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },

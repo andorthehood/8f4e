@@ -66,6 +66,7 @@ import map from './map';
 import _default from './default';
 import mapEnd from './mapEnd';
 import storeBytes from './storeBytes';
+import memoryCopy from './memoryCopy';
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
 const instructions = {
@@ -144,6 +145,7 @@ const instructions = {
 	default: _default,
 	mapEnd,
 	storeBytes,
+	memoryCopy,
 } as const;
 
 export default instructions;
