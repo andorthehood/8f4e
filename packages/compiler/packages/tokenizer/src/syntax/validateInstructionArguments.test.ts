@@ -69,6 +69,17 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('exitIfTrue', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
 	});
 
+	it('requires a non-negative compile-time byte count for memoryCopy', () => {
+		expect(() =>
+			validateInstructionArguments('memoryCopy', [{ type: ArgumentType.LITERAL, value: 20, isInteger: true }])
+		).not.toThrow();
+		expect(() => validateInstructionArguments('memoryCopy', [classifyIdentifier('sizeof(buffer)')])).not.toThrow();
+		expect(() => validateInstructionArguments('memoryCopy', [])).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('memoryCopy', [{ type: ArgumentType.LITERAL, value: -1, isInteger: true }])
+		).toThrowError(SyntaxRulesError);
+	});
+
 	it('rejects too many result types for ifEnd', () => {
 		expect(() =>
 			validateInstructionArguments('ifEnd', [classifyIdentifier('int'), classifyIdentifier('float')])

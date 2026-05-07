@@ -118,6 +118,23 @@ push &buffer
 storeBytes 5
 ```
 
+### memoryCopy
+
+The memoryCopy instruction takes a compile-time byte count argument, consumes a destination address and source address from the stack, then copies that many bytes within linear memory. Overlapping ranges are supported, matching WebAssembly `memory.copy` behavior.
+If either source or destination range is out of bounds, the copy is skipped instead of trapping.
+
+Stack layout before call: `... , dstAddress , srcAddress`
+
+#### Examples
+
+```
+int[] source 5
+int[] target 5
+push &target
+push &source
+memoryCopy 20
+```
+
 ### clampAddress
 
 The clampAddress instruction consumes an address and clamps it to the tracked address range carried by that stack value.

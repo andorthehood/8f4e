@@ -26,6 +26,12 @@ type GuardedStoreOptions = {
 	storeByteCode: number[];
 };
 
+type GuardedMemoryCopyOptions = {
+	byteLength: number;
+	lineNumberAfterMacroExpansion: number;
+	memoryCopyByteCode: number[];
+};
+
 export function getOrCreateMemoryGuardLocal(
 	context: CompilationContext,
 	name: string,
@@ -65,8 +71,26 @@ export function linearLastValidStartAddress(accessByteWidth: number): number[] {
 	];
 }
 
+function linearMemoryByteLength(): number[] {
+	return [WASMInstruction.MEMORY_SIZE, 0x00, ...i32const(16), WASMInstruction.I32_SHL];
+}
+
 function addressWithinMemoryBounds(addressLocalIndex: number, accessByteWidth: number): number[] {
 	return [...localGet(addressLocalIndex), ...linearLastValidStartAddress(accessByteWidth), WASMInstruction.I32_LE_U];
+}
+
+function rangeWithinMemoryBounds(addressLocalIndex: number, byteLength: number): number[] {
+	return [
+		...localGet(addressLocalIndex),
+		...linearMemoryByteLength(),
+		WASMInstruction.I32_LE_U,
+		...i32const(byteLength),
+		...linearMemoryByteLength(),
+		...localGet(addressLocalIndex),
+		WASMInstruction.I32_SUB,
+		WASMInstruction.I32_LE_U,
+		WASMInstruction.I32_AND,
+	];
 }
 
 function zeroValue(type: Type.I32 | Type.F32 | Type.F64): number[] {
@@ -116,6 +140,41 @@ export function guardedStore(context: CompilationContext, options: GuardedStoreO
 		...localSet(addressLocal.index),
 		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth),
 		...ifelse(Type.VOID, [...localGet(addressLocal.index), ...localGet(valueLocal.index), ...options.storeByteCode]),
+	];
+}
+
+export function isSafeMemoryCopy(destination: StackItem, source: StackItem, byteLength: number): boolean {
+	return byteLength > 0 && isSafeMemoryAccess(destination, byteLength) && isSafeMemoryAccess(source, byteLength);
+}
+
+export function guardedMemoryCopy(context: CompilationContext, options: GuardedMemoryCopyOptions): number[] {
+	const destinationLocal = getOrCreateMemoryGuardLocal(
+		context,
+		`__memoryCopyDestination_${options.lineNumberAfterMacroExpansion}`,
+		{
+			isInteger: true,
+		}
+	);
+	const sourceLocal = getOrCreateMemoryGuardLocal(
+		context,
+		`__memoryCopySource_${options.lineNumberAfterMacroExpansion}`,
+		{
+			isInteger: true,
+		}
+	);
+
+	return [
+		...localSet(sourceLocal.index),
+		...localSet(destinationLocal.index),
+		...rangeWithinMemoryBounds(destinationLocal.index, options.byteLength),
+		...rangeWithinMemoryBounds(sourceLocal.index, options.byteLength),
+		WASMInstruction.I32_AND,
+		...ifelse(Type.VOID, [
+			...localGet(destinationLocal.index),
+			...localGet(sourceLocal.index),
+			...i32const(options.byteLength),
+			...options.memoryCopyByteCode,
+		]),
 	];
 }
 

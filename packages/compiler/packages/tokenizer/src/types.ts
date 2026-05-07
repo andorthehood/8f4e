@@ -94,6 +94,10 @@ export type BranchIfTrueLine = ASTLineBase<'branchIfTrue', [ArgumentLiteral]>;
 export type BranchIfUnchangedLine = ASTLineBase<'branchIfUnchanged', [ArgumentLiteral]>;
 export type ExitIfTrueLine = ASTLineBase<'exitIfTrue', []>;
 export type StoreBytesLine = ASTLineBase<'storeBytes', [ArgumentLiteral]>;
+export type MemoryCopyLine = ASTLineBase<
+	'memoryCopy',
+	[ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression]
+>;
 export type ConstLine = ASTLineBase<
 	'const',
 	[ArgumentIdentifier, ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression]
