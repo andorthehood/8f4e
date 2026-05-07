@@ -26,6 +26,13 @@ enum WASMMiscInstruction {
 	MEMORY_INIT = 0x08,
 
 	/**
+	 * Bulk-memory copy within linear memory.
+	 * Full instruction encoding: 0xfc 0x0a <dstmemidx> <srcmemidx>
+	 * Stack: destination memory offset, source memory offset, byte count.
+	 */
+	MEMORY_COPY = 0x0a,
+
+	/**
 	 * Bulk-memory fill of linear memory with a byte value.
 	 * Full instruction encoding: 0xfc 0x0b <memidx>
 	 * Stack: destination memory offset, fill byte value, byte count.
