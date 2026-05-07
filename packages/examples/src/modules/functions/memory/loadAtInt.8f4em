@@ -1,0 +1,16 @@
+8f4e/v1
+
+function loadAtInt
+#impure
+; Loads an int from buffer[index].
+param int* buffer
+param int index
+
+push buffer
+push index
+push sizeof(*buffer)
+mul
+add
+load
+
+functionEnd int
