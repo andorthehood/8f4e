@@ -12,8 +12,6 @@ const loopCap: InstructionCompiler<LoopCapLine> = withValidation(
 	{
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
-		minArguments: 1,
-		argumentTypes: ['nonNegativeIntegerLiteral'],
 	},
 	(line, context) => {
 		context.loopCap = line.arguments[0].value as number;
