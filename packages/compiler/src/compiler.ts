@@ -1,4 +1,3 @@
-import { compileToAST } from '@8f4e/tokenizer';
 import { createFunction, createLocalDeclaration, Type } from '@8f4e/compiler-wasm-utils';
 
 import instructions from './instructionCompilers';
@@ -39,19 +38,6 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 	}
 
 	compileCodegenLine(line, context);
-}
-
-export function compileSegment(
-	code: string[],
-	context: CompilationContext,
-	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
-) {
-	const rawAst = compileToAST(code, lineMetadata);
-	rawAst.forEach(originalLine => {
-		const line = normalizeCompileTimeArguments(originalLine, context);
-		compileLine(line, context);
-	});
-	return context;
 }
 
 export function compileModule(
