@@ -1,4 +1,15 @@
-import { compileSegment } from '../compiler';
+import {
+	f32load,
+	f32store,
+	i32const,
+	i32load,
+	i32store,
+	localGet,
+	localSet,
+	WASMInstruction,
+} from '@8f4e/compiler-wasm-utils';
+
+import { saveByteCode } from '../utils/compilation';
 import { allocateInternalResource } from '../utils/internalResources';
 import { withValidation } from '../withValidation';
 
@@ -21,27 +32,30 @@ const hasChanged: InstructionCompiler = withValidation(
 		const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
 		const memoryType = operand.isInteger ? 'int' : 'float';
 		const previousValue = allocateInternalResource(context, previousValueName, memoryType);
+		const currentValueLocalIndex = Object.keys(context.locals).length;
 
-		context.stack.push({ isInteger: operand.isInteger, isNonZero: false });
+		context.locals[currentValueName] = {
+			isInteger: operand.isInteger,
+			index: currentValueLocalIndex,
+		};
 
-		// compileSegment is used here because hasChanged combines a memory load,
-		// equality check, logical inversion, and memory store; this multi-step
-		// pattern genuinely benefits from composed instruction semantics.
-		return compileSegment(
-			[
-				`local ${memoryType} ${currentValueName}`,
-				`localSet ${currentValueName}`,
-				`push ${previousValue.byteAddress}`,
-				operand.isInteger ? 'load' : 'loadFloat',
-				`push ${currentValueName}`,
-				'equal',
-				'equalToZero',
-				`push ${previousValue.byteAddress}`,
-				`push ${currentValueName}`,
-				'store',
-			],
-			context
-		);
+		context.stack.push({ isInteger: true, isNonZero: false });
+
+		const loadByteCode = operand.isInteger ? i32load() : f32load();
+		const equalityByteCode = operand.isInteger ? WASMInstruction.I32_EQ : WASMInstruction.F32_EQ;
+		const storeByteCode = operand.isInteger ? i32store() : f32store();
+
+		return saveByteCode(context, [
+			...localSet(currentValueLocalIndex),
+			...i32const(previousValue.byteAddress),
+			...loadByteCode,
+			...localGet(currentValueLocalIndex),
+			equalityByteCode,
+			WASMInstruction.I32_EQZ,
+			...i32const(previousValue.byteAddress),
+			...localGet(currentValueLocalIndex),
+			...storeByteCode,
+		]);
 	}
 );
 
