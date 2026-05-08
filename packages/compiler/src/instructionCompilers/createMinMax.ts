@@ -1,6 +1,5 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
-import { compileSegment } from '../compiler';
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
@@ -30,26 +29,32 @@ const createMinMax = (instruction: 'min' | 'max'): InstructionCompiler =>
 			if (isInteger) {
 				const leftName = `__${instruction}_left${line.lineNumberAfterMacroExpansion}`;
 				const rightName = `__${instruction}_right${line.lineNumberAfterMacroExpansion}`;
+				const leftLocalIndex = Object.keys(context.locals).length;
+				const rightLocalIndex = leftLocalIndex + 1;
 
-				context.stack.push(operand1, operand2);
+				context.locals[leftName] = {
+					isInteger: true,
+					index: leftLocalIndex,
+				};
+				context.locals[rightName] = {
+					isInteger: true,
+					index: rightLocalIndex,
+				};
+				context.stack.push({ isInteger: true, isNonZero: false });
 
-				return compileSegment(
-					[
-						`local int ${leftName}`,
-						`local int ${rightName}`,
-						`localSet ${rightName}`,
-						`localSet ${leftName}`,
-						`push ${leftName}`,
-						`push ${rightName}`,
-						instruction === 'min' ? 'lessThan' : 'greaterThan',
-						'if',
-						` push ${leftName}`,
-						'else',
-						` push ${rightName}`,
-						'ifEnd int',
-					],
-					context
-				);
+				return saveByteCode(context, [
+					...localSet(rightLocalIndex),
+					...localSet(leftLocalIndex),
+					...localGet(leftLocalIndex),
+					...localGet(rightLocalIndex),
+					instruction === 'min' ? WASMInstruction.I32_LT_S : WASMInstruction.I32_GT_S,
+					WASMInstruction.IF,
+					Type.I32,
+					...localGet(leftLocalIndex),
+					WASMInstruction.ELSE,
+					...localGet(rightLocalIndex),
+					WASMInstruction.END,
+				]);
 			}
 
 			context.stack.push({
