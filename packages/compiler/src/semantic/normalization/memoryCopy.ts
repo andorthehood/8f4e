@@ -11,6 +11,8 @@ import {
 	validateOrDeferUnresolvedIdentifier,
 } from './helpers';
 
+import { ErrorCode, getError } from '../../compilerError';
+
 export default function normalizeMemoryCopy(
 	line: MemoryCopyLine,
 	context: CompilationContext
@@ -29,6 +31,12 @@ export default function normalizeMemoryCopy(
 		if (deferred) {
 			return normalized as MemoryCopyLine;
 		}
+	}
+	if (argument?.type === ArgumentType.LITERAL && !argument.isInteger) {
+		throw getError(ErrorCode.TYPE_MISMATCH, line, context);
+	}
+	if (argument?.type === ArgumentType.LITERAL && argument.value < 0) {
+		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 
 	return normalized as NormalizedMemoryCopyLine | MemoryCopyLine;

@@ -1,7 +1,6 @@
 import { BLOCK_TYPE, type AST, type InstructionCompiler } from '@8f4e/compiler-types';
 
 import { peekStackOperands } from './peekStackOperands';
-import { validateArgumentTypes } from './validateArgumentTypes';
 import { validateOperandTypes } from './validateOperandTypes';
 import { validateScope } from './validateScope';
 
@@ -33,14 +32,6 @@ export function withValidation<TLine extends AST[number]>(
 				context,
 				spec.onInvalidScope ?? ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK
 			);
-		}
-
-		if (spec.minArguments !== undefined && line.arguments.length < spec.minArguments) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		if (spec.argumentTypes) {
-			validateArgumentTypes(line.arguments, spec.argumentTypes, line, context);
 		}
 
 		const validatedOperands = spec.validateOperands?.(line as TLine, context);

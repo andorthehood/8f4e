@@ -17,8 +17,6 @@ const memoryCopy: InstructionCompiler<NormalizedMemoryCopyLine> = withValidation
 	{
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
-		minArguments: 1,
-		argumentTypes: 'nonNegativeIntegerLiteral',
 		minOperands: 2,
 		operandTypes: 'int',
 	},
