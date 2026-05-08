@@ -3,6 +3,7 @@ import { BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import _return from './return';
 
+import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-types';
@@ -40,17 +41,15 @@ describe('return instruction compiler', () => {
 	it('throws when used outside a function', () => {
 		const context = createInstructionCompilerTestContext();
 		// default context has MODULE block, not FUNCTION
+		const line = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'return',
+			arguments: [],
+		} as AST[number];
 
 		expect(() => {
-			_return(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'return',
-					arguments: [],
-				} as AST[number],
-				context
-			);
+			validateInstruction(line, context);
 		}).toThrowError();
 	});
 });
