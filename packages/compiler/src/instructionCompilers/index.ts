@@ -43,7 +43,6 @@ import risingEdge from './risingEdge';
 import fallingEdge from './fallingEdge';
 import hasChanged from './hasChanged';
 import dup from './dup';
-import swap from './swap';
 import abs from './abs';
 import equal from './equal';
 import branchIfUnchanged from './branchIfUnchanged';
@@ -123,7 +122,6 @@ const instructions = {
 	fallingEdge,
 	hasChanged,
 	dup,
-	swap,
 	abs,
 	equal,
 	branchIfUnchanged,

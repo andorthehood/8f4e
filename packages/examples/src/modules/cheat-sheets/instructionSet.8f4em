@@ -59,7 +59,6 @@ constants instructionSet
 ; 	`-> or pointer-derived value.
 ; drop	Discard the top stack value.
 ; dup	Duplicate the top stack value.
-; swap	Swap the top two stack values.
 ; clearStack	Clear the current stack.
 ;
 ; Memory

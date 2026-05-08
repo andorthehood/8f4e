@@ -55,23 +55,28 @@ param float x1
 param float y1
 param float x2
 param float y2
+local float dx
+local float dy
 
 ; dx = x2 - x1
 push x2
 push x1
 sub
+localSet dx
 
 ; dy = y2 - y1
 push y2
 push y1
 sub
+localSet dy
 
 ; dx * dx
+push dx
 dup
 mul
 
 ; dy * dy
-swap
+push dy
 dup
 mul
 

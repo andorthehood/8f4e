@@ -100,7 +100,6 @@ const instructionsToHighlight = [
 	'fallingEdge',
 	'hasChanged',
 	'dup',
-	'swap',
 	'abs',
 	'use',
 	'equal',
