@@ -15,7 +15,6 @@ const DEFAULT_LOOP_CAP = 1000;
 const loop: InstructionCompiler<LoopLine> = withValidation(
 	{
 		scope: 'moduleOrFunction',
-		argumentTypes: ['nonNegativeIntegerLiteral'],
 	},
 	(line, context) => {
 		const capArg = line.arguments[0];
