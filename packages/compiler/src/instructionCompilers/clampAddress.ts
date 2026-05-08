@@ -36,7 +36,6 @@ export const clampAddress: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
-		argumentTypes: 'memoryAccessWidthLiteral',
 	},
 	(line, context) => {
 		const operand = context.stack.pop()!;
@@ -54,7 +53,6 @@ export const clampModuleAddress: InstructionCompiler = withValidation(
 		scope: 'module',
 		minOperands: 1,
 		operandTypes: 'int',
-		argumentTypes: 'memoryAccessWidthLiteral',
 	},
 	(line, context) => {
 		const operand = context.stack.pop()!;
@@ -67,7 +65,6 @@ export const clampGlobalAddress: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
-		argumentTypes: 'memoryAccessWidthLiteral',
 	},
 	(line, context) => {
 		const operand = context.stack.pop()!;
