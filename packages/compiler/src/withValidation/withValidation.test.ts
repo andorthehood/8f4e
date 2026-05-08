@@ -3,8 +3,6 @@ import { BLOCK_TYPE, type InstructionCompiler } from '@8f4e/compiler-types';
 
 import { withValidation } from './withValidation';
 
-const { classifyIdentifier } = await import('@8f4e/tokenizer');
-
 const line: Parameters<InstructionCompiler>[0] = {
 	lineNumberBeforeMacroExpansion: 1,
 	lineNumberAfterMacroExpansion: 1,
@@ -64,16 +62,5 @@ describe('withValidation (in-source)', () => {
 		context.stack.push({ isInteger: true });
 
 		expect(() => compiler(line, context)).not.toThrow();
-	});
-
-	it('validates argument types when configured', () => {
-		const compiler = withValidation({ argumentTypes: 'identifier' }, (_line, context) => context);
-		const context = createContext();
-		const identifierLine: Parameters<InstructionCompiler>[0] = {
-			...line,
-			arguments: [classifyIdentifier('arg')],
-		};
-
-		expect(() => compiler(identifierLine, context)).not.toThrow();
 	});
 });

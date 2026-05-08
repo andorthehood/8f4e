@@ -6,6 +6,7 @@ import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAdd
 
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import { ErrorCode } from '../compilerError';
+import normalizeClampAddress from '../semantic/normalization/clampAddress';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, MemoryAddressRange } from '@8f4e/compiler-types';
@@ -166,18 +167,16 @@ describe('clamp address instruction compilers', () => {
 
 	it('rejects zero access width', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false, clampAddressRange: range });
 
-		expect(() => clampAddress(createLine('clampAddress', 0), context)).toThrow(
+		expect(() => normalizeClampAddress(createLine('clampAddress', 0), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
 		);
 	});
 
 	it('rejects unsupported access widths', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false, clampAddressRange: range });
 
-		expect(() => clampAddress(createLine('clampAddress', 3), context)).toThrow(
+		expect(() => normalizeClampAddress(createLine('clampAddress', 3), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
 		);
 	});
