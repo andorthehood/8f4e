@@ -22,7 +22,7 @@ Active todo files are listed below.
 | 271 | Add float64 support for loadFloat instruction | 🔴 | 1-3h | 2026-02-20 | loadFloat is missing explicit float64 support in the compiler instruction path. |
 | 272 | Add float32/float64 width checks to localSet instruction | 🔴 | 1-3h | 2026-02-20 | localSet is missing explicit float64 support in the compiler instruction path. |
 | 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | storeBytes <count> covers contiguous byte writes, but there is no equivalent explicit instruction for contiguous multi-byte word writes. |
-| 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | 8f4e has dup, swap, drop, and clearStack, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for... |
+| 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | 8f4e has drop and clearStack, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for... |
 | 305 | Reuse WASM instance across incremental compiles | 🔴 | 3-6h | 2026-03-14 | The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed. |
 
 ### 🟡 Medium Priority

@@ -72,12 +72,12 @@ localSet dy
 
 ; dx * dx
 push dx
-dup
+push dx
 mul
 
 ; dy * dy
 push dy
-dup
+push dy
 mul
 
 ; dx*dx + dy*dy

@@ -177,7 +177,7 @@ ifEnd
 
 local float x2
 push x
-dup
+push x
 mul
 localSet x2
 

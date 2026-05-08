@@ -109,7 +109,7 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with multiple return values', () => {
 		const functions: Module[] = [
 			{
-				code: ['function duplicate', 'param int x', 'push x', 'dup', 'functionEnd int int'],
+				code: ['function duplicate', 'param int x', 'push x', 'push x', 'functionEnd int int'],
 			},
 		];
 
@@ -129,7 +129,7 @@ describe('Pure Function Compilation', () => {
 	test('should support calling a function from a module', () => {
 		const functions: Module[] = [
 			{
-				code: ['function square', 'param int x', 'push x', 'dup', 'mul', 'functionEnd int'],
+				code: ['function square', 'param int x', 'push x', 'push x', 'mul', 'functionEnd int'],
 			},
 		];
 
@@ -581,7 +581,7 @@ describe('Pure Function Edge Cases', () => {
 					'function abs',
 					'param int x',
 					'push x',
-					'dup',
+					'push x',
 					'push 0',
 					'lessThan',
 					'if',

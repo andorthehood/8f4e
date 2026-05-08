@@ -154,8 +154,6 @@ The current compiler is not a simple one-line-at-a-time stack-effect interpreter
 
 Examples include:
 
-- `dup`
-- `swap`
 - `loop`
 - `abs` for integers
 - `min` / `max` for integers
