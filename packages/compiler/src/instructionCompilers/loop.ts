@@ -1,9 +1,7 @@
-import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { br, i32const, localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
 
-import { compileSegment } from '../compiler';
 import { saveByteCode } from '../utils/compilation';
-import { allocateInternalResource } from '../utils/internalResources';
 import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler, LoopLine } from '@8f4e/compiler-types';
@@ -27,8 +25,11 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 				: (context.loopCap ?? DEFAULT_LOOP_CAP);
 
 		const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumberAfterMacroExpansion;
-		const loopErrorSignalerName = '__loopErrorSignaler';
-		const loopErrorSignaler = allocateInternalResource(context, loopErrorSignalerName, 'int', -1);
+		const counterLocalIndex = Object.keys(context.locals).length;
+		context.locals[infiniteLoopProtectionCounterName] = {
+			isInteger: true,
+			index: counterLocalIndex,
+		};
 
 		context.blockStack.push({
 			expectedResultIsInteger: false,
@@ -37,30 +38,25 @@ const loop: InstructionCompiler<LoopLine> = withValidation(
 			loopCounterLocalName: infiniteLoopProtectionCounterName,
 		});
 
-		compileSegment(
-			[`local int ${infiniteLoopProtectionCounterName}`, 'push 0', `localSet ${infiniteLoopProtectionCounterName}`],
-			context
-		);
-		saveByteCode(context, [WASMInstruction.BLOCK, Type.VOID, WASMInstruction.LOOP, Type.VOID]);
-
-		return compileSegment(
-			[
-				`push ${infiniteLoopProtectionCounterName}`,
-				`push ${effectiveCap}`,
-				'greaterOrEqual',
-				'if',
-				` push ${loopErrorSignaler.byteAddress}`,
-				` push ${line.lineNumberBeforeMacroExpansion}`,
-				' store',
-				` branch 2`,
-				'ifEnd',
-				`push ${infiniteLoopProtectionCounterName}`,
-				'push 1',
-				'add',
-				`localSet ${infiniteLoopProtectionCounterName}`,
-			],
-			context
-		);
+		return saveByteCode(context, [
+			...i32const(0),
+			...localSet(counterLocalIndex),
+			WASMInstruction.BLOCK,
+			Type.VOID,
+			WASMInstruction.LOOP,
+			Type.VOID,
+			...localGet(counterLocalIndex),
+			...i32const(effectiveCap),
+			WASMInstruction.I32_GE_S,
+			WASMInstruction.IF,
+			Type.VOID,
+			...br(2),
+			WASMInstruction.END,
+			...localGet(counterLocalIndex),
+			...i32const(1),
+			WASMInstruction.I32_ADD,
+			...localSet(counterLocalIndex),
+		]);
 	}
 );
 
