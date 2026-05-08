@@ -610,7 +610,6 @@ export type Instruction =
 	| 'risingEdge'
 	| 'fallingEdge'
 	| 'hasChanged'
-	| 'dup'
 	| 'abs'
 	| 'equal'
 	| 'branchIfUnchanged'

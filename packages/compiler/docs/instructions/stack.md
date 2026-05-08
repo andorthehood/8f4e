@@ -54,17 +54,6 @@ push 1
 drop
 ```
 
-### dup
-
-The dup instruction duplicates the top value on the stack.
-
-#### Examples
-
-```
-push 5
-dup
-```
-
 ### clearStack
 
 The clearStack instruction removes all values from the stack.

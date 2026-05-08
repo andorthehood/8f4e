@@ -58,7 +58,6 @@ constants instructionSet
 ; push	Push a literal, identifier, 
 ; 	`-> or pointer-derived value.
 ; drop	Discard the top stack value.
-; dup	Duplicate the top stack value.
 ; clearStack	Clear the current stack.
 ;
 ; Memory

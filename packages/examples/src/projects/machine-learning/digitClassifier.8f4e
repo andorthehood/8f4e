@@ -64,7 +64,7 @@ param float64 x
 ; mapped to [0, 1]
 
 push x
-dup
+push x
 abs
 push 1.0f64
 add

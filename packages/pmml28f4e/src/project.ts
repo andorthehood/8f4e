@@ -40,7 +40,7 @@ function buildSigmoidFunctionBlock(): CodeBlock {
 			'; Fast sigmoid approximation: x / (1 + |x|)',
 			'',
 			'push x',
-			'dup',
+			'push x',
 			'abs',
 			'push 1.0',
 			'add',

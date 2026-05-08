@@ -11,7 +11,7 @@ completed: 2025-12-20
 
 ## Problem Description
 
-Five instruction compilers for type casting and math operations (`castToFloat`, `round`, `sqrt`, `dup`, `swap`) need migration to the `withValidation` helper pattern.
+The type casting and math instruction compilers (`castToFloat`, `round`, `sqrt`) need migration to the `withValidation` helper pattern.
 
 ## Proposed Solution
 
@@ -34,19 +34,9 @@ Refactor these instruction compilers to use the `withValidation` helper.
 - Preserve square root logic
 - Verify tests pass
 
-### Step 4: Migrate `dup` instruction
-- Wrap with `minOperands: 1`, `operandTypes: 'any'`
-- Preserve stack duplication logic
-- Verify tests pass
-
-### Step 5: Migrate `swap` instruction
-- Wrap with `minOperands: 2`, `operandTypes: 'any'`
-- Preserve stack swap logic
-- Verify tests pass
-
 ## Success Criteria
 
-- [ ] All 5 instructions use `withValidation` wrapper
+- [ ] All instructions use `withValidation` wrapper
 - [ ] All existing tests pass without modification
 - [ ] Type checking passes
 - [ ] Linting passes
@@ -56,13 +46,11 @@ Refactor these instruction compilers to use the `withValidation` helper.
 - `packages/compiler/src/instructionCompilers/castToFloat.ts`
 - `packages/compiler/src/instructionCompilers/round.ts`
 - `packages/compiler/src/instructionCompilers/sqrt.ts`
-- `packages/compiler/src/instructionCompilers/dup.ts`
-- `packages/compiler/src/instructionCompilers/swap.ts`
 
 ## Risks & Considerations
 
-- **Risk**: Stack manipulation operations (dup, swap) need careful handling
-- **Mitigation**: Verify stack state is correct after migration
+- **Risk**: Numeric operations need careful handling across supported operand widths
+- **Mitigation**: Verify stack state and numeric output after migration
 - **Breaking Changes**: None expected
 
 ## Related Items
@@ -73,4 +61,3 @@ Refactor these instruction compilers to use the `withValidation` helper.
 ## Notes
 
 - Math operations like sqrt and round typically work on floats
-- Stack operations like dup and swap work on any type

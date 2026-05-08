@@ -1517,8 +1517,15 @@
   {
     "lineNumberBeforeMacroExpansion": 179,
     "lineNumberAfterMacroExpansion": 179,
-    "instruction": "dup",
-    "arguments": [],
+    "instruction": "push",
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "x",
+        "referenceKind": "plain",
+        "scope": "local"
+      }
+    ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": false
   },

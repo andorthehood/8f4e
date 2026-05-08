@@ -137,10 +137,10 @@ describe('Macro expansion integration', () => {
 		expect(result.compiledFunctions.doubleValue).toBeDefined();
 	});
 
-	test('should instantiate macro-expanded temp-local instructions the same as manual inline', async () => {
+	test('should instantiate macro-expanded instructions the same as manual inline', async () => {
 		const macros: Module[] = [
 			{
-				code: ['defineMacro duplicateTwice', 'dup', 'dup', 'defineMacroEnd'],
+				code: ['defineMacro addTen', 'push 10', 'add', 'defineMacroEnd'],
 			},
 		];
 
@@ -149,17 +149,11 @@ describe('Macro expansion integration', () => {
 				code: [
 					'module test',
 					'int input 7',
-					'int output1',
-					'int output2',
-					'int output3',
+					'int output',
 					'loop',
-					'push &output1',
-					'push &output2',
-					'push &output3',
+					'push &output',
 					'push input',
-					'macro duplicateTwice',
-					'store',
-					'store',
+					'macro addTen',
 					'store',
 					'loopEnd',
 					'moduleEnd',
@@ -172,18 +166,12 @@ describe('Macro expansion integration', () => {
 				code: [
 					'module test',
 					'int input 7',
-					'int output1',
-					'int output2',
-					'int output3',
+					'int output',
 					'loop',
-					'push &output1',
-					'push &output2',
-					'push &output3',
+					'push &output',
 					'push input',
-					'dup',
-					'dup',
-					'store',
-					'store',
+					'push 10',
+					'add',
 					'store',
 					'loopEnd',
 					'moduleEnd',
