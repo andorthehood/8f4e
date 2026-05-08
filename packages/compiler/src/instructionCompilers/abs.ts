@@ -1,6 +1,5 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { i32const, localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
-import { compileSegment } from '../compiler';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
@@ -20,28 +19,29 @@ const abs: InstructionCompiler = withValidation(
 		const operand = context.stack.pop()!;
 
 		if (operand.isInteger) {
-			context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 			const valueName = '__absify_value' + line.lineNumberAfterMacroExpansion;
+			const valueLocalIndex = Object.keys(context.locals).length;
 
-			// compileSegment is used here because i32 has no native abs opcode;
-			// the if/else/ifEnd control flow genuinely benefits from composed instruction semantics.
-			return compileSegment(
-				[
-					`local int ${valueName}`,
-					`localSet ${valueName}`,
-					`push ${valueName}`,
-					'push 0',
-					'lessThan',
-					'if',
-					' push 0',
-					` push ${valueName}`,
-					' sub',
-					'else',
-					` push ${valueName}`,
-					'ifEnd int',
-				],
-				context
-			);
+			context.locals[valueName] = {
+				isInteger: true,
+				index: valueLocalIndex,
+			};
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			return saveByteCode(context, [
+				...localSet(valueLocalIndex),
+				...localGet(valueLocalIndex),
+				...i32const(0),
+				WASMInstruction.I32_LT_S,
+				WASMInstruction.IF,
+				Type.I32,
+				...i32const(0),
+				...localGet(valueLocalIndex),
+				WASMInstruction.I32_SUB,
+				WASMInstruction.ELSE,
+				...localGet(valueLocalIndex),
+				WASMInstruction.END,
+			]);
 		} else {
 			context.stack.push({
 				isInteger: false,
