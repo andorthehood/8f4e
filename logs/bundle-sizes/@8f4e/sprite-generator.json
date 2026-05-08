@@ -67,5 +67,28 @@
 				"brotli": 1460
 			}
 		]
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-05-08T09:24:14.642Z",
+		"commit": "d6e108b82ccb94761a566ee81e0d287d3e0705da",
+		"branch": "main",
+		"releaseTag": "@8f4e/sprite-generator@1.0.6",
+		"packageName": "@8f4e/sprite-generator",
+		"projectName": "@8f4e/sprite-generator",
+		"version": "1.0.6",
+		"bytes": {
+			"raw": 12293,
+			"gzip": 1649,
+			"brotli": 1460
+		},
+		"files": [
+			{
+				"path": "index.js",
+				"raw": 12293,
+				"gzip": 1649,
+				"brotli": 1460
+			}
+		]
 	}
 ]
