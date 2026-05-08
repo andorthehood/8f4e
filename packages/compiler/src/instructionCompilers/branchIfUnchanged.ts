@@ -1,4 +1,16 @@
-import { compileSegment } from '../compiler';
+import {
+	br_if,
+	f32load,
+	f32store,
+	i32const,
+	i32load,
+	i32store,
+	localGet,
+	localSet,
+	WASMInstruction,
+} from '@8f4e/compiler-wasm-utils';
+
+import { saveByteCode } from '../utils/compilation';
 import { allocateInternalResource } from '../utils/internalResources';
 import { withValidation } from '../withValidation';
 
@@ -17,36 +29,34 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = withValida
 		// Non-null assertion is safe: withValidation ensures 1 operand exists
 		const operand = context.stack.pop()!;
 
-		context.stack.push(operand);
-
 		const depth = line.arguments[0].value;
 		const type = operand.isInteger ? 'int' : 'float';
 		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 		const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
 		const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumberAfterMacroExpansion;
 		const previousValue = allocateInternalResource(context, previousValueMemoryName, type);
+		const currentValueLocalIndex = Object.keys(context.locals).length;
 
-		// compileSegment is used here because branchIfUnchanged combines a memory load,
-		// equality comparison, conditional branch, and memory store; this multi-step
-		// pattern genuinely benefits from composed instruction semantics.
-		return compileSegment(
-			[
-				`local ${type} ${currentValueMemoryName}`,
+		context.locals[currentValueMemoryName] = {
+			isInteger: operand.isInteger,
+			index: currentValueLocalIndex,
+		};
 
-				`localSet ${currentValueMemoryName} `,
+		const loadByteCode = operand.isInteger ? i32load() : f32load();
+		const equalityByteCode = operand.isInteger ? WASMInstruction.I32_EQ : WASMInstruction.F32_EQ;
+		const storeByteCode = operand.isInteger ? i32store() : f32store();
 
-				`push ${previousValue.byteAddress}`,
-				operand.isInteger ? 'load' : 'loadFloat',
-				`push ${currentValueMemoryName}`,
-				'equal',
-				`branchIfTrue ${depth}`,
-
-				`push ${previousValue.byteAddress}`,
-				`push ${currentValueMemoryName}`,
-				'store',
-			],
-			context
-		);
+		return saveByteCode(context, [
+			...localSet(currentValueLocalIndex),
+			...i32const(previousValue.byteAddress),
+			...loadByteCode,
+			...localGet(currentValueLocalIndex),
+			equalityByteCode,
+			...br_if(depth),
+			...i32const(previousValue.byteAddress),
+			...localGet(currentValueLocalIndex),
+			...storeByteCode,
+		]);
 	}
 );
 
