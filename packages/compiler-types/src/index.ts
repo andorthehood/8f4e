@@ -611,7 +611,6 @@ export type Instruction =
 	| 'fallingEdge'
 	| 'hasChanged'
 	| 'dup'
-	| 'swap'
 	| 'abs'
 	| 'equal'
 	| 'branchIfUnchanged'

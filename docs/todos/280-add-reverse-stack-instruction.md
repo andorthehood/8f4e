@@ -12,7 +12,7 @@ completed: null
 
 ## Problem Description
 
-8f4e has `dup`, `swap`, `drop`, and `clearStack`, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for byte/word sequence workflows.
+8f4e has `dup`, `drop`, and `clearStack`, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is verbose and error-prone for byte/word sequence workflows.
 
 ## Proposed Solution
 

@@ -67,7 +67,7 @@ moduleEnd
 ### Allowed Instructions in Functions
 - **Arithmetic**: `add`, `sub`, `mul`, `div`, `remainder`, `min`, `max`, `abs`, `sqrt`, `round`
 - **Logic**: `and`, `or`, `xor`, `equal`, `equalToZero`, `greaterThan`, `lessThan`, `greaterOrEqual`, `lessOrEqual`
-- **Stack**: `push`, `dup`, `drop`, `swap`, `clearStack`
+- **Stack**: `push`, `dup`, `drop`, `clearStack`
 - **Locals**: `local`, `localSet`
 - **Control flow**: `if`, `ifEnd`, `else`, `loop`, `loopEnd`, `block`, `blockEnd`, `branch`, `branchIfTrue`
 - **Type conversion**: `castToInt`, `castToFloat`
@@ -138,7 +138,11 @@ console.log(result.codeBuffer);
 
 #### Example 1: Simple arithmetic helper
 ```
-function average int int
+function average
+  param int a
+  param int b
+  push a
+  push b
   add
   push 2
   div
@@ -147,35 +151,37 @@ functionEnd int
 
 #### Example 2: Using local variables
 ```
-function clamp int int int
-  ; Parameters: value, min, max
-  local int temp
+function clampMin
+  param int value
+  param int minValue
+  local int result
   
-  ; Compare value with min
-  swap
-  dup
-  localSet temp
+  push value
+  localSet result
+
+  push value
+  push minValue
   lessThan
   if
-    drop
-    push temp
-  ifEnd int
+    push minValue
+    localSet result
+  ifEnd
   
-  ; Compare with max
-  ; (implementation continues...)
+  push result
 functionEnd int
 ```
 
 #### Example 3: Multiple return values
 ```
-function divMod int int
-  ; Returns quotient and remainder
-  swap
-  dup
-  dup
-  dup
+function divMod
+  param int dividend
+  param int divisor
+
+  push dividend
+  push divisor
   div
-  swap
+  push dividend
+  push divisor
   remainder
 functionEnd int int
 ```

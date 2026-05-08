@@ -602,30 +602,4 @@ describe('Pure Function Edge Cases', () => {
 		const result = compile(modules, defaultOptions, functions);
 		expect(result.compiledFunctions!.abs).toBeDefined();
 	});
-
-	test('should handle functions that use stack manipulation', () => {
-		const functions: Module[] = [
-			{
-				code: [
-					'function swapAndAdd',
-					'param int x',
-					'param int y',
-					'push x',
-					'push y',
-					'swap',
-					'add',
-					'functionEnd int',
-				],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		const result = compile(modules, defaultOptions, functions);
-		expect(result.compiledFunctions!.swapAndAdd).toBeDefined();
-	});
 });

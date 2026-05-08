@@ -65,18 +65,6 @@ push 5
 dup
 ```
 
-### swap
-
-The swap instruction swaps the top two values on the stack.
-
-#### Examples
-
-```
-push 1
-push 2
-swap
-```
-
 ### clearStack
 
 The clearStack instruction removes all values from the stack.
