@@ -1,0 +1,66 @@
+import { BLOCK_TYPE } from '@8f4e/compiler-types';
+
+import { peekStackOperands } from './peekStackOperands';
+import { validateOperandTypes } from './validateOperandTypes';
+import { validateScope } from './validateScope';
+
+import { ErrorCode, getError } from '../compilerError';
+import { instructionSpecs } from '../instructionSpecs';
+import { isInstructionIsInsideBlock } from '../utils/blockStack';
+
+import type { AST, CompilationContext } from '@8f4e/compiler-types';
+import type { InstructionSpec, InstructionSpecName } from '../instructionSpecs';
+
+function resolveInstructionSpec(line: AST[number]): InstructionSpec | undefined {
+	if (line.isMemoryDeclaration) {
+		return instructionSpecs.memoryDeclaration;
+	}
+
+	return instructionSpecs[line.instruction as InstructionSpecName];
+}
+
+export function validateInstruction(line: AST[number], context: CompilationContext) {
+	const spec = resolveInstructionSpec(line);
+
+	if (!spec) {
+		return;
+	}
+
+	const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS);
+	if (insideConstantsBlock && !spec.allowedInConstantsBlocks) {
+		throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
+	}
+
+	const insideMapBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.MAP);
+	if (insideMapBlock && !spec.allowedInMapBlocks) {
+		throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
+	}
+
+	if (spec.scope) {
+		validateScope(
+			context.blockStack,
+			spec.scope,
+			line,
+			context,
+			spec.onInvalidScope ?? ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK
+		);
+	}
+
+	const validatedOperands = spec.validateOperands?.(line, context);
+	const operandsNeeded = validatedOperands?.minOperands ?? spec.minOperands ?? 0;
+	const operandTypes = validatedOperands?.operandTypes ?? spec.operandTypes;
+
+	if (operandsNeeded === 0) {
+		return;
+	}
+
+	const operands = peekStackOperands(context.stack, operandsNeeded);
+
+	if (operands.length < operandsNeeded) {
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
+	}
+
+	if (operandTypes) {
+		validateOperandTypes(operands, operandTypes, line, context);
+	}
+}

@@ -5,6 +5,8 @@ import int from './int';
 import int8 from './int8';
 import int16 from './int16';
 
+import { validateInstruction } from '../../stackAnalysis/validateInstruction';
+
 import type { AST, CompilationContext, InstructionCompiler } from '@8f4e/compiler-types';
 
 export const declarationCompilers = {
@@ -35,7 +37,7 @@ export const declarationCompilers = {
 	'float64[]': array,
 	'float64*[]': array,
 	'float64**[]': array,
-} as const satisfies Record<string, InstructionCompiler>;
+} as const;
 
 export type MemoryDeclarationInstruction = keyof typeof declarationCompilers;
 
@@ -52,5 +54,9 @@ export function applyMemoryDeclarationLine(line: AST[number], context: Compilati
 		return context;
 	}
 
-	return declarationCompilers[line.instruction as MemoryDeclarationInstruction](line, context);
+	validateInstruction(line, context);
+	const compileDeclaration = declarationCompilers[
+		line.instruction as MemoryDeclarationInstruction
+	] as InstructionCompiler;
+	return compileDeclaration(line, context);
 }

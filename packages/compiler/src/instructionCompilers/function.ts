@@ -5,9 +5,9 @@ import { isInstructionInsideFunction, isInstructionIsInsideAModule } from '../ut
 
 import type { CompilationContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-types';
 
-// Note: This instruction does not use withValidation because it requires inverted scope validation:
+// Note: This instruction does not use the shared instruction scope rule because it requires inverted scope validation:
 // it must NOT be inside a module or function, which is the opposite of the standard scope rules
-// that withValidation supports. The withValidation helper is designed for positive scope assertions
+// that instruction specs support. The shared validator is designed for positive scope assertions
 // (must be inside X), not negative ones (must NOT be inside X).
 
 /**
