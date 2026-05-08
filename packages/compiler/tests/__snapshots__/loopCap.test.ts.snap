@@ -144,7 +144,7 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -153,24 +153,6 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
         i32.const 500
         i32.ge_s
         if  ;; label = @3
-          i32.const 4
-          i32.const 4
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -450,7 +432,7 @@ exports[`#loopCap does not affect loops declared before it > if the generated AS
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
-    (local i32 i32 i32 i32)
+    (local i32 i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -459,24 +441,6 @@ exports[`#loopCap does not affect loops declared before it > if the generated AS
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 8
-          i32.const 4
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -493,37 +457,19 @@ exports[`#loopCap does not affect loops declared before it > if the generated AS
       end
     end
     i32.const 0
-    local.set 3
+    local.set 1
     block  ;; label = @1
       loop  ;; label = @2
-        local.get 3
+        local.get 1
         i32.const 500
         i32.ge_s
         if  ;; label = @3
-          i32.const 8
-          i32.const 14
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
-        local.get 3
+        local.get 1
         i32.const 1
         i32.add
-        local.set 3
+        local.set 1
         i32.const 4
         i32.const 4
         i32.load
@@ -706,7 +652,7 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -715,24 +661,6 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
         i32.const 0
         i32.ge_s
         if  ;; label = @3
-          i32.const 4
-          i32.const 3
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -921,7 +849,7 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -930,24 +858,6 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
         i32.const 12
         i32.ge_s
         if  ;; label = @3
-          i32.const 4
-          i32.const 4
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -1122,7 +1032,7 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -1131,24 +1041,6 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
         i32.const 32
         i32.ge_s
         if  ;; label = @3
-          i32.const 4
-          i32.const 3
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -1426,7 +1318,7 @@ exports[`nested loops resolve their own caps independently > if the generated AS
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
-    (local i32 i32 i32 i32)
+    (local i32 i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -1435,24 +1327,6 @@ exports[`nested loops resolve their own caps independently > if the generated AS
         i32.const 5
         i32.ge_s
         if  ;; label = @3
-          i32.const 8
-          i32.const 4
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -1466,37 +1340,19 @@ exports[`nested loops resolve their own caps independently > if the generated AS
         i32.add
         i32.store
         i32.const 0
-        local.set 3
+        local.set 1
         block  ;; label = @3
           loop  ;; label = @4
-            local.get 3
+            local.get 1
             i32.const 3
             i32.ge_s
             if  ;; label = @5
-              i32.const 8
-              i32.const 11
-              local.set 2
-              local.set 1
-              local.get 1
-              memory.size
-              i32.const 1
-              i32.sub
-              i32.const 16
-              i32.shl
-              i32.const 65532
-              i32.add
-              i32.le_u
-              if  ;; label = @6
-                local.get 1
-                local.get 2
-                i32.store
-              end
               br 2 (;@3;)
             end
-            local.get 3
+            local.get 1
             i32.const 1
             i32.add
-            local.set 3
+            local.set 1
             i32.const 4
             i32.const 4
             i32.load
@@ -1676,7 +1532,7 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -1685,24 +1541,6 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 4
-          i32.const 3
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0

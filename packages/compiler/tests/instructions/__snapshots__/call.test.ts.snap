@@ -113,12 +113,8 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
-    i32.const 12
-    memory.fill
     i32.const 8
-    i32.const 0
-    i32.const 4
-    memory.init 0)
+    memory.fill)
   (func (;1;) (type 0)
     call 5)
   (func (;2;) (type 0))
@@ -138,7 +134,7 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   (func (;4;) (type 3) (result i32)
     i32.const 42)
   (func (;5;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -147,24 +143,6 @@ exports[`call constant function > if the generated AST, WAT and memory map match
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 8
-          i32.const 3
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -180,8 +158,7 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   (export "init" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
-  (export "buffer" (func 3))
-  (data (;0;) "\\ff\\ff\\ff\\ff"))
+  (export "buffer" (func 3)))
 "
 `;
 
@@ -317,12 +294,8 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
-    i32.const 20
-    memory.fill
     i32.const 16
-    i32.const 0
-    i32.const 4
-    memory.init 0)
+    memory.fill)
   (func (;1;) (type 0)
     call 5)
   (func (;2;) (type 0))
@@ -344,7 +317,7 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
     f64.const 0x1p+1 (;=2;)
     f64.mul)
   (func (;5;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -353,24 +326,6 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 16
-          i32.const 3
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -386,8 +341,7 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   (export "init" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
-  (export "buffer" (func 3))
-  (data (;0;) "\\ff\\ff\\ff\\ff"))
+  (export "buffer" (func 3)))
 "
 `;
 
@@ -547,12 +501,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
-    i32.const 12
-    memory.fill
     i32.const 8
-    i32.const 0
-    i32.const 4
-    memory.init 0)
+    memory.fill)
   (func (;1;) (type 0)
     call 6)
   (func (;2;) (type 0))
@@ -574,7 +524,7 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   (func (;5;) (type 3) (result i32)
     i32.const 3)
   (func (;6;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -583,24 +533,6 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 8
-          i32.const 3
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -618,8 +550,7 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   (export "init" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
-  (export "buffer" (func 3))
-  (data (;0;) "\\ff\\ff\\ff\\ff"))
+  (export "buffer" (func 3)))
 "
 `;
 
@@ -786,12 +717,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
-    i32.const 16
-    memory.fill
     i32.const 12
-    i32.const 0
-    i32.const 4
-    memory.init 0)
+    memory.fill)
   (func (;1;) (type 0)
     call 5)
   (func (;2;) (type 0))
@@ -813,7 +740,7 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     i32.const 2
     i32.mul)
   (func (;5;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -822,24 +749,6 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 12
-          i32.const 4
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -857,8 +766,7 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   (export "init" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
-  (export "buffer" (func 3))
-  (data (;0;) "\\ff\\ff\\ff\\ff"))
+  (export "buffer" (func 3)))
 "
 `;
 
@@ -1009,12 +917,8 @@ exports[`function can call another function with its signature and wasm index av
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
-    i32.const 12
-    memory.fill
     i32.const 8
-    i32.const 0
-    i32.const 4
-    memory.init 0)
+    memory.fill)
   (func (;1;) (type 0)
     call 6)
   (func (;2;) (type 0))
@@ -1039,7 +943,7 @@ exports[`function can call another function with its signature and wasm index av
     i32.const 41
     call 4)
   (func (;6;) (type 0)
-    (local i32 i32 i32)
+    (local i32)
     i32.const 0
     local.set 0
     block  ;; label = @1
@@ -1048,24 +952,6 @@ exports[`function can call another function with its signature and wasm index av
         i32.const 1000
         i32.ge_s
         if  ;; label = @3
-          i32.const 8
-          i32.const 3
-          local.set 2
-          local.set 1
-          local.get 1
-          memory.size
-          i32.const 1
-          i32.sub
-          i32.const 16
-          i32.shl
-          i32.const 65532
-          i32.add
-          i32.le_u
-          if  ;; label = @4
-            local.get 1
-            local.get 2
-            i32.store
-          end
           br 2 (;@1;)
         end
         local.get 0
@@ -1081,8 +967,7 @@ exports[`function can call another function with its signature and wasm index av
   (export "init" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
-  (export "buffer" (func 3))
-  (data (;0;) "\\ff\\ff\\ff\\ff"))
+  (export "buffer" (func 3)))
 "
 `;
 
