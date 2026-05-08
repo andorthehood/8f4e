@@ -99,9 +99,9 @@ defineMacroEnd
 
 **Second macro block:**
 ```
-defineMacro square
-dup
-mul
+defineMacro addInput
+push x
+add
 defineMacroEnd
 ```
 
@@ -112,7 +112,7 @@ function calculate
 param int x
 push x
 macro triple
-macro square
+macro addInput
 functionEnd int
 ```
 

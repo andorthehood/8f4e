@@ -42,7 +42,6 @@ import clearStack from './clearStack';
 import risingEdge from './risingEdge';
 import fallingEdge from './fallingEdge';
 import hasChanged from './hasChanged';
-import dup from './dup';
 import abs from './abs';
 import equal from './equal';
 import branchIfUnchanged from './branchIfUnchanged';
@@ -121,7 +120,6 @@ const instructions = {
 	risingEdge,
 	fallingEdge,
 	hasChanged,
-	dup,
 	abs,
 	equal,
 	branchIfUnchanged,

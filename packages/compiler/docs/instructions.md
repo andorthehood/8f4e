@@ -56,7 +56,6 @@
 - [Stack instructions](instructions/stack.md)
   - [push](instructions/stack.md#push)
   - [drop](instructions/stack.md#drop)
-  - [dup](instructions/stack.md#dup)
   - [clearStack](instructions/stack.md#clearstack)
 
 - [Memory instructions](instructions/memory.md)

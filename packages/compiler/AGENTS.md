@@ -67,7 +67,7 @@ moduleEnd
 ### Allowed Instructions in Functions
 - **Arithmetic**: `add`, `sub`, `mul`, `div`, `remainder`, `min`, `max`, `abs`, `sqrt`, `round`
 - **Logic**: `and`, `or`, `xor`, `equal`, `equalToZero`, `greaterThan`, `lessThan`, `greaterOrEqual`, `lessOrEqual`
-- **Stack**: `push`, `dup`, `drop`, `clearStack`
+- **Stack**: `push`, `drop`, `clearStack`
 - **Locals**: `local`, `localSet`
 - **Control flow**: `if`, `ifEnd`, `else`, `loop`, `loopEnd`, `block`, `blockEnd`, `branch`, `branchIfTrue`
 - **Type conversion**: `castToInt`, `castToFloat`
@@ -83,8 +83,10 @@ import compile from '@8f4e/compiler';
 const functions = [
   {
     code: [
-      'function square int',
-      'dup',
+      'function square',
+      'param int x',
+      'push x',
+      'push x',
       'mul',
       'functionEnd int'
     ]

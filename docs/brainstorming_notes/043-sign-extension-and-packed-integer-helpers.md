@@ -56,13 +56,16 @@ signExtend8
 Without `signExtend8`, users have to emulate this with comparisons and subtraction:
 
 ```8f4e
-; x is 0..255
-dup
+; x is a local in 0..255
+push x
 push 127
 greaterThan
 if int
+	push x
 	push 256
 	sub
+else
+	push x
 ifEnd
 ```
 
