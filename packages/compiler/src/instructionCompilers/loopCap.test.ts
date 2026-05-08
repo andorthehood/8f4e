@@ -3,6 +3,7 @@ import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
 
 import loopCap from './loopCap';
 
+import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-types';
@@ -120,17 +121,15 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [],
 		});
+		const line = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: '#loopCap',
+			arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
+		} as AST[number];
 
 		expect(() => {
-			loopCap(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: '#loopCap',
-					arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
-				} as AST[number],
-				context
-			);
+			validateInstruction(line, context);
 		}).toThrow();
 	});
 });

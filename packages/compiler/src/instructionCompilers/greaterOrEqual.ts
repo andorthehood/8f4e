@@ -2,7 +2,6 @@ import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
 import { areAllOperandsIntegers } from '../utils/operandTypes';
-import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -10,25 +9,18 @@ import type { InstructionCompiler } from '@8f4e/compiler-types';
  * Instruction compiler for `greaterOrEqual`.
  * @see [Instruction docs](../../docs/instructions/comparison.md)
  */
-const greaterOrEqual: InstructionCompiler = withValidation(
-	{
-		scope: 'moduleOrFunction',
-		minOperands: 2,
-		operandTypes: 'matching',
-	},
-	(line, context) => {
-		// Non-null assertion is safe: withValidation ensures 2 operands exist
-		const operand2 = context.stack.pop()!;
-		const operand1 = context.stack.pop()!;
+const greaterOrEqual: InstructionCompiler = (line, context) => {
+	// Non-null assertion is safe: instruction validation ensures 2 operands exist
+	const operand2 = context.stack.pop()!;
+	const operand1 = context.stack.pop()!;
 
-		if (areAllOperandsIntegers(operand1, operand2)) {
-			context.stack.push({ isInteger: true, isNonZero: false });
-			return saveByteCode(context, [WASMInstruction.I32_GE_S]);
-		} else {
-			context.stack.push({ isInteger: true, isNonZero: false });
-			return saveByteCode(context, [WASMInstruction.F32_GE]);
-		}
+	if (areAllOperandsIntegers(operand1, operand2)) {
+		context.stack.push({ isInteger: true, isNonZero: false });
+		return saveByteCode(context, [WASMInstruction.I32_GE_S]);
+	} else {
+		context.stack.push({ isInteger: true, isNonZero: false });
+		return saveByteCode(context, [WASMInstruction.F32_GE]);
 	}
-);
+};
 
 export default greaterOrEqual;

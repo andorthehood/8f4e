@@ -502,11 +502,10 @@ export type BlockStack = Array<{
 	mapState?: MapBlockState;
 }>;
 
-export type InstructionCompiler<TLine extends AST[number] = AST[number]> = ((
+export type InstructionCompiler<TLine extends AST[number] = AST[number]> = (
 	line: TLine,
 	context: CompilationContext
-) => CompilationContext) &
-	((line: AST[number], context: CompilationContext) => CompilationContext);
+) => CompilationContext;
 
 /**
  * Internal compiler-stage error shape returned by getError().

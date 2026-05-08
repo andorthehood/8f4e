@@ -8,7 +8,6 @@ import {
 	rangeUpperByteAddressCode,
 } from '../utils/addressClamp';
 import { saveByteCode } from '../utils/compilation';
-import { withValidation } from '../withValidation';
 
 import type { AST, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-types';
 
@@ -31,46 +30,25 @@ function clampToRange(
 	);
 }
 
-export const clampAddress: InstructionCompiler = withValidation(
-	{
-		scope: 'moduleOrFunction',
-		minOperands: 1,
-		operandTypes: 'int',
-	},
-	(line, context) => {
-		const operand = context.stack.pop()!;
-		const range = operand.clampAddressRange ?? operand.safeAddressRange;
-		if (!range) {
-			throw getError(ErrorCode.ADDRESS_RANGE_REQUIRED, line, context);
-		}
-
-		return clampToRange(line, context, operand, range);
+export const clampAddress: InstructionCompiler = (line, context) => {
+	const operand = context.stack.pop()!;
+	const range = operand.clampAddressRange ?? operand.safeAddressRange;
+	if (!range) {
+		throw getError(ErrorCode.ADDRESS_RANGE_REQUIRED, line, context);
 	}
-);
 
-export const clampModuleAddress: InstructionCompiler = withValidation(
-	{
-		scope: 'module',
-		minOperands: 1,
-		operandTypes: 'int',
-	},
-	(line, context) => {
-		const operand = context.stack.pop()!;
-		return clampToRange(line, context, operand, getModuleAddressRange(context));
-	}
-);
+	return clampToRange(line, context, operand, range);
+};
 
-export const clampGlobalAddress: InstructionCompiler = withValidation(
-	{
-		scope: 'moduleOrFunction',
-		minOperands: 1,
-		operandTypes: 'int',
-	},
-	(line, context) => {
-		const operand = context.stack.pop()!;
-		const accessByteWidth = getClampAccessByteWidth(line);
-		context.stack.push(getClampedAddressStackItem(operand, undefined, accessByteWidth));
+export const clampModuleAddress: InstructionCompiler = (line, context) => {
+	const operand = context.stack.pop()!;
+	return clampToRange(line, context, operand, getModuleAddressRange(context));
+};
 
-		return saveByteCode(context, clampAddressByteCode(context, line, 0, linearUpperByteAddressCode(accessByteWidth)));
-	}
-);
+export const clampGlobalAddress: InstructionCompiler = (line, context) => {
+	const operand = context.stack.pop()!;
+	const accessByteWidth = getClampAccessByteWidth(line);
+	context.stack.push(getClampedAddressStackItem(operand, undefined, accessByteWidth));
+
+	return saveByteCode(context, clampAddressByteCode(context, line, 0, linearUpperByteAddressCode(accessByteWidth)));
+};

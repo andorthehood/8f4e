@@ -1,8 +1,6 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
-import { ErrorCode } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
-import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -17,19 +15,13 @@ import type { InstructionCompiler } from '@8f4e/compiler-types';
  *
  * @see [Instruction docs](../../docs/instructions/blocks/function.md)
  */
-const _return: InstructionCompiler = withValidation(
-	{
-		scope: 'function',
-		onInvalidScope: ErrorCode.RETURN_OUTSIDE_FUNCTION,
-	},
-	(line, context) => {
-		saveByteCode(context, [WASMInstruction.RETURN]);
+const _return: InstructionCompiler = (line, context) => {
+	saveByteCode(context, [WASMInstruction.RETURN]);
 
-		// Clear the stack — execution does not continue past a return
-		context.stack = [];
+	// Clear the stack — execution does not continue past a return
+	context.stack = [];
 
-		return context;
-	}
-);
+	return context;
+};
 
 export default _return;

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import and from './and';
 
+import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-types';
@@ -30,17 +31,15 @@ describe('and instruction compiler', () => {
 	it('rejects non-integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+		const line = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'and',
+			arguments: [],
+		} as AST[number];
 
 		expect(() => {
-			and(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'and',
-					arguments: [],
-				} as AST[number],
-				context
-			);
+			validateInstruction(line, context);
 		}).toThrowError();
 	});
 
