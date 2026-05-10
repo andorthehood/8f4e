@@ -215,6 +215,7 @@ export function compileFunction(
 			context.byteCode
 		),
 		locals: localDeclarations,
+		...(context.currentFunctionExportName ? { exportName: context.currentFunctionExportName } : {}),
 		wasmIndex,
 		typeIndex,
 		ast: normalizedAst,
