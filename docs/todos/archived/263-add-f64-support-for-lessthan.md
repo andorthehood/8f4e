@@ -4,8 +4,8 @@ priority: High
 effort: 1-3h
 created: 2026-02-20
 issue: https://github.com/andorthehood/8f4e/issues/410
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-10
 ---
 
 # TODO: Add float64 support for lessThan instruction
@@ -34,9 +34,9 @@ Emit `F64_LT` when both operands are float64; keep existing int32/float32 behavi
 
 ## Success Criteria
 
-- [ ] `lessThan` handles float64 correctly.
-- [ ] Existing int32/float32 behavior remains unchanged.
-- [ ] Regression tests cover the float64 path.
+- [x] `lessThan` handles float64 correctly.
+- [x] Existing int32/float32 behavior remains unchanged.
+- [x] Regression tests cover the float64 path.
 
 ## Related Items
 
