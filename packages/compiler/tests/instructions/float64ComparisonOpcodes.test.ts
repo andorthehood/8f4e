@@ -6,18 +6,18 @@ import compile from '../../src/index';
 import { ErrorCode } from '../../src/compilerError';
 
 const comparisonCases = [
-	{ instruction: 'equal', left: 1.5, right: 1.5 },
-	{ instruction: 'lessThan', left: 1.25, right: 2.5 },
-	{ instruction: 'greaterThan', left: 2.5, right: 1.25 },
-	{ instruction: 'lessOrEqual', left: 1.25, right: 1.25 },
-	{ instruction: 'greaterOrEqual', left: 2.5, right: 1.25 },
-	{ instruction: 'greaterOrEqualUnsigned', left: 2.5, right: 1.25 },
+	{ instruction: 'equal', left: 1.5, right: 1.5, opcode: 'f64.eq' },
+	{ instruction: 'lessThan', left: 1.25, right: 2.5, opcode: 'f64.lt' },
+	{ instruction: 'greaterThan', left: 2.5, right: 1.25, opcode: 'f64.gt' },
+	{ instruction: 'lessOrEqual', left: 1.25, right: 1.25, opcode: 'f64.le' },
+	{ instruction: 'greaterOrEqual', left: 2.5, right: 1.25, opcode: 'f64.ge' },
+	{ instruction: 'greaterOrEqualUnsigned', left: 2.5, right: 1.25, opcode: 'f64.ge' },
 ] as const;
 
 describe('float64 comparison opcodes', () => {
 	it.each(comparisonCases)(
 		'emits valid Wasm for $instruction with float64 operands',
-		async ({ instruction, left, right }) => {
+		async ({ instruction, left, right, opcode }) => {
 			const testModule = await createTestModule(`module ${instruction}F64
 
 float64 left
@@ -37,7 +37,7 @@ moduleEnd
 			testModule.memory.set('right', right);
 			testModule.test();
 
-			expect(testModule.wat).toContain('f64.');
+			expect(testModule.wat).toContain(opcode);
 			expect(testModule.memory.get('output')).toBe(1);
 		}
 	);
