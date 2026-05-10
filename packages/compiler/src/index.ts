@@ -31,6 +31,7 @@ import {
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
+import { ErrorCode, getError } from './compilerError';
 
 import type {
 	AST,
@@ -119,6 +120,26 @@ function createCompilerCache(): CompilerCache {
 	};
 }
 
+const BUILT_IN_EXPORT_NAMES = new Set(['init', 'cycle', 'initOnly', 'buffer']);
+
+function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): void {
+	const seen = new Set<string>();
+
+	for (const compiledFunction of Object.values(functions)) {
+		const exportName = compiledFunction.exportName;
+		if (!exportName) {
+			continue;
+		}
+
+		const exportLine = compiledFunction.ast?.find(line => line.instruction === '#export') ?? compiledFunction.ast![0];
+		if (BUILT_IN_EXPORT_NAMES.has(exportName) || seen.has(exportName)) {
+			throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, exportLine, undefined, { identifier: exportName });
+		}
+
+		seen.add(exportName);
+	}
+}
+
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
@@ -176,6 +197,7 @@ export default function compile(
 		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry, functionMetadata)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
+	assertUniqueFunctionExportNames(compiledFunctionsMap);
 	const totalModuleBytes = Object.values(namespaces).reduce((max, namespace) => {
 		const byteAddress = namespace.byteAddress ?? 0;
 		const wordAlignedSize = namespace.wordAlignedSize ?? 0;
@@ -279,6 +301,9 @@ export default function compile(
 				createFunctionExport('cycle', 0x01),
 				createFunctionExport('initOnly', 0x02),
 				createFunctionExport('buffer', 0x03),
+				...compiledFunctions
+					.filter(func => func.exportName && func.wasmIndex !== undefined)
+					.map(func => createFunctionExport(func.exportName!, func.wasmIndex!)),
 			]),
 			...(initialMemoryDataSegments.length > 0 ? createDataCountSection(initialMemoryDataSegments.length) : []),
 			...createCodeSection([

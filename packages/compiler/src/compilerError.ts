@@ -73,6 +73,8 @@ export enum ErrorCode {
 	ADDRESS_RANGE_REQUIRED,
 	INVALID_ACCESS_WIDTH,
 	ADDRESS_RANGE_TOO_SMALL,
+	EXPORT_DIRECTIVE_INVALID_CONTEXT,
+	DUPLICATE_EXPORT_NAME,
 }
 
 interface ErrorDetails {
@@ -350,6 +352,13 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT:
+			return {
+				code,
+				message: '#export can only be used within a function block. (' + code + ')',
+				line,
+				context,
+			};
 		case ErrorCode.MIXED_FLOAT_WIDTH:
 			return {
 				code,
@@ -470,6 +479,18 @@ export function getError(
 					'Duplicate identifier' +
 					(details?.identifier ? `: ${details.identifier}` : '') +
 					'. Module and function IDs must be unique. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.DUPLICATE_EXPORT_NAME:
+			return {
+				code,
+				message:
+					'Duplicate function export name' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Exported function names must be unique and must not reuse built-in export names. (' +
 					code +
 					')',
 				line,
