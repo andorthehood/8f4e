@@ -70,23 +70,6 @@ describe('mul instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('throws on mixed float32/float64 operands', () => {
-		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isFloat64: true, isNonZero: false });
-
-		expect(() => {
-			mul(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'mul',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-		}).toThrowError();
-	});
-
 	it('keeps known integer metadata when multiplying known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(

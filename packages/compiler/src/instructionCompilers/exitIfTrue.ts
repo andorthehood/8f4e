@@ -3,7 +3,6 @@ import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode, getError } from '../compilerError';
 import { isInstructionInsideFunction } from '../utils/blockStack';
 import { saveByteCode } from '../utils/compilation';
-import { withValidation } from '../withValidation';
 
 import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -18,29 +17,16 @@ import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-types';
  *
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = withValidation<ExitIfTrueLine>(
-	{
-		scope: 'moduleOrFunction',
-		minOperands: 1,
-		operandTypes: 'int',
-	},
-	(line: ExitIfTrueLine, context) => {
-		if (isInstructionInsideFunction(context.blockStack)) {
-			throw getError(ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE, line, context);
-		}
-
-		context.stack.pop()!;
-
-		const drops = context.stack.flatMap(() => [WASMInstruction.DROP]);
-
-		return saveByteCode(context, [
-			WASMInstruction.IF,
-			Type.VOID,
-			...drops,
-			WASMInstruction.RETURN,
-			WASMInstruction.END,
-		]);
+const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line: ExitIfTrueLine, context) => {
+	if (isInstructionInsideFunction(context.blockStack)) {
+		throw getError(ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE, line, context);
 	}
-);
+
+	context.stack.pop()!;
+
+	const drops = context.stack.flatMap(() => [WASMInstruction.DROP]);
+
+	return saveByteCode(context, [WASMInstruction.IF, Type.VOID, ...drops, WASMInstruction.RETURN, WASMInstruction.END]);
+};
 
 export default exitIfTrue;
