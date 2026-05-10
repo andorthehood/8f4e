@@ -29,6 +29,7 @@ const _function = function (line: FunctionLine, context: CompilationContext) {
 		returns: [],
 	};
 	context.currentFunctionIsImpure = false;
+	context.currentFunctionExportName = undefined;
 	context.mode = 'function';
 
 	// Initialize empty locals - parameters will be added by param instructions

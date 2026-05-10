@@ -49,6 +49,7 @@ import {
 	type LoopIndexLine,
 	type LoopCapLine,
 	type ImpureLine,
+	type ExportLine,
 } from '@8f4e/tokenizer';
 
 import type { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
@@ -145,6 +146,7 @@ export interface CompiledFunction {
 	signature: FunctionSignature;
 	body: number[];
 	locals: Array<{ isInteger: boolean; count: number }>;
+	exportName?: string;
 	wasmIndex?: number;
 	typeIndex?: number;
 	ast?: AST;
@@ -269,6 +271,7 @@ export {
 	type LoopIndexLine,
 	type LoopCapLine,
 	type ImpureLine,
+	type ExportLine,
 };
 
 export interface TestModule {
@@ -360,6 +363,7 @@ export interface CompilationContext {
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
 	currentFunctionIsImpure?: boolean;
+	currentFunctionExportName?: string;
 	functionTypeRegistry?: FunctionTypeRegistry;
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
@@ -624,6 +628,7 @@ export type Instruction =
 	| '#skipExecution'
 	| '#initOnly'
 	| '#impure'
+	| '#export'
 	| '#loopCap'
 	| 'mapBegin'
 	| 'map'

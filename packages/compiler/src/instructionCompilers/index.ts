@@ -58,6 +58,7 @@ import call from './call';
 import skipExecution from './skipExecution';
 import initOnly from './initOnly';
 import impure from './impure';
+import exportFunction from './exportFunction';
 import loopCap from './loopCap';
 import mapBegin from './mapBegin';
 import map from './map';
@@ -135,6 +136,7 @@ const instructions = {
 	'#skipExecution': skipExecution,
 	'#initOnly': initOnly,
 	'#impure': impure,
+	'#export': exportFunction,
 	'#loopCap': loopCap,
 	mapBegin,
 	map,
