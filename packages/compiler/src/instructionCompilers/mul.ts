@@ -1,9 +1,8 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
-import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
-import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 
 import type { InstructionCompiler, StackItem } from '@8f4e/compiler-types';
 
@@ -15,10 +14,6 @@ const mul: InstructionCompiler = (line, context) => {
 	// Non-null assertion is safe: instruction validation ensures 2 operands exist
 	const operand2 = context.stack.pop()!;
 	const operand1 = context.stack.pop()!;
-
-	if (hasMixedFloatWidth(operand1, operand2)) {
-		throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
-	}
 
 	const isInteger = areAllOperandsIntegers(operand1, operand2);
 	const isFloat64 = areAllOperandsFloat64(operand1, operand2);

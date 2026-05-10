@@ -28,6 +28,20 @@ describe('validateOperandTypes', () => {
 		);
 	});
 
+	it('rejects mixed float widths for matching operands', () => {
+		expect(() =>
+			validateOperandTypes(
+				[
+					{ isInteger: false, isNonZero: false },
+					{ isInteger: false, isFloat64: true, isNonZero: false },
+				],
+				'matching',
+				line,
+				context
+			)
+		).toThrow(`${ErrorCode.MIXED_FLOAT_WIDTH}`);
+	});
+
 	it('validates tuple rules by position', () => {
 		expect(() =>
 			validateOperandTypes([{ isInteger: true }, { isInteger: false }], ['int', 'float'], line, context)
