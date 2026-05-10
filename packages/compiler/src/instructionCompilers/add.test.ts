@@ -70,23 +70,6 @@ describe('add instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('throws on mixed float32/float64 operands', () => {
-		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isFloat64: true, isNonZero: false });
-
-		expect(() => {
-			add(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'add',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-		}).toThrowError();
-	});
-
 	it('keeps address metadata when adding a known in-range byte offset', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(

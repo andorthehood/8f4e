@@ -10,10 +10,10 @@ import type { InstructionCompiler } from '@8f4e/compiler-types';
  */
 const sqrt: InstructionCompiler = (line, context) => {
 	// Non-null assertion is safe: instruction validation ensures 1 operand exists
-	context.stack.pop()!;
+	const operand = context.stack.pop()!;
 
-	context.stack.push({ isInteger: false, isNonZero: true });
-	return saveByteCode(context, [WASMInstruction.F32_SQRT]);
+	context.stack.push({ isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: false });
+	return saveByteCode(context, [operand.isFloat64 ? WASMInstruction.F64_SQRT : WASMInstruction.F32_SQRT]);
 };
 
 export default sqrt;
