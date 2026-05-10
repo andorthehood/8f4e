@@ -222,6 +222,11 @@ export const instructionSpecs = {
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 	},
+	// #export <exportName> ( -- )
+	'#export': {
+		scope: 'function',
+		onInvalidScope: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT,
+	},
 	// loopEnd ( -- ), loopEnd (T -- T)
 	loopEnd: {
 		scope: 'moduleOrFunction',

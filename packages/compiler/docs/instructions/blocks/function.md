@@ -24,6 +24,7 @@ Functions are reusable code blocks that:
 - Can be called from modules using the `call` instruction
 - Are pure by default
 - Can opt into explicit address-driven memory IO with `#impure`
+- Can be exported to the host WebAssembly ABI with `#export <exportedName>`
 - Do not have direct access to module memory identifiers by name
 - Cannot declare their own memory
 
@@ -46,6 +47,34 @@ mul
 store
 functionEnd
 ```
+
+### `#export`
+
+Use `#export <exportedName>` inside a function to export it from the generated WebAssembly module under the provided name.
+
+```
+function onMidiCC
+#export onMidiCC
+param int channel
+param int controller
+param int value
+functionEnd
+```
+
+Host code calls exported functions with positional numeric arguments:
+
+```ts
+(instance.exports.onMidiCC as CallableFunction)(channel, controller, value);
+```
+
+Argument mapping:
+
+- `int` maps to Wasm `i32` and a JavaScript `number`
+- `float` maps to Wasm `f32` and a JavaScript `number`
+- `float64` maps to Wasm `f64` and a JavaScript `number`
+
+Export names must be unique and must not reuse built-in exports such as `init`, `cycle`, `initOnly`, or `buffer`.
+Functions that read from or write to memory still need `#impure`.
 
 ### Example Function
 
