@@ -11,7 +11,6 @@ import {
 
 import { saveByteCode } from '../utils/compilation';
 import { allocateInternalResource } from '../utils/internalResources';
-import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -19,44 +18,38 @@ import type { InstructionCompiler } from '@8f4e/compiler-types';
  * Instruction compiler for `hasChanged`.
  * @see [Instruction docs](../../docs/instructions/signal-helpers.md)
  */
-const hasChanged: InstructionCompiler = withValidation(
-	{
-		scope: 'module',
-		minOperands: 1,
-	},
-	(line, context) => {
-		const operand = context.stack.pop()!;
+const hasChanged: InstructionCompiler = (line, context) => {
+	const operand = context.stack.pop()!;
 
-		const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-		const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
-		const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
-		const memoryType = operand.isInteger ? 'int' : 'float';
-		const previousValue = allocateInternalResource(context, previousValueName, memoryType);
-		const currentValueLocalIndex = Object.keys(context.locals).length;
+	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+	const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
+	const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
+	const memoryType = operand.isInteger ? 'int' : 'float';
+	const previousValue = allocateInternalResource(context, previousValueName, memoryType);
+	const currentValueLocalIndex = Object.keys(context.locals).length;
 
-		context.locals[currentValueName] = {
-			isInteger: operand.isInteger,
-			index: currentValueLocalIndex,
-		};
+	context.locals[currentValueName] = {
+		isInteger: operand.isInteger,
+		index: currentValueLocalIndex,
+	};
 
-		context.stack.push({ isInteger: true, isNonZero: false });
+	context.stack.push({ isInteger: true, isNonZero: false });
 
-		const loadByteCode = operand.isInteger ? i32load() : f32load();
-		const equalityByteCode = operand.isInteger ? WASMInstruction.I32_EQ : WASMInstruction.F32_EQ;
-		const storeByteCode = operand.isInteger ? i32store() : f32store();
+	const loadByteCode = operand.isInteger ? i32load() : f32load();
+	const equalityByteCode = operand.isInteger ? WASMInstruction.I32_EQ : WASMInstruction.F32_EQ;
+	const storeByteCode = operand.isInteger ? i32store() : f32store();
 
-		return saveByteCode(context, [
-			...localSet(currentValueLocalIndex),
-			...i32const(previousValue.byteAddress),
-			...loadByteCode,
-			...localGet(currentValueLocalIndex),
-			equalityByteCode,
-			WASMInstruction.I32_EQZ,
-			...i32const(previousValue.byteAddress),
-			...localGet(currentValueLocalIndex),
-			...storeByteCode,
-		]);
-	}
-);
+	return saveByteCode(context, [
+		...localSet(currentValueLocalIndex),
+		...i32const(previousValue.byteAddress),
+		...loadByteCode,
+		...localGet(currentValueLocalIndex),
+		equalityByteCode,
+		WASMInstruction.I32_EQZ,
+		...i32const(previousValue.byteAddress),
+		...localGet(currentValueLocalIndex),
+		...storeByteCode,
+	]);
+};
 
 export default hasChanged;

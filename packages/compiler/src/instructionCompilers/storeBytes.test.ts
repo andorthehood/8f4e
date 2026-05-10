@@ -4,6 +4,7 @@ import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import storeBytes from './storeBytes';
 
+import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-types';
@@ -13,17 +14,15 @@ describe('storeBytes instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		// Only 2 items on stack but count=3 requires 4
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		const line = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'storeBytes',
+			arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
+		} as AST[number];
 
 		expect(() => {
-			storeBytes(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'storeBytes',
-					arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-				} as AST[number],
-				context
-			);
+			validateInstruction(line, context);
 		}).toThrow();
 	});
 

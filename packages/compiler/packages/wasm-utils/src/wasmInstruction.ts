@@ -334,6 +334,30 @@ enum WASMInstruction {
 	F64_NE = 0x62,
 
 	/**
+	 * Floating-Point Less Than (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_LT = 0x63,
+
+	/**
+	 * Floating-Point Greater Than (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_GT = 0x64,
+
+	/**
+	 * Floating-Point Less Than Or Equal To (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_LE = 0x65,
+
+	/**
+	 * Floating-Point Greater Than Or Equal To (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_GE = 0x66,
+
+	/**
 	 * Aadd.
 	 * Type signature: (param i32 i32) (result i32)
 	 */
@@ -533,6 +557,12 @@ enum WASMInstruction {
 	 * Type signature: (param f32) (result f32)
 	 */
 	F32_SQRT = 0x91,
+
+	/**
+	 * Square root (f64).
+	 * Type signature: (param f64) (result f64)
+	 */
+	F64_SQRT = 0x9f,
 
 	/**
 	 * Truncate Floating-Point to Integer, Signed

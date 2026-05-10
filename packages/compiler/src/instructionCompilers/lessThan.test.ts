@@ -1,3 +1,4 @@
+import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
 import lessThan from './lessThan';
@@ -45,5 +46,26 @@ describe('lessThan instruction compiler', () => {
 			stack: context.stack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
+	});
+
+	it('emits F64_LT for float64 operands', () => {
+		const context = createInstructionCompilerTestContext();
+		context.stack.push(
+			{ isInteger: false, isFloat64: true, isNonZero: false },
+			{ isInteger: false, isFloat64: true, isNonZero: false }
+		);
+
+		lessThan(
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'lessThan',
+				arguments: [],
+			} as AST[number],
+			context
+		);
+
+		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
+		expect(context.byteCode).toEqual([WASMInstruction.F64_LT]);
 	});
 });

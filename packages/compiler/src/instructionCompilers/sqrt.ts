@@ -1,7 +1,6 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
-import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -9,19 +8,12 @@ import type { InstructionCompiler } from '@8f4e/compiler-types';
  * Instruction compiler for `sqrt`.
  * @see [Instruction docs](../../docs/instructions/math-helpers.md)
  */
-const sqrt: InstructionCompiler = withValidation(
-	{
-		scope: 'moduleOrFunction',
-		minOperands: 1,
-		operandTypes: 'float',
-	},
-	(line, context) => {
-		// Non-null assertion is safe: withValidation ensures 1 operand exists
-		context.stack.pop()!;
+const sqrt: InstructionCompiler = (line, context) => {
+	// Non-null assertion is safe: instruction validation ensures 1 operand exists
+	const operand = context.stack.pop()!;
 
-		context.stack.push({ isInteger: false, isNonZero: true });
-		return saveByteCode(context, [WASMInstruction.F32_SQRT]);
-	}
-);
+	context.stack.push({ isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: false });
+	return saveByteCode(context, [operand.isFloat64 ? WASMInstruction.F64_SQRT : WASMInstruction.F32_SQRT]);
+};
 
 export default sqrt;

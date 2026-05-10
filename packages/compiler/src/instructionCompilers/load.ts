@@ -6,7 +6,6 @@ import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_AC
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { guardedLoad, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
-import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -30,35 +29,28 @@ const instructionToAccessByteWidthMap: Record<string, number> = {
 	load16u: HALF_WORD_MEMORY_ACCESS_WIDTH,
 };
 
-const load: InstructionCompiler = withValidation(
-	{
-		scope: 'moduleOrFunction',
-		minOperands: 1,
-		operandTypes: 'int',
-	},
-	(line, context) => {
-		assertFunctionMemoryIoAllowed(line, context);
-		const address = context.stack.pop()!;
-		context.stack.push({ isInteger: true, isNonZero: false });
-		const instructions = instructionToByteCodeMap[line.instruction];
-		if (!instructions) {
-			throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-		}
-		const accessByteWidth = instructionToAccessByteWidthMap[line.instruction];
-		if (isSafeMemoryAccess(address, accessByteWidth)) {
-			return saveByteCode(context, instructions);
-		}
-
-		return saveByteCode(
-			context,
-			guardedLoad(context, {
-				accessByteWidth,
-				lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
-				resultType: Type.I32,
-				loadByteCode: instructions,
-			})
-		);
+const load: InstructionCompiler = (line, context) => {
+	assertFunctionMemoryIoAllowed(line, context);
+	const address = context.stack.pop()!;
+	context.stack.push({ isInteger: true, isNonZero: false });
+	const instructions = instructionToByteCodeMap[line.instruction];
+	if (!instructions) {
+		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
-);
+	const accessByteWidth = instructionToAccessByteWidthMap[line.instruction];
+	if (isSafeMemoryAccess(address, accessByteWidth)) {
+		return saveByteCode(context, instructions);
+	}
+
+	return saveByteCode(
+		context,
+		guardedLoad(context, {
+			accessByteWidth,
+			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+			resultType: Type.I32,
+			loadByteCode: instructions,
+		})
+	);
+};
 
 export default load;

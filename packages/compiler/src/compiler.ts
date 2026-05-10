@@ -5,6 +5,7 @@ import { ErrorCode, getError } from './compilerError';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
+import { validateInstruction } from './stackAnalysis/validateInstruction';
 import { functionValueTypeToWasmType } from './utils/functionValueType';
 
 import type {
@@ -14,30 +15,41 @@ import type {
 	CompiledFunction,
 	CompiledFunctionLookup,
 	FunctionTypeRegistry,
+	InstructionCompiler,
 	Namespaces,
 	Instruction,
 } from '@8f4e/compiler-types';
 
-export function compileCodegenLine(line: AST[number], context: CompilationContext) {
+export function compileCodegenLine(
+	line: AST[number],
+	context: CompilationContext,
+	options: { skipValidation?: boolean } = {}
+) {
 	const instruction = line.instruction as Instruction;
 
 	if (!instructions[instruction]) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
-	instructions[instruction](line, context);
+	if (!options.skipValidation) {
+		validateInstruction(line, context);
+	}
+	const compileInstruction = instructions[instruction] as InstructionCompiler;
+	compileInstruction(line, context);
 }
 
 export function compileLine(line: AST[number], context: CompilationContext) {
+	if (line.isMemoryDeclaration && context.mode === 'function') {
+		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
+	}
+
+	validateInstruction(line, context);
+
 	if (line.isSemanticOnly) {
 		applySemanticLine(line, context);
 		return;
 	}
 
-	if (line.isMemoryDeclaration && context.mode === 'function') {
-		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
-	}
-
-	compileCodegenLine(line, context);
+	compileCodegenLine(line, context, { skipValidation: true });
 }
 
 export function compileModule(
@@ -74,10 +86,11 @@ export function compileModule(
 
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
+		validateInstruction(line, context);
 		if (line.isSemanticOnly) {
 			applySemanticLine(line, context);
 		} else if (!line.isMemoryDeclaration) {
-			compileCodegenLine(line, context);
+			compileCodegenLine(line, context, { skipValidation: true });
 		}
 		return line;
 	});
