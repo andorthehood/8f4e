@@ -70,23 +70,6 @@ describe('div instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('throws on mixed float32/float64 operands', () => {
-		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isFloat64: true, isNonZero: true });
-
-		expect(() => {
-			div(
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'div',
-					arguments: [],
-				} as AST[number],
-				context
-			);
-		}).toThrowError();
-	});
-
 	it('throws on division by zero', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });

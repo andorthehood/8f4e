@@ -1,7 +1,7 @@
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 
-import { getError } from '../compilerError';
-import { areAllOperandsFloats, areAllOperandsIntegers } from '../utils/operandTypes';
+import { ErrorCode, getError } from '../compilerError';
+import { areAllOperandsFloats, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 
 import type { CompilationContext, InstructionCompiler, StackItem } from '@8f4e/compiler-types';
 import type { OperandRule } from './types';
@@ -36,6 +36,10 @@ export function validateOperandTypes(
 	} else if (rule === 'matching') {
 		if (!areAllOperandsIntegers(...operands) && !areAllOperandsFloats(...operands)) {
 			throw getError(errorCode, line, context);
+		}
+
+		if (hasMixedFloatWidth(...operands)) {
+			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 		}
 	}
 }

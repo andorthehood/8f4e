@@ -1,7 +1,7 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
-import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -17,10 +17,12 @@ const greaterOrEqualUnsigned: InstructionCompiler = (line, context) => {
 	if (areAllOperandsIntegers(operand1, operand2)) {
 		context.stack.push({ isInteger: true, isNonZero: false });
 		return saveByteCode(context, [WASMInstruction.I32_GE_U]);
-	} else {
-		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.F32_GE]);
 	}
+
+	context.stack.push({ isInteger: true, isNonZero: false });
+	return saveByteCode(context, [
+		areAllOperandsFloat64(operand1, operand2) ? WASMInstruction.F64_GE : WASMInstruction.F32_GE,
+	]);
 };
 
 export default greaterOrEqualUnsigned;

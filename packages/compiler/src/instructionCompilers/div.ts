@@ -3,7 +3,7 @@ import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { deriveKnownIntegerValue, I32_MIN } from '../utils/knownIntegerValue';
-import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 
 import type { InstructionCompiler, StackItem } from '@8f4e/compiler-types';
 
@@ -18,10 +18,6 @@ const div: InstructionCompiler = (line, context) => {
 
 	if (!operand1.isNonZero) {
 		throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
-	}
-
-	if (hasMixedFloatWidth(operand1, operand2)) {
-		throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 	}
 
 	const isInteger = areAllOperandsIntegers(operand1, operand2);

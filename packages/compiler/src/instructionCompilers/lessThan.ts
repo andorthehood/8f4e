@@ -1,7 +1,7 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
-import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 
 import type { InstructionCompiler } from '@8f4e/compiler-types';
 
@@ -15,8 +15,11 @@ const lessThan: InstructionCompiler = (line, context) => {
 	const operand1 = context.stack.pop()!;
 
 	const isInteger = areAllOperandsIntegers(operand1, operand2);
+	const isFloat64 = areAllOperandsFloat64(operand1, operand2);
 	context.stack.push({ isInteger: true, isNonZero: false });
-	return saveByteCode(context, [isInteger ? WASMInstruction.I32_LT_S : WASMInstruction.F32_LT]);
+	return saveByteCode(context, [
+		isInteger ? WASMInstruction.I32_LT_S : isFloat64 ? WASMInstruction.F64_LT : WASMInstruction.F32_LT,
+	]);
 };
 
 export default lessThan;
