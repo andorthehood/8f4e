@@ -4,8 +4,8 @@ priority: High
 effort: 1-3h
 created: 2026-02-20
 issue: https://github.com/andorthehood/8f4e/issues/417
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-10
 ---
 
 # TODO: Add float64 support for sqrt instruction
@@ -34,9 +34,9 @@ Emit `F64_SQRT` for float64 operands while keeping `F32_SQRT` for float32.
 
 ## Success Criteria
 
-- [ ] `sqrt` handles float64 correctly.
-- [ ] Existing int32/float32 behavior remains unchanged.
-- [ ] Regression tests cover the float64 path.
+- [x] `sqrt` handles float64 correctly.
+- [x] Existing int32/float32 behavior remains unchanged.
+- [x] Regression tests cover the float64 path.
 
 ## Related Items
 

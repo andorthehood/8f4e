@@ -10,13 +10,6 @@ Active todo files are listed below.
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
-| 262 | Add float64 support for equal instruction | 🔴 | 1-3h | 2026-02-20 | equal is missing explicit float64 support in the compiler instruction path. |
-| 263 | Add float64 support for lessThan instruction | 🔴 | 1-3h | 2026-02-20 | lessThan is missing explicit float64 support in the compiler instruction path. |
-| 264 | Add float64 support for lessOrEqual instruction | 🔴 | 1-3h | 2026-02-20 | lessOrEqual is missing explicit float64 support in the compiler instruction path. |
-| 265 | Add float64 support for greaterThan instruction | 🔴 | 1-3h | 2026-02-20 | greaterThan is missing explicit float64 support in the compiler instruction path. |
-| 266 | Add float64 support for greaterOrEqual instruction | 🔴 | 1-3h | 2026-02-20 | greaterOrEqual is missing explicit float64 support in the compiler instruction path. |
-| 267 | Add float64 support for greaterOrEqualUnsigned instruction | 🔴 | 1-3h | 2026-02-20 | greaterOrEqualUnsigned is missing explicit float64 support in the compiler instruction path. |
-| 268 | Add float64 support for sqrt instruction | 🔴 | 1-3h | 2026-02-20 | sqrt is missing explicit float64 support in the compiler instruction path. |
 | 269 | Add float64 support for round instruction | 🔴 | 1-3h | 2026-02-20 | round is missing explicit float64 support in the compiler instruction path. |
 | 270 | Add float64 support for castToInt instruction | 🔴 | 1-3h | 2026-02-20 | castToInt is missing explicit float64 support in the compiler instruction path. |
 | 271 | Add float64 support for loadFloat instruction | 🔴 | 1-3h | 2026-02-20 | loadFloat is missing explicit float64 support in the compiler instruction path. |
@@ -84,6 +77,13 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 262 | Add float64 support for equal instruction | 2026-05-10 | `equal` now emits `F64_EQ` for float64 operands and has unit/public regression coverage. |
+| 263 | Add float64 support for lessThan instruction | 2026-05-10 | `lessThan` now emits `F64_LT` for float64 operands and has unit/public regression coverage. |
+| 264 | Add float64 support for lessOrEqual instruction | 2026-05-10 | `lessOrEqual` now emits `F64_LE` for float64 operands and has unit/public regression coverage. |
+| 265 | Add float64 support for greaterThan instruction | 2026-05-10 | `greaterThan` now emits `F64_GT` for float64 operands and has unit/public regression coverage. |
+| 266 | Add float64 support for greaterOrEqual instruction | 2026-05-10 | `greaterOrEqual` now emits `F64_GE` for float64 operands and has unit/public regression coverage. |
+| 267 | Add float64 support for greaterOrEqualUnsigned instruction | 2026-05-10 | `greaterOrEqualUnsigned` now emits `F64_GE` for float64 operands and has unit/public regression coverage. |
+| 268 | Add float64 support for sqrt instruction | 2026-05-10 | `sqrt` now emits `F64_SQRT`, preserves float64 metadata, and no longer marks the result as always non-zero. |
 | 391 | Add compiler AST cache for incremental compiles | 2026-05-04 | `compile()` now returns and accepts an opaque AST cache for unchanged expanded module and function inputs. |
 | 329 | Replace literal-only const collection with semantic namespace prepass | 2026-03-27 | Replaced `collectConstants(ast)` bootstrap with semantic namespace prepass. |
 | 330 | Centralize compile-time folding as an AST normalization pass | 2026-03-27 | Compile-time folding now runs as a semantic normalization pass before codegen. |
