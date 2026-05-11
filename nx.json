@@ -72,7 +72,6 @@
       "push": false
     }
   },
-  "nxCloudAccessToken": null,
   "defaultBase": "HEAD~1",
   "analytics": false
 }

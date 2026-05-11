@@ -1,6 +1,7 @@
 .DS_Store
 .cache
 dist*
+graph.json
 bundle/
 node_modules
 .eslintcache
