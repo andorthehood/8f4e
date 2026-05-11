@@ -96,4 +96,36 @@ describe('parseMidiInDirectives', () => {
 			'Duplicate @midiIn binding for port "2" and callback "onMidiIn".',
 		]);
 	});
+
+	it('normalizes numeric ports before deduplicating bindings', () => {
+		const result = parseMidiInDirectives(
+			stateWithBlocks([
+				codeBlock('foo', [
+					midiInDirective(['01', 'onMidiIn'], 0),
+					midiInDirective(['1', 'onMidiIn'], 1),
+					midiInDirective(['02', 'onPitchBend'], 2),
+				]),
+			])
+		);
+
+		expect(result.bindings).toEqual([
+			{
+				port: '1',
+				exportName: 'onMidiIn',
+				lineNumber: 1,
+				codeBlockId: 'foo',
+				codeBlockType: 'module',
+			},
+			{
+				port: '2',
+				exportName: 'onPitchBend',
+				lineNumber: 3,
+				codeBlockId: 'foo',
+				codeBlockType: 'module',
+			},
+		]);
+		expect(result.errors.map(error => error.message)).toEqual([
+			'Duplicate @midiIn binding for port "1" and callback "onMidiIn".',
+		]);
+	});
 });
