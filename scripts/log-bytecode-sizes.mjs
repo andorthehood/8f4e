@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execFile } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -16,6 +16,8 @@ const suiteName = "bytecode-size";
 
 async function main() {
   const benchmarkCases = await collectBenchmarkCases(benchmarkDir);
+  const gitMetadata = getGitMetadata();
+  const packageJson = await readJson(path.resolve(workspaceRoot, "packages/examples/package.json"));
 
   if (benchmarkCases.length === 0) {
     console.error(
@@ -44,6 +46,9 @@ async function main() {
       const emittedBytes = (await fs.stat(wasmPath)).size;
       const outputPath = getCaseLogPath(outputDir, benchmarkCase);
       const entry = {
+        commit: gitMetadata.commit,
+        version: packageJson.version ?? null,
+        benchmark: benchmarkCase.relativePath,
         emittedBytes,
       };
 
@@ -145,6 +150,24 @@ async function appendLogEntry(filePath, entry) {
 
   existingEntries.push(entry);
   await fs.writeFile(filePath, `${JSON.stringify(existingEntries, null, "\t")}\n`);
+}
+
+function getGitMetadata() {
+  return {
+    commit: runGit(["rev-parse", "HEAD"]),
+  };
+}
+
+function runGit(args) {
+  try {
+    return execFileSync("git", args, {
+      cwd: workspaceRoot,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return "";
+  }
 }
 
 async function readJson(filePath) {
