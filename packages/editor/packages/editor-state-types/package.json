@@ -28,8 +28,5 @@
     "@8f4e/sprite-generator": "*",
     "@8f4e/state-manager": "*",
     "glugglug": "*"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.0"
   }
 }
