@@ -11,7 +11,6 @@ const execFileAsync = promisify(execFile);
 const workspaceRoot = process.cwd();
 const defaultBenchmarkDir = "packages/examples/src/benchmarks/bytecode-size";
 const defaultOutputDir = "logs/bytecode-size";
-const packageName = "@8f4e/examples";
 const suiteName = "bytecode-size";
 
 async function main() {
@@ -68,10 +67,7 @@ async function main() {
         schemaVersion: 1,
         recordedAt: new Date().toISOString(),
         commit: gitMetadata.commit,
-        branch: gitMetadata.branch,
-        packageName,
         version: packageJson.version ?? null,
-        suite: suiteName,
         benchmark: benchmarkCase.relativePath,
         path: benchmarkCase.path,
         emittedBytes,
@@ -389,7 +385,6 @@ async function appendLogEntry(filePath, entry) {
 function getGitMetadata() {
   return {
     commit: runGit(["rev-parse", "HEAD"]),
-    branch: runGit(["branch", "--show-current"]),
   };
 }
 
