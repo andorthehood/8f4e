@@ -1,0 +1,42 @@
+8f4e/v1
+
+constants env
+; @pos -51 -3
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+function onMidiEvent
+; @pos -123 11
+#export onMidiEvent
+#impure
+; @midiIn -1710537465 onMidiEvent
+
+param int status
+param int data1
+param int data2
+
+push &boson:test
+push status
+store
+
+functionEnd
+
+module boson
+; @pos -77 18
+
+int test ; @w
+moduleEnd
+
+module projectConfig
+; @pos -102 0
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @config export.fileName audioBuffer
+
+moduleEnd
