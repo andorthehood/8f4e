@@ -48,8 +48,10 @@ describe('editor environment plugin manager', () => {
 	const windowMock = {} as Window;
 	const navigatorMock = {} as Navigator;
 	const memoryViewsMock = {} as EditorEnvironmentPluginContext['memoryViews'];
-	const getWasmMemory = vi.fn(() => null);
-	const getCodeBuffer = vi.fn(() => new Uint8Array());
+	const wasmExports = {
+		getExports: vi.fn(async () => undefined),
+		invalidate: vi.fn(),
+	};
 
 	it('lazy-loads a plugin when one of its editor directives appears', async () => {
 		const dispose = vi.fn();
@@ -68,8 +70,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
-			getWasmMemory,
-			getCodeBuffer,
+			wasmExports,
 			registry,
 		});
 
@@ -87,8 +88,7 @@ describe('editor environment plugin manager', () => {
 				window: windowMock,
 				navigator: navigatorMock,
 				memoryViews: memoryViewsMock,
-				getWasmMemory,
-				getCodeBuffer,
+				wasmExports,
 			})
 		);
 
@@ -111,8 +111,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
-			getWasmMemory,
-			getCodeBuffer,
+			wasmExports,
 			registry,
 		});
 		await flushPromises();
@@ -145,8 +144,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
-			getWasmMemory,
-			getCodeBuffer,
+			wasmExports,
 			registry,
 		});
 		await flushPromises();
@@ -180,8 +178,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
-			getWasmMemory,
-			getCodeBuffer,
+			wasmExports,
 			registry,
 		});
 

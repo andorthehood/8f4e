@@ -21,8 +21,10 @@ function createContext(): EditorEnvironmentPluginContext {
 		window: {} as Window,
 		navigator: {} as Navigator,
 		memoryViews: {} as never,
-		getWasmMemory: () => null,
-		getCodeBuffer: () => new Uint8Array(),
+		wasmExports: {
+			getExports: vi.fn(async () => undefined),
+			invalidate: vi.fn(),
+		},
 		setErrors: vi.fn(),
 	};
 }

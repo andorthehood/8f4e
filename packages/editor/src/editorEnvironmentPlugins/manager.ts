@@ -5,6 +5,7 @@ import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '@8f4e/web-ui';
 import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEntry } from './types';
+import type { EditorEnvironmentWasmExports } from './wasmExports';
 
 interface ActivePlugin {
 	token: number;
@@ -15,8 +16,7 @@ interface EditorEnvironmentPluginManagerOptions {
 	window: Window;
 	navigator: Navigator;
 	memoryViews: MemoryViews;
-	getWasmMemory: () => WebAssembly.Memory | null;
-	getCodeBuffer: () => Uint8Array;
+	wasmExports: EditorEnvironmentWasmExports;
 	registry?: EditorEnvironmentPluginRegistryEntry[];
 }
 
@@ -105,8 +105,7 @@ export function createEditorEnvironmentPluginManager(
 					window: options.window,
 					navigator: options.navigator,
 					memoryViews: options.memoryViews,
-					getWasmMemory: options.getWasmMemory,
-					getCodeBuffer: options.getCodeBuffer,
+					wasmExports: options.wasmExports,
 					setErrors: errors => setPluginErrors(entry.id, errors),
 				};
 
