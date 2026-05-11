@@ -8,7 +8,7 @@
   },
   "scripts": {
     "preinstall": "git submodule update --init --recursive",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",

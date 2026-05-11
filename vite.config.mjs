@@ -1,11 +1,6 @@
 import { defineConfig } from 'vite'
 import glsl from 'vite-plugin-glsl'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
-import path from 'path'
-import { fileURLToPath } from 'url'
-// import { visualizer } from "rollup-plugin-visualizer";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig(() => {
   return {
@@ -13,13 +8,7 @@ export default defineConfig(() => {
     define: {
       'import.meta.vitest': 'undefined'
     },
-    resolve: {
-      alias: {
-        '@8f4e/examples': path.resolve(__dirname, 'packages/examples/src')
-      }
-    },
     plugins: [
-      // visualizer(),
       glsl({
         include: ['**/*.glsl', '**/*.vert', '**/*.frag'],
         defaultExtension: 'glsl',
@@ -47,8 +36,6 @@ export default defineConfig(() => {
       outDir: '../dist',
       emptyOutDir: true,
       rollupOptions: {
-        // Ensure proper module resolution for production
-        external: [],
         output: {
           entryFileNames: 'assets/entries/[name]-[hash].js',
           chunkFileNames: 'assets/chunks/[name]-[hash].js'
