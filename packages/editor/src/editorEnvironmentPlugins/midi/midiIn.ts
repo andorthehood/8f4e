@@ -17,6 +17,11 @@ interface ActiveMidiInputListener {
 	handler: (event: unknown) => void;
 }
 
+interface ResolvedMidiCallbacks {
+	callbacksByPort: Map<string, MidiCallbackBinding[]>;
+	errors: CodeError[];
+}
+
 interface MidiInOptions {
 	store: StateManager<State>;
 	setErrors: EditorEnvironmentPluginContext['setErrors'];
@@ -64,6 +69,77 @@ function getMidiEventBytes(event: unknown): [number, number, number] {
 	const data = (event as MIDIMessageEvent).data;
 
 	return [data?.[0] ?? 0, data?.[1] ?? 0, data?.[2] ?? 0];
+}
+
+function resolveMidiCallbacks(
+	bindings: MidiInBinding[],
+	exports: WebAssembly.Exports,
+	getInputPort: MidiInputLookup
+): ResolvedMidiCallbacks {
+	const callbacksByPort = new Map<string, MidiCallbackBinding[]>();
+	const errors: CodeError[] = [];
+
+	for (const binding of bindings) {
+		const callback = exports[binding.exportName];
+		if (typeof callback !== 'function') {
+			errors.push(
+				createBindingError(binding, `Missing callable WebAssembly export for @midiIn callback "${binding.exportName}".`)
+			);
+			continue;
+		}
+
+		if (!getInputPort(binding.port)) {
+			errors.push(createBindingError(binding, `MIDI input port "${binding.port}" is not available.`));
+			continue;
+		}
+
+		const callbacks = callbacksByPort.get(binding.port) ?? [];
+		callbacks.push({ binding, callback: callback as MidiCallback });
+		callbacksByPort.set(binding.port, callbacks);
+	}
+
+	return { callbacksByPort, errors };
+}
+
+function attachMidiInputListeners({
+	callbacksByPort,
+	getInputPort,
+	activeListeners,
+	baseErrors,
+	setErrors,
+}: {
+	callbacksByPort: Map<string, MidiCallbackBinding[]>;
+	getInputPort: MidiInputLookup;
+	activeListeners: ActiveMidiInputListener[];
+	baseErrors: CodeError[];
+	setErrors: EditorEnvironmentPluginContext['setErrors'];
+}): void {
+	for (const [port, callbacks] of callbacksByPort) {
+		const input = getInputPort(port);
+		if (!input) {
+			continue;
+		}
+
+		const handler = (event: unknown) => {
+			const [status, data1, data2] = getMidiEventBytes(event);
+			const callbackErrors: CodeError[] = [];
+			for (const { binding, callback } of callbacks) {
+				try {
+					callback(status, data1, data2);
+				} catch (error) {
+					console.error('MIDI input callback failed:', error);
+					callbackErrors.push(createBindingError(binding, `MIDI input callback "${binding.exportName}" failed.`));
+				}
+			}
+
+			if (callbackErrors.length > 0) {
+				setErrors([...baseErrors, ...callbackErrors]);
+			}
+		};
+
+		input.addEventListener('midimessage', handler as Parameters<MIDIInput['addEventListener']>[1]);
+		activeListeners.push({ input, handler });
+	}
 }
 
 export default function createMidiIn({
@@ -114,57 +190,15 @@ export default function createMidiIn({
 					return;
 				}
 
-				const callbacksByPort = new Map<string, MidiCallbackBinding[]>();
-
-				for (const binding of bindings) {
-					const callback = exports[binding.exportName];
-					if (typeof callback !== 'function') {
-						errors.push(
-							createBindingError(
-								binding,
-								`Missing callable WebAssembly export for @midiIn callback "${binding.exportName}".`
-							)
-						);
-						continue;
-					}
-
-					const input = getInputPort(binding.port);
-					if (!input) {
-						errors.push(createBindingError(binding, `MIDI input port "${binding.port}" is not available.`));
-						continue;
-					}
-
-					const callbacks = callbacksByPort.get(binding.port) ?? [];
-					callbacks.push({ binding, callback: callback as MidiCallback });
-					callbacksByPort.set(binding.port, callbacks);
-				}
-
-				for (const [port, callbacks] of callbacksByPort) {
-					const input = getInputPort(port);
-					if (!input) {
-						continue;
-					}
-
-					const handler = (event: unknown) => {
-						const [status, data1, data2] = getMidiEventBytes(event);
-						const callbackErrors: CodeError[] = [];
-						for (const { binding, callback } of callbacks) {
-							try {
-								callback(status, data1, data2);
-							} catch (error) {
-								console.error('MIDI input callback failed:', error);
-								callbackErrors.push(createBindingError(binding, `MIDI input callback "${binding.exportName}" failed.`));
-							}
-						}
-
-						if (callbackErrors.length > 0) {
-							setErrors([...errors, ...callbackErrors]);
-						}
-					};
-
-					input.addEventListener('midimessage', handler as Parameters<MIDIInput['addEventListener']>[1]);
-					activeListeners.push({ input, handler });
-				}
+				const resolvedCallbacks = resolveMidiCallbacks(bindings, exports, getInputPort);
+				errors.push(...resolvedCallbacks.errors);
+				attachMidiInputListeners({
+					callbacksByPort: resolvedCallbacks.callbacksByPort,
+					getInputPort,
+					activeListeners,
+					baseErrors: errors,
+					setErrors,
+				});
 
 				setErrors(errors);
 			})

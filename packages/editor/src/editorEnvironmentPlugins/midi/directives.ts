@@ -1,3 +1,5 @@
+import { getActiveCodeBlocksForEnvironmentPlugins } from '../codeBlocks';
+
 import type { CodeBlockGraphicData, CodeError, State } from '@8f4e/editor-state-types';
 import type { MidiInBinding } from './types';
 
@@ -14,17 +16,6 @@ function getCodeBlockType(block: CodeBlockGraphicData): CodeError['codeBlockType
 	return undefined;
 }
 
-function getDirectiveBlocks(state: State): CodeBlockGraphicData[] {
-	const blocks = [...state.graphicHelper.codeBlocks];
-	const selectedBlock = state.graphicHelper.selectedCodeBlock;
-
-	if (selectedBlock && !blocks.some(block => block.id === selectedBlock.id)) {
-		blocks.push(selectedBlock);
-	}
-
-	return blocks;
-}
-
 function createDirectiveError(block: CodeBlockGraphicData, rawRow: number, message: string): CodeError {
 	return {
 		codeBlockId: block.id,
@@ -39,7 +30,7 @@ export default function parseMidiInDirectives(state: State): MidiInDirectivePars
 	const errors: CodeError[] = [];
 	const seenBindings = new Set<string>();
 
-	for (const block of getDirectiveBlocks(state)) {
+	for (const block of getActiveCodeBlocksForEnvironmentPlugins(state)) {
 		for (const directive of block.parsedDirectives ?? []) {
 			if (directive.prefix !== '@' || directive.name !== 'midiIn') {
 				continue;
