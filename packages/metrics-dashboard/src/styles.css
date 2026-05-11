@@ -99,6 +99,17 @@ main > * {
 	min-width: 0;
 }
 
+#bundles-view,
+#bytecode-view {
+	display: grid;
+	gap: 20px;
+	min-width: 0;
+}
+
+[hidden] {
+	display: none !important;
+}
+
 .summary-grid {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -161,22 +172,10 @@ main > * {
 	overflow-x: auto;
 }
 
-.chart-short {
-	min-height: 220px;
-}
-
 .chart svg {
 	display: block;
 	max-width: 100%;
 	font-family: inherit;
-}
-
-.empty-chart {
-	display: grid;
-	min-height: 220px;
-	place-items: center;
-	color: #667085;
-	font-size: 14px;
 }
 
 .package-grid {

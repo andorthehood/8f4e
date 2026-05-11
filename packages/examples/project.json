@@ -26,6 +26,22 @@
 				"cwd": "{projectRoot}"
 			}
 		},
+		"log-bytecode-size": {
+			"executor": "nx:run-commands",
+			"cache": false,
+			"outputs": ["{workspaceRoot}/logs/bytecode-size"],
+			"dependsOn": [
+				{
+					"projects": ["@8f4e/cli"],
+					"target": "build",
+					"params": "ignore"
+				}
+			],
+			"options": {
+				"command": "node scripts/log-bytecode-sizes.mjs",
+				"cwd": "{workspaceRoot}"
+			}
+		},
 		"typecheck": {
 			"executor": "nx:run-commands",
 			"options": {
