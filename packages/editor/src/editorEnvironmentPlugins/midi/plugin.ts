@@ -7,7 +7,7 @@ export default function midiPlugin({
 	store,
 	navigator,
 	setErrors,
-	wasmExports,
+	services,
 }: EditorEnvironmentPluginContext): () => void {
 	let syncMidiIn = () => {};
 	const devices = createMidiDeviceManager({
@@ -19,7 +19,7 @@ export default function midiPlugin({
 		store,
 		setErrors,
 		getInputPort: devices.getInputPort,
-		wasmExports,
+		getWasmExports: services.getWasmExports,
 	});
 
 	syncMidiIn = midiIn.sync;
