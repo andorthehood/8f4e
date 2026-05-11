@@ -66,19 +66,10 @@
   },
   "overrides": {
     "nx": {
-      "minimatch": "10.2.3"
-    },
-    "@nx/js": {
-      "picomatch": "4.0.4"
-    },
-    "@nx/vite": {
-      "picomatch": "4.0.4"
-    },
-    "@nx/devkit": {
-      "minimatch": "10.2.3"
-    },
-    "@nx/workspace": {
-      "picomatch": "4.0.4"
+      "axios": "1.16.0",
+      "brace-expansion": "5.0.6",
+      "follow-redirects": "1.16.0",
+      "yaml": "2.9.0"
     }
   }
 }
