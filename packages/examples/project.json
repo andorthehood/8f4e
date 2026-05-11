@@ -26,10 +26,10 @@
 				"cwd": "{projectRoot}"
 			}
 		},
-		"log-opcode-size": {
+		"log-bytecode-size": {
 			"executor": "nx:run-commands",
 			"cache": false,
-			"outputs": ["{workspaceRoot}/logs/opcode-size"],
+			"outputs": ["{workspaceRoot}/logs/bytecode-size"],
 			"dependsOn": [
 				{
 					"projects": ["@8f4e/cli"],
@@ -38,7 +38,7 @@
 				}
 			],
 			"options": {
-				"command": "node scripts/log-opcode-sizes.mjs",
+				"command": "node scripts/log-bytecode-sizes.mjs",
 				"cwd": "{workspaceRoot}"
 			}
 		},
