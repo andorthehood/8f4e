@@ -142,11 +142,12 @@ async function createBytecodeManifest() {
 	return {
 		logs: files.map(filePath => {
 			const relativePath = path.relative(logsRoot, filePath).split(path.sep).join('/');
-			const benchmark = path.basename(relativePath, '.json');
+			const benchmark = relativePath.replace(/\.json$/, '');
+			const labelSource = path.basename(relativePath, '.json');
 
 			return {
 				benchmark,
-				label: splitCamelCase(benchmark),
+				label: splitCamelCase(labelSource),
 				path: relativePath,
 			};
 		}),
