@@ -239,6 +239,7 @@ Notes:
 - The MIDI plugin is activated by `@midiIn`; `; @info midi` can display available ports while MIDI is active.
 - `<port>` is the numeric input index shown by `; @info midi`.
 - MIDI entries are shown as `0`, `1`, etc.; only entries marked `(in)` can be used with `@midiIn`.
+- Indexes are stable while the MIDI plugin is active; disconnected port indexes are not reused until the plugin is restarted.
 - `<callbackExportName>` must be a callable WebAssembly export created with `#export`.
 - The callback receives three integer arguments: `status`, `data1`, and `data2`.
 - MIDI messages with fewer than three bytes pass missing bytes as `0`.
