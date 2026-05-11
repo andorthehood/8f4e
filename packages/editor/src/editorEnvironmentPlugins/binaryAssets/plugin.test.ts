@@ -59,6 +59,10 @@ async function flushPromises(): Promise<void> {
 describe('binary assets plugin', () => {
 	let events: EventDispatcher;
 	const memoryViews = {} as EditorEnvironmentPluginContext['memoryViews'];
+	const wasmExports: EditorEnvironmentPluginContext['wasmExports'] = {
+		getExports: vi.fn(async () => undefined),
+		invalidate: vi.fn(),
+	};
 
 	beforeEach(() => {
 		events = {
@@ -88,6 +92,7 @@ describe('binary assets plugin', () => {
 			window: {} as Window,
 			navigator: {} as Navigator,
 			setErrors: vi.fn(),
+			wasmExports,
 		});
 		await flushPromises();
 
@@ -128,6 +133,7 @@ describe('binary assets plugin', () => {
 			window: {} as Window,
 			navigator: {} as Navigator,
 			setErrors: vi.fn(),
+			wasmExports,
 		});
 		await flushPromises();
 
@@ -155,6 +161,7 @@ describe('binary assets plugin', () => {
 			window: {} as Window,
 			navigator: {} as Navigator,
 			setErrors: vi.fn(),
+			wasmExports,
 		});
 		await flushPromises();
 
@@ -223,6 +230,7 @@ describe('binary assets plugin', () => {
 			window: {} as Window,
 			navigator: {} as Navigator,
 			setErrors: vi.fn(),
+			wasmExports,
 		});
 		await flushPromises();
 		expect(store.getState().binaryAssets[0].assetByteLength).toBe(12);
@@ -277,6 +285,7 @@ describe('binary assets plugin', () => {
 			window: {} as Window,
 			navigator: {} as Navigator,
 			setErrors: vi.fn(),
+			wasmExports,
 		});
 		expect(store.getState().binaryAssets).toEqual([]);
 

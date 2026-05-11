@@ -4,6 +4,7 @@ import createStateManager from '@8f4e/state-manager';
 import createMidiIn from './midiIn';
 
 import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
+import type { EditorEnvironmentPluginContext } from '../types';
 
 interface MIDIInputMock {
 	addEventListener: ReturnType<typeof vi.fn>;
@@ -68,6 +69,15 @@ async function flushPromises(): Promise<void> {
 	await Promise.resolve();
 }
 
+function createWasmExports(
+	exports: Record<string, (...args: number[]) => unknown>
+): EditorEnvironmentPluginContext['wasmExports'] {
+	return {
+		getExports: vi.fn(async () => exports as WebAssembly.Exports),
+		invalidate: vi.fn(),
+	};
+}
+
 describe('createMidiIn', () => {
 	it('fans one MIDI input event out to every callback bound to the port', async () => {
 		const onNote = vi.fn();
@@ -82,9 +92,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors,
 			getInputPort: port => (port === '0' ? (input as unknown as MIDIInput) : undefined),
-			getWasmMemory: () => new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }),
-			getCodeBuffer: () => new Uint8Array([1, 2, 3]),
-			instantiateModule: () => ({
+			wasmExports: createWasmExports({
 				onNote,
 				onPitchBend,
 			}),
@@ -109,9 +117,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors: vi.fn(),
 			getInputPort: () => input as unknown as MIDIInput,
-			getWasmMemory: () => new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }),
-			getCodeBuffer: () => new Uint8Array([1, 2, 3]),
-			instantiateModule: () => ({
+			wasmExports: createWasmExports({
 				onClock,
 			}),
 		});
@@ -135,9 +141,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors,
 			getInputPort: port => (port === '0' ? (input as unknown as MIDIInput) : undefined),
-			getWasmMemory: () => new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }),
-			getCodeBuffer: () => new Uint8Array([1, 2, 3]),
-			instantiateModule: () => ({
+			wasmExports: createWasmExports({
 				onMidiIn: vi.fn(),
 			}),
 		});
@@ -171,9 +175,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors,
 			getInputPort: () => input as unknown as MIDIInput,
-			getWasmMemory: () => new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }),
-			getCodeBuffer: () => new Uint8Array([1, 2, 3]),
-			instantiateModule: () => ({
+			wasmExports: createWasmExports({
 				broken,
 				later,
 			}),

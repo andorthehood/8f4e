@@ -6,6 +6,7 @@ import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
 import { createEditorEnvironmentPluginManager } from './editorEnvironmentPlugins/manager';
+import { createEditorEnvironmentWasmExports } from './editorEnvironmentPlugins/wasmExports';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
@@ -98,6 +99,10 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	let view: Awaited<ReturnType<typeof initView>>;
 	const exportCanvasScreenshot = options.callbacks.exportCanvasScreenshot;
 	const compileCode = options.callbacks.compileCode;
+	const wasmExports = createEditorEnvironmentWasmExports({
+		getWasmMemory: () => currentMemoryRef,
+		getCodeBuffer: () => currentCodeBuffer,
+	});
 
 	store = initState(events, {
 		...options,
@@ -107,6 +112,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 				? async (modules, compilerOptions, functions, macros) => {
 						const result = await compileCode(modules, compilerOptions, functions, macros);
 						currentCodeBuffer = new Uint8Array(result.codeBuffer);
+						wasmExports.invalidate();
 						return result;
 					}
 				: undefined,
@@ -144,8 +150,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		window: browserWindow as Window,
 		navigator: browserWindow?.navigator ?? globalThis.navigator,
 		memoryViews,
-		getWasmMemory: () => currentMemoryRef,
-		getCodeBuffer: () => currentCodeBuffer,
+		wasmExports,
 	});
 
 	// Generate sprite data and update state before initializing view
@@ -187,6 +192,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		updateMemoryViews: (memoryRef: MemoryRef) => {
 			currentMemoryRef = memoryRef instanceof WebAssembly.Memory ? memoryRef : null;
+			wasmExports.invalidate();
 			updateMemoryViews(memoryRef);
 		},
 		getMemoryViews: () => memoryViews,

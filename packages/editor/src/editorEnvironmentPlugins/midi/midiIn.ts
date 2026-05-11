@@ -26,12 +26,7 @@ interface MidiInOptions {
 	store: StateManager<State>;
 	setErrors: EditorEnvironmentPluginContext['setErrors'];
 	getInputPort: MidiInputLookup;
-	getWasmMemory: () => WebAssembly.Memory | null;
-	getCodeBuffer: () => Uint8Array;
-	instantiateModule?: (
-		memory: WebAssembly.Memory,
-		codeBuffer: Uint8Array
-	) => Promise<WebAssembly.Exports> | WebAssembly.Exports;
+	wasmExports: EditorEnvironmentPluginContext['wasmExports'];
 }
 
 export interface MidiInManager {
@@ -46,16 +41,6 @@ function createBindingError(binding: MidiInBinding, message: string): CodeError 
 		lineNumber: binding.lineNumber,
 		message,
 	};
-}
-
-async function instantiateMidiModule(memory: WebAssembly.Memory, codeBuffer: Uint8Array): Promise<WebAssembly.Exports> {
-	const { instance } = (await WebAssembly.instantiate(codeBuffer, {
-		js: {
-			memory,
-		},
-	})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
-
-	return instance.exports;
 }
 
 function removeInputListeners(activeListeners: ActiveMidiInputListener[]): void {
@@ -142,14 +127,7 @@ function attachMidiInputListeners({
 	}
 }
 
-export default function createMidiIn({
-	store,
-	setErrors,
-	getInputPort,
-	getWasmMemory,
-	getCodeBuffer,
-	instantiateModule = instantiateMidiModule,
-}: MidiInOptions): MidiInManager {
+export default function createMidiIn({ store, setErrors, getInputPort, wasmExports }: MidiInOptions): MidiInManager {
 	const activeListeners: ActiveMidiInputListener[] = [];
 	let disposed = false;
 	let syncGeneration = 0;
@@ -176,17 +154,15 @@ export default function createMidiIn({
 			return;
 		}
 
-		const memory = getWasmMemory();
-		const codeBuffer = getCodeBuffer();
-
-		if (!memory || codeBuffer.length === 0) {
-			setErrors(errors);
-			return;
-		}
-
-		void Promise.resolve(instantiateModule(memory, codeBuffer))
+		void wasmExports
+			.getExports()
 			.then(exports => {
 				if (disposed || generation !== syncGeneration) {
+					return;
+				}
+
+				if (!exports) {
+					setErrors(errors);
 					return;
 				}
 
