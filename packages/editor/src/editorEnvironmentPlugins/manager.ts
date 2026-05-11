@@ -1,4 +1,5 @@
 import { editorEnvironmentPluginRegistry } from './registry';
+import { getActiveCodeBlocksForEnvironmentPlugins } from './codeBlocks';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
@@ -34,11 +35,9 @@ function getDirectiveNamesFromBlock(block: CodeBlockGraphicData | undefined, nam
 function getActiveEditorDirectiveNames(state: State): Set<string> {
 	const names = new Set<string>();
 
-	for (const block of state.graphicHelper.codeBlocks) {
+	for (const block of getActiveCodeBlocksForEnvironmentPlugins(state)) {
 		getDirectiveNamesFromBlock(block, names);
 	}
-
-	getDirectiveNamesFromBlock(state.graphicHelper.selectedCodeBlock, names);
 
 	return names;
 }
