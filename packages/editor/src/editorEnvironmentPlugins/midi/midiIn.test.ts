@@ -150,14 +150,38 @@ describe('createMidiIn', () => {
 		await flushPromises();
 
 		expect(input.addEventListener).not.toHaveBeenCalled();
+		expect(setErrors).toHaveBeenLastCalledWith(
+			expect.arrayContaining([
+				expect.objectContaining({
+					message: 'Missing callable WebAssembly export for @midiIn callback "missingExport".',
+				}),
+				expect.objectContaining({
+					message: 'MIDI input port "1" is not available.',
+				}),
+			])
+		);
+
+		manager.dispose();
+	});
+
+	it('reports missing ports without waiting for WebAssembly exports', async () => {
+		const setErrors = vi.fn();
+		const getWasmExports = vi.fn();
+		const store = createStore([codeBlock('foo', [midiInDirective(['99', 'onMidiIn'])])]);
+
+		const manager = createMidiIn({
+			store,
+			setErrors,
+			getInputPort: () => undefined,
+			getWasmExports,
+		});
+
 		expect(setErrors).toHaveBeenLastCalledWith([
 			expect.objectContaining({
-				message: 'Missing callable WebAssembly export for @midiIn callback "missingExport".',
-			}),
-			expect.objectContaining({
-				message: 'MIDI input port "1" is not available.',
+				message: 'MIDI input port "99" is not available.',
 			}),
 		]);
+		expect(getWasmExports).not.toHaveBeenCalled();
 
 		manager.dispose();
 	});

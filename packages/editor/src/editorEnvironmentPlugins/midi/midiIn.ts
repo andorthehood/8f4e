@@ -22,6 +22,11 @@ interface ResolvedMidiCallbacks {
 	errors: CodeError[];
 }
 
+interface ResolvedMidiInputPorts {
+	bindings: MidiInBinding[];
+	errors: CodeError[];
+}
+
 interface MidiInOptions {
 	store: StateManager<State>;
 	setErrors: EditorEnvironmentPluginContext['setErrors'];
@@ -56,11 +61,23 @@ function getMidiEventBytes(event: unknown): [number, number, number] {
 	return [data?.[0] ?? 0, data?.[1] ?? 0, data?.[2] ?? 0];
 }
 
-function resolveMidiCallbacks(
-	bindings: MidiInBinding[],
-	exports: WebAssembly.Exports,
-	getInputPort: MidiInputLookup
-): ResolvedMidiCallbacks {
+function resolveMidiInputPorts(bindings: MidiInBinding[], getInputPort: MidiInputLookup): ResolvedMidiInputPorts {
+	const availableBindings: MidiInBinding[] = [];
+	const errors: CodeError[] = [];
+
+	for (const binding of bindings) {
+		if (!getInputPort(binding.port)) {
+			errors.push(createBindingError(binding, `MIDI input port "${binding.port}" is not available.`));
+			continue;
+		}
+
+		availableBindings.push(binding);
+	}
+
+	return { bindings: availableBindings, errors };
+}
+
+function resolveMidiCallbacks(bindings: MidiInBinding[], exports: WebAssembly.Exports): ResolvedMidiCallbacks {
 	const callbacksByPort = new Map<string, MidiCallbackBinding[]>();
 	const errors: CodeError[] = [];
 
@@ -70,11 +87,6 @@ function resolveMidiCallbacks(
 			errors.push(
 				createBindingError(binding, `Missing callable WebAssembly export for @midiIn callback "${binding.exportName}".`)
 			);
-			continue;
-		}
-
-		if (!getInputPort(binding.port)) {
-			errors.push(createBindingError(binding, `MIDI input port "${binding.port}" is not available.`));
 			continue;
 		}
 
@@ -147,7 +159,9 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 
 		const parsed = parseMidiInDirectives(state);
 		const errors: CodeError[] = [...parsed.errors];
-		const bindings = parsed.bindings;
+		const resolvedPorts = resolveMidiInputPorts(parsed.bindings, getInputPort);
+		errors.push(...resolvedPorts.errors);
+		const bindings = resolvedPorts.bindings;
 
 		if (bindings.length === 0) {
 			setErrors(errors);
@@ -166,7 +180,7 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 					return;
 				}
 
-				const resolvedCallbacks = resolveMidiCallbacks(bindings, exports, getInputPort);
+				const resolvedCallbacks = resolveMidiCallbacks(bindings, exports);
 				errors.push(...resolvedCallbacks.errors);
 				attachMidiInputListeners({
 					callbacksByPort: resolvedCallbacks.callbacksByPort,
