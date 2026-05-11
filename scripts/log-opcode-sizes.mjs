@@ -62,7 +62,7 @@ async function main() {
       });
 
       const wasmBytes = await fs.readFile(wasmPath);
-      const metrics = measureWasm(wasmBytes);
+      const emittedBytes = measureWasmEmittedBytes(wasmBytes);
       const outputPath = getCaseLogPath(outputDir, benchmarkCase);
       const entry = {
         schemaVersion: 1,
@@ -74,7 +74,7 @@ async function main() {
         suite: suiteName,
         benchmark: benchmarkCase.relativePath,
         path: benchmarkCase.path,
-        ...metrics,
+        emittedBytes,
       };
 
       await appendLogEntry(outputPath, entry);
@@ -89,7 +89,6 @@ async function main() {
     console.log(
       [
         suiteName,
-        `${totals.opcodes} opcodes`,
         `${totals.emittedBytes} emitted bytes`,
         `${totals.cases} cases`,
         path.relative(workspaceRoot, outputDir),
@@ -100,7 +99,6 @@ async function main() {
       console.log(
         [
           benchmarkCase.path,
-          `${benchmarkCase.opcodes} opcodes`,
           `${benchmarkCase.emittedBytes} emitted bytes`,
           path.relative(workspaceRoot, benchmarkCase.outputPath),
         ].join(" | "),
@@ -192,7 +190,7 @@ Options:
 Notes:
   - The script invokes packages/cli/bin/cli.js compile with --wasm-output.
   - Run through Nx with npx nx run @8f4e/examples:log-opcode-size so the CLI is built first.
-  - Log entries contain per-project opcode counts and emitted byte counts.`);
+  - Log entries contain emitted byte counts.`);
 }
 
 async function collectBenchmarkCases(root, caseFilter) {
@@ -233,19 +231,11 @@ async function collectFiles(root, dir, files) {
   }
 }
 
-function measureWasm(wasmBytes) {
-  const metrics = parseWasmOpcodeMetrics([...wasmBytes]);
-
-  return {
-    opcodes: metrics.opcodes,
-    emittedBytes: metrics.emittedBytes,
-    functionBodyBytes: metrics.functionBodyBytes,
-    functions: metrics.functions.length,
-    functionMetrics: metrics.functions,
-  };
+function measureWasmEmittedBytes(wasmBytes) {
+  return parseWasmEmittedBytes([...wasmBytes]);
 }
 
-function parseWasmOpcodeMetrics(bytes) {
+function parseWasmEmittedBytes(bytes) {
   const reader = createByteReader(bytes);
   const magic = reader.readBytes(4);
   const version = reader.readBytes(4);
@@ -263,7 +253,7 @@ function parseWasmOpcodeMetrics(bytes) {
     throw new Error("Invalid WebAssembly binary");
   }
 
-  const functions = [];
+  let emittedBytes = 0;
 
   while (!reader.done()) {
     const sectionId = reader.readByte();
@@ -271,23 +261,18 @@ function parseWasmOpcodeMetrics(bytes) {
     const sectionEnd = reader.position() + sectionSize;
 
     if (sectionId === 10) {
-      functions.push(...parseCodeSection(reader, sectionEnd));
+      emittedBytes += measureCodeSection(reader, sectionEnd);
     }
 
     reader.setPosition(sectionEnd);
   }
 
-  return {
-    opcodes: sum(functions, "opcodes"),
-    emittedBytes: sum(functions, "emittedBytes"),
-    functionBodyBytes: sum(functions, "functionBodyBytes"),
-    functions,
-  };
+  return emittedBytes;
 }
 
-function parseCodeSection(reader, sectionEnd) {
+function measureCodeSection(reader, sectionEnd) {
   const functionCount = reader.readUnsignedLeb128();
-  const functions = [];
+  let emittedBytes = 0;
 
   for (let functionIndex = 0; functionIndex < functionCount; functionIndex += 1) {
     const bodySize = reader.readUnsignedLeb128();
@@ -300,49 +285,15 @@ function parseCodeSection(reader, sectionEnd) {
       reader.readByte();
     }
 
-    const instructionBytes = reader.readBytes(bodyEnd - reader.position());
-    const opcodes = decodeWasmOpcodes(instructionBytes);
-
-    functions.push({
-      index: functionIndex,
-      opcodes: opcodes.length,
-      emittedBytes: instructionBytes.length,
-      functionBodyBytes: bodySize,
-    });
+    emittedBytes += bodyEnd - reader.position();
+    reader.setPosition(bodyEnd);
   }
 
   if (reader.position() !== sectionEnd) {
     throw new Error("Invalid WebAssembly code section size");
   }
 
-  return functions;
-}
-
-function decodeWasmOpcodes(bytes) {
-  const reader = createByteReader(bytes);
-  const opcodes = [];
-
-  while (!reader.done()) {
-    const opcode = reader.readByte();
-
-    if (opcode === 0xfc) {
-      const subOpcode = reader.readUnsignedLeb128();
-      skipMiscImmediate(reader, subOpcode);
-      opcodes.push(opcode);
-      continue;
-    }
-
-    if (opcode === 0xfd) {
-      reader.readUnsignedLeb128();
-      opcodes.push(opcode);
-      continue;
-    }
-
-    skipImmediate(reader, opcode);
-    opcodes.push(opcode);
-  }
-
-  return opcodes;
+  return emittedBytes;
 }
 
 function createByteReader(bytes) {
@@ -402,113 +353,7 @@ function createByteReader(bytes) {
         shift += 7;
       }
     },
-    readSignedLeb128() {
-      while (true) {
-        const byte = this.readByte();
-
-        if ((byte & 0x80) === 0) {
-          return;
-        }
-      }
-    },
-    readBlockType() {
-      const byte = this.readByte();
-
-      if (byte === 0x40 || byte === 0x7f || byte === 0x7e || byte === 0x7d || byte === 0x7c) {
-        return;
-      }
-
-      while ((byte & 0x80) !== 0) {
-        const next = this.readByte();
-        if ((next & 0x80) === 0) {
-          return;
-        }
-      }
-    },
   };
-}
-
-function skipImmediate(reader, opcode) {
-  if (opcode === 0x02 || opcode === 0x03 || opcode === 0x04) {
-    reader.readBlockType();
-    return;
-  }
-
-  if (opcode === 0x0c || opcode === 0x0d || opcode === 0x10 || opcode === 0xd2) {
-    reader.readUnsignedLeb128();
-    return;
-  }
-
-  if (opcode === 0x0e) {
-    const labelCount = reader.readUnsignedLeb128();
-    for (let index = 0; index < labelCount + 1; index += 1) {
-      reader.readUnsignedLeb128();
-    }
-    return;
-  }
-
-  if (opcode === 0x11) {
-    reader.readUnsignedLeb128();
-    reader.readUnsignedLeb128();
-    return;
-  }
-
-  if (opcode === 0x1c) {
-    const typeCount = reader.readUnsignedLeb128();
-    for (let index = 0; index < typeCount; index += 1) {
-      reader.readByte();
-    }
-    return;
-  }
-
-  if ((opcode >= 0x20 && opcode <= 0x24) || opcode === 0xd0) {
-    reader.readUnsignedLeb128();
-    return;
-  }
-
-  if (opcode >= 0x28 && opcode <= 0x3e) {
-    reader.readUnsignedLeb128();
-    reader.readUnsignedLeb128();
-    return;
-  }
-
-  if (opcode === 0x3f || opcode === 0x40) {
-    reader.readByte();
-    return;
-  }
-
-  if (opcode === 0x41 || opcode === 0x42) {
-    reader.readSignedLeb128();
-    return;
-  }
-
-  if (opcode === 0x43) {
-    reader.readBytes(4);
-    return;
-  }
-
-  if (opcode === 0x44) {
-    reader.readBytes(8);
-  }
-}
-
-function skipMiscImmediate(reader, subOpcode) {
-  if (subOpcode === 0x08 || subOpcode === 0x0a || subOpcode === 0x0c || subOpcode === 0x0e) {
-    reader.readUnsignedLeb128();
-    reader.readUnsignedLeb128();
-    return;
-  }
-
-  if (
-    subOpcode === 0x09 ||
-    subOpcode === 0x0b ||
-    subOpcode === 0x0d ||
-    subOpcode === 0x0f ||
-    subOpcode === 0x10 ||
-    subOpcode === 0x11
-  ) {
-    reader.readUnsignedLeb128();
-  }
 }
 
 function sum(items, key) {
@@ -518,10 +363,7 @@ function sum(items, key) {
 function sumCases(cases) {
   return {
     cases: cases.length,
-    opcodes: sum(cases, "opcodes"),
     emittedBytes: sum(cases, "emittedBytes"),
-    functionBodyBytes: sum(cases, "functionBodyBytes"),
-    functions: sum(cases, "functions"),
   };
 }
 
