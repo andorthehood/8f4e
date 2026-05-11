@@ -80,8 +80,8 @@ describe('createMidiDeviceManager', () => {
 
 		expect(requestMIDIAccess).toHaveBeenCalledTimes(1);
 		expect(store.getState().info.midi).toEqual({
-			0: 'Keys (in)',
-			'out 0': 'Synth (out)',
+			'input-a': 'Keys (in)',
+			'output-a': 'Synth (out)',
 		});
 		expect(manager.getInputPort('0')).toBe(access.inputs.get('input-a'));
 
@@ -98,9 +98,9 @@ describe('createMidiDeviceManager', () => {
 		access.onstatechange?.({});
 
 		expect(store.getState().info.midi).toEqual({
-			0: 'Keys (in)',
-			1: 'Pads (in)',
-			'out 0': 'Synth (out)',
+			'input-a': 'Keys (in)',
+			'input-b': 'Pads (in)',
+			'output-a': 'Synth (out)',
 		});
 		expect(manager.getInputPort('1')).toBe(access.inputs.get('input-b'));
 
