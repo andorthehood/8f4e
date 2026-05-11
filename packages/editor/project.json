@@ -2,7 +2,6 @@
   "name": "@8f4e/editor",
   "sourceRoot": "src",
   "projectType": "application",
-  "implicitDependencies": ["@8f4e/state-manager"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
