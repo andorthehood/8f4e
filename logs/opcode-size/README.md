@@ -1,6 +1,6 @@
 # Opcode Size Logs
 
-Generated opcode-size benchmark logs live here.
+Generated opcode-size benchmark byte logs live here.
 
 Use this directory for captured output from benchmark cases in `packages/examples/src/benchmarks/opcode-size`.
 
