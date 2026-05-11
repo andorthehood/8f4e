@@ -214,3 +214,4 @@ Handle instructions that need custom analysis:
 - This refactor is enabled by removing `compileSegment`; instruction lowering is no longer recursively compiling synthetic source.
 - Avoid merging a hybrid state where both `withValidation` and stack analysis validate stack operands.
 - The central risk is accidentally reintroducing duplicate validation across stages. The stage boundary should be documented and enforced through tests.
+- Maintenance review on 2026-05-11 kept this TODO open. The repository has a central `instructionSpecs.ts` table and `packages/compiler/src/stackAnalysis/` validation helpers, but the full separate analysis pass is not complete yet: `compileLine` still validates immediately before codegen, instruction compilers still mutate `context.stack`, and codegen still receives a `CompilationContext` that exposes the analysis stack.
