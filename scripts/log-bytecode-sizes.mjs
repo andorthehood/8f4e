@@ -9,10 +9,10 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 
 const workspaceRoot = process.cwd();
-const defaultBenchmarkDir = "packages/examples/src/benchmarks/opcode-size";
-const defaultOutputDir = "logs/opcode-size";
+const defaultBenchmarkDir = "packages/examples/src/benchmarks/bytecode-size";
+const defaultOutputDir = "logs/bytecode-size";
 const packageName = "@8f4e/examples";
-const suiteName = "opcode-size";
+const suiteName = "bytecode-size";
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
@@ -36,12 +36,12 @@ async function main() {
 
   if (benchmarkCases.length === 0) {
     console.error(
-      `No opcode-size benchmark cases matched in ${path.relative(workspaceRoot, benchmarkDir)}`,
+      `No bytecode-size benchmark cases matched in ${path.relative(workspaceRoot, benchmarkDir)}`,
     );
     process.exit(1);
   }
 
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "8f4e-opcode-size-"));
+  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "8f4e-bytecode-size-"));
   const gitMetadata = getGitMetadata();
   const packageJson = await readJson(path.resolve(workspaceRoot, "packages/examples/package.json"));
 
@@ -177,9 +177,9 @@ function parseArgs(args) {
 }
 
 function printHelp() {
-  console.log(`Usage: node scripts/log-opcode-sizes.mjs [options]
+  console.log(`Usage: node scripts/log-bytecode-sizes.mjs [options]
 
-Compiles benchmark projects with the CLI and appends opcode-size entries to ${defaultOutputDir}/{benchmark-name}.json.
+Compiles benchmark projects with the CLI and appends bytecode-size entries to ${defaultOutputDir}/{benchmark-name}.json.
 
 Options:
   --benchmarks-dir <path>  Directory containing .8f4e benchmark projects. Default: ${defaultBenchmarkDir}
@@ -189,7 +189,7 @@ Options:
 
 Notes:
   - The script invokes packages/cli/bin/cli.js compile with --wasm-output.
-  - Run through Nx with npx nx run @8f4e/examples:log-opcode-size so the CLI is built first.
+  - Run through Nx with npx nx run @8f4e/examples:log-bytecode-size so the CLI is built first.
   - Log entries contain emitted byte counts.`);
 }
 
