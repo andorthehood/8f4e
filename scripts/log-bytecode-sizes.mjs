@@ -9,29 +9,13 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 
 const workspaceRoot = process.cwd();
-const defaultBenchmarkDir = "packages/examples/src/benchmarks/bytecode-size";
-const defaultOutputDir = "logs/bytecode-size";
+const benchmarkDir = path.resolve(workspaceRoot, "packages/examples/src/benchmarks/bytecode-size");
+const outputDir = path.resolve(workspaceRoot, "logs/bytecode-size");
+const cliPath = path.resolve(workspaceRoot, "packages/cli/bin/cli.js");
 const suiteName = "bytecode-size";
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
-
-  if (options.help) {
-    printHelp();
-    process.exit(0);
-  }
-
-  const benchmarkDir = path.resolve(
-    workspaceRoot,
-    options.benchmarkDir ?? defaultBenchmarkDir,
-  );
-  const outputDir = path.resolve(
-    workspaceRoot,
-    options.outputDir ?? defaultOutputDir,
-  );
-  const caseFilter = options.cases.length > 0 ? new Set(options.cases) : null;
-  const cliPath = path.resolve(workspaceRoot, "packages/cli/bin/cli.js");
-  const benchmarkCases = await collectBenchmarkCases(benchmarkDir, caseFilter);
+  const benchmarkCases = await collectBenchmarkCases(benchmarkDir);
 
   if (benchmarkCases.length === 0) {
     console.error(
@@ -96,96 +80,11 @@ async function main() {
   }
 }
 
-function parseArgs(args) {
-  const parsed = {
-    help: false,
-    benchmarkDir: undefined,
-    outputDir: undefined,
-    cases: [],
-  };
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-
-    if (arg === "--help" || arg === "-h") {
-      parsed.help = true;
-      continue;
-    }
-
-    if (arg === "--benchmarks-dir") {
-      const value = args[index + 1];
-      if (!value) {
-        throw new Error("--benchmarks-dir requires a value");
-      }
-      parsed.benchmarkDir = value;
-      index += 1;
-      continue;
-    }
-
-    if (arg.startsWith("--benchmarks-dir=")) {
-      parsed.benchmarkDir = arg.slice("--benchmarks-dir=".length);
-      continue;
-    }
-
-    if (arg === "--out-dir") {
-      const value = args[index + 1];
-      if (!value) {
-        throw new Error("--out-dir requires a value");
-      }
-      parsed.outputDir = value;
-      index += 1;
-      continue;
-    }
-
-    if (arg.startsWith("--out-dir=")) {
-      parsed.outputDir = arg.slice("--out-dir=".length);
-      continue;
-    }
-
-    if (arg === "--case") {
-      const value = args[index + 1];
-      if (!value) {
-        throw new Error("--case requires a value");
-      }
-      parsed.cases.push(value);
-      index += 1;
-      continue;
-    }
-
-    if (arg.startsWith("--case=")) {
-      parsed.cases.push(arg.slice("--case=".length));
-      continue;
-    }
-
-    throw new Error(`Unknown argument: ${arg}`);
-  }
-
-  return parsed;
-}
-
-function printHelp() {
-  console.log(`Usage: node scripts/log-bytecode-sizes.mjs [options]
-
-Compiles benchmark projects with the CLI and appends bytecode-size entries to ${defaultOutputDir}/{benchmark-name}.json.
-
-Options:
-  --benchmarks-dir <path>  Directory containing .8f4e benchmark projects. Default: ${defaultBenchmarkDir}
-  --out-dir <path>         Output directory for per-benchmark JSON logs. Default: ${defaultOutputDir}
-  --case <path>            Only log one case, relative to the benchmark directory. Can be repeated.
-  -h, --help               Show this help.
-
-Notes:
-  - The script invokes packages/cli/bin/cli.js compile with --wasm-output.
-  - Run through Nx with npx nx run @8f4e/examples:log-bytecode-size so the CLI is built first.
-  - Log entries contain emitted byte counts.`);
-}
-
-async function collectBenchmarkCases(root, caseFilter) {
+async function collectBenchmarkCases(root) {
   const files = [];
   await collectFiles(root, root, files);
 
   return files
-    .filter(({ relativePath }) => !caseFilter || caseFilter.has(relativePath))
     .map(({ filePath, relativePath }) => ({
       filePath,
       path: path.relative(workspaceRoot, filePath).split(path.sep).join("/"),
