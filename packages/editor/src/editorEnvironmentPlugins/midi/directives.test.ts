@@ -36,9 +36,9 @@ describe('parseMidiInDirectives', () => {
 		const result = parseMidiInDirectives(
 			stateWithBlocks([
 				codeBlock('foo', [
-					midiInDirective(['0', 'onMidiIn'], 1),
-					midiInDirective(['0', 'onPitchBend'], 2),
-					midiInDirective(['1', 'onMidiIn'], 3),
+					midiInDirective(['-1710537465', 'onMidiIn'], 1),
+					midiInDirective(['-1710537465', 'onPitchBend'], 2),
+					midiInDirective(['input-b', 'onMidiIn'], 3),
 				]),
 			])
 		);
@@ -46,21 +46,21 @@ describe('parseMidiInDirectives', () => {
 		expect(result.errors).toEqual([]);
 		expect(result.bindings).toEqual([
 			{
-				port: '0',
+				port: '-1710537465',
 				exportName: 'onMidiIn',
 				lineNumber: 2,
 				codeBlockId: 'foo',
 				codeBlockType: 'module',
 			},
 			{
-				port: '0',
+				port: '-1710537465',
 				exportName: 'onPitchBend',
 				lineNumber: 3,
 				codeBlockId: 'foo',
 				codeBlockType: 'module',
 			},
 			{
-				port: '1',
+				port: 'input-b',
 				exportName: 'onMidiIn',
 				lineNumber: 4,
 				codeBlockId: 'foo',
@@ -74,58 +74,50 @@ describe('parseMidiInDirectives', () => {
 			stateWithBlocks([
 				codeBlock('foo', [
 					midiInDirective(['0'], 0),
-					midiInDirective(['not-a-number', 'onMidiIn'], 1),
-					midiInDirective(['2', 'onMidiIn'], 2),
-					midiInDirective(['2', 'onMidiIn'], 3),
+					midiInDirective(['-1710537465', 'onMidiIn'], 1),
+					midiInDirective(['-1710537465', 'onMidiIn'], 2),
 				]),
 			])
 		);
 
 		expect(result.bindings).toEqual([
 			{
-				port: '2',
+				port: '-1710537465',
 				exportName: 'onMidiIn',
-				lineNumber: 3,
+				lineNumber: 2,
 				codeBlockId: 'foo',
 				codeBlockType: 'module',
 			},
 		]);
 		expect(result.errors.map(error => error.message)).toEqual([
 			'@midiIn requires <port> and <callbackExportName>.',
-			'@midiIn port must be a non-negative number.',
-			'Duplicate @midiIn binding for port "2" and callback "onMidiIn".',
+			'Duplicate @midiIn binding for port "-1710537465" and callback "onMidiIn".',
 		]);
 	});
 
-	it('normalizes numeric ports before deduplicating bindings', () => {
+	it('keeps raw port strings when deduplicating bindings', () => {
 		const result = parseMidiInDirectives(
 			stateWithBlocks([
-				codeBlock('foo', [
-					midiInDirective(['01', 'onMidiIn'], 0),
-					midiInDirective(['1', 'onMidiIn'], 1),
-					midiInDirective(['02', 'onPitchBend'], 2),
-				]),
+				codeBlock('foo', [midiInDirective(['01', 'onMidiIn'], 0), midiInDirective(['1', 'onMidiIn'], 1)]),
 			])
 		);
 
 		expect(result.bindings).toEqual([
 			{
-				port: '1',
+				port: '01',
 				exportName: 'onMidiIn',
 				lineNumber: 1,
 				codeBlockId: 'foo',
 				codeBlockType: 'module',
 			},
 			{
-				port: '2',
-				exportName: 'onPitchBend',
-				lineNumber: 3,
+				port: '1',
+				exportName: 'onMidiIn',
+				lineNumber: 2,
 				codeBlockId: 'foo',
 				codeBlockType: 'module',
 			},
 		]);
-		expect(result.errors.map(error => error.message)).toEqual([
-			'Duplicate @midiIn binding for port "1" and callback "onMidiIn".',
-		]);
+		expect(result.errors).toEqual([]);
 	});
 });

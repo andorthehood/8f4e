@@ -11,8 +11,7 @@ interface MidiDevicesOptions {
 }
 
 interface ConnectedMidiDevices {
-	inputs: MIDIInput[];
-	outputs: MIDIOutput[];
+	inputsByPort: Map<string, MIDIInput>;
 }
 
 export interface MidiDeviceManager {
@@ -34,7 +33,7 @@ function addPorts(
 	info: InfoRecord,
 	ports: MIDIInputMap | MIDIOutputMap,
 	type: MidiDeviceDirection,
-	connectedPorts: MIDIInput[] | MIDIOutput[]
+	connectedInputsByPort?: Map<string, MIDIInput>
 ): void {
 	ports.forEach((port, mapId) => {
 		if (!isConnectedPort(port)) {
@@ -47,17 +46,16 @@ function addPorts(
 		}
 
 		info[key] = formatPortName(port, key) + (type === 'input' ? ' (in)' : ' (out)');
-		connectedPorts.push(port as MIDIInput & MIDIOutput);
+		connectedInputsByPort?.set(key, port as MIDIInput);
 	});
 }
 
 function createMidiInfo(access: MIDIAccess, connectedDevices: ConnectedMidiDevices): InfoRecord {
 	const info: InfoRecord = {};
 
-	connectedDevices.inputs.length = 0;
-	connectedDevices.outputs.length = 0;
-	addPorts(info, access.inputs, 'input', connectedDevices.inputs);
-	addPorts(info, access.outputs, 'output', connectedDevices.outputs);
+	connectedDevices.inputsByPort.clear();
+	addPorts(info, access.inputs, 'input', connectedDevices.inputsByPort);
+	addPorts(info, access.outputs, 'output');
 	return info;
 }
 
@@ -69,8 +67,7 @@ export default function createMidiDeviceManager({
 	const requestMIDIAccess = (navigator as unknown as { requestMIDIAccess?: Navigator['requestMIDIAccess'] })
 		.requestMIDIAccess;
 	const connectedDevices: ConnectedMidiDevices = {
-		inputs: [],
-		outputs: [],
+		inputsByPort: new Map(),
 	};
 	let disposed = false;
 	let midiAccess: MIDIAccess | undefined;
@@ -126,21 +123,13 @@ export default function createMidiDeviceManager({
 		});
 
 	return {
-		getInputPort: port => {
-			const portNumber = Number(port);
-			if (!Number.isInteger(portNumber) || portNumber < 0) {
-				return undefined;
-			}
-
-			return connectedDevices.inputs[portNumber];
-		},
+		getInputPort: port => connectedDevices.inputsByPort.get(port),
 		dispose: () => {
 			disposed = true;
 			if (midiAccess) {
 				midiAccess.onstatechange = previousStateChangeHandler;
 			}
-			connectedDevices.inputs.length = 0;
-			connectedDevices.outputs.length = 0;
+			connectedDevices.inputsByPort.clear();
 			setMidiInfo(undefined);
 			onPortsChanged?.();
 		},

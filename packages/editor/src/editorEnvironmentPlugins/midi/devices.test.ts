@@ -48,7 +48,7 @@ describe('createMidiDeviceManager', () => {
 				[
 					'input-a',
 					{
-						id: 'input-a',
+						id: '-1710537465',
 						manufacturer: 'Acme',
 						name: 'Keys',
 						state: 'connected',
@@ -80,10 +80,11 @@ describe('createMidiDeviceManager', () => {
 
 		expect(requestMIDIAccess).toHaveBeenCalledTimes(1);
 		expect(store.getState().info.midi).toEqual({
-			'input-a': 'Keys (in)',
+			'-1710537465': 'Keys (in)',
 			'output-a': 'Synth (out)',
 		});
-		expect(manager.getInputPort('0')).toBe(access.inputs.get('input-a'));
+		expect(manager.getInputPort('-1710537465')).toBe(access.inputs.get('input-a'));
+		expect(manager.getInputPort('0')).toBeUndefined();
 
 		access.inputs.set('input-b', {
 			id: 'input-b',
@@ -98,11 +99,11 @@ describe('createMidiDeviceManager', () => {
 		access.onstatechange?.({});
 
 		expect(store.getState().info.midi).toEqual({
-			'input-a': 'Keys (in)',
+			'-1710537465': 'Keys (in)',
 			'input-b': 'Pads (in)',
 			'output-a': 'Synth (out)',
 		});
-		expect(manager.getInputPort('1')).toBe(access.inputs.get('input-b'));
+		expect(manager.getInputPort('input-b')).toBe(access.inputs.get('input-b'));
 
 		manager.dispose();
 

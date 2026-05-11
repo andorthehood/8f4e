@@ -237,7 +237,7 @@ Bind a browser MIDI input port to an exported 8f4e function.
 Notes:
 
 - The MIDI plugin is activated by `@midiIn`; `; @info midi` can display available ports while MIDI is active.
-- `<port>` is the raw input port number shown by `; @info midi`.
+- `<port>` is the raw input port key shown by `; @info midi`.
 - `<callbackExportName>` must be a callable WebAssembly export created with `#export`.
 - The callback receives three integer arguments: `status`, `data1`, and `data2`.
 - MIDI messages with fewer than three bytes pass missing bytes as `0`.
@@ -249,8 +249,8 @@ Example:
 
 ```txt
 ; @info midi
-; @midiIn 0 onMidiIn
-; @midiIn 0 onPitchBend
+; @midiIn -1710537465 onMidiIn
+; @midiIn -1710537465 onPitchBend
 ```
 
 ### `@offset`
