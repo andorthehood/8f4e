@@ -3,7 +3,7 @@
 note
 ; @pos -83 19
 
-; @midiIn -1710537465 onMidiEvent
+; @midiIn 0 onMidiEvent
 
 ; @info midi
 
