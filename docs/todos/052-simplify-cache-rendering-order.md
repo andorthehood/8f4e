@@ -1,5 +1,5 @@
 ---
-title: 'null'
+title: 'TODO: Simplify Cache Rendering Order'
 priority: Medium
 effort: 2–3 days
 created: 2025-09-03

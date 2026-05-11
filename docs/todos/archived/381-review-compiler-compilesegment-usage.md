@@ -3,7 +3,8 @@ title: 'TODO: Review compiler compileSegment usage for unnecessary self-compilat
 priority: Medium
 effort: 2-4h
 created: 2026-04-22
-status: Active
+status: Completed
+completed: 2026-05-08
 ---
 
 # TODO: Review compiler compileSegment usage for unnecessary self-compilation
@@ -94,3 +95,4 @@ The goal is not to remove `compileSegment(...)` entirely. The goal is to make it
 ## Notes
 
 - Start with the simplest instruction-level cases first, especially unary comparisons and small normalization helpers.
+- Archived after verification on 2026-05-11: `rg -n "compileSegment\\(" packages/compiler/src` returned no current compiler call sites. The removal landed in `e73dd2486 fix(compiler): remove compileSegment` on 2026-05-08.

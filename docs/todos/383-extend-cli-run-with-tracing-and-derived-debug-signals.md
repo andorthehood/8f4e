@@ -1,3 +1,12 @@
+---
+title: 'TODO: Extend CLI run with tracing and derived debug signals'
+priority: Medium
+effort: 1-2d
+created: 2026-04-23
+status: Open
+completed: null
+---
+
 # Extend CLI `run` with tracing and derived debug signals
 
 ## Why
