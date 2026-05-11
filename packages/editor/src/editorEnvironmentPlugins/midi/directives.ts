@@ -42,18 +42,20 @@ export default function parseMidiInDirectives(state: State): MidiInDirectivePars
 				continue;
 			}
 
-			if (!Number.isInteger(Number(port)) || Number(port) < 0) {
+			const portNumber = Number(port);
+			if (!Number.isInteger(portNumber) || portNumber < 0) {
 				errors.push(createDirectiveError(block, directive.rawRow, '@midiIn port must be a non-negative number.'));
 				continue;
 			}
+			const normalizedPort = String(portNumber);
 
-			const bindingKey = `${port}\u0000${exportName}`;
+			const bindingKey = `${normalizedPort}\u0000${exportName}`;
 			if (seenBindings.has(bindingKey)) {
 				errors.push(
 					createDirectiveError(
 						block,
 						directive.rawRow,
-						`Duplicate @midiIn binding for port "${port}" and callback "${exportName}".`
+						`Duplicate @midiIn binding for port "${normalizedPort}" and callback "${exportName}".`
 					)
 				);
 				continue;
@@ -61,7 +63,7 @@ export default function parseMidiInDirectives(state: State): MidiInDirectivePars
 
 			seenBindings.add(bindingKey);
 			bindings.push({
-				port,
+				port: normalizedPort,
 				exportName,
 				lineNumber: directive.rawRow + 1,
 				codeBlockId: block.id,
