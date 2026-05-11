@@ -30,7 +30,23 @@ function getPortKey(port: MIDIPort, mapId: string): string | undefined {
 	return port.id || mapId || undefined;
 }
 
-function addInputPorts(info: InfoRecord, ports: MIDIInputMap, inputsByPort: Map<string, MIDIInput>): void {
+function getIndexedPortKey(kind: 'input' | 'output', portKey: string, indexesByKey: Map<string, number>): string {
+	const indexedPortKey = `${kind}\u0000${portKey}`;
+	let index = indexesByKey.get(indexedPortKey);
+	if (index === undefined) {
+		index = indexesByKey.size;
+		indexesByKey.set(indexedPortKey, index);
+	}
+
+	return String(index);
+}
+
+function addInputPorts(
+	info: InfoRecord,
+	ports: MIDIInputMap,
+	inputsByPort: Map<string, MIDIInput>,
+	indexesByKey: Map<string, number>
+): void {
 	ports.forEach((port, mapId) => {
 		if (!isConnectedPort(port)) {
 			return;
@@ -41,12 +57,13 @@ function addInputPorts(info: InfoRecord, ports: MIDIInputMap, inputsByPort: Map<
 			return;
 		}
 
-		info[key] = formatPortName(port, key) + ' (in)';
-		inputsByPort.set(key, port);
+		const indexedKey = getIndexedPortKey('input', key, indexesByKey);
+		info[indexedKey] = formatPortName(port, indexedKey) + ' (in)';
+		inputsByPort.set(indexedKey, port);
 	});
 }
 
-function addOutputPorts(info: InfoRecord, ports: MIDIOutputMap): void {
+function addOutputPorts(info: InfoRecord, ports: MIDIOutputMap, indexesByKey: Map<string, number>): void {
 	ports.forEach((port, mapId) => {
 		if (!isConnectedPort(port)) {
 			return;
@@ -57,7 +74,8 @@ function addOutputPorts(info: InfoRecord, ports: MIDIOutputMap): void {
 			return;
 		}
 
-		info[key] = formatPortName(port, key) + ' (out)';
+		const indexedKey = getIndexedPortKey('output', key, indexesByKey);
+		info[indexedKey] = formatPortName(port, indexedKey) + ' (out)';
 	});
 }
 
@@ -65,8 +83,9 @@ function createMidiInfo(access: MIDIAccess, connectedDevices: ConnectedMidiDevic
 	connectedDevices.inputsByPort.clear();
 
 	const info: InfoRecord = {};
-	addInputPorts(info, access.inputs, connectedDevices.inputsByPort);
-	addOutputPorts(info, access.outputs);
+	const indexesByKey = new Map<string, number>();
+	addInputPorts(info, access.inputs, connectedDevices.inputsByPort, indexesByKey);
+	addOutputPorts(info, access.outputs, indexesByKey);
 	return info;
 }
 
