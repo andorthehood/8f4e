@@ -20,13 +20,13 @@ function createState(codeBlocks: CodeBlockGraphicData[] = []): State {
 	} as unknown as State;
 }
 
-function createCodeBlockWithEditorDirective(name: string): CodeBlockGraphicData {
+function createCodeBlockWithEditorDirective(name: string, args: string[] = []): CodeBlockGraphicData {
 	return {
 		parsedDirectives: [
 			{
 				prefix: '@',
 				name,
-				args: [],
+				args,
 				rawRow: 0,
 				isTrailing: false,
 			},
@@ -48,6 +48,8 @@ describe('editor environment plugin manager', () => {
 	const windowMock = {} as Window;
 	const navigatorMock = {} as Navigator;
 	const memoryViewsMock = {} as EditorEnvironmentPluginContext['memoryViews'];
+	const getWasmMemory = vi.fn(() => null);
+	const getCodeBuffer = vi.fn(() => new Uint8Array());
 
 	it('lazy-loads a plugin when one of its editor directives appears', async () => {
 		const dispose = vi.fn();
@@ -66,6 +68,8 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			getWasmMemory,
+			getCodeBuffer,
 			registry,
 		});
 
@@ -83,6 +87,8 @@ describe('editor environment plugin manager', () => {
 				window: windowMock,
 				navigator: navigatorMock,
 				memoryViews: memoryViewsMock,
+				getWasmMemory,
+				getCodeBuffer,
 			})
 		);
 
@@ -105,6 +111,8 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			getWasmMemory,
+			getCodeBuffer,
 			registry,
 		});
 		await flushPromises();
@@ -112,6 +120,37 @@ describe('editor environment plugin manager', () => {
 		store.set('graphicHelper.codeBlocks', []);
 
 		expect(dispose).toHaveBeenCalledTimes(1);
+	});
+
+	it('uses an entry-specific directive matcher when provided', async () => {
+		const start = vi.fn(() => () => {});
+		const registry: EditorEnvironmentPluginRegistryEntry[] = [
+			{
+				id: 'test-plugin',
+				editorDirectives: ['info'],
+				matchesDirective: directive =>
+					directive.prefix === '@' && directive.name === 'info' && directive.args[0] === 'midi',
+				load: vi.fn(async () => ({ default: start })),
+			},
+		];
+		const store = createStateManager(createState([createCodeBlockWithEditorDirective('info', ['compiler'])]));
+
+		createEditorEnvironmentPluginManager(store, events, {
+			window: windowMock,
+			navigator: navigatorMock,
+			memoryViews: memoryViewsMock,
+			getWasmMemory,
+			getCodeBuffer,
+			registry,
+		});
+		await flushPromises();
+
+		expect(start).not.toHaveBeenCalled();
+
+		store.set('graphicHelper.codeBlocks', [createCodeBlockWithEditorDirective('info', ['midi'])]);
+		await flushPromises();
+
+		expect(start).toHaveBeenCalledTimes(1);
 	});
 
 	it('lets plugins own and clear their scoped errors', async () => {
@@ -137,6 +176,8 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			getWasmMemory,
+			getCodeBuffer,
 			registry,
 		});
 		await flushPromises();
@@ -170,6 +211,8 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			getWasmMemory,
+			getCodeBuffer,
 			registry,
 		});
 

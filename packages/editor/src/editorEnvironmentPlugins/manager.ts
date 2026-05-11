@@ -1,7 +1,13 @@
 import { editorEnvironmentPluginRegistry } from './registry';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type {
+	CodeBlockGraphicData,
+	CodeError,
+	EventDispatcher,
+	ParsedDirectiveRecord,
+	State,
+} from '@8f4e/editor-state-types';
 import type { MemoryViews } from '@8f4e/web-ui';
 import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEntry } from './types';
 
@@ -14,36 +20,41 @@ interface EditorEnvironmentPluginManagerOptions {
 	window: Window;
 	navigator: Navigator;
 	memoryViews: MemoryViews;
+	getWasmMemory: () => WebAssembly.Memory | null;
+	getCodeBuffer: () => Uint8Array;
 	registry?: EditorEnvironmentPluginRegistryEntry[];
 }
 
-function getDirectiveNamesFromBlock(block: CodeBlockGraphicData | undefined, names: Set<string>): void {
+function directiveMatchesEntry(entry: EditorEnvironmentPluginRegistryEntry, directive: ParsedDirectiveRecord): boolean {
+	if (directive.prefix !== '@') {
+		return false;
+	}
+
+	return entry.matchesDirective?.(directive) ?? entry.editorDirectives.includes(directive.name);
+}
+
+function blockHasMatchingDirective(
+	entry: EditorEnvironmentPluginRegistryEntry,
+	block: CodeBlockGraphicData | undefined
+): boolean {
 	if (!block) {
-		return;
+		return false;
 	}
 
 	for (const directive of block.parsedDirectives ?? []) {
-		if (directive.prefix === '@') {
-			names.add(directive.name);
+		if (directiveMatchesEntry(entry, directive)) {
+			return true;
 		}
 	}
-}
 
-function getActiveEditorDirectiveNames(state: State): Set<string> {
-	const names = new Set<string>();
-
-	for (const block of state.graphicHelper.codeBlocks) {
-		getDirectiveNamesFromBlock(block, names);
-	}
-
-	getDirectiveNamesFromBlock(state.graphicHelper.selectedCodeBlock, names);
-
-	return names;
+	return false;
 }
 
 function hasMatchingDirective(entry: EditorEnvironmentPluginRegistryEntry, state: State): boolean {
-	const activeNames = getActiveEditorDirectiveNames(state);
-	return entry.editorDirectives.some(name => activeNames.has(name));
+	return (
+		state.graphicHelper.codeBlocks.some(block => blockHasMatchingDirective(entry, block)) ||
+		blockHasMatchingDirective(entry, state.graphicHelper.selectedCodeBlock)
+	);
 }
 
 export function createEditorEnvironmentPluginManager(
@@ -104,6 +115,8 @@ export function createEditorEnvironmentPluginManager(
 					window: options.window,
 					navigator: options.navigator,
 					memoryViews: options.memoryViews,
+					getWasmMemory: options.getWasmMemory,
+					getCodeBuffer: options.getCodeBuffer,
 					setErrors: errors => setPluginErrors(entry.id, errors),
 				};
 
