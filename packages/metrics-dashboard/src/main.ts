@@ -33,6 +33,23 @@ type BundleSizeManifest = {
 	logs: TrackedLog[];
 };
 
+type BytecodeTrackedLog = {
+	benchmark: string;
+	label: string;
+	path: string;
+};
+
+type BytecodeSizeManifest = {
+	logs: BytecodeTrackedLog[];
+};
+
+type BytecodeSizeEntry = {
+	commit: string;
+	version: string | null;
+	benchmark: string;
+	emittedBytes: number;
+};
+
 type Point = {
 	packageName: string;
 	label: string;
@@ -52,71 +69,142 @@ type Point = {
 	files: BundleFileEntry[];
 };
 
+type BytecodePoint = {
+	benchmark: string;
+	label: string;
+	version: string;
+	releaseTag: string;
+	commit: string;
+	releaseKey: string;
+	releaseIndex: number;
+	releaseLabel: string;
+	bytes: number;
+	previousBytes: number | null;
+	delta: number | null;
+};
+
+type DashboardTab = 'bundles' | 'bytecode';
+
 const app = requireElement<HTMLDivElement>('#app');
 
 app.innerHTML = `
 	<header class="app-header">
 		<div>
-			<h1>Bundle Sizes</h1>
+			<h1>Metrics Dashboard</h1>
 			<p id="last-updated"></p>
 		</div>
 		<div class="controls" aria-label="Dashboard controls">
-			<div class="segmented" role="group" aria-label="Size metric">
+			<div class="segmented" role="tablist" aria-label="Metric view">
+				<button type="button" class="segment is-active" data-tab="bundles">Bundles</button>
+				<button type="button" class="segment" data-tab="bytecode">Bytecode</button>
+			</div>
+			<div class="segmented" id="metric-control" role="group" aria-label="Size metric">
 				<button type="button" class="segment is-active" data-metric="gzip">Gzip</button>
 				<button type="button" class="segment" data-metric="raw">Raw</button>
 			</div>
 		</div>
 	</header>
 	<main>
-		<section class="summary-grid" id="summary-grid" aria-label="Latest bundle size summary"></section>
-		<section class="chart-section package-section">
-			<div class="section-heading">
-				<h2>Packages</h2>
-				<span id="package-caption"></span>
-			</div>
-			<div class="package-grid" id="package-grid"></div>
-		</section>
-		<section class="chart-section">
-			<div class="section-heading">
-				<h2>Growth</h2>
-				<span id="growth-caption"></span>
-			</div>
-			<div class="chart" id="overview-chart"></div>
-		</section>
-		<section class="chart-section">
-			<div class="section-heading">
-				<h2>Latest Delta</h2>
-				<span id="delta-caption"></span>
-			</div>
-			<div class="chart chart-short" id="delta-chart"></div>
-		</section>
+		<div id="bundles-view">
+			<section class="summary-grid" id="summary-grid" aria-label="Latest bundle size summary"></section>
+			<section class="chart-section package-section">
+				<div class="section-heading">
+					<h2>Packages</h2>
+					<span id="package-caption"></span>
+				</div>
+				<div class="package-grid" id="package-grid"></div>
+			</section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Growth</h2>
+					<span id="growth-caption"></span>
+				</div>
+				<div class="chart" id="overview-chart"></div>
+			</section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Latest Delta</h2>
+					<span id="delta-caption"></span>
+				</div>
+				<div class="chart chart-short" id="delta-chart"></div>
+			</section>
+		</div>
+		<div id="bytecode-view" hidden>
+			<section class="summary-grid" id="bytecode-summary-grid" aria-label="Latest bytecode size summary"></section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Benchmarks</h2>
+					<span id="bytecode-package-caption">Emitted bytes</span>
+				</div>
+				<div class="package-grid" id="bytecode-grid"></div>
+			</section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Growth</h2>
+					<span>Emitted bytes</span>
+				</div>
+				<div class="chart" id="bytecode-overview-chart"></div>
+			</section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Latest Delta</h2>
+					<span>Emitted bytes</span>
+				</div>
+				<div class="chart chart-short" id="bytecode-delta-chart"></div>
+			</section>
+		</div>
 	</main>
 `;
 
 const state = {
+	tab: 'bundles' as DashboardTab,
 	metric: 'gzip' as SizeMetric,
 	trackedLogs: [] as TrackedLog[],
 	points: [] as Point[],
+	bytecodeLogs: [] as BytecodeTrackedLog[],
+	bytecodePoints: [] as BytecodePoint[],
 };
 
+const bundlesView = requireElement<HTMLDivElement>('#bundles-view');
+const bytecodeView = requireElement<HTMLDivElement>('#bytecode-view');
 const summaryGrid = requireElement<HTMLDivElement>('#summary-grid');
 const overviewChart = requireElement<HTMLDivElement>('#overview-chart');
 const deltaChart = requireElement<HTMLDivElement>('#delta-chart');
+const bytecodeSummaryGrid = requireElement<HTMLDivElement>('#bytecode-summary-grid');
+const bytecodeOverviewChart = requireElement<HTMLDivElement>('#bytecode-overview-chart');
+const bytecodeDeltaChart = requireElement<HTMLDivElement>('#bytecode-delta-chart');
+const bytecodeGrid = requireElement<HTMLDivElement>('#bytecode-grid');
 const lastUpdated = requireElement<HTMLParagraphElement>('#last-updated');
 const growthCaption = requireElement<HTMLSpanElement>('#growth-caption');
 const deltaCaption = requireElement<HTMLSpanElement>('#delta-caption');
 const packageCaption = requireElement<HTMLSpanElement>('#package-caption');
 const packageGrid = requireElement<HTMLDivElement>('#package-grid');
+const metricControl = requireElement<HTMLDivElement>('#metric-control');
+const tabButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-tab]')];
 const metricButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-metric]')];
 
 init().catch((error: unknown) => {
-	app.innerHTML = `<div class="error-state"><h1>Bundle Sizes</h1><p>${escapeHtml(getErrorMessage(error))}</p></div>`;
+	app.innerHTML = `<div class="error-state"><h1>Metrics Dashboard</h1><p>${escapeHtml(getErrorMessage(error))}</p></div>`;
 });
 
 async function init() {
-	state.trackedLogs = await loadTrackedLogs();
-	state.points = await loadPoints(state.trackedLogs);
+	const [trackedLogs, bytecodeLogs] = await Promise.all([loadTrackedLogs(), loadBytecodeTrackedLogs()]);
+	state.trackedLogs = trackedLogs;
+	state.bytecodeLogs = bytecodeLogs;
+	const [points, bytecodePoints] = await Promise.all([
+		loadPoints(state.trackedLogs),
+		loadBytecodePoints(state.bytecodeLogs),
+	]);
+	state.points = points;
+	state.bytecodePoints = bytecodePoints;
 	render();
+
+	for (const button of tabButtons) {
+		button.addEventListener('click', () => {
+			state.tab = button.dataset.tab as DashboardTab;
+			render();
+		});
+	}
 
 	for (const button of metricButtons) {
 		button.addEventListener('click', () => {
@@ -141,6 +229,19 @@ async function loadTrackedLogs() {
 	return manifest.logs;
 }
 
+async function loadBytecodeTrackedLogs() {
+	const response = await fetch('bytecode-size/manifest.json', {
+		cache: 'no-store',
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to load bytecode size manifest: ${response.status}`);
+	}
+
+	const manifest = (await response.json()) as BytecodeSizeManifest;
+	return manifest.logs;
+}
+
 async function loadPoints(trackedLogs: TrackedLog[]) {
 	const pointGroups = await Promise.all(
 		trackedLogs.map(async log => {
@@ -158,6 +259,25 @@ async function loadPoints(trackedLogs: TrackedLog[]) {
 	);
 
 	return withReleaseIndexes(pointGroups.flat());
+}
+
+async function loadBytecodePoints(trackedLogs: BytecodeTrackedLog[]) {
+	const pointGroups = await Promise.all(
+		trackedLogs.map(async log => {
+			const response = await fetch(`bytecode-size/${log.path}`, {
+				cache: 'no-store',
+			});
+
+			if (!response.ok) {
+				throw new Error(`Failed to load ${log.path}: ${response.status}`);
+			}
+
+			const entries = (await response.json()) as BytecodeSizeEntry[];
+			return toBytecodePoints(log, entries);
+		})
+	);
+
+	return withSequentialReleaseIndexes(pointGroups.flat());
 }
 
 function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
@@ -198,6 +318,32 @@ function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 	}
 
 	return points;
+}
+
+function toBytecodePoints(log: BytecodeTrackedLog, entries: BytecodeSizeEntry[]) {
+	const previousByBenchmark = new Map<string, number>();
+
+	return entries.map(entry => {
+		const bytes = entry.emittedBytes;
+		const previousBytes = previousByBenchmark.get(log.benchmark) ?? null;
+		const version = entry.version ?? 'unknown';
+		const point = {
+			benchmark: log.benchmark,
+			label: log.label,
+			version,
+			releaseTag: `@8f4e/compiler@${version}`,
+			commit: entry.commit,
+			releaseKey: entry.commit || version,
+			releaseIndex: 0,
+			releaseLabel: '',
+			bytes,
+			previousBytes,
+			delta: previousBytes === null ? null : bytes - previousBytes,
+		};
+
+		previousByBenchmark.set(log.benchmark, bytes);
+		return point;
+	});
 }
 
 function sumFileBytes(files: BundleFileEntry[]): Record<SizeMetric, number> {
@@ -245,9 +391,47 @@ function withReleaseIndexes(points: Point[]) {
 	});
 }
 
+function withSequentialReleaseIndexes<TPoint extends { releaseKey: string; commit: string; version: string }>(
+	points: TPoint[]
+) {
+	const releases = [...new Map(points.map(point => [point.releaseKey, point])).values()].map((point, index) => ({
+		key: point.releaseKey,
+		index,
+		label: `${index + 1} · ${point.version}`,
+	}));
+	const releaseByKey = new Map(releases.map(release => [release.key, release]));
+
+	return points.map(point => {
+		const release = releaseByKey.get(point.releaseKey);
+
+		if (!release) {
+			return point;
+		}
+
+		return {
+			...point,
+			releaseIndex: release.index,
+			releaseLabel: release.label,
+		};
+	});
+}
+
 function render() {
+	bundlesView.hidden = state.tab !== 'bundles';
+	bytecodeView.hidden = state.tab !== 'bytecode';
+	metricControl.hidden = state.tab !== 'bundles';
+
+	for (const button of tabButtons) {
+		button.classList.toggle('is-active', button.dataset.tab === state.tab);
+	}
+
 	for (const button of metricButtons) {
 		button.classList.toggle('is-active', button.dataset.metric === state.metric);
+	}
+
+	if (state.tab === 'bytecode') {
+		renderBytecode();
+		return;
 	}
 
 	const metricPoints = state.points.filter(point => point.metric === state.metric);
@@ -285,6 +469,39 @@ function renderSummary(latestPoints: Point[]) {
 	].join('');
 }
 
+function renderBytecode() {
+	const latestPoints = getLatestBytecodePoints(state.bytecodePoints);
+	const latestPoint = latestPoints[0] ?? null;
+	const latestDelta =
+		latestPoints
+			.filter(point => point.delta !== null)
+			.sort((a, b) => Math.abs(b.delta ?? 0) - Math.abs(a.delta ?? 0))[0] ?? null;
+	const snapshotCount = new Set(state.bytecodePoints.map(point => point.releaseKey)).size;
+
+	lastUpdated.textContent = latestPoint
+		? `Latest compiler ${latestPoint.releaseTag} · ${shortCommit(latestPoint.commit)}`
+		: 'No bytecode data';
+
+	bytecodeSummaryGrid.innerHTML = [
+		renderSummaryItem(
+			'Latest Compiler',
+			latestPoint?.version ?? 'n/a',
+			latestPoint ? shortCommit(latestPoint.commit) : ''
+		),
+		renderSummaryItem('Latest Size', latestPoint ? formatBytes(latestPoint.bytes) : 'n/a', latestPoint?.label ?? ''),
+		renderSummaryItem(
+			'Largest Delta',
+			latestDelta?.delta === null || !latestDelta ? 'n/a' : formatDelta(latestDelta.delta),
+			latestDelta ? latestDelta.label : ''
+		),
+		renderSummaryItem('Snapshots', String(snapshotCount), 'compiler releases'),
+	].join('');
+
+	renderBytecodeOverview(state.bytecodePoints);
+	renderBytecodeDelta(latestPoints);
+	renderBytecodeGrid(state.bytecodePoints);
+}
+
 function renderSummaryItem(label: string, value: string, meta: string) {
 	return `
 		<article class="summary-item">
@@ -293,6 +510,55 @@ function renderSummaryItem(label: string, value: string, meta: string) {
 			<small>${escapeHtml(meta)}</small>
 		</article>
 	`;
+}
+
+function renderBytecodeOverview(points: BytecodePoint[]) {
+	const releaseLabels = getReleaseLabels(points);
+	const hasTrend = hasMultipleSnapshots(points);
+
+	replaceChart(
+		bytecodeOverviewChart,
+		Plot.plot({
+			width: getChartWidth(bytecodeOverviewChart),
+			height: 340,
+			marginLeft: 64,
+			marginRight: 24,
+			marginTop: 18,
+			marginBottom: 44,
+			x: {
+				label: null,
+				grid: true,
+				tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
+			},
+			y: {
+				domain: getByteDomain(points),
+				label: 'Emitted bytes',
+				grid: true,
+				tickFormat: formatCompactBytes,
+			},
+			color: { legend: true },
+			marks: [
+				...(hasTrend
+					? [
+							Plot.lineY(points, {
+								x: 'releaseIndex',
+								y: 'bytes',
+								stroke: 'label',
+								strokeWidth: 2.25,
+								tip: true,
+							}),
+						]
+					: []),
+				Plot.dot(points, {
+					x: 'releaseIndex',
+					y: 'bytes',
+					fill: 'label',
+					r: 4,
+					title: point => `${point.label}\n${point.releaseTag}\n${point.releaseLabel}\n${formatBytes(point.bytes)}`,
+				}),
+			],
+		})
+	);
 }
 
 function renderOverview(points: Point[]) {
@@ -344,6 +610,45 @@ function renderOverview(points: Point[]) {
 	);
 }
 
+function renderBytecodeDelta(latestPoints: BytecodePoint[]) {
+	const deltaPoints = latestPoints.filter(point => point.delta !== null);
+
+	if (deltaPoints.length === 0) {
+		bytecodeDeltaChart.replaceChildren(createEmptyChart('No previous snapshot'));
+		return;
+	}
+
+	replaceChart(
+		bytecodeDeltaChart,
+		Plot.plot({
+			width: getChartWidth(bytecodeDeltaChart),
+			height: 260,
+			marginLeft: 64,
+			marginRight: 24,
+			marginTop: 18,
+			marginBottom: 72,
+			x: { label: null, tickRotate: -24 },
+			y: {
+				label: 'Emitted byte delta',
+				grid: true,
+				tickFormat: formatCompactBytes,
+			},
+			color: {
+				range: ['#b42318', '#027a48'],
+			},
+			marks: [
+				Plot.ruleY([0]),
+				Plot.barY(deltaPoints, {
+					x: 'label',
+					y: 'delta',
+					fill: point => ((point.delta ?? 0) > 0 ? 'increase' : 'decrease'),
+					title: point => `${point.label}\n${formatDelta(point.delta ?? 0)}`,
+				}),
+			],
+		})
+	);
+}
+
 function renderDelta(latestPoints: Point[]) {
 	const deltaPoints = latestPoints.filter(point => point.delta !== null);
 
@@ -383,6 +688,35 @@ function renderDelta(latestPoints: Point[]) {
 	);
 }
 
+function renderBytecodeGrid(points: BytecodePoint[]) {
+	bytecodeGrid.replaceChildren();
+
+	for (const log of state.bytecodeLogs) {
+		const benchmarkPoints = points.filter(point => point.benchmark === log.benchmark);
+		const latestPoint = benchmarkPoints[benchmarkPoints.length - 1] ?? null;
+		const card = document.createElement('article');
+		card.className = 'package-card';
+		card.innerHTML = `
+			<div class="package-card-header">
+				<div>
+					<h3>${escapeHtml(log.label)}</h3>
+					<p>${latestPoint ? escapeHtml(formatBytecodePointMeta(latestPoint)) : ''}</p>
+				</div>
+				<strong>${latestPoint ? escapeHtml(formatBytes(latestPoint.bytes)) : 'n/a'}</strong>
+			</div>
+			<div class="package-card-chart"></div>
+			${renderBytecodeTable(benchmarkPoints)}
+		`;
+
+		bytecodeGrid.append(card);
+		const chartContainer = card.querySelector<HTMLElement>('.package-card-chart');
+
+		if (chartContainer) {
+			replaceChart(chartContainer, createBytecodeBenchmarkChart(chartContainer, benchmarkPoints));
+		}
+	}
+}
+
 function renderPackageGrid(points: Point[]) {
 	packageGrid.replaceChildren();
 
@@ -410,6 +744,50 @@ function renderPackageGrid(points: Point[]) {
 			replaceChart(chartContainer, createPackageChart(chartContainer, packagePoints));
 		}
 	}
+}
+
+function createBytecodeBenchmarkChart(container: HTMLElement, points: BytecodePoint[]) {
+	const releaseLabels = getReleaseLabels(points);
+	const hasTrend = hasMultipleSnapshots(points);
+
+	return Plot.plot({
+		width: getChartWidth(container),
+		height: 170,
+		marginLeft: 54,
+		marginRight: 16,
+		marginTop: 12,
+		marginBottom: 36,
+		x: {
+			label: null,
+			grid: true,
+			tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
+		},
+		y: {
+			domain: getByteDomain(points),
+			label: 'Bytes',
+			grid: true,
+			tickFormat: formatCompactBytes,
+		},
+		marks: [
+			...(hasTrend
+				? [
+						Plot.lineY(points, {
+							x: 'releaseIndex',
+							y: 'bytes',
+							stroke: '#1d4ed8',
+							strokeWidth: 2,
+						}),
+					]
+				: []),
+			Plot.dot(points, {
+				x: 'releaseIndex',
+				y: 'bytes',
+				fill: '#1d4ed8',
+				r: 4,
+				title: point => `${point.releaseTag}\n${point.releaseLabel}\n${formatBytes(point.bytes)}`,
+			}),
+		],
+	});
 }
 
 function createPackageChart(container: HTMLElement, points: Point[]) {
@@ -454,6 +832,41 @@ function createPackageChart(container: HTMLElement, points: Point[]) {
 			}),
 		],
 	});
+}
+
+function renderBytecodeTable(points: BytecodePoint[]) {
+	if (points.length === 0) {
+		return '<div class="empty-table">No snapshots</div>';
+	}
+
+	return `
+		<div class="file-table-wrap">
+			<table class="file-table">
+				<thead>
+					<tr>
+						<th>Compiler</th>
+						<th>Bytes</th>
+						<th>Delta</th>
+					</tr>
+				</thead>
+				<tbody>
+					${points
+						.slice(-8)
+						.reverse()
+						.map(
+							point => `
+								<tr>
+									<td>${escapeHtml(point.releaseTag)}</td>
+									<td>${formatBytes(point.bytes)}</td>
+									<td>${point.delta === null ? 'n/a' : formatDelta(point.delta)}</td>
+								</tr>
+							`
+						)
+						.join('')}
+				</tbody>
+			</table>
+		</div>
+	`;
 }
 
 function renderFileTable(point: Point | null) {
@@ -506,6 +919,12 @@ function getLatestPoints(points: Point[]) {
 		.filter((point): point is Point => Boolean(point));
 }
 
+function getLatestBytecodePoints(points: BytecodePoint[]) {
+	return state.bytecodeLogs
+		.map(log => points.filter(point => point.benchmark === log.benchmark).at(-1))
+		.filter((point): point is BytecodePoint => Boolean(point));
+}
+
 function getLatestDate(points: Point[]) {
 	return points.map(point => point.recordedAt).sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
 }
@@ -514,15 +933,15 @@ function getChartWidth(container: HTMLElement) {
 	return Math.max(280, Math.floor(container.getBoundingClientRect().width));
 }
 
-function getReleaseLabels(points: Point[]) {
+function getReleaseLabels(points: Array<{ releaseIndex: number; releaseLabel: string }>) {
 	return new Map(points.map(point => [point.releaseIndex, point.releaseLabel]));
 }
 
-function hasMultipleSnapshots(points: Point[]) {
+function hasMultipleSnapshots(points: Array<{ releaseIndex: number }>) {
 	return new Set(points.map(point => point.releaseIndex)).size > 1;
 }
 
-function getByteDomain(points: Point[]): [number, number] | undefined {
+function getByteDomain(points: Array<{ bytes: number }>): [number, number] | undefined {
 	const values = points.map(point => point.bytes).filter(Number.isFinite);
 
 	if (values.length === 0) {
@@ -558,6 +977,10 @@ function formatDelta(delta: number) {
 }
 
 function formatPointMeta(point: Point) {
+	return `${point.releaseTag} · ${shortCommit(point.commit)}`;
+}
+
+function formatBytecodePointMeta(point: BytecodePoint) {
 	return `${point.releaseTag} · ${shortCommit(point.commit)}`;
 }
 
