@@ -6,6 +6,7 @@ import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
 import { createEditorEnvironmentPluginManager } from './editorEnvironmentPlugins/manager';
+import { createEditorEnvironmentPluginServices } from './editorEnvironmentPlugins/services';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
@@ -92,14 +93,29 @@ function toGraphicsInfoRecord(stats: RenderStats): InfoRecord {
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
 	const { memoryViews, updateMemoryViews } = createMemoryViewManager(new ArrayBuffer(0));
 	const events = initEvents();
+	let currentMemoryRef: WebAssembly.Memory | null = null;
+	let currentCodeBuffer = new Uint8Array();
 	let store: ReturnType<typeof initState>;
 	let view: Awaited<ReturnType<typeof initView>>;
 	const exportCanvasScreenshot = options.callbacks.exportCanvasScreenshot;
+	const compileCode = options.callbacks.compileCode;
+	const pluginServices = createEditorEnvironmentPluginServices({
+		getWasmMemory: () => currentMemoryRef,
+		getCodeBuffer: () => currentCodeBuffer,
+	});
 
 	store = initState(events, {
 		...options,
 		callbacks: {
 			...options.callbacks,
+			compileCode: compileCode
+				? async (modules, compilerOptions, functions, macros) => {
+						const result = await compileCode(modules, compilerOptions, functions, macros);
+						currentCodeBuffer = new Uint8Array(result.codeBuffer);
+						pluginServices.invalidateWasmExports();
+						return result;
+					}
+				: undefined,
 			getWordFromMemory: (wordAlignedAddress: number) => {
 				return memoryViews.int32[wordAlignedAddress] || 0;
 			},
@@ -134,6 +150,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		window: browserWindow as Window,
 		navigator: browserWindow?.navigator ?? globalThis.navigator,
 		memoryViews,
+		services: pluginServices.services,
 	});
 
 	// Generate sprite data and update state before initializing view
@@ -173,7 +190,11 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
 			view.resize(width, height);
 		},
-		updateMemoryViews,
+		updateMemoryViews: (memoryRef: MemoryRef) => {
+			currentMemoryRef = memoryRef instanceof WebAssembly.Memory ? memoryRef : null;
+			pluginServices.invalidateWasmExports();
+			updateMemoryViews(memoryRef);
+		},
 		getMemoryViews: () => memoryViews,
 		dispose: () => {
 			cleanupPointer();

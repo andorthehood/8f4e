@@ -20,13 +20,13 @@ function createState(codeBlocks: CodeBlockGraphicData[] = []): State {
 	} as unknown as State;
 }
 
-function createCodeBlockWithEditorDirective(name: string): CodeBlockGraphicData {
+function createCodeBlockWithEditorDirective(name: string, args: string[] = []): CodeBlockGraphicData {
 	return {
 		parsedDirectives: [
 			{
 				prefix: '@',
 				name,
-				args: [],
+				args,
 				rawRow: 0,
 				isTrailing: false,
 			},
@@ -48,6 +48,9 @@ describe('editor environment plugin manager', () => {
 	const windowMock = {} as Window;
 	const navigatorMock = {} as Navigator;
 	const memoryViewsMock = {} as EditorEnvironmentPluginContext['memoryViews'];
+	const services = {
+		getWasmExports: vi.fn(),
+	};
 
 	it('lazy-loads a plugin when one of its editor directives appears', async () => {
 		const dispose = vi.fn();
@@ -66,6 +69,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			services,
 			registry,
 		});
 
@@ -83,6 +87,7 @@ describe('editor environment plugin manager', () => {
 				window: windowMock,
 				navigator: navigatorMock,
 				memoryViews: memoryViewsMock,
+				services,
 			})
 		);
 
@@ -105,6 +110,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			services,
 			registry,
 		});
 		await flushPromises();
@@ -137,6 +143,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			services,
 			registry,
 		});
 		await flushPromises();
@@ -170,6 +177,7 @@ describe('editor environment plugin manager', () => {
 			window: windowMock,
 			navigator: navigatorMock,
 			memoryViews: memoryViewsMock,
+			services,
 			registry,
 		});
 

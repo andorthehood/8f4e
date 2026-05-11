@@ -85,6 +85,7 @@ Active todo files are listed below.
 | 267 | Add float64 support for greaterOrEqualUnsigned instruction | 2026-05-10 | `greaterOrEqualUnsigned` now emits `F64_GE` for float64 operands and has unit/public regression coverage. |
 | 268 | Add float64 support for sqrt instruction | 2026-05-10 | `sqrt` now emits `F64_SQRT`, preserves float64 metadata, and no longer marks the result as always non-zero. |
 | 395 | Add exported 8f4e functions | 2026-05-10 | `#export <exportedName>` now exports user functions through the generated WebAssembly ABI with positional JS numeric arguments and duplicate-name validation. |
+| 396 | Add MIDI input editor environment plugin | 2026-05-11 | The editor MIDI plugin now lazy-loads from `@midiIn`, lists devices via `@info midi`, and forwards MIDI input bytes to exported 8f4e callbacks through a shared-memory Wasm instance. |
 | 391 | Add compiler AST cache for incremental compiles | 2026-05-04 | `compile()` now returns and accepts an opaque AST cache for unchanged expanded module and function inputs. |
 | 329 | Replace literal-only const collection with semantic namespace prepass | 2026-03-27 | Replaced `collectConstants(ast)` bootstrap with semantic namespace prepass. |
 | 330 | Centralize compile-time folding as an AST normalization pass | 2026-03-27 | Compile-time folding now runs as a semantic normalization pass before codegen. |

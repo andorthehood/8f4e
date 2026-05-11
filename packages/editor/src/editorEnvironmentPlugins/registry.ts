@@ -12,8 +12,8 @@ export const editorEnvironmentPluginRegistry: EditorEnvironmentPluginRegistryEnt
 		load: () => import('./binaryAssets/plugin'),
 	},
 	{
-		id: 'midi-devices',
-		editorDirectives: ['midi'],
-		load: () => import('./midiDevices/plugin'),
+		id: 'midi',
+		editorDirectives: ['midiIn'],
+		load: () => import('./midi/plugin'),
 	},
 ];

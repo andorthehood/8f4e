@@ -1,0 +1,77 @@
+8f4e/v1
+
+note
+; @pos -83 19
+
+; @midiIn 0 onMidiEvent
+
+; @info midi
+
+noteEnd
+
+constants env
+; @pos -202 -6
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+function midiChannel
+; @pos -122 -4
+param int status
+
+push status
+push 0xf
+and
+
+functionEnd int
+
+function onMidiEvent
+; @pos -122 7
+#export onMidiEvent
+#impure
+
+param int status
+param int data1
+param int data2
+
+push &lastMidiEvent:status
+push status
+store
+
+push &lastMidiEvent:channel
+push status
+call midiChannel
+store
+
+push &lastMidiEvent:data1
+push data1
+store
+
+push &lastMidiEvent:data2
+push data2
+store
+
+functionEnd
+
+module lastMidiEvent
+; @pos -83 7
+; @home right                      
+int status  ; @w 0x
+int channel ; @w
+int data1   ; @w
+int data2   ; @w
+
+moduleEnd
+
+module projectConfig
+; @pos -202 -14
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @config export.fileName midiIn
+
+moduleEnd
