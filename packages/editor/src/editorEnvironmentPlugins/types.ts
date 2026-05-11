@@ -1,5 +1,5 @@
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeError, EventDispatcher, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
+import type { CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '@8f4e/web-ui';
 
 export interface EditorEnvironmentPluginContext {
@@ -20,6 +20,5 @@ export type EditorEnvironmentPlugin = (
 export interface EditorEnvironmentPluginRegistryEntry {
 	id: string;
 	editorDirectives: string[];
-	matchesDirective?: (directive: ParsedDirectiveRecord) => boolean;
 	load: () => Promise<{ default: EditorEnvironmentPlugin }>;
 }

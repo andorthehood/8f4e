@@ -13,10 +13,7 @@ export const editorEnvironmentPluginRegistry: EditorEnvironmentPluginRegistryEnt
 	},
 	{
 		id: 'midi',
-		editorDirectives: ['midiIn', 'info'],
-		matchesDirective: directive =>
-			directive.prefix === '@' &&
-			(directive.name === 'midiIn' || (directive.name === 'info' && directive.args[0] === 'midi')),
+		editorDirectives: ['midiIn'],
 		load: () => import('./midi/plugin'),
 	},
 ];
