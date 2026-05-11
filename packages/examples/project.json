@@ -26,6 +26,22 @@
 				"cwd": "{projectRoot}"
 			}
 		},
+		"log-opcode-size": {
+			"executor": "nx:run-commands",
+			"cache": false,
+			"outputs": ["{workspaceRoot}/logs/opcode-size"],
+			"dependsOn": [
+				{
+					"projects": ["@8f4e/cli"],
+					"target": "build",
+					"params": "ignore"
+				}
+			],
+			"options": {
+				"command": "node scripts/log-opcode-sizes.mjs",
+				"cwd": "{workspaceRoot}"
+			}
+		},
 		"typecheck": {
 			"executor": "nx:run-commands",
 			"options": {
