@@ -6,6 +6,7 @@ Example modules and projects used by the editor and tooling. Exports example mod
 
 - `modules/`: reusable example modules.
 - `projects/`: complete example projects.
+- `src/benchmarks/bytecode-size/`: benchmark cases for measuring emitted bytecode size.
 
 ## Hosted Examples
 
