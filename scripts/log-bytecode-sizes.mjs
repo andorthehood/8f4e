@@ -17,7 +17,7 @@ const suiteName = "bytecode-size";
 async function main() {
   const benchmarkCases = await collectBenchmarkCases(benchmarkDir);
   const gitMetadata = getGitMetadata();
-  const packageJson = await readJson(path.resolve(workspaceRoot, "packages/examples/package.json"));
+  const packageJson = await readJson(path.resolve(workspaceRoot, "packages/compiler/package.json"));
 
   if (benchmarkCases.length === 0) {
     console.error(
