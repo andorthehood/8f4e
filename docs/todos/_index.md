@@ -59,7 +59,7 @@ Active todo files are listed below.
 | 386 | Guard i32.rem_s divisor zero | 🟡 | 2-4h | 2026-04-30 | The `remainder` instruction emits WebAssembly `i32.rem_s` for integer operands. WebAssembly has no non-trapping variant for integer remainder. The raw opcode traps when the divi... |
 | 390 | Add compiler passive data inputs for array initialization | 🟡 | 1-2d | 2026-05-04 | The compiler now uses passive data segments to restore declared initial memory, but every segment is still derived from source-level memory declarations and compiler-owned inter... |
 | 392 | Move shared compiler constants to compiler-types | 🟡 | 2-4h | 2026-05-06 | Some compiler-related constants are still owned by implementation packages even though they are part of the public contract consumed by editor state, web UI, compiler workers, o... |
-| 394 | Extract compiler stack analysis into a separate pass | 🟡 | 2-4d | 2026-05-08 | The compiler currently mixes stack analysis, stack-type validation, and bytecode emission inside instruction compilers. |
+| 397 | Finish compiler stack analysis/codegen separation | 🟡 | 2-4d | 2026-05-11 | TODO 394 centralized compiler instruction stack validation: `withValidation` is gone, compiler-owned instruction contracts live in `packages/compiler/src/instructionSpecs.ts`, a... |
 
 ### 🟢 Low Priority
 
@@ -77,6 +77,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 394 | Extract compiler stack analysis into a separate pass | 2026-05-08 | `withValidation` was removed, stack validation helpers moved under `packages/compiler/src/stackAnalysis/`, and compiler instruction contracts were centralized in `instructionSpecs.ts`; remaining codegen separation is tracked in `397`. |
 | 381 | Review compiler compileSegment usage for unnecessary self-compilation | 2026-05-08 | Archived after verification: no current compiler `compileSegment(...)` call sites remain under `packages/compiler/src`; removal landed in `e73dd2486`. |
 | 387 | Add lazy editor environment plugins | 2026-05-01 | Directive-triggered lazy editor environment plugins now load keyboard memory and binary asset integrations only when matching directives are present. |
 | 262 | Add float64 support for equal instruction | 2026-05-10 | `equal` now emits `F64_EQ` for float64 operands and has unit/public regression coverage. |
