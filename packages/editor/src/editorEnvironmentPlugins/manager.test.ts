@@ -122,37 +122,6 @@ describe('editor environment plugin manager', () => {
 		expect(dispose).toHaveBeenCalledTimes(1);
 	});
 
-	it('uses an entry-specific directive matcher when provided', async () => {
-		const start = vi.fn(() => () => {});
-		const registry: EditorEnvironmentPluginRegistryEntry[] = [
-			{
-				id: 'test-plugin',
-				editorDirectives: ['info'],
-				matchesDirective: directive =>
-					directive.prefix === '@' && directive.name === 'info' && directive.args[0] === 'midi',
-				load: vi.fn(async () => ({ default: start })),
-			},
-		];
-		const store = createStateManager(createState([createCodeBlockWithEditorDirective('info', ['compiler'])]));
-
-		createEditorEnvironmentPluginManager(store, events, {
-			window: windowMock,
-			navigator: navigatorMock,
-			memoryViews: memoryViewsMock,
-			getWasmMemory,
-			getCodeBuffer,
-			registry,
-		});
-		await flushPromises();
-
-		expect(start).not.toHaveBeenCalled();
-
-		store.set('graphicHelper.codeBlocks', [createCodeBlockWithEditorDirective('info', ['midi'])]);
-		await flushPromises();
-
-		expect(start).toHaveBeenCalledTimes(1);
-	});
-
 	it('lets plugins own and clear their scoped errors', async () => {
 		const pluginError = {
 			codeBlockId: 'test-block',

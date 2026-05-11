@@ -236,7 +236,7 @@ Bind a browser MIDI input port to an exported 8f4e function.
 
 Notes:
 
-- Use `; @info midi` to list available MIDI inputs and outputs.
+- The MIDI plugin is activated by `@midiIn`; `; @info midi` can display available ports while MIDI is active.
 - `<port>` is the raw input port number shown by `; @info midi`.
 - `<callbackExportName>` must be a callable WebAssembly export created with `#export`.
 - The callback receives three integer arguments: `status`, `data1`, and `data2`.

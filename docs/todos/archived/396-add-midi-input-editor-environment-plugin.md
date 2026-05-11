@@ -176,7 +176,7 @@ to:
 ## Success Criteria
 
 - [x] The MIDI editor environment plugin is named and organized as `midi`.
-- [x] The plugin lazy-loads from `@midiIn` or `@info midi`, not placeholder `@midi`.
+- [x] The plugin lazy-loads from `@midiIn`, not placeholder `@midi`.
 - [x] `@info midi` continues to list available MIDI devices.
 - [x] `@midiIn <port> <callbackExportName>` binds a MIDI input port to a `#export`ed 8f4e function.
 - [x] Multiple `@midiIn` handlers can be bound to the same port.
