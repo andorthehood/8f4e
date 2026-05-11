@@ -1,8 +1,10 @@
 import { editorEnvironmentPluginRegistry } from './registry';
+import { getActiveCodeBlocksForEnvironmentPlugins } from './codeBlocks';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '@8f4e/web-ui';
+import type { EditorEnvironmentPluginServices } from './services';
 import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEntry } from './types';
 
 interface ActivePlugin {
@@ -14,6 +16,7 @@ interface EditorEnvironmentPluginManagerOptions {
 	window: Window;
 	navigator: Navigator;
 	memoryViews: MemoryViews;
+	services: EditorEnvironmentPluginServices;
 	registry?: EditorEnvironmentPluginRegistryEntry[];
 }
 
@@ -32,17 +35,14 @@ function getDirectiveNamesFromBlock(block: CodeBlockGraphicData | undefined, nam
 function getActiveEditorDirectiveNames(state: State): Set<string> {
 	const names = new Set<string>();
 
-	for (const block of state.graphicHelper.codeBlocks) {
+	for (const block of getActiveCodeBlocksForEnvironmentPlugins(state)) {
 		getDirectiveNamesFromBlock(block, names);
 	}
-
-	getDirectiveNamesFromBlock(state.graphicHelper.selectedCodeBlock, names);
 
 	return names;
 }
 
-function hasMatchingDirective(entry: EditorEnvironmentPluginRegistryEntry, state: State): boolean {
-	const activeNames = getActiveEditorDirectiveNames(state);
+function hasMatchingDirective(entry: EditorEnvironmentPluginRegistryEntry, activeNames: Set<string>): boolean {
 	return entry.editorDirectives.some(name => activeNames.has(name));
 }
 
@@ -92,7 +92,7 @@ export function createEditorEnvironmentPluginManager(
 					return;
 				}
 
-				if (!hasMatchingDirective(entry, store.getState())) {
+				if (!hasMatchingDirective(entry, getActiveEditorDirectiveNames(store.getState()))) {
 					activePlugins.delete(entry.id);
 					setPluginErrors(entry.id, []);
 					return;
@@ -104,6 +104,7 @@ export function createEditorEnvironmentPluginManager(
 					window: options.window,
 					navigator: options.navigator,
 					memoryViews: options.memoryViews,
+					services: options.services,
 					setErrors: errors => setPluginErrors(entry.id, errors),
 				};
 
@@ -117,7 +118,7 @@ export function createEditorEnvironmentPluginManager(
 					return;
 				}
 
-				if (!hasMatchingDirective(entry, store.getState())) {
+				if (!hasMatchingDirective(entry, getActiveEditorDirectiveNames(store.getState()))) {
 					if (typeof dispose === 'function') {
 						dispose();
 					}
@@ -144,9 +145,9 @@ export function createEditorEnvironmentPluginManager(
 			return;
 		}
 
-		const state = store.getState();
+		const activeNames = getActiveEditorDirectiveNames(store.getState());
 		for (const entry of registry) {
-			if (hasMatchingDirective(entry, state)) {
+			if (hasMatchingDirective(entry, activeNames)) {
 				startPlugin(entry);
 			} else {
 				disposePlugin(entry);
