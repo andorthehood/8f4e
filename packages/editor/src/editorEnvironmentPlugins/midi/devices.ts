@@ -1,8 +1,5 @@
-import type { InfoRecord } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '@8f4e/editor-state-types';
-
-type MidiDeviceDirection = 'input' | 'output';
+import type { InfoRecord, State } from '@8f4e/editor-state-types';
 
 interface MidiDevicesOptions {
 	store: StateManager<State>;
@@ -29,33 +26,47 @@ function isConnectedPort(port: MIDIPort): boolean {
 	return !port.state || port.state === 'connected';
 }
 
-function addPorts(
-	info: InfoRecord,
-	ports: MIDIInputMap | MIDIOutputMap,
-	type: MidiDeviceDirection,
-	connectedInputsByPort?: Map<string, MIDIInput>
-): void {
+function getPortKey(port: MIDIPort, mapId: string): string | undefined {
+	return port.id || mapId || undefined;
+}
+
+function addInputPorts(info: InfoRecord, ports: MIDIInputMap, inputsByPort: Map<string, MIDIInput>): void {
 	ports.forEach((port, mapId) => {
 		if (!isConnectedPort(port)) {
 			return;
 		}
 
-		const key = port.id || mapId;
+		const key = getPortKey(port, mapId);
 		if (!key) {
 			return;
 		}
 
-		info[key] = formatPortName(port, key) + (type === 'input' ? ' (in)' : ' (out)');
-		connectedInputsByPort?.set(key, port as MIDIInput);
+		info[key] = formatPortName(port, key) + ' (in)';
+		inputsByPort.set(key, port);
+	});
+}
+
+function addOutputPorts(info: InfoRecord, ports: MIDIOutputMap): void {
+	ports.forEach((port, mapId) => {
+		if (!isConnectedPort(port)) {
+			return;
+		}
+
+		const key = getPortKey(port, mapId);
+		if (!key) {
+			return;
+		}
+
+		info[key] = formatPortName(port, key) + ' (out)';
 	});
 }
 
 function createMidiInfo(access: MIDIAccess, connectedDevices: ConnectedMidiDevices): InfoRecord {
-	const info: InfoRecord = {};
-
 	connectedDevices.inputsByPort.clear();
-	addPorts(info, access.inputs, 'input', connectedDevices.inputsByPort);
-	addPorts(info, access.outputs, 'output');
+
+	const info: InfoRecord = {};
+	addInputPorts(info, access.inputs, connectedDevices.inputsByPort);
+	addOutputPorts(info, access.outputs);
 	return info;
 }
 

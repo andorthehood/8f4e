@@ -85,6 +85,7 @@ describe('createMidiIn', () => {
 		const onPitchBend = vi.fn();
 		const input = createMIDIInputMock();
 		const setErrors = vi.fn();
+		const getInputPort = vi.fn(port => (port === 'input-a' ? (input as unknown as MIDIInput) : undefined));
 		const store = createStore([
 			codeBlock('foo', [midiInDirective(['input-a', 'onNote']), midiInDirective(['input-a', 'onPitchBend'])]),
 		]);
@@ -92,7 +93,7 @@ describe('createMidiIn', () => {
 		const manager = createMidiIn({
 			store,
 			setErrors,
-			getInputPort: port => (port === 'input-a' ? (input as unknown as MIDIInput) : undefined),
+			getInputPort,
 			getWasmExports: createGetWasmExports({
 				onNote,
 				onPitchBend,
@@ -105,6 +106,7 @@ describe('createMidiIn', () => {
 		expect(onNote).toHaveBeenCalledWith(0x90, 64, 127);
 		expect(onPitchBend).toHaveBeenCalledWith(0x90, 64, 127);
 		expect(setErrors).toHaveBeenLastCalledWith([]);
+		expect(getInputPort).toHaveBeenCalledTimes(1);
 
 		manager.dispose();
 	});
