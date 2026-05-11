@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execFile, execFileSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -41,9 +41,6 @@ async function main() {
   }
 
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "8f4e-bytecode-size-"));
-  const gitMetadata = getGitMetadata();
-  const packageJson = await readJson(path.resolve(workspaceRoot, "packages/examples/package.json"));
-
   try {
     const loggedCases = [];
 
@@ -60,22 +57,16 @@ async function main() {
         maxBuffer: 1024 * 1024 * 20,
       });
 
-      const wasmBytes = await fs.readFile(wasmPath);
-      const emittedBytes = measureWasmEmittedBytes(wasmBytes);
+      const emittedBytes = (await fs.stat(wasmPath)).size;
       const outputPath = getCaseLogPath(outputDir, benchmarkCase);
       const entry = {
-        schemaVersion: 1,
-        recordedAt: new Date().toISOString(),
-        commit: gitMetadata.commit,
-        version: packageJson.version ?? null,
-        benchmark: benchmarkCase.relativePath,
-        path: benchmarkCase.path,
         emittedBytes,
       };
 
       await appendLogEntry(outputPath, entry);
       loggedCases.push({
         ...entry,
+        sourcePath: benchmarkCase.path,
         outputPath,
       });
     }
@@ -94,7 +85,7 @@ async function main() {
     for (const benchmarkCase of loggedCases) {
       console.log(
         [
-          benchmarkCase.path,
+          benchmarkCase.sourcePath,
           `${benchmarkCase.emittedBytes} emitted bytes`,
           path.relative(workspaceRoot, benchmarkCase.outputPath),
         ].join(" | "),
@@ -227,131 +218,6 @@ async function collectFiles(root, dir, files) {
   }
 }
 
-function measureWasmEmittedBytes(wasmBytes) {
-  return parseWasmEmittedBytes([...wasmBytes]);
-}
-
-function parseWasmEmittedBytes(bytes) {
-  const reader = createByteReader(bytes);
-  const magic = reader.readBytes(4);
-  const version = reader.readBytes(4);
-
-  if (
-    magic[0] !== 0x00 ||
-    magic[1] !== 0x61 ||
-    magic[2] !== 0x73 ||
-    magic[3] !== 0x6d ||
-    version[0] !== 0x01 ||
-    version[1] !== 0x00 ||
-    version[2] !== 0x00 ||
-    version[3] !== 0x00
-  ) {
-    throw new Error("Invalid WebAssembly binary");
-  }
-
-  let emittedBytes = 0;
-
-  while (!reader.done()) {
-    const sectionId = reader.readByte();
-    const sectionSize = reader.readUnsignedLeb128();
-    const sectionEnd = reader.position() + sectionSize;
-
-    if (sectionId === 10) {
-      emittedBytes += measureCodeSection(reader, sectionEnd);
-    }
-
-    reader.setPosition(sectionEnd);
-  }
-
-  return emittedBytes;
-}
-
-function measureCodeSection(reader, sectionEnd) {
-  const functionCount = reader.readUnsignedLeb128();
-  let emittedBytes = 0;
-
-  for (let functionIndex = 0; functionIndex < functionCount; functionIndex += 1) {
-    const bodySize = reader.readUnsignedLeb128();
-    const bodyStart = reader.position();
-    const bodyEnd = bodyStart + bodySize;
-    const localDeclarationCount = reader.readUnsignedLeb128();
-
-    for (let index = 0; index < localDeclarationCount; index += 1) {
-      reader.readUnsignedLeb128();
-      reader.readByte();
-    }
-
-    emittedBytes += bodyEnd - reader.position();
-    reader.setPosition(bodyEnd);
-  }
-
-  if (reader.position() !== sectionEnd) {
-    throw new Error("Invalid WebAssembly code section size");
-  }
-
-  return emittedBytes;
-}
-
-function createByteReader(bytes) {
-  let offset = 0;
-
-  return {
-    done() {
-      return offset >= bytes.length;
-    },
-    readByte() {
-      if (offset >= bytes.length) {
-        throw new Error("Unexpected end of bytecode");
-      }
-
-      const value = bytes[offset];
-      offset += 1;
-
-      if (!Number.isInteger(value) || value < 0 || value > 255) {
-        throw new Error(`Invalid byte value: ${value}`);
-      }
-
-      return value;
-    },
-    readBytes(length) {
-      const values = [];
-      for (let index = 0; index < length; index += 1) {
-        values.push(this.readByte());
-      }
-      return values;
-    },
-    position() {
-      return offset;
-    },
-    setPosition(position) {
-      if (position < offset) {
-        throw new Error("Cannot rewind byte reader");
-      }
-
-      if (position > bytes.length) {
-        throw new Error("Byte reader position is out of range");
-      }
-
-      offset = position;
-    },
-    readUnsignedLeb128() {
-      let shift = 0;
-      let result = 0;
-
-      while (true) {
-        const byte = this.readByte();
-        result += (byte & 0x7f) * 2 ** shift;
-
-        if ((byte & 0x80) === 0) {
-          return result;
-        }
-
-        shift += 7;
-      }
-    },
-  };
-}
-
 function sum(items, key) {
   return items.reduce((total, item) => total + item[key], 0);
 }
@@ -380,24 +246,6 @@ async function appendLogEntry(filePath, entry) {
 
   existingEntries.push(entry);
   await fs.writeFile(filePath, `${JSON.stringify(existingEntries, null, "\t")}\n`);
-}
-
-function getGitMetadata() {
-  return {
-    commit: runGit(["rev-parse", "HEAD"]),
-  };
-}
-
-function runGit(args) {
-  try {
-    return execFileSync("git", args, {
-      cwd: workspaceRoot,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-    }).trim();
-  } catch {
-    return "";
-  }
 }
 
 async function readJson(filePath) {
