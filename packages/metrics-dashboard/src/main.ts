@@ -425,8 +425,9 @@ function renderSummary(latestPoints: Point[]) {
 }
 
 function renderBytecode() {
-	const latestPoints = getLatestBytecodePoints(state.bytecodePoints);
-	const latestPoint = latestPoints[0] ?? null;
+	const latestReleasePoints = getLatestBytecodeReleasePoints(state.bytecodePoints);
+	const latestPoint = latestReleasePoints[0] ?? null;
+	const latestReleaseBytes = latestReleasePoints.reduce((sum, point) => sum + point.bytes, 0);
 	const snapshotCount = new Set(state.bytecodePoints.map(point => point.releaseKey)).size;
 
 	lastUpdated.textContent = latestPoint
@@ -439,7 +440,11 @@ function renderBytecode() {
 			latestPoint?.version ?? 'n/a',
 			latestPoint ? shortCommit(latestPoint.commit) : ''
 		),
-		renderSummaryItem('Latest Size', latestPoint ? formatBytes(latestPoint.bytes) : 'n/a', latestPoint?.label ?? ''),
+		renderSummaryItem(
+			'Latest Size',
+			latestPoint ? formatBytes(latestReleaseBytes) : 'n/a',
+			`${latestReleasePoints.length} benchmarks`
+		),
 		renderSummaryItem('Snapshots', String(snapshotCount), 'compiler releases'),
 	].join('');
 
@@ -777,10 +782,10 @@ function getLatestPoints(points: Point[]) {
 		.filter((point): point is Point => Boolean(point));
 }
 
-function getLatestBytecodePoints(points: BytecodePoint[]) {
-	return state.bytecodeLogs
-		.map(log => points.filter(point => point.benchmark === log.benchmark).at(-1))
-		.filter((point): point is BytecodePoint => Boolean(point));
+function getLatestBytecodeReleasePoints(points: BytecodePoint[]) {
+	const latestReleaseIndex = Math.max(-1, ...points.map(point => point.releaseIndex));
+
+	return points.filter(point => point.releaseIndex === latestReleaseIndex);
 }
 
 function getLatestDate(points: Point[]) {

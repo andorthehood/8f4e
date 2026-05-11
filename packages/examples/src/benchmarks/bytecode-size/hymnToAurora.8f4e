@@ -48,7 +48,7 @@ note
 ; @stop 5 5 @hidden
 
 ; These four horizontal lanes represent
-; the fourplayback channels of the MOD.
+; the four playback channels of the MOD.
 noteEnd
 
 note
@@ -1822,7 +1822,7 @@ int* in &modRowCounter:out
 int out
 ; We can afford some reading
 ; and writing to memory
-; for better aesthethics.
+; for better aesthetics.
 push &out
 push *in
 store

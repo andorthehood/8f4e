@@ -125,7 +125,7 @@ async function collectBenchmarkCases(root) {
       path: path.relative(workspaceRoot, filePath).split(path.sep).join("/"),
       relativePath,
       slug: relativePath.replace(/\.8f4e$/, "").replace(/[^a-zA-Z0-9_-]+/g, "-"),
-      logName: `${path.basename(relativePath, ".8f4e")}.json`,
+      logPath: relativePath.replace(/\.8f4e$/, ".json"),
     }))
     .sort((left, right) => left.relativePath.localeCompare(right.relativePath));
 }
@@ -164,7 +164,7 @@ function sumCases(cases) {
 }
 
 function getCaseLogPath(outputDir, benchmarkCase) {
-  return path.join(outputDir, benchmarkCase.logName);
+  return path.join(outputDir, benchmarkCase.logPath);
 }
 
 async function hasLoggedBenchmarkVersion(filePath, version) {
