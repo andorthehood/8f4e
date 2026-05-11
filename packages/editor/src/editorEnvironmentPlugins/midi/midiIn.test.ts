@@ -86,13 +86,13 @@ describe('createMidiIn', () => {
 		const input = createMIDIInputMock();
 		const setErrors = vi.fn();
 		const store = createStore([
-			codeBlock('foo', [midiInDirective(['0', 'onNote']), midiInDirective(['0', 'onPitchBend'])]),
+			codeBlock('foo', [midiInDirective(['input-a', 'onNote']), midiInDirective(['input-a', 'onPitchBend'])]),
 		]);
 
 		const manager = createMidiIn({
 			store,
 			setErrors,
-			getInputPort: port => (port === '0' ? (input as unknown as MIDIInput) : undefined),
+			getInputPort: port => (port === 'input-a' ? (input as unknown as MIDIInput) : undefined),
 			getWasmExports: createGetWasmExports({
 				onNote,
 				onPitchBend,
@@ -112,7 +112,7 @@ describe('createMidiIn', () => {
 	it('defaults missing MIDI data bytes to zero', async () => {
 		const onClock = vi.fn();
 		const input = createMIDIInputMock();
-		const store = createStore([codeBlock('foo', [midiInDirective(['0', 'onClock'])])]);
+		const store = createStore([codeBlock('foo', [midiInDirective(['input-a', 'onClock'])])]);
 
 		const manager = createMidiIn({
 			store,
@@ -135,13 +135,13 @@ describe('createMidiIn', () => {
 		const setErrors = vi.fn();
 		const input = createMIDIInputMock();
 		const store = createStore([
-			codeBlock('foo', [midiInDirective(['0', 'missingExport']), midiInDirective(['1', 'onMidiIn'])]),
+			codeBlock('foo', [midiInDirective(['input-a', 'missingExport']), midiInDirective(['input-b', 'onMidiIn'])]),
 		]);
 
 		const manager = createMidiIn({
 			store,
 			setErrors,
-			getInputPort: port => (port === '0' ? (input as unknown as MIDIInput) : undefined),
+			getInputPort: port => (port === 'input-a' ? (input as unknown as MIDIInput) : undefined),
 			getWasmExports: createGetWasmExports({
 				onMidiIn: vi.fn(),
 			}),
@@ -156,7 +156,7 @@ describe('createMidiIn', () => {
 					message: 'Missing callable WebAssembly export for @midiIn callback "missingExport".',
 				}),
 				expect.objectContaining({
-					message: 'MIDI input port "1" is not available.',
+					message: 'MIDI input port "input-b" is not available.',
 				}),
 			])
 		);
@@ -167,7 +167,7 @@ describe('createMidiIn', () => {
 	it('reports missing ports without waiting for WebAssembly exports', async () => {
 		const setErrors = vi.fn();
 		const getWasmExports = vi.fn();
-		const store = createStore([codeBlock('foo', [midiInDirective(['99', 'onMidiIn'])])]);
+		const store = createStore([codeBlock('foo', [midiInDirective(['missing-input', 'onMidiIn'])])]);
 
 		const manager = createMidiIn({
 			store,
@@ -178,7 +178,7 @@ describe('createMidiIn', () => {
 
 		expect(setErrors).toHaveBeenLastCalledWith([
 			expect.objectContaining({
-				message: 'MIDI input port "99" is not available.',
+				message: 'MIDI input port "missing-input" is not available.',
 			}),
 		]);
 		expect(getWasmExports).not.toHaveBeenCalled();
@@ -194,7 +194,9 @@ describe('createMidiIn', () => {
 		const later = vi.fn();
 		const setErrors = vi.fn();
 		const input = createMIDIInputMock();
-		const store = createStore([codeBlock('foo', [midiInDirective(['0', 'broken']), midiInDirective(['0', 'later'])])]);
+		const store = createStore([
+			codeBlock('foo', [midiInDirective(['input-a', 'broken']), midiInDirective(['input-a', 'later'])]),
+		]);
 
 		const manager = createMidiIn({
 			store,
