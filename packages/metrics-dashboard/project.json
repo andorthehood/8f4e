@@ -10,7 +10,8 @@
 				"default",
 				"^default",
 				"{workspaceRoot}/bundle-size.config.json",
-				"{workspaceRoot}/logs/bundle-sizes/**/*"
+				"{workspaceRoot}/logs/bundle-sizes/**/*",
+				"{workspaceRoot}/logs/bytecode-size/**/*"
 			],
 			"options": {
 				"command": "vite build",

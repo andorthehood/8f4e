@@ -99,6 +99,17 @@ main > * {
 	min-width: 0;
 }
 
+#bundles-view,
+#bytecode-view {
+	display: grid;
+	gap: 20px;
+	min-width: 0;
+}
+
+[hidden] {
+	display: none !important;
+}
+
 .summary-grid {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
