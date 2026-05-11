@@ -7,8 +7,9 @@ interface MidiDevicesOptions {
 	onPortsChanged?: () => void;
 }
 
-interface ConnectedMidiDevices {
-	inputsByPort: Map<string, MIDIInput>;
+interface MidiPortRegistry {
+	inputsByIndex: Map<string, MIDIInput>;
+	indexesByKey: Map<string, number>;
 }
 
 export interface MidiDeviceManager {
@@ -30,7 +31,7 @@ function getPortKey(port: MIDIPort, mapId: string): string | undefined {
 	return port.id || mapId || undefined;
 }
 
-function getIndexedPortKey(kind: 'input' | 'output', portKey: string, indexesByKey: Map<string, number>): string {
+function getPortIndex(kind: 'input' | 'output', portKey: string, indexesByKey: Map<string, number>): string {
 	const indexedPortKey = `${kind}\u0000${portKey}`;
 	let index = indexesByKey.get(indexedPortKey);
 	if (index === undefined) {
@@ -44,7 +45,7 @@ function getIndexedPortKey(kind: 'input' | 'output', portKey: string, indexesByK
 function addInputPorts(
 	info: InfoRecord,
 	ports: MIDIInputMap,
-	inputsByPort: Map<string, MIDIInput>,
+	inputsByIndex: Map<string, MIDIInput>,
 	indexesByKey: Map<string, number>
 ): void {
 	ports.forEach((port, mapId) => {
@@ -57,9 +58,9 @@ function addInputPorts(
 			return;
 		}
 
-		const indexedKey = getIndexedPortKey('input', key, indexesByKey);
-		info[indexedKey] = formatPortName(port, indexedKey) + ' (in)';
-		inputsByPort.set(indexedKey, port);
+		const index = getPortIndex('input', key, indexesByKey);
+		info[index] = formatPortName(port, index) + ' (in)';
+		inputsByIndex.set(index, port);
 	});
 }
 
@@ -74,18 +75,17 @@ function addOutputPorts(info: InfoRecord, ports: MIDIOutputMap, indexesByKey: Ma
 			return;
 		}
 
-		const indexedKey = getIndexedPortKey('output', key, indexesByKey);
-		info[indexedKey] = formatPortName(port, indexedKey) + ' (out)';
+		const index = getPortIndex('output', key, indexesByKey);
+		info[index] = formatPortName(port, index) + ' (out)';
 	});
 }
 
-function createMidiInfo(access: MIDIAccess, connectedDevices: ConnectedMidiDevices): InfoRecord {
-	connectedDevices.inputsByPort.clear();
+function createMidiInfo(access: MIDIAccess, portRegistry: MidiPortRegistry): InfoRecord {
+	portRegistry.inputsByIndex.clear();
 
 	const info: InfoRecord = {};
-	const indexesByKey = new Map<string, number>();
-	addInputPorts(info, access.inputs, connectedDevices.inputsByPort, indexesByKey);
-	addOutputPorts(info, access.outputs, indexesByKey);
+	addInputPorts(info, access.inputs, portRegistry.inputsByIndex, portRegistry.indexesByKey);
+	addOutputPorts(info, access.outputs, portRegistry.indexesByKey);
 	return info;
 }
 
@@ -96,8 +96,9 @@ export default function createMidiDeviceManager({
 }: MidiDevicesOptions): MidiDeviceManager {
 	const requestMIDIAccess = (navigator as unknown as { requestMIDIAccess?: Navigator['requestMIDIAccess'] })
 		.requestMIDIAccess;
-	const connectedDevices: ConnectedMidiDevices = {
-		inputsByPort: new Map(),
+	const portRegistry: MidiPortRegistry = {
+		inputsByIndex: new Map(),
+		indexesByKey: new Map(),
 	};
 	let disposed = false;
 	let midiAccess: MIDIAccess | undefined;
@@ -112,7 +113,7 @@ export default function createMidiDeviceManager({
 			return;
 		}
 
-		setMidiInfo(createMidiInfo(midiAccess, connectedDevices));
+		setMidiInfo(createMidiInfo(midiAccess, portRegistry));
 		onPortsChanged?.();
 	}
 
@@ -153,13 +154,14 @@ export default function createMidiDeviceManager({
 		});
 
 	return {
-		getInputPort: port => connectedDevices.inputsByPort.get(port),
+		getInputPort: port => portRegistry.inputsByIndex.get(port),
 		dispose: () => {
 			disposed = true;
 			if (midiAccess) {
 				midiAccess.onstatechange = previousStateChangeHandler;
 			}
-			connectedDevices.inputsByPort.clear();
+			portRegistry.inputsByIndex.clear();
+			portRegistry.indexesByKey.clear();
 			setMidiInfo(undefined);
 			onPortsChanged?.();
 		},

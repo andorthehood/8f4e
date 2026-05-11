@@ -101,10 +101,30 @@ describe('createMidiDeviceManager', () => {
 
 		expect(store.getState().info.midi).toEqual({
 			'0': 'Keys (in)',
-			'1': 'Pads (in)',
-			'2': 'Synth (out)',
+			'1': 'Synth (out)',
+			'2': 'Pads (in)',
 		});
-		expect(manager.getInputPort('1')).toBe(access.inputs.get('input-b'));
+		expect(manager.getInputPort('2')).toBe(access.inputs.get('input-b'));
+
+		access.inputs.get('input-a')!.state = 'disconnected';
+		access.onstatechange?.({});
+
+		expect(store.getState().info.midi).toEqual({
+			'1': 'Synth (out)',
+			'2': 'Pads (in)',
+		});
+		expect(manager.getInputPort('0')).toBeUndefined();
+		expect(manager.getInputPort('2')).toBe(access.inputs.get('input-b'));
+
+		access.inputs.get('input-a')!.state = 'connected';
+		access.onstatechange?.({});
+
+		expect(store.getState().info.midi).toEqual({
+			'0': 'Keys (in)',
+			'1': 'Synth (out)',
+			'2': 'Pads (in)',
+		});
+		expect(manager.getInputPort('0')).toBe(access.inputs.get('input-a'));
 
 		manager.dispose();
 

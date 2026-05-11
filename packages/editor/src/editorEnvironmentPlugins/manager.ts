@@ -42,8 +42,7 @@ function getActiveEditorDirectiveNames(state: State): Set<string> {
 	return names;
 }
 
-function hasMatchingDirective(entry: EditorEnvironmentPluginRegistryEntry, state: State): boolean {
-	const activeNames = getActiveEditorDirectiveNames(state);
+function hasMatchingDirective(entry: EditorEnvironmentPluginRegistryEntry, activeNames: Set<string>): boolean {
 	return entry.editorDirectives.some(name => activeNames.has(name));
 }
 
@@ -93,7 +92,7 @@ export function createEditorEnvironmentPluginManager(
 					return;
 				}
 
-				if (!hasMatchingDirective(entry, store.getState())) {
+				if (!hasMatchingDirective(entry, getActiveEditorDirectiveNames(store.getState()))) {
 					activePlugins.delete(entry.id);
 					setPluginErrors(entry.id, []);
 					return;
@@ -119,7 +118,7 @@ export function createEditorEnvironmentPluginManager(
 					return;
 				}
 
-				if (!hasMatchingDirective(entry, store.getState())) {
+				if (!hasMatchingDirective(entry, getActiveEditorDirectiveNames(store.getState()))) {
 					if (typeof dispose === 'function') {
 						dispose();
 					}
@@ -146,9 +145,9 @@ export function createEditorEnvironmentPluginManager(
 			return;
 		}
 
-		const state = store.getState();
+		const activeNames = getActiveEditorDirectiveNames(store.getState());
 		for (const entry of registry) {
-			if (hasMatchingDirective(entry, state)) {
+			if (hasMatchingDirective(entry, activeNames)) {
 				startPlugin(entry);
 			} else {
 				disposePlugin(entry);
