@@ -26,7 +26,7 @@ interface MidiInOptions {
 	store: StateManager<State>;
 	setErrors: EditorEnvironmentPluginContext['setErrors'];
 	getInputPort: MidiInputLookup;
-	wasmExports: EditorEnvironmentPluginContext['wasmExports'];
+	getWasmExports: EditorEnvironmentPluginContext['services']['getWasmExports'];
 }
 
 export interface MidiInManager {
@@ -127,7 +127,7 @@ function attachMidiInputListeners({
 	}
 }
 
-export default function createMidiIn({ store, setErrors, getInputPort, wasmExports }: MidiInOptions): MidiInManager {
+export default function createMidiIn({ store, setErrors, getInputPort, getWasmExports }: MidiInOptions): MidiInManager {
 	const activeListeners: ActiveMidiInputListener[] = [];
 	let disposed = false;
 	let syncGeneration = 0;
@@ -154,8 +154,8 @@ export default function createMidiIn({ store, setErrors, getInputPort, wasmExpor
 			return;
 		}
 
-		void wasmExports
-			.getExports()
+		void getWasmExports()
+			.then(wasmExports => wasmExports.getExports())
 			.then(exports => {
 				if (disposed || generation !== syncGeneration) {
 					return;

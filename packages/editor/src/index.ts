@@ -6,7 +6,7 @@ import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
 import { createEditorEnvironmentPluginManager } from './editorEnvironmentPlugins/manager';
-import { createEditorEnvironmentWasmExports } from './editorEnvironmentPlugins/wasmExports';
+import { createEditorEnvironmentPluginServices } from './editorEnvironmentPlugins/services';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
@@ -99,7 +99,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	let view: Awaited<ReturnType<typeof initView>>;
 	const exportCanvasScreenshot = options.callbacks.exportCanvasScreenshot;
 	const compileCode = options.callbacks.compileCode;
-	const wasmExports = createEditorEnvironmentWasmExports({
+	const pluginServices = createEditorEnvironmentPluginServices({
 		getWasmMemory: () => currentMemoryRef,
 		getCodeBuffer: () => currentCodeBuffer,
 	});
@@ -112,7 +112,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 				? async (modules, compilerOptions, functions, macros) => {
 						const result = await compileCode(modules, compilerOptions, functions, macros);
 						currentCodeBuffer = new Uint8Array(result.codeBuffer);
-						wasmExports.invalidate();
+						pluginServices.invalidateWasmExports();
 						return result;
 					}
 				: undefined,
@@ -150,7 +150,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		window: browserWindow as Window,
 		navigator: browserWindow?.navigator ?? globalThis.navigator,
 		memoryViews,
-		wasmExports,
+		services: pluginServices.services,
 	});
 
 	// Generate sprite data and update state before initializing view
@@ -192,7 +192,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		updateMemoryViews: (memoryRef: MemoryRef) => {
 			currentMemoryRef = memoryRef instanceof WebAssembly.Memory ? memoryRef : null;
-			wasmExports.invalidate();
+			pluginServices.invalidateWasmExports();
 			updateMemoryViews(memoryRef);
 		},
 		getMemoryViews: () => memoryViews,

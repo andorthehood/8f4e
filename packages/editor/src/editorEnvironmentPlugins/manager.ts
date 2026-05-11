@@ -4,8 +4,8 @@ import { getActiveCodeBlocksForEnvironmentPlugins } from './codeBlocks';
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '@8f4e/web-ui';
+import type { EditorEnvironmentPluginServices } from './services';
 import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEntry } from './types';
-import type { EditorEnvironmentWasmExports } from './wasmExports';
 
 interface ActivePlugin {
 	token: number;
@@ -16,7 +16,7 @@ interface EditorEnvironmentPluginManagerOptions {
 	window: Window;
 	navigator: Navigator;
 	memoryViews: MemoryViews;
-	wasmExports: EditorEnvironmentWasmExports;
+	services: EditorEnvironmentPluginServices;
 	registry?: EditorEnvironmentPluginRegistryEntry[];
 }
 
@@ -105,7 +105,7 @@ export function createEditorEnvironmentPluginManager(
 					window: options.window,
 					navigator: options.navigator,
 					memoryViews: options.memoryViews,
-					wasmExports: options.wasmExports,
+					services: options.services,
 					setErrors: errors => setPluginErrors(entry.id, errors),
 				};
 

@@ -21,9 +21,8 @@ function createContext(): EditorEnvironmentPluginContext {
 		window: {} as Window,
 		navigator: {} as Navigator,
 		memoryViews: {} as never,
-		wasmExports: {
-			getExports: vi.fn(async () => undefined),
-			invalidate: vi.fn(),
+		services: {
+			getWasmExports: vi.fn(),
 		},
 		setErrors: vi.fn(),
 	};

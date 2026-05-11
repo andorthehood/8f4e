@@ -67,15 +67,16 @@ function createMIDIInputMock(): MIDIInputMock {
 async function flushPromises(): Promise<void> {
 	await Promise.resolve();
 	await Promise.resolve();
+	await Promise.resolve();
 }
 
-function createWasmExports(
+function createGetWasmExports(
 	exports: Record<string, (...args: number[]) => unknown>
-): EditorEnvironmentPluginContext['wasmExports'] {
-	return {
+): EditorEnvironmentPluginContext['services']['getWasmExports'] {
+	return vi.fn(async () => ({
 		getExports: vi.fn(async () => exports as WebAssembly.Exports),
 		invalidate: vi.fn(),
-	};
+	}));
 }
 
 describe('createMidiIn', () => {
@@ -92,7 +93,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors,
 			getInputPort: port => (port === '0' ? (input as unknown as MIDIInput) : undefined),
-			wasmExports: createWasmExports({
+			getWasmExports: createGetWasmExports({
 				onNote,
 				onPitchBend,
 			}),
@@ -117,7 +118,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors: vi.fn(),
 			getInputPort: () => input as unknown as MIDIInput,
-			wasmExports: createWasmExports({
+			getWasmExports: createGetWasmExports({
 				onClock,
 			}),
 		});
@@ -141,7 +142,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors,
 			getInputPort: port => (port === '0' ? (input as unknown as MIDIInput) : undefined),
-			wasmExports: createWasmExports({
+			getWasmExports: createGetWasmExports({
 				onMidiIn: vi.fn(),
 			}),
 		});
@@ -175,7 +176,7 @@ describe('createMidiIn', () => {
 			store,
 			setErrors,
 			getInputPort: () => input as unknown as MIDIInput,
-			wasmExports: createWasmExports({
+			getWasmExports: createGetWasmExports({
 				broken,
 				later,
 			}),
