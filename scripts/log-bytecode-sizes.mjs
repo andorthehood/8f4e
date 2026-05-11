@@ -29,6 +29,7 @@ async function main() {
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "8f4e-bytecode-size-"));
   try {
     const loggedCases = [];
+    const skippedCases = [];
 
     for (const benchmarkCase of benchmarkCases) {
       const wasmPath = path.join(tempRoot, `${benchmarkCase.slug}.wasm`);
@@ -45,9 +46,20 @@ async function main() {
 
       const emittedBytes = (await fs.stat(wasmPath)).size;
       const outputPath = getCaseLogPath(outputDir, benchmarkCase);
+      const version = packageJson.version ?? null;
+
+      if (await hasLoggedBenchmarkVersion(outputPath, version)) {
+        skippedCases.push({
+          sourcePath: benchmarkCase.path,
+          version,
+          outputPath,
+        });
+        continue;
+      }
+
       const entry = {
         commit: gitMetadata.commit,
-        version: packageJson.version ?? null,
+        version,
         benchmark: benchmarkCase.relativePath,
         emittedBytes,
       };
@@ -58,6 +70,13 @@ async function main() {
         sourcePath: benchmarkCase.path,
         outputPath,
       });
+    }
+
+    if (loggedCases.length === 0) {
+      console.log(
+        `No bytecode-size benchmark results were logged because compiler version ${packageJson.version ?? "unknown"} already has entries.`,
+      );
+      return;
     }
 
     const totals = sumCases(loggedCases);
@@ -77,6 +96,17 @@ async function main() {
           benchmarkCase.sourcePath,
           `${benchmarkCase.emittedBytes} emitted bytes`,
           path.relative(workspaceRoot, benchmarkCase.outputPath),
+        ].join(" | "),
+      );
+    }
+
+    for (const benchmarkCase of skippedCases) {
+      console.log(
+        [
+          benchmarkCase.sourcePath,
+          `compiler version ${benchmarkCase.version ?? "unknown"} already logged`,
+          path.relative(workspaceRoot, benchmarkCase.outputPath),
+          "skipped",
         ].join(" | "),
       );
     }
@@ -135,6 +165,20 @@ function sumCases(cases) {
 
 function getCaseLogPath(outputDir, benchmarkCase) {
   return path.join(outputDir, benchmarkCase.logName);
+}
+
+async function hasLoggedBenchmarkVersion(filePath, version) {
+  if (!(await pathExists(filePath))) {
+    return false;
+  }
+
+  const existingEntries = await readJson(filePath);
+
+  if (!Array.isArray(existingEntries)) {
+    throw new Error(`${path.relative(workspaceRoot, filePath)} must contain a JSON array`);
+  }
+
+  return existingEntries.some(entry => entry?.version === version);
 }
 
 async function appendLogEntry(filePath, entry) {

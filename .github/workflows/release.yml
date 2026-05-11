@@ -61,10 +61,16 @@ jobs:
 
           npx nx run app:build
           node scripts/log-bundle-sizes.mjs
+          npx nx run @8f4e/examples:log-bytecode-size
 
           if [[ -n "$(git status --porcelain -- logs/bundle-sizes)" ]]; then
             git add logs/bundle-sizes
             git commit -m "chore(release): record bundle sizes" --no-verify
+          fi
+
+          if [[ -n "$(git status --porcelain -- logs/bytecode-size)" ]]; then
+            git add logs/bytecode-size
+            git commit -m "chore(release): record bytecode sizes" --no-verify
           fi
 
           git push origin HEAD:main --follow-tags --no-verify --atomic
