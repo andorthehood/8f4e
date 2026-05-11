@@ -64,8 +64,6 @@ type Point = {
 	bytes: number;
 	raw: number;
 	gzip: number;
-	previousBytes: number | null;
-	delta: number | null;
 	files: BundleFileEntry[];
 };
 
@@ -79,8 +77,6 @@ type BytecodePoint = {
 	releaseIndex: number;
 	releaseLabel: string;
 	bytes: number;
-	previousBytes: number | null;
-	delta: number | null;
 };
 
 type DashboardTab = 'bundles' | 'bytecode';
@@ -121,13 +117,6 @@ app.innerHTML = `
 				</div>
 				<div class="chart" id="overview-chart"></div>
 			</section>
-			<section class="chart-section">
-				<div class="section-heading">
-					<h2>Latest Delta</h2>
-					<span id="delta-caption"></span>
-				</div>
-				<div class="chart chart-short" id="delta-chart"></div>
-			</section>
 		</div>
 		<div id="bytecode-view" hidden>
 			<section class="summary-grid" id="bytecode-summary-grid" aria-label="Latest bytecode size summary"></section>
@@ -144,13 +133,6 @@ app.innerHTML = `
 					<span>Emitted bytes</span>
 				</div>
 				<div class="chart" id="bytecode-overview-chart"></div>
-			</section>
-			<section class="chart-section">
-				<div class="section-heading">
-					<h2>Latest Delta</h2>
-					<span>Emitted bytes</span>
-				</div>
-				<div class="chart chart-short" id="bytecode-delta-chart"></div>
 			</section>
 		</div>
 	</main>
@@ -169,14 +151,11 @@ const bundlesView = requireElement<HTMLDivElement>('#bundles-view');
 const bytecodeView = requireElement<HTMLDivElement>('#bytecode-view');
 const summaryGrid = requireElement<HTMLDivElement>('#summary-grid');
 const overviewChart = requireElement<HTMLDivElement>('#overview-chart');
-const deltaChart = requireElement<HTMLDivElement>('#delta-chart');
 const bytecodeSummaryGrid = requireElement<HTMLDivElement>('#bytecode-summary-grid');
 const bytecodeOverviewChart = requireElement<HTMLDivElement>('#bytecode-overview-chart');
-const bytecodeDeltaChart = requireElement<HTMLDivElement>('#bytecode-delta-chart');
 const bytecodeGrid = requireElement<HTMLDivElement>('#bytecode-grid');
 const lastUpdated = requireElement<HTMLParagraphElement>('#last-updated');
 const growthCaption = requireElement<HTMLSpanElement>('#growth-caption');
-const deltaCaption = requireElement<HTMLSpanElement>('#delta-caption');
 const packageCaption = requireElement<HTMLSpanElement>('#package-caption');
 const packageGrid = requireElement<HTMLDivElement>('#package-grid');
 const metricControl = requireElement<HTMLDivElement>('#metric-control');
@@ -282,7 +261,6 @@ async function loadBytecodePoints(trackedLogs: BytecodeTrackedLog[]) {
 
 function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 	const sortedEntries = [...entries].sort((a, b) => a.recordedAt.localeCompare(b.recordedAt));
-	const previousByMetric = new Map<SizeMetric, number>();
 	const points: Point[] = [];
 	const trackedFiles = new Set(log.files);
 
@@ -292,7 +270,6 @@ function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 
 		for (const metric of ['raw', 'gzip'] as const) {
 			const metricBytes = bytes[metric];
-			const previousBytes = previousByMetric.get(metric) ?? null;
 
 			points.push({
 				packageName: log.packageName,
@@ -308,12 +285,8 @@ function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 				bytes: metricBytes,
 				raw: bytes.raw,
 				gzip: bytes.gzip,
-				previousBytes,
-				delta: previousBytes === null ? null : metricBytes - previousBytes,
 				files,
 			});
-
-			previousByMetric.set(metric, metricBytes);
 		}
 	}
 
@@ -321,13 +294,10 @@ function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 }
 
 function toBytecodePoints(log: BytecodeTrackedLog, entries: BytecodeSizeEntry[]) {
-	const previousByBenchmark = new Map<string, number>();
-
 	return entries.map(entry => {
 		const bytes = entry.emittedBytes;
-		const previousBytes = previousByBenchmark.get(log.benchmark) ?? null;
 		const version = entry.version ?? 'unknown';
-		const point = {
+		return {
 			benchmark: log.benchmark,
 			label: log.label,
 			version,
@@ -337,12 +307,7 @@ function toBytecodePoints(log: BytecodeTrackedLog, entries: BytecodeSizeEntry[])
 			releaseIndex: 0,
 			releaseLabel: '',
 			bytes,
-			previousBytes,
-			delta: previousBytes === null ? null : bytes - previousBytes,
 		};
-
-		previousByBenchmark.set(log.benchmark, bytes);
-		return point;
 	});
 }
 
@@ -440,31 +405,21 @@ function render() {
 
 	lastUpdated.textContent = latestDate ? `Last recorded ${formatDateTime(latestDate)}` : 'No recorded data';
 	growthCaption.textContent = metricLabel(state.metric);
-	deltaCaption.textContent = metricLabel(state.metric);
 	packageCaption.textContent = metricLabel(state.metric);
 
 	renderSummary(latestPoints);
 	renderOverview(metricPoints);
-	renderDelta(latestPoints);
 	renderPackageGrid(metricPoints);
 }
 
 function renderSummary(latestPoints: Point[]) {
 	const appPoint = latestPoints.find(point => point.packageName === '8f4e') ?? null;
-	const largest = latestPoints
-		.filter(point => point.delta !== null)
-		.sort((a, b) => Math.abs(b.delta ?? 0) - Math.abs(a.delta ?? 0))[0];
 	const totalTrackedBytes = latestPoints.reduce((sum, point) => sum + point.bytes, 0);
 	const snapshotCount = new Set(state.points.map(point => point.releaseKey)).size;
 
 	summaryGrid.innerHTML = [
 		renderSummaryItem('App', appPoint ? formatBytes(appPoint.bytes) : 'n/a', appPoint ? formatPointMeta(appPoint) : ''),
 		renderSummaryItem('Tracked Total', formatBytes(totalTrackedBytes), `${latestPoints.length} packages`),
-		renderSummaryItem(
-			'Largest Delta',
-			largest?.delta === null || !largest ? 'n/a' : formatDelta(largest.delta),
-			largest ? largest.label : ''
-		),
 		renderSummaryItem('Snapshots', String(snapshotCount), 'release commits'),
 	].join('');
 }
@@ -472,10 +427,6 @@ function renderSummary(latestPoints: Point[]) {
 function renderBytecode() {
 	const latestPoints = getLatestBytecodePoints(state.bytecodePoints);
 	const latestPoint = latestPoints[0] ?? null;
-	const latestDelta =
-		latestPoints
-			.filter(point => point.delta !== null)
-			.sort((a, b) => Math.abs(b.delta ?? 0) - Math.abs(a.delta ?? 0))[0] ?? null;
 	const snapshotCount = new Set(state.bytecodePoints.map(point => point.releaseKey)).size;
 
 	lastUpdated.textContent = latestPoint
@@ -489,16 +440,10 @@ function renderBytecode() {
 			latestPoint ? shortCommit(latestPoint.commit) : ''
 		),
 		renderSummaryItem('Latest Size', latestPoint ? formatBytes(latestPoint.bytes) : 'n/a', latestPoint?.label ?? ''),
-		renderSummaryItem(
-			'Largest Delta',
-			latestDelta?.delta === null || !latestDelta ? 'n/a' : formatDelta(latestDelta.delta),
-			latestDelta ? latestDelta.label : ''
-		),
 		renderSummaryItem('Snapshots', String(snapshotCount), 'compiler releases'),
 	].join('');
 
 	renderBytecodeOverview(state.bytecodePoints);
-	renderBytecodeDelta(latestPoints);
 	renderBytecodeGrid(state.bytecodePoints);
 }
 
@@ -604,84 +549,6 @@ function renderOverview(points: Point[]) {
 					fill: 'label',
 					r: 4,
 					title: point => `${point.label}\n${point.releaseTag}\n${point.releaseLabel}\n${formatBytes(point.bytes)}`,
-				}),
-			],
-		})
-	);
-}
-
-function renderBytecodeDelta(latestPoints: BytecodePoint[]) {
-	const deltaPoints = latestPoints.filter(point => point.delta !== null);
-
-	if (deltaPoints.length === 0) {
-		bytecodeDeltaChart.replaceChildren(createEmptyChart('No previous snapshot'));
-		return;
-	}
-
-	replaceChart(
-		bytecodeDeltaChart,
-		Plot.plot({
-			width: getChartWidth(bytecodeDeltaChart),
-			height: 260,
-			marginLeft: 64,
-			marginRight: 24,
-			marginTop: 18,
-			marginBottom: 72,
-			x: { label: null, tickRotate: -24 },
-			y: {
-				label: 'Emitted byte delta',
-				grid: true,
-				tickFormat: formatCompactBytes,
-			},
-			color: {
-				range: ['#b42318', '#027a48'],
-			},
-			marks: [
-				Plot.ruleY([0]),
-				Plot.barY(deltaPoints, {
-					x: 'label',
-					y: 'delta',
-					fill: point => ((point.delta ?? 0) > 0 ? 'increase' : 'decrease'),
-					title: point => `${point.label}\n${formatDelta(point.delta ?? 0)}`,
-				}),
-			],
-		})
-	);
-}
-
-function renderDelta(latestPoints: Point[]) {
-	const deltaPoints = latestPoints.filter(point => point.delta !== null);
-
-	if (deltaPoints.length === 0) {
-		deltaChart.replaceChildren(createEmptyChart('No previous snapshot'));
-		return;
-	}
-
-	replaceChart(
-		deltaChart,
-		Plot.plot({
-			width: getChartWidth(deltaChart),
-			height: 260,
-			marginLeft: 64,
-			marginRight: 24,
-			marginTop: 18,
-			marginBottom: 72,
-			x: { label: null, tickRotate: -24 },
-			y: {
-				label: `${metricLabel(state.metric)} delta`,
-				grid: true,
-				tickFormat: formatCompactBytes,
-			},
-			color: {
-				range: ['#b42318', '#027a48'],
-			},
-			marks: [
-				Plot.ruleY([0]),
-				Plot.barY(deltaPoints, {
-					x: 'label',
-					y: 'delta',
-					fill: point => ((point.delta ?? 0) > 0 ? 'increase' : 'decrease'),
-					title: point => `${point.label}\n${formatDelta(point.delta ?? 0)}`,
 				}),
 			],
 		})
@@ -846,7 +713,6 @@ function renderBytecodeTable(points: BytecodePoint[]) {
 					<tr>
 						<th>Compiler</th>
 						<th>Bytes</th>
-						<th>Delta</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -858,7 +724,6 @@ function renderBytecodeTable(points: BytecodePoint[]) {
 								<tr>
 									<td>${escapeHtml(point.releaseTag)}</td>
 									<td>${formatBytes(point.bytes)}</td>
-									<td>${point.delta === null ? 'n/a' : formatDelta(point.delta)}</td>
 								</tr>
 							`
 						)
@@ -904,13 +769,6 @@ function renderFileTable(point: Point | null) {
 
 function replaceChart(container: HTMLElement, chart: SVGSVGElement | HTMLElement) {
 	container.replaceChildren(chart);
-}
-
-function createEmptyChart(message: string) {
-	const element = document.createElement('div');
-	element.className = 'empty-chart';
-	element.textContent = message;
-	return element;
 }
 
 function getLatestPoints(points: Point[]) {
@@ -970,10 +828,6 @@ function formatCompactBytes(bytes: number) {
 	}
 
 	return `${Math.round(bytes / 1024)} KiB`;
-}
-
-function formatDelta(delta: number) {
-	return `${delta > 0 ? '+' : ''}${formatBytes(delta)}`;
 }
 
 function formatPointMeta(point: Point) {
