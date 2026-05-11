@@ -3,8 +3,8 @@ title: 'TODO: Move shared compiler constants to compiler-types'
 priority: Medium
 effort: 2-4h
 created: 2026-05-06
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-11
 ---
 
 # TODO: Move shared compiler constants to compiler-types
@@ -41,10 +41,10 @@ Move or re-export those constants from `@8f4e/compiler-types` when they are stab
 
 ## Success Criteria
 
-- [ ] Shared compiler contract constants are exported from `@8f4e/compiler-types`.
-- [ ] Editor-facing packages do not import implementation-only packages just for constants.
-- [ ] Remaining implementation constants are intentionally private.
-- [ ] Affected package typechecks pass.
+- [x] Shared compiler contract constants are exported from `@8f4e/compiler-types`.
+- [x] Editor-facing packages do not import implementation-only packages just for constants.
+- [x] Remaining implementation constants are intentionally private.
+- [x] Affected package typechecks pass.
 
 ## Affected Components
 

@@ -1,10 +1,11 @@
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-types';
+
 import didProgramOrMemoryStructureChange from './didProgramOrMemoryStructureChange';
 
 import type { CompiledModuleLookup, GetOrCreateMemoryResult, MemoryAction } from '@8f4e/compiler-types';
 
 let memoryRefCache: WebAssembly.Memory | null = null;
 let currentMemorySize = 0;
-const WASM_PAGE_SIZE = 65536;
 
 export default function getOrCreateMemory(
 	allocatedMemoryBytes: number,
@@ -19,7 +20,7 @@ export default function getOrCreateMemory(
 	if (shouldRecreate) {
 		const prevBytes = currentMemorySize;
 		// Round up requested bytes to whole wasm pages (64 KiB); WebAssembly.Memory is page-granular.
-		const pages = Math.ceil(allocatedMemoryBytes / WASM_PAGE_SIZE);
+		const pages = Math.ceil(allocatedMemoryBytes / WASM_MEMORY_PAGE_SIZE);
 
 		memoryRefCache = new WebAssembly.Memory({
 			initial: pages,
