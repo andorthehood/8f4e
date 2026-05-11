@@ -1,12 +1,9 @@
 [
 	{
 		"schemaVersion": 1,
-		"recordedAt": "2026-05-11T09:43:34.630Z",
-		"commit": "bbc133d8432b63937beb8f3ddaadc2389e594a02",
-		"branch": "ai/opcode-size-benchmark-logs",
-		"packageName": "@8f4e/examples",
+		"recordedAt": "2026-05-11T09:45:08.119Z",
+		"commit": "39aebf1e39d62b59b461635bdadf247e957adf48",
 		"version": "1.3.2",
-		"suite": "bytecode-size",
 		"benchmark": "sineGenerator.8f4e",
 		"path": "packages/examples/src/benchmarks/bytecode-size/sineGenerator.8f4e",
 		"emittedBytes": 338
