@@ -12,18 +12,28 @@ interface MidiCallbackBinding {
 	callback: MidiCallback;
 }
 
+interface MidiInputBinding {
+	binding: MidiInBinding;
+	input: MIDIInput;
+}
+
+interface MidiCallbackGroup {
+	input: MIDIInput;
+	callbacks: MidiCallbackBinding[];
+}
+
 interface ActiveMidiInputListener {
 	input: MIDIInput;
 	handler: (event: unknown) => void;
 }
 
 interface ResolvedMidiCallbacks {
-	callbacksByPort: Map<string, MidiCallbackBinding[]>;
+	callbackGroupsByPort: Map<string, MidiCallbackGroup>;
 	errors: CodeError[];
 }
 
 interface ResolvedMidiInputPorts {
-	bindings: MidiInBinding[];
+	bindings: MidiInputBinding[];
 	errors: CodeError[];
 }
 
@@ -62,26 +72,32 @@ function getMidiEventBytes(event: unknown): [number, number, number] {
 }
 
 function resolveMidiInputPorts(bindings: MidiInBinding[], getInputPort: MidiInputLookup): ResolvedMidiInputPorts {
-	const availableBindings: MidiInBinding[] = [];
+	const inputsByPort = new Map<string, MIDIInput | undefined>();
+	const availableBindings: MidiInputBinding[] = [];
 	const errors: CodeError[] = [];
 
 	for (const binding of bindings) {
-		if (!getInputPort(binding.port)) {
+		if (!inputsByPort.has(binding.port)) {
+			inputsByPort.set(binding.port, getInputPort(binding.port));
+		}
+
+		const input = inputsByPort.get(binding.port);
+		if (!input) {
 			errors.push(createBindingError(binding, `MIDI input port "${binding.port}" is not available.`));
 			continue;
 		}
 
-		availableBindings.push(binding);
+		availableBindings.push({ binding, input });
 	}
 
 	return { bindings: availableBindings, errors };
 }
 
-function resolveMidiCallbacks(bindings: MidiInBinding[], exports: WebAssembly.Exports): ResolvedMidiCallbacks {
-	const callbacksByPort = new Map<string, MidiCallbackBinding[]>();
+function resolveMidiCallbacks(bindings: MidiInputBinding[], exports: WebAssembly.Exports): ResolvedMidiCallbacks {
+	const callbackGroupsByPort = new Map<string, MidiCallbackGroup>();
 	const errors: CodeError[] = [];
 
-	for (const binding of bindings) {
+	for (const { binding, input } of bindings) {
 		const callback = exports[binding.exportName];
 		if (typeof callback !== 'function') {
 			errors.push(
@@ -90,33 +106,26 @@ function resolveMidiCallbacks(bindings: MidiInBinding[], exports: WebAssembly.Ex
 			continue;
 		}
 
-		const callbacks = callbacksByPort.get(binding.port) ?? [];
-		callbacks.push({ binding, callback: callback as MidiCallback });
-		callbacksByPort.set(binding.port, callbacks);
+		const group = callbackGroupsByPort.get(binding.port) ?? { input, callbacks: [] };
+		group.callbacks.push({ binding, callback: callback as MidiCallback });
+		callbackGroupsByPort.set(binding.port, group);
 	}
 
-	return { callbacksByPort, errors };
+	return { callbackGroupsByPort, errors };
 }
 
 function attachMidiInputListeners({
-	callbacksByPort,
-	getInputPort,
+	callbackGroupsByPort,
 	activeListeners,
 	baseErrors,
 	setErrors,
 }: {
-	callbacksByPort: Map<string, MidiCallbackBinding[]>;
-	getInputPort: MidiInputLookup;
+	callbackGroupsByPort: Map<string, MidiCallbackGroup>;
 	activeListeners: ActiveMidiInputListener[];
 	baseErrors: CodeError[];
 	setErrors: EditorEnvironmentPluginContext['setErrors'];
 }): void {
-	for (const [port, callbacks] of callbacksByPort) {
-		const input = getInputPort(port);
-		if (!input) {
-			continue;
-		}
-
+	for (const { input, callbacks } of callbackGroupsByPort.values()) {
 		const handler = (event: unknown) => {
 			const [status, data1, data2] = getMidiEventBytes(event);
 			const callbackErrors: CodeError[] = [];
@@ -183,8 +192,7 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 				const resolvedCallbacks = resolveMidiCallbacks(bindings, exports);
 				errors.push(...resolvedCallbacks.errors);
 				attachMidiInputListeners({
-					callbacksByPort: resolvedCallbacks.callbacksByPort,
-					getInputPort,
+					callbackGroupsByPort: resolvedCallbacks.callbackGroupsByPort,
 					activeListeners,
 					baseErrors: errors,
 					setErrors,
