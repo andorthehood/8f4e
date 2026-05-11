@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-types';
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import { ErrorCode } from '../compilerError';
 import normalizeClampAddress from '../semantic/normalization/clampAddress';
 import createInstructionCompilerTestContext from '../utils/testUtils';

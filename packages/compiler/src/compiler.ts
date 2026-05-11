@@ -1,8 +1,8 @@
 import { createFunction, createLocalDeclaration, Type } from '@8f4e/compiler-wasm-utils';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-types';
 
 import instructions from './instructionCompilers';
 import { ErrorCode, getError } from './compilerError';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
 import { validateInstruction } from './stackAnalysis/validateInstruction';

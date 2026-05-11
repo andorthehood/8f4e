@@ -1,4 +1,4 @@
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-types';
 
 import {
 	normalizeArgumentsAtIndexes,
@@ -7,7 +7,6 @@ import {
 } from './helpers';
 
 import { ErrorCode, getError } from '../../compilerError';
-import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '../../consts';
 
 import type { AST, CompilationContext } from '@8f4e/compiler-types';
 

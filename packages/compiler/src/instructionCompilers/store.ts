@@ -1,8 +1,8 @@
 import { f32store, f64store, i32store } from '@8f4e/compiler-wasm-utils';
+import { DOUBLE_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-types';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
-import { DOUBLE_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '../consts';
 import { saveByteCode } from '../utils/compilation';
 import { guardedStore, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 

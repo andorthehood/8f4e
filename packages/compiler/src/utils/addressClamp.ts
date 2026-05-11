@@ -1,9 +1,8 @@
 import { i32const, localGet, localSet, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ArgumentType } from '@8f4e/compiler-types';
+import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-types';
 
 import { getOrCreateMemoryGuardLocal, linearLastValidStartAddress } from './memoryAccessGuard';
-
-import { WORD_MEMORY_ACCESS_WIDTH } from '../consts';
 
 import type { AST, CompilationContext, MemoryAddressRange, StackItem } from '@8f4e/compiler-types';
 

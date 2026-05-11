@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-types';
 
 import {
 	getDataStructure,
@@ -15,8 +16,6 @@ import {
 	getPointeeElementWordSize,
 	getPointeeValueKindFromMetadata,
 } from './memoryData';
-
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 import type { MemoryMap } from '@8f4e/compiler-types';
 

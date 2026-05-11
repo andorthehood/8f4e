@@ -1,8 +1,8 @@
 import { f32load, Type } from '@8f4e/compiler-wasm-utils';
+import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-types';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
-import { WORD_MEMORY_ACCESS_WIDTH } from '../consts';
 import { saveByteCode } from '../utils/compilation';
 import { guardedLoad, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 
