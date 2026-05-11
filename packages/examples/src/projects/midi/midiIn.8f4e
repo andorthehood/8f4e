@@ -1,5 +1,14 @@
 8f4e/v1
 
+note
+; @pos -83 19
+
+; @midiIn -1710537465 onMidiEvent
+
+; @info midi
+
+noteEnd
+
 constants env
 ; @pos -202 -6
 ; @favorite
@@ -26,9 +35,6 @@ function onMidiEvent
 #export onMidiEvent
 #impure
 
-; @midiIn -1710537465 onMidiEvent
-; @info midi
-
 param int status
 param int data1
 param int data2
@@ -53,7 +59,7 @@ store
 functionEnd
 
 module lastMidiEvent
-; @pos -75 7
+; @pos -83 7
 ; @home right                      
 int status  ; @w 0x
 int channel ; @w
