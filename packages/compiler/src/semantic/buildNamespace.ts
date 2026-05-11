@@ -7,6 +7,7 @@ import {
 	type Namespaces,
 	type Argument,
 	type ParsedSemanticInstructionLine,
+	GLOBAL_ALIGNMENT_BOUNDARY,
 } from '@8f4e/compiler-types';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
@@ -14,7 +15,6 @@ import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
 
 import { ErrorCode, getError } from '../compilerError';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 /**
