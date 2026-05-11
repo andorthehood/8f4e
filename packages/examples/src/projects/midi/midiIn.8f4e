@@ -1,7 +1,7 @@
 8f4e/v1
 
 constants env
-; @pos -51 -3
+; @pos -202 -6
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -11,32 +11,61 @@ const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
+function midiChannel
+; @pos -122 -4
+param int status
+
+push status
+push 0xf
+and
+
+functionEnd int
+
 function onMidiEvent
-; @pos -123 11
+; @pos -122 7
 #export onMidiEvent
 #impure
+
 ; @midiIn -1710537465 onMidiEvent
+; @info midi
 
 param int status
 param int data1
 param int data2
 
-push &boson:test
+push &lastMidiEvent:status
 push status
+store
+
+push &lastMidiEvent:channel
+push status
+call midiChannel
+store
+
+push &lastMidiEvent:data1
+push data1
+store
+
+push &lastMidiEvent:data2
+push data2
 store
 
 functionEnd
 
-module boson
-; @pos -77 18
+module lastMidiEvent
+; @pos -75 7
+; @home right                      
+int status  ; @w 0x
+int channel ; @w
+int data1   ; @w
+int data2   ; @w
 
-int test ; @w
 moduleEnd
 
 module projectConfig
-; @pos -102 0
+; @pos -202 -14
 ; @config runtime AudioWorkletRuntime
 ; ~sampleRate 48000
-; @config export.fileName audioBuffer
+; @config export.fileName midiIn
 
 moduleEnd
