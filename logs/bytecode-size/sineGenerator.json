@@ -1,8 +1,122 @@
 [
 	{
-		"commit": "5b8c338067d4be405080f5f204336ee2fe0f206e",
+		"commit": "1d4eade45c742b925fff34b37f4a302362dc6b3e",
+		"version": "0.1.0",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "d04af7ea55b7b037d37102e6cc2b1a90fcf6a906",
+		"version": "0.1.1",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "b6042793633f742dee20672e0267bf3f055477ed",
+		"version": "0.1.2",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "3b290a0a1c004c69ebb20c476a2f29ce2d5f1d23",
+		"version": "0.1.3",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "1f5576c7cf5a8204a338456cd139479024f31f22",
+		"version": "0.1.4",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "0c97e31ea75a8fbe081e83bc9e45e83f2cac4a33",
+		"version": "0.1.5",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "351da439d3068816c858e3d7c5b33a0e9016166a",
+		"version": "0.1.6",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "1244e99b240a9043e6694f20dab78331f8368e24",
+		"version": "0.1.7",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "d0cdda36833728e50ba903f15897930a5ddc9917",
+		"version": "0.1.8",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "1ee771e502c901340dd8e00f7a60ed3642adc2b6",
+		"version": "0.2.0",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "b1a313467f5f2df856904196d31924551d4b775f",
+		"version": "0.2.1",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "07d500cc4166d958ba279bbdb8a152dab1deefde",
+		"version": "0.2.2",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "7d8b31bd626d7abe6c6638ea33ea30e78fb098da",
+		"version": "1.0.0",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "0875ca3e7fce70be78cd985b1b42c425364e4048",
+		"version": "1.1.0",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "e234c45be8d266d199c5fa78c543cbadaab96b84",
+		"version": "1.1.1",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "e8849b76d572fa4158ec59d1a694a2ab3bc305c1",
+		"version": "1.1.2",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "fb0446056a0eb3fd77afbab3e10d20a65e64c24c",
+		"version": "1.2.0",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "d6e108b82ccb94761a566ee81e0d287d3e0705da",
+		"version": "1.3.0",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "b2a04717cebc38a8b44cc5dedf10572bc8b2dd45",
+		"version": "1.3.1",
+		"benchmark": "sineGenerator.8f4e",
+		"emittedBytes": 469
+	},
+	{
+		"commit": "6fdd2223f5576a0f69742cd15f625e17be5c0b55",
 		"version": "1.3.2",
 		"benchmark": "sineGenerator.8f4e",
-		"emittedBytes": 504
+		"emittedBytes": 469
 	}
 ]
