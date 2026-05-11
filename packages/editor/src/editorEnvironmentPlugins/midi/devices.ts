@@ -36,17 +36,18 @@ function addPorts(
 	type: MidiDeviceDirection,
 	connectedPorts: MIDIInput[] | MIDIOutput[]
 ): void {
-	let portNumber = 0;
-
-	ports.forEach(port => {
+	ports.forEach((port, mapId) => {
 		if (!isConnectedPort(port)) {
 			return;
 		}
 
-		const key = type === 'input' ? String(portNumber) : `out ${portNumber}`;
+		const key = port.id || mapId;
+		if (!key) {
+			return;
+		}
+
 		info[key] = formatPortName(port, key) + (type === 'input' ? ' (in)' : ' (out)');
 		connectedPorts.push(port as MIDIInput & MIDIOutput);
-		portNumber++;
 	});
 }
 
