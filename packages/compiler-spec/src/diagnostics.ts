@@ -30,8 +30,8 @@ export interface CompilerDiagnosticContext {
 }
 
 export interface CompilerDiagnostic {
-	/** Numeric ErrorCode for compiler errors; SyntaxErrorCode string for syntax errors. */
-	code: number | string;
+	/** Numeric ErrorCode for compiler errors; numeric SyntaxErrorCode for syntax errors. */
+	code: number;
 	message: string;
 	line: CompilerDiagnosticLine;
 	context: CompilerDiagnosticContext;

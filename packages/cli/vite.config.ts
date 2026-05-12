@@ -19,7 +19,7 @@ export default defineConfig({
 			fileName: (_format, name) => `${name}.js`,
 		},
 		rollupOptions: {
-			external: [...nodeBuiltins],
+			external: [...nodeBuiltins, '@8f4e/compiler', '@8f4e/compiler-spec'],
 		},
 	},
 });

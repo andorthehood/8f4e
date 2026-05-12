@@ -19,7 +19,7 @@ export default defineConfig({
 			fileName: (_format, entryName) => `${entryName}.js`,
 		},
 		rollupOptions: {
-			external: nodeBuiltins,
+			external: [...nodeBuiltins, '@8f4e/editor-state'],
 			output: {
 				banner: chunk => (chunk.name === 'cli' ? '#!/usr/bin/env node' : undefined),
 			},
