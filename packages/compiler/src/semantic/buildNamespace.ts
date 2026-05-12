@@ -1,13 +1,13 @@
-import { ArgumentType } from '@8f4e/tokenizer';
 import {
+	ArgumentType,
+	GLOBAL_ALIGNMENT_BOUNDARY,
 	type AST,
+	type Argument,
 	type CompilationContext,
 	type CompiledFunctionLookup,
 	type FunctionSignature,
 	type Namespaces,
-	type Argument,
 	type ParsedSemanticInstructionLine,
-	GLOBAL_ALIGNMENT_BOUNDARY,
 } from '@8f4e/compiler-spec';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
