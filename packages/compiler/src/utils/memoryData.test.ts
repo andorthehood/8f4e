@@ -229,6 +229,23 @@ describe('memoryData utilities', () => {
 			expect(getDereferencedValueKindFromMetadata(pointerMetadata)).toBe('int32');
 			expect(getDereferencedValueWordSizeFromMetadata(pointerMetadata)).toBe(2);
 		});
+
+		it('classifies unsigned narrow pointees from metadata', () => {
+			const int8uPointerMetadata = {
+				pointeeBaseType: 'int8u',
+				isPointingToPointer: false,
+			} as const;
+			const int16uPointerMetadata = {
+				pointeeBaseType: 'int16u',
+				isPointingToPointer: false,
+			} as const;
+
+			expect(getPointeeElementIsIntegerFromMetadata(int8uPointerMetadata)).toBe(true);
+			expect(getPointeeValueKindFromMetadata(int8uPointerMetadata)).toBe('int32');
+			expect(getDereferencedValueWordSizeFromMetadata(int8uPointerMetadata)).toBe(1);
+			expect(getPointeeValueKindFromMetadata(int16uPointerMetadata)).toBe('int32');
+			expect(getDereferencedValueWordSizeFromMetadata(int16uPointerMetadata)).toBe(2);
+		});
 	});
 
 	describe('getElementMaxValue', () => {
@@ -470,6 +487,23 @@ describe('memoryData utilities', () => {
 				} as unknown as MemoryMap[string],
 			};
 			expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(32767);
+		});
+
+		it('returns max unsigned narrow values for unsigned integer pointers', () => {
+			const memory: MemoryMap = {
+				int8uPtr: {
+					elementWordSize: 4,
+					pointeeBaseType: 'int8u',
+					isPointingToPointer: false,
+				} as unknown as MemoryMap[string],
+				int16uPtr: {
+					elementWordSize: 4,
+					pointeeBaseType: 'int16u',
+					isPointingToPointer: false,
+				} as unknown as MemoryMap[string],
+			};
+			expect(getPointeeElementMaxValue(memory, 'int8uPtr')).toBe(255);
+			expect(getPointeeElementMaxValue(memory, 'int16uPtr')).toBe(65535);
 		});
 
 		it('returns max float32 value for float* pointer', () => {
