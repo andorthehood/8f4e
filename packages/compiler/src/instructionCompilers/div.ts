@@ -1,8 +1,8 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA, ErrorCode } from '@8f4e/compiler-spec';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
-import { deriveKnownIntegerValue, I32_MIN } from './utils/knownIntegerValue';
+import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
 
 import { getError } from '../compilerError';
 
@@ -25,7 +25,7 @@ const div = createNumericBinaryCompiler({
 	},
 	deriveIntegerMetadata: (left, right) =>
 		deriveKnownIntegerValue(left, right, (dividend, divisor) => {
-			if (divisor === 0 || (dividend === I32_MIN && divisor === -1)) {
+			if (divisor === 0 || (dividend === BASE_TYPE_METADATA.int.min && divisor === -1)) {
 				return undefined;
 			}
 
