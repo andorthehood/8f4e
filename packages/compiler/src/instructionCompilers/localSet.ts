@@ -1,8 +1,9 @@
 import { localSet } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
+import { saveByteCode } from './utils/saveByteCode';
+
 import { getError } from '../compilerError';
-import { saveByteCode } from '../utils/compilation';
 
 import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-spec';
 

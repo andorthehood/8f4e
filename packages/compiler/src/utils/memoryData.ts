@@ -1,12 +1,32 @@
+import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
+
 import { getEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { DataStructure, LocalBinding, MemoryMap } from '@8f4e/compiler-spec';
+import type { DataStructure, LocalBinding, MemoryMap, MemoryValueKind } from '@8f4e/compiler-spec';
 
 export type PointerMetadata =
 	| Pick<DataStructure, 'pointeeBaseType' | 'isPointingToPointer'>
 	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer'>;
 
-export type PointeeValueKind = 'int32' | 'float32' | 'float64';
+function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
+	if (memoryItem.isInteger) {
+		if (memoryItem.elementWordSize === BASE_TYPE_METADATA.int8.wordSize) {
+			return memoryItem.isUnsigned ? BASE_TYPE_METADATA.int8u : BASE_TYPE_METADATA.int8;
+		}
+		if (memoryItem.elementWordSize === BASE_TYPE_METADATA.int16.wordSize) {
+			return memoryItem.isUnsigned ? BASE_TYPE_METADATA.int16u : BASE_TYPE_METADATA.int16;
+		}
+		return BASE_TYPE_METADATA.int;
+	}
+
+	return memoryItem.elementWordSize === BASE_TYPE_METADATA.float64.wordSize
+		? BASE_TYPE_METADATA.float64
+		: BASE_TYPE_METADATA.float;
+}
+
+function getPointeeBaseTypeMetadata(pointeeBaseType: NonNullable<PointerMetadata['pointeeBaseType']>) {
+	return BASE_TYPE_METADATA[pointeeBaseType];
+}
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
 	return memoryMap[id];
@@ -34,11 +54,8 @@ export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 
 export function getPointeeElementWordSizeFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
 	if (!pointerMetadata?.pointeeBaseType) return 0;
-	if (pointerMetadata.isPointingToPointer) return 4;
-	if (pointerMetadata.pointeeBaseType === 'float64') return 8;
-	if (pointerMetadata.pointeeBaseType === 'int8') return 1;
-	if (pointerMetadata.pointeeBaseType === 'int16') return 2;
-	return 4;
+	if (pointerMetadata.isPointingToPointer) return BASE_TYPE_METADATA.pointer.wordSize;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).wordSize;
 }
 
 export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
@@ -47,89 +64,39 @@ export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): num
 
 export function getPointeeElementIsIntegerFromMetadata(pointerMetadata: PointerMetadata | undefined): boolean {
 	if (!pointerMetadata?.pointeeBaseType) return false;
-	return (
-		!!pointerMetadata.isPointingToPointer ||
-		(pointerMetadata.pointeeBaseType !== 'float' && pointerMetadata.pointeeBaseType !== 'float64')
-	);
+	if (pointerMetadata.isPointingToPointer) return BASE_TYPE_METADATA.pointer.isInteger;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).isInteger;
 }
 
-export function getPointeeValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): PointeeValueKind {
+export function getPointeeValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): MemoryValueKind {
 	if (!pointerMetadata?.pointeeBaseType) return 'float32';
 	if (getPointeeElementIsIntegerFromMetadata(pointerMetadata)) return 'int32';
-	if (pointerMetadata.pointeeBaseType === 'float64') return 'float64';
-	return 'float32';
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).valueKind;
 }
 
 export function getDereferencedValueWordSizeFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
 	if (!pointerMetadata?.pointeeBaseType) return 0;
-	if (pointerMetadata.pointeeBaseType === 'float64') return 8;
-	if (pointerMetadata.pointeeBaseType === 'int8') return 1;
-	if (pointerMetadata.pointeeBaseType === 'int16') return 2;
-	return 4;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).wordSize;
 }
 
-export function getDereferencedValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): PointeeValueKind {
+export function getDereferencedValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): MemoryValueKind {
 	if (!pointerMetadata?.pointeeBaseType) return 'float32';
-	if (
-		pointerMetadata.pointeeBaseType === 'int' ||
-		pointerMetadata.pointeeBaseType === 'int8' ||
-		pointerMetadata.pointeeBaseType === 'int16'
-	)
-		return 'int32';
-	if (pointerMetadata.pointeeBaseType === 'float64') return 'float64';
-	return 'float32';
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).valueKind;
 }
 
 export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem) return 0;
 
-	if (memoryItem.isInteger) {
-		const elementWordSize = memoryItem.elementWordSize;
-		if (memoryItem.isUnsigned) {
-			if (elementWordSize === 1) {
-				return 255;
-			} else if (elementWordSize === 2) {
-				return 65535;
-			} else {
-				return 4294967295;
-			}
-		} else {
-			if (elementWordSize === 1) {
-				return 127;
-			} else if (elementWordSize === 2) {
-				return 32767;
-			} else {
-				return 2147483647;
-			}
-		}
-	} else if (!memoryItem.isInteger && memoryItem.elementWordSize === 8) {
-		return 1.7976931348623157e308;
-	} else {
-		return 3.4028234663852886e38;
-	}
+	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
+	return memoryItem.isUnsigned ? (metadata.unsignedMax ?? metadata.max) : metadata.max;
 }
 
 export function getPointeeElementMaxValueFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
 	if (!pointerMetadata?.pointeeBaseType) return 0;
 
-	// double pointers: pointee is a pointer slot (stored as i32)
-	if (pointerMetadata.isPointingToPointer) return 2147483647;
-
-	// float64*: max float64
-	if (pointerMetadata.pointeeBaseType === 'float64') return 1.7976931348623157e308;
-
-	// int8*: max signed int8
-	if (pointerMetadata.pointeeBaseType === 'int8') return 127;
-
-	// int16*: max signed int16
-	if (pointerMetadata.pointeeBaseType === 'int16') return 32767;
-
-	// int*: max signed int32
-	if (pointerMetadata.pointeeBaseType === 'int') return 2147483647;
-
-	// float*: max float32
-	return 3.4028234663852886e38;
+	if (pointerMetadata.isPointingToPointer) return BASE_TYPE_METADATA.pointer.max;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).max;
 }
 
 export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
@@ -140,22 +107,6 @@ export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	if (!memoryItem) return 0;
 
-	if (memoryItem.isInteger) {
-		const elementWordSize = memoryItem.elementWordSize;
-		if (memoryItem.isUnsigned) {
-			return 0;
-		} else {
-			if (elementWordSize === 1) {
-				return -128;
-			} else if (elementWordSize === 2) {
-				return -32768;
-			} else {
-				return -2147483648;
-			}
-		}
-	} else if (!memoryItem.isInteger && memoryItem.elementWordSize === 8) {
-		return -1.7976931348623157e308;
-	} else {
-		return -3.4028234663852886e38;
-	}
+	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
+	return memoryItem.isUnsigned ? (metadata.unsignedMin ?? metadata.min) : metadata.min;
 }

@@ -1,6 +1,6 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
-import { saveByteCode } from '../utils/compilation';
+import { saveByteCode } from './utils/saveByteCode';
 
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
 

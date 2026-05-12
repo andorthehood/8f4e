@@ -21,6 +21,8 @@ import { ErrorCode, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-s
 
 import type { AST, CompilationContext, CompilerStageError } from '@8f4e/compiler-spec';
 
+export { ErrorCode };
+
 interface ErrorDetails {
 	identifier?: string;
 }

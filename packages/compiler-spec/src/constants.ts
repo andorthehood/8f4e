@@ -1,8 +1,6 @@
-export const I32_SIGNED_SMALLEST_NUMBER = -2147483648;
-export const I32_SIGNED_LARGEST_NUMBER = 2147483647;
-export const I16_SIGNED_LARGEST_NUMBER = 32767;
-export const I16_SIGNED_SMALLEST_NUMBER = -32768;
-export const LOGIC_HIGH = I16_SIGNED_LARGEST_NUMBER;
+import { BASE_TYPE_METADATA } from './memory';
+
+export const LOGIC_HIGH = BASE_TYPE_METADATA.int16.max;
 export const LOGIC_LOW = 0;
 // Global allocation grid is 4 bytes so memory maps cleanly to Int32Array/Float32Array views.
 // float64 declarations require an even word offset (2-word boundary) so their byteAddress is
