@@ -13,6 +13,7 @@ import type { UserConfig, LibraryOptions, BuildOptions } from 'vite';
 export const sharedLibBuildOptions: Partial<BuildOptions> = {
 	sourcemap: true,
 	minify: true,
+	manifest: true,
 };
 
 /**

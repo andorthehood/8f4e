@@ -76,10 +76,10 @@ for (const [packageName, packageConfig] of Object.entries(
     continue;
   }
 
-  const bundleFiles = await resolveBundleFiles(distRoot, packageConfig.files);
-  const files = await measureBundleFiles(bundleFiles);
+  const bundleEntries = await resolveBundleEntries(distRoot, packageConfig.entries);
+  const measuredEntries = await measureBundleEntries(bundleEntries);
 
-  if (files.length === 0) {
+  if (measuredEntries.length === 0) {
     console.warn(
       `Skipping ${packageName}: no configured bundle files matched in ${path.relative(workspaceRoot, distRoot)}`,
     );
@@ -100,8 +100,7 @@ for (const [packageName, packageConfig] of Object.entries(
     packageName,
     projectName,
     version: packageJson.version ?? null,
-    bytes: sumFiles(files),
-    files,
+    bytes: sumFiles(measuredEntries),
   };
 
   await appendPackageEntry(outputDir, packageName, entry);
@@ -130,7 +129,6 @@ for (const result of packageResults) {
       `${result.bytes.raw} raw bytes`,
       `${result.bytes.gzip} gzip bytes`,
       `${result.bytes.brotli} brotli bytes`,
-      `${result.files.length} files`,
       path.relative(workspaceRoot, logPath),
     ].join(" | "),
   );
@@ -225,11 +223,11 @@ Options:
   -h, --help             Show this help.
 
 Notes:
-  - Packages and file regexes are read from ${defaultConfigPath}.
+  - Packages and entry regexes are read from ${defaultConfigPath}.
   - Run package builds before this script.
-  - File patterns match paths relative to each configured distDir.
-  - The configured file name is stored in the log instead of hashed build paths.
-  - Log entries contain numeric byte totals and measured file paths, for graphing.
+  - File patterns match entry files relative to each configured distDir.
+  - When a Vite manifest exists, bytes include the matched entry and its static imports.
+  - Log entries contain aggregate numeric byte totals for graphing.
   - Scoped packages use their package name as a nested path, e.g. logs/bundle-sizes/@8f4e/compiler.json.`);
 }
 
@@ -290,9 +288,10 @@ async function getPackageManifestsByName(packageManifests) {
   return manifestsByName;
 }
 
-async function resolveBundleFiles(distRoot, fileRules) {
+async function resolveBundleEntries(distRoot, fileRules) {
   const distFilePaths = await collectDistRuntimeFiles(distRoot);
-  const bundleFiles = [];
+  const viteManifest = await readViteManifest(distRoot);
+  const bundleEntries = [];
 
   for (const rule of fileRules) {
     const pattern = new RegExp(rule.pattern);
@@ -315,13 +314,88 @@ async function resolveBundleFiles(distRoot, fileRules) {
       );
     }
 
-    bundleFiles.push({
+    const staticFiles = resolveStaticBundleFiles(
+      matches[0],
+      viteManifest,
+      distRoot,
+    );
+
+    bundleEntries.push({
       name: rule.name,
-      filePath: matches[0].filePath,
+      filePaths: staticFiles.map(({ filePath }) => filePath),
     });
   }
 
-  return bundleFiles.sort((a, b) => a.name.localeCompare(b.name));
+  return bundleEntries.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+async function readViteManifest(distRoot) {
+  const manifestPath = path.join(distRoot, ".vite", "manifest.json");
+
+  if (!(await pathExists(manifestPath))) {
+    console.warn(
+      `No Vite manifest found at ${path.relative(workspaceRoot, manifestPath)}; measuring matched entry files only.`,
+    );
+    return null;
+  }
+
+  return readJson(manifestPath);
+}
+
+function resolveStaticBundleFiles(entryFile, manifest, distRoot) {
+  if (!manifest) {
+    return [entryFile];
+  }
+
+  const entryChunk = Object.values(manifest).find(
+    (chunk) => chunk?.file === entryFile.relativePath,
+  );
+
+  if (!entryChunk) {
+    console.warn(
+      `No Vite manifest chunk found for ${entryFile.relativePath} in ${path.relative(workspaceRoot, distRoot)}; measuring matched entry file only.`,
+    );
+    return [entryFile];
+  }
+
+  const filesByRelativePath = new Map();
+  const chunksByKey = new Map(Object.entries(manifest));
+  const visitedChunkKeys = new Set();
+  const staticFiles = [];
+
+  function addChunk(chunkKey, chunk) {
+    if (!chunk || visitedChunkKeys.has(chunkKey)) {
+      return;
+    }
+
+    visitedChunkKeys.add(chunkKey);
+
+    if (typeof chunk.file === "string" && isRuntimeFile(chunk.file)) {
+      filesByRelativePath.set(chunk.file, {
+        relativePath: chunk.file,
+        filePath: path.join(distRoot, chunk.file),
+      });
+    }
+
+    for (const importKey of chunk.imports ?? []) {
+      addChunk(importKey, chunksByKey.get(importKey));
+    }
+  }
+
+  for (const [chunkKey, chunk] of chunksByKey) {
+    if (chunk === entryChunk) {
+      addChunk(chunkKey, chunk);
+      break;
+    }
+  }
+
+  for (const file of [...filesByRelativePath.values()].sort((a, b) =>
+    a.relativePath.localeCompare(b.relativePath),
+  )) {
+    staticFiles.push(file);
+  }
+
+  return staticFiles.length > 0 ? staticFiles : [entryFile];
 }
 
 async function collectDistRuntimeFiles(distRoot) {
@@ -356,23 +430,35 @@ async function collectRuntimeFiles(root, dir, files) {
   }
 }
 
-async function measureBundleFiles(bundleFiles) {
-  const files = [];
+async function measureBundleEntries(bundleEntries) {
+  const entries = [];
 
-  for (const { name, filePath } of bundleFiles) {
-    const bytes = await fs.readFile(filePath);
-    const gzipBytes = await gzipAsync(bytes);
-    const brotliBytes = await brotliCompressAsync(bytes);
+  for (const { name, filePaths } of bundleEntries) {
+    const measuredFiles = await Promise.all(filePaths.map(measureFile));
+    const bytes = sumFiles(measuredFiles);
 
-    files.push({
+    entries.push({
       path: name,
-      raw: bytes.byteLength,
-      gzip: gzipBytes.byteLength,
-      brotli: brotliBytes.byteLength,
+      raw: bytes.raw,
+      gzip: bytes.gzip,
+      brotli: bytes.brotli,
     });
   }
 
-  return files.sort((a, b) => a.path.localeCompare(b.path));
+  return entries.sort((a, b) => a.path.localeCompare(b.path));
+}
+
+async function measureFile(filePath) {
+  const bytes = await fs.readFile(filePath);
+  const gzipBytes = await gzipAsync(bytes);
+  const brotliBytes = await brotliCompressAsync(bytes);
+
+  return {
+    path: filePath,
+    raw: bytes.byteLength,
+    gzip: gzipBytes.byteLength,
+    brotli: brotliBytes.byteLength,
+  };
 }
 
 function isRuntimeFile(fileName) {
@@ -519,34 +605,34 @@ async function readBundleSizeConfig(configPath) {
     }
 
     if (
-      !Array.isArray(packageConfig.files) ||
-      packageConfig.files.length === 0
+      !Array.isArray(packageConfig.entries) ||
+      packageConfig.entries.length === 0
     ) {
       throw new Error(
-        `${configPath}: ${packageName}.files must be a non-empty array`,
+        `${configPath}: ${packageName}.entries must be a non-empty array`,
       );
     }
 
-    for (const fileRule of packageConfig.files) {
-      if (!fileRule || typeof fileRule !== "object") {
+    for (const entryRule of packageConfig.entries) {
+      if (!entryRule || typeof entryRule !== "object") {
         throw new Error(
-          `${configPath}: ${packageName}.files entries must be objects`,
+          `${configPath}: ${packageName}.entries entries must be objects`,
         );
       }
 
-      if (typeof fileRule.name !== "string" || !fileRule.name) {
+      if (typeof entryRule.name !== "string" || !entryRule.name) {
         throw new Error(
-          `${configPath}: ${packageName}.files[].name must be a string`,
+          `${configPath}: ${packageName}.entries[].name must be a string`,
         );
       }
 
-      if (typeof fileRule.pattern !== "string" || !fileRule.pattern) {
+      if (typeof entryRule.pattern !== "string" || !entryRule.pattern) {
         throw new Error(
-          `${configPath}: ${packageName}.files[].pattern must be a string`,
+          `${configPath}: ${packageName}.entries[].pattern must be a string`,
         );
       }
 
-      new RegExp(fileRule.pattern);
+      new RegExp(entryRule.pattern);
     }
   }
 

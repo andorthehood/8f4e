@@ -35,6 +35,7 @@ export default defineConfig(() => {
     build: {
       outDir: '../dist',
       emptyOutDir: true,
+      manifest: true,
       rollupOptions: {
         output: {
           entryFileNames: 'assets/entries/[name]-[hash].js',
