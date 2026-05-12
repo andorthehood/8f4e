@@ -1,9 +1,9 @@
 import { Type } from '@8f4e/compiler-wasm-utils';
-import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/tokenizer';
+import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 
 import getMemoryFlags from './memoryFlags';
 
-import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-types';
+import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-spec';
 
 type PointerFunctionValueType = Extract<FunctionValueType, `${string}*`>;
 

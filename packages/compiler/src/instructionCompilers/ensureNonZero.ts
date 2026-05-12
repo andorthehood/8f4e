@@ -1,9 +1,9 @@
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType } from '@8f4e/compiler-spec';
 import { f32const, f64const, i32const, localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `ensureNonZero`.

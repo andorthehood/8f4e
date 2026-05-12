@@ -1,4 +1,4 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 export function getByteAddressFromWordOffset(startingByteAddress: number, wordOffset: number): number {
 	return startingByteAddress + wordOffset * GLOBAL_ALIGNMENT_BOUNDARY;

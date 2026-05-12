@@ -1,6 +1,7 @@
-import { ErrorCode } from './compilerError';
+import { ErrorCode } from './errors';
 
-import type { AST, CompilationContext, StoreBytesLine } from '@8f4e/compiler-types';
+import type { AST, StoreBytesLine } from './ast';
+import type { CompilationContext } from './semantic';
 
 export type OperandRule = 'int' | 'float' | 'matching';
 export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | 'constants' | 'map';

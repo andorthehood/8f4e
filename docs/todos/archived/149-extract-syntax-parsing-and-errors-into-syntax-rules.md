@@ -52,7 +52,7 @@ Move syntax-only parsing and validation into `@8f4e/syntax-rules`, along with a 
 ## Risks & Considerations
 
 - **Error mapping**: ensure syntax error codes map cleanly to compiler-facing errors.
-- **Dependency direction**: avoid syntax-rules importing compiler types or errors.
+- **Dependency direction**: avoid syntax-rules importing compiler spec or errors.
 - **Compatibility**: public API changes in syntax-rules may affect editor-state users.
 
 ## Related Items

@@ -1,4 +1,4 @@
-import type { CompilationContext, MemoryMap } from '@8f4e/compiler-types';
+import type { CompilationContext, MemoryMap } from '@8f4e/compiler-spec';
 
 export function calculateWordAlignedSizeOfMemory(memory: MemoryMap): number {
 	return Object.values(memory).reduce((accumulator, current) => {

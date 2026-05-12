@@ -1,4 +1,4 @@
-import type { AST } from '../types';
+import type { AST } from './ast';
 
 export interface ASTCacheStats {
 	hits: number;

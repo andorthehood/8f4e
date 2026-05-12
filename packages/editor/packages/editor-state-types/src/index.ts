@@ -4,7 +4,7 @@
  * and re-exporting them for backward compatibility and public API stability.
  */
 
-import type { CompileOptions, MemoryAction as CompilerMemoryAction, Module } from '@8f4e/compiler-types';
+import type { CompileOptions, MemoryAction as CompilerMemoryAction, Module } from '@8f4e/compiler-spec';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	CodeBlock,
@@ -106,7 +106,7 @@ export type {
 // Re-export menu types
 export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 
-// Re-export program-compiler types
+// Re-export program-compiler spec
 export type { Compiler, CompilationResult };
 
 // Re-export browser-local note storage types

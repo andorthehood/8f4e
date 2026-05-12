@@ -1,8 +1,9 @@
-import { BLOCK_TYPE } from '@8f4e/compiler-types';
+import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 
-import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-types';
+import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `#export`.

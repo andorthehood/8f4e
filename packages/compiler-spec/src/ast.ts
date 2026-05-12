@@ -1,28 +1,12 @@
-import {
-	ArgumentType,
-	type Argument,
-	type ArgumentCompileTimeExpression,
-	type ArgumentIdentifier,
-	type ArgumentLiteral,
-	type ArgumentStringLiteral,
-	type CompileTimeOperand,
-	type ReferenceKind,
-	classifyIdentifier,
-} from './syntax/parseArgument';
+import type {
+	Argument,
+	ArgumentCompileTimeExpression,
+	ArgumentIdentifier,
+	ArgumentLiteral,
+	ArgumentStringLiteral,
+} from './arguments';
 
-export {
-	ArgumentType,
-	type Argument,
-	type ArgumentCompileTimeExpression,
-	type ArgumentIdentifier,
-	type ArgumentLiteral,
-	type ArgumentStringLiteral,
-	type CompileTimeOperand,
-	type ReferenceKind,
-	classifyIdentifier,
-};
-
-type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> = {
+export type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> = {
 	lineNumberBeforeMacroExpansion: number;
 	lineNumberAfterMacroExpansion: number;
 	instruction: Instruction;
@@ -77,6 +61,7 @@ export type BlockLine = ASTLineBase<'block', []>;
 export type BlockEndLine = ASTLineBase<'blockEnd', [] | [ArgumentIdentifier]>;
 export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
 export type LocalVariableAccessLine = LocalSetLine;
+export type TokenizedLocalVariableAccessLine = LocalVariableAccessLine;
 
 export type FunctionLine = ASTLineBase<'function', [ArgumentIdentifier]>;
 export type CallLine = ASTLineBase<'call', [ArgumentIdentifier]>;

@@ -1,8 +1,9 @@
 import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenizer';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 
-import type { AST, ExpandedLine, Instruction, MacroDefinition, Module } from '@8f4e/compiler-types';
+import type { AST, ExpandedLine, Instruction, MacroDefinition, Module } from '@8f4e/compiler-spec';
 
 /**
  * Parse macro definitions from macro modules.

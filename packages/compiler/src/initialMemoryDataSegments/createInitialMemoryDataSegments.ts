@@ -3,7 +3,7 @@ import createMemoryDataSegmentCandidate from './createMemoryDataSegmentCandidate
 import mergeAdjacentInitialMemoryDataSegments from './mergeAdjacentInitialMemoryDataSegments';
 
 import type { InitialMemoryDataSegment } from './types';
-import type { CompiledModule } from '@8f4e/compiler-types';
+import type { CompiledModule } from '@8f4e/compiler-spec';
 
 export default function createInitialMemoryDataSegments(compiledModules: CompiledModule[]): InitialMemoryDataSegment[] {
 	const segmentCandidates = compiledModules.flatMap(module => [

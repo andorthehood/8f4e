@@ -1,10 +1,11 @@
 import { call as wasmCall } from '@8f4e/compiler-wasm-utils';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 
-import type { CallLine, InstructionCompiler } from '@8f4e/compiler-types';
+import type { CallLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `call`.

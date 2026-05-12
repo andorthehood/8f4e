@@ -7,7 +7,7 @@ import {
 	hasMixedFloatWidth,
 } from './operandTypes';
 
-import type { StackItem } from '@8f4e/compiler-types';
+import type { StackItem } from '@8f4e/compiler-spec';
 
 describe('operandTypes utilities', () => {
 	const intOperand: StackItem = { isInteger: true, isNonZero: false };

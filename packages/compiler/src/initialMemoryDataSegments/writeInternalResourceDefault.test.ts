@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import writeInternalResourceDefault from './writeInternalResourceDefault';
 
-import type { InternalResource } from '@8f4e/compiler-types';
+import type { InternalResource } from '@8f4e/compiler-spec';
 
 function createResource(
 	overrides: Pick<InternalResource, 'byteAddress' | 'default' | 'storageType'>

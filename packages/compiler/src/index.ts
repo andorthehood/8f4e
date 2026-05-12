@@ -19,6 +19,7 @@ import {
 	createPassiveDataSegment,
 	WASM_MEMORY_PAGE_SIZE,
 } from '@8f4e/compiler-wasm-utils';
+import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
@@ -28,10 +29,10 @@ import {
 	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
 } from './semantic/buildNamespace';
-import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
+import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
-import { ErrorCode, getError } from './compilerError';
+import { getError } from './compilerError';
 
 import type {
 	AST,
@@ -44,18 +45,8 @@ import type {
 	FunctionTypeRegistry,
 	Module,
 	Namespaces,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
-export {
-	I16_SIGNED_LARGEST_NUMBER,
-	I16_SIGNED_SMALLEST_NUMBER,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS,
-	BYTE_MEMORY_ACCESS_WIDTH,
-	HALF_WORD_MEMORY_ACCESS_WIDTH,
-	WORD_MEMORY_ACCESS_WIDTH,
-	DOUBLE_WORD_MEMORY_ACCESS_WIDTH,
-} from './consts';
 export { default as instructions } from './instructionCompilers';
 export {
 	prepassNamespace,
@@ -67,7 +58,7 @@ export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-export { ErrorCode, getError } from './compilerError';
+export { getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
 export { createInitialMemoryDataSegments };
 export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';

@@ -6,10 +6,11 @@ import {
 	type ArgumentIdentifier,
 	type CompilationContext,
 	type NormalizedArgumentLiteral,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;

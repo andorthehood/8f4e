@@ -1,5 +1,5 @@
 import compile, { compileCodegenLine, collectNamespacesFromASTs } from '@8f4e/compiler';
-import { BLOCK_TYPE, type AST, type CompileOptions, type CompilationContext, type Module } from '@8f4e/compiler-types';
+import { BLOCK_TYPE, type AST, type CompileOptions, type CompilationContext, type Module } from '@8f4e/compiler-spec';
 
 import getBlockType from '../shared/getBlockType';
 

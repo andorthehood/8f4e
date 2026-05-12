@@ -1,9 +1,9 @@
 import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import modules from './__fixtures__/modules';
 
-import { ErrorCode } from '../src/compilerError';
 import { compileModules } from '../src';
 import compile from '../src';
 
@@ -44,15 +44,9 @@ describe('compiler', () => {
 
 	test('rejects duplicate module ids', () => {
 		expect(() =>
-			compile(
-				[
-					{ code: ['module same', 'int a 1', 'moduleEnd'] },
-					{ code: ['module same', 'int b 2', 'moduleEnd'] },
-				],
-				{
-					startingMemoryWordAddress: 0,
-				}
-			)
+			compile([{ code: ['module same', 'int a 1', 'moduleEnd'] }, { code: ['module same', 'int b 2', 'moduleEnd'] }], {
+				startingMemoryWordAddress: 0,
+			})
 		).toThrow(`${ErrorCode.DUPLICATE_IDENTIFIER}`);
 	});
 });

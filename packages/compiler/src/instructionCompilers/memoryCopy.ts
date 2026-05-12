@@ -5,7 +5,7 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../utils/compilation';
 import { guardedMemoryCopy, isSafeMemoryCopy } from '../utils/memoryAccessGuard';
 
-import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compiler-types';
+import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `memoryCopy`.

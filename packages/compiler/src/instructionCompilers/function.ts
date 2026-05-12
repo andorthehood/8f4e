@@ -1,9 +1,10 @@
-import { BLOCK_TYPE } from '@8f4e/compiler-types';
+import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import { isInstructionInsideFunction, isInstructionIsInsideAModule } from '../utils/blockStack';
 
-import type { CompilationContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-types';
+import type { CompilationContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 // Note: This instruction does not use the shared instruction scope rule because it requires inverted scope validation:
 // it must NOT be inside a module or function, which is the opposite of the standard scope rules

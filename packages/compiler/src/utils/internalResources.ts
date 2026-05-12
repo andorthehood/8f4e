@@ -1,6 +1,6 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
-import type { CompilationContext, InternalResource } from '@8f4e/compiler-types';
+import type { CompilationContext, InternalResource } from '@8f4e/compiler-spec';
 
 type InternalResourceType = 'int' | 'float' | 'float64';
 

@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode } from '../src/compilerError';
 import compile from '../src/index';
 
-import type { Module } from '@8f4e/compiler-types';
+import type { Module } from '@8f4e/compiler-spec';
 
 const defaultOptions = {
 	startingMemoryWordAddress: 1,

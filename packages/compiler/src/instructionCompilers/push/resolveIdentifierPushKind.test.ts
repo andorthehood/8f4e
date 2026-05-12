@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import resolveIdentifierPushKind, { IdentifierPushKind } from './resolveIdentifierPushKind';
 
-import type { LocalMap, Namespace } from '@8f4e/compiler-types';
+import type { LocalMap, Namespace } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

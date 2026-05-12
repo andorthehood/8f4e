@@ -6,20 +6,7 @@ export { default as isValidInstruction } from './isValidInstruction';
 export { default as isSemanticOnlyInstruction } from './isSemanticOnlyInstruction';
 export { default as isArrayDeclarationInstruction } from './isArrayDeclarationInstruction';
 export { default as isMemoryDeclarationInstruction } from './isMemoryDeclarationInstruction';
-export {
-	ArgumentType,
-	parseArgument,
-	classifyIdentifier,
-	parseCompileTimeOperand,
-	decodeStringLiteral,
-	type Argument,
-	type ArgumentCompileTimeExpression,
-	type ArgumentLiteral,
-	type ArgumentIdentifier,
-	type ArgumentStringLiteral,
-	type CompileTimeOperand,
-	type ReferenceKind,
-} from './parseArgument';
+export { parseArgument, classifyIdentifier, parseCompileTimeOperand, decodeStringLiteral } from './parseArgument';
 export { getBlockType, isCompilableBlockType, type CodeBlockType } from './getBlockType';
 export { default as getModuleId } from './getModuleId';
 export { default as getFunctionId } from './getFunctionId';
@@ -46,14 +33,6 @@ export { default as hasElementMinPrefix } from './hasElementMinPrefix';
 export { default as extractElementMinBase } from './extractElementMinBase';
 export { default as hasElementWordSizePrefix } from './hasElementWordSizePrefix';
 export { default as extractElementWordSizeBase } from './extractElementWordSizeBase';
-export {
-	FUNCTION_TYPE_IDENTIFIERS,
-	POINTER_FUNCTION_TYPE_IDENTIFIERS,
-	SCALAR_TYPE_IDENTIFIERS,
-	type FunctionTypeIdentifier,
-	type PointerFunctionTypeIdentifier,
-	type ScalarTypeIdentifier,
-} from './functionTypeIdentifiers';
 export { default as hasPointeeElementWordSizePrefix } from './hasPointeeElementWordSizePrefix';
 export { default as extractPointeeElementWordSizeBase } from './extractPointeeElementWordSizeBase';
 export { default as hasPointeeElementMaxPrefix } from './hasPointeeElementMaxPrefix';

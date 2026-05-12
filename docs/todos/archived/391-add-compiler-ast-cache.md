@@ -83,7 +83,7 @@ High-level behavior:
 ## Affected Components
 
 - `packages/compiler/src/index.ts` - compile API, AST caching integration, result shape.
-- `packages/compiler-types/src/index.ts` - public cache and compile result types if needed.
+- `packages/compiler-spec/src/index.ts` - public cache and compile result types if needed.
 - `packages/compiler/packages/tokenizer/src/parser.ts` - AST parsing boundary used by the cache wrapper.
 - `packages/compiler/tests/` - integration tests for cache reuse and output equivalence.
 

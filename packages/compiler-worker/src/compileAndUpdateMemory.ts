@@ -10,7 +10,7 @@ import type {
 	CompilerCache,
 	GetOrCreateWasmInstanceResult,
 	Module,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
 let compilerCache: CompilerCache | undefined;

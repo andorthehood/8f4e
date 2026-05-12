@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
-import { ArgumentType, classifyIdentifier, decodeStringLiteral, parseArgument } from './parseArgument';
+import { classifyIdentifier, decodeStringLiteral, parseArgument } from './parseArgument';
 
 /**
  * Ordering regression tests for classifyIdentifier.

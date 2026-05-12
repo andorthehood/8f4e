@@ -1,7 +1,7 @@
 import writeInternalResourceDefault from './writeInternalResourceDefault';
 
 import type { InitialMemoryDataSegmentCandidate } from './types';
-import type { InternalResource } from '@8f4e/compiler-types';
+import type { InternalResource } from '@8f4e/compiler-spec';
 
 export default function createInternalResourceDataSegmentCandidate(
 	resource: InternalResource

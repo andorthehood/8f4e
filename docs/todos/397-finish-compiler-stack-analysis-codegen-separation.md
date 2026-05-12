@@ -95,7 +95,7 @@ The first command should return no matches. The second command should return no 
 - `packages/compiler/src/instructionSpecs.ts` - central instruction contract table extended with stack-effect metadata.
 - `packages/compiler/src/instructionCompilers/` - bytecode emitters converted away from stack mutation.
 - `packages/compiler/src/compiler.ts` - pipeline orchestration for semantic normalization, stack analysis, and codegen.
-- `packages/compiler-types` - shared analyzed-line and narrowed codegen-context contract types if they need to cross package boundaries.
+- `packages/compiler-spec` - shared analyzed-line and narrowed codegen-context contract types if they need to cross package boundaries.
 
 ## Risks & Considerations
 

@@ -1,6 +1,6 @@
 import createDeclarationCompiler from './createDeclarationCompiler';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `float64`, `float64*`, `float64**`.

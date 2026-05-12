@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import { BLOCK_TYPE } from '@8f4e/compiler-types';
+import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import exitIfTrue from './exitIfTrue';
 
-import { ErrorCode } from '../compilerError';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('exitIfTrue instruction compiler', () => {
 	it('emits a conditional early module exit and preserves the fallthrough stack', () => {

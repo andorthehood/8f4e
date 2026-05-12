@@ -1,14 +1,19 @@
-import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-types';
+import {
+	BLOCK_TYPE,
+	type BlockStack,
+	type CompilationContext,
+	type InstructionCompiler,
+	type ScopeRule,
+} from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import {
 	isInstructionInsideFunction,
 	isInstructionInsideModuleOrFunction,
 	isInstructionIsInsideAModule,
 	isInstructionIsInsideBlock,
 } from '../utils/blockStack';
-
-import type { ScopeRule } from './types';
 
 export function validateScope(
 	blockStack: BlockStack,

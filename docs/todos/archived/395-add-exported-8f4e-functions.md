@@ -102,7 +102,7 @@ Initial ABI rules:
 
 - `packages/compiler/packages/tokenizer` - Recognize and validate `#export` directive shape.
 - `packages/compiler/src` - Carry export metadata and emit Wasm export entries.
-- `packages/compiler-types/src/index.ts` - Add exported-function metadata fields as needed.
+- `packages/compiler-spec/src/index.ts` - Add exported-function metadata fields as needed.
 - `packages/compiler/docs/instructions/blocks/function.md` - Document function export syntax and ABI.
 - `packages/compiler/tests` - Add integration coverage for exported functions.
 
