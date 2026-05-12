@@ -36,7 +36,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - run: npx nx run @8f4e/examples:build
 

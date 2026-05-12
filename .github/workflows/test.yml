@@ -28,7 +28,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Build config package
         run: npx nx run @8f4e/config:build
