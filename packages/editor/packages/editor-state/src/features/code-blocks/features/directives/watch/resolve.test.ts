@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes } from '@8f4e/compiler-types';
+import { MemoryTypes } from '@8f4e/compiler-spec';
 
 import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { DataStructure } from '@8f4e/compiler-types';
+import type { DataStructure } from '@8f4e/compiler-spec';
 
 import { getTabStopsByLine, getVisualLineWidth } from '~/features/code-editing/tabLayout';
 import {

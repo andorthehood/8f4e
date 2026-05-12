@@ -1,5 +1,5 @@
 import { createFunction, createLocalDeclaration, Type } from '@8f4e/compiler-wasm-utils';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-types';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import instructions from './instructionCompilers';
 import { ErrorCode, getError } from './compilerError';
@@ -18,7 +18,7 @@ import type {
 	InstructionCompiler,
 	Namespaces,
 	Instruction,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 export function compileCodegenLine(
 	line: AST[number],

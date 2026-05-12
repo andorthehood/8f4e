@@ -1,8 +1,8 @@
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
 import { ErrorCode, getError } from '../compilerError';
 
-import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-types';
+import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `map`.

@@ -1,4 +1,4 @@
-import type { StackItem } from '@8f4e/compiler-types';
+import type { StackItem } from '@8f4e/compiler-spec';
 
 export const I32_MIN = -2147483648;
 

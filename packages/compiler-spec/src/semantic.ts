@@ -1,10 +1,12 @@
 import type { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import type {
-	AST,
 	ArgumentCompileTimeExpression,
 	ArgumentIdentifier,
 	ArgumentLiteral,
 	ArgumentStringLiteral,
+} from './arguments';
+import type {
+	AST,
 	ConstLine,
 	ConstantsEndLine,
 	ConstantsLine,

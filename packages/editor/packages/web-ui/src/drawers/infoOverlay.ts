@@ -1,4 +1,4 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-types';
+import { GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 import { Engine } from 'glugglug';
 
 import type { State } from '@8f4e/editor-state-types';

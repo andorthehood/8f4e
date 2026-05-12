@@ -1,5 +1,5 @@
 import type { MemoryIdentifier, State } from '@8f4e/editor-state-types';
-import type { DataStructure } from '@8f4e/compiler-types';
+import type { DataStructure } from '@8f4e/compiler-spec';
 
 export default function resolveMemoryIdentifier(
 	state: State,

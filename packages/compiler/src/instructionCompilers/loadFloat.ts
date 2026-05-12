@@ -1,12 +1,12 @@
 import { f32load, Type } from '@8f4e/compiler-wasm-utils';
-import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-types';
+import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
 import { saveByteCode } from '../utils/compilation';
 import { guardedLoad, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `loadFloat`.

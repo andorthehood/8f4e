@@ -4,7 +4,7 @@ import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/tokenizer';
 import { serializeDiagnostic } from './diagnostic';
 import { ErrorCode, getError } from './compilerError';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 const stubLine = {
 	lineNumberBeforeMacroExpansion: 3,

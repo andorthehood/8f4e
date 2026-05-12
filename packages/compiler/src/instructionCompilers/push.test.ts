@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
 import push from './push';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, MemoryMap } from '@8f4e/compiler-types';
+import type { AST, MemoryMap } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

@@ -5,7 +5,7 @@ import and from './and';
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('and instruction compiler', () => {
 	it('emits I32_AND for integer operands', () => {

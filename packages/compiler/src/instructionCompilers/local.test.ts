@@ -5,7 +5,7 @@ import local from './local';
 import { ErrorCode } from '../compilerError';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

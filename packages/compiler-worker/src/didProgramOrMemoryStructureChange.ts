@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup } from '@8f4e/compiler-types';
+import type { CompiledModuleLookup } from '@8f4e/compiler-spec';
 
 function didInternalResourcesChange(
 	compiledModule: CompiledModuleLookup[string],

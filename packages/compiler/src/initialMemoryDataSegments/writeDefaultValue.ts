@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-types';
+import type { DataStructure } from '@8f4e/compiler-spec';
 
 export default function writeDefaultValue(
 	view: DataView,

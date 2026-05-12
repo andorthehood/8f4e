@@ -1,4 +1,4 @@
-import { BLOCK_TYPE, type CompilationContext, type ModuleEndLine } from '@8f4e/compiler-types';
+import { BLOCK_TYPE, type CompilationContext, type ModuleEndLine } from '@8f4e/compiler-spec';
 
 import { ErrorCode, getError } from '../../compilerError';
 import { isInstructionIsInsideAModule } from '../../utils/blockStack';
