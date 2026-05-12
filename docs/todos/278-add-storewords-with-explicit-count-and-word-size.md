@@ -112,7 +112,7 @@ storeWords 16 %buffer
 ## Related Items
 
 - **Depends on**: `docs/todos/archived/277-add-storebytes-with-explicit-byte-count.md`
-- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
+- **Related**: `docs/todos/archived/146-investigate-index-arithmetic-support.md`
 
 ## Notes
 

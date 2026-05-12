@@ -99,7 +99,7 @@ Out of scope:
 ## Related Items
 
 - **Depends on**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
-- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
+- **Related**: `docs/todos/archived/146-investigate-index-arithmetic-support.md`
 
 ## Notes
 

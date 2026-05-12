@@ -96,7 +96,7 @@ storeBytes 5
 
 ## Related Items
 
-- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
+- **Related**: `docs/todos/archived/146-investigate-index-arithmetic-support.md`
 - **Related**: `docs/todos/271-add-f64-support-for-loadfloat.md`
 
 ## Notes

@@ -3,7 +3,7 @@ title: 'TODO: Add WebMCP-based MCP server integration to the 8f4e editor'
 priority: Medium
 effort: 2-4d
 created: 2026-02-07
-status: Open
+status: Cancelled
 completed: null
 ---
 
@@ -79,3 +79,4 @@ Create a focused integration spike that adds an MCP server bridge for the editor
 ## Notes
 
 - Treat this as an integration spike first, not a production-ready commitment.
+- Cancelled and archived by request on 2026-05-12.

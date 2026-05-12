@@ -3,7 +3,7 @@ title: 'TODO: Handle Large Binary Assets with OPFS'
 priority: Medium
 effort: 1-2d
 created: 2025-11-17
-status: Open
+status: Cancelled
 completed: null
 ---
 
@@ -71,6 +71,7 @@ Binary asset imports in `src/storage-callbacks.ts:158` always serialize the uplo
 - Align the size threshold with existing binary asset upload limits (if any) and surface a helpful message when files are rerouted to OPFS. 
 - Consider chunked writes for very large files to avoid blocking the UI thread when streaming from FileReader.
 - Document cleanup commands or UI affordances so users can reclaim space if OPFS storage gets large.
+- Cancelled and archived by request on 2026-05-12.
 
 ## Archive Instructions
 

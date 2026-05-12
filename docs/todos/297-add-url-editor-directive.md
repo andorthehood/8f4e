@@ -95,7 +95,7 @@ Key requirements:
 ## Related Items
 
 - **Related**: `docs/todos/241-load-project-from-query-param-url.md`
-- **Related**: `docs/todos/210-add-webmcp-mcp-server-integration-editor.md`
+- **Related**: `docs/todos/archived/210-add-webmcp-mcp-server-integration-editor.md`
 
 ## Notes
 

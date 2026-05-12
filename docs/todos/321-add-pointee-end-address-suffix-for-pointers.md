@@ -92,7 +92,7 @@ Expected semantics:
 
 - **Related**: `docs/todos/archived/319-add-pointee-element-word-size-prefix-for-pointers.md`
 - **Related**: `docs/todos/320-add-pointee-start-address-prefix-for-pointers.md`
-- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
+- **Related**: `docs/todos/archived/146-investigate-index-arithmetic-support.md`
 
 ## Notes
 
