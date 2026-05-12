@@ -100,7 +100,7 @@ describe('serializeDiagnostic', () => {
 
 			// Both must expose same top-level fields — no stage-specific special casing needed
 			for (const d of [syntax, compiler]) {
-				expect(typeof d.code === 'string' || typeof d.code === 'number').toBe(true);
+				expect(typeof d.code).toBe('number');
 				expect(typeof d.message).toBe('string');
 				expect(d.line).toBeDefined();
 				expect(d.context).toBeDefined();
