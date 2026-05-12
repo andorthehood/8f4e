@@ -1,7 +1,7 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
-import { saveByteCode } from '../utils/compilation';
-import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
+import { saveByteCode } from './utils/saveByteCode';
+import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
 
 import type { InstructionCompiler, StackItem } from '@8f4e/compiler-spec';
 

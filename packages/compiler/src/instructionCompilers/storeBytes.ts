@@ -1,9 +1,8 @@
 import { i32store8, localGet, localSet } from '@8f4e/compiler-wasm-utils';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
-
-import { saveByteCode } from '../utils/compilation';
-import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
+import { saveByteCode } from './utils/saveByteCode';
+import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 
 import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
 
