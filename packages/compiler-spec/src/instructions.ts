@@ -1,76 +1,106 @@
+import { instructionSpecs } from './instructionSpecs';
+import { memoryDeclarationInstructions } from './memory';
+
+import type { InstructionSpecName } from './instructionSpecs';
+import type { MemoryDeclarationInstruction } from './memory';
+
+export const semanticInstructionNames = ['const', 'use', 'module', 'moduleEnd', 'constants', 'constantsEnd'] as const;
+export type SemanticInstructionName = (typeof semanticInstructionNames)[number];
+
+export const macroInstructionNames = ['defineMacro', 'defineMacroEnd', 'macro'] as const;
+export type MacroInstructionName = (typeof macroInstructionNames)[number];
+
+export const stackBlockInstructionPairs = [
+	{ start: 'if', end: 'ifEnd' },
+	{ start: 'block', end: 'blockEnd' },
+	{ start: 'loop', end: 'loopEnd' },
+] as const;
+
+export const compilerBlockInstructionPairs = [
+	...stackBlockInstructionPairs,
+	{ start: 'function', end: 'functionEnd' },
+	{ start: 'module', end: 'moduleEnd' },
+	{ start: 'constants', end: 'constantsEnd' },
+	{ start: 'mapBegin', end: 'mapEnd' },
+] as const;
+
+export type BlockStartInstruction = (typeof compilerBlockInstructionPairs)[number]['start'];
+export type BlockEndInstruction = (typeof compilerBlockInstructionPairs)[number]['end'];
+
+export const blockStartInstructions = compilerBlockInstructionPairs.map(
+	({ start }) => start
+) as BlockStartInstruction[];
+
+export const blockEndToStartInstruction = Object.fromEntries(
+	compilerBlockInstructionPairs.map(({ start, end }) => [end, start])
+) as Record<BlockEndInstruction, BlockStartInstruction>;
+
+export const compilerSourceBlockInstructionPairs = [
+	{ type: 'module', start: 'module', end: 'moduleEnd' },
+	{ type: 'function', start: 'function', end: 'functionEnd' },
+	{ type: 'constants', start: 'constants', end: 'constantsEnd' },
+] as const;
+
+export type CompilerSourceBlockType = (typeof compilerSourceBlockInstructionPairs)[number]['type'];
+export const compilerSourceBlockTypes = compilerSourceBlockInstructionPairs.map(
+	({ type }) => type
+) as CompilerSourceBlockType[];
+
+export type CompiledModuleBlockType = Exclude<CompilerSourceBlockType, 'function'>;
+export const compiledModuleBlockTypes = compilerSourceBlockTypes.filter(
+	(type): type is CompiledModuleBlockType => type !== 'function'
+);
+
+export const compilerSourceBlockInstructionByType = Object.fromEntries(
+	compilerSourceBlockInstructionPairs.map(pair => [pair.type, pair])
+) as {
+	readonly [Type in CompilerSourceBlockType]: Extract<
+		(typeof compilerSourceBlockInstructionPairs)[number],
+		{ type: Type }
+	>;
+};
+
+export const documentOnlyInstructionNames = ['note', 'noteEnd'] as const;
+export type DocumentOnlyInstructionName = (typeof documentOnlyInstructionNames)[number];
+
+export const documentBlockInstructionPairs = [
+	...compilerSourceBlockInstructionPairs,
+	{ type: 'macro', start: 'defineMacro', end: 'defineMacroEnd' },
+	{ type: 'note', start: 'note', end: 'noteEnd' },
+] as const;
+
+export type DocumentBlockType = (typeof documentBlockInstructionPairs)[number]['type'];
+export type DocumentBlockStartInstruction = (typeof documentBlockInstructionPairs)[number]['start'];
+export type DocumentBlockEndInstruction = (typeof documentBlockInstructionPairs)[number]['end'];
+
+export const documentBlockInstructionByType = Object.fromEntries(
+	documentBlockInstructionPairs.map(pair => [pair.type, pair])
+) as { readonly [Type in DocumentBlockType]: Extract<(typeof documentBlockInstructionPairs)[number], { type: Type }> };
+
+export type CompilableBlockType = Exclude<DocumentBlockType, 'note'>;
+export const compilableBlockTypes = documentBlockInstructionPairs
+	.map(({ type }) => type)
+	.filter((type): type is CompilableBlockType => type !== 'note');
+
+export type CodegenInstructionName = Exclude<InstructionSpecName, 'memoryDeclaration'>;
+
+export const codegenInstructionNames = Object.keys(instructionSpecs).filter(
+	(instruction): instruction is CodegenInstructionName => instruction !== 'memoryDeclaration'
+);
+
 export type Instruction =
-	| 'and'
-	| 'or'
-	| 'load'
-	| 'load8u'
-	| 'load16u'
-	| 'load8s'
-	| 'load16s'
-	| 'clampAddress'
-	| 'clampModuleAddress'
-	| 'clampGlobalAddress'
-	| 'localSet'
-	| 'else'
-	| 'if'
-	| 'ifEnd'
-	| 'lessThan'
-	| 'store'
-	| 'sub'
-	| 'div'
-	| 'xor'
-	| 'local'
-	| 'greaterOrEqual'
-	| 'add'
-	| 'min'
-	| 'max'
-	| 'greaterThan'
-	| 'branch'
-	| 'branchIfTrue'
-	| 'exitIfTrue'
-	| 'push'
-	| 'block'
-	| 'blockEnd'
-	| 'lessOrEqual'
-	| 'mul'
-	| 'loop'
-	| 'loopIndex'
-	| 'loopEnd'
-	| 'greaterOrEqualUnsigned'
-	| 'equalToZero'
-	| 'notEqual'
-	| 'notZero'
-	| 'shiftLeft'
-	| 'shiftRight'
-	| 'shiftRightUnsigned'
-	| 'remainder'
-	| 'castToInt'
-	| 'castToFloat'
-	| 'castToFloat64'
-	| 'drop'
-	| 'clearStack'
-	| 'risingEdge'
-	| 'fallingEdge'
-	| 'hasChanged'
-	| 'abs'
-	| 'equal'
-	| 'branchIfUnchanged'
-	| 'sqrt'
-	| 'loadFloat'
-	| 'round'
-	| 'ensureNonZero'
-	| 'function'
-	| 'functionEnd'
-	| 'return'
-	| 'param'
-	| 'call'
-	| '#skipExecution'
-	| '#initOnly'
-	| '#impure'
-	| '#export'
-	| '#loopCap'
-	| 'mapBegin'
-	| 'map'
-	| 'default'
-	| 'mapEnd'
-	| 'storeBytes'
-	| 'memoryCopy';
+	| CodegenInstructionName
+	| MemoryDeclarationInstruction
+	| SemanticInstructionName
+	| MacroInstructionName
+	| DocumentOnlyInstructionName;
+
+export const languageInstructionNames = Array.from(
+	new Set([
+		...codegenInstructionNames,
+		...memoryDeclarationInstructions,
+		...semanticInstructionNames,
+		...macroInstructionNames,
+		...documentOnlyInstructionNames,
+	])
+) as Instruction[];

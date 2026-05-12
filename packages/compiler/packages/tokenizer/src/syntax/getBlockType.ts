@@ -1,22 +1,18 @@
-export type CodeBlockType = 'module' | 'function' | 'constants' | 'unknown';
+import { compilableBlockTypes, compilerSourceBlockInstructionPairs } from '@8f4e/compiler-spec';
+
+import type { CompilableBlockType, CompilerSourceBlockType } from '@8f4e/compiler-spec';
+
+export type CodeBlockType = CompilerSourceBlockType | 'unknown';
 
 const BLOCK_MARKERS: Array<{
-	type: Exclude<CodeBlockType, 'unknown'>;
+	type: CompilerSourceBlockType;
 	opener: RegExp;
 	closer: RegExp;
-}> = [
-	{ type: 'module', opener: /^\s*module(\s|$)/, closer: /^\s*moduleEnd(\s|$)/ },
-	{
-		type: 'function',
-		opener: /^\s*function(\s|$)/,
-		closer: /^\s*functionEnd(\s|$)/,
-	},
-	{
-		type: 'constants',
-		opener: /^\s*constants(\s|$)/,
-		closer: /^\s*constantsEnd(\s|$)/,
-	},
-];
+}> = compilerSourceBlockInstructionPairs.map(({ type, start, end }) => ({
+	type,
+	opener: new RegExp(`^\\s*${start}(\\s|$)`),
+	closer: new RegExp(`^\\s*${end}(\\s|$)`),
+}));
 
 /**
  * Detects whether a block of code represents a module, function, constants, or unknown block by scanning for marker pairs.
@@ -45,8 +41,6 @@ export function getBlockType(code: string[]): CodeBlockType {
  * Constants blocks are treated as modules by the compiler.
  * Accepts undefined for safe use with optional chaining.
  */
-export function isCompilableBlockType(
-	blockType: string | undefined
-): blockType is 'module' | 'function' | 'constants' | 'macro' {
-	return blockType === 'module' || blockType === 'function' || blockType === 'constants' || blockType === 'macro';
+export function isCompilableBlockType(blockType: string | undefined): blockType is CompilableBlockType {
+	return blockType !== undefined && (compilableBlockTypes as readonly string[]).includes(blockType);
 }
