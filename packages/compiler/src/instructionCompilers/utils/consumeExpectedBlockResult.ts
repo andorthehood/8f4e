@@ -1,6 +1,4 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { getError } from '../../compilerError';
+import { ErrorCode, getError } from '../../compilerError';
 
 import type { BlockStack, InstructionCompiler } from '@8f4e/compiler-spec';
 

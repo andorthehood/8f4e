@@ -25,7 +25,7 @@ const div = createNumericBinaryCompiler({
 	},
 	deriveIntegerMetadata: (left, right) =>
 		deriveKnownIntegerValue(left, right, (dividend, divisor) => {
-			if (divisor === 0 || (dividend === BASE_TYPE_METADATA.int.min && divisor === -1)) {
+			if (dividend === BASE_TYPE_METADATA.int.min && divisor === -1) {
 				return undefined;
 			}
 

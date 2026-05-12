@@ -2,7 +2,7 @@ import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 
 import { getEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { BaseMemoryType, DataStructure, LocalBinding, MemoryMap, MemoryValueKind } from '@8f4e/compiler-spec';
+import type { DataStructure, LocalBinding, MemoryMap, MemoryValueKind } from '@8f4e/compiler-spec';
 
 export type PointerMetadata =
 	| Pick<DataStructure, 'pointeeBaseType' | 'isPointingToPointer'>
@@ -11,10 +11,10 @@ export type PointerMetadata =
 function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
 	if (memoryItem.isInteger) {
 		if (memoryItem.elementWordSize === BASE_TYPE_METADATA.int8.wordSize) {
-			return BASE_TYPE_METADATA.int8;
+			return memoryItem.isUnsigned ? BASE_TYPE_METADATA.int8u : BASE_TYPE_METADATA.int8;
 		}
 		if (memoryItem.elementWordSize === BASE_TYPE_METADATA.int16.wordSize) {
-			return BASE_TYPE_METADATA.int16;
+			return memoryItem.isUnsigned ? BASE_TYPE_METADATA.int16u : BASE_TYPE_METADATA.int16;
 		}
 		return BASE_TYPE_METADATA.int;
 	}
@@ -24,18 +24,8 @@ function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
 		: BASE_TYPE_METADATA.float;
 }
 
-function isBaseMemoryType(pointeeBaseType: PointerMetadata['pointeeBaseType']): pointeeBaseType is BaseMemoryType {
-	return (
-		pointeeBaseType === 'int8' ||
-		pointeeBaseType === 'int16' ||
-		pointeeBaseType === 'int' ||
-		pointeeBaseType === 'float' ||
-		pointeeBaseType === 'float64'
-	);
-}
-
-function getPointeeBaseTypeMetadata(pointeeBaseType: PointerMetadata['pointeeBaseType']) {
-	return isBaseMemoryType(pointeeBaseType) ? BASE_TYPE_METADATA[pointeeBaseType] : undefined;
+function getPointeeBaseTypeMetadata(pointeeBaseType: NonNullable<PointerMetadata['pointeeBaseType']>) {
+	return BASE_TYPE_METADATA[pointeeBaseType];
 }
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
@@ -65,7 +55,7 @@ export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 export function getPointeeElementWordSizeFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
 	if (!pointerMetadata?.pointeeBaseType) return 0;
 	if (pointerMetadata.isPointingToPointer) return BASE_TYPE_METADATA.pointer.wordSize;
-	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.wordSize ?? BASE_TYPE_METADATA.int.wordSize;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).wordSize;
 }
 
 export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
@@ -75,26 +65,23 @@ export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): num
 export function getPointeeElementIsIntegerFromMetadata(pointerMetadata: PointerMetadata | undefined): boolean {
 	if (!pointerMetadata?.pointeeBaseType) return false;
 	if (pointerMetadata.isPointingToPointer) return BASE_TYPE_METADATA.pointer.isInteger;
-	const metadata = getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType);
-	return metadata
-		? metadata.isInteger
-		: pointerMetadata.pointeeBaseType !== 'float64' && pointerMetadata.pointeeBaseType !== 'float';
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).isInteger;
 }
 
 export function getPointeeValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): MemoryValueKind {
 	if (!pointerMetadata?.pointeeBaseType) return 'float32';
 	if (getPointeeElementIsIntegerFromMetadata(pointerMetadata)) return 'int32';
-	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.valueKind ?? BASE_TYPE_METADATA.float.valueKind;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).valueKind;
 }
 
 export function getDereferencedValueWordSizeFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
 	if (!pointerMetadata?.pointeeBaseType) return 0;
-	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.wordSize ?? BASE_TYPE_METADATA.int.wordSize;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).wordSize;
 }
 
 export function getDereferencedValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): MemoryValueKind {
 	if (!pointerMetadata?.pointeeBaseType) return 'float32';
-	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.valueKind ?? BASE_TYPE_METADATA.float.valueKind;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).valueKind;
 }
 
 export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
@@ -109,7 +96,7 @@ export function getPointeeElementMaxValueFromMetadata(pointerMetadata: PointerMe
 	if (!pointerMetadata?.pointeeBaseType) return 0;
 
 	if (pointerMetadata.isPointingToPointer) return BASE_TYPE_METADATA.pointer.max;
-	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.max ?? BASE_TYPE_METADATA.float.max;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).max;
 }
 
 export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
