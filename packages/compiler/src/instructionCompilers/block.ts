@@ -1,7 +1,7 @@
 import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { BLOCK_TYPE } from '@8f4e/compiler-spec';
 
-import { saveByteCode } from '../utils/compilation';
+import { saveByteCode } from './utils/saveByteCode';
 
 import type { BlockLine, InstructionCompiler } from '@8f4e/compiler-spec';
 

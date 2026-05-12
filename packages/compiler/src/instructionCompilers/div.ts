@@ -1,47 +1,36 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { getError } from '../compilerError';
-import { saveByteCode } from '../utils/compilation';
-import { deriveKnownIntegerValue, I32_MIN } from '../utils/knownIntegerValue';
-import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
+import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
+import { deriveKnownIntegerValue, I32_MIN } from './utils/knownIntegerValue';
 
-import type { InstructionCompiler, StackItem } from '@8f4e/compiler-spec';
+import { getError } from '../compilerError';
 
 /**
  * Instruction compiler for `div`.
  * @see [Instruction docs](../../docs/instructions/arithmetic.md)
  */
-const div: InstructionCompiler = (line, context) => {
-	// Non-null assertion is safe: instruction validation ensures 2 operands exist
-	const operand1 = context.stack.pop()!;
-	const operand2 = context.stack.pop()!;
-
-	if (!operand1.isNonZero) {
+const div = createNumericBinaryCompiler({
+	opcodes: {
+		int32: WASMInstruction.I32_DIV_S,
+		float32: WASMInstruction.F32_DIV,
+		float64: WASMInstruction.F64_DIV,
+	},
+	result: 'numeric',
+	validate: ({ right, line, context }) => {
+		if (right.isNonZero) {
+			return;
+		}
 		throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
-	}
+	},
+	deriveIntegerMetadata: (left, right) =>
+		deriveKnownIntegerValue(left, right, (dividend, divisor) => {
+			if (divisor === 0 || (dividend === I32_MIN && divisor === -1)) {
+				return undefined;
+			}
 
-	const isInteger = areAllOperandsIntegers(operand1, operand2);
-	const isFloat64 = areAllOperandsFloat64(operand1, operand2);
-	const integerMetadata: Partial<StackItem> = isInteger
-		? deriveKnownIntegerValue(operand2, operand1, (dividend, divisor) => {
-				if (divisor === 0 || (dividend === I32_MIN && divisor === -1)) {
-					return undefined;
-				}
-
-				return Math.trunc(dividend / divisor) | 0;
-			})
-		: {};
-
-	context.stack.push({
-		isInteger,
-		...(isFloat64 ? { isFloat64: true } : {}),
-		isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
-		...integerMetadata,
-	});
-	return saveByteCode(context, [
-		isInteger ? WASMInstruction.I32_DIV_S : isFloat64 ? WASMInstruction.F64_DIV : WASMInstruction.F32_DIV,
-	]);
-};
+			return Math.trunc(dividend / divisor) | 0;
+		}),
+});
 
 export default div;
