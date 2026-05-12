@@ -1,4 +1,4 @@
-import { ArgumentType } from '@8f4e/tokenizer';
+import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
 import { tryResolveCompileTimeArgument } from './resolveCompileTimeArgument';

@@ -1,5 +1,4 @@
-import { ArgumentType } from '@8f4e/tokenizer';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
 

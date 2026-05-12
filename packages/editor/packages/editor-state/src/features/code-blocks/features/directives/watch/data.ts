@@ -1,4 +1,5 @@
-import { ArgumentType, parseLine } from '@8f4e/tokenizer';
+import { ArgumentType } from '@8f4e/compiler-spec';
+import { parseLine } from '@8f4e/tokenizer';
 
 export interface WatchDirectiveData {
 	id: string;
