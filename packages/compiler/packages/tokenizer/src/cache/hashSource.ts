@@ -1,4 +1,4 @@
-import type { ParsedLineMetadata } from '../types';
+import type { ParsedLineMetadata } from '@8f4e/compiler-spec';
 
 function appendHashInput(hash: number, input: string): number {
 	let nextHash = hash;

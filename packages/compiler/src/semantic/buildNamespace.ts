@@ -9,12 +9,13 @@ import {
 	type Namespaces,
 	type ParsedSemanticInstructionLine,
 } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 /**

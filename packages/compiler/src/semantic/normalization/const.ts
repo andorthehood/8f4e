@@ -1,8 +1,9 @@
 import { ArgumentType, type CompilationContext, type ConstLine, type NormalizedConstLine } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { normalizeArgumentsAtIndexes } from './helpers';
 
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 // Throws UNDECLARED_IDENTIFIER when the value cannot be folded to a literal.
 // During namespace prepass, collectNamespacesFromASTs catches this to defer the AST

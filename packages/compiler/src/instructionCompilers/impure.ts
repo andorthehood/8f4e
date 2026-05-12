@@ -1,6 +1,7 @@
 import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 
 import type { ImpureLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
