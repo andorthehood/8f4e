@@ -1,3 +1,5 @@
+import { memoryDeclarationInstructions as specMemoryDeclarationInstructions } from '@8f4e/compiler-spec';
+
 import array from './array';
 import float from './float';
 import float64 from './float64';
@@ -7,43 +9,32 @@ import int16 from './int16';
 
 import { validateInstruction } from '../../stackAnalysis/validateInstruction';
 
-import type { AST, CompilationContext, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { AST, CompilationContext, InstructionCompiler, MemoryDeclarationInstruction } from '@8f4e/compiler-spec';
 
-export const declarationCompilers = {
-	int,
-	float,
-	'int*': int,
-	'int**': int,
-	'int8*': int8,
-	'int8**': int8,
-	'int16*': int16,
-	'int16**': int16,
-	'float*': float,
-	'float**': float,
-	float64,
-	'float64*': float64,
-	'float64**': float64,
-	'float[]': array,
-	'int[]': array,
-	'int8[]': array,
-	'int8u[]': array,
-	'int16[]': array,
-	'int16u[]': array,
-	'int32[]': array,
-	'float*[]': array,
-	'float**[]': array,
-	'int*[]': array,
-	'int**[]': array,
-	'float64[]': array,
-	'float64*[]': array,
-	'float64**[]': array,
-} as const;
+function getDeclarationCompiler(instruction: MemoryDeclarationInstruction): InstructionCompiler {
+	if (instruction.endsWith('[]')) {
+		return array as InstructionCompiler;
+	}
+	if (instruction.startsWith('int8')) {
+		return int8 as InstructionCompiler;
+	}
+	if (instruction.startsWith('int16')) {
+		return int16 as InstructionCompiler;
+	}
+	if (instruction.startsWith('float64')) {
+		return float64 as InstructionCompiler;
+	}
+	if (instruction.startsWith('float')) {
+		return float as InstructionCompiler;
+	}
+	return int as InstructionCompiler;
+}
 
-export type MemoryDeclarationInstruction = keyof typeof declarationCompilers;
+export const declarationCompilers = Object.fromEntries(
+	specMemoryDeclarationInstructions.map(instruction => [instruction, getDeclarationCompiler(instruction)])
+) as Record<MemoryDeclarationInstruction, InstructionCompiler>;
 
-export const memoryDeclarationInstructions = new Set<MemoryDeclarationInstruction>(
-	Object.keys(declarationCompilers) as MemoryDeclarationInstruction[]
-);
+export const memoryDeclarationInstructions = new Set<MemoryDeclarationInstruction>(specMemoryDeclarationInstructions);
 
 export function isMemoryDeclarationInstruction(instruction: string): instruction is MemoryDeclarationInstruction {
 	return memoryDeclarationInstructions.has(instruction as MemoryDeclarationInstruction);

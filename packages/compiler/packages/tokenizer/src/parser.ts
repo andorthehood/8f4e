@@ -1,4 +1,4 @@
-import { ArgumentType } from '@8f4e/compiler-spec';
+import { ArgumentType, blockEndToStartInstruction, blockStartInstructions } from '@8f4e/compiler-spec';
 
 import instructionParser from './syntax/instructionParser';
 import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
@@ -15,13 +15,12 @@ import type {
 	AST,
 	ASTCache,
 	ASTLine,
+	BlockEndInstruction,
+	BlockStartInstruction,
 	BlockBlockResultType,
 	IfBlockResultType,
 	ParsedLineMetadata,
 } from '@8f4e/compiler-spec';
-
-type BlockStartInstruction = 'if' | 'block' | 'loop' | 'function' | 'module' | 'constants' | 'mapBegin';
-type BlockEndInstruction = 'ifEnd' | 'blockEnd' | 'loopEnd' | 'functionEnd' | 'moduleEnd' | 'constantsEnd' | 'mapEnd';
 
 type OpenBlock = {
 	instruction: BlockStartInstruction;
@@ -29,25 +28,7 @@ type OpenBlock = {
 	hasElse?: boolean;
 };
 
-const blockStartInstructions = new Set<BlockStartInstruction>([
-	'if',
-	'block',
-	'loop',
-	'function',
-	'module',
-	'constants',
-	'mapBegin',
-]);
-
-const blockEndToStartInstruction: Record<BlockEndInstruction, BlockStartInstruction> = {
-	ifEnd: 'if',
-	blockEnd: 'block',
-	loopEnd: 'loop',
-	functionEnd: 'function',
-	moduleEnd: 'module',
-	constantsEnd: 'constants',
-	mapEnd: 'mapBegin',
-};
+const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
 
 function getResultTypeFromFirstArgument(line: ASTLine): IfBlockResultType {
 	const typeArgument = line.arguments[0];
@@ -208,7 +189,7 @@ export function compileToAST(
 
 		ast.push(parsedLine);
 
-		if (blockStartInstructions.has(parsedLine.instruction as BlockStartInstruction)) {
+		if (blockStartInstructionSet.has(parsedLine.instruction as BlockStartInstruction)) {
 			blockStack.push({
 				instruction: parsedLine.instruction as BlockStartInstruction,
 				astIndex,

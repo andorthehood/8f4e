@@ -1,6 +1,7 @@
 import {
 	ArgumentType,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	compilerSourceBlockInstructionByType,
 	type AST,
 	type Argument,
 	type CompilationContext,
@@ -18,6 +19,10 @@ import applySemanticInstruction from './instructions';
 import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
+const constantsBlock = compilerSourceBlockInstructionByType.constants;
+const functionBlock = compilerSourceBlockInstructionByType.function;
+const moduleBlock = compilerSourceBlockInstructionByType.module;
+
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
  * This allows semantic normalization (e.g. `call` target validation) and
@@ -28,7 +33,7 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 	const result: CompiledFunctionLookup = {};
 
 	for (const [index, ast] of asts.entries()) {
-		const functionLine = ast.find(line => line.instruction === 'function');
+		const functionLine = ast.find(line => line.instruction === functionBlock.start);
 		if (!functionLine || functionLine.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
 			continue;
 		}
@@ -48,7 +53,7 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 			returns: [],
 		};
 
-		const functionEndLine = ast.find(line => line.instruction === 'functionEnd');
+		const functionEndLine = ast.find(line => line.instruction === functionBlock.end);
 		if (functionEndLine) {
 			signature.returns = functionEndLine.arguments.map(
 				arg => (arg as { type: ArgumentType.IDENTIFIER; value: FunctionSignature['returns'][number] }).value
@@ -71,7 +76,7 @@ export function assertUniqueModuleIds(asts: AST[]): void {
 	const seenModuleIds = new Set<string>();
 
 	for (const ast of asts) {
-		const moduleLine = ast.find(line => line.instruction === 'module');
+		const moduleLine = ast.find(line => line.instruction === moduleBlock.start);
 		if (!moduleLine || moduleLine.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
 			continue;
 		}
@@ -117,8 +122,8 @@ export function prepassNamespace(
 		startingByteAddress,
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: undefined,
-		mode: 'module',
-		codeBlockType: ast[0]?.instruction === 'constants' ? 'constants' : 'module',
+		mode: moduleBlock.type,
+		codeBlockType: ast[0]?.instruction === constantsBlock.start ? constantsBlock.type : moduleBlock.type,
 	};
 
 	ast.forEach(originalLine => {
@@ -238,15 +243,15 @@ export function collectNamespacesFromASTs(
 				if (!context.namespace.moduleName) {
 					continue;
 				}
-				const moduleLine = ast.find(line => line.instruction === 'module');
+				const moduleLine = ast.find(line => line.instruction === moduleBlock.start);
 				const existingNamespace = namespaces[context.namespace.moduleName];
-				if (moduleLine && existingNamespace?.kind === 'module') {
+				if (moduleLine && existingNamespace?.kind === moduleBlock.type) {
 					throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine ?? ast[0], context, {
 						identifier: context.namespace.moduleName,
 					});
 				}
 				namespaces[context.namespace.moduleName] = {
-					kind: moduleLine ? 'module' : 'constants',
+					kind: moduleLine ? moduleBlock.type : constantsBlock.type,
 					consts: { ...context.namespace.consts },
 					memory: context.namespace.memory,
 				};
@@ -277,7 +282,7 @@ export function collectNamespacesFromASTs(
 		}
 
 		namespaces[context.namespace.moduleName] = {
-			kind: 'module',
+			kind: moduleBlock.type,
 			consts: { ...context.namespace.consts },
 			memory: context.namespace.memory,
 			byteAddress: nextStartingByteAddress,

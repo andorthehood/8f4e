@@ -1,8 +1,11 @@
-import { ArgumentType } from '@8f4e/compiler-spec';
+import { ArgumentType, compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
 
 import { isMemoryDeclarationInstruction } from './semantic/declarations';
 
 import type { AST, Argument } from '@8f4e/compiler-spec';
+
+const constantsInstruction = compilerSourceBlockInstructionByType.constants.start;
+const moduleInstruction = compilerSourceBlockInstructionByType.module.start;
 
 function getIntermodularReferenceModules(argument: Argument | undefined): string[] {
 	if (!argument) {
@@ -43,8 +46,8 @@ function extractIntermodularDependencies(ast: AST): string[] {
 }
 
 function getModuleSortMetadata(ast: AST, index: number): ModuleSortMetadata {
-	const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-	const moduleId = getIdentifierValue(ast.find(line => line.instruction === 'module')?.arguments[0]);
+	const isConstantsBlock = ast.some(line => line.instruction === constantsInstruction);
+	const moduleId = getIdentifierValue(ast.find(line => line.instruction === moduleInstruction)?.arguments[0]);
 	const referencedModuleIds = isConstantsBlock ? [] : extractIntermodularDependencies(ast);
 	return { ast, moduleId, isConstantsBlock, referencedModuleIds, index };
 }

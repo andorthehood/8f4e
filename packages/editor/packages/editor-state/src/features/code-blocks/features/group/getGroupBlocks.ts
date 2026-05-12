@@ -1,4 +1,8 @@
+import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
+
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+
+const moduleBlockType = documentBlockInstructionByType.module.type;
 
 /**
  * Filters code blocks by group name.
@@ -19,5 +23,5 @@ export function getGroupBlocks(codeBlocks: CodeBlockGraphicData[], groupName: st
  * @returns Array of module code blocks that belong to the specified group
  */
 export function getGroupModuleBlocks(codeBlocks: CodeBlockGraphicData[], groupName: string): CodeBlockGraphicData[] {
-	return codeBlocks.filter(block => block.groupName === groupName && block.blockType === 'module');
+	return codeBlocks.filter(block => block.groupName === groupName && block.blockType === moduleBlockType);
 }

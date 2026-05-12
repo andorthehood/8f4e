@@ -1,9 +1,14 @@
 import compile from '@8f4e/compiler';
+import { compiledModuleBlockTypes, documentBlockInstructionByType } from '@8f4e/compiler-spec';
 
 import getBlockType from '../shared/getBlockType';
 
 import type { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler-spec';
 import type { ProjectCodeBlock } from '../shared/types';
+
+const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
+const functionBlockType = documentBlockInstructionByType.function.type;
+const macroBlockType = documentBlockInstructionByType.macro.type;
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
@@ -34,15 +39,15 @@ export default function compileProjectModules(
 		}
 
 		const blockType = getBlockType(block.code);
-		if (blockType === 'module' || blockType === 'constants') {
+		if (compiledModuleBlockTypeSet.has(blockType)) {
 			moduleBlocks.push({ code: block.code });
 			continue;
 		}
-		if (blockType === 'function') {
+		if (blockType === functionBlockType) {
 			functionBlocks.push({ code: block.code });
 			continue;
 		}
-		if (blockType === 'macro') {
+		if (blockType === macroBlockType) {
 			macroBlocks.push({ code: block.code });
 		}
 	}

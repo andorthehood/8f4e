@@ -1,4 +1,4 @@
-export enum MemoryTypes {
+export const scalarMemoryDeclarationInstructions = [
 	'int',
 	'int*',
 	'int**',
@@ -12,7 +12,40 @@ export enum MemoryTypes {
 	'float64',
 	'float64*',
 	'float64**',
-}
+] as const;
+
+export type ScalarMemoryDeclarationInstruction = (typeof scalarMemoryDeclarationInstructions)[number];
+
+export const MemoryTypes = Object.fromEntries(
+	scalarMemoryDeclarationInstructions.map(instruction => [instruction, instruction])
+) as { readonly [Instruction in ScalarMemoryDeclarationInstruction]: Instruction };
+
+export type MemoryType = ScalarMemoryDeclarationInstruction;
+
+export const arrayMemoryDeclarationInstructions = [
+	'float[]',
+	'int[]',
+	'int8[]',
+	'int8u[]',
+	'int16[]',
+	'int16u[]',
+	'int32[]',
+	'float*[]',
+	'float**[]',
+	'int*[]',
+	'int**[]',
+	'float64[]',
+	'float64*[]',
+	'float64**[]',
+] as const;
+
+export type ArrayDeclarationInstruction = (typeof arrayMemoryDeclarationInstructions)[number];
+export type MemoryDeclarationInstruction = ScalarMemoryDeclarationInstruction | ArrayDeclarationInstruction;
+
+export const memoryDeclarationInstructions = [
+	...scalarMemoryDeclarationInstructions,
+	...arrayMemoryDeclarationInstructions,
+] as readonly MemoryDeclarationInstruction[];
 
 export type BaseMemoryType = 'int' | 'int8' | 'int16' | 'float' | 'float64';
 type ReservedUnsignedBaseMemoryType = 'int8u' | 'int16u';
@@ -95,7 +128,7 @@ export const BASE_TYPE_METADATA: Record<BaseTypeMetadataKey, BaseTypeMetadata> =
 export interface DataStructure {
 	numberOfElements: number;
 	elementWordSize: number;
-	type: MemoryTypes;
+	type: MemoryType;
 	byteAddress: number;
 	wordAlignedSize: number;
 	wordAlignedAddress: number;

@@ -1,12 +1,12 @@
+import { documentBlockInstructionPairs } from '@8f4e/compiler-spec';
+
 export const FORMAT_HEADER = '8f4e/v1';
 
-export const BLOCK_DELIMITERS = [
-	{ type: 'module', opener: 'module', closer: 'moduleEnd' },
-	{ type: 'function', opener: 'function', closer: 'functionEnd' },
-	{ type: 'constants', opener: 'constants', closer: 'constantsEnd' },
-	{ type: 'macro', opener: 'defineMacro', closer: 'defineMacroEnd' },
-	{ type: 'note', opener: 'note', closer: 'noteEnd' },
-] as const;
+export const BLOCK_DELIMITERS = documentBlockInstructionPairs.map(({ type, start, end }) => ({
+	type,
+	opener: start,
+	closer: end,
+}));
 
 function matchesKeyword(line: string, keyword: string): boolean {
 	return line === keyword || line.startsWith(keyword + ' ');

@@ -1,21 +1,7 @@
-import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
+import { memoryDeclarationInstructions } from '@8f4e/compiler-spec';
 
-const scalarMemoryDeclarationInstructions = new Set([
-	'int',
-	'float',
-	'int*',
-	'int**',
-	'int8*',
-	'int8**',
-	'int16*',
-	'int16**',
-	'float*',
-	'float**',
-	'float64',
-	'float64*',
-	'float64**',
-]);
+const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 
 export default function isMemoryDeclarationInstruction(instruction: string): boolean {
-	return scalarMemoryDeclarationInstructions.has(instruction) || isArrayDeclarationInstruction(instruction);
+	return memoryDeclarationInstructionSet.has(instruction);
 }

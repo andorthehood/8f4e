@@ -213,11 +213,6 @@ export const instructionSpecs = {
 	loop: {
 		scope: 'moduleOrFunction',
 	},
-	// loopCap ( -- )
-	loopCap: {
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
-	},
 	// #loopCap ( -- )
 	'#loopCap': {
 		scope: 'moduleOrFunction',
