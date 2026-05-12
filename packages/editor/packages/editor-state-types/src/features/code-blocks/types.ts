@@ -2,7 +2,7 @@
  * Types for code-blocks feature - manages code block entities, rendering, and interactions.
  */
 
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { DataStructure, DocumentBlockType } from '@8f4e/compiler-spec';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type { ContextMenu } from '../menu/types';
@@ -26,7 +26,7 @@ export interface CodeBlock {
  * - 'note': Contains note/noteEnd markers (editor-only notes, not compiled)
  * - 'unknown': Mixed or incomplete markers, or no recognizable markers
  */
-export type CodeBlockType = 'module' | 'function' | 'constants' | 'macro' | 'note' | 'unknown';
+export type CodeBlockType = DocumentBlockType | 'unknown';
 
 // Forward declarations for circular dependencies
 export interface Input {

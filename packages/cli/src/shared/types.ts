@@ -1,4 +1,5 @@
 import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-spec';
+import type { CompilableBlockType } from '@8f4e/compiler-spec';
 
 export interface ProjectCodeBlock {
 	code: string[];
@@ -26,4 +27,4 @@ export interface CompileProjectResult {
 	requiredMemoryBytes?: number;
 }
 
-export type BlockType = 'module' | 'function' | 'constants' | 'macro' | 'unknown';
+export type BlockType = CompilableBlockType | 'unknown';

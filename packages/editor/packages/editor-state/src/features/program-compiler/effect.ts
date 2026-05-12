@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
-import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
+import { compiledModuleBlockTypes, documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
@@ -9,6 +9,10 @@ import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
 import type { CompilerDiagnostic } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
+
+const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
+const functionBlockType = documentBlockInstructionByType.function.type;
+const macroBlockType = documentBlockInstructionByType.macro.type;
 
 /**
  * Converts code blocks into separate arrays for modules, functions, and macros, sorted by creationIndex.
@@ -32,11 +36,11 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 		.sort((a, b) => a.creationIndex - b.creationIndex);
 
 	for (const block of sortedEnabled) {
-		if (block.blockType === 'module' || block.blockType === 'constants') {
+		if (compiledModuleBlockTypeSet.has(block.blockType)) {
 			modules.push(block);
-		} else if (block.blockType === 'function') {
+		} else if (block.blockType === functionBlockType) {
 			functions.push(block);
-		} else if (block.blockType === 'macro') {
+		} else if (block.blockType === macroBlockType) {
 			macros.push(block);
 		}
 	}

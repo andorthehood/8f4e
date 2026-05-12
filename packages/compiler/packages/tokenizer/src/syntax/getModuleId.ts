@@ -1,4 +1,8 @@
+import { compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
+
 import instructionParser from './instructionParser';
+
+const moduleInstruction = compilerSourceBlockInstructionByType.module.start;
 
 /**
  * Extracts the identifier provided to the first module instruction within a block of code.
@@ -8,7 +12,7 @@ import instructionParser from './instructionParser';
 export default function getModuleId(code: string[]) {
 	for (let i = 0; i < code.length; i++) {
 		const [, instruction, argumentText = ''] = code[i].match(instructionParser) || [];
-		if (instruction === 'module') {
+		if (instruction === moduleInstruction) {
 			return argumentText.trim().split(/\s+/)[0] || '';
 		}
 	}

@@ -1,7 +1,16 @@
+import { compilerSourceBlockTypes } from '@8f4e/compiler-spec';
+
 import { getActiveCodeBlocksForEnvironmentPlugins } from '../codeBlocks';
 
 import type { CodeBlockGraphicData, CodeError, State } from '@8f4e/editor-state-types';
+import type { CompilerSourceBlockType } from '@8f4e/compiler-spec';
 import type { MidiInBinding } from './types';
+
+const diagnosticBlockTypes = new Set<string>(compilerSourceBlockTypes);
+
+function isDiagnosticBlockType(blockType: string): blockType is CompilerSourceBlockType {
+	return diagnosticBlockTypes.has(blockType);
+}
 
 export interface MidiInDirectiveParseResult {
 	bindings: MidiInBinding[];
@@ -9,7 +18,7 @@ export interface MidiInDirectiveParseResult {
 }
 
 function getCodeBlockType(block: CodeBlockGraphicData): CodeError['codeBlockType'] | undefined {
-	if (block.blockType === 'module' || block.blockType === 'function' || block.blockType === 'constants') {
+	if (isDiagnosticBlockType(block.blockType)) {
 		return block.blockType;
 	}
 

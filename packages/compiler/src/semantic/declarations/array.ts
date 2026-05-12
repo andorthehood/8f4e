@@ -4,7 +4,7 @@ import {
 	type ArrayDeclarationLine,
 	type CompilationContext,
 	type InstructionCompiler,
-	type MemoryTypes,
+	type MemoryType,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -84,7 +84,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = (line: ArrayDeclaration
 							: 'float',
 				}
 			: {}),
-		type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
+		type: line.instruction.slice(0, -2) as unknown as MemoryType,
 		isUnsigned,
 	};
 	context.currentModuleNextWordOffset = wordAlignedAddress + wordAlignedSize;
