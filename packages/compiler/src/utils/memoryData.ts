@@ -8,8 +8,6 @@ export type PointerMetadata =
 	| Pick<DataStructure, 'pointeeBaseType' | 'isPointingToPointer'>
 	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer'>;
 
-export type PointeeValueKind = MemoryValueKind;
-
 function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
 	if (memoryItem.isInteger) {
 		if (memoryItem.elementWordSize === BASE_TYPE_METADATA.int8.wordSize) {
@@ -83,7 +81,7 @@ export function getPointeeElementIsIntegerFromMetadata(pointerMetadata: PointerM
 		: pointerMetadata.pointeeBaseType !== 'float64' && pointerMetadata.pointeeBaseType !== 'float';
 }
 
-export function getPointeeValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): PointeeValueKind {
+export function getPointeeValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): MemoryValueKind {
 	if (!pointerMetadata?.pointeeBaseType) return 'float32';
 	if (getPointeeElementIsIntegerFromMetadata(pointerMetadata)) return 'int32';
 	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.valueKind ?? BASE_TYPE_METADATA.float.valueKind;
@@ -94,7 +92,7 @@ export function getDereferencedValueWordSizeFromMetadata(pointerMetadata: Pointe
 	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.wordSize ?? BASE_TYPE_METADATA.int.wordSize;
 }
 
-export function getDereferencedValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): PointeeValueKind {
+export function getDereferencedValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): MemoryValueKind {
 	if (!pointerMetadata?.pointeeBaseType) return 'float32';
 	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType)?.valueKind ?? BASE_TYPE_METADATA.float.valueKind;
 }
