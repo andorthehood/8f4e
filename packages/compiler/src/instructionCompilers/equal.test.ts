@@ -5,7 +5,7 @@ import equal from './equal';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('equal instruction compiler', () => {
 	it('emits I32_EQ for integer operands', () => {

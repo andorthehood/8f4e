@@ -13,7 +13,7 @@ completed: 2025-08-27
 
 The editor currently has tight coupling with the compiler through the `@8f4e/compiler-worker` package and direct imports from `@8f4e/compiler`. This creates several issues:
 
-- **Tight Coupling**: The editor directly imports and manages compiler types, worker instances, and compilation logic
+- **Tight Coupling**: The editor directly imports and manages compiler spec, worker instances, and compilation logic
 - **Limited Flexibility**: Consumers of the editor cannot provide their own compilation strategy or use different compilers
 - **Testing Complexity**: The editor is harder to test in isolation without mocking the entire compiler system
 - **Bundle Size**: The editor bundle includes compiler-specific code even when not needed

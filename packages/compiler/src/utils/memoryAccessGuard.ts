@@ -10,7 +10,7 @@ import {
 	WASMInstruction,
 } from '@8f4e/compiler-wasm-utils';
 
-import type { CompilationContext, StackItem } from '@8f4e/compiler-types';
+import type { CompilationContext, StackItem } from '@8f4e/compiler-spec';
 
 type GuardedLoadOptions = {
 	accessByteWidth: number;

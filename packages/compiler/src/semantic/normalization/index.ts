@@ -8,7 +8,7 @@ import normalizeMemoryCopy from './memoryCopy';
 import normalizeMemoryDeclaration from './memoryDeclaration';
 import normalizePush from './push';
 
-import type { AST, CompilationContext, NormalizedLine } from '@8f4e/compiler-types';
+import type { AST, CompilationContext, NormalizedLine } from '@8f4e/compiler-spec';
 
 const instructionNormalizers = {
 	call: normalizeCall,

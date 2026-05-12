@@ -84,7 +84,7 @@ After the argument-validation cleanup, compiler-owned instruction contracts shou
 - block allowances
 - stack production/effect
 
-Tokenizer-owned facts must stay in `packages/compiler/packages/tokenizer/src/syntax/validateInstructionArguments.ts` and must not be mirrored in compiler types.
+Tokenizer-owned facts must stay in `packages/compiler/packages/tokenizer/src/syntax/validateInstructionArguments.ts` and must not be mirrored in compiler spec.
 
 Preferred shape:
 
@@ -202,7 +202,7 @@ Handle instructions that need custom analysis:
 
 ## Affected Components
 
-- `packages/compiler-types` - Shared analyzed-line and codegen-context contract types.
+- `packages/compiler-spec` - Shared analyzed-line and codegen-context contract types.
 - `packages/compiler/src/withValidation` - Existing wrapper and private helpers to remove or relocate into stack analysis.
 - `packages/compiler/src/instructionCompilers` - Codegen functions that currently mutate stack state.
 - `packages/compiler/src/stackAnalysis` - New analysis pass and stack validation helpers.

@@ -4,7 +4,7 @@ import round from './round';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('round instruction compiler', () => {
 	it('rounds a float operand', () => {

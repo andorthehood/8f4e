@@ -1,8 +1,9 @@
 import { createFunction, createLocalDeclaration, Type } from '@8f4e/compiler-wasm-utils';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import instructions from './instructionCompilers';
-import { ErrorCode, getError } from './compilerError';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
+import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
 import { validateInstruction } from './stackAnalysis/validateInstruction';
@@ -18,7 +19,7 @@ import type {
 	InstructionCompiler,
 	Namespaces,
 	Instruction,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 export function compileCodegenLine(
 	line: AST[number],

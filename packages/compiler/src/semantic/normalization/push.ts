@@ -1,4 +1,5 @@
-import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '@8f4e/compiler-types';
+import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import {
 	hasCollectedNamespaces,
@@ -9,7 +10,7 @@ import {
 } from './helpers';
 
 import { isMemoryIdentifier } from '../../utils/memoryIdentifier';
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 /**
  * Normalizes compile-time arguments for the `push` instruction.

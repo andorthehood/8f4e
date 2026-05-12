@@ -4,7 +4,7 @@ import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser
 import getMemoryFlags from '../../utils/memoryFlags';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
-import type { InstructionCompiler, MemoryTypes } from '@8f4e/compiler-types';
+import type { InstructionCompiler, MemoryTypes } from '@8f4e/compiler-spec';
 
 type BaseType = Parameters<typeof getMemoryFlags>[0];
 

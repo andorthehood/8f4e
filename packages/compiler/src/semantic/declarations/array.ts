@@ -1,13 +1,14 @@
 import {
 	ArgumentType,
+	GLOBAL_ALIGNMENT_BOUNDARY,
 	type ArrayDeclarationLine,
 	type CompilationContext,
 	type InstructionCompiler,
 	type MemoryTypes,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../../consts';
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
 function getElementWordSize(instruction: string): number {

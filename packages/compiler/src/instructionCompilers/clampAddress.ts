@@ -1,4 +1,6 @@
-import { ErrorCode, getError } from '../compilerError';
+import { ErrorCode } from '@8f4e/compiler-spec';
+
+import { getError } from '../compilerError';
 import {
 	clampAddressByteCode,
 	getClampAccessByteWidth,
@@ -9,7 +11,7 @@ import {
 } from '../utils/addressClamp';
 import { saveByteCode } from '../utils/compilation';
 
-import type { AST, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-types';
+import type { AST, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
 function clampToRange(
 	line: AST[number],

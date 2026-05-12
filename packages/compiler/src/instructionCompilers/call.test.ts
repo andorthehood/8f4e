@@ -4,7 +4,7 @@ import call from './call';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, CompilationContext } from '@8f4e/compiler-types';
+import type { AST, CompilationContext } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

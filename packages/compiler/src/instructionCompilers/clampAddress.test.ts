@@ -1,15 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
-import { ErrorCode } from '../compilerError';
 import normalizeClampAddress from '../semantic/normalization/clampAddress';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, MemoryAddressRange } from '@8f4e/compiler-types';
+import type { AST, MemoryAddressRange } from '@8f4e/compiler-spec';
 
 const range: MemoryAddressRange = {
 	source: 'memory-start',

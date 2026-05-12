@@ -1,10 +1,11 @@
 import { createFunctionType } from '@8f4e/compiler-wasm-utils';
-import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
+import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import { functionValueTypeToWasmType, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 
-import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-types';
+import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `functionEnd`.

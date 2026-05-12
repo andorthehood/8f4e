@@ -1,13 +1,14 @@
 import { i32load, i32load16s, i32load16u, i32load8s, i32load8u, Type } from '@8f4e/compiler-wasm-utils';
+import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 
-import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '../consts';
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { guardedLoad, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `load` variants.
