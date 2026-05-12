@@ -113,7 +113,7 @@ This first step only guarantees safe memory reservation and addressing metadata.
 
 ## Related Items
 
-- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md` (word/byte addressing implications).
+- **Related**: `docs/todos/archived/146-investigate-index-arithmetic-support.md` (word/byte addressing implications).
 - **Related**: `docs/todos/150-add-test-module-type.md` (test ergonomics for low-level memory behavior).
 
 ## Notes

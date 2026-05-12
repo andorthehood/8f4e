@@ -54,6 +54,5 @@ Use the same semantic split already used by `push` to keep behavior consistent a
 
 ## Related Items
 
-- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
+- **Related**: `docs/todos/archived/146-investigate-index-arithmetic-support.md`
 - **Related**: `docs/todos/212-remove-init-loop-distinction-from-compiler.md`
-
