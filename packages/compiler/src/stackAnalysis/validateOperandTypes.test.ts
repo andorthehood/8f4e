@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { validateOperandTypes } from './validateOperandTypes';
-
-import { ErrorCode } from '../compilerError';
 
 import type { CompilationContext, InstructionCompiler } from '@8f4e/compiler-spec';
 

@@ -1,4 +1,4 @@
-import type { ASTCache } from './types';
+import type { ASTCache } from '@8f4e/compiler-spec';
 
 export default function createASTCache(): ASTCache {
 	return {

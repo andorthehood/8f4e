@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
-
-import { ErrorCode } from '../compilerError';
 
 describe('inferErrorCodeFromRule', () => {
 	it('returns the correct error code for scalar rules', () => {

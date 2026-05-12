@@ -1,6 +1,7 @@
 import { type CompilationContext, type ParsedLocalVariableAccessLine } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 /**
  * Validates that localSet targets an already-declared local.

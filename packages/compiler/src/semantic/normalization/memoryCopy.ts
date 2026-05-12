@@ -4,6 +4,7 @@ import {
 	type MemoryCopyLine,
 	type NormalizedMemoryCopyLine,
 } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import {
 	normalizeArgumentsAtIndexes,
@@ -11,7 +12,7 @@ import {
 	validateOrDeferUnresolvedIdentifier,
 } from './helpers';
 
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 export default function normalizeMemoryCopy(
 	line: MemoryCopyLine,

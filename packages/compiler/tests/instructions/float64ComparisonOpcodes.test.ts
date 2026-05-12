@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { createTestModule } from './testUtils';
 
 import compile from '../../src/index';
-import { ErrorCode } from '../../src/compilerError';
 
 const comparisonCases = [
 	{ instruction: 'equal', left: 1.5, right: 1.5, opcode: 'f64.eq' },

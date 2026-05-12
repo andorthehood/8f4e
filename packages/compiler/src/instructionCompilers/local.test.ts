@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import local from './local';
 
-import { ErrorCode } from '../compilerError';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';

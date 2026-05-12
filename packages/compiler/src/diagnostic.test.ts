@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { SyntaxRulesError, SyntaxErrorCode } from '@8f4e/tokenizer';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { serializeDiagnostic } from './diagnostic';
-import { ErrorCode, getError } from './compilerError';
+import { getError } from './compilerError';
 
 import type { AST } from '@8f4e/compiler-spec';
 

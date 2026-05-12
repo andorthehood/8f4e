@@ -1,7 +1,8 @@
 import { WASMInstruction, i32const, localGet } from '@8f4e/compiler-wasm-utils';
 import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 
 import type { InstructionCompiler, LoopIndexLine } from '@8f4e/compiler-spec';
