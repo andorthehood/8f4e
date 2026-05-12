@@ -2,6 +2,7 @@ import { instructionParser } from '@8f4e/tokenizer';
 import { getModuleId } from '@8f4e/tokenizer';
 import { getFunctionId } from '@8f4e/tokenizer';
 import { getConstantsId } from '@8f4e/tokenizer';
+import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 
 import { insertDependencies } from './insertDependencies';
 import parseModuleSource from './parseModuleSource';
@@ -16,6 +17,14 @@ import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicDa
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
+import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/compiler-spec';
+
+type NewCodeBlockType = Extract<DocumentBlockType, 'module' | 'function' | 'note'>;
+type RenameableCodeBlockType = Extract<CompilerSourceBlockType, 'module' | 'function'>;
+
+const functionBlock = documentBlockInstructionByType.function;
+const moduleBlock = documentBlockInstructionByType.module;
+const noteBlock = documentBlockInstructionByType.note;
 
 const nameList = [
 	'quark',
@@ -87,7 +96,7 @@ function incrementCodeBlockId(id: string) {
 	}
 }
 
-function incrementCodeBlockIdUntilUnique(state: State, blockType: 'module' | 'function', blockId: string) {
+function incrementCodeBlockIdUntilUnique(state: State, blockType: RenameableCodeBlockType, blockId: string) {
 	while (checkIfCodeBlockIdIsTaken(state, blockType, blockId)) {
 		blockId = incrementCodeBlockId(blockId);
 	}
@@ -106,7 +115,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		x: number;
 		y: number;
 		isNew: boolean;
-		blockType?: 'module' | 'function' | 'note';
+		blockType?: NewCodeBlockType;
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -116,12 +125,12 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		const hasExplicitCode = code.length > 1 || (code.length === 1 && code[0].trim().length > 0);
 
 		if (isNew && !hasExplicitCode) {
-			if (blockType === 'function') {
-				code = ['function ' + getRandomCodeBlockId(), '', '', 'functionEnd'];
-			} else if (blockType === 'note') {
-				code = ['note', '', '', 'noteEnd'];
+			if (blockType === functionBlock.type) {
+				code = [functionBlock.start + ' ' + getRandomCodeBlockId(), '', '', functionBlock.end];
+			} else if (blockType === noteBlock.type) {
+				code = [noteBlock.start, '', '', noteBlock.end];
 			} else {
-				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
+				code = [moduleBlock.start + ' ' + getRandomCodeBlockId(), '', '', moduleBlock.end];
 			}
 		} else if (code.length < 2) {
 			// If no callback is provided, fail silently
@@ -152,9 +161,17 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		const functionId = getFunctionId(code);
 
 		if (functionId) {
-			code = changeCodeBlockIdInCode(code, 'function', incrementCodeBlockIdUntilUnique(state, 'function', functionId));
+			code = changeCodeBlockIdInCode(
+				code,
+				functionBlock.start,
+				incrementCodeBlockIdUntilUnique(state, functionBlock.type, functionId)
+			);
 		} else if (moduleId) {
-			code = changeCodeBlockIdInCode(code, 'module', incrementCodeBlockIdUntilUnique(state, 'module', moduleId));
+			code = changeCodeBlockIdInCode(
+				code,
+				moduleBlock.start,
+				incrementCodeBlockIdUntilUnique(state, moduleBlock.type, moduleId)
+			);
 		}
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;

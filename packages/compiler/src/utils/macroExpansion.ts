@@ -1,9 +1,13 @@
 import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenizer';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ErrorCode, documentBlockInstructionByType } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
 import type { AST, ExpandedLine, Instruction, MacroDefinition, Module } from '@8f4e/compiler-spec';
+
+const macroDefinitionInstruction = documentBlockInstructionByType.macro.start;
+const macroDefinitionEndInstruction = documentBlockInstructionByType.macro.end;
+const macroCallInstruction = documentBlockInstructionByType.macro.type;
 
 /**
  * Parse macro definitions from macro modules.
@@ -44,7 +48,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 
 			const instruction = match[1];
 
-			if (instruction === 'defineMacro') {
+			if (instruction === macroDefinitionInstruction) {
 				if (insideMacro) {
 					const astLine: AST[number] = {
 						lineNumberBeforeMacroExpansion: lineIndex,
@@ -57,13 +61,13 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 
 				if (macroCount > 0) {
 					throw new Error(
-						`Line ${lineIndex}: Each code block can contain only one macro definition. Found multiple 'defineMacro' declarations.`
+						`Line ${lineIndex}: Each code block can contain only one macro definition. Found multiple '${macroDefinitionInstruction}' declarations.`
 					);
 				}
 
 				const macroName = match[2];
 				if (!macroName) {
-					throw new Error(`Line ${lineIndex}: Missing macro name after 'defineMacro'.`);
+					throw new Error(`Line ${lineIndex}: Missing macro name after '${macroDefinitionInstruction}'.`);
 				}
 
 				if (macroMap.has(macroName)) {
@@ -83,7 +87,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				};
 				insideMacro = true;
 				macroCount++;
-			} else if (instruction === 'defineMacroEnd') {
+			} else if (instruction === macroDefinitionEndInstruction) {
 				if (!insideMacro || !currentMacro) {
 					const astLine: AST[number] = {
 						lineNumberBeforeMacroExpansion: lineIndex,
@@ -99,7 +103,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				insideMacro = false;
 			} else if (insideMacro) {
 				// Check for nested macro calls or definitions inside macro body
-				if (instruction === 'macro') {
+				if (instruction === macroCallInstruction) {
 					const astLine: AST[number] = {
 						lineNumberBeforeMacroExpansion: lineIndex,
 						lineNumberAfterMacroExpansion: lineIndex,
@@ -165,10 +169,10 @@ export function expandMacros(module: Module, macroDefinitions: Map<string, Macro
 
 		const instruction = match[1];
 
-		if (instruction === 'macro') {
+		if (instruction === macroCallInstruction) {
 			const macroName = match[2];
 			if (!macroName) {
-				throw new Error(`Line ${lineIndex}: Missing macro name after 'macro'.`);
+				throw new Error(`Line ${lineIndex}: Missing macro name after '${macroCallInstruction}'.`);
 			}
 
 			const macroDef = macroDefinitions.get(macroName);

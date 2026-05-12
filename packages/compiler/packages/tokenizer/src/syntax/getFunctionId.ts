@@ -1,4 +1,8 @@
+import { compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
+
 import instructionParser from './instructionParser';
+
+const functionInstruction = compilerSourceBlockInstructionByType.function.start;
 
 /**
  * Extracts the identifier provided to the first function instruction within a block of code.
@@ -8,7 +12,7 @@ import instructionParser from './instructionParser';
 export default function getFunctionId(code: string[]) {
 	for (let i = 0; i < code.length; i++) {
 		const [, instruction, argumentText = ''] = code[i].match(instructionParser) || [];
-		if (instruction === 'function') {
+		if (instruction === functionInstruction) {
 			return argumentText.trim().split(/\s+/)[0] || '';
 		}
 	}

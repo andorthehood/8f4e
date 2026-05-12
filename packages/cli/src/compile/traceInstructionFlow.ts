@@ -1,5 +1,15 @@
 import compile, { compileCodegenLine, collectNamespacesFromASTs } from '@8f4e/compiler';
-import { BLOCK_TYPE, type AST, type CompileOptions, type CompilationContext, type Module } from '@8f4e/compiler-spec';
+import {
+	BLOCK_TYPE,
+	compiledModuleBlockTypes,
+	compilerSourceBlockInstructionByType,
+	documentBlockInstructionByType,
+	type AST,
+	type CompileOptions,
+	type CompilationContext,
+	type CompilerSourceBlockType,
+	type Module,
+} from '@8f4e/compiler-spec';
 
 import getBlockType from '../shared/getBlockType';
 
@@ -21,7 +31,7 @@ export interface InstructionTraceEntry {
 
 export interface BlockTrace {
 	id: string;
-	kind: 'module' | 'function' | 'constants';
+	kind: CompilerSourceBlockType;
 	entries: InstructionTraceEntry[];
 }
 
@@ -72,6 +82,13 @@ function serializeArguments(line: AST[number]): InstructionTraceEntry['arguments
 	});
 }
 
+const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
+const constantsInstruction = compilerSourceBlockInstructionByType.constants.start;
+const constantsBlockType = compilerSourceBlockInstructionByType.constants.type;
+const functionBlockType = compilerSourceBlockInstructionByType.function.type;
+const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
+const macroBlockType = documentBlockInstructionByType.macro.type;
+
 function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: CompilationContext): BlockTrace {
 	const entries: InstructionTraceEntry[] = [];
 
@@ -115,17 +132,17 @@ function pickProjectBlocks(project: ProjectInput): {
 		}
 
 		const blockType = getBlockType(block.code);
-		if (blockType === 'module' || blockType === 'constants') {
+		if (compiledModuleBlockTypeSet.has(blockType)) {
 			moduleBlocks.push({ code: block.code });
 			continue;
 		}
 
-		if (blockType === 'function') {
+		if (blockType === functionBlockType) {
 			functionBlocks.push({ code: block.code });
 			continue;
 		}
 
-		if (blockType === 'macro') {
+		if (blockType === macroBlockType) {
 			macroBlocks.push({ code: block.code });
 		}
 	}
@@ -166,7 +183,9 @@ export default function traceInstructionFlow(
 			continue;
 		}
 
-		const kind = module.ast.some(line => line.instruction === 'constants') ? 'constants' : 'module';
+		const kind = module.ast.some(line => line.instruction === constantsInstruction)
+			? constantsBlockType
+			: moduleBlockType;
 		const context: CompilationContext = {
 			namespace: {
 				namespaces,
@@ -186,11 +205,11 @@ export default function traceInstructionFlow(
 				{
 					hasExpectedResult: false,
 					expectedResultIsInteger: false,
-					blockType: kind === 'constants' ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE,
+					blockType: kind === constantsBlockType ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE,
 				},
 			],
 			startingByteAddress: module.byteAddress,
-			mode: 'module',
+			mode: moduleBlockType,
 			codeBlockId: module.id,
 			codeBlockType: kind,
 			skipExecutionInCycle: module.skipExecutionInCycle,
@@ -228,12 +247,12 @@ export default function traceInstructionFlow(
 				},
 			],
 			startingByteAddress: 0,
-			mode: 'function',
+			mode: functionBlockType,
 			codeBlockId: compiledFunction.id,
-			codeBlockType: 'function',
+			codeBlockType: functionBlockType,
 		};
 
-		blocks.push(traceAst(compiledFunction.id, 'function', compiledFunction.ast, context));
+		blocks.push(traceAst(compiledFunction.id, functionBlockType, compiledFunction.ast, context));
 	}
 
 	return {
