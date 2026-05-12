@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode } from '../src/compilerError';
 import compile from '../src/index';
 
 import type { Module } from '../src/types';

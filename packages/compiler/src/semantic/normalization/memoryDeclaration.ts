@@ -1,4 +1,5 @@
 import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import {
 	validateIntermoduleAddressReference,
@@ -7,7 +8,7 @@ import {
 	normalizeArgumentsAtIndexes,
 } from './helpers';
 
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 function requireResolvedArrayValue(
 	argument: AST[number]['arguments'][number] | undefined,

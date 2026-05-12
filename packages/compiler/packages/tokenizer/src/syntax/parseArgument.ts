@@ -40,17 +40,6 @@ import isConstantName from './isConstantName';
 
 import type { Argument, ArgumentIdentifier, ArgumentLiteral } from '@8f4e/compiler-spec';
 
-export { ArgumentType };
-export type {
-	Argument,
-	ArgumentCompileTimeExpression,
-	ArgumentIdentifier,
-	ArgumentLiteral,
-	ArgumentStringLiteral,
-	CompileTimeOperand,
-	ReferenceKind,
-} from '@8f4e/compiler-spec';
-
 /**
  * Decodes escape sequences in a raw (unquoted) string literal body.
  * Supported: \", \\, \n, \r, \t, \xNN.

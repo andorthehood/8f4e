@@ -1,6 +1,7 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 

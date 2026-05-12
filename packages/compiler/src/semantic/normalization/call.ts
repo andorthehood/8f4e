@@ -1,4 +1,6 @@
-import { ErrorCode, getError } from '../../compilerError';
+import { ErrorCode } from '@8f4e/compiler-spec';
+
+import { getError } from '../../compilerError';
 
 import type { CallLine, CompilationContext } from '@8f4e/compiler-spec';
 

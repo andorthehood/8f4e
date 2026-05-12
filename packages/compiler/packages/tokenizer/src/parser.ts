@@ -1,16 +1,24 @@
+import { ArgumentType } from '@8f4e/compiler-spec';
+
 import instructionParser from './syntax/instructionParser';
 import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
 import isComment from './syntax/isComment';
 import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
 import isSemanticOnlyInstruction from './syntax/isSemanticOnlyInstruction';
 import isValidInstruction from './syntax/isValidInstruction';
-import { ArgumentType, parseArgument } from './syntax/parseArgument';
+import { parseArgument } from './syntax/parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
 import { hashSource } from './cache';
 
-import type { AST, ASTLine, BlockBlockResultType, IfBlockResultType, ParsedLineMetadata } from './types';
-import type { ASTCache } from './cache';
+import type {
+	AST,
+	ASTCache,
+	ASTLine,
+	BlockBlockResultType,
+	IfBlockResultType,
+	ParsedLineMetadata,
+} from '@8f4e/compiler-spec';
 
 type BlockStartInstruction = 'if' | 'block' | 'loop' | 'function' | 'module' | 'constants' | 'mapBegin';
 type BlockEndInstruction = 'ifEnd' | 'blockEnd' | 'loopEnd' | 'functionEnd' | 'moduleEnd' | 'constantsEnd' | 'mapEnd';

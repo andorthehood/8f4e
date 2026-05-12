@@ -1,10 +1,11 @@
 import { BLOCK_TYPE, instructionSpecs } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { peekStackOperands } from './peekStackOperands';
 import { validateOperandTypes } from './validateOperandTypes';
 import { validateScope } from './validateScope';
 
-import { ErrorCode, getError } from '../compilerError';
+import { getError } from '../compilerError';
 import { isInstructionIsInsideBlock } from '../utils/blockStack';
 
 import type { AST, CompilationContext, InstructionSpec, InstructionSpecName } from '@8f4e/compiler-spec';

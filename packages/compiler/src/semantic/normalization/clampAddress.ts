@@ -1,4 +1,5 @@
 import { ArgumentType, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import {
 	normalizeArgumentsAtIndexes,
@@ -6,7 +7,7 @@ import {
 	validateOrDeferUnresolvedIdentifier,
 } from './helpers';
 
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 import type { AST, CompilationContext } from '@8f4e/compiler-spec';
 

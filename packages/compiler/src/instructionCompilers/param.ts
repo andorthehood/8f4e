@@ -1,4 +1,6 @@
-import { ErrorCode, getError } from '../compilerError';
+import { ErrorCode } from '@8f4e/compiler-spec';
+
+import { getError } from '../compilerError';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 
 import type { FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/compiler-spec';

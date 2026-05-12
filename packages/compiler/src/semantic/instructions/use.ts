@@ -1,6 +1,7 @@
 import { type CompilationContext, type UseLine } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 /**
  * Applies a `use` instruction by importing all consts from the target namespace into

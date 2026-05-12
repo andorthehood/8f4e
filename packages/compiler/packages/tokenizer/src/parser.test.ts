@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
 import { compileToAST, parseLine } from './parser';
-import { ArgumentType, classifyIdentifier } from './syntax/parseArgument';
+import { classifyIdentifier } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 
-import type { AST } from './types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('parseLine', () => {
 	const fixtures: [number, string, AST[number]][] = [

@@ -1,8 +1,10 @@
+import { ArgumentType, FUNCTION_TYPE_IDENTIFIERS, SCALAR_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
+
 import isConstantName from './isConstantName';
 import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
-import { FUNCTION_TYPE_IDENTIFIERS, SCALAR_TYPE_IDENTIFIERS } from './functionTypeIdentifiers';
-import { ArgumentType, type Argument } from './parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
+
+import type { Argument } from '@8f4e/compiler-spec';
 
 type ArgumentShapeRule =
 	| 'identifier'

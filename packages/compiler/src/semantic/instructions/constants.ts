@@ -1,6 +1,7 @@
 import { BLOCK_TYPE, type CompilationContext, type ConstantsLine } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { ErrorCode, getError } from '../../compilerError';
+import { getError } from '../../compilerError';
 
 export default function semanticConstants(line: ConstantsLine, context: CompilationContext) {
 	if (context.blockStack.length > 0) {
