@@ -21,7 +21,14 @@ import type {
 	UseLine,
 } from './ast';
 import type { CompiledFunctionLookup, FunctionSignature, FunctionTypeRegistry } from './compiled';
-import type { DataStructure, InternalAllocator, InternalResourceMap, MemoryMap } from './memory';
+import type {
+	ArrayDeclarationInstruction,
+	DataStructure,
+	InternalAllocator,
+	InternalResourceMap,
+	MemoryMap,
+} from './memory';
+import type { CompiledModuleBlockType, CompilerSourceBlockType } from './instructions';
 
 export interface MemoryAddressRange {
 	source: 'memory-start' | 'memory-end' | 'module-start' | 'module-end' | 'module-nth-memory-start';
@@ -72,7 +79,7 @@ export interface Namespace {
 }
 
 export interface CollectedNamespace {
-	kind: 'module' | 'constants';
+	kind: CompiledModuleBlockType;
 	consts: Consts;
 	memory?: MemoryMap;
 	byteAddress?: number;
@@ -81,7 +88,7 @@ export interface CollectedNamespace {
 
 export type Namespaces = Record<string, CollectedNamespace>;
 
-export type CompilationMode = 'module' | 'function';
+export type CompilationMode = Exclude<CompilerSourceBlockType, 'constants'>;
 
 export interface CompilationContext {
 	namespace: Namespace;
@@ -96,7 +103,7 @@ export interface CompilationContext {
 	byteCode: Array<WASMInstruction | Type | number>;
 	mode?: CompilationMode;
 	codeBlockId?: string;
-	codeBlockType?: 'module' | 'function' | 'constants';
+	codeBlockType?: CompilerSourceBlockType;
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
 	currentFunctionIsImpure?: boolean;
@@ -152,22 +159,6 @@ export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & {
 export type NormalizedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
 	arguments: [NormalizedArgumentLiteral];
 };
-
-export type ArrayDeclarationInstruction =
-	| 'float[]'
-	| 'int[]'
-	| 'int8[]'
-	| 'int8u[]'
-	| 'int16[]'
-	| 'int16u[]'
-	| 'int32[]'
-	| 'float*[]'
-	| 'float**[]'
-	| 'int*[]'
-	| 'int**[]'
-	| 'float64[]'
-	| 'float64*[]'
-	| 'float64**[]';
 
 export type ArrayDeclarationInitializerArgument =
 	| ArgumentCompileTimeExpression

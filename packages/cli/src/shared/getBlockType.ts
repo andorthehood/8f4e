@@ -1,4 +1,13 @@
+import { compilableBlockTypes, documentBlockInstructionByType } from '@8f4e/compiler-spec';
+
 import type { BlockType } from './types';
+
+const CLI_BLOCK_DELIMITERS = compilableBlockTypes.map(type => documentBlockInstructionByType[type]);
+
+function startsWithInstructionArgument(line: string, instruction: string): boolean {
+	const nextCharacter = line[instruction.length];
+	return line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t');
+}
 
 export default function getBlockType(code: string[]): BlockType {
 	for (const line of code) {
@@ -6,10 +15,8 @@ export default function getBlockType(code: string[]): BlockType {
 		if (trimmed === '' || trimmed.startsWith('#') || trimmed.startsWith(';') || trimmed.startsWith('//')) {
 			continue;
 		}
-		if (/^module\s+/.test(trimmed)) return 'module';
-		if (/^function\s+/.test(trimmed)) return 'function';
-		if (/^constants\s+/.test(trimmed)) return 'constants';
-		if (/^defineMacro\s+/.test(trimmed)) return 'macro';
+		const blockDelimiter = CLI_BLOCK_DELIMITERS.find(({ start }) => startsWithInstructionArgument(trimmed, start));
+		if (blockDelimiter) return blockDelimiter.type;
 		break;
 	}
 	return 'unknown';

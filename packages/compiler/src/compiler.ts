@@ -18,8 +18,8 @@ import type {
 	FunctionTypeRegistry,
 	InstructionCompiler,
 	Namespaces,
-	Instruction,
 } from '@8f4e/compiler-spec';
+import type { Instruction } from './instructionCompilers';
 
 export function compileCodegenLine(
 	line: AST[number],

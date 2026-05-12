@@ -3,6 +3,8 @@
  * These types do not belong to any single feature and are used by multiple subsystems.
  */
 
+import type { CompilerSourceBlockType } from '@8f4e/compiler-spec';
+
 /**
  * Generic size dimensions used across features.
  */
@@ -69,7 +71,7 @@ export interface CodeError {
 	lineNumber: number;
 	message: string;
 	codeBlockId: string | number;
-	codeBlockType?: 'module' | 'function' | 'constants';
+	codeBlockType?: CompilerSourceBlockType;
 	/** Optional producer id for shared error buckets that contain errors from multiple owners. */
 	ownerId?: string;
 }

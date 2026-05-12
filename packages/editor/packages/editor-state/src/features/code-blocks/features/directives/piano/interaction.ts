@@ -1,3 +1,4 @@
+import { arrayMemoryDeclarationInstructions } from '@8f4e/compiler-spec';
 import { StateManager } from '@8f4e/state-manager';
 
 import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
@@ -26,8 +27,10 @@ function formatMemoryValue(value: number, isInteger: boolean): string {
 }
 
 function createArrayDeclarationRegexp(memoryId: string): RegExp {
+	const arrayDeclarationInstructionPattern = arrayMemoryDeclarationInstructions.map(escapeRegExp).join('|');
+
 	return new RegExp(
-		`^(?<prefix>\\s*(?:int8u?|int16u?|int32|int|float64|float)\\*{0,2}\\[\\]\\s+${escapeRegExp(
+		`^(?<prefix>\\s*(?:${arrayDeclarationInstructionPattern})\\s+${escapeRegExp(
 			memoryId
 		)}\\s+)(?<elementCount>\\S+)(?:\\s+[^;]*?)?(?<comment>\\s*;.*)?\\s*$`
 	);

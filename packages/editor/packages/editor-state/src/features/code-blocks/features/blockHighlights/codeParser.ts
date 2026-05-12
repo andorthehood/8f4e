@@ -1,8 +1,10 @@
+import { stackBlockInstructionPairs } from '@8f4e/compiler-spec';
 import { instructionParser } from '@8f4e/tokenizer';
 
-const startInstructions = ['if', 'loop', 'block'];
-
-const endInstructions = ['ifEnd', 'loopEnd', 'blockEnd'];
+const endInstructionByStartInstruction = new Map<string, string>(
+	stackBlockInstructionPairs.map(({ start, end }) => [start, end])
+);
+const endInstructions = new Set<string>(stackBlockInstructionPairs.map(({ end }) => end));
 
 interface CodeBlock {
 	startInstruction: string;
@@ -31,10 +33,11 @@ export default function parseCodeBlocks(code: string[]) {
 
 		const openBlockCount = countOpenBlocks(blocks);
 
-		if (startInstructions.includes(instruction)) {
+		const endInstruction = endInstructionByStartInstruction.get(instruction);
+		if (endInstruction) {
 			blocks.push({
 				startInstruction: instruction,
-				endInstruction: endInstructions[startInstructions.indexOf(instruction)],
+				endInstruction,
 				startLineNumber: lineIndex,
 				endLineNumber: undefined,
 				depth: openBlockCount,
@@ -62,7 +65,7 @@ export default function parseCodeBlocks(code: string[]) {
 			}
 		}
 
-		if (endInstructions.includes(instruction)) {
+		if (endInstructions.has(instruction)) {
 			const lastOpenBlock = getLastOpenBlockByEndInstruction(blocks, instruction);
 
 			if (lastOpenBlock) {
