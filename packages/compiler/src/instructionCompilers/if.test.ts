@@ -4,7 +4,7 @@ import _if from './if';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('if instruction compiler', () => {
 	it('emits a void if block when the matching ifEnd declares no result', () => {

@@ -8,7 +8,7 @@ import {
 	type Argument,
 	type ParsedSemanticInstructionLine,
 	GLOBAL_ALIGNMENT_BOUNDARY,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine } from './declarations';

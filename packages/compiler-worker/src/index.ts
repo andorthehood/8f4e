@@ -2,7 +2,7 @@ import { serializeDiagnostic } from '@8f4e/compiler';
 
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
-import type { CompileOptions, Module } from '@8f4e/compiler-types';
+import type { CompileOptions, Module } from '@8f4e/compiler-spec';
 
 async function compile(modules: Module[], compilerOptions: CompileOptions, functions?: Module[], macros?: Module[]) {
 	try {

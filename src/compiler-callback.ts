@@ -1,7 +1,7 @@
 import { Editor, type CompilationResult } from '@8f4e/editor';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 
-import type { CompileOptions, CompilerDiagnostic, Module } from '@8f4e/compiler-types';
+import type { CompileOptions, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
 
 // Create worker once at module scope
 // it will live for the entire application lifecycle

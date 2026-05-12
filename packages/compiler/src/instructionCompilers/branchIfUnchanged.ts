@@ -13,7 +13,7 @@ import {
 import { saveByteCode } from '../utils/compilation';
 import { allocateInternalResource } from '../utils/internalResources';
 
-import type { BranchIfUnchangedLine, InstructionCompiler } from '@8f4e/compiler-types';
+import type { BranchIfUnchangedLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `branchIfUnchanged`.

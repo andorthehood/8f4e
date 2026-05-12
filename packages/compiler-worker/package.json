@@ -25,7 +25,7 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
     "@8f4e/compiler": "*",
-    "@8f4e/compiler-types": "*"
+    "@8f4e/compiler-spec": "*"
   },
   "devDependencies": {}
 }

@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, DataStructure } from '@8f4e/compiler-types';
+import type { CompiledModuleLookup, DataStructure } from '@8f4e/compiler-spec';
 
 export interface RuntimeRunner {
 	initialize(): void;

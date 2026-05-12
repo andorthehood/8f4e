@@ -2,7 +2,7 @@ import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `sqrt`.

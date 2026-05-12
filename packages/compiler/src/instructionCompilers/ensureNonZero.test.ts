@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
 import ensureNonZero from './ensureNonZero';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('ensureNonZero instruction compiler', () => {
 	it('ensures integer operand is non-zero', () => {

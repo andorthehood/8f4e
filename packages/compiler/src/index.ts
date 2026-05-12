@@ -19,7 +19,7 @@ import {
 	createPassiveDataSegment,
 	WASM_MEMORY_PAGE_SIZE,
 } from '@8f4e/compiler-wasm-utils';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-types';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
@@ -45,7 +45,7 @@ import type {
 	FunctionTypeRegistry,
 	Module,
 	Namespaces,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 export {
 	I16_SIGNED_LARGEST_NUMBER,
@@ -56,7 +56,7 @@ export {
 	HALF_WORD_MEMORY_ACCESS_WIDTH,
 	WORD_MEMORY_ACCESS_WIDTH,
 	DOUBLE_WORD_MEMORY_ACCESS_WIDTH,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 export { default as instructions } from './instructionCompilers';
 export {
 	prepassNamespace,

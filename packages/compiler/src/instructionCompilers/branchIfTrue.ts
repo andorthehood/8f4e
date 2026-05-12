@@ -2,7 +2,7 @@ import { br_if } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../utils/compilation';
 
-import type { BranchIfTrueLine, InstructionCompiler } from '@8f4e/compiler-types';
+import type { BranchIfTrueLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `branchIfTrue`.

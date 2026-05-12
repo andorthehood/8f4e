@@ -1,5 +1,6 @@
-import type { FunctionTypeIdentifier } from '@8f4e/tokenizer';
-import type { AST, ASTCache } from './ast';
+import type { AST } from './ast';
+import type { ASTCache } from './cache';
+import type { FunctionTypeIdentifier } from './functionTypes';
 import type { InternalResourceMap, MemoryMap } from './memory';
 
 export interface CompiledModule {

@@ -7,7 +7,7 @@ import int16 from './int16';
 
 import { validateInstruction } from '../../stackAnalysis/validateInstruction';
 
-import type { AST, CompilationContext, InstructionCompiler } from '@8f4e/compiler-types';
+import type { AST, CompilationContext, InstructionCompiler } from '@8f4e/compiler-spec';
 
 export const declarationCompilers = {
 	int,

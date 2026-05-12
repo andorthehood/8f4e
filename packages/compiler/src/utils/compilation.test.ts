@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { calculateWordAlignedSizeOfMemory, saveByteCode } from './compilation';
 
-import type { CompilationContext, MemoryMap } from '@8f4e/compiler-types';
+import type { CompilationContext, MemoryMap } from '@8f4e/compiler-spec';
 
 describe('compilation utilities', () => {
 	describe('calculateWordAlignedSizeOfMemory', () => {

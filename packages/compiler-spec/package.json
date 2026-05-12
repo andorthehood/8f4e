@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/compiler-types",
+  "name": "@8f4e/compiler-spec",
   "version": "1.0.8",
   "private": true,
-  "description": "Shared public types for the 8f4e compiler contract",
+  "description": "Shared public spec and contracts for the 8f4e compiler",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/compiler-wasm-utils": "*",
-    "@8f4e/tokenizer": "*"
+    "@8f4e/compiler-wasm-utils": "*"
   },
   "devDependencies": {
     "@types/node": "^24.3.0"

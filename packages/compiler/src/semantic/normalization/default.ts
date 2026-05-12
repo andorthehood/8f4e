@@ -3,7 +3,7 @@ import {
 	type CompilationContext,
 	type DefaultLine,
 	type NormalizedDefaultLine,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 import {
 	validateOrDeferCompileTimeExpression,

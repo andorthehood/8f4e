@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { allocateInternalResource } from './internalResources';
 
-import type { CompilationContext } from '@8f4e/compiler-types';
+import type { CompilationContext } from '@8f4e/compiler-spec';
 
 const createContext = () =>
 	({
