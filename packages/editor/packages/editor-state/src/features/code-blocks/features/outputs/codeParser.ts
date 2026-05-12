@@ -1,5 +1,15 @@
+import { arrayMemoryDeclarationInstructions, scalarMemoryDeclarationInstructions } from '@8f4e/compiler-spec';
 import { isConstantName } from '@8f4e/tokenizer';
 import { instructionParser } from '@8f4e/tokenizer';
+
+const scalarOutputInstructions = new Set<string>(
+	scalarMemoryDeclarationInstructions.filter(instruction => !instruction.includes('*'))
+);
+
+const outputInstructions = new Set<string>([
+	...scalarOutputInstructions,
+	...arrayMemoryDeclarationInstructions.filter(instruction => !instruction.includes('*')),
+]);
 
 function getFirstArgument(argumentText = ''): string | undefined {
 	return argumentText.trim().split(/\s+/, 1)[0];
@@ -10,16 +20,9 @@ export default function parseOutputs(code: string[]) {
 		(acc, line, index) => {
 			const [, instruction, argumentText] = line.match(instructionParser) ?? [];
 			const firstArg = getFirstArgument(argumentText);
-			const isScalarDeclaration = instruction === 'int' || instruction === 'float' || instruction === 'float64';
+			const isScalarDeclaration = scalarOutputInstructions.has(instruction);
 
-			if (
-				isScalarDeclaration ||
-				instruction === 'int[]' ||
-				instruction === 'float[]' ||
-				instruction === 'float64[]' ||
-				instruction === 'int8[]' ||
-				instruction === 'int16[]'
-			) {
+			if (outputInstructions.has(instruction)) {
 				if (!firstArg) {
 					if (!isScalarDeclaration) {
 						return acc;

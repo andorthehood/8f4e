@@ -1,3 +1,5 @@
+import { languageInstructionNames } from '@8f4e/compiler-spec';
+
 import highlightEditorDirective from './highlightEditorDirective';
 
 /**
@@ -8,7 +10,7 @@ import highlightEditorDirective from './highlightEditorDirective';
 const getInstructionRegExp = (instructions: string[]) =>
 	new RegExp(
 		'(?<=^|\\s)(?:' +
-			instructions
+			[...instructions]
 				.sort((a, b) => b.length - a.length)
 				.join('|')
 				.replaceAll(/\*/g, '\\*')
@@ -21,108 +23,7 @@ const getInstructionRegExp = (instructions: string[]) =>
 /**
  * 8f4e language instruction keywords to highlight
  */
-const instructionsToHighlight = [
-	'and',
-	'or',
-	'const',
-	'load',
-	'load8u',
-	'load16u',
-	'load8s',
-	'load16s',
-	'localSet',
-	'else',
-	'if',
-	'ifEnd',
-	'lessThan',
-	'store',
-	'sub',
-	'div',
-	'xor',
-	'local',
-	'greaterOrEqual',
-	'add',
-	'min',
-	'max',
-	'greaterThan',
-	'branch',
-	'branchIfTrue',
-	'push',
-	'block',
-	'blockEnd',
-	'lessOrEqual',
-	'mul',
-	'loop',
-	'loopEnd',
-	'greaterOrEqualUnsigned',
-	'equalToZero',
-	'shiftLeft',
-	'shiftRight',
-	'shiftRightUnsigned',
-	'remainder',
-	'module',
-	'moduleEnd',
-	'return',
-	'storeBytes',
-	'int',
-	'float',
-	'int*',
-	'int**',
-	'int8*',
-	'int8**',
-	'int16*',
-	'int16**',
-	'float*',
-	'float**',
-	'float64',
-	'float64*',
-	'float64**',
-	'float[]',
-	'float64[]',
-	'int[]',
-	'int8[]',
-	'int8u[]',
-	'int16[]',
-	'int16u[]',
-	'int32[]',
-	'float64*[]',
-	'float64**[]',
-	'float*[]',
-	'float**[]',
-	'int*[]',
-	'int**[]',
-	'castToInt',
-	'castToFloat',
-	'castToFloat64',
-	'drop',
-	'clearStack',
-	'risingEdge',
-	'fallingEdge',
-	'hasChanged',
-	'abs',
-	'use',
-	'equal',
-	'branchIfUnchanged',
-	'sqrt',
-	'loadFloat',
-	'round',
-	'ensureNonZero',
-	'function',
-	'functionEnd',
-	'call',
-	'param',
-	'constants',
-	'constantsEnd',
-	'defineMacro',
-	'defineMacroEnd',
-	'macro',
-	'mapBegin',
-	'map',
-	'default',
-	'mapEnd',
-	'note',
-	'noteEnd',
-];
+const instructionRegExp = getInstructionRegExp(languageInstructionNames);
 
 /**
  * Generates a 2D lookup where each cell contains the sprite used to render a code character.
@@ -172,7 +73,7 @@ export default function highlightSyntax8f4e<T>(
 
 	return code.map(line => {
 		const commentIndex = getCommentIndex(line);
-		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
+		const instructionMatch = instructionRegExp.exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const numberMatches = line.matchAll(/(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi);
 		const binaryNumberMatches = line.matchAll(/0b([01]+)/g);

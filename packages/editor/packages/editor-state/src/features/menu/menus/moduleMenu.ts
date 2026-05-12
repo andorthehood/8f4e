@@ -1,8 +1,13 @@
+import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import { isSkipExecutionDirective } from '@8f4e/tokenizer';
 
 import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
 
 import type { CodeBlockGraphicData, MenuGenerator } from '@8f4e/editor-state-types';
+
+const functionBlockType = documentBlockInstructionByType.function.type;
+const moduleBlockType = documentBlockInstructionByType.module.type;
+const noteBlockType = documentBlockInstructionByType.note.type;
 
 export interface OpenGroupEvent {
 	codeBlock: CodeBlockGraphicData;
@@ -12,9 +17,9 @@ export const moduleMenu: MenuGenerator = state => {
 	const blockType = state.graphicHelper.selectedCodeBlock?.blockType;
 	let blockLabel = 'module';
 
-	if (blockType === 'function') {
+	if (blockType === functionBlockType) {
 		blockLabel = 'function';
-	} else if (blockType === 'note') {
+	} else if (blockType === noteBlockType) {
 		blockLabel = 'note';
 	}
 
@@ -22,7 +27,7 @@ export const moduleMenu: MenuGenerator = state => {
 
 	// Check if module has #skipExecution directive
 	const hasSkipExecutionDirective =
-		blockType === 'module' &&
+		blockType === moduleBlockType &&
 		state.graphicHelper.selectedCodeBlock?.code.some((line: string) => isSkipExecutionDirective(line));
 
 	// Check if code block has ; @favorite directive
@@ -40,7 +45,7 @@ export const moduleMenu: MenuGenerator = state => {
 		// Check if all group blocks have nonstick flag
 		allGroupBlocksNonstick = groupBlocks.every((block: CodeBlockGraphicData) => block.groupNonstick);
 
-		if (blockType === 'module') {
+		if (blockType === moduleBlockType) {
 			// Find all module blocks in the same group
 			const groupModuleBlocks = getGroupModuleBlocks(state.graphicHelper.codeBlocks, groupName);
 			// Check if all group module blocks have #skipExecution directive
@@ -65,7 +70,7 @@ export const moduleMenu: MenuGenerator = state => {
 						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 						close: true,
 					},
-					...(blockType === 'module'
+					...(blockType === moduleBlockType
 						? [
 								{
 									title: hasSkipExecutionDirective ? 'Unskip module' : 'Skip module',
@@ -81,7 +86,7 @@ export const moduleMenu: MenuGenerator = state => {
 								},
 							]
 						: []),
-					...(blockType === 'module' && hasGroup
+					...(blockType === moduleBlockType && hasGroup
 						? [
 								{
 									title: allGroupBlocksSkipped ? 'Unskip group' : 'Skip group',

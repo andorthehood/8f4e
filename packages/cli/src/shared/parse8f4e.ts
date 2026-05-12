@@ -1,13 +1,14 @@
+import { documentBlockInstructionPairs } from '@8f4e/compiler-spec';
+
 import type { ProjectInput } from './types';
 
 const FORMAT_HEADER = '8f4e/v1';
 
-const OPENERS = ['module', 'function', 'constants', 'defineMacro', 'note'] as const;
-
-const CLOSERS = ['moduleEnd', 'functionEnd', 'constantsEnd', 'defineMacroEnd', 'noteEnd'] as const;
+const closerByOpener = new Map<string, string>(documentBlockInstructionPairs.map(({ start, end }) => [start, end]));
+const openerByCloser = new Map<string, string>(documentBlockInstructionPairs.map(({ start, end }) => [end, start]));
 
 function getOpenerKeyword(line: string): string | null {
-	for (const opener of OPENERS) {
+	for (const opener of closerByOpener.keys()) {
 		if (line === opener || line.startsWith(opener + ' ')) {
 			return opener;
 		}
@@ -16,7 +17,7 @@ function getOpenerKeyword(line: string): string | null {
 }
 
 function getCloserKeyword(line: string): string | null {
-	for (const closer of CLOSERS) {
+	for (const closer of openerByCloser.keys()) {
 		if (line === closer || line.startsWith(closer + ' ')) {
 			return closer;
 		}
@@ -57,8 +58,7 @@ export default function parse8f4eToProject(text: string): ProjectInput {
 		currentBlockLines.push(line);
 		const closer = getCloserKeyword(trimmed);
 		if (closer) {
-			const expectedCloserPrefix = `${openerKeyword}End`;
-			if (!closer.startsWith(expectedCloserPrefix)) {
+			if (closer !== closerByOpener.get(openerKeyword ?? '')) {
 				throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 			}
 

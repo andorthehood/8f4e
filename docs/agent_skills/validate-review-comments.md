@@ -15,11 +15,11 @@ First identify what kind of claim the comment makes. Bug claims describe crashes
 
 Before accepting a review comment as a bug, try to reproduce it with an integration test that uses a supported entry point: user action, public API, CLI command, source file, request, or documented workflow.
 
-If the claimed failure can only be created by a unit test that calls internal functions with impossible or unsupported inputs, it is usually not a real product bug. Any function can be abused by a unit test. It is not a goal to prepare every internal function for every possible input.
+If the claimed failure can only be created by a unit test that calls internal functions with impossible or unsupported inputs, it is not a real product bug. Any function can be abused by a unit test. It is not a goal to prepare every internal function for every possible input.
 
 Internal APIs are not adversarial boundaries by default. Treat them as supported external APIs only when the project explicitly exposes them that way.
 
-If the claim is invalid, flag it as invalid. Do not turn it into a suggested cleanup, extra guard, contract clarification, or test change unless the user explicitly asks for that.
+If the claim is invalid, reject it. Do not turn it into a suggested cleanup, extra guard, contract clarification, or test change.
 
 For bug claims, answer:
 
@@ -29,6 +29,12 @@ For bug claims, answer:
 4. Should the response be a product fix or a statement that the review claim is invalid?
 
 Only change production behavior for bug claims when the integration-test path proves the bug is reachable.
+
+## Handling Hypothetical Future Bugs
+
+Do not treat a review comment as a valid bug merely because the code could become wrong after a future schema, spec, enum, config, or API change.
+
+If the failure depends on someone later adding a new value without updating related code, reject the comment.
 
 ## Handling Non-Bug Comments
 

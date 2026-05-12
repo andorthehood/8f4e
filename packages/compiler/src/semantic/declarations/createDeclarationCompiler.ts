@@ -4,7 +4,7 @@ import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser
 import getMemoryFlags from '../../utils/memoryFlags';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 
-import type { InstructionCompiler, MemoryTypes } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, MemoryType } from '@8f4e/compiler-spec';
 
 type BaseType = Parameters<typeof getMemoryFlags>[0];
 
@@ -52,7 +52,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				id,
 				default: finalDefault,
 				hasExplicitDefault: line.hasExplicitMemoryDefault === true,
-				type: line.instruction as unknown as MemoryTypes,
+				type: line.instruction as unknown as MemoryType,
 				...flags,
 			};
 			context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;
@@ -73,7 +73,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				id,
 				default: finalDefault,
 				hasExplicitDefault: line.hasExplicitMemoryDefault === true,
-				type: line.instruction as unknown as MemoryTypes,
+				type: line.instruction as unknown as MemoryType,
 				...flags,
 			};
 			context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;

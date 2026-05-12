@@ -1,4 +1,5 @@
 import type { CompilationContext, InstructionCompiler } from './semantic';
+import type { CompilerSourceBlockType } from './instructions';
 
 /**
  * Internal compiler-stage error shape returned by getError().
@@ -25,7 +26,7 @@ export interface CompilerDiagnosticLine {
 
 export interface CompilerDiagnosticContext {
 	codeBlockId?: string;
-	codeBlockType?: 'module' | 'function' | 'constants';
+	codeBlockType?: CompilerSourceBlockType;
 }
 
 export interface CompilerDiagnostic {
