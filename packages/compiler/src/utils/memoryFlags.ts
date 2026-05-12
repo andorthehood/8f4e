@@ -1,9 +1,13 @@
-export default function getMemoryFlags(baseType: 'int' | 'int8' | 'int16' | 'float' | 'float64', pointerDepth: number) {
+import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
+
+import type { BaseMemoryType } from '@8f4e/compiler-spec';
+
+export default function getMemoryFlags(baseType: BaseMemoryType, pointerDepth: number) {
 	const isPointer = pointerDepth > 0;
 	const isPointingToPointer = pointerDepth === 2;
-	const isInteger = baseType === 'int' || baseType === 'int8' || baseType === 'int16' || isPointer;
+	const isInteger = BASE_TYPE_METADATA[baseType].isInteger || isPointer;
 	const isFloat64 = baseType === 'float64' && !isPointer;
-	let pointeeBaseType: 'int' | 'int8' | 'int16' | 'float' | 'float64' | undefined;
+	let pointeeBaseType: BaseMemoryType | undefined;
 	if (isPointer) {
 		pointeeBaseType = baseType;
 	}
