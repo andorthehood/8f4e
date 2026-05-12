@@ -12,21 +12,7 @@
 			"raw": 153755,
 			"gzip": 38432,
 			"brotli": 32474
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 147881,
-				"gzip": 36286,
-				"brotli": 30636
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2146,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -41,21 +27,7 @@
 			"raw": 153755,
 			"gzip": 38350,
 			"brotli": 32474
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 147881,
-				"gzip": 36216,
-				"brotli": 30636
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2134,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -70,21 +42,7 @@
 			"raw": 153755,
 			"gzip": 38350,
 			"brotli": 32474
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 147881,
-				"gzip": 36216,
-				"brotli": 30636
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2134,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -99,21 +57,7 @@
 			"raw": 155442,
 			"gzip": 38838,
 			"brotli": 32879
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 149568,
-				"gzip": 36704,
-				"brotli": 31041
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2134,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -128,21 +72,7 @@
 			"raw": 155481,
 			"gzip": 38886,
 			"brotli": 32939
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 149607,
-				"gzip": 36751,
-				"brotli": 31101
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2135,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -157,21 +87,7 @@
 			"raw": 155462,
 			"gzip": 38880,
 			"brotli": 32918
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 149588,
-				"gzip": 36745,
-				"brotli": 31080
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2135,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -186,21 +102,7 @@
 			"raw": 155469,
 			"gzip": 38881,
 			"brotli": 32924
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 149595,
-				"gzip": 36746,
-				"brotli": 31086
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2135,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -215,21 +117,7 @@
 			"raw": 155469,
 			"gzip": 38882,
 			"brotli": 32913
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 149595,
-				"gzip": 36747,
-				"brotli": 31075
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2135,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -244,21 +132,7 @@
 			"raw": 155446,
 			"gzip": 38877,
 			"brotli": 32893
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 149572,
-				"gzip": 36742,
-				"brotli": 31055
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2135,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -273,21 +147,7 @@
 			"raw": 155523,
 			"gzip": 38889,
 			"brotli": 32930
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 149649,
-				"gzip": 36754,
-				"brotli": 31092
-			},
-			{
-				"path": "testing.js",
-				"raw": 5874,
-				"gzip": 2135,
-				"brotli": 1838
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -302,15 +162,7 @@
 			"raw": 172841,
 			"gzip": 41858,
 			"brotli": 35272
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 172841,
-				"gzip": 41858,
-				"brotli": 35272
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -325,15 +177,7 @@
 			"raw": 173294,
 			"gzip": 41907,
 			"brotli": 35292
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173294,
-				"gzip": 41907,
-				"brotli": 35292
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -348,15 +192,7 @@
 			"raw": 173294,
 			"gzip": 41907,
 			"brotli": 35292
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173294,
-				"gzip": 41907,
-				"brotli": 35292
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -371,15 +207,7 @@
 			"raw": 173639,
 			"gzip": 42092,
 			"brotli": 35420
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173639,
-				"gzip": 42092,
-				"brotli": 35420
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -394,15 +222,7 @@
 			"raw": 173048,
 			"gzip": 41970,
 			"brotli": 35260
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173048,
-				"gzip": 41970,
-				"brotli": 35260
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -417,15 +237,7 @@
 			"raw": 173084,
 			"gzip": 41983,
 			"brotli": 35238
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173084,
-				"gzip": 41983,
-				"brotli": 35238
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -440,15 +252,7 @@
 			"raw": 173063,
 			"gzip": 41971,
 			"brotli": 35305
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173063,
-				"gzip": 41971,
-				"brotli": 35305
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -463,15 +267,7 @@
 			"raw": 173063,
 			"gzip": 41971,
 			"brotli": 35305
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173063,
-				"gzip": 41971,
-				"brotli": 35305
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -486,15 +282,7 @@
 			"raw": 168392,
 			"gzip": 40890,
 			"brotli": 34431
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 168392,
-				"gzip": 40890,
-				"brotli": 34431
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -509,15 +297,7 @@
 			"raw": 168544,
 			"gzip": 40916,
 			"brotli": 34461
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 168544,
-				"gzip": 40916,
-				"brotli": 34461
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -532,15 +312,7 @@
 			"raw": 169418,
 			"gzip": 41089,
 			"brotli": 34558
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 169418,
-				"gzip": 41089,
-				"brotli": 34558
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -555,15 +327,7 @@
 			"raw": 169623,
 			"gzip": 41159,
 			"brotli": 34664
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 169623,
-				"gzip": 41159,
-				"brotli": 34664
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -578,15 +342,7 @@
 			"raw": 173315,
 			"gzip": 41994,
 			"brotli": 35255
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 173315,
-				"gzip": 41994,
-				"brotli": 35255
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -601,15 +357,7 @@
 			"raw": 174279,
 			"gzip": 42249,
 			"brotli": 35471
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 174279,
-				"gzip": 42249,
-				"brotli": 35471
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -624,15 +372,7 @@
 			"raw": 174260,
 			"gzip": 42240,
 			"brotli": 35519
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 174260,
-				"gzip": 42240,
-				"brotli": 35519
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -647,15 +387,7 @@
 			"raw": 174260,
 			"gzip": 42240,
 			"brotli": 35519
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 174260,
-				"gzip": 42240,
-				"brotli": 35519
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -670,15 +402,7 @@
 			"raw": 174342,
 			"gzip": 42252,
 			"brotli": 35468
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 174342,
-				"gzip": 42252,
-				"brotli": 35468
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -693,14 +417,6 @@
 			"raw": 174362,
 			"gzip": 42292,
 			"brotli": 35581
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 174362,
-				"gzip": 42292,
-				"brotli": 35581
-			}
-		]
+		}
 	}
 ]

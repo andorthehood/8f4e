@@ -3,12 +3,6 @@ import './styles.css';
 
 type SizeMetric = 'raw' | 'gzip';
 
-type BundleFileEntry = {
-	path: string;
-	raw: number;
-	gzip: number;
-};
-
 type BundleSizeEntry = {
 	schemaVersion: number;
 	recordedAt: string;
@@ -19,14 +13,12 @@ type BundleSizeEntry = {
 	projectName: string;
 	version: string | null;
 	bytes: Record<SizeMetric, number>;
-	files: BundleFileEntry[];
 };
 
 type TrackedLog = {
 	packageName: string;
 	label: string;
 	path: string;
-	files: string[];
 };
 
 type BundleSizeManifest = {
@@ -64,7 +56,6 @@ type Point = {
 	bytes: number;
 	raw: number;
 	gzip: number;
-	files: BundleFileEntry[];
 };
 
 type BytecodePoint = {
@@ -262,11 +253,9 @@ async function loadBytecodePoints(trackedLogs: BytecodeTrackedLog[]) {
 function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 	const sortedEntries = [...entries].sort((a, b) => a.recordedAt.localeCompare(b.recordedAt));
 	const points: Point[] = [];
-	const trackedFiles = new Set(log.files);
 
 	for (const entry of sortedEntries) {
-		const files = entry.files.filter(file => trackedFiles.has(file.path));
-		const bytes = sumFileBytes(files);
+		const bytes = entry.bytes;
 
 		for (const metric of ['raw', 'gzip'] as const) {
 			const metricBytes = bytes[metric];
@@ -285,7 +274,6 @@ function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
 				bytes: metricBytes,
 				raw: bytes.raw,
 				gzip: bytes.gzip,
-				files,
 			});
 		}
 	}
@@ -309,16 +297,6 @@ function toBytecodePoints(log: BytecodeTrackedLog, entries: BytecodeSizeEntry[])
 			bytes,
 		};
 	});
-}
-
-function sumFileBytes(files: BundleFileEntry[]): Record<SizeMetric, number> {
-	return files.reduce(
-		(bytes, file) => ({
-			raw: bytes.raw + file.raw,
-			gzip: bytes.gzip + file.gzip,
-		}),
-		{ raw: 0, gzip: 0 }
-	);
 }
 
 function withReleaseIndexes(points: Point[]) {
@@ -606,7 +584,6 @@ function renderPackageGrid(points: Point[]) {
 				<strong>${latestPoint ? escapeHtml(formatBytes(latestPoint.bytes)) : 'n/a'}</strong>
 			</div>
 			<div class="package-card-chart"></div>
-			${renderFileTable(latestPoint)}
 		`;
 
 		packageGrid.append(card);
@@ -729,39 +706,6 @@ function renderBytecodeTable(points: BytecodePoint[]) {
 								<tr>
 									<td>${escapeHtml(point.releaseTag)}</td>
 									<td>${formatBytes(point.bytes)}</td>
-								</tr>
-							`
-						)
-						.join('')}
-				</tbody>
-			</table>
-		</div>
-	`;
-}
-
-function renderFileTable(point: Point | null) {
-	if (!point) {
-		return '<div class="empty-table">No files</div>';
-	}
-
-	return `
-		<div class="file-table-wrap">
-			<table class="file-table">
-				<thead>
-					<tr>
-						<th>File</th>
-						<th>Raw</th>
-						<th>Gzip</th>
-					</tr>
-				</thead>
-				<tbody>
-					${point.files
-						.map(
-							file => `
-								<tr>
-									<td>${escapeHtml(file.path)}</td>
-									<td>${formatBytes(file.raw)}</td>
-									<td>${formatBytes(file.gzip)}</td>
 								</tr>
 							`
 						)

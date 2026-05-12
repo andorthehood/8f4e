@@ -12,15 +12,7 @@
 			"raw": 219710,
 			"gzip": 60378,
 			"brotli": 51389
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 219710,
-				"gzip": 60378,
-				"brotli": 51389
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -35,15 +27,7 @@
 			"raw": 219710,
 			"gzip": 60532,
 			"brotli": 51404
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 219710,
-				"gzip": 60532,
-				"brotli": 51404
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -58,15 +42,7 @@
 			"raw": 219710,
 			"gzip": 60527,
 			"brotli": 51434
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 219710,
-				"gzip": 60527,
-				"brotli": 51434
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -81,15 +57,7 @@
 			"raw": 220328,
 			"gzip": 60686,
 			"brotli": 51551
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220328,
-				"gzip": 60686,
-				"brotli": 51551
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -104,15 +72,7 @@
 			"raw": 220746,
 			"gzip": 61162,
 			"brotli": 51820
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220746,
-				"gzip": 61162,
-				"brotli": 51820
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -127,15 +87,7 @@
 			"raw": 220775,
 			"gzip": 61238,
 			"brotli": 51802
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220775,
-				"gzip": 61238,
-				"brotli": 51802
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -150,15 +102,7 @@
 			"raw": 220779,
 			"gzip": 61233,
 			"brotli": 51861
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220779,
-				"gzip": 61233,
-				"brotli": 51861
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -173,15 +117,7 @@
 			"raw": 220779,
 			"gzip": 61233,
 			"brotli": 51865
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220779,
-				"gzip": 61233,
-				"brotli": 51865
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -196,15 +132,7 @@
 			"raw": 220783,
 			"gzip": 61235,
 			"brotli": 51805
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220783,
-				"gzip": 61235,
-				"brotli": 51805
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -219,15 +147,7 @@
 			"raw": 220849,
 			"gzip": 61234,
 			"brotli": 51814
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220849,
-				"gzip": 61234,
-				"brotli": 51814
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -242,15 +162,7 @@
 			"raw": 220854,
 			"gzip": 61257,
 			"brotli": 51816
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220854,
-				"gzip": 61257,
-				"brotli": 51816
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -265,15 +177,7 @@
 			"raw": 221250,
 			"gzip": 61312,
 			"brotli": 51847
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 221250,
-				"gzip": 61312,
-				"brotli": 51847
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -288,15 +192,7 @@
 			"raw": 220958,
 			"gzip": 61222,
 			"brotli": 51786
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220958,
-				"gzip": 61222,
-				"brotli": 51786
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -311,15 +207,7 @@
 			"raw": 221208,
 			"gzip": 61335,
 			"brotli": 51922
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 221208,
-				"gzip": 61335,
-				"brotli": 51922
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -334,15 +222,7 @@
 			"raw": 220445,
 			"gzip": 61171,
 			"brotli": 51712
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220445,
-				"gzip": 61171,
-				"brotli": 51712
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -357,15 +237,7 @@
 			"raw": 220467,
 			"gzip": 61180,
 			"brotli": 51840
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 220467,
-				"gzip": 61180,
-				"brotli": 51840
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -380,15 +252,7 @@
 			"raw": 216601,
 			"gzip": 60384,
 			"brotli": 51091
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 216601,
-				"gzip": 60384,
-				"brotli": 51091
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -403,15 +267,7 @@
 			"raw": 210685,
 			"gzip": 59156,
 			"brotli": 49968
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 210685,
-				"gzip": 59156,
-				"brotli": 49968
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -426,15 +282,7 @@
 			"raw": 205263,
 			"gzip": 57393,
 			"brotli": 48496
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 205263,
-				"gzip": 57393,
-				"brotli": 48496
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -449,15 +297,7 @@
 			"raw": 205554,
 			"gzip": 57471,
 			"brotli": 48680
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 205554,
-				"gzip": 57471,
-				"brotli": 48680
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -472,15 +312,7 @@
 			"raw": 206797,
 			"gzip": 57827,
 			"brotli": 48940
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 206797,
-				"gzip": 57827,
-				"brotli": 48940
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -495,15 +327,7 @@
 			"raw": 206939,
 			"gzip": 57876,
 			"brotli": 49045
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 206939,
-				"gzip": 57876,
-				"brotli": 49045
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -518,15 +342,7 @@
 			"raw": 211673,
 			"gzip": 59279,
 			"brotli": 50171
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 211673,
-				"gzip": 59279,
-				"brotli": 50171
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -541,15 +357,7 @@
 			"raw": 212446,
 			"gzip": 59479,
 			"brotli": 50403
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 212446,
-				"gzip": 59479,
-				"brotli": 50403
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -564,15 +372,7 @@
 			"raw": 212433,
 			"gzip": 59471,
 			"brotli": 50373
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 212433,
-				"gzip": 59471,
-				"brotli": 50373
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -587,15 +387,7 @@
 			"raw": 212433,
 			"gzip": 59471,
 			"brotli": 50323
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 212433,
-				"gzip": 59471,
-				"brotli": 50323
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -610,15 +402,7 @@
 			"raw": 213413,
 			"gzip": 59774,
 			"brotli": 50715
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 213413,
-				"gzip": 59774,
-				"brotli": 50715
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -633,14 +417,6 @@
 			"raw": 213761,
 			"gzip": 60007,
 			"brotli": 50655
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 213761,
-				"gzip": 60007,
-				"brotli": 50655
-			}
-		]
+		}
 	}
 ]

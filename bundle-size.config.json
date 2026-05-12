@@ -4,7 +4,7 @@
     "8f4e": {
       "label": "App",
       "distDir": "dist",
-      "files": [
+      "entries": [
         {
           "name": "index.js",
           "pattern": "^assets/entries/index-[A-Za-z0-9_-]+\\.js$"
@@ -14,7 +14,7 @@
     "@8f4e/editor": {
       "label": "Editor",
       "distDir": "packages/editor/dist",
-      "files": [
+      "entries": [
         {
           "name": "index.js",
           "pattern": "^index\\.js$"
@@ -24,7 +24,7 @@
     "@8f4e/editor-state": {
       "label": "Editor State",
       "distDir": "packages/editor/packages/editor-state/dist",
-      "files": [
+      "entries": [
         {
           "name": "index.js",
           "pattern": "^index\\.js$"
@@ -38,7 +38,7 @@
     "@8f4e/compiler": {
       "label": "Compiler",
       "distDir": "packages/compiler/dist",
-      "files": [
+      "entries": [
         {
           "name": "index.js",
           "pattern": "^index\\.js$"
@@ -48,7 +48,7 @@
     "@8f4e/web-ui": {
       "label": "Web UI",
       "distDir": "packages/editor/packages/web-ui/dist",
-      "files": [
+      "entries": [
         {
           "name": "index.js",
           "pattern": "^index\\.js$"
@@ -58,7 +58,7 @@
     "@8f4e/sprite-generator": {
       "label": "Sprite Generator",
       "distDir": "packages/editor/packages/sprite-generator/dist",
-      "files": [
+      "entries": [
         {
           "name": "index.js",
           "pattern": "^index\\.js$"

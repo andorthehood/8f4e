@@ -12,15 +12,7 @@
 			"raw": 12293,
 			"gzip": 1649,
 			"brotli": 1460
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 12293,
-				"gzip": 1649,
-				"brotli": 1460
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -35,15 +27,7 @@
 			"raw": 12293,
 			"gzip": 1649,
 			"brotli": 1460
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 12293,
-				"gzip": 1649,
-				"brotli": 1460
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -58,15 +42,7 @@
 			"raw": 12293,
 			"gzip": 1649,
 			"brotli": 1460
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 12293,
-				"gzip": 1649,
-				"brotli": 1460
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -81,15 +57,7 @@
 			"raw": 12293,
 			"gzip": 1649,
 			"brotli": 1460
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 12293,
-				"gzip": 1649,
-				"brotli": 1460
-			}
-		]
+		}
 	},
 	{
 		"schemaVersion": 1,
@@ -104,14 +72,6 @@
 			"raw": 12293,
 			"gzip": 1649,
 			"brotli": 1460
-		},
-		"files": [
-			{
-				"path": "index.js",
-				"raw": 12293,
-				"gzip": 1649,
-				"brotli": 1460
-			}
-		]
+		}
 	}
 ]
