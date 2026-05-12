@@ -188,3 +188,33 @@ export function normalizeArgumentsAtIndexes(
 
 	return { line: changed ? { ...line, arguments: nextArguments } : line, changed };
 }
+
+/**
+ * Normalizes arguments at the given indexes, then validates any remaining unresolved
+ * compile-time expressions or identifiers as either deferrable prepass references or errors.
+ */
+export function normalizeAndValidateResolvableArgs<TLine extends AST[number]>(
+	line: TLine,
+	context: CompilationContext,
+	indexes: number[]
+): TLine {
+	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, indexes);
+
+	for (const index of indexes) {
+		const argument = normalized.arguments[index];
+		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+			const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+			if (deferred) {
+				continue;
+			}
+		}
+		if (argument?.type === ArgumentType.IDENTIFIER) {
+			const deferred = validateOrDeferUnresolvedIdentifier(argument, line, context);
+			if (deferred) {
+				continue;
+			}
+		}
+	}
+
+	return normalized as TLine;
+}
