@@ -6,11 +6,7 @@ import {
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
-import {
-	normalizeArgumentsAtIndexes,
-	validateOrDeferCompileTimeExpression,
-	validateOrDeferUnresolvedIdentifier,
-} from './helpers';
+import { normalizeAndValidateResolvableArgs } from './helpers';
 
 import { getError } from '../../compilerError';
 
@@ -18,21 +14,9 @@ export default function normalizeMemoryCopy(
 	line: MemoryCopyLine,
 	context: CompilationContext
 ): NormalizedMemoryCopyLine | MemoryCopyLine {
-	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);
+	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
 
 	const argument = normalized.arguments[0];
-	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
-		if (deferred) {
-			return normalized as MemoryCopyLine;
-		}
-	}
-	if (argument?.type === ArgumentType.IDENTIFIER) {
-		const deferred = validateOrDeferUnresolvedIdentifier(argument, line, context);
-		if (deferred) {
-			return normalized as MemoryCopyLine;
-		}
-	}
 	if (argument?.type === ArgumentType.LITERAL && !argument.isInteger) {
 		throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 	}
