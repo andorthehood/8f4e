@@ -2,12 +2,13 @@ import { WASMInstruction, f32const, f64const, i32const, localGet, localSet } fro
 import { BLOCK_TYPE } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
+import { resolveMapKind, validateMapValueKind } from './utils/mapValueKind';
+import { saveByteCode } from './utils/saveByteCode';
+
 import { getError } from '../compilerError';
-import { saveByteCode } from '../utils/compilation';
 
+import type { MapKind } from './utils/mapValueKind';
 import type { InstructionCompiler, MapEndLine } from '@8f4e/compiler-spec';
-
-type MapKind = 'int32' | 'float32' | 'float64';
 
 const constOp: Record<MapKind, (v: number) => number[]> = {
 	int32: i32const,
@@ -44,7 +45,7 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	const outputType = line.arguments[0].value;
 	const outputIsInteger = outputType === 'int';
 	const outputIsFloat64 = outputType === 'float64';
-	const outputKind: MapKind = outputIsInteger ? 'int32' : outputIsFloat64 ? 'float64' : 'float32';
+	const outputKind = resolveMapKind({ isInteger: outputIsInteger, isFloat64: outputIsFloat64 });
 
 	// Pop the MAP block from blockStack and read its state
 	const block = context.blockStack.pop();
@@ -54,27 +55,9 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	const mapState = block.mapState;
 
 	// Validate the input stack operand matches the declared inputType
+	const inputKind = resolveMapKind({ isInteger: mapState.inputIsInteger, isFloat64: mapState.inputIsFloat64 });
 	const inputOperand = context.stack[context.stack.length - 1];
-	if (mapState.inputIsFloat64) {
-		if (inputOperand.isInteger) {
-			throw getError(ErrorCode.ONLY_FLOATS, line, context);
-		}
-		if (!inputOperand.isFloat64) {
-			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
-		}
-	} else if (mapState.inputIsInteger) {
-		if (!inputOperand.isInteger) {
-			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-		}
-	} else {
-		// float32
-		if (inputOperand.isInteger) {
-			throw getError(ErrorCode.ONLY_FLOATS, line, context);
-		}
-		if (inputOperand.isFloat64) {
-			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
-		}
-	}
+	validateMapValueKind(inputOperand, inputKind, line, context);
 
 	const rows = mapState.rows;
 	const hasDefault = mapState.defaultSet;
@@ -84,59 +67,19 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 
 	// Validate value types for each row against outputType
 	for (const row of rows) {
-		if (outputIsFloat64) {
-			if (row.valueIsInteger) {
-				throw getError(ErrorCode.ONLY_FLOATS, line, context);
-			}
-			if (!row.valueIsFloat64) {
-				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
-			}
-		} else if (outputIsInteger) {
-			if (!row.valueIsInteger) {
-				throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-			}
-		} else {
-			// float32
-			if (row.valueIsInteger) {
-				throw getError(ErrorCode.ONLY_FLOATS, line, context);
-			}
-			if (row.valueIsFloat64) {
-				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
-			}
-		}
+		validateMapValueKind({ isInteger: row.valueIsInteger, isFloat64: row.valueIsFloat64 }, outputKind, line, context);
 	}
 
 	// Validate explicit default type against outputType
 	if (hasDefault) {
-		if (outputIsFloat64) {
-			if (defaultIsInteger) {
-				throw getError(ErrorCode.ONLY_FLOATS, line, context);
-			}
-			if (!defaultIsFloat64) {
-				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
-			}
-		} else if (outputIsInteger) {
-			if (!defaultIsInteger) {
-				throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-			}
-		} else {
-			// float32
-			if (defaultIsInteger) {
-				throw getError(ErrorCode.ONLY_FLOATS, line, context);
-			}
-			if (defaultIsFloat64) {
-				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
-			}
-		}
+		validateMapValueKind({ isInteger: defaultIsInteger, isFloat64: defaultIsFloat64 }, outputKind, line, context);
 	}
 
 	// Pop the input operand from the logical stack
 	context.stack.pop();
 
-	// Determine input kind for the equality opcode
 	const inputIsFloat64 = mapState.inputIsFloat64;
 	const inputIsInteger = mapState.inputIsInteger;
-	const inputKind: MapKind = inputIsInteger ? 'int32' : inputIsFloat64 ? 'float64' : 'float32';
 
 	if (rows.length === 0) {
 		// No rows: discard the input and push the default/zero value

@@ -3,10 +3,10 @@ import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_AC
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
+import { saveByteCode } from './utils/saveByteCode';
+import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 
 import { getError } from '../compilerError';
-import { saveByteCode } from '../utils/compilation';
-import { guardedLoad, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
 

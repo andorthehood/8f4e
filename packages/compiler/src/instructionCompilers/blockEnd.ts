@@ -1,8 +1,10 @@
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
+import consumeExpectedBlockResult from './utils/consumeExpectedBlockResult';
+import { saveByteCode } from './utils/saveByteCode';
+
 import { getError } from '../compilerError';
-import { saveByteCode } from '../utils/compilation';
 
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -17,19 +19,7 @@ const blockEnd: InstructionCompiler = (line, context) => {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 
-	if (block.hasExpectedResult) {
-		const operand = context.stack.pop();
-
-		if (!operand) {
-			throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-		}
-
-		if (block.expectedResultIsInteger && !operand.isInteger) {
-			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-		}
-
-		context.stack.push(operand);
-	}
+	consumeExpectedBlockResult(block, line, context, { restore: true });
 
 	return saveByteCode(context, [WASMInstruction.END]);
 };

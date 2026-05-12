@@ -73,6 +73,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 399 | Consolidate instruction compiler utilities | 2026-05-12 | Instruction-compiler-only helpers moved under `packages/compiler/src/instructionCompilers/utils/`; `saveByteCode` split out, unused word-alignment helper removed, and numeric binary instruction codegen centralized. |
 | 055 | Implement strength reduction optimization techniques in compiler | 2026-05-12 | Archived original TODO; remaining bytecode peephole optimization work is tracked in `398`. |
 | 392 | Move shared compiler constants to compiler-spec | 2026-05-11 | Shared memory layout, integer range, logic level, memory access-width, and Wasm page constants now resolve from `@8f4e/compiler-spec`; compiler-only bytecode header/export-count constants remain private. |
 | 394 | Extract compiler stack analysis into a separate pass | 2026-05-08 | `withValidation` was removed, stack validation helpers moved under `packages/compiler/src/stackAnalysis/`, and compiler instruction contracts were centralized in `instructionSpecs.ts`; remaining codegen separation is tracked in `397`. |

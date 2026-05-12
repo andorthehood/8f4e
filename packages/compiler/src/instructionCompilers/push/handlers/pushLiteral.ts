@@ -1,4 +1,4 @@
-import { saveByteCode } from '../../../utils/compilation';
+import { saveByteCode } from '../../utils/saveByteCode';
 import { constOpcode, kindToStackItem, resolveArgumentValueKind } from '../shared';
 
 import type { CodegenArgumentLiteral, CompilationContext } from '@8f4e/compiler-spec';

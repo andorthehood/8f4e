@@ -10,8 +10,8 @@ import {
 	WASMInstruction,
 } from '@8f4e/compiler-wasm-utils';
 
-import { saveByteCode } from '../utils/compilation';
-import { allocateInternalResource } from '../utils/internalResources';
+import { saveByteCode } from './utils/saveByteCode';
+import { allocateInternalResource } from './utils/internalResources';
 
 import type { BranchIfUnchangedLine, InstructionCompiler } from '@8f4e/compiler-spec';
 

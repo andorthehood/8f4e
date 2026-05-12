@@ -1,6 +1,6 @@
 import { br } from '@8f4e/compiler-wasm-utils';
 
-import { saveByteCode } from '../utils/compilation';
+import { saveByteCode } from './utils/saveByteCode';
 
 import type { BranchLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
