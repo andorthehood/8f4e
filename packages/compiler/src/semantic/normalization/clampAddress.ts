@@ -1,4 +1,4 @@
-import { ArgumentType, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-types';
+import { ArgumentType, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
 
 import {
 	normalizeArgumentsAtIndexes,
@@ -8,7 +8,7 @@ import {
 
 import { ErrorCode, getError } from '../../compilerError';
 
-import type { AST, CompilationContext } from '@8f4e/compiler-types';
+import type { AST, CompilationContext } from '@8f4e/compiler-spec';
 
 export default function normalizeClampAddress(line: AST[number], context: CompilationContext): AST[number] {
 	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);

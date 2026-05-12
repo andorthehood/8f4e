@@ -9,7 +9,7 @@ import {
 import { ErrorCode, getError } from '../compilerError';
 import { getEndByteAddress, getModuleEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { AST, CompilationContext } from '@8f4e/compiler-types';
+import type { AST, CompilationContext } from '@8f4e/compiler-spec';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.

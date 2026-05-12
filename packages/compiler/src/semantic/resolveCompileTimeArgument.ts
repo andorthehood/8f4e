@@ -1,5 +1,5 @@
 import { ArgumentType } from '@8f4e/tokenizer';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-types';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
 
@@ -22,7 +22,7 @@ import type {
 	Const,
 	DataStructure,
 	MemoryAddressRange,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 function getWordAlignedByteLength(wordAlignedSize: number): number {
 	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;

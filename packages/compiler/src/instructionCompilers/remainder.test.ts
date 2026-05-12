@@ -4,7 +4,7 @@ import remainder from './remainder';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('remainder instruction compiler', () => {
 	it('emits I32_REM_S for integer operands', () => {

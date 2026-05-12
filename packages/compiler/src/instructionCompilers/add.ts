@@ -4,7 +4,7 @@ import { saveByteCode } from '../utils/compilation';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { deriveAddStackMetadata } from '../utils/stackAddressMetadata';
 
-import type { InstructionCompiler, StackItem } from '@8f4e/compiler-types';
+import type { InstructionCompiler, StackItem } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `add`.

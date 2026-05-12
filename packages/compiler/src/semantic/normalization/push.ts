@@ -1,4 +1,4 @@
-import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '@8f4e/compiler-types';
+import { ArgumentType, type CompilationContext, type CodegenPushLine, type PushLine } from '@8f4e/compiler-spec';
 
 import {
 	hasCollectedNamespaces,

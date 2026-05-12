@@ -1,4 +1,4 @@
-import type { ASTCacheStats } from './ast';
+import type { ASTCacheStats } from './cache';
 import type { CompiledFunctionLookup, CompiledModuleLookup } from './compiled';
 
 export type MemoryReinitReason =

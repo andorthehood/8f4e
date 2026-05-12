@@ -3,7 +3,7 @@ import { localSet } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 
-import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-types';
+import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `localSet`.

@@ -1,4 +1,4 @@
-import type { StackItem } from '@8f4e/compiler-types';
+import type { StackItem } from '@8f4e/compiler-spec';
 
 export function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	if (stack.length < count) {

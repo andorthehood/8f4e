@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-types';
+import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-spec';
 
 import map from './map';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('map instruction compiler', () => {
 	it('records an int key→int value row', () => {

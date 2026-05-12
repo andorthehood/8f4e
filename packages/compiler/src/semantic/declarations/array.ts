@@ -5,7 +5,7 @@ import {
 	type CompilationContext,
 	type InstructionCompiler,
 	type MemoryTypes,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 import { ErrorCode, getError } from '../../compilerError';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';

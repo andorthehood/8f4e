@@ -1,6 +1,6 @@
-import { BLOCK_TYPE } from '@8f4e/compiler-types';
+import { BLOCK_TYPE } from '@8f4e/compiler-spec';
 
-import type { InstructionCompiler, MapBeginLine } from '@8f4e/compiler-types';
+import type { InstructionCompiler, MapBeginLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `mapBegin`.

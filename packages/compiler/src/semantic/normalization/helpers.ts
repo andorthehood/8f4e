@@ -6,7 +6,7 @@ import {
 	type ArgumentIdentifier,
 	type CompilationContext,
 	type NormalizedArgumentLiteral,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
 
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 import { ErrorCode, getError } from '../../compilerError';

@@ -4,7 +4,7 @@ import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 
-import type { InstructionCompiler, StackItem } from '@8f4e/compiler-types';
+import type { InstructionCompiler, StackItem } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `remainder`.

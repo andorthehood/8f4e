@@ -5,7 +5,7 @@ import pushMemoryPointer from './pushMemoryPointer';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 
-import type { PushIdentifierLine } from '@8f4e/compiler-types';
+import type { PushIdentifierLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

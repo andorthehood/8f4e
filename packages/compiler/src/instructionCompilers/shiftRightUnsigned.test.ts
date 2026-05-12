@@ -4,7 +4,7 @@ import shiftRightUnsigned from './shiftRightUnsigned';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('shiftRightUnsigned instruction compiler', () => {
 	it('emits I32_SHR_U for integer operands', () => {

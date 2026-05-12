@@ -76,7 +76,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
-| 392 | Move shared compiler constants to compiler-types | 2026-05-11 | Shared memory layout, integer range, logic level, memory access-width, and Wasm page constants now resolve from `@8f4e/compiler-types`; compiler-only bytecode header/export-count constants remain private. |
+| 392 | Move shared compiler constants to compiler-spec | 2026-05-11 | Shared memory layout, integer range, logic level, memory access-width, and Wasm page constants now resolve from `@8f4e/compiler-spec`; compiler-only bytecode header/export-count constants remain private. |
 | 394 | Extract compiler stack analysis into a separate pass | 2026-05-08 | `withValidation` was removed, stack validation helpers moved under `packages/compiler/src/stackAnalysis/`, and compiler instruction contracts were centralized in `instructionSpecs.ts`; remaining codegen separation is tracked in `397`. |
 | 381 | Review compiler compileSegment usage for unnecessary self-compilation | 2026-05-08 | Archived after verification: no current compiler `compileSegment(...)` call sites remain under `packages/compiler/src`; removal landed in `e73dd2486`. |
 | 387 | Add lazy editor environment plugins | 2026-05-01 | Directive-triggered lazy editor environment plugins now load keyboard memory and binary asset integrations only when matching directives are present. |

@@ -1,6 +1,6 @@
 import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, it, expect } from 'vitest';
-import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-types';
+import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-spec';
 
 import parseMemoryInstructionArguments from './memoryInstructionParser';
 

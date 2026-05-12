@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-types';
+import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-spec';
 
 import { validateScope } from './validateScope';
 

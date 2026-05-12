@@ -1,11 +1,1 @@
-import type { AST } from '../types';
-
-export interface ASTCacheStats {
-	hits: number;
-	misses: number;
-}
-
-export interface ASTCache {
-	entries: Map<string, { hash: number; ast: AST }>;
-	stats: ASTCacheStats;
-}
+export type { ASTCache, ASTCacheStats } from '@8f4e/compiler-spec';

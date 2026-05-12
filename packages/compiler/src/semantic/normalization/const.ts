@@ -1,4 +1,4 @@
-import { ArgumentType, type CompilationContext, type ConstLine, type NormalizedConstLine } from '@8f4e/compiler-types';
+import { ArgumentType, type CompilationContext, type ConstLine, type NormalizedConstLine } from '@8f4e/compiler-spec';
 
 import { normalizeArgumentsAtIndexes } from './helpers';
 

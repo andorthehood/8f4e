@@ -61,7 +61,7 @@ Lowering strategy decision:
 
 ## Implementation Plan
 
-### Step 1: Extend compiler types/context and block model
+### Step 1: Extend compiler spec/context and block model
 - Add a new block type for map scope in `packages/compiler/src/types.ts` (`BLOCK_TYPE.MAP`).
 - Add map-specific transient context fields to hold:
   - active map input type,

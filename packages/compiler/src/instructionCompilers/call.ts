@@ -4,7 +4,7 @@ import { ErrorCode, getError } from '../compilerError';
 import { saveByteCode } from '../utils/compilation';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 
-import type { CallLine, InstructionCompiler } from '@8f4e/compiler-types';
+import type { CallLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `call`.
