@@ -18,6 +18,7 @@ export type BaseMemoryType = 'int' | 'int8' | 'int16' | 'float' | 'float64';
 type ReservedUnsignedBaseMemoryType = 'int8u' | 'int16u';
 type PointeeBaseType = BaseMemoryType | ReservedUnsignedBaseMemoryType;
 type PointerSlotType = 'pointer';
+type BaseTypeMetadataKey = PointeeBaseType | PointerSlotType;
 export type MemoryValueKind = 'int32' | 'float32' | 'float64';
 
 interface BaseTypeMetadata {
@@ -30,15 +31,20 @@ interface BaseTypeMetadata {
 	unsignedMax?: number;
 }
 
-export const BASE_TYPE_METADATA: Record<BaseMemoryType | PointerSlotType, BaseTypeMetadata> = {
+export const BASE_TYPE_METADATA: Record<BaseTypeMetadataKey, BaseTypeMetadata> = {
 	int8: {
 		wordSize: 1,
 		isInteger: true,
 		valueKind: 'int32',
 		min: -128,
 		max: 127,
-		unsignedMin: 0,
-		unsignedMax: 255,
+	},
+	int8u: {
+		wordSize: 1,
+		isInteger: true,
+		valueKind: 'int32',
+		min: 0,
+		max: 255,
 	},
 	int16: {
 		wordSize: 2,
@@ -46,8 +52,13 @@ export const BASE_TYPE_METADATA: Record<BaseMemoryType | PointerSlotType, BaseTy
 		valueKind: 'int32',
 		min: -32768,
 		max: 32767,
-		unsignedMin: 0,
-		unsignedMax: 65535,
+	},
+	int16u: {
+		wordSize: 2,
+		isInteger: true,
+		valueKind: 'int32',
+		min: 0,
+		max: 65535,
 	},
 	int: {
 		wordSize: 4,
@@ -78,8 +89,6 @@ export const BASE_TYPE_METADATA: Record<BaseMemoryType | PointerSlotType, BaseTy
 		valueKind: 'int32',
 		min: -2147483648,
 		max: 2147483647,
-		unsignedMin: 0,
-		unsignedMax: 4294967295,
 	},
 };
 
@@ -100,7 +109,7 @@ export interface DataStructure {
 	 * Determines load width and value range for dereference operations.
 	 * - `'int'` / `'float'` / `'float64'`: standard 32-bit int, 32-bit float, or 64-bit float pointee
 	 * - `'int8'` / `'int16'`: narrow signed integer pointee (1 or 2 bytes)
-	 * - `'int8u'` / `'int16u'`: narrow unsigned integer pointee (reserved for future use)
+	 * - `'int8u'` / `'int16u'`: narrow unsigned integer pointee
 	 */
 	pointeeBaseType?: PointeeBaseType;
 	id: string;
