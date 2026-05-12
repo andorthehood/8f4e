@@ -4,5 +4,3 @@ export function saveByteCode(context: CompilationContext, byteCode: number[]): C
 	context.byteCode.push(...byteCode);
 	return context;
 }
-
-export default saveByteCode;
