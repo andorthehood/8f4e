@@ -6,7 +6,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 export type MapKind = 'int32' | 'float32' | 'float64';
 
-export interface MapValueKind {
+interface MapValueKind {
 	isInteger: boolean;
 	isFloat64?: boolean;
 }

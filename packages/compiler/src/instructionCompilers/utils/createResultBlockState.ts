@@ -4,7 +4,7 @@ import type { BLOCK_TYPE, BlockStack } from '@8f4e/compiler-spec';
 
 type ResultType = 'float' | 'int' | null | undefined;
 
-export interface ResultBlockState {
+interface ResultBlockState {
 	blockState: BlockStack[number];
 	wasmType: Type;
 }

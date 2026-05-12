@@ -15,12 +15,12 @@ export enum MemoryTypes {
 }
 
 export type BaseMemoryType = 'int' | 'int8' | 'int16' | 'float' | 'float64';
-export type ReservedUnsignedBaseMemoryType = 'int8u' | 'int16u';
-export type PointeeBaseType = BaseMemoryType | ReservedUnsignedBaseMemoryType;
-export type PointerSlotType = 'pointer';
+type ReservedUnsignedBaseMemoryType = 'int8u' | 'int16u';
+type PointeeBaseType = BaseMemoryType | ReservedUnsignedBaseMemoryType;
+type PointerSlotType = 'pointer';
 export type MemoryValueKind = 'int32' | 'float32' | 'float64';
 
-export interface BaseTypeMetadata {
+interface BaseTypeMetadata {
 	wordSize: number;
 	isInteger: boolean;
 	valueKind: MemoryValueKind;
