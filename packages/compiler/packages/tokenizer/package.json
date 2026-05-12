@@ -27,6 +27,6 @@
     "@8f4e/compiler-spec": "*"
   },
   "devDependencies": {
-    "@types/node": "^24.3.0"
+    "@types/node": "24.12.2"
   }
 }
