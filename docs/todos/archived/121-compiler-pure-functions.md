@@ -64,7 +64,7 @@ completed: 2025-12-09
 ## Related Items
 
 - **Related**: `docs/brainstorming_notes/016-compiler-pure-functions.md` – full design brainstorm.
-- **Related**: `docs/todos/055-strength-reduction-compiler-optimization.md` – future optimization work that could benefit from helper support.
+- **Related**: `docs/todos/398-add-compiler-peephole-arithmetic-strength-reduction.md` – future optimization work that could benefit from helper support.
 
 ## References
 

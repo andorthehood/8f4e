@@ -89,7 +89,7 @@ The goal is not to remove `compileSegment(...)` entirely. The goal is to make it
 
 ## Related Items
 
-- **Related**: `docs/todos/055-strength-reduction-compiler-optimization.md`
+- **Related**: `docs/todos/398-add-compiler-peephole-arithmetic-strength-reduction.md`
 - **Related**: `docs/todos/261-update-instruction-test-helpers-for-float64.md`
 
 ## Notes
