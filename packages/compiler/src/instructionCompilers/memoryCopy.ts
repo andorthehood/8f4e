@@ -1,9 +1,8 @@
 import { i32const, memoryCopy as wasmMemoryCopy } from '@8f4e/compiler-wasm-utils';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
-
-import { saveByteCode } from '../utils/compilation';
-import { guardedMemoryCopy, isSafeMemoryCopy } from '../utils/memoryAccessGuard';
+import { saveByteCode } from './utils/saveByteCode';
+import { guardedMemoryCopy, isSafeMemoryCopy } from './utils/memoryAccessGuard';
 
 import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compiler-spec';
 

@@ -1,8 +1,9 @@
 import { call as wasmCall } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
+import { saveByteCode } from './utils/saveByteCode';
+
 import { getError } from '../compilerError';
-import { saveByteCode } from '../utils/compilation';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 
 import type { CallLine, InstructionCompiler } from '@8f4e/compiler-spec';

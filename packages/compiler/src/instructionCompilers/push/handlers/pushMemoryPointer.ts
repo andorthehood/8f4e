@@ -1,7 +1,7 @@
 import { i32const } from '@8f4e/compiler-wasm-utils';
 
 import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
-import { saveByteCode } from '../../../utils/compilation';
+import { saveByteCode } from '../../utils/saveByteCode';
 import { getDataStructure } from '../../../utils/memoryData';
 import { buildPointerDereferenceByteCode, kindToStackItem } from '../shared';
 

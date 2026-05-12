@@ -1,7 +1,7 @@
 import { br, i32const, localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
 import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-spec';
 
-import { saveByteCode } from '../utils/compilation';
+import { saveByteCode } from './utils/saveByteCode';
 
 import type { InstructionCompiler, LoopLine } from '@8f4e/compiler-spec';
 
