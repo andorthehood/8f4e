@@ -1,5 +1,8 @@
-import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentStringLiteral } from './parseArgument';
+import { ArgumentType } from '@8f4e/compiler-spec';
+
 import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
+
+import type { Argument, ArgumentLiteral, ArgumentStringLiteral } from '@8f4e/compiler-spec';
 
 /**
  * A single token within a split-byte sequence.

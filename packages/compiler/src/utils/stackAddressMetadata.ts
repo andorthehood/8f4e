@@ -1,4 +1,4 @@
-import type { MemoryAddressRange, StackItem } from '@8f4e/compiler-types';
+import type { MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
 function shiftSafeAddressRange(
 	safeAddressRange: MemoryAddressRange,

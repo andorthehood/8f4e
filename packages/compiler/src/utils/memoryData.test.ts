@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import {
 	getDataStructure,
@@ -16,9 +17,7 @@ import {
 	getPointeeValueKindFromMetadata,
 } from './memoryData';
 
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
-
-import type { MemoryMap } from '@8f4e/compiler-types';
+import type { MemoryMap } from '@8f4e/compiler-spec';
 
 describe('memoryData utilities', () => {
 	const mockMemory: MemoryMap = {

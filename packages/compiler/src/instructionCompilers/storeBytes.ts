@@ -5,7 +5,7 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../utils/compilation';
 import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from '../utils/memoryAccessGuard';
 
-import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-types';
+import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `storeBytes`.

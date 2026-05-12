@@ -1,4 +1,4 @@
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
@@ -8,7 +8,7 @@ import pushMemoryPointer from './push/handlers/pushMemoryPointer';
 import pushStringLiteral from './push/handlers/pushStringLiteral';
 import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
-import type { CodegenPushLine, InstructionCompiler, PushIdentifierLine } from '@8f4e/compiler-types';
+import type { CodegenPushLine, InstructionCompiler, PushIdentifierLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `push`.

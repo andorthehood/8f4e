@@ -1,6 +1,5 @@
+import { GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 import { Engine } from 'glugglug';
-
-const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
 import type { State } from '@8f4e/editor-state-types';
 
@@ -87,7 +86,7 @@ export default function drawInfoOverlay(
 				memoryUsagePercent +
 				'%)'
 		);
-		debugText.push('Allocated pages: ' + allocatedMemoryBytes / 65536);
+		debugText.push('Allocated pages: ' + allocatedMemoryBytes / WASM_MEMORY_PAGE_SIZE);
 	}
 
 	// Runtime stats

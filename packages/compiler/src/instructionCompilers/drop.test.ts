@@ -4,7 +4,7 @@ import drop from './drop';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('drop instruction compiler', () => {
 	it('drops the top stack value', () => {

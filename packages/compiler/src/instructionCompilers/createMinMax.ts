@@ -3,7 +3,7 @@ import { localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-u
 import { saveByteCode } from '../utils/compilation';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 
-import type { InstructionCompiler } from '@8f4e/compiler-types';
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 const createMinMax =
 	(instruction: 'min' | 'max'): InstructionCompiler =>

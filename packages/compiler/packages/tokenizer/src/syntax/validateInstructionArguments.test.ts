@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
-import { ArgumentType, classifyIdentifier } from './parseArgument';
+import { classifyIdentifier } from './parseArgument';
 import { SyntaxRulesError } from './syntaxError';
 import validateInstructionArguments from './validateInstructionArguments';
 

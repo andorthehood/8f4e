@@ -2,7 +2,7 @@
  * Types for program-compiler feature - WebAssembly compilation and management.
  */
 
-import type { CompileAndUpdateMemoryResult, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-types';
+import type { CompileAndUpdateMemoryResult, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-spec';
 
 /**
  * Compiler state tracking compilation progress and results.

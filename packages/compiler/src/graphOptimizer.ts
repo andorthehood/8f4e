@@ -1,8 +1,8 @@
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
 import { isMemoryDeclarationInstruction } from './semantic/declarations';
 
-import type { AST, Argument } from '@8f4e/compiler-types';
+import type { AST, Argument } from '@8f4e/compiler-spec';
 
 function getIntermodularReferenceModules(argument: Argument | undefined): string[] {
 	if (!argument) {

@@ -4,7 +4,7 @@ import sub from './sub';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('sub instruction compiler', () => {
 	it('emits I32_SUB for integer operands', () => {

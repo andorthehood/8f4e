@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import compile from '../src';
 
-import type { Module } from '@8f4e/compiler-types';
+import type { Module } from '@8f4e/compiler-spec';
 
 const options = {
 	startingMemoryWordAddress: 0,

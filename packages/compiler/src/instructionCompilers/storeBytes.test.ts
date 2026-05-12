@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-types';
+import { ArgumentType } from '@8f4e/compiler-spec';
 import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
 
 import storeBytes from './storeBytes';
@@ -7,7 +7,7 @@ import storeBytes from './storeBytes';
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-types';
+import type { AST } from '@8f4e/compiler-spec';
 
 describe('storeBytes instruction compiler', () => {
 	it('throws INSUFFICIENT_OPERANDS when stack has fewer than count+1 items', () => {

@@ -1,20 +1,21 @@
-import { ArgumentType } from '@8f4e/tokenizer';
 import {
+	ArgumentType,
+	GLOBAL_ALIGNMENT_BOUNDARY,
 	type AST,
+	type Argument,
 	type CompilationContext,
 	type CompiledFunctionLookup,
 	type FunctionSignature,
 	type Namespaces,
-	type Argument,
 	type ParsedSemanticInstructionLine,
-} from '@8f4e/compiler-types';
+} from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
 
-import { ErrorCode, getError } from '../compilerError';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 /**

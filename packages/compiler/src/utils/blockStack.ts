@@ -1,6 +1,6 @@
-import { BLOCK_TYPE } from '@8f4e/compiler-types';
+import { BLOCK_TYPE } from '@8f4e/compiler-spec';
 
-import type { BlockStack } from '@8f4e/compiler-types';
+import type { BlockStack } from '@8f4e/compiler-spec';
 
 export function isInstructionIsInsideAModule(blockStack: BlockStack) {
 	return hasBlockType(blockStack, BLOCK_TYPE.MODULE);
