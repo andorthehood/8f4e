@@ -1,15 +1,6 @@
-import {
-	ArgumentType,
-	type CompilationContext,
-	type DefaultLine,
-	type NormalizedDefaultLine,
-} from '@8f4e/compiler-spec';
+import { normalizeAndValidateResolvableArgs } from './helpers';
 
-import {
-	validateOrDeferCompileTimeExpression,
-	validateOrDeferUnresolvedIdentifier,
-	normalizeArgumentsAtIndexes,
-} from './helpers';
+import type { CompilationContext, DefaultLine, NormalizedDefaultLine } from '@8f4e/compiler-spec';
 
 /**
  * Normalizes compile-time arguments for the `default` instruction.
@@ -20,21 +11,7 @@ export default function normalizeDefault(
 	line: DefaultLine,
 	context: CompilationContext
 ): NormalizedDefaultLine | DefaultLine {
-	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);
-
-	const argument = normalized.arguments[0];
-	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
-		if (deferred) {
-			return normalized as DefaultLine;
-		}
-	}
-	if (argument?.type === ArgumentType.IDENTIFIER) {
-		const deferred = validateOrDeferUnresolvedIdentifier(argument, line, context);
-		if (deferred) {
-			return normalized as DefaultLine;
-		}
-	}
+	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
 
 	return normalized as NormalizedDefaultLine | DefaultLine;
 }
