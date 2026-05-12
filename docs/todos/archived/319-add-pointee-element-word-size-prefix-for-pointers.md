@@ -92,7 +92,7 @@ Expected semantics with current type system:
 
 ## Related Items
 
-- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
+- **Related**: `docs/todos/archived/146-investigate-index-arithmetic-support.md`
 - **Related**: `docs/todos/archived/309-extract-shared-module-memory-identifier-parser.md`
 
 ## Notes

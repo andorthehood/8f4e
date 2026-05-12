@@ -74,7 +74,7 @@ Extend the config schema to accept `binaryAssets` entries with `{ url, memoryId 
 
 ## Related Items
 
-- **Related**: `docs/todos/094-opfs-large-binary-asset-storage.md` (future large-asset storage)
+- **Related**: `docs/todos/archived/094-opfs-large-binary-asset-storage.md` (future large-asset storage)
 
 ## Notes
 

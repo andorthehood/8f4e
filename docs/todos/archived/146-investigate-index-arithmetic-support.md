@@ -3,7 +3,7 @@ title: 'TODO: Investigate index arithmetic support'
 priority: Medium
 effort: 2-4 hours
 created: 2025-12-25
-status: Open
+status: Cancelled
 completed: null
 ---
 
@@ -68,4 +68,4 @@ Investigate the scope, impact, and implementation effort needed to add index ari
 
 ## Notes
 
-- None.
+- Cancelled and archived by request on 2026-05-12.
