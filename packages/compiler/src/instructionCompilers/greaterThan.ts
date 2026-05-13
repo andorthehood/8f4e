@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F32_GT, WASM_F64_GT, WASM_I32_GT_S } from '@8f4e/compiler-wasm-utils';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
 
@@ -8,9 +8,9 @@ import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
  */
 const greaterThan = createNumericBinaryCompiler({
 	opcodes: {
-		int32: WASMInstruction.I32_GT_S,
-		float32: WASMInstruction.F32_GT,
-		float64: WASMInstruction.F64_GT,
+		int32: WASM_I32_GT_S,
+		float32: WASM_F32_GT,
+		float64: WASM_F64_GT,
 	},
 	result: 'comparison',
 });

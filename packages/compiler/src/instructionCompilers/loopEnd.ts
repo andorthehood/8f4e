@@ -1,5 +1,5 @@
-import { WASMInstruction, br } from '@8f4e/compiler-wasm-utils';
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { br, WASM_END } from '@8f4e/compiler-wasm-utils';
+import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import consumeExpectedBlockResult from './utils/consumeExpectedBlockResult';
@@ -16,13 +16,13 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const loopEnd: InstructionCompiler = (line, context) => {
 	const block = context.blockStack.pop();
 
-	if (!block || block.blockType !== BLOCK_TYPE.LOOP) {
+	if (!block || block.blockType !== BlockType.LOOP) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 
 	consumeExpectedBlockResult(block, line, context, { restore: true });
 
-	return saveByteCode(context, [...br(0), WASMInstruction.END, WASMInstruction.END]);
+	return saveByteCode(context, [...br(0), WASM_END, WASM_END]);
 };
 
 export default loopEnd;

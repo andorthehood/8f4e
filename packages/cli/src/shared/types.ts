@@ -27,4 +27,4 @@ export interface CompileProjectResult {
 	requiredMemoryBytes?: number;
 }
 
-export type BlockType = CompilableBlockType | 'unknown';
+export type BlockTypeValue = CompilableBlockType | 'unknown';

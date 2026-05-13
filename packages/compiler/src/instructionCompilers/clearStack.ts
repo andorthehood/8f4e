@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_DROP } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -12,7 +12,7 @@ const clearStack: InstructionCompiler = (line, context) => {
 	const length = context.stack.length;
 	context.stack = [];
 
-	return saveByteCode(context, new Array(length).fill(WASMInstruction.DROP));
+	return saveByteCode(context, new Array(length).fill(WASM_DROP));
 };
 
 export default clearStack;

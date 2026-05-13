@@ -1,4 +1,4 @@
-import { BLOCK_TYPE, type CompilationContext, type ModuleEndLine } from '@8f4e/compiler-spec';
+import { BlockType, type CompilationContext, type ModuleEndLine } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
@@ -11,7 +11,7 @@ export default function semanticModuleEnd(line: ModuleEndLine, context: Compilat
 
 	const block = context.blockStack.pop();
 
-	if (!block || block.blockType !== BLOCK_TYPE.MODULE) {
+	if (!block || block.blockType !== BlockType.MODULE) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 }

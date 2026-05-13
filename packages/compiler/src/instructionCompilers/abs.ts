@@ -1,4 +1,16 @@
-import { i32const, localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import {
+	i32const,
+	localGet,
+	localSet,
+	WASM_ELSE,
+	WASM_END,
+	WASM_F32_ABS,
+	WASM_F64_ABS,
+	WASM_I32_LT_S,
+	WASM_I32_SUB,
+	WASM_IF,
+	WASM_TYPE_I32,
+} from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -26,15 +38,15 @@ const abs: InstructionCompiler = (line, context) => {
 			...localSet(valueLocalIndex),
 			...localGet(valueLocalIndex),
 			...i32const(0),
-			WASMInstruction.I32_LT_S,
-			WASMInstruction.IF,
-			Type.I32,
+			WASM_I32_LT_S,
+			WASM_IF,
+			WASM_TYPE_I32,
 			...i32const(0),
 			...localGet(valueLocalIndex),
-			WASMInstruction.I32_SUB,
-			WASMInstruction.ELSE,
+			WASM_I32_SUB,
+			WASM_ELSE,
 			...localGet(valueLocalIndex),
-			WASMInstruction.END,
+			WASM_END,
 		]);
 	} else {
 		context.stack.push({
@@ -42,7 +54,7 @@ const abs: InstructionCompiler = (line, context) => {
 			...(operand.isFloat64 ? { isFloat64: true } : {}),
 			isNonZero: operand.isNonZero,
 		});
-		return saveByteCode(context, [operand.isFloat64 ? WASMInstruction.F64_ABS : WASMInstruction.F32_ABS]);
+		return saveByteCode(context, [operand.isFloat64 ? WASM_F64_ABS : WASM_F32_ABS]);
 	}
 };
 

@@ -1,5 +1,5 @@
+import { WASM_F64_LOAD } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
-import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly f64.load instruction to load a 64-bit float from memory.
@@ -9,5 +9,5 @@ import Instruction from '../wasmInstruction';
  * @returns Byte array representing the f64.load instruction
  */
 export default function f64load(alignment = 3, offset = 0): number[] {
-	return [Instruction.F64_LOAD, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
+	return [WASM_F64_LOAD, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
 }

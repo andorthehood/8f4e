@@ -2,9 +2,9 @@ import { expect, test } from 'vitest';
 
 import createLocalDeclaration from './createLocalDeclaration';
 
-import Type from '../type';
+import { WASM_TYPE_I32 } from '../type';
 
 test('createLocalDeclaration generates correct format', () => {
-	const decl = createLocalDeclaration(Type.I32, 2);
-	expect(decl).toStrictEqual([2, Type.I32]);
+	const decl = createLocalDeclaration(WASM_TYPE_I32, 2);
+	expect(decl).toStrictEqual([2, WASM_TYPE_I32]);
 });

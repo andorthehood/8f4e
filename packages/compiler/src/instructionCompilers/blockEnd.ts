@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_END } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import consumeExpectedBlockResult from './utils/consumeExpectedBlockResult';
@@ -21,7 +21,7 @@ const blockEnd: InstructionCompiler = (line, context) => {
 
 	consumeExpectedBlockResult(block, line, context, { restore: true });
 
-	return saveByteCode(context, [WASMInstruction.END]);
+	return saveByteCode(context, [WASM_END]);
 };
 
 export default blockEnd;

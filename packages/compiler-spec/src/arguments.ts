@@ -5,8 +5,7 @@ export const ArgumentType = {
 	COMPILE_TIME_EXPRESSION: 'compile_time_expression',
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type ArgumentType = (typeof ArgumentType)[keyof typeof ArgumentType];
+export type ArgumentTypeValue = (typeof ArgumentType)[keyof typeof ArgumentType];
 
 /**
  * The syntactic class of an identifier-shaped argument.

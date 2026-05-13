@@ -1,4 +1,4 @@
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
@@ -10,7 +10,7 @@ import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-spec';
  * Marks the current function as a WebAssembly export under the provided name.
  */
 const exportFunction: InstructionCompiler<ExportLine> = function (line, context) {
-	const isInFunctionBlock = context.blockStack.some(block => block.blockType === BLOCK_TYPE.FUNCTION);
+	const isInFunctionBlock = context.blockStack.some(block => block.blockType === BlockType.FUNCTION);
 
 	if (!isInFunctionBlock) {
 		throw getError(ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT, line, context);

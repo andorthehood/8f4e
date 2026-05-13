@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { WASM_DROP, WASM_END, WASM_IF, WASM_RETURN, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
+import { BlockType, ErrorCode } from '@8f4e/compiler-spec';
 
 import exitIfTrue from './exitIfTrue';
 
@@ -25,13 +24,7 @@ describe('exitIfTrue instruction compiler', () => {
 			context
 		);
 
-		expect(context.byteCode).toEqual([
-			WASMInstruction.IF,
-			Type.VOID,
-			WASMInstruction.DROP,
-			WASMInstruction.RETURN,
-			WASMInstruction.END,
-		]);
+		expect(context.byteCode).toEqual([WASM_IF, WASM_TYPE_VOID, WASM_DROP, WASM_RETURN, WASM_END]);
 		expect(context.stack).toEqual([{ isInteger: false, isNonZero: false }]);
 	});
 
@@ -40,7 +33,7 @@ describe('exitIfTrue instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},

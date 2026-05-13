@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
 import param from './param';
 
@@ -15,7 +15,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},
@@ -45,7 +45,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},
@@ -75,7 +75,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},
@@ -107,7 +107,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},

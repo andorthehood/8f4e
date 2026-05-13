@@ -1,4 +1,4 @@
-import { BLOCK_TYPE, compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
+import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
@@ -39,7 +39,7 @@ const _function = function (line: FunctionLine, context: CompilationContext) {
 	context.locals = {};
 
 	context.blockStack.push({
-		blockType: BLOCK_TYPE.FUNCTION,
+		blockType: BlockType.FUNCTION,
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
 	});

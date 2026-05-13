@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F64_LE } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
 import lessOrEqual from './lessOrEqual';
@@ -66,6 +66,6 @@ describe('lessOrEqual instruction compiler', () => {
 		);
 
 		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
-		expect(context.byteCode).toEqual([WASMInstruction.F64_LE]);
+		expect(context.byteCode).toEqual([WASM_F64_LE]);
 	});
 });

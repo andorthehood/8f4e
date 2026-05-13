@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 
 import load from './load';
 
@@ -73,7 +73,7 @@ describe('load instruction compiler', () => {
 			context
 		);
 
-		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
+		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);
 	});
 
 	it('does not guard when an explicit clamp proves the access width is safe', () => {
@@ -94,6 +94,6 @@ describe('load instruction compiler', () => {
 			context
 		);
 
-		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
+		expect(context.byteCode).not.toContain(WASM_MEMORY_SIZE);
 	});
 });

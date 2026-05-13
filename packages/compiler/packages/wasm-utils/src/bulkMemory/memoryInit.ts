@@ -1,7 +1,7 @@
+import { WASM_MISC } from '../wasmInstruction';
+import { WASM_MISC_MEMORY_INIT } from '../wasmMiscInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
 import prefixedInstruction from '../encoding/prefixedInstruction';
-import WASMInstruction from '../wasmInstruction';
-import WASMMiscInstruction from '../wasmMiscInstruction';
 
 /**
  * Creates a WebAssembly memory.init instruction.
@@ -10,7 +10,7 @@ import WASMMiscInstruction from '../wasmMiscInstruction';
  */
 export default function memoryInit(dataSegmentIndex = 0, memoryIndex = 0): number[] {
 	return [
-		...prefixedInstruction(WASMInstruction.MISC, WASMMiscInstruction.MEMORY_INIT),
+		...prefixedInstruction(WASM_MISC, WASM_MISC_MEMORY_INIT),
 		...unsignedLEB128(dataSegmentIndex),
 		...unsignedLEB128(memoryIndex),
 	];

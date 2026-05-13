@@ -6,7 +6,8 @@ import {
 	i32store,
 	localGet,
 	localSet,
-	WASMInstruction,
+	WASM_F32_LT,
+	WASM_I32_LT_S,
 } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
@@ -36,7 +37,7 @@ const fallingEdge: InstructionCompiler = (line, context) => {
 	context.stack.push({ isInteger: true, isNonZero: false });
 
 	const loadByteCode = operand.isInteger ? i32load() : f32load();
-	const comparisonByteCode = operand.isInteger ? WASMInstruction.I32_LT_S : WASMInstruction.F32_LT;
+	const comparisonByteCode = operand.isInteger ? WASM_I32_LT_S : WASM_F32_LT;
 	const storeByteCode = operand.isInteger ? i32store() : f32store();
 
 	return saveByteCode(context, [

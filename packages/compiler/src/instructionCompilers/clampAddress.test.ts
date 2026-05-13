@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ArgumentType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
 
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
@@ -51,8 +50,8 @@ describe('clamp address instruction compilers', () => {
 				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
-		expect(context.byteCode).toContain(WASMInstruction.SELECT);
-		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
+		expect(context.byteCode).toContain(WASM_SELECT);
+		expect(context.byteCode).not.toContain(WASM_MEMORY_SIZE);
 	});
 
 	it('uses the optional access width when clamping to tracked address range metadata', () => {
@@ -103,8 +102,8 @@ describe('clamp address instruction compilers', () => {
 				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
-		expect(context.byteCode).toContain(WASMInstruction.I32_LT_S);
-		expect(context.byteCode).not.toContain(WASMInstruction.I32_LT_U);
+		expect(context.byteCode).toContain(WASM_I32_LT_S);
+		expect(context.byteCode).not.toContain(WASM_I32_LT_U);
 	});
 
 	it('throws when clampAddress has no address range metadata', () => {
@@ -143,8 +142,8 @@ describe('clamp address instruction compilers', () => {
 				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
-		expect(context.byteCode).toContain(WASMInstruction.SELECT);
-		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
+		expect(context.byteCode).toContain(WASM_SELECT);
+		expect(context.byteCode).not.toContain(WASM_MEMORY_SIZE);
 	});
 
 	it('clamps to the full global memory range', () => {
@@ -160,8 +159,8 @@ describe('clamp address instruction compilers', () => {
 				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
-		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
-		expect(context.byteCode).toContain(WASMInstruction.SELECT);
+		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);
+		expect(context.byteCode).toContain(WASM_SELECT);
 	});
 
 	it('rejects zero access width', () => {

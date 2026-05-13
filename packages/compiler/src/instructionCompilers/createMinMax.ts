@@ -1,4 +1,17 @@
-import { localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import {
+	localGet,
+	localSet,
+	WASM_ELSE,
+	WASM_END,
+	WASM_F32_MAX,
+	WASM_F32_MIN,
+	WASM_F64_MAX,
+	WASM_F64_MIN,
+	WASM_I32_GT_S,
+	WASM_I32_LT_S,
+	WASM_IF,
+	WASM_TYPE_I32,
+} from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -37,13 +50,13 @@ const createMinMax =
 				...localSet(leftLocalIndex),
 				...localGet(leftLocalIndex),
 				...localGet(rightLocalIndex),
-				instruction === 'min' ? WASMInstruction.I32_LT_S : WASMInstruction.I32_GT_S,
-				WASMInstruction.IF,
-				Type.I32,
+				instruction === 'min' ? WASM_I32_LT_S : WASM_I32_GT_S,
+				WASM_IF,
+				WASM_TYPE_I32,
 				...localGet(leftLocalIndex),
-				WASMInstruction.ELSE,
+				WASM_ELSE,
 				...localGet(rightLocalIndex),
-				WASMInstruction.END,
+				WASM_END,
 			]);
 		}
 
@@ -54,10 +67,10 @@ const createMinMax =
 		});
 
 		if (instruction === 'min') {
-			return saveByteCode(context, [isFloat64 ? WASMInstruction.F64_MIN : WASMInstruction.F32_MIN]);
+			return saveByteCode(context, [isFloat64 ? WASM_F64_MIN : WASM_F32_MIN]);
 		}
 
-		return saveByteCode(context, [isFloat64 ? WASMInstruction.F64_MAX : WASMInstruction.F32_MAX]);
+		return saveByteCode(context, [isFloat64 ? WASM_F64_MAX : WASM_F32_MAX]);
 	};
 
 export default createMinMax;

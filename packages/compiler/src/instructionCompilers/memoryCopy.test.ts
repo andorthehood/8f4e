@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ArgumentType } from '@8f4e/compiler-spec';
-import { WASMInstruction, WASMMiscInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_MEMORY_SIZE, WASM_MISC_MEMORY_COPY } from '@8f4e/compiler-wasm-utils';
 
 import memoryCopy from './memoryCopy';
 
@@ -34,7 +34,7 @@ describe('memoryCopy instruction compiler', () => {
 		memoryCopy(line, context);
 
 		expect(context.stack).toHaveLength(0);
-		expect(context.byteCode).toStrictEqual([0x41, 0x14, 0xfc, WASMMiscInstruction.MEMORY_COPY, 0x00, 0x00]);
+		expect(context.byteCode).toStrictEqual([0x41, 0x14, 0xfc, WASM_MISC_MEMORY_COPY, 0x00, 0x00]);
 	});
 
 	it('guards the copy when the length is not proven at compile time', () => {
@@ -43,8 +43,8 @@ describe('memoryCopy instruction compiler', () => {
 
 		memoryCopy(line, context);
 
-		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
-		expect(context.byteCode).toContain(WASMMiscInstruction.MEMORY_COPY);
+		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);
+		expect(context.byteCode).toContain(WASM_MISC_MEMORY_COPY);
 		expect(context.stack).toHaveLength(0);
 	});
 

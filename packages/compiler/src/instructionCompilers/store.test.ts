@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 
 import store from './store';
 
@@ -147,6 +147,6 @@ describe('store instruction compiler', () => {
 			context
 		);
 
-		expect(context.byteCode).not.toContain(WASMInstruction.MEMORY_SIZE);
+		expect(context.byteCode).not.toContain(WASM_MEMORY_SIZE);
 	});
 });

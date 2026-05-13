@@ -1,8 +1,8 @@
 import br from './br';
 
-import Instruction from '../wasmInstruction';
+import { WASM_END, WASM_LOOP } from '../wasmInstruction';
 
-import type { WasmType } from '../type';
+import type { WasmTypeValue } from '../type';
 
 /**
  * Creates a WebAssembly loop structure with automatic back-edge branching.
@@ -11,6 +11,6 @@ import type { WasmType } from '../type';
  * @param code - Instructions to execute in the loop body
  * @returns Byte array representing the loop-end structure with a branch back to start
  */
-export default function loop(resultType: WasmType, code: number[]): number[] {
-	return [Instruction.LOOP, resultType, ...code, ...br(0), Instruction.END];
+export default function loop(resultType: WasmTypeValue, code: number[]): number[] {
+	return [WASM_LOOP, resultType, ...code, ...br(0), WASM_END];
 }

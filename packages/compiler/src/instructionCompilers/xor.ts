@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_I32_XOR } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
@@ -24,7 +24,7 @@ const xor: InstructionCompiler = (line, context) => {
 		isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
 		...integerMetadata,
 	});
-	return saveByteCode(context, [WASMInstruction.I32_XOR]);
+	return saveByteCode(context, [WASM_I32_XOR]);
 };
 
 export default xor;

@@ -10,8 +10,7 @@ export const Command = {
 	PIXEL: 6,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type Command = (typeof Command)[keyof typeof Command];
+export type CommandValue = (typeof Command)[keyof typeof Command];
 
 export type DrawingCommand =
 	| [command: typeof Command.FILL_COLOR, fillColor: string]

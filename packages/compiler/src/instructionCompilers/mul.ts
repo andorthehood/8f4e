@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F32_MUL, WASM_F64_MUL, WASM_I32_MUL } from '@8f4e/compiler-wasm-utils';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
 import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
@@ -9,9 +9,9 @@ import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
  */
 const mul = createNumericBinaryCompiler({
 	opcodes: {
-		int32: WASMInstruction.I32_MUL,
-		float32: WASMInstruction.F32_MUL,
-		float64: WASMInstruction.F64_MUL,
+		int32: WASM_I32_MUL,
+		float32: WASM_F32_MUL,
+		float64: WASM_F64_MUL,
 	},
 	result: 'numeric',
 	deriveIntegerMetadata: (left, right) => deriveKnownIntegerValue(left, right, Math.imul),

@@ -1,6 +1,6 @@
+import { WASM_I32_STORE8 } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
 import i32const from '../const/i32const';
-import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.store8 instruction to store the low byte of a 32-bit integer to memory.
@@ -15,7 +15,7 @@ export default function i32store8(address?: number, value?: number, alignment = 
 	return [
 		...(typeof address === 'undefined' ? [] : i32const(address)),
 		...(typeof value === 'undefined' ? [] : i32const(value)),
-		Instruction.I32_STORE8,
+		WASM_I32_STORE8,
 		...unsignedLEB128(alignment),
 		...unsignedLEB128(offset),
 	];

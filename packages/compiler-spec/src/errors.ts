@@ -54,5 +54,4 @@ export const ErrorCode = {
 	DUPLICATE_EXPORT_NAME: 52,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
+export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];

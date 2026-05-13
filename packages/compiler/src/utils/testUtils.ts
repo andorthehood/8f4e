@@ -1,4 +1,4 @@
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
 import type { CompilationContext } from '@8f4e/compiler-spec';
 
@@ -20,7 +20,7 @@ export default function createInstructionCompilerTestContext(
 		stack: [],
 		blockStack: [
 			{
-				blockType: BLOCK_TYPE.MODULE,
+				blockType: BlockType.MODULE,
 				expectedResultIsInteger: false,
 				hasExpectedResult: false,
 			},

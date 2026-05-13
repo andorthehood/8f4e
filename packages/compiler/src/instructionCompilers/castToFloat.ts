@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F32_CONVERT_I32_S } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -14,7 +14,7 @@ const castToFloat: InstructionCompiler = (line, context) => {
 
 	context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
 
-	return saveByteCode(context, [WASMInstruction.F32_CONVERT_I32_S]);
+	return saveByteCode(context, [WASM_F32_CONVERT_I32_S]);
 };
 
 export default castToFloat;

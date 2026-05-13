@@ -1,6 +1,6 @@
+import { WASM_END } from '../wasmInstruction';
 import createVector from '../encoding/createVector';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
-import Instruction from '../wasmInstruction';
 
 import type { FunctionBody, LocalDeclaration } from '../section';
 
@@ -17,6 +17,6 @@ export default function createFunction(localDeclarations: LocalDeclaration[], fu
 		...unsignedLEB128(localDeclarationCount),
 		...localDeclarations.flat(),
 		...functionBody,
-		Instruction.END,
+		WASM_END,
 	]);
 }

@@ -1,5 +1,19 @@
 import { ArgumentType } from '@8f4e/compiler-spec';
-import { f32const, f64const, i32const, localGet, localSet, Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import {
+	f32const,
+	f64const,
+	i32const,
+	localGet,
+	localSet,
+	WASM_ELSE,
+	WASM_END,
+	WASM_F32_EQ,
+	WASM_F64_EQ,
+	WASM_I32_EQZ,
+	WASM_IF,
+	WASM_TYPE_I32,
+	WASM_TYPE_VOID,
+} from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -36,13 +50,13 @@ const ensureNonZero: InstructionCompiler = (line, context) => {
 		return saveByteCode(context, [
 			...localSet(tempLocalIndex),
 			...localGet(tempLocalIndex),
-			WASMInstruction.I32_EQZ,
-			WASMInstruction.IF,
-			Type.I32,
+			WASM_I32_EQZ,
+			WASM_IF,
+			WASM_TYPE_I32,
 			...i32const(defaultNonZeroValue),
-			WASMInstruction.ELSE,
+			WASM_ELSE,
 			...localGet(tempLocalIndex),
-			WASMInstruction.END,
+			WASM_END,
 		]);
 	} else {
 		context.locals[tempVariableName] = {
@@ -61,12 +75,12 @@ const ensureNonZero: InstructionCompiler = (line, context) => {
 			...localSet(tempLocalIndex),
 			...localGet(tempLocalIndex),
 			...zeroByteCode,
-			operand.isFloat64 ? WASMInstruction.F64_EQ : WASMInstruction.F32_EQ,
-			WASMInstruction.IF,
-			Type.VOID,
+			operand.isFloat64 ? WASM_F64_EQ : WASM_F32_EQ,
+			WASM_IF,
+			WASM_TYPE_VOID,
 			...fallbackByteCode,
 			...localSet(tempLocalIndex),
-			WASMInstruction.END,
+			WASM_END,
 			...localGet(tempLocalIndex),
 		]);
 	}

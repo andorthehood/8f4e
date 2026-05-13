@@ -1,9 +1,9 @@
-import { Type } from '@8f4e/compiler-wasm-utils';
+import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 
 import getMemoryFlags from './memoryFlags';
 
-import type { WasmType } from '@8f4e/compiler-wasm-utils';
+import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-spec';
 
 type PointerFunctionValueType = Extract<FunctionValueType, `${string}*`>;
@@ -61,16 +61,16 @@ function localBindingToStackItem(binding: LocalBinding): StackItem {
 	};
 }
 
-export function functionValueTypeToWasmType(type: FunctionValueType): WasmType {
+export function functionValueTypeToWasmType(type: FunctionValueType): WasmTypeValue {
 	if (type === 'float64') {
-		return Type.F64;
+		return WASM_TYPE_F64;
 	}
 
 	if (type === 'float') {
-		return Type.F32;
+		return WASM_TYPE_F32;
 	}
 
-	return Type.I32;
+	return WASM_TYPE_I32;
 }
 
 export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {

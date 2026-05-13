@@ -1,6 +1,7 @@
 import { ErrorCode } from './errors';
 
 import type { AST, StoreBytesLine } from './ast';
+import type { ErrorCodeValue } from './errors';
 import type { CompilationContext } from './semantic';
 
 export type OperandRule = 'int' | 'float' | 'matching';
@@ -17,7 +18,7 @@ export interface ValidationSpec<TLine extends AST[number] = AST[number]> {
 		minOperands?: number;
 		operandTypes?: OperandRule[] | OperandRule;
 	};
-	onInvalidScope?: ErrorCode;
+	onInvalidScope?: ErrorCodeValue;
 	allowedInConstantsBlocks?: boolean;
 	allowedInMapBlocks?: boolean;
 }

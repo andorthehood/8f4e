@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F32_SQRT, WASM_F64_SQRT } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -13,7 +13,7 @@ const sqrt: InstructionCompiler = (line, context) => {
 	const operand = context.stack.pop()!;
 
 	context.stack.push({ isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: false });
-	return saveByteCode(context, [operand.isFloat64 ? WASMInstruction.F64_SQRT : WASMInstruction.F32_SQRT]);
+	return saveByteCode(context, [operand.isFloat64 ? WASM_F64_SQRT : WASM_F32_SQRT]);
 };
 
 export default sqrt;

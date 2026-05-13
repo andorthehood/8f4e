@@ -4,7 +4,7 @@ import generateFont, { FontLookups, generateLookups as generateLookupsForFonts }
 import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors';
 import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
-import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
+import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons';
 import { createAtlasLayout } from './atlasLayout';
 import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
@@ -289,7 +289,7 @@ async function loadFont(font: Font): Promise<FontData> {
 export interface SpriteLookups extends FontLookups {
 	fillColors: Record<FillSpriteColorName, SpriteCoordinates>;
 	background: Record<0, SpriteCoordinates>;
-	icons: Record<Icon, SpriteCoordinates>;
+	icons: Record<IconValue, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;
 }
 

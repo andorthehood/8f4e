@@ -1,11 +1,11 @@
 import {
-	BLOCK_TYPE,
+	BlockType,
 	type BlockStack,
 	type CompilationContext,
+	type ErrorCodeValue,
 	type InstructionCompiler,
 	type ScopeRule,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 import {
@@ -20,7 +20,7 @@ export function validateScope(
 	scope: ScopeRule,
 	line: Parameters<InstructionCompiler>[0],
 	context: CompilationContext,
-	errorCode: ErrorCode
+	errorCode: ErrorCodeValue
 ): void {
 	let isValid = false;
 
@@ -35,13 +35,13 @@ export function validateScope(
 			isValid = isInstructionInsideModuleOrFunction(blockStack);
 			break;
 		case 'block':
-			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.BLOCK);
+			isValid = isInstructionIsInsideBlock(blockStack, BlockType.BLOCK);
 			break;
 		case 'constants':
-			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.CONSTANTS);
+			isValid = isInstructionIsInsideBlock(blockStack, BlockType.CONSTANTS);
 			break;
 		case 'map':
-			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.MAP);
+			isValid = isInstructionIsInsideBlock(blockStack, BlockType.MAP);
 			break;
 	}
 

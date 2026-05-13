@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BLOCK_TYPE, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-spec';
+import { BlockType, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { validateScope } from './validateScope';
@@ -16,14 +16,14 @@ const moduleStack: BlockStack = [
 	{
 		hasExpectedResult: false,
 		expectedResultIsInteger: false,
-		blockType: BLOCK_TYPE.MODULE,
+		blockType: BlockType.MODULE,
 	},
 ];
 const functionStack: BlockStack = [
 	{
 		hasExpectedResult: false,
 		expectedResultIsInteger: false,
-		blockType: BLOCK_TYPE.FUNCTION,
+		blockType: BlockType.FUNCTION,
 	},
 ];
 

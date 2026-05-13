@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
 import functionEnd from './functionEnd';
 
@@ -15,7 +15,7 @@ describe('functionEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},
@@ -51,12 +51,12 @@ describe('functionEnd instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('accepts float64 return type and emits Type.F64 in type registry', () => {
+	it('accepts float64 return type and emits WASM_TYPE_F64 in type registry', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},

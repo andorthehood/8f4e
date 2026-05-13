@@ -1,7 +1,7 @@
+import { WASM_F64_STORE } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
 import i32const from '../const/i32const';
 import f64const from '../const/f64const';
-import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly f64.store instruction to store a 64-bit float to memory.
@@ -16,7 +16,7 @@ export default function f64store(address?: number, value?: number, alignment = 3
 	return [
 		...(typeof address === 'undefined' ? [] : i32const(address)),
 		...(typeof value === 'undefined' ? [] : f64const(value)),
-		Instruction.F64_STORE,
+		WASM_F64_STORE,
 		...unsignedLEB128(alignment),
 		...unsignedLEB128(offset),
 	];

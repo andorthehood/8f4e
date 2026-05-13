@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_I32_AND } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
@@ -24,7 +24,7 @@ const and: InstructionCompiler = (line, context) => {
 		isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
 		...integerMetadata,
 	});
-	return saveByteCode(context, [WASMInstruction.I32_AND]);
+	return saveByteCode(context, [WASM_I32_AND]);
 };
 
 export default and;

@@ -1,4 +1,4 @@
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
 import type { InstructionCompiler, MapBeginLine } from '@8f4e/compiler-spec';
 
@@ -13,7 +13,7 @@ const mapBegin: InstructionCompiler<MapBeginLine> = (line: MapBeginLine, context
 	context.blockStack.push({
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
-		blockType: BLOCK_TYPE.MAP,
+		blockType: BlockType.MAP,
 		mapState: {
 			inputIsInteger: inputType === 'int',
 			inputIsFloat64: inputType === 'float64',

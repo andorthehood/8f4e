@@ -30,15 +30,14 @@ export const SyntaxErrorCode = {
 	INVALID_BLOCK_STRUCTURE: 9,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type SyntaxErrorCode = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
+export type SyntaxErrorCodeValue = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
 
 /**
  * Default messages for each syntax error code.
  * Throw sites that do not need a custom message can omit the message argument
  * and this registry will supply the default.
  */
-const SyntaxErrorMessages: Record<SyntaxErrorCode, string> = {
+const SyntaxErrorMessages: Record<SyntaxErrorCodeValue, string> = {
 	[SyntaxErrorCode.INVALID_MEMORY_IDENTIFIER_PREFIX]: 'Invalid memory identifier prefix.',
 	[SyntaxErrorCode.INVALID_IDENTIFIER]: 'Invalid identifier.',
 	[SyntaxErrorCode.INVALID_ARGUMENT]: 'Invalid instruction argument.',
@@ -61,7 +60,7 @@ export interface SyntaxErrorLine {
 
 export class SyntaxRulesError extends Error {
 	constructor(
-		public code: SyntaxErrorCode,
+		public code: SyntaxErrorCodeValue,
 		message?: string,
 		public line?: SyntaxErrorLine
 	) {

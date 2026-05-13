@@ -1,4 +1,10 @@
-import { createFunction, createLocalDeclaration, Type } from '@8f4e/compiler-wasm-utils';
+import {
+	createFunction,
+	createLocalDeclaration,
+	WASM_TYPE_F32,
+	WASM_TYPE_F64,
+	WASM_TYPE_I32,
+} from '@8f4e/compiler-wasm-utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -118,7 +124,10 @@ export function compileModule(
 		id: context.namespace.moduleName,
 		cycleFunction: createFunction(
 			Object.values(context.locals).map(local => {
-				return createLocalDeclaration(local.isInteger ? Type.I32 : local.isFloat64 ? Type.F64 : Type.F32, 1);
+				return createLocalDeclaration(
+					local.isInteger ? WASM_TYPE_I32 : local.isFloat64 ? WASM_TYPE_F64 : WASM_TYPE_F32,
+					1
+				);
 			}),
 			context.byteCode
 		),
@@ -211,7 +220,10 @@ export function compileFunction(
 		signature: context.currentFunctionSignature,
 		body: createFunction(
 			localDeclarations.map(local =>
-				createLocalDeclaration(local.isInteger ? Type.I32 : local.isFloat64 ? Type.F64 : Type.F32, local.count)
+				createLocalDeclaration(
+					local.isInteger ? WASM_TYPE_I32 : local.isFloat64 ? WASM_TYPE_F64 : WASM_TYPE_F32,
+					local.count
+				)
 			),
 			context.byteCode
 		),

@@ -1,4 +1,4 @@
-import { i32const, localGet, localSet, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { i32const, localGet, localSet, WASM_I32_GT_U, WASM_I32_LT_S, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
@@ -65,15 +65,15 @@ export function clampAddressByteCode(
 		...localGet(addressLocal.index),
 		...localGet(addressLocal.index),
 		...i32const(lowerByteAddress),
-		WASMInstruction.I32_LT_S,
-		WASMInstruction.SELECT,
+		WASM_I32_LT_S,
+		WASM_SELECT,
 		...localSet(addressLocal.index),
 		...upperByteAddressCode,
 		...localGet(addressLocal.index),
 		...localGet(addressLocal.index),
 		...upperByteAddressCode,
-		WASMInstruction.I32_GT_U,
-		WASMInstruction.SELECT,
+		WASM_I32_GT_U,
+		WASM_SELECT,
 	];
 }
 

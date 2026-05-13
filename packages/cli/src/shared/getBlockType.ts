@@ -1,6 +1,6 @@
 import { compilableBlockTypes, documentBlockInstructionByType } from '@8f4e/compiler-spec';
 
-import type { BlockType } from './types';
+import type { BlockTypeValue } from './types';
 
 const CLI_BLOCK_DELIMITERS = compilableBlockTypes.map(type => documentBlockInstructionByType[type]);
 
@@ -9,7 +9,7 @@ function startsWithInstructionArgument(line: string, instruction: string): boole
 	return line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t');
 }
 
-export default function getBlockType(code: string[]): BlockType {
+export default function getBlockType(code: string[]): BlockTypeValue {
 	for (const line of code) {
 		const trimmed = line.trim();
 		if (trimmed === '' || trimmed.startsWith('#') || trimmed.startsWith(';') || trimmed.startsWith('//')) {

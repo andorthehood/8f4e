@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
 import loopEnd from './loopEnd';
 
@@ -13,7 +13,7 @@ describe('loopEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BLOCK_TYPE.LOOP,
+					blockType: BlockType.LOOP,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},
