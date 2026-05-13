@@ -1,4 +1,4 @@
-import { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_DROP, WASM_END, WASM_IF, WASM_RETURN, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
@@ -26,9 +26,9 @@ const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line: ExitIfTrueLine, c
 
 	context.stack.pop()!;
 
-	const drops = context.stack.flatMap(() => [WASMInstruction.DROP]);
+	const drops = context.stack.flatMap(() => [WASM_DROP]);
 
-	return saveByteCode(context, [WASMInstruction.IF, Type.VOID, ...drops, WASMInstruction.RETURN, WASMInstruction.END]);
+	return saveByteCode(context, [WASM_IF, WASM_TYPE_VOID, ...drops, WASM_RETURN, WASM_END]);
 };
 
 export default exitIfTrue;

@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_I32_REM_S } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
@@ -34,7 +34,7 @@ const remainder: InstructionCompiler = (line, context) => {
 		isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
 		...integerMetadata,
 	});
-	return saveByteCode(context, [WASMInstruction.I32_REM_S]);
+	return saveByteCode(context, [WASM_I32_REM_S]);
 };
 
 export default remainder;

@@ -1,19 +1,19 @@
-import { Type } from '@8f4e/compiler-wasm-utils';
+import { WASM_TYPE_F32, WASM_TYPE_I32, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
 
-import type { WasmType } from '@8f4e/compiler-wasm-utils';
-import type { BLOCK_TYPE, BlockStack } from '@8f4e/compiler-spec';
+import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
+import type { BlockStack, BlockTypeValue } from '@8f4e/compiler-spec';
 
 type ResultType = 'float' | 'int' | null | undefined;
 
 interface ResultBlockState {
 	blockState: BlockStack[number];
-	wasmType: WasmType;
+	wasmType: WasmTypeValue;
 }
 
 /**
  * Creates the compiler block-stack metadata and matching WASM block result type.
  */
-export default function createResultBlockState(resultType: ResultType, blockType: BLOCK_TYPE): ResultBlockState {
+export default function createResultBlockState(resultType: ResultType, blockType: BlockTypeValue): ResultBlockState {
 	if (resultType === 'float') {
 		return {
 			blockState: {
@@ -21,7 +21,7 @@ export default function createResultBlockState(resultType: ResultType, blockType
 				hasExpectedResult: true,
 				blockType,
 			},
-			wasmType: Type.F32,
+			wasmType: WASM_TYPE_F32,
 		};
 	}
 
@@ -32,7 +32,7 @@ export default function createResultBlockState(resultType: ResultType, blockType
 				hasExpectedResult: true,
 				blockType,
 			},
-			wasmType: Type.I32,
+			wasmType: WASM_TYPE_I32,
 		};
 	}
 
@@ -42,6 +42,6 @@ export default function createResultBlockState(resultType: ResultType, blockType
 			hasExpectedResult: false,
 			blockType,
 		},
-		wasmType: Type.VOID,
+		wasmType: WASM_TYPE_VOID,
 	};
 }

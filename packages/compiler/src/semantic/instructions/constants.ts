@@ -1,5 +1,5 @@
 import {
-	BLOCK_TYPE,
+	BlockType,
 	compilerSourceBlockInstructionByType,
 	type CompilationContext,
 	type ConstantsLine,
@@ -18,7 +18,7 @@ export default function semanticConstants(line: ConstantsLine, context: Compilat
 	context.blockStack.push({
 		hasExpectedResult: false,
 		expectedResultIsInteger: false,
-		blockType: BLOCK_TYPE.CONSTANTS,
+		blockType: BlockType.CONSTANTS,
 	});
 
 	const moduleId = line.arguments[0].value;

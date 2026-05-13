@@ -9,7 +9,6 @@ import {
 	createFunctionSection,
 	createFunctionType,
 	createTypeSection,
-	Type,
 	call,
 	i32const,
 	memoryFill,
@@ -18,6 +17,7 @@ import {
 	createDataSection,
 	createPassiveDataSegment,
 	WASM_MEMORY_PAGE_SIZE,
+	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
@@ -51,8 +51,8 @@ export { default as instructions } from './instructionCompilers';
 export {
 	prepassNamespace,
 	assertUniqueModuleIds,
-	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
+	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
 export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
@@ -279,8 +279,8 @@ export default function compile(
 			...VERSION,
 			...createTypeSection([
 				createFunctionType([], []),
-				createFunctionType([Type.I32], [Type.I32]),
-				createFunctionType([Type.I32, Type.I32], [Type.I32]),
+				createFunctionType([WASM_TYPE_I32], [WASM_TYPE_I32]),
+				createFunctionType([WASM_TYPE_I32, WASM_TYPE_I32], [WASM_TYPE_I32]),
 				...uniqueUserFunctionTypes,
 			]),
 			...createImportSection([

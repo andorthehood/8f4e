@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F32_DIV, WASM_F64_DIV, WASM_I32_DIV_S } from '@8f4e/compiler-wasm-utils';
 import { BASE_TYPE_METADATA, ErrorCode } from '@8f4e/compiler-spec';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
@@ -12,9 +12,9 @@ import { getError } from '../compilerError';
  */
 const div = createNumericBinaryCompiler({
 	opcodes: {
-		int32: WASMInstruction.I32_DIV_S,
-		float32: WASMInstruction.F32_DIV,
-		float64: WASMInstruction.F64_DIV,
+		int32: WASM_I32_DIV_S,
+		float32: WASM_F32_DIV,
+		float64: WASM_F64_DIV,
 	},
 	result: 'numeric',
 	validate: ({ right, line, context }) => {

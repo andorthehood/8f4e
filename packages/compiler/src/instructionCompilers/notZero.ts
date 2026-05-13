@@ -1,4 +1,4 @@
-import { WASMInstruction, f32const, f64const, i32const } from '@8f4e/compiler-wasm-utils';
+import { f32const, f64const, i32const, WASM_F32_NE, WASM_F64_NE, WASM_I32_NE } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -14,13 +14,13 @@ const notZero: InstructionCompiler = (line, context) => {
 
 	if (operand.isInteger) {
 		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
-		return saveByteCode(context, [...i32const(0), WASMInstruction.I32_NE]);
+		return saveByteCode(context, [...i32const(0), WASM_I32_NE]);
 	} else if (operand.isFloat64) {
 		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
-		return saveByteCode(context, [...f64const(0), WASMInstruction.F64_NE]);
+		return saveByteCode(context, [...f64const(0), WASM_F64_NE]);
 	} else {
 		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
-		return saveByteCode(context, [...f32const(0), WASMInstruction.F32_NE]);
+		return saveByteCode(context, [...f32const(0), WASM_F32_NE]);
 	}
 };
 

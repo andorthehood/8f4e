@@ -1,7 +1,7 @@
+import { WASM_MISC } from '../wasmInstruction';
+import { WASM_MISC_MEMORY_COPY } from '../wasmMiscInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
 import prefixedInstruction from '../encoding/prefixedInstruction';
-import WASMInstruction from '../wasmInstruction';
-import WASMMiscInstruction from '../wasmMiscInstruction';
 
 /**
  * Creates a WebAssembly memory.copy instruction.
@@ -10,7 +10,7 @@ import WASMMiscInstruction from '../wasmMiscInstruction';
  */
 export default function memoryCopy(destinationMemoryIndex = 0, sourceMemoryIndex = 0): number[] {
 	return [
-		...prefixedInstruction(WASMInstruction.MISC, WASMMiscInstruction.MEMORY_COPY),
+		...prefixedInstruction(WASM_MISC, WASM_MISC_MEMORY_COPY),
 		...unsignedLEB128(destinationMemoryIndex),
 		...unsignedLEB128(sourceMemoryIndex),
 	];

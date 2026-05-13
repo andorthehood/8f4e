@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F64_GT } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
 import greaterThan from './greaterThan';
@@ -66,6 +66,6 @@ describe('greaterThan instruction compiler', () => {
 		);
 
 		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
-		expect(context.byteCode).toEqual([WASMInstruction.F64_GT]);
+		expect(context.byteCode).toEqual([WASM_F64_GT]);
 	});
 });

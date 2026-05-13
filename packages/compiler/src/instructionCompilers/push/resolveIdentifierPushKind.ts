@@ -7,14 +7,13 @@ export const IdentifierPushKind = {
 	LOCAL: 3,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type IdentifierPushKind = (typeof IdentifierPushKind)[keyof typeof IdentifierPushKind];
+export type IdentifierPushKindValue = (typeof IdentifierPushKind)[keyof typeof IdentifierPushKind];
 
 export default function resolveIdentifierPushKind(
 	namespace: Namespace,
 	locals: LocalMap,
 	identifier: ArgumentIdentifier
-): IdentifierPushKind {
+): IdentifierPushKindValue {
 	const { memory } = namespace;
 
 	// Locals shadow memory: if the identifier refers to a declared local, treat it as LOCAL.

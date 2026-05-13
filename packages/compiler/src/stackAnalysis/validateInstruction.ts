@@ -1,4 +1,4 @@
-import { BLOCK_TYPE, instructionSpecs } from '@8f4e/compiler-spec';
+import { BlockType, instructionSpecs } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { peekStackOperands } from './peekStackOperands';
@@ -25,12 +25,12 @@ export function validateInstruction(line: AST[number], context: CompilationConte
 		return;
 	}
 
-	const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS);
+	const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BlockType.CONSTANTS);
 	if (insideConstantsBlock && !spec.allowedInConstantsBlocks) {
 		throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 	}
 
-	const insideMapBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.MAP);
+	const insideMapBlock = isInstructionIsInsideBlock(context.blockStack, BlockType.MAP);
 	if (insideMapBlock && !spec.allowedInMapBlocks) {
 		throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 	}

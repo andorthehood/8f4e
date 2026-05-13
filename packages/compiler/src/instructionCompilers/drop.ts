@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_DROP } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -11,7 +11,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const drop: InstructionCompiler = (line, context) => {
 	context.stack.pop();
 
-	return saveByteCode(context, [WASMInstruction.DROP]);
+	return saveByteCode(context, [WASM_DROP]);
 };
 
 export default drop;

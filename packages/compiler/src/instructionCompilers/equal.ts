@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F32_EQ, WASM_F64_EQ, WASM_I32_EQ } from '@8f4e/compiler-wasm-utils';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
 
@@ -8,9 +8,9 @@ import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
  */
 const equal = createNumericBinaryCompiler({
 	opcodes: {
-		int32: WASMInstruction.I32_EQ,
-		float32: WASMInstruction.F32_EQ,
-		float64: WASMInstruction.F64_EQ,
+		int32: WASM_I32_EQ,
+		float32: WASM_F32_EQ,
+		float64: WASM_F64_EQ,
 	},
 	result: 'comparison',
 });

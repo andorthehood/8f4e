@@ -10,30 +10,26 @@ export const Section = {
 	DATA_COUNT: 0x0c,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type Section = (typeof Section)[keyof typeof Section];
+export type SectionValue = (typeof Section)[keyof typeof Section];
 
 export const NameSection = {
 	FUNCTION_NAME: 0x01,
 	LOCAL_NAME: 0x02,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type NameSection = (typeof NameSection)[keyof typeof NameSection];
+export type NameSectionValue = (typeof NameSection)[keyof typeof NameSection];
 
 export const ImportDesc = {
 	MEMORY: 0x02,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type ImportDesc = (typeof ImportDesc)[keyof typeof ImportDesc];
+export type ImportDescValue = (typeof ImportDesc)[keyof typeof ImportDesc];
 
 export const ExportDesc = {
 	FUNC: 0x00,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type ExportDesc = (typeof ExportDesc)[keyof typeof ExportDesc];
+export type ExportDescValue = (typeof ExportDesc)[keyof typeof ExportDesc];
 
 export type LocalDeclaration = number[];
 export type FunctionBody = number[];

@@ -1,5 +1,5 @@
+import { WASM_BR } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
-import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly br (branch) instruction for unconditional branching.
@@ -8,5 +8,5 @@ import Instruction from '../wasmInstruction';
  * @returns Byte array representing the br instruction
  */
 export default function br(breakDepth: number): number[] {
-	return [Instruction.BR, ...unsignedLEB128(breakDepth)];
+	return [WASM_BR, ...unsignedLEB128(breakDepth)];
 }

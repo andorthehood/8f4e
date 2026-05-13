@@ -16,7 +16,6 @@ const Glyph = {
 	SLASH: 18,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type Glyph = (typeof Glyph)[keyof typeof Glyph];
+export type GlyphValue = (typeof Glyph)[keyof typeof Glyph];
 
 export default Glyph;

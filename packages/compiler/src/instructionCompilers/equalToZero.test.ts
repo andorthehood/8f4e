@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { WASMInstruction, f32const, f64const } from '@8f4e/compiler-wasm-utils';
+import { f32const, f64const, WASM_F32_EQ, WASM_F64_EQ, WASM_I32_EQZ } from '@8f4e/compiler-wasm-utils';
 
 import equalToZero from './equalToZero';
 
@@ -23,7 +23,7 @@ describe('equalToZero instruction compiler', () => {
 		);
 
 		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
-		expect(context.byteCode).toEqual([WASMInstruction.I32_EQZ]);
+		expect(context.byteCode).toEqual([WASM_I32_EQZ]);
 	});
 
 	it('emits F32_EQ for float32 operands', () => {
@@ -41,7 +41,7 @@ describe('equalToZero instruction compiler', () => {
 		);
 
 		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
-		expect(context.byteCode).toEqual([...f32const(0), WASMInstruction.F32_EQ]);
+		expect(context.byteCode).toEqual([...f32const(0), WASM_F32_EQ]);
 	});
 
 	it('emits F64_EQ for float64 operands', () => {
@@ -59,6 +59,6 @@ describe('equalToZero instruction compiler', () => {
 		);
 
 		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
-		expect(context.byteCode).toEqual([...f64const(0), WASMInstruction.F64_EQ]);
+		expect(context.byteCode).toEqual([...f64const(0), WASM_F64_EQ]);
 	});
 });

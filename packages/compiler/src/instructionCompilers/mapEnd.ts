@@ -1,5 +1,19 @@
-import { WASMInstruction, f32const, f64const, i32const, localGet, localSet } from '@8f4e/compiler-wasm-utils';
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import {
+	f32const,
+	f64const,
+	i32const,
+	localGet,
+	localSet,
+	WASM_DROP,
+	WASM_F32_EQ,
+	WASM_F64_EQ,
+	WASM_I32_AND,
+	WASM_I32_EQ,
+	WASM_I32_EQZ,
+	WASM_I32_OR,
+	WASM_SELECT,
+} from '@8f4e/compiler-wasm-utils';
+import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { resolveMapKind, validateMapValueKind } from './utils/mapValueKind';
@@ -18,9 +32,9 @@ const constOp: Record<MapKind, (v: number) => number[]> = {
 };
 
 const eqOpcode: Record<MapKind, WASMInstructionCode> = {
-	int32: WASMInstruction.I32_EQ,
-	float32: WASMInstruction.F32_EQ,
-	float64: WASMInstruction.F64_EQ,
+	int32: WASM_I32_EQ,
+	float32: WASM_F32_EQ,
+	float64: WASM_F64_EQ,
 };
 
 /**
@@ -50,7 +64,7 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 
 	// Pop the MAP block from blockStack and read its state
 	const block = context.blockStack.pop();
-	if (!block || block.blockType !== BLOCK_TYPE.MAP || !block.mapState) {
+	if (!block || block.blockType !== BlockType.MAP || !block.mapState) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 	const mapState = block.mapState;
@@ -84,7 +98,7 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 
 	if (rows.length === 0) {
 		// No rows: discard the input and push the default/zero value
-		saveByteCode(context, [WASMInstruction.DROP, ...constOp[outputKind](defaultValue)]);
+		saveByteCode(context, [WASM_DROP, ...constOp[outputKind](defaultValue)]);
 	} else {
 		// Allocate four temporary locals: inputLocal, resultLocal, matchedLocal, condLocal
 		const localBase = Object.keys(context.locals).length;
@@ -138,16 +152,16 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 				// Compute apply = cond AND !matchedLocal
 				...localGet(condLocalIdx),
 				...localGet(matchedLocalIdx),
-				WASMInstruction.I32_EQZ,
-				WASMInstruction.I32_AND,
+				WASM_I32_EQZ,
+				WASM_I32_AND,
 				// select(value, resultLocal, apply)
-				WASMInstruction.SELECT,
+				WASM_SELECT,
 				// Update resultLocal
 				...localSet(resultLocalIdx),
 				// Update matchedLocal = matchedLocal OR cond
 				...localGet(matchedLocalIdx),
 				...localGet(condLocalIdx),
-				WASMInstruction.I32_OR,
+				WASM_I32_OR,
 				...localSet(matchedLocalIdx),
 			]);
 		}

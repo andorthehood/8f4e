@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { i32const, localGet, WASMInstruction } from '@8f4e/compiler-wasm-utils';
-import { BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { i32const, localGet, WASM_I32_SUB } from '@8f4e/compiler-wasm-utils';
+import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import loopIndex from './loopIndex';
@@ -17,12 +17,12 @@ describe('loopIndex instruction compiler', () => {
 			},
 			blockStack: [
 				{
-					blockType: BLOCK_TYPE.MODULE,
+					blockType: BlockType.MODULE,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},
 				{
-					blockType: BLOCK_TYPE.LOOP,
+					blockType: BlockType.LOOP,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 					loopCounterLocalName: '__loopCounter2',
@@ -40,7 +40,7 @@ describe('loopIndex instruction compiler', () => {
 			context
 		);
 
-		expect(context.byteCode).toEqual([...localGet(3), ...i32const(1), WASMInstruction.I32_SUB]);
+		expect(context.byteCode).toEqual([...localGet(3), ...i32const(1), WASM_I32_SUB]);
 		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
 	});
 
@@ -52,18 +52,18 @@ describe('loopIndex instruction compiler', () => {
 			},
 			blockStack: [
 				{
-					blockType: BLOCK_TYPE.MODULE,
+					blockType: BlockType.MODULE,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 				},
 				{
-					blockType: BLOCK_TYPE.LOOP,
+					blockType: BlockType.LOOP,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 					loopCounterLocalName: '__outer',
 				},
 				{
-					blockType: BLOCK_TYPE.LOOP,
+					blockType: BlockType.LOOP,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 					loopCounterLocalName: '__inner',
@@ -81,7 +81,7 @@ describe('loopIndex instruction compiler', () => {
 			context
 		);
 
-		expect(context.byteCode).toEqual([...localGet(2), ...i32const(1), WASMInstruction.I32_SUB]);
+		expect(context.byteCode).toEqual([...localGet(2), ...i32const(1), WASM_I32_SUB]);
 	});
 
 	it('throws outside a loop', () => {

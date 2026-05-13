@@ -5,14 +5,22 @@ import {
 	ifelse,
 	localGet,
 	localSet,
-	Type,
+	WASM_I32_ADD,
+	WASM_I32_AND,
+	WASM_I32_LE_U,
+	WASM_I32_SHL,
+	WASM_I32_SUB,
 	WASM_MEMORY_PAGE_SIZE,
-	WASMInstruction,
+	WASM_MEMORY_SIZE,
+	WASM_TYPE_F32,
+	WASM_TYPE_F64,
+	WASM_TYPE_I32,
+	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
 
 import type { CompilationContext, StackItem } from '@8f4e/compiler-spec';
 
-type NumericWasmValueType = typeof Type.I32 | typeof Type.F32 | typeof Type.F64;
+type NumericWasmValueType = typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof WASM_TYPE_F64;
 
 type GuardedLoadOptions = {
 	accessByteWidth: number;
@@ -62,45 +70,45 @@ export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number):
 
 export function linearLastValidStartAddress(accessByteWidth: number): number[] {
 	return [
-		WASMInstruction.MEMORY_SIZE,
+		WASM_MEMORY_SIZE,
 		0x00,
 		...i32const(1),
-		WASMInstruction.I32_SUB,
+		WASM_I32_SUB,
 		...i32const(16),
-		WASMInstruction.I32_SHL,
+		WASM_I32_SHL,
 		...i32const(WASM_MEMORY_PAGE_SIZE - accessByteWidth),
-		WASMInstruction.I32_ADD,
+		WASM_I32_ADD,
 	];
 }
 
 function linearMemoryByteLength(): number[] {
-	return [WASMInstruction.MEMORY_SIZE, 0x00, ...i32const(16), WASMInstruction.I32_SHL];
+	return [WASM_MEMORY_SIZE, 0x00, ...i32const(16), WASM_I32_SHL];
 }
 
 function addressWithinMemoryBounds(addressLocalIndex: number, accessByteWidth: number): number[] {
-	return [...localGet(addressLocalIndex), ...linearLastValidStartAddress(accessByteWidth), WASMInstruction.I32_LE_U];
+	return [...localGet(addressLocalIndex), ...linearLastValidStartAddress(accessByteWidth), WASM_I32_LE_U];
 }
 
 function rangeWithinMemoryBounds(addressLocalIndex: number, byteLength: number): number[] {
 	return [
 		...localGet(addressLocalIndex),
 		...linearMemoryByteLength(),
-		WASMInstruction.I32_LE_U,
+		WASM_I32_LE_U,
 		...i32const(byteLength),
 		...linearMemoryByteLength(),
 		...localGet(addressLocalIndex),
-		WASMInstruction.I32_SUB,
-		WASMInstruction.I32_LE_U,
-		WASMInstruction.I32_AND,
+		WASM_I32_SUB,
+		WASM_I32_LE_U,
+		WASM_I32_AND,
 	];
 }
 
 function zeroValue(type: NumericWasmValueType): number[] {
-	if (type === Type.F64) {
+	if (type === WASM_TYPE_F64) {
 		return f64const(0);
 	}
 
-	return type === Type.F32 ? f32const(0) : i32const(0);
+	return type === WASM_TYPE_F32 ? f32const(0) : i32const(0);
 }
 
 export function guardedLoad(context: CompilationContext, options: GuardedLoadOptions): number[] {
@@ -141,7 +149,11 @@ export function guardedStore(context: CompilationContext, options: GuardedStoreO
 		...localSet(valueLocal.index),
 		...localSet(addressLocal.index),
 		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth),
-		...ifelse(Type.VOID, [...localGet(addressLocal.index), ...localGet(valueLocal.index), ...options.storeByteCode]),
+		...ifelse(WASM_TYPE_VOID, [
+			...localGet(addressLocal.index),
+			...localGet(valueLocal.index),
+			...options.storeByteCode,
+		]),
 	];
 }
 
@@ -170,8 +182,8 @@ export function guardedMemoryCopy(context: CompilationContext, options: GuardedM
 		...localSet(destinationLocal.index),
 		...rangeWithinMemoryBounds(destinationLocal.index, options.byteLength),
 		...rangeWithinMemoryBounds(sourceLocal.index, options.byteLength),
-		WASMInstruction.I32_AND,
-		...ifelse(Type.VOID, [
+		WASM_I32_AND,
+		...ifelse(WASM_TYPE_VOID, [
 			...localGet(destinationLocal.index),
 			...localGet(sourceLocal.index),
 			...i32const(options.byteLength),
@@ -188,6 +200,6 @@ export function guardedStoreFromLocals(
 ): number[] {
 	return [
 		...addressWithinMemoryBounds(addressLocalIndex, accessByteWidth),
-		...ifelse(Type.VOID, [...localGet(addressLocalIndex), ...localGet(valueLocalIndex), ...storeByteCode]),
+		...ifelse(WASM_TYPE_VOID, [...localGet(addressLocalIndex), ...localGet(valueLocalIndex), ...storeByteCode]),
 	];
 }

@@ -7,7 +7,8 @@ import {
 	i32store,
 	localGet,
 	localSet,
-	WASMInstruction,
+	WASM_F32_EQ,
+	WASM_I32_EQ,
 } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
@@ -37,7 +38,7 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = (line: Bra
 	};
 
 	const loadByteCode = operand.isInteger ? i32load() : f32load();
-	const equalityByteCode = operand.isInteger ? WASMInstruction.I32_EQ : WASMInstruction.F32_EQ;
+	const equalityByteCode = operand.isInteger ? WASM_I32_EQ : WASM_F32_EQ;
 	const storeByteCode = operand.isInteger ? i32store() : f32store();
 
 	return saveByteCode(context, [
