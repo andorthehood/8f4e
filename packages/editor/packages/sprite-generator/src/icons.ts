@@ -11,7 +11,8 @@ type IconCharacter = {
 };
 
 const ascii = (char: string): IconCharacter => ({ font: 'ascii', char });
-const glyph = (char: Glyph): IconCharacter => ({ font: 'glyphs', char });
+type GlyphCode = (typeof Glyph)[keyof typeof Glyph];
+const glyph = (char: GlyphCode): IconCharacter => ({ font: 'glyphs', char });
 
 const icons = (
 	characterWidth: number,
@@ -51,11 +52,14 @@ const icons = (
 	},
 ];
 
-export enum Icon {
-	INPUT,
-	SWITCH_OFF,
-	SWITCH_ON,
-}
+export const Icon = {
+	INPUT: 0,
+	SWITCH_OFF: 1,
+	SWITCH_ON: 2,
+} as const;
+
+// eslint-disable-next-line no-redeclare
+export type Icon = (typeof Icon)[keyof typeof Icon];
 
 export default function generate(
 	asciiFont: number[],

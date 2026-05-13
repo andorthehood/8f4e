@@ -1,9 +1,12 @@
-export enum ArgumentType {
-	LITERAL = 'literal',
-	IDENTIFIER = 'identifier',
-	STRING_LITERAL = 'string_literal',
-	COMPILE_TIME_EXPRESSION = 'compile_time_expression',
-}
+export const ArgumentType = {
+	LITERAL: 'literal',
+	IDENTIFIER: 'identifier',
+	STRING_LITERAL: 'string_literal',
+	COMPILE_TIME_EXPRESSION: 'compile_time_expression',
+} as const;
+
+// eslint-disable-next-line no-redeclare
+export type ArgumentType = (typeof ArgumentType)[keyof typeof ArgumentType];
 
 /**
  * The syntactic class of an identifier-shaped argument.
@@ -29,7 +32,7 @@ export type ReferenceKind =
 	| 'intermodular-element-min';
 
 export type ArgumentLiteral = {
-	type: ArgumentType.LITERAL;
+	type: typeof ArgumentType.LITERAL;
 	value: number;
 	isInteger: boolean;
 	isFloat64?: boolean;
@@ -37,7 +40,7 @@ export type ArgumentLiteral = {
 };
 
 type IdentifierBase<K extends ReferenceKind, S extends 'local' | 'intermodule'> = {
-	type: ArgumentType.IDENTIFIER;
+	type: typeof ArgumentType.IDENTIFIER;
 	value: string;
 	referenceKind: K;
 	scope: S;
@@ -120,7 +123,7 @@ export type ArgumentIdentifier =
 	| IntermodularElementMinIdentifier;
 
 export type ArgumentStringLiteral = {
-	type: ArgumentType.STRING_LITERAL;
+	type: typeof ArgumentType.STRING_LITERAL;
 	value: string;
 };
 
@@ -132,7 +135,7 @@ export type ArgumentStringLiteral = {
 export type CompileTimeOperand = ArgumentLiteral | ArgumentIdentifier;
 
 export type ArgumentCompileTimeExpression = {
-	type: ArgumentType.COMPILE_TIME_EXPRESSION;
+	type: typeof ArgumentType.COMPILE_TIME_EXPRESSION;
 	left: CompileTimeOperand;
 	operator: '+' | '-' | '*' | '/' | '^';
 	right: CompileTimeOperand;

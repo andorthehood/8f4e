@@ -58,7 +58,7 @@ export interface ParsedMemoryInstructionArguments {
  * Returns true when the argument is a byte-sized integer literal (0–255) in any numeric form
  * (decimal, hexadecimal, or binary).
  */
-function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: ArgumentType.LITERAL; isInteger: true } {
+function isByteLiteral(arg: Argument): arg is ArgumentLiteral & { type: typeof ArgumentType.LITERAL; isInteger: true } {
 	return arg.type === ArgumentType.LITERAL && arg.isInteger === true && arg.value >= 0 && arg.value <= 255;
 }
 

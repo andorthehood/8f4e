@@ -5,11 +5,14 @@ import { ColorScheme, Command, DrawingCommand } from './types';
 
 export type FillSpriteColorName = (typeof FILL_COLOR_NAMES)[number];
 
-export enum Icon {
-	INPUT,
-	SWITCH_OFF,
-	SWITCH_ON,
-}
+export const Icon = {
+	INPUT: 0,
+	SWITCH_OFF: 1,
+	SWITCH_ON: 2,
+} as const;
+
+// eslint-disable-next-line no-redeclare
+export type Icon = (typeof Icon)[keyof typeof Icon];
 
 export default function generate(
 	characterWidth: number,
