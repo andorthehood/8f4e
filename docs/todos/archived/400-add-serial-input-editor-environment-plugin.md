@@ -3,8 +3,8 @@ title: 'TODO: Add serial input editor environment plugin'
 priority: Medium
 effort: 1-2d
 created: 2026-05-13
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-13
 ---
 
 # TODO: Add serial input editor environment plugin
@@ -56,6 +56,17 @@ onSerialFrame(ptr, frameBytes);
 ```
 
 Incomplete trailing bytes remain buffered until more serial data arrives. Queues are cleared when the Wasm exports or memory are rebound.
+
+Completed changes:
+
+- Added the `serial` editor environment plugin and lazy registry entry.
+- Added Web Serial device discovery backed by `state.info.serial`.
+- Added `@serialIn` pipeline parsing and `@serialInCallback` fanout parsing.
+- Added fixed-size serial input framing over arbitrary `ReadableStream` chunks.
+- Added raw byte copying into Wasm memory and exported callback invocation as `(ptr, length)`.
+- Added cleanup/resync behavior for directive, compile, memory, and port-list changes.
+- Documented the serial directives in the editor directive guide.
+- Added focused tests for device discovery, directive parsing, framing, callback fanout, diagnostics, and cleanup.
 
 ## Initial Decisions
 
@@ -168,16 +179,16 @@ Responsibilities:
 
 ## Success Criteria
 
-- [ ] `@info serial` lists already-granted serial ports while the plugin is active.
-- [ ] `@serialIn <port> <baudRate> <bufferMemoryId> <frameBytes>` configures one fixed-frame serial input pipeline.
-- [ ] `@serialInCallback <port> <callbackExportName>` binds one or more exported callbacks to completed frames.
-- [ ] Serial `ReadableStream` chunks are buffered and reframed deterministically by `frameBytes`.
-- [ ] Completed frames are copied into the configured Wasm memory buffer as raw bytes.
-- [ ] Callbacks receive `(ptr, length)`.
-- [ ] Partial queues are cleared on compile/memory/export rebinding.
-- [ ] Disconnects cancel readers, clear queues, refresh `info.serial`, and surface unavailable-port errors.
-- [ ] Malformed directives, duplicate pipelines, missing ports, missing buffers, and missing exports produce plugin-owned editor directive errors.
-- [ ] Device discovery, directive parsing, framing, callback fanout, and lifecycle cleanup have focused tests.
+- [x] `@info serial` lists already-granted serial ports while the plugin is active.
+- [x] `@serialIn <port> <baudRate> <bufferMemoryId> <frameBytes>` configures one fixed-frame serial input pipeline.
+- [x] `@serialInCallback <port> <callbackExportName>` binds one or more exported callbacks to completed frames.
+- [x] Serial `ReadableStream` chunks are buffered and reframed deterministically by `frameBytes`.
+- [x] Completed frames are copied into the configured Wasm memory buffer as raw bytes.
+- [x] Callbacks receive `(ptr, length)`.
+- [x] Partial queues are cleared on compile/memory/export rebinding.
+- [x] Disconnects cancel readers, clear queues, refresh `info.serial`, and surface unavailable-port errors.
+- [x] Malformed directives, duplicate pipelines, missing ports, missing buffers, and missing exports produce plugin-owned editor directive errors.
+- [x] Device discovery, directive parsing, framing, callback fanout, and lifecycle cleanup have focused tests.
 
 ## Affected Components
 
@@ -200,4 +211,8 @@ Responsibilities:
 
 - **Related**: `docs/todos/archived/396-add-midi-input-editor-environment-plugin.md`
 - **Related**: `docs/todos/archived/395-add-exported-8f4e-functions.md`
-- **Related**: `docs/todos/387-add-lazy-editor-environment-plugins.md`
+- **Related**: `docs/todos/archived/387-add-lazy-editor-environment-plugins.md`
+
+## Notes
+
+- Completed on 2026-05-13 by adding the serial editor environment plugin, directive docs, and focused editor tests.

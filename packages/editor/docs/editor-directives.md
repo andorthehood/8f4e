@@ -255,6 +255,46 @@ Example:
 ; @midiIn 0 onPitchBend
 ```
 
+### `@serialIn`
+
+Define a fixed-size browser serial input frame pipeline.
+
+```txt
+; @serialIn <port> <baudRate> <bufferMemoryId> <frameBytes>
+```
+
+### `@serialInCallback`
+
+Bind a serial input pipeline to an exported 8f4e function.
+
+```txt
+; @serialInCallback <port> <callbackExportName>
+```
+
+Notes:
+
+- The serial plugin is activated by `@serialIn` or `@serialInCallback`; `; @info serial` can display available already-granted ports while serial is active.
+- `<port>` is the numeric serial port index shown by `; @info serial`.
+- The plugin uses already-granted Web Serial ports. Granting a new browser serial port still needs a user gesture outside this directive.
+- `<baudRate>` is passed to `port.open({ baudRate })`.
+- `<bufferMemoryId>` is the memory item that receives each completed frame. It may be local to the declaring module or use `module:memory` syntax.
+- `<frameBytes>` must be a positive integer. The plugin buffers arbitrary browser serial chunks until exactly this many bytes are available.
+- Browser serial chunks are not message boundaries; fixed-size framing is the directive-defined boundary.
+- Completed frames are copied as raw bytes into `<bufferMemoryId>`.
+- `<callbackExportName>` must be a callable WebAssembly export created with `#export`.
+- The callback receives two integer arguments: `ptr` and `length`.
+- Multiple `@serialInCallback` directives can bind the same serial input pipeline to different callbacks.
+- Partial frames are cleared when the serial pipeline is rebound after compile, memory, or export changes.
+
+Example:
+
+```txt
+; @info serial
+; @serialIn 0 115200 serialBuffer 32
+; @serialInCallback 0 onSerialFrame
+; @serialInCallback 0 onSerialDebug
+```
+
 ### `@offset`
 
 Apply code-block visual position offset from an integer memory value.

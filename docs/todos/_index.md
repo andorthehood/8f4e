@@ -56,7 +56,6 @@ Active todo files are listed below.
 | 390 | Add compiler passive data inputs for array initialization | 🟡 | 1-2d | 2026-05-04 | The compiler now uses passive data segments to restore declared initial memory, but every segment is still derived from source-level memory declarations and compiler-owned inter... |
 | 397 | Finish compiler stack analysis/codegen separation | 🟡 | 2-4d | 2026-05-11 | TODO 394 centralized compiler instruction stack validation: `withValidation` is gone, compiler-owned instruction contracts live in `packages/compiler/src/instructionSpecs.ts`, a... |
 | 398 | Add compiler peephole arithmetic strength reduction | 🟡 | 1-2 days | 2026-05-12 | The compiler now has compile-time folding and stack-level integer metadata, but runtime arithmetic codegen still emits direct WebAssembly arithmetic operations even when the top... |
-| 400 | Add serial input editor environment plugin | 🟡 | 1-2d | 2026-05-13 | Add a Web Serial editor environment plugin with `@info serial`, fixed-size `@serialIn` framing, and `@serialInCallback` fanout to exported 8f4e functions. |
 
 ### 🟢 Low Priority
 
@@ -75,6 +74,7 @@ Active todo files are listed below.
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
 | 399 | Consolidate instruction compiler utilities | 2026-05-12 | Instruction-compiler-only helpers moved under `packages/compiler/src/instructionCompilers/utils/`; `saveByteCode` split out, unused word-alignment helper removed, and numeric binary instruction codegen centralized. |
+| 400 | Add serial input editor environment plugin | 2026-05-13 | Added a Web Serial editor plugin with `@info serial`, fixed-size `@serialIn` framing, and `@serialInCallback` fanout to exported 8f4e callbacks. |
 | 055 | Implement strength reduction optimization techniques in compiler | 2026-05-12 | Archived original TODO; remaining bytecode peephole optimization work is tracked in `398`. |
 | 392 | Move shared compiler constants to compiler-spec | 2026-05-11 | Shared memory layout, integer range, logic level, memory access-width, and Wasm page constants now resolve from `@8f4e/compiler-spec`; compiler-only bytecode header/export-count constants remain private. |
 | 394 | Extract compiler stack analysis into a separate pass | 2026-05-08 | `withValidation` was removed, stack validation helpers moved under `packages/compiler/src/stackAnalysis/`, and compiler instruction contracts were centralized in `instructionSpecs.ts`; remaining codegen separation is tracked in `397`. |
