@@ -53,7 +53,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          if git tag --list '*@*' | grep -q .; then
+          if [[ -n "$(git tag --list '*@*')" ]]; then
             npx nx release --skip-publish
           else
             npx nx release 0.1.0 --first-release --skip-publish
