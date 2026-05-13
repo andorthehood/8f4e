@@ -16,4 +16,9 @@ export const editorEnvironmentPluginRegistry: EditorEnvironmentPluginRegistryEnt
 		editorDirectives: ['midiIn'],
 		load: () => import('./midi/plugin'),
 	},
+	{
+		id: 'serial',
+		editorDirectives: ['serialIn', 'serialInCallback'],
+		load: () => import('./serial/plugin'),
+	},
 ];
