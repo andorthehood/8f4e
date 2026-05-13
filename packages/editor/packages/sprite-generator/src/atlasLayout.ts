@@ -1,6 +1,5 @@
 import defaultColorScheme from './defaultColorScheme.ts';
 
-import type { SpriteCoordinates } from 'glugglug';
 import type { ColorScheme } from './types.ts';
 
 export const TEXT_COLOR_NAMES = Object.keys(defaultColorScheme.text) as Array<keyof ColorScheme['text']>;
@@ -101,13 +100,4 @@ export function createAtlasLayout(characterWidth: number, characterHeight: numbe
 		fillColors,
 		icons,
 	};
-}
-
-export function createSpriteCoordinates(
-	x: number,
-	y: number,
-	spriteWidth: number,
-	spriteHeight: number
-): SpriteCoordinates {
-	return { x, y, spriteWidth, spriteHeight };
 }
