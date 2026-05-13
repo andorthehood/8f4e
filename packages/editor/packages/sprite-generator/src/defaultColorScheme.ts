@@ -1,4 +1,4 @@
-import type { ColorScheme } from './types';
+import type { ColorScheme } from './types.ts';
 
 /**
  * Default fallback color scheme used when no color scheme is specified

@@ -1,8 +1,8 @@
 import { SpriteCoordinates } from 'glugglug';
 
-import { createAtlasLayout } from './atlasLayout';
-import { drawCharacter } from './font';
-import { ColorScheme, Command, DrawingCommand } from './types';
+import { createAtlasLayout } from './atlasLayout.ts';
+import { drawCharacter } from './font.ts';
+import { ColorScheme, Command, DrawingCommand } from './types.ts';
 
 export function getFeedbackScaleColors(colors: ColorScheme['icons']): string[] {
 	return [

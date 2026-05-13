@@ -1,7 +1,7 @@
-import defaultColorScheme from './defaultColorScheme';
+import defaultColorScheme from './defaultColorScheme.ts';
 
 import type { SpriteCoordinates } from 'glugglug';
-import type { ColorScheme } from './types';
+import type { ColorScheme } from './types.ts';
 
 export const TEXT_COLOR_NAMES = Object.keys(defaultColorScheme.text) as Array<keyof ColorScheme['text']>;
 export const FILL_COLOR_NAMES = Object.keys(defaultColorScheme.fill) as Array<keyof ColorScheme['fill']>;

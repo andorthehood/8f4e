@@ -1,22 +1,22 @@
 import { SpriteCoordinates } from 'glugglug';
 
-import generateFont, { FontLookups, generateLookups as generateLookupsForFonts } from './font';
-import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors';
-import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale';
-import generateBackground, { generateLookup as generateLookupForBackground } from './background';
-import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons';
-import { createAtlasLayout } from './atlasLayout';
-import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types';
-import decodeFontBase64 from './fonts/font-decoder';
-import defaultColorScheme from './defaultColorScheme';
+import generateFont, { FontLookups, generateLookups as generateLookupsForFonts } from './font.ts';
+import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors.ts';
+import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale.ts';
+import generateBackground, { generateLookup as generateLookupForBackground } from './background.ts';
+import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons.ts';
+import { createAtlasLayout } from './atlasLayout.ts';
+import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types.ts';
+import decodeFontBase64 from './fonts/font-decoder.ts';
+import defaultColorScheme from './defaultColorScheme.ts';
 
-import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii';
-import type { FillSpriteColorName } from './fillColors';
+import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii.ts';
+import type { FillSpriteColorName } from './fillColors.ts';
 
-export { Icon } from './icons';
-export { FONT_NAMES } from './types';
-export type { ColorScheme, ColorSchemeOverrides, Font } from './types';
-export { default as defaultColorScheme } from './defaultColorScheme';
+export { Icon } from './icons.ts';
+export { FONT_NAMES } from './types.ts';
+export type { ColorScheme, ColorSchemeOverrides, Font } from './types.ts';
+export { default as defaultColorScheme } from './defaultColorScheme.ts';
 
 type FontData = {
 	asciiBitmap: number[];
@@ -42,8 +42,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 16,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/attpc63008x16/generated/ascii'),
-				import('./fonts/attpc63008x16/generated/glyphs'),
+				import('./fonts/attpc63008x16/generated/ascii.ts'),
+				import('./fonts/attpc63008x16/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -54,8 +54,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 10,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/6x10/generated/ascii'),
-				import('./fonts/6x10/generated/glyphs'),
+				import('./fonts/6x10/generated/ascii.ts'),
+				import('./fonts/6x10/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -66,8 +66,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 16,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/ibmvga8x16/generated/ascii'),
-				import('./fonts/ibmvga8x16/generated/glyphs'),
+				import('./fonts/ibmvga8x16/generated/ascii.ts'),
+				import('./fonts/ibmvga8x16/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -78,8 +78,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 16,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/nix8810m168x16/generated/ascii'),
-				import('./fonts/nix8810m168x16/generated/glyphs'),
+				import('./fonts/nix8810m168x16/generated/ascii.ts'),
+				import('./fonts/nix8810m168x16/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -90,8 +90,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 16,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/olivettithin8x16/generated/ascii'),
-				import('./fonts/olivettithin8x16/generated/glyphs'),
+				import('./fonts/olivettithin8x16/generated/ascii.ts'),
+				import('./fonts/olivettithin8x16/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -102,8 +102,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 8,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/spleen5x8/generated/ascii'),
-				import('./fonts/spleen5x8/generated/glyphs'),
+				import('./fonts/spleen5x8/generated/ascii.ts'),
+				import('./fonts/spleen5x8/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -114,8 +114,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 12,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/spleen6x12/generated/ascii'),
-				import('./fonts/spleen6x12/generated/glyphs'),
+				import('./fonts/spleen6x12/generated/ascii.ts'),
+				import('./fonts/spleen6x12/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -126,8 +126,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 16,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/spleen8x16/generated/ascii'),
-				import('./fonts/spleen8x16/generated/glyphs'),
+				import('./fonts/spleen8x16/generated/ascii.ts'),
+				import('./fonts/spleen8x16/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -138,8 +138,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 8,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/templeos8x8/generated/ascii'),
-				import('./fonts/templeos8x8/generated/glyphs'),
+				import('./fonts/templeos8x8/generated/ascii.ts'),
+				import('./fonts/templeos8x8/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -150,8 +150,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 24,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/spleen12x24/generated/ascii'),
-				import('./fonts/spleen12x24/generated/glyphs'),
+				import('./fonts/spleen12x24/generated/ascii.ts'),
+				import('./fonts/spleen12x24/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -162,8 +162,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 32,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/spleen16x32/generated/ascii'),
-				import('./fonts/spleen16x32/generated/glyphs'),
+				import('./fonts/spleen16x32/generated/ascii.ts'),
+				import('./fonts/spleen16x32/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -174,8 +174,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 16,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/terminus8x16/generated/ascii'),
-				import('./fonts/terminus8x16/generated/glyphs'),
+				import('./fonts/terminus8x16/generated/ascii.ts'),
+				import('./fonts/terminus8x16/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -186,8 +186,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 16,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/terminus8x16bold/generated/ascii'),
-				import('./fonts/terminus8x16bold/generated/glyphs'),
+				import('./fonts/terminus8x16bold/generated/ascii.ts'),
+				import('./fonts/terminus8x16bold/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -198,8 +198,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 18,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/terminus10x18/generated/ascii'),
-				import('./fonts/terminus10x18/generated/glyphs'),
+				import('./fonts/terminus10x18/generated/ascii.ts'),
+				import('./fonts/terminus10x18/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -210,8 +210,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 18,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/terminus10x18bold/generated/ascii'),
-				import('./fonts/terminus10x18bold/generated/glyphs'),
+				import('./fonts/terminus10x18bold/generated/ascii.ts'),
+				import('./fonts/terminus10x18bold/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -222,8 +222,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 13,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/kana12x13/generated/ascii'),
-				import('./fonts/kana12x13/generated/glyphs'),
+				import('./fonts/kana12x13/generated/ascii.ts'),
+				import('./fonts/kana12x13/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -234,8 +234,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 24,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/terminus12x24/generated/ascii'),
-				import('./fonts/terminus12x24/generated/glyphs'),
+				import('./fonts/terminus12x24/generated/ascii.ts'),
+				import('./fonts/terminus12x24/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };
@@ -246,8 +246,8 @@ const FONT_DEFINITIONS: Record<Font, FontDefinition> = {
 		characterHeight: 24,
 		loadMetadata: async () => {
 			const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
-				import('./fonts/terminus12x24bold/generated/ascii'),
-				import('./fonts/terminus12x24bold/generated/glyphs'),
+				import('./fonts/terminus12x24bold/generated/ascii.ts'),
+				import('./fonts/terminus12x24bold/generated/glyphs.ts'),
 			]);
 
 			return { asciiMetadata, glyphsMetadata };

@@ -1,7 +1,7 @@
 import { SpriteCoordinates } from 'glugglug';
 
-import { createAtlasLayout, FILL_COLOR_NAMES } from './atlasLayout';
-import { ColorScheme, Command, DrawingCommand } from './types';
+import { createAtlasLayout, FILL_COLOR_NAMES } from './atlasLayout.ts';
+import { ColorScheme, Command, DrawingCommand } from './types.ts';
 
 export type FillSpriteColorName = (typeof FILL_COLOR_NAMES)[number];
 

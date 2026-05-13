@@ -1,7 +1,7 @@
 import { SpriteCoordinates } from 'glugglug';
 
-import { createAtlasLayout, TEXT_COLOR_NAMES } from './atlasLayout';
-import { Command, DrawingCommand, ColorScheme } from './types';
+import { createAtlasLayout, TEXT_COLOR_NAMES } from './atlasLayout.ts';
+import { Command, DrawingCommand, ColorScheme } from './types.ts';
 
 const ASCII_START = 0;
 const ASCII_END = 127;
