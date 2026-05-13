@@ -1,8 +1,3 @@
-export const amigaPeriodIncrementMetadata = {
-	title: 'Amiga MOD Period Increment Table',
-	category: 'Lookup Tables',
-} as const;
-
 // PAL Amiga clock speed in Hz
 const AMIGA_CLOCK = 3546895;
 

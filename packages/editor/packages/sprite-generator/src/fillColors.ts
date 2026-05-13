@@ -5,14 +5,6 @@ import { ColorScheme, Command, DrawingCommand } from './types.ts';
 
 export type FillSpriteColorName = (typeof FILL_COLOR_NAMES)[number];
 
-export const Icon = {
-	INPUT: 0,
-	SWITCH_OFF: 1,
-	SWITCH_ON: 2,
-} as const;
-
-export type IconValue = (typeof Icon)[keyof typeof Icon];
-
 export default function generate(
 	characterWidth: number,
 	characterHeight: number,
