@@ -17,18 +17,21 @@
  *   → use ErrorCode / getError in compilerError.ts.
  */
 
-export enum SyntaxErrorCode {
-	INVALID_MEMORY_IDENTIFIER_PREFIX,
-	INVALID_IDENTIFIER,
-	INVALID_ARGUMENT,
-	INVALID_NUMERIC_LITERAL,
-	INVALID_POINTER_DEPTH,
-	MISSING_ARGUMENT,
-	DIVISION_BY_ZERO,
-	INVALID_STRING_LITERAL,
-	SPLIT_HEX_MIXED_TOKENS,
-	INVALID_BLOCK_STRUCTURE,
-}
+export const SyntaxErrorCode = {
+	INVALID_MEMORY_IDENTIFIER_PREFIX: 0,
+	INVALID_IDENTIFIER: 1,
+	INVALID_ARGUMENT: 2,
+	INVALID_NUMERIC_LITERAL: 3,
+	INVALID_POINTER_DEPTH: 4,
+	MISSING_ARGUMENT: 5,
+	DIVISION_BY_ZERO: 6,
+	INVALID_STRING_LITERAL: 7,
+	SPLIT_HEX_MIXED_TOKENS: 8,
+	INVALID_BLOCK_STRUCTURE: 9,
+} as const;
+
+// eslint-disable-next-line no-redeclare
+export type SyntaxErrorCode = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
 
 /**
  * Default messages for each syntax error code.

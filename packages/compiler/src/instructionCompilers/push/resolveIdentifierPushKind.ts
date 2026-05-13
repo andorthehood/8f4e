@@ -1,11 +1,14 @@
 import type { ArgumentIdentifier, LocalMap, Namespace } from '@8f4e/compiler-spec';
 
-export const enum IdentifierPushKind {
-	MEMORY_IDENTIFIER,
-	MEMORY_POINTER,
-	LOCAL_POINTER,
-	LOCAL,
-}
+export const IdentifierPushKind = {
+	MEMORY_IDENTIFIER: 0,
+	MEMORY_POINTER: 1,
+	LOCAL_POINTER: 2,
+	LOCAL: 3,
+} as const;
+
+// eslint-disable-next-line no-redeclare
+export type IdentifierPushKind = (typeof IdentifierPushKind)[keyof typeof IdentifierPushKind];
 
 export default function resolveIdentifierPushKind(
 	namespace: Namespace,

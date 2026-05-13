@@ -3,6 +3,7 @@ import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 
 import getMemoryFlags from './memoryFlags';
 
+import type { WasmType } from '@8f4e/compiler-wasm-utils';
 import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-spec';
 
 type PointerFunctionValueType = Extract<FunctionValueType, `${string}*`>;
@@ -60,7 +61,7 @@ function localBindingToStackItem(binding: LocalBinding): StackItem {
 	};
 }
 
-export function functionValueTypeToWasmType(type: FunctionValueType): Type {
+export function functionValueTypeToWasmType(type: FunctionValueType): WasmType {
 	if (type === 'float64') {
 		return Type.F64;
 	}

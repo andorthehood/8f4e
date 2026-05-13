@@ -7,6 +7,7 @@ import { saveByteCode } from './utils/saveByteCode';
 
 import { getError } from '../compilerError';
 
+import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
 import type { MapKind } from './utils/mapValueKind';
 import type { InstructionCompiler, MapEndLine } from '@8f4e/compiler-spec';
 
@@ -16,7 +17,7 @@ const constOp: Record<MapKind, (v: number) => number[]> = {
 	float64: f64const,
 };
 
-const eqOpcode: Record<MapKind, WASMInstruction> = {
+const eqOpcode: Record<MapKind, WASMInstructionCode> = {
 	int32: WASMInstruction.I32_EQ,
 	float32: WASMInstruction.F32_EQ,
 	float64: WASMInstruction.F64_EQ,

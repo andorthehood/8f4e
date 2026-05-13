@@ -108,7 +108,7 @@ export function normalizeArgument(
 	}
 
 	const literal: NormalizedArgumentLiteral = {
-		type: ArgumentType.LITERAL as ArgumentType.LITERAL,
+		type: ArgumentType.LITERAL as typeof ArgumentType.LITERAL,
 		value: resolved.value,
 		isInteger: resolved.isInteger,
 		...(resolved.isFloat64 ? { isFloat64: true } : {}),
@@ -124,7 +124,7 @@ export function normalizeArgument(
  * Returns true if the argument was deferred (prepass intermodule), false if it should continue processing.
  */
 export function validateOrDeferCompileTimeExpression(
-	argument: Extract<Argument, { type: ArgumentType.COMPILE_TIME_EXPRESSION }>,
+	argument: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>,
 	line: AST[number],
 	context: CompilationContext
 ): boolean {
@@ -149,7 +149,7 @@ export function validateOrDeferCompileTimeExpression(
  * Returns true if the argument was deferred (prepass intermodule), false if processing should continue.
  */
 export function validateOrDeferUnresolvedIdentifier(
-	argument: Extract<Argument, { type: ArgumentType.IDENTIFIER }>,
+	argument: Extract<Argument, { type: typeof ArgumentType.IDENTIFIER }>,
 	line: AST[number],
 	context: CompilationContext
 ): boolean {

@@ -1,23 +1,26 @@
 import { SpriteCoordinates } from 'glugglug';
 
-export enum Command {
-	FILL_COLOR,
-	RECTANGLE,
-	TRANSLATE,
-	SAVE,
-	RESTORE,
-	RESET_TRANSFORM,
-	PIXEL,
-}
+export const Command = {
+	FILL_COLOR: 0,
+	RECTANGLE: 1,
+	TRANSLATE: 2,
+	SAVE: 3,
+	RESTORE: 4,
+	RESET_TRANSFORM: 5,
+	PIXEL: 6,
+} as const;
+
+// eslint-disable-next-line no-redeclare
+export type Command = (typeof Command)[keyof typeof Command];
 
 export type DrawingCommand =
-	| [command: Command.FILL_COLOR, fillColor: string]
-	| [command: Command.RECTANGLE, x: number, y: number, width: number, height: number]
-	| [command: Command.TRANSLATE, x: number, y: number]
-	| [command: Command.PIXEL, x: number, y: number]
-	| [command: Command.SAVE]
-	| [command: Command.RESTORE]
-	| [command: Command.RESET_TRANSFORM];
+	| [command: typeof Command.FILL_COLOR, fillColor: string]
+	| [command: typeof Command.RECTANGLE, x: number, y: number, width: number, height: number]
+	| [command: typeof Command.TRANSLATE, x: number, y: number]
+	| [command: typeof Command.PIXEL, x: number, y: number]
+	| [command: typeof Command.SAVE]
+	| [command: typeof Command.RESTORE]
+	| [command: typeof Command.RESET_TRANSFORM];
 
 export interface ColorScheme {
 	text: {

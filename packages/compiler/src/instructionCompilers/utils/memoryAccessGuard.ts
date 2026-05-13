@@ -12,10 +12,12 @@ import {
 
 import type { CompilationContext, StackItem } from '@8f4e/compiler-spec';
 
+type NumericWasmValueType = typeof Type.I32 | typeof Type.F32 | typeof Type.F64;
+
 type GuardedLoadOptions = {
 	accessByteWidth: number;
 	lineNumberAfterMacroExpansion: number;
-	resultType: Type.I32 | Type.F32 | Type.F64;
+	resultType: NumericWasmValueType;
 	loadByteCode: number[];
 };
 
@@ -93,7 +95,7 @@ function rangeWithinMemoryBounds(addressLocalIndex: number, byteLength: number):
 	];
 }
 
-function zeroValue(type: Type.I32 | Type.F32 | Type.F64): number[] {
+function zeroValue(type: NumericWasmValueType): number[] {
 	if (type === Type.F64) {
 		return f64const(0);
 	}
