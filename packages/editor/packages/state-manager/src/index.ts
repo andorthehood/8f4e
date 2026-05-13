@@ -1,7 +1,7 @@
-import { createSet } from './set';
-import { createSubscribe } from './subscribe';
-import { createSubscribeToValue } from './subscribeToValue';
-import { createUnsubscribe } from './unsubscribe';
+import { createSet } from './set.js';
+import { createSubscribe } from './subscribe.js';
+import { createSubscribeToValue } from './subscribeToValue.js';
+import { createUnsubscribe } from './unsubscribe.js';
 
 import type { Path, PathValue, Subscription, Matcher } from './types';
 

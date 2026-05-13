@@ -3,7 +3,7 @@
  * Converts the compact Base64 format back to the number[] format expected by the rendering system.
  */
 
-import type { FontMetadata } from './ibmvga8x16/generated/ascii';
+import type { FontMetadata } from './ibmvga8x16/generated/ascii.ts';
 
 /**
  * Decodes a Base64-encoded font bitmap back to a number array.
@@ -13,8 +13,8 @@ import type { FontMetadata } from './ibmvga8x16/generated/ascii';
  *
  * @example
  * ```ts
- * import { fontMetadata } from './fonts/ibmvga8x16/generated/ascii';
- * import decodeFontBase64 from './fonts/font-decoder';
+ * import { fontMetadata } from './fonts/ibmvga8x16/generated/ascii.ts';
+ * import decodeFontBase64 from './fonts/font-decoder.ts';
  *
  * const bitmap = decodeFontBase64(fontMetadata);
  * // bitmap is now a number[] ready for rendering

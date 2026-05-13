@@ -1,9 +1,9 @@
 import { SpriteCoordinates } from 'glugglug';
 
-import { createAtlasLayout } from './atlasLayout';
-import { drawCharacter } from './font';
-import Glyph from './fonts/types';
-import { ColorScheme, Command, DrawingCommand } from './types';
+import { createAtlasLayout } from './atlasLayout.ts';
+import { drawCharacter } from './font.ts';
+import Glyph from './fonts/types.ts';
+import { ColorScheme, Command, DrawingCommand } from './types.ts';
 
 type IconCharacter = {
 	font: 'ascii' | 'glyphs';
