@@ -56,6 +56,7 @@ Active todo files are listed below.
 | 390 | Add compiler passive data inputs for array initialization | 🟡 | 1-2d | 2026-05-04 | The compiler now uses passive data segments to restore declared initial memory, but every segment is still derived from source-level memory declarations and compiler-owned inter... |
 | 397 | Finish compiler stack analysis/codegen separation | 🟡 | 2-4d | 2026-05-11 | TODO 394 centralized compiler instruction stack validation: `withValidation` is gone, compiler-owned instruction contracts live in `packages/compiler/src/instructionSpecs.ts`, a... |
 | 398 | Add compiler peephole arithmetic strength reduction | 🟡 | 1-2 days | 2026-05-12 | The compiler now has compile-time folding and stack-level integer metadata, but runtime arithmetic codegen still emits direct WebAssembly arithmetic operations even when the top... |
+| 400 | Add serial input editor environment plugin | 🟡 | 1-2d | 2026-05-13 | Add a Web Serial editor environment plugin with `@info serial`, fixed-size `@serialIn` framing, and `@serialInCallback` fanout to exported 8f4e functions. |
 
 ### 🟢 Low Priority
 
