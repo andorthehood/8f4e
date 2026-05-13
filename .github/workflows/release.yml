@@ -53,11 +53,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [[ -n "$(git tag --list '*@*')" ]]; then
-            npx nx release --skip-publish
-          else
-            npx nx release 0.1.0 --first-release --skip-publish
+          release_tags="$(git tag --list '@8f4e/*@*' 'app@*')"
+          if [[ -z "$release_tags" ]]; then
+            echo "No existing release tags were found. Refusing to run first-release mode from CI."
+            exit 1
           fi
+          npx nx release --skip-publish
 
           npx nx run app:build
           node scripts/log-bundle-sizes.mjs
