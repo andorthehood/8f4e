@@ -23,7 +23,7 @@ const functionEnd: InstructionCompiler = (line, context) => {
 		arg =>
 			(
 				arg as {
-					type: ArgumentType.IDENTIFIER;
+					type: typeof ArgumentType.IDENTIFIER;
 					value: FunctionSignature['returns'][number];
 				}
 			).value

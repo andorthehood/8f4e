@@ -1,4 +1,4 @@
-import type { Type, WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import type { WASMInstructionCode, WasmType } from '@8f4e/compiler-wasm-utils';
 import type {
 	ArgumentCompileTimeExpression,
 	ArgumentIdentifier,
@@ -100,7 +100,7 @@ export interface CompilationContext {
 	startingByteAddress: number;
 	currentModuleNextWordOffset?: number;
 	currentModuleWordAlignedSize?: number;
-	byteCode: Array<WASMInstruction | Type | number>;
+	byteCode: Array<WASMInstructionCode | WasmType | number>;
 	mode?: CompilationMode;
 	codeBlockId?: string;
 	codeBlockType?: CompilerSourceBlockType;
@@ -212,15 +212,18 @@ export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 							? ArrayDeclarationLine
 							: TLine;
 
-export enum BLOCK_TYPE {
-	MODULE,
-	LOOP,
-	CONDITION,
-	FUNCTION,
-	BLOCK,
-	CONSTANTS,
-	MAP,
-}
+export const BLOCK_TYPE = {
+	MODULE: 0,
+	LOOP: 1,
+	CONDITION: 2,
+	FUNCTION: 3,
+	BLOCK: 4,
+	CONSTANTS: 5,
+	MAP: 6,
+} as const;
+
+// eslint-disable-next-line no-redeclare
+export type BLOCK_TYPE = (typeof BLOCK_TYPE)[keyof typeof BLOCK_TYPE];
 
 export interface MapRow {
 	keyValue: number;

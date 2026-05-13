@@ -56,7 +56,7 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 		const functionEndLine = ast.find(line => line.instruction === functionBlock.end);
 		if (functionEndLine) {
 			signature.returns = functionEndLine.arguments.map(
-				arg => (arg as { type: ArgumentType.IDENTIFIER; value: FunctionSignature['returns'][number] }).value
+				arg => (arg as { type: typeof ArgumentType.IDENTIFIER; value: FunctionSignature['returns'][number] }).value
 			);
 		}
 
