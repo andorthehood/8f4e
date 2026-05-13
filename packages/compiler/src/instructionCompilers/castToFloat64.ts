@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F64_CONVERT_I32_S, WASM_F64_PROMOTE_F32 } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -20,7 +20,7 @@ const castToFloat64: InstructionCompiler = (line, context) => {
 	});
 
 	if (operand.isInteger) {
-		return saveByteCode(context, [WASMInstruction.F64_CONVERT_I32_S]);
+		return saveByteCode(context, [WASM_F64_CONVERT_I32_S]);
 	}
 
 	// Float64 input needs no opcode conversion.
@@ -28,7 +28,7 @@ const castToFloat64: InstructionCompiler = (line, context) => {
 		return context;
 	}
 
-	return saveByteCode(context, [WASMInstruction.F64_PROMOTE_F32]);
+	return saveByteCode(context, [WASM_F64_PROMOTE_F32]);
 };
 
 export default castToFloat64;

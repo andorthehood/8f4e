@@ -1,4 +1,4 @@
-import { i32load, i32load16s, i32load16u, i32load8s, i32load8u, Type } from '@8f4e/compiler-wasm-utils';
+import { i32load, i32load16s, i32load16u, i32load8s, i32load8u, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -48,7 +48,7 @@ const load: InstructionCompiler = (line, context) => {
 		guardedLoad(context, {
 			accessByteWidth,
 			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
-			resultType: Type.I32,
+			resultType: WASM_TYPE_I32,
 			loadByteCode: instructions,
 		})
 	);

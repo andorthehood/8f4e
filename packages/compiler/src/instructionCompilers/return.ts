@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_RETURN } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -16,7 +16,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/blocks/function.md)
  */
 const _return: InstructionCompiler = (line, context) => {
-	saveByteCode(context, [WASMInstruction.RETURN]);
+	saveByteCode(context, [WASM_RETURN]);
 
 	// Clear the stack — execution does not continue past a return
 	context.stack = [];

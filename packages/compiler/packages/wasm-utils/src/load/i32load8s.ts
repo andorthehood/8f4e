@@ -1,5 +1,5 @@
+import { WASM_I32_LOAD_8_S } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
-import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.load8_s instruction to load a signed 8-bit integer from memory.
@@ -9,5 +9,5 @@ import Instruction from '../wasmInstruction';
  * @returns Byte array representing the i32.load8_s instruction
  */
 export default function i32load8s(alignment = 0, offset = 0): number[] {
-	return [Instruction.I32_LOAD_8_S, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
+	return [WASM_I32_LOAD_8_S, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
 }

@@ -1,5 +1,5 @@
 import { createFunctionType } from '@8f4e/compiler-wasm-utils';
-import { ArgumentType, BLOCK_TYPE } from '@8f4e/compiler-spec';
+import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
@@ -14,7 +14,7 @@ import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec
 const functionEnd: InstructionCompiler = (line, context) => {
 	const block = context.blockStack.pop();
 
-	if (!block || block.blockType !== BLOCK_TYPE.FUNCTION) {
+	if (!block || block.blockType !== BlockType.FUNCTION) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 

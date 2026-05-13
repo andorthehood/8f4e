@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_F64_SQRT } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
 import sqrt from './sqrt';
@@ -43,6 +43,6 @@ describe('sqrt instruction compiler', () => {
 		);
 
 		expect(context.stack).toEqual([{ isInteger: false, isFloat64: true, isNonZero: false }]);
-		expect(context.byteCode).toEqual([WASMInstruction.F64_SQRT]);
+		expect(context.byteCode).toEqual([WASM_F64_SQRT]);
 	});
 });

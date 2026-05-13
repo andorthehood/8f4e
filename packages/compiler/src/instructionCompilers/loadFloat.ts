@@ -1,4 +1,4 @@
-import { f32load, Type } from '@8f4e/compiler-wasm-utils';
+import { f32load, WASM_TYPE_F32 } from '@8f4e/compiler-wasm-utils';
 import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
@@ -25,7 +25,7 @@ const loadFloat: InstructionCompiler = (line, context) => {
 		guardedLoad(context, {
 			accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
 			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
-			resultType: Type.F32,
+			resultType: WASM_TYPE_F32,
 			loadByteCode: instructions,
 		})
 	);

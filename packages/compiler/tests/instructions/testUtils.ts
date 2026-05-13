@@ -1,14 +1,14 @@
-import { compileToAST } from '@8f4e/tokenizer';
-import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, test } from 'vitest';
 import wabt from 'wabt';
+import { compileToAST } from '@8f4e/tokenizer';
 import {
 	createCodeSection,
 	createExportSection,
 	createFunctionExport,
-	createImportSection,
-	createMemoryImport,
 	createFunctionSection,
 	createFunctionType,
+	createImportSection,
+	createMemoryImport,
 	createTypeSection,
 } from '@8f4e/compiler-wasm-utils';
 

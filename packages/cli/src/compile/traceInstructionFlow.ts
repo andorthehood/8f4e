@@ -1,6 +1,6 @@
 import compile, { compileCodegenLine, collectNamespacesFromASTs } from '@8f4e/compiler';
 import {
-	BLOCK_TYPE,
+	BlockType,
 	compiledModuleBlockTypes,
 	compilerSourceBlockInstructionByType,
 	documentBlockInstructionByType,
@@ -205,7 +205,7 @@ export default function traceInstructionFlow(
 				{
 					hasExpectedResult: false,
 					expectedResultIsInteger: false,
-					blockType: kind === constantsBlockType ? BLOCK_TYPE.CONSTANTS : BLOCK_TYPE.MODULE,
+					blockType: kind === constantsBlockType ? BlockType.CONSTANTS : BlockType.MODULE,
 				},
 			],
 			startingByteAddress: module.byteAddress,
@@ -243,7 +243,7 @@ export default function traceInstructionFlow(
 				{
 					hasExpectedResult: false,
 					expectedResultIsInteger: false,
-					blockType: BLOCK_TYPE.FUNCTION,
+					blockType: BlockType.FUNCTION,
 				},
 			],
 			startingByteAddress: 0,

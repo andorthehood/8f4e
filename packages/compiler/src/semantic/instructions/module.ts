@@ -1,5 +1,5 @@
 import {
-	BLOCK_TYPE,
+	BlockType,
 	compilerSourceBlockInstructionByType,
 	type CompilationContext,
 	type ModuleLine,
@@ -13,7 +13,7 @@ export default function semanticModule(line: ModuleLine, context: CompilationCon
 	context.blockStack.push({
 		hasExpectedResult: false,
 		expectedResultIsInteger: false,
-		blockType: BLOCK_TYPE.MODULE,
+		blockType: BlockType.MODULE,
 	});
 
 	context.namespace.moduleName = moduleId;

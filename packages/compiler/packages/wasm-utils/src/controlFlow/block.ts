@@ -1,6 +1,6 @@
-import Instruction from '../wasmInstruction';
+import { WASM_BLOCK, WASM_END } from '../wasmInstruction';
 
-import type { WasmType } from '../type';
+import type { WasmTypeValue } from '../type';
 
 /**
  * Creates a WebAssembly block structure.
@@ -9,6 +9,6 @@ import type { WasmType } from '../type';
  * @param code - Instructions to execute in the block
  * @returns Byte array representing the block-end structure
  */
-export default function block(resultType: WasmType, code: number[]): number[] {
-	return [Instruction.BLOCK, resultType, ...code, Instruction.END];
+export default function block(resultType: WasmTypeValue, code: number[]): number[] {
+	return [WASM_BLOCK, resultType, ...code, WASM_END];
 }

@@ -6,8 +6,11 @@ import {
 	i32const,
 	localGet,
 	localSet,
-	Type,
-	WASMInstruction,
+	WASM_END,
+	WASM_I32_SUB,
+	WASM_LOOP,
+	WASM_TYPE_I32,
+	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
 
 import type { FunctionBody } from '@8f4e/compiler-wasm-utils';
@@ -46,21 +49,21 @@ export default function createBufferFunctionBody(
 		...i32const(bufferSize),
 		...localSet(counterLocalIndex),
 		// loop $L0
-		WASMInstruction.LOOP,
-		Type.VOID,
+		WASM_LOOP,
+		WASM_TYPE_VOID,
 		// call $cycle
 		...call(cycleFunctionIndex),
 		// Decrement counter and check: (local.get $i) - 1 -> local.set $i
 		...localGet(counterLocalIndex),
 		...i32const(1),
-		WASMInstruction.I32_SUB,
+		WASM_I32_SUB,
 		...localSet(counterLocalIndex),
 		// Get counter value and branch if non-zero
 		...localGet(counterLocalIndex),
 		...br_if(0), // br_if 0 branches to start of loop (label 0)
-		WASMInstruction.END,
+		WASM_END,
 	];
 
 	// Loop strategy needs a local i32 counter variable
-	return createFunction([createLocalDeclaration(Type.I32, 1)], body);
+	return createFunction([createLocalDeclaration(WASM_TYPE_I32, 1)], body);
 }

@@ -1,5 +1,5 @@
+import { WASM_BR_IF } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
-import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly br_if (conditional branch) instruction.
@@ -8,5 +8,5 @@ import Instruction from '../wasmInstruction';
  * @returns Byte array representing the br_if instruction
  */
 export default function br_if(breakDepth: number): number[] {
-	return [Instruction.BR_IF, ...unsignedLEB128(breakDepth)];
+	return [WASM_BR_IF, ...unsignedLEB128(breakDepth)];
 }

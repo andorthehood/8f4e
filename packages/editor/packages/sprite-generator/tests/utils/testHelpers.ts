@@ -1,9 +1,7 @@
 import { expect } from 'vitest';
 import { SpriteCoordinates } from 'glugglug';
 
-import { Command } from '../../src/types';
-
-import type { DrawingCommand } from '../../src/types';
+import type { CommandValue, DrawingCommand } from '../../src/types';
 
 /**
  * Utility to validate sprite coordinates
@@ -26,7 +24,7 @@ export function validateSpriteCoordinates(
  */
 export function validateDrawingCommand(
 	command: DrawingCommand,
-	expectedType: Command,
+	expectedType: CommandValue,
 	expectedParams?: unknown[]
 ): void {
 	expect(command[0]).toBe(expectedType);
@@ -38,21 +36,21 @@ export function validateDrawingCommand(
 /**
  * Utility to find a specific command type in a command array
  */
-export function findCommand(commands: DrawingCommand[], commandType: Command): DrawingCommand | undefined {
+export function findCommand(commands: DrawingCommand[], commandType: CommandValue): DrawingCommand | undefined {
 	return commands.find(cmd => cmd[0] === commandType);
 }
 
 /**
  * Utility to find all commands of a specific type in a command array
  */
-export function findAllCommands(commands: DrawingCommand[], commandType: Command): DrawingCommand[] {
+export function findAllCommands(commands: DrawingCommand[], commandType: CommandValue): DrawingCommand[] {
 	return commands.filter(cmd => cmd[0] === commandType);
 }
 
 /**
  * Utility to validate that required command types are present
  */
-export function validateRequiredCommands(commands: DrawingCommand[], requiredTypes: Command[]): void {
+export function validateRequiredCommands(commands: DrawingCommand[], requiredTypes: CommandValue[]): void {
 	requiredTypes.forEach(type => {
 		const command = findCommand(commands, type);
 		expect(command).toBeDefined();

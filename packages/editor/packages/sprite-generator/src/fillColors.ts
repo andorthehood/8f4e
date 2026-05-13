@@ -11,8 +11,7 @@ export const Icon = {
 	SWITCH_ON: 2,
 } as const;
 
-// eslint-disable-next-line no-redeclare
-export type Icon = (typeof Icon)[keyof typeof Icon];
+export type IconValue = (typeof Icon)[keyof typeof Icon];
 
 export default function generate(
 	characterWidth: number,

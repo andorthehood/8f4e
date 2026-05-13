@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ArgumentType } from '@8f4e/compiler-spec';
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 
 import storeBytes from './storeBytes';
 
@@ -101,7 +101,7 @@ describe('storeBytes instruction compiler', () => {
 			context
 		);
 
-		expect(context.byteCode).toContain(WASMInstruction.MEMORY_SIZE);
+		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);
 		expect(context.stack).toHaveLength(0);
 	});
 

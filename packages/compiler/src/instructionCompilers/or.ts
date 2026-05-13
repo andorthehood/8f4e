@@ -1,4 +1,4 @@
-import { WASMInstruction } from '@8f4e/compiler-wasm-utils';
+import { WASM_I32_OR } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
@@ -28,7 +28,7 @@ const or: InstructionCompiler = (line, context) => {
 				: Boolean(operand1.isNonZero || operand2.isNonZero),
 		...integerMetadata,
 	});
-	return saveByteCode(context, [WASMInstruction.I32_OR]);
+	return saveByteCode(context, [WASM_I32_OR]);
 };
 
 export default or;
