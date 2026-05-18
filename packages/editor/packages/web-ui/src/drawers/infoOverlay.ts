@@ -61,7 +61,9 @@ export default function drawInfoOverlay(
 	);
 	debugText.push('Time to render one frame ' + timeToRender.toFixed(2) + 'ms');
 	debugText.push('FPS: ' + fps);
-	debugText.push('Graphic load: ' + ((timeToRender / (1000 / fps)) * 100).toFixed(2) + '%');
+	const frameBudgetMs = fps > 0 ? 1000 / fps : 0;
+	const headroomRatio = timeToRender > 0 ? frameBudgetMs / timeToRender : 0;
+	debugText.push('Headroom ratio: ' + headroomRatio.toFixed(2) + 'x');
 	const cs = engine.getCacheStats();
 	debugText.push('Cached items: ' + cs.itemCount + '/' + cs.maxItems);
 

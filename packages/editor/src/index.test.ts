@@ -174,11 +174,14 @@ describe('editor init', () => {
 		viewOptions.onRenderStats?.({
 			timeToRenderMs: 10,
 			fps: 50,
+			frameBudgetMs: 20,
+			headroomMs: 10,
+			fpsCapacity: 100,
+			headroomRatio: 2,
 			quadCount: 25,
 			vertexCount: 150,
 			maxVertices: 300,
 			vertexUsagePercent: 50,
-			graphicLoadPercent: 50,
 			cacheItemCount: 3,
 			cacheMaxItems: 50,
 		});
@@ -187,11 +190,14 @@ describe('editor init', () => {
 		expect(store.set).toHaveBeenCalledWith('info.graphics', {
 			timeToRenderMs: 10,
 			fps: 50,
+			frameBudgetMs: 20,
+			headroomMs: 10,
+			fpsCapacity: 100,
+			headroomRatio: 2,
 			quadCount: 25,
 			vertexCount: 150,
 			maxVertices: 300,
 			vertexUsagePercent: 50,
-			graphicLoadPercent: 50,
 			cacheItemCount: 3,
 			cacheMaxItems: 50,
 		});
