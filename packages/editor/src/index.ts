@@ -80,11 +80,14 @@ function toGraphicsInfoRecord(stats: RenderStats): InfoRecord {
 	return {
 		timeToRenderMs: stats.timeToRenderMs,
 		fps: stats.fps,
+		frameBudgetMs: stats.frameBudgetMs,
+		headroomMs: stats.headroomMs,
+		fpsCapacity: stats.fpsCapacity,
+		headroomRatio: stats.headroomRatio,
 		quadCount: stats.quadCount,
 		vertexCount: stats.vertexCount,
 		maxVertices: stats.maxVertices,
 		vertexUsagePercent: stats.vertexUsagePercent,
-		graphicLoadPercent: stats.graphicLoadPercent,
 		cacheItemCount: stats.cacheItemCount,
 		cacheMaxItems: stats.cacheMaxItems,
 	};
