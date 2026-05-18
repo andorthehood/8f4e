@@ -134,7 +134,6 @@ describe('web-ui init', () => {
 			frameBudgetMs: 20,
 			headroomMs: 7.5,
 			fpsCapacity: 80,
-			headroomRatio: 1.6,
 			quadCount: 100,
 			vertexCount: 600,
 			maxVertices: 1200,

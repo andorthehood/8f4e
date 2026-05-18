@@ -83,7 +83,6 @@ function toGraphicsInfoRecord(stats: RenderStats): InfoRecord {
 		frameBudgetMs: stats.frameBudgetMs,
 		headroomMs: stats.headroomMs,
 		fpsCapacity: stats.fpsCapacity,
-		headroomRatio: stats.headroomRatio,
 		quadCount: stats.quadCount,
 		vertexCount: stats.vertexCount,
 		maxVertices: stats.maxVertices,
