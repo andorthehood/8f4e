@@ -34,6 +34,6 @@
   "devDependencies": {
     "@8f4e/editor-state-testing": "*",
     "@types/node": "24.12.2",
-    "vitest": "4.1.5"
+    "vitest": "4.1.6"
   }
 }
