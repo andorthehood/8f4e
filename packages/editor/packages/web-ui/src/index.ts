@@ -24,11 +24,14 @@ export interface SpriteData {
 export interface RenderStats {
 	timeToRenderMs: number;
 	fps: number;
+	frameBudgetMs: number;
+	headroomMs: number;
+	fpsCapacity: number;
+	headroomRatio: number;
 	quadCount: number;
 	vertexCount: number;
 	maxVertices: number;
 	vertexUsagePercent: number;
-	graphicLoadPercent: number;
 	cacheItemCount: number;
 	cacheMaxItems: number;
 }
@@ -81,14 +84,21 @@ export default async function init(
 
 		const cacheStats = engine.getCacheStats();
 		const fps = getSampledFps();
+		const frameBudgetMs = fps > 0 ? 1000 / fps : 0;
+		const headroomMs = frameBudgetMs > 0 ? frameBudgetMs - timeToRenderMs : 0;
+		const fpsCapacity = timeToRenderMs > 0 ? 1000 / timeToRenderMs : 0;
+		const headroomRatio = timeToRenderMs > 0 ? frameBudgetMs / timeToRenderMs : 0;
 		options.onRenderStats({
 			timeToRenderMs,
 			fps,
+			frameBudgetMs,
+			headroomMs,
+			fpsCapacity,
+			headroomRatio,
 			quadCount: Math.floor(vertexCount / 6),
 			vertexCount,
 			maxVertices,
 			vertexUsagePercent: maxVertices > 0 ? (vertexCount / maxVertices) * 100 : 0,
-			graphicLoadPercent: fps > 0 ? (timeToRenderMs / (1000 / fps)) * 100 : 0,
 			cacheItemCount: cacheStats.itemCount,
 			cacheMaxItems: cacheStats.maxItems,
 		});

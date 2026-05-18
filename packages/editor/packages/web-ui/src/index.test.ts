@@ -131,11 +131,14 @@ describe('web-ui init', () => {
 		expect(onRenderStats).toHaveBeenCalledWith({
 			timeToRenderMs: 12.5,
 			fps: 50,
+			frameBudgetMs: 20,
+			headroomMs: 7.5,
+			fpsCapacity: 80,
+			headroomRatio: 1.6,
 			quadCount: 100,
 			vertexCount: 600,
 			maxVertices: 1200,
 			vertexUsagePercent: 50,
-			graphicLoadPercent: 62.5,
 			cacheItemCount: 7,
 			cacheMaxItems: 50,
 		});
