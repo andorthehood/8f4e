@@ -18,6 +18,7 @@ export default [
 			'**/.vscode/**',
 			'**/jest.config.js',
 			'**/jest.image.ts',
+			'**/src/fonts/**/generated/**',
 			// Ignore glugglug submodule (has its own linting config)
 			'**/packages/editor/packages/glugglug/**',
 		],

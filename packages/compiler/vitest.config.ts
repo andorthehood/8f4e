@@ -5,5 +5,5 @@ export default defineConfig(
 	createNodePreset({
 		include: ['src/**/*.test.ts', 'tests/**/*.test.ts'],
 		typecheckEnabled: true,
-	}),
+	})
 );

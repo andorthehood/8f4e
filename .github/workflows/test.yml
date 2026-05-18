@@ -34,11 +34,11 @@ jobs:
         run: npx nx run @8f4e/config:build
 
       - name: Run linting
-        run: npx eslint "**/*.ts" --fix
+        run: npx eslint "**/*.ts"
 
       - name: Run typecheck
         run: npx nx run-many --target=typecheck --all
 
       - name: Run tests
-        run: npx nx run-many --target=test --all --exclude=@8f4e/web-ui
+        run: npx nx run-many --target=test --all
         timeout-minutes: 10
