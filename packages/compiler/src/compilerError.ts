@@ -305,14 +305,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE:
-			return {
-				code,
-				message:
-					'Compiler directives must appear in the block prologue, immediately after module or function. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.MIXED_FLOAT_WIDTH:
 			return {
 				code,

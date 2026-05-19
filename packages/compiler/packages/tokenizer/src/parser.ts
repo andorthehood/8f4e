@@ -207,6 +207,12 @@ export function compileToAST(
 			isCompilerDirectiveInstruction(parsedLine.instruction)
 		) {
 			parsedLine.isBlockPrologue = true;
+		} else if (currentSourceBlockPrologue && isCompilerDirectiveInstruction(parsedLine.instruction)) {
+			throw new SyntaxRulesError(SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE, undefined, {
+				lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion,
+				instruction: parsedLine.instruction,
+			});
 		}
 
 		if (

@@ -34,7 +34,7 @@ moduleEnd
 
 **Errors:**
 - Using `#skipExecution` outside of a module block (e.g., in `constants` or `function` blocks) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
-- Placing `#skipExecution` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
+- Placing `#skipExecution` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
 
 **Example:**
 
@@ -100,7 +100,7 @@ moduleEnd
 
 **Errors:**
 - Using `#initOnly` outside of a module block (e.g., in `constants` or `function` blocks) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
-- Placing `#initOnly` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
+- Placing `#initOnly` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
 
 **Example:**
 
@@ -184,7 +184,7 @@ functionEnd
 **Errors:**
 - Using `#impure` outside a function block results in an `IMPURE_DIRECTIVE_INVALID_CONTEXT` error
 - Using memory IO in a function without `#impure` results in an `IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO` error
-- Placing `#impure` after params, locals, or executable instructions results in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
+- Placing `#impure` after params, locals, or executable instructions results in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
 
 ### `#loopCap`
 
@@ -248,7 +248,7 @@ functionEnd
 
 **Errors:**
 - Using `#loopCap` outside of a module or function block (e.g., in `constants` blocks or at the top level before any `module`) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
-- Placing `#loopCap` after params, declarations, locals, or executable instructions will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
+- Placing `#loopCap` after params, declarations, locals, or executable instructions will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
 - Providing a non-integer, float, or negative integer argument is a syntax error detected by the tokenizer
 
 ## Error Handling
@@ -259,4 +259,4 @@ If a module-scoped directive like `#skipExecution` or `#initOnly` is used outsid
 
 If `#loopCap` is used outside of a module or function block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
 
-If a compiler directive appears after the block prologue has ended, the compiler will throw a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error.
+If a compiler directive appears after the block prologue has ended, the tokenizer will throw a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error.

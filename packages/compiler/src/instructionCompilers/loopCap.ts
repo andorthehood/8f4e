@@ -1,5 +1,3 @@
-import { assertCompilerDirectiveInPrologue } from '../semantic/compilerDirectives';
-
 import type { InstructionCompiler, LoopCapLine } from '@8f4e/compiler-spec';
 
 /**
@@ -8,7 +6,6 @@ import type { InstructionCompiler, LoopCapLine } from '@8f4e/compiler-spec';
  * @see [Directive docs](../../docs/directives.md)
  */
 const loopCap: InstructionCompiler<LoopCapLine> = (line, context) => {
-	assertCompilerDirectiveInPrologue(line, context);
 	context.loopCap = line.arguments[0].value as number;
 	return context;
 };

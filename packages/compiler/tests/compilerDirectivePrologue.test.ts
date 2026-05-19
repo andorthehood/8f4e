@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { SyntaxErrorCode } from '@8f4e/tokenizer';
 
 import compile from '../src/index';
 
@@ -36,7 +36,7 @@ describe('compiler directive prologue validation', () => {
 				],
 				defaultOptions
 			)
-		).toThrow(expect.objectContaining({ code: ErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
+		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
 	});
 
 	test('rejects module loop caps after executable instructions', () => {
@@ -49,7 +49,7 @@ describe('compiler directive prologue validation', () => {
 				],
 				defaultOptions
 			)
-		).toThrow(expect.objectContaining({ code: ErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
+		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
 	});
 
 	test('accepts function directives immediately after function', () => {
@@ -80,7 +80,7 @@ describe('compiler directive prologue validation', () => {
 					code: ['function lateImpure', 'param int address', '#impure', 'push address', 'load', 'functionEnd int'],
 				},
 			])
-		).toThrow(expect.objectContaining({ code: ErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
+		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
 	});
 
 	test('rejects function exports after executable instructions', () => {
@@ -90,6 +90,6 @@ describe('compiler directive prologue validation', () => {
 					code: ['function lateExport', 'push 1', '#export lateExport', 'functionEnd int'],
 				},
 			])
-		).toThrow(expect.objectContaining({ code: ErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
+		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
 	});
 });

@@ -2,7 +2,6 @@ import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
-import { assertCompilerDirectiveInPrologue } from '../semantic/compilerDirectives';
 
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -17,7 +16,6 @@ const initOnly: InstructionCompiler = function (line, context) {
 	if (!isInModuleBlock) {
 		throw getError(ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT, line, context);
 	}
-	assertCompilerDirectiveInPrologue(line, context);
 
 	// Set the metadata flag (idempotent - multiple calls have no additional effect)
 	context.initOnlyExecution = true;

@@ -2,7 +2,6 @@ import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
-import { assertCompilerDirectiveInPrologue } from '../semantic/compilerDirectives';
 
 import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -16,7 +15,6 @@ const exportFunction: InstructionCompiler<ExportLine> = function (line, context)
 	if (!isInFunctionBlock) {
 		throw getError(ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT, line, context);
 	}
-	assertCompilerDirectiveInPrologue(line, context);
 
 	if (context.currentFunctionExportName !== undefined) {
 		throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, line, context, {
