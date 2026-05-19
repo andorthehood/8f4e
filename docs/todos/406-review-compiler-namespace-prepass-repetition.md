@@ -3,6 +3,7 @@ title: 'TODO: Review repeated compiler namespace prepass work'
 priority: Medium
 effort: 1-2d
 created: 2026-05-19
+issue: https://github.com/andorthehood/8f4e/issues/659
 status: Open
 completed: null
 ---

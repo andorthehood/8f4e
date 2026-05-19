@@ -3,6 +3,7 @@ title: 'TODO: Make parser stateful for block pairing and owning block context'
 priority: Medium
 effort: 4-8h
 created: 2026-04-08
+issue: https://github.com/andorthehood/8f4e/issues/560
 status: Open
 completed: null
 ---

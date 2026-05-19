@@ -3,6 +3,7 @@ title: 'TODO: Optimize global editor directive recomputation'
 priority: Medium
 effort: 3-6h
 created: 2026-03-16
+issue: https://github.com/andorthehood/8f4e/issues/556
 status: Open
 completed: null
 ---

@@ -3,6 +3,7 @@ title: 'TODO: Optimize state-manager selector tokenization and subscription look
 priority: Medium
 effort: 3-6h
 created: 2026-03-14
+issue: https://github.com/andorthehood/8f4e/issues/555
 status: Open
 completed: null
 ---
