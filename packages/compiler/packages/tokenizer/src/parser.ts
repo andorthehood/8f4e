@@ -14,6 +14,7 @@ import { hashSource } from './cache';
 import type {
 	AST,
 	ASTCache,
+	ASTCacheEntry,
 	ASTLine,
 	BlockEndInstruction,
 	BlockStartInstruction,
@@ -32,6 +33,11 @@ type SourceBlockPrologue = {
 	instruction: 'module' | 'function';
 	blockDepth: number;
 	isOpen: boolean;
+};
+
+type ASTCacheLookupResult = {
+	ast?: AST;
+	hash?: number;
 };
 
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
@@ -81,6 +87,32 @@ function hasExplicitMemoryDefault(instruction: string, args: ASTLine['arguments'
 		return true;
 	}
 	return args.length > 1;
+}
+
+function getASTCacheLookupResult(
+	cached: ASTCacheEntry | undefined,
+	code: string[],
+	lineMetadata: ParsedLineMetadata | undefined
+): ASTCacheLookupResult {
+	// Optimize first compilation and obvious cache misses: only hash when an existing same-line-count entry needs validation.
+	if (!cached || cached.lineCount !== code.length) {
+		return {};
+	}
+
+	const hash = hashSource(code, lineMetadata);
+	const cachedHash =
+		cached.hash ?? (cached.hashInput ? hashSource(cached.hashInput.code, cached.hashInput.lineMetadata) : undefined);
+
+	if (cachedHash === undefined) {
+		return { hash };
+	}
+
+	cached.hash = cachedHash;
+	cached.hashInput = undefined;
+	return {
+		ast: cachedHash === hash ? cached.ast : undefined,
+		hash,
+	};
 }
 
 /**
@@ -176,11 +208,11 @@ export function compileToAST(
 	cache?: ASTCache,
 	cacheKey?: string
 ): AST {
-	const hash = cache && cacheKey !== undefined ? hashSource(code, lineMetadata) : undefined;
 	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
-	if (cached && hash !== undefined && cached.hash === hash) {
+	const cachedLookup = getASTCacheLookupResult(cached, code, lineMetadata);
+	if (cachedLookup.ast) {
 		cache!.stats.hits++;
-		return cached.ast;
+		return cachedLookup.ast;
 	}
 	if (cache && cacheKey !== undefined) {
 		cache.stats.misses++;
@@ -343,8 +375,20 @@ export function compileToAST(
 		});
 	}
 
-	if (cache && cacheKey !== undefined && hash !== undefined) {
-		cache.entries.set(cacheKey, { hash, ast });
+	if (cache && cacheKey !== undefined) {
+		const entry: ASTCacheEntry = {
+			ast,
+			hashInput: {
+				code,
+				lineMetadata,
+			},
+			lineCount: code.length,
+		};
+		if (cachedLookup.hash !== undefined) {
+			entry.hash = cachedLookup.hash;
+			entry.hashInput = undefined;
+		}
+		cache.entries.set(cacheKey, entry);
 	}
 
 	return ast;
