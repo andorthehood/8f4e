@@ -37,7 +37,11 @@ function metricsLogsPlugin(): Plugin {
 		name: 'metrics-logs',
 		configureServer(server) {
 			server.middlewares.use(async (request, response, next) => {
-				if (!request.url?.startsWith('/bundle-sizes/') && !request.url?.startsWith('/bytecode-size/')) {
+				if (
+					!request.url?.startsWith('/bundle-sizes/') &&
+					!request.url?.startsWith('/bytecode-size/') &&
+					!request.url?.startsWith('/compiler-coverage-counts/')
+				) {
 					next();
 					return;
 				}
@@ -64,6 +68,7 @@ function metricsLogsPlugin(): Plugin {
 			const config = await readBundleSizeConfig();
 			const manifest = createManifest(config);
 			const bytecodeManifest = await createBytecodeManifest();
+			const compilerCoverageManifest = await createCompilerCoverageManifest();
 
 			this.emitFile({
 				type: 'asset',
@@ -94,6 +99,21 @@ function metricsLogsPlugin(): Plugin {
 					source: content,
 				});
 			}
+
+			this.emitFile({
+				type: 'asset',
+				fileName: 'compiler-coverage-counts/manifest.json',
+				source: JSON.stringify(compilerCoverageManifest, null, '\t'),
+			});
+
+			for (const log of compilerCoverageManifest.logs) {
+				const content = await fs.readFile(getCompilerCoverageLogFilePath(log.path), 'utf8');
+				this.emitFile({
+					type: 'asset',
+					fileName: `compiler-coverage-counts/${log.path}`,
+					source: content,
+				});
+			}
 		},
 	};
 }
@@ -107,10 +127,17 @@ async function readMetricsAsset(pathname: string) {
 			: await fs.readFile(getLogFilePath(config, relativePath), 'utf8');
 	}
 
-	const relativePath = decodeURIComponent(pathname.slice('/bytecode-size/'.length));
-	return relativePath === 'manifest.json'
-		? JSON.stringify(await createBytecodeManifest(), null, '\t')
-		: await fs.readFile(getBytecodeLogFilePath(relativePath), 'utf8');
+	if (pathname.startsWith('/bytecode-size/')) {
+		const relativePath = decodeURIComponent(pathname.slice('/bytecode-size/'.length));
+		return relativePath === 'manifest.json'
+			? JSON.stringify(await createBytecodeManifest(), null, '\t')
+			: await fs.readFile(getBytecodeLogFilePath(relativePath), 'utf8');
+	}
+
+	const compilerCoverageRelativePath = decodeURIComponent(pathname.slice('/compiler-coverage-counts/'.length));
+	return compilerCoverageRelativePath === 'manifest.json'
+		? JSON.stringify(await createCompilerCoverageManifest(), null, '\t')
+		: await fs.readFile(getCompilerCoverageLogFilePath(compilerCoverageRelativePath), 'utf8');
 }
 
 function isFileNotFoundError(error: unknown) {
@@ -133,6 +160,15 @@ function createManifest(config: BundleSizeConfig) {
 
 async function createBytecodeManifest() {
 	const logsRoot = getBytecodeLogsRoot();
+	return createBenchmarkManifest(logsRoot);
+}
+
+async function createCompilerCoverageManifest() {
+	const logsRoot = getCompilerCoverageLogsRoot();
+	return createBenchmarkManifest(logsRoot);
+}
+
+async function createBenchmarkManifest(logsRoot: string) {
 	const files = await collectJsonFiles(logsRoot, logsRoot);
 
 	return {
@@ -181,11 +217,20 @@ function getLogFilePath(config: BundleSizeConfig, relativePath: string) {
 
 function getBytecodeLogFilePath(relativePath: string) {
 	const logsRoot = getBytecodeLogsRoot();
+	return getMetricsLogFilePath(logsRoot, relativePath, 'bytecode-size');
+}
+
+function getCompilerCoverageLogFilePath(relativePath: string) {
+	const logsRoot = getCompilerCoverageLogsRoot();
+	return getMetricsLogFilePath(logsRoot, relativePath, 'compiler-coverage-counts');
+}
+
+function getMetricsLogFilePath(logsRoot: string, relativePath: string, logType: string) {
 	const filePath = path.resolve(logsRoot, relativePath);
 	const relativeToLogsRoot = path.relative(logsRoot, filePath);
 
 	if (relativeToLogsRoot.startsWith('..') || path.isAbsolute(relativeToLogsRoot)) {
-		throw new Error(`Invalid bytecode-size log path: ${relativePath}`);
+		throw new Error(`Invalid ${logType} log path: ${relativePath}`);
 	}
 
 	return filePath;
@@ -193,6 +238,10 @@ function getBytecodeLogFilePath(relativePath: string) {
 
 function getBytecodeLogsRoot() {
 	return path.resolve(workspaceRoot, 'logs/bytecode-size');
+}
+
+function getCompilerCoverageLogsRoot() {
+	return path.resolve(workspaceRoot, 'logs/compiler-coverage-counts');
 }
 
 function getPackageLogRelativePath(packageName: string) {

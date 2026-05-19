@@ -11,7 +11,8 @@
 				"^default",
 				"{workspaceRoot}/bundle-size.config.json",
 				"{workspaceRoot}/logs/bundle-sizes/**/*",
-				"{workspaceRoot}/logs/bytecode-size/**/*"
+				"{workspaceRoot}/logs/bytecode-size/**/*",
+				"{workspaceRoot}/logs/compiler-coverage-counts/**/*"
 			],
 			"options": {
 				"command": "vite build",
