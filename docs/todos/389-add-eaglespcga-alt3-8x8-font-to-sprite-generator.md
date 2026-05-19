@@ -3,6 +3,7 @@ title: 'TODO: Add EagleSpCGA Alt3 8x8 font to sprite-generator'
 priority: Low
 effort: 4-8h
 created: 2026-05-04
+issue: https://github.com/andorthehood/8f4e/issues/651
 status: Open
 completed: null
 ---

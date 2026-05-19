@@ -3,6 +3,7 @@ title: 'TODO: Consolidate defaultFeatureFlags into a single source of truth'
 priority: Medium
 effort: 2-4h
 created: 2026-02-21
+issue: https://github.com/andorthehood/8f4e/issues/552
 status: Open
 completed: null
 ---

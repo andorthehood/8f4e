@@ -3,6 +3,7 @@ title: 'TODO: Simplify Cache Rendering Order'
 priority: Medium
 effort: 2–3 days
 created: 2025-09-03
+issue: https://github.com/andorthehood/8f4e/issues/540
 status: Open
 completed: null
 ---

@@ -3,6 +3,7 @@ title: 'TODO: Avoid AST cache hashing when no cache entry exists'
 priority: Medium
 effort: 1-2h
 created: 2026-05-19
+issue: https://github.com/andorthehood/8f4e/issues/658
 status: Open
 completed: null
 ---

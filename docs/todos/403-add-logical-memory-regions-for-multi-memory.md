@@ -3,6 +3,7 @@ title: 'TODO: Add logical memory regions for multi-memory'
 priority: Medium
 effort: 3-5d
 created: 2026-05-19
+issue: https://github.com/andorthehood/8f4e/issues/657
 status: Open
 completed: null
 ---
