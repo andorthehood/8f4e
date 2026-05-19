@@ -1,12 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { BlockType } from '@8f4e/compiler-spec';
 
-import {
-	isInstructionInsideFunction,
-	isInstructionInsideModuleOrFunction,
-	isInstructionIsInsideAModule,
-	isInstructionIsInsideBlock,
-} from './blockStack';
+import { popBlock, pushBlock } from './blockStack';
+import createInstructionCompilerTestContext from './testUtils';
 
 import type { BlockStack } from '@8f4e/compiler-spec';
 
@@ -26,58 +22,93 @@ describe('blockStack utilities', () => {
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
 	};
+	const mockGenericBlock: BlockStack[number] = {
+		blockType: BlockType.BLOCK,
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
+	};
+	const mockConditionBlock: BlockStack[number] = {
+		blockType: BlockType.CONDITION,
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
+	};
+	const mockConstantsBlock: BlockStack[number] = {
+		blockType: BlockType.CONSTANTS,
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
+	};
+	const mockMapBlock: BlockStack[number] = {
+		blockType: BlockType.MAP,
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
+		mapState: {
+			inputIsInteger: true,
+			inputIsFloat64: false,
+			rows: [],
+			defaultSet: false,
+		},
+	};
 
-	describe('isInstructionIsInsideAModule', () => {
-		it('returns true when inside a module', () => {
-			expect(isInstructionIsInsideAModule([mockModuleBlock])).toBe(true);
-			expect(isInstructionIsInsideAModule([mockModuleBlock, mockLoopBlock])).toBe(true);
+	describe('pushBlock and popBlock', () => {
+		it.each([
+			['module', mockModuleBlock, 'insideModuleBlock'],
+			['function', mockFunctionBlock, 'insideFunctionBlock'],
+			['generic', mockGenericBlock, 'insideGenericBlock'],
+			['loop', mockLoopBlock, 'insideLoopBlock'],
+			['condition', mockConditionBlock, 'insideConditionBlock'],
+			['constants', mockConstantsBlock, 'insideConstantsBlock'],
+			['map', mockMapBlock, 'insideMapBlock'],
+		] as const)('tracks %s block context with a simple boolean flag', (_name, block, flagName) => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			pushBlock(context, block);
+
+			expect(context.blockStack).toEqual([block]);
+			expect(context[flagName]).toBe(true);
+
+			expect(popBlock(context)).toEqual(block);
+			expect(context.blockStack).toEqual([]);
+			expect(context[flagName]).toBe(false);
 		});
 
-		it('returns false when not inside a module', () => {
-			expect(isInstructionIsInsideAModule([])).toBe(false);
-			expect(isInstructionIsInsideAModule([mockFunctionBlock])).toBe(false);
-			expect(isInstructionIsInsideAModule([mockLoopBlock])).toBe(false);
-		});
-	});
+		it.each([
+			['module', mockModuleBlock, 'insideModuleBlock'],
+			['function', mockFunctionBlock, 'insideFunctionBlock'],
+			['generic', mockGenericBlock, 'insideGenericBlock'],
+			['loop', mockLoopBlock, 'insideLoopBlock'],
+			['condition', mockConditionBlock, 'insideConditionBlock'],
+			['constants', mockConstantsBlock, 'insideConstantsBlock'],
+			['map', mockMapBlock, 'insideMapBlock'],
+		] as const)('keeps the %s block flag set until the last matching block is popped', (_name, block, flagName) => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
 
-	describe('isInstructionInsideFunction', () => {
-		it('returns true when inside a function', () => {
-			expect(isInstructionInsideFunction([mockFunctionBlock])).toBe(true);
-			expect(isInstructionInsideFunction([mockFunctionBlock, mockLoopBlock])).toBe(true);
-		});
+			pushBlock(context, block);
+			pushBlock(context, block);
 
-		it('returns false when not inside a function', () => {
-			expect(isInstructionInsideFunction([])).toBe(false);
-			expect(isInstructionInsideFunction([mockModuleBlock])).toBe(false);
-			expect(isInstructionInsideFunction([mockLoopBlock])).toBe(false);
-		});
-	});
+			expect(context.blockStack).toHaveLength(2);
+			expect(context[flagName]).toBe(true);
 
-	describe('isInstructionInsideModuleOrFunction', () => {
-		it('returns true when inside a module', () => {
-			expect(isInstructionInsideModuleOrFunction([mockModuleBlock])).toBe(true);
-		});
+			expect(popBlock(context)).toEqual(block);
+			expect(context.blockStack).toHaveLength(1);
+			expect(context[flagName]).toBe(true);
 
-		it('returns true when inside a function', () => {
-			expect(isInstructionInsideModuleOrFunction([mockFunctionBlock])).toBe(true);
+			expect(popBlock(context)).toEqual(block);
+			expect(context.blockStack).toEqual([]);
+			expect(context[flagName]).toBe(false);
 		});
 
-		it('returns false when inside neither', () => {
-			expect(isInstructionInsideModuleOrFunction([])).toBe(false);
-			expect(isInstructionInsideModuleOrFunction([mockLoopBlock])).toBe(false);
-		});
-	});
+		it('leaves cached block-context flags unchanged for unrelated blocks', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [],
+				insideConstantsBlock: true,
+				insideMapBlock: true,
+			});
 
-	describe('isInstructionIsInsideBlock', () => {
-		it('returns true when inside specified block type', () => {
-			expect(isInstructionIsInsideBlock([mockLoopBlock], BlockType.LOOP)).toBe(true);
-			expect(isInstructionIsInsideBlock([mockModuleBlock], BlockType.MODULE)).toBe(true);
-		});
+			pushBlock(context, mockLoopBlock);
+			popBlock(context);
 
-		it('returns false when not inside specified block type', () => {
-			expect(isInstructionIsInsideBlock([], BlockType.LOOP)).toBe(false);
-			expect(isInstructionIsInsideBlock([mockModuleBlock], BlockType.LOOP)).toBe(false);
-			expect(isInstructionIsInsideBlock([mockFunctionBlock], BlockType.LOOP)).toBe(false);
+			expect(context.insideConstantsBlock).toBe(true);
+			expect(context.insideMapBlock).toBe(true);
 		});
 	});
 });

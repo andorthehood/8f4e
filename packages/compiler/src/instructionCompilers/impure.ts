@@ -1,4 +1,3 @@
-import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
@@ -10,9 +9,7 @@ import type { ImpureLine, InstructionCompiler } from '@8f4e/compiler-spec';
  * Marks a function as allowed to perform explicit memory IO.
  */
 const impure: InstructionCompiler<ImpureLine> = function (line, context) {
-	const isInFunctionBlock = context.blockStack.some(block => block.blockType === BlockType.FUNCTION);
-
-	if (!isInFunctionBlock) {
+	if (!context.insideFunctionBlock) {
 		throw getError(ErrorCode.IMPURE_DIRECTIVE_INVALID_CONTEXT, line, context);
 	}
 
