@@ -131,7 +131,7 @@ ifEnd int
 
 The loop instruction begins a loop block. The loop body repeats until a branch exits the loop.
 
-An optional non-negative integer argument sets the cap for this loop's infinite-loop guard. When omitted, the effective cap is determined by the ambient `#loopCap` directive in the current block, or the built-in default of `1000` if no directive is active.
+An optional non-negative integer argument sets the cap for this loop's infinite-loop guard. When omitted, the effective cap is determined by the ambient prologue `#loopCap` directive in the current block, or the built-in default of `1000` if no directive is active.
 
 **Precedence:** explicit `loop <int>` > ambient `#loopCap` > built-in default `1000`
 
@@ -165,7 +165,7 @@ loop 32
 loopEnd
 ```
 
-Loop cap set for all subsequent loops via the `#loopCap` directive:
+Loop cap set for loops in the block via the `#loopCap` prologue directive:
 
 ```
 #loopCap 5000

@@ -52,6 +52,7 @@ export const ErrorCode = {
 	ADDRESS_RANGE_TOO_SMALL: 50,
 	EXPORT_DIRECTIVE_INVALID_CONTEXT: 51,
 	DUPLICATE_EXPORT_NAME: 52,
+	COMPILER_DIRECTIVE_MUST_BE_PROLOGUE: 53,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];
