@@ -6,6 +6,53 @@ Compiler directives are block prologue metadata. In a `module`, module-scoped di
 
 ## Module-Scoped Directives
 
+### `#region`
+
+Assigns all declarations in the current module to a logical memory region.
+
+**Scope:** Module blocks only
+
+**Syntax:** `#region <region-name-or-index>`
+
+**Usage:**
+```
+module samples
+#region sampleMemory
+int8[] values 1024
+moduleEnd
+```
+
+**Behavior:**
+- Region names come from the compiler option `memoryRegions`, where index `0` is always the implicit default memory and custom names start at Wasm memory index `1`
+- `#region sampleMemory` resolves by name; `#region 1` resolves by Wasm memory index; `#region 0` selects the implicit default memory
+- The directive applies to declarations in the module only and must appear before any declaration or executable instruction
+- Address references such as `&samples:values` carry their source region, so `load`, `store`, `storeBytes`, `memoryCopy`, pointer defaults, and `push *ptr` use the memory region carried by the address or pointer provenance
+- Raw integer addresses without address provenance use memory index `0`
+- `requiredMemoryBytes` reports only the implicit default memory; custom regions are reported separately as `requiredMemoryBytesByRegion`
+
+**Errors:**
+- Using `#region` outside of a module block will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+- Placing `#region` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
+- Unknown region names, out-of-bounds numeric indices, duplicate configured names, numeric-looking configured names, and reserved configured names such as `default` or `memory` produce compiler diagnostics
+
+**Example:**
+```
+module samples
+#region sampleMemory
+int8[] values 4 11
+moduleEnd
+
+module reader
+int result
+int8* ptr &samples:values
+push &result
+push *ptr
+store
+moduleEnd
+```
+
+With `memoryRegions: ['sampleMemory']`, `values` is stored in Wasm memory index `1`. The pointer slot `ptr` lives in the default memory because `reader` has no `#region`, but its pointee metadata still targets `sampleMemory`, so `push *ptr` loads from the sample memory region.
+
 ### `#skipExecution`
 
 Marks a module to skip execution in the cycle dispatcher while preserving normal compilation and memory initialization behavior.

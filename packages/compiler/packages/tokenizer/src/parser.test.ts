@@ -191,6 +191,7 @@ describe('compileToAST', () => {
 			'module test',
 			'#skipExecution',
 			'#initOnly',
+			'#region sampleMemory',
 			'int counter',
 			'moduleEnd',
 			'function readValue',
@@ -202,10 +203,11 @@ describe('compileToAST', () => {
 
 		expect(ast[1].isBlockPrologue).toBe(true);
 		expect(ast[2].isBlockPrologue).toBe(true);
-		expect(ast[3].isBlockPrologue).toBeUndefined();
-		expect(ast[6].isBlockPrologue).toBe(true);
+		expect(ast[3].isBlockPrologue).toBe(true);
+		expect(ast[4].isBlockPrologue).toBeUndefined();
 		expect(ast[7].isBlockPrologue).toBe(true);
-		expect(ast[8].isBlockPrologue).toBeUndefined();
+		expect(ast[8].isBlockPrologue).toBe(true);
+		expect(ast[9].isBlockPrologue).toBeUndefined();
 	});
 
 	it('rejects module directives after the module prologue', () => {

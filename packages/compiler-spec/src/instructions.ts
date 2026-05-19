@@ -4,7 +4,15 @@ import { memoryDeclarationInstructions } from './memory';
 import type { InstructionSpecName } from './instructionSpecs';
 import type { MemoryDeclarationInstruction } from './memory';
 
-export const semanticInstructionNames = ['const', 'use', 'module', 'moduleEnd', 'constants', 'constantsEnd'] as const;
+export const semanticInstructionNames = [
+	'const',
+	'use',
+	'module',
+	'moduleEnd',
+	'constants',
+	'constantsEnd',
+	'#region',
+] as const;
 export type SemanticInstructionName = (typeof semanticInstructionNames)[number];
 
 export const macroInstructionNames = ['defineMacro', 'defineMacroEnd', 'macro'] as const;

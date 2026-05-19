@@ -8,6 +8,8 @@ export interface CompiledModule {
 	initFunctionBody: number[];
 	cycleFunction: number[];
 	id: string;
+	memoryIndex?: number;
+	memoryRegionName?: string;
 	byteAddress: number;
 	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
@@ -55,6 +57,7 @@ export type CompileResult = {
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	requiredMemoryBytes: number;
+	requiredMemoryBytesByRegion?: Record<string, number>;
 	cache: CompilerCache;
 };
 

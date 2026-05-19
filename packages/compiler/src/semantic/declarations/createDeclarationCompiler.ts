@@ -3,6 +3,7 @@ import { getPointerDepth } from '@8f4e/tokenizer';
 import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
 import getMemoryFlags from '../../utils/memoryFlags';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
+import { getMemoryRegionFields } from '../memoryRegions';
 
 import type { InstructionCompiler, MemoryType } from '@8f4e/compiler-spec';
 
@@ -34,9 +35,21 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 
 	return (line, context) => {
 		const localWordOffset = context.currentModuleNextWordOffset ?? 0;
-		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
+		const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
 		const pointerDepth = getPointerDepth(line.instruction);
 		const flags = getMemoryFlags(baseType, pointerDepth);
+		const memoryIndex = context.currentMemoryIndex ?? 0;
+		const memoryRegionName = context.currentMemoryRegionName;
+		const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
+		const pointeeMemoryRegionFields = defaultAddress
+			? {
+					...(defaultAddress.memoryIndex !== undefined && defaultAddress.memoryIndex !== 0
+						? { pointeeMemoryIndex: defaultAddress.memoryIndex }
+						: {}),
+					...(defaultAddress.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
+				}
+			: {};
+		const pointerPointeeRegion = pointerDepth > 0 ? pointeeMemoryRegionFields : {};
 
 		const finalDefault = truncate ? Math.trunc(defaultValue) : defaultValue;
 
@@ -46,6 +59,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 			context.namespace.memory[id] = {
 				numberOfElements: 1,
 				elementWordSize: 4,
+				...memoryRegionFields,
 				wordAlignedAddress: getAbsoluteWordOffset(context.startingByteAddress, localWordOffset),
 				wordAlignedSize,
 				byteAddress: getByteAddressFromWordOffset(context.startingByteAddress, localWordOffset),
@@ -54,6 +68,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				hasExplicitDefault: line.hasExplicitMemoryDefault === true,
 				type: line.instruction as unknown as MemoryType,
 				...flags,
+				...pointerPointeeRegion,
 			};
 			context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;
 		} else {
@@ -67,6 +82,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 			context.namespace.memory[id] = {
 				numberOfElements: 1,
 				elementWordSize: nonPointerElementWordSize,
+				...memoryRegionFields,
 				wordAlignedAddress: alignedAbsoluteWordOffset,
 				wordAlignedSize,
 				byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
@@ -75,6 +91,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				hasExplicitDefault: line.hasExplicitMemoryDefault === true,
 				type: line.instruction as unknown as MemoryType,
 				...flags,
+				...pointerPointeeRegion,
 			};
 			context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;
 		}

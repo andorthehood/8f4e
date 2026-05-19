@@ -4,6 +4,7 @@ import {
 	compilerSourceBlockInstructionByType,
 	type AST,
 	type Argument,
+	type CompileOptions,
 	type CompilationContext,
 	type CompiledFunctionLookup,
 	type FunctionSignature,
@@ -15,6 +16,14 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
+import {
+	DEFAULT_MEMORY_INDEX,
+	getDefaultMemoryRegion,
+	getMemoryRegionFields,
+	resolveMemoryRegionByIndex,
+	resolveMemoryRegionName,
+	validateMemoryRegionOptions,
+} from './memoryRegions';
 
 import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
@@ -101,8 +110,10 @@ export function prepassNamespace(
 	ast: AST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	functions?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup,
+	options: Pick<CompileOptions, 'memoryRegions'> = {}
 ): CompilationContext {
+	const defaultRegion = getDefaultMemoryRegion();
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
@@ -122,6 +133,8 @@ export function prepassNamespace(
 		startingByteAddress,
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: undefined,
+		currentMemoryIndex: defaultRegion.memoryIndex,
+		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
 		codeBlockType: ast[0]?.instruction === constantsBlock.start ? constantsBlock.type : moduleBlock.type,
 	};
@@ -152,6 +165,34 @@ export function prepassNamespace(
 	});
 
 	return context;
+}
+
+export function getModuleIdFromAst(ast: AST): string | undefined {
+	const moduleLine = ast.find(line => line.instruction === moduleBlock.start);
+	const moduleId = moduleLine?.arguments[0];
+	return moduleId?.type === ArgumentType.IDENTIFIER ? moduleId.value : undefined;
+}
+
+function getModuleRegionFromAst(
+	ast: AST,
+	options: Pick<CompileOptions, 'memoryRegions'>
+): { memoryIndex: number; memoryRegionName?: string } {
+	const regionLine = ast.find(line => line.instruction === '#region');
+	const argument = regionLine?.arguments[0];
+
+	if (!regionLine || !argument) {
+		return getDefaultMemoryRegion();
+	}
+
+	if (argument.type === ArgumentType.LITERAL) {
+		return resolveMemoryRegionByIndex(argument.value, options.memoryRegions ?? [], regionLine);
+	}
+
+	if (argument.type === ArgumentType.IDENTIFIER) {
+		return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], regionLine);
+	}
+
+	return getDefaultMemoryRegion();
 }
 
 function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {
@@ -221,8 +262,10 @@ export function collectNamespacesFromASTs(
 	asts: AST[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
 	compiledFunctions?: CompiledFunctionLookup,
-	layoutAsts: AST[] = asts
+	layoutAsts: AST[] = asts,
+	options: Pick<CompileOptions, 'memoryRegions'> = {}
 ): Namespaces {
+	validateMemoryRegionOptions(options, asts[0]?.[0]);
 	const namespaces: Namespaces = {};
 
 	let pendingAsts = [...asts];
@@ -238,7 +281,8 @@ export function collectNamespacesFromASTs(
 					toNamespaceDiscoveryAst(ast),
 					namespaces,
 					startingByteAddress,
-					compiledFunctions
+					compiledFunctions,
+					options
 				);
 				if (!context.namespace.moduleName) {
 					continue;
@@ -254,6 +298,7 @@ export function collectNamespacesFromASTs(
 					kind: moduleLine ? moduleBlock.type : constantsBlock.type,
 					consts: { ...context.namespace.consts },
 					memory: context.namespace.memory,
+					...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
 				};
 				madeProgress = true;
 			} catch (error) {
@@ -271,12 +316,16 @@ export function collectNamespacesFromASTs(
 	}
 
 	if (pendingAsts.length > 0) {
-		prepassNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions);
+		prepassNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options);
 	}
 
-	let nextStartingByteAddress = startingByteAddress;
+	const nextStartingByteAddressByMemoryIndex: Record<number, number> = {
+		[DEFAULT_MEMORY_INDEX]: startingByteAddress,
+	};
 	for (const ast of layoutAsts) {
-		const context = prepassNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions);
+		const region = getModuleRegionFromAst(ast, options);
+		const nextStartingByteAddress = nextStartingByteAddressByMemoryIndex[region.memoryIndex] ?? startingByteAddress;
+		const context = prepassNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions, options);
 		if (!context.namespace.moduleName) {
 			continue;
 		}
@@ -285,11 +334,13 @@ export function collectNamespacesFromASTs(
 			kind: moduleBlock.type,
 			consts: { ...context.namespace.consts },
 			memory: context.namespace.memory,
+			...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
 			byteAddress: nextStartingByteAddress,
 			wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		};
 
-		nextStartingByteAddress += (context.currentModuleWordAlignedSize ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
+		nextStartingByteAddressByMemoryIndex[region.memoryIndex] =
+			nextStartingByteAddress + (context.currentModuleWordAlignedSize ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	}
 
 	return namespaces;

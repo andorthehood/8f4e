@@ -67,6 +67,13 @@ export default function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
+		if (
+			compiledModule.memoryIndex !== previousModule.memoryIndex ||
+			compiledModule.memoryRegionName !== previousModule.memoryRegionName
+		) {
+			return true;
+		}
+
 		if (didInternalResourcesChange(compiledModule, previousModule)) {
 			return true;
 		}

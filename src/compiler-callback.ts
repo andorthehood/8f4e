@@ -8,6 +8,7 @@ import type { CompileOptions, CompilerDiagnostic, Module } from '@8f4e/compiler-
 const compilerWorker = new CompilerWorker();
 
 let memoryRef: WebAssembly.Memory | null = null;
+let memoryRefsByRegion: Record<string, WebAssembly.Memory> = {};
 let codeBuffer: Uint8Array = new Uint8Array();
 
 export async function compileCode(
@@ -22,6 +23,7 @@ export async function compileCode(
 			switch (data.type) {
 				case 'success':
 					memoryRef = data.payload.wasmMemory;
+					memoryRefsByRegion = data.payload.wasmMemoriesByRegion ?? {};
 					codeBuffer = data.payload.codeBuffer;
 
 					editor.updateMemoryViews(data.payload.wasmMemory);
@@ -30,7 +32,9 @@ export async function compileCode(
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,
 						requiredMemoryBytes: data.payload.requiredMemoryBytes,
+						requiredMemoryBytesByRegion: data.payload.requiredMemoryBytesByRegion,
 						allocatedMemoryBytes: data.payload.allocatedMemoryBytes,
+						allocatedMemoryBytesByRegion: data.payload.allocatedMemoryBytesByRegion,
 						astCacheStats: data.payload.astCacheStats,
 						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
 						memoryAction: data.payload.memoryAction,
@@ -62,6 +66,10 @@ export async function compileCode(
 // Export memory getter for runtimes to access
 export function getMemory(): WebAssembly.Memory | null {
 	return memoryRef;
+}
+
+export function getMemoryRefsByRegion(): Record<string, WebAssembly.Memory> {
+	return memoryRefsByRegion;
 }
 
 export function getCodeBuffer(): Uint8Array {

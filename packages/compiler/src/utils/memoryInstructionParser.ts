@@ -10,7 +10,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { getEndByteAddress, getModuleEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { AST, CompilationContext } from '@8f4e/compiler-spec';
+import type { AST, AddressMetadata, CompilationContext } from '@8f4e/compiler-spec';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.
@@ -170,10 +170,20 @@ function resolveMemoryDefaultValue(
 	}
 }
 
+function getNormalizedAddressMetadata(
+	argument: AST[number]['arguments'][number] | undefined
+): AddressMetadata | undefined {
+	if (argument?.type !== 'literal' || !('address' in argument)) {
+		return undefined;
+	}
+
+	return argument.address as AddressMetadata | undefined;
+}
+
 export default function parseMemoryInstructionArguments(
 	line: AST[number],
 	context: CompilationContext
-): { id: string; defaultValue: number } {
+): { id: string; defaultValue: number; defaultAddress?: AddressMetadata } {
 	const { arguments: args, lineNumberAfterMacroExpansion } = line;
 	const lineForError = line;
 
@@ -226,5 +236,11 @@ export default function parseMemoryInstructionArguments(
 	}
 
 	// Named declaration with a single default value:
-	return { id, defaultValue: resolveMemoryDefaultValue(shape.secondArg, lineForError, context) };
+	return {
+		id,
+		defaultValue: resolveMemoryDefaultValue(shape.secondArg, lineForError, context),
+		...(getNormalizedAddressMetadata(line.arguments[1])
+			? { defaultAddress: getNormalizedAddressMetadata(line.arguments[1]) }
+			: {}),
+	};
 }
