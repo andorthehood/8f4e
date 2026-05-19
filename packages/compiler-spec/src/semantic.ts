@@ -17,6 +17,7 @@ import type {
 	ModuleEndLine,
 	ModuleLine,
 	PushLine,
+	RegionLine,
 	TokenizedLocalVariableAccessLine,
 	UseLine,
 } from './ast';
@@ -32,6 +33,8 @@ import type { CompiledModuleBlockType, CompilerSourceBlockType } from './instruc
 
 export interface MemoryAddressRange {
 	source: 'memory-start' | 'memory-end' | 'module-start' | 'module-end' | 'module-nth-memory-start';
+	memoryIndex?: number;
+	memoryRegionName?: string;
 	byteAddress: number;
 	safeByteLength: number;
 	moduleId?: string;
@@ -39,6 +42,10 @@ export interface MemoryAddressRange {
 }
 
 export interface AddressMetadata {
+	/** Resolved WebAssembly memory index that this address points into. */
+	memoryIndex?: number;
+	/** Configured logical region name for non-default memories. */
+	memoryRegionName?: string;
 	/**
 	 * Proven safe byte range for memory operations at this exact value.
 	 * Pointer arithmetic may shrink or remove this range when the compiler can no
@@ -76,6 +83,8 @@ export interface LocalBinding {
 	isFloat64?: boolean;
 	pointeeBaseType?: DataStructure['pointeeBaseType'];
 	isPointingToPointer?: boolean;
+	pointeeMemoryIndex?: number;
+	pointeeMemoryRegionName?: string;
 	index: number;
 }
 
@@ -93,6 +102,8 @@ export interface CollectedNamespace {
 	kind: CompiledModuleBlockType;
 	consts: Consts;
 	memory?: MemoryMap;
+	memoryIndex?: number;
+	memoryRegionName?: string;
 	byteAddress?: number;
 	wordAlignedSize?: number;
 }
@@ -118,6 +129,9 @@ export interface CompilationContext {
 	startingByteAddress: number;
 	currentModuleNextWordOffset?: number;
 	currentModuleWordAlignedSize?: number;
+	currentMemoryIndex?: number;
+	currentMemoryRegionName?: string;
+	memoryRegions?: string[];
 	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
 	mode?: CompilationMode;
 	codeBlockId?: string;
@@ -178,6 +192,7 @@ export type NormalizedSemanticInstructionLine =
 	| NormalizedConstLine
 	| UseLine
 	| ModuleLine
+	| RegionLine
 	| ModuleEndLine
 	| ConstantsLine
 	| ConstantsEndLine;
@@ -186,6 +201,7 @@ export type ParsedSemanticInstructionLine =
 	| ConstLine
 	| UseLine
 	| ModuleLine
+	| RegionLine
 	| ModuleEndLine
 	| ConstantsLine
 	| ConstantsEndLine;

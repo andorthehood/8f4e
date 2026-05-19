@@ -5,8 +5,16 @@ import { getEndByteAddress } from '../semantic/layoutAddresses';
 import type { DataStructure, LocalBinding, MemoryMap, MemoryValueKind } from '@8f4e/compiler-spec';
 
 export type PointerMetadata =
-	| Pick<DataStructure, 'pointeeBaseType' | 'isPointingToPointer'>
-	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer'>;
+	| Pick<
+			DataStructure,
+			| 'memoryIndex'
+			| 'memoryRegionName'
+			| 'pointeeBaseType'
+			| 'isPointingToPointer'
+			| 'pointeeMemoryIndex'
+			| 'pointeeMemoryRegionName'
+	  >
+	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName'>;
 
 function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
 	if (memoryItem.isInteger) {

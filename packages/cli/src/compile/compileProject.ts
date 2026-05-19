@@ -13,6 +13,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 		bufferSize: options.compilerOptions?.bufferSize,
 		bufferStrategy: options.compilerOptions?.bufferStrategy,
+		memoryRegions: options.compilerOptions?.memoryRegions,
 	};
 
 	const moduleResult = compileProjectModules(project.codeBlocks, {
@@ -36,5 +37,6 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		compiledFunctions: undefined,
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
+		requiredMemoryBytesByRegion: moduleResult.requiredMemoryBytesByRegion,
 	};
 }

@@ -11,9 +11,10 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import instructions from './instructionCompilers';
 import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
-import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
+import { applySemanticLine, getModuleIdFromAst, prepassNamespace } from './semantic/buildNamespace';
 import { validateInstruction } from './stackAnalysis/validateInstruction';
 import { functionValueTypeToWasmType } from './utils/functionValueType';
+import { getMemoryRegionFields } from './semantic/memoryRegions';
 
 import type {
 	AST,
@@ -65,12 +66,17 @@ export function compileModule(
 	startingByteAddress = 0,
 	index: number,
 	functions?: CompiledFunctionLookup,
-	internalAllocator = { nextByteAddress: 0 }
+	internalAllocator = { nextByteAddress: 0 },
+	options: { memoryRegions?: string[] } = {}
 ): CompiledModule {
 	// Prepass establishes the memory layout (byte addresses, sizes) for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
 	// the compilation loop below, so consts are not copied from the prepass context.
-	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions);
+	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions, options);
+	const moduleId = getModuleIdFromAst(ast);
+	const namespace = moduleId ? namespaces[moduleId] : undefined;
+	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex ?? 0;
+	const memoryRegionName = namespace?.memoryRegionName ?? prepassContext.currentMemoryRegionName;
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
@@ -95,6 +101,9 @@ export function compileModule(
 		startingByteAddress,
 		currentModuleNextWordOffset: prepassContext.currentModuleNextWordOffset,
 		currentModuleWordAlignedSize: prepassContext.currentModuleWordAlignedSize,
+		currentMemoryIndex: memoryIndex,
+		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
+		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
 	};
 
@@ -139,6 +148,7 @@ export function compileModule(
 			context.byteCode
 		),
 		initFunctionBody: [],
+		...getMemoryRegionFields(memoryIndex, memoryRegionName),
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
@@ -184,6 +194,8 @@ export function compileFunction(
 		startingByteAddress: 0,
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: 0,
+		currentMemoryIndex: 0,
+		memoryRegions: [],
 		mode: 'function',
 		codeBlockType: 'function',
 		functionTypeRegistry: typeRegistry,

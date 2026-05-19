@@ -15,7 +15,7 @@ type WebAssemblyApiLike = {
 	Memory: new (descriptor: { initial: number; maximum: number; shared: boolean }) => WebAssemblyMemoryLike;
 	instantiate: (
 		bytes: Buffer,
-		imports: { js: { memory: WebAssemblyMemoryLike } }
+		imports: { js: Record<string, WebAssemblyMemoryLike> & { memory: WebAssemblyMemoryLike } }
 	) => Promise<{ instance: WebAssemblyInstanceLike }>;
 };
 
@@ -136,14 +136,48 @@ function createWebAssemblyMemory(requiredMemoryBytes: number): WebAssemblyMemory
 	});
 }
 
+function getRegionName(memoryIndex: number, memoryRegions: string[] | undefined): string {
+	return memoryRegions?.[memoryIndex - 1] ?? `memory${memoryIndex}`;
+}
+
+function getRegionMemoryImportNames(
+	compiledModules: CreateRuntimeRunnerOptions['compiledModules'],
+	memoryRegions: string[] | undefined
+): string[] {
+	const maxUsedMemoryIndex = Math.max(0, ...Object.values(compiledModules).map(module => module.memoryIndex ?? 0));
+	return Array.from({ length: maxUsedMemoryIndex }, (_, index) => getRegionName(index + 1, memoryRegions));
+}
+
+function getMemoryView(
+	data: DataStructure,
+	defaultView: DataView,
+	regionViews: Record<string, DataView>,
+	memoryRegions: string[] | undefined
+): DataView {
+	const memoryIndex = data.memoryIndex ?? 0;
+	if (memoryIndex === 0) {
+		return defaultView;
+	}
+	return regionViews[data.memoryRegionName ?? getRegionName(memoryIndex, memoryRegions)];
+}
+
 export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): Promise<RuntimeRunner> {
 	const lookup: MemoryLookup = createMemoryLookup(options.compiledModules);
 	const memory = createWebAssemblyMemory(options.requiredMemoryBytes);
+	const regionMemories = Object.fromEntries(
+		getRegionMemoryImportNames(options.compiledModules, options.memoryRegions).map(regionName => [
+			regionName,
+			createWebAssemblyMemory(options.requiredMemoryBytesByRegion?.[regionName] ?? 0),
+		])
+	);
 	const program = Buffer.from(options.compiledWasmBase64, 'base64');
 	const { instance } = await getWebAssemblyApi().instantiate(program, {
-		js: { memory },
+		js: { memory, ...regionMemories },
 	});
 	const view = new DataView(memory.buffer);
+	const regionViews = Object.fromEntries(
+		Object.entries(regionMemories).map(([regionName, regionMemory]) => [regionName, new DataView(regionMemory.buffer)])
+	);
 
 	const init = instance.exports.init as () => void;
 	const cycle = instance.exports.cycle as () => void;
@@ -159,19 +193,19 @@ export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): 
 		},
 		read(id: string): number | number[] {
 			const resolved = lookup.resolve(id);
-			return readValue(view, resolved.data);
+			return readValue(getMemoryView(resolved.data, view, regionViews, options.memoryRegions), resolved.data);
 		},
 		readBytes(id: string): Uint8Array {
 			const resolved = lookup.resolve(id);
-			return readBytes(view, resolved.data);
+			return readBytes(getMemoryView(resolved.data, view, regionViews, options.memoryRegions), resolved.data);
 		},
 		write(id: string, value: number | number[]): void {
 			const resolved = lookup.resolve(id);
-			writeValue(view, resolved.data, value);
+			writeValue(getMemoryView(resolved.data, view, regionViews, options.memoryRegions), resolved.data, value);
 		},
 		writeBytes(id: string, bytes: Uint8Array): void {
 			const resolved = lookup.resolve(id);
-			writeBytes(view, resolved.data, bytes);
+			writeBytes(getMemoryView(resolved.data, view, regionViews, options.memoryRegions), resolved.data, bytes);
 		},
 	};
 }

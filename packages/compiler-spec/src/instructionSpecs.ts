@@ -219,6 +219,11 @@ export const instructionSpecs = {
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 	},
+	// #region <name|index> ( -- )
+	'#region': {
+		scope: 'module',
+		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
+	},
 	// #export <exportName> ( -- )
 	'#export': {
 		scope: 'function',

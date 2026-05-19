@@ -1,5 +1,5 @@
 import { WASM_F64_STORE } from '../wasmInstruction';
-import unsignedLEB128 from '../encoding/unsignedLEB128';
+import memarg from '../memory/memarg';
 import i32const from '../const/i32const';
 import f64const from '../const/f64const';
 
@@ -12,12 +12,17 @@ import f64const from '../const/f64const';
  * @param offset - Static offset from the address, defaults to 0
  * @returns Byte array representing the f64.store instruction and optional setup
  */
-export default function f64store(address?: number, value?: number, alignment = 3, offset = 0): number[] {
+export default function f64store(
+	address?: number,
+	value?: number,
+	alignment = 3,
+	offset = 0,
+	memoryIndex = 0
+): number[] {
 	return [
 		...(typeof address === 'undefined' ? [] : i32const(address)),
 		...(typeof value === 'undefined' ? [] : f64const(value)),
 		WASM_F64_STORE,
-		...unsignedLEB128(alignment),
-		...unsignedLEB128(offset),
+		...memarg(alignment, offset, memoryIndex),
 	];
 }
