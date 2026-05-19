@@ -3,8 +3,8 @@ title: 'TODO: Restrict compiler directives to block prologue'
 priority: Medium
 effort: 2-4h
 created: 2026-05-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-19
 ---
 
 # TODO: Restrict compiler directives to block prologue
@@ -79,4 +79,3 @@ Add compiler validation that treats compiler directives as source-block prologue
 - **Blocks**: `403-add-logical-memory-regions-for-multi-memory`
 - **Related**: `381-add-follow-module-layout-directive.md`
 - **Related**: `docs/brainstorming_notes/041-logical-memory-regions-for-multi-memory-runtimes.md`
-

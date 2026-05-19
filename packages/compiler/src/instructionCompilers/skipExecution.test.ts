@@ -25,6 +25,7 @@ describe('skipExecution instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#skipExecution',
 				arguments: [],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -67,6 +68,7 @@ describe('skipExecution instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#skipExecution',
 				arguments: [],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -79,6 +81,7 @@ describe('skipExecution instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: '#skipExecution',
 				arguments: [],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);

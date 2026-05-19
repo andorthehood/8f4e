@@ -28,7 +28,19 @@ type OpenBlock = {
 	hasElse?: boolean;
 };
 
+type SourceBlockPrologue = {
+	instruction: 'module' | 'function';
+	blockDepth: number;
+	isOpen: boolean;
+};
+
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
+const sourceBlockStartInstructionSet = new Set(['module', 'function']);
+const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd']);
+
+function isCompilerDirectiveInstruction(instruction: string): boolean {
+	return instruction.startsWith('#');
+}
 
 function getResultTypeFromFirstArgument(line: ASTLine): IfBlockResultType {
 	const typeArgument = line.arguments[0];
@@ -176,6 +188,7 @@ export function compileToAST(
 
 	const ast: AST = [];
 	const blockStack: OpenBlock[] = [];
+	const sourceBlockPrologueStack: SourceBlockPrologue[] = [];
 
 	for (const [lineNumberAfterMacroExpansion, line] of code.map((sourceLine, index) => [index, sourceLine] as const)) {
 		if (isComment(line) || !isValidInstruction(line)) {
@@ -186,6 +199,24 @@ export function compileToAST(
 			lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
 		const parsedLine = parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
 		const astIndex = ast.length;
+		const currentSourceBlockPrologue = sourceBlockPrologueStack[sourceBlockPrologueStack.length - 1];
+		const isCompilerDirective = isCompilerDirectiveInstruction(parsedLine.instruction);
+		const isInOpenSourceBlockPrologue =
+			currentSourceBlockPrologue?.isOpen && currentSourceBlockPrologue.blockDepth === blockStack.length;
+
+		if (isCompilerDirective && isInOpenSourceBlockPrologue) {
+			parsedLine.isBlockPrologue = true;
+		} else if (isCompilerDirective) {
+			throw new SyntaxRulesError(SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE, undefined, {
+				lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion,
+				instruction: parsedLine.instruction,
+			});
+		}
+
+		if (isInOpenSourceBlockPrologue && !isCompilerDirective) {
+			currentSourceBlockPrologue.isOpen = false;
+		}
 
 		ast.push(parsedLine);
 
@@ -195,6 +226,14 @@ export function compileToAST(
 				astIndex,
 				hasElse: parsedLine.instruction === 'if' ? false : undefined,
 			});
+
+			if (sourceBlockStartInstructionSet.has(parsedLine.instruction)) {
+				sourceBlockPrologueStack.push({
+					instruction: parsedLine.instruction as 'module' | 'function',
+					blockDepth: blockStack.length,
+					isOpen: true,
+				});
+			}
 			continue;
 		}
 
@@ -259,6 +298,10 @@ export function compileToAST(
 					instruction: parsedLine.instruction,
 				}
 			);
+		}
+
+		if (sourceBlockEndInstructionSet.has(endInstruction)) {
+			sourceBlockPrologueStack.pop();
 		}
 
 		if (endInstruction !== 'ifEnd' && endInstruction !== 'blockEnd') {

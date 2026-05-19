@@ -1,4 +1,5 @@
-import { describe, test, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
+import { SyntaxErrorCode } from '@8f4e/tokenizer';
 
 import { moduleTester } from './instructions/testUtils';
 
@@ -91,7 +92,7 @@ moduleEnd
 		}).toThrow();
 	});
 
-	test('#loopCap only affects loops declared after it', () => {
+	test('rejects #loopCap after declarations', () => {
 		const modules = [
 			{
 				code: `
@@ -111,9 +112,9 @@ moduleEnd
 			},
 		];
 
-		// Should compile without error — #loopCap affects the loop after it
-		const result = compile(modules, { startingMemoryWordAddress: 1 });
-		expect(result.compiledModules.test).toBeDefined();
+		expect(() => compile(modules, { startingMemoryWordAddress: 1 })).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
+		);
 	});
 });
 
@@ -139,8 +140,8 @@ moduleEnd
 moduleTester(
 	'#loopCap changes the default cap for subsequent loops',
 	`module loop
-int counter
 #loopCap 500
+int counter
 
 loop
  push &counter
@@ -176,8 +177,8 @@ moduleEnd
 moduleTester(
 	'loop with explicit cap argument overrides #loopCap',
 	`module loop
-int counter
 #loopCap 500
+int counter
 
 loop 12
  push &counter
@@ -190,35 +191,6 @@ loopEnd
 moduleEnd
 `,
 	[[{}, { counter: 12 }]]
-);
-
-moduleTester(
-	'#loopCap does not affect loops declared before it',
-	`module loop
-int counter
-int counter2
-
-loop
- push &counter
- push counter
- push 1
- add
- store
-loopEnd
-
-#loopCap 500
-
-loop
- push &counter2
- push counter2
- push 1
- add
- store
-loopEnd
-
-moduleEnd
-`,
-	[[{}, { counter: 1000, counter2: 500 }]]
 );
 
 moduleTester(

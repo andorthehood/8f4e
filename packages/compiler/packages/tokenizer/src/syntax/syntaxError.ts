@@ -28,6 +28,7 @@ export const SyntaxErrorCode = {
 	INVALID_STRING_LITERAL: 7,
 	SPLIT_HEX_MIXED_TOKENS: 8,
 	INVALID_BLOCK_STRUCTURE: 9,
+	COMPILER_DIRECTIVE_MUST_BE_PROLOGUE: 10,
 } as const;
 
 export type SyntaxErrorCodeValue = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
@@ -49,6 +50,8 @@ const SyntaxErrorMessages: Record<SyntaxErrorCodeValue, string> = {
 	[SyntaxErrorCode.SPLIT_HEX_MIXED_TOKENS]:
 		'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255), literal-only * or / expressions that fold to an integer in that range, or constant-style identifiers. Memory references and non-byte-resolving forms are not allowed in split-byte sequences.',
 	[SyntaxErrorCode.INVALID_BLOCK_STRUCTURE]: 'Invalid block structure.',
+	[SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE]:
+		'Compiler directives must appear in the block prologue, immediately after module or function.',
 };
 
 export interface SyntaxErrorLine {
