@@ -67,10 +67,6 @@ Introduce logical memory regions as compiler metadata first, then lower them to 
 - Complete `404-refactor-address-metadata-into-first-class-shape.md`.
 - Multi-memory region tracking should extend `AddressMetadata` instead of adding more loose address fields.
 
-### Step 1.6: Centralize Memory Access Target Selection
-- Complete `405-centralize-memory-access-target-selection.md`.
-- Multi-memory should extend the shared target-resolution helper instead of adding memory-index decisions inside each instruction compiler.
-
 ### Step 2: Add Region Directive Syntax
 - Add `#region <identifier|non-negative-integer>` as a module compiler directive.
 - Keep tokenizer/parser responsibility limited to argument shape: identifier or non-negative integer literal.
@@ -111,6 +107,7 @@ Introduce logical memory regions as compiler metadata first, then lower them to 
 ### Step 6: Update Codegen
 - Extend wasm-utils load/store memarg builders to encode non-zero memory indices.
 - Update `load`, `load8s`, `load8u`, `load16s`, `load16u`, `loadFloat`, `store`, `storeBytes`, `memoryCopy`, `memoryFill`, `memoryInit`, bounds guards, and automatic pointer dereference to pass the correct memory index.
+- Add the shared memory access target-selection helper as part of this step, after region metadata exists, so it can resolve targets from `AddressMetadata`, pointer pointee metadata, and `memoryCopy` destination/source metadata.
 - Use operation precedence: tracked address/pointer provenance first, implicit memory `0` for raw addresses last.
 - Treat codegen as a consumer of resolved region metadata; it should not rediscover or reinterpret module/declaration regions.
 - Update guard helpers so `memory.size`, last-valid-address calculation, range checks, guarded loads, guarded stores, and guarded memory copies use the same memory index as the operation.
@@ -181,7 +178,6 @@ Introduce logical memory regions as compiler metadata first, then lower them to 
 
 - **Depends on**: `402-restrict-compiler-directives-to-block-prologue.md`
 - **Depends on**: `404-refactor-address-metadata-into-first-class-shape.md`
-- **Depends on**: `405-centralize-memory-access-target-selection.md`
 - **Related**: `docs/brainstorming_notes/041-logical-memory-regions-for-multi-memory-runtimes.md`
 - **Related**: `390-add-compiler-passive-data-inputs.md`
 - **Related**: `305-reuse-wasm-instance-across-incremental-compiles.md`
