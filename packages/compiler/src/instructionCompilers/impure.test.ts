@@ -27,6 +27,7 @@ describe('impure instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#impure',
 				arguments: [],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);

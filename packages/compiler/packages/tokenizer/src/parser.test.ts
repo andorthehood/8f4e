@@ -186,6 +186,52 @@ describe('compileToAST', () => {
 		expect(ast[2].lineNumberAfterMacroExpansion).toBe(2);
 	});
 
+	it('marks directives in module and function prologues', () => {
+		const ast = compileToAST([
+			'module test',
+			'#skipExecution',
+			'#initOnly',
+			'int counter',
+			'moduleEnd',
+			'function readValue',
+			'#impure',
+			'#export readValue',
+			'param int address',
+			'functionEnd int',
+		]);
+
+		expect(ast[1].isBlockPrologue).toBe(true);
+		expect(ast[2].isBlockPrologue).toBe(true);
+		expect(ast[3].isBlockPrologue).toBeUndefined();
+		expect(ast[6].isBlockPrologue).toBe(true);
+		expect(ast[7].isBlockPrologue).toBe(true);
+		expect(ast[8].isBlockPrologue).toBeUndefined();
+	});
+
+	it('rejects module directives after the module prologue', () => {
+		expect(() => compileToAST(['module test', 'int counter', '#skipExecution', 'moduleEnd'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
+		);
+	});
+
+	it('rejects function directives after the function prologue', () => {
+		expect(() => compileToAST(['function readValue', 'param int address', '#impure', 'functionEnd int'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
+		);
+	});
+
+	it('rejects directives nested inside non-prologue blocks', () => {
+		expect(() => compileToAST(['module test', 'if', '#loopCap 20', 'ifEnd', 'moduleEnd'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
+		);
+	});
+
+	it('rejects directives before any module or function prologue', () => {
+		expect(() => compileToAST(['#skipExecution'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
+		);
+	});
+
 	it('pairs if with ifEnd metadata without rewriting source arguments', () => {
 		const ast = compileToAST(['push 1', 'if', 'push 10', 'ifEnd int']);
 

@@ -76,6 +76,8 @@ Argument mapping:
 Export names must be unique and must not reuse built-in exports such as `init`, `cycle`, `initOnly`, or `buffer`.
 Functions that read from or write to memory still need `#impure`.
 
+Function compiler directives are prologue metadata: place `#impure`, `#export`, and `#loopCap` directly after the `function` line and before params, locals, or executable instructions.
+
 ### Example Function
 
 ```

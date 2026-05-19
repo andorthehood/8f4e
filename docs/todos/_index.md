@@ -58,7 +58,6 @@ Active todo files are listed below.
 | 398 | Add compiler peephole arithmetic strength reduction | 🟡 | 1-2 days | 2026-05-12 | The compiler now has compile-time folding and stack-level integer metadata, but runtime arithmetic codegen still emits direct WebAssembly arithmetic operations even when the top... |
 | 400 | Add serial input editor environment plugin | 🟡 | 1-2d | 2026-05-13 | Add a Web Serial editor environment plugin with `@info serial`, fixed-size `@serialIn` framing, and `@serialInCallback` fanout to exported 8f4e functions. |
 | 401 | Tighten runtime browser API typing | 🟡 | 2-4h | 2026-05-18 | Browser runtime packages cross platform-specific API boundaries and currently rely on broad `any` casts and `@ts-expect-error` comments in production runtime code. |
-| 402 | Restrict compiler directives to block prologue | 🟡 | 2-4h | 2026-05-19 | Compiler directives should be block prologue metadata, appearing directly after `module` or `function` before declarations or executable instructions. |
 | 403 | Add logical memory regions for multi-memory | 🟡 | 3-5d | 2026-05-19 | Add module-level logical memory regions that map declarations, address provenance, pointer dereference, and Wasm memory operations to the correct linear memory. |
 | 404 | Refactor address metadata into first-class shape | 🟡 | 1-2d | 2026-05-19 | Replace scattered stack address fields with `StackItem.address` so future memory-region tracking has one internal metadata shape to extend. |
 | 405 | Centralize memory access target selection | 🟡 | 4-8h | 2026-05-19 | Add a shared internal helper for memory operation target selection so future region support has one place to resolve memory indices. |
@@ -94,6 +93,7 @@ Active todo files are listed below.
 | 268 | Add float64 support for sqrt instruction | 2026-05-10 | `sqrt` now emits `F64_SQRT`, preserves float64 metadata, and no longer marks the result as always non-zero. |
 | 395 | Add exported 8f4e functions | 2026-05-10 | `#export <exportedName>` now exports user functions through the generated WebAssembly ABI with positional JS numeric arguments and duplicate-name validation. |
 | 396 | Add MIDI input editor environment plugin | 2026-05-11 | The editor MIDI plugin now lazy-loads from `@midiIn`, lists devices via `@info midi`, and forwards MIDI input bytes to exported 8f4e callbacks through a shared-memory Wasm instance. |
+| 402 | Restrict compiler directives to block prologue | 2026-05-19 | Compiler directives are now validated as module/function prologue metadata, with late directives rejected by a dedicated compiler diagnostic. |
 | 391 | Add compiler AST cache for incremental compiles | 2026-05-04 | `compile()` now returns and accepts an opaque AST cache for unchanged expanded module and function inputs. |
 | 329 | Replace literal-only const collection with semantic namespace prepass | 2026-03-27 | Replaced `collectConstants(ast)` bootstrap with semantic namespace prepass. |
 | 330 | Centralize compile-time folding as an AST normalization pass | 2026-03-27 | Compile-time folding now runs as a semantic normalization pass before codegen. |
