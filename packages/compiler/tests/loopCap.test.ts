@@ -1,5 +1,5 @@
-import { describe, test, expect } from 'vitest';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { describe, expect, test } from 'vitest';
+import { SyntaxErrorCode } from '@8f4e/tokenizer';
 
 import { moduleTester } from './instructions/testUtils';
 
@@ -113,7 +113,7 @@ moduleEnd
 		];
 
 		expect(() => compile(modules, { startingMemoryWordAddress: 1 })).toThrow(
-			expect.objectContaining({ code: ErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
+			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
 		);
 	});
 });
