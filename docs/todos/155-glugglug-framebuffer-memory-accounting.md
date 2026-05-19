@@ -3,6 +3,7 @@ title: 'TODO: Add Framebuffer Memory Accounting in glugglug'
 priority: Medium
 effort: 2-4h
 created: 2025-12-30
+issue: https://github.com/andorthehood/8f4e/issues/548
 status: Open
 completed: null
 ---

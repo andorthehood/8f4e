@@ -4,7 +4,6 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { saveByteCode } from './utils/saveByteCode';
 
 import { getError } from '../compilerError';
-import { isInstructionInsideFunction } from '../utils/blockStack';
 
 import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -20,7 +19,7 @@ import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line: ExitIfTrueLine, context) => {
-	if (isInstructionInsideFunction(context.blockStack)) {
+	if (context.insideFunctionBlock) {
 		throw getError(ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE, line, context);
 	}
 

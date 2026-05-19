@@ -1,5 +1,7 @@
 import { BlockType } from '@8f4e/compiler-spec';
 
+import { pushBlock } from '../utils/blockStack';
+
 import type { InstructionCompiler, MapBeginLine } from '@8f4e/compiler-spec';
 
 /**
@@ -10,7 +12,7 @@ import type { InstructionCompiler, MapBeginLine } from '@8f4e/compiler-spec';
 const mapBegin: InstructionCompiler<MapBeginLine> = (line: MapBeginLine, context) => {
 	const inputType = line.arguments[0].value;
 
-	context.blockStack.push({
+	pushBlock(context, {
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
 		blockType: BlockType.MAP,

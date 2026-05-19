@@ -42,6 +42,61 @@ type BytecodeSizeEntry = {
 	emittedBytes: number;
 };
 
+type CoverageComponent = 'compiler' | 'tokenizer';
+type CoverageMetric = 'rangeExecutions' | 'functionEntries' | 'coveredFunctions';
+
+type CoverageDashboardTab = 'ranges' | 'functionEntries' | 'coveredFunctions';
+
+type CoverageMetricConfig = {
+	metric: CoverageMetric;
+	emptyLabel: string;
+	axisLabel: string;
+	cardLabel: string;
+	compilerSummaryLabel: string;
+	tokenizerSummaryLabel: string;
+};
+
+const coverageMetricConfigs: Record<CoverageDashboardTab, CoverageMetricConfig> = {
+	ranges: {
+		metric: 'rangeExecutions',
+		emptyLabel: 'range execution data',
+		axisLabel: 'Range executions',
+		cardLabel: 'Ranges',
+		compilerSummaryLabel: 'Compiler Ranges',
+		tokenizerSummaryLabel: 'Tokenizer Ranges',
+	},
+	functionEntries: {
+		metric: 'functionEntries',
+		emptyLabel: 'function entry data',
+		axisLabel: 'Function entries',
+		cardLabel: 'Entries',
+		compilerSummaryLabel: 'Compiler Entries',
+		tokenizerSummaryLabel: 'Tokenizer Entries',
+	},
+	coveredFunctions: {
+		metric: 'coveredFunctions',
+		emptyLabel: 'covered function data',
+		axisLabel: 'Covered functions',
+		cardLabel: 'Functions',
+		compilerSummaryLabel: 'Compiler Functions',
+		tokenizerSummaryLabel: 'Tokenizer Functions',
+	},
+};
+
+type CompilerCoverageBucket = {
+	coveredFunctions: number;
+	functionEntries: number;
+	rangeExecutions: number;
+	maxRangesPerFunction: number;
+};
+
+type CompilerCoverageEntry = {
+	commit: string;
+	version: string | null;
+	benchmark: string;
+	coverage: Record<CoverageComponent, CompilerCoverageBucket>;
+};
+
 type Point = {
 	packageName: string;
 	label: string;
@@ -70,7 +125,36 @@ type BytecodePoint = {
 	bytes: number;
 };
 
-type DashboardTab = 'bundles' | 'bytecode';
+type CoveragePoint = {
+	benchmark: string;
+	label: string;
+	component: CoverageComponent;
+	componentLabel: string;
+	seriesLabel: string;
+	version: string;
+	releaseTag: string;
+	commit: string;
+	releaseKey: string;
+	releaseIndex: number;
+	releaseLabel: string;
+	coveredFunctions: number;
+	functionEntries: number;
+	rangeExecutions: number;
+};
+
+type CoverageSummaryPoint = {
+	component: CoverageComponent;
+	componentLabel: string;
+	version: string;
+	releaseTag: string;
+	commit: string;
+	releaseKey: string;
+	releaseIndex: number;
+	releaseLabel: string;
+	value: number;
+};
+
+type DashboardTab = 'bundles' | 'bytecode' | CoverageDashboardTab;
 
 const app = requireElement<HTMLDivElement>('#app');
 
@@ -84,6 +168,9 @@ app.innerHTML = `
 			<div class="segmented" role="tablist" aria-label="Metric view">
 				<button type="button" class="segment is-active" data-tab="bundles">Bundles</button>
 				<button type="button" class="segment" data-tab="bytecode">Bytecode</button>
+				<button type="button" class="segment" data-tab="ranges">Ranges</button>
+				<button type="button" class="segment" data-tab="functionEntries">Function Entries</button>
+				<button type="button" class="segment" data-tab="coveredFunctions">Covered Functions</button>
 			</div>
 			<div class="segmented" id="metric-control" role="group" aria-label="Size metric">
 				<button type="button" class="segment is-active" data-metric="gzip">Gzip</button>
@@ -126,6 +213,23 @@ app.innerHTML = `
 				<div class="chart" id="bytecode-overview-chart"></div>
 			</section>
 		</div>
+		<div id="ranges-view" hidden>
+			<section class="summary-grid" id="ranges-summary-grid" aria-label="Latest compiler coverage summary"></section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Compiler vs Tokenizer</h2>
+					<span id="coverage-overview-caption">Range executions</span>
+				</div>
+				<div class="chart" id="ranges-overview-chart"></div>
+			</section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Benchmarks</h2>
+					<span id="coverage-benchmark-caption">Compiler and tokenizer</span>
+				</div>
+				<div class="package-grid" id="ranges-grid"></div>
+			</section>
+		</div>
 	</main>
 `;
 
@@ -136,15 +240,23 @@ const state = {
 	points: [] as Point[],
 	bytecodeLogs: [] as BytecodeTrackedLog[],
 	bytecodePoints: [] as BytecodePoint[],
+	coverageLogs: [] as BytecodeTrackedLog[],
+	coveragePoints: [] as CoveragePoint[],
 };
 
 const bundlesView = requireElement<HTMLDivElement>('#bundles-view');
 const bytecodeView = requireElement<HTMLDivElement>('#bytecode-view');
+const rangesView = requireElement<HTMLDivElement>('#ranges-view');
 const summaryGrid = requireElement<HTMLDivElement>('#summary-grid');
 const overviewChart = requireElement<HTMLDivElement>('#overview-chart');
 const bytecodeSummaryGrid = requireElement<HTMLDivElement>('#bytecode-summary-grid');
 const bytecodeOverviewChart = requireElement<HTMLDivElement>('#bytecode-overview-chart');
 const bytecodeGrid = requireElement<HTMLDivElement>('#bytecode-grid');
+const rangesSummaryGrid = requireElement<HTMLDivElement>('#ranges-summary-grid');
+const rangesOverviewChart = requireElement<HTMLDivElement>('#ranges-overview-chart');
+const rangesGrid = requireElement<HTMLDivElement>('#ranges-grid');
+const coverageOverviewCaption = requireElement<HTMLSpanElement>('#coverage-overview-caption');
+const coverageBenchmarkCaption = requireElement<HTMLSpanElement>('#coverage-benchmark-caption');
 const lastUpdated = requireElement<HTMLParagraphElement>('#last-updated');
 const growthCaption = requireElement<HTMLSpanElement>('#growth-caption');
 const packageCaption = requireElement<HTMLSpanElement>('#package-caption');
@@ -158,15 +270,22 @@ init().catch((error: unknown) => {
 });
 
 async function init() {
-	const [trackedLogs, bytecodeLogs] = await Promise.all([loadTrackedLogs(), loadBytecodeTrackedLogs()]);
+	const [trackedLogs, bytecodeLogs, coverageLogs] = await Promise.all([
+		loadTrackedLogs(),
+		loadBytecodeTrackedLogs(),
+		loadCoverageTrackedLogs(),
+	]);
 	state.trackedLogs = trackedLogs;
 	state.bytecodeLogs = bytecodeLogs;
-	const [points, bytecodePoints] = await Promise.all([
+	state.coverageLogs = coverageLogs;
+	const [points, bytecodePoints, coveragePoints] = await Promise.all([
 		loadPoints(state.trackedLogs),
 		loadBytecodePoints(state.bytecodeLogs),
+		loadCoveragePoints(state.coverageLogs),
 	]);
 	state.points = points;
 	state.bytecodePoints = bytecodePoints;
+	state.coveragePoints = coveragePoints;
 	render();
 
 	for (const button of tabButtons) {
@@ -212,6 +331,19 @@ async function loadBytecodeTrackedLogs() {
 	return manifest.logs;
 }
 
+async function loadCoverageTrackedLogs() {
+	const response = await fetch('compiler-coverage-counts/manifest.json', {
+		cache: 'no-store',
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to load compiler coverage count manifest: ${response.status}`);
+	}
+
+	const manifest = (await response.json()) as BytecodeSizeManifest;
+	return manifest.logs;
+}
+
 async function loadPoints(trackedLogs: TrackedLog[]) {
 	const pointGroups = await Promise.all(
 		trackedLogs.map(async log => {
@@ -244,6 +376,25 @@ async function loadBytecodePoints(trackedLogs: BytecodeTrackedLog[]) {
 
 			const entries = (await response.json()) as BytecodeSizeEntry[];
 			return toBytecodePoints(log, entries);
+		})
+	);
+
+	return withSequentialReleaseIndexes(pointGroups.flat());
+}
+
+async function loadCoveragePoints(trackedLogs: BytecodeTrackedLog[]) {
+	const pointGroups = await Promise.all(
+		trackedLogs.map(async log => {
+			const response = await fetch(`compiler-coverage-counts/${log.path}`, {
+				cache: 'no-store',
+			});
+
+			if (!response.ok) {
+				throw new Error(`Failed to load ${log.path}: ${response.status}`);
+			}
+
+			const entries = (await response.json()) as CompilerCoverageEntry[];
+			return toCoveragePoints(log, entries);
 		})
 	);
 
@@ -296,6 +447,34 @@ function toBytecodePoints(log: BytecodeTrackedLog, entries: BytecodeSizeEntry[])
 			releaseLabel: '',
 			bytes,
 		};
+	});
+}
+
+function toCoveragePoints(log: BytecodeTrackedLog, entries: CompilerCoverageEntry[]) {
+	return entries.flatMap(entry => {
+		const version = entry.version ?? 'unknown';
+		const releaseTag = `@8f4e/compiler@${version}`;
+
+		return (['compiler', 'tokenizer'] as const).map(component => {
+			const componentLabel = component === 'compiler' ? 'Compiler' : 'Tokenizer';
+
+			return {
+				benchmark: log.benchmark,
+				label: log.label,
+				component,
+				componentLabel,
+				seriesLabel: `${log.label} ${componentLabel}`,
+				version,
+				releaseTag,
+				commit: entry.commit,
+				releaseKey: entry.commit || version,
+				releaseIndex: 0,
+				releaseLabel: '',
+				coveredFunctions: entry.coverage[component].coveredFunctions,
+				functionEntries: entry.coverage[component].functionEntries,
+				rangeExecutions: entry.coverage[component].rangeExecutions,
+			};
+		});
 	});
 }
 
@@ -359,9 +538,14 @@ function withSequentialReleaseIndexes<TPoint extends { releaseKey: string; commi
 	});
 }
 
+function isCoverageDashboardTab(tab: DashboardTab): tab is CoverageDashboardTab {
+	return tab in coverageMetricConfigs;
+}
+
 function render() {
 	bundlesView.hidden = state.tab !== 'bundles';
 	bytecodeView.hidden = state.tab !== 'bytecode';
+	rangesView.hidden = !isCoverageDashboardTab(state.tab);
 	metricControl.hidden = state.tab !== 'bundles';
 
 	for (const button of tabButtons) {
@@ -374,6 +558,11 @@ function render() {
 
 	if (state.tab === 'bytecode') {
 		renderBytecode();
+		return;
+	}
+
+	if (isCoverageDashboardTab(state.tab)) {
+		renderCoverage(coverageMetricConfigs[state.tab]);
 		return;
 	}
 
@@ -430,6 +619,38 @@ function renderBytecode() {
 	renderBytecodeGrid(state.bytecodePoints);
 }
 
+function renderCoverage(config: CoverageMetricConfig) {
+	const summaryPoints = toCoverageSummaryPoints(state.coveragePoints, config.metric);
+	const latestReleasePoints = getLatestCoverageReleasePoints(summaryPoints);
+	const latestPoint = latestReleasePoints[0] ?? null;
+	const latestCompilerPoint = latestReleasePoints.find(point => point.component === 'compiler') ?? null;
+	const latestTokenizerPoint = latestReleasePoints.find(point => point.component === 'tokenizer') ?? null;
+	const snapshotCount = new Set(state.coveragePoints.map(point => point.releaseKey)).size;
+
+	lastUpdated.textContent = latestPoint
+		? `Latest compiler ${latestPoint.releaseTag} · ${shortCommit(latestPoint.commit)}`
+		: `No ${config.emptyLabel}`;
+	coverageOverviewCaption.textContent = config.axisLabel;
+	coverageBenchmarkCaption.textContent = `${config.axisLabel} by benchmark`;
+
+	rangesSummaryGrid.innerHTML = [
+		renderSummaryItem(
+			config.compilerSummaryLabel,
+			latestCompilerPoint ? formatCount(latestCompilerPoint.value) : 'n/a',
+			`${state.coverageLogs.length} benchmarks`
+		),
+		renderSummaryItem(
+			config.tokenizerSummaryLabel,
+			latestTokenizerPoint ? formatCount(latestTokenizerPoint.value) : 'n/a',
+			`${state.coverageLogs.length} benchmarks`
+		),
+		renderSummaryItem('Snapshots', String(snapshotCount), 'compiler releases'),
+	].join('');
+
+	renderCoverageOverview(summaryPoints, config);
+	renderCoverageGrid(state.coveragePoints, config);
+}
+
 function renderSummaryItem(label: string, value: string, meta: string) {
 	return `
 		<article class="summary-item">
@@ -438,6 +659,56 @@ function renderSummaryItem(label: string, value: string, meta: string) {
 			<small>${escapeHtml(meta)}</small>
 		</article>
 	`;
+}
+
+function renderCoverageOverview(points: CoverageSummaryPoint[], config: CoverageMetricConfig) {
+	const releaseLabels = getReleaseLabels(points);
+	const hasTrend = hasMultipleSnapshots(points);
+
+	replaceChart(
+		rangesOverviewChart,
+		Plot.plot({
+			width: getChartWidth(rangesOverviewChart),
+			height: 340,
+			marginLeft: 72,
+			marginRight: 24,
+			marginTop: 18,
+			marginBottom: 44,
+			x: {
+				label: null,
+				grid: true,
+				tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
+			},
+			y: {
+				domain: getCountDomain(points.map(point => point.value)),
+				label: config.axisLabel,
+				grid: true,
+				tickFormat: formatCompactCount,
+			},
+			color: { legend: true },
+			marks: [
+				...(hasTrend
+					? [
+							Plot.lineY(points, {
+								x: 'releaseIndex',
+								y: 'value',
+								stroke: 'componentLabel',
+								strokeWidth: 2.25,
+								tip: true,
+							}),
+						]
+					: []),
+				Plot.dot(points, {
+					x: 'releaseIndex',
+					y: 'value',
+					fill: 'componentLabel',
+					r: 4,
+					title: point =>
+						`${point.componentLabel}\n${point.releaseTag}\n${point.releaseLabel}\n${formatCount(point.value)}`,
+				}),
+			],
+		})
+	);
 }
 
 function renderBytecodeOverview(points: BytecodePoint[]) {
@@ -567,6 +838,38 @@ function renderBytecodeGrid(points: BytecodePoint[]) {
 	}
 }
 
+function renderCoverageGrid(points: CoveragePoint[], config: CoverageMetricConfig) {
+	rangesGrid.replaceChildren();
+
+	for (const log of state.coverageLogs) {
+		const benchmarkPoints = points.filter(point => point.benchmark === log.benchmark);
+		const latestPoints = getLatestCoverageReleasePoints(benchmarkPoints);
+		const latestCompilerPoint = latestPoints.find(point => point.component === 'compiler') ?? null;
+		const latestTokenizerPoint = latestPoints.find(point => point.component === 'tokenizer') ?? null;
+		const latestPoint = latestCompilerPoint ?? latestTokenizerPoint;
+		const card = document.createElement('article');
+		card.className = 'package-card';
+		card.innerHTML = `
+			<div class="package-card-header">
+				<div>
+					<h3>${escapeHtml(log.label)}</h3>
+					<p>${latestPoint ? escapeHtml(formatCoveragePointMeta(latestPoint)) : ''}</p>
+				</div>
+				<strong>${latestCompilerPoint ? escapeHtml(formatCount(getCoverageMetricValue(latestCompilerPoint, config.metric))) : 'n/a'}</strong>
+			</div>
+			<div class="package-card-chart"></div>
+			${renderCoverageTable(benchmarkPoints, config)}
+		`;
+
+		rangesGrid.append(card);
+		const chartContainer = card.querySelector<HTMLElement>('.package-card-chart');
+
+		if (chartContainer) {
+			replaceChart(chartContainer, createCoverageBenchmarkChart(chartContainer, benchmarkPoints, config));
+		}
+	}
+}
+
 function renderPackageGrid(points: Point[]) {
 	packageGrid.replaceChildren();
 
@@ -593,6 +896,52 @@ function renderPackageGrid(points: Point[]) {
 			replaceChart(chartContainer, createPackageChart(chartContainer, packagePoints));
 		}
 	}
+}
+
+function createCoverageBenchmarkChart(container: HTMLElement, points: CoveragePoint[], config: CoverageMetricConfig) {
+	const releaseLabels = getReleaseLabels(points);
+	const hasTrend = hasMultipleSnapshots(points);
+
+	return Plot.plot({
+		width: getChartWidth(container),
+		height: 170,
+		marginLeft: 62,
+		marginRight: 16,
+		marginTop: 12,
+		marginBottom: 36,
+		x: {
+			label: null,
+			grid: true,
+			tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
+		},
+		y: {
+			domain: getCountDomain(points.map(point => getCoverageMetricValue(point, config.metric))),
+			label: config.cardLabel,
+			grid: true,
+			tickFormat: formatCompactCount,
+		},
+		color: { legend: true },
+		marks: [
+			...(hasTrend
+				? [
+						Plot.lineY(points, {
+							x: 'releaseIndex',
+							y: point => getCoverageMetricValue(point, config.metric),
+							stroke: 'componentLabel',
+							strokeWidth: 2,
+						}),
+					]
+				: []),
+			Plot.dot(points, {
+				x: 'releaseIndex',
+				y: point => getCoverageMetricValue(point, config.metric),
+				fill: 'componentLabel',
+				r: 4,
+				title: point =>
+					`${point.componentLabel}\n${point.releaseTag}\n${point.releaseLabel}\n${formatCount(getCoverageMetricValue(point, config.metric))}`,
+			}),
+		],
+	});
 }
 
 function createBytecodeBenchmarkChart(container: HTMLElement, points: BytecodePoint[]) {
@@ -716,6 +1065,45 @@ function renderBytecodeTable(points: BytecodePoint[]) {
 	`;
 }
 
+function renderCoverageTable(points: CoveragePoint[], config: CoverageMetricConfig) {
+	if (points.length === 0) {
+		return '<div class="empty-table">No snapshots</div>';
+	}
+
+	const releases = [...new Map(points.map(point => [point.releaseKey, point])).values()].slice(-8).reverse();
+
+	return `
+		<div class="file-table-wrap">
+			<table class="file-table">
+				<thead>
+					<tr>
+						<th>Release</th>
+						<th>Compiler</th>
+						<th>Tokenizer</th>
+					</tr>
+				</thead>
+				<tbody>
+					${releases
+						.map(release => {
+							const releasePoints = points.filter(point => point.releaseKey === release.releaseKey);
+							const compilerPoint = releasePoints.find(point => point.component === 'compiler');
+							const tokenizerPoint = releasePoints.find(point => point.component === 'tokenizer');
+
+							return `
+								<tr>
+									<td>${escapeHtml(release.releaseTag)}</td>
+									<td>${compilerPoint ? formatCount(getCoverageMetricValue(compilerPoint, config.metric)) : 'n/a'}</td>
+									<td>${tokenizerPoint ? formatCount(getCoverageMetricValue(tokenizerPoint, config.metric)) : 'n/a'}</td>
+								</tr>
+							`;
+						})
+						.join('')}
+				</tbody>
+			</table>
+		</div>
+	`;
+}
+
 function replaceChart(container: HTMLElement, chart: SVGSVGElement | HTMLElement) {
 	container.replaceChildren(chart);
 }
@@ -732,8 +1120,47 @@ function getLatestBytecodeReleasePoints(points: BytecodePoint[]) {
 	return points.filter(point => point.releaseIndex === latestReleaseIndex);
 }
 
+function getLatestCoverageReleasePoints<TPoint extends { releaseIndex: number }>(points: TPoint[]) {
+	const latestReleaseIndex = Math.max(-1, ...points.map(point => point.releaseIndex));
+
+	return points.filter(point => point.releaseIndex === latestReleaseIndex);
+}
+
+function toCoverageSummaryPoints(points: CoveragePoint[], metric: CoverageMetric) {
+	const byReleaseAndComponent = new Map<string, CoverageSummaryPoint>();
+
+	for (const point of points) {
+		const key = `${point.releaseKey}:${point.component}`;
+		const existingPoint = byReleaseAndComponent.get(key);
+		const value = getCoverageMetricValue(point, metric);
+
+		if (existingPoint) {
+			existingPoint.value += value;
+			continue;
+		}
+
+		byReleaseAndComponent.set(key, {
+			component: point.component,
+			componentLabel: point.componentLabel,
+			version: point.version,
+			releaseTag: point.releaseTag,
+			commit: point.commit,
+			releaseKey: point.releaseKey,
+			releaseIndex: point.releaseIndex,
+			releaseLabel: point.releaseLabel,
+			value,
+		});
+	}
+
+	return [...byReleaseAndComponent.values()];
+}
+
 function getLatestDate(points: Point[]) {
 	return points.map(point => point.recordedAt).sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
+}
+
+function getCoverageMetricValue(point: CoveragePoint, metric: CoverageMetric) {
+	return point[metric];
 }
 
 function getChartWidth(container: HTMLElement) {
@@ -763,6 +1190,21 @@ function getByteDomain(points: Array<{ bytes: number }>): [number, number] | und
 	return [Math.max(0, Math.floor(min - padding)), Math.ceil(max + padding)];
 }
 
+function getCountDomain(values: number[]): [number, number] | undefined {
+	const finiteValues = values.filter(Number.isFinite);
+
+	if (finiteValues.length === 0) {
+		return;
+	}
+
+	const min = Math.min(...finiteValues);
+	const max = Math.max(...finiteValues);
+	const spread = max - min;
+	const padding = Math.max(spread * 0.12, max * 0.01, 1);
+
+	return [Math.max(0, Math.floor(min - padding)), Math.ceil(max + padding)];
+}
+
 function formatBytes(bytes: number) {
 	if (bytes < 1024) {
 		return `${bytes} B`;
@@ -779,11 +1221,26 @@ function formatCompactBytes(bytes: number) {
 	return `${Math.round(bytes / 1024)} KiB`;
 }
 
+function formatCount(value: number) {
+	return new Intl.NumberFormat(undefined).format(value);
+}
+
+function formatCompactCount(value: number) {
+	return new Intl.NumberFormat(undefined, {
+		notation: 'compact',
+		maximumFractionDigits: 1,
+	}).format(value);
+}
+
 function formatPointMeta(point: Point) {
 	return `${point.releaseTag} · ${shortCommit(point.commit)}`;
 }
 
 function formatBytecodePointMeta(point: BytecodePoint) {
+	return `${point.releaseTag} · ${shortCommit(point.commit)}`;
+}
+
+function formatCoveragePointMeta(point: CoveragePoint | CoverageSummaryPoint) {
 	return `${point.releaseTag} · ${shortCommit(point.commit)}`;
 }
 

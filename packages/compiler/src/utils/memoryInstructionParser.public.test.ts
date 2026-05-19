@@ -17,6 +17,13 @@ describe('parseMemoryInstructionArguments', () => {
 		byteCode: [],
 		stack: [],
 		blockStack: [],
+		insideModuleBlock: false,
+		insideFunctionBlock: false,
+		insideGenericBlock: false,
+		insideLoopBlock: false,
+		insideConditionBlock: false,
+		insideConstantsBlock: false,
+		insideMapBlock: false,
 		startingByteAddress: 0,
 		mode: 'module',
 	});

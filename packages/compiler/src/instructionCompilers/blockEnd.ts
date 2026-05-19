@@ -5,6 +5,7 @@ import consumeExpectedBlockResult from './utils/consumeExpectedBlockResult';
 import { saveByteCode } from './utils/saveByteCode';
 
 import { getError } from '../compilerError';
+import { popBlock } from '../utils/blockStack';
 
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -13,7 +14,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const blockEnd: InstructionCompiler = (line, context) => {
-	const block = context.blockStack.pop();
+	const block = popBlock(context);
 
 	if (!block) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);

@@ -1,0 +1,60 @@
+import { describe, expect, it } from 'vitest';
+import { ArgumentType, BlockType, ErrorCode } from '@8f4e/compiler-spec';
+
+import { validateInstruction } from './validateInstruction';
+
+import createInstructionCompilerTestContext from '../utils/testUtils';
+
+import type { AST } from '@8f4e/compiler-spec';
+
+const pushLine: AST[number] = {
+	lineNumberBeforeMacroExpansion: 1,
+	lineNumberAfterMacroExpansion: 1,
+	instruction: 'push',
+	arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
+};
+
+const mapLine: AST[number] = {
+	lineNumberBeforeMacroExpansion: 1,
+	lineNumberAfterMacroExpansion: 1,
+	instruction: 'map',
+	arguments: [
+		{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+		{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+	],
+};
+
+describe('validateInstruction', () => {
+	it('rejects instructions inside constants blocks from the cached context flag', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [],
+			insideConstantsBlock: true,
+		});
+
+		expect(() => validateInstruction(pushLine, context)).toThrow(`${ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK}`);
+	});
+
+	it('rejects instructions inside map blocks from the cached context flag', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [],
+			insideMapBlock: true,
+		});
+
+		expect(() => validateInstruction(pushLine, context)).toThrow(`${ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK}`);
+	});
+
+	it('still allows map instructions inside map blocks', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [
+				{
+					blockType: BlockType.MAP,
+					expectedResultIsInteger: false,
+					hasExpectedResult: false,
+				},
+			],
+			insideMapBlock: true,
+		});
+
+		expect(() => validateInstruction(mapLine, context)).not.toThrow();
+	});
+});

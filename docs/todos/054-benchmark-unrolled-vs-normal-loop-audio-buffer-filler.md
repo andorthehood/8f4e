@@ -3,6 +3,7 @@ title: 'TODO: Benchmark Unrolled vs Normal Loop in Audio Buffer Filler'
 priority: Medium
 effort: 8-12 hours
 created: 2025-09-07
+issue: https://github.com/andorthehood/8f4e/issues/541
 status: Open
 completed: null
 ---

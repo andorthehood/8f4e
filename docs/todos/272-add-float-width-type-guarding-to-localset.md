@@ -3,6 +3,7 @@ title: 'TODO: Add float32/float64 width checks to localSet instruction'
 priority: High
 effort: 1-3h
 created: 2026-02-20
+issue: https://github.com/andorthehood/8f4e/issues/551
 status: Open
 completed: null
 ---

@@ -160,5 +160,23 @@
 		"version": "1.4.6",
 		"benchmark": "fmSynth.8f4e",
 		"emittedBytes": 6703
+	},
+	{
+		"commit": "d0f9114715e67177d74c1789646826f7fffdc401",
+		"version": "1.4.7",
+		"benchmark": "fmSynth.8f4e",
+		"emittedBytes": 6703
+	},
+	{
+		"commit": "f240f0ea0359f102bb38183c308e32c68d67f2ef",
+		"version": "1.4.8",
+		"benchmark": "fmSynth.8f4e",
+		"emittedBytes": 6703
+	},
+	{
+		"commit": "aa3ceb89ef4d2e1011145dec1d3ff4c8d92e0ef9",
+		"version": "1.4.9",
+		"benchmark": "fmSynth.8f4e",
+		"emittedBytes": 6703
 	}
 ]

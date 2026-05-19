@@ -1,6 +1,4 @@
 import {
-	BlockType,
-	type BlockStack,
 	type CompilationContext,
 	type ErrorCodeValue,
 	type InstructionCompiler,
@@ -8,15 +6,8 @@ import {
 } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
-import {
-	isInstructionInsideFunction,
-	isInstructionInsideModuleOrFunction,
-	isInstructionIsInsideAModule,
-	isInstructionIsInsideBlock,
-} from '../utils/blockStack';
 
 export function validateScope(
-	blockStack: BlockStack,
 	scope: ScopeRule,
 	line: Parameters<InstructionCompiler>[0],
 	context: CompilationContext,
@@ -26,22 +17,22 @@ export function validateScope(
 
 	switch (scope) {
 		case 'module':
-			isValid = isInstructionIsInsideAModule(blockStack);
+			isValid = context.insideModuleBlock === true;
 			break;
 		case 'function':
-			isValid = isInstructionInsideFunction(blockStack);
+			isValid = context.insideFunctionBlock === true;
 			break;
 		case 'moduleOrFunction':
-			isValid = isInstructionInsideModuleOrFunction(blockStack);
+			isValid = context.insideModuleBlock === true || context.insideFunctionBlock === true;
 			break;
 		case 'block':
-			isValid = isInstructionIsInsideBlock(blockStack, BlockType.BLOCK);
+			isValid = context.insideGenericBlock === true;
 			break;
 		case 'constants':
-			isValid = isInstructionIsInsideBlock(blockStack, BlockType.CONSTANTS);
+			isValid = context.insideConstantsBlock === true;
 			break;
 		case 'map':
-			isValid = isInstructionIsInsideBlock(blockStack, BlockType.MAP);
+			isValid = context.insideMapBlock === true;
 			break;
 	}
 

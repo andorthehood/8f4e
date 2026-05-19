@@ -3,6 +3,7 @@ title: 'TODO: Finish compiler stack analysis/codegen separation'
 priority: Medium
 effort: 2-4d
 created: 2026-05-11
+issue: https://github.com/andorthehood/8f4e/issues/653
 status: Open
 completed: null
 ---

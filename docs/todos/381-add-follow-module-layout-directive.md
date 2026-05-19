@@ -3,6 +3,7 @@ title: 'TODO: Add #follow module layout directive'
 priority: Medium
 effort: 1-2 days
 created: 2026-04-21
+issue: https://github.com/andorthehood/8f4e/issues/562
 status: Open
 completed: null
 ---

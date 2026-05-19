@@ -1,4 +1,4 @@
-import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
+import { parse8f4eProject } from '@8f4e/tokenizer';
 
 import type { Project } from '@8f4e/editor-state-types';
 
@@ -7,64 +7,7 @@ import type { Project } from '@8f4e/editor-state-types';
  * Throws if the text is not valid .8f4e format.
  */
 export function parse8f4eToProject(text: string): Project {
-	const lines = text.split('\n');
-
-	if (lines[0]?.trim() !== FORMAT_HEADER) {
-		throw new Error(`Invalid .8f4e file: expected header "${FORMAT_HEADER}", got "${lines[0]?.trim() ?? ''}"`);
-	}
-
-	const codeBlocks: Array<{ code: string[] }> = [];
-	let currentBlockLines: string[] | null = null;
-	let openerKeyword: string | null = null;
-
-	for (let i = 1; i < lines.length; i++) {
-		const line = lines[i];
-		const trimmed = line.trim();
-
-		if (currentBlockLines === null) {
-			// Outside a block: skip blank lines, expect opener
-			if (trimmed === '') {
-				continue;
-			}
-
-			const opener = getOpenerKeyword(trimmed);
-			if (!opener) {
-				throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
-			}
-
-			openerKeyword = opener;
-			currentBlockLines = [line];
-		} else {
-			// Inside a block: accumulate lines, watch for closer
-			currentBlockLines.push(line);
-
-			const closer = getCloserKeyword(trimmed);
-			if (closer) {
-				const expectedCloserPrefix = getExpectedCloserPrefix(openerKeyword!);
-				if (!closer.startsWith(expectedCloserPrefix)) {
-					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
-				}
-
-				codeBlocks.push({ code: currentBlockLines });
-				currentBlockLines = null;
-				openerKeyword = null;
-			} else if (trimmed !== '') {
-				// Check for mixed openers inside the block
-				const innerOpener = getOpenerKeyword(trimmed);
-				if (innerOpener) {
-					throw new Error(
-						`Parse error at line ${i + 1}: mixed block type markers (found opener "${trimmed}" inside "${openerKeyword}" block)`
-					);
-				}
-			}
-		}
-	}
-
-	if (currentBlockLines !== null) {
-		throw new Error(`Parse error: unclosed block with opener "${openerKeyword}"`);
-	}
-
-	return { codeBlocks };
+	return parse8f4eProject(text) as Project;
 }
 
 if (import.meta.vitest) {
