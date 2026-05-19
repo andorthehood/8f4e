@@ -4,7 +4,7 @@
   "description": "8f4e",
   "packageManager": "npm@11.6.1",
   "engines": {
-    "node": "24.11.0",
+    "node": "24.15.0",
     "npm": "11.6.1"
   },
   "scripts": {
@@ -27,7 +27,7 @@
     "@nx/vite": "22.7.1",
     "@playwright/test": "1.59.1",
     "@types/audioworklet": "0.0.100",
-    "@types/node": "24.12.2",
+    "@types/node": "24.12.4",
     "@types/offscreencanvas": "2019.7.3",
     "@typescript-eslint/eslint-plugin": "8.59.2",
     "@typescript-eslint/parser": "8.59.2",
