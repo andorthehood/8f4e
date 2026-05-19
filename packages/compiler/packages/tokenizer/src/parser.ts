@@ -200,14 +200,13 @@ export function compileToAST(
 		const parsedLine = parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
 		const astIndex = ast.length;
 		const currentSourceBlockPrologue = sourceBlockPrologueStack[sourceBlockPrologueStack.length - 1];
+		const isCompilerDirective = isCompilerDirectiveInstruction(parsedLine.instruction);
+		const isInOpenSourceBlockPrologue =
+			currentSourceBlockPrologue?.isOpen && currentSourceBlockPrologue.blockDepth === blockStack.length;
 
-		if (
-			currentSourceBlockPrologue?.isOpen &&
-			currentSourceBlockPrologue.blockDepth === blockStack.length &&
-			isCompilerDirectiveInstruction(parsedLine.instruction)
-		) {
+		if (isCompilerDirective && isInOpenSourceBlockPrologue) {
 			parsedLine.isBlockPrologue = true;
-		} else if (currentSourceBlockPrologue && isCompilerDirectiveInstruction(parsedLine.instruction)) {
+		} else if (isCompilerDirective) {
 			throw new SyntaxRulesError(SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE, undefined, {
 				lineNumberBeforeMacroExpansion,
 				lineNumberAfterMacroExpansion,
@@ -215,11 +214,7 @@ export function compileToAST(
 			});
 		}
 
-		if (
-			currentSourceBlockPrologue?.isOpen &&
-			currentSourceBlockPrologue.blockDepth === blockStack.length &&
-			!isCompilerDirectiveInstruction(parsedLine.instruction)
-		) {
+		if (isInOpenSourceBlockPrologue && !isCompilerDirective) {
 			currentSourceBlockPrologue.isOpen = false;
 		}
 
