@@ -68,6 +68,12 @@ select {
 	background: #ffffff;
 }
 
+.segmented[role='tablist'] {
+	display: flex;
+	max-width: 100%;
+	overflow-x: auto;
+}
+
 .segment {
 	min-height: 36px;
 	padding: 0 12px;
@@ -76,6 +82,11 @@ select {
 	background: #ffffff;
 	color: #344054;
 	cursor: pointer;
+	white-space: nowrap;
+}
+
+.segmented[role='tablist'] .segment {
+	flex: 0 0 auto;
 }
 
 .segment:last-child {
@@ -100,7 +111,8 @@ main > * {
 }
 
 #bundles-view,
-#bytecode-view {
+#bytecode-view,
+#ranges-view {
 	display: grid;
 	gap: 20px;
 	min-width: 0;
