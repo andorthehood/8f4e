@@ -1,17 +1,13 @@
 import compile, { compileCodegenLine, collectNamespacesFromASTs } from '@8f4e/compiler';
+import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
-	compiledModuleBlockTypes,
 	compilerSourceBlockInstructionByType,
-	documentBlockInstructionByType,
 	type AST,
 	type CompileOptions,
 	type CompilationContext,
 	type CompilerSourceBlockType,
-	type Module,
 } from '@8f4e/compiler-spec';
-
-import getBlockType from '../shared/getBlockType';
 
 import type { ProjectInput } from '../shared/types';
 
@@ -82,12 +78,10 @@ function serializeArguments(line: AST[number]): InstructionTraceEntry['arguments
 	});
 }
 
-const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
 const constantsInstruction = compilerSourceBlockInstructionByType.constants.start;
 const constantsBlockType = compilerSourceBlockInstructionByType.constants.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
-const macroBlockType = documentBlockInstructionByType.macro.type;
 
 function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: CompilationContext): BlockTrace {
 	const entries: InstructionTraceEntry[] = [];
@@ -117,44 +111,11 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 	};
 }
 
-function pickProjectBlocks(project: ProjectInput): {
-	moduleBlocks: Module[];
-	functionBlocks: Module[];
-	macroBlocks: Module[];
-} {
-	const moduleBlocks: Module[] = [];
-	const functionBlocks: Module[] = [];
-	const macroBlocks: Module[] = [];
-
-	for (const block of project.codeBlocks) {
-		if (block.disabled) {
-			continue;
-		}
-
-		const blockType = getBlockType(block.code);
-		if (compiledModuleBlockTypeSet.has(blockType)) {
-			moduleBlocks.push({ code: block.code });
-			continue;
-		}
-
-		if (blockType === functionBlockType) {
-			functionBlocks.push({ code: block.code });
-			continue;
-		}
-
-		if (blockType === macroBlockType) {
-			macroBlocks.push({ code: block.code });
-		}
-	}
-
-	return { moduleBlocks, functionBlocks, macroBlocks };
-}
-
 export default function traceInstructionFlow(
 	project: ProjectInput,
 	compilerOptions: CompileOptions
 ): InstructionFlowTrace {
-	const { moduleBlocks, functionBlocks, macroBlocks } = pickProjectBlocks(project);
+	const { moduleBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
 
 	if (moduleBlocks.length === 0) {
 		return {

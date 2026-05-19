@@ -1,15 +1,7 @@
 import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-spec';
-import type { CompilableBlockType } from '@8f4e/compiler-spec';
+import type { ProjectBlockType, ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
 
-export interface ProjectCodeBlock {
-	code: string[];
-	disabled?: boolean;
-}
-
-export interface ProjectInput {
-	codeBlocks: ProjectCodeBlock[];
-	[key: string]: unknown;
-}
+export type { ProjectCodeBlock, ProjectInput };
 
 export interface CompileProjectOptions {
 	compilerOptions?: Partial<CompileOptions>;
@@ -27,4 +19,4 @@ export interface CompileProjectResult {
 	requiredMemoryBytes?: number;
 }
 
-export type BlockTypeValue = CompilableBlockType | 'unknown';
+export type BlockTypeValue = ProjectBlockType;

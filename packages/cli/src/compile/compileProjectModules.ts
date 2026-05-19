@@ -1,14 +1,8 @@
 import compile from '@8f4e/compiler';
-import { compiledModuleBlockTypes, documentBlockInstructionByType } from '@8f4e/compiler-spec';
+import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
-import getBlockType from '../shared/getBlockType';
-
-import type { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler-spec';
+import type { CompileOptions, CompiledModuleLookup } from '@8f4e/compiler-spec';
 import type { ProjectCodeBlock } from '../shared/types';
-
-const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
-const functionBlockType = documentBlockInstructionByType.function.type;
-const macroBlockType = documentBlockInstructionByType.macro.type;
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
@@ -28,29 +22,7 @@ export default function compileProjectModules(
 ): CompileProjectModulesResult {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-
-	const moduleBlocks: Module[] = [];
-	const functionBlocks: Module[] = [];
-	const macroBlocks: Module[] = [];
-
-	for (const block of blocks) {
-		if (block.disabled) {
-			continue;
-		}
-
-		const blockType = getBlockType(block.code);
-		if (compiledModuleBlockTypeSet.has(blockType)) {
-			moduleBlocks.push({ code: block.code });
-			continue;
-		}
-		if (blockType === functionBlockType) {
-			functionBlocks.push({ code: block.code });
-			continue;
-		}
-		if (blockType === macroBlockType) {
-			macroBlocks.push({ code: block.code });
-		}
-	}
+	const { moduleBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(blocks);
 
 	if (moduleBlocks.length === 0) {
 		return {
