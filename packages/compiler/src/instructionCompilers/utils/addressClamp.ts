@@ -31,7 +31,7 @@ export function getClampedAddressStackItem(
 	range: MemoryAddressRange | undefined,
 	accessByteWidth: number
 ): StackItem {
-	const safeMemoryAccessByteWidth = Math.min(accessByteWidth, range?.safeByteLength ?? accessByteWidth);
+	const safeAccessByteWidth = Math.min(accessByteWidth, range?.safeByteLength ?? accessByteWidth);
 	const knownIntegerValue = range
 		? clampKnownIntegerValue(
 				operand.knownIntegerValue,
@@ -44,8 +44,14 @@ export function getClampedAddressStackItem(
 		isInteger: true,
 		isNonZero: knownIntegerValue !== undefined ? knownIntegerValue !== 0 : false,
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
-		...(range ? { clampAddressRange: range } : {}),
-		...(safeMemoryAccessByteWidth > 0 ? { safeMemoryAccessByteWidth } : {}),
+		...(range || safeAccessByteWidth > 0
+			? {
+					address: {
+						...(range ? { clampRange: range } : {}),
+						...(safeAccessByteWidth > 0 ? { safeAccessByteWidth } : {}),
+					},
+				}
+			: {}),
 	};
 }
 

@@ -13,7 +13,9 @@ describe('load instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			safeAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+			address: {
+				safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+			},
 		});
 
 		load(
@@ -60,7 +62,9 @@ describe('load instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			safeAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'test' },
+			address: {
+				safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'test' },
+			},
 		});
 
 		load(
@@ -81,7 +85,9 @@ describe('load instruction compiler', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			safeMemoryAccessByteWidth: 4,
+			address: {
+				safeAccessByteWidth: 4,
+			},
 		});
 
 		load(

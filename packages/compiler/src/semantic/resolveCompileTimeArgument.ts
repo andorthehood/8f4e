@@ -35,12 +35,14 @@ function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): 
 	return {
 		value: memoryItem.byteAddress,
 		isInteger: true,
-		safeAddressRange: {
-			source: 'memory-start',
-			byteAddress: memoryItem.byteAddress,
-			safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
-			...(moduleId ? { moduleId } : {}),
-			...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
+		address: {
+			safeRange: {
+				source: 'memory-start',
+				byteAddress: memoryItem.byteAddress,
+				safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
+				...(moduleId ? { moduleId } : {}),
+				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
+			},
 		},
 	};
 }
@@ -50,12 +52,14 @@ function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Co
 	return {
 		value: byteAddress,
 		isInteger: true,
-		safeAddressRange: {
-			source: 'memory-end',
-			byteAddress,
-			safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
-			...(moduleId ? { moduleId } : {}),
-			...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
+		address: {
+			safeRange: {
+				source: 'memory-end',
+				byteAddress,
+				safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
+				...(moduleId ? { moduleId } : {}),
+				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
+			},
 		},
 	};
 }
@@ -69,30 +73,29 @@ function moduleAddressConst(
 	return {
 		value: byteAddress,
 		isInteger: true,
-		safeAddressRange: {
-			source,
-			byteAddress,
-			safeByteLength:
-				source === 'module-start'
-					? getWordAlignedByteLength(wordAlignedSize)
-					: getEndAddressSafeByteLength(wordAlignedSize),
-			...(moduleId ? { moduleId } : {}),
+		address: {
+			safeRange: {
+				source,
+				byteAddress,
+				safeByteLength:
+					source === 'module-start'
+						? getWordAlignedByteLength(wordAlignedSize)
+						: getEndAddressSafeByteLength(wordAlignedSize),
+				...(moduleId ? { moduleId } : {}),
+			},
 		},
 	};
 }
 
-function shiftSafeAddressRange(
-	safeAddressRange: MemoryAddressRange,
-	byteOffset: number
-): MemoryAddressRange | undefined {
-	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > safeAddressRange.safeByteLength) {
+function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
+	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > safeRange.safeByteLength) {
 		return undefined;
 	}
 
 	return {
-		...safeAddressRange,
-		byteAddress: safeAddressRange.byteAddress + byteOffset,
-		safeByteLength: safeAddressRange.safeByteLength - byteOffset,
+		...safeRange,
+		byteAddress: safeRange.byteAddress + byteOffset,
+		safeByteLength: safeRange.safeByteLength - byteOffset,
 	};
 }
 
@@ -298,12 +301,14 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		if (item) {
 			return {
 				...memoryStartAddressConst(item, targetModuleId),
-				safeAddressRange: {
-					source: 'module-nth-memory-start',
-					byteAddress: item.byteAddress,
-					safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
-					moduleId: targetModuleId,
-					...(item.id ? { memoryId: item.id } : {}),
+				address: {
+					safeRange: {
+						source: 'module-nth-memory-start',
+						byteAddress: item.byteAddress,
+						safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
+						moduleId: targetModuleId,
+						...(item.id ? { memoryId: item.id } : {}),
+					},
 				},
 			};
 		}
@@ -376,20 +381,20 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 						: Math.pow(lhsConst.value, rhsConst.value);
 	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
 	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
-	const safeAddressRange =
-		isInteger && operator === '+' && lhsConst.safeAddressRange && rhsConst.isInteger
-			? shiftSafeAddressRange(lhsConst.safeAddressRange, rhsConst.value)
-			: isInteger && operator === '+' && rhsConst.safeAddressRange && lhsConst.isInteger
-				? shiftSafeAddressRange(rhsConst.safeAddressRange, lhsConst.value)
-				: isInteger && operator === '-' && lhsConst.safeAddressRange && rhsConst.isInteger
-					? shiftSafeAddressRange(lhsConst.safeAddressRange, -rhsConst.value)
+	const safeRange =
+		isInteger && operator === '+' && lhsConst.address?.safeRange && rhsConst.isInteger
+			? shiftSafeRange(lhsConst.address.safeRange, rhsConst.value)
+			: isInteger && operator === '+' && rhsConst.address?.safeRange && lhsConst.isInteger
+				? shiftSafeRange(rhsConst.address.safeRange, lhsConst.value)
+				: isInteger && operator === '-' && lhsConst.address?.safeRange && rhsConst.isInteger
+					? shiftSafeRange(lhsConst.address.safeRange, -rhsConst.value)
 					: undefined;
 
 	return {
 		value,
 		isInteger,
 		...(isFloat64 ? { isFloat64: true } : {}),
-		...(safeAddressRange ? { safeAddressRange } : {}),
+		...(safeRange ? { address: { safeRange } } : {}),
 	};
 }
 

@@ -61,11 +61,13 @@ describe('push instruction compiler', () => {
 						type: ArgumentType.LITERAL,
 						value: 12,
 						isInteger: true,
-						safeAddressRange: {
-							source: 'memory-start',
-							byteAddress: 12,
-							safeByteLength: 16,
-							memoryId: 'buffer',
+						address: {
+							safeRange: {
+								source: 'memory-start',
+								byteAddress: 12,
+								safeByteLength: 16,
+								memoryId: 'buffer',
+							},
 						},
 					},
 				],
@@ -76,11 +78,13 @@ describe('push instruction compiler', () => {
 		expect(context.stack[0]).toMatchObject({
 			isInteger: true,
 			isNonZero: true,
-			safeAddressRange: {
-				source: 'memory-start',
-				byteAddress: 12,
-				safeByteLength: 16,
-				memoryId: 'buffer',
+			address: {
+				safeRange: {
+					source: 'memory-start',
+					byteAddress: 12,
+					safeByteLength: 16,
+					memoryId: 'buffer',
+				},
 			},
 		});
 	});
