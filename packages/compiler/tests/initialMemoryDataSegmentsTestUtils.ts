@@ -9,6 +9,7 @@ export function createMemory(
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes.int,
+		memoryIndex: 0,
 		wordAlignedSize: 1,
 		wordAlignedAddress: overrides.byteAddress / 4,
 		default: 0,
@@ -41,6 +42,7 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 		initFunctionBody: [],
 		cycleFunction: [],
 		id: 'test',
+		memoryIndex: 0,
 		byteAddress,
 		wordAlignedAddress: byteAddress / 4,
 		memoryMap: {},
@@ -49,8 +51,11 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 	};
 }
 
-export function serializeSegments<T extends { byteAddress: number; bytes: Uint8Array }>(segments: T[]) {
+export function serializeSegments<T extends { memoryIndex?: number; byteAddress: number; bytes: Uint8Array }>(
+	segments: T[]
+) {
 	return segments.map(segment => ({
+		...(segment.memoryIndex ? { memoryIndex: segment.memoryIndex } : {}),
 		byteAddress: segment.byteAddress,
 		bytes: Array.from(segment.bytes),
 	}));

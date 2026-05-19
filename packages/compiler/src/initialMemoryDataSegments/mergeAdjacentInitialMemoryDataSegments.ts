@@ -8,6 +8,8 @@ export default function mergeAdjacentInitialMemoryDataSegments(
 	segments: InitialMemoryDataSegment[]
 ): InitialMemoryDataSegment[] {
 	const mergedSegments: InitialMemoryDataSegment[] = [];
+	let segmentMemoryIndex = 0;
+	let segmentMemoryRegionName: string | undefined;
 	let segmentByteAddress = 0;
 	let segmentByteLength = 0;
 	let segmentChunks: Array<Uint8Array | number> = [];
@@ -19,6 +21,8 @@ export default function mergeAdjacentInitialMemoryDataSegments(
 		}
 
 		mergedSegments.push({
+			memoryIndex: segmentMemoryIndex,
+			...(segmentMemoryRegionName ? { memoryRegionName: segmentMemoryRegionName } : {}),
 			byteAddress: segmentByteAddress,
 			bytes: materializeByteChunks(segmentChunks, segmentByteLength),
 		});
@@ -27,11 +31,17 @@ export default function mergeAdjacentInitialMemoryDataSegments(
 		nextSegmentByteAddress = undefined;
 	};
 
-	for (const segment of [...segments].sort((left, right) => left.byteAddress - right.byteAddress)) {
-		const gapByteLength = nextSegmentByteAddress === undefined ? 0 : segment.byteAddress - nextSegmentByteAddress;
+	for (const segment of [...segments].sort(
+		(left, right) => left.memoryIndex - right.memoryIndex || left.byteAddress - right.byteAddress
+	)) {
+		const memoryChanged = segmentChunks.length > 0 && segmentMemoryIndex !== segment.memoryIndex;
+		const gapByteLength =
+			nextSegmentByteAddress === undefined || memoryChanged ? 0 : segment.byteAddress - nextSegmentByteAddress;
 
-		if (segmentChunks.length === 0 || gapByteLength > MAX_ZERO_GAP_BYTES_TO_MERGE) {
+		if (segmentChunks.length === 0 || memoryChanged || gapByteLength > MAX_ZERO_GAP_BYTES_TO_MERGE) {
 			flushSegment();
+			segmentMemoryIndex = segment.memoryIndex;
+			segmentMemoryRegionName = segment.memoryRegionName;
 			segmentByteAddress = segment.byteAddress;
 		} else if (gapByteLength > 0) {
 			segmentChunks.push(gapByteLength);

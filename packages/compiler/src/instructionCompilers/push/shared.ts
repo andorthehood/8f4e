@@ -41,10 +41,10 @@ export const constOpcode: Record<PushValueKind, (value: number) => number[]> = {
 	float64: f64const,
 };
 
-export const loadOpcode: Record<PushValueKind, () => number[]> = {
-	int32: () => i32load(),
-	float32: () => f32load(),
-	float64: () => f64load(),
+export const loadOpcode: Record<PushValueKind, (memoryIndex?: number) => number[]> = {
+	int32: (memoryIndex = 0) => i32load(2, 0, memoryIndex),
+	float32: (memoryIndex = 0) => f32load(2, 0, memoryIndex),
+	float64: (memoryIndex = 0) => f64load(3, 0, memoryIndex),
 };
 
 export function kindToStackItem(kind: PushValueKind, extras?: Partial<StackItem>): StackItem {
@@ -62,8 +62,15 @@ export function buildPointerDereferenceByteCode(
 ): { kind: PushValueKind; byteCode: number[] } {
 	const kind = resolvePointerTargetValueKind(pointerMetadata);
 	const dereferencedValueWordSize = getDereferencedValueWordSizeFromMetadata(pointerMetadata);
+	const slotMemoryIndex =
+		pointerValueSource === 'pointer-slot' && 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
+	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;
 	const finalLoad =
-		dereferencedValueWordSize === 1 ? i32load8s() : dereferencedValueWordSize === 2 ? i32load16s() : loadOpcode[kind]();
+		dereferencedValueWordSize === 1
+			? i32load8s(0, 0, pointeeMemoryIndex)
+			: dereferencedValueWordSize === 2
+				? i32load16s(1, 0, pointeeMemoryIndex)
+				: loadOpcode[kind](pointeeMemoryIndex);
 
 	const pointerLoadCount =
 		pointerValueSource === 'pointer-slot'
@@ -76,7 +83,9 @@ export function buildPointerDereferenceByteCode(
 
 	const byteCode = [...baseAddressByteCode];
 	for (let i = 0; i < pointerLoadCount; i++) {
-		byteCode.push(...i32load());
+		byteCode.push(
+			...i32load(2, 0, i === 0 && pointerValueSource === 'pointer-slot' ? slotMemoryIndex : pointeeMemoryIndex)
+		);
 	}
 	byteCode.push(...finalLoad);
 

@@ -442,6 +442,45 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.INVALID_MEMORY_REGION_NAME:
+			return {
+				code,
+				message:
+					'Invalid memory region name' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Custom memory region names must be unique non-numeric identifiers and cannot be "default" or "memory". (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.DUPLICATE_MEMORY_REGION_NAME:
+			return {
+				code,
+				message:
+					'Duplicate memory region name' + (details?.identifier ? `: ${details.identifier}` : '') + '. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.UNKNOWN_MEMORY_REGION:
+			return {
+				code,
+				message: 'Unknown memory region' + (details?.identifier ? `: ${details.identifier}` : '') + '. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS:
+			return {
+				code,
+				message:
+					'Memory region index is out of bounds' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
 			return {
 				code,

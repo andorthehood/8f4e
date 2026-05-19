@@ -29,6 +29,8 @@ export default function getMemoryValueChanges(
 					changes.push({
 						wordAlignedSize: memory.wordAlignedSize,
 						wordAlignedAddress: memory.wordAlignedAddress,
+						...(memory.memoryIndex !== undefined ? { memoryIndex: memory.memoryIndex } : {}),
+						...(memory.memoryRegionName ? { memoryRegionName: memory.memoryRegionName } : {}),
 						value: memory.default,
 						isInteger: memory.isInteger,
 						isFloat64: memory.isFloat64,
@@ -40,6 +42,8 @@ export default function getMemoryValueChanges(
 					changes.push({
 						wordAlignedSize: memory.wordAlignedSize,
 						wordAlignedAddress: memory.wordAlignedAddress,
+						...(memory.memoryIndex !== undefined ? { memoryIndex: memory.memoryIndex } : {}),
+						...(memory.memoryRegionName ? { memoryRegionName: memory.memoryRegionName } : {}),
 						value: memory.default,
 						isInteger: memory.isInteger,
 						isFloat64: memory.isFloat64,

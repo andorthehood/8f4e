@@ -1,6 +1,7 @@
 import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
+import { getMemoryRegionFields } from './memoryRegions';
 
 import {
 	getElementCount,
@@ -32,12 +33,15 @@ function getEndAddressSafeByteLength(wordAlignedSize: number): number {
 }
 
 function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
+	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: memoryItem.byteAddress,
 		isInteger: true,
 		address: {
+			...memoryRegionFields,
 			safeRange: {
 				source: 'memory-start',
+				...memoryRegionFields,
 				byteAddress: memoryItem.byteAddress,
 				safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
 				...(moduleId ? { moduleId } : {}),
@@ -49,12 +53,15 @@ function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): 
 
 function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
 	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
+	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: byteAddress,
 		isInteger: true,
 		address: {
+			...memoryRegionFields,
 			safeRange: {
 				source: 'memory-end',
+				...memoryRegionFields,
 				byteAddress,
 				safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
 				...(moduleId ? { moduleId } : {}),
@@ -68,14 +75,19 @@ function moduleAddressConst(
 	source: 'module-start' | 'module-end',
 	byteAddress: number,
 	wordAlignedSize: number,
-	moduleId?: string
+	moduleId?: string,
+	memoryIndex = 0,
+	memoryRegionName?: string
 ): Const {
+	const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
 	return {
 		value: byteAddress,
 		isInteger: true,
 		address: {
+			...memoryRegionFields,
 			safeRange: {
 				source,
+				...memoryRegionFields,
 				byteAddress,
 				safeByteLength:
 					source === 'module-start'
@@ -279,7 +291,9 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 				operand.isEndAddress ? 'module-end' : 'module-start',
 				value,
 				targetNamespace.wordAlignedSize,
-				targetModuleId
+				targetModuleId,
+				targetNamespace.memoryIndex ?? 0,
+				targetNamespace.memoryRegionName
 			);
 		}
 		return undefined;
@@ -299,11 +313,14 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		const items = Object.values(targetNamespace.memory);
 		const item = items[operand.targetMemoryIndex];
 		if (item) {
+			const memoryRegionFields = getMemoryRegionFields(item.memoryIndex, item.memoryRegionName);
 			return {
 				...memoryStartAddressConst(item, targetModuleId),
 				address: {
+					...memoryRegionFields,
 					safeRange: {
 						source: 'module-nth-memory-start',
+						...memoryRegionFields,
 						byteAddress: item.byteAddress,
 						safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
 						moduleId: targetModuleId,
@@ -343,7 +360,9 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 					'module-start',
 					context.startingByteAddress,
 					context.currentModuleWordAlignedSize ?? 0,
-					context.namespace.moduleName
+					context.namespace.moduleName,
+					context.currentMemoryIndex ?? 0,
+					context.currentMemoryRegionName
 				);
 			}
 			if (typeof context.currentModuleWordAlignedSize === 'number') {
@@ -353,7 +372,9 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 						'module-end',
 						byteAddress,
 						context.currentModuleWordAlignedSize,
-						context.namespace.moduleName
+						context.namespace.moduleName,
+						context.currentMemoryIndex ?? 0,
+						context.currentMemoryRegionName
 					),
 				};
 			}
@@ -394,7 +415,14 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 		value,
 		isInteger,
 		...(isFloat64 ? { isFloat64: true } : {}),
-		...(safeRange ? { address: { safeRange } } : {}),
+		...(safeRange
+			? {
+					address: {
+						...getMemoryRegionFields(safeRange.memoryIndex, safeRange.memoryRegionName),
+						safeRange,
+					},
+				}
+			: {}),
 	};
 }
 

@@ -53,5 +53,13 @@ export const clampGlobalAddress: InstructionCompiler = (line, context) => {
 	const accessByteWidth = getClampAccessByteWidth(line);
 	context.stack.push(getClampedAddressStackItem(operand, undefined, accessByteWidth));
 
-	return saveByteCode(context, clampAddressByteCode(context, line, 0, linearUpperByteAddressCode(accessByteWidth)));
+	return saveByteCode(
+		context,
+		clampAddressByteCode(
+			context,
+			line,
+			0,
+			linearUpperByteAddressCode(accessByteWidth, operand.address?.memoryIndex ?? 0)
+		)
+	);
 };

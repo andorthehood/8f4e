@@ -3,8 +3,8 @@ title: 'TODO: Add logical memory regions for multi-memory'
 priority: Medium
 effort: 3-5d
 created: 2026-05-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-19
 ---
 
 # TODO: Add logical memory regions for multi-memory
@@ -137,21 +137,21 @@ Introduce logical memory regions as compiler metadata first, then lower them to 
 
 ## Success Criteria
 
-- [ ] Declarations in a `#region` module allocate into that logical region.
-- [ ] `#region sampleMemory` resolves through the configured custom `memoryRegions` array.
-- [ ] `#region 1` resolves to the region at index `1`.
-- [ ] `#region 0` and omitted `#region` both target the implicit default memory.
-- [ ] Unknown region names and out-of-bounds numeric region indices produce diagnostics.
-- [ ] Modules without `#region` allocate into the default region / memory `0`.
-- [ ] `push &module:item` carries the target item's region.
-- [ ] `push *ptr` loads from the pointee region, not the pointer slot's storage region.
-- [ ] Address-style pointer arithmetic preserves region metadata when the result remains an address.
-- [ ] `load`, `store`, `storeBytes`, and `memoryCopy` use address provenance when available.
-- [ ] Raw-address `load`, `store`, `storeBytes`, and `memoryCopy` sides without provenance use implicit memory `0`.
-- [ ] Bounds guards use `memory.size` for the same memory index as the guarded operation.
-- [ ] `requiredMemoryBytes` remains default-memory-only and custom regions are reported separately.
-- [ ] Multi-memory codegen emits correct memory indices for non-default regions.
-- [ ] Existing single-memory projects keep compiling unchanged.
+- [x] Declarations in a `#region` module allocate into that logical region.
+- [x] `#region sampleMemory` resolves through the configured custom `memoryRegions` array.
+- [x] `#region 1` resolves to the region at index `1`.
+- [x] `#region 0` and omitted `#region` both target the implicit default memory.
+- [x] Unknown region names and out-of-bounds numeric region indices produce diagnostics.
+- [x] Modules without `#region` allocate into the default region / memory `0`.
+- [x] `push &module:item` carries the target item's region.
+- [x] `push *ptr` loads from the pointee region, not the pointer slot's storage region.
+- [x] Address-style pointer arithmetic preserves region metadata when the result remains an address.
+- [x] `load`, `store`, `storeBytes`, and `memoryCopy` use address provenance when available.
+- [x] Raw-address `load`, `store`, `storeBytes`, and `memoryCopy` sides without provenance use implicit memory `0`.
+- [x] Bounds guards use `memory.size` for the same memory index as the guarded operation.
+- [x] `requiredMemoryBytes` remains default-memory-only and custom regions are reported separately.
+- [x] Multi-memory codegen emits correct memory indices for non-default regions.
+- [x] Existing single-memory projects keep compiling unchanged.
 
 ## Affected Components
 

@@ -1,5 +1,5 @@
 import { WASM_F32_LOAD } from '../wasmInstruction';
-import unsignedLEB128 from '../encoding/unsignedLEB128';
+import memarg from '../memory/memarg';
 
 /**
  * Creates a WebAssembly f32.load instruction to load a 32-bit float from memory.
@@ -8,6 +8,6 @@ import unsignedLEB128 from '../encoding/unsignedLEB128';
  * @param offset - Static offset from the address, defaults to 0
  * @returns Byte array representing the f32.load instruction
  */
-export default function f32load(alignment = 2, offset = 0): number[] {
-	return [WASM_F32_LOAD, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
+export default function f32load(alignment = 2, offset = 0, memoryIndex = 0): number[] {
+	return [WASM_F32_LOAD, ...memarg(alignment, offset, memoryIndex)];
 }

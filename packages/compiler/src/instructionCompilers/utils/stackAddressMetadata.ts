@@ -1,3 +1,5 @@
+import { getMemoryRegionFields } from '../../semantic/memoryRegions';
+
 import type { MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
 function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
@@ -32,7 +34,16 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
 		...(safeRange || clampRange
-			? { address: { ...(safeRange ? { safeRange } : {}), ...(clampRange ? { clampRange } : {}) } }
+			? {
+					address: {
+						...getMemoryRegionFields(
+							(safeRange ?? clampRange)!.memoryIndex,
+							(safeRange ?? clampRange)!.memoryRegionName
+						),
+						...(safeRange ? { safeRange } : {}),
+						...(clampRange ? { clampRange } : {}),
+					},
+				}
 			: {}),
 	};
 }
@@ -51,7 +62,16 @@ export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem)
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
 		...(safeRange || clampRange
-			? { address: { ...(safeRange ? { safeRange } : {}), ...(clampRange ? { clampRange } : {}) } }
+			? {
+					address: {
+						...getMemoryRegionFields(
+							(safeRange ?? clampRange)!.memoryIndex,
+							(safeRange ?? clampRange)!.memoryRegionName
+						),
+						...(safeRange ? { safeRange } : {}),
+						...(clampRange ? { clampRange } : {}),
+					},
+				}
 			: {}),
 	};
 }

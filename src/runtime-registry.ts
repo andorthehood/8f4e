@@ -1,7 +1,7 @@
 import { createWebWorkerRuntimeDef } from '@8f4e/runtime-web-worker/runtime-def';
 import WebWorkerRuntime from '@8f4e/runtime-web-worker?worker';
 
-import { getCodeBuffer, getMemory } from './compiler-callback';
+import { getCodeBuffer, getMemory, getMemoryRefsByRegion } from './compiler-callback';
 
 import type { RuntimeRegistry, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
@@ -72,11 +72,11 @@ function createLazyRuntimeEntry(
  * the full schema after loading.
  */
 export const runtimeRegistry: RuntimeRegistry = {
-	WebWorkerRuntime: createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime),
+	WebWorkerRuntime: createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime, getMemoryRefsByRegion),
 
 	MainThreadRuntime: createLazyRuntimeEntry('MainThreadRuntime', { sampleRate: 50 }, async () => {
 		const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
-		return createMainThreadRuntimeDef(getCodeBuffer, getMemory);
+		return createMainThreadRuntimeDef(getCodeBuffer, getMemory, getMemoryRefsByRegion);
 	}),
 
 	AudioWorkletRuntime: createLazyRuntimeEntry('AudioWorkletRuntime', { sampleRate: 48000 }, async () => {
@@ -84,6 +84,6 @@ export const runtimeRegistry: RuntimeRegistry = {
 			import('@8f4e/runtime-audio-worklet/runtime-def'),
 			import('@8f4e/runtime-audio-worklet/worklet?url'),
 		]);
-		return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
+		return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl, getMemoryRefsByRegion);
 	}),
 };

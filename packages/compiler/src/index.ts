@@ -28,11 +28,13 @@ import {
 	assertUniqueModuleIds,
 	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
+	getModuleIdFromAst,
 } from './semantic/buildNamespace';
 import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 import { getError } from './compilerError';
+import { validateMemoryRegionOptions } from './semantic/memoryRegions';
 
 import type {
 	AST,
@@ -70,11 +72,14 @@ export function compileModules(
 	compiledFunctions?: CompiledFunctionLookup,
 	internalAllocator?: { nextByteAddress: number }
 ): CompiledModule[] {
-	let memoryAddress = options.startingMemoryWordAddress ?? 0;
+	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	const ns: Namespaces =
-		namespaces ?? collectNamespacesFromASTs(modules, memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY, compiledFunctions);
+		namespaces ?? collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options);
 	const allocator = internalAllocator ?? {
 		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
+			if ((namespace.memoryIndex ?? 0) !== 0) {
+				return max;
+			}
 			const byteAddress = namespace.byteAddress ?? 0;
 			const wordAlignedSize = namespace.wordAlignedSize ?? 0;
 			return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
@@ -82,15 +87,10 @@ export function compileModules(
 	};
 
 	return modules.map((ast, index) => {
-		const module = compileModule(
-			ast,
-			ns,
-			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-			index,
-			compiledFunctions,
-			allocator
-		);
-		memoryAddress += module.wordAlignedSize;
+		const moduleId = getModuleIdFromAst(ast);
+		const moduleStartingByteAddress =
+			moduleId && ns[moduleId]?.byteAddress !== undefined ? ns[moduleId].byteAddress : startingByteAddress;
+		const module = compileModule(ast, ns, moduleStartingByteAddress, index, compiledFunctions, allocator, options);
 		return module;
 	});
 }
@@ -131,6 +131,35 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): voi
 	}
 }
 
+function getRequiredMemoryBytesByIndex(
+	items: Array<{ memoryIndex?: number; byteAddress?: number; wordAlignedSize?: number }>
+): Record<number, number> {
+	return items.reduce<Record<number, number>>((result, item) => {
+		const memoryIndex = item.memoryIndex ?? 0;
+		const requiredBytes = (item.byteAddress ?? 0) + (item.wordAlignedSize ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
+		result[memoryIndex] = Math.max(result[memoryIndex] ?? 0, requiredBytes);
+		return result;
+	}, {});
+}
+
+function getRequiredMemoryBytesByRegion(
+	requiredMemoryBytesByIndex: Record<number, number>,
+	memoryRegions: readonly string[]
+): Record<string, number> {
+	const result: Record<string, number> = {};
+
+	for (const [memoryIndexString, requiredBytes] of Object.entries(requiredMemoryBytesByIndex)) {
+		const memoryIndex = Number(memoryIndexString);
+		if (memoryIndex === 0 || requiredBytes <= 0) {
+			continue;
+		}
+
+		result[memoryRegions[memoryIndex - 1] ?? `memory${memoryIndex}`] = requiredBytes;
+	}
+
+	return result;
+}
+
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
@@ -138,6 +167,7 @@ export default function compile(
 	macros?: Module[],
 	cache = createCompilerCache()
 ): CompileResult {
+	validateMemoryRegionOptions(options);
 	// Parse and expand macros if provided
 	const macroDefinitions = macros ? parseMacroDefinitions(macros) : new Map();
 
@@ -165,7 +195,13 @@ export default function compile(
 	assertUniqueModuleIds(astModules);
 	const dependencyOrderedModules = sortModules(astModules);
 
-	const namespaces = collectNamespacesFromASTs(dependencyOrderedModules, GLOBAL_ALIGNMENT_BOUNDARY);
+	const namespaces = collectNamespacesFromASTs(
+		dependencyOrderedModules,
+		GLOBAL_ALIGNMENT_BOUNDARY,
+		undefined,
+		dependencyOrderedModules,
+		options
+	);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
@@ -189,11 +225,8 @@ export default function compile(
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 	assertUniqueFunctionExportNames(compiledFunctionsMap);
-	const totalModuleBytes = Object.values(namespaces).reduce((max, namespace) => {
-		const byteAddress = namespace.byteAddress ?? 0;
-		const wordAlignedSize = namespace.wordAlignedSize ?? 0;
-		return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
-	}, 0);
+	const requiredMemoryBytesByIndexFromNamespaces = getRequiredMemoryBytesByIndex(Object.values(namespaces));
+	const totalModuleBytes = requiredMemoryBytesByIndexFromNamespaces[0] ?? 0;
 	const internalAllocator = { nextByteAddress: totalModuleBytes };
 
 	// Extract the unique function types and type indices from the registry
@@ -216,14 +249,20 @@ export default function compile(
 	const functionSignatures = compiledModules.map(() => 0x00);
 
 	// Calculate the required memory footprint from the compiled program.
-	const requiredMemoryBytes =
-		compiledModules.length === 0
-			? internalAllocator.nextByteAddress
-			: Math.max(
-					compiledModules[compiledModules.length - 1].byteAddress +
-						compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
-					internalAllocator.nextByteAddress
-				);
+	const requiredMemoryBytesByIndexFromModules = getRequiredMemoryBytesByIndex(compiledModules);
+	const requiredMemoryBytes = Math.max(
+		requiredMemoryBytesByIndexFromModules[0] ?? 0,
+		internalAllocator.nextByteAddress
+	);
+	const requiredMemoryBytesByIndex: Record<number, number> = {
+		...requiredMemoryBytesByIndexFromModules,
+		0: requiredMemoryBytes,
+	};
+	const requiredMemoryBytesByRegion = getRequiredMemoryBytesByRegion(
+		requiredMemoryBytesByIndex,
+		options.memoryRegions ?? []
+	);
+	const maxUsedMemoryIndex = Math.max(0, ...Object.keys(requiredMemoryBytesByIndex).map(Number));
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
@@ -245,14 +284,17 @@ export default function compile(
 
 	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules);
 	const memoryInitiatorFunction = [
-		...(requiredMemoryBytes > 0
-			? [...i32const(0), ...i32const(0), ...i32const(requiredMemoryBytes), ...memoryFill(0)]
-			: []),
+		...Object.entries(requiredMemoryBytesByIndex).flatMap(([memoryIndexString, requiredBytes]) => {
+			const memoryIndex = Number(memoryIndexString);
+			return requiredBytes > 0
+				? [...i32const(0), ...i32const(0), ...i32const(requiredBytes), ...memoryFill(memoryIndex)]
+				: [];
+		}),
 		...initialMemoryDataSegments.flatMap((segment, index) => [
 			...i32const(segment.byteAddress),
 			...i32const(0),
 			...i32const(segment.bytes.length),
-			...memoryInit(index, 0),
+			...memoryInit(index, segment.memoryIndex),
 		]),
 		...initOnlyModuleCalls,
 	];
@@ -270,8 +312,18 @@ export default function compile(
 		? compiledModulesMap
 		: stripASTFromCompiledModules(compiledModulesMap);
 
-	// Round up to whole wasm pages (64 KiB each); memory cannot be imported with fractional pages.
-	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
+	const memoryImports = Array.from({ length: maxUsedMemoryIndex + 1 }, (_, memoryIndex) => {
+		const requiredBytes = requiredMemoryBytesByIndex[memoryIndex] ?? 0;
+		const memorySizePages = Math.max(1, Math.ceil(requiredBytes / WASM_MEMORY_PAGE_SIZE));
+		const importName = memoryIndex === 0 ? 'memory' : options.memoryRegions?.[memoryIndex - 1];
+		return createMemoryImport(
+			'js',
+			importName ?? `memory${memoryIndex}`,
+			memorySizePages,
+			memorySizePages,
+			!options.disableSharedMemory
+		);
+	});
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -283,9 +335,7 @@ export default function compile(
 				createFunctionType([WASM_TYPE_I32, WASM_TYPE_I32], [WASM_TYPE_I32]),
 				...uniqueUserFunctionTypes,
 			]),
-			...createImportSection([
-				createMemoryImport('js', 'memory', memorySizePages, memorySizePages, !options.disableSharedMemory),
-			]),
+			...createImportSection(memoryImports),
 			...createFunctionSection([0x00, 0x00, 0x00, 0x00, ...userFunctionSignatureIndices, ...functionSignatures]),
 			...createExportSection([
 				createFunctionExport('init', 0x00),
@@ -312,6 +362,7 @@ export default function compile(
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
 		requiredMemoryBytes,
+		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
 		cache,
 	};
 }

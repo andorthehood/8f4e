@@ -192,4 +192,14 @@ describe('validateInstructionArguments', () => {
 			validateInstructionArguments('blockEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
 		).toThrowError(SyntaxRulesError);
 	});
+
+	it('accepts identifier or non-negative integer #region references', () => {
+		expect(() => validateInstructionArguments('#region', [classifyIdentifier('sampleMemory')])).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('#region', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])
+		).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('#region', [{ type: ArgumentType.LITERAL, value: -1, isInteger: true }])
+		).toThrowError(SyntaxRulesError);
+	});
 });
