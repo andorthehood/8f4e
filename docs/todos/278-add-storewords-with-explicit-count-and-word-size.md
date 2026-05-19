@@ -3,6 +3,7 @@ title: 'TODO: Add storeWords with explicit count and word size'
 priority: High
 effort: 1-2d
 created: 2026-02-23
+issue: https://github.com/andorthehood/8f4e/issues/645
 status: Open
 completed: null
 ---

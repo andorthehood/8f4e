@@ -3,6 +3,7 @@ title: 'TODO: Research JavaScript/WebAssembly Runtimes for Step-by-Step Executio
 priority: Low
 effort: 8-12 hours
 created: 2025-09-09
+issue: https://github.com/andorthehood/8f4e/issues/543
 status: Open
 completed: null
 ---

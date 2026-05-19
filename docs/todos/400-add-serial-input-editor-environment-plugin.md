@@ -3,6 +3,7 @@ title: 'TODO: Add serial input editor environment plugin'
 priority: Medium
 effort: 1-2d
 created: 2026-05-13
+issue: https://github.com/andorthehood/8f4e/issues/655
 status: Open
 completed: null
 ---
