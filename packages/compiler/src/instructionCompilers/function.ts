@@ -2,7 +2,7 @@ import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/compiler-
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
-import { isInstructionInsideFunction, isInstructionIsInsideAModule } from '../utils/blockStack';
+import { pushBlock } from '../utils/blockStack';
 
 import type { CompilationContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -18,7 +18,7 @@ const functionBlockType = compilerSourceBlockInstructionByType.function.type;
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
 const _function = function (line: FunctionLine, context: CompilationContext) {
-	if (isInstructionIsInsideAModule(context.blockStack) || isInstructionInsideFunction(context.blockStack)) {
+	if (context.insideModuleBlock || context.insideFunctionBlock) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
@@ -38,7 +38,7 @@ const _function = function (line: FunctionLine, context: CompilationContext) {
 	// Initialize empty locals - parameters will be added by param instructions
 	context.locals = {};
 
-	context.blockStack.push({
+	pushBlock(context, {
 		blockType: BlockType.FUNCTION,
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,

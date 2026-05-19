@@ -4,6 +4,8 @@ import { BlockType } from '@8f4e/compiler-spec';
 import createResultBlockState from './utils/createResultBlockState';
 import { saveByteCode } from './utils/saveByteCode';
 
+import { pushBlock } from '../utils/blockStack';
+
 import type { IfLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
@@ -15,7 +17,7 @@ const _if: InstructionCompiler<IfLine> = (line, context) => {
 	context.stack.pop()!;
 	const { blockState, wasmType } = createResultBlockState(line.ifBlock?.resultType, BlockType.CONDITION);
 
-	context.blockStack.push(blockState);
+	pushBlock(context, blockState);
 	return saveByteCode(context, [WASM_IF, wasmType]);
 };
 
