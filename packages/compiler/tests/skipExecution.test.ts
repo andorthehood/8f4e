@@ -64,8 +64,8 @@ moduleEnd
 				code: `
 module testModule
 #skipExecution
-int counter 0
 #skipExecution
+int counter 0
 push counter
 push counter
 load

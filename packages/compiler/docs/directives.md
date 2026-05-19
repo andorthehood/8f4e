@@ -2,6 +2,8 @@
 
 Compiler directives are special instructions prefixed with `#` that control compilation behavior without affecting runtime execution. They are processed during compilation and filtered out before code generation.
 
+Compiler directives are block prologue metadata. In a `module`, module-scoped directives must appear immediately after the `module` line and before declarations or executable instructions. In a `function`, function-scoped directives must appear immediately after the `function` line and before `param`, `local`, or executable instructions. Blank lines and comments are ignored by parsing, so they can still appear around prologue directives.
+
 ## Module-Scoped Directives
 
 ### `#skipExecution`
@@ -23,7 +25,7 @@ moduleEnd
 - The module is compiled normally (AST, memory map, inter-module references preserved)
 - Module memory defaults and initialization still run during the init/memory-init phase
 - The module's cycle function is not called from the global cycle dispatcher
-- Multiple `#skipExecution` directives in the same module are idempotent (same effect)
+- Multiple prologue `#skipExecution` directives in the same module are idempotent (same effect)
 
 **Use Cases:**
 - Temporarily disable a module during development without removing it
@@ -32,6 +34,7 @@ moduleEnd
 
 **Errors:**
 - Using `#skipExecution` outside of a module block (e.g., in `constants` or `function` blocks) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+- Placing `#skipExecution` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
 
 **Example:**
 
@@ -87,7 +90,7 @@ moduleEnd
 - The module code does not run during the cycle loop
 - Memory declared in the module is initialized with default values before the module code runs
 - Incremental recompiles that patch default memory values rerun all init-only modules via the `initOnly` export; full `init` still runs on first compile or memory recreation
-- Multiple `#initOnly` directives in the same module have the same effect as one
+- Multiple prologue `#initOnly` directives in the same module have the same effect as one
 - If both `#skipExecution` and `#initOnly` are present, `#skipExecution` takes precedence (the module does not execute at all)
 
 **Use Cases:**
@@ -97,6 +100,7 @@ moduleEnd
 
 **Errors:**
 - Using `#initOnly` outside of a module block (e.g., in `constants` or `function` blocks) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+- Placing `#initOnly` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
 
 **Example:**
 
@@ -180,10 +184,11 @@ functionEnd
 **Errors:**
 - Using `#impure` outside a function block results in an `IMPURE_DIRECTIVE_INVALID_CONTEXT` error
 - Using memory IO in a function without `#impure` results in an `IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO` error
+- Placing `#impure` after params, locals, or executable instructions results in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
 
 ### `#loopCap`
 
-Sets the default loop cap for subsequent `loop` blocks in the current module or function block. The loop cap limits the maximum number of iterations to prevent infinite loops at runtime.
+Sets the default loop cap for `loop` blocks in the current module or function block. The loop cap limits the maximum number of iterations to prevent infinite loops at runtime.
 
 **Scope:** Module and function blocks
 
@@ -198,12 +203,11 @@ moduleEnd
 ```
 
 **Behavior:**
-- Sets the ambient loop cap for all `loop` instructions that follow in the same module or function body
-- Only affects `loop` instructions that appear after the directive (single-pass compilation)
+- Sets the ambient loop cap for `loop` instructions in the same module or function body
 - A per-loop explicit argument (`loop <int>`) takes precedence over the ambient `#loopCap`
 - When no `#loopCap` is present and no per-loop argument is given, the built-in default of `1000` applies
 - The cap value `0` is valid and causes the loop guard to exit immediately on the first guard check
-- Multiple `#loopCap` directives in the same block update the ambient default each time they appear
+- Multiple prologue `#loopCap` directives in the same block are allowed; the last prologue value becomes the ambient default
 
 **Precedence order (highest to lowest):**
 1. Explicit `loop <int>` argument
@@ -244,6 +248,7 @@ functionEnd
 
 **Errors:**
 - Using `#loopCap` outside of a module or function block (e.g., in `constants` blocks or at the top level before any `module`) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+- Placing `#loopCap` after params, declarations, locals, or executable instructions will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error
 - Providing a non-integer, float, or negative integer argument is a syntax error detected by the tokenizer
 
 ## Error Handling
@@ -253,3 +258,5 @@ If an unknown compiler directive is encountered, the compiler will throw an `UNR
 If a module-scoped directive like `#skipExecution` or `#initOnly` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
 
 If `#loopCap` is used outside of a module or function block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
+
+If a compiler directive appears after the block prologue has ended, the compiler will throw a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` error.

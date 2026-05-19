@@ -12,6 +12,7 @@ import instructions from './instructionCompilers';
 import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
+import { validateCompilerDirectivePrologue } from './semantic/compilerDirectives';
 import { validateInstruction } from './stackAnalysis/validateInstruction';
 import { functionValueTypeToWasmType } from './utils/functionValueType';
 
@@ -67,6 +68,8 @@ export function compileModule(
 	functions?: CompiledFunctionLookup,
 	internalAllocator = { nextByteAddress: 0 }
 ): CompiledModule {
+	validateCompilerDirectivePrologue(ast);
+
 	// Prepass establishes the memory layout (byte addresses, sizes) for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
 	// the compilation loop below, so consts are not copied from the prepass context.
@@ -151,6 +154,8 @@ export function compileFunction(
 	typeRegistry: FunctionTypeRegistry,
 	functions?: CompiledFunctionLookup
 ): CompiledFunction {
+	validateCompilerDirectivePrologue(ast, 'function');
+
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
