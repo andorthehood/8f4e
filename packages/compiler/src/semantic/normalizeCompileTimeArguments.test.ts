@@ -233,11 +233,13 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 16,
 					isInteger: true,
-					safeAddressRange: {
-						source: 'module-start',
-						byteAddress: 16,
-						safeByteLength: 12,
-						moduleId: 'test',
+					address: {
+						safeRange: {
+							source: 'module-start',
+							byteAddress: 16,
+							safeByteLength: 12,
+							moduleId: 'test',
+						},
 					},
 				},
 			],
@@ -265,11 +267,13 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 24,
 					isInteger: true,
-					safeAddressRange: {
-						source: 'module-end',
-						byteAddress: 24,
-						safeByteLength: 4,
-						moduleId: 'test',
+					address: {
+						safeRange: {
+							source: 'module-end',
+							byteAddress: 24,
+							safeByteLength: 4,
+							moduleId: 'test',
+						},
 					},
 				},
 			],
@@ -497,11 +501,13 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 12,
 					isInteger: true,
-					safeAddressRange: {
-						source: 'memory-start',
-						byteAddress: 12,
-						safeByteLength: 16,
-						memoryId: 'buffer',
+					address: {
+						safeRange: {
+							source: 'memory-start',
+							byteAddress: 12,
+							safeByteLength: 16,
+							memoryId: 'buffer',
+						},
 					},
 				},
 			],
@@ -546,11 +552,13 @@ describe('normalizeCompileTimeArguments', () => {
 					type: ArgumentType.LITERAL,
 					value: 24,
 					isInteger: true,
-					safeAddressRange: {
-						source: 'memory-end',
-						byteAddress: 24,
-						safeByteLength: 4,
-						memoryId: 'buffer',
+					address: {
+						safeRange: {
+							source: 'memory-end',
+							byteAddress: 24,
+							safeByteLength: 4,
+							memoryId: 'buffer',
+						},
 					},
 				},
 			],

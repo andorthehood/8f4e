@@ -9,8 +9,8 @@ export default function pushLiteral(argument: CodegenArgumentLiteral, context: C
 		kindToStackItem(kind, {
 			isNonZero: argument.value !== 0,
 			...(argument.isInteger && Number.isInteger(argument.value) ? { knownIntegerValue: argument.value } : {}),
-			...(argument.safeAddressRange
-				? { safeAddressRange: argument.safeAddressRange, clampAddressRange: argument.safeAddressRange }
+			...(argument.address?.safeRange
+				? { address: { safeRange: argument.address.safeRange, clampRange: argument.address.safeRange } }
 				: {}),
 		})
 	);

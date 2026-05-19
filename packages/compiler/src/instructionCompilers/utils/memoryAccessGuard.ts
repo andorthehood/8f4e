@@ -63,8 +63,8 @@ export function getOrCreateMemoryGuardLocal(
 
 export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number): boolean {
 	return (
-		(address.safeAddressRange?.safeByteLength ?? 0) >= accessByteWidth ||
-		(address.safeMemoryAccessByteWidth ?? 0) >= accessByteWidth
+		(address.address?.safeRange?.safeByteLength ?? 0) >= accessByteWidth ||
+		(address.address?.safeAccessByteWidth ?? 0) >= accessByteWidth
 	);
 }
 
