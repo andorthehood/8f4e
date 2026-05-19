@@ -1,0 +1,21 @@
+[
+	{
+		"commit": "f545a531538c0324128144abf88e12de915480d9",
+		"version": "1.4.6",
+		"benchmark": "sineGenerator.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 174,
+				"functionEntries": 4734,
+				"rangeExecutions": 10936,
+				"maxRangesPerFunction": 40
+			},
+			"tokenizer": {
+				"coveredFunctions": 35,
+				"functionEntries": 2445,
+				"rangeExecutions": 17726,
+				"maxRangesPerFunction": 39
+			}
+		}
+	}
+]

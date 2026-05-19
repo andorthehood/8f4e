@@ -1,0 +1,21 @@
+[
+	{
+		"commit": "f545a531538c0324128144abf88e12de915480d9",
+		"version": "1.4.6",
+		"benchmark": "hymnToAurora.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 218,
+				"functionEntries": 72553,
+				"rangeExecutions": 185125,
+				"maxRangesPerFunction": 56
+			},
+			"tokenizer": {
+				"coveredFunctions": 40,
+				"functionEntries": 29559,
+				"rangeExecutions": 269943,
+				"maxRangesPerFunction": 39
+			}
+		}
+	}
+]
