@@ -1,8 +1,6 @@
+import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
+
 import type { CodeBlockType } from '@8f4e/editor-state-types';
-
-import { BLOCK_DELIMITERS, getCloserKeyword, getOpenerKeyword } from '~/features/project-format';
-
-type DetectableBlockType = Exclude<CodeBlockType, 'unknown'>;
 
 /**
  * Detects whether a block of code represents a module, config, function, note, or unknown block by scanning for marker pairs.
@@ -10,20 +8,7 @@ type DetectableBlockType = Exclude<CodeBlockType, 'unknown'>;
  * @returns The inferred code block type.
  */
 export default function getBlockType(code: string[]): CodeBlockType {
-	const trimmedLines = code.map(line => line.trim());
-	const markerMatches = BLOCK_DELIMITERS.map(({ type, opener, closer }) => ({
-		type,
-		hasOpener: trimmedLines.some(line => getOpenerKeyword(line) === opener),
-		hasCloser: trimmedLines.some(line => getCloserKeyword(line) === closer),
-	}));
-	const presentTypes = markerMatches.filter(({ hasOpener, hasCloser }) => hasOpener || hasCloser);
-
-	if (presentTypes.length !== 1) {
-		return 'unknown';
-	}
-
-	const [match] = presentTypes;
-	return match.hasOpener && match.hasCloser ? (match.type as DetectableBlockType) : 'unknown';
+	return getDocumentProjectBlockType(code) as CodeBlockType;
 }
 
 if (import.meta.vitest) {
