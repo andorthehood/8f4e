@@ -26,6 +26,7 @@ describe('#loopCap instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -50,6 +51,7 @@ describe('#loopCap instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2048, isInteger: true }],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -74,6 +76,7 @@ describe('#loopCap instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -98,6 +101,7 @@ describe('#loopCap instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -110,6 +114,7 @@ describe('#loopCap instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 100, isInteger: true }],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);

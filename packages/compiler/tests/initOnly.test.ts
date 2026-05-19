@@ -83,8 +83,8 @@ moduleEnd
 				code: `
 module testModule
 #initOnly
-int counter 0
 #initOnly
+int counter 0
 push counter
 push counter
 load
