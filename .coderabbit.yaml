@@ -1,2 +1,5 @@
 reviews:
   review_status: false
+  auto_review:
+    enabled: false
+    description_keyword: "coderabbit:review"
