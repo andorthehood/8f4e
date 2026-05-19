@@ -38,26 +38,37 @@ export interface MemoryAddressRange {
 	memoryId?: string;
 }
 
+export interface AddressMetadata {
+	/**
+	 * Proven safe byte range for memory operations at this exact value.
+	 * Pointer arithmetic may shrink or remove this range when the compiler can no
+	 * longer prove the current address is safe.
+	 */
+	safeRange?: MemoryAddressRange;
+	/**
+	 * Broader range this address is allowed to clamp back into.
+	 * This does not prove the current value is safe; it preserves the original
+	 * allocation/module range so `clampAddress` can recover a safe address after
+	 * pointer arithmetic moves outside `safeRange`.
+	 */
+	clampRange?: MemoryAddressRange;
+	/** Proven access width after an explicit address clamp. */
+	safeAccessByteWidth?: number;
+}
+
 export type Const = {
 	value: number;
 	isInteger: boolean;
 	isFloat64?: boolean;
-	/**
-	 * Proven safe byte range when this constant value is an address.
-	 * The `byteAddress` is the exact address value and `safeByteLength` is the
-	 * number of bytes that can be accessed from that address without a guard.
-	 */
-	safeAddressRange?: MemoryAddressRange;
+	/** Address metadata when this constant value is an address. */
+	address?: AddressMetadata;
 };
 
 export type Consts = Record<string, Const>;
 
 export type NormalizedArgumentLiteral = ArgumentLiteral & {
-	/**
-	 * Proven safe byte range when semantic normalization resolves this literal
-	 * from an address expression such as `&foo` or `&foo + 4`.
-	 */
-	safeAddressRange?: MemoryAddressRange;
+	/** Address metadata when semantic normalization resolves this literal from an address expression. */
+	address?: AddressMetadata;
 };
 
 export interface LocalBinding {
@@ -119,27 +130,13 @@ export interface CompilationContext {
 export interface StackItem {
 	isInteger: boolean;
 	isFloat64?: boolean;
+	address?: AddressMetadata;
 	pointeeBaseType?: DataStructure['pointeeBaseType'];
 	isPointingToPointer?: boolean;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
 	/** Exact integer value when the compiler can still prove it at this stack position. */
 	knownIntegerValue?: number;
-	/**
-	 * Proven safe byte range for memory operations at this exact stack value.
-	 * Pointer arithmetic may shrink or remove this range when the compiler can no
-	 * longer prove the current address is safe.
-	 */
-	safeAddressRange?: MemoryAddressRange;
-	/**
-	 * Broader range this address is allowed to clamp back into.
-	 * This does not prove the current stack value is safe; it preserves the
-	 * original allocation/module range so `clampAddress` can recover a safe address
-	 * after pointer arithmetic moves outside `safeAddressRange`.
-	 */
-	clampAddressRange?: MemoryAddressRange;
-	/** Proven access width after an explicit address clamp. */
-	safeMemoryAccessByteWidth?: number;
 }
 
 export type Stack = StackItem[];

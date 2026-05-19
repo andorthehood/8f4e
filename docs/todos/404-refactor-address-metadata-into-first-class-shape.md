@@ -3,8 +3,8 @@ title: 'TODO: Refactor address metadata into first-class shape'
 priority: Medium
 effort: 1-2d
 created: 2026-05-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-19
 ---
 
 # TODO: Refactor address metadata into first-class shape
@@ -79,11 +79,11 @@ This refactor should preserve current behavior and keep all memory implicitly in
 
 ## Success Criteria
 
-- [ ] Address metadata is represented by `StackItem.address`.
-- [ ] Existing memory safety guard behavior is unchanged.
-- [ ] Address-producing normalized constants/literals carry the new metadata shape.
-- [ ] Old loose address fields are removed or limited to compatibility shims scheduled for deletion.
-- [ ] Compiler tests and typecheck pass.
+- [x] Address metadata is represented by `StackItem.address`.
+- [x] Existing memory safety guard behavior is unchanged.
+- [x] Address-producing normalized constants/literals carry the new metadata shape.
+- [x] Old loose address fields are removed or limited to compatibility shims scheduled for deletion.
+- [x] Compiler tests and typecheck pass.
 
 ## Affected Components
 
@@ -103,4 +103,3 @@ This refactor should preserve current behavior and keep all memory implicitly in
 
 - **Blocks**: `403-add-logical-memory-regions-for-multi-memory.md`
 - **Related**: `397-finish-compiler-stack-analysis-codegen-separation.md`
-

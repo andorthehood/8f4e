@@ -59,13 +59,15 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "counter",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "counter",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -242,13 +244,15 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "counter",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "counter",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -440,13 +444,15 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "counter",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "counter",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -623,13 +629,15 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "counter",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "counter",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -822,13 +830,15 @@ exports[`nested loops resolve their own caps independently > if the generated AS
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "outerCounter",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "outerCounter",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -901,13 +911,15 @@ exports[`nested loops resolve their own caps independently > if the generated AS
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "innerCounter",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "innerCounter",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -1123,13 +1135,15 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "counter",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "counter",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },

@@ -51,13 +51,15 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -193,13 +195,15 @@ exports[`float: bare anonymous zero-initialized allocation > if the generated AS
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -361,13 +365,15 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -509,13 +515,15 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },

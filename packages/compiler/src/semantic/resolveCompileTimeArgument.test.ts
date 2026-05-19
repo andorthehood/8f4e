@@ -300,11 +300,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
 			value: 8,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'memory-start',
-				byteAddress: 8,
-				safeByteLength: 16,
-				moduleId: 'source',
+			address: {
+				safeRange: {
+					source: 'memory-start',
+					byteAddress: 8,
+					safeByteLength: 16,
+					moduleId: 'source',
+				},
 			},
 		});
 	});
@@ -338,11 +340,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
 			value: 20,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'memory-end',
-				byteAddress: 20,
-				safeByteLength: 4,
-				moduleId: 'source',
+			address: {
+				safeRange: {
+					source: 'memory-end',
+					byteAddress: 20,
+					safeByteLength: 4,
+					moduleId: 'source',
+				},
 			},
 		});
 	});
@@ -367,11 +371,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
 			value: 12,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'module-start',
-				byteAddress: 12,
-				safeByteLength: 12,
-				moduleId: 'source',
+			address: {
+				safeRange: {
+					source: 'module-start',
+					byteAddress: 12,
+					safeByteLength: 12,
+					moduleId: 'source',
+				},
 			},
 		});
 	});
@@ -397,11 +403,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
 			value: 20,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'module-end',
-				byteAddress: 20,
-				safeByteLength: 4,
-				moduleId: 'source',
+			address: {
+				safeRange: {
+					source: 'module-end',
+					byteAddress: 20,
+					safeByteLength: 4,
+					moduleId: 'source',
+				},
 			},
 		});
 	});
@@ -436,19 +444,23 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&this'))).toEqual({
 			value: 24,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'module-start',
-				byteAddress: 24,
-				safeByteLength: 20,
+			address: {
+				safeRange: {
+					source: 'module-start',
+					byteAddress: 24,
+					safeByteLength: 20,
+				},
 			},
 		});
 		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('this&'))).toEqual({
 			value: 40,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'module-end',
-				byteAddress: 40,
-				safeByteLength: 4,
+			address: {
+				safeRange: {
+					source: 'module-end',
+					byteAddress: 40,
+					safeByteLength: 4,
+				},
 			},
 		});
 	});
@@ -474,11 +486,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr+4'))).toEqual({
 			value: 20,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'memory-start',
-				byteAddress: 20,
-				safeByteLength: 12,
-				memoryId: 'arr',
+			address: {
+				safeRange: {
+					source: 'memory-start',
+					byteAddress: 20,
+					safeByteLength: 12,
+					memoryId: 'arr',
+				},
 			},
 		});
 	});
@@ -504,11 +518,13 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('4+&arr'))).toEqual({
 			value: 20,
 			isInteger: true,
-			safeAddressRange: {
-				source: 'memory-start',
-				byteAddress: 20,
-				safeByteLength: 12,
-				memoryId: 'arr',
+			address: {
+				safeRange: {
+					source: 'memory-start',
+					byteAddress: 20,
+					safeByteLength: 12,
+					memoryId: 'arr',
+				},
 			},
 		});
 	});

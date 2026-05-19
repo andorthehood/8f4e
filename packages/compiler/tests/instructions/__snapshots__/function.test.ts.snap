@@ -44,13 +44,15 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -241,13 +243,15 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -487,13 +491,15 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 12,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 12,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 12,
       },

@@ -35,7 +35,7 @@ function clampToRange(
 
 export const clampAddress: InstructionCompiler = (line, context) => {
 	const operand = context.stack.pop()!;
-	const range = operand.clampAddressRange ?? operand.safeAddressRange;
+	const range = operand.address?.clampRange ?? operand.address?.safeRange;
 	if (!range) {
 		throw getError(ErrorCode.ADDRESS_RANGE_REQUIRED, line, context);
 	}
