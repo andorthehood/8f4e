@@ -226,6 +226,12 @@ describe('compileToAST', () => {
 		);
 	});
 
+	it('rejects directives before any module or function prologue', () => {
+		expect(() => compileToAST(['#skipExecution'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
+		);
+	});
+
 	it('pairs if with ifEnd metadata without rewriting source arguments', () => {
 		const ast = compileToAST(['push 1', 'if', 'push 10', 'ifEnd int']);
 
