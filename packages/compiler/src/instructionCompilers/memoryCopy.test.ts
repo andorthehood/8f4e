@@ -22,12 +22,16 @@ describe('memoryCopy instruction compiler', () => {
 			{
 				isInteger: true,
 				isNonZero: false,
-				safeAddressRange: { source: 'memory-start', byteAddress: 20, safeByteLength: 20, memoryId: 'target' },
+				address: {
+					safeRange: { source: 'memory-start', byteAddress: 20, safeByteLength: 20, memoryId: 'target' },
+				},
 			},
 			{
 				isInteger: true,
 				isNonZero: false,
-				safeAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 20, memoryId: 'source' },
+				address: {
+					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 20, memoryId: 'source' },
+				},
 			}
 		);
 

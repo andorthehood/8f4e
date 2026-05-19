@@ -36,7 +36,7 @@ describe('clamp address instruction compilers', () => {
 			isInteger: true,
 			isNonZero: true,
 			knownIntegerValue: 1024,
-			clampAddressRange: range,
+			address: { clampRange: range },
 		});
 
 		clampAddress(createLine('clampAddress'), context);
@@ -46,8 +46,10 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
-				clampAddressRange: range,
-				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+				address: {
+					clampRange: range,
+					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+				},
 			},
 		]);
 		expect(context.byteCode).toContain(WASM_SELECT);
@@ -60,7 +62,7 @@ describe('clamp address instruction compilers', () => {
 			isInteger: true,
 			isNonZero: true,
 			knownIntegerValue: 1024,
-			clampAddressRange: range,
+			address: { clampRange: range },
 		});
 
 		clampAddress(createLine('clampAddress', 1), context);
@@ -70,8 +72,10 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 127,
-				clampAddressRange: range,
-				safeMemoryAccessByteWidth: 1,
+				address: {
+					clampRange: range,
+					safeAccessByteWidth: 1,
+				},
 			},
 		]);
 	});
@@ -88,7 +92,7 @@ describe('clamp address instruction compilers', () => {
 			isInteger: true,
 			isNonZero: true,
 			knownIntegerValue: -1,
-			clampAddressRange: shiftedRange,
+			address: { clampRange: shiftedRange },
 		});
 
 		clampAddress(createLine('clampAddress'), context);
@@ -98,8 +102,10 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 64,
-				clampAddressRange: shiftedRange,
-				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+				address: {
+					clampRange: shiftedRange,
+					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+				},
 			},
 		]);
 		expect(context.byteCode).toContain(WASM_I32_LT_S);
@@ -133,13 +139,15 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: true,
 				knownIntegerValue: 92,
-				clampAddressRange: {
-					source: 'module-start',
-					byteAddress: 64,
-					safeByteLength: 32,
-					moduleId: 'osc',
+				address: {
+					clampRange: {
+						source: 'module-start',
+						byteAddress: 64,
+						safeByteLength: 32,
+						moduleId: 'osc',
+					},
+					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 				},
-				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 			},
 		]);
 		expect(context.byteCode).toContain(WASM_SELECT);
@@ -156,7 +164,9 @@ describe('clamp address instruction compilers', () => {
 			{
 				isInteger: true,
 				isNonZero: false,
-				safeMemoryAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+				address: {
+					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+				},
 			},
 		]);
 		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);
@@ -184,7 +194,9 @@ describe('clamp address instruction compilers', () => {
 		context.stack.push({
 			isInteger: true,
 			isNonZero: false,
-			clampAddressRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },
+			address: {
+				clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },
+			},
 		});
 
 		expect(() => clampAddress(createLine('clampAddress'), context)).toThrow(

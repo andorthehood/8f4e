@@ -49,13 +49,15 @@ exports[`compiler > compileModules 1`] = `
             "value": "in",
           },
           {
-            "isInteger": true,
-            "safeAddressRange": {
-              "byteAddress": 0,
-              "memoryId": "defaultValue",
-              "safeByteLength": 4,
-              "source": "memory-start",
+            "address": {
+              "safeRange": {
+                "byteAddress": 0,
+                "memoryId": "defaultValue",
+                "safeByteLength": 4,
+                "source": "memory-start",
+              },
             },
+            "isInteger": true,
             "type": "literal",
             "value": 0,
           },
@@ -133,13 +135,15 @@ exports[`compiler > compileModules 1`] = `
       {
         "arguments": [
           {
-            "isInteger": true,
-            "safeAddressRange": {
-              "byteAddress": 8,
-              "memoryId": "out",
-              "safeByteLength": 4,
-              "source": "memory-start",
+            "address": {
+              "safeRange": {
+                "byteAddress": 8,
+                "memoryId": "out",
+                "safeByteLength": 4,
+                "source": "memory-start",
+              },
             },
+            "isInteger": true,
             "type": "literal",
             "value": 8,
           },

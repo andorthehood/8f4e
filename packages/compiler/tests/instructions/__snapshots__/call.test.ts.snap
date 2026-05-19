@@ -44,13 +44,15 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -225,13 +227,15 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 12,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 12,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -409,13 +413,15 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -633,13 +639,15 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -847,13 +855,15 @@ exports[`function can call another function with its signature and wasm index av
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },

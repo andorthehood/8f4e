@@ -97,13 +97,15 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -268,13 +270,15 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -425,13 +429,15 @@ exports[`const: expression from another constant > if the generated AST, WAT and
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -583,13 +589,15 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -754,13 +762,15 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -1008,13 +1018,15 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -1166,13 +1178,15 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -1338,13 +1352,15 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 16,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 16,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 16,
       },
@@ -1510,13 +1526,15 @@ exports[`int[]: buffer size from constant division expression > if the generated
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 16,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 16,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 16,
       },
@@ -1682,13 +1700,15 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 32,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 32,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 32,
       },
@@ -1854,13 +1874,15 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 64,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 64,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 64,
       },
@@ -2027,13 +2049,15 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 96,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 96,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 96,
       },
@@ -2214,13 +2238,15 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 24,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 24,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 24,
       },
@@ -2400,13 +2426,15 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -2574,13 +2602,15 @@ exports[`memory declaration: constant expression default > if the generated AST,
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 4,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 4,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -2748,13 +2778,15 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -2899,13 +2931,15 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -3036,13 +3070,15 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -3174,13 +3210,15 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -3325,13 +3363,15 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 0,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 0,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -3463,13 +3503,15 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
   {
     "arguments": [
       {
-        "isInteger": true,
-        "safeAddressRange": {
-          "byteAddress": 8,
-          "memoryId": "output",
-          "safeByteLength": 4,
-          "source": "memory-start",
+        "address": {
+          "safeRange": {
+            "byteAddress": 8,
+            "memoryId": "output",
+            "safeByteLength": 4,
+            "source": "memory-start",
+          },
         },
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
