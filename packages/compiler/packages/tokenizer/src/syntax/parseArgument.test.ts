@@ -67,6 +67,50 @@ describe('classifyIdentifier – check ordering regression', () => {
 			expect(result.scope).toBe('local');
 		});
 	});
+
+	it('preserves reference classification across dispatch gates', () => {
+		expect(
+			[
+				classifyIdentifier('count(source:buffer)'),
+				classifyIdentifier('sizeof(source:buffer)'),
+				classifyIdentifier('max(source:buffer)'),
+				classifyIdentifier('min(source:buffer)'),
+				classifyIdentifier('sizeof(*source:buffer)'),
+				classifyIdentifier('sizeof(*source:path:buffer)'),
+				classifyIdentifier('count(source:path:buffer)'),
+				classifyIdentifier('count(source:buffer)&'),
+				classifyIdentifier('*buffer&'),
+				classifyIdentifier('*buffer'),
+				classifyIdentifier('sizeof(*buffer)'),
+				classifyIdentifier('max(*buffer)'),
+				classifyIdentifier('count(buffer)'),
+				classifyIdentifier('sizeof(buffer)'),
+				classifyIdentifier('max(buffer)'),
+				classifyIdentifier('min(buffer)'),
+				classifyIdentifier('BUFFER_SIZE'),
+				classifyIdentifier('buffer'),
+			].map(({ referenceKind, scope }) => ({ referenceKind, scope }))
+		).toEqual([
+			{ referenceKind: 'intermodular-element-count', scope: 'intermodule' },
+			{ referenceKind: 'intermodular-element-word-size', scope: 'intermodule' },
+			{ referenceKind: 'intermodular-element-max', scope: 'intermodule' },
+			{ referenceKind: 'intermodular-element-min', scope: 'intermodule' },
+			{ referenceKind: 'intermodular-element-word-size', scope: 'intermodule' },
+			{ referenceKind: 'pointee-element-word-size', scope: 'local' },
+			{ referenceKind: 'element-count', scope: 'local' },
+			{ referenceKind: 'intermodular-reference', scope: 'intermodule' },
+			{ referenceKind: 'memory-reference', scope: 'local' },
+			{ referenceKind: 'memory-pointer', scope: 'local' },
+			{ referenceKind: 'pointee-element-word-size', scope: 'local' },
+			{ referenceKind: 'pointee-element-max', scope: 'local' },
+			{ referenceKind: 'element-count', scope: 'local' },
+			{ referenceKind: 'element-word-size', scope: 'local' },
+			{ referenceKind: 'element-max', scope: 'local' },
+			{ referenceKind: 'element-min', scope: 'local' },
+			{ referenceKind: 'constant', scope: 'local' },
+			{ referenceKind: 'plain', scope: 'local' },
+		]);
+	});
 });
 
 describe('parseArgument', () => {
