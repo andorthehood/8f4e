@@ -58,6 +58,10 @@ Active todo files are listed below.
 | 398 | Add compiler peephole arithmetic strength reduction | 🟡 | 1-2 days | 2026-05-12 | The compiler now has compile-time folding and stack-level integer metadata, but runtime arithmetic codegen still emits direct WebAssembly arithmetic operations even when the top... |
 | 400 | Add serial input editor environment plugin | 🟡 | 1-2d | 2026-05-13 | Add a Web Serial editor environment plugin with `@info serial`, fixed-size `@serialIn` framing, and `@serialInCallback` fanout to exported 8f4e functions. |
 | 401 | Tighten runtime browser API typing | 🟡 | 2-4h | 2026-05-18 | Browser runtime packages cross platform-specific API boundaries and currently rely on broad `any` casts and `@ts-expect-error` comments in production runtime code. |
+| 402 | Restrict compiler directives to block prologue | 🟡 | 2-4h | 2026-05-19 | Compiler directives should be block prologue metadata, appearing directly after `module` or `function` before declarations or executable instructions. |
+| 403 | Add logical memory regions for multi-memory | 🟡 | 3-5d | 2026-05-19 | Add module-level logical memory regions that map declarations, address provenance, pointer dereference, and Wasm memory operations to the correct linear memory. |
+| 404 | Refactor address metadata into first-class shape | 🟡 | 1-2d | 2026-05-19 | Replace scattered stack address fields with `StackItem.address` so future memory-region tracking has one internal metadata shape to extend. |
+| 405 | Centralize memory access target selection | 🟡 | 4-8h | 2026-05-19 | Add a shared internal helper for memory operation target selection so future region support has one place to resolve memory indices. |
 
 ### 🟢 Low Priority
 
