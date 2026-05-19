@@ -1,0 +1,21 @@
+[
+	{
+		"commit": "f545a531538c0324128144abf88e12de915480d9",
+		"version": "1.4.6",
+		"benchmark": "minBLEP.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 197,
+				"functionEntries": 49708,
+				"rangeExecutions": 141604,
+				"maxRangesPerFunction": 47
+			},
+			"tokenizer": {
+				"coveredFunctions": 42,
+				"functionEntries": 19445,
+				"rangeExecutions": 131222,
+				"maxRangesPerFunction": 39
+			}
+		}
+	}
+]

@@ -1,0 +1,21 @@
+[
+	{
+		"commit": "f545a531538c0324128144abf88e12de915480d9",
+		"version": "1.4.6",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 224,
+				"functionEntries": 106352,
+				"rangeExecutions": 242766,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 53,
+				"functionEntries": 61037,
+				"rangeExecutions": 279295,
+				"maxRangesPerFunction": 40
+			}
+		}
+	}
+]
