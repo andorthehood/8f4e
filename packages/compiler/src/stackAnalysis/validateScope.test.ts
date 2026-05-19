@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { BlockType, type BlockStack, type CompilationContext, type InstructionCompiler } from '@8f4e/compiler-spec';
+import { type InstructionCompiler } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { validateScope } from './validateScope';
+
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 const line: Parameters<InstructionCompiler>[0] = {
 	lineNumberBeforeMacroExpansion: 1,
@@ -10,32 +12,45 @@ const line: Parameters<InstructionCompiler>[0] = {
 	instruction: 'test' as never,
 	arguments: [],
 };
-const context = { stack: [] } as unknown as CompilationContext;
-
-const moduleStack: BlockStack = [
-	{
-		hasExpectedResult: false,
-		expectedResultIsInteger: false,
-		blockType: BlockType.MODULE,
-	},
-];
-const functionStack: BlockStack = [
-	{
-		hasExpectedResult: false,
-		expectedResultIsInteger: false,
-		blockType: BlockType.FUNCTION,
-	},
-];
-
 describe('validateScope', () => {
 	it('accepts valid scopes', () => {
-		expect(() => validateScope(moduleStack, 'module', line, context, ErrorCode.UNKNOWN_ERROR)).not.toThrow();
-		expect(() => validateScope(functionStack, 'function', line, context, ErrorCode.UNKNOWN_ERROR)).not.toThrow();
+		const cases = [
+			['module', { insideModuleBlock: true }],
+			['function', { insideFunctionBlock: true }],
+			['moduleOrFunction', { insideModuleBlock: true }],
+			['moduleOrFunction', { insideFunctionBlock: true }],
+			['block', { insideGenericBlock: true }],
+			['constants', { insideConstantsBlock: true }],
+			['map', { insideMapBlock: true }],
+		] as const;
+
+		for (const [scope, contextFlags] of cases) {
+			expect(() =>
+				validateScope(
+					scope,
+					line,
+					createInstructionCompilerTestContext({ blockStack: [], ...contextFlags }),
+					ErrorCode.UNKNOWN_ERROR
+				)
+			).not.toThrow();
+		}
 	});
 
 	it('rejects invalid scopes', () => {
-		expect(() => validateScope([], 'module', line, context, ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK)).toThrow(
-			`${ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK}`
-		);
+		const context = createInstructionCompilerTestContext({ blockStack: [] });
+		const cases: Array<Parameters<typeof validateScope>[0]> = [
+			'module',
+			'function',
+			'moduleOrFunction',
+			'block',
+			'constants',
+			'map',
+		];
+
+		for (const scope of cases) {
+			expect(() => validateScope(scope, line, context, ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK)).toThrow(
+				`${ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK}`
+			);
+		}
 	});
 });

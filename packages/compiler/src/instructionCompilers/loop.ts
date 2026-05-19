@@ -15,6 +15,8 @@ import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 
+import { pushBlock } from '../utils/blockStack';
+
 import type { InstructionCompiler, LoopLine } from '@8f4e/compiler-spec';
 
 const DEFAULT_LOOP_CAP = 1000;
@@ -37,7 +39,7 @@ const loop: InstructionCompiler<LoopLine> = (line, context) => {
 		index: counterLocalIndex,
 	};
 
-	context.blockStack.push({
+	pushBlock(context, {
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
 		blockType: BlockType.LOOP,
