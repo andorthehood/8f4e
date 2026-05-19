@@ -13,6 +13,7 @@ export type ASTLineBase<Instruction extends string, Arguments extends Array<Argu
 	arguments: Arguments;
 	isSemanticOnly?: boolean;
 	isMemoryDeclaration?: boolean;
+	isBlockPrologue?: boolean;
 	hasExplicitMemoryDefault?: boolean;
 	ifBlock?: IfBlockMetadata;
 	ifEndBlock?: IfEndBlockMetadata;

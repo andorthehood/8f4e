@@ -186,6 +186,26 @@ describe('compileToAST', () => {
 		expect(ast[2].lineNumberAfterMacroExpansion).toBe(2);
 	});
 
+	it('marks directives in module and function prologues', () => {
+		const ast = compileToAST([
+			'module test',
+			'#skipExecution',
+			'int counter',
+			'#initOnly',
+			'moduleEnd',
+			'function readValue',
+			'#impure',
+			'param int address',
+			'#export late',
+			'functionEnd int',
+		]);
+
+		expect(ast[1].isBlockPrologue).toBe(true);
+		expect(ast[3].isBlockPrologue).toBeUndefined();
+		expect(ast[6].isBlockPrologue).toBe(true);
+		expect(ast[8].isBlockPrologue).toBeUndefined();
+	});
+
 	it('pairs if with ifEnd metadata without rewriting source arguments', () => {
 		const ast = compileToAST(['push 1', 'if', 'push 10', 'ifEnd int']);
 

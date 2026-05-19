@@ -29,7 +29,6 @@ import {
 	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
 } from './semantic/buildNamespace';
-import { validateCompilerDirectivePrologue } from './semantic/compilerDirectives';
 import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
@@ -163,7 +162,6 @@ export default function compile(
 	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
 		compileToAST(code, lineMetadata, cache.ast, `module:${index}`)
 	);
-	astModules.forEach(ast => validateCompilerDirectivePrologue(ast));
 	assertUniqueModuleIds(astModules);
 	const dependencyOrderedModules = sortModules(astModules);
 
@@ -173,7 +171,6 @@ export default function compile(
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
 		compileToAST(code, lineMetadata, cache.ast, `function:${index}`)
 	);
-	astFunctions.forEach(ast => validateCompilerDirectivePrologue(ast));
 
 	// Collect pre-codegen function metadata so `call` target validation and
 	// function-body codegen can rely on the same registry before compilation finishes.
