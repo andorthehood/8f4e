@@ -7,6 +7,7 @@ import {
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
+import { pushBlock } from '../../utils/blockStack';
 
 const constantsBlockType = compilerSourceBlockInstructionByType.constants.type;
 
@@ -15,7 +16,7 @@ export default function semanticConstants(line: ConstantsLine, context: Compilat
 		throw getError(ErrorCode.INSTRUCTION_MUST_BE_TOP_LEVEL, line, context);
 	}
 
-	context.blockStack.push({
+	pushBlock(context, {
 		hasExpectedResult: false,
 		expectedResultIsInteger: false,
 		blockType: BlockType.CONSTANTS,

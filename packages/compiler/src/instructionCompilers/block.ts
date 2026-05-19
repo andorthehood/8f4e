@@ -4,6 +4,8 @@ import { BlockType } from '@8f4e/compiler-spec';
 import createResultBlockState from './utils/createResultBlockState';
 import { saveByteCode } from './utils/saveByteCode';
 
+import { pushBlock } from '../utils/blockStack';
+
 import type { BlockLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
@@ -13,7 +15,7 @@ import type { BlockLine, InstructionCompiler } from '@8f4e/compiler-spec';
 const block: InstructionCompiler<BlockLine> = (line: BlockLine, context) => {
 	const { blockState, wasmType } = createResultBlockState(line.blockBlock?.resultType, BlockType.BLOCK);
 
-	context.blockStack.push(blockState);
+	pushBlock(context, blockState);
 	return saveByteCode(context, [WASM_BLOCK, wasmType]);
 };
 

@@ -108,6 +108,13 @@ export interface CompilationContext {
 	internalAllocator: InternalAllocator;
 	stack: Stack;
 	blockStack: BlockStack;
+	insideModuleBlock?: boolean;
+	insideFunctionBlock?: boolean;
+	insideGenericBlock?: boolean;
+	insideLoopBlock?: boolean;
+	insideConditionBlock?: boolean;
+	insideConstantsBlock?: boolean;
+	insideMapBlock?: boolean;
 	startingByteAddress: number;
 	currentModuleNextWordOffset?: number;
 	currentModuleWordAlignedSize?: number;

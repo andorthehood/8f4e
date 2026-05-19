@@ -1,28 +1,44 @@
 import { BlockType } from '@8f4e/compiler-spec';
 
-import type { BlockStack, BlockTypeValue } from '@8f4e/compiler-spec';
+import type { BlockStack, BlockTypeValue, CompilationContext } from '@8f4e/compiler-spec';
 
-export function isInstructionIsInsideAModule(blockStack: BlockStack) {
-	return hasBlockType(blockStack, BlockType.MODULE);
+export function pushBlock(context: CompilationContext, block: BlockStack[number]) {
+	context.blockStack.push(block);
+	updateBlockContextFlag(context, block.blockType, true);
 }
 
-export function isInstructionInsideFunction(blockStack: BlockStack) {
-	return hasBlockType(blockStack, BlockType.FUNCTION);
-}
+export function popBlock(context: CompilationContext) {
+	const block = context.blockStack.pop();
 
-export function isInstructionInsideModuleOrFunction(blockStack: BlockStack) {
-	return isInstructionIsInsideAModule(blockStack) || isInstructionInsideFunction(blockStack);
-}
-
-export function isInstructionIsInsideBlock(blockStack: BlockStack, blockType: BlockTypeValue) {
-	return hasBlockType(blockStack, blockType);
-}
-
-function hasBlockType(blockStack: BlockStack, blockType: BlockTypeValue) {
-	for (let i = blockStack.length - 1; i >= 0; i--) {
-		if (blockStack[i].blockType === blockType) {
-			return true;
-		}
+	if (block) {
+		updateBlockContextFlag(context, block.blockType, false);
 	}
-	return false;
+
+	return block;
+}
+
+function updateBlockContextFlag(context: CompilationContext, blockType: BlockTypeValue, isInside: boolean) {
+	switch (blockType) {
+		case BlockType.MODULE:
+			context.insideModuleBlock = isInside;
+			break;
+		case BlockType.FUNCTION:
+			context.insideFunctionBlock = isInside;
+			break;
+		case BlockType.BLOCK:
+			context.insideGenericBlock = isInside;
+			break;
+		case BlockType.LOOP:
+			context.insideLoopBlock = isInside;
+			break;
+		case BlockType.CONDITION:
+			context.insideConditionBlock = isInside;
+			break;
+		case BlockType.CONSTANTS:
+			context.insideConstantsBlock = isInside;
+			break;
+		case BlockType.MAP:
+			context.insideMapBlock = isInside;
+			break;
+	}
 }
