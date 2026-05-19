@@ -4,6 +4,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 import { functionValueTypeToWasmType, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
+import { popBlock } from '../utils/blockStack';
 
 import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -12,7 +13,7 @@ import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
 const functionEnd: InstructionCompiler = (line, context) => {
-	const block = context.blockStack.pop();
+	const block = popBlock(context);
 
 	if (!block || block.blockType !== BlockType.FUNCTION) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);

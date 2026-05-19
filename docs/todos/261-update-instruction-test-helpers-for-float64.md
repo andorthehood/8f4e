@@ -3,6 +3,7 @@ title: 'TODO: Update instruction test helpers for float64 and refactor call test
 priority: Medium
 effort: 2-4h
 created: 2026-02-20
+issue: https://github.com/andorthehood/8f4e/issues/644
 status: Open
 completed: null
 ---

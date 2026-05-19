@@ -3,6 +3,7 @@ title: 'TODO: Add int64 support across compiler, runtime, and docs'
 priority: Medium
 effort: 2-4d
 created: 2026-03-09
+issue: https://github.com/andorthehood/8f4e/issues/553
 status: Open
 completed: null
 ---

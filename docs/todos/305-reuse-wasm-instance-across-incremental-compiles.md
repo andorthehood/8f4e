@@ -3,6 +3,7 @@ title: 'TODO: Reuse WASM instance across incremental compiles'
 priority: High
 effort: 3-6h
 created: 2026-03-14
+issue: https://github.com/andorthehood/8f4e/issues/646
 status: Open
 completed: null
 ---

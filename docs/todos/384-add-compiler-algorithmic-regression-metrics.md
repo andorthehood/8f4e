@@ -3,6 +3,7 @@ title: 'TODO: Add compiler algorithmic regression metrics'
 priority: Medium
 effort: 1-2 days
 created: 2026-04-28
+issue: https://github.com/andorthehood/8f4e/issues/647
 status: Open
 completed: null
 ---

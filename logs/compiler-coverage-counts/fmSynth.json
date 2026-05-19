@@ -1,0 +1,572 @@
+[
+	{
+		"commit": "1d4eade45c742b925fff34b37f4a302362dc6b3e",
+		"version": "0.1.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 191,
+				"functionEntries": 98953,
+				"rangeExecutions": 216164,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 64881,
+				"rangeExecutions": 283200,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "d04af7ea55b7b037d37102e6cc2b1a90fcf6a906",
+		"version": "0.1.1",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 192,
+				"functionEntries": 99169,
+				"rangeExecutions": 216380,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 64881,
+				"rangeExecutions": 283200,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "b6042793633f742dee20672e0267bf3f055477ed",
+		"version": "0.1.2",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 193,
+				"functionEntries": 106636,
+				"rangeExecutions": 223847,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 64881,
+				"rangeExecutions": 283200,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "3b290a0a1c004c69ebb20c476a2f29ce2d5f1d23",
+		"version": "0.1.3",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 193,
+				"functionEntries": 106636,
+				"rangeExecutions": 223847,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 64881,
+				"rangeExecutions": 283200,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "1f5576c7cf5a8204a338456cd139479024f31f22",
+		"version": "0.1.4",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 194,
+				"functionEntries": 106643,
+				"rangeExecutions": 223854,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 64881,
+				"rangeExecutions": 283200,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "0c97e31ea75a8fbe081e83bc9e45e83f2cac4a33",
+		"version": "0.1.5",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 198,
+				"functionEntries": 106665,
+				"rangeExecutions": 227534,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "351da439d3068816c858e3d7c5b33a0e9016166a",
+		"version": "0.1.6",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 198,
+				"functionEntries": 106665,
+				"rangeExecutions": 227534,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "1244e99b240a9043e6694f20dab78331f8368e24",
+		"version": "0.1.7",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 198,
+				"functionEntries": 106665,
+				"rangeExecutions": 227534,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "d0cdda36833728e50ba903f15897930a5ddc9917",
+		"version": "0.1.8",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 198,
+				"functionEntries": 106665,
+				"rangeExecutions": 227534,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "1ee771e502c901340dd8e00f7a60ed3642adc2b6",
+		"version": "0.2.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 211,
+				"functionEntries": 107291,
+				"rangeExecutions": 230836,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "b1a313467f5f2df856904196d31924551d4b775f",
+		"version": "0.2.1",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 211,
+				"functionEntries": 107291,
+				"rangeExecutions": 230836,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "07d500cc4166d958ba279bbdb8a152dab1deefde",
+		"version": "0.2.2",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 211,
+				"functionEntries": 107291,
+				"rangeExecutions": 230836,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "7d8b31bd626d7abe6c6638ea33ea30e78fb098da",
+		"version": "1.0.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 211,
+				"functionEntries": 107291,
+				"rangeExecutions": 230836,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "0875ca3e7fce70be78cd985b1b42c425364e4048",
+		"version": "1.1.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 211,
+				"functionEntries": 107291,
+				"rangeExecutions": 230836,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "e234c45be8d266d199c5fa78c543cbadaab96b84",
+		"version": "1.1.1",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 211,
+				"functionEntries": 107291,
+				"rangeExecutions": 230836,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 65271,
+				"rangeExecutions": 283592,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "e8849b76d572fa4158ec59d1a694a2ab3bc305c1",
+		"version": "1.1.2",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 219,
+				"functionEntries": 108011,
+				"rangeExecutions": 233394,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 49,
+				"functionEntries": 66050,
+				"rangeExecutions": 285534,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "fb0446056a0eb3fd77afbab3e10d20a65e64c24c",
+		"version": "1.2.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 220,
+				"functionEntries": 108012,
+				"rangeExecutions": 233395,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 70392,
+				"rangeExecutions": 341377,
+				"maxRangesPerFunction": 38
+			}
+		}
+	},
+	{
+		"commit": "d6e108b82ccb94761a566ee81e0d287d3e0705da",
+		"version": "1.3.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 220,
+				"functionEntries": 102778,
+				"rangeExecutions": 222691,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 63057,
+				"rangeExecutions": 292548,
+				"maxRangesPerFunction": 38
+			}
+		}
+	},
+	{
+		"commit": "b2a04717cebc38a8b44cc5dedf10572bc8b2dd45",
+		"version": "1.3.1",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 218,
+				"functionEntries": 100545,
+				"rangeExecutions": 218355,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 60782,
+				"rangeExecutions": 275158,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "6fdd2223f5576a0f69742cd15f625e17be5c0b55",
+		"version": "1.3.2",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 219,
+				"functionEntries": 106013,
+				"rangeExecutions": 243072,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 60782,
+				"rangeExecutions": 275158,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "dde66f525cb4195e7fde164065720be459afc6ba",
+		"version": "1.4.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 221,
+				"functionEntries": 106016,
+				"rangeExecutions": 243077,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 60782,
+				"rangeExecutions": 275158,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "67d41407a64bf94dace24a7217397e929ee1543f",
+		"version": "1.4.1",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 221,
+				"functionEntries": 106016,
+				"rangeExecutions": 243077,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 60782,
+				"rangeExecutions": 275158,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "79b3d5843fd3093a098a2b7cc3b6453ad3a2a659",
+		"version": "1.4.2",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 224,
+				"functionEntries": 106352,
+				"rangeExecutions": 242642,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 60782,
+				"rangeExecutions": 275158,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "e54ec0f86a6923564dcaa626f6c5a7cfc01f6305",
+		"version": "1.4.3",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 224,
+				"functionEntries": 106352,
+				"rangeExecutions": 242642,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 59188,
+				"rangeExecutions": 271970,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "f69e06a12ddbac69e7eda731a08f31c0480e8e27",
+		"version": "1.4.4",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 224,
+				"functionEntries": 106352,
+				"rangeExecutions": 242642,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 59188,
+				"rangeExecutions": 271970,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "476c9060b9fda6dbf74478ad2576eece9d74f7a2",
+		"version": "1.4.5",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 224,
+				"functionEntries": 106352,
+				"rangeExecutions": 242642,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 59188,
+				"rangeExecutions": 271970,
+				"maxRangesPerFunction": 34
+			}
+		}
+	},
+	{
+		"commit": "f545a531538c0324128144abf88e12de915480d9",
+		"version": "1.4.6",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 224,
+				"functionEntries": 106352,
+				"rangeExecutions": 242766,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 53,
+				"functionEntries": 61037,
+				"rangeExecutions": 279295,
+				"maxRangesPerFunction": 40
+			}
+		}
+	},
+	{
+		"commit": "d0f9114715e67177d74c1789646826f7fffdc401",
+		"version": "1.4.7",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 224,
+				"functionEntries": 106352,
+				"rangeExecutions": 242766,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 53,
+				"functionEntries": 61037,
+				"rangeExecutions": 279295,
+				"maxRangesPerFunction": 40
+			}
+		}
+	},
+	{
+		"commit": "f240f0ea0359f102bb38183c308e32c68d67f2ef",
+		"version": "1.4.8",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 223,
+				"functionEntries": 91574,
+				"rangeExecutions": 212206,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 53,
+				"functionEntries": 61037,
+				"rangeExecutions": 279295,
+				"maxRangesPerFunction": 40
+			}
+		}
+	},
+	{
+		"commit": "aa3ceb89ef4d2e1011145dec1d3ff4c8d92e0ef9",
+		"version": "1.4.9",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 223,
+				"functionEntries": 91574,
+				"rangeExecutions": 212206,
+				"maxRangesPerFunction": 45
+			},
+			"tokenizer": {
+				"coveredFunctions": 52,
+				"functionEntries": 56725,
+				"rangeExecutions": 223784,
+				"maxRangesPerFunction": 38
+			}
+		}
+	}
+]
