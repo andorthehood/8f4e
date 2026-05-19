@@ -42,6 +42,22 @@
 				"cwd": "{workspaceRoot}"
 			}
 		},
+		"log-compiler-coverage-counts": {
+			"executor": "nx:run-commands",
+			"cache": false,
+			"outputs": ["{workspaceRoot}/logs/compiler-coverage-counts"],
+			"dependsOn": [
+				{
+					"projects": ["@8f4e/compiler"],
+					"target": "build",
+					"params": "ignore"
+				}
+			],
+			"options": {
+				"command": "node scripts/log-compiler-coverage-counts.mjs",
+				"cwd": "{workspaceRoot}"
+			}
+		},
 		"typecheck": {
 			"executor": "nx:run-commands",
 			"options": {
