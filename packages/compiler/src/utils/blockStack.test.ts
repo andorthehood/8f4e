@@ -71,6 +71,32 @@ describe('blockStack utilities', () => {
 			expect(context[flagName]).toBe(false);
 		});
 
+		it.each([
+			['module', mockModuleBlock, 'insideModuleBlock'],
+			['function', mockFunctionBlock, 'insideFunctionBlock'],
+			['generic', mockGenericBlock, 'insideGenericBlock'],
+			['loop', mockLoopBlock, 'insideLoopBlock'],
+			['condition', mockConditionBlock, 'insideConditionBlock'],
+			['constants', mockConstantsBlock, 'insideConstantsBlock'],
+			['map', mockMapBlock, 'insideMapBlock'],
+		] as const)('keeps the %s block flag set until the last matching block is popped', (_name, block, flagName) => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			pushBlock(context, block);
+			pushBlock(context, block);
+
+			expect(context.blockStack).toHaveLength(2);
+			expect(context[flagName]).toBe(true);
+
+			expect(popBlock(context)).toEqual(block);
+			expect(context.blockStack).toHaveLength(1);
+			expect(context[flagName]).toBe(true);
+
+			expect(popBlock(context)).toEqual(block);
+			expect(context.blockStack).toEqual([]);
+			expect(context[flagName]).toBe(false);
+		});
+
 		it('leaves cached block-context flags unchanged for unrelated blocks', () => {
 			const context = createInstructionCompilerTestContext({
 				blockStack: [],

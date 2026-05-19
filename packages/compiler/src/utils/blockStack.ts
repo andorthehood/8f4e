@@ -10,7 +10,7 @@ export function pushBlock(context: CompilationContext, block: BlockStack[number]
 export function popBlock(context: CompilationContext) {
 	const block = context.blockStack.pop();
 
-	if (block) {
+	if (block && !context.blockStack.some(remainingBlock => remainingBlock.blockType === block.blockType)) {
 		updateBlockContextFlag(context, block.blockType, false);
 	}
 
