@@ -25,6 +25,7 @@ describe('initOnly instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#initOnly',
 				arguments: [],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -67,6 +68,7 @@ describe('initOnly instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: '#initOnly',
 				arguments: [],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
@@ -79,6 +81,7 @@ describe('initOnly instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: '#initOnly',
 				arguments: [],
+				isBlockPrologue: true,
 			} as AST[number],
 			context
 		);
