@@ -1,4 +1,6 @@
 export interface InitialMemoryDataSegment {
+	memoryIndex: number;
+	memoryRegionName?: string;
 	byteAddress: number;
 	bytes: Uint8Array;
 }

@@ -11,6 +11,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {},
@@ -25,12 +26,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
           "byteAddress": 4,
@@ -45,6 +48,7 @@
         "in2": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
           "byteAddress": 8,
@@ -108,12 +112,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "memoryMap": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
           "byteAddress": 12,
@@ -124,11 +130,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "in2": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 4,
           "wordAlignedSize": 1,
           "byteAddress": 16,
@@ -139,11 +147,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 5,
           "wordAlignedSize": 1,
           "byteAddress": 20,
@@ -182,12 +192,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 24,
       "wordAlignedAddress": 6,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
           "byteAddress": 24,
@@ -198,11 +210,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 7,
           "wordAlignedSize": 1,
           "byteAddress": 28,
@@ -266,12 +280,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 32,
       "wordAlignedAddress": 8,
       "memoryMap": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 8,
           "wordAlignedSize": 1,
           "byteAddress": 32,
@@ -282,11 +298,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "in2": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 9,
           "wordAlignedSize": 1,
           "byteAddress": 36,
@@ -297,11 +315,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 10,
           "wordAlignedSize": 1,
           "byteAddress": 40,
@@ -340,12 +360,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 44,
       "wordAlignedAddress": 11,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 11,
           "wordAlignedSize": 1,
           "byteAddress": 44,
@@ -356,11 +378,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 12,
           "wordAlignedSize": 1,
           "byteAddress": 48,
@@ -424,12 +448,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 52,
       "wordAlignedAddress": 13,
       "memoryMap": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 13,
           "wordAlignedSize": 1,
           "byteAddress": 52,
@@ -440,11 +466,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "in2": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 14,
           "wordAlignedSize": 1,
           "byteAddress": 56,
@@ -455,11 +483,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 15,
           "wordAlignedSize": 1,
           "byteAddress": 60,
@@ -514,12 +544,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 64,
       "wordAlignedAddress": 16,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 16,
           "wordAlignedSize": 1,
           "byteAddress": 64,
@@ -530,11 +562,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 17,
           "wordAlignedSize": 1,
           "byteAddress": 68,
@@ -558,6 +592,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "memoryMap": {},
@@ -572,6 +607,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "memoryMap": {},
@@ -586,12 +622,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 72,
       "wordAlignedAddress": 18,
       "memoryMap": {
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 18,
           "wordAlignedSize": 1,
           "byteAddress": 72,
@@ -602,7 +640,8 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 1,

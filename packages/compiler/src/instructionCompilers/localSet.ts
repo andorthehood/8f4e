@@ -23,6 +23,19 @@ const _localSet: InstructionCompiler<CodegenLocalSetLine> = (line: CodegenLocalS
 		throw getError(ErrorCode.ONLY_FLOATS, line, context);
 	}
 
+	if (local.pointeeBaseType) {
+		local.pointeeMemoryIndex = operand.address?.memoryIndex ?? 0;
+		if (operand.address) {
+			if (operand.address.memoryRegionName) {
+				local.pointeeMemoryRegionName = operand.address.memoryRegionName;
+			} else {
+				delete local.pointeeMemoryRegionName;
+			}
+		} else {
+			delete local.pointeeMemoryRegionName;
+		}
+	}
+
 	return saveByteCode(context, localSet(local.index));
 };
 

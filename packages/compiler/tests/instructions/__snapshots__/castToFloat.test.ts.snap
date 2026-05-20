@@ -53,9 +53,11 @@ exports[`castToFloat > if the generated AST, WAT and memory map match the snapsh
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -138,6 +140,7 @@ exports[`castToFloat > if the generated AST, WAT and memory map match the snapsh
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -152,6 +155,7 @@ exports[`castToFloat > if the generated AST, WAT and memory map match the snapsh
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,

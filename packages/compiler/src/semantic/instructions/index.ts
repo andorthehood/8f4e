@@ -4,6 +4,7 @@ import semanticModule from './module';
 import semanticConstants from './constants';
 import semanticModuleEnd from './moduleEnd';
 import semanticConstantsEnd from './constantsEnd';
+import semanticRegion from './region';
 
 import type { CompilationContext, NormalizedSemanticInstructionLine } from '@8f4e/compiler-spec';
 
@@ -17,6 +18,9 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 			return;
 		case 'module':
 			semanticModule(line, context);
+			return;
+		case '#region':
+			semanticRegion(line, context);
 			return;
 		case 'constants':
 			semanticConstants(line, context);

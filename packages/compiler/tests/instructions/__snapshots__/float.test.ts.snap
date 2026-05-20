@@ -52,9 +52,11 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -128,6 +130,7 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -142,6 +145,7 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -196,9 +200,11 @@ exports[`float: bare anonymous zero-initialized allocation > if the generated AS
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -272,6 +278,7 @@ exports[`float: bare anonymous zero-initialized allocation > if the generated AS
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -286,6 +293,7 @@ exports[`float: bare anonymous zero-initialized allocation > if the generated AS
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -366,9 +374,11 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -442,6 +452,7 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -456,6 +467,7 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -516,9 +528,11 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -592,6 +606,7 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -606,6 +621,7 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,

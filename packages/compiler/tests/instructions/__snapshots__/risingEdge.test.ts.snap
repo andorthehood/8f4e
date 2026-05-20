@@ -53,9 +53,11 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -219,6 +221,7 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -233,6 +236,7 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -294,9 +298,11 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -460,6 +466,7 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -474,6 +481,7 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
