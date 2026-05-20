@@ -5,6 +5,7 @@ import i32store16 from './i32store16';
 test('i32store16 with no setup generates only store16 instruction', () => {
 	const result = i32store16();
 	expect(result).toStrictEqual([0x3b, 1, 0]); // opcode 0x3b, alignment 1, offset 0
+	expect(i32store16(undefined, undefined, 1, 0, 1)).toStrictEqual([0x3b, 0x41, 1, 0]);
 });
 
 test('i32store16 with offset generates correct encoding', () => {
