@@ -129,9 +129,9 @@ export interface CompilationContext {
 	startingByteAddress: number;
 	currentModuleNextWordOffset?: number;
 	currentModuleWordAlignedSize?: number;
-	currentMemoryIndex?: number;
+	currentMemoryIndex: number;
 	currentMemoryRegionName?: string;
-	memoryRegions?: string[];
+	memoryRegions: string[];
 	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
 	mode?: CompilationMode;
 	codeBlockId?: string;

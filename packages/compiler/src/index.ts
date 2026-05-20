@@ -34,7 +34,7 @@ import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 import { getError } from './compilerError';
-import { getRequiredCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
+import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 
 import type {
 	AST,
@@ -154,7 +154,7 @@ function getRequiredMemoryBytesByRegion(
 			continue;
 		}
 
-		result[getRequiredCustomMemoryRegionName(memoryRegions, memoryIndex)] = requiredBytes;
+		result[getCustomMemoryRegionName(memoryRegions, memoryIndex)] = requiredBytes;
 	}
 
 	return result;
@@ -316,7 +316,7 @@ export default function compile(
 		const requiredBytes = requiredMemoryBytesByIndex[memoryIndex] ?? 0;
 		const memorySizePages = Math.max(1, Math.ceil(requiredBytes / WASM_MEMORY_PAGE_SIZE));
 		const importName =
-			memoryIndex === 0 ? 'memory' : getRequiredCustomMemoryRegionName(options.memoryRegions ?? [], memoryIndex);
+			memoryIndex === 0 ? 'memory' : getCustomMemoryRegionName(options.memoryRegions ?? [], memoryIndex);
 		return createMemoryImport('js', importName, memorySizePages, memorySizePages, !options.disableSharedMemory);
 	});
 

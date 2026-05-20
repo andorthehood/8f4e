@@ -25,6 +25,8 @@ describe('parseMemoryInstructionArguments', () => {
 		insideConstantsBlock: false,
 		insideMapBlock: false,
 		startingByteAddress: 0,
+		currentMemoryIndex: 0,
+		memoryRegions: [],
 		mode: 'module',
 	});
 

@@ -52,7 +52,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = (line: ArrayDeclaration
 	const isUnsigned = line.instruction.endsWith('u[]');
 	const numberOfElements = elementCountArg.value;
 	const isInteger = line.instruction.startsWith('int') || line.instruction.includes('*');
-	const memoryIndex = context.currentMemoryIndex ?? 0;
+	const memoryIndex = context.currentMemoryIndex;
 	const memoryRegionName = context.currentMemoryRegionName;
 	const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
 

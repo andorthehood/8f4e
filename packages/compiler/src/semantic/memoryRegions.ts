@@ -29,26 +29,19 @@ export function getMemoryRegions(options?: Pick<CompileOptions, 'memoryRegions'>
 	return options?.memoryRegions ?? [];
 }
 
-export function getMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {
-	return memoryIndex === DEFAULT_MEMORY_INDEX ? undefined : memoryRegions[memoryIndex - 1];
+export function getCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string {
+	return memoryRegions[memoryIndex - 1]!;
 }
 
-export function getMemoryRegionFields(
-	memoryIndex = DEFAULT_MEMORY_INDEX,
-	memoryRegionName?: string
-): ResolvedMemoryRegion {
+export function getMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {
+	return memoryIndex === DEFAULT_MEMORY_INDEX ? undefined : getCustomMemoryRegionName(memoryRegions, memoryIndex);
+}
+
+export function getMemoryRegionFields(memoryIndex: number, memoryRegionName?: string): ResolvedMemoryRegion {
 	return {
 		memoryIndex,
 		...(memoryRegionName ? { memoryRegionName } : {}),
 	};
-}
-
-export function getRequiredCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string {
-	const memoryRegionName = getMemoryRegionName(memoryRegions, memoryIndex);
-	if (!memoryRegionName) {
-		throw new Error(`Missing configured memory region name for memory index ${memoryIndex}`);
-	}
-	return memoryRegionName;
 }
 
 export function validateMemoryRegionOptions(

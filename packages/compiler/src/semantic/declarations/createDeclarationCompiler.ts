@@ -38,7 +38,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 		const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
 		const pointerDepth = getPointerDepth(line.instruction);
 		const flags = getMemoryFlags(baseType, pointerDepth);
-		const memoryIndex = context.currentMemoryIndex ?? 0;
+		const memoryIndex = context.currentMemoryIndex;
 		const memoryRegionName = context.currentMemoryRegionName;
 		const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
 		const pointerPointeeRegion =
