@@ -53,9 +53,11 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -75,9 +77,11 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "input",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -144,6 +148,7 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -158,6 +163,7 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,

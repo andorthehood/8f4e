@@ -92,6 +92,8 @@ describe('pushLocal', () => {
 		);
 
 		expect(context.byteCode).toEqual(localGet(4));
-		expect(context.stack).toEqual([{ isInteger: true, pointeeBaseType: 'float', isNonZero: false }]);
+		expect(context.stack).toEqual([
+			{ isInteger: true, pointeeBaseType: 'float', address: { memoryIndex: 0 }, isNonZero: false },
+		]);
 	});
 });

@@ -69,9 +69,11 @@ exports[`shiftLeft > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 8,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -171,6 +173,7 @@ exports[`shiftLeft > if the generated AST, WAT and memory map match the snapshot
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -185,6 +188,7 @@ exports[`shiftLeft > if the generated AST, WAT and memory map match the snapshot
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -199,6 +203,7 @@ exports[`shiftLeft > if the generated AST, WAT and memory map match the snapshot
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 2,

@@ -25,6 +25,7 @@ export function createInternalResource(
 	overrides: Partial<InternalResource> & Pick<InternalResource, 'id' | 'byteAddress'>
 ): InternalResource {
 	return {
+		memoryIndex: 0,
 		wordAlignedAddress: overrides.byteAddress / 4,
 		wordAlignedSize: 1,
 		elementWordSize: 4,
@@ -51,11 +52,11 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 	};
 }
 
-export function serializeSegments<T extends { memoryIndex?: number; byteAddress: number; bytes: Uint8Array }>(
+export function serializeSegments<T extends { memoryIndex: number; byteAddress: number; bytes: Uint8Array }>(
 	segments: T[]
 ) {
 	return segments.map(segment => ({
-		...(segment.memoryIndex ? { memoryIndex: segment.memoryIndex } : {}),
+		memoryIndex: segment.memoryIndex,
 		byteAddress: segment.byteAddress,
 		bytes: Array.from(segment.bytes),
 	}));
