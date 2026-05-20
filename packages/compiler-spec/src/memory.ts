@@ -129,6 +129,10 @@ export interface DataStructure {
 	numberOfElements: number;
 	elementWordSize: number;
 	type: MemoryType;
+	/** Resolved WebAssembly memory index where this declaration is stored. */
+	memoryIndex: number;
+	/** Configured logical region name for non-default memories. */
+	memoryRegionName?: string;
 	byteAddress: number;
 	wordAlignedSize: number;
 	wordAlignedAddress: number;
@@ -145,6 +149,10 @@ export interface DataStructure {
 	 * - `'int8u'` / `'int16u'`: narrow unsigned integer pointee
 	 */
 	pointeeBaseType?: PointeeBaseType;
+	/** Resolved WebAssembly memory index where this pointer dereferences. */
+	pointeeMemoryIndex?: number;
+	/** Configured logical region name for this pointer's pointee memory. */
+	pointeeMemoryRegionName?: string;
 	id: string;
 	isPointingToPointer: boolean;
 	isUnsigned: boolean;
@@ -154,6 +162,8 @@ export type MemoryMap = Record<string, DataStructure>;
 
 export interface InternalResource {
 	id: string;
+	memoryIndex: number;
+	memoryRegionName?: string;
 	byteAddress: number;
 	wordAlignedAddress: number;
 	wordAlignedSize: number;
@@ -171,6 +181,8 @@ export interface InternalAllocator {
 export type MemoryBuffer = Int32Array;
 
 export type MemoryValueChange = {
+	memoryIndex: number;
+	memoryRegionName?: string;
 	wordAlignedSize: number;
 	wordAlignedAddress: number;
 	value: number | Record<string, number>;

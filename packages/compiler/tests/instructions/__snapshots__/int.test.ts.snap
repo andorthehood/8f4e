@@ -46,9 +46,11 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -122,8 +124,10 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "pointeeBaseType": "int",
+    "pointeeMemoryIndex": 0,
     "type": "int*",
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
@@ -137,6 +141,7 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -197,9 +202,11 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -273,6 +280,7 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -287,6 +295,7 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -373,9 +382,11 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -449,6 +460,7 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -463,6 +475,7 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -568,9 +581,11 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -644,6 +659,7 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -658,6 +674,7 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -723,9 +740,11 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -799,6 +818,7 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -813,6 +833,7 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -880,9 +901,11 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -956,6 +979,7 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -970,6 +994,7 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1024,9 +1049,11 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1100,6 +1127,7 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1114,6 +1142,7 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1210,9 +1239,11 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 12,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1338,6 +1369,7 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1352,6 +1384,7 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 2,
@@ -1366,6 +1399,7 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1380,6 +1414,7 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 3,
@@ -1452,9 +1487,11 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1528,6 +1565,7 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1542,6 +1580,7 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1632,9 +1671,11 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 12,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1760,6 +1801,7 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1774,6 +1816,7 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1788,6 +1831,7 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 2,
@@ -1802,6 +1846,7 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 3,
@@ -1914,9 +1959,11 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1990,6 +2037,7 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -2004,6 +2052,7 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -2097,9 +2146,11 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -2173,6 +2224,7 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -2187,6 +2239,7 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -2258,9 +2311,11 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -2334,6 +2389,7 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -2348,6 +2404,7 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -2429,9 +2486,11 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -2505,6 +2564,7 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -2519,6 +2579,7 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -2592,9 +2653,11 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -2668,6 +2731,7 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -2682,6 +2746,7 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -2767,9 +2832,11 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -2843,6 +2910,7 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -2857,6 +2925,7 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -2922,9 +2991,11 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -2998,6 +3069,7 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -3012,6 +3084,7 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -3072,9 +3145,11 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -3148,6 +3223,7 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -3162,6 +3238,7 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -3221,9 +3298,11 @@ exports[`int: with anonymous single-character string default > if the generated 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -3297,6 +3376,7 @@ exports[`int: with anonymous single-character string default > if the generated 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -3311,6 +3391,7 @@ exports[`int: with anonymous single-character string default > if the generated 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -3391,9 +3472,11 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -3467,6 +3550,7 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -3481,6 +3565,7 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -3541,9 +3626,11 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -3617,6 +3704,7 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -3631,6 +3719,7 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -3697,9 +3786,11 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -3773,6 +3864,7 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -3787,6 +3879,7 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -3852,9 +3945,11 @@ exports[`int: with named single-character string default > if the generated AST,
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -3928,6 +4023,7 @@ exports[`int: with named single-character string default > if the generated AST,
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -3942,6 +4038,7 @@ exports[`int: with named single-character string default > if the generated AST,
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,

@@ -78,7 +78,7 @@ describe('sub instruction compiler', () => {
 				isNonZero: false,
 				knownIntegerValue: 0,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 			{ isInteger: true, isNonZero: true, knownIntegerValue: -4 }
@@ -100,8 +100,9 @@ describe('sub instruction compiler', () => {
 				isNonZero: true,
 				knownIntegerValue: 4,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
-					clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					memoryIndex: 0,
+					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
+					clampRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 		]);
@@ -115,7 +116,7 @@ describe('sub instruction compiler', () => {
 				isNonZero: false,
 				knownIntegerValue: 0,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
@@ -137,7 +138,8 @@ describe('sub instruction compiler', () => {
 				isNonZero: true,
 				knownIntegerValue: -4,
 				address: {
-					clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
+					memoryIndex: 0,
+					clampRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
 		]);

@@ -53,9 +53,11 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -202,6 +204,7 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -216,6 +219,7 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -277,9 +281,11 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -426,6 +432,7 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -440,6 +447,7 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -529,9 +537,11 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -581,9 +591,11 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -675,6 +687,7 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -689,6 +702,7 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,

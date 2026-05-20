@@ -4,6 +4,8 @@ import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import { getOrCreateMemoryGuardLocal, linearLastValidStartAddress } from './memoryAccessGuard';
 
+import { getMemoryRegionFields } from '../../semantic/memoryRegions';
+
 import type { AST, CompilationContext, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
 const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
@@ -16,6 +18,7 @@ export function getClampAccessByteWidth(line: AST[number]): number {
 export function getModuleAddressRange(context: CompilationContext): MemoryAddressRange {
 	return {
 		source: 'module-start',
+		...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
 		byteAddress: context.startingByteAddress,
 		safeByteLength: Math.max(0, (context.currentModuleWordAlignedSize ?? 0) * WORD_MEMORY_ACCESS_WIDTH),
 		...(context.namespace.moduleName ? { moduleId: context.namespace.moduleName } : {}),
@@ -47,6 +50,10 @@ export function getClampedAddressStackItem(
 		...(range || safeAccessByteWidth > 0
 			? {
 					address: {
+						...getMemoryRegionFields(
+							range?.memoryIndex ?? operand.address?.memoryIndex ?? 0,
+							range?.memoryRegionName ?? operand.address?.memoryRegionName
+						),
 						...(range ? { clampRange: range } : {}),
 						...(safeAccessByteWidth > 0 ? { safeAccessByteWidth } : {}),
 					},
@@ -87,6 +94,6 @@ export function rangeUpperByteAddressCode(range: MemoryAddressRange, accessByteW
 	return i32const(range.byteAddress + Math.max(0, range.safeByteLength - accessByteWidth));
 }
 
-export function linearUpperByteAddressCode(accessByteWidth: number): number[] {
-	return linearLastValidStartAddress(accessByteWidth);
+export function linearUpperByteAddressCode(accessByteWidth: number, memoryIndex = 0): number[] {
+	return linearLastValidStartAddress(accessByteWidth, memoryIndex);
 }

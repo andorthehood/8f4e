@@ -31,8 +31,10 @@ export function allocateInternalResource(
 	const elementWordSize = getElementWordSize(type);
 	const wordAlignedSize = getWordAlignedSize(type);
 	const byteAddress = context.internalAllocator.nextByteAddress;
+	// Compiler-generated state is intentionally kept in default memory 0, even inside #region modules.
 	const resource: InternalResource = {
 		id,
+		memoryIndex: 0,
 		byteAddress,
 		wordAlignedAddress: byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		wordAlignedSize,

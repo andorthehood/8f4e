@@ -289,6 +289,7 @@ describe('tryResolveCompileTimeArgument', () => {
 								wordAlignedSize: 4,
 								numberOfElements: 4,
 								elementWordSize: 4,
+								memoryIndex: 0,
 								isInteger: true,
 							},
 						},
@@ -301,8 +302,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 8,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
+					memoryIndex: 0,
 					byteAddress: 8,
 					safeByteLength: 16,
 					moduleId: 'source',
@@ -328,6 +331,7 @@ describe('tryResolveCompileTimeArgument', () => {
 								wordAlignedSize: 4,
 								numberOfElements: 4,
 								elementWordSize: 4,
+								memoryIndex: 0,
 								isInteger: true,
 							},
 						},
@@ -341,8 +345,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-end',
+					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 4,
 					moduleId: 'source',
@@ -372,8 +378,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 12,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'module-start',
+					memoryIndex: 0,
 					byteAddress: 12,
 					safeByteLength: 12,
 					moduleId: 'source',
@@ -404,8 +412,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'module-end',
+					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 4,
 					moduleId: 'source',
@@ -445,8 +455,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 24,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'module-start',
+					memoryIndex: 0,
 					byteAddress: 24,
 					safeByteLength: 20,
 				},
@@ -456,8 +468,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 40,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'module-end',
+					memoryIndex: 0,
 					byteAddress: 40,
 					safeByteLength: 4,
 				},
@@ -477,6 +491,7 @@ describe('tryResolveCompileTimeArgument', () => {
 						wordAlignedSize: 4,
 						numberOfElements: 4,
 						elementWordSize: 4,
+						memoryIndex: 0,
 						isInteger: true,
 					},
 				},
@@ -487,8 +502,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
+					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 12,
 					memoryId: 'arr',
@@ -509,6 +526,7 @@ describe('tryResolveCompileTimeArgument', () => {
 						wordAlignedSize: 4,
 						numberOfElements: 4,
 						elementWordSize: 4,
+						memoryIndex: 0,
 						isInteger: true,
 					},
 				},
@@ -519,8 +537,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 20,
 			isInteger: true,
 			address: {
+				memoryIndex: 0,
 				safeRange: {
 					source: 'memory-start',
+					memoryIndex: 0,
 					byteAddress: 20,
 					safeByteLength: 12,
 					memoryId: 'arr',

@@ -50,9 +50,11 @@ exports[`compiler > compileModules 1`] = `
           },
           {
             "address": {
+              "memoryIndex": 0,
               "safeRange": {
                 "byteAddress": 0,
                 "memoryId": "defaultValue",
+                "memoryIndex": 0,
                 "safeByteLength": 4,
                 "source": "memory-start",
               },
@@ -136,9 +138,11 @@ exports[`compiler > compileModules 1`] = `
         "arguments": [
           {
             "address": {
+              "memoryIndex": 0,
               "safeRange": {
                 "byteAddress": 8,
                 "memoryId": "out",
+                "memoryIndex": 0,
                 "safeByteLength": 4,
                 "source": "memory-start",
               },
@@ -370,6 +374,7 @@ exports[`compiler > compileModules 1`] = `
     "index": 0,
     "initFunctionBody": [],
     "initOnlyExecution": undefined,
+    "memoryIndex": 0,
     "memoryMap": {
       "defaultValue": {
         "byteAddress": 0,
@@ -380,6 +385,7 @@ exports[`compiler > compileModules 1`] = `
         "isInteger": true,
         "isPointingToPointer": false,
         "isUnsigned": false,
+        "memoryIndex": 0,
         "numberOfElements": 1,
         "type": "int",
         "wordAlignedAddress": 0,
@@ -394,8 +400,10 @@ exports[`compiler > compileModules 1`] = `
         "isInteger": true,
         "isPointingToPointer": false,
         "isUnsigned": false,
+        "memoryIndex": 0,
         "numberOfElements": 1,
         "pointeeBaseType": "int",
+        "pointeeMemoryIndex": 0,
         "type": "int*",
         "wordAlignedAddress": 1,
         "wordAlignedSize": 1,
@@ -409,6 +417,7 @@ exports[`compiler > compileModules 1`] = `
         "isInteger": true,
         "isPointingToPointer": false,
         "isUnsigned": false,
+        "memoryIndex": 0,
         "numberOfElements": 1,
         "type": "int",
         "wordAlignedAddress": 2,
@@ -423,6 +432,7 @@ exports[`compiler > compileModules 1`] = `
         "isInteger": true,
         "isPointingToPointer": false,
         "isUnsigned": false,
+        "memoryIndex": 0,
         "numberOfElements": 1,
         "type": "int",
         "wordAlignedAddress": 3,

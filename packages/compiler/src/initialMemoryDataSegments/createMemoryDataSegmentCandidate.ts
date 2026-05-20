@@ -20,6 +20,8 @@ export default function createMemoryDataSegmentCandidate(memory: DataStructure):
 	const bytes = createDefaultValueBytes(memory, memory.default as number);
 	return [
 		{
+			memoryIndex: memory.memoryIndex,
+			...(memory.memoryRegionName ? { memoryRegionName: memory.memoryRegionName } : {}),
 			byteAddress: memory.byteAddress,
 			bytes,
 			sourceKind: 'scalar',
@@ -40,6 +42,8 @@ function createArrayDataSegmentCandidates(memory: DataStructure): InitialMemoryD
 		}
 
 		segments.push({
+			memoryIndex: memory.memoryIndex,
+			...(memory.memoryRegionName ? { memoryRegionName: memory.memoryRegionName } : {}),
 			byteAddress: runByteAddress,
 			bytes: materializeByteChunks(runChunks, runByteLength),
 			sourceKind: 'array',

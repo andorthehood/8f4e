@@ -10,6 +10,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
+import { getMemoryRegionFields } from '../memoryRegions';
 
 function getElementWordSize(instruction: string): number {
 	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;
@@ -51,6 +52,9 @@ const array: InstructionCompiler<ArrayDeclarationLine> = (line: ArrayDeclaration
 	const isUnsigned = line.instruction.endsWith('u[]');
 	const numberOfElements = elementCountArg.value;
 	const isInteger = line.instruction.startsWith('int') || line.instruction.includes('*');
+	const memoryIndex = context.currentMemoryIndex;
+	const memoryRegionName = context.currentMemoryRegionName;
+	const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
 
 	// Apply 8-byte alignment for float64[] arrays: round up absolute word offset to even
 	// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.
@@ -63,6 +67,7 @@ const array: InstructionCompiler<ArrayDeclarationLine> = (line: ArrayDeclaration
 	context.namespace.memory[memoryId] = {
 		numberOfElements,
 		elementWordSize,
+		...memoryRegionFields,
 		// Round up to the 4-byte allocation grid so all data structures stay word-addressable.
 		// alignmentPadding reserves any gap needed before float64[] to guarantee 8-byte byte-address alignment.
 		wordAlignedSize,

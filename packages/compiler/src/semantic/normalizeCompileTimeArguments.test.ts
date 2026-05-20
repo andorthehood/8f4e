@@ -234,8 +234,10 @@ describe('normalizeCompileTimeArguments', () => {
 					value: 16,
 					isInteger: true,
 					address: {
+						memoryIndex: 0,
 						safeRange: {
 							source: 'module-start',
+							memoryIndex: 0,
 							byteAddress: 16,
 							safeByteLength: 12,
 							moduleId: 'test',
@@ -268,8 +270,10 @@ describe('normalizeCompileTimeArguments', () => {
 					value: 24,
 					isInteger: true,
 					address: {
+						memoryIndex: 0,
 						safeRange: {
 							source: 'module-end',
+							memoryIndex: 0,
 							byteAddress: 24,
 							safeByteLength: 4,
 							moduleId: 'test',
@@ -471,6 +475,7 @@ describe('normalizeCompileTimeArguments', () => {
 						id: 'buffer',
 						numberOfElements: 4,
 						elementWordSize: 4,
+						memoryIndex: 0,
 						wordAlignedAddress: 3,
 						wordAlignedSize: 4,
 						byteAddress: 12,
@@ -502,8 +507,10 @@ describe('normalizeCompileTimeArguments', () => {
 					value: 12,
 					isInteger: true,
 					address: {
+						memoryIndex: 0,
 						safeRange: {
 							source: 'memory-start',
+							memoryIndex: 0,
 							byteAddress: 12,
 							safeByteLength: 16,
 							memoryId: 'buffer',
@@ -522,6 +529,7 @@ describe('normalizeCompileTimeArguments', () => {
 						id: 'buffer',
 						numberOfElements: 4,
 						elementWordSize: 4,
+						memoryIndex: 0,
 						wordAlignedAddress: 3,
 						wordAlignedSize: 4,
 						byteAddress: 12,
@@ -553,8 +561,10 @@ describe('normalizeCompileTimeArguments', () => {
 					value: 24,
 					isInteger: true,
 					address: {
+						memoryIndex: 0,
 						safeRange: {
 							source: 'memory-end',
+							memoryIndex: 0,
 							byteAddress: 24,
 							safeByteLength: 4,
 							memoryId: 'buffer',

@@ -44,6 +44,8 @@ The exported `init` function is responsible for restoring the full declared init
 
 The initial `memory.fill` is part of the contract. It makes implicit defaults cheap and gives repeated `init()` calls the same reset semantics as a fresh memory instance for declared program memory.
 
+When a program uses logical memory regions, each WebAssembly memory has the same initialization contract independently. The compiler clears the required byte range for memory `0` and for each used custom region, then applies passive data segments with the matching memory index. The compile result keeps `requiredMemoryBytes` scoped to memory `0` and reports custom regions through `requiredMemoryBytesByRegion`.
+
 ### Passive Data Segments
 
 Passive data segments contain only bytes that must differ from the cleared zero image.

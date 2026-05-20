@@ -69,9 +69,11 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 8,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -188,6 +190,7 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -202,6 +205,7 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -216,6 +220,7 @@ exports[`remainder with ensureNonZero > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 2,
