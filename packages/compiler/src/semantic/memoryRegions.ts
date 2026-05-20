@@ -2,7 +2,7 @@ import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
-import type { AST, CompileOptions, CompilationContext } from '@8f4e/compiler-spec';
+import type { AST, CompileOptions, CompilationContext, RegionLine } from '@8f4e/compiler-spec';
 
 export const DEFAULT_MEMORY_INDEX = 0;
 const RESERVED_REGION_NAMES = new Set(['default', 'memory']);
@@ -102,17 +102,13 @@ export function resolveMemoryRegionName(
 	};
 }
 
-export function resolveRegionDirective(line: AST[number], context: CompilationContext): ResolvedMemoryRegion {
-	const argument = line.arguments[0];
-	if (argument?.type === ArgumentType.LITERAL) {
+export function resolveRegionDirective(line: RegionLine, context: CompilationContext): ResolvedMemoryRegion {
+	const [argument] = line.arguments;
+	if (argument.type === ArgumentType.LITERAL) {
 		return resolveMemoryRegionByIndex(argument.value, context.memoryRegions ?? [], line, context);
 	}
 
-	if (argument?.type === ArgumentType.IDENTIFIER) {
-		return resolveMemoryRegionName(argument.value, context.memoryRegions ?? [], line, context);
-	}
-
-	throw new Error('Invalid #region directive argument after syntax validation');
+	return resolveMemoryRegionName(argument.value, context.memoryRegions ?? [], line, context);
 }
 
 export function getDefaultMemoryRegion(): ResolvedMemoryRegion {
