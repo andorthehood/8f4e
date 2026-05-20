@@ -136,6 +136,8 @@ export async function runRunCommand(args: string[]): Promise<void> {
 		compiledWasmBase64: compileResult.compiledWasm,
 		compiledModules: compileResult.compiledModules,
 		requiredMemoryBytes: compileResult.requiredMemoryBytes ?? 0,
+		requiredMemoryBytesByRegion: compileResult.requiredMemoryBytesByRegion,
+		memoryRegions: compileResult.compilerOptions?.memoryRegions,
 	});
 
 	runner.initialize();

@@ -15,7 +15,8 @@ export function mainThreadRuntimeFactory(
 	store: StateManager<State>,
 	events: EventDispatcher,
 	getCodeBuffer: () => Uint8Array,
-	getMemory: () => WebAssembly.Memory | null
+	getMemory: () => WebAssembly.Memory | null,
+	getMemoryRefsByRegion: () => Record<string, WebAssembly.Memory> = () => ({})
 ) {
 	const state = store.getState();
 	let runtime: ReturnType<typeof createMainThreadRuntime> | undefined;
@@ -54,7 +55,7 @@ export function mainThreadRuntimeFactory(
 		if (sampleRate === undefined) {
 			return;
 		}
-		runtime.init(memory, sampleRate, getCodeBuffer());
+		runtime.init(memory, sampleRate, getCodeBuffer(), getMemoryRefsByRegion());
 	}
 
 	runtime = createMainThreadRuntime(onInitialized, onStats, onError);
@@ -77,7 +78,8 @@ export function mainThreadRuntimeFactory(
  */
 export function createMainThreadRuntimeDef(
 	getCodeBuffer: () => Uint8Array,
-	getMemory: () => WebAssembly.Memory | null
+	getMemory: () => WebAssembly.Memory | null,
+	getMemoryRefsByRegion: () => Record<string, WebAssembly.Memory> = () => ({})
 ): RuntimeRegistryEntry {
 	return {
 		id: 'MainThreadRuntime',
@@ -94,7 +96,7 @@ export function createMainThreadRuntimeDef(
 		resolveRuntimeDirectives: codeBlocks => resolveMainThreadRuntimeDirectivesFromBlocks(codeBlocks),
 		getEnvConstants: codeBlocks => getMainThreadRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
-			return mainThreadRuntimeFactory(store, events, getCodeBuffer, getMemory);
+			return mainThreadRuntimeFactory(store, events, getCodeBuffer, getMemory, getMemoryRefsByRegion);
 		},
 	};
 }
