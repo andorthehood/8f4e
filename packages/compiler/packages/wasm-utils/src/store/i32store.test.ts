@@ -5,6 +5,7 @@ import i32store from './i32store';
 test('i32store with no setup generates only store instruction', () => {
 	const result = i32store();
 	expect(result.slice(-3)).toStrictEqual([54, 2, 0]);
+	expect(i32store(undefined, undefined, 2, 0, 1)).toStrictEqual([54, 0x42, 1, 0]);
 });
 
 test('i32store with address and value generates full instruction sequence', () => {
