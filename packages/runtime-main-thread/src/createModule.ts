@@ -1,7 +1,6 @@
 export default async function createModule(
 	memoryRef: WebAssembly.Memory,
-	codeBuffer: Uint8Array,
-	memoryRefsByRegion: Record<string, WebAssembly.Memory> = {}
+	codeBuffer: Uint8Array
 ): Promise<{
 	memoryBuffer: Int32Array;
 	cycle: CallableFunction;
@@ -13,7 +12,6 @@ export default async function createModule(
 	const { instance } = (await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,
-			...memoryRefsByRegion,
 		},
 	})) as unknown as { instance: WebAssembly.Instance; module: WebAssembly.Module };
 

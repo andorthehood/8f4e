@@ -20,7 +20,6 @@ export function audioWorkletRuntimeFactory(
 	events: EventDispatcher,
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null,
-	getMemoryRefsByRegion: () => Record<string, WebAssembly.Memory>,
 	audioWorkletUrl: string
 ) {
 	const state = store.getState();
@@ -94,7 +93,6 @@ export function audioWorkletRuntimeFactory(
 			audioWorklet.port.postMessage({
 				type: 'init',
 				memoryRef: memory,
-				memoryRefsByRegion: getMemoryRefsByRegion(),
 				codeBuffer: getCodeBuffer(),
 				audioOutputBuffers,
 				audioInputBuffers,
@@ -230,8 +228,7 @@ export function audioWorkletRuntimeFactory(
 export function createAudioWorkletRuntimeDef(
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null,
-	audioWorkletUrl: string,
-	getMemoryRefsByRegion: () => Record<string, WebAssembly.Memory> = () => ({})
+	audioWorkletUrl: string
 ): RuntimeRegistryEntry {
 	return {
 		id: AUDIO_WORKLET_RUNTIME_ID,
@@ -248,14 +245,7 @@ export function createAudioWorkletRuntimeDef(
 		resolveRuntimeDirectives: codeBlocks => resolveAudioWorkletRuntimeDirectivesFromBlocks(codeBlocks),
 		getEnvConstants: codeBlocks => getAudioWorkletRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
-			return audioWorkletRuntimeFactory(
-				store,
-				events,
-				getCodeBuffer,
-				getMemory,
-				getMemoryRefsByRegion,
-				audioWorkletUrl
-			);
+			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
 		},
 	};
 }
