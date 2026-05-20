@@ -25,15 +25,11 @@ function isNumericRegionName(name: string): boolean {
 	return /^\d+$/.test(name);
 }
 
-export function getMemoryRegions(options?: Pick<CompileOptions, 'memoryRegions'>): string[] {
-	return options?.memoryRegions ?? [];
-}
-
 export function getCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string {
 	return memoryRegions[memoryIndex - 1]!;
 }
 
-export function getMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {
+function getMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {
 	return memoryIndex === DEFAULT_MEMORY_INDEX ? undefined : getCustomMemoryRegionName(memoryRegions, memoryIndex);
 }
 
@@ -50,7 +46,7 @@ export function validateMemoryRegionOptions(
 ): void {
 	const seen = new Set<string>();
 
-	for (const name of getMemoryRegions(options)) {
+	for (const name of options?.memoryRegions ?? []) {
 		if (RESERVED_REGION_NAMES.has(name) || isNumericRegionName(name)) {
 			throw getError(ErrorCode.INVALID_MEMORY_REGION_NAME, line, undefined, { identifier: name });
 		}
@@ -98,10 +94,10 @@ export function resolveMemoryRegionName(
 export function resolveRegionDirective(line: RegionLine, context: CompilationContext): ResolvedMemoryRegion {
 	const [argument] = line.arguments;
 	if (argument.type === ArgumentType.LITERAL) {
-		return resolveMemoryRegionByIndex(argument.value, context.memoryRegions ?? [], line, context);
+		return resolveMemoryRegionByIndex(argument.value, context.memoryRegions, line, context);
 	}
 
-	return resolveMemoryRegionName(argument.value, context.memoryRegions ?? [], line, context);
+	return resolveMemoryRegionName(argument.value, context.memoryRegions, line, context);
 }
 
 export function getDefaultMemoryRegion(): ResolvedMemoryRegion {
