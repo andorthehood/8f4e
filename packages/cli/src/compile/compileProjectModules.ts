@@ -14,7 +14,6 @@ interface CompileProjectModulesResult {
 	compiledModules?: CompiledModuleLookup;
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
-	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 
 export default function compileProjectModules(
@@ -30,7 +29,6 @@ export default function compileProjectModules(
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
 			requiredMemoryBytes: 0,
-			requiredMemoryBytesByRegion: undefined,
 		};
 	}
 
@@ -45,6 +43,5 @@ export default function compileProjectModules(
 		compiledModules: includeModules ? result.compiledModules : undefined,
 		compiledWasm: includeWasm ? Buffer.from(result.codeBuffer).toString('base64') : undefined,
 		requiredMemoryBytes: result.requiredMemoryBytes,
-		requiredMemoryBytesByRegion: result.requiredMemoryBytesByRegion,
 	};
 }

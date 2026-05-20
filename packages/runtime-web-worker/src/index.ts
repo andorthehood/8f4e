@@ -6,14 +6,9 @@ let timeToExecuteLoopMs: number;
 let lastIntervalTime: number;
 let timerDriftMs: number;
 
-async function init(
-	memoryRef: WebAssembly.Memory,
-	sampleRate: number,
-	codeBuffer: Uint8Array,
-	memoryRefsByRegion: Record<string, WebAssembly.Memory> = {}
-) {
+async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
 	try {
-		const wasmApp = await createModule(memoryRef, codeBuffer, memoryRefsByRegion);
+		const wasmApp = await createModule(memoryRef, codeBuffer);
 
 		const intervalTime = Math.floor(1000 / sampleRate);
 
@@ -60,12 +55,7 @@ async function init(
 self.onmessage = function (event) {
 	switch (event.data.type) {
 		case 'init':
-			init(
-				event.data.payload.memoryRef,
-				event.data.payload.sampleRate,
-				event.data.payload.codeBuffer,
-				event.data.payload.memoryRefsByRegion
-			);
+			init(event.data.payload.memoryRef, event.data.payload.sampleRate, event.data.payload.codeBuffer);
 			break;
 	}
 };

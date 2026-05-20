@@ -16,7 +16,6 @@ export function webWorkerRuntimeFactory(
 	events: EventDispatcher,
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null,
-	getMemoryRefsByRegion: () => Record<string, WebAssembly.Memory>,
 	WorkerConstructor: new () => Worker
 ) {
 	const state = store.getState();
@@ -56,7 +55,6 @@ export function webWorkerRuntimeFactory(
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				memoryRefsByRegion: getMemoryRefsByRegion(),
 				sampleRate,
 				codeBuffer: getCodeBuffer(),
 				compiledModules: state.compiler.compiledModules,
@@ -88,8 +86,7 @@ export function webWorkerRuntimeFactory(
 export function createWebWorkerRuntimeDef(
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null,
-	WorkerConstructor: new () => Worker,
-	getMemoryRefsByRegion: () => Record<string, WebAssembly.Memory> = () => ({})
+	WorkerConstructor: new () => Worker
 ): RuntimeRegistryEntry {
 	return {
 		id: 'WebWorkerRuntime',
@@ -106,7 +103,7 @@ export function createWebWorkerRuntimeDef(
 		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerRuntimeDirectivesFromBlocks(codeBlocks),
 		getEnvConstants: codeBlocks => getWebWorkerRuntimeEnvConstantsFromBlocks(codeBlocks),
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
-			return webWorkerRuntimeFactory(store, events, getCodeBuffer, getMemory, getMemoryRefsByRegion, WorkerConstructor);
+			return webWorkerRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},
 	};
 }

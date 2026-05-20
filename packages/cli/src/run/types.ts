@@ -24,6 +24,4 @@ export interface CreateRuntimeRunnerOptions {
 	compiledWasmBase64: string;
 	compiledModules: CompiledModuleLookup;
 	requiredMemoryBytes: number;
-	requiredMemoryBytesByRegion?: Record<string, number>;
-	memoryRegions?: string[];
 }
