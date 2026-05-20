@@ -8,7 +8,7 @@ export interface CompiledModule {
 	initFunctionBody: number[];
 	cycleFunction: number[];
 	id: string;
-	memoryIndex?: number;
+	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;
 	wordAlignedAddress: number;

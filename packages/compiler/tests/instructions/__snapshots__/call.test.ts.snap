@@ -45,9 +45,11 @@ exports[`call constant function > if the generated AST, WAT and memory map match
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -175,6 +177,7 @@ exports[`call constant function > if the generated AST, WAT and memory map match
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -228,9 +231,11 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 8,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 12,
             "source": "memory-start",
           },
@@ -361,6 +366,7 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float64",
     "wordAlignedAddress": 2,
@@ -414,9 +420,11 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -571,6 +579,7 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -640,9 +649,11 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 8,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -789,6 +800,7 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -803,6 +815,7 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 2,
@@ -856,9 +869,11 @@ exports[`function can call another function with its signature and wasm index av
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -992,6 +1007,7 @@ exports[`function can call another function with its signature and wasm index av
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,

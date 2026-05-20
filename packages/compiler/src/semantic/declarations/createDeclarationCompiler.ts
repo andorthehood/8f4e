@@ -41,15 +41,13 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 		const memoryIndex = context.currentMemoryIndex ?? 0;
 		const memoryRegionName = context.currentMemoryRegionName;
 		const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
-		const pointeeMemoryRegionFields = defaultAddress
-			? {
-					...(defaultAddress.memoryIndex !== undefined && defaultAddress.memoryIndex !== 0
-						? { pointeeMemoryIndex: defaultAddress.memoryIndex }
-						: {}),
-					...(defaultAddress.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
-				}
-			: {};
-		const pointerPointeeRegion = pointerDepth > 0 ? pointeeMemoryRegionFields : {};
+		const pointerPointeeRegion =
+			pointerDepth > 0
+				? {
+						pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
+						...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
+					}
+				: {};
 
 		const finalDefault = truncate ? Math.trunc(defaultValue) : defaultValue;
 

@@ -45,9 +45,11 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "counter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -171,6 +173,7 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -275,9 +278,11 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "counter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -406,6 +411,7 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 3`] 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
