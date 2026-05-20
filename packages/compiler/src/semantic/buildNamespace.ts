@@ -25,6 +25,7 @@ import {
 	resolveMemoryRegionName,
 	validateMemoryRegionOptions,
 } from './memoryRegions';
+import { createCompilationContext } from './createCompilationContext';
 
 import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
@@ -115,7 +116,7 @@ export function prepassNamespace(
 	options: Pick<CompileOptions, 'memoryRegions'> = {}
 ): CompilationContext {
 	const defaultRegion = getDefaultMemoryRegion();
-	const context: CompilationContext = {
+	const context = createCompilationContext({
 		namespace: {
 			namespaces,
 			memory: {},
@@ -131,13 +132,6 @@ export function prepassNamespace(
 		byteCode: [],
 		stack: [],
 		blockStack: [],
-		insideModuleBlock: false,
-		insideFunctionBlock: false,
-		insideGenericBlock: false,
-		insideLoopBlock: false,
-		insideConditionBlock: false,
-		insideConstantsBlock: false,
-		insideMapBlock: false,
 		startingByteAddress,
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: undefined,
@@ -145,7 +139,7 @@ export function prepassNamespace(
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
 		codeBlockType: ast[0]?.instruction === constantsBlock.start ? constantsBlock.type : moduleBlock.type,
-	};
+	});
 
 	ast.forEach(originalLine => {
 		if (originalLine.isSemanticOnly) {

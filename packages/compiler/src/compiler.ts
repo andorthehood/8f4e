@@ -15,6 +15,7 @@ import { applySemanticLine, getModuleIdFromAst, prepassNamespace } from './seman
 import { validateInstruction } from './stackAnalysis/validateInstruction';
 import { functionValueTypeToWasmType } from './utils/functionValueType';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
+import { createCompilationContext } from './semantic/createCompilationContext';
 
 import type {
 	AST,
@@ -77,7 +78,7 @@ export function compileModule(
 	const namespace = moduleId ? namespaces[moduleId] : undefined;
 	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex;
 	const memoryRegionName = namespace?.memoryRegionName ?? prepassContext.currentMemoryRegionName;
-	const context: CompilationContext = {
+	const context = createCompilationContext({
 		namespace: {
 			namespaces,
 			memory: prepassContext.namespace.memory,
@@ -91,13 +92,6 @@ export function compileModule(
 		byteCode: [],
 		stack: [],
 		blockStack: [],
-		insideModuleBlock: false,
-		insideFunctionBlock: false,
-		insideGenericBlock: false,
-		insideLoopBlock: false,
-		insideConditionBlock: false,
-		insideConstantsBlock: false,
-		insideMapBlock: false,
 		startingByteAddress,
 		currentModuleNextWordOffset: prepassContext.currentModuleNextWordOffset,
 		currentModuleWordAlignedSize: prepassContext.currentModuleWordAlignedSize,
@@ -105,7 +99,7 @@ export function compileModule(
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
-	};
+	});
 
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
@@ -168,7 +162,7 @@ export function compileFunction(
 	typeRegistry: FunctionTypeRegistry,
 	functions?: CompiledFunctionLookup
 ): CompiledFunction {
-	const context: CompilationContext = {
+	const context = createCompilationContext({
 		namespace: {
 			namespaces,
 			memory: {},
@@ -184,13 +178,6 @@ export function compileFunction(
 		byteCode: [],
 		stack: [],
 		blockStack: [],
-		insideModuleBlock: false,
-		insideFunctionBlock: false,
-		insideGenericBlock: false,
-		insideLoopBlock: false,
-		insideConditionBlock: false,
-		insideConstantsBlock: false,
-		insideMapBlock: false,
 		startingByteAddress: 0,
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: 0,
@@ -199,7 +186,7 @@ export function compileFunction(
 		mode: 'function',
 		codeBlockType: 'function',
 		functionTypeRegistry: typeRegistry,
-	};
+	});
 
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);

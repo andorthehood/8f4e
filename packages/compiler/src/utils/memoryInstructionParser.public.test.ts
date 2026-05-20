@@ -4,31 +4,20 @@ import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-
 
 import parseMemoryInstructionArguments from './memoryInstructionParser';
 
+import { createCompilationContext } from '../semantic/createCompilationContext';
+
 describe('parseMemoryInstructionArguments', () => {
-	const createMockContext = (memory = {}, consts = {}): CompilationContext => ({
-		namespace: {
-			memory,
-			consts,
-			locals: {},
-			namespaces: {},
-			functions: {},
-			moduleName: 'test',
-		},
-		byteCode: [],
-		stack: [],
-		blockStack: [],
-		insideModuleBlock: false,
-		insideFunctionBlock: false,
-		insideGenericBlock: false,
-		insideLoopBlock: false,
-		insideConditionBlock: false,
-		insideConstantsBlock: false,
-		insideMapBlock: false,
-		startingByteAddress: 0,
-		currentMemoryIndex: 0,
-		memoryRegions: [],
-		mode: 'module',
-	});
+	const createMockContext = (memory = {}, consts = {}): CompilationContext =>
+		createCompilationContext({
+			namespace: {
+				memory,
+				consts,
+				namespaces: {},
+				functions: {},
+				moduleName: 'test',
+			},
+			mode: 'module',
+		});
 
 	const createLine = (lineNumber: number, instruction: AST[number]['instruction'], args: AST[number]['arguments']) => ({
 		lineNumberBeforeMacroExpansion: lineNumber,
