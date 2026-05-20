@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import createStateManager from '@8f4e/state-manager';
 
 import codeBlockNavigation, { goHome, jumpToCodeBlock, navigateToCodeBlockInDirection } from './effect';
 
@@ -224,6 +225,24 @@ describe('codeBlockNavigation', () => {
 				y: state.viewport.y,
 			})
 		);
+	});
+
+	it('should update the selected block cursor through the store during vertical navigation', () => {
+		selectedBlock.code = ['zero', 'one', 'two', 'three'];
+		selectedBlock.cursor.row = 2;
+		selectedBlock.cursor.col = 2;
+		selectedBlock.cursor.y = 2 * state.viewport.hGrid;
+
+		const store = createStateManager(state);
+		const onSelectedRowChanged = vi.fn();
+		store.subscribe('graphicHelper.selectedCodeBlock.cursor.row', onSelectedRowChanged);
+
+		const result = navigateToCodeBlockInDirection(store, 'up', events);
+
+		expect(result).toBe(true);
+		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+		expect(selectedBlock.cursor.row).toBe(0);
+		expect(onSelectedRowChanged).toHaveBeenCalledWith(0);
 	});
 
 	it('should move to the last line of the current block before navigating downward', () => {
