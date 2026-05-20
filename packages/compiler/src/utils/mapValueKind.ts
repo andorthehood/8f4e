@@ -1,6 +1,6 @@
 import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { getError } from '../../compilerError';
+import { getError } from '../compilerError';
 
 import type { AST, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
 

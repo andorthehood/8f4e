@@ -1,10 +1,7 @@
 import { br, WASM_END } from '@8f4e/compiler-wasm-utils';
-import { BlockType } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 
-import { getError } from '../compilerError';
 import { popBlock } from '../utils/blockStack';
 
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
@@ -14,11 +11,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const loopEnd: InstructionCompiler = (line, context) => {
-	const block = popBlock(context);
-
-	if (!block || block.blockType !== BlockType.LOOP) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
+	popBlock(context)!;
 
 	return saveByteCode(context, [...br(0), WASM_END, WASM_END]);
 };

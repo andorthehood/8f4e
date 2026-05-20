@@ -47,7 +47,7 @@ type IdentifierBase<K extends ReferenceKind, S extends 'local' | 'intermodule'> 
 
 type PlainIdentifier = IdentifierBase<'plain', 'local'>;
 type ConstantIdentifier = IdentifierBase<'constant', 'local'>;
-type MemoryPointerIdentifier = IdentifierBase<'memory-pointer', 'local'> & {
+export type MemoryPointerIdentifier = IdentifierBase<'memory-pointer', 'local'> & {
 	targetMemoryId: string;
 };
 type MemoryReferenceIdentifier = IdentifierBase<'memory-reference', 'local'> & {

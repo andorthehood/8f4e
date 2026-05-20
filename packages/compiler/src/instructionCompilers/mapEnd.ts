@@ -13,17 +13,14 @@ import {
 	WASM_I32_OR,
 	WASM_SELECT,
 } from '@8f4e/compiler-wasm-utils';
-import { BlockType } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { resolveMapKind } from './utils/mapValueKind';
 import { saveByteCode } from './utils/saveByteCode';
 
-import { getError } from '../compilerError';
+import { resolveMapKind } from '../utils/mapValueKind';
 import { popBlock } from '../utils/blockStack';
 
 import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
-import type { MapKind } from './utils/mapValueKind';
+import type { MapKind } from '../utils/mapValueKind';
 import type { InstructionCompiler, MapEndLine } from '@8f4e/compiler-spec';
 
 const constOp: Record<MapKind, (v: number) => number[]> = {
@@ -64,11 +61,8 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	const outputKind = resolveMapKind({ isInteger: outputIsInteger, isFloat64: outputIsFloat64 });
 
 	// Pop the MAP block from blockStack and read its state
-	const block = popBlock(context);
-	if (!block || block.blockType !== BlockType.MAP || !block.mapState) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
-	const mapState = block.mapState;
+	const block = popBlock(context)!;
+	const mapState = block.mapState!;
 
 	const inputKind = resolveMapKind({ isInteger: mapState.inputIsInteger, isFloat64: mapState.inputIsFloat64 });
 
