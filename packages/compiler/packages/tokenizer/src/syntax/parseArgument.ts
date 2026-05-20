@@ -7,38 +7,371 @@ import parseNumericLiteralToken, {
 	startsWithNumericPrefix,
 } from './parseNumericLiteralToken';
 import parseConstantMulDivExpression from './parseConstantMulDivExpression';
-import isIntermodularModuleReference from './isIntermodularModuleReference';
-import extractIntermodularModuleReferenceBase from './extractIntermodularModuleReferenceBase';
-import isIntermodularModuleNthReference from './isIntermodularModuleNthReference';
-import extractIntermodularModuleNthReferenceBase from './extractIntermodularModuleNthReferenceBase';
-import isIntermodularReference from './isIntermodularReference';
-import isIntermodularElementCountReference from './isIntermodularElementCountReference';
-import extractIntermodularElementCountBase from './extractIntermodularElementCountBase';
-import isIntermodularElementWordSizeReference from './isIntermodularElementWordSizeReference';
-import extractIntermodularElementWordSizeBase from './extractIntermodularElementWordSizeBase';
-import isIntermodularElementMaxReference from './isIntermodularElementMaxReference';
-import extractIntermodularElementMaxBase from './extractIntermodularElementMaxBase';
-import isIntermodularElementMinReference from './isIntermodularElementMinReference';
-import extractIntermodularElementMinBase from './extractIntermodularElementMinBase';
-import hasMemoryReferencePrefix from './hasMemoryReferencePrefix';
-import extractMemoryReferenceBase from './extractMemoryReferenceBase';
-import isMemoryPointerIdentifier from './isMemoryPointerIdentifier';
-import extractMemoryPointerBase from './extractMemoryPointerBase';
-import hasPointeeElementWordSizePrefix from './hasPointeeElementWordSizePrefix';
-import extractPointeeElementWordSizeBase from './extractPointeeElementWordSizeBase';
-import hasPointeeElementMaxPrefix from './hasPointeeElementMaxPrefix';
-import extractPointeeElementMaxBase from './extractPointeeElementMaxBase';
-import hasElementCountPrefix from './hasElementCountPrefix';
-import extractElementCountBase from './extractElementCountBase';
-import hasElementWordSizePrefix from './hasElementWordSizePrefix';
-import extractElementWordSizeBase from './extractElementWordSizeBase';
-import hasElementMaxPrefix from './hasElementMaxPrefix';
-import extractElementMaxBase from './extractElementMaxBase';
-import hasElementMinPrefix from './hasElementMinPrefix';
-import extractElementMinBase from './extractElementMinBase';
-import isConstantName from './isConstantName';
 
 import type { Argument, ArgumentIdentifier, ArgumentLiteral } from '@8f4e/compiler-spec';
+
+function classifySimpleIdentifier(value: string): ArgumentIdentifier {
+	return {
+		type: ArgumentType.IDENTIFIER,
+		value,
+		referenceKind: isConstantIdentifierName(value) ? 'constant' : 'plain',
+		scope: 'local',
+	};
+}
+
+function isConstantIdentifierName(value: string): boolean {
+	if (value.length === 0 || !isUppercaseAsciiLetter(value.charCodeAt(0))) {
+		return false;
+	}
+
+	for (let index = 1; index < value.length; index++) {
+		if (isLowercaseAsciiLetter(value.charCodeAt(index))) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function isUppercaseAsciiLetter(charCode: number): boolean {
+	return charCode >= 65 && charCode <= 90;
+}
+
+function isLowercaseAsciiLetter(charCode: number): boolean {
+	return charCode >= 97 && charCode <= 122;
+}
+
+function classifyIntermodularReference(value: string): ArgumentIdentifier | null {
+	if (value.startsWith('&')) {
+		return classifyStartAddressIntermodularReference(value);
+	}
+
+	if (value.endsWith('&')) {
+		return classifyEndAddressIntermodularReference(value);
+	}
+
+	return null;
+}
+
+function classifyStartAddressIntermodularReference(value: string): ArgumentIdentifier | null {
+	const colonIndex = value.indexOf(':', 1);
+	if (colonIndex === -1 || value.indexOf(':', colonIndex + 1) !== -1) {
+		return null;
+	}
+
+	const targetModuleId = value.slice(1, colonIndex);
+	if (!isValidModuleReferenceName(targetModuleId)) {
+		return null;
+	}
+
+	const targetMemoryId = value.slice(colonIndex + 1);
+	if (targetMemoryId.length === 0) {
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-module-reference',
+			scope: 'intermodule',
+			targetModuleId,
+			isEndAddress: false,
+		};
+	}
+
+	if (isDecimalDigits(targetMemoryId)) {
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-module-nth-reference',
+			scope: 'intermodule',
+			targetModuleId,
+			targetMemoryIndex: Number.parseInt(targetMemoryId, 10),
+		};
+	}
+
+	if (!isValidModuleReferenceName(targetMemoryId)) {
+		return null;
+	}
+
+	return {
+		type: ArgumentType.IDENTIFIER,
+		value,
+		referenceKind: 'intermodular-reference',
+		scope: 'intermodule',
+		targetModuleId,
+		targetMemoryId,
+		isEndAddress: false,
+	};
+}
+
+function classifyEndAddressIntermodularReference(value: string): ArgumentIdentifier | null {
+	const colonIndex = value.indexOf(':');
+	if (colonIndex === -1 || value.indexOf(':', colonIndex + 1) !== -1) {
+		return null;
+	}
+
+	const targetModuleId = value.slice(0, colonIndex);
+	if (!isValidModuleReferenceName(targetModuleId)) {
+		return null;
+	}
+
+	const targetMemoryId = value.slice(colonIndex + 1, -1);
+	if (targetMemoryId.length === 0) {
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-module-reference',
+			scope: 'intermodule',
+			targetModuleId,
+			isEndAddress: true,
+		};
+	}
+
+	if (!isValidModuleReferenceName(targetMemoryId)) {
+		return null;
+	}
+
+	return {
+		type: ArgumentType.IDENTIFIER,
+		value,
+		referenceKind: 'intermodular-reference',
+		scope: 'intermodule',
+		targetModuleId,
+		targetMemoryId,
+		isEndAddress: true,
+	};
+}
+
+function isValidModuleReferenceName(value: string): boolean {
+	if (value.length === 0) {
+		return false;
+	}
+
+	for (let index = 0; index < value.length; index++) {
+		const char = value[index];
+		if (char === '&' || char === ':' || char === '.' || char.trim() === '') {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function isDecimalDigits(value: string): boolean {
+	if (value.length === 0) {
+		return false;
+	}
+
+	for (let index = 0; index < value.length; index++) {
+		const charCode = value.charCodeAt(index);
+		if (charCode < 48 || charCode > 57) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function classifyElementQuery(value: string): ArgumentIdentifier | null {
+	switch (value[0]) {
+		case 'c':
+			return classifyCountQuery(value);
+		case 's':
+			return classifyWordSizeQuery(value);
+		case 'm':
+			if (value.startsWith('max(')) {
+				return classifyMaxQuery(value);
+			}
+			return classifyMinQuery(value);
+		default:
+			return null;
+	}
+}
+
+function classifyCountQuery(value: string): ArgumentIdentifier | null {
+	const targetMemoryId = extractQueryInner(value, 'count(');
+	if (targetMemoryId === null) {
+		return null;
+	}
+
+	const intermodule = parseIntermodularElementQuery(targetMemoryId);
+	if (intermodule) {
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-count',
+			scope: 'intermodule',
+			targetModuleId: intermodule.targetModuleId,
+			targetMemoryId: intermodule.targetMemoryId,
+		};
+	}
+
+	return {
+		type: ArgumentType.IDENTIFIER,
+		value,
+		referenceKind: 'element-count',
+		scope: 'local',
+		targetMemoryId,
+	};
+}
+
+function classifyWordSizeQuery(value: string): ArgumentIdentifier | null {
+	const targetMemoryId = extractQueryInner(value, 'sizeof(');
+	if (targetMemoryId === null) {
+		return null;
+	}
+
+	const intermodule = parseIntermodularElementQuery(targetMemoryId);
+	if (intermodule) {
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-word-size',
+			scope: 'intermodule',
+			targetModuleId: intermodule.targetModuleId,
+			targetMemoryId: intermodule.targetMemoryId,
+		};
+	}
+
+	if (targetMemoryId.startsWith('*')) {
+		const pointeeTargetMemoryId = getPointeeQueryTarget(value, targetMemoryId);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'pointee-element-word-size',
+			scope: 'local',
+			targetMemoryId: pointeeTargetMemoryId,
+			isPointee: true,
+		};
+	}
+
+	return {
+		type: ArgumentType.IDENTIFIER,
+		value,
+		referenceKind: 'element-word-size',
+		scope: 'local',
+		targetMemoryId,
+	};
+}
+
+function classifyMaxQuery(value: string): ArgumentIdentifier | null {
+	const targetMemoryId = extractQueryInner(value, 'max(');
+	if (targetMemoryId === null) {
+		return null;
+	}
+
+	const intermodule = parseIntermodularElementQuery(targetMemoryId);
+	if (intermodule) {
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-max',
+			scope: 'intermodule',
+			targetModuleId: intermodule.targetModuleId,
+			targetMemoryId: intermodule.targetMemoryId,
+		};
+	}
+
+	if (targetMemoryId.startsWith('*')) {
+		const pointeeTargetMemoryId = getPointeeQueryTarget(value, targetMemoryId);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'pointee-element-max',
+			scope: 'local',
+			targetMemoryId: pointeeTargetMemoryId,
+			isPointee: true,
+		};
+	}
+
+	return {
+		type: ArgumentType.IDENTIFIER,
+		value,
+		referenceKind: 'element-max',
+		scope: 'local',
+		targetMemoryId,
+	};
+}
+
+function classifyMinQuery(value: string): ArgumentIdentifier | null {
+	const targetMemoryId = extractQueryInner(value, 'min(');
+	if (targetMemoryId === null) {
+		return null;
+	}
+
+	const intermodule = parseIntermodularElementQuery(targetMemoryId);
+	if (intermodule) {
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'intermodular-element-min',
+			scope: 'intermodule',
+			targetModuleId: intermodule.targetModuleId,
+			targetMemoryId: intermodule.targetMemoryId,
+		};
+	}
+
+	return {
+		type: ArgumentType.IDENTIFIER,
+		value,
+		referenceKind: 'element-min',
+		scope: 'local',
+		targetMemoryId,
+	};
+}
+
+function extractQueryInner(value: string, prefix: string): string | null {
+	if (!value.startsWith(prefix) || !value.endsWith(')')) {
+		return null;
+	}
+
+	const inner = value.slice(prefix.length, -1);
+	if (inner.trim().length === 0) {
+		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_IDENTIFIER, `Metadata query target is missing: ${value}`);
+	}
+
+	return inner;
+}
+
+function getPointeeQueryTarget(value: string, targetMemoryId: string): string {
+	const pointeeTargetMemoryId = targetMemoryId.slice(1);
+	if (pointeeTargetMemoryId.trim().length === 0) {
+		throw new SyntaxRulesError(
+			SyntaxErrorCode.INVALID_IDENTIFIER,
+			`Pointee metadata query target is missing: ${value}`
+		);
+	}
+
+	return pointeeTargetMemoryId;
+}
+
+function parseIntermodularElementQuery(value: string): { targetModuleId: string; targetMemoryId: string } | null {
+	const colonIndex = value.indexOf(':');
+	if (colonIndex === -1 || value.indexOf(':', colonIndex + 1) !== -1) {
+		return null;
+	}
+
+	const targetModuleId = value.slice(0, colonIndex);
+	const targetMemoryId = value.slice(colonIndex + 1);
+	if (!isValidElementReferenceName(targetModuleId) || !isValidElementReferenceName(targetMemoryId)) {
+		return null;
+	}
+
+	return { targetModuleId, targetMemoryId };
+}
+
+function isValidElementReferenceName(value: string): boolean {
+	if (value.length === 0) {
+		return false;
+	}
+
+	for (let index = 0; index < value.length; index++) {
+		const char = value[index];
+		if (char === ':' || char === '(' || char === ')' || char.trim() === '') {
+			return false;
+		}
+	}
+
+	return true;
+}
 
 /**
  * Decodes escape sequences in a raw (unquoted) string literal body.
@@ -115,108 +448,40 @@ export function decodeStringLiteral(raw: string): string {
  *     because sizeof(*name) also starts with sizeof( and max(*name) also starts with max(.
  */
 export function classifyIdentifier(value: string): ArgumentIdentifier {
-	// Intermodular module-base references must be checked before generic memory-reference
-	// because &mod: and mod:& both start with & or end with & like local memory refs.
-	if (isIntermodularModuleReference(value)) {
-		const { module: targetModuleId, isEndAddress } = extractIntermodularModuleReferenceBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'intermodular-module-reference',
-			scope: 'intermodule',
-			targetModuleId,
-			isEndAddress,
-		};
+	const firstChar = value[0];
+	const lastChar = value[value.length - 1];
+	const hasIntermoduleSeparator = value.includes(':');
+	const hasMemoryReferenceSigil = firstChar === '&' || lastChar === '&';
+	const hasPointerPrefix = firstChar === '*';
+	const hasQueryOpen = value.includes('(');
+
+	// This classifier sits in the compilation hot path, so the dispatch below is intentionally
+	// micro-optimized to avoid calling every shape helper for plain identifier-like tokens.
+	if (!hasIntermoduleSeparator && !hasMemoryReferenceSigil && !hasPointerPrefix && !hasQueryOpen) {
+		return classifySimpleIdentifier(value);
 	}
 
-	// Intermodular module nth-item references: &mod:0, &mod:1, etc.
-	// Checked before generic intermodular-reference to prevent numeric suffixes from being
-	// treated as named memory identifiers.
-	if (isIntermodularModuleNthReference(value)) {
-		const { module: targetModuleId, index: targetMemoryIndex } = extractIntermodularModuleNthReferenceBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'intermodular-module-nth-reference',
-			scope: 'intermodule',
-			targetModuleId,
-			targetMemoryIndex,
-		};
+	// Intermodular module-base and memory references must be checked before local memory references.
+	if (hasIntermoduleSeparator) {
+		const intermodularReference = classifyIntermodularReference(value);
+		if (intermodularReference) {
+			return intermodularReference;
+		}
 	}
 
-	// Intermodular memory references: &mod:mem or mod:mem&
-	if (isIntermodularReference(value)) {
-		const isEndAddress = value.endsWith('&');
-		const cleanRef = isEndAddress ? value.slice(0, -1) : value.slice(1);
-		const colonIdx = cleanRef.indexOf(':');
-		const targetModuleId = cleanRef.slice(0, colonIdx);
-		const targetMemoryId = cleanRef.slice(colonIdx + 1);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'intermodular-reference',
-			scope: 'intermodule',
-			targetModuleId,
-			targetMemoryId,
-			isEndAddress,
-		};
-	}
-
-	// Intermodular element queries must be checked before local element queries
-	// because their pattern (e.g. count(mod:mem)) is a superset of local (count(name)).
-	if (isIntermodularElementCountReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'intermodular-element-count',
-			scope: 'intermodule',
-			targetModuleId,
-			targetMemoryId,
-		};
-	}
-
-	if (isIntermodularElementWordSizeReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementWordSizeBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'intermodular-element-word-size',
-			scope: 'intermodule',
-			targetModuleId,
-			targetMemoryId,
-		};
-	}
-
-	if (isIntermodularElementMaxReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'intermodular-element-max',
-			scope: 'intermodule',
-			targetModuleId,
-			targetMemoryId,
-		};
-	}
-
-	if (isIntermodularElementMinReference(value)) {
-		const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'intermodular-element-min',
-			scope: 'intermodule',
-			targetModuleId,
-			targetMemoryId,
-		};
+	// Metadata query parsing keeps intermodular forms ahead of local and pointee forms.
+	if (hasQueryOpen) {
+		const elementQuery = classifyElementQuery(value);
+		if (elementQuery) {
+			return elementQuery;
+		}
 	}
 
 	// Local memory reference: &name (start) or name& (end).
 	// Checked after all intermodular forms since &mod: and &mod:mem also start with &.
-	if (hasMemoryReferencePrefix(value)) {
-		const targetMemoryId = extractMemoryReferenceBase(value);
-		const isEndAddress = value.endsWith('&');
+	if (hasMemoryReferenceSigil) {
+		const isEndAddress = lastChar === '&';
+		const targetMemoryId = firstChar === '&' ? value.substring(1) : value.slice(0, -1);
 		return {
 			type: ArgumentType.IDENTIFIER,
 			value,
@@ -228,105 +493,17 @@ export function classifyIdentifier(value: string): ArgumentIdentifier {
 	}
 
 	// Memory pointer: *name
-	if (isMemoryPointerIdentifier(value)) {
-		const targetMemoryId = extractMemoryPointerBase(value);
+	if (hasPointerPrefix) {
 		return {
 			type: ArgumentType.IDENTIFIER,
 			value,
 			referenceKind: 'memory-pointer',
 			scope: 'local',
-			targetMemoryId,
+			targetMemoryId: value.substring(1),
 		};
 	}
 
-	// Pointee forms must be checked before plain element-query forms
-	// because sizeof(*name) also starts with sizeof( and max(*name) also starts with max(.
-	if (hasPointeeElementWordSizePrefix(value)) {
-		const targetMemoryId = extractPointeeElementWordSizeBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'pointee-element-word-size',
-			scope: 'local',
-			targetMemoryId,
-			isPointee: true,
-		};
-	}
-
-	if (hasPointeeElementMaxPrefix(value)) {
-		const targetMemoryId = extractPointeeElementMaxBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'pointee-element-max',
-			scope: 'local',
-			targetMemoryId,
-			isPointee: true,
-		};
-	}
-
-	// Local element-query forms
-	if (hasElementCountPrefix(value)) {
-		const targetMemoryId = extractElementCountBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'element-count',
-			scope: 'local',
-			targetMemoryId,
-		};
-	}
-
-	if (hasElementWordSizePrefix(value)) {
-		const targetMemoryId = extractElementWordSizeBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'element-word-size',
-			scope: 'local',
-			targetMemoryId,
-		};
-	}
-
-	if (hasElementMaxPrefix(value)) {
-		const targetMemoryId = extractElementMaxBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'element-max',
-			scope: 'local',
-			targetMemoryId,
-		};
-	}
-
-	if (hasElementMinPrefix(value)) {
-		const targetMemoryId = extractElementMinBase(value);
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'element-min',
-			scope: 'local',
-			targetMemoryId,
-		};
-	}
-
-	// Constant-style name: starts with uppercase, contains no lowercase letters
-	if (isConstantName(value)) {
-		return {
-			type: ArgumentType.IDENTIFIER,
-			value,
-			referenceKind: 'constant',
-			scope: 'local',
-		};
-	}
-
-	// Plain identifier
-	return {
-		type: ArgumentType.IDENTIFIER,
-		value,
-		referenceKind: 'plain',
-		scope: 'local',
-	};
+	return classifySimpleIdentifier(value);
 }
 
 /**

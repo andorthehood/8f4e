@@ -67,6 +67,138 @@ describe('classifyIdentifier – check ordering regression', () => {
 			expect(result.scope).toBe('local');
 		});
 	});
+
+	it('preserves reference classification across dispatch gates', () => {
+		expect([
+			classifyIdentifier('count(source:buffer)'),
+			classifyIdentifier('sizeof(*source:buffer)'),
+			classifyIdentifier('sizeof(*source:path:buffer)'),
+			classifyIdentifier('count(source:path:buffer)'),
+			classifyIdentifier('count(source:buffer)&'),
+			classifyIdentifier('*buffer&'),
+			classifyIdentifier('*buffer'),
+			classifyIdentifier('sizeof(*buffer)'),
+			classifyIdentifier('max(*buffer)'),
+			classifyIdentifier('count(buffer)'),
+			classifyIdentifier('sizeof(buffer)'),
+			classifyIdentifier('max(buffer)'),
+			classifyIdentifier('min(buffer)'),
+			classifyIdentifier('BUFFER_SIZE'),
+			classifyIdentifier('buffer'),
+		]).toEqual([
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'count(source:buffer)',
+				referenceKind: 'intermodular-element-count',
+				scope: 'intermodule',
+				targetModuleId: 'source',
+				targetMemoryId: 'buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'sizeof(*source:buffer)',
+				referenceKind: 'intermodular-element-word-size',
+				scope: 'intermodule',
+				targetModuleId: '*source',
+				targetMemoryId: 'buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'sizeof(*source:path:buffer)',
+				referenceKind: 'pointee-element-word-size',
+				scope: 'local',
+				targetMemoryId: 'source:path:buffer',
+				isPointee: true,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'count(source:path:buffer)',
+				referenceKind: 'element-count',
+				scope: 'local',
+				targetMemoryId: 'source:path:buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'count(source:buffer)&',
+				referenceKind: 'intermodular-reference',
+				scope: 'intermodule',
+				targetModuleId: 'count(source',
+				targetMemoryId: 'buffer)',
+				isEndAddress: true,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: '*buffer&',
+				referenceKind: 'memory-reference',
+				scope: 'local',
+				targetMemoryId: '*buffer',
+				isEndAddress: true,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: '*buffer',
+				referenceKind: 'memory-pointer',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'sizeof(*buffer)',
+				referenceKind: 'pointee-element-word-size',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+				isPointee: true,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'max(*buffer)',
+				referenceKind: 'pointee-element-max',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+				isPointee: true,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'count(buffer)',
+				referenceKind: 'element-count',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'sizeof(buffer)',
+				referenceKind: 'element-word-size',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'max(buffer)',
+				referenceKind: 'element-max',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'min(buffer)',
+				referenceKind: 'element-min',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'BUFFER_SIZE',
+				referenceKind: 'constant',
+				scope: 'local',
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'buffer',
+				referenceKind: 'plain',
+				scope: 'local',
+			},
+		]);
+	});
 });
 
 describe('parseArgument', () => {
@@ -163,6 +295,17 @@ describe('parseArgument', () => {
 			value: 'f0o',
 			type: ArgumentType.IDENTIFIER,
 		});
+	});
+
+	it('rejects empty metadata query targets', () => {
+		for (const value of ['count()', 'sizeof()', 'max()', 'min()', 'count(   )']) {
+			expect(() => parseArgument(value)).toThrow('Metadata query target is missing');
+		}
+	});
+
+	it('rejects empty pointee metadata query targets', () => {
+		expect(() => parseArgument('sizeof(*)')).toThrow('Pointee metadata query target is missing');
+		expect(() => parseArgument('max(*)')).toThrow('Pointee metadata query target is missing');
 	});
 
 	it('rejects identifiers that start with numbers', () => {
