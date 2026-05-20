@@ -16,6 +16,7 @@ import drawPianoKeyboards from './widgets/pianoKeyboards';
 import drawArrow from './drawArrow';
 import drawBlockHighlights from './widgets/blockHighlights';
 import drawSelectedOutline from './drawSelectedOutline';
+import drawSelectedLineHint from './drawSelectedLineHint';
 
 import type { State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../types';
@@ -145,6 +146,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawWaves(engine, state, codeBlock, memoryViews);
 			drawInfoPanels(engine, state, codeBlock);
 			drawDebuggers(engine, state, codeBlock, memoryViews);
+			drawSelectedLineHint(engine, state, codeBlock);
 
 			engine.endGroup();
 		} else if (state.featureFlags.offscreenBlockArrows) {

@@ -40,6 +40,9 @@ export default function createDefaultState() {
 				memoryReinitialized: false,
 			},
 		},
+		tooltip: {
+			text: [],
+		},
 		featureFlags: defaultFeatureFlags,
 		editorMode: 'view' as const,
 		editorConfig: {},
