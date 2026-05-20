@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import functionEnd from './functionEnd';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST, FunctionTypeRegistry } from '@8f4e/compiler-spec';
 
@@ -29,7 +29,8 @@ describe('functionEnd instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		functionEnd(
+		analyzeAndCompileInstruction(
+			functionEnd,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -70,7 +71,8 @@ describe('functionEnd instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
 
-		functionEnd(
+		analyzeAndCompileInstruction(
+			functionEnd,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -97,7 +99,8 @@ describe('functionEnd instruction compiler', () => {
 		context.stack.push({ isInteger: true, isNonZero: false });
 
 		expect(() => {
-			functionEnd(
+			analyzeAndCompileInstruction(
+				functionEnd,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

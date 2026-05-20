@@ -45,7 +45,7 @@ exports[`abs instruction compiler > emits F32_ABS for float operands 1`] = `
   "stack": [
     {
       "isInteger": false,
-      "isNonZero": true,
+      "isNonZero": false,
     },
   ],
 }
@@ -60,7 +60,7 @@ exports[`abs instruction compiler > emits F64_ABS for float64 operands 1`] = `
     {
       "isFloat64": true,
       "isInteger": false,
-      "isNonZero": true,
+      "isNonZero": false,
     },
   ],
 }

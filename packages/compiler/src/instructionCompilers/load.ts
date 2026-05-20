@@ -33,8 +33,7 @@ const instructionToAccessByteWidthMap: Record<string, number> = {
 
 const load: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const address = context.stack.pop()!;
-	context.stack.push({ isInteger: true, isNonZero: false });
+	const [address] = line.stackAnalysis.consumedOperands;
 	const buildInstructions = instructionToByteCodeMap[line.instruction];
 	if (!buildInstructions) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);

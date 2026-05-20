@@ -3,7 +3,7 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 
 import branch from './branch';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('branch instruction compiler', () => {
 	it('emits br bytecode', () => {
 		const context = createInstructionCompilerTestContext();
 
-		branch(
+		analyzeAndCompileInstruction(
+			branch,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

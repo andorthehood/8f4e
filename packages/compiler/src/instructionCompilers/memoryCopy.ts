@@ -13,8 +13,7 @@ import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compil
  */
 const memoryCopy: InstructionCompiler<NormalizedMemoryCopyLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const source = context.stack.pop()!;
-	const destination = context.stack.pop()!;
+	const [destination, source] = line.stackAnalysis.consumedOperands;
 	const byteLength = line.arguments[0].value;
 	const destinationMemoryIndex = getAddressMemoryIndex(destination);
 	const sourceMemoryIndex = getAddressMemoryIndex(source);

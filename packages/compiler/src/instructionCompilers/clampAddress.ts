@@ -1,16 +1,11 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
-
 import {
 	clampAddressByteCode,
 	getClampAccessByteWidth,
-	getClampedAddressStackItem,
 	getModuleAddressRange,
 	linearUpperByteAddressCode,
 	rangeUpperByteAddressCode,
 } from './utils/addressClamp';
 import { saveByteCode } from './utils/saveByteCode';
-
-import { getError } from '../compilerError';
 
 import type { AST, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
@@ -21,12 +16,6 @@ function clampToRange(
 	range: MemoryAddressRange
 ) {
 	const accessByteWidth = getClampAccessByteWidth(line);
-	if (range.safeByteLength < accessByteWidth) {
-		throw getError(ErrorCode.ADDRESS_RANGE_TOO_SMALL, line, context);
-	}
-
-	context.stack.push(getClampedAddressStackItem(operand, range, accessByteWidth));
-
 	return saveByteCode(
 		context,
 		clampAddressByteCode(context, line, range.byteAddress, rangeUpperByteAddressCode(range, accessByteWidth))
@@ -34,24 +23,20 @@ function clampToRange(
 }
 
 export const clampAddress: InstructionCompiler = (line, context) => {
-	const operand = context.stack.pop()!;
+	const [operand] = line.stackAnalysis.consumedOperands;
 	const range = operand.address?.clampRange ?? operand.address?.safeRange;
-	if (!range) {
-		throw getError(ErrorCode.ADDRESS_RANGE_REQUIRED, line, context);
-	}
 
-	return clampToRange(line, context, operand, range);
+	return clampToRange(line, context, operand, range!);
 };
 
 export const clampModuleAddress: InstructionCompiler = (line, context) => {
-	const operand = context.stack.pop()!;
+	const [operand] = line.stackAnalysis.consumedOperands;
 	return clampToRange(line, context, operand, getModuleAddressRange(context));
 };
 
 export const clampGlobalAddress: InstructionCompiler = (line, context) => {
-	const operand = context.stack.pop()!;
+	const [operand] = line.stackAnalysis.consumedOperands;
 	const accessByteWidth = getClampAccessByteWidth(line);
-	context.stack.push(getClampedAddressStackItem(operand, undefined, accessByteWidth));
 
 	return saveByteCode(
 		context,

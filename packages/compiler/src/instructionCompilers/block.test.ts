@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import block from './block';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -10,7 +10,8 @@ describe('block instruction compiler', () => {
 	it('emits a typed block for float', () => {
 		const context = createInstructionCompilerTestContext();
 
-		block(
+		analyzeAndCompileInstruction(
+			block,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -30,7 +31,8 @@ describe('block instruction compiler', () => {
 	it('emits a typed block for int', () => {
 		const context = createInstructionCompilerTestContext();
 
-		block(
+		analyzeAndCompileInstruction(
+			block,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -50,7 +52,8 @@ describe('block instruction compiler', () => {
 	it('emits a void block when no result type is declared', () => {
 		const context = createInstructionCompilerTestContext();
 
-		block(
+		analyzeAndCompileInstruction(
+			block,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

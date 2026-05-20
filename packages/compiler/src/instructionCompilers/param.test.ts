@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import param from './param';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -24,7 +24,8 @@ describe('param instruction compiler', () => {
 			locals: {},
 		});
 
-		param(
+		analyzeAndCompileInstruction(
+			param,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -54,7 +55,8 @@ describe('param instruction compiler', () => {
 			locals: {},
 		});
 
-		param(
+		analyzeAndCompileInstruction(
+			param,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -84,7 +86,8 @@ describe('param instruction compiler', () => {
 			locals: {},
 		});
 
-		param(
+		analyzeAndCompileInstruction(
+			param,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -117,7 +120,8 @@ describe('param instruction compiler', () => {
 		});
 
 		expect(() => {
-			param(
+			analyzeAndCompileInstruction(
+				param,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

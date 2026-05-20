@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import shiftRight from './shiftRight';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('shiftRight instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		shiftRight(
+		analyzeAndCompileInstruction(
+			shiftRight,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -34,7 +35,8 @@ describe('shiftRight instruction compiler', () => {
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 1 }
 		);
 
-		shiftRight(
+		analyzeAndCompileInstruction(
+			shiftRight,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

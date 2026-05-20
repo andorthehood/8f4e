@@ -14,8 +14,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  */
 const store: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const operand1Value = context.stack.pop()!;
-	const operand2Address = context.stack.pop()!;
+	const [operand2Address, operand1Value] = line.stackAnalysis.consumedOperands;
 	const memoryIndex = getAddressMemoryIndex(operand2Address);
 	const instructions = operand1Value.isInteger
 		? i32store(undefined, undefined, 2, 0, memoryIndex)

@@ -1,6 +1,6 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
-import type { CompilationContext, InternalResource } from '@8f4e/compiler-spec';
+import type { CodegenContext, CompilationContext, InternalResource } from '@8f4e/compiler-spec';
 
 type InternalResourceType = 'int' | 'float' | 'float64';
 
@@ -12,12 +12,14 @@ function getWordAlignedSize(type: InternalResourceType): number {
 	return type === 'float64' ? 2 : 1;
 }
 
-export function getInternalResourceId(context: CompilationContext, baseId: string): string {
+type InternalResourceContext = CodegenContext | CompilationContext;
+
+export function getInternalResourceId(context: InternalResourceContext, baseId: string): string {
 	return `${context.codeBlockId ?? context.namespace.moduleName ?? 'global'}::${baseId}`;
 }
 
 export function allocateInternalResource(
-	context: CompilationContext,
+	context: InternalResourceContext,
 	baseId: string,
 	type: InternalResourceType,
 	defaultValue = 0

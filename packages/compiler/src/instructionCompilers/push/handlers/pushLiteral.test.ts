@@ -20,7 +20,6 @@ describe('pushLiteral', () => {
 		pushLiteral(literal, context);
 
 		expect(context.byteCode).toEqual(i32const(7));
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 7 }]);
 	});
 
 	it('emits f64.const for float64 literals and tracks isFloat64', () => {
@@ -35,6 +34,5 @@ describe('pushLiteral', () => {
 		pushLiteral(literal, context);
 
 		expect(context.byteCode).toEqual(f64const(1.5));
-		expect(context.stack).toEqual([{ isInteger: false, isFloat64: true, isNonZero: true }]);
 	});
 });

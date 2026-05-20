@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import sqrt from './sqrt';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('sqrt instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: true });
 
-		sqrt(
+		analyzeAndCompileInstruction(
+			sqrt,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -32,7 +33,8 @@ describe('sqrt instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
 
-		sqrt(
+		analyzeAndCompileInstruction(
+			sqrt,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

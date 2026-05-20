@@ -3,7 +3,7 @@ import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 
 import store from './store';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -21,7 +21,8 @@ describe('store instruction compiler', () => {
 			{ isInteger: true, isNonZero: false }
 		);
 
-		store(
+		analyzeAndCompileInstruction(
+			store,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -41,7 +42,8 @@ describe('store instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		store(
+		analyzeAndCompileInstruction(
+			store,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
@@ -70,7 +72,8 @@ describe('store instruction compiler', () => {
 			{ isInteger: false, isFloat64: true, isNonZero: false }
 		);
 
-		store(
+		analyzeAndCompileInstruction(
+			store,
 			{
 				lineNumberBeforeMacroExpansion: 3,
 				lineNumberAfterMacroExpansion: 3,
@@ -99,7 +102,8 @@ describe('store instruction compiler', () => {
 			{ isInteger: false, isNonZero: false }
 		);
 
-		store(
+		analyzeAndCompileInstruction(
+			store,
 			{
 				lineNumberBeforeMacroExpansion: 4,
 				lineNumberAfterMacroExpansion: 4,
@@ -117,7 +121,8 @@ describe('store instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isFloat64: true, isNonZero: false });
 
-		store(
+		analyzeAndCompileInstruction(
+			store,
 			{
 				lineNumberBeforeMacroExpansion: 5,
 				lineNumberAfterMacroExpansion: 5,
@@ -145,7 +150,8 @@ describe('store instruction compiler', () => {
 			{ isInteger: true, isNonZero: false }
 		);
 
-		store(
+		analyzeAndCompileInstruction(
+			store,
 			{
 				lineNumberBeforeMacroExpansion: 6,
 				lineNumberAfterMacroExpansion: 6,

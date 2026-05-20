@@ -1,7 +1,6 @@
 import { WASM_F32_ADD, WASM_F64_ADD, WASM_I32_ADD } from '@8f4e/compiler-wasm-utils';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
-import { deriveAddStackMetadata } from './utils/stackAddressMetadata';
 
 /**
  * Instruction compiler for `add`.
@@ -14,7 +13,6 @@ const add = createNumericBinaryCompiler({
 		float64: WASM_F64_ADD,
 	},
 	result: 'numeric',
-	deriveIntegerMetadata: deriveAddStackMetadata,
 });
 
 export default add;

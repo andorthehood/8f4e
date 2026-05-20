@@ -16,7 +16,7 @@ import {
 import { BlockType } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { resolveMapKind, validateMapValueKind } from './utils/mapValueKind';
+import { resolveMapKind } from './utils/mapValueKind';
 import { saveByteCode } from './utils/saveByteCode';
 
 import { getError } from '../compilerError';
@@ -70,29 +70,11 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	}
 	const mapState = block.mapState;
 
-	// Validate the input stack operand matches the declared inputType
 	const inputKind = resolveMapKind({ isInteger: mapState.inputIsInteger, isFloat64: mapState.inputIsFloat64 });
-	const inputOperand = context.stack[context.stack.length - 1];
-	validateMapValueKind(inputOperand, inputKind, line, context);
 
 	const rows = mapState.rows;
 	const hasDefault = mapState.defaultSet;
 	const defaultValue = hasDefault ? mapState.defaultValue! : 0;
-	const defaultIsInteger = hasDefault ? !!mapState.defaultIsInteger : true;
-	const defaultIsFloat64 = hasDefault ? !!mapState.defaultIsFloat64 : false;
-
-	// Validate value types for each row against outputType
-	for (const row of rows) {
-		validateMapValueKind({ isInteger: row.valueIsInteger, isFloat64: row.valueIsFloat64 }, outputKind, line, context);
-	}
-
-	// Validate explicit default type against outputType
-	if (hasDefault) {
-		validateMapValueKind({ isInteger: defaultIsInteger, isFloat64: defaultIsFloat64 }, outputKind, line, context);
-	}
-
-	// Pop the input operand from the logical stack
-	context.stack.pop();
 
 	const inputIsFloat64 = mapState.inputIsFloat64;
 	const inputIsInteger = mapState.inputIsInteger;
@@ -170,12 +152,6 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 		// Step 5: push the final result
 		saveByteCode(context, localGet(resultLocalIdx));
 	}
-
-	// Push the result onto the logical stack
-	context.stack.push({
-		isInteger: outputIsInteger,
-		...(outputIsFloat64 ? { isFloat64: true } : {}),
-	});
 
 	return context;
 };

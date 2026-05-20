@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import risingEdge from './risingEdge';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('risingEdge instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		risingEdge(
+		analyzeAndCompileInstruction(
+			risingEdge,
 			{
 				lineNumberBeforeMacroExpansion: 4,
 				lineNumberAfterMacroExpansion: 4,
@@ -33,7 +34,8 @@ describe('risingEdge instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false });
 
-		risingEdge(
+		analyzeAndCompileInstruction(
+			risingEdge,
 			{
 				lineNumberBeforeMacroExpansion: 4,
 				lineNumberAfterMacroExpansion: 4,

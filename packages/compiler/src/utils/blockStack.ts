@@ -1,13 +1,15 @@
 import { BlockType } from '@8f4e/compiler-spec';
 
-import type { BlockStack, BlockTypeValue, CompilationContext } from '@8f4e/compiler-spec';
+import type { BlockStack, BlockTypeValue, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
 
-export function pushBlock(context: CompilationContext, block: BlockStack[number]) {
+type BlockContext = CodegenContext | CompilationContext;
+
+export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	context.blockStack.push(block);
 	updateBlockContextFlag(context, block.blockType, true);
 }
 
-export function popBlock(context: CompilationContext) {
+export function popBlock(context: BlockContext) {
 	const block = context.blockStack.pop();
 
 	if (block && !context.blockStack.some(remainingBlock => remainingBlock.blockType === block.blockType)) {
@@ -17,7 +19,7 @@ export function popBlock(context: CompilationContext) {
 	return block;
 }
 
-function updateBlockContextFlag(context: CompilationContext, blockType: BlockTypeValue, isInside: boolean) {
+function updateBlockContextFlag(context: BlockContext, blockType: BlockTypeValue, isInside: boolean) {
 	switch (blockType) {
 		case BlockType.MODULE:
 			context.insideModuleBlock = isInside;
