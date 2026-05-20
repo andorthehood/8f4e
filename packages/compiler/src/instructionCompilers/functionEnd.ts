@@ -30,10 +30,6 @@ const functionEnd: InstructionCompiler = (line, context) => {
 			).value
 	);
 
-	if (returnTypes.length > 8) {
-		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
-	}
-
 	// Update function signature with return types
 	if (context.currentFunctionSignature) {
 		context.currentFunctionSignature.returns = returnTypes;

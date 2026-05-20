@@ -7,12 +7,11 @@ import { buildPointerDereferenceByteCode } from '../shared';
 
 import type { CodegenContext, PushIdentifierLine } from '@8f4e/compiler-spec';
 
+type MemoryPointerArgument = Extract<PushIdentifierLine['arguments'][number], { referenceKind: 'memory-pointer' }>;
+
 export default function pushMemoryPointer(line: PushIdentifierLine, context: CodegenContext): CodegenContext {
 	const memory = context.namespace.memory;
-	const argument = line.arguments[0];
-	if (argument.referenceKind !== 'memory-pointer') {
-		return context;
-	}
+	const argument = line.arguments[0] as MemoryPointerArgument;
 	const base = argument.targetMemoryId;
 	const memoryItem = getDataStructure(memory, base)!;
 	assertFunctionMemoryIoAllowed(line, context);
