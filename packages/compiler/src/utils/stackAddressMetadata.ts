@@ -1,4 +1,4 @@
-import { getMemoryRegionFields } from '../../semantic/memoryRegions';
+import { getMemoryRegionFields } from '../semantic/memoryRegions';
 
 import type { MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 

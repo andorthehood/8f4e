@@ -9,7 +9,7 @@ import createInstructionCompilerTestContext from '../../../utils/testUtils';
 import type { ArgumentLiteral } from '@8f4e/compiler-spec';
 
 describe('pushLiteral', () => {
-	it('emits i32.const for integer literals and updates stack metadata', () => {
+	it('emits i32.const for integer literals', () => {
 		const context = createInstructionCompilerTestContext();
 		const literal: ArgumentLiteral = {
 			type: ArgumentType.LITERAL,
@@ -22,7 +22,7 @@ describe('pushLiteral', () => {
 		expect(context.byteCode).toEqual(i32const(7));
 	});
 
-	it('emits f64.const for float64 literals and tracks isFloat64', () => {
+	it('emits f64.const for float64 literals', () => {
 		const context = createInstructionCompilerTestContext();
 		const literal: ArgumentLiteral = {
 			type: ArgumentType.LITERAL,

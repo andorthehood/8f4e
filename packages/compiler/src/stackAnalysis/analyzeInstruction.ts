@@ -2,21 +2,17 @@ import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode } from '@8f4e/co
 
 import { validateInstruction } from './validateInstruction';
 
-import resolveIdentifierPushKind, { IdentifierPushKind } from '../instructionCompilers/push/resolveIdentifierPushKind';
+import resolveIdentifierPushKind, { IdentifierPushKind } from '../utils/resolveIdentifierPushKind';
 import {
-	buildPointerDereferenceByteCode,
 	kindToStackItem,
 	resolveArgumentValueKind,
 	resolveMemoryValueKind,
-} from '../instructionCompilers/push/shared';
-import {
-	getClampAccessByteWidth,
-	getClampedAddressStackItem,
-	getModuleAddressRange,
-} from '../instructionCompilers/utils/addressClamp';
-import { deriveKnownIntegerValue } from '../instructionCompilers/utils/knownIntegerValue';
-import { validateMapValueKind, resolveMapKind } from '../instructionCompilers/utils/mapValueKind';
-import { deriveAddStackMetadata, deriveSubStackMetadata } from '../instructionCompilers/utils/stackAddressMetadata';
+	resolvePointerTargetValueKind,
+} from '../utils/pushValueKind';
+import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
+import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
+import { validateMapValueKind, resolveMapKind } from '../utils/mapValueKind';
+import { deriveAddStackMetadata, deriveSubStackMetadata } from '../utils/stackAddressMetadata';
 import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { getDataStructure } from '../utils/memoryData';
@@ -30,6 +26,7 @@ import type {
 	CodegenPushLine,
 	CompilationContext,
 	FunctionValueType,
+	LocalSetLine,
 	MapEndLine,
 	Stack,
 	StackAnalysisResult,
@@ -132,8 +129,8 @@ function pushIdentifierStackItems(line: CodegenPushLine, context: CompilationCon
 				return [];
 			}
 			const memoryItem = getDataStructure(context.namespace.memory, argument.targetMemoryId)!;
-			const dereference = buildPointerDereferenceByteCode(memoryItem, [], 'pointer-slot');
-			return [kindToStackItem(dereference.kind, { isNonZero: false })];
+			const kind = resolvePointerTargetValueKind(memoryItem);
+			return [kindToStackItem(kind, { isNonZero: false })];
 		}
 		case IdentifierPushKind.LOCAL_POINTER: {
 			if (argument.referenceKind !== 'memory-pointer') {
@@ -143,8 +140,8 @@ function pushIdentifierStackItems(line: CodegenPushLine, context: CompilationCon
 			if (!local?.pointeeBaseType) {
 				return [];
 			}
-			const dereference = buildPointerDereferenceByteCode(local, [], 'pointer-value');
-			return [kindToStackItem(dereference.kind, { isNonZero: false })];
+			const kind = resolvePointerTargetValueKind(local);
+			return [kindToStackItem(kind, { isNonZero: false })];
 		}
 		case IdentifierPushKind.LOCAL:
 		default: {
@@ -234,6 +231,7 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 }
 
 function analyzeFunctionEnd(line: AST[number], context: CompilationContext): Stack {
+	assertTopBlock(line, context, BlockType.FUNCTION);
 	const returnTypes = line.arguments.map(arg => ('value' in arg ? (arg.value as FunctionValueType) : undefined));
 
 	if (returnTypes.length > 8) {
@@ -253,6 +251,46 @@ function analyzeFunctionEnd(line: AST[number], context: CompilationContext): Sta
 	}
 
 	return consume(context, returnTypes.length);
+}
+
+function assertTopBlock(
+	line: AST[number],
+	context: CompilationContext,
+	blockType: (typeof BlockType)[keyof typeof BlockType]
+) {
+	const block = context.blockStack[context.blockStack.length - 1];
+
+	if (!block || block.blockType !== blockType) {
+		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
+	}
+}
+
+function analyzeLocalSet(line: AST[number], context: CompilationContext): { consumed: Stack; produced: Stack } {
+	const consumed = consume(context, 1);
+	const operand = consumed[0];
+	const local = context.locals[(line as LocalSetLine).arguments[0].value]!;
+
+	if (local.isInteger && !operand.isInteger) {
+		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
+	}
+
+	if (!local.isInteger && operand.isInteger) {
+		throw getError(ErrorCode.ONLY_FLOATS, line, context);
+	}
+
+	return { consumed, produced: [] };
+}
+
+function analyzeLoopIndex(line: AST[number], context: CompilationContext): { consumed: Stack; produced: Stack } {
+	const loopBlock = [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP);
+
+	if (!loopBlock?.loopCounterLocalName || !context.locals[loopBlock.loopCounterLocalName]) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP, line, context);
+	}
+
+	const produced = [{ isInteger: true, isNonZero: false }];
+	produce(context, produced);
+	return { consumed: [], produced };
 }
 
 function analyzeExpectedBlockResult(
@@ -515,9 +553,11 @@ function analyzeByInstruction(
 		case 'drop':
 		case 'branchIfTrue':
 		case 'branchIfUnchanged':
-		case 'if':
-		case 'localSet': {
+		case 'if': {
 			return { consumed: consume(context, 1), produced: [] };
+		}
+		case 'localSet': {
+			return analyzeLocalSet(line, context);
 		}
 		case 'store':
 		case 'memoryCopy': {
@@ -545,21 +585,25 @@ function analyzeByInstruction(
 			return analyzeCall(line as CallLine, context);
 		}
 		case 'loopIndex': {
-			const produced = [{ isInteger: true, isNonZero: false }];
-			produce(context, produced);
-			return { consumed: [], produced };
+			return analyzeLoopIndex(line, context);
 		}
 		case 'mapEnd': {
 			return analyzeMapEnd(line as MapEndLine, context);
 		}
 		case 'else': {
+			assertTopBlock(line, context, BlockType.CONDITION);
 			return analyzeExpectedBlockResult(line, context, { validateFloatResult: true });
 		}
-		case 'blockEnd':
+		case 'blockEnd': {
+			assertTopBlock(line, context, BlockType.BLOCK);
+			return analyzeExpectedBlockResult(line, context, { restore: true });
+		}
 		case 'loopEnd': {
+			assertTopBlock(line, context, BlockType.LOOP);
 			return analyzeExpectedBlockResult(line, context, { restore: true });
 		}
 		case 'ifEnd': {
+			assertTopBlock(line, context, BlockType.CONDITION);
 			return analyzeExpectedBlockResult(line, context, { restore: true, validateFloatResult: true });
 		}
 		default:

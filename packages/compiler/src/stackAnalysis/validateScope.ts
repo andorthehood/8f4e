@@ -14,6 +14,9 @@ export function validateScope(
 		case 'module':
 			isValid = context.insideModuleBlock === true;
 			break;
+		case 'moduleOnly':
+			isValid = context.insideModuleBlock === true && context.insideFunctionBlock === false;
+			break;
 		case 'function':
 			isValid = context.insideFunctionBlock === true;
 			break;
@@ -28,6 +31,9 @@ export function validateScope(
 			break;
 		case 'map':
 			isValid = context.insideMapBlock === true;
+			break;
+		case 'loop':
+			isValid = context.insideLoopBlock === true;
 			break;
 	}
 

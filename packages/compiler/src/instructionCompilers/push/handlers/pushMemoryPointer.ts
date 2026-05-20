@@ -5,13 +5,11 @@ import { saveByteCode } from '../../utils/saveByteCode';
 import { getDataStructure } from '../../../utils/memoryData';
 import { buildPointerDereferenceByteCode } from '../shared';
 
-import type { CodegenContext, PushIdentifierLine } from '@8f4e/compiler-spec';
+import type { CodegenContext, MemoryPointerPushLine } from '@8f4e/compiler-spec';
 
-type MemoryPointerArgument = Extract<PushIdentifierLine['arguments'][number], { referenceKind: 'memory-pointer' }>;
-
-export default function pushMemoryPointer(line: PushIdentifierLine, context: CodegenContext): CodegenContext {
+export default function pushMemoryPointer(line: MemoryPointerPushLine, context: CodegenContext): CodegenContext {
 	const memory = context.namespace.memory;
-	const argument = line.arguments[0] as MemoryPointerArgument;
+	const argument = line.arguments[0];
 	const base = argument.targetMemoryId;
 	const memoryItem = getDataStructure(memory, base)!;
 	assertFunctionMemoryIoAllowed(line, context);

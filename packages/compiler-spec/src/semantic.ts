@@ -3,6 +3,7 @@ import type {
 	ArgumentCompileTimeExpression,
 	ArgumentIdentifier,
 	ArgumentLiteral,
+	MemoryPointerIdentifier,
 	ArgumentStringLiteral,
 } from './arguments';
 import type {
@@ -229,6 +230,7 @@ export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
 };
 
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
+export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & { arguments: [MemoryPointerIdentifier] };
 
 export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 	? NormalizedConstLine

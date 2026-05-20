@@ -1,9 +1,6 @@
 import { WASM_DROP, WASM_END, WASM_IF, WASM_RETURN, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
-
-import { getError } from '../compilerError';
 
 import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -19,10 +16,6 @@ import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line, context) => {
-	if (context.insideFunctionBlock) {
-		throw getError(ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE, line, context);
-	}
-
 	const drops = (line.stackAnalysis.droppedStackItems ?? []).flatMap(() => [WASM_DROP]);
 
 	return saveByteCode(context, [WASM_IF, WASM_TYPE_VOID, ...drops, WASM_RETURN, WASM_END]);

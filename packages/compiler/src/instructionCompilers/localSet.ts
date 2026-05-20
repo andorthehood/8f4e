@@ -1,9 +1,6 @@
 import { localSet } from '@8f4e/compiler-wasm-utils';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
-
-import { getError } from '../compilerError';
 
 import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -14,14 +11,6 @@ import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-sp
 const _localSet: InstructionCompiler<CodegenLocalSetLine> = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 	const local = context.locals[line.arguments[0].value]!;
-
-	if (local.isInteger && !operand.isInteger) {
-		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-	}
-
-	if (!local.isInteger && operand.isInteger) {
-		throw getError(ErrorCode.ONLY_FLOATS, line, context);
-	}
 
 	if (local.pointeeBaseType) {
 		local.pointeeMemoryIndex = operand.address?.memoryIndex ?? 0;
