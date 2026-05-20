@@ -82,8 +82,15 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			tabStopsByLine[Math.min(row, codeBlock.code.length - 1)] || []
 		);
 		const [boundedRow, boundedCol] = moveCaret(codeBlock.code, row, col, 'jump');
-		codeBlock.cursor.row = boundedRow;
-		codeBlock.cursor.col = boundedCol;
+		if (codeBlock !== state.graphicHelper.selectedCodeBlock) {
+			return;
+		}
+
+		store.set('graphicHelper.selectedCodeBlock.cursor', {
+			...codeBlock.cursor,
+			row: boundedRow,
+			col: boundedCol,
+		});
 	};
 
 	const updateGraphics = function (graphicData: CodeBlockGraphicData) {

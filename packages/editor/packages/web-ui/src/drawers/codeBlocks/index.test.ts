@@ -189,6 +189,67 @@ describe('drawModules', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(0, 16, '//');
 	});
 
+	it('draws tooltip text next to the selected line', () => {
+		const block = createMockCodeBlock({
+			textureCacheKey: 'selected-block',
+			width: 100,
+			height: 80,
+			cursor: {
+				row: 1,
+				col: 0,
+				x: 16,
+				y: 16,
+			},
+			codeToRender: [],
+			codeColors: [],
+		});
+		const state = createMockState({
+			graphicHelper: {
+				codeBlocks: [block],
+				selectedCodeBlock: block,
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+				} as never,
+			},
+			featureFlags: {
+				codeLineSelection: true,
+			},
+			tooltip: {
+				text: ['Dynamic hint', 'second line'],
+			},
+			viewport: {
+				vGrid: 8,
+				hGrid: 16,
+			},
+		});
+		const engine = createMockEngine();
+
+		drawModules(engine, state, createMemoryViews());
+
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
+			108,
+			16,
+			'debugInfoBackground',
+			112,
+			32
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			116,
+			16,
+			'Dynamic hint'
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			116,
+			32,
+			'second line'
+		);
+	});
+
 	it('can skip off-screen arrow indicators', () => {
 		const offscreenBlock = createMockCodeBlock({
 			x: 1200,

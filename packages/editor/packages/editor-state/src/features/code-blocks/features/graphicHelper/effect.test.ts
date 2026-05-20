@@ -1,4 +1,4 @@
-import { describe, it, expect, type Mock } from 'vitest';
+import { describe, it, expect, vi, type Mock } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import graphicHelperEffect from './effect';
@@ -80,6 +80,47 @@ describe('graphic helper hidden directive', () => {
 
 		store.set('graphicHelper.selectedCodeBlock', otherBlock);
 		expect(hiddenBlock.hidden).toBe(true);
+	});
+});
+
+describe('graphic helper cursor selection', () => {
+	it('updates the selected code block cursor through the store when a line is clicked', () => {
+		const selectedBlock = createMockCodeBlock({
+			code: ['zero', 'one', 'two'],
+			lineNumberColumnWidth: 1,
+		});
+		const state = createMockState({
+			featureFlags: {
+				codeLineSelection: true,
+			},
+			graphicHelper: {
+				codeBlocks: [selectedBlock],
+				selectedCodeBlock: selectedBlock,
+			},
+			viewport: {
+				vGrid: 8,
+				hGrid: 16,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+		const onSelectedRowChanged = vi.fn();
+
+		store.subscribe('graphicHelper.selectedCodeBlock.cursor.row', onSelectedRowChanged);
+		graphicHelperEffect(store, events);
+
+		const codeBlockClickHandler = (events.on as Mock).mock.calls.find(
+			([eventName]) => eventName === 'codeBlockClick'
+		)?.[1] as ((event: { relativeX: number; relativeY: number; codeBlock: typeof selectedBlock }) => void) | undefined;
+
+		codeBlockClickHandler?.({
+			relativeX: 0,
+			relativeY: state.viewport.hGrid,
+			codeBlock: selectedBlock,
+		});
+
+		expect(selectedBlock.cursor.row).toBe(1);
+		expect(onSelectedRowChanged).toHaveBeenCalledWith(1);
 	});
 });
 

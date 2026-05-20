@@ -149,6 +149,10 @@ export type InfoValue = unknown;
 export type InfoRecord = Record<string, InfoValue>;
 export type InfoState = Record<string, InfoRecord | undefined>;
 
+export interface TooltipState {
+	text: string[];
+}
+
 // Feature Flags types (top-level public API)
 export interface FeatureFlags {
 	/** Enable/disable right-click context menu functionality */
@@ -299,6 +303,7 @@ export interface State {
 	graphicHelper: GraphicHelper;
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
+	tooltip: TooltipState;
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;
 	editorMode: EditorMode;
