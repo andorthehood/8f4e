@@ -6,6 +6,7 @@ import memarg from '../memory/memarg';
  *
  * @param alignment - Memory alignment (power of 2), defaults to 3 (8-byte aligned)
  * @param offset - Static offset from the address, defaults to 0
+ * @param memoryIndex - Memory index to load from, defaults to 0
  * @returns Byte array representing the f64.load instruction
  */
 export default function f64load(alignment = 3, offset = 0, memoryIndex = 0): number[] {

@@ -1,5 +1,32 @@
 import type { CompiledModuleLookup } from '@8f4e/compiler-spec';
 
+function didRegionPlacementChange(
+	current: { memoryIndex?: number; memoryRegionName?: string },
+	previous: { memoryIndex?: number; memoryRegionName?: string }
+): boolean {
+	return current.memoryIndex !== previous.memoryIndex || current.memoryRegionName !== previous.memoryRegionName;
+}
+
+function didMemoryMapRegionPlacementChange(
+	compiledModule: CompiledModuleLookup[string],
+	previousModule: CompiledModuleLookup[string]
+): boolean {
+	const memoryKeys = Object.keys(compiledModule.memoryMap);
+	const previousMemoryKeys = Object.keys(previousModule.memoryMap);
+	if (memoryKeys.length !== previousMemoryKeys.length) {
+		return true;
+	}
+
+	for (const [id, data] of Object.entries(compiledModule.memoryMap)) {
+		const previousData = previousModule.memoryMap[id];
+		if (!previousData || didRegionPlacementChange(data, previousData)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 function didInternalResourcesChange(
 	compiledModule: CompiledModuleLookup[string],
 	previousModule: CompiledModuleLookup[string]
@@ -20,6 +47,7 @@ function didInternalResourcesChange(
 		}
 
 		if (
+			didRegionPlacementChange(resource, previousResource) ||
 			resource.byteAddress !== previousResource.byteAddress ||
 			resource.wordAlignedAddress !== previousResource.wordAlignedAddress ||
 			resource.wordAlignedSize !== previousResource.wordAlignedSize ||
@@ -71,6 +99,10 @@ export default function didProgramOrMemoryStructureChange(
 			compiledModule.memoryIndex !== previousModule.memoryIndex ||
 			compiledModule.memoryRegionName !== previousModule.memoryRegionName
 		) {
+			return true;
+		}
+
+		if (didMemoryMapRegionPlacementChange(compiledModule, previousModule)) {
 			return true;
 		}
 

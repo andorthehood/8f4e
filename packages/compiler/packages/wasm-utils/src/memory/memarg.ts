@@ -8,7 +8,7 @@ export default function memarg(alignment: number, offset: number, memoryIndex = 
 	}
 
 	return [
-		...unsignedLEB128(alignment + MULTI_MEMORY_MEMARG_FLAG),
+		...unsignedLEB128(alignment | MULTI_MEMORY_MEMARG_FLAG),
 		...unsignedLEB128(memoryIndex),
 		...unsignedLEB128(offset),
 	];

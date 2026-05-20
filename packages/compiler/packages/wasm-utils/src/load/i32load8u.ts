@@ -6,6 +6,7 @@ import memarg from '../memory/memarg';
  *
  * @param alignment - Memory alignment (power of 2), defaults to 0 (1-byte aligned)
  * @param offset - Static offset from the address, defaults to 0
+ * @param memoryIndex - Memory index to load from, defaults to 0
  * @returns Byte array representing the i32.load8_u instruction
  */
 export default function i32load8u(alignment = 0, offset = 0, memoryIndex = 0): number[] {

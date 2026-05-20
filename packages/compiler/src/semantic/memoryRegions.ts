@@ -104,7 +104,7 @@ export function resolveRegionDirective(line: AST[number], context: CompilationCo
 		return resolveMemoryRegionName(argument.value, context.memoryRegions ?? [], line, context);
 	}
 
-	return resolveMemoryRegionByIndex(DEFAULT_MEMORY_INDEX, context.memoryRegions ?? [], line, context);
+	throw new Error('Invalid #region directive argument after syntax validation');
 }
 
 export function getDefaultMemoryRegion(): ResolvedMemoryRegion {

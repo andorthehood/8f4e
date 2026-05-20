@@ -142,10 +142,30 @@ function getRegionName(memoryIndex: number, memoryRegions: string[] | undefined)
 
 function getRegionMemoryImportNames(
 	compiledModules: CreateRuntimeRunnerOptions['compiledModules'],
-	memoryRegions: string[] | undefined
+	memoryRegions: string[] | undefined,
+	requiredMemoryBytesByRegion: Record<string, number> | undefined
 ): string[] {
-	const maxUsedMemoryIndex = Math.max(0, ...Object.values(compiledModules).map(module => module.memoryIndex ?? 0));
-	return Array.from({ length: maxUsedMemoryIndex }, (_, index) => getRegionName(index + 1, memoryRegions));
+	const names = new Set(Object.keys(requiredMemoryBytesByRegion ?? {}));
+
+	const addRegion = (memoryIndex: number | undefined, memoryRegionName: string | undefined): void => {
+		const resolvedMemoryIndex = memoryIndex ?? 0;
+		if (resolvedMemoryIndex === 0) {
+			return;
+		}
+		names.add(memoryRegionName ?? getRegionName(resolvedMemoryIndex, memoryRegions));
+	};
+
+	for (const module of Object.values(compiledModules)) {
+		addRegion(module.memoryIndex, module.memoryRegionName);
+		for (const data of Object.values(module.memoryMap)) {
+			addRegion(data.memoryIndex, data.memoryRegionName);
+		}
+		for (const resource of Object.values(module.internalResources ?? {})) {
+			addRegion(resource.memoryIndex, resource.memoryRegionName);
+		}
+	}
+
+	return [...names];
 }
 
 function getMemoryView(
@@ -165,10 +185,9 @@ export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): 
 	const lookup: MemoryLookup = createMemoryLookup(options.compiledModules);
 	const memory = createWebAssemblyMemory(options.requiredMemoryBytes);
 	const regionMemories = Object.fromEntries(
-		getRegionMemoryImportNames(options.compiledModules, options.memoryRegions).map(regionName => [
-			regionName,
-			createWebAssemblyMemory(options.requiredMemoryBytesByRegion?.[regionName] ?? 0),
-		])
+		getRegionMemoryImportNames(options.compiledModules, options.memoryRegions, options.requiredMemoryBytesByRegion).map(
+			regionName => [regionName, createWebAssemblyMemory(options.requiredMemoryBytesByRegion?.[regionName] ?? 0)]
+		)
 	);
 	const program = Buffer.from(options.compiledWasmBase64, 'base64');
 	const { instance } = await getWebAssemblyApi().instantiate(program, {

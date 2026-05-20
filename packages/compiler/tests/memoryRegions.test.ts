@@ -1,4 +1,4 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { describe, expect, test } from 'vitest';
 
 import compile from '../src';
@@ -109,6 +109,48 @@ describe('logical memory regions', () => {
 
 		const resultMemory = result.compiledModules.defaults.memoryMap.result;
 		expect(defaultView.getInt32(resultMemory.byteAddress, true)).toBe(42);
+	});
+
+	test('keeps compiler-generated internal resources in default memory', () => {
+		const result = compile(
+			[
+				{
+					code: [
+						'module signal',
+						'#region sampleMemory',
+						'int input',
+						'int output',
+						'push &output',
+						'push input',
+						'hasChanged',
+						'if',
+						'push 1',
+						'else',
+						'push 0',
+						'ifEnd int',
+						'store',
+						'moduleEnd',
+					],
+				},
+			],
+			{ disableSharedMemory: true, memoryRegions: ['sampleMemory'] }
+		);
+
+		const signalModule = result.compiledModules.signal;
+		const resources = Object.values(signalModule.internalResources ?? {});
+		const declarationBytes = Math.max(
+			...Object.values(signalModule.memoryMap).map(
+				data => data.byteAddress + data.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY
+			)
+		);
+
+		expect(resources).toHaveLength(1);
+		expect(resources[0].memoryIndex).toBeUndefined();
+		expect(resources[0].memoryRegionName).toBeUndefined();
+		expect(result.requiredMemoryBytes).toBeGreaterThanOrEqual(
+			resources[0].byteAddress + resources[0].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY
+		);
+		expect(result.requiredMemoryBytesByRegion).toEqual({ sampleMemory: declarationBytes });
 	});
 
 	test('infers destination and source memories for cross-region memoryCopy', async () => {
