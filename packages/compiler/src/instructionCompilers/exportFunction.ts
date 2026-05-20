@@ -9,10 +9,6 @@ import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-spec';
  * Marks the current function as a WebAssembly export under the provided name.
  */
 const exportFunction: InstructionCompiler<ExportLine> = function (line, context) {
-	if (!context.insideFunctionBlock) {
-		throw getError(ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT, line, context);
-	}
-
 	if (context.currentFunctionExportName !== undefined) {
 		throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, line, context, {
 			identifier: line.arguments[0].value,

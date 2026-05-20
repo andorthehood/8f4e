@@ -1,13 +1,10 @@
 import { i32load, i32load16s, i32load16u, i32load8s, i32load8u, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
-
-import { getError } from '../compilerError';
 
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -35,9 +32,6 @@ const load: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const [address] = line.stackAnalysis.consumedOperands;
 	const buildInstructions = instructionToByteCodeMap[line.instruction];
-	if (!buildInstructions) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-	}
 	const memoryIndex = getAddressMemoryIndex(address);
 	const instructions = buildInstructions(memoryIndex);
 	const accessByteWidth = instructionToAccessByteWidthMap[line.instruction];
