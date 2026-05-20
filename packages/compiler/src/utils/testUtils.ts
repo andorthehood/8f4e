@@ -47,6 +47,8 @@ export default function createInstructionCompilerTestContext(
 		startingByteAddress: 0,
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: 0,
+		currentMemoryIndex: 0,
+		memoryRegions: [],
 		byteCode: [],
 		codeBlockId: 'test',
 		codeBlockType: 'module',

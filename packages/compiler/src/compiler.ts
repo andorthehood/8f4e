@@ -75,7 +75,7 @@ export function compileModule(
 	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions, options);
 	const moduleId = getModuleIdFromAst(ast);
 	const namespace = moduleId ? namespaces[moduleId] : undefined;
-	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex ?? 0;
+	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex;
 	const memoryRegionName = namespace?.memoryRegionName ?? prepassContext.currentMemoryRegionName;
 	const context: CompilationContext = {
 		namespace: {

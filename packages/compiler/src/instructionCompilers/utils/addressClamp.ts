@@ -51,7 +51,7 @@ export function getClampedAddressStackItem(
 			? {
 					address: {
 						...getMemoryRegionFields(
-							range?.memoryIndex ?? operand.address?.memoryIndex,
+							range?.memoryIndex ?? operand.address?.memoryIndex ?? 0,
 							range?.memoryRegionName ?? operand.address?.memoryRegionName
 						),
 						...(range ? { clampRange: range } : {}),

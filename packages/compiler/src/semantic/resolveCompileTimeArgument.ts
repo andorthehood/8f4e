@@ -361,7 +361,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 					context.startingByteAddress,
 					context.currentModuleWordAlignedSize ?? 0,
 					context.namespace.moduleName,
-					context.currentMemoryIndex ?? 0,
+					context.currentMemoryIndex,
 					context.currentMemoryRegionName
 				);
 			}
@@ -373,7 +373,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 						byteAddress,
 						context.currentModuleWordAlignedSize,
 						context.namespace.moduleName,
-						context.currentMemoryIndex ?? 0,
+						context.currentMemoryIndex,
 						context.currentMemoryRegionName
 					),
 				};
