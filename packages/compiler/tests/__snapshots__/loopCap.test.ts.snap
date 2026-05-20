@@ -60,9 +60,11 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "counter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -186,6 +188,7 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -245,9 +248,11 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "counter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -371,6 +376,7 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -445,9 +451,11 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "counter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -571,6 +579,7 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -630,9 +639,11 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "counter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -756,6 +767,7 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -831,9 +843,11 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "outerCounter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -912,9 +926,11 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "innerCounter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1069,6 +1085,7 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1083,6 +1100,7 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1136,9 +1154,11 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "counter",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1262,6 +1282,7 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,

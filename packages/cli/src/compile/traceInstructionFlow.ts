@@ -1,4 +1,4 @@
-import compile, { compileCodegenLine, collectNamespacesFromASTs } from '@8f4e/compiler';
+import compile, { compileCodegenLine, collectNamespacesFromASTs, createCompilationContext } from '@8f4e/compiler';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
@@ -136,7 +136,13 @@ export default function traceInstructionFlow(
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
 	const moduleAsts = compiledModules.map(module => module.ast).filter((ast): ast is AST => Array.isArray(ast));
-	const namespaces = collectNamespacesFromASTs(moduleAsts);
+	const namespaces = collectNamespacesFromASTs(
+		moduleAsts,
+		undefined,
+		compileResult.compiledFunctions,
+		moduleAsts,
+		compilerOptions
+	);
 	const blocks: BlockTrace[] = [];
 
 	for (const module of compiledModules) {
@@ -147,7 +153,7 @@ export default function traceInstructionFlow(
 		const kind = module.ast.some(line => line.instruction === constantsInstruction)
 			? constantsBlockType
 			: moduleBlockType;
-		const context: CompilationContext = {
+		const context = createCompilationContext({
 			namespace: {
 				namespaces,
 				memory: module.memoryMap,
@@ -169,20 +175,16 @@ export default function traceInstructionFlow(
 					blockType: kind === constantsBlockType ? BlockType.CONSTANTS : BlockType.MODULE,
 				},
 			],
-			insideModuleBlock: kind === moduleBlockType,
-			insideFunctionBlock: false,
-			insideGenericBlock: false,
-			insideLoopBlock: false,
-			insideConditionBlock: false,
-			insideConstantsBlock: kind === constantsBlockType,
-			insideMapBlock: false,
 			startingByteAddress: module.byteAddress,
+			currentMemoryIndex: module.memoryIndex,
+			...(module.memoryRegionName ? { currentMemoryRegionName: module.memoryRegionName } : {}),
+			memoryRegions: compilerOptions.memoryRegions ?? [],
 			mode: moduleBlockType,
 			codeBlockId: module.id,
 			codeBlockType: kind,
 			skipExecutionInCycle: module.skipExecutionInCycle,
 			initOnlyExecution: module.initOnlyExecution,
-		};
+		});
 
 		blocks.push(traceAst(module.id, kind, module.ast, context));
 	}
@@ -192,7 +194,7 @@ export default function traceInstructionFlow(
 			continue;
 		}
 
-		const context: CompilationContext = {
+		const context = createCompilationContext({
 			namespace: {
 				namespaces,
 				memory: {},
@@ -214,18 +216,13 @@ export default function traceInstructionFlow(
 					blockType: BlockType.FUNCTION,
 				},
 			],
-			insideModuleBlock: false,
-			insideFunctionBlock: true,
-			insideGenericBlock: false,
-			insideLoopBlock: false,
-			insideConditionBlock: false,
-			insideConstantsBlock: false,
-			insideMapBlock: false,
 			startingByteAddress: 0,
+			currentMemoryIndex: 0,
+			memoryRegions: compilerOptions.memoryRegions ?? [],
 			mode: functionBlockType,
 			codeBlockId: compiledFunction.id,
 			codeBlockType: functionBlockType,
-		};
+		});
 
 		blocks.push(traceAst(compiledFunction.id, functionBlockType, compiledFunction.ast, context));
 	}

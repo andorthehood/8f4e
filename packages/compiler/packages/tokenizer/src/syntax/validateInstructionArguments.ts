@@ -16,7 +16,8 @@ type ArgumentShapeRule =
 	| 'mapValue'
 	| 'typeIdentifier'
 	| 'functionTypeIdentifier'
-	| 'ifResultType';
+	| 'ifResultType'
+	| 'regionReference';
 
 type InstructionArgumentSpec = {
 	minArguments?: number;
@@ -54,6 +55,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	loop: { argumentTypes: ['nonNegativeIntegerLiteral'] },
 	loopIndex: { maxArguments: 0 },
 	'#loopCap': { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
+	'#region': { minArguments: 1, maxArguments: 1, argumentTypes: ['regionReference'] },
 	'#impure': { maxArguments: 0 },
 	'#export': { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
 	module: { minArguments: 1, argumentTypes: ['identifier'] },
@@ -148,6 +150,14 @@ function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, inst
 		case 'ifResultType':
 			if (argument.type !== ArgumentType.IDENTIFIER || !supportedIfResultTypeIdentifiers.has(argument.value)) {
 				invalid(`Invalid argument for ${instruction}: expected result type (int or float).`);
+			}
+			return;
+		case 'regionReference':
+			if (
+				argument.type !== ArgumentType.IDENTIFIER &&
+				(argument.type !== ArgumentType.LITERAL || !argument.isInteger || argument.value < 0)
+			) {
+				invalid(`Invalid argument for ${instruction}: expected region identifier or non-negative integer index.`);
 			}
 			return;
 	}

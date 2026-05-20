@@ -6,6 +6,54 @@ Compiler directives are block prologue metadata. In a `module`, module-scoped di
 
 ## Module-Scoped Directives
 
+### `#region`
+
+Assigns all declarations in the current module to a logical memory region.
+
+**Scope:** Module blocks only
+
+**Syntax:** `#region <region-name-or-index>`
+
+**Usage:**
+```8f4e
+module samples
+#region sampleMemory
+int8[] values 1024
+moduleEnd
+```
+
+**Behavior:**
+- Region names come from the compiler option `memoryRegions`, where index `0` is always the implicit default memory and custom names start at Wasm memory index `1`
+- `#region sampleMemory` resolves by name; `#region 1` resolves by Wasm memory index; `#region 0` selects the implicit default memory
+- The directive applies to declarations in the module only and must appear before any declaration or executable instruction
+- Address references such as `&samples:values` carry their source region, so `load`, `store`, `storeBytes`, `memoryCopy`, pointer defaults, and `push *ptr` use the memory region carried by the address or pointer provenance
+- Raw integer addresses without address provenance use memory index `0`
+- Compiler-generated internal resources remain in memory index `0` so small hot runtime state stays in the default memory
+- `requiredMemoryBytes` reports only the implicit default memory; custom regions are reported separately as `requiredMemoryBytesByRegion`
+
+**Errors:**
+- Using `#region` outside of a module block will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+- Placing `#region` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
+- Unknown region names, out-of-bounds numeric indices, duplicate configured names, numeric-looking configured names, and reserved configured names such as `default` or `memory` produce compiler diagnostics
+
+**Example:**
+```8f4e
+module samples
+#region sampleMemory
+int8[] values 4 11
+moduleEnd
+
+module reader
+int result
+int8* ptr &samples:values
+push &result
+push *ptr
+store
+moduleEnd
+```
+
+With `memoryRegions: ['sampleMemory']`, `values` is stored in Wasm memory index `1`. The pointer slot `ptr` lives in the default memory because `reader` has no `#region`, but its pointee metadata still targets `sampleMemory`, so `push *ptr` loads from the sample memory region.
+
 ### `#skipExecution`
 
 Marks a module to skip execution in the cycle dispatcher while preserving normal compilation and memory initialization behavior.
@@ -13,7 +61,7 @@ Marks a module to skip execution in the cycle dispatcher while preserving normal
 **Scope:** Module blocks only
 
 **Usage:**
-```
+```8f4e
 module myModule
 #skipExecution
 int counter 0
@@ -38,7 +86,7 @@ moduleEnd
 
 **Example:**
 
-```
+```8f4e
 ; Active module that executes every cycle
 module activeModule
 int value 0
@@ -77,7 +125,7 @@ Marks a module to execute once during the init phase and skip execution in the c
 **Scope:** Module blocks only
 
 **Usage:**
-```
+```8f4e
 module myInitModule
 #initOnly
 int state 0
@@ -104,7 +152,7 @@ moduleEnd
 
 **Example:**
 
-```
+```8f4e
 ; Data module with initialized values
 module config
 int baseValue 100
@@ -144,7 +192,7 @@ In this example:
 **Interaction with `#skipExecution`:**
 
 When both directives are present in the same module:
-```
+```8f4e
 module myModule
 #skipExecution
 #initOnly
@@ -164,7 +212,7 @@ Marks the current function as allowed to perform explicit memory IO.
 **Scope:** Function blocks only
 
 **Usage:**
-```
+```8f4e
 function writeSample
 #impure
 param float* dst
@@ -195,7 +243,7 @@ Sets the default loop cap for `loop` blocks in the current module or function bl
 **Syntax:** `#loopCap <non-negative integer>`
 
 **Usage:**
-```
+```8f4e
 module myModule
 #loopCap 5000
 ; ... loops after this line use a cap of 5000 ...
@@ -222,7 +270,7 @@ moduleEnd
 **Examples:**
 
 Module-scoped cap:
-```
+```8f4e
 module demo
 #loopCap 5000
 
@@ -237,7 +285,7 @@ moduleEnd
 ```
 
 Function-scoped cap:
-```
+```8f4e
 function int:int slowPath
 #loopCap 2048
 param int input

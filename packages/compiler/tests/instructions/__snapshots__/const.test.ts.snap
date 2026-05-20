@@ -134,9 +134,11 @@ exports[`const instruction > const with valid constant names > if the generated 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 0,
             "memoryId": "output1",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -178,9 +180,11 @@ exports[`const instruction > const with valid constant names > if the generated 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output2",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -255,6 +259,7 @@ exports[`const instruction > const with valid constant names > if the generated 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -269,6 +274,7 @@ exports[`const instruction > const with valid constant names > if the generated 
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -283,6 +289,7 @@ exports[`const instruction > const with valid constant names > if the generated 
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 2,

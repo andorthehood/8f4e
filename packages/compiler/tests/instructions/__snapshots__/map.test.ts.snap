@@ -53,9 +53,11 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -236,6 +238,7 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -250,6 +253,7 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -311,9 +315,11 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -494,6 +500,7 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -508,6 +515,7 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -569,9 +577,11 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -717,6 +727,7 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -731,6 +742,7 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -792,9 +804,11 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -975,6 +989,7 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -989,6 +1004,7 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -1050,9 +1066,11 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1268,6 +1286,7 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1282,6 +1301,7 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1343,9 +1363,11 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1505,6 +1527,7 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1519,6 +1542,7 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1580,9 +1604,11 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1726,6 +1752,7 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1740,6 +1767,7 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1801,9 +1829,11 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -1909,6 +1939,7 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -1923,6 +1954,7 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
@@ -1984,9 +2016,11 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -2106,6 +2140,7 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -2120,6 +2155,7 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,

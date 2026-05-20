@@ -3,6 +3,7 @@ import { i32store8, localGet, localSet } from '@8f4e/compiler-wasm-utils';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from './utils/memoryAccessGuard';
+import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
 import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
 
@@ -17,6 +18,7 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line: StoreBytesLine, c
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const address = context.stack.pop()!;
 	const addressIsSafe = isSafeMemoryAccess(address, count);
+	const memoryIndex = getAddressMemoryIndex(address);
 	for (let i = 0; i < count; i++) {
 		context.stack.pop();
 	}
@@ -30,12 +32,12 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line: StoreBytesLine, c
 
 	const byteCode = [...localSet(tempAddrLocal.index)];
 	for (let i = 0; i < count; i++) {
-		const storeByteCode = i32store8(undefined, undefined, 0, i);
+		const storeByteCode = i32store8(undefined, undefined, 0, i, memoryIndex);
 		byteCode.push(
 			...localSet(tempByteLocal.index),
 			...(addressIsSafe
 				? [...localGet(tempAddrLocal.index), ...localGet(tempByteLocal.index), ...storeByteCode]
-				: guardedStoreFromLocals(tempAddrLocal.index, tempByteLocal.index, i + 1, storeByteCode))
+				: guardedStoreFromLocals(tempAddrLocal.index, tempByteLocal.index, i + 1, storeByteCode, memoryIndex))
 		);
 	}
 

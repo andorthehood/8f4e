@@ -22,5 +22,6 @@ export default function semanticConst(line: NormalizedConstLine, context: Compil
 		value: constValue.value,
 		isInteger: constValue.isInteger,
 		...(constValue.isFloat64 ? { isFloat64: true } : {}),
+		...(constValue.address ? { address: constValue.address } : {}),
 	};
 }
