@@ -232,12 +232,13 @@ function classifyWordSizeQuery(value: string): ArgumentIdentifier | null {
 	}
 
 	if (targetMemoryId.startsWith('*')) {
+		const pointeeTargetMemoryId = getPointeeQueryTarget(value, targetMemoryId);
 		return {
 			type: ArgumentType.IDENTIFIER,
 			value,
 			referenceKind: 'pointee-element-word-size',
 			scope: 'local',
-			targetMemoryId: targetMemoryId.slice(1),
+			targetMemoryId: pointeeTargetMemoryId,
 			isPointee: true,
 		};
 	}
@@ -270,12 +271,13 @@ function classifyMaxQuery(value: string): ArgumentIdentifier | null {
 	}
 
 	if (targetMemoryId.startsWith('*')) {
+		const pointeeTargetMemoryId = getPointeeQueryTarget(value, targetMemoryId);
 		return {
 			type: ArgumentType.IDENTIFIER,
 			value,
 			referenceKind: 'pointee-element-max',
 			scope: 'local',
-			targetMemoryId: targetMemoryId.slice(1),
+			targetMemoryId: pointeeTargetMemoryId,
 			isPointee: true,
 		};
 	}
@@ -321,7 +323,24 @@ function extractQueryInner(value: string, prefix: string): string | null {
 		return null;
 	}
 
-	return value.slice(prefix.length, -1);
+	const inner = value.slice(prefix.length, -1);
+	if (inner.trim().length === 0) {
+		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_IDENTIFIER, `Metadata query target is missing: ${value}`);
+	}
+
+	return inner;
+}
+
+function getPointeeQueryTarget(value: string, targetMemoryId: string): string {
+	const pointeeTargetMemoryId = targetMemoryId.slice(1);
+	if (pointeeTargetMemoryId.trim().length === 0) {
+		throw new SyntaxRulesError(
+			SyntaxErrorCode.INVALID_IDENTIFIER,
+			`Pointee metadata query target is missing: ${value}`
+		);
+	}
+
+	return pointeeTargetMemoryId;
 }
 
 function parseIntermodularElementQuery(value: string): { targetModuleId: string; targetMemoryId: string } | null {
