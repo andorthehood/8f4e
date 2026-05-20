@@ -33,7 +33,7 @@ import type { CompiledModuleBlockType, CompilerSourceBlockType } from './instruc
 
 export interface MemoryAddressRange {
 	source: 'memory-start' | 'memory-end' | 'module-start' | 'module-end' | 'module-nth-memory-start';
-	memoryIndex?: number;
+	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;
 	safeByteLength: number;
@@ -43,7 +43,7 @@ export interface MemoryAddressRange {
 
 export interface AddressMetadata {
 	/** Resolved WebAssembly memory index that this address points into. */
-	memoryIndex?: number;
+	memoryIndex: number;
 	/** Configured logical region name for non-default memories. */
 	memoryRegionName?: string;
 	/**
@@ -102,7 +102,7 @@ export interface CollectedNamespace {
 	kind: CompiledModuleBlockType;
 	consts: Consts;
 	memory?: MemoryMap;
-	memoryIndex?: number;
+	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress?: number;
 	wordAlignedSize?: number;

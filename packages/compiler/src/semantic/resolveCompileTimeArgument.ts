@@ -292,7 +292,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 				value,
 				targetNamespace.wordAlignedSize,
 				targetModuleId,
-				targetNamespace.memoryIndex ?? 0,
+				targetNamespace.memoryIndex,
 				targetNamespace.memoryRegionName
 			);
 		}

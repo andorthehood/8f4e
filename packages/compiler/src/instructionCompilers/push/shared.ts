@@ -41,10 +41,10 @@ export const constOpcode: Record<PushValueKind, (value: number) => number[]> = {
 	float64: f64const,
 };
 
-export const loadOpcode: Record<PushValueKind, (memoryIndex?: number) => number[]> = {
-	int32: (memoryIndex = 0) => i32load(2, 0, memoryIndex),
-	float32: (memoryIndex = 0) => f32load(2, 0, memoryIndex),
-	float64: (memoryIndex = 0) => f64load(3, 0, memoryIndex),
+export const loadOpcode: Record<PushValueKind, (memoryIndex: number) => number[]> = {
+	int32: memoryIndex => i32load(2, 0, memoryIndex),
+	float32: memoryIndex => f32load(2, 0, memoryIndex),
+	float64: memoryIndex => f64load(3, 0, memoryIndex),
 };
 
 export function kindToStackItem(kind: PushValueKind, extras?: Partial<StackItem>): StackItem {

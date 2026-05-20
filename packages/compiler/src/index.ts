@@ -34,7 +34,7 @@ import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 import { getError } from './compilerError';
-import { validateMemoryRegionOptions } from './semantic/memoryRegions';
+import { getRequiredCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 
 import type {
 	AST,
@@ -77,7 +77,7 @@ export function compileModules(
 		namespaces ?? collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options);
 	const allocator = internalAllocator ?? {
 		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
-			if ((namespace.memoryIndex ?? 0) !== 0) {
+			if (namespace.memoryIndex !== 0) {
 				return max;
 			}
 			const byteAddress = namespace.byteAddress ?? 0;
@@ -132,10 +132,10 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): voi
 }
 
 function getRequiredMemoryBytesByIndex(
-	items: Array<{ memoryIndex?: number; byteAddress?: number; wordAlignedSize?: number }>
+	items: Array<{ memoryIndex: number; byteAddress?: number; wordAlignedSize?: number }>
 ): Record<number, number> {
 	return items.reduce<Record<number, number>>((result, item) => {
-		const memoryIndex = item.memoryIndex ?? 0;
+		const memoryIndex = item.memoryIndex;
 		const requiredBytes = (item.byteAddress ?? 0) + (item.wordAlignedSize ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 		result[memoryIndex] = Math.max(result[memoryIndex] ?? 0, requiredBytes);
 		return result;
@@ -154,7 +154,7 @@ function getRequiredMemoryBytesByRegion(
 			continue;
 		}
 
-		result[memoryRegions[memoryIndex - 1] ?? `memory${memoryIndex}`] = requiredBytes;
+		result[getRequiredCustomMemoryRegionName(memoryRegions, memoryIndex)] = requiredBytes;
 	}
 
 	return result;
@@ -315,14 +315,9 @@ export default function compile(
 	const memoryImports = Array.from({ length: maxUsedMemoryIndex + 1 }, (_, memoryIndex) => {
 		const requiredBytes = requiredMemoryBytesByIndex[memoryIndex] ?? 0;
 		const memorySizePages = Math.max(1, Math.ceil(requiredBytes / WASM_MEMORY_PAGE_SIZE));
-		const importName = memoryIndex === 0 ? 'memory' : options.memoryRegions?.[memoryIndex - 1];
-		return createMemoryImport(
-			'js',
-			importName ?? `memory${memoryIndex}`,
-			memorySizePages,
-			memorySizePages,
-			!options.disableSharedMemory
-		);
+		const importName =
+			memoryIndex === 0 ? 'memory' : getRequiredCustomMemoryRegionName(options.memoryRegions ?? [], memoryIndex);
+		return createMemoryImport('js', importName, memorySizePages, memorySizePages, !options.disableSharedMemory);
 	});
 
 	return {
