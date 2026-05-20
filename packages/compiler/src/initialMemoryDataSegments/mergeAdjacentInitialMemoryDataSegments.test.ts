@@ -56,6 +56,52 @@ describe('mergeAdjacentInitialMemoryDataSegments', () => {
 		]);
 	});
 
+	test('does not merge adjacent ranges from different memory indices', () => {
+		const segments = mergeAdjacentInitialMemoryDataSegments([
+			{ memoryIndex: 0, byteAddress: 0, bytes: new Uint8Array([1]) },
+			{ memoryIndex: 1, byteAddress: 1, bytes: new Uint8Array([2]) },
+		]);
+
+		expect(serializeSegments(segments)).toEqual([
+			{
+				memoryIndex: 0,
+				byteAddress: 0,
+				bytes: [1],
+			},
+			{
+				memoryIndex: 1,
+				byteAddress: 1,
+				bytes: [2],
+			},
+		]);
+	});
+
+	test('sorts segments by memory index before byte address', () => {
+		const segments = mergeAdjacentInitialMemoryDataSegments([
+			{ memoryIndex: 1, byteAddress: 0, bytes: new Uint8Array([3]) },
+			{ memoryIndex: 0, byteAddress: 100, bytes: new Uint8Array([1]) },
+			{ memoryIndex: 0, byteAddress: 0, bytes: new Uint8Array([2]) },
+		]);
+
+		expect(serializeSegments(segments)).toEqual([
+			{
+				memoryIndex: 0,
+				byteAddress: 0,
+				bytes: [2],
+			},
+			{
+				memoryIndex: 0,
+				byteAddress: 100,
+				bytes: [1],
+			},
+			{
+				memoryIndex: 1,
+				byteAddress: 0,
+				bytes: [3],
+			},
+		]);
+	});
+
 	test('copies segment bytes so callers cannot mutate retained inputs', () => {
 		const inputBytes = new Uint8Array([1]);
 		const [segment] = mergeAdjacentInitialMemoryDataSegments([{ memoryIndex: 0, byteAddress: 0, bytes: inputBytes }]);

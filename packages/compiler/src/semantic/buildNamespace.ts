@@ -10,6 +10,7 @@ import {
 	type FunctionSignature,
 	type Namespaces,
 	type ParsedSemanticInstructionLine,
+	type RegionLine,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -184,22 +185,18 @@ function getModuleRegionFromAst(
 	ast: AST,
 	options: Pick<CompileOptions, 'memoryRegions'>
 ): { memoryIndex: number; memoryRegionName?: string } {
-	const regionLine = ast.find(line => line.instruction === '#region');
-	const argument = regionLine?.arguments[0];
+	const regionLine = ast.find((line): line is RegionLine => line.instruction === '#region');
 
-	if (!regionLine || !argument) {
+	if (!regionLine) {
 		return getDefaultMemoryRegion();
 	}
 
+	const [argument] = regionLine.arguments;
 	if (argument.type === ArgumentType.LITERAL) {
 		return resolveMemoryRegionByIndex(argument.value, options.memoryRegions ?? [], regionLine);
 	}
 
-	if (argument.type === ArgumentType.IDENTIFIER) {
-		return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], regionLine);
-	}
-
-	throw new Error('Invalid #region directive argument after syntax validation');
+	return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], regionLine);
 }
 
 function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {
