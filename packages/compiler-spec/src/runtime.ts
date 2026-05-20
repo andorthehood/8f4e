@@ -13,8 +13,6 @@ export type GetOrCreateMemoryResult = {
 	memoryAction: MemoryAction;
 };
 
-export type MemoryRefsByRegion = Record<string, WebAssembly.Memory>;
-
 export type GetOrCreateWasmInstanceResult = {
 	wasmInstanceRef: WebAssembly.Instance;
 	hasWasmInstanceBeenReset: boolean;
@@ -25,12 +23,9 @@ export type CompileAndUpdateMemoryResult = {
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	requiredMemoryBytes: number;
-	requiredMemoryBytesByRegion?: Record<string, number>;
 	allocatedMemoryBytes: number;
-	allocatedMemoryBytesByRegion?: Record<string, number>;
 	astCacheStats: ASTCacheStats;
 	memoryRef: WebAssembly.Memory;
-	memoryRefsByRegion?: MemoryRefsByRegion;
 	hasWasmInstanceBeenReset: boolean;
 	memoryAction: MemoryAction;
 	initOnlyReran: boolean;

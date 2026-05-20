@@ -130,7 +130,7 @@ export interface DataStructure {
 	elementWordSize: number;
 	type: MemoryType;
 	/** Resolved WebAssembly memory index where this declaration is stored. */
-	memoryIndex?: number;
+	memoryIndex: number;
 	/** Configured logical region name for non-default memories. */
 	memoryRegionName?: string;
 	byteAddress: number;
@@ -162,7 +162,7 @@ export type MemoryMap = Record<string, DataStructure>;
 
 export interface InternalResource {
 	id: string;
-	memoryIndex?: number;
+	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;
 	wordAlignedAddress: number;
@@ -181,7 +181,7 @@ export interface InternalAllocator {
 export type MemoryBuffer = Int32Array;
 
 export type MemoryValueChange = {
-	memoryIndex?: number;
+	memoryIndex: number;
 	memoryRegionName?: string;
 	wordAlignedSize: number;
 	wordAlignedAddress: number;

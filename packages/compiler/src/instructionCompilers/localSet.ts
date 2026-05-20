@@ -24,11 +24,7 @@ const _localSet: InstructionCompiler<CodegenLocalSetLine> = (line: CodegenLocalS
 	}
 
 	if (local.pointeeBaseType) {
-		if (operand.address?.memoryIndex !== undefined && operand.address.memoryIndex !== 0) {
-			local.pointeeMemoryIndex = operand.address.memoryIndex;
-		} else {
-			delete local.pointeeMemoryIndex;
-		}
+		local.pointeeMemoryIndex = operand.address?.memoryIndex ?? 0;
 		if (operand.address) {
 			if (operand.address.memoryRegionName) {
 				local.pointeeMemoryRegionName = operand.address.memoryRegionName;

@@ -18,7 +18,7 @@ export default function createInternalResourceDataSegmentCandidate(
 	});
 
 	return {
-		memoryIndex: resource.memoryIndex ?? 0,
+		memoryIndex: resource.memoryIndex,
 		...(resource.memoryRegionName ? { memoryRegionName: resource.memoryRegionName } : {}),
 		byteAddress: resource.byteAddress,
 		bytes,

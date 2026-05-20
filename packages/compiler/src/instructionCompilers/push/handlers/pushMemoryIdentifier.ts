@@ -15,10 +15,9 @@ export default function pushMemoryIdentifier(
 	const memoryItem = getDataStructure(memory, line.arguments[0].value)!;
 
 	const kind = resolveMemoryValueKind(memoryItem);
-	const pointeeMemoryRegionFields = getMemoryRegionFields(
-		memoryItem.pointeeMemoryIndex,
-		memoryItem.pointeeMemoryRegionName
-	);
+	const pointeeAddress = memoryItem.pointeeBaseType
+		? getMemoryRegionFields(memoryItem.pointeeMemoryIndex ?? 0, memoryItem.pointeeMemoryRegionName)
+		: undefined;
 	context.stack.push(
 		kindToStackItem(kind, {
 			isNonZero: false,
@@ -26,7 +25,7 @@ export default function pushMemoryIdentifier(
 				? {
 						pointeeBaseType: memoryItem.pointeeBaseType,
 						...(memoryItem.isPointingToPointer ? { isPointingToPointer: true } : {}),
-						...(Object.keys(pointeeMemoryRegionFields).length > 0 ? { address: pointeeMemoryRegionFields } : {}),
+						...(pointeeAddress ? { address: pointeeAddress } : {}),
 					}
 				: {}),
 		})

@@ -74,8 +74,8 @@ describe('logical memory regions', () => {
 			{ disableSharedMemory: true, memoryRegions: ['displayMemory'] }
 		);
 
-		expect(result.compiledModules.defaulted.memoryIndex).toBeUndefined();
-		expect(result.compiledModules.defaulted.memoryMap.value.memoryIndex).toBeUndefined();
+		expect(result.compiledModules.defaulted.memoryIndex).toBe(0);
+		expect(result.compiledModules.defaulted.memoryMap.value.memoryIndex).toBe(0);
 		expect(result.compiledModules.display.memoryIndex).toBe(1);
 		expect(result.compiledModules.display.memoryRegionName).toBe('displayMemory');
 		expect(result.compiledModules.display.memoryMap.pixel.memoryIndex).toBe(1);
@@ -145,7 +145,7 @@ describe('logical memory regions', () => {
 		);
 
 		expect(resources).toHaveLength(1);
-		expect(resources[0].memoryIndex).toBeUndefined();
+		expect(resources[0].memoryIndex).toBe(0);
 		expect(resources[0].memoryRegionName).toBeUndefined();
 		expect(result.requiredMemoryBytes).toBeGreaterThanOrEqual(
 			resources[0].byteAddress + resources[0].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY

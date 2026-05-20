@@ -11,6 +11,7 @@ import type { AST, MemoryAddressRange } from '@8f4e/compiler-spec';
 
 const range: MemoryAddressRange = {
 	source: 'memory-start',
+	memoryIndex: 0,
 	byteAddress: 0,
 	safeByteLength: 128,
 	memoryId: 'arr',
@@ -47,6 +48,7 @@ describe('clamp address instruction compilers', () => {
 				isNonZero: true,
 				knownIntegerValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
 				address: {
+					memoryIndex: 0,
 					clampRange: range,
 					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 				},
@@ -73,6 +75,7 @@ describe('clamp address instruction compilers', () => {
 				isNonZero: true,
 				knownIntegerValue: 127,
 				address: {
+					memoryIndex: 0,
 					clampRange: range,
 					safeAccessByteWidth: 1,
 				},
@@ -84,6 +87,7 @@ describe('clamp address instruction compilers', () => {
 		const context = createInstructionCompilerTestContext();
 		const shiftedRange: MemoryAddressRange = {
 			source: 'memory-start',
+			memoryIndex: 0,
 			byteAddress: 64,
 			safeByteLength: 128,
 			memoryId: 'arr',
@@ -103,6 +107,7 @@ describe('clamp address instruction compilers', () => {
 				isNonZero: true,
 				knownIntegerValue: 64,
 				address: {
+					memoryIndex: 0,
 					clampRange: shiftedRange,
 					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 				},
@@ -140,8 +145,10 @@ describe('clamp address instruction compilers', () => {
 				isNonZero: true,
 				knownIntegerValue: 92,
 				address: {
+					memoryIndex: 0,
 					clampRange: {
 						source: 'module-start',
+						memoryIndex: 0,
 						byteAddress: 64,
 						safeByteLength: 32,
 						moduleId: 'osc',
@@ -165,6 +172,7 @@ describe('clamp address instruction compilers', () => {
 				isInteger: true,
 				isNonZero: false,
 				address: {
+					memoryIndex: 0,
 					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
 				},
 			},

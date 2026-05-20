@@ -53,9 +53,11 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -147,6 +149,7 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,
@@ -161,6 +164,7 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
     "isInteger": false,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 1,
@@ -222,9 +226,11 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
     "arguments": [
       {
         "address": {
+          "memoryIndex": 0,
           "safeRange": {
             "byteAddress": 4,
             "memoryId": "output",
+            "memoryIndex": 0,
             "safeByteLength": 4,
             "source": "memory-start",
           },
@@ -315,6 +321,7 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
@@ -329,6 +336,7 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
     "isInteger": true,
     "isPointingToPointer": false,
     "isUnsigned": false,
+    "memoryIndex": 0,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,

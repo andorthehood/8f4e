@@ -36,11 +36,19 @@ export function getMemoryRegionName(memoryRegions: readonly string[], memoryInde
 export function getMemoryRegionFields(
 	memoryIndex = DEFAULT_MEMORY_INDEX,
 	memoryRegionName?: string
-): Partial<ResolvedMemoryRegion> {
+): ResolvedMemoryRegion {
 	return {
-		...(memoryIndex !== DEFAULT_MEMORY_INDEX ? { memoryIndex } : {}),
+		memoryIndex,
 		...(memoryRegionName ? { memoryRegionName } : {}),
 	};
+}
+
+export function getRequiredCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string {
+	const memoryRegionName = getMemoryRegionName(memoryRegions, memoryIndex);
+	if (!memoryRegionName) {
+		throw new Error(`Missing configured memory region name for memory index ${memoryIndex}`);
+	}
+	return memoryRegionName;
 }
 
 export function validateMemoryRegionOptions(
