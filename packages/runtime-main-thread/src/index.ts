@@ -1,7 +1,12 @@
 import createModule from './createModule';
 
 export interface MainThreadRuntime {
-	init: (memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) => Promise<void>;
+	init: (
+		memoryRef: WebAssembly.Memory,
+		sampleRate: number,
+		codeBuffer: Uint8Array,
+		memoryRefsByRegion?: Record<string, WebAssembly.Memory>
+	) => Promise<void>;
 	start: () => void;
 	stop: () => void;
 	isRunning: () => boolean;
@@ -25,12 +30,17 @@ export default function createMainThreadRuntime(
 	let wasmApp: { cycle: CallableFunction } | null = null;
 	let isRunning = false;
 
-	async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
+	async function init(
+		memoryRef: WebAssembly.Memory,
+		sampleRate: number,
+		codeBuffer: Uint8Array,
+		memoryRefsByRegion: Record<string, WebAssembly.Memory> = {}
+	) {
 		try {
 			// Stop any existing runtime
 			stop();
 
-			wasmApp = await createModule(memoryRef, codeBuffer);
+			wasmApp = await createModule(memoryRef, codeBuffer, memoryRefsByRegion);
 
 			const intervalTime = Math.floor(1000 / sampleRate);
 
