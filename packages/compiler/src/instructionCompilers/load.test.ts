@@ -3,7 +3,7 @@ import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 
 import load from './load';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -18,7 +18,8 @@ describe('load instruction compiler', () => {
 			},
 		});
 
-		load(
+		analyzeAndCompileInstruction(
+			load,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -41,7 +42,8 @@ describe('load instruction compiler', () => {
 			isNonZero: false,
 		});
 
-		load(
+		analyzeAndCompileInstruction(
+			load,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
@@ -67,7 +69,8 @@ describe('load instruction compiler', () => {
 			},
 		});
 
-		load(
+		analyzeAndCompileInstruction(
+			load,
 			{
 				lineNumberBeforeMacroExpansion: 3,
 				lineNumberAfterMacroExpansion: 3,
@@ -90,7 +93,8 @@ describe('load instruction compiler', () => {
 			},
 		});
 
-		load(
+		analyzeAndCompileInstruction(
+			load,
 			{
 				lineNumberBeforeMacroExpansion: 4,
 				lineNumberAfterMacroExpansion: 4,

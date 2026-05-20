@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import greaterOrEqual from './greaterOrEqual';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('greaterOrEqual instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		greaterOrEqual(
+		analyzeAndCompileInstruction(
+			greaterOrEqual,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -32,7 +33,8 @@ describe('greaterOrEqual instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-		greaterOrEqual(
+		analyzeAndCompileInstruction(
+			greaterOrEqual,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -55,7 +57,8 @@ describe('greaterOrEqual instruction compiler', () => {
 			{ isInteger: false, isFloat64: true, isNonZero: false }
 		);
 
-		greaterOrEqual(
+		analyzeAndCompileInstruction(
+			greaterOrEqual,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

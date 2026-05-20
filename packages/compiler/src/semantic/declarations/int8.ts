@@ -1,6 +1,6 @@
 import createDeclarationCompiler from './createDeclarationCompiler';
 
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
 
 /**
  * Instruction compiler for `int8*`, `int8**`.
@@ -11,7 +11,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  *
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const int8: InstructionCompiler = createDeclarationCompiler({
+const int8: MemoryDeclarationCompiler = createDeclarationCompiler({
 	baseType: 'int8',
 	truncate: true,
 	nonPointerElementWordSize: 4,

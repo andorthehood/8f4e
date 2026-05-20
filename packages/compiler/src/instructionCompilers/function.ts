@@ -4,7 +4,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { pushBlock } from '../utils/blockStack';
 
-import type { CompilationContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { CodegenContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
 
@@ -17,7 +17,7 @@ const functionBlockType = compilerSourceBlockInstructionByType.function.type;
  * Instruction compiler for `function`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const _function = function (line: FunctionLine, context: CompilationContext) {
+const _function = function (line: FunctionLine, context: CodegenContext) {
 	if (context.insideModuleBlock || context.insideFunctionBlock) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}

@@ -9,8 +9,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/stack.md)
  */
 const clearStack: InstructionCompiler = (line, context) => {
-	const length = context.stack.length;
-	context.stack = [];
+	const length = line.stackAnalysis.droppedStackItems?.length ?? line.stackAnalysis.consumedOperands.length;
 
 	return saveByteCode(context, new Array(length).fill(WASM_DROP));
 };

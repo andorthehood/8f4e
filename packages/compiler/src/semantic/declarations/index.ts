@@ -9,30 +9,31 @@ import int16 from './int16';
 
 import { validateInstruction } from '../../stackAnalysis/validateInstruction';
 
-import type { AST, CompilationContext, InstructionCompiler, MemoryDeclarationInstruction } from '@8f4e/compiler-spec';
+import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
+import type { AST, CompilationContext, MemoryDeclarationInstruction } from '@8f4e/compiler-spec';
 
-function getDeclarationCompiler(instruction: MemoryDeclarationInstruction): InstructionCompiler {
+function getDeclarationCompiler(instruction: MemoryDeclarationInstruction): MemoryDeclarationCompiler {
 	if (instruction.endsWith('[]')) {
-		return array as InstructionCompiler;
+		return array as MemoryDeclarationCompiler;
 	}
 	if (instruction.startsWith('int8')) {
-		return int8 as InstructionCompiler;
+		return int8 as MemoryDeclarationCompiler;
 	}
 	if (instruction.startsWith('int16')) {
-		return int16 as InstructionCompiler;
+		return int16 as MemoryDeclarationCompiler;
 	}
 	if (instruction.startsWith('float64')) {
-		return float64 as InstructionCompiler;
+		return float64 as MemoryDeclarationCompiler;
 	}
 	if (instruction.startsWith('float')) {
-		return float as InstructionCompiler;
+		return float as MemoryDeclarationCompiler;
 	}
-	return int as InstructionCompiler;
+	return int as MemoryDeclarationCompiler;
 }
 
 export const declarationCompilers = Object.fromEntries(
 	specMemoryDeclarationInstructions.map(instruction => [instruction, getDeclarationCompiler(instruction)])
-) as Record<MemoryDeclarationInstruction, InstructionCompiler>;
+) as Record<MemoryDeclarationInstruction, MemoryDeclarationCompiler>;
 
 export const memoryDeclarationInstructions = new Set<MemoryDeclarationInstruction>(specMemoryDeclarationInstructions);
 
@@ -48,6 +49,6 @@ export function applyMemoryDeclarationLine(line: AST[number], context: Compilati
 	validateInstruction(line, context);
 	const compileDeclaration = declarationCompilers[
 		line.instruction as MemoryDeclarationInstruction
-	] as InstructionCompiler;
+	] as MemoryDeclarationCompiler;
 	return compileDeclaration(line, context);
 }

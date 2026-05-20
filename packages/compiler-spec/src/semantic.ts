@@ -162,6 +162,20 @@ export interface StackItem {
 
 export type Stack = StackItem[];
 
+export interface StackAnalysisResult {
+	stackBefore: Stack;
+	stackAfter: Stack;
+	consumedOperands: Stack;
+	producedStackItems: Stack;
+	droppedStackItems?: Stack;
+}
+
+export type AnalyzedLine<TLine extends AST[number] = AST[number]> = TLine & {
+	stackAnalysis: StackAnalysisResult;
+};
+
+export type CodegenContext = Omit<CompilationContext, 'stack'>;
+
 export type ResolvedMapValueArgument = NormalizedArgumentLiteral | ArgumentStringLiteral;
 
 export type NormalizedMapLine = Omit<MapLine, 'arguments'> & {
@@ -270,6 +284,6 @@ export type BlockStack = Array<{
 }>;
 
 export type InstructionCompiler<TLine extends AST[number] = AST[number]> = (
-	line: TLine,
-	context: CompilationContext
-) => CompilationContext;
+	line: AnalyzedLine<TLine>,
+	context: CodegenContext
+) => CodegenContext;

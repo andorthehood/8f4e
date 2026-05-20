@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import mul from './mul';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('mul instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		mul(
+		analyzeAndCompileInstruction(
+			mul,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -31,7 +32,8 @@ describe('mul instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-		mul(
+		analyzeAndCompileInstruction(
+			mul,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -54,7 +56,8 @@ describe('mul instruction compiler', () => {
 			{ isInteger: false, isFloat64: true, isNonZero: false }
 		);
 
-		mul(
+		analyzeAndCompileInstruction(
+			mul,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -77,7 +80,8 @@ describe('mul instruction compiler', () => {
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
 		);
 
-		mul(
+		analyzeAndCompileInstruction(
+			mul,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

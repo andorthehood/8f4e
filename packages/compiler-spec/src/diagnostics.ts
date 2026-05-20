@@ -1,4 +1,5 @@
-import type { CompilationContext, InstructionCompiler } from './semantic';
+import type { AST } from './ast';
+import type { CodegenContext, CompilationContext } from './semantic';
 import type { CompilerSourceBlockType } from './instructions';
 
 /**
@@ -7,8 +8,8 @@ import type { CompilerSourceBlockType } from './instructions';
  */
 export interface CompilerStageError {
 	message: string;
-	line: Parameters<InstructionCompiler>[0];
-	context?: CompilationContext;
+	line: AST[number];
+	context?: CodegenContext | CompilationContext;
 	code: number;
 }
 

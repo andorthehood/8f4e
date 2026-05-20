@@ -21,8 +21,6 @@ const loopIndex: InstructionCompiler<LoopIndexLine> = (line, context) => {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP, line, context);
 	}
 
-	context.stack.push({ isInteger: true, isNonZero: false });
-
 	return saveByteCode(context, [...localGet(local.index), ...i32const(1), WASM_I32_SUB]);
 };
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import div from './div';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('div instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
 
-		div(
+		analyzeAndCompileInstruction(
+			div,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -31,7 +32,8 @@ describe('div instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isNonZero: true });
 
-		div(
+		analyzeAndCompileInstruction(
+			div,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -54,7 +56,8 @@ describe('div instruction compiler', () => {
 			{ isInteger: false, isFloat64: true, isNonZero: true }
 		);
 
-		div(
+		analyzeAndCompileInstruction(
+			div,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -75,7 +78,8 @@ describe('div instruction compiler', () => {
 		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
 
 		expect(() => {
-			div(
+			analyzeAndCompileInstruction(
+				div,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -94,7 +98,8 @@ describe('div instruction compiler', () => {
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
 		);
 
-		div(
+		analyzeAndCompileInstruction(
+			div,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -114,7 +119,8 @@ describe('div instruction compiler', () => {
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }
 		);
 
-		div(
+		analyzeAndCompileInstruction(
+			div,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

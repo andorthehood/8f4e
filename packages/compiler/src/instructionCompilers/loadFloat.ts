@@ -14,8 +14,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  */
 const loadFloat: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const address = context.stack.pop()!;
-	context.stack.push({ isInteger: false, isNonZero: false });
+	const [address] = line.stackAnalysis.consumedOperands;
 	const memoryIndex = getAddressMemoryIndex(address);
 	const instructions = f32load(2, 0, memoryIndex);
 	if (isSafeMemoryAccess(address, WORD_MEMORY_ACCESS_WIDTH)) {

@@ -9,8 +9,6 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/stack.md)
  */
 const drop: InstructionCompiler = (line, context) => {
-	context.stack.pop();
-
 	return saveByteCode(context, [WASM_DROP]);
 };
 

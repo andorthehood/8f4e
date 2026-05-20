@@ -14,10 +14,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/conversion.md)
  */
 const castToInt: InstructionCompiler = (line, context) => {
-	// Non-null assertion is safe: instruction validation ensures 1 operand exists
-	const operand = context.stack.pop()!;
-
-	context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
+	const [operand] = line.stackAnalysis.consumedOperands;
 
 	// Use the non-trapping saturating conversion so NaN and out-of-range floats do not stop the runtime.
 	return saveByteCode(

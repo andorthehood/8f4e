@@ -6,7 +6,7 @@ import { getOrCreateMemoryGuardLocal, linearLastValidStartAddress } from './memo
 
 import { getMemoryRegionFields } from '../../semantic/memoryRegions';
 
-import type { AST, CompilationContext, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
+import type { AST, CodegenContext, CompilationContext, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
 const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
 
@@ -15,7 +15,7 @@ export function getClampAccessByteWidth(line: AST[number]): number {
 	return argument?.type === ArgumentType.LITERAL ? argument.value : DEFAULT_ACCESS_BYTE_WIDTH;
 }
 
-export function getModuleAddressRange(context: CompilationContext): MemoryAddressRange {
+export function getModuleAddressRange(context: CodegenContext | CompilationContext): MemoryAddressRange {
 	return {
 		source: 'module-start',
 		...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
@@ -63,7 +63,7 @@ export function getClampedAddressStackItem(
 }
 
 export function clampAddressByteCode(
-	context: CompilationContext,
+	context: CodegenContext | CompilationContext,
 	line: AST[number],
 	lowerByteAddress: number,
 	upperByteAddressCode: number[]

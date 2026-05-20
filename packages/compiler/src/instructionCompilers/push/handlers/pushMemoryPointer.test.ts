@@ -44,7 +44,6 @@ describe('pushMemoryPointer', () => {
 		);
 
 		expect(context.byteCode).toEqual([...i32const(12), ...i32load(), ...i32load(), ...f64load()]);
-		expect(context.stack).toEqual([{ isInteger: false, isFloat64: true, isNonZero: false }]);
 	});
 
 	it('dereferences int8* with i32load8s for the final load', () => {
@@ -81,7 +80,6 @@ describe('pushMemoryPointer', () => {
 		);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8s()]);
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
 	});
 
 	it('dereferences int8** with i32load8s for the final load', () => {
@@ -118,7 +116,6 @@ describe('pushMemoryPointer', () => {
 		);
 
 		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load8s()]);
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
 	});
 
 	it('dereferences int16* with i32load16s for the final load', () => {
@@ -155,7 +152,6 @@ describe('pushMemoryPointer', () => {
 		);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load16s()]);
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
 	});
 
 	it('dereferences int16** with i32load16s for the final load', () => {
@@ -192,6 +188,5 @@ describe('pushMemoryPointer', () => {
 		);
 
 		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load16s()]);
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
 	});
 });

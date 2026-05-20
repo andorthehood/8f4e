@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import and from './and';
 
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('and instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		and(
+		analyzeAndCompileInstruction(
+			and,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -50,7 +51,8 @@ describe('and instruction compiler', () => {
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 3 }
 		);
 
-		and(
+		analyzeAndCompileInstruction(
+			and,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

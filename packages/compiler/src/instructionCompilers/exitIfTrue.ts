@@ -18,14 +18,12 @@ import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-spec';
  *
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line: ExitIfTrueLine, context) => {
+const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line, context) => {
 	if (context.insideFunctionBlock) {
 		throw getError(ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE, line, context);
 	}
 
-	context.stack.pop()!;
-
-	const drops = context.stack.flatMap(() => [WASM_DROP]);
+	const drops = (line.stackAnalysis.droppedStackItems ?? []).flatMap(() => [WASM_DROP]);
 
 	return saveByteCode(context, [WASM_IF, WASM_TYPE_VOID, ...drops, WASM_RETURN, WASM_END]);
 };

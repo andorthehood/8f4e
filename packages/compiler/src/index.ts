@@ -58,6 +58,7 @@ export {
 } from './semantic/buildNamespace';
 export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { compileLine, compileCodegenLine } from './compiler';
+export { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 export { createCompilationContext } from './semantic/createCompilationContext';
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';

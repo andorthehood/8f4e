@@ -11,8 +11,8 @@ import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-sp
  * Instruction compiler for `localSet`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const _localSet: InstructionCompiler<CodegenLocalSetLine> = (line: CodegenLocalSetLine, context) => {
-	const operand = context.stack.pop()!;
+const _localSet: InstructionCompiler<CodegenLocalSetLine> = (line, context) => {
+	const [operand] = line.stackAnalysis.consumedOperands;
 	const local = context.locals[line.arguments[0].value]!;
 
 	if (local.isInteger && !operand.isInteger) {

@@ -3,7 +3,7 @@ import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
 
 import _default from './default';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -30,7 +30,8 @@ describe('default instruction compiler', () => {
 			],
 		});
 
-		_default(
+		analyzeAndCompileInstruction(
+			_default,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -49,7 +50,8 @@ describe('default instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 
 		expect(() => {
-			_default(
+			analyzeAndCompileInstruction(
+				_default,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

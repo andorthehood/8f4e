@@ -4,7 +4,7 @@ import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
 import loopCap from './loopCap';
 
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -20,7 +20,8 @@ describe('#loopCap instruction compiler', () => {
 			],
 		});
 
-		loopCap(
+		analyzeAndCompileInstruction(
+			loopCap,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -45,7 +46,8 @@ describe('#loopCap instruction compiler', () => {
 			],
 		});
 
-		loopCap(
+		analyzeAndCompileInstruction(
+			loopCap,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -70,7 +72,8 @@ describe('#loopCap instruction compiler', () => {
 			],
 		});
 
-		loopCap(
+		analyzeAndCompileInstruction(
+			loopCap,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -95,7 +98,8 @@ describe('#loopCap instruction compiler', () => {
 			],
 		});
 
-		loopCap(
+		analyzeAndCompileInstruction(
+			loopCap,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -108,7 +112,8 @@ describe('#loopCap instruction compiler', () => {
 
 		expect(context.loopCap).toBe(500);
 
-		loopCap(
+		analyzeAndCompileInstruction(
+			loopCap,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,

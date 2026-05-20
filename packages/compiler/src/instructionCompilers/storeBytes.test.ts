@@ -5,7 +5,7 @@ import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 import storeBytes from './storeBytes';
 
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -42,7 +42,8 @@ describe('storeBytes instruction compiler', () => {
 			}
 		);
 
-		storeBytes(
+		analyzeAndCompileInstruction(
+			storeBytes,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -70,7 +71,8 @@ describe('storeBytes instruction compiler', () => {
 			}
 		);
 
-		storeBytes(
+		analyzeAndCompileInstruction(
+			storeBytes,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -97,7 +99,8 @@ describe('storeBytes instruction compiler', () => {
 			}
 		);
 
-		storeBytes(
+		analyzeAndCompileInstruction(
+			storeBytes,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -121,7 +124,8 @@ describe('storeBytes instruction compiler', () => {
 			},
 		});
 
-		storeBytes(
+		analyzeAndCompileInstruction(
+			storeBytes,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

@@ -43,6 +43,5 @@ describe('pushMemoryIdentifier', () => {
 		);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load()]);
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
 	});
 });

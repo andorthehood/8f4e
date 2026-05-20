@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import mapEnd from './mapEnd';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -34,7 +34,8 @@ describe('mapEnd instruction compiler', () => {
 		context.stack.push({ isInteger: true });
 
 		expect(() => {
-			mapEnd(
+			analyzeAndCompileInstruction(
+				mapEnd,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -51,7 +52,8 @@ describe('mapEnd instruction compiler', () => {
 		context.stack.push({ isInteger: true });
 
 		expect(() => {
-			mapEnd(
+			analyzeAndCompileInstruction(
+				mapEnd,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -86,7 +88,8 @@ describe('mapEnd instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: true });
 
-		mapEnd(
+		analyzeAndCompileInstruction(
+			mapEnd,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

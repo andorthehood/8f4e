@@ -3,7 +3,6 @@ import {
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	type ArrayDeclarationLine,
 	type CompilationContext,
-	type InstructionCompiler,
 	type MemoryType,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
@@ -11,6 +10,8 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
+
+import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
 
 function getElementWordSize(instruction: string): number {
 	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;
@@ -43,7 +44,7 @@ function createArrayDefaultValues(
  * Instruction compiler for typed array declarations such as `int[]`, `float[]`, and `float64[]`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const array: InstructionCompiler<ArrayDeclarationLine> = (line: ArrayDeclarationLine, context) => {
+const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDeclarationLine, context) => {
 	const memoryId = line.arguments[0].value;
 	const elementCountArg = line.arguments[1];
 	const wordAlignedAddress = context.currentModuleNextWordOffset ?? 0;
