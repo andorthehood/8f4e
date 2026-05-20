@@ -10,6 +10,7 @@ import f64const from '../const/f64const';
  * @param value - Optional value to store (generates f64.const if provided)
  * @param alignment - Memory alignment (power of 2), defaults to 3 (8-byte aligned)
  * @param offset - Static offset from the address, defaults to 0
+ * @param memoryIndex - Memory index to store to, defaults to 0
  * @returns Byte array representing the f64.store instruction and optional setup
  */
 export default function f64store(

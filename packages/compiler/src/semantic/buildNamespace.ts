@@ -199,7 +199,7 @@ function getModuleRegionFromAst(
 		return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], regionLine);
 	}
 
-	return getDefaultMemoryRegion();
+	throw new Error('Invalid #region directive argument after syntax validation');
 }
 
 function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {

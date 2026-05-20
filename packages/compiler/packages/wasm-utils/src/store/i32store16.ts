@@ -9,6 +9,7 @@ import i32const from '../const/i32const';
  * @param value - Optional value to store (generates i32.const if provided)
  * @param alignment - Log2 of the memory alignment in bytes (defaults to 1, meaning 2^1 = 2-byte alignment)
  * @param offset - Static offset from the address, defaults to 0
+ * @param memoryIndex - Memory index to store to, defaults to 0
  * @returns Byte array representing the i32.store16 instruction and optional setup
  */
 export default function i32store16(

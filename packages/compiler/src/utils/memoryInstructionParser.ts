@@ -5,7 +5,7 @@ import {
 	type MemoryArgumentShape,
 	type SplitByteToken,
 } from '@8f4e/tokenizer';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 import { getEndByteAddress, getModuleEndByteAddress } from '../semantic/layoutAddresses';
@@ -173,7 +173,7 @@ function resolveMemoryDefaultValue(
 function getNormalizedAddressMetadata(
 	argument: AST[number]['arguments'][number] | undefined
 ): AddressMetadata | undefined {
-	if (argument?.type !== 'literal' || !('address' in argument)) {
+	if (argument?.type !== ArgumentType.LITERAL || !('address' in argument)) {
 		return undefined;
 	}
 
@@ -236,11 +236,10 @@ export default function parseMemoryInstructionArguments(
 	}
 
 	// Named declaration with a single default value:
+	const defaultAddress = getNormalizedAddressMetadata(line.arguments[1]);
 	return {
 		id,
 		defaultValue: resolveMemoryDefaultValue(shape.secondArg, lineForError, context),
-		...(getNormalizedAddressMetadata(line.arguments[1])
-			? { defaultAddress: getNormalizedAddressMetadata(line.arguments[1]) }
-			: {}),
+		...(defaultAddress ? { defaultAddress } : {}),
 	};
 }
