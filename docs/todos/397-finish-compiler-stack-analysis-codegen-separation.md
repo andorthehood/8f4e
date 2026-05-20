@@ -12,14 +12,14 @@ completed: null
 
 ## Problem Description
 
-TODO 394 centralized compiler instruction stack validation: `withValidation` is gone, compiler-owned instruction contracts live in `packages/compiler/src/instructionSpecs.ts`, and stack validation helpers live under `packages/compiler/src/stackAnalysis/`.
+TODO 394 centralized compiler instruction stack validation: `withValidation` is gone, compiler-owned instruction contracts live in `packages/compiler-spec/src/instructionSpecs.ts`, and stack validation helpers live under `packages/compiler/src/stackAnalysis/`.
 
 That was an important first extraction step, but the compiler is still not fully split into distinct stack-analysis and codegen stages:
 
 - `compileLine` still calls `validateInstruction(...)` immediately before emitting bytecode.
 - instruction compiler files still read and mutate `context.stack`;
 - codegen still receives `CompilationContext`, which exposes the stack-analysis state;
-- stack effects are not yet returned as analyzed line data with codegen hints;
+- stack effects are now documented as shared spec metadata, but are not yet returned as analyzed line data with codegen hints;
 - there is no automated boundary check preventing stack validation from creeping back into codegen.
 
 This keeps stack typing partially coupled to bytecode emission and makes later compiler work, such as generic function specialization or typed dispatch, harder than it needs to be.
@@ -47,6 +47,7 @@ Codegen should not own stack validation or mutate the analysis stack directly.
 ### Step 2: Convert simple instruction effects
 
 - Move stack effects for simple linear instructions into stack analysis.
+- Use the shared stack-effect metadata in `@8f4e/compiler-spec` as the declarative source for display/docs and as the starting point for analysis-owned simple effects.
 - Start with arithmetic, comparisons, casts, `drop`, and `clearStack`.
 - Keep existing bytecode output stable while removing stack mutation from those instruction compilers.
 
@@ -93,7 +94,7 @@ The first command should return no matches. The second command should return no 
 ## Affected Components
 
 - `packages/compiler/src/stackAnalysis/` - analysis pass, stack effects, validation helpers, and tests.
-- `packages/compiler/src/instructionSpecs.ts` - central instruction contract table extended with stack-effect metadata.
+- `packages/compiler-spec/src/instructionSpecs.ts` - central instruction contract table extended with stack-effect metadata.
 - `packages/compiler/src/instructionCompilers/` - bytecode emitters converted away from stack mutation.
 - `packages/compiler/src/compiler.ts` - pipeline orchestration for semantic normalization, stack analysis, and codegen.
 - `packages/compiler-spec` - shared analyzed-line and narrowed codegen-context contract types if they need to cross package boundaries.
@@ -113,3 +114,4 @@ The first command should return no matches. The second command should return no 
 ## Notes
 
 - This TODO intentionally starts from the current post-394 state, where `withValidation` has already been removed and instruction stack validation has already moved into `packages/compiler/src/stackAnalysis/`.
+- `packages/compiler-spec/src/instructionSpecs.ts` now exposes user-facing docs, stack-effect display metadata, and stack-signature helpers. The remaining work is to make compiler stack analysis consume this metadata and to remove stack mutation from codegen.
