@@ -5,6 +5,7 @@ import f32store from './f32store';
 test('f32store with no setup generates only store instruction', () => {
 	const result = f32store();
 	expect(result.slice(-3)).toStrictEqual([56, 2, 0]);
+	expect(f32store(undefined, undefined, 2, 0, 1)).toStrictEqual([56, 0x42, 1, 0]);
 });
 
 test('f32store with address and value generates full instruction sequence', () => {
