@@ -11,6 +11,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {},
@@ -25,6 +26,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {},
@@ -130,12 +132,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {
         "defaultFreq": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
           "byteAddress": 4,
@@ -150,6 +154,7 @@
         "frequency": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
           "byteAddress": 8,
@@ -160,11 +165,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "phase": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
           "byteAddress": 12,
@@ -179,6 +186,7 @@
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 4,
           "wordAlignedSize": 1,
           "byteAddress": 16,
@@ -287,12 +295,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 20,
       "wordAlignedAddress": 5,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 5,
           "wordAlignedSize": 1,
           "byteAddress": 20,
@@ -303,11 +313,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "buffer": {
           "numberOfElements": 128,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedSize": 128,
           "wordAlignedAddress": 6,
           "id": "buffer",
@@ -322,6 +334,7 @@
         "pointer": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 134,
           "wordAlignedSize": 1,
           "byteAddress": 536,
@@ -345,6 +358,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 540,
       "wordAlignedAddress": 135,
       "memoryMap": {},
@@ -359,6 +373,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 540,
       "wordAlignedAddress": 135,
       "memoryMap": {},

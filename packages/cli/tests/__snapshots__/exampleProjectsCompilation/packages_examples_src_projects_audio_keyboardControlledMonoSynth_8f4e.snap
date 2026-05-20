@@ -11,6 +11,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {},
@@ -25,6 +26,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {},
@@ -39,6 +41,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {},
@@ -53,12 +56,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "memoryMap": {
         "keyPressed": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
           "byteAddress": 4,
@@ -73,6 +78,7 @@
         "keyCode": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
           "byteAddress": 8,
@@ -231,12 +237,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "memoryMap": {
         "dAttack": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
           "byteAddress": 12,
@@ -251,6 +259,7 @@
         "dRelease": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 4,
           "wordAlignedSize": 1,
           "byteAddress": 16,
@@ -265,6 +274,7 @@
         "trigger": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 5,
           "wordAlignedSize": 1,
           "byteAddress": 20,
@@ -275,11 +285,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "attackRate": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
           "byteAddress": 24,
@@ -290,11 +302,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "releaseRate": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 7,
           "wordAlignedSize": 1,
           "byteAddress": 28,
@@ -305,11 +319,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 8,
           "wordAlignedSize": 1,
           "byteAddress": 32,
@@ -324,6 +340,7 @@
         "attacking": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 9,
           "wordAlignedSize": 1,
           "byteAddress": 36,
@@ -339,6 +356,7 @@
       "internalResources": {
         "arEnv::__risingEdgeDetector_previousValue17": {
           "id": "arEnv::__risingEdgeDetector_previousValue17",
+          "memoryIndex": 0,
           "byteAddress": 1120,
           "wordAlignedAddress": 280,
           "wordAlignedSize": 1,
@@ -373,12 +391,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 40,
       "wordAlignedAddress": 10,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 10,
           "wordAlignedSize": 1,
           "byteAddress": 40,
@@ -389,11 +409,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 11,
           "wordAlignedSize": 1,
           "byteAddress": 44,
@@ -417,12 +439,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 48,
       "wordAlignedAddress": 12,
       "memoryMap": {
         "__anonymous__3": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 12,
           "wordAlignedSize": 1,
           "byteAddress": 48,
@@ -437,6 +461,7 @@
         "__anonymous__4": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 13,
           "wordAlignedSize": 1,
           "byteAddress": 52,
@@ -451,6 +476,7 @@
         "__anonymous__5": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 14,
           "wordAlignedSize": 1,
           "byteAddress": 56,
@@ -465,6 +491,7 @@
         "__anonymous__6": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 15,
           "wordAlignedSize": 1,
           "byteAddress": 60,
@@ -479,6 +506,7 @@
         "__anonymous__7": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 16,
           "wordAlignedSize": 1,
           "byteAddress": 64,
@@ -493,6 +521,7 @@
         "__anonymous__8": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 17,
           "wordAlignedSize": 1,
           "byteAddress": 68,
@@ -507,6 +536,7 @@
         "__anonymous__9": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 18,
           "wordAlignedSize": 1,
           "byteAddress": 72,
@@ -521,6 +551,7 @@
         "__anonymous__10": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 19,
           "wordAlignedSize": 1,
           "byteAddress": 76,
@@ -535,6 +566,7 @@
         "__anonymous__11": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 20,
           "wordAlignedSize": 1,
           "byteAddress": 80,
@@ -549,6 +581,7 @@
         "__anonymous__12": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 21,
           "wordAlignedSize": 1,
           "byteAddress": 84,
@@ -563,6 +596,7 @@
         "__anonymous__13": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 22,
           "wordAlignedSize": 1,
           "byteAddress": 88,
@@ -577,6 +611,7 @@
         "__anonymous__14": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 23,
           "wordAlignedSize": 1,
           "byteAddress": 92,
@@ -591,6 +626,7 @@
         "__anonymous__15": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 24,
           "wordAlignedSize": 1,
           "byteAddress": 96,
@@ -605,6 +641,7 @@
         "__anonymous__16": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 25,
           "wordAlignedSize": 1,
           "byteAddress": 100,
@@ -619,6 +656,7 @@
         "__anonymous__17": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 26,
           "wordAlignedSize": 1,
           "byteAddress": 104,
@@ -633,6 +671,7 @@
         "__anonymous__18": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 27,
           "wordAlignedSize": 1,
           "byteAddress": 108,
@@ -647,6 +686,7 @@
         "__anonymous__19": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 28,
           "wordAlignedSize": 1,
           "byteAddress": 112,
@@ -661,6 +701,7 @@
         "__anonymous__20": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 29,
           "wordAlignedSize": 1,
           "byteAddress": 116,
@@ -675,6 +716,7 @@
         "__anonymous__21": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 30,
           "wordAlignedSize": 1,
           "byteAddress": 120,
@@ -689,6 +731,7 @@
         "__anonymous__22": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 31,
           "wordAlignedSize": 1,
           "byteAddress": 124,
@@ -703,6 +746,7 @@
         "__anonymous__23": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 32,
           "wordAlignedSize": 1,
           "byteAddress": 128,
@@ -717,6 +761,7 @@
         "__anonymous__24": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 33,
           "wordAlignedSize": 1,
           "byteAddress": 132,
@@ -731,6 +776,7 @@
         "__anonymous__25": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 34,
           "wordAlignedSize": 1,
           "byteAddress": 136,
@@ -745,6 +791,7 @@
         "__anonymous__26": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 35,
           "wordAlignedSize": 1,
           "byteAddress": 140,
@@ -759,6 +806,7 @@
         "__anonymous__27": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 36,
           "wordAlignedSize": 1,
           "byteAddress": 144,
@@ -773,6 +821,7 @@
         "__anonymous__28": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 37,
           "wordAlignedSize": 1,
           "byteAddress": 148,
@@ -787,6 +836,7 @@
         "__anonymous__29": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 38,
           "wordAlignedSize": 1,
           "byteAddress": 152,
@@ -801,6 +851,7 @@
         "__anonymous__30": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 39,
           "wordAlignedSize": 1,
           "byteAddress": 156,
@@ -815,6 +866,7 @@
         "__anonymous__31": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 40,
           "wordAlignedSize": 1,
           "byteAddress": 160,
@@ -829,6 +881,7 @@
         "__anonymous__32": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 41,
           "wordAlignedSize": 1,
           "byteAddress": 164,
@@ -843,6 +896,7 @@
         "__anonymous__33": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 42,
           "wordAlignedSize": 1,
           "byteAddress": 168,
@@ -857,6 +911,7 @@
         "__anonymous__34": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 43,
           "wordAlignedSize": 1,
           "byteAddress": 172,
@@ -871,6 +926,7 @@
         "__anonymous__35": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 44,
           "wordAlignedSize": 1,
           "byteAddress": 176,
@@ -885,6 +941,7 @@
         "__anonymous__36": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 45,
           "wordAlignedSize": 1,
           "byteAddress": 180,
@@ -899,6 +956,7 @@
         "__anonymous__37": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 46,
           "wordAlignedSize": 1,
           "byteAddress": 184,
@@ -913,6 +971,7 @@
         "__anonymous__38": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 47,
           "wordAlignedSize": 1,
           "byteAddress": 188,
@@ -927,6 +986,7 @@
         "__anonymous__39": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 48,
           "wordAlignedSize": 1,
           "byteAddress": 192,
@@ -941,6 +1001,7 @@
         "__anonymous__40": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 49,
           "wordAlignedSize": 1,
           "byteAddress": 196,
@@ -955,6 +1016,7 @@
         "__anonymous__41": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 50,
           "wordAlignedSize": 1,
           "byteAddress": 200,
@@ -969,6 +1031,7 @@
         "__anonymous__42": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 51,
           "wordAlignedSize": 1,
           "byteAddress": 204,
@@ -983,6 +1046,7 @@
         "__anonymous__43": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 52,
           "wordAlignedSize": 1,
           "byteAddress": 208,
@@ -997,6 +1061,7 @@
         "__anonymous__44": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 53,
           "wordAlignedSize": 1,
           "byteAddress": 212,
@@ -1011,6 +1076,7 @@
         "__anonymous__45": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 54,
           "wordAlignedSize": 1,
           "byteAddress": 216,
@@ -1025,6 +1091,7 @@
         "__anonymous__46": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 55,
           "wordAlignedSize": 1,
           "byteAddress": 220,
@@ -1039,6 +1106,7 @@
         "__anonymous__47": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 56,
           "wordAlignedSize": 1,
           "byteAddress": 224,
@@ -1053,6 +1121,7 @@
         "__anonymous__48": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 57,
           "wordAlignedSize": 1,
           "byteAddress": 228,
@@ -1067,6 +1136,7 @@
         "__anonymous__49": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 58,
           "wordAlignedSize": 1,
           "byteAddress": 232,
@@ -1081,6 +1151,7 @@
         "__anonymous__50": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 59,
           "wordAlignedSize": 1,
           "byteAddress": 236,
@@ -1095,6 +1166,7 @@
         "__anonymous__51": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 60,
           "wordAlignedSize": 1,
           "byteAddress": 240,
@@ -1109,6 +1181,7 @@
         "__anonymous__52": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 61,
           "wordAlignedSize": 1,
           "byteAddress": 244,
@@ -1123,6 +1196,7 @@
         "__anonymous__53": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 62,
           "wordAlignedSize": 1,
           "byteAddress": 248,
@@ -1137,6 +1211,7 @@
         "__anonymous__54": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 63,
           "wordAlignedSize": 1,
           "byteAddress": 252,
@@ -1151,6 +1226,7 @@
         "__anonymous__55": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 64,
           "wordAlignedSize": 1,
           "byteAddress": 256,
@@ -1165,6 +1241,7 @@
         "__anonymous__56": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 65,
           "wordAlignedSize": 1,
           "byteAddress": 260,
@@ -1179,6 +1256,7 @@
         "__anonymous__57": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 66,
           "wordAlignedSize": 1,
           "byteAddress": 264,
@@ -1193,6 +1271,7 @@
         "__anonymous__58": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 67,
           "wordAlignedSize": 1,
           "byteAddress": 268,
@@ -1207,6 +1286,7 @@
         "__anonymous__59": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 68,
           "wordAlignedSize": 1,
           "byteAddress": 272,
@@ -1221,6 +1301,7 @@
         "__anonymous__60": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 69,
           "wordAlignedSize": 1,
           "byteAddress": 276,
@@ -1235,6 +1316,7 @@
         "__anonymous__61": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 70,
           "wordAlignedSize": 1,
           "byteAddress": 280,
@@ -1249,6 +1331,7 @@
         "__anonymous__62": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 71,
           "wordAlignedSize": 1,
           "byteAddress": 284,
@@ -1263,6 +1346,7 @@
         "__anonymous__63": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 72,
           "wordAlignedSize": 1,
           "byteAddress": 288,
@@ -1277,6 +1361,7 @@
         "__anonymous__64": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 73,
           "wordAlignedSize": 1,
           "byteAddress": 292,
@@ -1291,6 +1376,7 @@
         "__anonymous__65": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 74,
           "wordAlignedSize": 1,
           "byteAddress": 296,
@@ -1305,6 +1391,7 @@
         "__anonymous__66": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 75,
           "wordAlignedSize": 1,
           "byteAddress": 300,
@@ -1319,6 +1406,7 @@
         "__anonymous__67": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 76,
           "wordAlignedSize": 1,
           "byteAddress": 304,
@@ -1333,6 +1421,7 @@
         "__anonymous__68": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 77,
           "wordAlignedSize": 1,
           "byteAddress": 308,
@@ -1347,6 +1436,7 @@
         "__anonymous__69": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 78,
           "wordAlignedSize": 1,
           "byteAddress": 312,
@@ -1361,6 +1451,7 @@
         "__anonymous__70": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 79,
           "wordAlignedSize": 1,
           "byteAddress": 316,
@@ -1375,6 +1466,7 @@
         "__anonymous__71": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 80,
           "wordAlignedSize": 1,
           "byteAddress": 320,
@@ -1389,6 +1481,7 @@
         "__anonymous__72": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 81,
           "wordAlignedSize": 1,
           "byteAddress": 324,
@@ -1403,6 +1496,7 @@
         "__anonymous__73": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 82,
           "wordAlignedSize": 1,
           "byteAddress": 328,
@@ -1417,6 +1511,7 @@
         "__anonymous__74": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 83,
           "wordAlignedSize": 1,
           "byteAddress": 332,
@@ -1431,6 +1526,7 @@
         "__anonymous__75": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 84,
           "wordAlignedSize": 1,
           "byteAddress": 336,
@@ -1445,6 +1541,7 @@
         "__anonymous__76": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 85,
           "wordAlignedSize": 1,
           "byteAddress": 340,
@@ -1459,6 +1556,7 @@
         "__anonymous__77": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 86,
           "wordAlignedSize": 1,
           "byteAddress": 344,
@@ -1473,6 +1571,7 @@
         "__anonymous__78": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 87,
           "wordAlignedSize": 1,
           "byteAddress": 348,
@@ -1487,6 +1586,7 @@
         "__anonymous__79": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 88,
           "wordAlignedSize": 1,
           "byteAddress": 352,
@@ -1501,6 +1601,7 @@
         "__anonymous__80": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 89,
           "wordAlignedSize": 1,
           "byteAddress": 356,
@@ -1515,6 +1616,7 @@
         "__anonymous__81": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 90,
           "wordAlignedSize": 1,
           "byteAddress": 360,
@@ -1529,6 +1631,7 @@
         "__anonymous__82": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 91,
           "wordAlignedSize": 1,
           "byteAddress": 364,
@@ -1543,6 +1646,7 @@
         "__anonymous__83": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 92,
           "wordAlignedSize": 1,
           "byteAddress": 368,
@@ -1557,6 +1661,7 @@
         "__anonymous__84": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 93,
           "wordAlignedSize": 1,
           "byteAddress": 372,
@@ -1571,6 +1676,7 @@
         "__anonymous__85": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 94,
           "wordAlignedSize": 1,
           "byteAddress": 376,
@@ -1585,6 +1691,7 @@
         "__anonymous__86": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 95,
           "wordAlignedSize": 1,
           "byteAddress": 380,
@@ -1599,6 +1706,7 @@
         "__anonymous__87": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 96,
           "wordAlignedSize": 1,
           "byteAddress": 384,
@@ -1613,6 +1721,7 @@
         "__anonymous__88": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 97,
           "wordAlignedSize": 1,
           "byteAddress": 388,
@@ -1627,6 +1736,7 @@
         "__anonymous__89": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 98,
           "wordAlignedSize": 1,
           "byteAddress": 392,
@@ -1641,6 +1751,7 @@
         "__anonymous__90": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 99,
           "wordAlignedSize": 1,
           "byteAddress": 396,
@@ -1655,6 +1766,7 @@
         "__anonymous__91": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 100,
           "wordAlignedSize": 1,
           "byteAddress": 400,
@@ -1669,6 +1781,7 @@
         "__anonymous__92": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 101,
           "wordAlignedSize": 1,
           "byteAddress": 404,
@@ -1683,6 +1796,7 @@
         "__anonymous__93": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 102,
           "wordAlignedSize": 1,
           "byteAddress": 408,
@@ -1697,6 +1811,7 @@
         "__anonymous__94": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 103,
           "wordAlignedSize": 1,
           "byteAddress": 412,
@@ -1711,6 +1826,7 @@
         "__anonymous__95": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 104,
           "wordAlignedSize": 1,
           "byteAddress": 416,
@@ -1725,6 +1841,7 @@
         "__anonymous__96": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 105,
           "wordAlignedSize": 1,
           "byteAddress": 420,
@@ -1739,6 +1856,7 @@
         "__anonymous__97": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 106,
           "wordAlignedSize": 1,
           "byteAddress": 424,
@@ -1753,6 +1871,7 @@
         "__anonymous__98": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 107,
           "wordAlignedSize": 1,
           "byteAddress": 428,
@@ -1767,6 +1886,7 @@
         "__anonymous__99": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 108,
           "wordAlignedSize": 1,
           "byteAddress": 432,
@@ -1781,6 +1901,7 @@
         "__anonymous__100": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 109,
           "wordAlignedSize": 1,
           "byteAddress": 436,
@@ -1795,6 +1916,7 @@
         "__anonymous__101": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 110,
           "wordAlignedSize": 1,
           "byteAddress": 440,
@@ -1809,6 +1931,7 @@
         "__anonymous__102": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 111,
           "wordAlignedSize": 1,
           "byteAddress": 444,
@@ -1823,6 +1946,7 @@
         "__anonymous__103": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 112,
           "wordAlignedSize": 1,
           "byteAddress": 448,
@@ -1837,6 +1961,7 @@
         "__anonymous__104": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 113,
           "wordAlignedSize": 1,
           "byteAddress": 452,
@@ -1851,6 +1976,7 @@
         "__anonymous__105": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 114,
           "wordAlignedSize": 1,
           "byteAddress": 456,
@@ -1865,6 +1991,7 @@
         "__anonymous__106": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 115,
           "wordAlignedSize": 1,
           "byteAddress": 460,
@@ -1879,6 +2006,7 @@
         "__anonymous__107": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 116,
           "wordAlignedSize": 1,
           "byteAddress": 464,
@@ -1893,6 +2021,7 @@
         "__anonymous__108": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 117,
           "wordAlignedSize": 1,
           "byteAddress": 468,
@@ -1907,6 +2036,7 @@
         "__anonymous__109": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 118,
           "wordAlignedSize": 1,
           "byteAddress": 472,
@@ -1921,6 +2051,7 @@
         "__anonymous__110": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 119,
           "wordAlignedSize": 1,
           "byteAddress": 476,
@@ -1935,6 +2066,7 @@
         "__anonymous__111": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 120,
           "wordAlignedSize": 1,
           "byteAddress": 480,
@@ -1949,6 +2081,7 @@
         "__anonymous__112": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 121,
           "wordAlignedSize": 1,
           "byteAddress": 484,
@@ -1963,6 +2096,7 @@
         "__anonymous__113": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 122,
           "wordAlignedSize": 1,
           "byteAddress": 488,
@@ -1977,6 +2111,7 @@
         "__anonymous__114": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 123,
           "wordAlignedSize": 1,
           "byteAddress": 492,
@@ -1991,6 +2126,7 @@
         "__anonymous__115": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 124,
           "wordAlignedSize": 1,
           "byteAddress": 496,
@@ -2005,6 +2141,7 @@
         "__anonymous__116": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 125,
           "wordAlignedSize": 1,
           "byteAddress": 500,
@@ -2019,6 +2156,7 @@
         "__anonymous__117": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 126,
           "wordAlignedSize": 1,
           "byteAddress": 504,
@@ -2033,6 +2171,7 @@
         "__anonymous__118": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 127,
           "wordAlignedSize": 1,
           "byteAddress": 508,
@@ -2047,6 +2186,7 @@
         "__anonymous__119": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 128,
           "wordAlignedSize": 1,
           "byteAddress": 512,
@@ -2061,6 +2201,7 @@
         "__anonymous__120": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 129,
           "wordAlignedSize": 1,
           "byteAddress": 516,
@@ -2075,6 +2216,7 @@
         "__anonymous__121": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 130,
           "wordAlignedSize": 1,
           "byteAddress": 520,
@@ -2089,6 +2231,7 @@
         "__anonymous__122": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 131,
           "wordAlignedSize": 1,
           "byteAddress": 524,
@@ -2103,6 +2246,7 @@
         "__anonymous__123": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 132,
           "wordAlignedSize": 1,
           "byteAddress": 528,
@@ -2117,6 +2261,7 @@
         "__anonymous__124": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 133,
           "wordAlignedSize": 1,
           "byteAddress": 532,
@@ -2131,6 +2276,7 @@
         "__anonymous__125": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 134,
           "wordAlignedSize": 1,
           "byteAddress": 536,
@@ -2145,6 +2291,7 @@
         "__anonymous__126": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 135,
           "wordAlignedSize": 1,
           "byteAddress": 540,
@@ -2159,6 +2306,7 @@
         "__anonymous__127": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 136,
           "wordAlignedSize": 1,
           "byteAddress": 544,
@@ -2173,6 +2321,7 @@
         "__anonymous__128": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 137,
           "wordAlignedSize": 1,
           "byteAddress": 548,
@@ -2187,6 +2336,7 @@
         "__anonymous__129": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 138,
           "wordAlignedSize": 1,
           "byteAddress": 552,
@@ -2201,6 +2351,7 @@
         "__anonymous__130": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 139,
           "wordAlignedSize": 1,
           "byteAddress": 556,
@@ -2283,12 +2434,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 560,
       "wordAlignedAddress": 140,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 140,
           "wordAlignedSize": 1,
           "byteAddress": 560,
@@ -2299,11 +2452,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 141,
           "wordAlignedSize": 1,
           "byteAddress": 564,
@@ -2318,6 +2473,7 @@
         "notes": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 142,
           "wordAlignedSize": 1,
           "byteAddress": 568,
@@ -2328,7 +2484,8 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 3,
@@ -2440,12 +2597,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 572,
       "wordAlignedAddress": 143,
       "memoryMap": {
         "defaultFreq": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 143,
           "wordAlignedSize": 1,
           "byteAddress": 572,
@@ -2460,6 +2619,7 @@
         "frequency": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 144,
           "wordAlignedSize": 1,
           "byteAddress": 576,
@@ -2470,11 +2630,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "phase": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 145,
           "wordAlignedSize": 1,
           "byteAddress": 580,
@@ -2489,6 +2651,7 @@
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 146,
           "wordAlignedSize": 1,
           "byteAddress": 584,
@@ -2537,12 +2700,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 588,
       "wordAlignedAddress": 147,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 147,
           "wordAlignedSize": 1,
           "byteAddress": 588,
@@ -2553,11 +2718,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "volume": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 148,
           "wordAlignedSize": 1,
           "byteAddress": 592,
@@ -2568,11 +2735,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 149,
           "wordAlignedSize": 1,
           "byteAddress": 596,
@@ -2683,12 +2852,14 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 600,
       "wordAlignedAddress": 150,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 150,
           "wordAlignedSize": 1,
           "byteAddress": 600,
@@ -2699,11 +2870,13 @@
           "isPointingToPointer": false,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "pointeeMemoryIndex": 0
         },
         "buffer": {
           "numberOfElements": 128,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedSize": 128,
           "wordAlignedAddress": 151,
           "id": "buffer",
@@ -2718,6 +2891,7 @@
         "pointer": {
           "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
           "wordAlignedAddress": 279,
           "wordAlignedSize": 1,
           "byteAddress": 1116,
@@ -2741,6 +2915,7 @@
         11
       ],
       "initFunctionBody": [],
+      "memoryIndex": 0,
       "byteAddress": 1120,
       "wordAlignedAddress": 280,
       "memoryMap": {},
