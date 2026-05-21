@@ -133,6 +133,80 @@ describe('program compiler effect', () => {
 		});
 	});
 
+	it('disables stack analysis when code line selection is disabled', async () => {
+		mockState.featureFlags.codeLineSelection = false;
+		mockCompileCode.mockResolvedValue({
+			codeBuffer: new Uint8Array([0x00]),
+			compiledModules: {},
+			compiledFunctions: {},
+			requiredMemoryBytes: 0,
+			allocatedMemoryBytes: 65536,
+			astCacheStats: { hits: 0, misses: 0 },
+			hasWasmInstanceBeenReset: false,
+			memoryAction: { action: 'reused' },
+			initOnlyReran: false,
+			byteCodeSize: 1,
+		});
+
+		await triggerProgrammaticCompile();
+
+		expect(mockCompileCode).toHaveBeenCalledWith(
+			expect.any(Array),
+			{
+				startingMemoryWordAddress: 0,
+				includeStackAnalysis: false,
+			},
+			expect.any(Array),
+			expect.any(Array)
+		);
+	});
+
+	it('recompiles when code line selection changes so stack analysis follows the feature flag', async () => {
+		mockCompileCode.mockResolvedValue({
+			codeBuffer: new Uint8Array([0x00]),
+			compiledModules: {},
+			compiledFunctions: {},
+			requiredMemoryBytes: 0,
+			allocatedMemoryBytes: 65536,
+			astCacheStats: { hits: 0, misses: 0 },
+			hasWasmInstanceBeenReset: false,
+			memoryAction: { action: 'reused' },
+			initOnlyReran: false,
+			byteCodeSize: 1,
+		});
+		compilerEffect(store);
+		const featureFlagChangeCall = subscribeSpy.mock.calls.find(call => call[0] === 'featureFlags.codeLineSelection');
+		expect(featureFlagChangeCall).toBeDefined();
+
+		mockState.featureFlags.codeLineSelection = false;
+		featureFlagChangeCall![1]();
+		await vi.advanceTimersByTimeAsync(500);
+
+		expect(mockCompileCode).toHaveBeenCalledWith(
+			expect.any(Array),
+			{
+				startingMemoryWordAddress: 0,
+				includeStackAnalysis: false,
+			},
+			expect.any(Array),
+			expect.any(Array)
+		);
+
+		mockState.featureFlags.codeLineSelection = true;
+		featureFlagChangeCall![1]();
+		await vi.advanceTimersByTimeAsync(500);
+
+		expect(mockCompileCode).toHaveBeenLastCalledWith(
+			expect.any(Array),
+			{
+				startingMemoryWordAddress: 0,
+				includeStackAnalysis: true,
+			},
+			expect.any(Array),
+			expect.any(Array)
+		);
+	});
+
 	it('registers the recompile debounce delay editor config validator', () => {
 		compilerEffect(store);
 
