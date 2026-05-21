@@ -10,10 +10,16 @@ import {
 const memoryIdentifierRegExp = /^[a-z_]\w*$/i;
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 
+/**
+ * Returns the first non-whitespace token from a source line.
+ */
 export function getInstructionNameFromSourceLine(line: string): string | undefined {
 	return line.trim().split(/\s+/)[0] || undefined;
 }
 
+/**
+ * Resolves the compiler instruction spec for executable source lines.
+ */
 export function getInstructionSpecFromSourceLine(line: string): InstructionSpec | undefined {
 	const instruction = getInstructionNameFromSourceLine(line);
 
@@ -24,6 +30,9 @@ export function getInstructionSpecFromSourceLine(line: string): InstructionSpec 
 	return getInstructionSpec(instruction);
 }
 
+/**
+ * Extracts the declared memory identifier from a memory declaration line.
+ */
 export function getMemoryDeclarationIdFromSourceLine(line: string | undefined): string | undefined {
 	const source = line?.split(';')[0].trim();
 
@@ -40,6 +49,9 @@ export function getMemoryDeclarationIdFromSourceLine(line: string | undefined): 
 	return id;
 }
 
+/**
+ * Builds the synthetic line data needed by variadic stack signature formatters.
+ */
 function getStackSignatureLineFromSourceLine(line: string, instruction: string): AST[number] | undefined {
 	if (instruction !== 'storeBytes') {
 		return undefined;
@@ -59,6 +71,9 @@ function getStackSignatureLineFromSourceLine(line: string, instruction: string):
 	};
 }
 
+/**
+ * Formats the stack signature for the instruction on a source line.
+ */
 export function getStackSignatureFromSourceLine(line: string): string | undefined {
 	const instruction = getInstructionNameFromSourceLine(line);
 	const spec = getInstructionSpecFromSourceLine(line);

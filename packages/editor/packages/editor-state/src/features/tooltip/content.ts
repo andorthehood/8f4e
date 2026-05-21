@@ -12,6 +12,9 @@ import { getMaxLineLength, getTooltipTextCharacters, wrapTooltipText } from './t
 import type { CompiledStackAnalysisLine, DataStructure } from '@8f4e/compiler-spec';
 import type { SelectedLineTooltipContent, SpriteLookups } from './types';
 
+/**
+ * Builds wrapped tooltip text for instruction docs and stack analysis.
+ */
 export function getSelectedLineTooltipText(
 	line: string | undefined,
 	maxLength = TOOLTIP_WRAP_WIDTH,
@@ -43,6 +46,9 @@ export function getSelectedLineTooltipText(
 	return tooltipText;
 }
 
+/**
+ * Assembles the complete selected-line tooltip payload consumed by the drawer.
+ */
 export function getSelectedLineTooltipContent(
 	line: string | undefined,
 	maxLength = TOOLTIP_WRAP_WIDTH,

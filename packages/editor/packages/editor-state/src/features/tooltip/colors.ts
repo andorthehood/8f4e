@@ -4,6 +4,9 @@ import { getStackSignatureFromSourceLine } from './sourceLine';
 import type { SpriteLookup } from 'glugglug';
 import type { SpriteLookups, TooltipHighlightRange } from './types';
 
+/**
+ * Encodes tooltip color transitions as sparse sprite lookups for the drawer.
+ */
 export function getTooltipLineColors(
 	line: string,
 	spriteLookups: SpriteLookups | undefined,
@@ -27,6 +30,9 @@ export function getTooltipLineColors(
 	return colors;
 }
 
+/**
+ * Computes color transitions for the selected-line tooltip text.
+ */
 export function getSelectedLineTooltipColors(
 	line: string | undefined,
 	text: string[],
