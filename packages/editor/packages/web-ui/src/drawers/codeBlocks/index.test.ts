@@ -190,6 +190,10 @@ describe('drawModules', () => {
 	});
 
 	it('draws tooltip text next to the selected line', () => {
+		const fillColors = {};
+		const fontCode = {};
+		const fontCodeComment = {};
+		const fontInstruction = {};
 		const block = createMockCodeBlock({
 			textureCacheKey: 'selected-block',
 			width: 100,
@@ -208,19 +212,20 @@ describe('drawModules', () => {
 				codeBlocks: [block],
 				selectedCodeBlock: block,
 				spriteLookups: {
-					fillColors: {},
+					fillColors,
 					fontNumbers: {},
-					fontCode: {},
+					fontCode,
 					fontDisabledCode: {},
 					fontLineNumber: {},
-					fontCodeComment: {},
+					fontCodeComment,
+					fontInstruction,
 				} as never,
 			},
 			featureFlags: {
 				codeLineSelection: true,
 			},
 			tooltip: {
-				text: ['Dynamic hint', 'second line'],
+				text: ['add (T T -- T)', 'Adds two numbers', 'before [int, int]', 'after: [int]'],
 			},
 			viewport: {
 				vGrid: 8,
@@ -232,21 +237,32 @@ describe('drawModules', () => {
 		drawModules(engine, state, createMemoryViews());
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
-			-120,
+			-160,
 			16,
 			'debugInfoBackground',
-			112,
-			32
+			152,
+			64
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			-112,
+			-152,
 			16,
-			'Dynamic hint'
+			'add'
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			-112,
+			-128,
+			16,
+			' (T T -- T)'
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			-152,
 			32,
-			'second line'
+			'Adds two numbers'
+		);
+		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
+			fontInstruction
+		);
+		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
+			fontCodeComment
 		);
 	});
 
