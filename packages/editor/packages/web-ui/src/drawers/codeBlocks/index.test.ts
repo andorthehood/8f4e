@@ -232,19 +232,19 @@ describe('drawModules', () => {
 		drawModules(engine, state, createMemoryViews());
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
-			108,
+			-120,
 			16,
 			'debugInfoBackground',
 			112,
 			32
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			116,
+			-112,
 			16,
 			'Dynamic hint'
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			116,
+			-112,
 			32,
 			'second line'
 		);

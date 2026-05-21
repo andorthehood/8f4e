@@ -15,10 +15,10 @@ export default function drawSelectedLineHint(engine: Engine, state: State, codeB
 	}
 
 	const { vGrid, hGrid } = state.viewport;
-	const x = codeBlock.width + vGrid;
-	const y = codeBlock.cursor.y;
 	const width = (Math.max(...lines.map(line => line.length)) + 2) * vGrid;
 	const height = lines.length * hGrid;
+	const x = -width - vGrid;
+	const y = codeBlock.cursor.y;
 
 	engine.setSpriteLookup(spriteLookups.fillColors);
 	engine.drawSprite(x, y, 'debugInfoBackground', width, height);
