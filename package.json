@@ -2,10 +2,10 @@
   "name": "8f4e",
   "version": "1.0.25",
   "description": "8f4e",
-  "packageManager": "npm@11.6.1",
+  "packageManager": "npm@11.13.0",
   "engines": {
-    "node": "24.11.0",
-    "npm": "11.6.1"
+    "node": "24.16.0",
+    "npm": "11.13.0"
   },
   "scripts": {
     "preinstall": "git submodule update --init --recursive",
