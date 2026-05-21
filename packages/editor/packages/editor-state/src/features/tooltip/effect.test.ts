@@ -74,11 +74,15 @@ describe('tooltip effect', () => {
 
 		tooltip(store);
 
-		expect(state.tooltip.text).toEqual(['add (T T -- T)', 'Adds two numbers of the same type and pushes the result.']);
+		expect(state.tooltip.text).toEqual([
+			'add (T T -- T)',
+			'Adds two numbers of the same',
+			'type and pushes the result.',
+		]);
 
 		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
 
-		expect(state.tooltip.text).toEqual(['drop (T -- )', 'Removes the top value from the stack.']);
+		expect(state.tooltip.text).toEqual(['drop (T -- )', 'Removes the top value from the', 'stack.']);
 	});
 
 	it('updates documentation tooltip text when the selected line text changes', () => {
@@ -105,7 +109,7 @@ describe('tooltip effect', () => {
 
 		store.set('graphicHelper.selectedCodeBlock.code', ['drop']);
 
-		expect(state.tooltip.text).toEqual(['drop (T -- )', 'Removes the top value from the stack.']);
+		expect(state.tooltip.text).toEqual(['drop (T -- )', 'Removes the top value from the', 'stack.']);
 	});
 
 	it('clears tooltip text when line selection is disabled', () => {
