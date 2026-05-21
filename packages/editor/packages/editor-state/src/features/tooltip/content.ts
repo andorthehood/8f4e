@@ -1,7 +1,7 @@
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getLiveTooltipContent } from './liveValues';
 import { getSelectedLineTooltipColors } from './colors';
-import { getStackAnalysisTooltipText } from './stackAnalysisTooltip';
+import { getStackAnalysisTooltipContent } from './stackAnalysisTooltip';
 import {
 	getInstructionSpecFromSourceLine,
 	getMemoryDeclarationIdFromSourceLine,
@@ -12,22 +12,28 @@ import { getMaxLineLength, getTooltipTextCharacters, wrapTooltipText } from './t
 import type { CompiledStackAnalysisLine, DataStructure } from '@8f4e/compiler-spec';
 import type { SelectedLineTooltipContent, SpriteLookups } from './types';
 
+interface SelectedLineTooltipTextContent {
+	text: string[];
+	highlightTargets: SelectedLineTooltipContent['highlightTargets'];
+}
+
 /**
  * Builds wrapped tooltip text for instruction docs and stack analysis.
  */
-export function getSelectedLineTooltipText(
+export function getSelectedLineTooltipTextContent(
 	line: string | undefined,
 	maxLength = TOOLTIP_WRAP_WIDTH,
 	stackAnalysisLine?: CompiledStackAnalysisLine
-): string[] {
+): SelectedLineTooltipTextContent {
 	if (!line) {
-		return [];
+		return { text: [], highlightTargets: [] };
 	}
 
 	const spec = getInstructionSpecFromSourceLine(line);
 	const stackSignature = getStackSignatureFromSourceLine(line);
 	const shortDescription = spec?.docs?.shortDescription;
 	const tooltipText: string[] = [];
+	const highlightTargets: SelectedLineTooltipContent['highlightTargets'] = [];
 
 	if (stackSignature) {
 		tooltipText.push(stackSignature);
@@ -37,13 +43,31 @@ export function getSelectedLineTooltipText(
 		tooltipText.push(...wrapTooltipText(shortDescription, maxLength));
 	}
 
-	tooltipText.push(...getStackAnalysisTooltipText(stackAnalysisLine));
+	const stackAnalysisContent = getStackAnalysisTooltipContent(stackAnalysisLine);
+	highlightTargets.push(
+		...stackAnalysisContent.highlightTargets.map(target => ({
+			...target,
+			lineIndex: target.lineIndex + tooltipText.length,
+		}))
+	);
+	tooltipText.push(...stackAnalysisContent.text);
 
 	if (tooltipText.length === 0) {
-		return [];
+		return { text: [], highlightTargets: [] };
 	}
 
-	return tooltipText;
+	return { text: tooltipText, highlightTargets };
+}
+
+/**
+ * Builds wrapped tooltip text for instruction docs and stack analysis.
+ */
+export function getSelectedLineTooltipText(
+	line: string | undefined,
+	maxLength = TOOLTIP_WRAP_WIDTH,
+	stackAnalysisLine?: CompiledStackAnalysisLine
+): string[] {
+	return getSelectedLineTooltipTextContent(line, maxLength, stackAnalysisLine).text;
 }
 
 /**
@@ -57,7 +81,8 @@ export function getSelectedLineTooltipContent(
 	moduleId?: string,
 	memory?: DataStructure
 ): SelectedLineTooltipContent {
-	const text = getSelectedLineTooltipText(line, maxLength, stackAnalysisLine);
+	const textContent = getSelectedLineTooltipTextContent(line, maxLength, stackAnalysisLine);
+	const text = textContent.text;
 	const memoryId = getMemoryDeclarationIdFromSourceLine(line);
 	const colors = getSelectedLineTooltipColors(line, text, spriteLookups);
 	const liveTooltipContent = getLiveTooltipContent(memory, moduleId, memoryId, text.length, spriteLookups);
@@ -71,6 +96,7 @@ export function getSelectedLineTooltipContent(
 		colors,
 		lineCount: text.length,
 		widthChars: Math.max(getMaxLineLength(text), liveTooltipContent.maxLineLength),
+		highlightTargets: textContent.highlightTargets,
 		liveValueTargets: liveTooltipContent.liveValueTargets,
 	};
 }

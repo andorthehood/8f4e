@@ -3,11 +3,12 @@ import { tooltipHorizontalPaddingChars } from './constants';
 import type {
 	CodeBlockGraphicData,
 	State,
+	TooltipHighlight,
 	TooltipLayout,
 	TooltipLiveValue,
 	TooltipState,
 } from '@8f4e/editor-state-types';
-import type { SelectedLineTooltipContent, TooltipLiveValueTarget } from './types';
+import type { SelectedLineTooltipContent, TooltipHighlightTarget, TooltipLiveValueTarget } from './types';
 
 const emptyTooltipLayout: TooltipLayout = {
 	horizontalPadding: 0,
@@ -29,6 +30,7 @@ export function createEmptyTooltipState(): TooltipState {
 		lineCount: 0,
 		widthChars: 0,
 		layout: { ...emptyTooltipLayout },
+		highlights: [],
 		liveValues: [],
 	};
 }
@@ -74,6 +76,23 @@ function getTooltipLiveValues(
 }
 
 /**
+ * Converts tooltip highlight columns into absolute drawer rectangles.
+ */
+function getTooltipHighlights(
+	targets: TooltipHighlightTarget[],
+	layout: TooltipLayout,
+	state: State
+): TooltipHighlight[] {
+	return targets.map(target => ({
+		x: layout.lineX + target.column * state.viewport.vGrid,
+		y: layout.y + target.lineIndex * state.viewport.hGrid,
+		width: target.widthChars * state.viewport.vGrid,
+		height: state.viewport.hGrid,
+		fillColor: target.fillColor,
+	}));
+}
+
+/**
  * Combines tooltip content with viewport layout data into state.
  */
 export function getTooltipState(
@@ -90,6 +109,7 @@ export function getTooltipState(
 		lineCount: content.lineCount,
 		widthChars: content.widthChars,
 		layout,
+		highlights: getTooltipHighlights(content.highlightTargets, layout, state),
 		liveValues: getTooltipLiveValues(content.liveValueTargets, layout, state),
 	};
 }

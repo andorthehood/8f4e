@@ -1,13 +1,23 @@
 import { maxInlineStackItemCount } from './constants';
 
 import type { CompiledStackAnalysisLine, Stack, StackItem } from '@8f4e/compiler-spec';
-import type { TooltipHighlightRange } from './types';
+import type { TooltipHighlightRange, TooltipHighlightTarget } from './types';
 
 const stackBeforeInlineLabel = 'before ';
 const stackBeforeBlockLabel = 'before: ';
 const stackAfterLabel = 'after: ';
 
 type StackItemMarker = 'input' | 'output';
+
+interface StackAnalysisTooltipContent {
+	text: string[];
+	highlightTargets: TooltipHighlightTarget[];
+}
+
+interface FormattedStackItem {
+	label: string;
+	isMarked: boolean;
+}
 
 /**
  * Returns the part of a stack tooltip line that should use the highlight color.
@@ -70,11 +80,59 @@ function isMarkedStackItem(index: number, stack: Stack, markedItemCount: number)
 	return index >= stack.length - markedItemCount;
 }
 
+function formatStackItems(stack: Stack, markedItemCount: number, marker: StackItemMarker): FormattedStackItem[] {
+	return stack.map((item, index) => {
+		const isMarked = isMarkedStackItem(index, stack, markedItemCount);
+
+		return {
+			label: getStackItemLabel(item, isMarked ? marker : undefined),
+			isMarked,
+		};
+	});
+}
+
 /**
  * Formats a compact inline stack display.
  */
-function formatStack(stack: Stack, markedItemCount: number, marker: StackItemMarker): string {
-	return `[${stack.map((item, index) => getStackItemLabel(item, isMarkedStackItem(index, stack, markedItemCount) ? marker : undefined)).join(', ')}]`;
+function formatStack(items: FormattedStackItem[]): string {
+	return `[${items.map(item => item.label).join(', ')}]`;
+}
+
+function getInlineHighlightTargets(
+	lineIndex: number,
+	labelLength: number,
+	items: FormattedStackItem[]
+): TooltipHighlightTarget[] {
+	const highlightTargets: TooltipHighlightTarget[] = [];
+	let column = labelLength + 1;
+
+	for (const item of items) {
+		if (item.isMarked) {
+			highlightTargets.push({
+				lineIndex,
+				column,
+				widthChars: item.label.length,
+				fillColor: 'tooltipHighlight',
+			});
+		}
+
+		column += item.label.length + 2;
+	}
+
+	return highlightTargets;
+}
+
+function getBlockHighlightTarget(lineIndex: number, item: FormattedStackItem): TooltipHighlightTarget | undefined {
+	if (!item.isMarked) {
+		return undefined;
+	}
+
+	return {
+		lineIndex,
+		column: 2,
+		widthChars: item.label.length,
+		fillColor: 'tooltipHighlight',
+	};
 }
 
 /**
@@ -85,38 +143,69 @@ function formatStackTooltipLines(
 	blockLabel: string,
 	stack: Stack,
 	markedItemCount: number,
-	marker: StackItemMarker
-): string[] {
+	marker: StackItemMarker,
+	firstLineIndex: number
+): StackAnalysisTooltipContent {
+	const items = formatStackItems(stack, markedItemCount, marker);
+
 	if (stack.length <= maxInlineStackItemCount) {
-		return [`${inlineLabel}${formatStack(stack, markedItemCount, marker)}`];
+		return {
+			text: [`${inlineLabel}${formatStack(items)}`],
+			highlightTargets: getInlineHighlightTargets(firstLineIndex, inlineLabel.length, items),
+		};
 	}
 
-	const stackItemLines = stack.map((item, index) => {
+	const stackItemLines = items.map((item, index) => {
 		const suffix = index === stack.length - 1 ? '' : ',';
-		return `  ${getStackItemLabel(item, isMarkedStackItem(index, stack, markedItemCount) ? marker : undefined)}${suffix}`;
+		return `  ${item.label}${suffix}`;
 	});
+	const highlightTargets = items
+		.map((item, index) => getBlockHighlightTarget(firstLineIndex + index + 1, item))
+		.filter(target => target !== undefined);
 
-	return [`${blockLabel}[`, ...stackItemLines, ']'];
+	return {
+		text: [`${blockLabel}[`, ...stackItemLines, ']'],
+		highlightTargets,
+	};
+}
+
+/**
+ * Builds before/after stack tooltip text and highlight rectangles from compiler stack analysis.
+ */
+export function getStackAnalysisTooltipContent(
+	stackAnalysisLine: CompiledStackAnalysisLine | undefined
+): StackAnalysisTooltipContent {
+	if (!stackAnalysisLine) {
+		return { text: [], highlightTargets: [] };
+	}
+
+	const { consumedOperands, producedStackItems, stackBefore, stackAfter } = stackAnalysisLine.stackAnalysis;
+	const beforeContent = formatStackTooltipLines(
+		stackBeforeInlineLabel,
+		stackBeforeBlockLabel,
+		stackBefore,
+		consumedOperands.length,
+		'input',
+		0
+	);
+	const afterContent = formatStackTooltipLines(
+		stackAfterLabel,
+		stackAfterLabel,
+		stackAfter,
+		producedStackItems.length,
+		'output',
+		beforeContent.text.length
+	);
+
+	return {
+		text: [...beforeContent.text, ...afterContent.text],
+		highlightTargets: [...beforeContent.highlightTargets, ...afterContent.highlightTargets],
+	};
 }
 
 /**
  * Builds before/after stack tooltip lines from compiler stack analysis.
  */
 export function getStackAnalysisTooltipText(stackAnalysisLine: CompiledStackAnalysisLine | undefined): string[] {
-	if (!stackAnalysisLine) {
-		return [];
-	}
-
-	const { consumedOperands, producedStackItems, stackBefore, stackAfter } = stackAnalysisLine.stackAnalysis;
-
-	return [
-		...formatStackTooltipLines(
-			stackBeforeInlineLabel,
-			stackBeforeBlockLabel,
-			stackBefore,
-			consumedOperands.length,
-			'input'
-		),
-		...formatStackTooltipLines(stackAfterLabel, stackAfterLabel, stackAfter, producedStackItems.length, 'output'),
-	];
+	return getStackAnalysisTooltipContent(stackAnalysisLine).text;
 }
