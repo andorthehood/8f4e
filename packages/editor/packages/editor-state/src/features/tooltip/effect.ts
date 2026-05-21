@@ -19,6 +19,9 @@ export {
 export { getStackAnalysisTooltipText } from './stackAnalysisTooltip';
 export { wrapTooltipText } from './text';
 
+/**
+ * Finds stack analysis for the currently selected source line.
+ */
 function getSelectedCodeBlockStackAnalysisLine(
 	state: State,
 	selectedCodeBlock: CodeBlockGraphicData
@@ -34,6 +37,9 @@ function getSelectedCodeBlockStackAnalysisLine(
 	);
 }
 
+/**
+ * Resolves memory metadata for selected memory declaration tooltip rows.
+ */
 function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined, memoryId: string | undefined) {
 	if (!moduleId || !memoryId) {
 		return undefined;
@@ -42,6 +48,9 @@ function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined
 	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
 }
 
+/**
+ * Keeps central tooltip state synchronized with the selected code line.
+ */
 export default function tooltip(store: StateManager<State>): void {
 	const state = store.getState();
 
