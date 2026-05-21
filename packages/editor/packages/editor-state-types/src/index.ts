@@ -5,6 +5,7 @@
  */
 
 import type { CompileOptions, MemoryAction as CompilerMemoryAction, Module } from '@8f4e/compiler-spec';
+import type { SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	CodeBlock,
@@ -148,6 +149,65 @@ export type { Project };
 export type InfoValue = unknown;
 export type InfoRecord = Record<string, InfoValue>;
 export type InfoState = Record<string, InfoRecord | undefined>;
+
+export type TooltipLiveValueSourceKind = 'memoryAddress' | 'memoryValue' | 'memoryDereference';
+
+export interface TooltipLiveValueMemoryFormat {
+	elementWordSize: number;
+	isInteger: boolean;
+	isUnsigned: boolean;
+}
+
+export interface TooltipMemoryAddressLiveValueSource {
+	kind: 'memoryAddress';
+	moduleId: string;
+	memoryId: string;
+}
+
+export interface TooltipMemoryValueLiveValueSource {
+	kind: 'memoryValue';
+	moduleId: string;
+	memoryId: string;
+	elementIndex?: number;
+}
+
+export interface TooltipMemoryDereferenceLiveValueSource {
+	kind: 'memoryDereference';
+	moduleId: string;
+	memoryId: string;
+	format: TooltipLiveValueMemoryFormat;
+}
+
+export type TooltipLiveValueSource =
+	| TooltipMemoryAddressLiveValueSource
+	| TooltipMemoryValueLiveValueSource
+	| TooltipMemoryDereferenceLiveValueSource;
+
+export interface TooltipLiveValue {
+	x: number;
+	y: number;
+	source: TooltipLiveValueSource;
+	color: SpriteLookup | undefined;
+}
+
+export interface TooltipLayout {
+	horizontalPadding: number;
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	lineX: number;
+}
+
+export interface TooltipState {
+	text: string[];
+	characters: Array<Array<number | string>>;
+	colors: Array<Array<SpriteLookup | undefined>>;
+	lineCount: number;
+	widthChars: number;
+	layout: TooltipLayout;
+	liveValues: TooltipLiveValue[];
+}
 
 // Feature Flags types (top-level public API)
 export interface FeatureFlags {
@@ -299,6 +359,7 @@ export interface State {
 	graphicHelper: GraphicHelper;
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
+	tooltip: TooltipState;
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;
 	editorMode: EditorMode;
