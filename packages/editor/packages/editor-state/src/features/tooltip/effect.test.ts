@@ -5,6 +5,7 @@ import tooltip, {
 	TOOLTIP_WRAP_WIDTH,
 	getInstructionNameFromSourceLine,
 	getInstructionSpecFromSourceLine,
+	getMemoryDeclarationIdFromSourceLine,
 	getSelectedLineTooltipContent,
 	getSelectedLineTooltipText,
 	getStackAnalysisTooltipText,
@@ -43,6 +44,13 @@ describe('tooltip effect', () => {
 		);
 		expect(getInstructionSpecFromSourceLine('; add')?.docs).toBeUndefined();
 		expect(getInstructionSpecFromSourceLine('@pos 1 2')?.docs).toBeUndefined();
+	});
+
+	it('extracts named memory declaration ids from selected source lines', () => {
+		expect(getMemoryDeclarationIdFromSourceLine('int value 1')).toBe('value');
+		expect(getMemoryDeclarationIdFromSourceLine('int[] buffer 4 48 50')).toBe('buffer');
+		expect(getMemoryDeclarationIdFromSourceLine('int 1')).toBeUndefined();
+		expect(getMemoryDeclarationIdFromSourceLine('add')).toBeUndefined();
 	});
 
 	it('wraps selected line documentation', () => {
@@ -179,6 +187,40 @@ describe('tooltip effect', () => {
 		]);
 	});
 
+	it('writes live memory value target metadata for selected memory declarations', () => {
+		const selectedBlock = createMockCodeBlock({
+			code: ['int value', 'add'],
+			moduleId: 'test',
+			cursor: {
+				row: 0,
+				col: 0,
+				x: 0,
+				y: 0,
+			},
+		});
+		const state = createMockState({
+			graphicHelper: {
+				selectedCodeBlock: selectedBlock,
+			},
+			tooltip: {
+				text: [],
+			},
+		});
+		const store = createStateManager(state);
+
+		tooltip(store);
+
+		expect(state.tooltip.memoryValueTarget).toEqual({
+			moduleId: 'test',
+			memoryId: 'value',
+			insertAtLineIndex: state.tooltip.text.length,
+		});
+
+		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
+
+		expect(state.tooltip.memoryValueTarget).toBeUndefined();
+	});
+
 	it('writes documentation tooltip text when the selected line changes', () => {
 		const selectedBlock = createMockCodeBlock({
 			code: ['add', 'drop'],
@@ -257,5 +299,6 @@ describe('tooltip effect', () => {
 		tooltip(store);
 
 		expect(state.tooltip.text).toEqual([]);
+		expect(state.tooltip.memoryValueTarget).toBeUndefined();
 	});
 });

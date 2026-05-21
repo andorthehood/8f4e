@@ -150,9 +150,16 @@ export type InfoValue = unknown;
 export type InfoRecord = Record<string, InfoValue>;
 export type InfoState = Record<string, InfoRecord | undefined>;
 
+export interface TooltipMemoryValueTarget {
+	moduleId: string;
+	memoryId: string;
+	insertAtLineIndex: number;
+}
+
 export interface TooltipState {
 	text: string[];
 	colors: Array<Array<SpriteLookup | undefined>>;
+	memoryValueTarget: TooltipMemoryValueTarget | undefined;
 }
 
 // Feature Flags types (top-level public API)

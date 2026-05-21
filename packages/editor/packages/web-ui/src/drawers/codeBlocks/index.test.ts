@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 
-import { getMemoryDeclarationIdFromSourceLine, getMemoryDeclarationTooltipContent } from './drawSelectedLineHint';
+import { getMemoryDeclarationTooltipContent } from './drawSelectedLineHint';
 
 import drawModules from './index';
 
@@ -70,13 +70,6 @@ function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 }
 
 describe('drawModules', () => {
-	it('extracts named memory declaration ids from selected source lines', () => {
-		expect(getMemoryDeclarationIdFromSourceLine('int value 1')).toBe('value');
-		expect(getMemoryDeclarationIdFromSourceLine('int[] buffer 4 48 50')).toBe('buffer');
-		expect(getMemoryDeclarationIdFromSourceLine('int 1')).toBeUndefined();
-		expect(getMemoryDeclarationIdFromSourceLine('add')).toBeUndefined();
-	});
-
 	it('formats live memory declaration values for the selected line hint', () => {
 		const memoryViews = createMemoryViews({ int32: [0, 42, 20, 0, 0, 123] });
 		const fontTooltipHighlight = {};
@@ -377,7 +370,7 @@ describe('drawModules', () => {
 		);
 	});
 
-	it('draws live memory declaration values in the selected line hint', () => {
+	it('draws live memory declaration values from tooltip metadata', () => {
 		const block = createMockCodeBlock({
 			textureCacheKey: 'selected-memory-block',
 			width: 100,
@@ -389,7 +382,7 @@ describe('drawModules', () => {
 				x: 16,
 				y: 16,
 			},
-			code: ['int value'],
+			code: ['add'],
 			codeToRender: [],
 			codeColors: [],
 		});
@@ -423,6 +416,11 @@ describe('drawModules', () => {
 			tooltip: {
 				text: ['int ( -- )'],
 				colors: [[]],
+				memoryValueTarget: {
+					moduleId: 'test',
+					memoryId: 'value',
+					insertAtLineIndex: 1,
+				},
 			},
 		});
 		const engine = createMockEngine();

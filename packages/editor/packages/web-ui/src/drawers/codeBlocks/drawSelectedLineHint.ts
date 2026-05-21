@@ -1,4 +1,4 @@
-import { BASE_TYPE_METADATA, memoryDeclarationInstructions } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 
 import formatDebuggerValue from './widgets/formatDebuggerValue';
 
@@ -8,9 +8,7 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../types';
 import type { SpriteLookup } from 'glugglug';
 
-const memoryIdentifierRegExp = /^[a-z_]\w*$/i;
 const horizontalPaddingChars = 1;
-const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 
 interface TooltipContent {
 	text: string[];
@@ -19,22 +17,6 @@ interface TooltipContent {
 
 function isPointerMemory(memory: DataStructure): boolean {
 	return Boolean(memory.pointeeBaseType || memory.isPointingToPointer);
-}
-
-export function getMemoryDeclarationIdFromSourceLine(line: string | undefined): string | undefined {
-	const source = line?.split(';')[0].trim();
-
-	if (!source) {
-		return undefined;
-	}
-
-	const [instruction, id] = source.split(/\s+/);
-
-	if (!memoryDeclarationInstructionSet.has(instruction) || !id || !memoryIdentifierRegExp.test(id)) {
-		return undefined;
-	}
-
-	return id;
 }
 
 function createDereferencedMemory(memory: DataStructure, byteAddress: number): DataStructure {
@@ -107,20 +89,24 @@ export function getMemoryDeclarationTooltipContent(
 	};
 }
 
-function getSelectedMemoryDeclaration(state: State, codeBlock: CodeBlockGraphicData): DataStructure | undefined {
-	const moduleId = codeBlock.moduleId;
+function getSelectedMemoryDeclaration(state: State): DataStructure | undefined {
+	const target = state.tooltip.memoryValueTarget;
 
-	if (!moduleId) {
+	if (!target) {
 		return undefined;
 	}
 
-	const memoryId = getMemoryDeclarationIdFromSourceLine(codeBlock.code[codeBlock.cursor.row]);
+	return state.compiler.compiledModules[target.moduleId]?.memoryMap[target.memoryId];
+}
 
-	if (!memoryId) {
-		return undefined;
-	}
-
-	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
+function appendLiveMemoryContent(
+	lines: string[],
+	colors: Array<Array<SpriteLookup | undefined>>,
+	memoryContent: TooltipContent,
+	insertAtLineIndex: number
+): void {
+	lines.splice(insertAtLineIndex, 0, ...memoryContent.text);
+	colors.splice(insertAtLineIndex, 0, ...memoryContent.colors);
 }
 
 function drawTextWithColors(
@@ -167,13 +153,18 @@ export default function drawSelectedLineHint(
 		return;
 	}
 
-	const memoryContent = getMemoryDeclarationTooltipContent(
-		memoryViews,
-		getSelectedMemoryDeclaration(state, codeBlock),
-		spriteLookups
-	);
-	const lines = [...state.tooltip.text, ...memoryContent.text];
-	const colors = [...state.tooltip.colors, ...memoryContent.colors];
+	const lines = [...state.tooltip.text];
+	const colors = [...state.tooltip.colors];
+
+	if (state.tooltip.memoryValueTarget) {
+		const memoryContent = getMemoryDeclarationTooltipContent(
+			memoryViews,
+			getSelectedMemoryDeclaration(state),
+			spriteLookups
+		);
+
+		appendLiveMemoryContent(lines, colors, memoryContent, state.tooltip.memoryValueTarget.insertAtLineIndex);
+	}
 
 	if (lines.length === 0) {
 		return;
