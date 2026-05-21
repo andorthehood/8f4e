@@ -29,6 +29,19 @@ describe('compiler', () => {
 		}
 	});
 
+	test('compile function excludes stack analysis by default', () => {
+		const result = compile(
+			[{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }],
+			{
+				startingMemoryWordAddress: 0,
+			},
+			[{ code: ['function noop', 'functionEnd'] }]
+		);
+
+		expect(result.compiledModules.test.stackAnalysis).toBeUndefined();
+		expect(result.compiledFunctions!.noop.stackAnalysis).toBeUndefined();
+	});
+
 	test('compile function includes AST when includeAST is true', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
@@ -40,6 +53,71 @@ describe('compiler', () => {
 			expect(module.ast).toBeDefined();
 			expect(Array.isArray(module.ast)).toBe(true);
 		}
+	});
+
+	test('compile function includes module stack analysis when includeStackAnalysis is true', () => {
+		const result = compile([{ code: ['module test', 'int output', 'push &output', 'push 1', 'store', 'moduleEnd'] }], {
+			startingMemoryWordAddress: 0,
+			includeStackAnalysis: true,
+		});
+
+		expect(result.compiledModules.test.ast).toBeUndefined();
+		expect(result.compiledModules.test.stackAnalysis?.map(line => line.instruction)).toEqual(['push', 'push', 'store']);
+		expect(result.compiledModules.test.stackAnalysis?.[1]).toMatchObject({
+			lineNumberBeforeMacroExpansion: 3,
+			lineNumberAfterMacroExpansion: 3,
+			instruction: 'push',
+			stackAnalysis: {
+				stackBefore: [{ isInteger: true, isNonZero: true }],
+				consumedOperands: [],
+				producedStackItems: [{ isInteger: true, isNonZero: true, knownIntegerValue: 1 }],
+				stackAfter: [
+					{ isInteger: true, isNonZero: true },
+					{ isInteger: true, isNonZero: true, knownIntegerValue: 1 },
+				],
+			},
+		});
+	});
+
+	test('compile function includes function stack analysis when includeStackAnalysis is true', () => {
+		const result = compile(
+			[{ code: ['module test', 'moduleEnd'] }],
+			{
+				startingMemoryWordAddress: 0,
+				includeStackAnalysis: true,
+			},
+			[{ code: ['function double', 'param int value', 'push value', 'push value', 'add', 'functionEnd int'] }]
+		);
+
+		expect(result.compiledFunctions!.double.stackAnalysis?.map(line => line.instruction)).toEqual([
+			'function',
+			'param',
+			'push',
+			'push',
+			'add',
+			'functionEnd',
+		]);
+		expect(result.compiledFunctions!.double.stackAnalysis?.[4]).toMatchObject({
+			instruction: 'add',
+			stackAnalysis: {
+				consumedOperands: [
+					{ isInteger: true, isNonZero: false },
+					{ isInteger: true, isNonZero: false },
+				],
+				producedStackItems: [{ isInteger: true, isNonZero: false }],
+			},
+		});
+	});
+
+	test('includeAST and includeStackAnalysis can be enabled together', () => {
+		const result = compile([{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }], {
+			startingMemoryWordAddress: 0,
+			includeAST: true,
+			includeStackAnalysis: true,
+		});
+
+		expect(result.compiledModules.test.ast).toBeDefined();
+		expect(result.compiledModules.test.stackAnalysis?.map(line => line.instruction)).toEqual(['push', 'drop']);
 	});
 
 	test('rejects duplicate module ids', () => {
