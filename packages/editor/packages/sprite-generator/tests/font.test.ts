@@ -326,6 +326,8 @@ describe('font module', () => {
 			expect(lookups.fontBasePrefix).toBeDefined();
 			expect(lookups.fontPianoKeyWhitePressedOverlay).toBeDefined();
 			expect(lookups.fontPianoKeyBlackPressedOverlay).toBeDefined();
+			expect(lookups.fontTooltipText).toBeDefined();
+			expect(lookups.fontTooltipHighlight).toBeDefined();
 		});
 
 		it('should generate correct lookups for 6x10 characters', () => {

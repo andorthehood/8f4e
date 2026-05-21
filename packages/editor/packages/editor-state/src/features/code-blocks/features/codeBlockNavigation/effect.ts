@@ -11,6 +11,8 @@ import type { StateManager } from '@8f4e/state-manager';
 import type { State, EventDispatcher, NavigateCodeBlockEvent } from '@8f4e/editor-state-types';
 
 type StateSource = StateManager<State> | State;
+type CodeBlockCursor = NonNullable<State['graphicHelper']['selectedCodeBlock']>['cursor'];
+type CodeBlockCursorUpdate = Partial<CodeBlockCursor> & Pick<CodeBlockCursor, 'row' | 'col'>;
 
 function getState(source: StateSource): State {
 	return 'getState' in source ? source.getState() : source;
@@ -25,8 +27,26 @@ function setSelectedCodeBlock(source: StateSource, codeBlock: State['graphicHelp
 	source.graphicHelper.selectedCodeBlock = codeBlock;
 }
 
+function setSelectedCodeBlockCursor(
+	source: StateSource,
+	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	cursor: CodeBlockCursorUpdate
+): void {
+	const nextCursor = {
+		...block.cursor,
+		...cursor,
+	};
+
+	if ('set' in source && getState(source).graphicHelper.selectedCodeBlock === block) {
+		source.set('graphicHelper.selectedCodeBlock.cursor', nextCursor);
+		return;
+	}
+
+	block.cursor = nextCursor;
+}
+
 function alignTargetBlockCursorForHorizontalNavigation(
-	state: State,
+	source: StateSource,
 	sourceBlock: State['graphicHelper']['selectedCodeBlock'],
 	targetBlock: State['graphicHelper']['selectedCodeBlock']
 ): void {
@@ -34,6 +54,7 @@ function alignTargetBlockCursorForHorizontalNavigation(
 		return;
 	}
 
+	const state = getState(source);
 	const sourceAbsoluteCursorY = sourceBlock.y + sourceBlock.offsetY + sourceBlock.cursor.y;
 	const targetRelativeCursorY = sourceAbsoluteCursorY - (targetBlock.y + targetBlock.offsetY);
 	const targetPhysicalRow = Math.max(Math.floor(targetRelativeCursorY / state.viewport.hGrid), 0);
@@ -47,17 +68,20 @@ function alignTargetBlockCursorForHorizontalNavigation(
 	);
 	const targetRawRow = targetDirectiveState.displayModel.displayRowToRawRow[boundedDisplayRow] ?? 0;
 
-	targetBlock.cursor.row = targetRawRow;
-	targetBlock.cursor.col = Math.min(sourceBlock.cursor.col, targetBlock.code[targetRawRow]?.length ?? 0);
-	targetBlock.cursor.y = gapCalculator(boundedDisplayRow, targetBlock.gaps) * state.viewport.hGrid;
+	setSelectedCodeBlockCursor(source, targetBlock, {
+		row: targetRawRow,
+		col: Math.min(sourceBlock.cursor.col, targetBlock.code[targetRawRow]?.length ?? 0),
+		y: gapCalculator(boundedDisplayRow, targetBlock.gaps) * state.viewport.hGrid,
+	});
 }
 
 function setBlockCursorToDisplayRow(
-	state: State,
+	source: StateSource,
 	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
 	displayRow: number,
 	sourceCol?: number
 ): void {
+	const state = getState(source);
 	const directiveState = deriveDirectiveState(block.code, block.parsedDirectives, {
 		isExpandedForEditing: true,
 	});
@@ -65,9 +89,11 @@ function setBlockCursorToDisplayRow(
 	const boundedDisplayRow = Math.min(Math.max(displayRow, 0), maxDisplayRow);
 	const targetRawRow = directiveState.displayModel.displayRowToRawRow[boundedDisplayRow] ?? 0;
 
-	block.cursor.row = targetRawRow;
-	block.cursor.col = Math.min(sourceCol ?? block.cursor.col, block.code[targetRawRow]?.length ?? 0);
-	block.cursor.y = gapCalculator(boundedDisplayRow, block.gaps) * state.viewport.hGrid;
+	setSelectedCodeBlockCursor(source, block, {
+		row: targetRawRow,
+		col: Math.min(sourceCol ?? block.cursor.col, block.code[targetRawRow]?.length ?? 0),
+		y: gapCalculator(boundedDisplayRow, block.gaps) * state.viewport.hGrid,
+	});
 }
 
 function getSelectedBlockDisplayRow(
@@ -79,10 +105,11 @@ function getSelectedBlockDisplayRow(
 }
 
 function moveSelectionToCurrentBlockVerticalEdge(
-	state: State,
+	source: StateSource,
 	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
 	direction: 'up' | 'down'
 ): boolean {
+	const state = getState(source);
 	const directiveState = deriveDirectiveState(block.code, block.parsedDirectives, {
 		isExpandedForEditing: true,
 	});
@@ -94,12 +121,12 @@ function moveSelectionToCurrentBlockVerticalEdge(
 		return false;
 	}
 
-	setBlockCursorToDisplayRow(state, block, edgeDisplayRow);
+	setBlockCursorToDisplayRow(source, block, edgeDisplayRow);
 	return true;
 }
 
 function alignTargetBlockCursorForVerticalNavigation(
-	state: State,
+	source: StateSource,
 	sourceBlock: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
 	targetBlock: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
 	direction: 'up' | 'down'
@@ -110,7 +137,7 @@ function alignTargetBlockCursorForVerticalNavigation(
 	const maxDisplayRow = Math.max(targetDirectiveState.displayModel.displayRowToRawRow.length - 1, 0);
 	const targetDisplayRow = direction === 'up' ? maxDisplayRow : 0;
 
-	setBlockCursorToDisplayRow(state, targetBlock, targetDisplayRow, sourceBlock.cursor.col);
+	setBlockCursorToDisplayRow(source, targetBlock, targetDisplayRow, sourceBlock.cursor.col);
 }
 
 /**
@@ -149,7 +176,7 @@ export function navigateToCodeBlockInDirection(
 	// Find the closest code block in the specified direction
 	if (
 		(direction === 'up' || direction === 'down') &&
-		moveSelectionToCurrentBlockVerticalEdge(state, currentBlock, direction)
+		moveSelectionToCurrentBlockVerticalEdge(stateSource, currentBlock, direction)
 	) {
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, currentBlock);
 		animateViewport(state, x, y, events);
@@ -160,13 +187,14 @@ export function navigateToCodeBlockInDirection(
 
 	// If we found a different block, select it and center viewport on it
 	if (targetBlock !== currentBlock) {
+		setSelectedCodeBlock(stateSource, targetBlock);
+
 		if (direction === 'left' || direction === 'right') {
-			alignTargetBlockCursorForHorizontalNavigation(state, currentBlock, targetBlock);
+			alignTargetBlockCursorForHorizontalNavigation(stateSource, currentBlock, targetBlock);
 		} else {
-			alignTargetBlockCursorForVerticalNavigation(state, currentBlock, targetBlock, direction);
+			alignTargetBlockCursorForVerticalNavigation(stateSource, currentBlock, targetBlock, direction);
 		}
 
-		setSelectedCodeBlock(stateSource, targetBlock);
 		const { x, y } = centerViewportOnCodeBlockCursor(state.viewport, targetBlock);
 		animateViewport(state, x, y, events);
 		return true;

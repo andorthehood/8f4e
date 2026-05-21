@@ -82,6 +82,7 @@ export default function compiler(store: StateManager<State>) {
 
 			const compilerOptions = {
 				startingMemoryWordAddress: 0,
+				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
 
 			const result = await state.callbacks.compileCode(modules, compilerOptions, functions, macros);
@@ -160,4 +161,5 @@ export default function compiler(store: StateManager<State>) {
 		}
 		scheduleRecompile();
 	});
+	store.subscribe('featureFlags.codeLineSelection', scheduleRecompile);
 }
