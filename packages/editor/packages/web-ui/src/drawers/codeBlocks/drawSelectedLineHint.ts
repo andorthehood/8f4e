@@ -3,6 +3,7 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { SpriteLookup } from 'glugglug';
 
 const numberRegExp = /(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi;
+const horizontalPaddingChars = 2;
 
 function isStackAnalysisLine(line: string): boolean {
 	return line.startsWith('before ') || line.startsWith('after: ');
@@ -81,7 +82,8 @@ export default function drawSelectedLineHint(engine: Engine, state: State, codeB
 	}
 
 	const { vGrid, hGrid } = state.viewport;
-	const width = (Math.max(...lines.map(line => line.length)) + 2) * vGrid;
+	const horizontalPadding = horizontalPaddingChars * vGrid;
+	const width = (Math.max(...lines.map(line => line.length)) + horizontalPaddingChars * 2) * vGrid;
 	const height = lines.length * hGrid;
 	const x = -width - vGrid;
 	const y = codeBlock.cursor.y;
@@ -90,7 +92,7 @@ export default function drawSelectedLineHint(engine: Engine, state: State, codeB
 	engine.drawSprite(x, y, 'debugInfoBackground', width, height);
 
 	lines.forEach((line, index) => {
-		const lineX = x + vGrid;
+		const lineX = x + horizontalPadding;
 		const lineY = y + index * hGrid;
 
 		if (index === 0 && !isStackAnalysisLine(line)) {
