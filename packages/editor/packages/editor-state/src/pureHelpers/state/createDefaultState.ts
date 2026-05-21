@@ -54,6 +54,7 @@ export default function createDefaultState() {
 				y: 0,
 				lineX: 0,
 			},
+			highlights: [],
 			liveValues: [],
 		},
 		featureFlags: defaultFeatureFlags,
