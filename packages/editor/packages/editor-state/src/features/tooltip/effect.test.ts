@@ -237,33 +237,28 @@ describe('tooltip effect', () => {
 
 		tooltip(store);
 
-		expect(state.tooltip.liveValueBlock).toEqual({
-			insertAtLineIndex: state.tooltip.text.length,
-			lineCount: 2,
-			lines: [
-				{
-					label: 'address: ',
-					labelCharacters: toCharacters('address: '),
-					maxLineLength: 19,
-					source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'value' },
-					textColor: fontTooltipText,
-					valueColor: fontTooltipHighlight,
-				},
-				{
-					label: 'value: ',
-					labelCharacters: toCharacters('value: '),
-					maxLineLength: 18,
-					source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'value', elementIndex: 0 },
-					textColor: fontTooltipText,
-					valueColor: fontTooltipHighlight,
-				},
-			],
-			maxLineLength: 19,
-		});
+		expect(state.tooltip.text.slice(-2)).toEqual(['address: ', 'value: ']);
+		expect(state.tooltip.characters.slice(-2)).toEqual([toCharacters('address: '), toCharacters('value: ')]);
+		expect(state.tooltip.liveValues).toEqual([
+			{
+				lineIndex: state.tooltip.text.length - 2,
+				column: 'address: '.length,
+				source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'value' },
+				color: fontTooltipHighlight,
+			},
+			{
+				lineIndex: state.tooltip.text.length - 1,
+				column: 'value: '.length,
+				source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'value', elementIndex: 0 },
+				color: fontTooltipHighlight,
+			},
+		]);
+		expect(state.tooltip.lineCount).toBe(state.tooltip.text.length);
+		expect(state.tooltip.widthChars).toBeGreaterThanOrEqual(19);
 
 		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
 
-		expect(state.tooltip.liveValueBlock).toBeUndefined();
+		expect(state.tooltip.liveValues).toEqual([]);
 	});
 
 	it('writes documentation tooltip text when the selected line changes', () => {
@@ -344,6 +339,6 @@ describe('tooltip effect', () => {
 		tooltip(store);
 
 		expect(state.tooltip.text).toEqual([]);
-		expect(state.tooltip.liveValueBlock).toBeUndefined();
+		expect(state.tooltip.liveValues).toEqual([]);
 	});
 });

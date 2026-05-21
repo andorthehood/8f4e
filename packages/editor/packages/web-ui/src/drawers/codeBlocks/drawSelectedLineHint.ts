@@ -2,7 +2,7 @@ import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/for
 
 import type { Engine } from 'glugglug';
 import type { DataStructure } from '@8f4e/compiler-spec';
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../types';
 import type { SpriteLookup } from 'glugglug';
 
@@ -12,51 +12,29 @@ function getMemoryForLiveValueLine(state: State, moduleId: string, memoryId: str
 	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
 }
 
-function getLiveValueText(state: State, memoryViews: MemoryViews, liveLineIndex: number): string | undefined {
-	const liveLine = state.tooltip.liveValueBlock?.lines[liveLineIndex];
-
-	if (!liveLine) {
-		return undefined;
-	}
-
-	const memory = getMemoryForLiveValueLine(state, liveLine.source.moduleId, liveLine.source.memoryId);
+function getLiveValueText(state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): string | undefined {
+	const memory = getMemoryForLiveValueLine(state, liveValue.source.moduleId, liveValue.source.memoryId);
 
 	if (!memory) {
 		return undefined;
 	}
 
-	switch (liveLine.source.kind) {
+	switch (liveValue.source.kind) {
 		case 'memoryAddress':
 			return String(memory.byteAddress);
 		case 'memoryValue':
-			return formatDebuggerValue(memoryViews, memory, liveLine.source.elementIndex ?? 0, 'decimal');
+			return formatDebuggerValue(memoryViews, memory, liveValue.source.elementIndex ?? 0, 'decimal');
 		case 'memoryDereference': {
 			const pointerByteAddress = memoryViews.int32[memory.wordAlignedAddress];
 			return formatDebuggerValueAtAddress(
 				memoryViews,
 				pointerByteAddress,
 				pointerByteAddress / 4,
-				liveLine.source.format,
+				liveValue.source.format,
 				'decimal'
 			);
 		}
 	}
-}
-
-function getLiveValues(state: State, memoryViews: MemoryViews): Array<string | undefined> {
-	const block = state.tooltip.liveValueBlock;
-
-	if (!block) {
-		return [];
-	}
-
-	const liveValues: Array<string | undefined> = new Array(block.lines.length);
-
-	for (let index = 0; index < block.lines.length; index++) {
-		liveValues[index] = getLiveValueText(state, memoryViews, index);
-	}
-
-	return liveValues;
 }
 
 function drawCharactersWithColors(
@@ -96,44 +74,29 @@ function drawTextCharacters(engine: Engine, state: State, text: string, x: numbe
 	}
 }
 
-function drawLiveValueLine(
+function drawLiveValue(
 	engine: Engine,
 	state: State,
-	value: string,
-	liveLineIndex: number,
+	memoryViews: MemoryViews,
+	liveValue: TooltipLiveValue,
 	x: number,
 	y: number
 ): void {
-	const liveLine = state.tooltip.liveValueBlock!.lines[liveLineIndex];
 	const spriteLookups = state.graphicHelper.spriteLookups!;
+	const value = getLiveValueText(state, memoryViews, liveValue);
 
-	drawCharactersWithColors(engine, state, liveLine.labelCharacters, [liveLine.textColor], x, y);
-	engine.setSpriteLookup(liveLine.valueColor ?? spriteLookups.fontTooltipHighlight);
-	drawTextCharacters(engine, state, value, x + liveLine.labelCharacters.length * state.viewport.vGrid, y);
-}
-
-function drawLiveValueLines(
-	engine: Engine,
-	state: State,
-	liveValues: Array<string | undefined>,
-	lineX: number,
-	y: number,
-	renderedLineIndex: number
-): number {
-	let nextRenderedLineIndex = renderedLineIndex;
-
-	for (let index = 0; index < liveValues.length; index++) {
-		const value = liveValues[index];
-
-		if (value === undefined) {
-			continue;
-		}
-
-		drawLiveValueLine(engine, state, value, index, lineX, y + nextRenderedLineIndex * state.viewport.hGrid);
-		nextRenderedLineIndex++;
+	if (value === undefined) {
+		return;
 	}
 
-	return nextRenderedLineIndex;
+	engine.setSpriteLookup(liveValue.color ?? spriteLookups.fontTooltipHighlight);
+	drawTextCharacters(
+		engine,
+		state,
+		value,
+		x + liveValue.column * state.viewport.vGrid,
+		y + liveValue.lineIndex * state.viewport.hGrid
+	);
 }
 
 export default function drawSelectedLineHint(
@@ -147,8 +110,6 @@ export default function drawSelectedLineHint(
 	if (!spriteLookups || !state.featureFlags.codeLineSelection || state.graphicHelper.selectedCodeBlock !== codeBlock) {
 		return;
 	}
-
-	const liveValues = getLiveValues(state, memoryViews);
 
 	if (state.tooltip.lineCount === 0) {
 		return;
@@ -165,23 +126,18 @@ export default function drawSelectedLineHint(
 	engine.setSpriteLookup(spriteLookups.fillColors);
 	engine.drawSprite(x, y, 'tooltipBackground', width, height);
 
-	let renderedLineIndex = 0;
+	for (let index = 0; index < state.tooltip.characters.length; index++) {
+		drawCharactersWithColors(
+			engine,
+			state,
+			state.tooltip.characters[index],
+			state.tooltip.colors[index] ?? [],
+			lineX,
+			y + index * hGrid
+		);
+	}
 
-	for (let index = 0; index <= state.tooltip.text.length; index++) {
-		if (state.tooltip.liveValueBlock?.insertAtLineIndex === index) {
-			renderedLineIndex = drawLiveValueLines(engine, state, liveValues, lineX, y, renderedLineIndex);
-		}
-
-		if (index < state.tooltip.text.length) {
-			drawCharactersWithColors(
-				engine,
-				state,
-				state.tooltip.characters[index],
-				state.tooltip.colors[index] ?? [],
-				lineX,
-				y + renderedLineIndex * hGrid
-			);
-			renderedLineIndex++;
-		}
+	for (const liveValue of state.tooltip.liveValues) {
+		drawLiveValue(engine, state, memoryViews, liveValue, lineX, y);
 	}
 }

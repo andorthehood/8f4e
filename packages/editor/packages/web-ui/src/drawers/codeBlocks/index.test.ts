@@ -388,51 +388,40 @@ describe('drawModules', () => {
 				codeLineSelection: true,
 			},
 			tooltip: {
-				text: ['int ( -- )'],
-				characters: createTooltipCharacters(['int ( -- )']),
-				colors: [[]],
+				text: ['int ( -- )', 'address: ', 'value: ', 'deref: '],
+				characters: createTooltipCharacters(['int ( -- )', 'address: ', 'value: ', 'deref: ']),
+				colors: [[], [], [], []],
 				lineCount: 4,
 				widthChars: 19,
-				liveValueBlock: {
-					insertAtLineIndex: 1,
-					lineCount: 3,
-					lines: [
-						{
-							label: 'address: ',
-							labelCharacters: createCharacters('address: '),
-							maxLineLength: 19,
-							source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'pointer' },
-							textColor: {},
-							valueColor: {},
-						},
-						{
-							label: 'value: ',
-							labelCharacters: createCharacters('value: '),
-							maxLineLength: 18,
-							source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'pointer', elementIndex: 0 },
-							textColor: {},
-							valueColor: {},
-						},
-						{
-							label: 'deref: ',
-							labelCharacters: createCharacters('deref: '),
-							maxLineLength: 18,
-							source: {
-								kind: 'memoryDereference',
-								moduleId: 'test',
-								memoryId: 'pointer',
-								format: {
-									elementWordSize: 4,
-									isInteger: true,
-									isUnsigned: false,
-								},
+				liveValues: [
+					{
+						lineIndex: 1,
+						column: 'address: '.length,
+						source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'pointer' },
+						color: {},
+					},
+					{
+						lineIndex: 2,
+						column: 'value: '.length,
+						source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'pointer', elementIndex: 0 },
+						color: {},
+					},
+					{
+						lineIndex: 3,
+						column: 'deref: '.length,
+						source: {
+							kind: 'memoryDereference',
+							moduleId: 'test',
+							memoryId: 'pointer',
+							format: {
+								elementWordSize: 4,
+								isInteger: true,
+								isUnsigned: false,
 							},
-							textColor: {},
-							valueColor: {},
 						},
-					],
-					maxLineLength: 19,
-				},
+						color: {},
+					},
+				],
 			},
 		});
 		const engine = createMockEngine();
