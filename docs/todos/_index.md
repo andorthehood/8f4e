@@ -65,6 +65,7 @@ Active todo files are listed below.
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
 | 411 | Move compiler analysis metadata into instruction specs | 🟡 | 1-2d | 2026-05-20 | Move generic fixed stack effects, block close behavior, and memory operation metadata into `instructionSpecs.ts` while keeping dynamic function and map algorithms explicit. |
+| 412 | Expose compiler stack analysis results | 🟡 | 4-8h | 2026-05-21 | Add an opt-in compiler result payload for per-module and per-function stack analysis so editor tooltips can show selected-line stack state. |
 
 ### 🟢 Low Priority
 
