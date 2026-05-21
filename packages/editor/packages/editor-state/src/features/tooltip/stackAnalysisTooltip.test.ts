@@ -28,9 +28,9 @@ describe('stack analysis tooltip text', () => {
 			'after: [int=0, +int]',
 		]);
 		expect(getStackAnalysisTooltipContent(stackAnalysisLine).highlightTargets).toEqual([
-			{ lineIndex: 0, column: 15, widthChars: 6, fillColor: 'tooltipHighlight' },
-			{ lineIndex: 0, column: 23, widthChars: 6, fillColor: 'tooltipHighlight' },
-			{ lineIndex: 1, column: 15, widthChars: 4, fillColor: 'tooltipHighlight' },
+			{ lineIndex: 0, column: 15, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
+			{ lineIndex: 0, column: 23, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
+			{ lineIndex: 1, column: 15, widthChars: 4, fillColor: 'tooltipAddedHighlight' },
 		]);
 	});
 
@@ -78,7 +78,7 @@ describe('stack analysis tooltip text', () => {
 			']',
 		]);
 		expect(getStackAnalysisTooltipContent(stackAnalysisLine).highlightTargets).toEqual([
-			{ lineIndex: 6, column: 2, widthChars: 4, fillColor: 'tooltipHighlight' },
+			{ lineIndex: 6, column: 2, widthChars: 4, fillColor: 'tooltipConsumedHighlight' },
 		]);
 	});
 });

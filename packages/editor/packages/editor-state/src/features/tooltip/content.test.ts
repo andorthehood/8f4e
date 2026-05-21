@@ -65,9 +65,9 @@ describe('selected line tooltip content', () => {
 		expect(content.colors[4][0]).toBe(fontTooltipText);
 		expect(content.colors[4][7]).toBe(fontTooltipHighlight);
 		expect(content.highlightTargets).toEqual([
-			{ lineIndex: 3, column: 8, widthChars: 6, fillColor: 'tooltipHighlight' },
-			{ lineIndex: 3, column: 16, widthChars: 6, fillColor: 'tooltipHighlight' },
-			{ lineIndex: 4, column: 8, widthChars: 4, fillColor: 'tooltipHighlight' },
+			{ lineIndex: 3, column: 8, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
+			{ lineIndex: 3, column: 16, widthChars: 6, fillColor: 'tooltipConsumedHighlight' },
+			{ lineIndex: 4, column: 8, widthChars: 4, fillColor: 'tooltipAddedHighlight' },
 		]);
 	});
 });
