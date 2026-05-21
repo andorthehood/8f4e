@@ -187,7 +187,9 @@ describe('tooltip effect', () => {
 		]);
 	});
 
-	it('writes live memory value target metadata for selected memory declarations', () => {
+	it('writes live value metadata for selected memory declarations', () => {
+		const fontTooltipText = {};
+		const fontTooltipHighlight = {};
 		const selectedBlock = createMockCodeBlock({
 			code: ['int value', 'add'],
 			moduleId: 'test',
@@ -199,8 +201,26 @@ describe('tooltip effect', () => {
 			},
 		});
 		const state = createMockState({
+			compiler: {
+				compiledModules: {
+					test: {
+						memoryMap: {
+							value: {
+								id: 'value',
+								numberOfElements: 1,
+								byteAddress: 4,
+								wordAlignedAddress: 1,
+							},
+						},
+					} as never,
+				},
+			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,
+				spriteLookups: {
+					fontTooltipText,
+					fontTooltipHighlight,
+				} as never,
 			},
 			tooltip: {
 				text: [],
@@ -210,15 +230,27 @@ describe('tooltip effect', () => {
 
 		tooltip(store);
 
-		expect(state.tooltip.memoryValueTarget).toEqual({
-			moduleId: 'test',
-			memoryId: 'value',
+		expect(state.tooltip.liveValueBlock).toEqual({
 			insertAtLineIndex: state.tooltip.text.length,
+			lines: [
+				{
+					label: 'address: ',
+					source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'value' },
+					textColor: fontTooltipText,
+					valueColor: fontTooltipHighlight,
+				},
+				{
+					label: 'value: ',
+					source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'value', elementIndex: 0 },
+					textColor: fontTooltipText,
+					valueColor: fontTooltipHighlight,
+				},
+			],
 		});
 
 		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
 
-		expect(state.tooltip.memoryValueTarget).toBeUndefined();
+		expect(state.tooltip.liveValueBlock).toBeUndefined();
 	});
 
 	it('writes documentation tooltip text when the selected line changes', () => {
@@ -299,6 +331,6 @@ describe('tooltip effect', () => {
 		tooltip(store);
 
 		expect(state.tooltip.text).toEqual([]);
-		expect(state.tooltip.memoryValueTarget).toBeUndefined();
+		expect(state.tooltip.liveValueBlock).toBeUndefined();
 	});
 });
