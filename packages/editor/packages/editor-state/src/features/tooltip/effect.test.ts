@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import tooltip, {
+	TOOLTIP_WRAP_WIDTH,
 	getInstructionNameFromSourceLine,
 	getInstructionSpecFromSourceLine,
+	getSelectedLineTooltipContent,
 	getSelectedLineTooltipText,
 	getStackAnalysisTooltipText,
 	getStackSignatureFromSourceLine,
@@ -51,6 +53,50 @@ describe('tooltip effect', () => {
 			'address, or constant',
 			'onto the stack.',
 		]);
+	});
+
+	it('generates tooltip color transitions for instructions and stack values', () => {
+		const fontTooltipText = {};
+		const fontTooltipHighlight = {};
+		const content = getSelectedLineTooltipContent(
+			'add',
+			TOOLTIP_WRAP_WIDTH,
+			{
+				lineNumberBeforeMacroExpansion: 2,
+				lineNumberAfterMacroExpansion: 2,
+				instruction: 'add',
+				stackAnalysis: {
+					stackBefore: [
+						{ isInteger: true, knownIntegerValue: 1 },
+						{ isInteger: true, knownIntegerValue: 2 },
+					],
+					consumedOperands: [
+						{ isInteger: true, knownIntegerValue: 1 },
+						{ isInteger: true, knownIntegerValue: 2 },
+					],
+					producedStackItems: [{ isInteger: true }],
+					stackAfter: [{ isInteger: true }],
+				},
+			},
+			{
+				fontTooltipText,
+				fontTooltipHighlight,
+			} as never
+		);
+
+		expect(content.text).toEqual([
+			'add (T T -- T)',
+			'Adds two numbers of the same',
+			'type and pushes the result.',
+			'before [int=1, int=2]',
+			'after: [int]',
+		]);
+		expect(content.colors[0][0]).toBe(fontTooltipHighlight);
+		expect(content.colors[0][3]).toBe(fontTooltipText);
+		expect(content.colors[3][12]).toBe(fontTooltipHighlight);
+		expect(content.colors[3][13]).toBe(fontTooltipText);
+		expect(content.colors[3][19]).toBe(fontTooltipHighlight);
+		expect(content.colors[3][20]).toBe(fontTooltipText);
 	});
 
 	it('formats selected line stack analysis', () => {

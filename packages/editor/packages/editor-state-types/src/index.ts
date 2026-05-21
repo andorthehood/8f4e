@@ -5,6 +5,7 @@
  */
 
 import type { CompileOptions, MemoryAction as CompilerMemoryAction, Module } from '@8f4e/compiler-spec';
+import type { SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	CodeBlock,
@@ -151,6 +152,7 @@ export type InfoState = Record<string, InfoRecord | undefined>;
 
 export interface TooltipState {
 	text: string[];
+	colors: Array<Array<SpriteLookup | undefined>>;
 }
 
 // Feature Flags types (top-level public API)
