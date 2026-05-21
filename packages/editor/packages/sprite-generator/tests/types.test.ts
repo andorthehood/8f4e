@@ -115,6 +115,9 @@ describe('Types and Enums', () => {
 			expect(textKeys).toContain('basePrefix');
 			expect(textKeys).toContain('pianoKeyWhitePressedOverlay');
 			expect(textKeys).toContain('pianoKeyBlackPressedOverlay');
+			expect(textKeys).toContain('tooltipText');
+			expect(textKeys).toContain('tooltipValue');
+			expect(textKeys).toContain('tooltipInstruction');
 		});
 
 		it('should have all required fill color properties', () => {
@@ -137,6 +140,7 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('plotterBackground');
 			expect(fillKeys).toContain('waveform');
 			expect(fillKeys).toContain('scanLine');
+			expect(fillKeys).toContain('tooltipBackground');
 		});
 
 		it('should have all required icon color properties', () => {
