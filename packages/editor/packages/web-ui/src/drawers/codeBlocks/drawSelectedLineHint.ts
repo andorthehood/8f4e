@@ -4,7 +4,12 @@ import formatDebuggerValue from './widgets/formatDebuggerValue';
 
 import type { Engine } from 'glugglug';
 import type { DataStructure, MemoryType } from '@8f4e/compiler-spec';
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type {
+	CodeBlockGraphicData,
+	State,
+	TooltipLiveValueLine,
+	TooltipLiveValueSource,
+} from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../types';
 import type { SpriteLookup } from 'glugglug';
 
@@ -45,58 +50,8 @@ function createDereferencedMemory(memory: DataStructure, byteAddress: number): D
 	};
 }
 
-function getValueHighlightColors(
-	line: string,
-	spriteLookups: NonNullable<State['graphicHelper']['spriteLookups']>
-): Array<SpriteLookup | undefined> {
-	const colors: Array<SpriteLookup | undefined> = new Array(line.length).fill(undefined);
-	const valueStart = line.indexOf(': ') + 2;
-
-	colors[0] = spriteLookups.fontTooltipText;
-
-	if (valueStart > 1 && valueStart < line.length) {
-		colors[valueStart] = spriteLookups.fontTooltipHighlight;
-	}
-
-	return colors;
-}
-
-export function getMemoryDeclarationTooltipContent(
-	memoryViews: MemoryViews,
-	memory: DataStructure | undefined,
-	spriteLookups: NonNullable<State['graphicHelper']['spriteLookups']>
-): TooltipContent {
-	if (!memory) {
-		return { text: [], colors: [] };
-	}
-
-	const valueLabel = memory.numberOfElements > 1 ? 'value[0]' : 'value';
-	const text = [
-		`address: ${memory.byteAddress}`,
-		`${valueLabel}: ${formatDebuggerValue(memoryViews, memory, 0, 'decimal')}`,
-	];
-
-	if (isPointerMemory(memory)) {
-		const pointerByteAddress = memoryViews.int32[memory.wordAlignedAddress];
-		const dereferencedMemory = createDereferencedMemory(memory, pointerByteAddress);
-
-		text.push(`deref: ${formatDebuggerValue(memoryViews, dereferencedMemory, 0, 'decimal')}`);
-	}
-
-	return {
-		text,
-		colors: text.map(line => getValueHighlightColors(line, spriteLookups)),
-	};
-}
-
-function getSelectedMemoryDeclaration(state: State): DataStructure | undefined {
-	const target = state.tooltip.memoryValueTarget;
-
-	if (!target) {
-		return undefined;
-	}
-
-	return state.compiler.compiledModules[target.moduleId]?.memoryMap[target.memoryId];
+function getMemoryForLiveValueSource(state: State, source: TooltipLiveValueSource): DataStructure | undefined {
+	return state.compiler.compiledModules[source.moduleId]?.memoryMap[source.memoryId];
 }
 
 function appendLiveMemoryContent(
@@ -107,6 +62,73 @@ function appendLiveMemoryContent(
 ): void {
 	lines.splice(insertAtLineIndex, 0, ...memoryContent.text);
 	colors.splice(insertAtLineIndex, 0, ...memoryContent.colors);
+}
+
+function getLiveValueText(state: State, memoryViews: MemoryViews, source: TooltipLiveValueSource): string | undefined {
+	const memory = getMemoryForLiveValueSource(state, source);
+
+	if (!memory) {
+		return undefined;
+	}
+
+	switch (source.kind) {
+		case 'memoryAddress':
+			return String(memory.byteAddress);
+		case 'memoryValue':
+			return formatDebuggerValue(memoryViews, memory, source.elementIndex ?? 0, 'decimal');
+		case 'memoryDereference': {
+			if (!isPointerMemory(memory)) {
+				return undefined;
+			}
+
+			const pointerByteAddress = memoryViews.int32[memory.wordAlignedAddress];
+			return formatDebuggerValue(memoryViews, createDereferencedMemory(memory, pointerByteAddress), 0, 'decimal');
+		}
+	}
+}
+
+function getLiveValueLineColors(
+	textLength: number,
+	valueStart: number,
+	line: TooltipLiveValueLine
+): Array<SpriteLookup | undefined> {
+	const colors: Array<SpriteLookup | undefined> = new Array(textLength).fill(undefined);
+
+	if (textLength > 0) {
+		colors[0] = line.textColor;
+	}
+
+	if (valueStart < textLength) {
+		colors[valueStart] = line.valueColor;
+	}
+
+	return colors;
+}
+
+export function getLiveValueTooltipContent(state: State, memoryViews: MemoryViews): TooltipContent {
+	const block = state.tooltip.liveValueBlock;
+
+	if (!block) {
+		return { text: [], colors: [] };
+	}
+
+	return block.lines.reduce<TooltipContent>(
+		(content, liveLine) => {
+			const value = getLiveValueText(state, memoryViews, liveLine.source);
+
+			if (value === undefined) {
+				return content;
+			}
+
+			const text = `${liveLine.label}${value}`;
+
+			content.text.push(text);
+			content.colors.push(getLiveValueLineColors(text.length, liveLine.label.length, liveLine));
+
+			return content;
+		},
+		{ text: [], colors: [] }
+	);
 }
 
 function drawTextWithColors(
@@ -156,14 +178,10 @@ export default function drawSelectedLineHint(
 	const lines = [...state.tooltip.text];
 	const colors = [...state.tooltip.colors];
 
-	if (state.tooltip.memoryValueTarget) {
-		const memoryContent = getMemoryDeclarationTooltipContent(
-			memoryViews,
-			getSelectedMemoryDeclaration(state),
-			spriteLookups
-		);
+	if (state.tooltip.liveValueBlock) {
+		const memoryContent = getLiveValueTooltipContent(state, memoryViews);
 
-		appendLiveMemoryContent(lines, colors, memoryContent, state.tooltip.memoryValueTarget.insertAtLineIndex);
+		appendLiveMemoryContent(lines, colors, memoryContent, state.tooltip.liveValueBlock.insertAtLineIndex);
 	}
 
 	if (lines.length === 0) {

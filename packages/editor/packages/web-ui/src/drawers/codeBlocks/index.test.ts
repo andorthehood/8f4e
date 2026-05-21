@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 
-import { getMemoryDeclarationTooltipContent } from './drawSelectedLineHint';
+import { getLiveValueTooltipContent } from './drawSelectedLineHint';
 
 import drawModules from './index';
 
@@ -74,46 +74,132 @@ describe('drawModules', () => {
 		const memoryViews = createMemoryViews({ int32: [0, 42, 20, 0, 0, 123] });
 		const fontTooltipHighlight = {};
 		const fontTooltipText = {};
-		const spriteLookups = {
-			fontTooltipHighlight,
-			fontTooltipText,
-		} as never;
-		const scalarContent = getMemoryDeclarationTooltipContent(
-			memoryViews,
-			createMemory({ byteAddress: 4, wordAlignedAddress: 1 }),
-			spriteLookups
-		);
+		const scalarState = createMockState({
+			compiler: {
+				compiledModules: {
+					test: {
+						memoryMap: {
+							value: createMemory({ byteAddress: 4, wordAlignedAddress: 1 }),
+						},
+					} as never,
+				},
+			},
+			tooltip: {
+				text: [],
+				colors: [],
+				liveValueBlock: {
+					insertAtLineIndex: 0,
+					lines: [
+						{
+							label: 'address: ',
+							source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'value' },
+							textColor: fontTooltipText,
+							valueColor: fontTooltipHighlight,
+						},
+						{
+							label: 'value: ',
+							source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'value', elementIndex: 0 },
+							textColor: fontTooltipText,
+							valueColor: fontTooltipHighlight,
+						},
+					],
+				},
+			},
+		});
+		const pointerState = createMockState({
+			compiler: {
+				compiledModules: {
+					test: {
+						memoryMap: {
+							pointer: createMemory({
+								id: 'pointer',
+								type: MemoryTypes['int*'],
+								byteAddress: 8,
+								wordAlignedAddress: 2,
+								pointeeBaseType: 'int',
+							}),
+						},
+					} as never,
+				},
+			},
+			tooltip: {
+				text: [],
+				colors: [],
+				liveValueBlock: {
+					insertAtLineIndex: 0,
+					lines: [
+						{
+							label: 'address: ',
+							source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'pointer' },
+							textColor: fontTooltipText,
+							valueColor: fontTooltipHighlight,
+						},
+						{
+							label: 'value: ',
+							source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'pointer', elementIndex: 0 },
+							textColor: fontTooltipText,
+							valueColor: fontTooltipHighlight,
+						},
+						{
+							label: 'deref: ',
+							source: { kind: 'memoryDereference', moduleId: 'test', memoryId: 'pointer' },
+							textColor: fontTooltipText,
+							valueColor: fontTooltipHighlight,
+						},
+					],
+				},
+			},
+		});
+		const bufferState = createMockState({
+			compiler: {
+				compiledModules: {
+					test: {
+						memoryMap: {
+							buffer: createMemory({
+								id: 'buffer',
+								byteAddress: 4,
+								wordAlignedAddress: 1,
+								numberOfElements: 4,
+							}),
+						},
+					} as never,
+				},
+			},
+			tooltip: {
+				text: [],
+				colors: [],
+				liveValueBlock: {
+					insertAtLineIndex: 0,
+					lines: [
+						{
+							label: 'address: ',
+							source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'buffer' },
+							textColor: fontTooltipText,
+							valueColor: fontTooltipHighlight,
+						},
+						{
+							label: 'value[0]: ',
+							source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'buffer', elementIndex: 0 },
+							textColor: fontTooltipText,
+							valueColor: fontTooltipHighlight,
+						},
+					],
+				},
+			},
+		});
+		const scalarContent = getLiveValueTooltipContent(scalarState, memoryViews);
 
 		expect(scalarContent.text).toEqual(['address: 4', 'value: 42']);
 		expect(scalarContent.colors[0][0]).toBe(fontTooltipText);
 		expect(scalarContent.colors[0][9]).toBe(fontTooltipHighlight);
 		expect(scalarContent.colors[1][0]).toBe(fontTooltipText);
 		expect(scalarContent.colors[1][7]).toBe(fontTooltipHighlight);
-		expect(
-			getMemoryDeclarationTooltipContent(
-				memoryViews,
-				createMemory({
-					id: 'pointer',
-					type: MemoryTypes['int*'],
-					byteAddress: 8,
-					wordAlignedAddress: 2,
-					pointeeBaseType: 'int',
-				}),
-				spriteLookups
-			).text
-		).toEqual(['address: 8', 'value: 20', 'deref: 123']);
-		expect(
-			getMemoryDeclarationTooltipContent(
-				memoryViews,
-				createMemory({
-					id: 'buffer',
-					byteAddress: 4,
-					wordAlignedAddress: 1,
-					numberOfElements: 4,
-				}),
-				spriteLookups
-			).text
-		).toEqual(['address: 4', 'value[0]: 42']);
+		expect(getLiveValueTooltipContent(pointerState, memoryViews).text).toEqual([
+			'address: 8',
+			'value: 20',
+			'deref: 123',
+		]);
+		expect(getLiveValueTooltipContent(bufferState, memoryViews).text).toEqual(['address: 4', 'value[0]: 42']);
 	});
 
 	it('renders only the corners for hidden blocks by default', () => {
@@ -416,10 +502,22 @@ describe('drawModules', () => {
 			tooltip: {
 				text: ['int ( -- )'],
 				colors: [[]],
-				memoryValueTarget: {
-					moduleId: 'test',
-					memoryId: 'value',
+				liveValueBlock: {
 					insertAtLineIndex: 1,
+					lines: [
+						{
+							label: 'address: ',
+							source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'value' },
+							textColor: {},
+							valueColor: {},
+						},
+						{
+							label: 'value: ',
+							source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'value', elementIndex: 0 },
+							textColor: {},
+							valueColor: {},
+						},
+					],
 				},
 			},
 		});

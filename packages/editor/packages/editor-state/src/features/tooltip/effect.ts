@@ -5,6 +5,7 @@ import {
 	memoryDeclarationInstructions,
 	type AST,
 	type CompiledStackAnalysisLine,
+	type DataStructure,
 	type InstructionSpec,
 	type Stack,
 	type StackItem,
@@ -12,7 +13,7 @@ import {
 
 import wrapText from '../code-blocks/utils/wrapText';
 
-import type { CodeBlockGraphicData, State, TooltipMemoryValueTarget } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State, TooltipLiveValueBlock } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { SpriteLookup } from 'glugglug';
 
@@ -33,7 +34,7 @@ interface TooltipHighlightRange {
 interface SelectedLineTooltipContent {
 	text: string[];
 	colors: Array<Array<SpriteLookup | undefined>>;
-	memoryValueTarget: TooltipMemoryValueTarget | undefined;
+	liveValueBlock: TooltipLiveValueBlock | undefined;
 }
 
 export function wrapTooltipText(text: string, maxLength = TOOLTIP_WRAP_WIDTH): string[] {
@@ -68,6 +69,10 @@ export function getMemoryDeclarationIdFromSourceLine(line: string | undefined): 
 	}
 
 	return id;
+}
+
+function isPointerMemory(memory: DataStructure): boolean {
+	return Boolean(memory.pointeeBaseType || memory.isPointingToPointer);
 }
 
 function getStackSignatureLineFromSourceLine(line: string, instruction: string): AST[number] | undefined {
@@ -175,6 +180,58 @@ function getSelectedCodeBlockStackAnalysisLine(state: State, selectedCodeBlock: 
 	);
 }
 
+function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined, memoryId: string | undefined) {
+	if (!moduleId || !memoryId) {
+		return undefined;
+	}
+
+	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
+}
+
+function getTooltipLiveValueBlock(
+	memory: DataStructure | undefined,
+	moduleId: string | undefined,
+	memoryId: string | undefined,
+	insertAtLineIndex: number,
+	spriteLookups: SpriteLookups | undefined
+): TooltipLiveValueBlock | undefined {
+	if (!memory || !moduleId || !memoryId) {
+		return undefined;
+	}
+
+	const textColor = spriteLookups?.fontTooltipText;
+	const valueColor = spriteLookups?.fontTooltipHighlight;
+	const valueLabel = memory.numberOfElements > 1 ? 'value[0]: ' : 'value: ';
+	const lines: TooltipLiveValueBlock['lines'] = [
+		{
+			label: 'address: ',
+			source: { kind: 'memoryAddress', moduleId, memoryId },
+			textColor,
+			valueColor,
+		},
+		{
+			label: valueLabel,
+			source: { kind: 'memoryValue', moduleId, memoryId, elementIndex: 0 },
+			textColor,
+			valueColor,
+		},
+	];
+
+	if (isPointerMemory(memory)) {
+		lines.push({
+			label: 'deref: ',
+			source: { kind: 'memoryDereference', moduleId, memoryId },
+			textColor,
+			valueColor,
+		});
+	}
+
+	return {
+		insertAtLineIndex,
+		lines,
+	};
+}
+
 export function getSelectedLineTooltipText(
 	line: string | undefined,
 	maxLength = TOOLTIP_WRAP_WIDTH,
@@ -228,23 +285,17 @@ export function getSelectedLineTooltipContent(
 	maxLength = TOOLTIP_WRAP_WIDTH,
 	stackAnalysisLine?: CompiledStackAnalysisLine,
 	spriteLookups?: SpriteLookups,
-	moduleId?: string
+	moduleId?: string,
+	memory?: DataStructure
 ): SelectedLineTooltipContent {
 	const text = getSelectedLineTooltipText(line, maxLength, stackAnalysisLine);
 	const memoryId = getMemoryDeclarationIdFromSourceLine(line);
-	const memoryValueTarget =
-		moduleId && memoryId
-			? {
-					moduleId,
-					memoryId,
-					insertAtLineIndex: text.length,
-				}
-			: undefined;
+	const liveValueBlock = getTooltipLiveValueBlock(memory, moduleId, memoryId, text.length, spriteLookups);
 
 	return {
 		text,
 		colors: getSelectedLineTooltipColors(line, text, spriteLookups),
-		memoryValueTarget,
+		liveValueBlock,
 	};
 }
 
@@ -257,21 +308,24 @@ export default function tooltip(store: StateManager<State>): void {
 		if (!state.featureFlags.codeLineSelection || !selectedCodeBlock) {
 			store.set('tooltip.text', []);
 			store.set('tooltip.colors', []);
-			store.set('tooltip.memoryValueTarget', undefined);
+			store.set('tooltip.liveValueBlock', undefined);
 			return;
 		}
 
+		const line = selectedCodeBlock.code[selectedCodeBlock.cursor.row];
+		const memoryId = getMemoryDeclarationIdFromSourceLine(line);
 		const content = getSelectedLineTooltipContent(
-			selectedCodeBlock.code[selectedCodeBlock.cursor.row],
+			line,
 			TOOLTIP_WRAP_WIDTH,
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
 			state.graphicHelper.spriteLookups,
-			selectedCodeBlock.moduleId
+			selectedCodeBlock.moduleId,
+			getSelectedMemoryDeclaration(state, selectedCodeBlock.moduleId, memoryId)
 		);
 
 		store.set('tooltip.text', content.text);
 		store.set('tooltip.colors', content.colors);
-		store.set('tooltip.memoryValueTarget', content.memoryValueTarget);
+		store.set('tooltip.liveValueBlock', content.liveValueBlock);
 	}
 
 	store.subscribe('graphicHelper.selectedCodeBlock', syncSelectedLineTooltip);
