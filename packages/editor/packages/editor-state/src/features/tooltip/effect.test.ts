@@ -5,6 +5,7 @@ import tooltip, {
 	getInstructionNameFromSourceLine,
 	getInstructionSpecFromSourceLine,
 	getSelectedLineTooltipText,
+	getStackAnalysisTooltipText,
 	getStackSignatureFromSourceLine,
 	wrapTooltipText,
 } from './effect';
@@ -49,6 +50,73 @@ describe('tooltip effect', () => {
 			'value, local value,',
 			'address, or constant',
 			'onto the stack.',
+		]);
+	});
+
+	it('formats selected line stack analysis', () => {
+		expect(
+			getStackAnalysisTooltipText({
+				lineNumberBeforeMacroExpansion: 2,
+				lineNumberAfterMacroExpansion: 2,
+				instruction: 'add',
+				stackAnalysis: {
+					stackBefore: [{ isInteger: true }, { isInteger: true }],
+					consumedOperands: [{ isInteger: true }, { isInteger: true }],
+					producedStackItems: [{ isInteger: true }],
+					stackAfter: [{ isInteger: true }],
+				},
+			})
+		).toEqual(['before [int, int]', 'after: [int]']);
+	});
+
+	it('adds selected line stack analysis when compiler data is available', () => {
+		const selectedBlock = createMockCodeBlock({
+			code: ['push 1', 'push 2', 'add'],
+			moduleId: 'test',
+			cursor: {
+				row: 2,
+				col: 0,
+				x: 0,
+				y: 0,
+			},
+		});
+		const state = createMockState({
+			compiler: {
+				compiledModules: {
+					test: {
+						stackAnalysis: [
+							{
+								lineNumberBeforeMacroExpansion: 2,
+								lineNumberAfterMacroExpansion: 2,
+								instruction: 'add',
+								stackAnalysis: {
+									stackBefore: [{ isInteger: true }, { isInteger: true }],
+									consumedOperands: [{ isInteger: true }, { isInteger: true }],
+									producedStackItems: [{ isInteger: true }],
+									stackAfter: [{ isInteger: true }],
+								},
+							},
+						],
+					} as never,
+				},
+			},
+			graphicHelper: {
+				selectedCodeBlock: selectedBlock,
+			},
+			tooltip: {
+				text: [],
+			},
+		});
+		const store = createStateManager(state);
+
+		tooltip(store);
+
+		expect(state.tooltip.text).toEqual([
+			'add (T T -- T)',
+			'Adds two numbers of the same',
+			'type and pushes the result.',
+			'before [int, int]',
+			'after: [int]',
 		]);
 	});
 

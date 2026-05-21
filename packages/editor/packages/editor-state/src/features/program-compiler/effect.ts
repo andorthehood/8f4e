@@ -82,6 +82,7 @@ export default function compiler(store: StateManager<State>) {
 
 			const compilerOptions = {
 				startingMemoryWordAddress: 0,
+				includeStackAnalysis: true,
 			};
 
 			const result = await state.callbacks.compileCode(modules, compilerOptions, functions, macros);
