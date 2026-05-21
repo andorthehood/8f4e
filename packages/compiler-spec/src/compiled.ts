@@ -2,6 +2,14 @@ import type { AST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionTypeIdentifier } from './functionTypes';
 import type { InternalResourceMap, MemoryMap } from './memory';
+import type { StackAnalysisResult } from './semantic';
+
+export type CompiledStackAnalysisLine = {
+	lineNumberBeforeMacroExpansion: number;
+	lineNumberAfterMacroExpansion: number;
+	instruction: string;
+	stackAnalysis: StackAnalysisResult;
+};
 
 export interface CompiledModule {
 	index: number;
@@ -16,6 +24,7 @@ export interface CompiledModule {
 	internalResources?: InternalResourceMap;
 	wordAlignedSize: number;
 	ast?: AST;
+	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
 }
@@ -44,6 +53,7 @@ export interface CompiledFunction {
 	wasmIndex?: number;
 	typeIndex?: number;
 	ast?: AST;
+	stackAnalysis?: CompiledStackAnalysisLine[];
 }
 
 export type CompiledFunctionLookup = Record<string, CompiledFunction>;

@@ -65,7 +65,6 @@ Active todo files are listed below.
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
 | 411 | Move compiler analysis metadata into instruction specs | 🟡 | 1-2d | 2026-05-20 | Move generic fixed stack effects, block close behavior, and memory operation metadata into `instructionSpecs.ts` while keeping dynamic function and map algorithms explicit. |
-| 412 | Expose compiler stack analysis results | 🟡 | 4-8h | 2026-05-21 | Add an opt-in compiler result payload for per-module and per-function stack analysis so editor tooltips can show selected-line stack state. |
 
 ### 🟢 Low Priority
 
@@ -83,6 +82,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 412 | Expose compiler stack analysis results | 2026-05-21 | `includeStackAnalysis` now returns compact per-line stack analysis for compiled modules and functions, independently from AST output. |
 | 399 | Consolidate instruction compiler utilities | 2026-05-12 | Instruction-compiler-only helpers moved under `packages/compiler/src/instructionCompilers/utils/`; `saveByteCode` split out, unused word-alignment helper removed, and numeric binary instruction codegen centralized. |
 | 055 | Implement strength reduction optimization techniques in compiler | 2026-05-12 | Archived original TODO; remaining bytecode peephole optimization work is tracked in `398`. |
 | 392 | Move shared compiler constants to compiler-spec | 2026-05-11 | Shared memory layout, integer range, logic level, memory access-width, and Wasm page constants now resolve from `@8f4e/compiler-spec`; compiler-only bytecode header/export-count constants remain private. |
