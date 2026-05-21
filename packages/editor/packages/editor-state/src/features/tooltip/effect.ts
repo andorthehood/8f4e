@@ -17,7 +17,8 @@ import type { SpriteLookup } from 'glugglug';
 
 export const TOOLTIP_WRAP_WIDTH = 32;
 
-const numberRegExp = /(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi;
+const stackBeforeLabel = 'before ';
+const stackAfterLabel = 'after: ';
 
 type SpriteLookups = NonNullable<State['graphicHelper']['spriteLookups']>;
 
@@ -79,24 +80,16 @@ export function getStackSignatureFromSourceLine(line: string): string | undefine
 	return getInstructionStackSignature(instruction, getStackSignatureLineFromSourceLine(line, instruction));
 }
 
-function getNumberHighlightRanges(line: string): TooltipHighlightRange[] {
-	return Array.from(line.matchAll(numberRegExp)).flatMap(match => {
-		if (typeof match.index !== 'number') {
-			return [];
-		}
-
-		return [{ start: match.index, end: match.index + match[0].length }];
-	});
-}
-
-function getInstructionHighlightRange(line: string): TooltipHighlightRange | undefined {
-	const instructionMatch = /^(\S+)/.exec(line);
-
-	if (!instructionMatch) {
-		return undefined;
+function getStackValueHighlightRange(line: string): TooltipHighlightRange | undefined {
+	if (line.startsWith(stackBeforeLabel)) {
+		return { start: stackBeforeLabel.length, end: line.length };
 	}
 
-	return { start: 0, end: instructionMatch[0].length };
+	if (line.startsWith(stackAfterLabel)) {
+		return { start: stackAfterLabel.length, end: line.length };
+	}
+
+	return undefined;
 }
 
 function getTooltipLineColors(
@@ -111,7 +104,7 @@ function getTooltipLineColors(
 	const colors: Array<SpriteLookup | undefined> = new Array(line.length).fill(undefined);
 	colors[0] = spriteLookups.fontTooltipText;
 
-	for (const range of [...getNumberHighlightRanges(line), ...highlightRanges]) {
+	for (const range of highlightRanges) {
 		colors[range.start] = spriteLookups.fontTooltipHighlight;
 
 		if (range.end < line.length) {
@@ -201,14 +194,12 @@ export function getSelectedLineTooltipColors(
 	const stackSignature = line ? getStackSignatureFromSourceLine(line) : undefined;
 
 	return text.map((tooltipLine, index) => {
-		const instructionHighlightRange =
-			index === 0 && stackSignature === tooltipLine ? getInstructionHighlightRange(tooltipLine) : undefined;
+		const highlightRange =
+			index === 0 && stackSignature === tooltipLine
+				? { start: 0, end: tooltipLine.length }
+				: getStackValueHighlightRange(tooltipLine);
 
-		return getTooltipLineColors(
-			tooltipLine,
-			spriteLookups,
-			instructionHighlightRange ? [instructionHighlightRange] : []
-		);
+		return getTooltipLineColors(tooltipLine, spriteLookups, highlightRange ? [highlightRange] : []);
 	});
 }
 

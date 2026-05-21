@@ -79,18 +79,23 @@ describe('drawModules', () => {
 
 	it('formats live memory declaration values for the selected line hint', () => {
 		const memoryViews = createMemoryViews({ int32: [0, 42, 20, 0, 0, 123] });
+		const fontTooltipHighlight = {};
+		const fontTooltipText = {};
 		const spriteLookups = {
-			fontTooltipHighlight: {},
-			fontTooltipText: {},
+			fontTooltipHighlight,
+			fontTooltipText,
 		} as never;
+		const scalarContent = getMemoryDeclarationTooltipContent(
+			memoryViews,
+			createMemory({ byteAddress: 4, wordAlignedAddress: 1 }),
+			spriteLookups
+		);
 
-		expect(
-			getMemoryDeclarationTooltipContent(
-				memoryViews,
-				createMemory({ byteAddress: 4, wordAlignedAddress: 1 }),
-				spriteLookups
-			).text
-		).toEqual(['address: 4', 'value: 42']);
+		expect(scalarContent.text).toEqual(['address: 4', 'value: 42']);
+		expect(scalarContent.colors[0][0]).toBe(fontTooltipText);
+		expect(scalarContent.colors[0][9]).toBe(fontTooltipHighlight);
+		expect(scalarContent.colors[1][0]).toBe(fontTooltipText);
+		expect(scalarContent.colors[1][7]).toBe(fontTooltipHighlight);
 		expect(
 			getMemoryDeclarationTooltipContent(
 				memoryViews,
@@ -312,21 +317,10 @@ describe('drawModules', () => {
 			tooltip: {
 				text: ['add (T T -- T)', 'Adds two numbers', 'before [int=1, int=2]', 'after: [int=3]'],
 				colors: [
-					createTooltipColors('add (T T -- T)', fontTooltipText, [
-						[0, fontTooltipHighlight],
-						[3, fontTooltipText],
-					]),
+					createTooltipColors('add (T T -- T)', fontTooltipText, [[0, fontTooltipHighlight]]),
 					createTooltipColors('Adds two numbers', fontTooltipText, []),
-					createTooltipColors('before [int=1, int=2]', fontTooltipText, [
-						[12, fontTooltipHighlight],
-						[13, fontTooltipText],
-						[19, fontTooltipHighlight],
-						[20, fontTooltipText],
-					]),
-					createTooltipColors('after: [int=3]', fontTooltipText, [
-						[12, fontTooltipHighlight],
-						[13, fontTooltipText],
-					]),
+					createTooltipColors('before [int=1, int=2]', fontTooltipText, [[7, fontTooltipHighlight]]),
+					createTooltipColors('after: [int=3]', fontTooltipText, [[7, fontTooltipHighlight]]),
 				] as never,
 			},
 			viewport: {
@@ -348,21 +342,33 @@ describe('drawModules', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			-184,
 			16,
-			'add'
-		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			-160,
-			16,
-			' (T T -- T)'
+			'add (T T -- T)'
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			-184,
 			32,
 			'Adds two numbers'
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-88, 48, '1');
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-32, 48, '2');
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-88, 64, '3');
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			-184,
+			48,
+			'before '
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			-128,
+			48,
+			'[int=1, int=2]'
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			-184,
+			64,
+			'after: '
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			-128,
+			64,
+			'[int=3]'
+		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			fontTooltipHighlight
 		);

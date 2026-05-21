@@ -92,11 +92,12 @@ describe('tooltip effect', () => {
 			'after: [int]',
 		]);
 		expect(content.colors[0][0]).toBe(fontTooltipHighlight);
-		expect(content.colors[0][3]).toBe(fontTooltipText);
-		expect(content.colors[3][12]).toBe(fontTooltipHighlight);
-		expect(content.colors[3][13]).toBe(fontTooltipText);
-		expect(content.colors[3][19]).toBe(fontTooltipHighlight);
-		expect(content.colors[3][20]).toBe(fontTooltipText);
+		expect(content.colors[0][3]).toBeUndefined();
+		expect(content.colors[3][0]).toBe(fontTooltipText);
+		expect(content.colors[3][7]).toBe(fontTooltipHighlight);
+		expect(content.colors[3][12]).toBeUndefined();
+		expect(content.colors[4][0]).toBe(fontTooltipText);
+		expect(content.colors[4][7]).toBe(fontTooltipHighlight);
 	});
 
 	it('formats selected line stack analysis', () => {
