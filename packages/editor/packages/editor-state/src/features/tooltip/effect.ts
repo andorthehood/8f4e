@@ -3,12 +3,15 @@ import {
 	getInstructionSpec,
 	getInstructionStackSignature,
 	type AST,
+	type CompiledStackAnalysisLine,
 	type InstructionSpec,
+	type Stack,
+	type StackItem,
 } from '@8f4e/compiler-spec';
 
 import wrapText from '../code-blocks/utils/wrapText';
 
-import type { State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 
 export const TOOLTIP_WRAP_WIDTH = 32;
@@ -61,7 +64,49 @@ export function getStackSignatureFromSourceLine(line: string): string | undefine
 	return getInstructionStackSignature(instruction, getStackSignatureLineFromSourceLine(line, instruction));
 }
 
-export function getSelectedLineTooltipText(line: string | undefined, maxLength = TOOLTIP_WRAP_WIDTH): string[] {
+function getStackItemLabel(item: StackItem): string {
+	if (item.address || item.pointeeBaseType || item.isPointingToPointer) {
+		return 'ptr';
+	}
+
+	if (item.isFloat64) {
+		return 'float64';
+	}
+
+	return item.isInteger ? 'int' : 'float';
+}
+
+function formatStack(stack: Stack): string {
+	return `[${stack.map(getStackItemLabel).join(', ')}]`;
+}
+
+export function getStackAnalysisTooltipText(stackAnalysisLine: CompiledStackAnalysisLine | undefined): string[] {
+	if (!stackAnalysisLine) {
+		return [];
+	}
+
+	const { stackBefore, stackAfter } = stackAnalysisLine.stackAnalysis;
+
+	return [`before ${formatStack(stackBefore)}`, `after: ${formatStack(stackAfter)}`];
+}
+
+function getSelectedCodeBlockStackAnalysisLine(state: State, selectedCodeBlock: CodeBlockGraphicData) {
+	const moduleId = selectedCodeBlock.moduleId;
+
+	if (!moduleId) {
+		return undefined;
+	}
+
+	return state.compiler.compiledModules[moduleId]?.stackAnalysis?.find(
+		line => line.lineNumberBeforeMacroExpansion === selectedCodeBlock.cursor.row
+	);
+}
+
+export function getSelectedLineTooltipText(
+	line: string | undefined,
+	maxLength = TOOLTIP_WRAP_WIDTH,
+	stackAnalysisLine?: CompiledStackAnalysisLine
+): string[] {
 	if (!line) {
 		return [];
 	}
@@ -78,6 +123,8 @@ export function getSelectedLineTooltipText(line: string | undefined, maxLength =
 	if (shortDescription) {
 		tooltipText.push(...wrapTooltipText(shortDescription, maxLength));
 	}
+
+	tooltipText.push(...getStackAnalysisTooltipText(stackAnalysisLine));
 
 	if (tooltipText.length === 0) {
 		return [];
@@ -97,13 +144,21 @@ export default function tooltip(store: StateManager<State>): void {
 			return;
 		}
 
-		store.set('tooltip.text', getSelectedLineTooltipText(selectedCodeBlock.code[selectedCodeBlock.cursor.row]));
+		store.set(
+			'tooltip.text',
+			getSelectedLineTooltipText(
+				selectedCodeBlock.code[selectedCodeBlock.cursor.row],
+				TOOLTIP_WRAP_WIDTH,
+				getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock)
+			)
+		);
 	}
 
 	store.subscribe('graphicHelper.selectedCodeBlock', syncSelectedLineTooltip);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', syncSelectedLineTooltip);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor.row', syncSelectedLineTooltip);
 	store.subscribe('featureFlags.codeLineSelection', syncSelectedLineTooltip);
+	store.subscribe('compiler.compiledModules', syncSelectedLineTooltip);
 
 	syncSelectedLineTooltip();
 }

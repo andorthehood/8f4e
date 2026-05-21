@@ -110,6 +110,15 @@ describe('program compiler effect', () => {
 
 		await triggerProgrammaticCompile();
 
+		expect(mockCompileCode).toHaveBeenCalledWith(
+			expect.any(Array),
+			{
+				startingMemoryWordAddress: 0,
+				includeStackAnalysis: true,
+			},
+			expect.any(Array),
+			expect.any(Array)
+		);
 		expect(mockState.info.compiler).toMatchObject({
 			isCompiling: false,
 			compilationTimeMs: expect.any(Number),
