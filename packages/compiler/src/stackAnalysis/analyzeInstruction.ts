@@ -470,10 +470,23 @@ function analyzeByInstruction(
 		case 'abs': {
 			const consumed = consume(context, 1);
 			const operand = consumed[0];
+			const knownAbsValue =
+				operand.knownIntegerValue === undefined
+					? undefined
+					: operand.knownIntegerValue < 0
+						? (0 - operand.knownIntegerValue) | 0
+						: operand.knownIntegerValue;
+			const knownIntegerMetadata =
+				knownAbsValue === undefined
+					? {}
+					: {
+							knownIntegerValue: knownAbsValue,
+							isNonZero: knownAbsValue !== 0,
+						};
 			const produced = [
 				operand.isInteger
-					? { isInteger: true, isNonZero: false }
-					: { isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: false },
+					? { isInteger: true, isNonZero: operand.isNonZero, ...knownIntegerMetadata }
+					: { isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: operand.isNonZero },
 			];
 			produce(context, produced);
 			return { consumed, produced };

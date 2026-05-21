@@ -12,7 +12,6 @@ const greaterOrEqualUnsigned = createNumericBinaryCompiler({
 		float32: WASM_F32_GE,
 		float64: WASM_F64_GE,
 	},
-	result: 'comparison',
 });
 
 export default greaterOrEqualUnsigned;

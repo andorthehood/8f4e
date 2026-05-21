@@ -21,7 +21,6 @@ type NumericBinaryOperands = {
 
 type NumericBinaryCompilerOptions = {
 	opcodes: NumericBinaryOpcodes;
-	result: 'numeric' | 'comparison';
 	validate?: (operands: NumericBinaryOperands) => void;
 };
 

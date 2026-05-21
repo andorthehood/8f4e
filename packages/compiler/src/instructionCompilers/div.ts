@@ -12,7 +12,6 @@ const div = createNumericBinaryCompiler({
 		float32: WASM_F32_DIV,
 		float64: WASM_F64_DIV,
 	},
-	result: 'numeric',
 });
 
 export default div;

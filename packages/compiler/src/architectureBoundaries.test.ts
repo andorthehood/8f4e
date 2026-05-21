@@ -30,7 +30,7 @@ describe('compiler architecture boundaries', () => {
 				fileViolations.push(`${relativePath}: context.stack`);
 			}
 
-			if (/from ['"]\.\.?\/\.\.?\/stackAnalysis\//.test(source) || /from ['"]\.\.\/stackAnalysis\//.test(source)) {
+			if (/from ['"](?:\.\.\/)+stackAnalysis\//.test(source)) {
 				fileViolations.push(`${relativePath}: stackAnalysis import`);
 			}
 
