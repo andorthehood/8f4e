@@ -184,10 +184,19 @@ export type TooltipLiveValueSource =
 	| TooltipMemoryDereferenceLiveValueSource;
 
 export interface TooltipLiveValue {
-	lineIndex: number;
-	column: number;
+	x: number;
+	y: number;
 	source: TooltipLiveValueSource;
 	color: SpriteLookup | undefined;
+}
+
+export interface TooltipLayout {
+	horizontalPadding: number;
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	lineX: number;
 }
 
 export interface TooltipState {
@@ -196,6 +205,7 @@ export interface TooltipState {
 	colors: Array<Array<SpriteLookup | undefined>>;
 	lineCount: number;
 	widthChars: number;
+	layout: TooltipLayout;
 	liveValues: TooltipLiveValue[];
 }
 
