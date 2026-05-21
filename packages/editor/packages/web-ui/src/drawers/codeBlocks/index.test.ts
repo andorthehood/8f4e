@@ -251,9 +251,9 @@ describe('drawModules', () => {
 	it('draws tooltip text next to the selected line', () => {
 		const fillColors = {};
 		const fontCode = {};
-		const fontCodeComment = {};
-		const fontInstruction = {};
-		const fontNumbers = {};
+		const fontTooltipInstruction = {};
+		const fontTooltipText = {};
+		const fontTooltipValue = {};
 		const block = createMockCodeBlock({
 			textureCacheKey: 'selected-block',
 			width: 100,
@@ -273,12 +273,14 @@ describe('drawModules', () => {
 				selectedCodeBlock: block,
 				spriteLookups: {
 					fillColors,
-					fontNumbers,
 					fontCode,
+					fontNumbers: {},
 					fontDisabledCode: {},
 					fontLineNumber: {},
-					fontCodeComment,
-					fontInstruction,
+					fontCodeComment: {},
+					fontTooltipInstruction,
+					fontTooltipText,
+					fontTooltipValue,
 				} as never,
 			},
 			featureFlags: {
@@ -299,7 +301,7 @@ describe('drawModules', () => {
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-208,
 			16,
-			'debugInfoBackground',
+			'tooltipBackground',
 			200,
 			64
 		);
@@ -322,13 +324,13 @@ describe('drawModules', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-40, 48, '2');
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-96, 64, '3');
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			fontInstruction
+			fontTooltipInstruction
 		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			fontCodeComment
+			fontTooltipText
 		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			fontNumbers
+			fontTooltipValue
 		);
 	});
 
@@ -368,7 +370,9 @@ describe('drawModules', () => {
 					fontDisabledCode: {},
 					fontLineNumber: {},
 					fontCodeComment: {},
-					fontInstruction: {},
+					fontTooltipInstruction: {},
+					fontTooltipText: {},
+					fontTooltipValue: {},
 				} as never,
 			},
 			featureFlags: {
