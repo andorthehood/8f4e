@@ -194,6 +194,7 @@ describe('drawModules', () => {
 		const fontCode = {};
 		const fontCodeComment = {};
 		const fontInstruction = {};
+		const fontNumbers = {};
 		const block = createMockCodeBlock({
 			textureCacheKey: 'selected-block',
 			width: 100,
@@ -213,7 +214,7 @@ describe('drawModules', () => {
 				selectedCodeBlock: block,
 				spriteLookups: {
 					fillColors,
-					fontNumbers: {},
+					fontNumbers,
 					fontCode,
 					fontDisabledCode: {},
 					fontLineNumber: {},
@@ -225,7 +226,7 @@ describe('drawModules', () => {
 				codeLineSelection: true,
 			},
 			tooltip: {
-				text: ['add (T T -- T)', 'Adds two numbers', 'before [int, int]', 'after: [int]'],
+				text: ['add (T T -- T)', 'Adds two numbers', 'before [int=1, int=2]', 'after: [int=3]'],
 			},
 			viewport: {
 				vGrid: 8,
@@ -237,32 +238,38 @@ describe('drawModules', () => {
 		drawModules(engine, state, createMemoryViews());
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
-			-160,
+			-192,
 			16,
 			'debugInfoBackground',
-			152,
+			184,
 			64
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			-152,
+			-184,
 			16,
 			'add'
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			-128,
+			-160,
 			16,
 			' (T T -- T)'
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			-152,
+			-184,
 			32,
 			'Adds two numbers'
 		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-88, 48, '1');
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-32, 48, '2');
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-88, 64, '3');
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			fontInstruction
 		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			fontCodeComment
+		);
+		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
+			fontNumbers
 		);
 	});
 
