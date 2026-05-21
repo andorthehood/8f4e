@@ -7,7 +7,7 @@ const stackBeforeInlineLabel = 'before ';
 const stackBeforeBlockLabel = 'before: ';
 const stackAfterLabel = 'after: ';
 
-type StackItemMarker = 'input' | 'output';
+type StackItemMarker = 'removed' | 'added';
 
 interface StackAnalysisTooltipContent {
 	text: string[];
@@ -47,7 +47,7 @@ export function getStackValueHighlightRange(line: string): TooltipHighlightRange
 }
 
 /**
- * Formats one stack item, marking consumed inputs as `>item` and produced outputs as `item<`.
+ * Formats one stack item, marking consumed values as `-item` and produced values as `+item`.
  */
 function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 	let label: string;
@@ -62,12 +62,12 @@ function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 
 	const valueLabel = item.knownIntegerValue === undefined ? label : `${label}=${item.knownIntegerValue}`;
 
-	if (marker === 'input') {
-		return `>${valueLabel}`;
+	if (marker === 'removed') {
+		return `-${valueLabel}`;
 	}
 
-	if (marker === 'output') {
-		return `${valueLabel}<`;
+	if (marker === 'added') {
+		return `+${valueLabel}`;
 	}
 
 	return valueLabel;
@@ -185,7 +185,7 @@ export function getStackAnalysisTooltipContent(
 		stackBeforeBlockLabel,
 		stackBefore,
 		consumedOperands.length,
-		'input',
+		'removed',
 		0
 	);
 	const afterContent = formatStackTooltipLines(
@@ -193,7 +193,7 @@ export function getStackAnalysisTooltipContent(
 		stackAfterLabel,
 		stackAfter,
 		producedStackItems.length,
-		'output',
+		'added',
 		beforeContent.text.length
 	);
 

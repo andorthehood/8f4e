@@ -51,8 +51,8 @@ describe('selected line tooltip content', () => {
 			'add (T T -- T)',
 			'Adds two numbers of the same',
 			'type and pushes the result.',
-			'before [>int=1, >int=2]',
-			'after: [int<]',
+			'before [-int=1, -int=2]',
+			'after: [+int]',
 		]);
 		expect(content.characters[0]).toEqual(toCharacters('add (T T -- T)'));
 		expect(content.lineCount).toBe(5);

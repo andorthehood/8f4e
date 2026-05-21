@@ -24,8 +24,8 @@ describe('stack analysis tooltip text', () => {
 		} as const;
 
 		expect(getStackAnalysisTooltipText(stackAnalysisLine)).toEqual([
-			'before [int=0, >int=1, >int=2]',
-			'after: [int=0, int<]',
+			'before [int=0, -int=1, -int=2]',
+			'after: [int=0, +int]',
 		]);
 		expect(getStackAnalysisTooltipContent(stackAnalysisLine).highlightTargets).toEqual([
 			{ lineIndex: 0, column: 15, widthChars: 6, fillColor: 'tooltipHighlight' },
@@ -67,7 +67,7 @@ describe('stack analysis tooltip text', () => {
 			'  float,',
 			'  ptr,',
 			'  int,',
-			'  >int',
+			'  -int',
 			']',
 			'after: [',
 			'  int=1234,',
