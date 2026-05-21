@@ -10,7 +10,7 @@ import type { SpriteLookup } from 'glugglug';
 
 const numberRegExp = /(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi;
 const memoryIdentifierRegExp = /^[a-z_]\w*$/i;
-const horizontalPaddingChars = 2;
+const horizontalPaddingChars = 1;
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 
 function isStackAnalysisLine(line: string): boolean {
