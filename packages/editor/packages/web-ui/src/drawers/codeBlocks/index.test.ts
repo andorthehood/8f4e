@@ -297,7 +297,7 @@ describe('drawModules', () => {
 						y: 48,
 						width: 48,
 						height: 16,
-						fillColor: 'tooltipHighlight',
+						fillColor: 'tooltipConsumedHighlight',
 					},
 				],
 			},
@@ -320,7 +320,7 @@ describe('drawModules', () => {
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-120,
 			48,
-			'tooltipHighlight',
+			'tooltipConsumedHighlight',
 			48,
 			16
 		);

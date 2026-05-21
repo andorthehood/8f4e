@@ -71,21 +71,21 @@ describe('tooltip effect', () => {
 				y: state.tooltip.layout.y + 3 * 16,
 				width: 6 * 8,
 				height: 16,
-				fillColor: 'tooltipHighlight',
+				fillColor: 'tooltipConsumedHighlight',
 			},
 			{
 				x: state.tooltip.layout.lineX + 16 * 8,
 				y: state.tooltip.layout.y + 3 * 16,
 				width: 6 * 8,
 				height: 16,
-				fillColor: 'tooltipHighlight',
+				fillColor: 'tooltipConsumedHighlight',
 			},
 			{
 				x: state.tooltip.layout.lineX + 8 * 8,
 				y: state.tooltip.layout.y + 4 * 16,
 				width: 4 * 8,
 				height: 16,
-				fillColor: 'tooltipHighlight',
+				fillColor: 'tooltipAddedHighlight',
 			},
 		]);
 	});
