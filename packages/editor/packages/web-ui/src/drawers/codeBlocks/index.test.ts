@@ -49,6 +49,14 @@ function createTooltipColors(
 	return colors;
 }
 
+function createCharacters(text: string): number[] {
+	return [...text].map(char => char.charCodeAt(0));
+}
+
+function createTooltipCharacters(lines: string[]): number[][] {
+	return lines.map(createCharacters);
+}
+
 function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 	return {
 		id: 'value',
@@ -261,12 +269,20 @@ describe('drawModules', () => {
 			},
 			tooltip: {
 				text: ['add (T T -- T)', 'Adds two numbers', 'before [int=1, int=2]', 'after: [int=3]'],
+				characters: createTooltipCharacters([
+					'add (T T -- T)',
+					'Adds two numbers',
+					'before [int=1, int=2]',
+					'after: [int=3]',
+				]),
 				colors: [
 					createTooltipColors('add (T T -- T)', fontTooltipText, [[0, fontTooltipHighlight]]),
 					createTooltipColors('Adds two numbers', fontTooltipText, []),
 					createTooltipColors('before [int=1, int=2]', fontTooltipText, [[7, fontTooltipHighlight]]),
 					createTooltipColors('after: [int=3]', fontTooltipText, [[7, fontTooltipHighlight]]),
 				] as never,
+				lineCount: 4,
+				widthChars: 'before [int=1, int=2]'.length,
 			},
 			viewport: {
 				vGrid: 8,
@@ -284,35 +300,35 @@ describe('drawModules', () => {
 			184,
 			64
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-184,
 			16,
-			'add (T T -- T)'
+			'a'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-184,
 			32,
-			'Adds two numbers'
+			'A'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-184,
 			48,
-			'before '
+			'b'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-128,
 			48,
-			'[int=1, int=2]'
+			'['.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-184,
 			64,
-			'after: '
+			'a'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-128,
 			64,
-			'[int=3]'
+			'['.charCodeAt(0)
 		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			fontTooltipHighlight
@@ -373,24 +389,34 @@ describe('drawModules', () => {
 			},
 			tooltip: {
 				text: ['int ( -- )'],
+				characters: createTooltipCharacters(['int ( -- )']),
 				colors: [[]],
+				lineCount: 4,
+				widthChars: 19,
 				liveValueBlock: {
 					insertAtLineIndex: 1,
+					lineCount: 3,
 					lines: [
 						{
 							label: 'address: ',
+							labelCharacters: createCharacters('address: '),
+							maxLineLength: 19,
 							source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'pointer' },
 							textColor: {},
 							valueColor: {},
 						},
 						{
 							label: 'value: ',
+							labelCharacters: createCharacters('value: '),
+							maxLineLength: 18,
 							source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'pointer', elementIndex: 0 },
 							textColor: {},
 							valueColor: {},
 						},
 						{
 							label: 'deref: ',
+							labelCharacters: createCharacters('deref: '),
+							maxLineLength: 18,
 							source: {
 								kind: 'memoryDereference',
 								moduleId: 'test',
@@ -405,6 +431,7 @@ describe('drawModules', () => {
 							valueColor: {},
 						},
 					],
+					maxLineLength: 19,
 				},
 			},
 		});
@@ -412,30 +439,30 @@ describe('drawModules', () => {
 
 		drawModules(engine, state, createMemoryViews({ int32: [0, 0, 20, 0, 0, 123] }));
 
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			expect.any(Number),
 			expect.any(Number),
-			'address: '
+			'a'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			expect.any(Number),
 			expect.any(Number),
-			'value: '
+			'v'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			expect.any(Number),
 			expect.any(Number),
-			'20'
+			'2'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			expect.any(Number),
 			expect.any(Number),
-			'deref: '
+			'd'.charCodeAt(0)
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			expect.any(Number),
 			expect.any(Number),
-			'123'
+			'1'.charCodeAt(0)
 		);
 	});
 

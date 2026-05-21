@@ -24,6 +24,8 @@ const stackBeforeLabel = 'before ';
 const stackAfterLabel = 'after: ';
 const memoryIdentifierRegExp = /^[a-z_]\w*$/i;
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
+const maxLiveMemoryAddressLength = 10;
+const maxLiveMemoryValueLength = 11;
 
 type SpriteLookups = NonNullable<State['graphicHelper']['spriteLookups']>;
 
@@ -34,7 +36,10 @@ interface TooltipHighlightRange {
 
 interface SelectedLineTooltipContent {
 	text: string[];
+	characters: Array<Array<number | string>>;
 	colors: Array<Array<SpriteLookup | undefined>>;
+	lineCount: number;
+	widthChars: number;
 	liveValueBlock: TooltipLiveValueBlock | undefined;
 }
 
@@ -85,6 +90,24 @@ function getDereferencedMemoryFormat(memory: DataStructure) {
 		isInteger: metadata.isInteger,
 		isUnsigned: pointeeType === 'int8u' || pointeeType === 'int16u',
 	};
+}
+
+function getTextCharacters(text: string): Array<number | string> {
+	return [...text].map(char => char.charCodeAt(0));
+}
+
+function getTooltipTextCharacters(text: string[]): Array<Array<number | string>> {
+	return text.map(getTextCharacters);
+}
+
+function getMaxLineLength(lines: string[]): number {
+	let maxLineLength = 0;
+
+	for (let index = 0; index < lines.length; index++) {
+		maxLineLength = Math.max(maxLineLength, lines[index].length);
+	}
+
+	return maxLineLength;
 }
 
 function getStackSignatureLineFromSourceLine(line: string, instruction: string): AST[number] | undefined {
@@ -217,12 +240,16 @@ function getTooltipLiveValueBlock(
 	const lines: TooltipLiveValueBlock['lines'] = [
 		{
 			label: 'address: ',
+			labelCharacters: getTextCharacters('address: '),
+			maxLineLength: 'address: '.length + maxLiveMemoryAddressLength,
 			source: { kind: 'memoryAddress', moduleId, memoryId },
 			textColor,
 			valueColor,
 		},
 		{
 			label: valueLabel,
+			labelCharacters: getTextCharacters(valueLabel),
+			maxLineLength: valueLabel.length + maxLiveMemoryValueLength,
 			source: { kind: 'memoryValue', moduleId, memoryId, elementIndex: 0 },
 			textColor,
 			valueColor,
@@ -232,6 +259,8 @@ function getTooltipLiveValueBlock(
 	if (isPointerMemory(memory)) {
 		lines.push({
 			label: 'deref: ',
+			labelCharacters: getTextCharacters('deref: '),
+			maxLineLength: 'deref: '.length + maxLiveMemoryValueLength,
 			source: { kind: 'memoryDereference', moduleId, memoryId, format: getDereferencedMemoryFormat(memory) },
 			textColor,
 			valueColor,
@@ -240,7 +269,9 @@ function getTooltipLiveValueBlock(
 
 	return {
 		insertAtLineIndex,
+		lineCount: lines.length,
 		lines,
+		maxLineLength: Math.max(...lines.map(line => line.maxLineLength)),
 	};
 }
 
@@ -303,10 +334,14 @@ export function getSelectedLineTooltipContent(
 	const text = getSelectedLineTooltipText(line, maxLength, stackAnalysisLine);
 	const memoryId = getMemoryDeclarationIdFromSourceLine(line);
 	const liveValueBlock = getTooltipLiveValueBlock(memory, moduleId, memoryId, text.length, spriteLookups);
+	const widthChars = Math.max(getMaxLineLength(text), liveValueBlock?.maxLineLength ?? 0);
 
 	return {
 		text,
+		characters: getTooltipTextCharacters(text),
 		colors: getSelectedLineTooltipColors(line, text, spriteLookups),
+		lineCount: text.length + (liveValueBlock?.lineCount ?? 0),
+		widthChars,
 		liveValueBlock,
 	};
 }
@@ -319,7 +354,10 @@ export default function tooltip(store: StateManager<State>): void {
 
 		if (!state.featureFlags.codeLineSelection || !selectedCodeBlock) {
 			store.set('tooltip.text', []);
+			store.set('tooltip.characters', []);
 			store.set('tooltip.colors', []);
+			store.set('tooltip.lineCount', 0);
+			store.set('tooltip.widthChars', 0);
 			store.set('tooltip.liveValueBlock', undefined);
 			return;
 		}
@@ -336,7 +374,10 @@ export default function tooltip(store: StateManager<State>): void {
 		);
 
 		store.set('tooltip.text', content.text);
+		store.set('tooltip.characters', content.characters);
 		store.set('tooltip.colors', content.colors);
+		store.set('tooltip.lineCount', content.lineCount);
+		store.set('tooltip.widthChars', content.widthChars);
 		store.set('tooltip.liveValueBlock', content.liveValueBlock);
 	}
 
