@@ -62,8 +62,8 @@ describe('tooltip effect', () => {
 			'add (T T -- T)',
 			'Adds two numbers of the same',
 			'type and pushes the result.',
-			'before [>int=1, >int=2]',
-			'after: [int<]',
+			'before [-int=1, -int=2]',
+			'after: [+int]',
 		]);
 		expect(state.tooltip.highlights).toEqual([
 			{
