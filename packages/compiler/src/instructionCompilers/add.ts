@@ -12,7 +12,6 @@ const add = createNumericBinaryCompiler({
 		float32: WASM_F32_ADD,
 		float64: WASM_F64_ADD,
 	},
-	result: 'numeric',
 });
 
 export default add;

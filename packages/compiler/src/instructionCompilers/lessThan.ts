@@ -12,7 +12,6 @@ const lessThan = createNumericBinaryCompiler({
 		float32: WASM_F32_LT,
 		float64: WASM_F64_LT,
 	},
-	result: 'comparison',
 });
 
 export default lessThan;

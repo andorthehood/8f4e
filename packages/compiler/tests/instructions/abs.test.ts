@@ -43,3 +43,22 @@ moduleEnd
 		[{ input: 420.1 }, { output: 420.1 }],
 	]
 );
+
+moduleTester(
+	'abs as non-zero divisor',
+	`module abs
+
+int input
+int output
+
+push &output
+push input
+push -2
+abs
+div
+store
+
+moduleEnd
+`,
+	[[{ input: 8 }, { output: 4 }]]
+);

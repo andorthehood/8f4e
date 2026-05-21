@@ -12,7 +12,6 @@ const equal = createNumericBinaryCompiler({
 		float32: WASM_F32_EQ,
 		float64: WASM_F64_EQ,
 	},
-	result: 'comparison',
 });
 
 export default equal;

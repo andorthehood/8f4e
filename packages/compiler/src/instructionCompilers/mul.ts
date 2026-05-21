@@ -12,7 +12,6 @@ const mul = createNumericBinaryCompiler({
 		float32: WASM_F32_MUL,
 		float64: WASM_F64_MUL,
 	},
-	result: 'numeric',
 });
 
 export default mul;

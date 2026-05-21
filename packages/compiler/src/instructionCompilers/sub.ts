@@ -12,7 +12,6 @@ const sub = createNumericBinaryCompiler({
 		float32: WASM_F32_SUB,
 		float64: WASM_F64_SUB,
 	},
-	result: 'numeric',
 });
 
 export default sub;
