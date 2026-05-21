@@ -43,7 +43,6 @@ export default function createDefaultState() {
 		tooltip: {
 			text: [],
 			colors: [],
-			liveValueBlock: undefined,
 		},
 		featureFlags: defaultFeatureFlags,
 		editorMode: 'view' as const,

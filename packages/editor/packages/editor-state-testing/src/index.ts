@@ -262,7 +262,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		tooltip: {
 			text: [],
 			colors: [],
-			liveValueBlock: undefined,
 		},
 		featureFlags: {
 			contextMenu: true,
