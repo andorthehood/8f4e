@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 
 import drawModules from './index';
@@ -46,6 +47,24 @@ function createTooltipColors(
 	});
 
 	return colors;
+}
+
+function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+	return {
+		id: 'value',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: MemoryTypes.int,
+		memoryIndex: 0,
+		byteAddress: 0,
+		wordAlignedSize: 1,
+		wordAlignedAddress: 0,
+		default: 0,
+		isInteger: true,
+		isPointingToPointer: false,
+		isUnsigned: false,
+		...overrides,
+	};
 }
 
 describe('drawModules', () => {
@@ -300,6 +319,123 @@ describe('drawModules', () => {
 		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			fontTooltipText
+		);
+	});
+
+	it('draws live memory declaration values from tooltip metadata', () => {
+		const block = createMockCodeBlock({
+			textureCacheKey: 'selected-memory-block',
+			width: 100,
+			height: 80,
+			moduleId: 'test',
+			cursor: {
+				row: 0,
+				col: 0,
+				x: 16,
+				y: 16,
+			},
+			code: ['add'],
+			codeToRender: [],
+			codeColors: [],
+		});
+		const state = createMockState({
+			compiler: {
+				compiledModules: {
+					test: {
+						memoryMap: {
+							pointer: createMemory({
+								id: 'pointer',
+								type: MemoryTypes['int*'],
+								byteAddress: 8,
+								wordAlignedAddress: 2,
+								pointeeBaseType: 'int',
+							}),
+						},
+					} as never,
+				},
+			},
+			graphicHelper: {
+				codeBlocks: [block],
+				selectedCodeBlock: block,
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+					fontTooltipHighlight: {},
+					fontTooltipText: {},
+				} as never,
+			},
+			featureFlags: {
+				codeLineSelection: true,
+			},
+			tooltip: {
+				text: ['int ( -- )'],
+				colors: [[]],
+				liveValueBlock: {
+					insertAtLineIndex: 1,
+					lines: [
+						{
+							label: 'address: ',
+							source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'pointer' },
+							textColor: {},
+							valueColor: {},
+						},
+						{
+							label: 'value: ',
+							source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'pointer', elementIndex: 0 },
+							textColor: {},
+							valueColor: {},
+						},
+						{
+							label: 'deref: ',
+							source: {
+								kind: 'memoryDereference',
+								moduleId: 'test',
+								memoryId: 'pointer',
+								format: {
+									elementWordSize: 4,
+									isInteger: true,
+									isUnsigned: false,
+								},
+							},
+							textColor: {},
+							valueColor: {},
+						},
+					],
+				},
+			},
+		});
+		const engine = createMockEngine();
+
+		drawModules(engine, state, createMemoryViews({ int32: [0, 0, 20, 0, 0, 123] }));
+
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'address: '
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'value: '
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'20'
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'deref: '
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'123'
 		);
 	});
 
