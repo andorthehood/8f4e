@@ -6,8 +6,10 @@ import type { TooltipHighlightRange, TooltipHighlightTarget } from './types';
 const stackBeforeInlineLabel = 'before ';
 const stackBeforeBlockLabel = 'before: ';
 const stackAfterLabel = 'after: ';
+const consumedStackItemHighlight = 'tooltipConsumedHighlight';
+const producedStackItemHighlight = 'tooltipAddedHighlight';
 
-type StackItemMarker = 'removed' | 'added';
+type StackItemMarker = 'consumed' | 'added';
 
 interface StackAnalysisTooltipContent {
 	text: string[];
@@ -16,7 +18,7 @@ interface StackAnalysisTooltipContent {
 
 interface FormattedStackItem {
 	label: string;
-	isMarked: boolean;
+	highlightColor?: TooltipHighlightTarget['fillColor'];
 }
 
 /**
@@ -62,7 +64,7 @@ function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 
 	const valueLabel = item.knownIntegerValue === undefined ? label : `${label}=${item.knownIntegerValue}`;
 
-	if (marker === 'removed') {
+	if (marker === 'consumed') {
 		return `-${valueLabel}`;
 	}
 
@@ -80,13 +82,17 @@ function isMarkedStackItem(index: number, stack: Stack, markedItemCount: number)
 	return index >= stack.length - markedItemCount;
 }
 
+function getStackItemHighlightColor(marker: StackItemMarker): TooltipHighlightTarget['fillColor'] {
+	return marker === 'consumed' ? consumedStackItemHighlight : producedStackItemHighlight;
+}
+
 function formatStackItems(stack: Stack, markedItemCount: number, marker: StackItemMarker): FormattedStackItem[] {
 	return stack.map((item, index) => {
 		const isMarked = isMarkedStackItem(index, stack, markedItemCount);
 
 		return {
 			label: getStackItemLabel(item, isMarked ? marker : undefined),
-			isMarked,
+			highlightColor: isMarked ? getStackItemHighlightColor(marker) : undefined,
 		};
 	});
 }
@@ -107,12 +113,12 @@ function getInlineHighlightTargets(
 	let column = labelLength + 1;
 
 	for (const item of items) {
-		if (item.isMarked) {
+		if (item.highlightColor) {
 			highlightTargets.push({
 				lineIndex,
 				column,
 				widthChars: item.label.length,
-				fillColor: 'tooltipHighlight',
+				fillColor: item.highlightColor,
 			});
 		}
 
@@ -123,7 +129,7 @@ function getInlineHighlightTargets(
 }
 
 function getBlockHighlightTarget(lineIndex: number, item: FormattedStackItem): TooltipHighlightTarget | undefined {
-	if (!item.isMarked) {
+	if (!item.highlightColor) {
 		return undefined;
 	}
 
@@ -131,7 +137,7 @@ function getBlockHighlightTarget(lineIndex: number, item: FormattedStackItem): T
 		lineIndex,
 		column: 2,
 		widthChars: item.label.length,
-		fillColor: 'tooltipHighlight',
+		fillColor: item.highlightColor,
 	};
 }
 
@@ -185,7 +191,7 @@ export function getStackAnalysisTooltipContent(
 		stackBeforeBlockLabel,
 		stackBefore,
 		consumedOperands.length,
-		'removed',
+		'consumed',
 		0
 	);
 	const afterContent = formatStackTooltipLines(

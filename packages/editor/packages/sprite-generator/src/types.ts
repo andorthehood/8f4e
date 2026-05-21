@@ -79,7 +79,8 @@ export interface ColorScheme {
 		pianoKeyWhite: string;
 		pianoKeyBlack: string;
 		tooltipBackground: string;
-		tooltipHighlight: string;
+		tooltipAddedHighlight: string;
+		tooltipConsumedHighlight: string;
 	};
 	icons: {
 		inputConnector: string;

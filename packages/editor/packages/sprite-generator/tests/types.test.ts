@@ -140,7 +140,8 @@ describe('Types and Enums', () => {
 			expect(fillKeys).toContain('waveform');
 			expect(fillKeys).toContain('scanLine');
 			expect(fillKeys).toContain('tooltipBackground');
-			expect(fillKeys).toContain('tooltipHighlight');
+			expect(fillKeys).toContain('tooltipAddedHighlight');
+			expect(fillKeys).toContain('tooltipConsumedHighlight');
 		});
 
 		it('should have all required icon color properties', () => {
