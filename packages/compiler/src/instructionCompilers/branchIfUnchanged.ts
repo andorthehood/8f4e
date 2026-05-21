@@ -20,9 +20,8 @@ import type { BranchIfUnchangedLine, InstructionCompiler } from '@8f4e/compiler-
  * Instruction compiler for `branchIfUnchanged`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = (line: BranchIfUnchangedLine, context) => {
-	// Non-null assertion is safe: instruction validation ensures 1 operand exists
-	const operand = context.stack.pop()!;
+const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = (line, context) => {
+	const [operand] = line.stackAnalysis.consumedOperands;
 
 	const depth = line.arguments[0].value;
 	const type = operand.isInteger ? 'int' : 'float';

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import _localSet from './localSet';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -17,7 +17,8 @@ describe('localSet instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		_localSet(
+		analyzeAndCompileInstruction(
+			_localSet,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

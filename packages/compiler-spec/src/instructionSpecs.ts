@@ -7,7 +7,15 @@ import type { MemoryDeclarationInstruction } from './memory';
 import type { CompilationContext } from './semantic';
 
 export type OperandRule = 'int' | 'float' | 'matching';
-export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | 'constants' | 'map';
+export type ScopeRule =
+	| 'module'
+	| 'moduleOnly'
+	| 'function'
+	| 'moduleOrFunction'
+	| 'block'
+	| 'constants'
+	| 'map'
+	| 'loop';
 
 export interface ValidationSpec<TLine extends AST[number] = AST[number]> {
 	scope?: ScopeRule;
@@ -265,7 +273,8 @@ export const instructionSpecs = {
 	),
 	// exitIfTrue (int -- )
 	exitIfTrue: {
-		scope: 'moduleOrFunction',
+		scope: 'moduleOnly',
+		onInvalidScope: ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE,
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Exits the enclosing module when the condition is non-zero.' },
@@ -401,6 +410,27 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Exports the current function under the provided name.' },
 		stack: stack([], []),
 	},
+	// #skipExecution ( -- )
+	'#skipExecution': {
+		scope: 'moduleOnly',
+		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
+		docs: { shortDescription: 'Skips the current module during cycle execution.' },
+		stack: stack([], []),
+	},
+	// #initOnly ( -- )
+	'#initOnly': {
+		scope: 'moduleOnly',
+		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
+		docs: { shortDescription: 'Runs the current module only during initialization.' },
+		stack: stack([], []),
+	},
+	// #impure ( -- )
+	'#impure': {
+		scope: 'function',
+		onInvalidScope: ErrorCode.IMPURE_DIRECTIVE_INVALID_CONTEXT,
+		docs: { shortDescription: 'Allows the current function to perform explicit memory IO.' },
+		stack: stack([], []),
+	},
 	// loopEnd ( -- ), loopEnd (T -- T)
 	loopEnd: {
 		scope: 'moduleOrFunction',
@@ -409,7 +439,8 @@ export const instructionSpecs = {
 	},
 	// loopIndex ( -- int)
 	loopIndex: {
-		scope: 'moduleOrFunction',
+		scope: 'loop',
+		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP,
 		docs: { shortDescription: 'Pushes the current zero-based loop iteration index.' },
 		stack: stack([], ['int']),
 	},

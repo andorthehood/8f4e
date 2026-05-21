@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import loopEnd from './loopEnd';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -20,7 +20,8 @@ describe('loopEnd instruction compiler', () => {
 			],
 		});
 
-		loopEnd(
+		analyzeAndCompileInstruction(
+			loopEnd,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -40,7 +41,8 @@ describe('loopEnd instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 
 		expect(() => {
-			loopEnd(
+			analyzeAndCompileInstruction(
+				loopEnd,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

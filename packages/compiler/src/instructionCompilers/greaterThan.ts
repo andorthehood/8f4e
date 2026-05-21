@@ -12,7 +12,6 @@ const greaterThan = createNumericBinaryCompiler({
 		float32: WASM_F32_GT,
 		float64: WASM_F64_GT,
 	},
-	result: 'comparison',
 });
 
 export default greaterThan;

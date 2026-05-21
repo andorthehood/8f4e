@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import call from './call';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST, CompilationContext } from '@8f4e/compiler-spec';
 
@@ -22,7 +22,8 @@ describe('call instruction compiler', () => {
 		} as CompilationContext['namespace']['functions'];
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-		call(
+		analyzeAndCompileInstruction(
+			call,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -51,7 +52,8 @@ describe('call instruction compiler', () => {
 		} as CompilationContext['namespace']['functions'];
 		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
 
-		call(
+		analyzeAndCompileInstruction(
+			call,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -82,7 +84,8 @@ describe('call instruction compiler', () => {
 		context.stack.push({ isInteger: false, isNonZero: false });
 
 		expect(() => {
-			call(
+			analyzeAndCompileInstruction(
+				call,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -106,7 +109,8 @@ describe('call instruction compiler', () => {
 			},
 		} as CompilationContext['namespace']['functions'];
 
-		call(
+		analyzeAndCompileInstruction(
+			call,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

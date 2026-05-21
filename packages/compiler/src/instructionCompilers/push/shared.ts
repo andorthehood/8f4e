@@ -10,30 +10,21 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 
 import {
-	getDereferencedValueKindFromMetadata,
-	getDereferencedValueWordSizeFromMetadata,
-	type PointerMetadata,
-} from '../../utils/memoryData';
+	getDereferencedValueWordSize,
+	resolvePointerTargetValueKind,
+	type PushValueKind,
+} from '../../utils/pushValueKind';
 
-import type { DataStructure, StackItem } from '@8f4e/compiler-spec';
+import type { PointerMetadata } from '../../utils/memoryData';
 
-export type PushValueKind = 'int32' | 'float32' | 'float64';
 type PointerValueSource = 'pointer-slot' | 'pointer-value';
 
-export function resolveMemoryValueKind(memoryItem: DataStructure): PushValueKind {
-	if (memoryItem.isInteger) return 'int32';
-	if (memoryItem.isFloat64) return 'float64';
-	return 'float32';
-}
-
-export function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat64?: boolean }): PushValueKind {
-	if (argument.isFloat64) return 'float64';
-	return argument.isInteger ? 'int32' : 'float32';
-}
-
-export function resolvePointerTargetValueKind(pointerMetadata: PointerMetadata): PushValueKind {
-	return getDereferencedValueKindFromMetadata(pointerMetadata);
-}
+export {
+	kindToStackItem,
+	resolveArgumentValueKind,
+	resolveMemoryValueKind,
+	resolvePointerTargetValueKind,
+} from '../../utils/pushValueKind';
 
 export const constOpcode: Record<PushValueKind, (value: number) => number[]> = {
 	int32: i32const,
@@ -47,21 +38,13 @@ export const loadOpcode: Record<PushValueKind, (memoryIndex: number) => number[]
 	float64: memoryIndex => f64load(3, 0, memoryIndex),
 };
 
-export function kindToStackItem(kind: PushValueKind, extras?: Partial<StackItem>): StackItem {
-	return {
-		isInteger: kind === 'int32',
-		...(kind === 'float64' ? { isFloat64: true } : {}),
-		...extras,
-	};
-}
-
 export function buildPointerDereferenceByteCode(
 	pointerMetadata: PointerMetadata,
 	baseAddressByteCode: number[],
 	pointerValueSource: PointerValueSource
 ): { kind: PushValueKind; byteCode: number[] } {
 	const kind = resolvePointerTargetValueKind(pointerMetadata);
-	const dereferencedValueWordSize = getDereferencedValueWordSizeFromMetadata(pointerMetadata);
+	const dereferencedValueWordSize = getDereferencedValueWordSize(pointerMetadata);
 	const slotMemoryIndex =
 		pointerValueSource === 'pointer-slot' && 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
 	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;

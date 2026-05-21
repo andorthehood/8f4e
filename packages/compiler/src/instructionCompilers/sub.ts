@@ -1,7 +1,6 @@
 import { WASM_F32_SUB, WASM_F64_SUB, WASM_I32_SUB } from '@8f4e/compiler-wasm-utils';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
-import { deriveSubStackMetadata } from './utils/stackAddressMetadata';
 
 /**
  * Instruction compiler for `sub`.
@@ -13,8 +12,6 @@ const sub = createNumericBinaryCompiler({
 		float32: WASM_F32_SUB,
 		float64: WASM_F64_SUB,
 	},
-	result: 'numeric',
-	deriveIntegerMetadata: deriveSubStackMetadata,
 });
 
 export default sub;

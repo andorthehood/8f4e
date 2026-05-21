@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import castToInt from './castToInt';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('castToInt instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: true });
 
-		castToInt(
+		analyzeAndCompileInstruction(
+			castToInt,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -31,7 +32,8 @@ describe('castToInt instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
 
-		castToInt(
+		analyzeAndCompileInstruction(
+			castToInt,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

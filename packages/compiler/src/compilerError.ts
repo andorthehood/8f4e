@@ -19,7 +19,7 @@
 
 import { ErrorCode, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
 
-import type { AST, CompilationContext, CompilerStageError, ErrorCodeValue } from '@8f4e/compiler-spec';
+import type { AST, CodegenContext, CompilationContext, CompilerStageError, ErrorCodeValue } from '@8f4e/compiler-spec';
 
 export { ErrorCode };
 
@@ -30,7 +30,7 @@ interface ErrorDetails {
 export function getError(
 	code: ErrorCodeValue,
 	line: AST[number],
-	context?: CompilationContext,
+	context?: CodegenContext | CompilationContext,
 	details?: ErrorDetails
 ): CompilerStageError {
 	switch (code) {
@@ -139,21 +139,23 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS:
+		case ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS: {
+			const stack = context && 'stack' in context && Array.isArray(context.stack) ? context.stack : [];
 			return {
 				code,
 				message:
 					line.lineNumberBeforeMacroExpansion +
 					': Expected 0 elements on the stack, found ' +
-					context?.stack.length +
+					stack.length +
 					' [' +
-					context?.stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
+					stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
 					'] (' +
 					code +
 					')',
 				line,
 				context,
 			};
+		}
 		case ErrorCode.MISSING_BLOCK_START_INSTRUCTION:
 			return {
 				code,

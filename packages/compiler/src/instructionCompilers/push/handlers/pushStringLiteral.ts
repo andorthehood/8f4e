@@ -2,7 +2,7 @@ import { i32const } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../../utils/saveByteCode';
 
-import type { ArgumentStringLiteral, CompilationContext } from '@8f4e/compiler-spec';
+import type { ArgumentStringLiteral, CodegenContext } from '@8f4e/compiler-spec';
 
 /**
  * Expands a string literal argument into one i32.const per byte (source order).
@@ -12,14 +12,10 @@ import type { ArgumentStringLiteral, CompilationContext } from '@8f4e/compiler-s
  * produces the expected byte sequence.
  * No null terminator is appended.
  */
-export default function pushStringLiteral(
-	argument: ArgumentStringLiteral,
-	context: CompilationContext
-): CompilationContext {
+export default function pushStringLiteral(argument: ArgumentStringLiteral, context: CodegenContext): CodegenContext {
 	// Array.from iterates by UTF-16 code unit; & 0xff clamps each to 0..255
 	const bytes = Array.from(argument.value, ch => ch.charCodeAt(0) & 0xff);
 	for (const byte of bytes) {
-		context.stack.push({ isInteger: true, isNonZero: byte !== 0 });
 		saveByteCode(context, i32const(byte));
 	}
 	return context;

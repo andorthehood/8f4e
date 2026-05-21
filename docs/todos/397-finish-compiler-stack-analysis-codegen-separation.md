@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4d
 created: 2026-05-11
 issue: https://github.com/andorthehood/8f4e/issues/653
-status: Open
-completed: null
+status: Done
+completed: 2026-05-20
 ---
 
 # TODO: Finish compiler stack analysis/codegen separation
@@ -81,15 +81,15 @@ The first command should return no matches. The second command should return no 
 
 ## Success Criteria
 
-- [ ] Stack analysis runs as a distinct pass after semantic normalization and before codegen.
-- [ ] Stack-type-related errors are owned by stack analysis.
-- [ ] Analyzed line data records consumed operands, produced stack items, stack before/after, and codegen hints.
-- [ ] Codegen instruction functions consume analyzed lines instead of mutating `context.stack`.
-- [ ] Codegen uses a narrowed context type that does not expose `stack`.
-- [ ] Non-test instruction compiler files do not import stack-analysis validation helpers.
-- [ ] Automated checks fail if `context.stack` or stack validation helpers reappear in codegen files.
-- [ ] Existing compiler behavior and bytecode snapshots remain stable unless intentionally changed.
-- [ ] Focused compiler tests and typechecks pass.
+- [x] Stack analysis runs as a distinct pass after semantic normalization and before codegen.
+- [x] Stack-type-related errors are owned by stack analysis.
+- [x] Analyzed line data records consumed operands, produced stack items, and stack before/after.
+- [x] Codegen instruction functions consume analyzed lines instead of mutating `context.stack`.
+- [x] Codegen uses a narrowed context type that does not expose `stack`.
+- [x] Non-test instruction compiler files do not import stack-analysis validation helpers.
+- [x] Automated checks fail if `context.stack` or stack validation helpers reappear in codegen files.
+- [x] Existing compiler behavior and bytecode snapshots remain stable unless intentionally changed.
+- [x] Focused compiler tests and typechecks pass.
 
 ## Affected Components
 
@@ -115,3 +115,4 @@ The first command should return no matches. The second command should return no 
 
 - This TODO intentionally starts from the current post-394 state, where `withValidation` has already been removed and instruction stack validation has already moved into `packages/compiler/src/stackAnalysis/`.
 - `packages/compiler-spec/src/instructionSpecs.ts` now exposes user-facing docs, stack-effect display metadata, and stack-signature helpers. The remaining work is to make compiler stack analysis consume this metadata and to remove stack mutation from codegen.
+- Completed on 2026-05-20 by introducing analyzed lines and a narrowed codegen context, moving stack effects out of instruction emitters, and adding `architectureBoundaries.test.ts` to enforce the new boundary.

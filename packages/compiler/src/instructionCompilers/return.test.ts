@@ -4,7 +4,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 import _return from './return';
 
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -22,7 +22,8 @@ describe('return instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: false, isNonZero: false });
 
-		_return(
+		analyzeAndCompileInstruction(
+			_return,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

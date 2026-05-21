@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import fallingEdge from './fallingEdge';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('fallingEdge instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		fallingEdge(
+		analyzeAndCompileInstruction(
+			fallingEdge,
 			{
 				lineNumberBeforeMacroExpansion: 5,
 				lineNumberAfterMacroExpansion: 5,

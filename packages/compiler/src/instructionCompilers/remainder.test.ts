@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import remainder from './remainder';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('remainder instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
 
-		remainder(
+		analyzeAndCompileInstruction(
+			remainder,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -32,7 +33,8 @@ describe('remainder instruction compiler', () => {
 		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
 
 		expect(() => {
-			remainder(
+			analyzeAndCompileInstruction(
+				remainder,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -51,7 +53,8 @@ describe('remainder instruction compiler', () => {
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
 		);
 
-		remainder(
+		analyzeAndCompileInstruction(
+			remainder,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

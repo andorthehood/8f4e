@@ -11,17 +11,14 @@ import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
  * Instruction compiler for `storeBytes`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const storeBytes: InstructionCompiler<StoreBytesLine> = (line: StoreBytesLine, context) => {
+const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const count = line.arguments[0].value;
 
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-	const address = context.stack.pop()!;
+	const address = line.stackAnalysis.consumedOperands[line.stackAnalysis.consumedOperands.length - 1];
 	const addressIsSafe = isSafeMemoryAccess(address, count);
 	const memoryIndex = getAddressMemoryIndex(address);
-	for (let i = 0; i < count; i++) {
-		context.stack.pop();
-	}
 
 	const tempAddrLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesAddr_${lineNumberAfterMacroExpansion}`, {
 		isInteger: true,

@@ -1,6 +1,6 @@
 import createDeclarationCompiler from './createDeclarationCompiler';
 
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
 
 /**
  * Instruction compiler for `float64`, `float64*`, `float64**`.
@@ -15,7 +15,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  *
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const float64: InstructionCompiler = createDeclarationCompiler({
+const float64: MemoryDeclarationCompiler = createDeclarationCompiler({
 	baseType: 'float64',
 	truncate: false,
 	nonPointerElementWordSize: 8,

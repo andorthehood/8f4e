@@ -21,7 +21,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/signal-helpers.md)
  */
 const hasChanged: InstructionCompiler = (line, context) => {
-	const operand = context.stack.pop()!;
+	const [operand] = line.stackAnalysis.consumedOperands;
 
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
@@ -34,8 +34,6 @@ const hasChanged: InstructionCompiler = (line, context) => {
 		isInteger: operand.isInteger,
 		index: currentValueLocalIndex,
 	};
-
-	context.stack.push({ isInteger: true, isNonZero: false });
 
 	const loadByteCode = operand.isInteger ? i32load() : f32load();
 	const equalityByteCode = operand.isInteger ? WASM_I32_EQ : WASM_F32_EQ;
