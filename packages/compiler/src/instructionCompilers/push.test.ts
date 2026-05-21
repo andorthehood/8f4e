@@ -3,7 +3,7 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 
 import push from './push';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST, MemoryMap } from '@8f4e/compiler-spec';
 
@@ -13,7 +13,8 @@ describe('push instruction compiler', () => {
 	it('pushes a literal value', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -32,7 +33,8 @@ describe('push instruction compiler', () => {
 	it('pushes a normalized literal value', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -51,7 +53,8 @@ describe('push instruction compiler', () => {
 	it('tracks address range metadata on normalized address literals', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -92,7 +95,8 @@ describe('push instruction compiler', () => {
 	it('expands a string literal into per-byte i32.const pushes', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -111,7 +115,8 @@ describe('push instruction compiler', () => {
 	it('pushes a f64 literal value emitting f64.const', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -137,7 +142,8 @@ describe('push instruction compiler', () => {
 	it('tracks isFloat64 on the stack item for f64 literal', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -161,7 +167,8 @@ describe('push instruction compiler', () => {
 	it('pushes a normalized f64 literal emitting f64.const', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -187,7 +194,8 @@ describe('push instruction compiler', () => {
 	it('tracks isFloat64 on the stack item for normalized f64 literal', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -211,7 +219,8 @@ describe('push instruction compiler', () => {
 	it('float32 literal push does not emit f64.const', () => {
 		const context = createInstructionCompilerTestContext();
 
-		push(
+		analyzeAndCompileInstruction(
+			push,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -242,7 +251,8 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -273,7 +283,8 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -302,7 +313,8 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -331,7 +343,8 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -359,7 +372,8 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -388,7 +402,8 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -420,7 +435,8 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -467,7 +483,8 @@ describe('push instruction compiler', () => {
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -485,7 +502,8 @@ describe('push instruction compiler', () => {
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -503,7 +521,8 @@ describe('push instruction compiler', () => {
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			push(
+			analyzeAndCompileInstruction(
+				push,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

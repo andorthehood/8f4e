@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import castToFloat from './castToFloat';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('castToFloat instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: true });
 
-		castToFloat(
+		analyzeAndCompileInstruction(
+			castToFloat,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

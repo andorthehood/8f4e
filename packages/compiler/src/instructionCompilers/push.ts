@@ -8,7 +8,12 @@ import pushMemoryPointer from './push/handlers/pushMemoryPointer';
 import pushStringLiteral from './push/handlers/pushStringLiteral';
 import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
-import type { CodegenPushLine, InstructionCompiler, PushIdentifierLine } from '@8f4e/compiler-spec';
+import type {
+	CodegenPushLine,
+	InstructionCompiler,
+	MemoryPointerPushLine,
+	PushIdentifierLine,
+} from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `push`.
@@ -28,9 +33,9 @@ const push: InstructionCompiler<CodegenPushLine> = (line: CodegenPushLine, conte
 			case IdentifierPushKind.MEMORY_IDENTIFIER:
 				return pushMemoryIdentifier(identifierLine, context);
 			case IdentifierPushKind.MEMORY_POINTER:
-				return pushMemoryPointer(identifierLine, context);
+				return pushMemoryPointer(identifierLine as MemoryPointerPushLine, context);
 			case IdentifierPushKind.LOCAL_POINTER:
-				return pushLocalPointer(identifierLine, context);
+				return pushLocalPointer(identifierLine as MemoryPointerPushLine, context);
 			case IdentifierPushKind.LOCAL:
 			default:
 				return pushLocal(identifierLine, context);

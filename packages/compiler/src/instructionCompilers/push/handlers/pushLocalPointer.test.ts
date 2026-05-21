@@ -28,6 +28,5 @@ describe('pushLocalPointer', () => {
 		);
 
 		expect(context.byteCode).toEqual([...localGet(1), ...f32load()]);
-		expect(context.stack).toEqual([{ isInteger: false, isNonZero: false }]);
 	});
 });

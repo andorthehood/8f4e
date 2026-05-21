@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import blockEnd from './blockEnd';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -21,7 +21,8 @@ describe('blockEnd instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		blockEnd(
+		analyzeAndCompileInstruction(
+			blockEnd,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

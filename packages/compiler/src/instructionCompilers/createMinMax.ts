@@ -22,10 +22,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const createMinMax =
 	(instruction: 'min' | 'max'): InstructionCompiler =>
 	(line, context) => {
-		// Non-null assertion is safe: instruction validation ensures 2 operands exist
-		const operand2 = context.stack.pop()!;
-		const operand1 = context.stack.pop()!;
-
+		const [operand1, operand2] = line.stackAnalysis.consumedOperands;
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
 
@@ -43,7 +40,6 @@ const createMinMax =
 				isInteger: true,
 				index: rightLocalIndex,
 			};
-			context.stack.push({ isInteger: true, isNonZero: false });
 
 			return saveByteCode(context, [
 				...localSet(rightLocalIndex),
@@ -59,12 +55,6 @@ const createMinMax =
 				WASM_END,
 			]);
 		}
-
-		context.stack.push({
-			isInteger: false,
-			...(isFloat64 ? { isFloat64: true } : {}),
-			isNonZero: false,
-		});
 
 		if (instruction === 'min') {
 			return saveByteCode(context, [isFloat64 ? WASM_F64_MIN : WASM_F32_MIN]);

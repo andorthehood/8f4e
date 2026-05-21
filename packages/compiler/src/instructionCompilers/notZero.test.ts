@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import notZero from './notZero';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('notZero instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		notZero(
+		analyzeAndCompileInstruction(
+			notZero,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -31,7 +32,8 @@ describe('notZero instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false });
 
-		notZero(
+		analyzeAndCompileInstruction(
+			notZero,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -51,7 +53,8 @@ describe('notZero instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
 
-		notZero(
+		analyzeAndCompileInstruction(
+			notZero,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

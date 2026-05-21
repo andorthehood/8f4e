@@ -4,7 +4,7 @@ import { WASM_MEMORY_SIZE, WASM_MISC_MEMORY_COPY } from '@8f4e/compiler-wasm-uti
 
 import memoryCopy from './memoryCopy';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -35,7 +35,7 @@ describe('memoryCopy instruction compiler', () => {
 			}
 		);
 
-		memoryCopy(line, context);
+		analyzeAndCompileInstruction(memoryCopy, line, context);
 
 		expect(context.stack).toHaveLength(0);
 		expect(context.byteCode).toStrictEqual([0x41, 0x14, 0xfc, WASM_MISC_MEMORY_COPY, 0x00, 0x00]);
@@ -45,7 +45,7 @@ describe('memoryCopy instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		memoryCopy(line, context);
+		analyzeAndCompileInstruction(memoryCopy, line, context);
 
 		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);
 		expect(context.byteCode).toContain(WASM_MISC_MEMORY_COPY);
@@ -56,7 +56,8 @@ describe('memoryCopy instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		memoryCopy(
+		analyzeAndCompileInstruction(
+			memoryCopy,
 			{
 				...line,
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],

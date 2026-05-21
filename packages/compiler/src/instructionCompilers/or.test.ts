@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import or from './or';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('or instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: true });
 
-		or(
+		analyzeAndCompileInstruction(
+			or,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -34,7 +35,8 @@ describe('or instruction compiler', () => {
 			{ isInteger: true, isNonZero: true, knownIntegerValue: 3 }
 		);
 
-		or(
+		analyzeAndCompileInstruction(
+			or,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

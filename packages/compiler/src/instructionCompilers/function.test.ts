@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import _function from './function';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('function instruction compiler', () => {
 	it('starts a new function block', () => {
 		const context = createInstructionCompilerTestContext({ blockStack: [] });
 
-		_function(
+		analyzeAndCompileInstruction(
+			_function,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -35,7 +36,8 @@ describe('function instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 
 		expect(() => {
-			_function(
+			analyzeAndCompileInstruction(
+				_function,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

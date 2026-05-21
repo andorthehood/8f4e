@@ -3,7 +3,7 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 
 import ensureNonZero from './ensureNonZero';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('ensureNonZero instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		ensureNonZero(
+		analyzeAndCompileInstruction(
+			ensureNonZero,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -33,7 +34,8 @@ describe('ensureNonZero instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false });
 
-		ensureNonZero(
+		analyzeAndCompileInstruction(
+			ensureNonZero,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
@@ -54,7 +56,8 @@ describe('ensureNonZero instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
 
-		ensureNonZero(
+		analyzeAndCompileInstruction(
+			ensureNonZero,
 			{
 				lineNumberBeforeMacroExpansion: 3,
 				lineNumberAfterMacroExpansion: 3,

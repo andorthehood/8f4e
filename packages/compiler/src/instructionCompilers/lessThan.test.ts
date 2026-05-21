@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import lessThan from './lessThan';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('lessThan instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
 
-		lessThan(
+		analyzeAndCompileInstruction(
+			lessThan,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -32,7 +33,8 @@ describe('lessThan instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-		lessThan(
+		analyzeAndCompileInstruction(
+			lessThan,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -55,7 +57,8 @@ describe('lessThan instruction compiler', () => {
 			{ isInteger: false, isFloat64: true, isNonZero: false }
 		);
 
-		lessThan(
+		analyzeAndCompileInstruction(
+			lessThan,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

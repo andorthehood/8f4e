@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import mapBegin from './mapBegin';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('mapBegin instruction compiler', () => {
 	it('opens a map block for int input type', () => {
 		const context = createInstructionCompilerTestContext();
 
-		mapBegin(
+		analyzeAndCompileInstruction(
+			mapBegin,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -30,7 +31,8 @@ describe('mapBegin instruction compiler', () => {
 	it('opens a map block for float input type', () => {
 		const context = createInstructionCompilerTestContext();
 
-		mapBegin(
+		analyzeAndCompileInstruction(
+			mapBegin,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -48,7 +50,8 @@ describe('mapBegin instruction compiler', () => {
 	it('opens a map block for float64 input type', () => {
 		const context = createInstructionCompilerTestContext();
 
-		mapBegin(
+		analyzeAndCompileInstruction(
+			mapBegin,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

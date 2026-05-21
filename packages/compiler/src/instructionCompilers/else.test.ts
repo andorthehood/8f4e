@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import _else from './else';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -21,7 +21,8 @@ describe('else instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		_else(
+		analyzeAndCompileInstruction(
+			_else,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -42,7 +43,8 @@ describe('else instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({ blockStack: [] });
 
 		expect(() => {
-			_else(
+			analyzeAndCompileInstruction(
+				_else,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

@@ -20,10 +20,6 @@ describe('pushStringLiteral', () => {
 
 		// 'h' = 104, 'i' = 105
 		expect(context.byteCode).toEqual([...i32const(104), ...i32const(105)]);
-		expect(context.stack).toEqual([
-			{ isInteger: true, isNonZero: true },
-			{ isInteger: true, isNonZero: true },
-		]);
 	});
 
 	it('pushes nothing for an empty string', () => {
@@ -36,7 +32,6 @@ describe('pushStringLiteral', () => {
 		pushStringLiteral(arg, context);
 
 		expect(context.byteCode).toEqual([]);
-		expect(context.stack).toEqual([]);
 	});
 
 	it('emits i32.const 0 for null byte and marks isNonZero false', () => {
@@ -49,7 +44,6 @@ describe('pushStringLiteral', () => {
 		pushStringLiteral(arg, context);
 
 		expect(context.byteCode).toEqual(i32const(0));
-		expect(context.stack[0]).toEqual({ isInteger: true, isNonZero: false });
 	});
 
 	it('expands "hello" to 5 byte pushes', () => {
@@ -61,7 +55,6 @@ describe('pushStringLiteral', () => {
 
 		pushStringLiteral(arg, context);
 
-		expect(context.stack).toHaveLength(5);
 		// h=104, e=101, l=108, l=108, o=111
 		const expected = [...i32const(104), ...i32const(101), ...i32const(108), ...i32const(108), ...i32const(111)];
 		expect(context.byteCode).toEqual(expected);

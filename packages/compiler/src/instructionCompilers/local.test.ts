@@ -3,7 +3,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 
 import local from './local';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -13,7 +13,8 @@ describe('local instruction compiler', () => {
 	it('adds a local variable', () => {
 		const context = createInstructionCompilerTestContext();
 
-		local(
+		analyzeAndCompileInstruction(
+			local,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -52,7 +53,8 @@ describe('local instruction compiler', () => {
 
 		let thrownError: unknown;
 		try {
-			local(
+			analyzeAndCompileInstruction(
+				local,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -72,7 +74,8 @@ describe('local instruction compiler', () => {
 	it('adds a pointer local variable with pointee metadata', () => {
 		const context = createInstructionCompilerTestContext();
 
-		local(
+		analyzeAndCompileInstruction(
+			local,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,

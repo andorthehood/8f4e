@@ -31,7 +31,7 @@ exports[`abs instruction compiler > compiles int abs via segment instructions 1`
   "stack": [
     {
       "isInteger": true,
-      "isNonZero": false,
+      "isNonZero": true,
     },
   ],
 }

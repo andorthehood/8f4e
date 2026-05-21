@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import impure from './impure';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -21,7 +21,8 @@ describe('impure instruction compiler', () => {
 			codeBlockType: 'function',
 		});
 
-		impure(
+		analyzeAndCompileInstruction(
+			impure,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -39,7 +40,8 @@ describe('impure instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 
 		expect(() => {
-			impure(
+			analyzeAndCompileInstruction(
+				impure,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

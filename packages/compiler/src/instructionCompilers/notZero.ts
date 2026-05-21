@@ -9,17 +9,13 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/comparison.md)
  */
 const notZero: InstructionCompiler = (line, context) => {
-	// Non-null assertion is safe: instruction validation ensures 1 operand exists
-	const operand = context.stack.pop()!;
+	const [operand] = line.stackAnalysis.consumedOperands;
 
 	if (operand.isInteger) {
-		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 		return saveByteCode(context, [...i32const(0), WASM_I32_NE]);
 	} else if (operand.isFloat64) {
-		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 		return saveByteCode(context, [...f64const(0), WASM_F64_NE]);
 	} else {
-		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 		return saveByteCode(context, [...f32const(0), WASM_F32_NE]);
 	}
 };

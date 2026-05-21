@@ -20,8 +20,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/signal-helpers.md)
  */
 const risingEdge: InstructionCompiler = (line, context) => {
-	// Non-null assertion is safe: instruction validation with minOperands: 1 guarantees at least 1 operand exists on the stack
-	const operand = context.stack.pop()!;
+	const [operand] = line.stackAnalysis.consumedOperands;
 
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const currentValueName = '__risingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
@@ -34,7 +33,6 @@ const risingEdge: InstructionCompiler = (line, context) => {
 		isInteger: operand.isInteger,
 		index: currentValueLocalIndex,
 	};
-	context.stack.push({ isInteger: true, isNonZero: false });
 
 	const loadByteCode = operand.isInteger ? i32load() : f32load();
 	const comparisonByteCode = operand.isInteger ? WASM_I32_GT_S : WASM_F32_GT;

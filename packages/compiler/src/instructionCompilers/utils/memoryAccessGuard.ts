@@ -19,7 +19,7 @@ import {
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
 
-import type { CompilationContext, StackItem } from '@8f4e/compiler-spec';
+import type { CodegenContext, CompilationContext, StackItem } from '@8f4e/compiler-spec';
 
 type NumericWasmValueType = typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof WASM_TYPE_F64;
 
@@ -47,8 +47,10 @@ type GuardedMemoryCopyOptions = {
 	memoryCopyByteCode: number[];
 };
 
+type MemoryGuardContext = CodegenContext | CompilationContext;
+
 export function getOrCreateMemoryGuardLocal(
-	context: CompilationContext,
+	context: MemoryGuardContext,
 	name: string,
 	item: Pick<StackItem, 'isInteger' | 'isFloat64'>
 ) {
@@ -116,7 +118,7 @@ function zeroValue(type: NumericWasmValueType): number[] {
 	return type === WASM_TYPE_F32 ? f32const(0) : i32const(0);
 }
 
-export function guardedLoad(context: CompilationContext, options: GuardedLoadOptions): number[] {
+export function guardedLoad(context: MemoryGuardContext, options: GuardedLoadOptions): number[] {
 	const addressLocal = getOrCreateMemoryGuardLocal(
 		context,
 		`__memoryGuardAddr_${options.lineNumberAfterMacroExpansion}`,
@@ -136,7 +138,7 @@ export function guardedLoad(context: CompilationContext, options: GuardedLoadOpt
 	];
 }
 
-export function guardedStore(context: CompilationContext, options: GuardedStoreOptions): number[] {
+export function guardedStore(context: MemoryGuardContext, options: GuardedStoreOptions): number[] {
 	const addressLocal = getOrCreateMemoryGuardLocal(
 		context,
 		`__memoryGuardAddr_${options.lineNumberAfterMacroExpansion}`,
@@ -166,7 +168,7 @@ export function isSafeMemoryCopy(destination: StackItem, source: StackItem, byte
 	return byteLength > 0 && isSafeMemoryAccess(destination, byteLength) && isSafeMemoryAccess(source, byteLength);
 }
 
-export function guardedMemoryCopy(context: CompilationContext, options: GuardedMemoryCopyOptions): number[] {
+export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedMemoryCopyOptions): number[] {
 	const destinationLocal = getOrCreateMemoryGuardLocal(
 		context,
 		`__memoryCopyDestination_${options.lineNumberAfterMacroExpansion}`,

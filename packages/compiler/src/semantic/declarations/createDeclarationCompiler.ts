@@ -5,7 +5,12 @@ import getMemoryFlags from '../../utils/memoryFlags';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
 
-import type { InstructionCompiler, MemoryType } from '@8f4e/compiler-spec';
+import type { AST, CompilationContext, MemoryType } from '@8f4e/compiler-spec';
+
+export type MemoryDeclarationCompiler<TLine extends AST[number] = AST[number]> = (
+	line: TLine,
+	context: CompilationContext
+) => CompilationContext;
 
 type BaseType = Parameters<typeof getMemoryFlags>[0];
 
@@ -23,14 +28,14 @@ interface DeclarationCompilerOptions {
 }
 
 /**
- * Factory that produces an `InstructionCompiler` for a scalar/pointer memory
+ * Factory that produces a compiler for a scalar/pointer memory
  * declaration instruction (int, int8, int16, float, float64 and their pointer
  * variants).
  *
  * All declaration compilers share the same five-step pattern; only the base
  * type, truncation behaviour, and non-pointer element word size differ.
  */
-export default function createDeclarationCompiler(options: DeclarationCompilerOptions): InstructionCompiler {
+export default function createDeclarationCompiler(options: DeclarationCompilerOptions): MemoryDeclarationCompiler {
 	const { baseType, truncate, nonPointerElementWordSize } = options;
 
 	return (line, context) => {

@@ -9,10 +9,8 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/math-helpers.md)
  */
 const sqrt: InstructionCompiler = (line, context) => {
-	// Non-null assertion is safe: instruction validation ensures 1 operand exists
-	const operand = context.stack.pop()!;
+	const [operand] = line.stackAnalysis.consumedOperands;
 
-	context.stack.push({ isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: false });
 	return saveByteCode(context, [operand.isFloat64 ? WASM_F64_SQRT : WASM_F32_SQRT]);
 };
 

@@ -12,7 +12,6 @@ const notEqual = createNumericBinaryCompiler({
 		float32: WASM_F32_NE,
 		float64: WASM_F64_NE,
 	},
-	result: 'comparison',
 });
 
 export default notEqual;
