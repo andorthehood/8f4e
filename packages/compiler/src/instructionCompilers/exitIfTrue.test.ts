@@ -4,7 +4,7 @@ import { BlockType, ErrorCode } from '@8f4e/compiler-spec';
 
 import exitIfTrue from './exitIfTrue';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -14,7 +14,8 @@ describe('exitIfTrue instruction compiler', () => {
 		context.stack.push({ isInteger: false, isNonZero: false });
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		exitIfTrue(
+		analyzeAndCompileInstruction(
+			exitIfTrue,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -42,7 +43,8 @@ describe('exitIfTrue instruction compiler', () => {
 		context.stack.push({ isInteger: true, isNonZero: false });
 
 		try {
-			exitIfTrue(
+			analyzeAndCompileInstruction(
+				exitIfTrue,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

@@ -1,9 +1,7 @@
 import { createFunctionType } from '@8f4e/compiler-wasm-utils';
-import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/compiler-spec';
 
-import { getError } from '../compilerError';
-import { functionValueTypeToWasmType, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
+import { functionValueTypeToWasmType } from '../utils/functionValueType';
 import { popBlock } from '../utils/blockStack';
 
 import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
@@ -13,11 +11,7 @@ import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
 const functionEnd: InstructionCompiler = (line, context) => {
-	const block = popBlock(context);
-
-	if (!block || block.blockType !== BlockType.FUNCTION) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
+	popBlock(context)!;
 
 	// Parse return types: functionEnd [<returnType1> <returnType2> ...]
 	const returnTypes = line.arguments.map(
@@ -29,22 +23,6 @@ const functionEnd: InstructionCompiler = (line, context) => {
 				}
 			).value
 	);
-
-	if (returnTypes.length > 8) {
-		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
-	}
-
-	// Validate stack matches return types
-	if (context.stack.length !== returnTypes.length) {
-		throw getError(ErrorCode.STACK_MISMATCH_FUNCTION_RETURN, line, context);
-	}
-
-	for (let i = 0; i < returnTypes.length; i++) {
-		const stackItem = context.stack[context.stack.length - returnTypes.length + i];
-		if (!stackItemMatchesFunctionValueType(stackItem, returnTypes[i])) {
-			throw getError(ErrorCode.TYPE_MISMATCH, line, context);
-		}
-	}
 
 	// Update function signature with return types
 	if (context.currentFunctionSignature) {
@@ -64,9 +42,6 @@ const functionEnd: InstructionCompiler = (line, context) => {
 			}
 		}
 	}
-
-	// Clear the stack (return values are consumed)
-	context.stack = [];
 
 	return context;
 };

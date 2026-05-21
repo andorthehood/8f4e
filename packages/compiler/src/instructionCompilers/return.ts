@@ -18,9 +18,6 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const _return: InstructionCompiler = (line, context) => {
 	saveByteCode(context, [WASM_RETURN]);
 
-	// Clear the stack — execution does not continue past a return
-	context.stack = [];
-
 	return context;
 };
 

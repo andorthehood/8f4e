@@ -5,7 +5,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 
 import loopIndex from './loopIndex';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -30,7 +30,8 @@ describe('loopIndex instruction compiler', () => {
 			],
 		});
 
-		loopIndex(
+		analyzeAndCompileInstruction(
+			loopIndex,
 			{
 				lineNumberBeforeMacroExpansion: 10,
 				lineNumberAfterMacroExpansion: 10,
@@ -71,7 +72,8 @@ describe('loopIndex instruction compiler', () => {
 			],
 		});
 
-		loopIndex(
+		analyzeAndCompileInstruction(
+			loopIndex,
 			{
 				lineNumberBeforeMacroExpansion: 10,
 				lineNumberAfterMacroExpansion: 10,
@@ -88,7 +90,8 @@ describe('loopIndex instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 
 		try {
-			loopIndex(
+			analyzeAndCompileInstruction(
+				loopIndex,
 				{
 					lineNumberBeforeMacroExpansion: 10,
 					lineNumberAfterMacroExpansion: 10,

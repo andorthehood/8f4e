@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import loadFloat from './loadFloat';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -17,7 +17,8 @@ describe('loadFloat instruction compiler', () => {
 			},
 		});
 
-		loadFloat(
+		analyzeAndCompileInstruction(
+			loadFloat,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -40,7 +41,8 @@ describe('loadFloat instruction compiler', () => {
 			isNonZero: false,
 		});
 
-		loadFloat(
+		analyzeAndCompileInstruction(
+			loadFloat,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,

@@ -1,15 +1,10 @@
-import {
-	type CompilationContext,
-	type ErrorCodeValue,
-	type InstructionCompiler,
-	type ScopeRule,
-} from '@8f4e/compiler-spec';
+import { type AST, type CompilationContext, type ErrorCodeValue, type ScopeRule } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
 export function validateScope(
 	scope: ScopeRule,
-	line: Parameters<InstructionCompiler>[0],
+	line: AST[number],
 	context: CompilationContext,
 	errorCode: ErrorCodeValue
 ): void {
@@ -18,6 +13,9 @@ export function validateScope(
 	switch (scope) {
 		case 'module':
 			isValid = context.insideModuleBlock === true;
+			break;
+		case 'moduleOnly':
+			isValid = context.insideModuleBlock === true && context.insideFunctionBlock === false;
 			break;
 		case 'function':
 			isValid = context.insideFunctionBlock === true;
@@ -33,6 +31,9 @@ export function validateScope(
 			break;
 		case 'map':
 			isValid = context.insideMapBlock === true;
+			break;
+		case 'loop':
+			isValid = context.insideLoopBlock === true;
 			break;
 	}
 

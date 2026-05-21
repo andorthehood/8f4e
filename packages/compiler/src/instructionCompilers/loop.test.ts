@@ -3,7 +3,7 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 
 import loop from './loop';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,8 @@ describe('loop instruction compiler', () => {
 	it('compiles the loop segment with default cap', () => {
 		const context = createInstructionCompilerTestContext();
 
-		loop(
+		analyzeAndCompileInstruction(
+			loop,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
@@ -32,7 +33,8 @@ describe('loop instruction compiler', () => {
 	it('compiles the loop segment with explicit cap argument', () => {
 		const context = createInstructionCompilerTestContext();
 
-		loop(
+		analyzeAndCompileInstruction(
+			loop,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
@@ -54,7 +56,8 @@ describe('loop instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.loopCap = 500;
 
-		loop(
+		analyzeAndCompileInstruction(
+			loop,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
@@ -76,7 +79,8 @@ describe('loop instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.loopCap = 500;
 
-		loop(
+		analyzeAndCompileInstruction(
+			loop,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,

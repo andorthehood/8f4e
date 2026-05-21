@@ -12,7 +12,6 @@ const lessOrEqual = createNumericBinaryCompiler({
 		float32: WASM_F32_LE,
 		float64: WASM_F64_LE,
 	},
-	result: 'comparison',
 });
 
 export default lessOrEqual;

@@ -3,6 +3,7 @@ import type {
 	ArgumentCompileTimeExpression,
 	ArgumentIdentifier,
 	ArgumentLiteral,
+	MemoryPointerIdentifier,
 	ArgumentStringLiteral,
 } from './arguments';
 import type {
@@ -162,6 +163,20 @@ export interface StackItem {
 
 export type Stack = StackItem[];
 
+export interface StackAnalysisResult {
+	stackBefore: Stack;
+	stackAfter: Stack;
+	consumedOperands: Stack;
+	producedStackItems: Stack;
+	droppedStackItems?: Stack;
+}
+
+export type AnalyzedLine<TLine extends AST[number] = AST[number]> = TLine & {
+	stackAnalysis: StackAnalysisResult;
+};
+
+export type CodegenContext = Omit<CompilationContext, 'stack'>;
+
 export type ResolvedMapValueArgument = NormalizedArgumentLiteral | ArgumentStringLiteral;
 
 export type NormalizedMapLine = Omit<MapLine, 'arguments'> & {
@@ -215,6 +230,7 @@ export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
 };
 
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
+export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & { arguments: [MemoryPointerIdentifier] };
 
 export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 	? NormalizedConstLine
@@ -270,6 +286,6 @@ export type BlockStack = Array<{
 }>;
 
 export type InstructionCompiler<TLine extends AST[number] = AST[number]> = (
-	line: TLine,
-	context: CompilationContext
-) => CompilationContext;
+	line: AnalyzedLine<TLine>,
+	context: CodegenContext
+) => CodegenContext;

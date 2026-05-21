@@ -5,7 +5,7 @@ import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
 import normalizeClampAddress from '../semantic/normalization/clampAddress';
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST, MemoryAddressRange } from '@8f4e/compiler-spec';
 
@@ -40,7 +40,7 @@ describe('clamp address instruction compilers', () => {
 			address: { clampRange: range },
 		});
 
-		clampAddress(createLine('clampAddress'), context);
+		analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context);
 
 		expect(context.stack).toEqual([
 			{
@@ -67,7 +67,7 @@ describe('clamp address instruction compilers', () => {
 			address: { clampRange: range },
 		});
 
-		clampAddress(createLine('clampAddress', 1), context);
+		analyzeAndCompileInstruction(clampAddress, createLine('clampAddress', 1), context);
 
 		expect(context.stack).toEqual([
 			{
@@ -99,7 +99,7 @@ describe('clamp address instruction compilers', () => {
 			address: { clampRange: shiftedRange },
 		});
 
-		clampAddress(createLine('clampAddress'), context);
+		analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context);
 
 		expect(context.stack).toEqual([
 			{
@@ -121,7 +121,7 @@ describe('clamp address instruction compilers', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		expect(() => clampAddress(createLine('clampAddress'), context)).toThrow(
+		expect(() => analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.ADDRESS_RANGE_REQUIRED })
 		);
 	});
@@ -137,7 +137,7 @@ describe('clamp address instruction compilers', () => {
 		});
 		context.stack.push({ isInteger: true, isNonZero: true, knownIntegerValue: 999 });
 
-		clampModuleAddress(createLine('clampModuleAddress'), context);
+		analyzeAndCompileInstruction(clampModuleAddress, createLine('clampModuleAddress'), context);
 
 		expect(context.stack).toEqual([
 			{
@@ -165,7 +165,7 @@ describe('clamp address instruction compilers', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: true, knownIntegerValue: 1024 });
 
-		clampGlobalAddress(createLine('clampGlobalAddress'), context);
+		analyzeAndCompileInstruction(clampGlobalAddress, createLine('clampGlobalAddress'), context);
 
 		expect(context.stack).toEqual([
 			{
@@ -207,7 +207,7 @@ describe('clamp address instruction compilers', () => {
 			},
 		});
 
-		expect(() => clampAddress(createLine('clampAddress'), context)).toThrow(
+		expect(() => analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.ADDRESS_RANGE_TOO_SMALL })
 		);
 	});

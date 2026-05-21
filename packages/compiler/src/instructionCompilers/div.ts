@@ -1,10 +1,6 @@
 import { WASM_F32_DIV, WASM_F64_DIV, WASM_I32_DIV_S } from '@8f4e/compiler-wasm-utils';
-import { BASE_TYPE_METADATA, ErrorCode } from '@8f4e/compiler-spec';
 
 import createNumericBinaryCompiler from './utils/createNumericBinaryCompiler';
-import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
-
-import { getError } from '../compilerError';
 
 /**
  * Instruction compiler for `div`.
@@ -16,21 +12,6 @@ const div = createNumericBinaryCompiler({
 		float32: WASM_F32_DIV,
 		float64: WASM_F64_DIV,
 	},
-	result: 'numeric',
-	validate: ({ right, line, context }) => {
-		if (right.isNonZero) {
-			return;
-		}
-		throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
-	},
-	deriveIntegerMetadata: (left, right) =>
-		deriveKnownIntegerValue(left, right, (dividend, divisor) => {
-			if (dividend === BASE_TYPE_METADATA.int.min && divisor === -1) {
-				return undefined;
-			}
-
-			return Math.trunc(dividend / divisor) | 0;
-		}),
 });
 
 export default div;

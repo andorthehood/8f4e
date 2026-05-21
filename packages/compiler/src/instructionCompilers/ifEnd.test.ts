@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import ifEnd from './ifEnd';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -21,7 +21,8 @@ describe('ifEnd instruction compiler', () => {
 		});
 		context.stack.push({ isInteger: true, isNonZero: false });
 
-		ifEnd(
+		analyzeAndCompileInstruction(
+			ifEnd,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -42,7 +43,8 @@ describe('ifEnd instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 
 		expect(() => {
-			ifEnd(
+			analyzeAndCompileInstruction(
+				ifEnd,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,

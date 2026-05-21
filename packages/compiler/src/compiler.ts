@@ -12,13 +12,14 @@ import instructions from './instructionCompilers';
 import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, getModuleIdFromAst, prepassNamespace } from './semantic/buildNamespace';
-import { validateInstruction } from './stackAnalysis/validateInstruction';
+import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 import { functionValueTypeToWasmType } from './utils/functionValueType';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import { createCompilationContext } from './semantic/createCompilationContext';
 
 import type {
 	AST,
+	AnalyzedLine,
 	CompilationContext,
 	CompiledModule,
 	CompiledFunction,
@@ -29,18 +30,11 @@ import type {
 } from '@8f4e/compiler-spec';
 import type { Instruction } from './instructionCompilers';
 
-export function compileCodegenLine(
-	line: AST[number],
-	context: CompilationContext,
-	options: { skipValidation?: boolean } = {}
-) {
+export function compileCodegenLine(line: AnalyzedLine, context: CompilationContext) {
 	const instruction = line.instruction as Instruction;
 
 	if (!instructions[instruction]) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-	}
-	if (!options.skipValidation) {
-		validateInstruction(line, context);
 	}
 	const compileInstruction = instructions[instruction] as InstructionCompiler;
 	compileInstruction(line, context);
@@ -51,14 +45,12 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
 	}
 
-	validateInstruction(line, context);
-
 	if (line.isSemanticOnly) {
 		applySemanticLine(line, context);
 		return;
 	}
 
-	compileCodegenLine(line, context, { skipValidation: true });
+	compileCodegenLine(analyzeInstruction(line, context), context);
 }
 
 export function compileModule(
@@ -103,11 +95,10 @@ export function compileModule(
 
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
-		validateInstruction(line, context);
 		if (line.isSemanticOnly) {
 			applySemanticLine(line, context);
 		} else if (!line.isMemoryDeclaration) {
-			compileCodegenLine(line, context, { skipValidation: true });
+			compileCodegenLine(analyzeInstruction(line, context), context);
 		}
 		return line;
 	});

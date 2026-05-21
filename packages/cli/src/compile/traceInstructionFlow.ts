@@ -1,4 +1,9 @@
-import compile, { compileCodegenLine, collectNamespacesFromASTs, createCompilationContext } from '@8f4e/compiler';
+import compile, {
+	analyzeInstruction,
+	compileCodegenLine,
+	collectNamespacesFromASTs,
+	createCompilationContext,
+} from '@8f4e/compiler';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
@@ -91,7 +96,7 @@ function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: Compi
 		const byteCodeOffset = context.byteCode.length;
 
 		if (!line.isSemanticOnly && !line.isMemoryDeclaration) {
-			compileCodegenLine(line, context);
+			compileCodegenLine(analyzeInstruction(line, context), context);
 		}
 
 		entries.push({

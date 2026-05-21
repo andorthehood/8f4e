@@ -13,8 +13,6 @@ import type { IfLine, InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const _if: InstructionCompiler<IfLine> = (line, context) => {
-	// Non-null assertion is safe: instruction validation confirmed 1 operand exists before this function was called
-	context.stack.pop()!;
 	const { blockState, wasmType } = createResultBlockState(line.ifBlock?.resultType, BlockType.CONDITION);
 
 	pushBlock(context, blockState);

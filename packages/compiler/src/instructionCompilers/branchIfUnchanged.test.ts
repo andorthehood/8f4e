@@ -3,7 +3,7 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 
 import branchIfUnchanged from './branchIfUnchanged';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -12,7 +12,8 @@ describe('branchIfUnchanged instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({ isInteger: true, isNonZero: true });
 
-		branchIfUnchanged(
+		analyzeAndCompileInstruction(
+			branchIfUnchanged,
 			{
 				lineNumberBeforeMacroExpansion: 4,
 				lineNumberAfterMacroExpansion: 4,

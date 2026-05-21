@@ -3,7 +3,7 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import initOnly from './initOnly';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -19,7 +19,8 @@ describe('initOnly instruction compiler', () => {
 			],
 		});
 
-		initOnly(
+		analyzeAndCompileInstruction(
+			initOnly,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -39,7 +40,8 @@ describe('initOnly instruction compiler', () => {
 		});
 
 		expect(() => {
-			initOnly(
+			analyzeAndCompileInstruction(
+				initOnly,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -62,7 +64,8 @@ describe('initOnly instruction compiler', () => {
 			],
 		});
 
-		initOnly(
+		analyzeAndCompileInstruction(
+			initOnly,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -75,7 +78,8 @@ describe('initOnly instruction compiler', () => {
 
 		expect(context.initOnlyExecution).toBe(true);
 
-		initOnly(
+		analyzeAndCompileInstruction(
+			initOnly,
 			{
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,

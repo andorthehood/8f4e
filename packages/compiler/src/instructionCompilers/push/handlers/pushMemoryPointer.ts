@@ -3,21 +3,17 @@ import { i32const } from '@8f4e/compiler-wasm-utils';
 import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { getDataStructure } from '../../../utils/memoryData';
-import { buildPointerDereferenceByteCode, kindToStackItem } from '../shared';
+import { buildPointerDereferenceByteCode } from '../shared';
 
-import type { CompilationContext, PushIdentifierLine } from '@8f4e/compiler-spec';
+import type { CodegenContext, MemoryPointerPushLine } from '@8f4e/compiler-spec';
 
-export default function pushMemoryPointer(line: PushIdentifierLine, context: CompilationContext): CompilationContext {
+export default function pushMemoryPointer(line: MemoryPointerPushLine, context: CodegenContext): CodegenContext {
 	const memory = context.namespace.memory;
 	const argument = line.arguments[0];
-	if (argument.referenceKind !== 'memory-pointer') {
-		return context;
-	}
 	const base = argument.targetMemoryId;
 	const memoryItem = getDataStructure(memory, base)!;
 	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(memoryItem, i32const(memoryItem.byteAddress), 'pointer-slot');
-	context.stack.push(kindToStackItem(dereference.kind, { isNonZero: false }));
 
 	return saveByteCode(context, dereference.byteCode);
 }

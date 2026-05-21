@@ -3,7 +3,7 @@ import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
 
 import map from './map';
 
-import createInstructionCompilerTestContext from '../utils/testUtils';
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
 import type { AST } from '@8f4e/compiler-spec';
 
@@ -30,7 +30,8 @@ describe('map instruction compiler', () => {
 			],
 		});
 
-		map(
+		analyzeAndCompileInstruction(
+			map,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -68,7 +69,8 @@ describe('map instruction compiler', () => {
 			],
 		});
 
-		map(
+		analyzeAndCompileInstruction(
+			map,
 			{
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
@@ -114,7 +116,8 @@ describe('map instruction compiler', () => {
 		});
 
 		expect(() => {
-			map(
+			analyzeAndCompileInstruction(
+				map,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
@@ -133,7 +136,8 @@ describe('map instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 
 		expect(() => {
-			map(
+			analyzeAndCompileInstruction(
+				map,
 				{
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
