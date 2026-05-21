@@ -146,7 +146,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawWaves(engine, state, codeBlock, memoryViews);
 			drawInfoPanels(engine, state, codeBlock);
 			drawDebuggers(engine, state, codeBlock, memoryViews);
-			drawSelectedLineHint(engine, state, codeBlock);
+			drawSelectedLineHint(engine, state, codeBlock, memoryViews);
 
 			engine.endGroup();
 		} else if (state.featureFlags.offscreenBlockArrows) {

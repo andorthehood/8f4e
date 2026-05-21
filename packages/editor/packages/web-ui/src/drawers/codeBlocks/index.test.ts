@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
+
+import { getMemoryDeclarationIdFromSourceLine, getMemoryDeclarationTooltipText } from './drawSelectedLineHint';
 
 import drawModules from './index';
 
@@ -33,7 +36,63 @@ function createMockEngine({ drawCachedGroup = true }: { drawCachedGroup?: boolea
 	} as unknown as Engine;
 }
 
+function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+	return {
+		id: 'value',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: MemoryTypes.int,
+		memoryIndex: 0,
+		byteAddress: 0,
+		wordAlignedSize: 1,
+		wordAlignedAddress: 0,
+		default: 0,
+		isInteger: true,
+		isPointingToPointer: false,
+		isUnsigned: false,
+		...overrides,
+	};
+}
+
 describe('drawModules', () => {
+	it('extracts named memory declaration ids from selected source lines', () => {
+		expect(getMemoryDeclarationIdFromSourceLine('int value 1')).toBe('value');
+		expect(getMemoryDeclarationIdFromSourceLine('int[] buffer 4 48 50')).toBe('buffer');
+		expect(getMemoryDeclarationIdFromSourceLine('int 1')).toBeUndefined();
+		expect(getMemoryDeclarationIdFromSourceLine('add')).toBeUndefined();
+	});
+
+	it('formats live memory declaration values for the selected line hint', () => {
+		const memoryViews = createMemoryViews({ int32: [0, 42, 20, 0, 0, 123] });
+
+		expect(
+			getMemoryDeclarationTooltipText(memoryViews, createMemory({ byteAddress: 4, wordAlignedAddress: 1 }))
+		).toEqual(['address: 4', 'value: 42']);
+		expect(
+			getMemoryDeclarationTooltipText(
+				memoryViews,
+				createMemory({
+					id: 'pointer',
+					type: MemoryTypes['int*'],
+					byteAddress: 8,
+					wordAlignedAddress: 2,
+					pointeeBaseType: 'int',
+				})
+			)
+		).toEqual(['address: 8', 'value: 20', 'deref: 123']);
+		expect(
+			getMemoryDeclarationTooltipText(
+				memoryViews,
+				createMemory({
+					id: 'buffer',
+					byteAddress: 4,
+					wordAlignedAddress: 1,
+					numberOfElements: 4,
+				})
+			)
+		).toEqual(['address: 4', 'value[0]: 42']);
+	});
+
 	it('renders only the corners for hidden blocks by default', () => {
 		const hiddenBlock = createMockCodeBlock({
 			hidden: true,
@@ -270,6 +329,73 @@ describe('drawModules', () => {
 		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			fontNumbers
+		);
+	});
+
+	it('draws live memory declaration values in the selected line hint', () => {
+		const block = createMockCodeBlock({
+			textureCacheKey: 'selected-memory-block',
+			width: 100,
+			height: 80,
+			moduleId: 'test',
+			cursor: {
+				row: 0,
+				col: 0,
+				x: 16,
+				y: 16,
+			},
+			code: ['int value'],
+			codeToRender: [],
+			codeColors: [],
+		});
+		const state = createMockState({
+			compiler: {
+				compiledModules: {
+					test: {
+						memoryMap: {
+							value: createMemory({ id: 'value', byteAddress: 4, wordAlignedAddress: 1 }),
+						},
+					} as never,
+				},
+			},
+			graphicHelper: {
+				codeBlocks: [block],
+				selectedCodeBlock: block,
+				spriteLookups: {
+					fillColors: {},
+					fontNumbers: {},
+					fontCode: {},
+					fontDisabledCode: {},
+					fontLineNumber: {},
+					fontCodeComment: {},
+					fontInstruction: {},
+				} as never,
+			},
+			featureFlags: {
+				codeLineSelection: true,
+			},
+			tooltip: {
+				text: ['int ( -- )'],
+			},
+		});
+		const engine = createMockEngine();
+
+		drawModules(engine, state, createMemoryViews({ int32: [0, 77] }));
+
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'address: '
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'value: '
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			expect.any(Number),
+			expect.any(Number),
+			'77'
 		);
 	});
 
