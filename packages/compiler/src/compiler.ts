@@ -24,6 +24,8 @@ import type {
 	CompiledModule,
 	CompiledFunction,
 	CompiledFunctionLookup,
+	CompiledStackAnalysisLine,
+	CompileOptions,
 	FunctionTypeRegistry,
 	InstructionCompiler,
 	Namespaces,
@@ -40,7 +42,16 @@ export function compileCodegenLine(line: AnalyzedLine, context: CompilationConte
 	compileInstruction(line, context);
 }
 
-export function compileLine(line: AST[number], context: CompilationContext) {
+function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAnalysisLine {
+	return {
+		lineNumberBeforeMacroExpansion: line.lineNumberBeforeMacroExpansion,
+		lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+		instruction: line.instruction,
+		stackAnalysis: line.stackAnalysis,
+	};
+}
+
+export function compileLine(line: AST[number], context: CompilationContext): AnalyzedLine | undefined {
 	if (line.isMemoryDeclaration && context.mode === 'function') {
 		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
 	}
@@ -50,7 +61,9 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 		return;
 	}
 
-	compileCodegenLine(analyzeInstruction(line, context), context);
+	const analyzedLine = analyzeInstruction(line, context);
+	compileCodegenLine(analyzedLine, context);
+	return analyzedLine;
 }
 
 export function compileModule(
@@ -60,7 +73,7 @@ export function compileModule(
 	index: number,
 	functions?: CompiledFunctionLookup,
 	internalAllocator = { nextByteAddress: 0 },
-	options: { memoryRegions?: string[] } = {}
+	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {}
 ): CompiledModule {
 	// Prepass establishes the memory layout (byte addresses, sizes) for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
@@ -93,12 +106,17 @@ export function compileModule(
 		mode: 'module',
 	});
 
+	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		if (line.isSemanticOnly) {
 			applySemanticLine(line, context);
 		} else if (!line.isMemoryDeclaration) {
-			compileCodegenLine(analyzeInstruction(line, context), context);
+			const analyzedLine = analyzeInstruction(line, context);
+			compileCodegenLine(analyzedLine, context);
+			if (options.includeStackAnalysis) {
+				stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
+			}
 		}
 		return line;
 	});
@@ -140,6 +158,7 @@ export function compileModule(
 		...(internalResources ? { internalResources } : {}),
 		wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
 		ast: normalizedAst,
+		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
 		initOnlyExecution: context.initOnlyExecution,
@@ -151,7 +170,8 @@ export function compileFunction(
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
-	functions?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup,
+	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
 	const context = createCompilationContext({
 		namespace: {
@@ -179,9 +199,13 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	});
 
+	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 	const normalizedAst = ast.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
-		compileLine(line, context);
+		const analyzedLine = compileLine(line, context);
+		if (options.includeStackAnalysis && analyzedLine) {
+			stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
+		}
 		return line;
 	});
 
@@ -236,5 +260,6 @@ export function compileFunction(
 		wasmIndex,
 		typeIndex,
 		ast: normalizedAst,
+		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};
 }

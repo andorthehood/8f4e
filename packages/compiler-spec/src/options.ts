@@ -11,6 +11,8 @@ export interface CompileOptions {
 	memoryRegions?: string[];
 	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
 	includeAST?: boolean;
+	/** Whether to include per-instruction stack analysis in compiled modules and functions. Default is false. */
+	includeStackAnalysis?: boolean;
 	/** Disable shared memory for tests (wabt doesn't support shared memory). Default is false (shared enabled). */
 	disableSharedMemory?: boolean;
 	/** Buffer size for the buffer function. Default is 128. */

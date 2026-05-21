@@ -223,7 +223,7 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry, functionMetadata)
+		compileFunction(ast, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry, functionMetadata, options)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 	assertUniqueFunctionExportNames(compiledFunctionsMap);

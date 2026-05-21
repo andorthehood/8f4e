@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-05-21
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-21
 ---
 
 # TODO: Expose compiler stack analysis results
@@ -100,11 +100,20 @@ interface CompiledFunction {
 
 ## Success Criteria
 
-- [ ] `compile(...)` can return per-module stack analysis when requested.
-- [ ] `compile(...)` can return per-function stack analysis when requested.
-- [ ] Default compile output remains unchanged.
-- [ ] Stack analysis output is independent from AST output.
-- [ ] The payload contains enough line and stack metadata for editor selected-line tooltips.
+- [x] `compile(...)` can return per-module stack analysis when requested.
+- [x] `compile(...)` can return per-function stack analysis when requested.
+- [x] Default compile output remains unchanged.
+- [x] Stack analysis output is independent from AST output.
+- [x] The payload contains enough line and stack metadata for editor selected-line tooltips.
+
+## Completion Notes
+
+Completed on 2026-05-21.
+
+- Added `includeStackAnalysis?: boolean` to compiler options.
+- Added `CompiledStackAnalysisLine` and optional `stackAnalysis` payloads for compiled modules and functions.
+- Kept stack analysis opt-in and independent from `includeAST`.
+- Added public compiler tests for omitted output, module output, function output, and combined AST plus stack analysis output.
 
 ## Affected Components
 
