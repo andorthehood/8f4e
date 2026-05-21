@@ -42,7 +42,10 @@ export default function createDefaultState() {
 		},
 		tooltip: {
 			text: [],
+			characters: [],
 			colors: [],
+			lineCount: 0,
+			widthChars: 0,
 			liveValueBlock: undefined,
 		},
 		featureFlags: defaultFeatureFlags,
