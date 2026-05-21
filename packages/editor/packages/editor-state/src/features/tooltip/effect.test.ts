@@ -60,13 +60,19 @@ describe('tooltip effect', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'add',
 				stackAnalysis: {
-					stackBefore: [{ isInteger: true }, { isInteger: true }],
-					consumedOperands: [{ isInteger: true }, { isInteger: true }],
+					stackBefore: [
+						{ isInteger: true, knownIntegerValue: 1 },
+						{ isInteger: true, knownIntegerValue: 2 },
+					],
+					consumedOperands: [
+						{ isInteger: true, knownIntegerValue: 1 },
+						{ isInteger: true, knownIntegerValue: 2 },
+					],
 					producedStackItems: [{ isInteger: true }],
 					stackAfter: [{ isInteger: true }],
 				},
 			})
-		).toEqual(['before [int, int]', 'after: [int]']);
+		).toEqual(['before [int=1, int=2]', 'after: [int]']);
 	});
 
 	it('adds selected line stack analysis when compiler data is available', () => {
@@ -90,8 +96,14 @@ describe('tooltip effect', () => {
 								lineNumberAfterMacroExpansion: 2,
 								instruction: 'add',
 								stackAnalysis: {
-									stackBefore: [{ isInteger: true }, { isInteger: true }],
-									consumedOperands: [{ isInteger: true }, { isInteger: true }],
+									stackBefore: [
+										{ isInteger: true, knownIntegerValue: 1 },
+										{ isInteger: true, knownIntegerValue: 2 },
+									],
+									consumedOperands: [
+										{ isInteger: true, knownIntegerValue: 1 },
+										{ isInteger: true, knownIntegerValue: 2 },
+									],
 									producedStackItems: [{ isInteger: true }],
 									stackAfter: [{ isInteger: true }],
 								},
@@ -115,7 +127,7 @@ describe('tooltip effect', () => {
 			'add (T T -- T)',
 			'Adds two numbers of the same',
 			'type and pushes the result.',
-			'before [int, int]',
+			'before [int=1, int=2]',
 			'after: [int]',
 		]);
 	});
