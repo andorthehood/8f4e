@@ -291,6 +291,15 @@ describe('drawModules', () => {
 					y: 16,
 					lineX: -184,
 				},
+				highlights: [
+					{
+						x: -120,
+						y: 48,
+						width: 48,
+						height: 16,
+						fillColor: 'tooltipConsumedHighlight',
+					},
+				],
 			},
 			viewport: {
 				vGrid: 8,
@@ -307,6 +316,13 @@ describe('drawModules', () => {
 			'tooltipBackground',
 			184,
 			64
+		);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
+			-120,
+			48,
+			'tooltipConsumedHighlight',
+			48,
+			16
 		);
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-184,

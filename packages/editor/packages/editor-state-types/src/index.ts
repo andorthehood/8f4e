@@ -5,6 +5,7 @@
  */
 
 import type { CompileOptions, MemoryAction as CompilerMemoryAction, Module } from '@8f4e/compiler-spec';
+import type { FillSpriteColorName } from '@8f4e/sprite-generator';
 import type { SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
@@ -199,6 +200,14 @@ export interface TooltipLayout {
 	lineX: number;
 }
 
+export interface TooltipHighlight {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	fillColor: FillSpriteColorName;
+}
+
 export interface TooltipState {
 	text: string[];
 	characters: Array<Array<number | string>>;
@@ -206,6 +215,7 @@ export interface TooltipState {
 	lineCount: number;
 	widthChars: number;
 	layout: TooltipLayout;
+	highlights: TooltipHighlight[];
 	liveValues: TooltipLiveValue[];
 }
 

@@ -15,6 +15,7 @@ import type { FillSpriteColorName } from './fillColors.ts';
 
 export { Icon } from './icons.ts';
 export { FONT_NAMES } from './types.ts';
+export type { FillSpriteColorName } from './fillColors.ts';
 export type { ColorScheme, ColorSchemeOverrides, Font } from './types.ts';
 export { default as defaultColorScheme } from './defaultColorScheme.ts';
 
