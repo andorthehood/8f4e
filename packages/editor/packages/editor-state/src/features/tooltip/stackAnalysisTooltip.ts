@@ -9,6 +9,9 @@ const stackAfterLabel = 'after: ';
 
 type StackItemMarker = 'input' | 'output';
 
+/**
+ * Returns the part of a stack tooltip line that should use the highlight color.
+ */
 export function getStackValueHighlightRange(line: string): TooltipHighlightRange | undefined {
 	if (line.startsWith(stackBeforeInlineLabel)) {
 		return { start: stackBeforeInlineLabel.length, end: line.length };
@@ -33,6 +36,9 @@ export function getStackValueHighlightRange(line: string): TooltipHighlightRange
 	return undefined;
 }
 
+/**
+ * Formats one stack item, marking consumed inputs as `>item` and produced outputs as `item<`.
+ */
 function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 	let label: string;
 
@@ -57,14 +63,23 @@ function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 	return valueLabel;
 }
 
+/**
+ * Stack analysis lists the top of the stack at the end, so markers apply from the tail.
+ */
 function isMarkedStackItem(index: number, stack: Stack, markedItemCount: number): boolean {
 	return index >= stack.length - markedItemCount;
 }
 
+/**
+ * Formats a compact inline stack display.
+ */
 function formatStack(stack: Stack, markedItemCount: number, marker: StackItemMarker): string {
 	return `[${stack.map((item, index) => getStackItemLabel(item, isMarkedStackItem(index, stack, markedItemCount) ? marker : undefined)).join(', ')}]`;
 }
 
+/**
+ * Formats stack tooltip text inline for short stacks and as a block for longer stacks.
+ */
 function formatStackTooltipLines(
 	inlineLabel: string,
 	blockLabel: string,
@@ -84,6 +99,9 @@ function formatStackTooltipLines(
 	return [`${blockLabel}[`, ...stackItemLines, ']'];
 }
 
+/**
+ * Builds before/after stack tooltip lines from compiler stack analysis.
+ */
 export function getStackAnalysisTooltipText(stackAnalysisLine: CompiledStackAnalysisLine | undefined): string[] {
 	if (!stackAnalysisLine) {
 		return [];

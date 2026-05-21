@@ -18,6 +18,9 @@ const emptyTooltipLayout: TooltipLayout = {
 	lineX: 0,
 };
 
+/**
+ * Creates the empty tooltip state used when line selection cannot show a tooltip.
+ */
 export function createEmptyTooltipState(): TooltipState {
 	return {
 		text: [],
@@ -30,6 +33,9 @@ export function createEmptyTooltipState(): TooltipState {
 	};
 }
 
+/**
+ * Positions the tooltip to the left of the selected code line.
+ */
 function getTooltipLayout(
 	content: SelectedLineTooltipContent,
 	state: State,
@@ -51,6 +57,9 @@ function getTooltipLayout(
 	};
 }
 
+/**
+ * Converts live-value text columns into absolute drawer positions.
+ */
 function getTooltipLiveValues(
 	targets: TooltipLiveValueTarget[],
 	layout: TooltipLayout,
@@ -64,6 +73,9 @@ function getTooltipLiveValues(
 	}));
 }
 
+/**
+ * Combines tooltip content with viewport layout data into state.
+ */
 export function getTooltipState(
 	content: SelectedLineTooltipContent,
 	state: State,

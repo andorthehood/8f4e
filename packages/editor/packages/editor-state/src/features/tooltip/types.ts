@@ -3,11 +3,17 @@ import type { SpriteLookup } from 'glugglug';
 
 export type SpriteLookups = NonNullable<State['graphicHelper']['spriteLookups']>;
 
+/**
+ * Character range that should switch to the tooltip highlight color.
+ */
 export interface TooltipHighlightRange {
 	start: number;
 	end: number;
 }
 
+/**
+ * Placeholder position for a live value that the drawer fills while rendering.
+ */
 export interface TooltipLiveValueTarget {
 	lineIndex: number;
 	column: number;
@@ -15,6 +21,9 @@ export interface TooltipLiveValueTarget {
 	color: SpriteLookup | undefined;
 }
 
+/**
+ * Fully assembled selected-line tooltip content before viewport layout is applied.
+ */
 export interface SelectedLineTooltipContent {
 	text: string[];
 	characters: Array<Array<number | string>>;
