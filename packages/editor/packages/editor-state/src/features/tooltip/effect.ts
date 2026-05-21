@@ -65,15 +65,17 @@ export function getStackSignatureFromSourceLine(line: string): string | undefine
 }
 
 function getStackItemLabel(item: StackItem): string {
+	let label: string;
+
 	if (item.address || item.pointeeBaseType || item.isPointingToPointer) {
-		return 'ptr';
+		label = 'ptr';
+	} else if (item.isFloat64) {
+		label = 'float64';
+	} else {
+		label = item.isInteger ? 'int' : 'float';
 	}
 
-	if (item.isFloat64) {
-		return 'float64';
-	}
-
-	return item.isInteger ? 'int' : 'float';
+	return item.knownIntegerValue === undefined ? label : `${label}=${item.knownIntegerValue}`;
 }
 
 function formatStack(stack: Stack): string {
