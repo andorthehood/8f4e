@@ -44,8 +44,7 @@ export interface ColorScheme {
 		pianoKeyWhitePressedOverlay: string;
 		pianoKeyBlackPressedOverlay: string;
 		tooltipText: string;
-		tooltipValue: string;
-		tooltipInstruction: string;
+		tooltipHighlight: string;
 	};
 	fill: {
 		menuItemBackground: string;

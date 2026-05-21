@@ -26,8 +26,7 @@ export const minimalColorScheme: ColorScheme = {
 		pianoKeyWhitePressedOverlay: '#000000',
 		pianoKeyBlackPressedOverlay: '#ffffff',
 		tooltipText: '#666666',
-		tooltipValue: '#000000',
-		tooltipInstruction: '#000000',
+		tooltipHighlight: '#000000',
 	},
 	fill: {
 		menuItemBackground: '#000000',
