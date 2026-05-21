@@ -15,6 +15,10 @@ import tooltip, {
 
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
+function toCharacters(text: string): number[] {
+	return [...text].map(char => char.charCodeAt(0));
+}
+
 describe('tooltip effect', () => {
 	it('reads the instruction name from source text', () => {
 		expect(getInstructionNameFromSourceLine('  add')).toBe('add');
@@ -99,6 +103,9 @@ describe('tooltip effect', () => {
 			'before [int=1, int=2]',
 			'after: [int]',
 		]);
+		expect(content.characters[0]).toEqual(toCharacters('add (T T -- T)'));
+		expect(content.lineCount).toBe(5);
+		expect(content.widthChars).toBe('Adds two numbers of the same'.length);
 		expect(content.colors[0][0]).toBe(fontTooltipHighlight);
 		expect(content.colors[0][3]).toBeUndefined();
 		expect(content.colors[3][0]).toBe(fontTooltipText);
@@ -232,20 +239,26 @@ describe('tooltip effect', () => {
 
 		expect(state.tooltip.liveValueBlock).toEqual({
 			insertAtLineIndex: state.tooltip.text.length,
+			lineCount: 2,
 			lines: [
 				{
 					label: 'address: ',
+					labelCharacters: toCharacters('address: '),
+					maxLineLength: 19,
 					source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'value' },
 					textColor: fontTooltipText,
 					valueColor: fontTooltipHighlight,
 				},
 				{
 					label: 'value: ',
+					labelCharacters: toCharacters('value: '),
+					maxLineLength: 18,
 					source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'value', elementIndex: 0 },
 					textColor: fontTooltipText,
 					valueColor: fontTooltipHighlight,
 				},
 			],
+			maxLineLength: 19,
 		});
 
 		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);

@@ -185,6 +185,8 @@ export type TooltipLiveValueSource =
 
 export interface TooltipLiveValueLine {
 	label: string;
+	labelCharacters: Array<number | string>;
+	maxLineLength: number;
 	source: TooltipLiveValueSource;
 	textColor: SpriteLookup | undefined;
 	valueColor: SpriteLookup | undefined;
@@ -192,12 +194,17 @@ export interface TooltipLiveValueLine {
 
 export interface TooltipLiveValueBlock {
 	insertAtLineIndex: number;
+	lineCount: number;
 	lines: TooltipLiveValueLine[];
+	maxLineLength: number;
 }
 
 export interface TooltipState {
 	text: string[];
+	characters: Array<Array<number | string>>;
 	colors: Array<Array<SpriteLookup | undefined>>;
+	lineCount: number;
+	widthChars: number;
 	liveValueBlock: TooltipLiveValueBlock | undefined;
 }
 
