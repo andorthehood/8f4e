@@ -134,7 +134,7 @@ function drawTextWithNumberFormatting(
 			engine.drawText(x + previousIndex * state.viewport.vGrid, y, text.slice(previousIndex, match.index));
 		}
 
-		engine.setSpriteLookup(spriteLookups.fontNumbers);
+		engine.setSpriteLookup(spriteLookups.fontTooltipValue);
 		engine.drawText(x + match.index * state.viewport.vGrid, y, match[0]);
 		previousIndex = match.index + match[0].length;
 	}
@@ -155,7 +155,7 @@ function drawSignatureLine(engine: Engine, state: State, line: string, x: number
 
 	const [, instruction, rest] = instructionMatch;
 
-	engine.setSpriteLookup(spriteLookups.fontInstruction);
+	engine.setSpriteLookup(spriteLookups.fontTooltipInstruction);
 	engine.drawText(x, y, instruction);
 
 	if (rest.length === 0) {
@@ -168,7 +168,7 @@ function drawSignatureLine(engine: Engine, state: State, line: string, x: number
 		rest,
 		x + instruction.length * state.viewport.vGrid,
 		y,
-		spriteLookups.fontCode
+		spriteLookups.fontTooltipText
 	);
 }
 
@@ -199,7 +199,7 @@ export default function drawSelectedLineHint(
 	const y = codeBlock.cursor.y;
 
 	engine.setSpriteLookup(spriteLookups.fillColors);
-	engine.drawSprite(x, y, 'debugInfoBackground', width, height);
+	engine.drawSprite(x, y, 'tooltipBackground', width, height);
 
 	lines.forEach((line, index) => {
 		const lineX = x + horizontalPadding;
@@ -210,13 +210,6 @@ export default function drawSelectedLineHint(
 			return;
 		}
 
-		drawTextWithNumberFormatting(
-			engine,
-			state,
-			line,
-			lineX,
-			lineY,
-			isCodeInfoLine(line) ? spriteLookups.fontCode : spriteLookups.fontCodeComment
-		);
+		drawTextWithNumberFormatting(engine, state, line, lineX, lineY, spriteLookups.fontTooltipText);
 	});
 }
