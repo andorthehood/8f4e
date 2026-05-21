@@ -105,6 +105,10 @@ export default function drawSelectedLineHint(
 	engine.setSpriteLookup(spriteLookups.fillColors);
 	engine.drawSprite(x, y, 'tooltipBackground', width, height);
 
+	for (const highlight of state.tooltip.highlights) {
+		engine.drawSprite(highlight.x, highlight.y, highlight.fillColor, highlight.width, highlight.height);
+	}
+
 	for (let index = 0; index < state.tooltip.characters.length; index++) {
 		drawCharactersWithColors(
 			engine,

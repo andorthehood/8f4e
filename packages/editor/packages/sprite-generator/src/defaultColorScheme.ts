@@ -61,6 +61,8 @@ const defaultColorScheme: ColorScheme = {
 		pianoKeyWhite: '#ffffff',
 		pianoKeyBlack: '#000000',
 		tooltipBackground: '#ffffff',
+		tooltipAddedHighlight: '#ccffcc',
+		tooltipConsumedHighlight: '#ffcccc',
 	},
 	icons: {
 		outputConnectorBackground: '#000000',
