@@ -150,9 +150,55 @@ export type InfoValue = unknown;
 export type InfoRecord = Record<string, InfoValue>;
 export type InfoState = Record<string, InfoRecord | undefined>;
 
+export type TooltipLiveValueSourceKind = 'memoryAddress' | 'memoryValue' | 'memoryDereference';
+
+export interface TooltipLiveValueMemoryFormat {
+	elementWordSize: number;
+	isInteger: boolean;
+	isUnsigned: boolean;
+}
+
+export interface TooltipMemoryAddressLiveValueSource {
+	kind: 'memoryAddress';
+	moduleId: string;
+	memoryId: string;
+}
+
+export interface TooltipMemoryValueLiveValueSource {
+	kind: 'memoryValue';
+	moduleId: string;
+	memoryId: string;
+	elementIndex?: number;
+}
+
+export interface TooltipMemoryDereferenceLiveValueSource {
+	kind: 'memoryDereference';
+	moduleId: string;
+	memoryId: string;
+	format: TooltipLiveValueMemoryFormat;
+}
+
+export type TooltipLiveValueSource =
+	| TooltipMemoryAddressLiveValueSource
+	| TooltipMemoryValueLiveValueSource
+	| TooltipMemoryDereferenceLiveValueSource;
+
+export interface TooltipLiveValueLine {
+	label: string;
+	source: TooltipLiveValueSource;
+	textColor: SpriteLookup | undefined;
+	valueColor: SpriteLookup | undefined;
+}
+
+export interface TooltipLiveValueBlock {
+	insertAtLineIndex: number;
+	lines: TooltipLiveValueLine[];
+}
+
 export interface TooltipState {
 	text: string[];
 	colors: Array<Array<SpriteLookup | undefined>>;
+	liveValueBlock: TooltipLiveValueBlock | undefined;
 }
 
 // Feature Flags types (top-level public API)
