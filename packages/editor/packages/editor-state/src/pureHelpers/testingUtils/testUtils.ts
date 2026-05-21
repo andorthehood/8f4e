@@ -297,7 +297,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		tooltip: {
 			text: [],
 			colors: [],
-			memoryValueTarget: undefined,
+			liveValueBlock: undefined,
 		},
 		featureFlags: {
 			contextMenu: true,
