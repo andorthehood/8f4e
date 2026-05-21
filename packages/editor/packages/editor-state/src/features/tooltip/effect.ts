@@ -11,7 +11,7 @@ import wrapText from '../code-blocks/utils/wrapText';
 import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 
-export const TOOLTIP_WRAP_WIDTH = 64;
+export const TOOLTIP_WRAP_WIDTH = 32;
 
 export function wrapTooltipText(text: string, maxLength = TOOLTIP_WRAP_WIDTH): string[] {
 	return wrapText(text, maxLength);
