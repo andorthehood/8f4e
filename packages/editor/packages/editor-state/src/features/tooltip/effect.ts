@@ -2,6 +2,7 @@ import {
 	ArgumentType,
 	getInstructionSpec,
 	getInstructionStackSignature,
+	memoryDeclarationInstructions,
 	type AST,
 	type CompiledStackAnalysisLine,
 	type InstructionSpec,
@@ -11,7 +12,7 @@ import {
 
 import wrapText from '../code-blocks/utils/wrapText';
 
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State, TooltipMemoryValueTarget } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { SpriteLookup } from 'glugglug';
 
@@ -19,6 +20,8 @@ export const TOOLTIP_WRAP_WIDTH = 32;
 
 const stackBeforeLabel = 'before ';
 const stackAfterLabel = 'after: ';
+const memoryIdentifierRegExp = /^[a-z_]\w*$/i;
+const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 
 type SpriteLookups = NonNullable<State['graphicHelper']['spriteLookups']>;
 
@@ -30,6 +33,7 @@ interface TooltipHighlightRange {
 interface SelectedLineTooltipContent {
 	text: string[];
 	colors: Array<Array<SpriteLookup | undefined>>;
+	memoryValueTarget: TooltipMemoryValueTarget | undefined;
 }
 
 export function wrapTooltipText(text: string, maxLength = TOOLTIP_WRAP_WIDTH): string[] {
@@ -48,6 +52,22 @@ export function getInstructionSpecFromSourceLine(line: string): InstructionSpec 
 	}
 
 	return getInstructionSpec(instruction);
+}
+
+export function getMemoryDeclarationIdFromSourceLine(line: string | undefined): string | undefined {
+	const source = line?.split(';')[0].trim();
+
+	if (!source) {
+		return undefined;
+	}
+
+	const [instruction, id] = source.split(/\s+/);
+
+	if (!memoryDeclarationInstructionSet.has(instruction) || !id || !memoryIdentifierRegExp.test(id)) {
+		return undefined;
+	}
+
+	return id;
 }
 
 function getStackSignatureLineFromSourceLine(line: string, instruction: string): AST[number] | undefined {
@@ -207,13 +227,24 @@ export function getSelectedLineTooltipContent(
 	line: string | undefined,
 	maxLength = TOOLTIP_WRAP_WIDTH,
 	stackAnalysisLine?: CompiledStackAnalysisLine,
-	spriteLookups?: SpriteLookups
+	spriteLookups?: SpriteLookups,
+	moduleId?: string
 ): SelectedLineTooltipContent {
 	const text = getSelectedLineTooltipText(line, maxLength, stackAnalysisLine);
+	const memoryId = getMemoryDeclarationIdFromSourceLine(line);
+	const memoryValueTarget =
+		moduleId && memoryId
+			? {
+					moduleId,
+					memoryId,
+					insertAtLineIndex: text.length,
+				}
+			: undefined;
 
 	return {
 		text,
 		colors: getSelectedLineTooltipColors(line, text, spriteLookups),
+		memoryValueTarget,
 	};
 }
 
@@ -226,6 +257,7 @@ export default function tooltip(store: StateManager<State>): void {
 		if (!state.featureFlags.codeLineSelection || !selectedCodeBlock) {
 			store.set('tooltip.text', []);
 			store.set('tooltip.colors', []);
+			store.set('tooltip.memoryValueTarget', undefined);
 			return;
 		}
 
@@ -233,11 +265,13 @@ export default function tooltip(store: StateManager<State>): void {
 			selectedCodeBlock.code[selectedCodeBlock.cursor.row],
 			TOOLTIP_WRAP_WIDTH,
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
-			state.graphicHelper.spriteLookups
+			state.graphicHelper.spriteLookups,
+			selectedCodeBlock.moduleId
 		);
 
 		store.set('tooltip.text', content.text);
 		store.set('tooltip.colors', content.colors);
+		store.set('tooltip.memoryValueTarget', content.memoryValueTarget);
 	}
 
 	store.subscribe('graphicHelper.selectedCodeBlock', syncSelectedLineTooltip);
