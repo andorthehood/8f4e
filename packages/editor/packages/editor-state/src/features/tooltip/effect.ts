@@ -20,6 +20,7 @@ import type {
 	TooltipLayout,
 	TooltipLiveValue,
 	TooltipLiveValueSource,
+	TooltipState,
 } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { SpriteLookup } from 'glugglug';
@@ -78,6 +79,18 @@ const emptyTooltipLayout: TooltipLayout = {
 	y: 0,
 	lineX: 0,
 };
+
+function createEmptyTooltipState(): TooltipState {
+	return {
+		text: [],
+		characters: [],
+		colors: [],
+		lineCount: 0,
+		widthChars: 0,
+		layout: { ...emptyTooltipLayout },
+		liveValues: [],
+	};
+}
 
 export function wrapTooltipText(text: string, maxLength = TOOLTIP_WRAP_WIDTH): string[] {
 	return wrapText(text, maxLength);
@@ -414,6 +427,24 @@ function getTooltipLiveValues(
 	}));
 }
 
+function getTooltipState(
+	content: SelectedLineTooltipContent,
+	state: State,
+	selectedCodeBlock: CodeBlockGraphicData
+): TooltipState {
+	const layout = getTooltipLayout(content, state, selectedCodeBlock);
+
+	return {
+		text: content.text,
+		characters: content.characters,
+		colors: content.colors,
+		lineCount: content.lineCount,
+		widthChars: content.widthChars,
+		layout,
+		liveValues: getTooltipLiveValues(content.liveValueTargets, layout, state),
+	};
+}
+
 export default function tooltip(store: StateManager<State>): void {
 	const state = store.getState();
 
@@ -421,13 +452,7 @@ export default function tooltip(store: StateManager<State>): void {
 		const selectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 
 		if (!state.featureFlags.codeLineSelection || !selectedCodeBlock) {
-			store.set('tooltip.text', []);
-			store.set('tooltip.characters', []);
-			store.set('tooltip.colors', []);
-			store.set('tooltip.lineCount', 0);
-			store.set('tooltip.widthChars', 0);
-			store.set('tooltip.layout', emptyTooltipLayout);
-			store.set('tooltip.liveValues', []);
+			store.set('tooltip', createEmptyTooltipState());
 			return;
 		}
 
@@ -441,15 +466,7 @@ export default function tooltip(store: StateManager<State>): void {
 			selectedCodeBlock.moduleId,
 			getSelectedMemoryDeclaration(state, selectedCodeBlock.moduleId, memoryId)
 		);
-		const layout = getTooltipLayout(content, state, selectedCodeBlock);
-
-		store.set('tooltip.text', content.text);
-		store.set('tooltip.characters', content.characters);
-		store.set('tooltip.colors', content.colors);
-		store.set('tooltip.lineCount', content.lineCount);
-		store.set('tooltip.widthChars', content.widthChars);
-		store.set('tooltip.layout', layout);
-		store.set('tooltip.liveValues', getTooltipLiveValues(content.liveValueTargets, layout, state));
+		store.set('tooltip', getTooltipState(content, state, selectedCodeBlock));
 	}
 
 	store.subscribe('graphicHelper.selectedCodeBlock', syncSelectedLineTooltip);
