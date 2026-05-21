@@ -46,8 +46,7 @@ test('font color rendering', async () => {
 		'fontPianoKeyWhitePressedOverlay',
 		'fontPianoKeyBlackPressedOverlay',
 		'fontTooltipText',
-		'fontTooltipValue',
-		'fontTooltipInstruction',
+		'fontTooltipHighlight',
 	];
 
 	colors.forEach((colorName, index) => {

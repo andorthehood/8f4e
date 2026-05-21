@@ -134,7 +134,7 @@ function drawTextWithNumberFormatting(
 			engine.drawText(x + previousIndex * state.viewport.vGrid, y, text.slice(previousIndex, match.index));
 		}
 
-		engine.setSpriteLookup(spriteLookups.fontTooltipValue);
+		engine.setSpriteLookup(spriteLookups.fontTooltipHighlight);
 		engine.drawText(x + match.index * state.viewport.vGrid, y, match[0]);
 		previousIndex = match.index + match[0].length;
 	}
@@ -155,7 +155,7 @@ function drawSignatureLine(engine: Engine, state: State, line: string, x: number
 
 	const [, instruction, rest] = instructionMatch;
 
-	engine.setSpriteLookup(spriteLookups.fontTooltipInstruction);
+	engine.setSpriteLookup(spriteLookups.fontTooltipHighlight);
 	engine.drawText(x, y, instruction);
 
 	if (rest.length === 0) {
