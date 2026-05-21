@@ -42,6 +42,7 @@ import dialog from './features/dialog/effect';
 import runtimeDirectiveErrorsEffect from './features/runtime/directiveErrorsEffect';
 import editorMode from './features/editor-mode/effect';
 import presentation from './features/presentation/effect';
+import tooltip from './features/tooltip/effect';
 
 import type { Options, State, EventDispatcher } from '@8f4e/editor-state-types';
 
@@ -106,6 +107,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	viewportDirectiveEffect(store, events);
 	browserLocalNotes(store, events);
 	codeEditing(store, events);
+	tooltip(store);
 	historyTracking(store, events);
 
 	events.on('consoleLog', event => {
