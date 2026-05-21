@@ -251,9 +251,8 @@ describe('drawModules', () => {
 	it('draws tooltip text next to the selected line', () => {
 		const fillColors = {};
 		const fontCode = {};
-		const fontTooltipInstruction = {};
+		const fontTooltipHighlight = {};
 		const fontTooltipText = {};
-		const fontTooltipValue = {};
 		const block = createMockCodeBlock({
 			textureCacheKey: 'selected-block',
 			width: 100,
@@ -278,9 +277,8 @@ describe('drawModules', () => {
 					fontDisabledCode: {},
 					fontLineNumber: {},
 					fontCodeComment: {},
-					fontTooltipInstruction,
+					fontTooltipHighlight,
 					fontTooltipText,
-					fontTooltipValue,
 				} as never,
 			},
 			featureFlags: {
@@ -324,13 +322,10 @@ describe('drawModules', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-32, 48, '2');
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(-88, 64, '3');
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			fontTooltipInstruction
+			fontTooltipHighlight
 		);
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
 			fontTooltipText
-		);
-		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			fontTooltipValue
 		);
 	});
 
@@ -370,9 +365,8 @@ describe('drawModules', () => {
 					fontDisabledCode: {},
 					fontLineNumber: {},
 					fontCodeComment: {},
-					fontTooltipInstruction: {},
+					fontTooltipHighlight: {},
 					fontTooltipText: {},
-					fontTooltipValue: {},
 				} as never,
 			},
 			featureFlags: {
