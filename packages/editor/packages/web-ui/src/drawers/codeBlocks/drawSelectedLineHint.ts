@@ -6,8 +6,6 @@ import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor
 import type { MemoryViews } from '../../types';
 import type { SpriteLookup } from 'glugglug';
 
-const horizontalPaddingChars = 1;
-
 function getMemoryForLiveValueLine(state: State, moduleId: string, memoryId: string): DataStructure | undefined {
 	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
 }
@@ -41,17 +39,17 @@ function drawCharactersWithColors(
 	engine: Engine,
 	state: State,
 	characters: Array<number | string>,
-	colors: Array<SpriteLookup | undefined>,
+	colors: Array<SpriteLookup | undefined> | undefined,
 	x: number,
 	y: number
 ): void {
 	const spriteLookups = state.graphicHelper.spriteLookups!;
-	let currentLookup = colors[0] ?? spriteLookups.fontTooltipText;
+	let currentLookup = colors?.[0] ?? spriteLookups.fontTooltipText;
 
 	engine.setSpriteLookup(currentLookup);
 
 	for (let index = 0; index < characters.length; index++) {
-		const nextLookup = colors[index] ?? currentLookup;
+		const nextLookup = colors?.[index] ?? currentLookup;
 
 		if (nextLookup !== currentLookup) {
 			engine.setSpriteLookup(nextLookup);
@@ -74,14 +72,7 @@ function drawTextCharacters(engine: Engine, state: State, text: string, x: numbe
 	}
 }
 
-function drawLiveValue(
-	engine: Engine,
-	state: State,
-	memoryViews: MemoryViews,
-	liveValue: TooltipLiveValue,
-	x: number,
-	y: number
-): void {
+function drawLiveValue(engine: Engine, state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): void {
 	const spriteLookups = state.graphicHelper.spriteLookups!;
 	const value = getLiveValueText(state, memoryViews, liveValue);
 
@@ -90,13 +81,7 @@ function drawLiveValue(
 	}
 
 	engine.setSpriteLookup(liveValue.color ?? spriteLookups.fontTooltipHighlight);
-	drawTextCharacters(
-		engine,
-		state,
-		value,
-		x + liveValue.column * state.viewport.vGrid,
-		y + liveValue.lineIndex * state.viewport.hGrid
-	);
+	drawTextCharacters(engine, state, value, liveValue.x, liveValue.y);
 }
 
 export default function drawSelectedLineHint(
@@ -115,13 +100,7 @@ export default function drawSelectedLineHint(
 		return;
 	}
 
-	const { vGrid, hGrid } = state.viewport;
-	const horizontalPadding = horizontalPaddingChars * vGrid;
-	const width = (state.tooltip.widthChars + horizontalPaddingChars * 2) * vGrid;
-	const height = state.tooltip.lineCount * hGrid;
-	const x = -width - vGrid;
-	const y = codeBlock.cursor.y;
-	const lineX = x + horizontalPadding;
+	const { width, height, x, y, lineX } = state.tooltip.layout;
 
 	engine.setSpriteLookup(spriteLookups.fillColors);
 	engine.drawSprite(x, y, 'tooltipBackground', width, height);
@@ -131,13 +110,13 @@ export default function drawSelectedLineHint(
 			engine,
 			state,
 			state.tooltip.characters[index],
-			state.tooltip.colors[index] ?? [],
+			state.tooltip.colors[index],
 			lineX,
-			y + index * hGrid
+			y + index * state.viewport.hGrid
 		);
 	}
 
 	for (const liveValue of state.tooltip.liveValues) {
-		drawLiveValue(engine, state, memoryViews, liveValue, lineX, y);
+		drawLiveValue(engine, state, memoryViews, liveValue);
 	}
 }

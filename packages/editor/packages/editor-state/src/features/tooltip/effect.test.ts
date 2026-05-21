@@ -239,16 +239,21 @@ describe('tooltip effect', () => {
 
 		expect(state.tooltip.text.slice(-2)).toEqual(['address: ', 'value: ']);
 		expect(state.tooltip.characters.slice(-2)).toEqual([toCharacters('address: '), toCharacters('value: ')]);
+		expect(state.tooltip.layout).toMatchObject({
+			horizontalPadding: 8,
+			height: state.tooltip.lineCount * 16,
+			y: 0,
+		});
 		expect(state.tooltip.liveValues).toEqual([
 			{
-				lineIndex: state.tooltip.text.length - 2,
-				column: 'address: '.length,
+				x: state.tooltip.layout.lineX + 'address: '.length * 8,
+				y: state.tooltip.layout.y + (state.tooltip.text.length - 2) * 16,
 				source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'value' },
 				color: fontTooltipHighlight,
 			},
 			{
-				lineIndex: state.tooltip.text.length - 1,
-				column: 'value: '.length,
+				x: state.tooltip.layout.lineX + 'value: '.length * 8,
+				y: state.tooltip.layout.y + (state.tooltip.text.length - 1) * 16,
 				source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'value', elementIndex: 0 },
 				color: fontTooltipHighlight,
 			},

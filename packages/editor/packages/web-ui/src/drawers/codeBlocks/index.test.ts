@@ -283,6 +283,14 @@ describe('drawModules', () => {
 				] as never,
 				lineCount: 4,
 				widthChars: 'before [int=1, int=2]'.length,
+				layout: {
+					horizontalPadding: 8,
+					width: 184,
+					height: 64,
+					x: -192,
+					y: 16,
+					lineX: -184,
+				},
 			},
 			viewport: {
 				vGrid: 8,
@@ -393,22 +401,30 @@ describe('drawModules', () => {
 				colors: [[], [], [], []],
 				lineCount: 4,
 				widthChars: 19,
+				layout: {
+					horizontalPadding: 8,
+					width: 168,
+					height: 64,
+					x: -176,
+					y: 16,
+					lineX: -168,
+				},
 				liveValues: [
 					{
-						lineIndex: 1,
-						column: 'address: '.length,
+						x: -168 + 'address: '.length * 8,
+						y: 16 + 16,
 						source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'pointer' },
 						color: {},
 					},
 					{
-						lineIndex: 2,
-						column: 'value: '.length,
+						x: -168 + 'value: '.length * 8,
+						y: 16 + 2 * 16,
 						source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'pointer', elementIndex: 0 },
 						color: {},
 					},
 					{
-						lineIndex: 3,
-						column: 'deref: '.length,
+						x: -168 + 'deref: '.length * 8,
+						y: 16 + 3 * 16,
 						source: {
 							kind: 'memoryDereference',
 							moduleId: 'test',
