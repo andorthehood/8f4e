@@ -65,6 +65,29 @@ describe('tooltip effect', () => {
 			'before [>int=1, >int=2]',
 			'after: [int<]',
 		]);
+		expect(state.tooltip.highlights).toEqual([
+			{
+				x: state.tooltip.layout.lineX + 8 * 8,
+				y: state.tooltip.layout.y + 3 * 16,
+				width: 6 * 8,
+				height: 16,
+				fillColor: 'tooltipHighlight',
+			},
+			{
+				x: state.tooltip.layout.lineX + 16 * 8,
+				y: state.tooltip.layout.y + 3 * 16,
+				width: 6 * 8,
+				height: 16,
+				fillColor: 'tooltipHighlight',
+			},
+			{
+				x: state.tooltip.layout.lineX + 8 * 8,
+				y: state.tooltip.layout.y + 4 * 16,
+				width: 4 * 8,
+				height: 16,
+				fillColor: 'tooltipHighlight',
+			},
+		]);
 	});
 
 	it('writes live value metadata for selected memory declarations', () => {
@@ -217,6 +240,7 @@ describe('tooltip effect', () => {
 		tooltip(store);
 
 		expect(state.tooltip.text).toEqual([]);
+		expect(state.tooltip.highlights).toEqual([]);
 		expect(state.tooltip.liveValues).toEqual([]);
 	});
 });

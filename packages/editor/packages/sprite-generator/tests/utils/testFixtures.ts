@@ -61,6 +61,7 @@ export const minimalColorScheme: ColorScheme = {
 		pianoKeyWhite: '#ffffff',
 		pianoKeyBlack: '#000000',
 		tooltipBackground: '#ffffff',
+		tooltipHighlight: '#cccccc',
 	},
 	icons: {
 		inputConnector: '#ffffff',
