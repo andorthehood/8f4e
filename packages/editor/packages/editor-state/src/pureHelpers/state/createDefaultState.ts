@@ -46,7 +46,7 @@ export default function createDefaultState() {
 			colors: [],
 			lineCount: 0,
 			widthChars: 0,
-			liveValueBlock: undefined,
+			liveValues: [],
 		},
 		featureFlags: defaultFeatureFlags,
 		editorMode: 'view' as const,

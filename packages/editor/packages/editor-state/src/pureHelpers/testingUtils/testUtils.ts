@@ -300,7 +300,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			colors: [],
 			lineCount: 0,
 			widthChars: 0,
-			liveValueBlock: undefined,
+			liveValues: [],
 		},
 		featureFlags: {
 			contextMenu: true,

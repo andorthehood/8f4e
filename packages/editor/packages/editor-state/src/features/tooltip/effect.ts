@@ -14,7 +14,7 @@ import {
 
 import wrapText from '../code-blocks/utils/wrapText';
 
-import type { CodeBlockGraphicData, State, TooltipLiveValueBlock } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State, TooltipLiveValue, TooltipLiveValueSource } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { SpriteLookup } from 'glugglug';
 
@@ -40,7 +40,20 @@ interface SelectedLineTooltipContent {
 	colors: Array<Array<SpriteLookup | undefined>>;
 	lineCount: number;
 	widthChars: number;
-	liveValueBlock: TooltipLiveValueBlock | undefined;
+	liveValues: TooltipLiveValue[];
+}
+
+interface LiveTooltipLine {
+	label: string;
+	maxLineLength: number;
+	source: TooltipLiveValueSource;
+}
+
+interface LiveTooltipContent {
+	text: string[];
+	colors: Array<Array<SpriteLookup | undefined>>;
+	liveValues: TooltipLiveValue[];
+	maxLineLength: number;
 }
 
 export function wrapTooltipText(text: string, maxLength = TOOLTIP_WRAP_WIDTH): string[] {
@@ -223,54 +236,49 @@ function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined
 	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
 }
 
-function getTooltipLiveValueBlock(
+function getLiveTooltipContent(
 	memory: DataStructure | undefined,
 	moduleId: string | undefined,
 	memoryId: string | undefined,
-	insertAtLineIndex: number,
+	firstLineIndex: number,
 	spriteLookups: SpriteLookups | undefined
-): TooltipLiveValueBlock | undefined {
+): LiveTooltipContent {
 	if (!memory || !moduleId || !memoryId) {
-		return undefined;
+		return { text: [], colors: [], liveValues: [], maxLineLength: 0 };
 	}
 
-	const textColor = spriteLookups?.fontTooltipText;
 	const valueColor = spriteLookups?.fontTooltipHighlight;
 	const valueLabel = memory.numberOfElements > 1 ? 'value[0]: ' : 'value: ';
-	const lines: TooltipLiveValueBlock['lines'] = [
+	const lines: LiveTooltipLine[] = [
 		{
 			label: 'address: ',
-			labelCharacters: getTextCharacters('address: '),
 			maxLineLength: 'address: '.length + maxLiveMemoryAddressLength,
 			source: { kind: 'memoryAddress', moduleId, memoryId },
-			textColor,
-			valueColor,
 		},
 		{
 			label: valueLabel,
-			labelCharacters: getTextCharacters(valueLabel),
 			maxLineLength: valueLabel.length + maxLiveMemoryValueLength,
 			source: { kind: 'memoryValue', moduleId, memoryId, elementIndex: 0 },
-			textColor,
-			valueColor,
 		},
 	];
 
 	if (isPointerMemory(memory)) {
 		lines.push({
 			label: 'deref: ',
-			labelCharacters: getTextCharacters('deref: '),
 			maxLineLength: 'deref: '.length + maxLiveMemoryValueLength,
 			source: { kind: 'memoryDereference', moduleId, memoryId, format: getDereferencedMemoryFormat(memory) },
-			textColor,
-			valueColor,
 		});
 	}
 
 	return {
-		insertAtLineIndex,
-		lineCount: lines.length,
-		lines,
+		text: lines.map(liveLine => liveLine.label),
+		colors: lines.map(liveLine => getTooltipLineColors(liveLine.label, spriteLookups)),
+		liveValues: lines.map((liveLine, index) => ({
+			lineIndex: firstLineIndex + index,
+			column: liveLine.label.length,
+			source: liveLine.source,
+			color: valueColor,
+		})),
 		maxLineLength: Math.max(...lines.map(line => line.maxLineLength)),
 	};
 }
@@ -333,16 +341,19 @@ export function getSelectedLineTooltipContent(
 ): SelectedLineTooltipContent {
 	const text = getSelectedLineTooltipText(line, maxLength, stackAnalysisLine);
 	const memoryId = getMemoryDeclarationIdFromSourceLine(line);
-	const liveValueBlock = getTooltipLiveValueBlock(memory, moduleId, memoryId, text.length, spriteLookups);
-	const widthChars = Math.max(getMaxLineLength(text), liveValueBlock?.maxLineLength ?? 0);
+	const colors = getSelectedLineTooltipColors(line, text, spriteLookups);
+	const liveTooltipContent = getLiveTooltipContent(memory, moduleId, memoryId, text.length, spriteLookups);
+
+	text.push(...liveTooltipContent.text);
+	colors.push(...liveTooltipContent.colors);
 
 	return {
 		text,
 		characters: getTooltipTextCharacters(text),
-		colors: getSelectedLineTooltipColors(line, text, spriteLookups),
-		lineCount: text.length + (liveValueBlock?.lineCount ?? 0),
-		widthChars,
-		liveValueBlock,
+		colors,
+		lineCount: text.length,
+		widthChars: Math.max(getMaxLineLength(text), liveTooltipContent.maxLineLength),
+		liveValues: liveTooltipContent.liveValues,
 	};
 }
 
@@ -358,7 +369,7 @@ export default function tooltip(store: StateManager<State>): void {
 			store.set('tooltip.colors', []);
 			store.set('tooltip.lineCount', 0);
 			store.set('tooltip.widthChars', 0);
-			store.set('tooltip.liveValueBlock', undefined);
+			store.set('tooltip.liveValues', []);
 			return;
 		}
 
@@ -378,7 +389,7 @@ export default function tooltip(store: StateManager<State>): void {
 		store.set('tooltip.colors', content.colors);
 		store.set('tooltip.lineCount', content.lineCount);
 		store.set('tooltip.widthChars', content.widthChars);
-		store.set('tooltip.liveValueBlock', content.liveValueBlock);
+		store.set('tooltip.liveValues', content.liveValues);
 	}
 
 	store.subscribe('graphicHelper.selectedCodeBlock', syncSelectedLineTooltip);
