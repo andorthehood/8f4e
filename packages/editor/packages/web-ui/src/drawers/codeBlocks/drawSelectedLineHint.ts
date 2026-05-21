@@ -1,8 +1,43 @@
 import type { Engine } from 'glugglug';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { SpriteLookup } from 'glugglug';
+
+const numberRegExp = /(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi;
 
 function isStackAnalysisLine(line: string): boolean {
 	return line.startsWith('before ') || line.startsWith('after: ');
+}
+
+function drawTextWithNumberFormatting(
+	engine: Engine,
+	state: State,
+	text: string,
+	x: number,
+	y: number,
+	defaultLookup: SpriteLookup
+): void {
+	const spriteLookups = state.graphicHelper.spriteLookups!;
+	let previousIndex = 0;
+
+	for (const match of text.matchAll(numberRegExp)) {
+		if (typeof match.index !== 'number') {
+			continue;
+		}
+
+		if (match.index > previousIndex) {
+			engine.setSpriteLookup(defaultLookup);
+			engine.drawText(x + previousIndex * state.viewport.vGrid, y, text.slice(previousIndex, match.index));
+		}
+
+		engine.setSpriteLookup(spriteLookups.fontNumbers);
+		engine.drawText(x + match.index * state.viewport.vGrid, y, match[0]);
+		previousIndex = match.index + match[0].length;
+	}
+
+	if (previousIndex < text.length) {
+		engine.setSpriteLookup(defaultLookup);
+		engine.drawText(x + previousIndex * state.viewport.vGrid, y, text.slice(previousIndex));
+	}
 }
 
 function drawSignatureLine(engine: Engine, state: State, line: string, x: number, y: number): void {
@@ -22,8 +57,14 @@ function drawSignatureLine(engine: Engine, state: State, line: string, x: number
 		return;
 	}
 
-	engine.setSpriteLookup(spriteLookups.fontCode);
-	engine.drawText(x + instruction.length * state.viewport.vGrid, y, rest);
+	drawTextWithNumberFormatting(
+		engine,
+		state,
+		rest,
+		x + instruction.length * state.viewport.vGrid,
+		y,
+		spriteLookups.fontCode
+	);
 }
 
 export default function drawSelectedLineHint(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
@@ -57,7 +98,13 @@ export default function drawSelectedLineHint(engine: Engine, state: State, codeB
 			return;
 		}
 
-		engine.setSpriteLookup(isStackAnalysisLine(line) ? spriteLookups.fontCode : spriteLookups.fontCodeComment);
-		engine.drawText(lineX, lineY, line);
+		drawTextWithNumberFormatting(
+			engine,
+			state,
+			line,
+			lineX,
+			lineY,
+			isStackAnalysisLine(line) ? spriteLookups.fontCode : spriteLookups.fontCodeComment
+		);
 	});
 }
