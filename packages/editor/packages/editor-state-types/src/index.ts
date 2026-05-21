@@ -183,20 +183,11 @@ export type TooltipLiveValueSource =
 	| TooltipMemoryValueLiveValueSource
 	| TooltipMemoryDereferenceLiveValueSource;
 
-export interface TooltipLiveValueLine {
-	label: string;
-	labelCharacters: Array<number | string>;
-	maxLineLength: number;
+export interface TooltipLiveValue {
+	lineIndex: number;
+	column: number;
 	source: TooltipLiveValueSource;
-	textColor: SpriteLookup | undefined;
-	valueColor: SpriteLookup | undefined;
-}
-
-export interface TooltipLiveValueBlock {
-	insertAtLineIndex: number;
-	lineCount: number;
-	lines: TooltipLiveValueLine[];
-	maxLineLength: number;
+	color: SpriteLookup | undefined;
 }
 
 export interface TooltipState {
@@ -205,7 +196,7 @@ export interface TooltipState {
 	colors: Array<Array<SpriteLookup | undefined>>;
 	lineCount: number;
 	widthChars: number;
-	liveValueBlock: TooltipLiveValueBlock | undefined;
+	liveValues: TooltipLiveValue[];
 }
 
 // Feature Flags types (top-level public API)
