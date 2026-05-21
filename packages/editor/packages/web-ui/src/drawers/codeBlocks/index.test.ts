@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 
-import { getMemoryDeclarationIdFromSourceLine, getMemoryDeclarationTooltipText } from './drawSelectedLineHint';
+import { getMemoryDeclarationIdFromSourceLine, getMemoryDeclarationTooltipContent } from './drawSelectedLineHint';
 
 import drawModules from './index';
 
@@ -36,6 +36,21 @@ function createMockEngine({ drawCachedGroup = true }: { drawCachedGroup?: boolea
 	} as unknown as Engine;
 }
 
+function createTooltipColors(
+	line: string,
+	defaultLookup: object,
+	transitions: Array<[number, object]>
+): Array<object | undefined> {
+	const colors: Array<object | undefined> = new Array(line.length).fill(undefined);
+	colors[0] = defaultLookup;
+
+	transitions.forEach(([index, lookup]) => {
+		colors[index] = lookup;
+	});
+
+	return colors;
+}
+
 function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 	return {
 		id: 'value',
@@ -64,12 +79,20 @@ describe('drawModules', () => {
 
 	it('formats live memory declaration values for the selected line hint', () => {
 		const memoryViews = createMemoryViews({ int32: [0, 42, 20, 0, 0, 123] });
+		const spriteLookups = {
+			fontTooltipHighlight: {},
+			fontTooltipText: {},
+		} as never;
 
 		expect(
-			getMemoryDeclarationTooltipText(memoryViews, createMemory({ byteAddress: 4, wordAlignedAddress: 1 }))
+			getMemoryDeclarationTooltipContent(
+				memoryViews,
+				createMemory({ byteAddress: 4, wordAlignedAddress: 1 }),
+				spriteLookups
+			).text
 		).toEqual(['address: 4', 'value: 42']);
 		expect(
-			getMemoryDeclarationTooltipText(
+			getMemoryDeclarationTooltipContent(
 				memoryViews,
 				createMemory({
 					id: 'pointer',
@@ -77,19 +100,21 @@ describe('drawModules', () => {
 					byteAddress: 8,
 					wordAlignedAddress: 2,
 					pointeeBaseType: 'int',
-				})
-			)
+				}),
+				spriteLookups
+			).text
 		).toEqual(['address: 8', 'value: 20', 'deref: 123']);
 		expect(
-			getMemoryDeclarationTooltipText(
+			getMemoryDeclarationTooltipContent(
 				memoryViews,
 				createMemory({
 					id: 'buffer',
 					byteAddress: 4,
 					wordAlignedAddress: 1,
 					numberOfElements: 4,
-				})
-			)
+				}),
+				spriteLookups
+			).text
 		).toEqual(['address: 4', 'value[0]: 42']);
 	});
 
@@ -286,6 +311,23 @@ describe('drawModules', () => {
 			},
 			tooltip: {
 				text: ['add (T T -- T)', 'Adds two numbers', 'before [int=1, int=2]', 'after: [int=3]'],
+				colors: [
+					createTooltipColors('add (T T -- T)', fontTooltipText, [
+						[0, fontTooltipHighlight],
+						[3, fontTooltipText],
+					]),
+					createTooltipColors('Adds two numbers', fontTooltipText, []),
+					createTooltipColors('before [int=1, int=2]', fontTooltipText, [
+						[12, fontTooltipHighlight],
+						[13, fontTooltipText],
+						[19, fontTooltipHighlight],
+						[20, fontTooltipText],
+					]),
+					createTooltipColors('after: [int=3]', fontTooltipText, [
+						[12, fontTooltipHighlight],
+						[13, fontTooltipText],
+					]),
+				] as never,
 			},
 			viewport: {
 				vGrid: 8,
@@ -374,6 +416,7 @@ describe('drawModules', () => {
 			},
 			tooltip: {
 				text: ['int ( -- )'],
+				colors: [[]],
 			},
 		});
 		const engine = createMockEngine();

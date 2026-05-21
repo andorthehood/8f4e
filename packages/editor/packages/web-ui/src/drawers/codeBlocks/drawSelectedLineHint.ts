@@ -8,26 +8,13 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { MemoryViews } from '../../types';
 import type { SpriteLookup } from 'glugglug';
 
-const numberRegExp = /(?<![#\w])-?(?:\d+|0b[01]+|0x[\da-f]+)\b/gi;
 const memoryIdentifierRegExp = /^[a-z_]\w*$/i;
 const horizontalPaddingChars = 1;
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 
-function isStackAnalysisLine(line: string): boolean {
-	return line.startsWith('before ') || line.startsWith('after: ');
-}
-
-function isMemoryValueLine(line: string): boolean {
-	return (
-		line.startsWith('address: ') ||
-		line.startsWith('value: ') ||
-		line.startsWith('value[0]: ') ||
-		line.startsWith('deref: ')
-	);
-}
-
-function isCodeInfoLine(line: string): boolean {
-	return isStackAnalysisLine(line) || isMemoryValueLine(line);
+interface TooltipContent {
+	text: string[];
+	colors: Array<Array<SpriteLookup | undefined>>;
 }
 
 function isPointerMemory(memory: DataStructure): boolean {
@@ -76,13 +63,33 @@ function createDereferencedMemory(memory: DataStructure, byteAddress: number): D
 	};
 }
 
-export function getMemoryDeclarationTooltipText(memoryViews: MemoryViews, memory: DataStructure | undefined): string[] {
+function getValueHighlightColors(
+	line: string,
+	spriteLookups: NonNullable<State['graphicHelper']['spriteLookups']>
+): Array<SpriteLookup | undefined> {
+	const colors: Array<SpriteLookup | undefined> = new Array(line.length).fill(undefined);
+	const valueStart = line.indexOf(': ') + 2;
+
+	colors[0] = spriteLookups.fontTooltipText;
+
+	if (valueStart > 1 && valueStart < line.length) {
+		colors[valueStart] = spriteLookups.fontTooltipHighlight;
+	}
+
+	return colors;
+}
+
+export function getMemoryDeclarationTooltipContent(
+	memoryViews: MemoryViews,
+	memory: DataStructure | undefined,
+	spriteLookups: NonNullable<State['graphicHelper']['spriteLookups']>
+): TooltipContent {
 	if (!memory) {
-		return [];
+		return { text: [], colors: [] };
 	}
 
 	const valueLabel = memory.numberOfElements > 1 ? 'value[0]' : 'value';
-	const lines = [
+	const text = [
 		`address: ${memory.byteAddress}`,
 		`${valueLabel}: ${formatDebuggerValue(memoryViews, memory, 0, 'decimal')}`,
 	];
@@ -91,10 +98,13 @@ export function getMemoryDeclarationTooltipText(memoryViews: MemoryViews, memory
 		const pointerByteAddress = memoryViews.int32[memory.wordAlignedAddress];
 		const dereferencedMemory = createDereferencedMemory(memory, pointerByteAddress);
 
-		lines.push(`deref: ${formatDebuggerValue(memoryViews, dereferencedMemory, 0, 'decimal')}`);
+		text.push(`deref: ${formatDebuggerValue(memoryViews, dereferencedMemory, 0, 'decimal')}`);
 	}
 
-	return lines;
+	return {
+		text,
+		colors: text.map(line => getValueHighlightColors(line, spriteLookups)),
+	};
 }
 
 function getSelectedMemoryDeclaration(state: State, codeBlock: CodeBlockGraphicData): DataStructure | undefined {
@@ -113,63 +123,36 @@ function getSelectedMemoryDeclaration(state: State, codeBlock: CodeBlockGraphicD
 	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
 }
 
-function drawTextWithNumberFormatting(
+function drawTextWithColors(
 	engine: Engine,
 	state: State,
 	text: string,
+	colors: Array<SpriteLookup | undefined>,
 	x: number,
-	y: number,
-	defaultLookup: SpriteLookup
+	y: number
 ): void {
 	const spriteLookups = state.graphicHelper.spriteLookups!;
-	let previousIndex = 0;
+	let segmentStart = 0;
+	let currentLookup = colors[0] ?? spriteLookups.fontTooltipText;
 
-	for (const match of text.matchAll(numberRegExp)) {
-		if (typeof match.index !== 'number') {
+	engine.setSpriteLookup(currentLookup);
+
+	for (let index = 1; index < text.length; index++) {
+		const nextLookup = colors[index];
+
+		if (!nextLookup || nextLookup === currentLookup) {
 			continue;
 		}
 
-		if (match.index > previousIndex) {
-			engine.setSpriteLookup(defaultLookup);
-			engine.drawText(x + previousIndex * state.viewport.vGrid, y, text.slice(previousIndex, match.index));
-		}
-
-		engine.setSpriteLookup(spriteLookups.fontTooltipHighlight);
-		engine.drawText(x + match.index * state.viewport.vGrid, y, match[0]);
-		previousIndex = match.index + match[0].length;
+		engine.drawText(x + segmentStart * state.viewport.vGrid, y, text.slice(segmentStart, index));
+		engine.setSpriteLookup(nextLookup);
+		currentLookup = nextLookup;
+		segmentStart = index;
 	}
 
-	if (previousIndex < text.length) {
-		engine.setSpriteLookup(defaultLookup);
-		engine.drawText(x + previousIndex * state.viewport.vGrid, y, text.slice(previousIndex));
+	if (segmentStart < text.length) {
+		engine.drawText(x + segmentStart * state.viewport.vGrid, y, text.slice(segmentStart));
 	}
-}
-
-function drawSignatureLine(engine: Engine, state: State, line: string, x: number, y: number): void {
-	const spriteLookups = state.graphicHelper.spriteLookups!;
-	const instructionMatch = /^(\S+)(.*)$/.exec(line);
-
-	if (!instructionMatch) {
-		return;
-	}
-
-	const [, instruction, rest] = instructionMatch;
-
-	engine.setSpriteLookup(spriteLookups.fontTooltipHighlight);
-	engine.drawText(x, y, instruction);
-
-	if (rest.length === 0) {
-		return;
-	}
-
-	drawTextWithNumberFormatting(
-		engine,
-		state,
-		rest,
-		x + instruction.length * state.viewport.vGrid,
-		y,
-		spriteLookups.fontTooltipText
-	);
 }
 
 export default function drawSelectedLineHint(
@@ -179,15 +162,20 @@ export default function drawSelectedLineHint(
 	memoryViews: MemoryViews
 ): void {
 	const spriteLookups = state.graphicHelper.spriteLookups;
-	const memoryLines = getMemoryDeclarationTooltipText(memoryViews, getSelectedMemoryDeclaration(state, codeBlock));
-	const lines = [...state.tooltip.text, ...memoryLines];
 
-	if (
-		!spriteLookups ||
-		lines.length === 0 ||
-		!state.featureFlags.codeLineSelection ||
-		state.graphicHelper.selectedCodeBlock !== codeBlock
-	) {
+	if (!spriteLookups || !state.featureFlags.codeLineSelection || state.graphicHelper.selectedCodeBlock !== codeBlock) {
+		return;
+	}
+
+	const memoryContent = getMemoryDeclarationTooltipContent(
+		memoryViews,
+		getSelectedMemoryDeclaration(state, codeBlock),
+		spriteLookups
+	);
+	const lines = [...state.tooltip.text, ...memoryContent.text];
+	const colors = [...state.tooltip.colors, ...memoryContent.colors];
+
+	if (lines.length === 0) {
 		return;
 	}
 
@@ -205,11 +193,6 @@ export default function drawSelectedLineHint(
 		const lineX = x + horizontalPadding;
 		const lineY = y + index * hGrid;
 
-		if (index === 0 && !isCodeInfoLine(line)) {
-			drawSignatureLine(engine, state, line, lineX, lineY);
-			return;
-		}
-
-		drawTextWithNumberFormatting(engine, state, line, lineX, lineY, spriteLookups.fontTooltipText);
+		drawTextWithColors(engine, state, line, colors[index] ?? [], lineX, lineY);
 	});
 }

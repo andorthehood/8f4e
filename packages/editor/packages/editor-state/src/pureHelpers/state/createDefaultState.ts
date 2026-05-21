@@ -42,6 +42,7 @@ export default function createDefaultState() {
 		},
 		tooltip: {
 			text: [],
+			colors: [],
 		},
 		featureFlags: defaultFeatureFlags,
 		editorMode: 'view' as const,
