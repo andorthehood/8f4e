@@ -51,7 +51,7 @@
 - PRs: Include summary, rationale, and test notes; link issues; add screenshots/gifs for UI/editor changes; update `docs/` when behavior or APIs change.
 
 ## Security & Configuration Tips
-- Node: use `nvm use` (repo uses `v22.15.1`).
+- Node: use `nvm use` (repo uses `v24.16.0`).
 - Dev server: Vite sets COOP/COEP headers; prefer running only one instance on port `3000`.
 - Verify aliases resolve to built outputs: run package `build` before `vite build` when changing package APIs.
 
