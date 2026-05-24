@@ -7,17 +7,23 @@ import {
 	i32load,
 	i32load16s,
 	i32load8s,
+	localGet,
 } from '@8f4e/compiler-wasm-utils';
+import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import {
 	getDereferencedValueWordSize,
 	resolvePointerTargetValueKind,
+	valueKindToWasmType,
 	type PushValueKind,
 } from '../../utils/pushValueKind';
+import { guardedAddressOperation } from '../utils/memoryAccessGuard';
 
+import type { CodegenContext } from '@8f4e/compiler-spec';
 import type { PointerMetadata } from '../../utils/memoryData';
 
 type PointerValueSource = 'pointer-slot' | 'pointer-value';
+type PointerLoadStep = { accessByteWidth: number; loadByteCode: number[]; memoryIndex: number };
 
 export {
 	kindToStackItem,
@@ -38,7 +44,30 @@ export const loadOpcode: Record<PushValueKind, (memoryIndex: number) => number[]
 	float64: memoryIndex => f64load(3, 0, memoryIndex),
 };
 
+function buildGuardedPointerLoadChain(
+	context: CodegenContext,
+	lineNumberAfterMacroExpansion: number,
+	kind: PushValueKind,
+	steps: PointerLoadStep[]
+): number[] {
+	const resultType = valueKindToWasmType(kind);
+
+	return steps.reduceRight<number[]>(
+		(continuation, step) =>
+			guardedAddressOperation(context, {
+				accessByteWidth: step.accessByteWidth,
+				memoryIndex: step.memoryIndex,
+				lineNumberAfterMacroExpansion,
+				resultType,
+				buildTrueBranch: addressLocalIndex => [...localGet(addressLocalIndex), ...step.loadByteCode, ...continuation],
+			}),
+		[]
+	);
+}
+
 export function buildPointerDereferenceByteCode(
+	context: CodegenContext,
+	lineNumberAfterMacroExpansion: number,
 	pointerMetadata: PointerMetadata,
 	baseAddressByteCode: number[],
 	pointerValueSource: PointerValueSource
@@ -65,12 +94,26 @@ export function buildPointerDereferenceByteCode(
 				: 0;
 
 	const byteCode = [...baseAddressByteCode];
+	const guardedLoadSteps: PointerLoadStep[] = [];
 	for (let i = 0; i < pointerLoadCount; i++) {
-		byteCode.push(
-			...i32load(2, 0, i === 0 && pointerValueSource === 'pointer-slot' ? slotMemoryIndex : pointeeMemoryIndex)
-		);
+		const memoryIndex = i === 0 && pointerValueSource === 'pointer-slot' ? slotMemoryIndex : pointeeMemoryIndex;
+		const pointerLoad = i32load(2, 0, memoryIndex);
+		if (i === 0 && pointerValueSource === 'pointer-slot') {
+			byteCode.push(...pointerLoad);
+		} else {
+			guardedLoadSteps.push({
+				accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
+				loadByteCode: pointerLoad,
+				memoryIndex,
+			});
+		}
 	}
-	byteCode.push(...finalLoad);
+	guardedLoadSteps.push({
+		accessByteWidth: dereferencedValueWordSize,
+		loadByteCode: finalLoad,
+		memoryIndex: pointeeMemoryIndex,
+	});
+	byteCode.push(...buildGuardedPointerLoadChain(context, lineNumberAfterMacroExpansion, kind, guardedLoadSteps));
 
 	return { kind, byteCode };
 }

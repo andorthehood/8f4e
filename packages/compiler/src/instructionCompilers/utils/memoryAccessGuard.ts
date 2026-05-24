@@ -31,6 +31,15 @@ type GuardedLoadOptions = {
 	loadByteCode: number[];
 };
 
+type GuardedAddressOperationOptions = {
+	accessByteWidth: number;
+	memoryIndex: number;
+	lineNumberAfterMacroExpansion: number;
+	resultType: NumericWasmValueType;
+	buildTrueBranch: (addressLocalIndex: number) => number[];
+	falseByteCode?: number[];
+};
+
 type GuardedStoreOptions = {
 	value: StackItem;
 	accessByteWidth: number;
@@ -62,7 +71,7 @@ export function getOrCreateMemoryGuardLocal(
 	const local = {
 		isInteger: item.isInteger,
 		...(item.isFloat64 ? { isFloat64: true } : {}),
-		index: Object.keys(context.locals).length,
+		index: Math.max(-1, ...Object.values(context.locals).map(local => local.index)) + 1,
 	};
 	context.locals[name] = local;
 	return local;
@@ -119,6 +128,16 @@ function zeroValue(type: NumericWasmValueType): number[] {
 }
 
 export function guardedLoad(context: MemoryGuardContext, options: GuardedLoadOptions): number[] {
+	return guardedAddressOperation(context, {
+		...options,
+		buildTrueBranch: addressLocalIndex => [...localGet(addressLocalIndex), ...options.loadByteCode],
+	});
+}
+
+export function guardedAddressOperation(
+	context: MemoryGuardContext,
+	options: GuardedAddressOperationOptions
+): number[] {
 	const addressLocal = getOrCreateMemoryGuardLocal(
 		context,
 		`__memoryGuardAddr_${options.lineNumberAfterMacroExpansion}`,
@@ -132,8 +151,8 @@ export function guardedLoad(context: MemoryGuardContext, options: GuardedLoadOpt
 		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth, options.memoryIndex),
 		...ifelse(
 			options.resultType,
-			[...localGet(addressLocal.index), ...options.loadByteCode],
-			zeroValue(options.resultType)
+			options.buildTrueBranch(addressLocal.index),
+			options.falseByteCode ?? zeroValue(options.resultType)
 		),
 	];
 }
