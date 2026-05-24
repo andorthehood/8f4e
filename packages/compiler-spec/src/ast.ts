@@ -105,5 +105,5 @@ export type LoopLine = ASTLineBase<'loop', [] | [ArgumentLiteral]>;
 export type LoopIndexLine = ASTLineBase<'loopIndex', []>;
 export type LoopCapLine = ASTLineBase<'#loopCap', [ArgumentLiteral]>;
 export type ImpureLine = ASTLineBase<'#impure', []>;
-export type ExportLine = ASTLineBase<'#export', [ArgumentIdentifier]>;
+export type ExportLine = ASTLineBase<'#export', [] | [ArgumentIdentifier]>;
 export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLiteral]>;

@@ -403,11 +403,13 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Selects the memory region used by subsequent module declarations.' },
 		stack: stack([], []),
 	},
-	// #export <exportName> ( -- )
+	// #export [exportName] ( -- )
 	'#export': {
 		scope: 'function',
 		onInvalidScope: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT,
-		docs: { shortDescription: 'Exports the current function under the provided name.' },
+		docs: {
+			shortDescription: 'Exports the current function under the provided name, or the function name if omitted.',
+		},
 		stack: stack([], []),
 	},
 	// #skipExecution ( -- )
