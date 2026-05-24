@@ -65,9 +65,9 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('#impure', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
 	});
 
-	it('requires one identifier argument for #export', () => {
+	it('accepts an optional identifier argument for #export', () => {
 		expect(() => validateInstructionArguments('#export', [classifyIdentifier('onMidiCC')])).not.toThrow();
-		expect(() => validateInstructionArguments('#export', [])).toThrowError(SyntaxRulesError);
+		expect(() => validateInstructionArguments('#export', [])).not.toThrow();
 		expect(() =>
 			validateInstructionArguments('#export', [classifyIdentifier('onMidiCC'), classifyIdentifier('extra')])
 		).toThrowError(SyntaxRulesError);

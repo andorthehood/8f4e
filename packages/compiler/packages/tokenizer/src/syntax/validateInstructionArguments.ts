@@ -57,7 +57,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	'#loopCap': { minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
 	'#region': { minArguments: 1, maxArguments: 1, argumentTypes: ['regionReference'] },
 	'#impure': { maxArguments: 0 },
-	'#export': { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
+	'#export': { maxArguments: 1, argumentTypes: ['identifier'] },
 	module: { minArguments: 1, argumentTypes: ['identifier'] },
 	constants: { minArguments: 1, argumentTypes: ['identifier'] },
 	use: { minArguments: 1, argumentTypes: ['identifier'] },
