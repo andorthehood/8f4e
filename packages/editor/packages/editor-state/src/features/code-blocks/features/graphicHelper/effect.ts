@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 import { getBlockType } from '@8f4e/tokenizer';
 import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
+import { getFunctionId } from '@8f4e/tokenizer';
 import { getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
 
 import gaps from './gaps';
@@ -123,6 +124,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 		graphicData.id = getCodeBlockId(graphicData.code);
 		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
+		graphicData.functionId = getFunctionId(graphicData.code) || undefined;
 		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
