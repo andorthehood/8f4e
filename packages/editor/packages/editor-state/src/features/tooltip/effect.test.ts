@@ -90,6 +90,69 @@ describe('tooltip effect', () => {
 		]);
 	});
 
+	it('adds selected function line stack analysis when compiler data is available', () => {
+		const selectedBlock = createMockCodeBlock({
+			id: 'function_helper',
+			code: ['function helper', 'param int', 'param int', 'add', 'return', 'functionEnd'],
+			blockType: 'function',
+			cursor: {
+				row: 3,
+				col: 0,
+				x: 0,
+				y: 0,
+			},
+		});
+		const state = createMockState({
+			compiler: {
+				compiledFunctions: {
+					helper: {
+						stackAnalysis: [
+							{
+								lineNumberBeforeMacroExpansion: 3,
+								lineNumberAfterMacroExpansion: 3,
+								instruction: 'add',
+								stackAnalysis: {
+									stackBefore: [
+										{ isInteger: true, knownIntegerValue: 1 },
+										{ isInteger: true, knownIntegerValue: 2 },
+									],
+									consumedOperands: [
+										{ isInteger: true, knownIntegerValue: 1 },
+										{ isInteger: true, knownIntegerValue: 2 },
+									],
+									producedStackItems: [{ isInteger: true }],
+									stackAfter: [{ isInteger: true }],
+								},
+							},
+						],
+					} as never,
+				},
+			},
+			graphicHelper: {
+				selectedCodeBlock: selectedBlock,
+			},
+			tooltip: {
+				text: [],
+			},
+		});
+		const store = createStateManager(state);
+
+		tooltip(store);
+
+		expect(state.tooltip.text).toEqual([
+			'add (T T -- T)',
+			'Adds two numbers of the same',
+			'type and pushes the result.',
+			'before [-int=1, -int=2]',
+			'after: [+int]',
+		]);
+		expect(state.tooltip.highlights.map(highlight => highlight.fillColor)).toEqual([
+			'tooltipConsumedHighlight',
+			'tooltipConsumedHighlight',
+			'tooltipAddedHighlight',
+		]);
+	});
+
 	it('writes live value metadata for selected memory declarations', () => {
 		const fontTooltipText = {};
 		const fontTooltipHighlight = {};

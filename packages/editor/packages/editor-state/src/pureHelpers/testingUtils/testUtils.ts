@@ -1,4 +1,4 @@
-import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
+import { getModuleId, getConstantsId, getFunctionId } from '@8f4e/tokenizer';
 
 import type { DirectiveDeriveOptions, DirectiveDerivedState } from '@8f4e/editor-state-types';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
@@ -74,6 +74,8 @@ export function createMockCodeBlock(
 	const code = overrides.code ?? [];
 	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
 	const moduleId = overrides.moduleId ?? derivedModuleId;
+	const derivedFunctionId = getFunctionId(code) || undefined;
+	const functionId = overrides.functionId ?? derivedFunctionId;
 
 	// Default grid size for testing (matches common font sizes)
 	const defaultVGrid = 8;
@@ -104,6 +106,7 @@ export function createMockCodeBlock(
 		cursor,
 		id,
 		...(moduleId !== undefined ? { moduleId } : {}),
+		...(functionId !== undefined ? { functionId } : {}),
 		code,
 		codeColors: [],
 		codeToRender: [],

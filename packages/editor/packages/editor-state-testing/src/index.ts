@@ -1,4 +1,4 @@
-import { getConstantsId, getModuleId } from '@8f4e/tokenizer';
+import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
 
 import type { CodeBlockGraphicData, EventDispatcher, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
 import type { Viewport } from '@8f4e/editor-state-types';
@@ -113,6 +113,8 @@ export function createMockCodeBlock(
 	const code = overrides.code ?? [];
 	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
 	const moduleId = overrides.moduleId ?? derivedModuleId;
+	const derivedFunctionId = getFunctionId(code) || undefined;
+	const functionId = overrides.functionId ?? derivedFunctionId;
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
@@ -138,6 +140,7 @@ export function createMockCodeBlock(
 		cursor,
 		id,
 		...(moduleId !== undefined ? { moduleId } : {}),
+		...(functionId !== undefined ? { functionId } : {}),
 		code,
 		codeColors: [],
 		codeToRender: [],

@@ -1,4 +1,4 @@
-import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
+import { getModuleId, getConstantsId, getFunctionId } from '@8f4e/tokenizer';
 
 import { parseBlockDirectives } from './parseBlockDirectives';
 
@@ -19,6 +19,8 @@ export function createCodeBlockGraphicData(
 	const code = overrides.code ?? [];
 	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
 	const moduleId = overrides.moduleId ?? derivedModuleId;
+	const derivedFunctionId = getFunctionId(code) || undefined;
+	const functionId = overrides.functionId ?? derivedFunctionId;
 
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
@@ -47,6 +49,7 @@ export function createCodeBlockGraphicData(
 		cursor,
 		id,
 		...(moduleId !== undefined ? { moduleId } : {}),
+		...(functionId !== undefined ? { functionId } : {}),
 		code,
 		codeColors: [],
 		codeToRender: [],

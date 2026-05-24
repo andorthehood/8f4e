@@ -29,7 +29,15 @@ function getSelectedCodeBlockStackAnalysisLine(
 	const moduleId = selectedCodeBlock.moduleId;
 
 	if (!moduleId) {
-		return undefined;
+		const functionId = selectedCodeBlock.functionId;
+
+		if (!functionId) {
+			return undefined;
+		}
+
+		return state.compiler.compiledFunctions?.[functionId]?.stackAnalysis?.find(
+			line => line.lineNumberBeforeMacroExpansion === selectedCodeBlock.cursor.row
+		);
 	}
 
 	return state.compiler.compiledModules[moduleId]?.stackAnalysis?.find(
@@ -81,6 +89,7 @@ export default function tooltip(store: StateManager<State>): void {
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor.y', syncSelectedLineTooltip);
 	store.subscribe('featureFlags.codeLineSelection', syncSelectedLineTooltip);
 	store.subscribe('compiler.compiledModules', syncSelectedLineTooltip);
+	store.subscribe('compiler.compiledFunctions', syncSelectedLineTooltip);
 	store.subscribe('graphicHelper.spriteLookups', syncSelectedLineTooltip);
 	store.subscribe('viewport.vGrid', syncSelectedLineTooltip);
 	store.subscribe('viewport.hGrid', syncSelectedLineTooltip);
