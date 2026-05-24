@@ -65,6 +65,7 @@ Active todo files are listed below.
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
 | 411 | Move compiler analysis metadata into instruction specs | 🟡 | 1-2d | 2026-05-20 | Move generic fixed stack effects, block close behavior, and memory operation metadata into `instructionSpecs.ts` while keeping dynamic function and map algorithms explicit. |
+| 413 | Add WASM bytecode to LLVM IR compiler | 🟡 | 3-5d | 2026-05-24 | Add a standalone converter from 8f4e's fixed-memory WebAssembly subset to LLVM IR so generated programs can be lowered to object files and linked into C/C++ hosts without complicating the live editor compiler. |
 
 ### 🟢 Low Priority
 
