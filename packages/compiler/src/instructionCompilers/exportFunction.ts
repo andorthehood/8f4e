@@ -6,16 +6,18 @@ import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `#export`.
- * Marks the current function as a WebAssembly export under the provided name.
+ * Marks the current function as a WebAssembly export.
  */
 const exportFunction: InstructionCompiler<ExportLine> = function (line, context) {
+	const exportName = line.arguments[0]?.value ?? context.currentFunctionId!;
+
 	if (context.currentFunctionExportName !== undefined) {
 		throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, line, context, {
-			identifier: line.arguments[0].value,
+			identifier: exportName,
 		});
 	}
 
-	context.currentFunctionExportName = line.arguments[0].value;
+	context.currentFunctionExportName = exportName;
 
 	return context;
 };

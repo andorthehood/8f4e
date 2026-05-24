@@ -24,7 +24,7 @@ Functions are reusable code blocks that:
 - Can be called from modules using the `call` instruction
 - Are pure by default
 - Can opt into explicit address-driven memory IO with `#impure`
-- Can be exported to the host WebAssembly ABI with `#export <exportedName>`
+- Can be exported to the host WebAssembly ABI with `#export` or `#export <exportedName>`
 - Do not have direct access to module memory identifiers by name
 - Cannot declare their own memory
 
@@ -50,11 +50,12 @@ functionEnd
 
 ### `#export`
 
-Use `#export <exportedName>` inside a function to export it from the generated WebAssembly module under the provided name.
+Use `#export` inside a function to export it from the generated WebAssembly module under the function name.
+Use `#export <exportedName>` to provide a different host-visible name.
 
 ```
 function onMidiCC
-#export onMidiCC
+#export
 param int channel
 param int controller
 param int value

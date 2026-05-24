@@ -44,6 +44,27 @@ describe('exported 8f4e functions', () => {
 		expect((exports.addFromJs as CallableFunction)(2, 3)).toBe(5);
 	});
 
+	test('exports a function under its own name when no export name is provided', async () => {
+		const { result, exports } = await instantiate([
+			{
+				code: [
+					'function addFromJs',
+					'#export',
+					'param int a',
+					'param int b',
+					'push a',
+					'push b',
+					'add',
+					'functionEnd int',
+				],
+			},
+		]);
+
+		expect(result.compiledFunctions.addFromJs.exportName).toBe('addFromJs');
+		expect(exports.addFromJs).toBeTypeOf('function');
+		expect((exports.addFromJs as CallableFunction)(2, 3)).toBe(5);
+	});
+
 	test('passes float and float64 arguments as positional JS numbers', async () => {
 		const { exports } = await instantiate([
 			{
