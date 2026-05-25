@@ -31,8 +31,8 @@ import type {
 	Stack,
 	StackAnalysisResult,
 	StackItem,
-	AnalysisProducedStackItemSpec,
-	AnalysisStackEffectSpec,
+	StackProducedItemSpec,
+	StackMutationSpec,
 	InstructionSpec,
 } from '@8f4e/compiler-spec';
 
@@ -329,10 +329,10 @@ function analyzeExpectedBlockResult(
 	return { consumed, produced: consumed };
 }
 
-function resolveAnalysisConsumeCount(
+function resolveStackConsumeCount(
 	line: AST[number],
 	context: CompilationContext,
-	consumes: AnalysisStackEffectSpec['consumes']
+	consumes: StackMutationSpec['consumes']
 ): number {
 	if (consumes === 'all') {
 		return context.stack.length;
@@ -348,9 +348,9 @@ function resolveAnalysisConsumeCount(
 	return value + consumes.add;
 }
 
-function resolveAnalysisNonZero(
+function resolveProducedStackItemNonZero(
 	consumed: Stack,
-	spec: AnalysisProducedStackItemSpec,
+	spec: StackProducedItemSpec,
 	defaultValue: boolean | undefined
 ): boolean | undefined {
 	if (spec.isNonZero === 'fromInput') {
@@ -360,22 +360,22 @@ function resolveAnalysisNonZero(
 	return spec.isNonZero ?? defaultValue;
 }
 
-function resolveAnalysisProducedStackItem(consumed: Stack, spec: AnalysisProducedStackItemSpec): StackItem {
+function resolveStackProducedItem(consumed: Stack, spec: StackProducedItemSpec): StackItem {
 	const input = consumed[spec.inputIndex ?? 0];
 
 	switch (spec.kind) {
 		case 'int':
-			return { isInteger: true, isNonZero: resolveAnalysisNonZero(consumed, spec, false) };
+			return { isInteger: true, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
 		case 'float':
-			return { isInteger: false, isNonZero: resolveAnalysisNonZero(consumed, spec, false) };
+			return { isInteger: false, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
 		case 'float64':
-			return { isInteger: false, isFloat64: true, isNonZero: resolveAnalysisNonZero(consumed, spec, false) };
+			return { isInteger: false, isFloat64: true, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
 		case 'same':
 		default:
 			return {
 				isInteger: Boolean(input?.isInteger),
 				...(input?.isFloat64 ? { isFloat64: true } : {}),
-				isNonZero: resolveAnalysisNonZero(consumed, spec, input?.isNonZero),
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, input?.isNonZero),
 			};
 	}
 }
@@ -383,12 +383,10 @@ function resolveAnalysisProducedStackItem(consumed: Stack, spec: AnalysisProduce
 function analyzeStackEffectFromSpec(
 	line: AST[number],
 	context: CompilationContext,
-	stackEffect: AnalysisStackEffectSpec
+	stackEffect: StackMutationSpec
 ): { consumed: Stack; produced: Stack; dropped?: Stack } {
-	const consumed = consume(context, resolveAnalysisConsumeCount(line, context, stackEffect.consumes));
-	const produced = (stackEffect.produces ?? []).map(producedSpec =>
-		resolveAnalysisProducedStackItem(consumed, producedSpec)
-	);
+	const consumed = consume(context, resolveStackConsumeCount(line, context, stackEffect.consumes));
+	const produced = (stackEffect.produces ?? []).map(producedSpec => resolveStackProducedItem(consumed, producedSpec));
 
 	produce(context, produced);
 
@@ -404,17 +402,17 @@ function analyzeFromSpec(
 	context: CompilationContext,
 	spec: InstructionSpec | undefined
 ): { consumed: Stack; produced: Stack; dropped?: Stack } | undefined {
-	const analysis = spec?.analysis;
-	if (analysis?.blockClose) {
-		assertTopBlock(line, context, analysis.blockClose.blockType);
+	const effects = spec?.effects;
+	if (effects?.blockClose) {
+		assertTopBlock(line, context, effects.blockClose.blockType);
 		return analyzeExpectedBlockResult(line, context, {
-			restore: analysis.blockClose.restoreResult,
-			validateFloatResult: analysis.blockClose.validateFloatResult,
+			restore: effects.blockClose.restoreResult,
+			validateFloatResult: effects.blockClose.validateFloatResult,
 		});
 	}
 
-	if (spec?.stack?.analysis) {
-		return analyzeStackEffectFromSpec(line, context, spec.stack.analysis);
+	if (spec?.stack?.effect) {
+		return analyzeStackEffectFromSpec(line, context, spec.stack.effect);
 	}
 
 	return undefined;

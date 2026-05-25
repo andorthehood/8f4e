@@ -34,7 +34,7 @@ const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => nu
 const load: InstructionCompiler<LoadLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const [address] = line.stackAnalysis.consumedOperands;
-	const operation = getInstructionSpec(line.instruction).analysis.memory;
+	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const buildInstructions = loadVariantByteCode[operation.loadVariant];
 	const memoryIndex = getAddressMemoryIndex(address);
 	const instructions = buildInstructions(memoryIndex);
