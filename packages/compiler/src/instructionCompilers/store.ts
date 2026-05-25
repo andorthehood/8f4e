@@ -6,17 +6,19 @@ import { saveByteCode } from './utils/saveByteCode';
 import { guardedStore, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import type { ASTLineBase, InstructionCompiler } from '@8f4e/compiler-spec';
+
+type StoreLine = ASTLineBase<'store', []>;
 
 /**
  * Instruction compiler for `store`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const store: InstructionCompiler = (line, context) => {
+const store: InstructionCompiler<StoreLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const operation = getInstructionSpec(line.instruction)!.analysis!.memory!;
-	const operand2Address = line.stackAnalysis.consumedOperands[operation.addressOperandIndex ?? 0];
-	const operand1Value = line.stackAnalysis.consumedOperands[operation.valueOperandIndex ?? 1];
+	const operation = getInstructionSpec(line.instruction).analysis.memory;
+	const operand2Address = line.stackAnalysis.consumedOperands[operation.addressOperandIndex];
+	const operand1Value = line.stackAnalysis.consumedOperands[operation.valueOperandIndex];
 	const memoryIndex = getAddressMemoryIndex(operand2Address);
 	const instructions = operand1Value.isInteger
 		? i32store(undefined, undefined, 2, 0, memoryIndex)

@@ -15,7 +15,10 @@ import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
-import type { InstructionCompiler, MemoryLoadVariant } from '@8f4e/compiler-spec';
+import type { ASTLineBase, InstructionCompiler, MemoryLoadVariant } from '@8f4e/compiler-spec';
+
+type LoadInstruction = 'load' | 'load8u' | 'load16u' | 'load8s' | 'load16s';
+type LoadLine = ASTLineBase<LoadInstruction, []>;
 
 /**
  * Instruction compiler for `load` variants.
@@ -30,14 +33,14 @@ const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => nu
 	f32: memoryIndex => f32load(2, 0, memoryIndex),
 };
 
-const load: InstructionCompiler = (line, context) => {
+const load: InstructionCompiler<LoadLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const [address] = line.stackAnalysis.consumedOperands;
-	const operation = getInstructionSpec(line.instruction)!.analysis!.memory!;
-	const buildInstructions = loadVariantByteCode[operation.loadVariant!];
+	const operation = getInstructionSpec(line.instruction).analysis.memory;
+	const buildInstructions = loadVariantByteCode[operation.loadVariant];
 	const memoryIndex = getAddressMemoryIndex(address);
 	const instructions = buildInstructions(memoryIndex);
-	const accessByteWidth = operation.accessByteWidth!;
+	const accessByteWidth = operation.accessByteWidth;
 	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
 	}
