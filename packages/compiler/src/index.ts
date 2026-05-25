@@ -219,7 +219,7 @@ export default function compile(
 	// Base type index is 3 (after the 3 built-in types)
 	const functionTypeRegistry: FunctionTypeRegistry = {
 		types: [],
-		signatureMap: new Map(),
+		signatures: [],
 		baseTypeIndex: 3,
 	};
 

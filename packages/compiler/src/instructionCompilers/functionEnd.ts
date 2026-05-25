@@ -1,7 +1,7 @@
-import { createFunctionType } from '@8f4e/compiler-wasm-utils';
 import { ArgumentType } from '@8f4e/compiler-spec';
 
 import { functionValueTypeToWasmType } from '../utils/functionValueType';
+import { getOrRegisterFunctionType } from '../utils/functionTypeRegistry';
 import { popBlock } from '../utils/blockStack';
 
 import type { AST, FunctionCodegenContext, FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
@@ -31,16 +31,7 @@ const functionEnd: InstructionCompiler<AST[number], FunctionCodegenContext> = (l
 	const params = context.currentFunctionSignature.parameters.map(functionValueTypeToWasmType);
 	const results = returnTypes.map(functionValueTypeToWasmType);
 
-	const signature = JSON.stringify({ params, results });
-	let typeIndex = context.functionTypeRegistry.signatureMap.get(signature);
-
-	if (typeIndex === undefined) {
-		typeIndex = context.functionTypeRegistry.baseTypeIndex + context.functionTypeRegistry.types.length;
-		context.functionTypeRegistry.signatureMap.set(signature, typeIndex);
-		context.functionTypeRegistry.types.push(createFunctionType(params, results));
-	}
-
-	context.currentFunctionTypeIndex = typeIndex;
+	context.currentFunctionTypeIndex = getOrRegisterFunctionType(context.functionTypeRegistry, { params, results });
 
 	return context;
 };
