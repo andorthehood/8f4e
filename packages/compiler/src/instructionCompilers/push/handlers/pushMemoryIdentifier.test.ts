@@ -5,7 +5,7 @@ import pushMemoryIdentifier from './pushMemoryIdentifier';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 
-import type { PushIdentifierLine } from '@8f4e/compiler-spec';
+import type { ResolvedMemoryPushLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -31,6 +31,7 @@ describe('pushMemoryIdentifier', () => {
 				},
 			},
 		});
+		const memoryItem = context.namespace.memory.value;
 
 		pushMemoryIdentifier(
 			{
@@ -38,7 +39,8 @@ describe('pushMemoryIdentifier', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('value')],
-			} as PushIdentifierLine,
+				resolvedTarget: { kind: 'memory', memoryItem },
+			} as ResolvedMemoryPushLine,
 			context
 		);
 

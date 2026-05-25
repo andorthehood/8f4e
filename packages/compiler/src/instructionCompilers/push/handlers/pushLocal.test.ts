@@ -5,15 +5,16 @@ import pushLocal from './pushLocal';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 
-import type { PushIdentifierLine } from '@8f4e/compiler-spec';
+import type { ResolvedLocalPushLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('pushLocal', () => {
 	it('pushes a local via local.get', () => {
+		const local = { isInteger: true, index: 3 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				temp: { isInteger: true, index: 3 },
+				temp: local,
 			},
 		});
 
@@ -23,7 +24,8 @@ describe('pushLocal', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('temp')],
-			} as PushIdentifierLine,
+				resolvedTarget: { kind: 'local', local },
+			} as ResolvedLocalPushLine,
 			context
 		);
 

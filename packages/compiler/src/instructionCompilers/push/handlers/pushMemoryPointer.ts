@@ -2,16 +2,15 @@ import { i32const } from '@8f4e/compiler-wasm-utils';
 
 import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../utils/saveByteCode';
-import { getDataStructure } from '../../../utils/memoryData';
 import { buildPointerDereferenceByteCode } from '../shared';
 
-import type { CodegenContext, MemoryPointerPushLine } from '@8f4e/compiler-spec';
+import type { CodegenContext, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
 
-export default function pushMemoryPointer(line: MemoryPointerPushLine, context: CodegenContext): CodegenContext {
-	const memory = context.namespace.memory;
-	const argument = line.arguments[0];
-	const base = argument.targetMemoryId;
-	const memoryItem = getDataStructure(memory, base)!;
+export default function pushMemoryPointer(
+	line: ResolvedMemoryPointerPushLine,
+	context: CodegenContext
+): CodegenContext {
+	const { memoryItem } = line.resolvedTarget;
 	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,

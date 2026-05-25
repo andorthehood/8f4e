@@ -79,6 +79,71 @@ exports[`call constant function > if the generated AST, WAT and memory map match
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,
+    "targetFunction": {
+      "ast": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "getFortyTwo",
+            },
+          ],
+          "instruction": "function",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 0,
+          "lineNumberBeforeMacroExpansion": 0,
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 42,
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 1,
+          "lineNumberBeforeMacroExpansion": 1,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 2,
+          "lineNumberBeforeMacroExpansion": 2,
+        },
+      ],
+      "body": [
+        4,
+        0,
+        65,
+        42,
+        11,
+      ],
+      "id": "getFortyTwo",
+      "locals": [],
+      "signature": {
+        "parameters": [],
+        "returns": [
+          "int",
+        ],
+      },
+      "typeIndex": 3,
+      "wasmIndex": 4,
+    },
   },
   {
     "arguments": [],
@@ -265,6 +330,112 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,
+    "targetFunction": {
+      "ast": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "getDoublePI",
+            },
+          ],
+          "instruction": "function",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 0,
+          "lineNumberBeforeMacroExpansion": 0,
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14159265358979,
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 1,
+          "lineNumberBeforeMacroExpansion": 1,
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 2,
+          "lineNumberBeforeMacroExpansion": 2,
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 3,
+          "lineNumberBeforeMacroExpansion": 3,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "functionEnd",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 4,
+          "lineNumberBeforeMacroExpansion": 4,
+        },
+      ],
+      "body": [
+        21,
+        0,
+        68,
+        17,
+        45,
+        68,
+        84,
+        251,
+        33,
+        9,
+        64,
+        68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        64,
+        162,
+        11,
+      ],
+      "id": "getDoublePI",
+      "locals": [],
+      "signature": {
+        "parameters": [],
+        "returns": [
+          "float64",
+        ],
+      },
+      "typeIndex": 3,
+      "wasmIndex": 4,
+    },
   },
   {
     "arguments": [],
@@ -454,6 +625,71 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,
+    "targetFunction": {
+      "ast": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "getTwo",
+            },
+          ],
+          "instruction": "function",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 0,
+          "lineNumberBeforeMacroExpansion": 0,
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 1,
+          "lineNumberBeforeMacroExpansion": 1,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 2,
+          "lineNumberBeforeMacroExpansion": 2,
+        },
+      ],
+      "body": [
+        4,
+        0,
+        65,
+        2,
+        11,
+      ],
+      "id": "getTwo",
+      "locals": [],
+      "signature": {
+        "parameters": [],
+        "returns": [
+          "int",
+        ],
+      },
+      "typeIndex": 3,
+      "wasmIndex": 4,
+    },
   },
   {
     "arguments": [
@@ -469,6 +705,71 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "targetFunction": {
+      "ast": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "getThree",
+            },
+          ],
+          "instruction": "function",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 0,
+          "lineNumberBeforeMacroExpansion": 0,
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 1,
+          "lineNumberBeforeMacroExpansion": 1,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 2,
+          "lineNumberBeforeMacroExpansion": 2,
+        },
+      ],
+      "body": [
+        4,
+        0,
+        65,
+        3,
+        11,
+      ],
+      "id": "getThree",
+      "locals": [],
+      "signature": {
+        "parameters": [],
+        "returns": [
+          "int",
+        ],
+      },
+      "typeIndex": 3,
+      "wasmIndex": 5,
+    },
   },
   {
     "arguments": [],
@@ -683,6 +984,24 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 4,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 1,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -698,6 +1017,127 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 7,
     "lineNumberBeforeMacroExpansion": 7,
+    "targetFunction": {
+      "ast": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "double",
+            },
+          ],
+          "instruction": "function",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 0,
+          "lineNumberBeforeMacroExpansion": 0,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "x",
+            },
+          ],
+          "instruction": "param",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 1,
+          "lineNumberBeforeMacroExpansion": 1,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "x",
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 2,
+          "lineNumberBeforeMacroExpansion": 2,
+          "resolvedTarget": {
+            "kind": "local",
+            "local": {
+              "index": 0,
+              "isInteger": true,
+            },
+          },
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 3,
+          "lineNumberBeforeMacroExpansion": 3,
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 4,
+          "lineNumberBeforeMacroExpansion": 4,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 5,
+          "lineNumberBeforeMacroExpansion": 5,
+        },
+      ],
+      "body": [
+        7,
+        0,
+        32,
+        0,
+        65,
+        2,
+        108,
+        11,
+      ],
+      "id": "double",
+      "locals": [],
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+      "typeIndex": 3,
+      "wasmIndex": 4,
+    },
   },
   {
     "arguments": [],
@@ -903,6 +1343,100 @@ exports[`function can call another function with its signature and wasm index av
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,
+    "targetFunction": {
+      "ast": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "compute",
+            },
+          ],
+          "instruction": "function",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 0,
+          "lineNumberBeforeMacroExpansion": 0,
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 41,
+            },
+          ],
+          "instruction": "push",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 1,
+          "lineNumberBeforeMacroExpansion": 1,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "increment",
+            },
+          ],
+          "instruction": "call",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 2,
+          "lineNumberBeforeMacroExpansion": 2,
+          "targetFunction": {
+            "id": "increment",
+            "signature": {
+              "parameters": [
+                "int",
+              ],
+              "returns": [
+                "int",
+              ],
+            },
+            "wasmIndex": 4,
+          },
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+          "isMemoryDeclaration": false,
+          "isSemanticOnly": false,
+          "lineNumberAfterMacroExpansion": 3,
+          "lineNumberBeforeMacroExpansion": 3,
+        },
+      ],
+      "body": [
+        6,
+        0,
+        65,
+        41,
+        16,
+        4,
+        11,
+      ],
+      "id": "compute",
+      "locals": [],
+      "signature": {
+        "parameters": [],
+        "returns": [
+          "int",
+        ],
+      },
+      "typeIndex": 4,
+      "wasmIndex": 5,
+    },
   },
   {
     "arguments": [],

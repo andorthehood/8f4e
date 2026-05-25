@@ -2,7 +2,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
 
-import type { CallLine, CompilationContext } from '@8f4e/compiler-spec';
+import type { CallLine, CompilationContext, ResolvedCallLine } from '@8f4e/compiler-spec';
 
 /**
  * Semantic normalizer for the `call` instruction.
@@ -11,15 +11,16 @@ import type { CallLine, CompilationContext } from '@8f4e/compiler-spec';
  * existence validation; codegen only handles stack shape, parameter/return
  * type compatibility, and lowering.
  */
-export default function normalizeCall(line: CallLine, context: CompilationContext): CallLine {
+export default function normalizeCall(line: CallLine, context: CompilationContext): CallLine | ResolvedCallLine {
 	if (!context.namespace.functions) {
 		return line;
 	}
 
 	const functionId = line.arguments[0].value;
-	if (!context.namespace.functions[functionId]) {
+	const targetFunction = context.namespace.functions[functionId];
+	if (!targetFunction) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
 
-	return line;
+	return { ...line, targetFunction };
 }

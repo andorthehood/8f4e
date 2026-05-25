@@ -94,6 +94,24 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "counter",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -282,6 +300,24 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "counter",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -485,6 +521,24 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "counter",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -673,6 +727,24 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "counter",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -877,6 +949,24 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "outerCounter",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -960,6 +1050,24 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 13,
     "lineNumberBeforeMacroExpansion": 13,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 4,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "innerCounter",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 1,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -1188,6 +1296,24 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 5,
     "lineNumberBeforeMacroExpansion": 5,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "counter",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [

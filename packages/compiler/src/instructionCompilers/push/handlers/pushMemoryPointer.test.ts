@@ -5,9 +5,22 @@ import pushMemoryPointer from './pushMemoryPointer';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
 
-import type { PushIdentifierLine } from '@8f4e/compiler-spec';
+import type { DataStructure, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
+
+function createResolvedMemoryPointerPushLine(
+	memoryId: string,
+	memoryItem: DataStructure
+): ResolvedMemoryPointerPushLine {
+	return {
+		lineNumberBeforeMacroExpansion: 1,
+		lineNumberAfterMacroExpansion: 1,
+		instruction: 'push',
+		arguments: [classifyIdentifier(`*${memoryId}`)],
+		resolvedTarget: { kind: 'memory-pointer', memoryItem },
+	} as ResolvedMemoryPointerPushLine;
+}
 
 describe('pushMemoryPointer', () => {
 	it('dereferences double pointers and loads target kind', () => {
@@ -33,15 +46,7 @@ describe('pushMemoryPointer', () => {
 			},
 		});
 
-		pushMemoryPointer(
-			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
-				instruction: 'push',
-				arguments: [classifyIdentifier('*ptr')],
-			} as PushIdentifierLine,
-			context
-		);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(12), ...i32load(), ...i32load(), ...f64load()]);
 	});
@@ -69,15 +74,7 @@ describe('pushMemoryPointer', () => {
 			},
 		});
 
-		pushMemoryPointer(
-			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
-				instruction: 'push',
-				arguments: [classifyIdentifier('*ptr')],
-			} as PushIdentifierLine,
-			context
-		);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8s()]);
 	});
@@ -105,15 +102,7 @@ describe('pushMemoryPointer', () => {
 			},
 		});
 
-		pushMemoryPointer(
-			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
-				instruction: 'push',
-				arguments: [classifyIdentifier('*pptr')],
-			} as PushIdentifierLine,
-			context
-		);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('pptr', context.namespace.memory.pptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load8s()]);
 	});
@@ -141,15 +130,7 @@ describe('pushMemoryPointer', () => {
 			},
 		});
 
-		pushMemoryPointer(
-			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
-				instruction: 'push',
-				arguments: [classifyIdentifier('*ptr')],
-			} as PushIdentifierLine,
-			context
-		);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load16s()]);
 	});
@@ -177,15 +158,7 @@ describe('pushMemoryPointer', () => {
 			},
 		});
 
-		pushMemoryPointer(
-			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
-				instruction: 'push',
-				arguments: [classifyIdentifier('*pptr')],
-			} as PushIdentifierLine,
-			context
-		);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('pptr', context.namespace.memory.pptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load16s()]);
 	});

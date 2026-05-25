@@ -87,6 +87,24 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -349,6 +367,24 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": false,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "float",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -611,6 +647,24 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -838,6 +892,24 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -1100,6 +1172,24 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -1397,6 +1487,24 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -1638,6 +1746,24 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -1863,6 +1989,24 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -2050,6 +2194,24 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 6,
     "lineNumberBeforeMacroExpansion": 6,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
