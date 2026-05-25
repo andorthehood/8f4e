@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-20
 issue: null
-status: Open
-completed: null
+status: Done
+completed: 2026-05-25
 ---
 
 # TODO: Move compiler analysis metadata into instruction specs
@@ -38,32 +38,32 @@ The stack analyzer and code generator should read this metadata for generic case
 
 ### Step 1: Design the Spec Metadata
 
-- Add narrowly scoped analysis metadata types to `packages/compiler-spec`.
-- Keep the metadata declarative and instruction-agnostic.
-- Avoid strategy callbacks or instruction-specific config names that just move code into data.
+- [x] Add narrowly scoped analysis metadata types to `packages/compiler-spec`.
+- [x] Keep the metadata declarative and instruction-agnostic.
+- [x] Avoid strategy callbacks or instruction-specific config names that just move code into data.
 
 ### Step 2: Move Fixed Stack Effects
 
-- Convert simple fixed-effect instructions to read stack behavior from the spec.
-- Cover arithmetic, comparisons, casts, stack manipulation, and other instructions that only consume and produce fixed stack shapes.
-- Update analyzer tests alongside the refactor.
+- [x] Convert simple fixed-effect instructions to read stack behavior from the spec.
+- [x] Cover comparisons, casts, stack manipulation, loads/stores, and other instructions that only consume and produce fixed stack shapes.
+- [x] Preserve custom arithmetic analysis where integer/address metadata derivation remains algorithmic.
 
 ### Step 3: Move Block Close Metadata
 
-- Move generic block-close shape into the specs for instructions such as `else`, `blockEnd`, `loopEnd`, and `ifEnd`.
-- Keep custom function and map result validation logic explicit unless a genuinely reusable abstraction emerges.
+- [x] Move generic block-close shape into the specs for instructions such as `else`, `blockEnd`, `loopEnd`, and `ifEnd`.
+- [x] Keep custom function and map result validation logic explicit unless a genuinely reusable abstraction emerges.
 
 ### Step 4: Move Memory Operation Metadata
 
-- Move memory access width, operation kind, address operand role, and produced value type into the instruction specs.
-- Use the same spec metadata from stack analysis and code generation where possible.
-- Remove duplicated memory maps once the spec becomes the source of truth.
+- [x] Move memory access width, operation kind, address operand role, and produced value type into the instruction specs.
+- [x] Use the same spec metadata from stack analysis and code generation where possible.
+- [x] Remove duplicated memory maps once the spec becomes the source of truth.
 
 ### Step 5: Leave Dynamic Algorithms Explicit
 
-- Keep `call`, `return`, and function-end signature logic in compiler code.
-- Keep map-specific row/default/selection analysis in compiler code.
-- Reconsider these only after a more generic abstraction becomes obvious from repeated behavior.
+- [x] Keep `call`, `return`, and function-end signature logic in compiler code.
+- [x] Keep map-specific row/default/selection analysis in compiler code.
+- [x] Reconsider these only after a more generic abstraction becomes obvious from repeated behavior.
 
 ## Validation Checkpoints
 
@@ -75,18 +75,18 @@ The stack analyzer and code generator should read this metadata for generic case
 
 ## Success Criteria
 
-- [ ] Generic fixed stack effects are read from instruction specs.
-- [ ] Generic block close behavior is read from instruction specs.
-- [ ] Generic memory operation metadata is read from instruction specs.
-- [ ] `analyzeInstruction.ts` only keeps custom algorithmic cases where configuration would be too specific.
-- [ ] Code generation no longer maintains duplicate memory metadata that can live in the spec.
-- [ ] Tests are updated to match the new spec-first structure.
+- [x] Generic fixed stack effects are read from instruction specs.
+- [x] Generic block close behavior is read from instruction specs.
+- [x] Generic memory operation metadata is read from instruction specs.
+- [x] `analyzeInstruction.ts` only keeps custom algorithmic cases where configuration would be too specific.
+- [x] Code generation no longer maintains duplicate memory metadata that can live in the spec.
+- [x] Tests are updated to match the new spec-first structure.
 
 ## Affected Components
 
 - `packages/compiler-spec/src/instructionSpecs.ts`
 - `packages/compiler/src/stackAnalysis/analyzeInstruction.ts`
-- `packages/compiler/src/codegen/`
+- `packages/compiler/src/instructionCompilers/`
 - compiler stack analysis tests
 - compiler architecture boundary tests
 - editor tooltip stack signature rendering
@@ -101,3 +101,10 @@ The stack analyzer and code generator should read this metadata for generic case
 ## Related Items
 
 - **Follows**: `397-finish-compiler-stack-analysis-codegen-separation.md`
+
+## Completion Notes
+
+- Completed on 2026-05-25 by adding declarative `InstructionSpec.analysis` metadata for generic stack effects, block-close behavior, and memory operations.
+- Stack analysis now resolves configured generic effects from instruction specs before falling back to custom algorithmic cases.
+- Memory load/store/copy codegen now reads operation metadata from instruction specs; opcode builders and truly dynamic value-width choices remain in instruction compilers.
+- Verified with `npx nx run compiler-spec:typecheck`, `npx nx run compiler:typecheck`, and `npx nx run compiler:test`.
