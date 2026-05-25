@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-25
 issue: https://github.com/andorthehood/8f4e/issues/683
-status: Open
-completed: null
+status: Done
+completed: 2026-05-25
 ---
 
 # TODO: Split compiler context phase types
@@ -35,24 +35,24 @@ This should make the compiler pipeline read more like a set of typed stages: pre
 
 ### Step 1: Define Phase Interfaces
 
-- Keep the existing shared fields in a base context type.
-- Add required `mode` values for module and function contexts.
-- Move phase-only optional fields into the narrower interfaces.
+- [x] Keep the existing shared fields in a base context type.
+- [x] Add required `mode` values for module and function contexts.
+- [x] Move phase-only optional fields into the narrower interfaces.
 
 ### Step 2: Narrow Context Creation
 
-- Update `createCompilationContext(...)` to either return the correct generic context or add dedicated creation helpers.
-- Preserve test helpers by making their overrides explicit about the target phase.
+- [x] Update `createCompilationContext(...)` to either return the correct generic context or add dedicated creation helpers.
+- [x] Preserve test helpers by making their overrides explicit about the target phase.
 
 ### Step 3: Narrow Compiler Entrypoints
 
-- Update `compileModule`, `compileFunction`, and namespace prepass functions to use the narrower types.
-- Update instruction compiler signatures for function-only instructions such as `param`, `functionEnd`, `#export`, and `#impure` where useful.
+- [x] Update `compileModule`, `compileFunction`, and namespace prepass functions to use the narrower types.
+- [x] Update instruction compiler signatures for function-only instructions such as `param`, `functionEnd`, `#export`, and `#impure` where useful.
 
 ### Step 4: Remove Defensive Checks
 
-- Remove checks and assertions that only exist because required phase fields are optional in the shared type.
-- Keep semantic user-code validation, such as invalid instruction scope errors.
+- [x] Remove checks and assertions that only exist because required phase fields are optional in the shared type.
+- [x] Keep semantic user-code validation, such as invalid instruction scope errors.
 
 ## Validation Checkpoints
 
@@ -63,10 +63,10 @@ This should make the compiler pipeline read more like a set of typed stages: pre
 
 ## Success Criteria
 
-- [ ] `mode` is required on phase-specific compiler contexts.
-- [ ] Function compilation code can access function signature and type registry without non-null assertions.
-- [ ] Module compilation code can access module layout fields without fallback defaults for internally guaranteed state.
-- [ ] Compiler tests and typechecks pass.
+- [x] `mode` is required on phase-specific compiler contexts.
+- [x] Function compilation code can access function signature and type registry without non-null assertions.
+- [x] Module compilation code can access module layout fields without fallback defaults for internally guaranteed state.
+- [x] Compiler tests and typechecks pass.
 
 ## Affected Components
 
@@ -88,3 +88,12 @@ This should make the compiler pipeline read more like a set of typed stages: pre
 
 - **Follows**: `413-split-compiled-function-lifecycle-types.md`
 - **Related**: `397-finish-compiler-stack-analysis-codegen-separation.md`
+
+## Completion Notes
+
+- Completed on 2026-05-25 by adding `NamespacePrepassContext`, `ModuleCompilationContext`, and `FunctionCompilationContext` over the shared compiler context surface.
+- Made `mode`, `currentModuleNextWordOffset`, and `currentModuleWordAlignedSize` required context fields, then narrowed namespace prepass, module compilation, and function compilation to the relevant phase context.
+- Made function codegen contexts require `currentFunctionSignature` and `functionTypeRegistry`, allowing `param` and `functionEnd` to update signatures and register function types without non-null assertions or optional fallbacks.
+- Removed fallback defaults for internally guaranteed module layout state in declaration compilation, namespace layout, compile-time module address resolution, and module address clamping.
+- Kept semantic runtime validation for invalid user programs; the removed checks only covered compiler-owned phase ambiguity that is now expressed in the type interfaces.
+- Verified with `npx nx run compiler-spec:typecheck`, `npx nx run compiler:typecheck`, and `npx nx run compiler:test`.
