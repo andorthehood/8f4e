@@ -18,6 +18,10 @@ That works because JavaScript `Map` keys compare arrays and objects by identity 
 
 The broader compiler hardening goal is to use strict internal types where applicable instead of handling ambiguity during runtime. Function type signatures are structured compiler data, so the registry should express that structure directly instead of encoding it through JSON serialization.
 
+## Project Compatibility Note
+
+This project has not been released yet and we own the whole codebase. Do not add compatibility layers, legacy aliases, adapter shims, or fallback paths just to preserve broad internal interfaces. Prefer changing the type contracts directly and updating all call sites in the repo.
+
 ## Proposed Solution
 
 Replace the serialized string key with an explicit typed function signature identity mechanism.
@@ -41,7 +45,7 @@ Prefer the approach that removes ad hoc serialization while keeping the registry
 ### Step 2: Replace JSON Serialization
 
 - Replace `JSON.stringify({ params, results })` with a typed key/equality strategy.
-- Update `FunctionTypeRegistry` in `packages/compiler-spec/src/compiled.ts` if its public shape needs to change.
+- Update `FunctionTypeRegistry` in `packages/compiler-spec/src/compiled.ts` if its shape needs to change.
 - Avoid broadening types or adding runtime fallback checks just to preserve the existing map shape.
 
 ### Step 3: Keep Final Assembly Simple
@@ -73,7 +77,7 @@ Prefer the approach that removes ad hoc serialization while keeping the registry
 
 ## Risks & Considerations
 
-- **Public shape risk**: `FunctionTypeRegistry` lives in `compiler-spec`; check whether changing `signatureMap` affects exported types or downstream package consumers.
+- **Ownership boundary**: `FunctionTypeRegistry` lives in `compiler-spec`; if changing it affects downstream packages in this repo, update those consumers directly instead of keeping `signatureMap` as a compatibility layer.
 - **Overengineering risk**: Avoid a large registry abstraction if a small typed helper is enough.
 - **Wrong-goal risk**: Do not replace JSON serialization with another opaque string format unless it is clearly modeled as a typed key. The goal is to make signature identity explicit, not merely prettier.
 - **Regression risk**: Function signatures with the same param/result types must still share one Wasm type entry and type index.

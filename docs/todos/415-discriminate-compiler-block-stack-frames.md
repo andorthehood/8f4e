@@ -20,6 +20,10 @@ The overall goal is to use strict types for block-state facts once the compiler 
 
 This refactor should remove code, not move checks around. In particular, do **not** add new codegen-phase runtime validation such as `peekExpectedBlock(...)` followed by `throw getError(...)`. Invalid source block structure should already be rejected by tokenizer, semantic normalization, or stack analysis before codegen runs. Codegen should consume a narrowed internal contract and trust compiler-owned invariants.
 
+## Project Compatibility Note
+
+This project has not been released yet and we own the whole codebase. Do not add compatibility layers, legacy aliases, adapter shims, or fallback paths just to preserve broad internal interfaces. Prefer changing the type contracts directly and updating all call sites in the repo.
+
 ## Proposed Solution
 
 Turn block frames into a discriminated union keyed by `blockType`:
