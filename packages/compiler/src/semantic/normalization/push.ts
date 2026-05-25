@@ -18,7 +18,6 @@ import {
 	validateIntermoduleAddressReference,
 	validateOrDeferCompileTimeExpression,
 	normalizeArgumentsAtIndexes,
-	withHiddenProperty,
 } from './helpers';
 
 import { getError } from '../../compilerError';
@@ -67,7 +66,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 					...normalizedPushLine,
 					arguments: [argument],
 				};
-				return withHiddenProperty(resolvedLine, 'resolvedTarget', { kind: 'local' as const, local });
+				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, local } };
 			}
 
 			const memoryItem = getDataStructure(memory, value);
@@ -76,7 +75,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 					...normalizedPushLine,
 					arguments: [argument],
 				};
-				return withHiddenProperty(resolvedLine, 'resolvedTarget', { kind: 'memory' as const, memoryItem });
+				return { ...resolvedLine, resolvedTarget: { kind: 'memory' as const, memoryItem } };
 			}
 		}
 		if (referenceKind === 'memory-pointer') {
@@ -87,10 +86,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 					...normalizedPushLine,
 					arguments: [pointerArgument],
 				};
-				return withHiddenProperty(resolvedLine, 'resolvedTarget', {
-					kind: 'memory-pointer' as const,
-					memoryItem,
-				});
+				return { ...resolvedLine, resolvedTarget: { kind: 'memory-pointer' as const, memoryItem } };
 			}
 
 			const local = context.locals[pointerArgument.targetMemoryId];
@@ -99,7 +95,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 					...normalizedPushLine,
 					arguments: [pointerArgument],
 				};
-				return withHiddenProperty(resolvedLine, 'resolvedTarget', { kind: 'local-pointer' as const, local });
+				return { ...resolvedLine, resolvedTarget: { kind: 'local-pointer' as const, local } };
 			}
 		}
 

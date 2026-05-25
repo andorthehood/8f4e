@@ -99,6 +99,24 @@ exports[`block (float) > if the generated AST, WAT and memory map match the snap
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 7,
     "lineNumberBeforeMacroExpansion": 7,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": false,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "float",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
@@ -287,6 +305,24 @@ exports[`block (int) > if the generated AST, WAT and memory map match the snapsh
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 7,
     "lineNumberBeforeMacroExpansion": 7,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [

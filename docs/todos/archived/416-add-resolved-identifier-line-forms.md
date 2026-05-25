@@ -40,7 +40,7 @@ This keeps the compiler stage boundary honest: semantic normalization owns symbo
 ### Step 1: Model Resolved Targets
 
 - [x] Add target-specific normalized types in `packages/compiler-spec/src/semantic.ts` based on ownership boundaries, not compatibility concerns.
-- [x] Keep source AST shape unchanged; resolved metadata is carried as internal non-enumerable compiler metadata.
+- [x] Keep resolved metadata explicit on normalized/compiler lines so later phases can consume it directly.
 
 ### Step 2: Update Semantic Normalization
 
@@ -73,7 +73,7 @@ This keeps the compiler stage boundary honest: semantic normalization owns symbo
 - Stack analysis and codegen use those carried targets directly instead of re-indexing compiler maps with non-null assertions.
 - Codegen push inputs now exclude deferred identifier forms; semantic/namespace deferral is modeled separately from bytecode emission.
 - The old `resolveIdentifierPushKind` rediscovery helper was removed because resolution is now owned by semantic normalization.
-- Internal resolved metadata is non-enumerable so AST snapshots and public line shapes stay source-faithful while the compiler pipeline still carries the stricter proof.
+- Resolved metadata is explicit on normalized/compiler lines; this project is unreleased, so the stricter representation is allowed to surface instead of being hidden behind compatibility behavior.
 
 ## Affected Components
 
