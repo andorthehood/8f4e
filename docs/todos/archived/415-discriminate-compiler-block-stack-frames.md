@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-05-25
 issue: https://github.com/andorthehood/8f4e/issues/684
-status: Open
-completed: null
+status: Done
+completed: 2026-05-25
 ---
 
 # TODO: Discriminate compiler block stack frames
@@ -40,27 +40,28 @@ The important distinction is between validating user block structure and defendi
 
 ### Step 1: Define Frame Union
 
-- Replace the single broad `BlockStack[number]` shape with named frame types.
-- Keep shared result-shape fields in a base frame type.
-- Require `mapState` on map frames.
+- [x] Replace the single broad `BlockStack[number]` shape with named frame types.
+- [x] Keep shared result-shape fields in a base frame type.
+- [x] Require `mapState` on map frames.
 
 ### Step 2: Add Typed Helpers
 
-- Add typed access helpers only where they delete existing code or assertions without adding new runtime error paths in codegen.
-- Keep user-facing block mismatch errors in existing validation phases.
-- Keep `popBlock(...)` for generic codegen behavior where no type-specific fields are needed.
+- [x] Add typed access helpers only where they delete existing code or assertions without adding new runtime error paths in codegen.
+- [x] Keep user-facing block mismatch errors in existing validation phases.
+- [x] Keep `popBlock(...)` for generic codegen behavior where no type-specific fields are needed.
 
 ### Step 3: Update Map and Loop Consumers
 
-- Update `map`, `default`, `mapEnd`, `loopIndex`, and stack-analysis map/loop paths to consume narrowed data.
-- Prefer pushing map row/default collection out of codegen so `map` and `default` codegen can shrink or disappear.
-- Remove `mapState!`, `loopBlock!`, and similar assertions only when the replacement removes ambiguity without adding new codegen checks.
+- [x] Update `map`, `default`, `mapEnd`, `loopIndex`, and stack-analysis map/loop paths to consume narrowed data.
+- [x] Remove `mapState!`, `loopBlock!`, and similar assertions only when the replacement removes ambiguity without adding new codegen checks.
+
+Deferred note: pushing map row/default collection out of codegen belongs to the larger stack-analysis/codegen separation work; this refactor deliberately avoided expanding scope beyond the frame shape.
 
 ### Step 4: Delete, Do Not Relocate, Defensive Code
 
-- Confirm the implementation has fewer codegen branches/checks than before.
-- Do not replace non-null assertions with codegen `if (!...) throw ...` guards.
-- If a narrowed type cannot be expressed without a new codegen check, leave that part for a later typed-line or phase-separation task instead of worsening runtime behavior.
+- [x] Confirm the implementation has fewer codegen branches/checks than before.
+- [x] Do not replace non-null assertions with codegen `if (!...) throw ...` guards.
+- [x] If a narrowed type cannot be expressed without a new codegen check, leave that part for a later typed-line or phase-separation task instead of worsening runtime behavior.
 
 ## Validation Checkpoints
 
@@ -72,12 +73,22 @@ The important distinction is between validating user block structure and defendi
 
 ## Success Criteria
 
-- [ ] Map block consumers can access `mapState` without non-null assertions.
-- [ ] Loop metadata consumers are narrowed through a typed frame.
-- [ ] Invalid block nesting still produces the same compiler errors.
-- [ ] Codegen does not gain new user-facing runtime checks for block structure.
-- [ ] Codegen code size/branch count is reduced or unchanged; the refactor does not merely wrap existing ambiguity in helper calls.
-- [ ] Compiler tests and typechecks pass.
+- [x] Map block consumers can access `mapState` without non-null assertions.
+- [x] Loop metadata consumers are narrowed through a typed frame.
+- [x] Invalid block nesting still produces the same compiler errors.
+- [x] Codegen does not gain new user-facing runtime checks for block structure.
+- [x] Codegen code size/branch count is reduced or unchanged; the refactor does not merely wrap existing ambiguity in helper calls.
+- [x] Compiler tests and typechecks pass.
+
+## Completion Notes
+
+Completed in PR followup branch `ai/discriminate-compiler-block-stack-frames`.
+
+- `BlockStack` is now a discriminated union with required `mapState` on map frames and required loop counter metadata on loop frames.
+- Codegen uses narrow invariant helpers for map/loop frames without adding user-facing validation branches.
+- Existing block-structure errors remain in stack analysis and validation paths.
+- `mapState!`, `loopBlock!`, `loopCounterLocalName!`, and close-block `popBlock(context)!` assertions were removed from compiler sources.
+- Moving map row/default collection out of codegen remains part of the larger stack-analysis/codegen separation work rather than this frame-shape refactor.
 
 ## Affected Components
 

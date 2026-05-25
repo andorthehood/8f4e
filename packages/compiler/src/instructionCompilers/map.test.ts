@@ -5,7 +5,17 @@ import map from './map';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { AST, CompilationContext, MapBlockState } from '@8f4e/compiler-spec';
+
+function getTopMapState(context: CompilationContext): MapBlockState {
+	const block = context.blockStack[context.blockStack.length - 1];
+
+	if (block?.blockType !== BlockType.MAP) {
+		throw new Error('Expected top block to be a map block');
+	}
+
+	return block.mapState;
+}
 
 describe('map instruction compiler', () => {
 	it('records an int key→int value row', () => {
@@ -44,7 +54,7 @@ describe('map instruction compiler', () => {
 			context
 		);
 
-		expect(context.blockStack[context.blockStack.length - 1].mapState!.rows).toMatchSnapshot();
+		expect(getTopMapState(context).rows).toMatchSnapshot();
 	});
 
 	it('accepts single-character string literals as ASCII int key/value', () => {
@@ -83,7 +93,7 @@ describe('map instruction compiler', () => {
 			context
 		);
 
-		expect(context.blockStack[context.blockStack.length - 1].mapState!.rows).toEqual([
+		expect(getTopMapState(context).rows).toEqual([
 			{
 				keyValue: 65,
 				valueValue: 66,

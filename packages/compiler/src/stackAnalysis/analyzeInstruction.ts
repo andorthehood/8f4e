@@ -199,7 +199,7 @@ function analyzeCall(line: CallLine, context: CompilationContext): { consumed: S
 function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const block = context.blockStack[context.blockStack.length - 1];
 
-	if (!block || block.blockType !== BlockType.MAP || !block.mapState) {
+	if (!block || block.blockType !== BlockType.MAP) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 
@@ -286,7 +286,7 @@ function analyzeLocalSet(line: AST[number], context: CompilationContext): { cons
 function analyzeLoopIndex(line: AST[number], context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const loopBlock = [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP);
 
-	if (!loopBlock?.loopCounterLocalName || !context.locals[loopBlock.loopCounterLocalName]) {
+	if (!loopBlock || !context.locals[loopBlock.loopCounterLocalName]) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP, line, context);
 	}
 
