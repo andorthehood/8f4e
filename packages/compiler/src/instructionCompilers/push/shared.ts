@@ -98,7 +98,7 @@ export function buildPointerDereferenceByteCode(
 	for (let i = 0; i < pointerLoadCount; i++) {
 		const memoryIndex = i === 0 && pointerValueSource === 'pointer-slot' ? slotMemoryIndex : pointeeMemoryIndex;
 		const pointerLoad = i32load(2, 0, memoryIndex);
-		if (i === 0 && pointerValueSource === 'pointer-slot') {
+		if (pointerValueSource === 'pointer-slot') {
 			byteCode.push(...pointerLoad);
 		} else {
 			guardedLoadSteps.push({
@@ -108,6 +108,11 @@ export function buildPointerDereferenceByteCode(
 			});
 		}
 	}
+	if (pointerValueSource === 'pointer-slot') {
+		byteCode.push(...finalLoad);
+		return { kind, byteCode };
+	}
+
 	guardedLoadSteps.push({
 		accessByteWidth: dereferencedValueWordSize,
 		loadByteCode: finalLoad,
