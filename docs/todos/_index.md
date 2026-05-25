@@ -64,7 +64,6 @@ Active todo files are listed below.
 | 408 | Reduce tokenizer identifier classification work | 🟡 | 1-2d | 2026-05-19 | `classifyIdentifier` runs many ordered reference-shape checks for every identifier; cheap prefix/suffix dispatch could avoid most checks for plain identifiers. |
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
-| 413 | Split compiled function lifecycle types | 🟡 | 2-4h | 2026-05-25 | Separate pre-codegen function metadata from fully compiled functions so compiler assembly can remove lifecycle-field non-null assertions. |
 | 414 | Split compiler context phase types | 🟡 | 1-2d | 2026-05-25 | Replace the broad optional `CompilationContext` surface with phase-specific contexts for prepass, module compilation, and function compilation. |
 | 415 | Discriminate compiler block stack frames | 🟡 | 4-8h | 2026-05-25 | Make block stack frames a discriminated union so map and loop consumers can access required frame metadata without defensive assertions. |
 | 416 | Add resolved identifier line forms | 🟡 | 1-2d | 2026-05-25 | Carry validated memory, local, pointer, and function targets from semantic normalization into stack analysis and codegen. |
@@ -86,6 +85,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 413 | Split compiled function lifecycle types | 2026-05-25 | Pre-codegen function metadata is now separate from final compiled function output; final functions require `wasmIndex`, `typeIndex`, and `ast`, removing lifecycle-field non-null assertions from compiler assembly. |
 | 411 | Move compiler analysis metadata into instruction specs | 2026-05-25 | Generic fixed stack effects, block-close behavior, and memory operation metadata now live in `instructionSpecs.ts`; stack analysis and memory codegen consume the metadata while dynamic function, map, and arithmetic metadata algorithms stay explicit. |
 | 412 | Expose compiler stack analysis results | 2026-05-21 | `includeStackAnalysis` now returns compact per-line stack analysis for compiled modules and functions, independently from AST output. |
 | 399 | Consolidate instruction compiler utilities | 2026-05-12 | Instruction-compiler-only helpers moved under `packages/compiler/src/instructionCompilers/utils/`; `saveByteCode` split out, unused word-alignment helper removed, and numeric binary instruction codegen centralized. |

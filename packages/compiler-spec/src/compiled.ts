@@ -44,15 +44,20 @@ export interface FunctionTypeRegistry {
 	baseTypeIndex: number;
 }
 
-export interface CompiledFunction {
+export interface FunctionMetadata {
 	id: string;
 	signature: FunctionSignature;
+	wasmIndex: number;
+}
+
+export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
+
+export interface CompiledFunction extends FunctionMetadata {
 	body: number[];
 	locals: Array<{ isInteger: boolean; count: number }>;
 	exportName?: string;
-	wasmIndex?: number;
-	typeIndex?: number;
-	ast?: AST;
+	typeIndex: number;
+	ast: AST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 }
 

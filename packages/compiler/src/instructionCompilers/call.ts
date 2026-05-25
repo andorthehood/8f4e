@@ -13,9 +13,7 @@ const call: InstructionCompiler<CallLine> = (line: CallLine, context) => {
 	const targetFunction = context.namespace.functions![line.arguments[0].value]!;
 
 	// Emit WASM call instruction
-	if (targetFunction.wasmIndex !== undefined) {
-		saveByteCode(context, wasmCall(targetFunction.wasmIndex));
-	}
+	saveByteCode(context, wasmCall(targetFunction.wasmIndex));
 
 	return context;
 };

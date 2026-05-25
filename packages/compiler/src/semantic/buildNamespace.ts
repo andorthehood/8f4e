@@ -6,7 +6,7 @@ import {
 	type Argument,
 	type CompileOptions,
 	type CompilationContext,
-	type CompiledFunctionLookup,
+	type FunctionMetadataLookup,
 	type FunctionSignature,
 	type Namespaces,
 	type ParsedSemanticInstructionLine,
@@ -40,8 +40,8 @@ const moduleBlock = compilerSourceBlockInstructionByType.module;
  * function-body codegen to rely on the same registry before full function
  * compilation completes.
  */
-export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: number): CompiledFunctionLookup {
-	const result: CompiledFunctionLookup = {};
+export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: number): FunctionMetadataLookup {
+	const result: FunctionMetadataLookup = {};
 
 	for (const [index, ast] of asts.entries()) {
 		const functionLine = ast.find(line => line.instruction === functionBlock.start);
@@ -74,8 +74,6 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 		result[id] = {
 			id,
 			signature,
-			body: [],
-			locals: [],
 			wasmIndex: startingWasmIndex + index,
 		};
 	}
@@ -112,7 +110,7 @@ export function prepassNamespace(
 	ast: AST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	functions?: CompiledFunctionLookup,
+	functions?: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'memoryRegions'> = {}
 ): CompilationContext {
 	const defaultRegion = getDefaultMemoryRegion();
@@ -259,7 +257,7 @@ function toNamespaceDiscoveryAst(ast: AST): AST {
 export function collectNamespacesFromASTs(
 	asts: AST[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
-	compiledFunctions?: CompiledFunctionLookup,
+	compiledFunctions?: FunctionMetadataLookup,
 	layoutAsts: AST[] = asts,
 	options: Pick<CompileOptions, 'memoryRegions'> = {}
 ): Namespaces {

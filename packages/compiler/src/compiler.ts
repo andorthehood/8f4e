@@ -23,9 +23,9 @@ import type {
 	CompilationContext,
 	CompiledModule,
 	CompiledFunction,
-	CompiledFunctionLookup,
 	CompiledStackAnalysisLine,
 	CompileOptions,
+	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	InstructionCompiler,
 	Namespaces,
@@ -71,7 +71,7 @@ export function compileModule(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
-	functions?: CompiledFunctionLookup,
+	functions?: FunctionMetadataLookup,
 	internalAllocator = { nextByteAddress: 0 },
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {}
 ): CompiledModule {
@@ -170,7 +170,7 @@ export function compileFunction(
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
-	functions?: CompiledFunctionLookup,
+	functions?: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
 	const context = createCompilationContext({
@@ -242,6 +242,9 @@ export function compileFunction(
 	const results = context.currentFunctionSignature.returns.map(functionValueTypeToWasmType);
 	const signature = JSON.stringify({ params, results });
 	const typeIndex = typeRegistry.signatureMap.get(signature);
+	if (typeIndex === undefined) {
+		throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, ast[ast.length - 1], context);
+	}
 
 	return {
 		id: context.currentFunctionId,

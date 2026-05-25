@@ -15,8 +15,6 @@ describe('call instruction compiler', () => {
 			foo: {
 				id: 'foo',
 				signature: { parameters: ['int', 'float'], returns: ['int'] },
-				body: [],
-				locals: [],
 				wasmIndex: 2,
 			},
 		} as CompilationContext['namespace']['functions'];
@@ -45,8 +43,6 @@ describe('call instruction compiler', () => {
 			foo64: {
 				id: 'foo64',
 				signature: { parameters: ['float64'], returns: ['float64'] },
-				body: [],
-				locals: [],
 				wasmIndex: 2,
 			},
 		} as CompilationContext['namespace']['functions'];
@@ -76,8 +72,6 @@ describe('call instruction compiler', () => {
 			foo64: {
 				id: 'foo64',
 				signature: { parameters: ['float64'], returns: [] },
-				body: [],
-				locals: [],
 				wasmIndex: 2,
 			},
 		} as CompilationContext['namespace']['functions'];
@@ -103,8 +97,6 @@ describe('call instruction compiler', () => {
 			addr: {
 				id: 'addr',
 				signature: { parameters: [], returns: ['float*'] },
-				body: [],
-				locals: [],
 				wasmIndex: 2,
 			},
 		} as CompilationContext['namespace']['functions'];
