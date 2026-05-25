@@ -22,7 +22,7 @@ import type {
 	TokenizedLocalVariableAccessLine,
 	UseLine,
 } from './ast';
-import type { CompiledFunctionLookup, FunctionSignature, FunctionTypeRegistry } from './compiled';
+import type { FunctionMetadataLookup, FunctionSignature, FunctionTypeRegistry } from './compiled';
 import type {
 	ArrayDeclarationInstruction,
 	DataStructure,
@@ -96,7 +96,7 @@ export interface Namespace {
 	consts: Consts;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
-	functions?: CompiledFunctionLookup;
+	functions?: FunctionMetadataLookup;
 }
 
 export interface CollectedNamespace {
