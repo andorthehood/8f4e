@@ -46,6 +46,8 @@ type GuardedStoreOptions = {
 	memoryIndex: number;
 	lineNumberAfterMacroExpansion: number;
 	storeByteCode: number[];
+	storedAddressAccessByteWidth?: number;
+	storedAddressMemoryIndex?: number;
 };
 
 type GuardedMemoryCopyOptions = {
@@ -175,6 +177,16 @@ export function guardedStore(context: MemoryGuardContext, options: GuardedStoreO
 		...localSet(valueLocal.index),
 		...localSet(addressLocal.index),
 		...addressWithinMemoryBounds(addressLocal.index, options.accessByteWidth, options.memoryIndex),
+		...(options.storedAddressAccessByteWidth === undefined
+			? []
+			: [
+					...addressWithinMemoryBounds(
+						valueLocal.index,
+						options.storedAddressAccessByteWidth,
+						options.storedAddressMemoryIndex ?? 0
+					),
+					WASM_I32_AND,
+				]),
 		...ifelse(WASM_TYPE_VOID, [
 			...localGet(addressLocal.index),
 			...localGet(valueLocal.index),
