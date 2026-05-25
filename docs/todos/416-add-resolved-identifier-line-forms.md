@@ -18,6 +18,10 @@ The current contract is "normalization already checked this"; the type system do
 
 The overall goal is to stop handling already-resolved compiler facts as runtime ambiguity. Once semantic normalization proves that an identifier refers to a specific memory item, local binding, pointer target, or function, that resolved target should travel with the normalized line. Later stages should consume the proof instead of repeating lookups or guarding against impossible misses.
 
+## Project Compatibility Note
+
+This project has not been released yet and we own the whole codebase. Do not add compatibility layers, legacy aliases, adapter shims, or fallback paths just to preserve broad internal interfaces. Prefer changing the type contracts directly and updating all call sites in the repo.
+
 ## Proposed Solution
 
 Add normalized/resolved line forms that carry resolved bindings or a narrow resolved target kind:
@@ -35,7 +39,7 @@ This keeps the compiler stage boundary honest: semantic normalization owns symbo
 
 ### Step 1: Model Resolved Targets
 
-- Add target-specific normalized types in `packages/compiler-spec/src/semantic.ts` or a compiler-private type module if they should not be public.
+- Add target-specific normalized types in `packages/compiler-spec/src/semantic.ts` or a compiler-private type module based on ownership boundaries, not compatibility concerns.
 - Keep source AST shape unchanged; this is an internal normalized/codegen contract.
 
 ### Step 2: Update Semantic Normalization
@@ -73,7 +77,7 @@ This keeps the compiler stage boundary honest: semantic normalization owns symbo
 
 ## Risks & Considerations
 
-- **Public type risk**: Decide whether resolved line forms belong in `compiler-spec` or should remain compiler-internal.
+- **Ownership boundary**: Decide whether resolved line forms belong in `compiler-spec` or should remain compiler-internal. If exported types need to change, update all repo consumers directly instead of preserving old shapes with compatibility shims.
 - **Deferral risk**: Intermodule namespace deferral must keep working during prepass.
 - **Wrong-goal risk**: Do not replace `!` with extra late-stage runtime checks. If a target was already validated, carry the target through the type interface.
 - **Dependency**: This is easier after TODO 414 because phase-specific context types clarify which maps are available.

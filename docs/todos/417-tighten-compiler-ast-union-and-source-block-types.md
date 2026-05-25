@@ -18,6 +18,10 @@ As a result, compiler phases still check or cast argument shapes for instruction
 
 The overall goal is to preserve strict parse-time facts across the tokenizer-to-compiler boundary. Once tokenizer syntax validation has accepted `module <identifier>` or `param <type> <identifier>`, compiler code should not need to handle those lines as arbitrary strings with arbitrary argument arrays. Runtime checks should remain for semantic facts that require compiler state, such as duplicate declarations or undeclared identifiers.
 
+## Project Compatibility Note
+
+This project has not been released yet and we own the whole codebase. Do not add compatibility layers, legacy aliases, adapter shims, or fallback paths just to preserve broad internal interfaces. Prefer changing the type contracts directly and updating all call sites in the repo.
+
 ## Proposed Solution
 
 Introduce a typed compiler AST union and source-block-level types:
@@ -27,9 +31,9 @@ Introduce a typed compiler AST union and source-block-level types:
 - `ModuleAst`, `FunctionAst`, and `ConstantsAst` source block types that encode required prologue/epilogue lines where practical;
 - helper predicates such as `isModuleLine`, `isFunctionLine`, and `isSemanticInstructionLine` that narrow to exact line types.
 
-Deploy this as an additive type layer first, then migrate compiler consumers away from broad `AST[number]`.
+Deploy this by tightening the canonical compiler AST contracts and updating compiler consumers away from broad `AST[number]`. Temporary migration helpers are acceptable only inside the same change and should be removed before completion.
 
-This is the broadest part of the hardening work: it turns tokenizer-owned guarantees into reusable static contracts. It should be done carefully and incrementally so older broad helper types do not become a permanent compatibility layer.
+This is the broadest part of the hardening work: it turns tokenizer-owned guarantees into reusable static contracts. It should be done carefully and incrementally, but the end state should not retain older broad helper types as compatibility layers.
 
 ## Implementation Plan
 
@@ -37,7 +41,7 @@ This is the broadest part of the hardening work: it turns tokenizer-owned guaran
 
 - Export a `CompilerASTLine` union from `packages/compiler-spec/src/ast.ts`.
 - Consider separating parsed line types from normalized/codegen line types.
-- Keep compatibility aliases during migration if needed, but avoid adding new broad casts.
+- Avoid compatibility aliases; if temporary migration helpers are unavoidable within the change, remove them before marking the TODO complete.
 
 ### Step 2: Type Parser Output
 
@@ -82,7 +86,7 @@ This is the broadest part of the hardening work: it turns tokenizer-owned guaran
 ## Risks & Considerations
 
 - **Blast radius**: This is the broadest hardening task and should be last.
-- **Compatibility risk**: Many tests and helper literals may rely on broad `AST[number]` assignment.
+- **Migration risk**: Many tests and helper literals may rely on broad `AST[number]` assignment; update those fixtures and helpers directly rather than preserving broad aliases.
 - **Validation boundary**: Do not move semantic checks into tokenizer just to make the AST type narrower.
 - **Wrong-goal risk**: Do not keep broad AST types and compensate with more runtime shape checks. The objective is to make syntax-validated shapes statically known downstream.
 
