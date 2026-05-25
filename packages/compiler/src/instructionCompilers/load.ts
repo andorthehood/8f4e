@@ -1,40 +1,47 @@
-import { i32load, i32load16s, i32load16u, i32load8s, i32load8u, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
-import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
+import {
+	f32load,
+	i32load,
+	i32load16s,
+	i32load16u,
+	i32load8s,
+	i32load8u,
+	WASM_TYPE_F32,
+	WASM_TYPE_I32,
+} from '@8f4e/compiler-wasm-utils';
+import { getInstructionSpec } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, MemoryLoadVariant } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `load` variants.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const instructionToByteCodeMap: Record<string, (memoryIndex: number) => number[]> = {
-	load: memoryIndex => i32load(2, 0, memoryIndex),
-	load8s: memoryIndex => i32load8s(0, 0, memoryIndex),
-	load8u: memoryIndex => i32load8u(0, 0, memoryIndex),
-	load16s: memoryIndex => i32load16s(1, 0, memoryIndex),
-	load16u: memoryIndex => i32load16u(1, 0, memoryIndex),
-};
-
-const instructionToAccessByteWidthMap: Record<string, number> = {
-	load: WORD_MEMORY_ACCESS_WIDTH,
-	load8s: BYTE_MEMORY_ACCESS_WIDTH,
-	load8u: BYTE_MEMORY_ACCESS_WIDTH,
-	load16s: HALF_WORD_MEMORY_ACCESS_WIDTH,
-	load16u: HALF_WORD_MEMORY_ACCESS_WIDTH,
+const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => number[]> = {
+	i32: memoryIndex => i32load(2, 0, memoryIndex),
+	i32_8s: memoryIndex => i32load8s(0, 0, memoryIndex),
+	i32_8u: memoryIndex => i32load8u(0, 0, memoryIndex),
+	i32_16s: memoryIndex => i32load16s(1, 0, memoryIndex),
+	i32_16u: memoryIndex => i32load16u(1, 0, memoryIndex),
+	f32: memoryIndex => f32load(2, 0, memoryIndex),
 };
 
 const load: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const [address] = line.stackAnalysis.consumedOperands;
-	const buildInstructions = instructionToByteCodeMap[line.instruction];
+	const operation = getInstructionSpec(line.instruction)?.analysis?.memory;
+	if (operation?.kind !== 'load' || !operation.loadVariant || !operation.accessByteWidth) {
+		throw new Error(`Missing load metadata for ${line.instruction}`);
+	}
+
+	const buildInstructions = loadVariantByteCode[operation.loadVariant];
 	const memoryIndex = getAddressMemoryIndex(address);
 	const instructions = buildInstructions(memoryIndex);
-	const accessByteWidth = instructionToAccessByteWidthMap[line.instruction];
+	const accessByteWidth = operation.accessByteWidth;
 	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
 	}
@@ -45,7 +52,7 @@ const load: InstructionCompiler = (line, context) => {
 			accessByteWidth,
 			memoryIndex,
 			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
-			resultType: WASM_TYPE_I32,
+			resultType: operation.resultType === 'float' ? WASM_TYPE_F32 : WASM_TYPE_I32,
 			loadByteCode: instructions,
 		})
 	);

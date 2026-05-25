@@ -64,7 +64,6 @@ Active todo files are listed below.
 | 408 | Reduce tokenizer identifier classification work | 🟡 | 1-2d | 2026-05-19 | `classifyIdentifier` runs many ordered reference-shape checks for every identifier; cheap prefix/suffix dispatch could avoid most checks for plain identifiers. |
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
-| 411 | Move compiler analysis metadata into instruction specs | 🟡 | 1-2d | 2026-05-20 | Move generic fixed stack effects, block close behavior, and memory operation metadata into `instructionSpecs.ts` while keeping dynamic function and map algorithms explicit. |
 
 ### 🟢 Low Priority
 
@@ -82,6 +81,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 411 | Move compiler analysis metadata into instruction specs | 2026-05-25 | Generic fixed stack effects, block-close behavior, and memory operation metadata now live in `instructionSpecs.ts`; stack analysis and memory codegen consume the metadata while dynamic function, map, and arithmetic metadata algorithms stay explicit. |
 | 412 | Expose compiler stack analysis results | 2026-05-21 | `includeStackAnalysis` now returns compact per-line stack analysis for compiled modules and functions, independently from AST output. |
 | 399 | Consolidate instruction compiler utilities | 2026-05-12 | Instruction-compiler-only helpers moved under `packages/compiler/src/instructionCompilers/utils/`; `saveByteCode` split out, unused word-alignment helper removed, and numeric binary instruction codegen centralized. |
 | 055 | Implement strength reduction optimization techniques in compiler | 2026-05-12 | Archived original TODO; remaining bytecode peephole optimization work is tracked in `398`. |

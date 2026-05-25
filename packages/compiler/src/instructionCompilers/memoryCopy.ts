@@ -1,4 +1,5 @@
 import { i32const, memoryCopy as wasmMemoryCopy } from '@8f4e/compiler-wasm-utils';
+import { getInstructionSpec } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
@@ -13,6 +14,11 @@ import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compil
  */
 const memoryCopy: InstructionCompiler<NormalizedMemoryCopyLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
+	const operation = getInstructionSpec(line.instruction)?.analysis?.memory;
+	if (operation?.kind !== 'copy') {
+		throw new Error(`Missing memoryCopy metadata for ${line.instruction}`);
+	}
+
 	const [destination, source] = line.stackAnalysis.consumedOperands;
 	const byteLength = line.arguments[0].value;
 	const destinationMemoryIndex = getAddressMemoryIndex(destination);

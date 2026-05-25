@@ -1,10 +1,12 @@
+import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from './constants';
 import { ErrorCode } from './errors';
 import { memoryDeclarationInstructions } from './memory';
+import { BlockType } from './semantic';
 
 import type { AST, StoreBytesLine } from './ast';
 import type { ErrorCodeValue } from './errors';
 import type { MemoryDeclarationInstruction } from './memory';
-import type { CompilationContext } from './semantic';
+import type { BlockTypeValue, CompilationContext } from './semantic';
 
 export type OperandRule = 'int' | 'float' | 'matching';
 export type ScopeRule =
@@ -59,9 +61,70 @@ export interface StackEffectSpec<TLine extends AST[number] = AST[number]> extend
 	resolve?: (line: TLine) => ResolvedStackEffect;
 }
 
+export type AnalysisStackConsumeSpec =
+	| number
+	| 'all'
+	| {
+			argumentValueIndex: number;
+			add: number;
+	  };
+
+export type AnalysisProducedStackItemSpec =
+	| {
+			kind: 'int';
+			isNonZero?: boolean | 'fromInput';
+			inputIndex?: number;
+	  }
+	| {
+			kind: 'float';
+			isNonZero?: boolean | 'fromInput';
+			inputIndex?: number;
+	  }
+	| {
+			kind: 'float64';
+			isNonZero?: boolean | 'fromInput';
+			inputIndex?: number;
+	  }
+	| {
+			kind: 'same';
+			inputIndex?: number;
+			isNonZero?: boolean | 'fromInput';
+	  };
+
+export interface AnalysisStackEffectSpec {
+	consumes: AnalysisStackConsumeSpec;
+	produces?: readonly AnalysisProducedStackItemSpec[];
+	dropped?: 'consumed';
+}
+
+export interface AnalysisBlockCloseSpec {
+	blockType: BlockTypeValue;
+	restoreResult?: boolean;
+	validateFloatResult?: boolean;
+}
+
+export type MemoryLoadVariant = 'i32' | 'i32_8s' | 'i32_8u' | 'i32_16s' | 'i32_16u' | 'f32';
+export type MemoryOperationKind = 'load' | 'store' | 'storeBytes' | 'copy';
+
+export interface AnalysisMemoryOperationSpec {
+	kind: MemoryOperationKind;
+	accessByteWidth?: number;
+	loadVariant?: MemoryLoadVariant;
+	resultType?: 'int' | 'float';
+	addressOperandIndex?: number;
+	valueOperandIndex?: number;
+}
+
+export interface InstructionAnalysisSpec {
+	stack?: AnalysisStackEffectSpec;
+	blockClose?: AnalysisBlockCloseSpec;
+	memory?: AnalysisMemoryOperationSpec;
+}
+
 export interface InstructionSpec<TLine extends AST[number] = AST[number]> extends ValidationSpec<TLine> {
 	docs?: InstructionDocumentation;
 	stack?: StackEffectSpec<TLine>;
+	analysis?: InstructionAnalysisSpec;
 }
 
 function withDocsAndStack<TSpec extends ValidationSpec>(
@@ -79,6 +142,40 @@ function withDocsAndStack<TSpec extends ValidationSpec>(
 
 function stack(inputs: readonly StackValueLabel[], outputs: readonly StackValueLabel[]): StackEffectSpec {
 	return { inputs, outputs };
+}
+
+function fixedStack(
+	consumes: AnalysisStackConsumeSpec,
+	produces: readonly AnalysisProducedStackItemSpec[] = []
+): InstructionAnalysisSpec {
+	return { stack: { consumes, produces } };
+}
+
+function memoryLoad(
+	loadVariant: MemoryLoadVariant,
+	accessByteWidth: number,
+	resultType: 'int' | 'float'
+): InstructionAnalysisSpec {
+	return {
+		stack: {
+			consumes: 1,
+			produces: [{ kind: resultType, isNonZero: false }],
+		},
+		memory: {
+			kind: 'load',
+			accessByteWidth,
+			loadVariant,
+			resultType,
+			addressOperandIndex: 0,
+		},
+	};
+}
+
+function blockClose(
+	blockType: BlockTypeValue,
+	{ restoreResult = false, validateFloatResult = false } = {}
+): InstructionAnalysisSpec {
+	return { blockClose: { blockType, restoreResult, validateFloatResult } };
 }
 
 export function resolveInstructionStackEffect<TLine extends AST[number]>(
@@ -146,6 +243,7 @@ export const instructionSpecs = {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends a block and validates its optional result value.' },
 		stack: stack(['T?'], ['T?']),
+		analysis: blockClose(BlockType.BLOCK, { restoreResult: true }),
 	},
 	// branch ( -- )
 	branch: {
@@ -160,6 +258,7 @@ export const instructionSpecs = {
 		operandTypes: 'int',
 		docs: { shortDescription: 'Branches out of enclosing blocks when the condition is non-zero.' },
 		stack: stack(['int'], []),
+		analysis: fixedStack(1),
 	},
 	// branchIfUnchanged (T -- )
 	branchIfUnchanged: {
@@ -167,6 +266,7 @@ export const instructionSpecs = {
 		minOperands: 1,
 		docs: { shortDescription: 'Branches when the consumed value matches the previous value seen by this instruction.' },
 		stack: stack(['T'], []),
+		analysis: fixedStack(1),
 	},
 	// call (args... -- returns...)
 	call: {
@@ -182,10 +282,11 @@ export const instructionSpecs = {
 		operandTypes: 'int',
 		docs: { shortDescription: 'Converts an integer stack value to a float.' },
 		stack: stack(['int'], ['float']),
+		analysis: fixedStack(1, [{ kind: 'float', isNonZero: 'fromInput' }]),
 	},
 	// castToFloat64 (int -- float64), castToFloat64 (float -- float64), castToFloat64 (float64 -- float64)
 	castToFloat64: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
+		{ ...unaryModuleOrFunctionSpec, analysis: fixedStack(1, [{ kind: 'float64', isNonZero: 'fromInput' }]) },
 		'Converts a numeric stack value to float64.',
 		['T'],
 		['float64']
@@ -197,6 +298,7 @@ export const instructionSpecs = {
 		operandTypes: 'float',
 		docs: { shortDescription: 'Converts a floating-point stack value to an integer.' },
 		stack: stack(['float'], ['int']),
+		analysis: fixedStack(1, [{ kind: 'int', isNonZero: 'fromInput' }]),
 	},
 	// clampAddress (ptr -- ptr)
 	clampAddress: {
@@ -227,6 +329,7 @@ export const instructionSpecs = {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Removes every value from the stack.' },
 		stack: stack(['...'], []),
+		analysis: { stack: { consumes: 'all', produces: [], dropped: 'consumed' } },
 	},
 	// default ( -- )
 	default: {
@@ -243,30 +346,36 @@ export const instructionSpecs = {
 		['T']
 	),
 	// drop (T -- )
-	drop: withDocsAndStack(unaryModuleOrFunctionSpec, 'Removes the top value from the stack.', ['T'], []),
+	drop: withDocsAndStack(
+		{ ...unaryModuleOrFunctionSpec, analysis: fixedStack(1) },
+		'Removes the top value from the stack.',
+		['T'],
+		[]
+	),
 	// else ( -- )
 	else: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts the alternate branch of the current if block.' },
 		stack: stack([], []),
+		analysis: blockClose(BlockType.CONDITION, { validateFloatResult: true }),
 	},
 	// ensureNonZero (int -- int), ensureNonZero (float -- float), ensureNonZero (float64 -- float64)
 	ensureNonZero: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
+		{ ...unaryModuleOrFunctionSpec, analysis: fixedStack(1, [{ kind: 'same', isNonZero: true }]) },
 		'Ensures the top stack value is non-zero before continuing.',
 		['T'],
 		['T']
 	),
 	// equal (int int -- int), equal (float float -- int), equal (float64 float64 -- int)
 	equal: withDocsAndStack(
-		binaryMatchingSpec,
+		{ ...binaryMatchingSpec, analysis: fixedStack(2, [{ kind: 'int', isNonZero: false }]) },
 		'Compares two values and pushes 1 when they are equal, otherwise 0.',
 		['T', 'T'],
 		['int']
 	),
 	// equalToZero (int -- int), equalToZero (float -- int), equalToZero (float64 -- int)
 	equalToZero: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
+		{ ...unaryModuleOrFunctionSpec, analysis: fixedStack(1, [{ kind: 'int', isNonZero: false }]) },
 		'Pushes 1 when the value is zero, otherwise 0.',
 		['T'],
 		['int']
@@ -286,6 +395,7 @@ export const instructionSpecs = {
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from a non-zero value to zero.' },
 		stack: stack(['T'], ['int']),
+		analysis: fixedStack(1, [{ kind: 'int', isNonZero: false }]),
 	},
 	// functionEnd (returns... -- )
 	functionEnd: {
@@ -296,21 +406,21 @@ export const instructionSpecs = {
 	},
 	// greaterOrEqual (int int -- int), greaterOrEqual (float float -- int), greaterOrEqual (float64 float64 -- int)
 	greaterOrEqual: withDocsAndStack(
-		binaryMatchingSpec,
+		{ ...binaryMatchingSpec, analysis: fixedStack(2, [{ kind: 'int', isNonZero: false }]) },
 		'Pushes 1 when the first value is greater than or equal to the second value.',
 		['T', 'T'],
 		['int']
 	),
 	// greaterOrEqualUnsigned (int int -- int), greaterOrEqualUnsigned (float float -- int)
 	greaterOrEqualUnsigned: withDocsAndStack(
-		binaryMatchingSpec,
+		{ ...binaryMatchingSpec, analysis: fixedStack(2, [{ kind: 'int', isNonZero: false }]) },
 		'Compares two values as unsigned numbers and pushes the result.',
 		['T', 'T'],
 		['int']
 	),
 	// greaterThan (int int -- int), greaterThan (float float -- int), greaterThan (float64 float64 -- int)
 	greaterThan: withDocsAndStack(
-		binaryMatchingSpec,
+		{ ...binaryMatchingSpec, analysis: fixedStack(2, [{ kind: 'int', isNonZero: false }]) },
 		'Pushes 1 when the first value is greater than the second value.',
 		['T', 'T'],
 		['int']
@@ -321,6 +431,7 @@ export const instructionSpecs = {
 		minOperands: 1,
 		docs: { shortDescription: 'Pushes 1 when the consumed value differs from its previous value.' },
 		stack: stack(['T'], ['int']),
+		analysis: fixedStack(1, [{ kind: 'int', isNonZero: false }]),
 	},
 	// if (int -- )
 	if: {
@@ -329,37 +440,64 @@ export const instructionSpecs = {
 		operandTypes: 'int',
 		docs: { shortDescription: 'Starts a conditional block when the condition is non-zero.' },
 		stack: stack(['int'], []),
+		analysis: fixedStack(1),
 	},
 	// ifEnd ( -- ), ifEnd (T -- T)
 	ifEnd: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends an if block and validates its optional result value.' },
 		stack: stack(['T?'], ['T?']),
+		analysis: blockClose(BlockType.CONDITION, { restoreResult: true, validateFloatResult: true }),
 	},
 	// lessOrEqual (int int -- int), lessOrEqual (float float -- int), lessOrEqual (float64 float64 -- int)
 	lessOrEqual: withDocsAndStack(
-		binaryMatchingSpec,
+		{ ...binaryMatchingSpec, analysis: fixedStack(2, [{ kind: 'int', isNonZero: false }]) },
 		'Pushes 1 when the first value is less than or equal to the second value.',
 		['T', 'T'],
 		['int']
 	),
 	// lessThan (int int -- int), lessThan (float float -- int), lessThan (float64 float64 -- int)
 	lessThan: withDocsAndStack(
-		binaryMatchingSpec,
+		{ ...binaryMatchingSpec, analysis: fixedStack(2, [{ kind: 'int', isNonZero: false }]) },
 		'Pushes 1 when the first value is less than the second value.',
 		['T', 'T'],
 		['int']
 	),
 	// load (ptr -- int)
-	load: withDocsAndStack(loadSpec, 'Loads a 32-bit integer value from memory.', ['ptr'], ['int']),
+	load: withDocsAndStack(
+		{ ...loadSpec, analysis: memoryLoad('i32', WORD_MEMORY_ACCESS_WIDTH, 'int') },
+		'Loads a 32-bit integer value from memory.',
+		['ptr'],
+		['int']
+	),
 	// load8u (ptr -- int)
-	load8u: withDocsAndStack(loadSpec, 'Loads an unsigned 8-bit integer value from memory.', ['ptr'], ['int']),
+	load8u: withDocsAndStack(
+		{ ...loadSpec, analysis: memoryLoad('i32_8u', BYTE_MEMORY_ACCESS_WIDTH, 'int') },
+		'Loads an unsigned 8-bit integer value from memory.',
+		['ptr'],
+		['int']
+	),
 	// load16u (ptr -- int)
-	load16u: withDocsAndStack(loadSpec, 'Loads an unsigned 16-bit integer value from memory.', ['ptr'], ['int']),
+	load16u: withDocsAndStack(
+		{ ...loadSpec, analysis: memoryLoad('i32_16u', HALF_WORD_MEMORY_ACCESS_WIDTH, 'int') },
+		'Loads an unsigned 16-bit integer value from memory.',
+		['ptr'],
+		['int']
+	),
 	// load8s (ptr -- int)
-	load8s: withDocsAndStack(loadSpec, 'Loads a signed 8-bit integer value from memory.', ['ptr'], ['int']),
+	load8s: withDocsAndStack(
+		{ ...loadSpec, analysis: memoryLoad('i32_8s', BYTE_MEMORY_ACCESS_WIDTH, 'int') },
+		'Loads a signed 8-bit integer value from memory.',
+		['ptr'],
+		['int']
+	),
 	// load16s (ptr -- int)
-	load16s: withDocsAndStack(loadSpec, 'Loads a signed 16-bit integer value from memory.', ['ptr'], ['int']),
+	load16s: withDocsAndStack(
+		{ ...loadSpec, analysis: memoryLoad('i32_16s', HALF_WORD_MEMORY_ACCESS_WIDTH, 'int') },
+		'Loads a signed 16-bit integer value from memory.',
+		['ptr'],
+		['int']
+	),
 	// loadFloat (ptr -- float)
 	loadFloat: {
 		scope: 'moduleOrFunction',
@@ -367,6 +505,7 @@ export const instructionSpecs = {
 		operandTypes: 'int',
 		docs: { shortDescription: 'Loads a float value from memory.' },
 		stack: stack(['ptr'], ['float']),
+		analysis: memoryLoad('f32', WORD_MEMORY_ACCESS_WIDTH, 'float'),
 	},
 	// local ( -- )
 	local: {
@@ -438,6 +577,7 @@ export const instructionSpecs = {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends a loop block and branches back to the start of the loop.' },
 		stack: stack(['T?'], ['T?']),
+		analysis: blockClose(BlockType.LOOP, { restoreResult: true }),
 	},
 	// loopIndex ( -- int)
 	loopIndex: {
@@ -475,6 +615,10 @@ export const instructionSpecs = {
 		operandTypes: 'int',
 		docs: { shortDescription: 'Copies memory from one pointer range to another.' },
 		stack: stack(['ptr', 'ptr'], []),
+		analysis: {
+			...fixedStack(2),
+			memory: { kind: 'copy', addressOperandIndex: 0 },
+		},
 	},
 	// min (int int -- int), min (float float -- float), min (float64 float64 -- float64)
 	min: withDocsAndStack(binaryMatchingSpec, 'Pushes the smaller of two values of the same type.', ['T', 'T'], ['T']),
@@ -489,14 +633,14 @@ export const instructionSpecs = {
 	),
 	// notEqual (int int -- int), notEqual (float float -- int), notEqual (float64 float64 -- int)
 	notEqual: withDocsAndStack(
-		binaryMatchingSpec,
+		{ ...binaryMatchingSpec, analysis: fixedStack(2, [{ kind: 'int', isNonZero: false }]) },
 		'Compares two values and pushes 1 when they are not equal, otherwise 0.',
 		['T', 'T'],
 		['int']
 	),
 	// notZero (int -- int), notZero (float -- int), notZero (float64 -- int)
 	notZero: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
+		{ ...unaryModuleOrFunctionSpec, analysis: fixedStack(1, [{ kind: 'int', isNonZero: 'fromInput' }]) },
 		'Pushes 1 when the value is non-zero, otherwise 0.',
 		['T'],
 		['int']
@@ -536,6 +680,7 @@ export const instructionSpecs = {
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from zero to a non-zero value.' },
 		stack: stack(['T'], ['int']),
+		analysis: fixedStack(1, [{ kind: 'int', isNonZero: false }]),
 	},
 	// round (float -- float)
 	round: {
@@ -544,6 +689,7 @@ export const instructionSpecs = {
 		operandTypes: 'float',
 		docs: { shortDescription: 'Rounds a float value to the nearest whole value.' },
 		stack: stack(['float'], ['float']),
+		analysis: fixedStack(1, [{ kind: 'float', isNonZero: false }]),
 	},
 	// shiftLeft (int int -- int)
 	shiftLeft: withDocsAndStack(
@@ -573,6 +719,7 @@ export const instructionSpecs = {
 		operandTypes: 'float',
 		docs: { shortDescription: 'Pushes the square root of a float value.' },
 		stack: stack(['float'], ['float']),
+		analysis: fixedStack(1, [{ kind: 'same', isNonZero: false }]),
 	},
 	// store (ptr int -- ), store (ptr float -- ), store (ptr float64 -- )
 	store: {
@@ -582,6 +729,10 @@ export const instructionSpecs = {
 		operandTypes: ['int'],
 		docs: { shortDescription: 'Stores a value at the memory address on the stack.' },
 		stack: stack(['ptr', 'T'], []),
+		analysis: {
+			...fixedStack(2),
+			memory: { kind: 'store', addressOperandIndex: 0, valueOperandIndex: 1 },
+		},
 	},
 	// storeBytes (ptr int... -- )
 	storeBytes: {
@@ -607,6 +758,10 @@ export const instructionSpecs = {
 
 				return { inputs: ['ptr', ...new Array(count).fill('int')], outputs: [] };
 			},
+		},
+		analysis: {
+			stack: { consumes: { argumentValueIndex: 0, add: 1 }, produces: [] },
+			memory: { kind: 'storeBytes', accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH },
 		},
 	},
 	// sub (int int -- int), sub (float float -- float), sub (float64 float64 -- float64)
