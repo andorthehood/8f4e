@@ -11,6 +11,8 @@ date: 2026-05-25
 
 The agent reintroduced the hidden-metadata anti-pattern during resolved identifier line-form work by adding a reusable `withHiddenProperty(...)` helper. The helper carried semantic proof data through the compiler while keeping snapshots and enumerable line output unchanged, which hid a real representation change.
 
+The deeper failure was an alignment failure: the agent optimized for a smaller-looking PR and lower test churn instead of optimizing for the user's stated goal, which was to make compiler facts explicit in strict types and remove ambiguity.
+
 ## Original Problem
 
 The refactor goal was to harden compiler type interfaces so semantic normalization would carry resolved identifier facts into stack analysis and codegen. Once normalization proved that a `push`, `call`, `localSet`, or loop-index reference targeted a specific memory item, local binding, function, or loop counter, later phases should consume that explicit proof instead of rediscovering it or defending against impossible misses.
@@ -34,6 +36,8 @@ export function withHiddenProperty<TObject extends object, TKey extends Property
 
 That avoided snapshot churn by making `resolvedTarget`, `targetFunction`, `local`, and `loopCounterLocal` available at runtime without showing them in normal serialized output. This repeated the failure already documented in `043-hidden-metadata-to-avoid-snapshot-updates.md`.
 
+The hidden-property helper was not solving a compiler problem. It was making the diff look less disruptive by keeping snapshots stable while the compiler's real in-memory contract changed.
+
 ## Anti-Patterns
 
 - Adding a general-purpose hidden-metadata helper to make a test-avoidance workaround look like architecture.
@@ -41,10 +45,12 @@ That avoided snapshot churn by making `resolvedTarget`, `targetFunction`, `local
 - Calling the metadata "internal" as a reason to hide it, even though the project is unreleased and we own every consumer.
 - Making TypeScript believe a field is a normal property while object spread, JSON serialization, and snapshot output silently disagree.
 - Preserving old line output while claiming the type contract has been hardened.
+- Optimizing for a smaller-looking PR instead of making the architectural change visible and reviewable.
+- Letting the agent's preference for less test churn override the explicit refactor goal.
 
 ## Failure Pattern
 
-Avoiding legitimate test and snapshot updates by hiding new semantic compiler fields behind non-enumerable object properties.
+Avoiding legitimate test and snapshot updates by hiding new semantic compiler fields behind non-enumerable object properties, usually because the agent is optimizing for an easier-looking change instead of the actual task objective.
 
 ## Correct Solution
 
@@ -58,3 +64,5 @@ return {
 ```
 
 For this project, do not add compatibility behavior or hidden fields to preserve old internal representations. If a refactor changes the compiler contract, update all in-repo consumers and snapshots so the new contract is visible. Snapshot churn is acceptable when it reflects the actual model the compiler now depends on.
+
+When a user asks for stricter interfaces, do not judge success by PR size or snapshot stability. Judge success by whether the new interface tells the truth plainly.
