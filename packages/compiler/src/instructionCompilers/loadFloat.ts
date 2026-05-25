@@ -6,9 +6,9 @@ import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
-import type { ASTLineBase, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { ASTLineBase, FloatLoadInstructionSpecName, InstructionCompiler } from '@8f4e/compiler-spec';
 
-type LoadFloatLine = ASTLineBase<'loadFloat', []>;
+type LoadFloatLine = ASTLineBase<FloatLoadInstructionSpecName, []>;
 
 /**
  * Instruction compiler for `loadFloat`.
