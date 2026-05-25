@@ -105,16 +105,28 @@ export interface AnalysisBlockCloseSpec {
 }
 
 export type MemoryLoadVariant = 'i32' | 'i32_8s' | 'i32_8u' | 'i32_16s' | 'i32_16u' | 'f32';
-export type MemoryOperationKind = 'load' | 'store' | 'storeBytes' | 'copy';
 
-export interface AnalysisMemoryOperationSpec {
-	kind: MemoryOperationKind;
-	accessByteWidth?: number;
-	loadVariant?: MemoryLoadVariant;
-	resultType?: 'int' | 'float';
-	addressOperandIndex?: number;
-	valueOperandIndex?: number;
-}
+export type AnalysisMemoryOperationSpec =
+	| {
+			kind: 'load';
+			accessByteWidth: number;
+			loadVariant: MemoryLoadVariant;
+			resultType: 'int' | 'float';
+			addressOperandIndex: number;
+	  }
+	| {
+			kind: 'store';
+			addressOperandIndex: number;
+			valueOperandIndex: number;
+	  }
+	| {
+			kind: 'storeBytes';
+			accessByteWidth: number;
+	  }
+	| {
+			kind: 'copy';
+			addressOperandIndex: number;
+	  };
 
 export interface InstructionAnalysisSpec {
 	blockClose?: AnalysisBlockCloseSpec;
@@ -160,7 +172,7 @@ function memoryLoad(
 	loadVariant: MemoryLoadVariant,
 	accessByteWidth: number,
 	resultType: 'int' | 'float'
-): InstructionAnalysisSpec {
+): { memory: Extract<AnalysisMemoryOperationSpec, { kind: 'load' }> } {
 	return {
 		memory: {
 			kind: 'load',
@@ -175,7 +187,7 @@ function memoryLoad(
 function blockClose(
 	blockType: BlockTypeValue,
 	{ restoreResult = false, validateFloatResult = false } = {}
-): InstructionAnalysisSpec {
+): { blockClose: AnalysisBlockCloseSpec } {
 	return { blockClose: { blockType, restoreResult, validateFloatResult } };
 }
 
@@ -777,7 +789,13 @@ export const instructionSpecs = {
 
 export type InstructionSpecName = keyof typeof instructionSpecs;
 
-export function getInstructionSpec(instruction: string): InstructionSpec | undefined {
+type GetInstructionSpec = {
+	<TInstruction extends InstructionSpecName>(instruction: TInstruction): (typeof instructionSpecs)[TInstruction];
+	(instruction: MemoryDeclarationInstruction): typeof instructionSpecs.memoryDeclaration;
+	(instruction: string): InstructionSpec | undefined;
+};
+
+const getInstructionSpecImplementation = (instruction: string): InstructionSpec | undefined => {
 	if (memoryDeclarationInstructions.includes(instruction as MemoryDeclarationInstruction)) {
 		return instructionSpecs.memoryDeclaration;
 	}
@@ -787,7 +805,9 @@ export function getInstructionSpec(instruction: string): InstructionSpec | undef
 	}
 
 	return undefined;
-}
+};
+
+export const getInstructionSpec = getInstructionSpecImplementation as GetInstructionSpec;
 
 export function getInstructionStackSignature(instruction: string, line?: AST[number]): string | undefined {
 	const spec = getInstructionSpec(instruction);
