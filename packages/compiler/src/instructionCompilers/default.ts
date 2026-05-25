@@ -1,3 +1,5 @@
+import { peekMapBlock } from '../utils/blockStack';
+
 import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/compiler-spec';
 
 /**
@@ -7,7 +9,7 @@ import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/compiler-
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const _default: InstructionCompiler<NormalizedDefaultLine> = (line: NormalizedDefaultLine, context) => {
-	const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
+	const { mapState } = peekMapBlock(context);
 
 	const valueArg = line.arguments[0];
 	const defaultValue = valueArg.value;

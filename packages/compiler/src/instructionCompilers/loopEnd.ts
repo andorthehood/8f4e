@@ -11,7 +11,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const loopEnd: InstructionCompiler = (line, context) => {
-	popBlock(context)!;
+	popBlock(context);
 
 	return saveByteCode(context, [...br(0), WASM_END, WASM_END]);
 };

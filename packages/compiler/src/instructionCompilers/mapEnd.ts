@@ -17,7 +17,7 @@ import {
 import { saveByteCode } from './utils/saveByteCode';
 
 import { resolveMapKind } from '../utils/mapValueKind';
-import { popBlock } from '../utils/blockStack';
+import { popMapBlock } from '../utils/blockStack';
 
 import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
 import type { MapKind } from '../utils/mapValueKind';
@@ -60,9 +60,7 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	const outputIsFloat64 = outputType === 'float64';
 	const outputKind = resolveMapKind({ isInteger: outputIsInteger, isFloat64: outputIsFloat64 });
 
-	// Pop the MAP block from blockStack and read its state
-	const block = popBlock(context)!;
-	const mapState = block.mapState!;
+	const { mapState } = popMapBlock(context);
 
 	const inputKind = resolveMapKind({ isInteger: mapState.inputIsInteger, isFloat64: mapState.inputIsFloat64 });
 

@@ -16,6 +16,7 @@ describe('loopEnd instruction compiler', () => {
 					blockType: BlockType.LOOP,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
+					loopCounterLocalName: '__loopCounter1',
 				},
 			],
 		});
