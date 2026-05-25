@@ -1,4 +1,4 @@
-import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode } from '@8f4e/compiler-spec';
+import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
 
 import { validateInstruction } from './validateInstruction';
 
@@ -31,7 +31,9 @@ import type {
 	Stack,
 	StackAnalysisResult,
 	StackItem,
-	StoreBytesLine,
+	StackProducedItemSpec,
+	StackMutationSpec,
+	InstructionSpec,
 } from '@8f4e/compiler-spec';
 
 function cloneStack(stack: Stack): Stack {
@@ -327,10 +329,104 @@ function analyzeExpectedBlockResult(
 	return { consumed, produced: consumed };
 }
 
+function resolveStackConsumeCount(
+	line: AST[number],
+	context: CompilationContext,
+	consumes: StackMutationSpec['consumes']
+): number {
+	if (consumes === 'all') {
+		return context.stack.length;
+	}
+
+	if (typeof consumes === 'number') {
+		return consumes;
+	}
+
+	const argument = line.arguments[consumes.argumentValueIndex];
+	const value = argument && 'value' in argument && typeof argument.value === 'number' ? argument.value : 0;
+
+	return value + consumes.add;
+}
+
+function resolveProducedStackItemNonZero(
+	consumed: Stack,
+	spec: StackProducedItemSpec,
+	defaultValue: boolean | undefined
+): boolean | undefined {
+	if (spec.isNonZero === 'fromInput') {
+		return consumed[spec.inputIndex ?? 0]?.isNonZero;
+	}
+
+	return spec.isNonZero ?? defaultValue;
+}
+
+function resolveStackProducedItem(consumed: Stack, spec: StackProducedItemSpec): StackItem {
+	const input = consumed[spec.inputIndex ?? 0];
+
+	switch (spec.kind) {
+		case 'int':
+			return { isInteger: true, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
+		case 'float':
+			return { isInteger: false, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
+		case 'float64':
+			return { isInteger: false, isFloat64: true, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
+		case 'same':
+		default:
+			return {
+				isInteger: Boolean(input?.isInteger),
+				...(input?.isFloat64 ? { isFloat64: true } : {}),
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, input?.isNonZero),
+			};
+	}
+}
+
+function analyzeStackEffectFromSpec(
+	line: AST[number],
+	context: CompilationContext,
+	stackEffect: StackMutationSpec
+): { consumed: Stack; produced: Stack; dropped?: Stack } {
+	const consumed = consume(context, resolveStackConsumeCount(line, context, stackEffect.consumes));
+	const produced = (stackEffect.produces ?? []).map(producedSpec => resolveStackProducedItem(consumed, producedSpec));
+
+	produce(context, produced);
+
+	return {
+		consumed,
+		produced,
+		...(stackEffect.dropped === 'consumed' ? { dropped: consumed } : {}),
+	};
+}
+
+function analyzeFromSpec(
+	line: AST[number],
+	context: CompilationContext,
+	spec: InstructionSpec | undefined
+): { consumed: Stack; produced: Stack; dropped?: Stack } | undefined {
+	const effects = spec?.effects;
+	if (effects?.blockClose) {
+		assertTopBlock(line, context, effects.blockClose.blockType);
+		return analyzeExpectedBlockResult(line, context, {
+			restore: effects.blockClose.restoreResult,
+			validateFloatResult: effects.blockClose.validateFloatResult,
+		});
+	}
+
+	if (spec?.stack?.effect) {
+		return analyzeStackEffectFromSpec(line, context, spec.stack.effect);
+	}
+
+	return undefined;
+}
+
 function analyzeByInstruction(
 	line: AST[number],
 	context: CompilationContext
 ): { consumed: Stack; produced: Stack; dropped?: Stack } {
+	const specResult = analyzeFromSpec(line, context, getInstructionSpec(line.instruction));
+	if (specResult) {
+		return specResult;
+	}
+
 	switch (line.instruction) {
 		case 'push': {
 			return { consumed: [], produced: analyzePush(line as CodegenPushLine, context) };
@@ -382,18 +478,6 @@ function analyzeByInstruction(
 					})
 				),
 			];
-			produce(context, produced);
-			return { consumed, produced };
-		}
-		case 'equal':
-		case 'notEqual':
-		case 'greaterOrEqual':
-		case 'greaterOrEqualUnsigned':
-		case 'greaterThan':
-		case 'lessOrEqual':
-		case 'lessThan': {
-			const consumed = consume(context, 2);
-			const produced = [{ isInteger: true, isNonZero: false }];
 			produce(context, produced);
 			return { consumed, produced };
 		}
@@ -491,54 +575,6 @@ function analyzeByInstruction(
 			produce(context, produced);
 			return { consumed, produced };
 		}
-		case 'castToFloat':
-		case 'castToFloat64':
-		case 'castToInt':
-		case 'sqrt':
-		case 'round':
-		case 'equalToZero':
-		case 'notZero':
-		case 'fallingEdge':
-		case 'risingEdge':
-		case 'hasChanged':
-		case 'ensureNonZero': {
-			const consumed = consume(context, 1);
-			const operand = consumed[0];
-			const producedByInstruction: Record<string, StackItem> = {
-				castToFloat: { isInteger: false, isNonZero: operand.isNonZero },
-				castToFloat64: { isInteger: false, isFloat64: true, isNonZero: operand.isNonZero },
-				castToInt: { isInteger: true, isNonZero: operand.isNonZero },
-				sqrt: { isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: false },
-				round: { isInteger: false, isNonZero: false },
-				equalToZero: { isInteger: true, isNonZero: false },
-				notZero: { isInteger: true, isNonZero: operand.isNonZero },
-				fallingEdge: { isInteger: true, isNonZero: false },
-				risingEdge: { isInteger: true, isNonZero: false },
-				hasChanged: { isInteger: true, isNonZero: false },
-				ensureNonZero: operand.isInteger
-					? { isInteger: true, isNonZero: true }
-					: { isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: true },
-			};
-			const produced = [producedByInstruction[line.instruction]];
-			produce(context, produced);
-			return { consumed, produced };
-		}
-		case 'load':
-		case 'load8s':
-		case 'load8u':
-		case 'load16s':
-		case 'load16u': {
-			const consumed = consume(context, 1);
-			const produced = [{ isInteger: true, isNonZero: false }];
-			produce(context, produced);
-			return { consumed, produced };
-		}
-		case 'loadFloat': {
-			const consumed = consume(context, 1);
-			const produced = [{ isInteger: false, isNonZero: false }];
-			produce(context, produced);
-			return { consumed, produced };
-		}
 		case 'clampAddress':
 		case 'clampModuleAddress':
 		case 'clampGlobalAddress': {
@@ -563,25 +599,8 @@ function analyzeByInstruction(
 			produce(context, produced);
 			return { consumed, produced };
 		}
-		case 'drop':
-		case 'branchIfTrue':
-		case 'branchIfUnchanged':
-		case 'if': {
-			return { consumed: consume(context, 1), produced: [] };
-		}
 		case 'localSet': {
 			return analyzeLocalSet(line, context);
-		}
-		case 'store':
-		case 'memoryCopy': {
-			return { consumed: consume(context, 2), produced: [] };
-		}
-		case 'storeBytes': {
-			return { consumed: consume(context, (line as StoreBytesLine).arguments[0].value + 1), produced: [] };
-		}
-		case 'clearStack': {
-			const consumed = consume(context, context.stack.length);
-			return { consumed, produced: [], dropped: consumed };
 		}
 		case 'exitIfTrue': {
 			const consumed = consume(context, 1);
@@ -602,22 +621,6 @@ function analyzeByInstruction(
 		}
 		case 'mapEnd': {
 			return analyzeMapEnd(line as MapEndLine, context);
-		}
-		case 'else': {
-			assertTopBlock(line, context, BlockType.CONDITION);
-			return analyzeExpectedBlockResult(line, context, { validateFloatResult: true });
-		}
-		case 'blockEnd': {
-			assertTopBlock(line, context, BlockType.BLOCK);
-			return analyzeExpectedBlockResult(line, context, { restore: true });
-		}
-		case 'loopEnd': {
-			assertTopBlock(line, context, BlockType.LOOP);
-			return analyzeExpectedBlockResult(line, context, { restore: true });
-		}
-		case 'ifEnd': {
-			assertTopBlock(line, context, BlockType.CONDITION);
-			return analyzeExpectedBlockResult(line, context, { restore: true, validateFloatResult: true });
 		}
 		default:
 			return { consumed: [], produced: [] };

@@ -1,10 +1,12 @@
+import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from './constants';
 import { ErrorCode } from './errors';
 import { memoryDeclarationInstructions } from './memory';
+import { BlockType } from './semantic';
 
 import type { AST, StoreBytesLine } from './ast';
 import type { ErrorCodeValue } from './errors';
 import type { MemoryDeclarationInstruction } from './memory';
-import type { CompilationContext } from './semantic';
+import type { BlockTypeValue, CompilationContext } from './semantic';
 
 export type OperandRule = 'int' | 'float' | 'matching';
 export type ScopeRule =
@@ -55,30 +57,169 @@ export interface ResolvedStackEffect {
 	outputs: readonly StackValueLabel[];
 }
 
+export type StackConsumeSpec =
+	| number
+	| 'all'
+	| {
+			argumentValueIndex: number;
+			add: number;
+	  };
+
+export type StackProducedItemSpec =
+	| {
+			kind: 'int';
+			isNonZero?: boolean | 'fromInput';
+			inputIndex?: number;
+	  }
+	| {
+			kind: 'float';
+			isNonZero?: boolean | 'fromInput';
+			inputIndex?: number;
+	  }
+	| {
+			kind: 'float64';
+			isNonZero?: boolean | 'fromInput';
+			inputIndex?: number;
+	  }
+	| {
+			kind: 'same';
+			inputIndex?: number;
+			isNonZero?: boolean | 'fromInput';
+	  };
+
+export interface StackMutationSpec {
+	consumes: StackConsumeSpec;
+	produces?: readonly StackProducedItemSpec[];
+	dropped?: 'consumed';
+}
+
 export interface StackEffectSpec<TLine extends AST[number] = AST[number]> extends ResolvedStackEffect {
 	resolve?: (line: TLine) => ResolvedStackEffect;
+	effect?: StackMutationSpec;
+}
+
+export interface BlockCloseEffectSpec {
+	blockType: BlockTypeValue;
+	restoreResult?: boolean;
+	validateFloatResult?: boolean;
+}
+
+export type MemoryLoadVariant = 'i32' | 'i32_8s' | 'i32_8u' | 'i32_16s' | 'i32_16u' | 'f32';
+
+export type MemoryOperationEffectSpec =
+	| {
+			kind: 'load';
+			accessByteWidth: number;
+			loadVariant: MemoryLoadVariant;
+			resultType: 'int' | 'float';
+			addressOperandIndex: number;
+	  }
+	| {
+			kind: 'store';
+			addressOperandIndex: number;
+			valueOperandIndex: number;
+	  }
+	| {
+			kind: 'storeBytes';
+			accessByteWidth: number;
+	  }
+	| {
+			kind: 'copy';
+			addressOperandIndex: number;
+	  };
+
+export interface InstructionEffectsSpec {
+	blockClose?: BlockCloseEffectSpec;
+	memory?: MemoryOperationEffectSpec;
 }
 
 export interface InstructionSpec<TLine extends AST[number] = AST[number]> extends ValidationSpec<TLine> {
 	docs?: InstructionDocumentation;
 	stack?: StackEffectSpec<TLine>;
+	effects?: InstructionEffectsSpec;
+}
+
+interface DocsAndStackOptions {
+	shortDescription: string;
+	inputs: readonly StackValueLabel[];
+	outputs: readonly StackValueLabel[];
+	effect?: StackMutationSpec;
+}
+
+interface StackOptions {
+	inputs: readonly StackValueLabel[];
+	outputs: readonly StackValueLabel[];
+	effect?: StackMutationSpec;
 }
 
 function withDocsAndStack<TSpec extends ValidationSpec>(
 	spec: TSpec,
-	shortDescription: string,
-	inputs: readonly StackValueLabel[],
-	outputs: readonly StackValueLabel[]
+	{ shortDescription, inputs, outputs, effect }: DocsAndStackOptions
 ): TSpec & { docs: InstructionDocumentation; stack: StackEffectSpec } {
 	return {
 		...spec,
 		docs: { shortDescription },
-		stack: { inputs, outputs },
+		stack: { inputs, outputs, ...(effect ? { effect } : {}) },
 	};
 }
 
-function stack(inputs: readonly StackValueLabel[], outputs: readonly StackValueLabel[]): StackEffectSpec {
-	return { inputs, outputs };
+function stack({ inputs, outputs, effect }: StackOptions): StackEffectSpec {
+	return { inputs, outputs, ...(effect ? { effect } : {}) };
+}
+
+function stackMutation(consumes: StackConsumeSpec, produces: readonly StackProducedItemSpec[] = []): StackMutationSpec {
+	return { consumes, produces };
+}
+
+function memoryLoad<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>(
+	loadVariant: TLoadVariant,
+	accessByteWidth: number,
+	resultType: TResultType
+): {
+	memory: Extract<MemoryOperationEffectSpec, { kind: 'load' }> & {
+		loadVariant: TLoadVariant;
+		resultType: TResultType;
+	};
+} {
+	return {
+		memory: {
+			kind: 'load',
+			accessByteWidth,
+			loadVariant,
+			resultType,
+			addressOperandIndex: 0,
+		},
+	};
+}
+
+interface LoadInstructionOptions<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'> {
+	loadVariant: TLoadVariant;
+	accessByteWidth: number;
+	resultType: TResultType;
+	shortDescription: string;
+	output: StackValueLabel;
+	effect: StackMutationSpec;
+}
+
+function loadInstruction<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>({
+	loadVariant,
+	accessByteWidth,
+	resultType,
+	shortDescription,
+	output,
+	effect,
+}: LoadInstructionOptions<TLoadVariant, TResultType>) {
+	return withDocsAndStack(
+		{ ...loadSpec, effects: memoryLoad(loadVariant, accessByteWidth, resultType) },
+		{ shortDescription, inputs: ['ptr'], outputs: [output], effect }
+	);
+}
+
+function blockClose(
+	blockType: BlockTypeValue,
+	{ restoreResult = false, validateFloatResult = false } = {}
+): { blockClose: BlockCloseEffectSpec } {
+	return { blockClose: { blockType, restoreResult, validateFloatResult } };
 }
 
 export function resolveInstructionStackEffect<TLine extends AST[number]>(
@@ -125,33 +266,41 @@ const memoryDeclarationSpec = {
 
 export const instructionSpecs = {
 	// abs (int -- int), abs (float -- float), abs (float64 -- float64)
-	abs: withDocsAndStack(unaryModuleOrFunctionSpec, 'Returns the absolute value of the top stack value.', ['T'], ['T']),
+	abs: withDocsAndStack(unaryModuleOrFunctionSpec, {
+		shortDescription: 'Returns the absolute value of the top stack value.',
+		inputs: ['T'],
+		outputs: ['T'],
+	}),
 	// add (int int -- int), add (float float -- float), add (float64 float64 -- float64)
-	add: withDocsAndStack(
-		binaryMatchingSpec,
-		'Adds two numbers of the same type and pushes the result.',
-		['T', 'T'],
-		['T']
-	),
+	add: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Adds two numbers of the same type and pushes the result.',
+		inputs: ['T', 'T'],
+		outputs: ['T'],
+	}),
 	// and (int int -- int)
-	and: withDocsAndStack(binaryIntegerSpec, 'Performs a bitwise AND on two integers.', ['int', 'int'], ['int']),
+	and: withDocsAndStack(binaryIntegerSpec, {
+		shortDescription: 'Performs a bitwise AND on two integers.',
+		inputs: ['int', 'int'],
+		outputs: ['int'],
+	}),
 	// block ( -- )
 	block: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts a block that can be exited with branch instructions.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// blockEnd ( -- ), blockEnd (T -- T)
 	blockEnd: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends a block and validates its optional result value.' },
-		stack: stack(['T?'], ['T?']),
+		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
+		effects: blockClose(BlockType.BLOCK, { restoreResult: true }),
 	},
 	// branch ( -- )
 	branch: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Branches out of one or more enclosing blocks.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// branchIfTrue (int -- )
 	branchIfTrue: {
@@ -159,21 +308,21 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Branches out of enclosing blocks when the condition is non-zero.' },
-		stack: stack(['int'], []),
+		stack: stack({ inputs: ['int'], outputs: [], effect: stackMutation(1) }),
 	},
 	// branchIfUnchanged (T -- )
 	branchIfUnchanged: {
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Branches when the consumed value matches the previous value seen by this instruction.' },
-		stack: stack(['T'], []),
+		stack: stack({ inputs: ['T'], outputs: [], effect: stackMutation(1) }),
 	},
 	// call (args... -- returns...)
 	call: {
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Calls a function, consuming its parameters and pushing its return values.' },
-		stack: stack(['args...'], ['returns...']),
+		stack: stack({ inputs: ['args...'], outputs: ['returns...'] }),
 	},
 	// castToFloat (int -- float)
 	castToFloat: {
@@ -181,22 +330,30 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Converts an integer stack value to a float.' },
-		stack: stack(['int'], ['float']),
+		stack: stack({
+			inputs: ['int'],
+			outputs: ['float'],
+			effect: stackMutation(1, [{ kind: 'float', isNonZero: 'fromInput' }]),
+		}),
 	},
 	// castToFloat64 (int -- float64), castToFloat64 (float -- float64), castToFloat64 (float64 -- float64)
-	castToFloat64: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
-		'Converts a numeric stack value to float64.',
-		['T'],
-		['float64']
-	),
+	castToFloat64: withDocsAndStack(unaryModuleOrFunctionSpec, {
+		shortDescription: 'Converts a numeric stack value to float64.',
+		inputs: ['T'],
+		outputs: ['float64'],
+		effect: stackMutation(1, [{ kind: 'float64', isNonZero: 'fromInput' }]),
+	}),
 	// castToInt (float -- int), castToInt (float64 -- int)
 	castToInt: {
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'float',
 		docs: { shortDescription: 'Converts a floating-point stack value to an integer.' },
-		stack: stack(['float'], ['int']),
+		stack: stack({
+			inputs: ['float'],
+			outputs: ['int'],
+			effect: stackMutation(1, [{ kind: 'int', isNonZero: 'fromInput' }]),
+		}),
 	},
 	// clampAddress (ptr -- ptr)
 	clampAddress: {
@@ -204,7 +361,7 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Clamps a pointer so it stays inside the active memory range.' },
-		stack: stack(['ptr'], ['ptr']),
+		stack: stack({ inputs: ['ptr'], outputs: ['ptr'] }),
 	},
 	// clampModuleAddress (ptr -- ptr)
 	clampModuleAddress: {
@@ -212,7 +369,7 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Clamps a pointer so it stays inside module memory.' },
-		stack: stack(['ptr'], ['ptr']),
+		stack: stack({ inputs: ['ptr'], outputs: ['ptr'] }),
 	},
 	// clampGlobalAddress (ptr -- ptr)
 	clampGlobalAddress: {
@@ -220,57 +377,62 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Clamps a pointer so it stays inside global memory.' },
-		stack: stack(['ptr'], ['ptr']),
+		stack: stack({ inputs: ['ptr'], outputs: ['ptr'] }),
 	},
 	// clearStack (... -- )
 	clearStack: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Removes every value from the stack.' },
-		stack: stack(['...'], []),
+		stack: stack({ inputs: ['...'], outputs: [], effect: { consumes: 'all', produces: [], dropped: 'consumed' } }),
 	},
 	// default ( -- )
 	default: {
 		scope: 'map',
 		allowedInMapBlocks: true,
 		docs: { shortDescription: 'Defines the fallback value for a map block.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// div (int int -- int), div (float float -- float), div (float64 float64 -- float64)
-	div: withDocsAndStack(
-		binaryMatchingSpec,
-		'Divides the first value by the second value and pushes the quotient.',
-		['T', 'T'],
-		['T']
-	),
+	div: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Divides the first value by the second value and pushes the quotient.',
+		inputs: ['T', 'T'],
+		outputs: ['T'],
+	}),
 	// drop (T -- )
-	drop: withDocsAndStack(unaryModuleOrFunctionSpec, 'Removes the top value from the stack.', ['T'], []),
+	drop: withDocsAndStack(unaryModuleOrFunctionSpec, {
+		shortDescription: 'Removes the top value from the stack.',
+		inputs: ['T'],
+		outputs: [],
+		effect: stackMutation(1),
+	}),
 	// else ( -- )
 	else: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts the alternate branch of the current if block.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
+		effects: blockClose(BlockType.CONDITION, { validateFloatResult: true }),
 	},
 	// ensureNonZero (int -- int), ensureNonZero (float -- float), ensureNonZero (float64 -- float64)
-	ensureNonZero: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
-		'Ensures the top stack value is non-zero before continuing.',
-		['T'],
-		['T']
-	),
+	ensureNonZero: withDocsAndStack(unaryModuleOrFunctionSpec, {
+		shortDescription: 'Ensures the top stack value is non-zero before continuing.',
+		inputs: ['T'],
+		outputs: ['T'],
+		effect: stackMutation(1, [{ kind: 'same', isNonZero: true }]),
+	}),
 	// equal (int int -- int), equal (float float -- int), equal (float64 float64 -- int)
-	equal: withDocsAndStack(
-		binaryMatchingSpec,
-		'Compares two values and pushes 1 when they are equal, otherwise 0.',
-		['T', 'T'],
-		['int']
-	),
+	equal: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Compares two values and pushes 1 when they are equal, otherwise 0.',
+		inputs: ['T', 'T'],
+		outputs: ['int'],
+		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// equalToZero (int -- int), equalToZero (float -- int), equalToZero (float64 -- int)
-	equalToZero: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
-		'Pushes 1 when the value is zero, otherwise 0.',
-		['T'],
-		['int']
-	),
+	equalToZero: withDocsAndStack(unaryModuleOrFunctionSpec, {
+		shortDescription: 'Pushes 1 when the value is zero, otherwise 0.',
+		inputs: ['T'],
+		outputs: ['int'],
+		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// exitIfTrue (int -- )
 	exitIfTrue: {
 		scope: 'moduleOnly',
@@ -278,49 +440,49 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Exits the enclosing module when the condition is non-zero.' },
-		stack: stack(['int'], []),
+		stack: stack({ inputs: ['int'], outputs: [] }),
 	},
 	// fallingEdge (int -- int), fallingEdge (float -- int)
 	fallingEdge: {
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from a non-zero value to zero.' },
-		stack: stack(['T'], ['int']),
+		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
 	},
 	// functionEnd (returns... -- )
 	functionEnd: {
 		scope: 'function',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Ends a function and records its return signature.' },
-		stack: stack(['returns...'], []),
+		stack: stack({ inputs: ['returns...'], outputs: [] }),
 	},
 	// greaterOrEqual (int int -- int), greaterOrEqual (float float -- int), greaterOrEqual (float64 float64 -- int)
-	greaterOrEqual: withDocsAndStack(
-		binaryMatchingSpec,
-		'Pushes 1 when the first value is greater than or equal to the second value.',
-		['T', 'T'],
-		['int']
-	),
+	greaterOrEqual: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Pushes 1 when the first value is greater than or equal to the second value.',
+		inputs: ['T', 'T'],
+		outputs: ['int'],
+		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// greaterOrEqualUnsigned (int int -- int), greaterOrEqualUnsigned (float float -- int)
-	greaterOrEqualUnsigned: withDocsAndStack(
-		binaryMatchingSpec,
-		'Compares two values as unsigned numbers and pushes the result.',
-		['T', 'T'],
-		['int']
-	),
+	greaterOrEqualUnsigned: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Compares two values as unsigned numbers and pushes the result.',
+		inputs: ['T', 'T'],
+		outputs: ['int'],
+		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// greaterThan (int int -- int), greaterThan (float float -- int), greaterThan (float64 float64 -- int)
-	greaterThan: withDocsAndStack(
-		binaryMatchingSpec,
-		'Pushes 1 when the first value is greater than the second value.',
-		['T', 'T'],
-		['int']
-	),
+	greaterThan: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Pushes 1 when the first value is greater than the second value.',
+		inputs: ['T', 'T'],
+		outputs: ['int'],
+		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// hasChanged (int -- int), hasChanged (float -- int)
 	hasChanged: {
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Pushes 1 when the consumed value differs from its previous value.' },
-		stack: stack(['T'], ['int']),
+		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
 	},
 	// if (int -- )
 	if: {
@@ -328,52 +490,89 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Starts a conditional block when the condition is non-zero.' },
-		stack: stack(['int'], []),
+		stack: stack({ inputs: ['int'], outputs: [], effect: stackMutation(1) }),
 	},
 	// ifEnd ( -- ), ifEnd (T -- T)
 	ifEnd: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends an if block and validates its optional result value.' },
-		stack: stack(['T?'], ['T?']),
+		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
+		effects: blockClose(BlockType.CONDITION, { restoreResult: true, validateFloatResult: true }),
 	},
 	// lessOrEqual (int int -- int), lessOrEqual (float float -- int), lessOrEqual (float64 float64 -- int)
-	lessOrEqual: withDocsAndStack(
-		binaryMatchingSpec,
-		'Pushes 1 when the first value is less than or equal to the second value.',
-		['T', 'T'],
-		['int']
-	),
+	lessOrEqual: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Pushes 1 when the first value is less than or equal to the second value.',
+		inputs: ['T', 'T'],
+		outputs: ['int'],
+		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// lessThan (int int -- int), lessThan (float float -- int), lessThan (float64 float64 -- int)
-	lessThan: withDocsAndStack(
-		binaryMatchingSpec,
-		'Pushes 1 when the first value is less than the second value.',
-		['T', 'T'],
-		['int']
-	),
+	lessThan: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Pushes 1 when the first value is less than the second value.',
+		inputs: ['T', 'T'],
+		outputs: ['int'],
+		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// load (ptr -- int)
-	load: withDocsAndStack(loadSpec, 'Loads a 32-bit integer value from memory.', ['ptr'], ['int']),
+	load: loadInstruction({
+		loadVariant: 'i32',
+		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
+		resultType: 'int',
+		shortDescription: 'Loads a 32-bit integer value from memory.',
+		output: 'int',
+		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// load8u (ptr -- int)
-	load8u: withDocsAndStack(loadSpec, 'Loads an unsigned 8-bit integer value from memory.', ['ptr'], ['int']),
+	load8u: loadInstruction({
+		loadVariant: 'i32_8u',
+		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
+		resultType: 'int',
+		shortDescription: 'Loads an unsigned 8-bit integer value from memory.',
+		output: 'int',
+		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// load16u (ptr -- int)
-	load16u: withDocsAndStack(loadSpec, 'Loads an unsigned 16-bit integer value from memory.', ['ptr'], ['int']),
+	load16u: loadInstruction({
+		loadVariant: 'i32_16u',
+		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
+		resultType: 'int',
+		shortDescription: 'Loads an unsigned 16-bit integer value from memory.',
+		output: 'int',
+		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// load8s (ptr -- int)
-	load8s: withDocsAndStack(loadSpec, 'Loads a signed 8-bit integer value from memory.', ['ptr'], ['int']),
+	load8s: loadInstruction({
+		loadVariant: 'i32_8s',
+		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
+		resultType: 'int',
+		shortDescription: 'Loads a signed 8-bit integer value from memory.',
+		output: 'int',
+		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// load16s (ptr -- int)
-	load16s: withDocsAndStack(loadSpec, 'Loads a signed 16-bit integer value from memory.', ['ptr'], ['int']),
+	load16s: loadInstruction({
+		loadVariant: 'i32_16s',
+		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
+		resultType: 'int',
+		shortDescription: 'Loads a signed 16-bit integer value from memory.',
+		output: 'int',
+		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// loadFloat (ptr -- float)
-	loadFloat: {
-		scope: 'moduleOrFunction',
-		minOperands: 1,
-		operandTypes: 'int',
-		docs: { shortDescription: 'Loads a float value from memory.' },
-		stack: stack(['ptr'], ['float']),
-	},
+	loadFloat: loadInstruction({
+		loadVariant: 'f32',
+		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
+		resultType: 'float',
+		shortDescription: 'Loads a float value from memory.',
+		output: 'float',
+		effect: stackMutation(1, [{ kind: 'float', isNonZero: false }]),
+	}),
 	// local ( -- )
 	local: {
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Declares a local variable in the current function or module block.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// localSet (T -- )
 	localSet: {
@@ -381,27 +580,27 @@ export const instructionSpecs = {
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 1,
 		docs: { shortDescription: 'Stores the top stack value into a local variable.' },
-		stack: stack(['T'], []),
+		stack: stack({ inputs: ['T'], outputs: [] }),
 	},
 	// loop ( -- )
 	loop: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts a loop block that repeats until a branch exits it.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #loopCap ( -- )
 	'#loopCap': {
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Sets the loop iteration cap for loops in the current block.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #region <name|index> ( -- )
 	'#region': {
 		scope: 'module',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Selects the memory region used by subsequent module declarations.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #export [exportName] ( -- )
 	'#export': {
@@ -410,54 +609,55 @@ export const instructionSpecs = {
 		docs: {
 			shortDescription: 'Exports the current function under the provided name, or the function name if omitted.',
 		},
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #skipExecution ( -- )
 	'#skipExecution': {
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Skips the current module during cycle execution.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #initOnly ( -- )
 	'#initOnly': {
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Runs the current module only during initialization.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #impure ( -- )
 	'#impure': {
 		scope: 'function',
 		onInvalidScope: ErrorCode.IMPURE_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Allows the current function to perform explicit memory IO.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// loopEnd ( -- ), loopEnd (T -- T)
 	loopEnd: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends a loop block and branches back to the start of the loop.' },
-		stack: stack(['T?'], ['T?']),
+		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
+		effects: blockClose(BlockType.LOOP, { restoreResult: true }),
 	},
 	// loopIndex ( -- int)
 	loopIndex: {
 		scope: 'loop',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP,
 		docs: { shortDescription: 'Pushes the current zero-based loop iteration index.' },
-		stack: stack([], ['int']),
+		stack: stack({ inputs: [], outputs: ['int'] }),
 	},
 	// map ( -- )
 	map: {
 		scope: 'map',
 		allowedInMapBlocks: true,
 		docs: { shortDescription: 'Starts a map case inside a map block.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// mapBegin ( -- )
 	mapBegin: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts a map block that chooses a value from map cases.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// mapEnd (int -- T), mapEnd (float -- T), mapEnd (float64 -- T)
 	mapEnd: {
@@ -465,7 +665,7 @@ export const instructionSpecs = {
 		allowedInMapBlocks: true,
 		minOperands: 1,
 		docs: { shortDescription: 'Ends a map block and leaves the selected mapped value on the stack.' },
-		stack: stack(['T'], ['T']),
+		stack: stack({ inputs: ['T'], outputs: ['T'] }),
 	},
 	// memoryCopy (ptr ptr -- )
 	memoryCopy: {
@@ -474,68 +674,79 @@ export const instructionSpecs = {
 		minOperands: 2,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Copies memory from one pointer range to another.' },
-		stack: stack(['ptr', 'ptr'], []),
+		stack: stack({ inputs: ['ptr', 'ptr'], outputs: [], effect: stackMutation(2) }),
+		effects: { memory: { kind: 'copy', addressOperandIndex: 0 } },
 	},
 	// min (int int -- int), min (float float -- float), min (float64 float64 -- float64)
-	min: withDocsAndStack(binaryMatchingSpec, 'Pushes the smaller of two values of the same type.', ['T', 'T'], ['T']),
+	min: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Pushes the smaller of two values of the same type.',
+		inputs: ['T', 'T'],
+		outputs: ['T'],
+	}),
 	// max (int int -- int), max (float float -- float), max (float64 float64 -- float64)
-	max: withDocsAndStack(binaryMatchingSpec, 'Pushes the larger of two values of the same type.', ['T', 'T'], ['T']),
+	max: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Pushes the larger of two values of the same type.',
+		inputs: ['T', 'T'],
+		outputs: ['T'],
+	}),
 	// mul (int int -- int), mul (float float -- float), mul (float64 float64 -- float64)
-	mul: withDocsAndStack(
-		binaryMatchingSpec,
-		'Multiplies two numbers of the same type and pushes the result.',
-		['T', 'T'],
-		['T']
-	),
+	mul: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Multiplies two numbers of the same type and pushes the result.',
+		inputs: ['T', 'T'],
+		outputs: ['T'],
+	}),
 	// notEqual (int int -- int), notEqual (float float -- int), notEqual (float64 float64 -- int)
-	notEqual: withDocsAndStack(
-		binaryMatchingSpec,
-		'Compares two values and pushes 1 when they are not equal, otherwise 0.',
-		['T', 'T'],
-		['int']
-	),
+	notEqual: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Compares two values and pushes 1 when they are not equal, otherwise 0.',
+		inputs: ['T', 'T'],
+		outputs: ['int'],
+		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
+	}),
 	// notZero (int -- int), notZero (float -- int), notZero (float64 -- int)
-	notZero: withDocsAndStack(
-		unaryModuleOrFunctionSpec,
-		'Pushes 1 when the value is non-zero, otherwise 0.',
-		['T'],
-		['int']
-	),
+	notZero: withDocsAndStack(unaryModuleOrFunctionSpec, {
+		shortDescription: 'Pushes 1 when the value is non-zero, otherwise 0.',
+		inputs: ['T'],
+		outputs: ['int'],
+		effect: stackMutation(1, [{ kind: 'int', isNonZero: 'fromInput' }]),
+	}),
 	// or (int int -- int)
-	or: withDocsAndStack(binaryIntegerSpec, 'Performs a bitwise OR on two integers.', ['int', 'int'], ['int']),
+	or: withDocsAndStack(binaryIntegerSpec, {
+		shortDescription: 'Performs a bitwise OR on two integers.',
+		inputs: ['int', 'int'],
+		outputs: ['int'],
+	}),
 	// param ( -- )
 	param: {
 		scope: 'function',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Declares a parameter for the current function.' },
-		stack: stack([], []),
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// push ( -- T)
 	push: {
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Pushes a literal, memory value, local value, address, or constant onto the stack.' },
-		stack: stack([], ['T']),
+		stack: stack({ inputs: [], outputs: ['T'] }),
 	},
 	// remainder (int int -- int)
-	remainder: withDocsAndStack(
-		binaryIntegerSpec,
-		'Divides one integer by another and pushes the remainder.',
-		['int', 'int'],
-		['int']
-	),
+	remainder: withDocsAndStack(binaryIntegerSpec, {
+		shortDescription: 'Divides one integer by another and pushes the remainder.',
+		inputs: ['int', 'int'],
+		outputs: ['int'],
+	}),
 	// return (returns... -- never)
 	return: {
 		scope: 'function',
 		onInvalidScope: ErrorCode.RETURN_OUTSIDE_FUNCTION,
 		docs: { shortDescription: 'Returns from the current function with the values on the stack.' },
-		stack: stack(['returns...'], ['never']),
+		stack: stack({ inputs: ['returns...'], outputs: ['never'] }),
 	},
 	// risingEdge (int -- int), risingEdge (float -- int)
 	risingEdge: {
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from zero to a non-zero value.' },
-		stack: stack(['T'], ['int']),
+		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
 	},
 	// round (float -- float)
 	round: {
@@ -543,36 +754,41 @@ export const instructionSpecs = {
 		minOperands: 1,
 		operandTypes: 'float',
 		docs: { shortDescription: 'Rounds a float value to the nearest whole value.' },
-		stack: stack(['float'], ['float']),
+		stack: stack({
+			inputs: ['float'],
+			outputs: ['float'],
+			effect: stackMutation(1, [{ kind: 'float', isNonZero: false }]),
+		}),
 	},
 	// shiftLeft (int int -- int)
-	shiftLeft: withDocsAndStack(
-		binaryIntegerSpec,
-		'Shifts an integer left by the requested number of bits.',
-		['int', 'int'],
-		['int']
-	),
+	shiftLeft: withDocsAndStack(binaryIntegerSpec, {
+		shortDescription: 'Shifts an integer left by the requested number of bits.',
+		inputs: ['int', 'int'],
+		outputs: ['int'],
+	}),
 	// shiftRight (int int -- int)
-	shiftRight: withDocsAndStack(
-		binaryIntegerSpec,
-		'Shifts an integer right by the requested number of bits.',
-		['int', 'int'],
-		['int']
-	),
+	shiftRight: withDocsAndStack(binaryIntegerSpec, {
+		shortDescription: 'Shifts an integer right by the requested number of bits.',
+		inputs: ['int', 'int'],
+		outputs: ['int'],
+	}),
 	// shiftRightUnsigned (int int -- int)
-	shiftRightUnsigned: withDocsAndStack(
-		binaryIntegerSpec,
-		'Shifts an integer right without preserving the sign bit.',
-		['int', 'int'],
-		['int']
-	),
+	shiftRightUnsigned: withDocsAndStack(binaryIntegerSpec, {
+		shortDescription: 'Shifts an integer right without preserving the sign bit.',
+		inputs: ['int', 'int'],
+		outputs: ['int'],
+	}),
 	// sqrt (float -- float)
 	sqrt: {
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'float',
 		docs: { shortDescription: 'Pushes the square root of a float value.' },
-		stack: stack(['float'], ['float']),
+		stack: stack({
+			inputs: ['float'],
+			outputs: ['float'],
+			effect: stackMutation(1, [{ kind: 'same', isNonZero: false }]),
+		}),
 	},
 	// store (ptr int -- ), store (ptr float -- ), store (ptr float64 -- )
 	store: {
@@ -581,9 +797,10 @@ export const instructionSpecs = {
 		minOperands: 2,
 		operandTypes: ['int'],
 		docs: { shortDescription: 'Stores a value at the memory address on the stack.' },
-		stack: stack(['ptr', 'T'], []),
+		stack: stack({ inputs: ['ptr', 'T'], outputs: [], effect: stackMutation(2) }),
+		effects: { memory: { kind: 'store', addressOperandIndex: 0, valueOperandIndex: 1 } },
 	},
-	// storeBytes (ptr int... -- )
+	// storeBytes (int... ptr -- )
 	storeBytes: {
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
@@ -596,40 +813,70 @@ export const instructionSpecs = {
 		},
 		docs: { shortDescription: 'Stores a fixed number of integer bytes at the memory address on the stack.' },
 		stack: {
-			inputs: ['ptr', 'bytes...'],
+			inputs: ['bytes...', 'ptr'],
 			outputs: [],
+			effect: { consumes: { argumentValueIndex: 0, add: 1 }, produces: [] },
 			resolve: line => {
 				const count = (line as StoreBytesLine).arguments[0]?.value;
 
 				if (!Number.isFinite(count) || count < 0) {
-					return { inputs: ['ptr', 'bytes...'], outputs: [] };
+					return { inputs: ['bytes...', 'ptr'], outputs: [] };
 				}
 
-				return { inputs: ['ptr', ...new Array(count).fill('int')], outputs: [] };
+				return { inputs: [...new Array(count).fill('int'), 'ptr'], outputs: [] };
 			},
 		},
+		effects: { memory: { kind: 'storeBytes', accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH } },
 	},
 	// sub (int int -- int), sub (float float -- float), sub (float64 float64 -- float64)
-	sub: withDocsAndStack(
-		binaryMatchingSpec,
-		'Subtracts the second value from the first value and pushes the result.',
-		['T', 'T'],
-		['T']
-	),
+	sub: withDocsAndStack(binaryMatchingSpec, {
+		shortDescription: 'Subtracts the second value from the first value and pushes the result.',
+		inputs: ['T', 'T'],
+		outputs: ['T'],
+	}),
 	// xor (int int -- int)
-	xor: withDocsAndStack(binaryIntegerSpec, 'Performs a bitwise XOR on two integers.', ['int', 'int'], ['int']),
+	xor: withDocsAndStack(binaryIntegerSpec, {
+		shortDescription: 'Performs a bitwise XOR on two integers.',
+		inputs: ['int', 'int'],
+		outputs: ['int'],
+	}),
 	// memoryDeclaration ( -- )
-	memoryDeclaration: withDocsAndStack(
-		memoryDeclarationSpec,
-		'Declares memory storage for values used by the module.',
-		[],
-		[]
-	),
+	memoryDeclaration: withDocsAndStack(memoryDeclarationSpec, {
+		shortDescription: 'Declares memory storage for values used by the module.',
+		inputs: [],
+		outputs: [],
+	}),
 } satisfies Record<string, InstructionSpec>;
 
 export type InstructionSpecName = keyof typeof instructionSpecs;
 
-export function getInstructionSpec(instruction: string): InstructionSpec | undefined {
+type MemoryOperationForSpec<TSpec> = TSpec extends { effects: { memory: infer TMemory } } ? TMemory : never;
+
+export type InstructionNamesByMemoryOperation<TOperation extends MemoryOperationEffectSpec> = {
+	[TInstruction in InstructionSpecName]: [MemoryOperationForSpec<(typeof instructionSpecs)[TInstruction]>] extends [
+		never,
+	]
+		? never
+		: MemoryOperationForSpec<(typeof instructionSpecs)[TInstruction]> extends TOperation
+			? TInstruction
+			: never;
+}[InstructionSpecName];
+
+export type LoadInstructionSpecName = InstructionNamesByMemoryOperation<
+	Extract<MemoryOperationEffectSpec, { kind: 'load' }> & { resultType: 'int' }
+>;
+
+export type FloatLoadInstructionSpecName = InstructionNamesByMemoryOperation<
+	Extract<MemoryOperationEffectSpec, { kind: 'load' }> & { resultType: 'float' }
+>;
+
+type GetInstructionSpec = {
+	<TInstruction extends InstructionSpecName>(instruction: TInstruction): (typeof instructionSpecs)[TInstruction];
+	(instruction: MemoryDeclarationInstruction): typeof instructionSpecs.memoryDeclaration;
+	(instruction: string): InstructionSpec | undefined;
+};
+
+const getInstructionSpecImplementation = (instruction: string): InstructionSpec | undefined => {
 	if (memoryDeclarationInstructions.includes(instruction as MemoryDeclarationInstruction)) {
 		return instructionSpecs.memoryDeclaration;
 	}
@@ -639,7 +886,9 @@ export function getInstructionSpec(instruction: string): InstructionSpec | undef
 	}
 
 	return undefined;
-}
+};
+
+export const getInstructionSpec = getInstructionSpecImplementation as GetInstructionSpec;
 
 export function getInstructionStackSignature(instruction: string, line?: AST[number]): string | undefined {
 	const spec = getInstructionSpec(instruction);

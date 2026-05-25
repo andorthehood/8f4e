@@ -1,4 +1,5 @@
 import { i32store8, localGet, localSet } from '@8f4e/compiler-wasm-utils';
+import { getInstructionSpec } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
@@ -14,6 +15,8 @@ import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
 const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const count = line.arguments[0].value;
+	const operation = getInstructionSpec(line.instruction).effects.memory;
+	const accessByteWidth = operation.accessByteWidth;
 
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const address = line.stackAnalysis.consumedOperands[line.stackAnalysis.consumedOperands.length - 1];
@@ -34,7 +37,13 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 			...localSet(tempByteLocal.index),
 			...(addressIsSafe
 				? [...localGet(tempAddrLocal.index), ...localGet(tempByteLocal.index), ...storeByteCode]
-				: guardedStoreFromLocals(tempAddrLocal.index, tempByteLocal.index, i + 1, storeByteCode, memoryIndex))
+				: guardedStoreFromLocals(
+						tempAddrLocal.index,
+						tempByteLocal.index,
+						i + accessByteWidth,
+						storeByteCode,
+						memoryIndex
+					))
 		);
 	}
 

@@ -19,7 +19,7 @@ describe('tooltip source line helpers', () => {
 		expect(getStackSignatureFromSourceLine('branchIfTrue 1')).toBe('branchIfTrue (int -- )');
 		expect(getStackSignatureFromSourceLine('load')).toBe('load (ptr -- int)');
 		expect(getStackSignatureFromSourceLine('store')).toBe('store (ptr T -- )');
-		expect(getStackSignatureFromSourceLine('storeBytes 3')).toBe('storeBytes (ptr int int int -- )');
+		expect(getStackSignatureFromSourceLine('storeBytes 3')).toBe('storeBytes (int int int ptr -- )');
 		expect(getStackSignatureFromSourceLine('int value')).toBe('int ( -- )');
 	});
 
