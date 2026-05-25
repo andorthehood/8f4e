@@ -32,19 +32,6 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
 	);
 }
 
-export function withHiddenProperty<TObject extends object, TKey extends PropertyKey, TValue>(
-	object: TObject,
-	key: TKey,
-	value: TValue
-): TObject & Record<TKey, TValue> {
-	return Object.defineProperty({ ...object }, key, {
-		value,
-		enumerable: false,
-		configurable: true,
-		writable: true,
-	}) as TObject & Record<TKey, TValue>;
-}
-
 /**
  * Validates that intermodule address references, including metadata-query forms,
  * target existing modules and memory once namespace collection is complete.

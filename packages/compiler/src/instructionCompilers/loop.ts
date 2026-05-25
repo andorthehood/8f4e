@@ -40,21 +40,13 @@ const loop: InstructionCompiler<LoopLine> = (line, context) => {
 	};
 	context.locals[infiniteLoopProtectionCounterName] = loopCounterLocal;
 
-	const loopBlock = Object.defineProperty(
-		{
-			expectedResultIsInteger: false,
-			hasExpectedResult: false,
-			blockType: BlockType.LOOP,
-			loopCounterLocalName: infiniteLoopProtectionCounterName,
-		},
-		'loopCounterLocal',
-		{
-			value: loopCounterLocal,
-			enumerable: false,
-			configurable: true,
-			writable: true,
-		}
-	) as LoopBlockStackFrame;
+	const loopBlock: LoopBlockStackFrame = {
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
+		blockType: BlockType.LOOP,
+		loopCounterLocalName: infiniteLoopProtectionCounterName,
+		loopCounterLocal,
+	};
 
 	pushBlock(context, loopBlock);
 
