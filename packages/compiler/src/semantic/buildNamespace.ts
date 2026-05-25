@@ -9,6 +9,7 @@ import {
 	type FunctionMetadataLookup,
 	type FunctionSignature,
 	type Namespaces,
+	type NamespacePrepassContext,
 	type ParsedSemanticInstructionLine,
 	type RegionLine,
 } from '@8f4e/compiler-spec';
@@ -112,9 +113,9 @@ export function prepassNamespace(
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'memoryRegions'> = {}
-): CompilationContext {
+): NamespacePrepassContext {
 	const defaultRegion = getDefaultMemoryRegion();
-	const context = createCompilationContext({
+	const context = createCompilationContext<NamespacePrepassContext>({
 		namespace: {
 			namespaces,
 			memory: {},
@@ -132,7 +133,7 @@ export function prepassNamespace(
 		blockStack: [],
 		startingByteAddress,
 		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: undefined,
+		currentModuleWordAlignedSize: 0,
 		currentMemoryIndex: defaultRegion.memoryIndex,
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
@@ -147,7 +148,7 @@ export function prepassNamespace(
 		}
 	});
 
-	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset ?? 0;
+	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
 
 	ast.forEach(originalLine => {
 		if (!originalLine.isMemoryDeclaration || originalLine.instruction.endsWith('[]')) {
@@ -332,11 +333,11 @@ export function collectNamespacesFromASTs(
 			memory: context.namespace.memory,
 			...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
 			byteAddress: nextStartingByteAddress,
-			wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
+			wordAlignedSize: context.currentModuleWordAlignedSize,
 		};
 
 		nextStartingByteAddressByMemoryIndex[region.memoryIndex] =
-			nextStartingByteAddress + (context.currentModuleWordAlignedSize ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
+			nextStartingByteAddress + context.currentModuleWordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 	}
 
 	return namespaces;

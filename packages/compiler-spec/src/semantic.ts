@@ -128,13 +128,13 @@ export interface CompilationContext {
 	insideConstantsBlock: boolean;
 	insideMapBlock: boolean;
 	startingByteAddress: number;
-	currentModuleNextWordOffset?: number;
-	currentModuleWordAlignedSize?: number;
+	currentModuleNextWordOffset: number;
+	currentModuleWordAlignedSize: number;
 	currentMemoryIndex: number;
 	currentMemoryRegionName?: string;
 	memoryRegions: string[];
 	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
-	mode?: CompilationMode;
+	mode: CompilationMode;
 	codeBlockId?: string;
 	codeBlockType?: CompilerSourceBlockType;
 	currentFunctionId?: string;
@@ -147,6 +147,28 @@ export interface CompilationContext {
 	initOnlyExecution?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;
+}
+
+export interface ModuleCompilationContext extends CompilationContext {
+	mode: 'module';
+	currentModuleNextWordOffset: number;
+	currentModuleWordAlignedSize: number;
+}
+
+export interface NamespacePrepassContext extends CompilationContext {
+	mode: 'module';
+	codeBlockType: CompiledModuleBlockType;
+	currentModuleNextWordOffset: number;
+	currentModuleWordAlignedSize: number;
+}
+
+export interface FunctionCompilationContext extends CompilationContext {
+	mode: 'function';
+	codeBlockType: 'function';
+	currentModuleNextWordOffset: number;
+	currentModuleWordAlignedSize: number;
+	currentFunctionSignature: FunctionSignature;
+	functionTypeRegistry: FunctionTypeRegistry;
 }
 
 export interface StackItem {
@@ -175,7 +197,8 @@ export type AnalyzedLine<TLine extends AST[number] = AST[number]> = TLine & {
 	stackAnalysis: StackAnalysisResult;
 };
 
-export type CodegenContext = Omit<CompilationContext, 'stack'>;
+export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<TContext, 'stack'>;
+export type FunctionCodegenContext = CodegenContext<FunctionCompilationContext>;
 
 export type ResolvedMapValueArgument = NormalizedArgumentLiteral | ArgumentStringLiteral;
 
@@ -285,7 +308,7 @@ export type BlockStack = Array<{
 	mapState?: MapBlockState;
 }>;
 
-export type InstructionCompiler<TLine extends AST[number] = AST[number]> = (
-	line: AnalyzedLine<TLine>,
-	context: CodegenContext
-) => CodegenContext;
+export type InstructionCompiler<
+	TLine extends AST[number] = AST[number],
+	TContext extends CodegenContext = CodegenContext,
+> = (line: AnalyzedLine<TLine>, context: TContext) => TContext;
