@@ -1,5 +1,11 @@
-import { type CompilationContext, type ParsedLocalVariableAccessLine } from '@8f4e/compiler-spec';
+import {
+	type CompilationContext,
+	type ParsedLocalVariableAccessLine,
+	type ResolvedLocalSetLine,
+} from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
+
+import { withHiddenProperty } from './helpers';
 
 import { getError } from '../../compilerError';
 
@@ -10,11 +16,12 @@ import { getError } from '../../compilerError';
 export default function normalizeLocalVariableAccess(
 	line: ParsedLocalVariableAccessLine,
 	context: CompilationContext
-): ParsedLocalVariableAccessLine {
+): ResolvedLocalSetLine {
 	const nameArg = line.arguments[0];
-	if (!context.locals[nameArg.value]) {
+	const local = context.locals[nameArg.value];
+	if (!local) {
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
 	}
 
-	return line;
+	return withHiddenProperty(line, 'local', local);
 }

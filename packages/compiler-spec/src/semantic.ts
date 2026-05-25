@@ -8,6 +8,7 @@ import type {
 } from './arguments';
 import type {
 	AST,
+	CallLine,
 	ConstLine,
 	ConstantsEndLine,
 	ConstantsLine,
@@ -22,7 +23,7 @@ import type {
 	TokenizedLocalVariableAccessLine,
 	UseLine,
 } from './ast';
-import type { FunctionMetadataLookup, FunctionSignature, FunctionTypeRegistry } from './compiled';
+import type { FunctionMetadata, FunctionMetadataLookup, FunctionSignature, FunctionTypeRegistry } from './compiled';
 import type {
 	ArrayDeclarationInstruction,
 	DataStructure,
@@ -247,31 +248,85 @@ export type ParsedSemanticInstructionLine =
 	| ConstantsEndLine;
 
 export type ParsedLocalVariableAccessLine = TokenizedLocalVariableAccessLine;
-export type CodegenLocalSetLine = LocalSetLine;
+export type ResolvedLocalSetLine = LocalSetLine & {
+	local: LocalBinding;
+};
+export type CodegenLocalSetLine = ResolvedLocalSetLine;
 export type CodegenArgumentLiteral = NormalizedArgumentLiteral;
 
-export type CodegenPushLine = Omit<PushLine, 'arguments'> & {
-	arguments: [CodegenArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral];
+export type LiteralPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [CodegenArgumentLiteral | ArgumentStringLiteral];
 };
+
+export type DeferredPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [ArgumentCompileTimeExpression | ArgumentIdentifier];
+};
+
+export type ResolvedMemoryPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier];
+	resolvedTarget: {
+		kind: 'memory';
+		memoryItem: DataStructure;
+	};
+};
+
+export type ResolvedMemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [MemoryPointerIdentifier];
+	resolvedTarget: {
+		kind: 'memory-pointer';
+		memoryItem: DataStructure;
+	};
+};
+
+export type ResolvedLocalPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier];
+	resolvedTarget: {
+		kind: 'local';
+		local: LocalBinding;
+	};
+};
+
+export type ResolvedLocalPointerPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [MemoryPointerIdentifier];
+	resolvedTarget: {
+		kind: 'local-pointer';
+		local: LocalBinding & { pointeeBaseType: NonNullable<LocalBinding['pointeeBaseType']> };
+	};
+};
+
+export type ResolvedPushLine =
+	| ResolvedMemoryPushLine
+	| ResolvedMemoryPointerPushLine
+	| ResolvedLocalPushLine
+	| ResolvedLocalPointerPushLine;
+
+export type CodegenPushLine = LiteralPushLine | ResolvedPushLine;
+export type NormalizedPushLine = CodegenPushLine | DeferredPushLine;
 
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
 export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & { arguments: [MemoryPointerIdentifier] };
+
+export type ResolvedCallLine = CallLine & {
+	targetFunction: FunctionMetadata;
+};
 
 export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 	? NormalizedConstLine
 	: TLine extends DefaultLine
 		? NormalizedDefaultLine | DefaultLine
-		: TLine extends MapLine
-			? NormalizedMapLine | MapLine
-			: TLine extends LocalSetLine
-				? CodegenLocalSetLine
-				: TLine extends PushLine
-					? CodegenPushLine
-					: TLine extends MemoryCopyLine
-						? NormalizedMemoryCopyLine | MemoryCopyLine
-						: TLine extends ArrayDeclarationLine
-							? ArrayDeclarationLine
-							: TLine;
+		: TLine extends CallLine
+			? ResolvedCallLine | CallLine
+			: TLine extends MapLine
+				? NormalizedMapLine | MapLine
+				: TLine extends LocalSetLine
+					? CodegenLocalSetLine
+					: TLine extends PushLine
+						? NormalizedPushLine
+						: TLine extends MemoryCopyLine
+							? NormalizedMemoryCopyLine | MemoryCopyLine
+							: TLine extends ArrayDeclarationLine
+								? ArrayDeclarationLine
+								: TLine;
 
 export const BlockType = {
 	MODULE: 0,
@@ -330,6 +385,7 @@ export interface ConstantsBlockStackFrame extends BlockStackFrameBase {
 export interface LoopBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.LOOP;
 	loopCounterLocalName: string;
+	loopCounterLocal: LocalBinding;
 }
 
 export interface MapBlockStackFrame extends BlockStackFrameBase {
