@@ -13,7 +13,6 @@ import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, getModuleIdFromAst, prepassNamespace } from './semantic/buildNamespace';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
-import { functionValueTypeToWasmType } from './utils/functionValueType';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import { createCompilationContext } from './semantic/createCompilationContext';
 
@@ -23,14 +22,21 @@ import type {
 	CompilationContext,
 	CompiledModule,
 	CompiledFunction,
-	CompiledFunctionLookup,
 	CompiledStackAnalysisLine,
 	CompileOptions,
+	FunctionMetadataLookup,
+	FunctionCompilationContext,
 	FunctionTypeRegistry,
 	InstructionCompiler,
+	ModuleCompilationContext,
 	Namespaces,
 } from '@8f4e/compiler-spec';
 import type { Instruction } from './instructionCompilers';
+
+type CompletedFunctionCompilationContext = FunctionCompilationContext & {
+	currentFunctionId: string;
+	currentFunctionTypeIndex: number;
+};
 
 export function compileCodegenLine(line: AnalyzedLine, context: CompilationContext) {
 	const instruction = line.instruction as Instruction;
@@ -71,7 +77,7 @@ export function compileModule(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
-	functions?: CompiledFunctionLookup,
+	functions?: FunctionMetadataLookup,
 	internalAllocator = { nextByteAddress: 0 },
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {}
 ): CompiledModule {
@@ -83,7 +89,7 @@ export function compileModule(
 	const namespace = moduleId ? namespaces[moduleId] : undefined;
 	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex;
 	const memoryRegionName = namespace?.memoryRegionName ?? prepassContext.currentMemoryRegionName;
-	const context = createCompilationContext({
+	const context = createCompilationContext<ModuleCompilationContext>({
 		namespace: {
 			namespaces,
 			memory: prepassContext.namespace.memory,
@@ -156,7 +162,7 @@ export function compileModule(
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		...(internalResources ? { internalResources } : {}),
-		wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
+		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast: normalizedAst,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
@@ -170,10 +176,10 @@ export function compileFunction(
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
-	functions?: CompiledFunctionLookup,
+	functions?: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
-	const context = createCompilationContext({
+	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,
 			memory: {},
@@ -196,6 +202,10 @@ export function compileFunction(
 		memoryRegions: [],
 		mode: 'function',
 		codeBlockType: 'function',
+		currentFunctionSignature: {
+			parameters: [],
+			returns: [],
+		},
 		functionTypeRegistry: typeRegistry,
 	});
 
@@ -217,14 +227,6 @@ export function compileFunction(
 		);
 	}
 
-	if (!context.currentFunctionSignature) {
-		throw getError(
-			ErrorCode.INVALID_FUNCTION_SIGNATURE,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
-			context
-		);
-	}
-
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
 	// Regular locals declared with the 'local' instruction come after parameters
@@ -237,15 +239,11 @@ export function compileFunction(
 			count: 1,
 		}));
 
-	// Get the type index for this function's signature
-	const params = context.currentFunctionSignature.parameters.map(functionValueTypeToWasmType);
-	const results = context.currentFunctionSignature.returns.map(functionValueTypeToWasmType);
-	const signature = JSON.stringify({ params, results });
-	const typeIndex = typeRegistry.signatureMap.get(signature);
+	const completedContext = context as CompletedFunctionCompilationContext;
 
 	return {
-		id: context.currentFunctionId,
-		signature: context.currentFunctionSignature,
+		id: completedContext.currentFunctionId,
+		signature: completedContext.currentFunctionSignature,
 		body: createFunction(
 			localDeclarations.map(local =>
 				createLocalDeclaration(
@@ -256,9 +254,9 @@ export function compileFunction(
 			context.byteCode
 		),
 		locals: localDeclarations,
-		...(context.currentFunctionExportName ? { exportName: context.currentFunctionExportName } : {}),
+		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
 		wasmIndex,
-		typeIndex,
+		typeIndex: completedContext.currentFunctionTypeIndex,
 		ast: normalizedAst,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};

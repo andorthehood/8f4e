@@ -3,13 +3,13 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 
-import type { FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/compiler-spec';
+import type { FunctionCodegenContext, FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `param`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const param: InstructionCompiler<ParamLine> = (line: ParamLine, context) => {
+const param: InstructionCompiler<ParamLine, FunctionCodegenContext> = (line: ParamLine, context) => {
 	// Validate param comes immediately after function (before any non-param locals or bytecode)
 	//
 	// Parameters must be declared before any other function body code:
@@ -22,7 +22,7 @@ const param: InstructionCompiler<ParamLine> = (line: ParamLine, context) => {
 	// 2. byteCode.length > 0: means other instructions have already run
 	//
 	// If either is true, we're past the param declaration phase and should error.
-	const paramCount = context.currentFunctionSignature?.parameters.length || 0;
+	const paramCount = context.currentFunctionSignature.parameters.length;
 	const localCount = Object.keys(context.locals).length;
 
 	if (localCount > paramCount || context.byteCode.length > 0) {
@@ -44,9 +44,9 @@ const param: InstructionCompiler<ParamLine> = (line: ParamLine, context) => {
 	context.locals[paramName] = functionValueTypeToLocalBinding(paramType, paramIndex);
 
 	// Add parameter type to the function signature being built
-	context.currentFunctionSignature!.parameters.push(paramType);
+	context.currentFunctionSignature.parameters.push(paramType);
 
-	if (context.currentFunctionSignature!.parameters.length > 8) {
+	if (context.currentFunctionSignature.parameters.length > 8) {
 		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
 	}
 
