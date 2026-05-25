@@ -15,10 +15,8 @@ import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
 const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const count = line.arguments[0].value;
-	const operation = getInstructionSpec(line.instruction)?.analysis?.memory;
-	if (operation?.kind !== 'storeBytes' || !operation.accessByteWidth) {
-		throw new Error(`Missing storeBytes metadata for ${line.instruction}`);
-	}
+	const operation = getInstructionSpec(line.instruction)!.analysis!.memory!;
+	const accessByteWidth = operation.accessByteWidth!;
 
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const address = line.stackAnalysis.consumedOperands[line.stackAnalysis.consumedOperands.length - 1];
@@ -42,7 +40,7 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 				: guardedStoreFromLocals(
 						tempAddrLocal.index,
 						tempByteLocal.index,
-						i + operation.accessByteWidth,
+						i + accessByteWidth,
 						storeByteCode,
 						memoryIndex
 					))

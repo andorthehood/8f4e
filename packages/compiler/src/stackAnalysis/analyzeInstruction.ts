@@ -33,7 +33,7 @@ import type {
 	StackItem,
 	AnalysisProducedStackItemSpec,
 	AnalysisStackEffectSpec,
-	InstructionAnalysisSpec,
+	InstructionSpec,
 } from '@8f4e/compiler-spec';
 
 function cloneStack(stack: Stack): Stack {
@@ -402,8 +402,9 @@ function analyzeStackEffectFromSpec(
 function analyzeFromSpec(
 	line: AST[number],
 	context: CompilationContext,
-	analysis: InstructionAnalysisSpec | undefined
+	spec: InstructionSpec | undefined
 ): { consumed: Stack; produced: Stack; dropped?: Stack } | undefined {
+	const analysis = spec?.analysis;
 	if (analysis?.blockClose) {
 		assertTopBlock(line, context, analysis.blockClose.blockType);
 		return analyzeExpectedBlockResult(line, context, {
@@ -412,8 +413,8 @@ function analyzeFromSpec(
 		});
 	}
 
-	if (analysis?.stack) {
-		return analyzeStackEffectFromSpec(line, context, analysis.stack);
+	if (spec?.stack?.analysis) {
+		return analyzeStackEffectFromSpec(line, context, spec.stack.analysis);
 	}
 
 	return undefined;
@@ -423,7 +424,7 @@ function analyzeByInstruction(
 	line: AST[number],
 	context: CompilationContext
 ): { consumed: Stack; produced: Stack; dropped?: Stack } {
-	const specResult = analyzeFromSpec(line, context, getInstructionSpec(line.instruction)?.analysis);
+	const specResult = analyzeFromSpec(line, context, getInstructionSpec(line.instruction));
 	if (specResult) {
 		return specResult;
 	}

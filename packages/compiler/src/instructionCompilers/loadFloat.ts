@@ -15,21 +15,19 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const loadFloat: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const [address] = line.stackAnalysis.consumedOperands;
-	const operation = getInstructionSpec(line.instruction)?.analysis?.memory;
-	if (operation?.kind !== 'load' || operation.loadVariant !== 'f32' || !operation.accessByteWidth) {
-		throw new Error(`Missing load metadata for ${line.instruction}`);
-	}
+	const operation = getInstructionSpec(line.instruction)!.analysis!.memory!;
+	const accessByteWidth = operation.accessByteWidth!;
 
 	const memoryIndex = getAddressMemoryIndex(address);
 	const instructions = f32load(2, 0, memoryIndex);
-	if (isSafeMemoryAccess(address, operation.accessByteWidth)) {
+	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
 	}
 
 	return saveByteCode(
 		context,
 		guardedLoad(context, {
-			accessByteWidth: operation.accessByteWidth,
+			accessByteWidth,
 			memoryIndex,
 			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
 			resultType: WASM_TYPE_F32,
