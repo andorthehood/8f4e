@@ -5,15 +5,16 @@ import pushLocalPointer from './pushLocalPointer';
 
 import createInstructionCompilerTestContext, { expectGuardedDereference } from '../../../utils/testUtils';
 
-import type { PushIdentifierLine } from '@8f4e/compiler-spec';
+import type { ResolvedLocalPointerPushLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('pushLocalPointer', () => {
 	it('dereferences a local pointer via a guarded load', () => {
+		const local = { isInteger: true, pointeeBaseType: 'float' as const, index: 1 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				lut: { isInteger: true, pointeeBaseType: 'float', index: 1 },
+				lut: local,
 			},
 		});
 
@@ -23,7 +24,8 @@ describe('pushLocalPointer', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('*lut')],
-			} as PushIdentifierLine,
+				resolvedTarget: { kind: 'local-pointer', local },
+			} as ResolvedLocalPointerPushLine,
 			context
 		);
 

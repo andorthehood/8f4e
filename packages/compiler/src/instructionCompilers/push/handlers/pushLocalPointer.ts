@@ -4,11 +4,10 @@ import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { buildPointerDereferenceByteCode } from '../shared';
 
-import type { CodegenContext, MemoryPointerPushLine } from '@8f4e/compiler-spec';
+import type { CodegenContext, ResolvedLocalPointerPushLine } from '@8f4e/compiler-spec';
 
-export default function pushLocalPointer(line: MemoryPointerPushLine, context: CodegenContext): CodegenContext {
-	const argument = line.arguments[0];
-	const local = context.locals[argument.targetMemoryId]!;
+export default function pushLocalPointer(line: ResolvedLocalPointerPushLine, context: CodegenContext): CodegenContext {
+	const { local } = line.resolvedTarget;
 	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,

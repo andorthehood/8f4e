@@ -2,7 +2,6 @@ import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionS
 
 import { validateInstruction } from './validateInstruction';
 
-import resolveIdentifierPushKind, { IdentifierPushKind } from '../utils/resolveIdentifierPushKind';
 import {
 	kindToStackItem,
 	resolveArgumentValueKind,
@@ -15,19 +14,19 @@ import { validateMapValueKind, resolveMapKind } from '../utils/mapValueKind';
 import { deriveAddStackMetadata, deriveSubStackMetadata } from '../utils/stackAddressMetadata';
 import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
-import { getDataStructure } from '../utils/memoryData';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 
 import type {
 	AST,
 	AnalyzedLine,
-	CallLine,
-	CodegenPushLine,
 	CompilationContext,
 	FunctionValueType,
 	LocalSetLine,
 	MapEndLine,
+	NormalizedPushLine,
+	ResolvedCallLine,
+	ResolvedPushLine,
 	Stack,
 	StackAnalysisResult,
 	StackItem,
@@ -69,14 +68,14 @@ function numericResult(
 	};
 }
 
-function pushLiteralStackItems(line: CodegenPushLine): Stack {
+function pushLiteralStackItems(line: NormalizedPushLine): Stack {
 	const argument = line.arguments[0];
 
 	if (argument.type === ArgumentType.STRING_LITERAL) {
 		return Array.from(argument.value, ch => ({ isInteger: true, isNonZero: (ch.charCodeAt(0) & 0xff) !== 0 }));
 	}
 
-	if (argument.type === ArgumentType.IDENTIFIER) {
+	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION || argument.type === ArgumentType.IDENTIFIER) {
 		return [];
 	}
 
@@ -98,16 +97,10 @@ function pushLiteralStackItems(line: CodegenPushLine): Stack {
 	];
 }
 
-function pushIdentifierStackItems(line: CodegenPushLine, context: CompilationContext): Stack {
-	const argument = line.arguments[0];
-
-	if (argument.type !== ArgumentType.IDENTIFIER) {
-		return [];
-	}
-
-	switch (resolveIdentifierPushKind(context.namespace, context.locals, argument)) {
-		case IdentifierPushKind.MEMORY_IDENTIFIER: {
-			const memoryItem = getDataStructure(context.namespace.memory, argument.value)!;
+function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
+	switch (line.resolvedTarget.kind) {
+		case 'memory': {
+			const { memoryItem } = line.resolvedTarget;
 			const kind = resolveMemoryValueKind(memoryItem);
 			const pointeeAddress = memoryItem.pointeeBaseType
 				? getMemoryRegionFields(memoryItem.pointeeMemoryIndex ?? 0, memoryItem.pointeeMemoryRegionName)
@@ -126,28 +119,19 @@ function pushIdentifierStackItems(line: CodegenPushLine, context: CompilationCon
 				}),
 			];
 		}
-		case IdentifierPushKind.MEMORY_POINTER: {
-			if (argument.referenceKind !== 'memory-pointer') {
-				return [];
-			}
-			const memoryItem = getDataStructure(context.namespace.memory, argument.targetMemoryId)!;
+		case 'memory-pointer': {
+			const { memoryItem } = line.resolvedTarget;
 			const kind = resolvePointerTargetValueKind(memoryItem);
 			return [kindToStackItem(kind, { isNonZero: false })];
 		}
-		case IdentifierPushKind.LOCAL_POINTER: {
-			if (argument.referenceKind !== 'memory-pointer') {
-				return [];
-			}
-			const local = context.locals[argument.targetMemoryId];
-			if (!local?.pointeeBaseType) {
-				return [];
-			}
+		case 'local-pointer': {
+			const { local } = line.resolvedTarget;
 			const kind = resolvePointerTargetValueKind(local);
 			return [kindToStackItem(kind, { isNonZero: false })];
 		}
-		case IdentifierPushKind.LOCAL:
+		case 'local':
 		default: {
-			const local = context.locals[argument.value]!;
+			const { local } = line.resolvedTarget;
 			const pointeeAddress = local.pointeeBaseType
 				? getMemoryRegionFields(local.pointeeMemoryIndex ?? 0, local.pointeeMemoryRegionName)
 				: undefined;
@@ -166,17 +150,14 @@ function pushIdentifierStackItems(line: CodegenPushLine, context: CompilationCon
 	}
 }
 
-function analyzePush(line: CodegenPushLine, context: CompilationContext): Stack {
-	const argument = line.arguments[0];
-	const produced =
-		argument.type === ArgumentType.IDENTIFIER ? pushIdentifierStackItems(line, context) : pushLiteralStackItems(line);
+function analyzePush(line: NormalizedPushLine, context: CompilationContext): Stack {
+	const produced = 'resolvedTarget' in line ? pushResolvedTargetStackItems(line) : pushLiteralStackItems(line);
 	produce(context, produced);
 	return produced;
 }
 
-function analyzeCall(line: CallLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const targetFunction = context.namespace.functions![line.arguments[0].value]!;
-	const { parameters, returns } = targetFunction.signature;
+function analyzeCall(line: ResolvedCallLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
+	const { parameters, returns } = line.targetFunction.signature;
 
 	if (context.stack.length < parameters.length) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
@@ -270,7 +251,7 @@ function assertTopBlock(
 function analyzeLocalSet(line: AST[number], context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
-	const local = context.locals[(line as LocalSetLine).arguments[0].value]!;
+	const { local } = line as LocalSetLine & { local: CompilationContext['locals'][string] };
 
 	if (local.isInteger && !operand.isInteger) {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
@@ -429,7 +410,7 @@ function analyzeByInstruction(
 
 	switch (line.instruction) {
 		case 'push': {
-			return { consumed: [], produced: analyzePush(line as CodegenPushLine, context) };
+			return { consumed: [], produced: analyzePush(line as NormalizedPushLine, context) };
 		}
 		case 'add': {
 			const consumed = consume(context, 2);
@@ -614,7 +595,7 @@ function analyzeByInstruction(
 			return { consumed: analyzeFunctionEnd(line, context), produced: [] };
 		}
 		case 'call': {
-			return analyzeCall(line as CallLine, context);
+			return analyzeCall(line as ResolvedCallLine, context);
 		}
 		case 'loopIndex': {
 			return analyzeLoopIndex(line, context);
@@ -640,8 +621,10 @@ export function analyzeInstruction(line: AST[number], context: CompilationContex
 		...(dropped ? { droppedStackItems: cloneStack(dropped) } : {}),
 	};
 
-	return {
-		...line,
-		stackAnalysis,
-	};
+	return Object.defineProperty(Object.defineProperties({}, Object.getOwnPropertyDescriptors(line)), 'stackAnalysis', {
+		value: stackAnalysis,
+		enumerable: true,
+		configurable: true,
+		writable: true,
+	}) as AnalyzedLine;
 }

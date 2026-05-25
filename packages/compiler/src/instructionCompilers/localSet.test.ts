@@ -10,9 +10,10 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('localSet instruction compiler', () => {
 	it('stores a local value', () => {
+		const local = { isInteger: true, index: 0 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				value: { isInteger: true, index: 0 },
+				value: local,
 			},
 		});
 		context.stack.push({ isInteger: true, isNonZero: false });
@@ -24,6 +25,7 @@ describe('localSet instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'localSet',
 				arguments: [classifyIdentifier('value')],
+				local,
 			} as AST[number],
 			context
 		);

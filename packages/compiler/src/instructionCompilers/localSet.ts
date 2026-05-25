@@ -10,7 +10,7 @@ import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-sp
  */
 const _localSet: InstructionCompiler<CodegenLocalSetLine> = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
-	const local = context.locals[line.arguments[0].value]!;
+	const { local } = line;
 
 	if (local.pointeeBaseType) {
 		local.pointeeMemoryIndex = operand.address?.memoryIndex ?? 0;

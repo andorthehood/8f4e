@@ -9,6 +9,26 @@ import type { AST, MemoryMap } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
+function resolvedMemoryPushLine(id: string, memoryItem: MemoryMap[string]): AST[number] {
+	return {
+		lineNumberBeforeMacroExpansion: 1,
+		lineNumberAfterMacroExpansion: 1,
+		instruction: 'push',
+		arguments: [classifyIdentifier(id)],
+		resolvedTarget: { kind: 'memory', memoryItem },
+	} as AST[number];
+}
+
+function resolvedMemoryPointerPushLine(id: string, memoryItem: MemoryMap[string]): AST[number] {
+	return {
+		lineNumberBeforeMacroExpansion: 1,
+		lineNumberAfterMacroExpansion: 1,
+		instruction: 'push',
+		arguments: [classifyIdentifier(`*${id}`)],
+		resolvedTarget: { kind: 'memory-pointer', memoryItem },
+	} as AST[number];
+}
+
 describe('push instruction compiler', () => {
 	it('pushes a literal value', () => {
 		const context = createInstructionCompilerTestContext();
@@ -251,16 +271,7 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			analyzeAndCompileInstruction(
-				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myF64')],
-				} as AST[number],
-				context
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), context);
 
 			expect({
 				stack: context.stack,
@@ -283,16 +294,7 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			analyzeAndCompileInstruction(
-				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myF64')],
-				} as AST[number],
-				context
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), context);
 
 			expect(context.stack[0].isFloat64).toBe(true);
 			expect(context.stack[0].isInteger).toBe(false);
@@ -313,16 +315,7 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			analyzeAndCompileInstruction(
-				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myF32')],
-				} as AST[number],
-				context
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF32', context.namespace.memory.myF32), context);
 
 			expect(context.stack[0].isFloat64).toBeUndefined();
 			expect(context.stack[0].isInteger).toBe(false);
@@ -343,16 +336,7 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			analyzeAndCompileInstruction(
-				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myF64')],
-				} as AST[number],
-				context
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), context);
 
 			// byteCode: i32const(0) + f64load() = [65, 0, 43, 3, 0]
 			expect(context.byteCode).toContain(43); // F64_LOAD opcode
@@ -372,16 +356,7 @@ describe('push instruction compiler', () => {
 				},
 			});
 
-			analyzeAndCompileInstruction(
-				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myF32')],
-				} as AST[number],
-				context
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF32', context.namespace.memory.myF32), context);
 
 			expect(context.byteCode).toContain(42); // F32_LOAD opcode
 			expect(context.byteCode).not.toContain(43); // no F64_LOAD
@@ -404,12 +379,7 @@ describe('push instruction compiler', () => {
 
 			analyzeAndCompileInstruction(
 				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('*floatPointer')],
-				} as AST[number],
+				resolvedMemoryPointerPushLine('floatPointer', context.namespace.memory.floatPointer),
 				context
 			);
 
@@ -437,12 +407,7 @@ describe('push instruction compiler', () => {
 
 			analyzeAndCompileInstruction(
 				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('*floatPointerPointer')],
-				} as AST[number],
+				resolvedMemoryPointerPushLine('floatPointerPointer', context.namespace.memory.floatPointerPointer),
 				context
 			);
 
@@ -483,16 +448,7 @@ describe('push instruction compiler', () => {
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			analyzeAndCompileInstruction(
-				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myInt')],
-				} as AST[number],
-				contextInt
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myInt', context.namespace.memory.myInt), contextInt);
 			expect(contextInt.stack[0]).toMatchObject({ isInteger: true });
 			expect(contextInt.byteCode).not.toContain(42);
 			expect(contextInt.byteCode).not.toContain(43);
@@ -504,12 +460,7 @@ describe('push instruction compiler', () => {
 			};
 			analyzeAndCompileInstruction(
 				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myFloat')],
-				} as AST[number],
+				resolvedMemoryPushLine('myFloat', context.namespace.memory.myFloat),
 				contextFloat
 			);
 			expect(contextFloat.stack[0]).toMatchObject({ isInteger: false });
@@ -521,16 +472,7 @@ describe('push instruction compiler', () => {
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			analyzeAndCompileInstruction(
-				push,
-				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
-					instruction: 'push',
-					arguments: [classifyIdentifier('myF64')],
-				} as AST[number],
-				contextF64
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), contextF64);
 			expect(contextF64.stack[0]).toMatchObject({
 				isInteger: false,
 				isFloat64: true,

@@ -17,6 +17,7 @@ describe('loopEnd instruction compiler', () => {
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 					loopCounterLocalName: '__loopCounter1',
+					loopCounterLocal: { isInteger: true, index: 0 },
 				},
 			],
 		});
