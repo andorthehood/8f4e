@@ -11,9 +11,10 @@ import type { AST } from '@8f4e/compiler-spec';
 
 describe('loopIndex instruction compiler', () => {
 	it('reads the nearest active loop counter as a zero-based index', () => {
+		const loopCounterLocal = { isInteger: true, index: 3 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				__loopCounter2: { isInteger: true, index: 3 },
+				__loopCounter2: loopCounterLocal,
 			},
 			blockStack: [
 				{
@@ -26,6 +27,7 @@ describe('loopIndex instruction compiler', () => {
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 					loopCounterLocalName: '__loopCounter2',
+					loopCounterLocal,
 				},
 			],
 		});
@@ -46,10 +48,12 @@ describe('loopIndex instruction compiler', () => {
 	});
 
 	it('uses the innermost loop when nested', () => {
+		const outerLoopCounterLocal = { isInteger: true, index: 1 };
+		const innerLoopCounterLocal = { isInteger: true, index: 2 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				__outer: { isInteger: true, index: 1 },
-				__inner: { isInteger: true, index: 2 },
+				__outer: outerLoopCounterLocal,
+				__inner: innerLoopCounterLocal,
 			},
 			blockStack: [
 				{
@@ -62,12 +66,14 @@ describe('loopIndex instruction compiler', () => {
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 					loopCounterLocalName: '__outer',
+					loopCounterLocal: outerLoopCounterLocal,
 				},
 				{
 					blockType: BlockType.LOOP,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
 					loopCounterLocalName: '__inner',
+					loopCounterLocal: innerLoopCounterLocal,
 				},
 			],
 		});

@@ -8,7 +8,7 @@ import type { InstructionCompiler, LoopIndexLine } from '@8f4e/compiler-spec';
 
 const loopIndex: InstructionCompiler<LoopIndexLine> = (line, context) => {
 	const loopBlock = findNearestLoopBlock(context);
-	const local = context.locals[loopBlock.loopCounterLocalName]!;
+	const { loopCounterLocal: local } = loopBlock;
 
 	return saveByteCode(context, [...localGet(local.index), ...i32const(1), WASM_I32_SUB]);
 };

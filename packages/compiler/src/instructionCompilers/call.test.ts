@@ -11,12 +11,13 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 describe('call instruction compiler', () => {
 	it('emits call bytecode and pushes returns', () => {
 		const context = createInstructionCompilerTestContext();
+		const targetFunction = {
+			id: 'foo',
+			signature: { parameters: ['int', 'float'], returns: ['int'] },
+			wasmIndex: 2,
+		} as NonNullable<CompilationContext['namespace']['functions']>[string];
 		context.namespace.functions = {
-			foo: {
-				id: 'foo',
-				signature: { parameters: ['int', 'float'], returns: ['int'] },
-				wasmIndex: 2,
-			},
+			foo: targetFunction,
 		} as CompilationContext['namespace']['functions'];
 		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: false });
 
@@ -27,6 +28,7 @@ describe('call instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo')],
+				targetFunction,
 			} as AST[number],
 			context
 		);
@@ -39,12 +41,13 @@ describe('call instruction compiler', () => {
 
 	it('tracks float64 parameter and return types on stack', () => {
 		const context = createInstructionCompilerTestContext();
+		const targetFunction = {
+			id: 'foo64',
+			signature: { parameters: ['float64'], returns: ['float64'] },
+			wasmIndex: 2,
+		} as NonNullable<CompilationContext['namespace']['functions']>[string];
 		context.namespace.functions = {
-			foo64: {
-				id: 'foo64',
-				signature: { parameters: ['float64'], returns: ['float64'] },
-				wasmIndex: 2,
-			},
+			foo64: targetFunction,
 		} as CompilationContext['namespace']['functions'];
 		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
 
@@ -55,6 +58,7 @@ describe('call instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo64')],
+				targetFunction,
 			} as AST[number],
 			context
 		);
@@ -68,12 +72,13 @@ describe('call instruction compiler', () => {
 
 	it('throws on float32 argument passed to float64 parameter', () => {
 		const context = createInstructionCompilerTestContext();
+		const targetFunction = {
+			id: 'foo64',
+			signature: { parameters: ['float64'], returns: [] },
+			wasmIndex: 2,
+		} as NonNullable<CompilationContext['namespace']['functions']>[string];
 		context.namespace.functions = {
-			foo64: {
-				id: 'foo64',
-				signature: { parameters: ['float64'], returns: [] },
-				wasmIndex: 2,
-			},
+			foo64: targetFunction,
 		} as CompilationContext['namespace']['functions'];
 		context.stack.push({ isInteger: false, isNonZero: false });
 
@@ -85,6 +90,7 @@ describe('call instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'call',
 					arguments: [classifyIdentifier('foo64')],
+					targetFunction,
 				} as AST[number],
 				context
 			);
@@ -93,12 +99,13 @@ describe('call instruction compiler', () => {
 
 	it('tracks pointer return types on the stack', () => {
 		const context = createInstructionCompilerTestContext();
+		const targetFunction = {
+			id: 'addr',
+			signature: { parameters: [], returns: ['float*'] },
+			wasmIndex: 2,
+		} as NonNullable<CompilationContext['namespace']['functions']>[string];
 		context.namespace.functions = {
-			addr: {
-				id: 'addr',
-				signature: { parameters: [], returns: ['float*'] },
-				wasmIndex: 2,
-			},
+			addr: targetFunction,
 		} as CompilationContext['namespace']['functions'];
 
 		analyzeAndCompileInstruction(
@@ -108,6 +115,7 @@ describe('call instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('addr')],
+				targetFunction,
 			} as AST[number],
 			context
 		);
