@@ -19,7 +19,7 @@ exports[`functionEnd instruction compiler > accepts float64 return type and emit
   },
   "functionTypeRegistry": {
     "baseTypeIndex": 0,
-    "signatureMapSize": 1,
+    "signatureCount": 1,
     "typesLength": 1,
   },
   "stack": [],
@@ -45,7 +45,7 @@ exports[`functionEnd instruction compiler > updates function signature and clear
   },
   "functionTypeRegistry": {
     "baseTypeIndex": 0,
-    "signatureMapSize": 1,
+    "signatureCount": 1,
     "typesLength": 1,
   },
   "stack": [],

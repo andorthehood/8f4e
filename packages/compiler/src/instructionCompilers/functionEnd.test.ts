@@ -23,7 +23,7 @@ describe('functionEnd instruction compiler', () => {
 			currentFunctionSignature: { parameters: ['int'], returns: [] },
 			functionTypeRegistry: {
 				baseTypeIndex: 0,
-				signatureMap: new Map<string, number>(),
+				signatures: [],
 				types: [],
 			} as FunctionTypeRegistry,
 		});
@@ -46,7 +46,7 @@ describe('functionEnd instruction compiler', () => {
 			currentFunctionSignature: context.currentFunctionSignature,
 			functionTypeRegistry: {
 				baseTypeIndex: context.functionTypeRegistry?.baseTypeIndex,
-				signatureMapSize: context.functionTypeRegistry?.signatureMap.size,
+				signatureCount: context.functionTypeRegistry?.signatures.length,
 				typesLength: context.functionTypeRegistry?.types.length,
 			},
 		}).toMatchSnapshot();
@@ -66,7 +66,7 @@ describe('functionEnd instruction compiler', () => {
 			currentFunctionSignature: { parameters: ['float64'], returns: [] },
 			functionTypeRegistry: {
 				baseTypeIndex: 0,
-				signatureMap: new Map<string, number>(),
+				signatures: [],
 				types: [],
 			} as FunctionTypeRegistry,
 		});
@@ -89,11 +89,50 @@ describe('functionEnd instruction compiler', () => {
 			currentFunctionSignature: context.currentFunctionSignature,
 			functionTypeRegistry: {
 				baseTypeIndex: context.functionTypeRegistry?.baseTypeIndex,
-				signatureMapSize: context.functionTypeRegistry?.signatureMap.size,
+				signatureCount: context.functionTypeRegistry?.signatures.length,
 				typesLength: context.functionTypeRegistry?.types.length,
 			},
 		}).toMatchSnapshot();
 		expect(context.currentFunctionTypeIndex).toBe(0);
+	});
+
+	it('reuses a registered function type for matching signatures', () => {
+		const functionTypeRegistry: FunctionTypeRegistry = {
+			baseTypeIndex: 3,
+			signatures: [],
+			types: [],
+		};
+		const createFunctionContext = () =>
+			createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BlockType.FUNCTION,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+				currentFunctionSignature: { parameters: ['int'], returns: [] },
+				functionTypeRegistry,
+			});
+		const line = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'functionEnd',
+			arguments: [classifyIdentifier('int')],
+		} as AST[number];
+		const firstContext = createFunctionContext();
+		const secondContext = createFunctionContext();
+		firstContext.stack.push({ isInteger: true, isNonZero: false });
+		secondContext.stack.push({ isInteger: true, isNonZero: false });
+
+		analyzeAndCompileInstruction(functionEnd, line, firstContext);
+		analyzeAndCompileInstruction(functionEnd, line, secondContext);
+
+		expect(firstContext.currentFunctionTypeIndex).toBe(3);
+		expect(secondContext.currentFunctionTypeIndex).toBe(3);
+		expect(functionTypeRegistry.signatures).toHaveLength(1);
+		expect(functionTypeRegistry.types).toHaveLength(1);
 	});
 
 	it('throws when missing function block', () => {

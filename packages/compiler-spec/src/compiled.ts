@@ -1,3 +1,4 @@
+import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import type { AST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionTypeIdentifier } from './functionTypes';
@@ -38,9 +39,18 @@ export interface FunctionSignature {
 	returns: FunctionValueType[];
 }
 
+export interface FunctionTypeSignature {
+	params: WasmTypeValue[];
+	results: WasmTypeValue[];
+}
+
+export interface RegisteredFunctionTypeSignature extends FunctionTypeSignature {
+	typeIndex: number;
+}
+
 export interface FunctionTypeRegistry {
-	types: Array<ReturnType<typeof import('@8f4e/compiler-wasm-utils').createFunctionType>>;
-	signatureMap: Map<string, number>;
+	types: FunctionType[];
+	signatures: RegisteredFunctionTypeSignature[];
 	baseTypeIndex: number;
 }
 
