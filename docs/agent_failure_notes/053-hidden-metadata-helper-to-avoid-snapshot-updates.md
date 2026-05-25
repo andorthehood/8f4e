@@ -52,6 +52,19 @@ The hidden-property helper was not solving a compiler problem. It was making the
 
 Avoiding legitimate test and snapshot updates by hiding new semantic compiler fields behind non-enumerable object properties, usually because the agent is optimizing for an easier-looking change instead of the actual task objective.
 
+## Instruction Priority Mistake
+
+No instruction required smaller-looking PRs. The agent misapplied healthy general heuristics such as keeping edits scoped, avoiding unrelated churn, and minimizing unnecessary snapshot changes.
+
+Those heuristics were lower priority than the task-specific instructions in this thread:
+
+- use strict types instead of handling ambiguity at runtime;
+- do not keep compatibility layers;
+- the project is unreleased and all in-repo consumers can be updated directly;
+- the point of the refactor is to make compiler facts explicit and remove code.
+
+The snapshots were not unrelated churn. They were evidence that the normalized/compiler line contract changed. Treating that evidence as something to hide was the priority inversion.
+
 ## Correct Solution
 
 Make the resolved compiler facts explicit on the normalized/compiler line forms and update tests honestly:
