@@ -175,7 +175,8 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
-	it('leaves push identifier arguments unchanged when the identifier is a known local', () => {
+	it('resolves push identifier arguments when the identifier is a known local', () => {
+		const local = { isInteger: true, index: 0 };
 		const line: AST[number] = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
@@ -189,10 +190,13 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {},
 			},
-			locals: { localVar: { isInteger: true, index: 0 } },
+			locals: { localVar: local },
 		} as unknown as CompilationContext;
 
-		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			resolvedTarget: { kind: 'local', local },
+		});
 	});
 
 	it('throws UNDECLARED_IDENTIFIER for push with an identifier not in memory or locals', () => {
@@ -645,6 +649,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('does not throw for call when the target function is registered', () => {
+		const targetFunction = { id: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
 		const context = {
 			namespace: {
 				memory: {},
@@ -652,7 +657,7 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
-					knownFn: { id: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 },
+					knownFn: targetFunction,
 				},
 			},
 			locals: {},
@@ -664,6 +669,9 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [classifyIdentifier('knownFn')],
 		};
 
-		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			targetFunction,
+		});
 	});
 });
