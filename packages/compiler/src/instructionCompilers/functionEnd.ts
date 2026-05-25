@@ -32,12 +32,15 @@ const functionEnd: InstructionCompiler<AST[number], FunctionCodegenContext> = (l
 	const results = returnTypes.map(functionValueTypeToWasmType);
 
 	const signature = JSON.stringify({ params, results });
+	let typeIndex = context.functionTypeRegistry.signatureMap.get(signature);
 
-	if (!context.functionTypeRegistry.signatureMap.has(signature)) {
-		const typeIndex = context.functionTypeRegistry.baseTypeIndex + context.functionTypeRegistry.types.length;
+	if (typeIndex === undefined) {
+		typeIndex = context.functionTypeRegistry.baseTypeIndex + context.functionTypeRegistry.types.length;
 		context.functionTypeRegistry.signatureMap.set(signature, typeIndex);
 		context.functionTypeRegistry.types.push(createFunctionType(params, results));
 	}
+
+	context.currentFunctionTypeIndex = typeIndex;
 
 	return context;
 };
