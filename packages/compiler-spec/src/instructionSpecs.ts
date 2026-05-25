@@ -168,11 +168,16 @@ function fixedStack(
 	return { consumes, produces };
 }
 
-function memoryLoad(
-	loadVariant: MemoryLoadVariant,
+function memoryLoad<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>(
+	loadVariant: TLoadVariant,
 	accessByteWidth: number,
-	resultType: 'int' | 'float'
-): { memory: Extract<AnalysisMemoryOperationSpec, { kind: 'load' }> } {
+	resultType: TResultType
+): {
+	memory: Extract<AnalysisMemoryOperationSpec, { kind: 'load' }> & {
+		loadVariant: TLoadVariant;
+		resultType: TResultType;
+	};
+} {
 	return {
 		memory: {
 			kind: 'load',
@@ -741,7 +746,7 @@ export const instructionSpecs = {
 		stack: stack(['ptr', 'T'], [], fixedStack(2)),
 		analysis: { memory: { kind: 'store', addressOperandIndex: 0, valueOperandIndex: 1 } },
 	},
-	// storeBytes (ptr int... -- )
+	// storeBytes (int... ptr -- )
 	storeBytes: {
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
@@ -754,17 +759,17 @@ export const instructionSpecs = {
 		},
 		docs: { shortDescription: 'Stores a fixed number of integer bytes at the memory address on the stack.' },
 		stack: {
-			inputs: ['ptr', 'bytes...'],
+			inputs: ['bytes...', 'ptr'],
 			outputs: [],
 			analysis: { consumes: { argumentValueIndex: 0, add: 1 }, produces: [] },
 			resolve: line => {
 				const count = (line as StoreBytesLine).arguments[0]?.value;
 
 				if (!Number.isFinite(count) || count < 0) {
-					return { inputs: ['ptr', 'bytes...'], outputs: [] };
+					return { inputs: ['bytes...', 'ptr'], outputs: [] };
 				}
 
-				return { inputs: ['ptr', ...new Array(count).fill('int')], outputs: [] };
+				return { inputs: [...new Array(count).fill('int'), 'ptr'], outputs: [] };
 			},
 		},
 		analysis: { memory: { kind: 'storeBytes', accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH } },
@@ -788,6 +793,26 @@ export const instructionSpecs = {
 } satisfies Record<string, InstructionSpec>;
 
 export type InstructionSpecName = keyof typeof instructionSpecs;
+
+type MemoryOperationForSpec<TSpec> = TSpec extends { analysis: { memory: infer TMemory } } ? TMemory : never;
+
+export type InstructionNamesByMemoryOperation<TOperation extends AnalysisMemoryOperationSpec> = {
+	[TInstruction in InstructionSpecName]: [MemoryOperationForSpec<(typeof instructionSpecs)[TInstruction]>] extends [
+		never,
+	]
+		? never
+		: MemoryOperationForSpec<(typeof instructionSpecs)[TInstruction]> extends TOperation
+			? TInstruction
+			: never;
+}[InstructionSpecName];
+
+export type LoadInstructionSpecName = InstructionNamesByMemoryOperation<
+	Extract<AnalysisMemoryOperationSpec, { kind: 'load' }> & { resultType: 'int' }
+>;
+
+export type FloatLoadInstructionSpecName = InstructionNamesByMemoryOperation<
+	Extract<AnalysisMemoryOperationSpec, { kind: 'load' }> & { resultType: 'float' }
+>;
 
 type GetInstructionSpec = {
 	<TInstruction extends InstructionSpecName>(instruction: TInstruction): (typeof instructionSpecs)[TInstruction];

@@ -5,7 +5,6 @@ import {
 	i32load16u,
 	i32load8s,
 	i32load8u,
-	WASM_TYPE_F32,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import { getInstructionSpec } from '@8f4e/compiler-spec';
@@ -15,10 +14,9 @@ import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
-import type { ASTLineBase, InstructionCompiler, MemoryLoadVariant } from '@8f4e/compiler-spec';
+import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/compiler-spec';
 
-type LoadInstruction = 'load' | 'load8u' | 'load16u' | 'load8s' | 'load16s';
-type LoadLine = ASTLineBase<LoadInstruction, []>;
+type LoadLine = ASTLineBase<LoadInstructionSpecName, []>;
 
 /**
  * Instruction compiler for `load` variants.
@@ -51,7 +49,7 @@ const load: InstructionCompiler<LoadLine> = (line, context) => {
 			accessByteWidth,
 			memoryIndex,
 			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
-			resultType: operation.resultType === 'float' ? WASM_TYPE_F32 : WASM_TYPE_I32,
+			resultType: WASM_TYPE_I32,
 			loadByteCode: instructions,
 		})
 	);
