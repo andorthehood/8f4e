@@ -8,16 +8,6 @@ import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } fr
 import type { AST } from '@8f4e/compiler-spec';
 
 describe('map instruction compiler', () => {
-	function getTopMapRows(context: ReturnType<typeof createInstructionCompilerTestContext>) {
-		const block = context.blockStack[context.blockStack.length - 1];
-
-		if (block?.blockType !== BlockType.MAP) {
-			throw new Error('Expected top block to be a map block');
-		}
-
-		return block.mapState.rows;
-	}
-
 	it('records an int key→int value row', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
@@ -54,7 +44,7 @@ describe('map instruction compiler', () => {
 			context
 		);
 
-		expect(getTopMapRows(context)).toMatchSnapshot();
+		expect(context.blockStack[context.blockStack.length - 1].mapState!.rows).toMatchSnapshot();
 	});
 
 	it('accepts single-character string literals as ASCII int key/value', () => {
@@ -93,7 +83,7 @@ describe('map instruction compiler', () => {
 			context
 		);
 
-		expect(getTopMapRows(context)).toEqual([
+		expect(context.blockStack[context.blockStack.length - 1].mapState!.rows).toEqual([
 			{
 				keyValue: 65,
 				valueValue: 66,

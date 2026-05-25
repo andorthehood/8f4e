@@ -1,15 +1,6 @@
-import { BlockType, ErrorCode } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
-import { getError } from '../compilerError';
-
-import type {
-	AST,
-	BlockFrameByType,
-	BlockStack,
-	BlockTypeValue,
-	CodegenContext,
-	CompilationContext,
-} from '@8f4e/compiler-spec';
+import type { BlockStack, BlockTypeValue, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
 
 type BlockContext = CodegenContext | CompilationContext;
 
@@ -25,38 +16,6 @@ export function popBlock(context: BlockContext) {
 		updateBlockContextFlag(context, block.blockType, false);
 	}
 
-	return block;
-}
-
-export function peekExpectedBlock<TBlockType extends BlockTypeValue>(
-	context: BlockContext,
-	blockType: TBlockType
-): BlockFrameByType<TBlockType> | undefined {
-	const block = context.blockStack[context.blockStack.length - 1];
-	return block?.blockType === blockType ? (block as BlockFrameByType<TBlockType>) : undefined;
-}
-
-export function findExpectedBlock<TBlockType extends BlockTypeValue>(
-	context: BlockContext,
-	blockType: TBlockType
-): BlockFrameByType<TBlockType> | undefined {
-	return [...context.blockStack]
-		.reverse()
-		.find((block): block is BlockFrameByType<TBlockType> => block.blockType === blockType);
-}
-
-export function popExpectedBlock<TBlockType extends BlockTypeValue>(
-	line: AST[number],
-	context: BlockContext,
-	blockType: TBlockType
-): BlockFrameByType<TBlockType> {
-	const block = peekExpectedBlock(context, blockType);
-
-	if (!block) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
-
-	popBlock(context);
 	return block;
 }
 

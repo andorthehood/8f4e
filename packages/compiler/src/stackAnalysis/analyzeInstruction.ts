@@ -15,7 +15,6 @@ import { validateMapValueKind, resolveMapKind } from '../utils/mapValueKind';
 import { deriveAddStackMetadata, deriveSubStackMetadata } from '../utils/stackAddressMetadata';
 import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
-import { findExpectedBlock, peekExpectedBlock } from '../utils/blockStack';
 import { getDataStructure } from '../utils/memoryData';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
@@ -198,9 +197,9 @@ function analyzeCall(line: CallLine, context: CompilationContext): { consumed: S
 }
 
 function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const block = peekExpectedBlock(context, BlockType.MAP);
+	const block = context.blockStack[context.blockStack.length - 1];
 
-	if (!block) {
+	if (!block || block.blockType !== BlockType.MAP || !block.mapState) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 
@@ -261,7 +260,9 @@ function assertTopBlock(
 	context: CompilationContext,
 	blockType: (typeof BlockType)[keyof typeof BlockType]
 ) {
-	if (!peekExpectedBlock(context, blockType)) {
+	const block = context.blockStack[context.blockStack.length - 1];
+
+	if (!block || block.blockType !== blockType) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 }
@@ -283,7 +284,7 @@ function analyzeLocalSet(line: AST[number], context: CompilationContext): { cons
 }
 
 function analyzeLoopIndex(line: AST[number], context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const loopBlock = findExpectedBlock(context, BlockType.LOOP);
+	const loopBlock = [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP);
 
 	if (!loopBlock?.loopCounterLocalName || !context.locals[loopBlock.loopCounterLocalName]) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP, line, context);

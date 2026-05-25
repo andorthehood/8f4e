@@ -8,16 +8,6 @@ import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } fr
 import type { AST } from '@8f4e/compiler-spec';
 
 describe('default instruction compiler', () => {
-	function getTopMapState(context: ReturnType<typeof createInstructionCompilerTestContext>) {
-		const block = context.blockStack[context.blockStack.length - 1];
-
-		if (block?.blockType !== BlockType.MAP) {
-			throw new Error('Expected top block to be a map block');
-		}
-
-		return block.mapState;
-	}
-
 	it('records a default value', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
@@ -52,7 +42,7 @@ describe('default instruction compiler', () => {
 		);
 
 		expect({
-			mapState: getTopMapState(context),
+			mapState: context.blockStack[context.blockStack.length - 1].mapState,
 		}).toMatchSnapshot();
 	});
 

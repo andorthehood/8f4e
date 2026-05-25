@@ -1,31 +1,26 @@
 import { WASM_TYPE_F32, WASM_TYPE_I32, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
-import { BlockType } from '@8f4e/compiler-spec';
 
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { BlockFrameByType } from '@8f4e/compiler-spec';
+import type { BlockStack, BlockTypeValue } from '@8f4e/compiler-spec';
 
 type ResultType = 'float' | 'int' | null | undefined;
-type ResultBlockType = typeof BlockType.BLOCK | typeof BlockType.CONDITION;
 
-interface ResultBlockState<TBlockType extends ResultBlockType> {
-	blockState: BlockFrameByType<TBlockType>;
+interface ResultBlockState {
+	blockState: BlockStack[number];
 	wasmType: WasmTypeValue;
 }
 
 /**
  * Creates the compiler block-stack metadata and matching WASM block result type.
  */
-export default function createResultBlockState<TBlockType extends ResultBlockType>(
-	resultType: ResultType,
-	blockType: TBlockType
-): ResultBlockState<TBlockType> {
+export default function createResultBlockState(resultType: ResultType, blockType: BlockTypeValue): ResultBlockState {
 	if (resultType === 'float') {
 		return {
 			blockState: {
 				expectedResultIsInteger: false,
 				hasExpectedResult: true,
 				blockType,
-			} as BlockFrameByType<TBlockType>,
+			},
 			wasmType: WASM_TYPE_F32,
 		};
 	}
@@ -36,7 +31,7 @@ export default function createResultBlockState<TBlockType extends ResultBlockTyp
 				expectedResultIsInteger: true,
 				hasExpectedResult: true,
 				blockType,
-			} as BlockFrameByType<TBlockType>,
+			},
 			wasmType: WASM_TYPE_I32,
 		};
 	}
@@ -46,7 +41,7 @@ export default function createResultBlockState<TBlockType extends ResultBlockTyp
 			expectedResultIsInteger: false,
 			hasExpectedResult: false,
 			blockType,
-		} as BlockFrameByType<TBlockType>,
+		},
 		wasmType: WASM_TYPE_VOID,
 	};
 }
