@@ -1,6 +1,13 @@
 import { BlockType } from '@8f4e/compiler-spec';
 
-import type { BlockStack, BlockTypeValue, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
+import type {
+	BlockStack,
+	BlockTypeValue,
+	CodegenContext,
+	CompilationContext,
+	LoopBlockStackFrame,
+	MapBlockStackFrame,
+} from '@8f4e/compiler-spec';
 
 type BlockContext = CodegenContext | CompilationContext;
 
@@ -17,6 +24,18 @@ export function popBlock(context: BlockContext) {
 	}
 
 	return block;
+}
+
+export function peekMapBlock(context: BlockContext): MapBlockStackFrame {
+	return context.blockStack[context.blockStack.length - 1] as MapBlockStackFrame;
+}
+
+export function popMapBlock(context: BlockContext): MapBlockStackFrame {
+	return popBlock(context) as MapBlockStackFrame;
+}
+
+export function findNearestLoopBlock(context: BlockContext): LoopBlockStackFrame {
+	return [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP) as LoopBlockStackFrame;
 }
 
 function updateBlockContextFlag(context: BlockContext, blockType: BlockTypeValue, isInside: boolean) {

@@ -21,6 +21,7 @@ describe('blockStack utilities', () => {
 		blockType: BlockType.LOOP,
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
+		loopCounterLocalName: '__loopCounter1',
 	};
 	const mockGenericBlock: BlockStack[number] = {
 		blockType: BlockType.BLOCK,
