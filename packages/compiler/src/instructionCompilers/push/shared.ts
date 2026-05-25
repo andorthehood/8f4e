@@ -7,17 +7,23 @@ import {
 	i32load,
 	i32load16s,
 	i32load8s,
+	localGet,
 } from '@8f4e/compiler-wasm-utils';
+import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import {
 	getDereferencedValueWordSize,
 	resolvePointerTargetValueKind,
+	valueKindToWasmType,
 	type PushValueKind,
 } from '../../utils/pushValueKind';
+import { guardedAddressOperation } from '../utils/memoryAccessGuard';
 
+import type { CodegenContext } from '@8f4e/compiler-spec';
 import type { PointerMetadata } from '../../utils/memoryData';
 
 type PointerValueSource = 'pointer-slot' | 'pointer-value';
+type PointerLoadStep = { accessByteWidth: number; loadByteCode: number[]; memoryIndex: number };
 
 export {
 	kindToStackItem,
@@ -38,15 +44,52 @@ export const loadOpcode: Record<PushValueKind, (memoryIndex: number) => number[]
 	float64: memoryIndex => f64load(3, 0, memoryIndex),
 };
 
+function buildGuardedPointerLoadChain(
+	context: CodegenContext,
+	lineNumberAfterMacroExpansion: number,
+	kind: PushValueKind,
+	steps: PointerLoadStep[]
+): number[] {
+	const resultType = valueKindToWasmType(kind);
+
+	return steps.reduceRight<number[]>(
+		(continuation, step) =>
+			guardedAddressOperation(context, {
+				accessByteWidth: step.accessByteWidth,
+				memoryIndex: step.memoryIndex,
+				lineNumberAfterMacroExpansion,
+				resultType,
+				buildTrueBranch: addressLocalIndex => [...localGet(addressLocalIndex), ...step.loadByteCode, ...continuation],
+			}),
+		[]
+	);
+}
+
+function getPointerLoadCount(pointerMetadata: PointerMetadata, pointerValueSource: PointerValueSource): number {
+	if (pointerValueSource === 'pointer-slot') {
+		return pointerMetadata.isPointingToPointer ? 2 : 1;
+	}
+
+	return pointerMetadata.isPointingToPointer ? 1 : 0;
+}
+
+function createPointerLoadStep(memoryIndex: number): PointerLoadStep {
+	return {
+		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
+		loadByteCode: i32load(2, 0, memoryIndex),
+		memoryIndex,
+	};
+}
+
 export function buildPointerDereferenceByteCode(
+	context: CodegenContext,
+	lineNumberAfterMacroExpansion: number,
 	pointerMetadata: PointerMetadata,
 	baseAddressByteCode: number[],
 	pointerValueSource: PointerValueSource
 ): { kind: PushValueKind; byteCode: number[] } {
 	const kind = resolvePointerTargetValueKind(pointerMetadata);
 	const dereferencedValueWordSize = getDereferencedValueWordSize(pointerMetadata);
-	const slotMemoryIndex =
-		pointerValueSource === 'pointer-slot' && 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
 	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;
 	const finalLoad =
 		dereferencedValueWordSize === 1
@@ -55,22 +98,29 @@ export function buildPointerDereferenceByteCode(
 				? i32load16s(1, 0, pointeeMemoryIndex)
 				: loadOpcode[kind](pointeeMemoryIndex);
 
-	const pointerLoadCount =
-		pointerValueSource === 'pointer-slot'
-			? pointerMetadata.isPointingToPointer
-				? 2
-				: 1
-			: pointerMetadata.isPointingToPointer
-				? 1
-				: 0;
+	if (pointerValueSource === 'pointer-slot') {
+		const slotMemoryIndex = 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
+		const pointerLoads = Array.from({ length: getPointerLoadCount(pointerMetadata, pointerValueSource) }, (_, index) =>
+			i32load(2, 0, index === 0 ? slotMemoryIndex : pointeeMemoryIndex)
+		).flat();
 
-	const byteCode = [...baseAddressByteCode];
-	for (let i = 0; i < pointerLoadCount; i++) {
-		byteCode.push(
-			...i32load(2, 0, i === 0 && pointerValueSource === 'pointer-slot' ? slotMemoryIndex : pointeeMemoryIndex)
-		);
+		return { kind, byteCode: [...baseAddressByteCode, ...pointerLoads, ...finalLoad] };
 	}
-	byteCode.push(...finalLoad);
 
-	return { kind, byteCode };
+	const guardedLoadSteps = Array.from({ length: getPointerLoadCount(pointerMetadata, pointerValueSource) }, () =>
+		createPointerLoadStep(pointeeMemoryIndex)
+	);
+	guardedLoadSteps.push({
+		accessByteWidth: dereferencedValueWordSize,
+		loadByteCode: finalLoad,
+		memoryIndex: pointeeMemoryIndex,
+	});
+
+	return {
+		kind,
+		byteCode: [
+			...baseAddressByteCode,
+			...buildGuardedPointerLoadChain(context, lineNumberAfterMacroExpansion, kind, guardedLoadSteps),
+		],
+	};
 }
