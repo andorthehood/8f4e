@@ -1,8 +1,8 @@
 import { createFunctionType } from '@8f4e/compiler-wasm-utils';
-import { ArgumentType } from '@8f4e/compiler-spec';
+import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
 
 import { functionValueTypeToWasmType } from '../utils/functionValueType';
-import { popBlock } from '../utils/blockStack';
+import { popExpectedBlock } from '../utils/blockStack';
 
 import type { AST, FunctionCodegenContext, FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -11,7 +11,7 @@ import type { AST, FunctionCodegenContext, FunctionSignature, InstructionCompile
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
 const functionEnd: InstructionCompiler<AST[number], FunctionCodegenContext> = (line, context) => {
-	popBlock(context)!;
+	popExpectedBlock(line, context, BlockType.FUNCTION);
 
 	// Parse return types: functionEnd [<returnType1> <returnType2> ...]
 	const returnTypes = line.arguments.map(

@@ -64,7 +64,6 @@ Active todo files are listed below.
 | 408 | Reduce tokenizer identifier classification work | 🟡 | 1-2d | 2026-05-19 | `classifyIdentifier` runs many ordered reference-shape checks for every identifier; cheap prefix/suffix dispatch could avoid most checks for plain identifiers. |
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
-| 415 | Discriminate compiler block stack frames | 🟡 | 4-8h | 2026-05-25 | Make block stack frames a discriminated union so map and loop consumers can access required frame metadata without defensive assertions. |
 | 416 | Add resolved identifier line forms | 🟡 | 1-2d | 2026-05-25 | Carry validated memory, local, pointer, and function targets from semantic normalization into stack analysis and codegen. |
 | 417 | Tighten compiler AST union and source block types | 🟡 | 2-4d | 2026-05-25 | Replace the broad `ASTLineBase<string, Argument[]>` compiler contract with typed AST unions and source-block types. |
 
@@ -84,6 +83,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 415 | Discriminate compiler block stack frames | 2026-05-25 | Block-stack frames are now discriminated by `blockType`; map frames require `mapState`, loop consumers use typed frame lookup, and block-close helpers preserve existing nesting errors without non-null assertions. |
 | 414 | Split compiler context phase types | 2026-05-25 | Namespace prepass, module compilation, and function compilation now use phase-specific context types; function codegen receives required signature/type-registry state and module layout fallbacks were removed. |
 | 413 | Split compiled function lifecycle types | 2026-05-25 | Pre-codegen function metadata is now separate from final compiled function output; final functions require `wasmIndex`, `typeIndex`, and `ast`, removing lifecycle-field non-null assertions from compiler assembly. |
 | 411 | Move compiler analysis metadata into instruction specs | 2026-05-25 | Generic fixed stack effects, block-close behavior, and memory operation metadata now live in `instructionSpecs.ts`; stack analysis and memory codegen consume the metadata while dynamic function, map, and arithmetic metadata algorithms stay explicit. |
