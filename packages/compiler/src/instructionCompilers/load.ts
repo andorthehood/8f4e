@@ -33,15 +33,11 @@ const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => nu
 const load: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const [address] = line.stackAnalysis.consumedOperands;
-	const operation = getInstructionSpec(line.instruction)?.analysis?.memory;
-	if (operation?.kind !== 'load' || !operation.loadVariant || !operation.accessByteWidth) {
-		throw new Error(`Missing load metadata for ${line.instruction}`);
-	}
-
-	const buildInstructions = loadVariantByteCode[operation.loadVariant];
+	const operation = getInstructionSpec(line.instruction)!.analysis!.memory!;
+	const buildInstructions = loadVariantByteCode[operation.loadVariant!];
 	const memoryIndex = getAddressMemoryIndex(address);
 	const instructions = buildInstructions(memoryIndex);
-	const accessByteWidth = operation.accessByteWidth;
+	const accessByteWidth = operation.accessByteWidth!;
 	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
 	}

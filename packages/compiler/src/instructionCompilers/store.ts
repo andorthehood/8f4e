@@ -14,11 +14,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  */
 const store: InstructionCompiler = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const operation = getInstructionSpec(line.instruction)?.analysis?.memory;
-	if (operation?.kind !== 'store') {
-		throw new Error(`Missing store metadata for ${line.instruction}`);
-	}
-
+	const operation = getInstructionSpec(line.instruction)!.analysis!.memory!;
 	const operand2Address = line.stackAnalysis.consumedOperands[operation.addressOperandIndex ?? 0];
 	const operand1Value = line.stackAnalysis.consumedOperands[operation.valueOperandIndex ?? 1];
 	const memoryIndex = getAddressMemoryIndex(operand2Address);

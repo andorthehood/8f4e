@@ -14,12 +14,10 @@ import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compil
  */
 const memoryCopy: InstructionCompiler<NormalizedMemoryCopyLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const operation = getInstructionSpec(line.instruction)?.analysis?.memory;
-	if (operation?.kind !== 'copy') {
-		throw new Error(`Missing memoryCopy metadata for ${line.instruction}`);
-	}
-
-	const [destination, source] = line.stackAnalysis.consumedOperands;
+	const operation = getInstructionSpec(line.instruction)!.analysis!.memory!;
+	const destinationIndex = operation.addressOperandIndex ?? 0;
+	const destination = line.stackAnalysis.consumedOperands[destinationIndex];
+	const source = line.stackAnalysis.consumedOperands[destinationIndex + 1];
 	const byteLength = line.arguments[0].value;
 	const destinationMemoryIndex = getAddressMemoryIndex(destination);
 	const sourceMemoryIndex = getAddressMemoryIndex(source);
