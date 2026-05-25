@@ -26,8 +26,10 @@ import type {
 	CompiledStackAnalysisLine,
 	CompileOptions,
 	FunctionMetadataLookup,
+	FunctionCompilationContext,
 	FunctionTypeRegistry,
 	InstructionCompiler,
+	ModuleCompilationContext,
 	Namespaces,
 } from '@8f4e/compiler-spec';
 import type { Instruction } from './instructionCompilers';
@@ -83,7 +85,7 @@ export function compileModule(
 	const namespace = moduleId ? namespaces[moduleId] : undefined;
 	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex;
 	const memoryRegionName = namespace?.memoryRegionName ?? prepassContext.currentMemoryRegionName;
-	const context = createCompilationContext({
+	const context = createCompilationContext<ModuleCompilationContext>({
 		namespace: {
 			namespaces,
 			memory: prepassContext.namespace.memory,
@@ -156,7 +158,7 @@ export function compileModule(
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		...(internalResources ? { internalResources } : {}),
-		wordAlignedSize: context.currentModuleWordAlignedSize ?? 0,
+		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast: normalizedAst,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
@@ -173,7 +175,7 @@ export function compileFunction(
 	functions?: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
-	const context = createCompilationContext({
+	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,
 			memory: {},
@@ -196,6 +198,10 @@ export function compileFunction(
 		memoryRegions: [],
 		mode: 'function',
 		codeBlockType: 'function',
+		currentFunctionSignature: {
+			parameters: [],
+			returns: [],
+		},
 		functionTypeRegistry: typeRegistry,
 	});
 
@@ -212,14 +218,6 @@ export function compileFunction(
 	if (!context.currentFunctionId) {
 		throw getError(
 			ErrorCode.MISSING_FUNCTION_ID,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
-			context
-		);
-	}
-
-	if (!context.currentFunctionSignature) {
-		throw getError(
-			ErrorCode.INVALID_FUNCTION_SIGNATURE,
 			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
 			context
 		);

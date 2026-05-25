@@ -2,8 +2,10 @@ import { BlockType } from '@8f4e/compiler-spec';
 
 import type { BlockStack, CompilationContext } from '@8f4e/compiler-spec';
 
-type CompilationContextOverrides = Partial<Omit<CompilationContext, 'namespace'>> & {
-	namespace?: Partial<CompilationContext['namespace']>;
+type CompilationContextOverrides<TContext extends CompilationContext = CompilationContext> = Partial<
+	Omit<TContext, 'namespace'>
+> & {
+	namespace?: Partial<TContext['namespace']>;
 };
 
 function getBlockContextFlags(blockStack: BlockStack) {
@@ -18,7 +20,9 @@ function getBlockContextFlags(blockStack: BlockStack) {
 	};
 }
 
-export function createCompilationContext(overrides: CompilationContextOverrides = {}): CompilationContext {
+export function createCompilationContext<TContext extends CompilationContext = CompilationContext>(
+	overrides: CompilationContextOverrides<TContext> = {}
+): TContext {
 	const base: CompilationContext = {
 		namespace: {
 			namespaces: {},
@@ -46,6 +50,7 @@ export function createCompilationContext(overrides: CompilationContextOverrides 
 		currentModuleWordAlignedSize: 0,
 		currentMemoryIndex: 0,
 		memoryRegions: [],
+		mode: 'module',
 	};
 
 	const context = {
@@ -67,5 +72,5 @@ export function createCompilationContext(overrides: CompilationContextOverrides 
 		insideConditionBlock: overrides.insideConditionBlock ?? blockContextFlags.insideConditionBlock,
 		insideConstantsBlock: overrides.insideConstantsBlock ?? blockContextFlags.insideConstantsBlock,
 		insideMapBlock: overrides.insideMapBlock ?? blockContextFlags.insideMapBlock,
-	};
+	} as TContext;
 }
