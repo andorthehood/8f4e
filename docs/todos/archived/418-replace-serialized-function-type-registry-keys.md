@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-05-25
 issue: https://github.com/andorthehood/8f4e/issues/688
-status: Open
-completed: null
+status: Done
+completed: 2026-05-25
 ---
 
 # TODO: Replace serialized function type registry keys
@@ -38,20 +38,20 @@ Prefer the approach that removes ad hoc serialization while keeping the registry
 
 ### Step 1: Centralize Type Registration
 
-- Add a helper for registering or looking up a function type.
-- Move the current key creation and `signatureMap` manipulation behind that helper.
-- Keep `functionEnd` as the single registration point for user function signatures.
+- [x] Add a helper for registering or looking up a function type.
+- [x] Replace the current key creation and `signatureMap` manipulation with that helper.
+- [x] Keep `functionEnd` as the single registration point for user function signatures.
 
 ### Step 2: Replace JSON Serialization
 
-- Replace `JSON.stringify({ params, results })` with a typed key/equality strategy.
-- Update `FunctionTypeRegistry` in `packages/compiler-spec/src/compiled.ts` if its shape needs to change.
-- Avoid broadening types or adding runtime fallback checks just to preserve the existing map shape.
+- [x] Replace `JSON.stringify({ params, results })` with a typed key/equality strategy.
+- [x] Update `FunctionTypeRegistry` in `packages/compiler-spec/src/compiled.ts` if its shape needs to change.
+- [x] Avoid broadening types or adding runtime fallback checks just to preserve the existing map shape.
 
 ### Step 3: Keep Final Assembly Simple
 
-- Preserve the current direction where `functionEnd` stores the registered `typeIndex` on function compilation state.
-- Do not reintroduce a second signature serialization or registry lookup in `compileFunction`.
+- [x] Preserve the current direction where `functionEnd` stores the registered `typeIndex` on function compilation state.
+- [x] Do not reintroduce a second signature serialization or registry lookup in `compileFunction`.
 
 ## Validation Checkpoints
 
@@ -62,11 +62,20 @@ Prefer the approach that removes ad hoc serialization while keeping the registry
 
 ## Success Criteria
 
-- [ ] Function type registry deduplication no longer relies on `JSON.stringify({ params, results })`.
-- [ ] Function type identity is represented by typed compiler data or a dedicated registry helper.
-- [ ] `functionEnd` remains the single registration point for function type indices.
-- [ ] `compileFunction` continues to consume the registered `currentFunctionTypeIndex` directly.
-- [ ] Compiler tests and typechecks pass.
+- [x] Function type registry deduplication no longer relies on `JSON.stringify({ params, results })`.
+- [x] Function type identity is represented by typed compiler data or a dedicated registry helper.
+- [x] `functionEnd` remains the single registration point for function type indices.
+- [x] `compileFunction` continues to consume the registered `currentFunctionTypeIndex` directly.
+- [x] Compiler tests and typechecks pass.
+
+## Completion Notes
+
+Completed in PR followup branch `ai/replace-function-type-registry-keys`.
+
+- `FunctionTypeRegistry` now stores typed registered signatures instead of `signatureMap`.
+- `functionEnd` delegates lookup/registration to `getOrRegisterFunctionType`.
+- Matching param/result Wasm type arrays share one type index through structural equality.
+- No compatibility layer was kept for the removed serialized key contract.
 
 ## Affected Components
 
