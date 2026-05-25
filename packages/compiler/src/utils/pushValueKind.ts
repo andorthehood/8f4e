@@ -1,3 +1,5 @@
+import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
+
 import {
 	getDereferencedValueKindFromMetadata,
 	getDereferencedValueWordSizeFromMetadata,
@@ -25,6 +27,16 @@ export function resolvePointerTargetValueKind(pointerMetadata: PointerMetadata):
 
 export function getDereferencedValueWordSize(pointerMetadata: PointerMetadata): number {
 	return getDereferencedValueWordSizeFromMetadata(pointerMetadata);
+}
+
+export function valueKindToWasmType(
+	kind: PushValueKind
+): typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof WASM_TYPE_F64 {
+	if (kind === 'float64') {
+		return WASM_TYPE_F64;
+	}
+
+	return kind === 'float32' ? WASM_TYPE_F32 : WASM_TYPE_I32;
 }
 
 export function kindToStackItem(kind: PushValueKind, extras?: Partial<StackItem>): StackItem {

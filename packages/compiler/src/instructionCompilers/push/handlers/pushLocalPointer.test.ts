@@ -1,16 +1,16 @@
-import { f32load, localGet } from '@8f4e/compiler-wasm-utils';
-import { describe, expect, it } from 'vitest';
+import { f32load, localGet, WASM_TYPE_F32 } from '@8f4e/compiler-wasm-utils';
+import { describe, it } from 'vitest';
 
 import pushLocalPointer from './pushLocalPointer';
 
-import createInstructionCompilerTestContext from '../../../utils/testUtils';
+import createInstructionCompilerTestContext, { expectGuardedDereference } from '../../../utils/testUtils';
 
 import type { PushIdentifierLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('pushLocalPointer', () => {
-	it('dereferences a local pointer via local.get and a load', () => {
+	it('dereferences a local pointer via a guarded load', () => {
 		const context = createInstructionCompilerTestContext({
 			locals: {
 				lut: { isInteger: true, pointeeBaseType: 'float', index: 1 },
@@ -27,6 +27,11 @@ describe('pushLocalPointer', () => {
 			context
 		);
 
-		expect(context.byteCode).toEqual([...localGet(1), ...f32load()]);
+		expectGuardedDereference(context.byteCode, {
+			prefix: localGet(1),
+			finalLoad: f32load(),
+			guardCount: 1,
+			resultType: WASM_TYPE_F32,
+		});
 	});
 });
