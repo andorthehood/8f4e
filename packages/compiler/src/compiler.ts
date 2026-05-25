@@ -13,7 +13,6 @@ import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { applySemanticLine, getModuleIdFromAst, prepassNamespace } from './semantic/buildNamespace';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
-import { functionValueTypeToWasmType } from './utils/functionValueType';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import { createCompilationContext } from './semantic/createCompilationContext';
 
@@ -33,6 +32,11 @@ import type {
 	Namespaces,
 } from '@8f4e/compiler-spec';
 import type { Instruction } from './instructionCompilers';
+
+type CompletedFunctionCompilationContext = FunctionCompilationContext & {
+	currentFunctionId: string;
+	currentFunctionTypeIndex: number;
+};
 
 export function compileCodegenLine(line: AnalyzedLine, context: CompilationContext) {
 	const instruction = line.instruction as Instruction;
@@ -235,18 +239,11 @@ export function compileFunction(
 			count: 1,
 		}));
 
-	// Get the type index for this function's signature
-	const params = context.currentFunctionSignature.parameters.map(functionValueTypeToWasmType);
-	const results = context.currentFunctionSignature.returns.map(functionValueTypeToWasmType);
-	const signature = JSON.stringify({ params, results });
-	const typeIndex = typeRegistry.signatureMap.get(signature);
-	if (typeIndex === undefined) {
-		throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, ast[ast.length - 1], context);
-	}
+	const completedContext = context as CompletedFunctionCompilationContext;
 
 	return {
-		id: context.currentFunctionId,
-		signature: context.currentFunctionSignature,
+		id: completedContext.currentFunctionId,
+		signature: completedContext.currentFunctionSignature,
 		body: createFunction(
 			localDeclarations.map(local =>
 				createLocalDeclaration(
@@ -257,9 +254,9 @@ export function compileFunction(
 			context.byteCode
 		),
 		locals: localDeclarations,
-		...(context.currentFunctionExportName ? { exportName: context.currentFunctionExportName } : {}),
+		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
 		wasmIndex,
-		typeIndex,
+		typeIndex: completedContext.currentFunctionTypeIndex,
 		ast: normalizedAst,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};

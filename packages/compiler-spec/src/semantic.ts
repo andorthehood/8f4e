@@ -139,6 +139,7 @@ export interface CompilationContext {
 	codeBlockType?: CompilerSourceBlockType;
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
+	currentFunctionTypeIndex?: number;
 	currentFunctionIsImpure?: boolean;
 	currentFunctionExportName?: string;
 	functionTypeRegistry?: FunctionTypeRegistry;
@@ -168,6 +169,7 @@ export interface FunctionCompilationContext extends CompilationContext {
 	currentModuleNextWordOffset: number;
 	currentModuleWordAlignedSize: number;
 	currentFunctionSignature: FunctionSignature;
+	currentFunctionTypeIndex?: number;
 	functionTypeRegistry: FunctionTypeRegistry;
 }
 
