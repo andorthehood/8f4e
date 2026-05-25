@@ -17,7 +17,7 @@ import { saveByteCode } from './utils/saveByteCode';
 
 import { pushBlock } from '../utils/blockStack';
 
-import type { InstructionCompiler, LoopLine } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, LoopBlockStackFrame, LoopLine } from '@8f4e/compiler-spec';
 
 const DEFAULT_LOOP_CAP = 1000;
 
@@ -34,17 +34,21 @@ const loop: InstructionCompiler<LoopLine> = (line, context) => {
 
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumberAfterMacroExpansion;
 	const counterLocalIndex = Object.keys(context.locals).length;
-	context.locals[infiniteLoopProtectionCounterName] = {
+	const loopCounterLocal = {
 		isInteger: true,
 		index: counterLocalIndex,
 	};
+	context.locals[infiniteLoopProtectionCounterName] = loopCounterLocal;
 
-	pushBlock(context, {
+	const loopBlock: LoopBlockStackFrame = {
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
 		blockType: BlockType.LOOP,
 		loopCounterLocalName: infiniteLoopProtectionCounterName,
-	});
+		loopCounterLocal,
+	};
+
+	pushBlock(context, loopBlock);
 
 	return saveByteCode(context, [
 		...i32const(0),

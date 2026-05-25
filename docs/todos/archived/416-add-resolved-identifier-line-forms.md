@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-25
 issue: https://github.com/andorthehood/8f4e/issues/685
-status: Open
-completed: null
+status: Done
+completed: 2026-05-25
 ---
 
 # TODO: Add resolved identifier line forms
@@ -39,18 +39,19 @@ This keeps the compiler stage boundary honest: semantic normalization owns symbo
 
 ### Step 1: Model Resolved Targets
 
-- Add target-specific normalized types in `packages/compiler-spec/src/semantic.ts` or a compiler-private type module based on ownership boundaries, not compatibility concerns.
-- Keep source AST shape unchanged; this is an internal normalized/codegen contract.
+- [x] Add target-specific normalized types in `packages/compiler-spec/src/semantic.ts` based on ownership boundaries, not compatibility concerns.
+- [x] Keep resolved metadata explicit on normalized/compiler lines so later phases can consume it directly.
 
 ### Step 2: Update Semantic Normalization
 
-- Update `normalizePush` and `normalizeCall` to return resolved line forms once identifier existence has been validated.
-- Continue to defer intermodule references during namespace discovery where needed.
+- [x] Update `normalizePush`, `normalizeCall`, and local-set normalization to return resolved line forms once identifier existence has been validated.
+- [x] Continue to defer intermodule references during namespace discovery where needed.
 
 ### Step 3: Update Stack Analysis and Codegen
 
-- Replace `getDataStructure(...)!`, `context.locals[...]!`, and `context.namespace.functions![...]!` in resolved paths with fields from the resolved line.
-- Keep user-facing semantic errors in normalization, not codegen.
+- [x] Replace `getDataStructure(...)!`, `context.locals[...]!`, and `context.namespace.functions![...]!` in resolved paths with fields from the resolved line or typed loop frame.
+- [x] Keep user-facing semantic errors in normalization, not codegen.
+- [x] Delete the old `resolveIdentifierPushKind` runtime rediscovery helper once all consumers use resolved targets.
 
 ## Validation Checkpoints
 
@@ -61,10 +62,18 @@ This keeps the compiler stage boundary honest: semantic normalization owns symbo
 
 ## Success Criteria
 
-- [ ] `push` codegen paths consume resolved target forms.
-- [ ] `call` stack analysis and codegen consume a resolved function target.
-- [ ] Non-null assertions around already-validated identifiers are removed from stack analysis and codegen.
-- [ ] Compiler behavior and diagnostics remain stable.
+- [x] `push` codegen paths consume resolved target forms.
+- [x] `call` stack analysis and codegen consume a resolved function target.
+- [x] Non-null assertions around already-validated identifiers are removed from stack analysis and codegen.
+- [x] Compiler behavior and diagnostics remain stable.
+
+## Completion Notes
+
+- Semantic normalization now attaches resolved memory, local, pointer, function, and local-set targets to the normalized lines that later phases consume.
+- Stack analysis and codegen use those carried targets directly instead of re-indexing compiler maps with non-null assertions.
+- Codegen push inputs now exclude deferred identifier forms; semantic/namespace deferral is modeled separately from bytecode emission.
+- The old `resolveIdentifierPushKind` rediscovery helper was removed because resolution is now owned by semantic normalization.
+- Resolved metadata is explicit on normalized/compiler lines; this project is unreleased, so the stricter representation is allowed to surface instead of being hidden behind compatibility behavior.
 
 ## Affected Components
 

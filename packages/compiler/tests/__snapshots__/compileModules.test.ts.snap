@@ -172,6 +172,26 @@ exports[`compiler > compileModules 1`] = `
         "isSemanticOnly": false,
         "lineNumberAfterMacroExpansion": 14,
         "lineNumberBeforeMacroExpansion": 14,
+        "resolvedTarget": {
+          "kind": "memory",
+          "memoryItem": {
+            "byteAddress": 4,
+            "default": 0,
+            "elementWordSize": 4,
+            "hasExplicitDefault": true,
+            "id": "in",
+            "isInteger": true,
+            "isPointingToPointer": false,
+            "isUnsigned": false,
+            "memoryIndex": 0,
+            "numberOfElements": 1,
+            "pointeeBaseType": "int",
+            "pointeeMemoryIndex": 0,
+            "type": "int*",
+            "wordAlignedAddress": 1,
+            "wordAlignedSize": 1,
+          },
+        },
       },
       {
         "arguments": [
@@ -187,6 +207,10 @@ exports[`compiler > compileModules 1`] = `
         "isSemanticOnly": false,
         "lineNumberAfterMacroExpansion": 15,
         "lineNumberBeforeMacroExpansion": 15,
+        "local": {
+          "index": 0,
+          "isInteger": true,
+        },
       },
       {
         "arguments": [
@@ -202,6 +226,13 @@ exports[`compiler > compileModules 1`] = `
         "isSemanticOnly": false,
         "lineNumberAfterMacroExpansion": 16,
         "lineNumberBeforeMacroExpansion": 16,
+        "resolvedTarget": {
+          "kind": "local",
+          "local": {
+            "index": 0,
+            "isInteger": true,
+          },
+        },
       },
       {
         "arguments": [
@@ -266,6 +297,13 @@ exports[`compiler > compileModules 1`] = `
         "isSemanticOnly": false,
         "lineNumberAfterMacroExpansion": 21,
         "lineNumberBeforeMacroExpansion": 21,
+        "resolvedTarget": {
+          "kind": "local",
+          "local": {
+            "index": 0,
+            "isInteger": true,
+          },
+        },
       },
       {
         "arguments": [],
@@ -297,6 +335,13 @@ exports[`compiler > compileModules 1`] = `
         "isSemanticOnly": false,
         "lineNumberAfterMacroExpansion": 24,
         "lineNumberBeforeMacroExpansion": 24,
+        "resolvedTarget": {
+          "kind": "local",
+          "local": {
+            "index": 0,
+            "isInteger": true,
+          },
+        },
       },
       {
         "arguments": [

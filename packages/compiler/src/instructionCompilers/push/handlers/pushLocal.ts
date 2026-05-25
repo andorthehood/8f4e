@@ -2,10 +2,10 @@ import { localGet } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from '../../utils/saveByteCode';
 
-import type { CodegenContext, PushIdentifierLine } from '@8f4e/compiler-spec';
+import type { CodegenContext, ResolvedLocalPushLine } from '@8f4e/compiler-spec';
 
-export default function pushLocal(line: PushIdentifierLine, context: CodegenContext): CodegenContext {
-	const local = context.locals[line.arguments[0].value]!;
+export default function pushLocal(line: ResolvedLocalPushLine, context: CodegenContext): CodegenContext {
+	const { local } = line.resolvedTarget;
 
 	return saveByteCode(context, localGet(local.index));
 }

@@ -6,43 +6,60 @@ import pushLocalPointer from './push/handlers/pushLocalPointer';
 import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
 import pushMemoryPointer from './push/handlers/pushMemoryPointer';
 import pushStringLiteral from './push/handlers/pushStringLiteral';
-import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
 import type {
 	CodegenPushLine,
 	InstructionCompiler,
-	MemoryPointerPushLine,
-	PushIdentifierLine,
+	ResolvedLocalPointerPushLine,
+	ResolvedLocalPushLine,
+	ResolvedMemoryPointerPushLine,
+	ResolvedMemoryPushLine,
+	ResolvedPushLine,
 } from '@8f4e/compiler-spec';
+
+function isResolvedMemoryPushLine(line: ResolvedPushLine): line is ResolvedMemoryPushLine {
+	return line.resolvedTarget.kind === 'memory';
+}
+
+function isResolvedMemoryPointerPushLine(line: ResolvedPushLine): line is ResolvedMemoryPointerPushLine {
+	return line.resolvedTarget.kind === 'memory-pointer';
+}
+
+function isResolvedLocalPointerPushLine(line: ResolvedPushLine): line is ResolvedLocalPointerPushLine {
+	return line.resolvedTarget.kind === 'local-pointer';
+}
+
+function isResolvedLocalPushLine(line: ResolvedPushLine): line is ResolvedLocalPushLine {
+	return line.resolvedTarget.kind === 'local';
+}
 
 /**
  * Instruction compiler for `push`.
  * @see [Instruction docs](../../docs/instructions/stack.md)
  */
 const push: InstructionCompiler<CodegenPushLine> = (line: CodegenPushLine, context) => {
-	const argument = line.arguments[0];
-
-	if (argument.type === ArgumentType.STRING_LITERAL) {
-		return pushStringLiteral(argument, context);
+	if (!('resolvedTarget' in line)) {
+		const argument = line.arguments[0];
+		return argument.type === ArgumentType.STRING_LITERAL
+			? pushStringLiteral(argument, context)
+			: pushLiteral(argument, context);
 	}
 
-	if (argument.type === ArgumentType.IDENTIFIER) {
-		const identifierLine = line as PushIdentifierLine;
-
-		switch (resolveIdentifierPushKind(context.namespace, context.locals, argument)) {
-			case IdentifierPushKind.MEMORY_IDENTIFIER:
-				return pushMemoryIdentifier(identifierLine, context);
-			case IdentifierPushKind.MEMORY_POINTER:
-				return pushMemoryPointer(identifierLine as MemoryPointerPushLine, context);
-			case IdentifierPushKind.LOCAL_POINTER:
-				return pushLocalPointer(identifierLine as MemoryPointerPushLine, context);
-			case IdentifierPushKind.LOCAL:
-			default:
-				return pushLocal(identifierLine, context);
-		}
+	if (isResolvedMemoryPushLine(line)) {
+		return pushMemoryIdentifier(line, context);
+	}
+	if (isResolvedMemoryPointerPushLine(line)) {
+		return pushMemoryPointer(line, context);
+	}
+	if (isResolvedLocalPointerPushLine(line)) {
+		return pushLocalPointer(line, context);
+	}
+	if (isResolvedLocalPushLine(line)) {
+		return pushLocal(line, context);
 	}
 
-	return pushLiteral(argument, context);
+	const unhandledLine: never = line;
+	return unhandledLine;
 };
 
 export default push;

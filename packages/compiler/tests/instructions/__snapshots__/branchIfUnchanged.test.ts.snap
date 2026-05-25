@@ -121,6 +121,24 @@ exports[`branchIfUnchanged > if the generated AST, WAT and memory map match the 
     "isSemanticOnly": false,
     "lineNumberAfterMacroExpansion": 10,
     "lineNumberBeforeMacroExpansion": 10,
+    "resolvedTarget": {
+      "kind": "memory",
+      "memoryItem": {
+        "byteAddress": 0,
+        "default": 0,
+        "elementWordSize": 4,
+        "hasExplicitDefault": false,
+        "id": "input",
+        "isInteger": true,
+        "isPointingToPointer": false,
+        "isUnsigned": false,
+        "memoryIndex": 0,
+        "numberOfElements": 1,
+        "type": "int",
+        "wordAlignedAddress": 0,
+        "wordAlignedSize": 1,
+      },
+    },
   },
   {
     "arguments": [
