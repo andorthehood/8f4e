@@ -1,17 +1,9 @@
-import {
-	f64load,
-	i32const,
-	i32load,
-	i32load16s,
-	i32load8s,
-	WASM_TYPE_F64,
-	WASM_TYPE_I32,
-} from '@8f4e/compiler-wasm-utils';
-import { describe, it } from 'vitest';
+import { f64load, i32const, i32load, i32load16s, i32load8s } from '@8f4e/compiler-wasm-utils';
+import { describe, expect, it } from 'vitest';
 
 import pushMemoryPointer from './pushMemoryPointer';
 
-import createInstructionCompilerTestContext, { expectGuardedDereference } from '../../../utils/testUtils';
+import createInstructionCompilerTestContext from '../../../utils/testUtils';
 
 import type { PushIdentifierLine } from '@8f4e/compiler-spec';
 
@@ -51,12 +43,7 @@ describe('pushMemoryPointer', () => {
 			context
 		);
 
-		expectGuardedDereference(context.byteCode, {
-			prefix: [...i32const(12), ...i32load()],
-			finalLoad: f64load(),
-			guardCount: 2,
-			resultType: WASM_TYPE_F64,
-		});
+		expect(context.byteCode).toEqual([...i32const(12), ...i32load(), ...i32load(), ...f64load()]);
 	});
 
 	it('dereferences int8* with i32load8s for the final load', () => {
@@ -92,12 +79,7 @@ describe('pushMemoryPointer', () => {
 			context
 		);
 
-		expectGuardedDereference(context.byteCode, {
-			prefix: [...i32const(8), ...i32load()],
-			finalLoad: i32load8s(),
-			guardCount: 1,
-			resultType: WASM_TYPE_I32,
-		});
+		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8s()]);
 	});
 
 	it('dereferences int8** with i32load8s for the final load', () => {
@@ -133,12 +115,7 @@ describe('pushMemoryPointer', () => {
 			context
 		);
 
-		expectGuardedDereference(context.byteCode, {
-			prefix: [...i32const(4), ...i32load()],
-			finalLoad: i32load8s(),
-			guardCount: 2,
-			resultType: WASM_TYPE_I32,
-		});
+		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load8s()]);
 	});
 
 	it('dereferences int16* with i32load16s for the final load', () => {
@@ -174,12 +151,7 @@ describe('pushMemoryPointer', () => {
 			context
 		);
 
-		expectGuardedDereference(context.byteCode, {
-			prefix: [...i32const(8), ...i32load()],
-			finalLoad: i32load16s(),
-			guardCount: 1,
-			resultType: WASM_TYPE_I32,
-		});
+		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load16s()]);
 	});
 
 	it('dereferences int16** with i32load16s for the final load', () => {
@@ -215,11 +187,6 @@ describe('pushMemoryPointer', () => {
 			context
 		);
 
-		expectGuardedDereference(context.byteCode, {
-			prefix: [...i32const(4), ...i32load()],
-			finalLoad: i32load16s(),
-			guardCount: 2,
-			resultType: WASM_TYPE_I32,
-		});
+		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load16s()]);
 	});
 });
