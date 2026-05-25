@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4d
 created: 2026-05-25
 issue: https://github.com/andorthehood/8f4e/issues/686
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-25
 ---
 
 # TODO: Tighten compiler AST union and source block types
@@ -68,11 +68,11 @@ This is the broadest part of the hardening work: it turns tokenizer-owned guaran
 
 ## Success Criteria
 
-- [ ] Compiler AST consumers can narrow by `line.instruction` to exact argument tuple types.
-- [ ] Module/function metadata collection no longer revalidates prologue argument shape.
-- [ ] Function return type parsing no longer casts raw arguments to identifiers.
-- [ ] Existing syntax validation remains tokenizer-owned.
-- [ ] Compiler and tokenizer tests/typechecks pass.
+- [x] Compiler AST consumers can narrow by `line.instruction` to exact argument tuple types.
+- [x] Module/function metadata collection no longer revalidates prologue argument shape.
+- [x] Function return type parsing no longer casts raw arguments to identifiers.
+- [x] Existing syntax validation remains tokenizer-owned.
+- [x] Compiler and tokenizer tests/typechecks pass.
 
 ## Affected Components
 
