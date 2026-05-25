@@ -13,12 +13,11 @@ import {
 	WASM_I32_OR,
 	WASM_SELECT,
 } from '@8f4e/compiler-wasm-utils';
-import { BlockType } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 
 import { resolveMapKind } from '../utils/mapValueKind';
-import { popExpectedBlock } from '../utils/blockStack';
+import { popBlock } from '../utils/blockStack';
 
 import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
 import type { MapKind } from '../utils/mapValueKind';
@@ -62,8 +61,8 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	const outputKind = resolveMapKind({ isInteger: outputIsInteger, isFloat64: outputIsFloat64 });
 
 	// Pop the MAP block from blockStack and read its state
-	const block = popExpectedBlock(line, context, BlockType.MAP);
-	const mapState = block.mapState;
+	const block = popBlock(context)!;
+	const mapState = block.mapState!;
 
 	const inputKind = resolveMapKind({ isInteger: mapState.inputIsInteger, isFloat64: mapState.inputIsFloat64 });
 

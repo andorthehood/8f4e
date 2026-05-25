@@ -1,7 +1,7 @@
-import { ArgumentType, BlockType, ErrorCode } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
-import { peekExpectedBlock } from '../utils/blockStack';
 
 import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-spec';
 
@@ -12,13 +12,7 @@ import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-spec
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const map: InstructionCompiler<NormalizedMapLine> = (line: NormalizedMapLine, context) => {
-	const block = peekExpectedBlock(context, BlockType.MAP);
-
-	if (!block) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
-
-	const mapState = block.mapState;
+	const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
 	const keyArg = line.arguments[0];
 	const valueArg = line.arguments[1];
 

@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-05-25
 issue: https://github.com/andorthehood/8f4e/issues/684
-status: Done
-completed: 2026-05-25
+status: Open
+completed: null
 ---
 
 # TODO: Discriminate compiler block stack frames
@@ -34,19 +34,19 @@ The important distinction is between validating user block structure and defendi
 
 ### Step 1: Define Frame Union
 
-- [x] Replace the single broad `BlockStack[number]` shape with named frame types.
-- [x] Keep shared result-shape fields in a base frame type.
-- [x] Require `mapState` on map frames.
+- Replace the single broad `BlockStack[number]` shape with named frame types.
+- Keep shared result-shape fields in a base frame type.
+- Require `mapState` on map frames.
 
 ### Step 2: Add Typed Helpers
 
-- [x] Add `peekExpectedBlock(...)` and/or `popExpectedBlock(...)` helpers that narrow by `BlockType`.
-- [x] Keep `popBlock(...)` for generic behavior where no type-specific fields are needed.
+- Add `peekExpectedBlock(...)` and/or `popExpectedBlock(...)` helpers that narrow by `BlockType`.
+- Keep `popBlock(...)` for generic behavior where no type-specific fields are needed.
 
 ### Step 3: Update Map and Loop Consumers
 
-- [x] Update `map`, `default`, `mapEnd`, `loopIndex`, and stack-analysis map/loop paths to use the narrowed helpers.
-- [x] Remove `mapState!`, `loopBlock!`, and similar assertions where the helper proves the shape.
+- Update `map`, `default`, `mapEnd`, `loopIndex`, and stack-analysis map/loop paths to use the narrowed helpers.
+- Remove `mapState!`, `loopBlock!`, and similar assertions where the helper proves the shape.
 
 ## Validation Checkpoints
 
@@ -57,10 +57,10 @@ The important distinction is between validating user block structure and defendi
 
 ## Success Criteria
 
-- [x] Map block consumers can access `mapState` without non-null assertions.
-- [x] Loop metadata consumers are narrowed through a typed frame.
-- [x] Invalid block nesting still produces the same compiler errors.
-- [x] Compiler tests and typechecks pass.
+- [ ] Map block consumers can access `mapState` without non-null assertions.
+- [ ] Loop metadata consumers are narrowed through a typed frame.
+- [ ] Invalid block nesting still produces the same compiler errors.
+- [ ] Compiler tests and typechecks pass.
 
 ## Affected Components
 
@@ -83,12 +83,3 @@ The important distinction is between validating user block structure and defendi
 
 - **Related**: `397-finish-compiler-stack-analysis-codegen-separation.md`
 - **Related**: `409-track-block-context-flags-during-stack-analysis.md`
-
-## Completion Notes
-
-- Completed on 2026-05-25 by replacing the broad block-stack frame shape with named discriminated frame interfaces in `packages/compiler-spec/src/semantic.ts`.
-- Map frames now require `mapState`, so map consumers can read map rows/defaults after a `BlockType.MAP` narrowing without `mapState!`.
-- Added typed `peekExpectedBlock(...)`, `findExpectedBlock(...)`, and `popExpectedBlock(...)` helpers in `packages/compiler/src/utils/blockStack.ts`; these preserve `MISSING_BLOCK_START_INSTRUCTION` for invalid source nesting while proving frame-specific fields to TypeScript.
-- Updated map/default/mapEnd, loopIndex, stack analysis, semantic block-end handlers, and simple block-close compilers to use typed helpers instead of non-null assertions.
-- Kept loop counter metadata optional on loop frames because only compiler-generated loop frames carry it; loop consumers now narrow to a loop frame and validate the metadata before reading the local.
-- Verified with `npx nx run compiler-spec:typecheck`, `npx nx run compiler:typecheck`, `npx nx run compiler:test`, and `rg -n "mapState!|loopBlock!|popBlock\\(context\\)!" packages/compiler/src packages/compiler-spec/src`.
