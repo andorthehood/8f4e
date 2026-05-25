@@ -64,7 +64,6 @@ Active todo files are listed below.
 | 408 | Reduce tokenizer identifier classification work | 🟡 | 1-2d | 2026-05-19 | `classifyIdentifier` runs many ordered reference-shape checks for every identifier; cheap prefix/suffix dispatch could avoid most checks for plain identifiers. |
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
-| 417 | Tighten compiler AST union and source block types | 🟡 | 2-4d | 2026-05-25 | Replace the broad `ASTLineBase<string, Argument[]>` compiler contract with typed AST unions and source-block types. |
 
 ### 🟢 Low Priority
 
@@ -82,6 +81,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 417 | Tighten compiler AST union and source block types | 2026-05-25 | Compiler AST lines are now a discriminated union with source-block tuple types; tokenizer validation owns fixed arity, and namespace metadata no longer revalidates syntax-guaranteed prologue or return shapes. |
 | 416 | Add resolved identifier line forms | 2026-05-25 | Semantic normalization now carries resolved memory, local, pointer, function, and local-set targets through stack analysis and codegen; old push-target rediscovery was removed. |
 | 415 | Discriminate compiler block stack frames | 2026-05-25 | Block stack frames are now a discriminated union; map frames require `mapState`, loop frames require counter metadata, and codegen consumers no longer use the old block-frame non-null assertions. |
 | 418 | Replace serialized function type registry keys | 2026-05-25 | Function type registry signatures are now typed records with structural equality through a registry helper; serialized JSON keys and `signatureMap` were removed without compatibility shims. |

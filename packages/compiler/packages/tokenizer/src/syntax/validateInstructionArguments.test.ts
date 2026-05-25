@@ -15,6 +15,19 @@ describe('validateInstructionArguments', () => {
 		).toThrowError(SyntaxRulesError);
 	});
 
+	it('rejects extra arguments for fixed-arity instructions', () => {
+		expect(() =>
+			validateInstructionArguments('push', [
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+			])
+		).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('module', [classifyIdentifier('main'), classifyIdentifier('extra')])
+		).toThrowError(SyntaxRulesError);
+		expect(() => validateInstructionArguments('add', [classifyIdentifier('extra')])).toThrowError(SyntaxRulesError);
+	});
+
 	it('accepts compile-time values for default', () => {
 		expect(() =>
 			validateInstructionArguments('default', [

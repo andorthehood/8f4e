@@ -16,7 +16,7 @@ function fallbackLine(): AST[number] {
 	return {
 		lineNumberBeforeMacroExpansion: 0,
 		lineNumberAfterMacroExpansion: 0,
-		instruction: '#region',
+		instruction: 'block',
 		arguments: [],
 	};
 }

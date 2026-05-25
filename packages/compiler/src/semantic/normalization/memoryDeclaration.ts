@@ -67,7 +67,7 @@ export default function normalizeMemoryDeclaration(line: AST[number], context: C
 				(argument.referenceKind === 'intermodular-module-reference' ||
 					argument.referenceKind === 'intermodular-reference')
 			) {
-				normalized = { ...normalized, arguments: [normalized.arguments[0]] };
+				normalized = { ...normalized, arguments: [normalized.arguments[0]] } as typeof normalized;
 			}
 		}
 	}

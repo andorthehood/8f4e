@@ -38,6 +38,17 @@ type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
 };
 
+function getFallbackErrorLine(ast: AST): AST[number] {
+	return (
+		ast[0] ?? {
+			lineNumberBeforeMacroExpansion: 0,
+			lineNumberAfterMacroExpansion: 0,
+			instruction: 'block',
+			arguments: [],
+		}
+	);
+}
+
 export function compileCodegenLine(line: AnalyzedLine, context: CompilationContext) {
 	const instruction = line.instruction as Instruction;
 
@@ -128,19 +139,11 @@ export function compileModule(
 	});
 
 	if (!context.namespace.moduleName) {
-		throw getError(
-			ErrorCode.MISSING_MODULE_ID,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'module', arguments: [] },
-			context
-		);
+		throw getError(ErrorCode.MISSING_MODULE_ID, getFallbackErrorLine(ast), context);
 	}
 
 	if (context.stack.length > 0) {
-		throw getError(
-			ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'module', arguments: [] },
-			context
-		);
+		throw getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, getFallbackErrorLine(ast), context);
 	}
 
 	const internalResources = Object.keys(context.internalResources).length > 0 ? context.internalResources : undefined;
@@ -220,11 +223,7 @@ export function compileFunction(
 	});
 
 	if (!context.currentFunctionId) {
-		throw getError(
-			ErrorCode.MISSING_FUNCTION_ID,
-			{ lineNumberBeforeMacroExpansion: 0, lineNumberAfterMacroExpansion: 0, instruction: 'function', arguments: [] },
-			context
-		);
+		throw getError(ErrorCode.MISSING_FUNCTION_ID, getFallbackErrorLine(ast), context);
 	}
 
 	// Collect locals (excluding parameters)
