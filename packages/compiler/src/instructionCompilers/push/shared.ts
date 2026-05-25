@@ -65,6 +65,22 @@ function buildGuardedPointerLoadChain(
 	);
 }
 
+function getPointerLoadCount(pointerMetadata: PointerMetadata, pointerValueSource: PointerValueSource): number {
+	if (pointerValueSource === 'pointer-slot') {
+		return pointerMetadata.isPointingToPointer ? 2 : 1;
+	}
+
+	return pointerMetadata.isPointingToPointer ? 1 : 0;
+}
+
+function createPointerLoadStep(memoryIndex: number): PointerLoadStep {
+	return {
+		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
+		loadByteCode: i32load(2, 0, memoryIndex),
+		memoryIndex,
+	};
+}
+
 export function buildPointerDereferenceByteCode(
 	context: CodegenContext,
 	lineNumberAfterMacroExpansion: number,
@@ -74,8 +90,6 @@ export function buildPointerDereferenceByteCode(
 ): { kind: PushValueKind; byteCode: number[] } {
 	const kind = resolvePointerTargetValueKind(pointerMetadata);
 	const dereferencedValueWordSize = getDereferencedValueWordSize(pointerMetadata);
-	const slotMemoryIndex =
-		pointerValueSource === 'pointer-slot' && 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
 	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;
 	const finalLoad =
 		dereferencedValueWordSize === 1
@@ -84,41 +98,29 @@ export function buildPointerDereferenceByteCode(
 				? i32load16s(1, 0, pointeeMemoryIndex)
 				: loadOpcode[kind](pointeeMemoryIndex);
 
-	const pointerLoadCount =
-		pointerValueSource === 'pointer-slot'
-			? pointerMetadata.isPointingToPointer
-				? 2
-				: 1
-			: pointerMetadata.isPointingToPointer
-				? 1
-				: 0;
-
-	const byteCode = [...baseAddressByteCode];
-	const guardedLoadSteps: PointerLoadStep[] = [];
-	for (let i = 0; i < pointerLoadCount; i++) {
-		const memoryIndex = i === 0 && pointerValueSource === 'pointer-slot' ? slotMemoryIndex : pointeeMemoryIndex;
-		const pointerLoad = i32load(2, 0, memoryIndex);
-		if (pointerValueSource === 'pointer-slot') {
-			byteCode.push(...pointerLoad);
-		} else {
-			guardedLoadSteps.push({
-				accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
-				loadByteCode: pointerLoad,
-				memoryIndex,
-			});
-		}
-	}
 	if (pointerValueSource === 'pointer-slot') {
-		byteCode.push(...finalLoad);
-		return { kind, byteCode };
+		const slotMemoryIndex = 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
+		const pointerLoads = Array.from({ length: getPointerLoadCount(pointerMetadata, pointerValueSource) }, (_, index) =>
+			i32load(2, 0, index === 0 ? slotMemoryIndex : pointeeMemoryIndex)
+		).flat();
+
+		return { kind, byteCode: [...baseAddressByteCode, ...pointerLoads, ...finalLoad] };
 	}
 
+	const guardedLoadSteps = Array.from({ length: getPointerLoadCount(pointerMetadata, pointerValueSource) }, () =>
+		createPointerLoadStep(pointeeMemoryIndex)
+	);
 	guardedLoadSteps.push({
 		accessByteWidth: dereferencedValueWordSize,
 		loadByteCode: finalLoad,
 		memoryIndex: pointeeMemoryIndex,
 	});
-	byteCode.push(...buildGuardedPointerLoadChain(context, lineNumberAfterMacroExpansion, kind, guardedLoadSteps));
 
-	return { kind, byteCode };
+	return {
+		kind,
+		byteCode: [
+			...baseAddressByteCode,
+			...buildGuardedPointerLoadChain(context, lineNumberAfterMacroExpansion, kind, guardedLoadSteps),
+		],
+	};
 }
