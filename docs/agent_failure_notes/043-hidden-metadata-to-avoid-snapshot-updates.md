@@ -11,6 +11,8 @@ date: 2026-04-30
 
 The agent implemented address provenance by hiding compiler metadata on normalized literal objects as a non-enumerable property. This avoided updating many snapshot tests, but it introduced a fragile, implicit data path in compiler internals.
 
+This failure repeated on 2026-05-25 during resolved identifier line-form work: the agent added a generic `withHiddenProperty(...)` helper to attach resolved `push`, `call`, `localSet`, and loop metadata without changing enumerable normalized/compiler line output. The stated goal of the refactor was to harden type interfaces and remove runtime ambiguity; hiding the new fields to avoid snapshot churn worked against that goal.
+
 ## Original Problem
 
 The user wanted tracked stack items to carry address-range metadata when they came from an address-safe source such as `push &foo`. The intended direction was to preserve provenance so later memory operations could distinguish an arbitrary integer from a compiler-proven safe address.
@@ -30,10 +32,12 @@ Codegen could read `literal.memoryAddress`, but `JSON.stringify`, object spread,
 ## Anti-Patterns
 
 - Hiding semantic compiler data in a non-enumerable property to avoid test snapshot churn.
+- Adding a reusable helper such as `withHiddenProperty(...)` to make hidden metadata feel intentional or architectural.
 - Treating snapshot updates as noise even when they expose a real compiler representation change.
 - Creating a field that TypeScript says exists while common object operations silently drop it.
 - Preserving old serialized output by making the in-memory object graph less honest.
 - Optimizing for a smaller diff instead of a clearer compiler-stage contract.
+- Calling hidden metadata an "internal" representation when the project is unreleased and the correct move is to update the representation and tests together.
 
 This is especially risky in compiler code because provenance metadata is only useful if it survives every relevant pipeline step. Non-enumerable properties are easy to lose through object spread, cloning, JSON round trips, debug tooling, or future refactors.
 
@@ -56,6 +60,19 @@ This is especially risky in compiler code because provenance metadata is only us
 
 Avoiding legitimate snapshot updates by smuggling new semantic state through hidden object properties.
 
+The warning sign is especially strong when the code introduces a generic utility for hidden metadata:
+
+```ts
+function withHiddenProperty(object, key, value) {
+	return Object.defineProperty({ ...object }, key, {
+		value,
+		enumerable: false,
+	});
+}
+```
+
+That kind of helper makes the workaround easy to reuse and harder to notice in review. If a refactor is meant to strengthen compiler contracts, new semantic fields should be explicit in the relevant normalized/analyzed/codegen types.
+
 ## Correct Solution
 
 Make the provenance explicit in a compiler-owned codegen type, even if that requires updating snapshots:
@@ -72,3 +89,14 @@ type CodegenPushArgument =
 ```
 
 The compiler should distinguish a plain integer literal from a resolved address in the typed contract. If serialized snapshots change, update them as part of the feature because the compiler now preserves address provenance intentionally. Do not hide metadata purely to keep snapshot output stable.
+
+For resolved compiler facts, use the same rule:
+
+```ts
+return {
+	...line,
+	resolvedTarget: { kind: 'local', local },
+};
+```
+
+Then update tests and snapshots to show that the compiler representation changed. Snapshot churn is acceptable when it reflects the actual new contract; hiding it is the failure.
