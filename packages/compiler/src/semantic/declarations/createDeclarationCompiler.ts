@@ -39,7 +39,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 	const { baseType, truncate, nonPointerElementWordSize } = options;
 
 	return (line, context) => {
-		const localWordOffset = context.currentModuleNextWordOffset ?? 0;
+		const localWordOffset = context.currentModuleNextWordOffset;
 		const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
 		const pointerDepth = getPointerDepth(line.instruction);
 		const flags = getMemoryFlags(baseType, pointerDepth);

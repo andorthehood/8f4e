@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-05-25
 issue: https://github.com/andorthehood/8f4e/issues/682
-status: Open
-completed: null
+status: Done
+completed: 2026-05-25
 ---
 
 # TODO: Split compiled function lifecycle types
@@ -34,20 +34,20 @@ After this change, the type system should communicate which phase a function rec
 
 ### Step 1: Add Lifecycle Types
 
-- Add a metadata-only function type in `packages/compiler-spec/src/compiled.ts`.
-- Make the final compiled function type require fields produced by `compileFunction`.
-- Keep `CompiledFunctionLookup` pointed at the final type if callers only receive compiled output.
+- [x] Add a metadata-only function type in `packages/compiler-spec/src/compiled.ts`.
+- [x] Make the final compiled function type require fields produced by `compileFunction`.
+- [x] Keep `CompiledFunctionLookup` pointed at the final type if callers only receive compiled output.
 
 ### Step 2: Update Function Collection
 
-- Update `collectFunctionMetadataFromAsts(...)` to return the metadata lookup type.
-- Update call-target normalization and stack analysis to accept metadata where that is the only data needed.
-- Avoid widening final compiled functions just to satisfy metadata call sites.
+- [x] Update `collectFunctionMetadataFromAsts(...)` to return the metadata lookup type.
+- [x] Update call-target normalization and stack analysis to accept metadata where that is the only data needed.
+- [x] Avoid widening final compiled functions just to satisfy metadata call sites.
 
 ### Step 3: Remove Assertions
 
-- Remove `typeIndex!`, `wasmIndex!`, and `ast!` from final compile/export assembly paths.
-- Replace export filtering with a typed helper if needed.
+- [x] Remove `typeIndex!`, `wasmIndex!`, and `ast!` from final compile/export assembly paths.
+- [x] Replace export filtering with a typed helper if needed.
 
 ## Validation Checkpoints
 
@@ -58,10 +58,10 @@ After this change, the type system should communicate which phase a function rec
 
 ## Success Criteria
 
-- [ ] Final compiled functions require `wasmIndex`, `typeIndex`, and `ast` where compiler output depends on them.
-- [ ] Pre-codegen function metadata no longer pretends to be a full compiled function.
-- [ ] Non-null assertions for function lifecycle fields are removed from compiler assembly code.
-- [ ] Compiler typecheck and tests pass.
+- [x] Final compiled functions require `wasmIndex`, `typeIndex`, and `ast` where compiler output depends on them.
+- [x] Pre-codegen function metadata no longer pretends to be a full compiled function.
+- [x] Non-null assertions for function lifecycle fields are removed from compiler assembly code.
+- [x] Compiler typecheck and tests pass.
 
 ## Affected Components
 
@@ -82,3 +82,11 @@ After this change, the type system should communicate which phase a function rec
 
 - **Related**: `397-finish-compiler-stack-analysis-codegen-separation.md`
 - **Related**: `412-expose-compiler-stack-analysis-results.md`
+
+## Completion Notes
+
+- Completed on 2026-05-25 by introducing `FunctionMetadata` / `FunctionMetadataLookup` for pre-codegen function discovery and requiring `wasmIndex`, `typeIndex`, and `ast` on final `CompiledFunction` output.
+- Updated namespace function registries and module/function compile helpers to accept metadata where only signatures and wasm indices are needed.
+- Removed lifecycle-field non-null assertions from final function section/export assembly.
+- Verified with `npx nx run compiler-spec:typecheck`, `npx nx run compiler:typecheck`, and `npx nx run compiler:test`.
+

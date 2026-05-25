@@ -359,7 +359,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 				return moduleAddressConst(
 					'module-start',
 					context.startingByteAddress,
-					context.currentModuleWordAlignedSize ?? 0,
+					context.currentModuleWordAlignedSize,
 					context.namespace.moduleName,
 					context.currentMemoryIndex,
 					context.currentMemoryRegionName

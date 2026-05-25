@@ -44,6 +44,7 @@ import type {
 	CompiledModuleLookup,
 	CompiledFunctionLookup,
 	CompilerCache,
+	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	Module,
 	Namespaces,
@@ -71,7 +72,7 @@ export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
 	namespaces?: Namespaces,
-	compiledFunctions?: CompiledFunctionLookup,
+	compiledFunctions?: FunctionMetadataLookup,
 	internalAllocator?: { nextByteAddress: number }
 ): CompiledModule[] {
 	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
@@ -124,7 +125,7 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): voi
 			continue;
 		}
 
-		const exportLine = compiledFunction.ast?.find(line => line.instruction === '#export') ?? compiledFunction.ast![0];
+		const exportLine = compiledFunction.ast.find(line => line.instruction === '#export') ?? compiledFunction.ast[0];
 		if (BUILT_IN_EXPORT_NAMES.has(exportName) || seen.has(exportName)) {
 			throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, exportLine, undefined, { identifier: exportName });
 		}
@@ -233,7 +234,7 @@ export default function compile(
 
 	// Extract the unique function types and type indices from the registry
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
-	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
+	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex);
 
 	// Compile all modules in dependency order to preserve the established physical layout.
 	const compiledModules = compileModules(
@@ -340,8 +341,8 @@ export default function compile(
 				createFunctionExport('initOnly', 0x02),
 				createFunctionExport('buffer', 0x03),
 				...compiledFunctions
-					.filter(func => func.exportName && func.wasmIndex !== undefined)
-					.map(func => createFunctionExport(func.exportName!, func.wasmIndex!)),
+					.filter((func): func is typeof func & { exportName: string } => !!func.exportName)
+					.map(func => createFunctionExport(func.exportName, func.wasmIndex)),
 			]),
 			...(initialMemoryDataSegments.length > 0 ? createDataCountSection(initialMemoryDataSegments.length) : []),
 			...createCodeSection([

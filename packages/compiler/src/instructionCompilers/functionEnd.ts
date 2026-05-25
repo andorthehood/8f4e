@@ -4,13 +4,13 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 import { functionValueTypeToWasmType } from '../utils/functionValueType';
 import { popBlock } from '../utils/blockStack';
 
-import type { FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { AST, FunctionCodegenContext, FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `functionEnd`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const functionEnd: InstructionCompiler = (line, context) => {
+const functionEnd: InstructionCompiler<AST[number], FunctionCodegenContext> = (line, context) => {
 	popBlock(context)!;
 
 	// Parse return types: functionEnd [<returnType1> <returnType2> ...]
@@ -25,23 +25,22 @@ const functionEnd: InstructionCompiler = (line, context) => {
 	);
 
 	// Update function signature with return types
-	if (context.currentFunctionSignature) {
-		context.currentFunctionSignature.returns = returnTypes;
+	context.currentFunctionSignature.returns = returnTypes;
 
-		// Register type signature in the type registry if available
-		if (context.functionTypeRegistry) {
-			const params = context.currentFunctionSignature.parameters.map(functionValueTypeToWasmType);
-			const results = returnTypes.map(functionValueTypeToWasmType);
+	// Register type signature in the type registry
+	const params = context.currentFunctionSignature.parameters.map(functionValueTypeToWasmType);
+	const results = returnTypes.map(functionValueTypeToWasmType);
 
-			const signature = JSON.stringify({ params, results });
+	const signature = JSON.stringify({ params, results });
+	let typeIndex = context.functionTypeRegistry.signatureMap.get(signature);
 
-			if (!context.functionTypeRegistry.signatureMap.has(signature)) {
-				const typeIndex = context.functionTypeRegistry.baseTypeIndex + context.functionTypeRegistry.types.length;
-				context.functionTypeRegistry.signatureMap.set(signature, typeIndex);
-				context.functionTypeRegistry.types.push(createFunctionType(params, results));
-			}
-		}
+	if (typeIndex === undefined) {
+		typeIndex = context.functionTypeRegistry.baseTypeIndex + context.functionTypeRegistry.types.length;
+		context.functionTypeRegistry.signatureMap.set(signature, typeIndex);
+		context.functionTypeRegistry.types.push(createFunctionType(params, results));
 	}
+
+	context.currentFunctionTypeIndex = typeIndex;
 
 	return context;
 };

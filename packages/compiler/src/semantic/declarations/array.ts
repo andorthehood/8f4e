@@ -47,7 +47,7 @@ function createArrayDefaultValues(
 const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDeclarationLine, context) => {
 	const memoryId = line.arguments[0].value;
 	const elementCountArg = line.arguments[1];
-	const wordAlignedAddress = context.currentModuleNextWordOffset ?? 0;
+	const wordAlignedAddress = context.currentModuleNextWordOffset;
 
 	const elementWordSize = getElementWordSize(line.instruction);
 	const isUnsigned = line.instruction.endsWith('u[]');

@@ -652,7 +652,7 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
-					knownFn: { id: 'knownFn', signature: { parameters: [], returns: [] }, body: [], locals: [] },
+					knownFn: { id: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 },
 				},
 			},
 			locals: {},

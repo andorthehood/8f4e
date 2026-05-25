@@ -50,6 +50,7 @@ describe('functionEnd instruction compiler', () => {
 				typesLength: context.functionTypeRegistry?.types.length,
 			},
 		}).toMatchSnapshot();
+		expect(context.currentFunctionTypeIndex).toBe(0);
 	});
 
 	it('accepts float64 return type and emits WASM_TYPE_F64 in type registry', () => {
@@ -92,6 +93,7 @@ describe('functionEnd instruction compiler', () => {
 				typesLength: context.functionTypeRegistry?.types.length,
 			},
 		}).toMatchSnapshot();
+		expect(context.currentFunctionTypeIndex).toBe(0);
 	});
 
 	it('throws when missing function block', () => {
