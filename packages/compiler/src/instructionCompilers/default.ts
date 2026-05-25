@@ -1,3 +1,8 @@
+import { BlockType, ErrorCode } from '@8f4e/compiler-spec';
+
+import { getError } from '../compilerError';
+import { peekExpectedBlock } from '../utils/blockStack';
+
 import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/compiler-spec';
 
 /**
@@ -7,7 +12,13 @@ import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/compiler-
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const _default: InstructionCompiler<NormalizedDefaultLine> = (line: NormalizedDefaultLine, context) => {
-	const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
+	const block = peekExpectedBlock(context, BlockType.MAP);
+
+	if (!block) {
+		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
+	}
+
+	const mapState = block.mapState;
 
 	const valueArg = line.arguments[0];
 	const defaultValue = valueArg.value;
