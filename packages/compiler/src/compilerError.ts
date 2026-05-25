@@ -483,6 +483,13 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.INVALID_POINTER_ADDRESS:
+			return {
+				code,
+				message: 'Pointer address is outside linear memory bounds. (' + code + ')',
+				line,
+				context,
+			};
 		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
 			return {
 				code,
