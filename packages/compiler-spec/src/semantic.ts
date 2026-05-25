@@ -302,13 +302,51 @@ export interface MapBlockState {
 	defaultSet: boolean;
 }
 
-export type BlockStack = Array<{
+interface BlockStackFrameBase {
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
-	blockType: BlockTypeValue;
-	loopCounterLocalName?: string;
-	mapState?: MapBlockState;
-}>;
+}
+
+export interface ModuleBlockStackFrame extends BlockStackFrameBase {
+	blockType: typeof BlockType.MODULE;
+}
+
+export interface FunctionBlockStackFrame extends BlockStackFrameBase {
+	blockType: typeof BlockType.FUNCTION;
+}
+
+export interface GenericBlockStackFrame extends BlockStackFrameBase {
+	blockType: typeof BlockType.BLOCK;
+}
+
+export interface ConditionBlockStackFrame extends BlockStackFrameBase {
+	blockType: typeof BlockType.CONDITION;
+}
+
+export interface ConstantsBlockStackFrame extends BlockStackFrameBase {
+	blockType: typeof BlockType.CONSTANTS;
+}
+
+export interface LoopBlockStackFrame extends BlockStackFrameBase {
+	blockType: typeof BlockType.LOOP;
+	loopCounterLocalName: string;
+}
+
+export interface MapBlockStackFrame extends BlockStackFrameBase {
+	blockType: typeof BlockType.MAP;
+	mapState: MapBlockState;
+}
+
+export type BlockStackFrame =
+	| ModuleBlockStackFrame
+	| FunctionBlockStackFrame
+	| GenericBlockStackFrame
+	| ConditionBlockStackFrame
+	| ConstantsBlockStackFrame
+	| LoopBlockStackFrame
+	| MapBlockStackFrame;
+
+export type BlockStack = BlockStackFrame[];
 
 export type InstructionCompiler<
 	TLine extends AST[number] = AST[number],

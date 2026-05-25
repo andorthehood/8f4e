@@ -50,6 +50,12 @@ describe('validateInstruction', () => {
 					blockType: BlockType.MAP,
 					expectedResultIsInteger: false,
 					hasExpectedResult: false,
+					mapState: {
+						inputIsInteger: true,
+						inputIsFloat64: false,
+						rows: [],
+						defaultSet: false,
+					},
 				},
 			],
 			insideMapBlock: true,

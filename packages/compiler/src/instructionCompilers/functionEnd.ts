@@ -11,7 +11,7 @@ import type { AST, FunctionCodegenContext, FunctionSignature, InstructionCompile
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
 const functionEnd: InstructionCompiler<AST[number], FunctionCodegenContext> = (line, context) => {
-	popBlock(context)!;
+	popBlock(context);
 
 	// Parse return types: functionEnd [<returnType1> <returnType2> ...]
 	const returnTypes = line.arguments.map(
