@@ -5,8 +5,6 @@ import {
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { withHiddenProperty } from './helpers';
-
 import { getError } from '../../compilerError';
 
 /**
@@ -23,5 +21,5 @@ export default function normalizeLocalVariableAccess(
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: nameArg.value });
 	}
 
-	return withHiddenProperty(line, 'local', local);
+	return { ...line, local };
 }

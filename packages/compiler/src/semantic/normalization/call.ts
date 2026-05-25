@@ -1,7 +1,5 @@
 import { ErrorCode } from '@8f4e/compiler-spec';
 
-import { withHiddenProperty } from './helpers';
-
 import { getError } from '../../compilerError';
 
 import type { CallLine, CompilationContext, ResolvedCallLine } from '@8f4e/compiler-spec';
@@ -24,5 +22,5 @@ export default function normalizeCall(line: CallLine, context: CompilationContex
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
 
-	return withHiddenProperty(line, 'targetFunction', targetFunction);
+	return { ...line, targetFunction };
 }

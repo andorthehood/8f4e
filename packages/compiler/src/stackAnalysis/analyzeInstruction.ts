@@ -621,10 +621,5 @@ export function analyzeInstruction(line: AST[number], context: CompilationContex
 		...(dropped ? { droppedStackItems: cloneStack(dropped) } : {}),
 	};
 
-	return Object.defineProperty(Object.defineProperties({}, Object.getOwnPropertyDescriptors(line)), 'stackAnalysis', {
-		value: stackAnalysis,
-		enumerable: true,
-		configurable: true,
-		writable: true,
-	}) as AnalyzedLine;
+	return { ...line, stackAnalysis } as AnalyzedLine;
 }
