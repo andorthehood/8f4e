@@ -171,24 +171,25 @@ function getASTCacheLookupResult<TAst>(
 	};
 }
 
-function getReferencedModuleIdsFromArgument(argument: Argument | undefined): string[] {
+function addReferencedModuleIdsFromArgument(referencedModuleIds: Set<string>, argument: Argument | undefined): void {
 	if (!argument) {
-		return [];
+		return;
 	}
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [...argument.intermoduleIds];
+		for (const moduleId of argument.intermoduleIds) {
+			referencedModuleIds.add(moduleId);
+		}
+		return;
 	}
 
 	if (argument.type !== ArgumentType.IDENTIFIER) {
-		return [];
+		return;
 	}
 
 	if (argument.scope === 'intermodule' && argument.targetModuleId) {
-		return [argument.targetModuleId];
+		referencedModuleIds.add(argument.targetModuleId);
 	}
-
-	return [];
 }
 
 function isRegionLine(line: CompilerASTLine): line is RegionLine {
@@ -205,9 +206,7 @@ function isFunctionEndLine(line: CompilerASTLine): line is FunctionEndLine {
 
 function addReferencedModuleIds(builder: ModuleASTBuilder, line: MemoryDeclarationLine): void {
 	for (const argument of line.arguments) {
-		for (const moduleId of getReferencedModuleIdsFromArgument(argument)) {
-			builder.referencedModuleIds.add(moduleId);
-		}
+		addReferencedModuleIdsFromArgument(builder.referencedModuleIds, argument);
 	}
 }
 
