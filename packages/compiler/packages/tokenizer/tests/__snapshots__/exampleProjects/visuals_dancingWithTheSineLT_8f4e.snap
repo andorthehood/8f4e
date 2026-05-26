@@ -68,7 +68,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 15,
@@ -93,7 +96,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 16,
@@ -118,7 +124,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 17,
@@ -418,7 +427,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 48,
@@ -443,7 +455,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 49,
@@ -468,7 +483,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 50,
@@ -768,7 +786,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 82,
@@ -793,7 +814,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 83,
@@ -818,7 +842,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 84,
@@ -1118,7 +1145,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 116,
@@ -1143,7 +1173,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 117,
@@ -1168,7 +1201,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "sineLT"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 118,
@@ -1193,7 +1229,10 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "dancer1"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 120,
