@@ -22,17 +22,21 @@ exports[`push instruction compiler > float64 memory push > pushes a float64 memo
 exports[`push instruction compiler > pushes a f64 literal value emitting f64.const 1`] = `
 {
   "byteCode": [
-    67,
-    195,
-    245,
-    72,
+    68,
+    31,
+    133,
+    235,
+    81,
+    184,
+    30,
+    9,
     64,
   ],
   "stack": [
     {
       "isNonZero": true,
       "kind": "value",
-      "valueType": "float",
+      "valueType": "float64",
     },
   ],
 }
