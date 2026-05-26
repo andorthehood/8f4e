@@ -3,7 +3,6 @@ import {
 	blockEndToStartInstruction,
 	blockStartInstructions,
 	isConstantsLine,
-	isFunctionEndLine,
 	isFunctionLine,
 	isMemoryDeclarationLine,
 	isModuleLine,
@@ -33,12 +32,15 @@ import type {
 	BlockBlockResultType,
 	CompilerASTLine,
 	CompilerASTLines,
+	ConstantsLine,
 	ExportLine,
 	FunctionEndLine,
+	FunctionLine,
 	FunctionSignature,
 	IfEndLine,
 	IfBlockResultType,
 	MemoryDeclarationLine,
+	ModuleLine,
 	ParsedLineMetadata,
 	RegionLine,
 } from '@8f4e/compiler-spec';
@@ -58,6 +60,38 @@ type SourceBlockPrologue = {
 type ASTCacheLookupResult<TAst> = {
 	ast?: TAst;
 	hash?: number;
+};
+
+type ModuleASTBuilder = {
+	type: 'module';
+	id: string;
+	moduleLine: ModuleLine;
+	regionLine?: RegionLine;
+	memoryDeclarationLines: MemoryDeclarationLine[];
+	referencedModuleIds: Set<string>;
+};
+
+type FunctionASTBuilder = {
+	type: 'function';
+	id: string;
+	functionLine: FunctionLine;
+	functionEndLine?: FunctionEndLine;
+	parameters: FunctionSignature['parameters'];
+	exportLine?: ExportLine;
+	exportName?: string;
+};
+
+type ConstantsASTBuilder = {
+	type: 'constants';
+	id: string;
+	constantsLine: ConstantsLine;
+};
+
+type SourceBlockASTBuilder = ModuleASTBuilder | FunctionASTBuilder | ConstantsASTBuilder;
+
+type ParsedCompilerSource = {
+	lines: CompilerASTLines;
+	astBuilder?: SourceBlockASTBuilder;
 };
 
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
@@ -157,92 +191,150 @@ function getReferencedModuleIdsFromArgument(argument: Argument | undefined): str
 	return [];
 }
 
-function getReferencedModuleIds(lines: readonly CompilerASTLine[]): string[] {
-	const referencedModuleIds = new Set<string>();
+function isRegionLine(line: CompilerASTLine): line is RegionLine {
+	return line.instruction === '#region';
+}
 
-	for (const line of lines) {
-		if (!isMemoryDeclarationLine(line)) {
-			continue;
-		}
+function isExportLine(line: CompilerASTLine): line is ExportLine {
+	return line.instruction === '#export';
+}
 
-		for (const argument of line.arguments) {
-			for (const moduleId of getReferencedModuleIdsFromArgument(argument)) {
-				referencedModuleIds.add(moduleId);
-			}
+function isFunctionEndLine(line: CompilerASTLine): line is FunctionEndLine {
+	return line.instruction === 'functionEnd';
+}
+
+function addReferencedModuleIds(builder: ModuleASTBuilder, line: MemoryDeclarationLine): void {
+	for (const argument of line.arguments) {
+		for (const moduleId of getReferencedModuleIdsFromArgument(argument)) {
+			builder.referencedModuleIds.add(moduleId);
 		}
 	}
-
-	return [...referencedModuleIds];
 }
 
-function getRegionLine(lines: readonly CompilerASTLine[]): RegionLine | undefined {
-	return lines.find((line): line is RegionLine => line.instruction === '#region');
-}
-
-function getMemoryDeclarationLines(lines: readonly CompilerASTLine[]): MemoryDeclarationLine[] {
-	return lines.filter(isMemoryDeclarationLine);
-}
-
-function getExportLine(lines: readonly CompilerASTLine[]): ExportLine | undefined {
-	return lines.find((line): line is ExportLine => line.instruction === '#export');
-}
-
-function getFunctionSignature(lines: readonly CompilerASTLine[], functionEndLine: FunctionEndLine): FunctionSignature {
-	return {
-		parameters: lines
-			.filter(isParamLine)
-			.map(line => line.arguments[0].value as FunctionSignature['parameters'][number]),
-		returns: functionEndLine.arguments.map(arg => arg.value as FunctionSignature['returns'][number]),
-	};
-}
-
-function toAST(lines: CompilerASTLines): AST {
-	const firstLine = lines[0];
-
-	if (isModuleLine(firstLine)) {
-		const regionLine = getRegionLine(lines);
+function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuilder | undefined {
+	if (isModuleLine(line)) {
 		return {
 			type: 'module',
-			id: firstLine.arguments[0].value,
-			lines,
-			moduleLine: firstLine,
-			...(regionLine ? { regionLine } : {}),
-			memoryDeclarationLines: getMemoryDeclarationLines(lines),
-			referencedModuleIds: getReferencedModuleIds(lines),
+			id: line.arguments[0].value,
+			moduleLine: line,
+			memoryDeclarationLines: [],
+			referencedModuleIds: new Set<string>(),
 		};
 	}
 
-	const functionLine = lines.find(isFunctionLine);
-	if (functionLine) {
-		const functionEndLine = lines.find(isFunctionEndLine);
-		if (!functionEndLine) {
-			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_BLOCK_STRUCTURE, 'Expected a matching functionEnd.', {
-				lineNumberBeforeMacroExpansion: functionLine.lineNumberBeforeMacroExpansion,
-				lineNumberAfterMacroExpansion: functionLine.lineNumberAfterMacroExpansion,
-				instruction: functionLine.instruction,
-			});
-		}
-
-		const id = functionLine.arguments[0].value;
-		const exportLine = getExportLine(lines);
+	if (isFunctionLine(line)) {
 		return {
 			type: 'function',
-			id,
-			lines,
-			functionLine,
-			functionEndLine,
-			signature: getFunctionSignature(lines, functionEndLine),
-			...(exportLine ? { exportLine, exportName: exportLine.arguments[0]?.value ?? id } : {}),
+			id: line.arguments[0].value,
+			functionLine: line,
+			parameters: [],
 		};
 	}
 
-	if (isConstantsLine(firstLine)) {
+	if (isConstantsLine(line)) {
 		return {
 			type: 'constants',
-			id: firstLine.arguments[0].value,
-			lines,
-			constantsLine: firstLine,
+			id: line.arguments[0].value,
+			constantsLine: line,
 		};
+	}
+
+	return undefined;
+}
+
+function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): void {
+	if (isRegionLine(line)) {
+		builder.regionLine = line;
+		return;
+	}
+
+	if (!isMemoryDeclarationLine(line)) {
+		return;
+	}
+
+	builder.memoryDeclarationLines.push(line);
+	addReferencedModuleIds(builder, line);
+}
+
+function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
+	if (isParamLine(line)) {
+		builder.parameters.push(line.arguments[0].value as FunctionSignature['parameters'][number]);
+		return;
+	}
+
+	if (isFunctionEndLine(line)) {
+		builder.functionEndLine = line;
+		return;
+	}
+
+	if (isExportLine(line)) {
+		builder.exportLine = line;
+		builder.exportName = builder.exportLine.arguments[0]?.value ?? builder.id;
+	}
+}
+
+function applySourceBlockASTLine(builder: SourceBlockASTBuilder, line: CompilerASTLine): void {
+	switch (builder.type) {
+		case 'module':
+			applyModuleASTLine(builder, line);
+			return;
+		case 'function':
+			applyFunctionASTLine(builder, line);
+			return;
+		case 'constants':
+			return;
+	}
+}
+
+function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBuilder): AST {
+	switch (builder.type) {
+		case 'module':
+			return {
+				type: 'module',
+				id: builder.id,
+				lines,
+				moduleLine: builder.moduleLine,
+				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
+				memoryDeclarationLines: builder.memoryDeclarationLines,
+				referencedModuleIds: [...builder.referencedModuleIds],
+			};
+		case 'function':
+			if (!builder.functionEndLine) {
+				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_BLOCK_STRUCTURE, 'Expected a matching functionEnd.', {
+					lineNumberBeforeMacroExpansion: builder.functionLine.lineNumberBeforeMacroExpansion,
+					lineNumberAfterMacroExpansion: builder.functionLine.lineNumberAfterMacroExpansion,
+					instruction: builder.functionLine.instruction,
+				});
+			}
+
+			return {
+				type: 'function',
+				id: builder.id,
+				lines,
+				functionLine: builder.functionLine,
+				functionEndLine: builder.functionEndLine,
+				signature: {
+					parameters: builder.parameters,
+					returns: builder.functionEndLine.arguments.map(arg => arg.value as FunctionSignature['returns'][number]),
+				},
+				...(builder.exportLine ? { exportLine: builder.exportLine, exportName: builder.exportName } : {}),
+			};
+		case 'constants':
+			return {
+				type: 'constants',
+				id: builder.id,
+				lines,
+				constantsLine: builder.constantsLine,
+			};
+	}
+}
+
+function toAST(parsedSource: ParsedCompilerSource): AST {
+	const { lines, astBuilder } = parsedSource;
+	const firstLine = lines[0];
+
+	if (astBuilder) {
+		return createASTFromBuilder(lines, astBuilder);
 	}
 
 	throw new SyntaxRulesError(SyntaxErrorCode.INVALID_BLOCK_STRUCTURE, 'Expected a compiler source block.', {
@@ -339,23 +431,10 @@ export function parseLine(
 	}
 }
 
-export function compileToASTLines(
-	code: string[],
-	lineMetadata?: ParsedLineMetadata,
-	cache?: ASTCache<CompilerASTLines>,
-	cacheKey?: string
-): CompilerASTLines {
-	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
-	const cachedLookup = getASTCacheLookupResult(cached, code, lineMetadata);
-	if (cachedLookup.ast) {
-		cache!.stats.hits++;
-		return cachedLookup.ast;
-	}
-	if (cache && cacheKey !== undefined) {
-		cache.stats.misses++;
-	}
-
+function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata): ParsedCompilerSource {
 	const ast: CompilerASTLines = [];
+	let astBuilder: SourceBlockASTBuilder | undefined;
+	let onlySemanticLinesBeforeSourceBlock = true;
 	const blockStack: OpenBlock[] = [];
 	const sourceBlockPrologueStack: SourceBlockPrologue[] = [];
 
@@ -368,6 +447,7 @@ export function compileToASTLines(
 			lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
 		const parsedLine = parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
 		const astIndex = ast.length;
+		const isFirstASTLine = ast.length === 0;
 		const currentSourceBlockPrologue = sourceBlockPrologueStack[sourceBlockPrologueStack.length - 1];
 		const isCompilerDirective = isCompilerDirectiveInstruction(parsedLine.instruction);
 		const isInOpenSourceBlockPrologue =
@@ -388,6 +468,20 @@ export function compileToASTLines(
 		}
 
 		ast.push(parsedLine);
+		if (!astBuilder) {
+			const candidateBuilder = createSourceBlockASTBuilder(parsedLine);
+			if (
+				candidateBuilder &&
+				(isFirstASTLine || (candidateBuilder.type === 'function' && onlySemanticLinesBeforeSourceBlock))
+			) {
+				astBuilder = candidateBuilder;
+			}
+		}
+		if (astBuilder) {
+			applySourceBlockASTLine(astBuilder, parsedLine);
+		} else if (!parsedLine.isSemanticOnly) {
+			onlySemanticLinesBeforeSourceBlock = false;
+		}
 
 		if (isBlockStartInstruction(parsedLine.instruction)) {
 			blockStack.push({
@@ -512,6 +606,27 @@ export function compileToASTLines(
 		});
 	}
 
+	return { lines: ast, astBuilder };
+}
+
+export function compileToASTLines(
+	code: string[],
+	lineMetadata?: ParsedLineMetadata,
+	cache?: ASTCache<CompilerASTLines>,
+	cacheKey?: string
+): CompilerASTLines {
+	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
+	const cachedLookup = getASTCacheLookupResult(cached, code, lineMetadata);
+	if (cachedLookup.ast) {
+		cache!.stats.hits++;
+		return cachedLookup.ast;
+	}
+	if (cache && cacheKey !== undefined) {
+		cache.stats.misses++;
+	}
+
+	const ast = parseCompilerSource(code, lineMetadata).lines;
+
 	if (cache && cacheKey !== undefined) {
 		const entry: ASTCacheEntry<CompilerASTLines> = {
 			ast,
@@ -547,8 +662,8 @@ export function compileToAST(
 		cache.stats.misses++;
 	}
 
-	const ast = compileToASTLines(code, lineMetadata);
-	const group = toAST(ast);
+	const parsedSource = parseCompilerSource(code, lineMetadata);
+	const group = toAST(parsedSource);
 
 	if (cache && cacheKey !== undefined) {
 		const entry: ASTCacheEntry<AST> = {

@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-05-26
 issue: null
-status: Open
-completed: null
+status: Done
+completed: 2026-05-26
 ---
 
 # TODO: Clean up AST construction helper scans
@@ -83,11 +83,11 @@ If a field can be accumulated while parsing each line, prefer accumulating it th
 
 ## Success Criteria
 
-- [ ] Top-level AST metadata is constructed through source-block-specific code, not scattered generic line-array helper scans.
-- [ ] Helpers whose only job is post-processing `CompilerASTLine[]` for module/function metadata are removed.
-- [ ] Compiler phases continue reading typed AST fields rather than rediscovering ids, directives, declarations, signatures, or references.
-- [ ] No compatibility layers, hidden metadata, or fallback runtime checks are introduced.
-- [ ] The AST construction code makes the ownership of module/function/constants metadata obvious to a new agent.
+- [x] Top-level AST metadata is constructed through source-block-specific code, not scattered generic line-array helper scans.
+- [x] Helpers whose only job is post-processing `CompilerASTLine[]` for module/function metadata are removed.
+- [x] Compiler phases continue reading typed AST fields rather than rediscovering ids, directives, declarations, signatures, or references.
+- [x] No compatibility layers, hidden metadata, or fallback runtime checks are introduced.
+- [x] The AST construction code makes the ownership of module/function/constants metadata obvious to a new agent.
 
 ## Affected Components
 

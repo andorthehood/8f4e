@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ArgumentType } from '@8f4e/compiler-spec';
 
-import { compileToASTLines, parseLine } from './parser';
+import { compileToAST, compileToASTLines, parseLine } from './parser';
 import { classifyIdentifier } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 
@@ -151,6 +151,66 @@ describe('parseLine', () => {
 			{ type: ArgumentType.LITERAL, value: 62, isInteger: true },
 			{ type: ArgumentType.LITERAL, value: 64, isInteger: true },
 		]);
+	});
+});
+
+describe('compileToAST', () => {
+	it('constructs module metadata from the source-block parse path', () => {
+		const ast = compileToAST([
+			'module target',
+			'#region fastMemory',
+			'int counter',
+			'int sourceStart &source:buffer',
+			'moduleEnd',
+		]);
+
+		expect(ast).toMatchObject({
+			type: 'module',
+			id: 'target',
+			moduleLine: { instruction: 'module' },
+			regionLine: { instruction: '#region' },
+		});
+		if (ast.type !== 'module') {
+			throw new Error('Expected module AST');
+		}
+		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
+		expect(ast.referencedModuleIds).toEqual(['source']);
+	});
+
+	it('constructs function metadata from the source-block parse path', () => {
+		const ast = compileToAST([
+			'const SCALE 2',
+			'function mix',
+			'#export mixExport',
+			'param int left',
+			'param float right',
+			'push left',
+			'functionEnd int float',
+		]);
+
+		expect(ast).toMatchObject({
+			type: 'function',
+			id: 'mix',
+			functionLine: { instruction: 'function' },
+			functionEndLine: { instruction: 'functionEnd' },
+			exportLine: { instruction: '#export' },
+			exportName: 'mixExport',
+			signature: {
+				parameters: ['int', 'float'],
+				returns: ['int', 'float'],
+			},
+		});
+		expect(ast.lines[0].instruction).toBe('const');
+	});
+
+	it('constructs constants metadata from the source-block parse path', () => {
+		const ast = compileToAST(['constants sizes', 'const COUNT 4', 'constantsEnd']);
+
+		expect(ast).toMatchObject({
+			type: 'constants',
+			id: 'sizes',
+			constantsLine: { instruction: 'constants' },
+		});
 	});
 });
 
