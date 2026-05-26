@@ -4,7 +4,7 @@ import float from './float';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import type { MemoryDeclarationLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -17,8 +17,9 @@ describe('float instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('temperature')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 

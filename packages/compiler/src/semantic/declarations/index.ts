@@ -10,7 +10,7 @@ import int16 from './int16';
 import { validateInstruction } from '../../stackAnalysis/validateInstruction';
 
 import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
-import type { CompilerASTLine, CompilationContext, MemoryDeclarationInstruction } from '@8f4e/compiler-spec';
+import type { CompilationContext, MemoryDeclarationInstruction, MemoryDeclarationLine } from '@8f4e/compiler-spec';
 
 function getDeclarationCompiler(instruction: MemoryDeclarationInstruction): MemoryDeclarationCompiler {
 	if (instruction.endsWith('[]')) {
@@ -41,11 +41,7 @@ export function isMemoryDeclarationInstruction(instruction: string): instruction
 	return memoryDeclarationInstructions.has(instruction as MemoryDeclarationInstruction);
 }
 
-export function applyMemoryDeclarationLine(line: CompilerASTLine, context: CompilationContext) {
-	if (!line.isMemoryDeclaration) {
-		return context;
-	}
-
+export function applyMemoryDeclarationLine(line: MemoryDeclarationLine, context: CompilationContext) {
 	validateInstruction(line, context);
 	const compileDeclaration = declarationCompilers[
 		line.instruction as MemoryDeclarationInstruction

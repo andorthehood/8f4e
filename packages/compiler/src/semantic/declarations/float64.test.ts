@@ -5,7 +5,7 @@ import int from './int';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import type { MemoryDeclarationLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -18,8 +18,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('value')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 
@@ -34,8 +35,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('value')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 
@@ -50,8 +52,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('value')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 
@@ -67,8 +70,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('a')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 
@@ -78,8 +82,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'int',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('x')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 		int(
@@ -87,8 +92,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 3,
 				lineNumberAfterMacroExpansion: 3,
 				instruction: 'int',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('y')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 		int(
@@ -96,8 +102,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 4,
 				lineNumberAfterMacroExpansion: 4,
 				instruction: 'int',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('z')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 
@@ -107,8 +114,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 5,
 				lineNumberAfterMacroExpansion: 5,
 				instruction: 'float64',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('b')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 
@@ -125,8 +133,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64*',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ptr')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 
@@ -145,8 +154,9 @@ describe('float64 instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64**',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('pptr')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 

@@ -7,12 +7,11 @@ function wasmTypeListsEqual(left: WasmTypeValue[], right: WasmTypeValue[]): bool
 	return left.length === right.length && left.every((type, index) => type === right[index]);
 }
 
-function functionTypeSignaturesEqual(left: FunctionTypeSignature, right: FunctionTypeSignature): boolean {
-	return wasmTypeListsEqual(left.params, right.params) && wasmTypeListsEqual(left.results, right.results);
-}
-
 export function getOrRegisterFunctionType(registry: FunctionTypeRegistry, signature: FunctionTypeSignature): number {
-	const registeredSignature = registry.signatures.find(existing => functionTypeSignaturesEqual(existing, signature));
+	const registeredSignature = registry.signatures.find(
+		existing =>
+			wasmTypeListsEqual(existing.params, signature.params) && wasmTypeListsEqual(existing.results, signature.results)
+	);
 
 	if (registeredSignature) {
 		return registeredSignature.typeIndex;

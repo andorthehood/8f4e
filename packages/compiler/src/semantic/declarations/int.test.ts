@@ -4,7 +4,7 @@ import int from './int';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import type { MemoryDeclarationLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -17,8 +17,9 @@ describe('int instruction compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('counter')],
-			} as CompilerASTLine,
+			} satisfies MemoryDeclarationLine,
 			context
 		);
 

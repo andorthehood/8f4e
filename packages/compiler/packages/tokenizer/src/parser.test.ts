@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-spec';
+import {
+	ArgumentType,
+	isCompilerDirectiveLine,
+	isMemoryDeclarationLine,
+	isSemanticInstructionLine,
+} from '@8f4e/compiler-spec';
 
 import { compileToAST, compileToASTLines, parseLine } from './parser';
 import { classifyIdentifier } from './syntax/parseArgument';
@@ -24,8 +29,6 @@ describe('parseLine', () => {
 				instruction: 'int',
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
-				isSemanticOnly: false,
-				isMemoryDeclaration: true,
 				hasExplicitMemoryDefault: true,
 			},
 		],
@@ -44,8 +47,6 @@ describe('parseLine', () => {
 				instruction: 'push',
 				lineNumberBeforeMacroExpansion: 100,
 				lineNumberAfterMacroExpansion: 100,
-				isSemanticOnly: false,
-				isMemoryDeclaration: false,
 			},
 		],
 	];
@@ -54,23 +55,33 @@ describe('parseLine', () => {
 		expect(parseLine(line, lineNumber)).toStrictEqual(ast);
 	});
 
-	it('flags semantic-only instructions in generated AST lines', () => {
-		expect(parseLine('const SIZE 16', 0).isSemanticOnly).toBe(true);
-		expect(parseLine('use math', 0).isSemanticOnly).toBe(true);
-		expect(parseLine('module demo', 0).isSemanticOnly).toBe(true);
+	it('narrows semantic instructions in generated AST lines', () => {
+		expect(isSemanticInstructionLine(parseLine('const SIZE 16', 0))).toBe(true);
+		expect(isSemanticInstructionLine(parseLine('use math', 0))).toBe(true);
+		expect(isSemanticInstructionLine(parseLine('module demo', 0))).toBe(true);
 	});
 
-	it('leaves runtime/codegen instructions unflagged', () => {
-		expect(parseLine('push 1', 0).isSemanticOnly).toBe(false);
-		expect(parseLine('int value 1', 0).isSemanticOnly).toBe(false);
+	it('does not narrow runtime/codegen instructions as semantic instructions', () => {
+		expect(isSemanticInstructionLine(parseLine('push 1', 0))).toBe(false);
+		expect(isSemanticInstructionLine(parseLine('int value 1', 0))).toBe(false);
 	});
 
 	it('marks explicit memory defaults from source syntax', () => {
-		expect(parseLine('int value', 0).hasExplicitMemoryDefault).toBe(false);
-		expect(parseLine('int value 0', 0).hasExplicitMemoryDefault).toBe(true);
-		expect(parseLine('int 0', 0).hasExplicitMemoryDefault).toBe(true);
-		expect(parseLine('int[] buffer 4', 0).hasExplicitMemoryDefault).toBe(false);
-		expect(parseLine('int[] buffer 4 0', 0).hasExplicitMemoryDefault).toBe(true);
+		const implicitScalarDefault = parseLine('int value', 0);
+		const explicitScalarDefault = parseLine('int value 0', 0);
+		const anonymousScalarDefault = parseLine('int 0', 0);
+		const implicitArrayDefault = parseLine('int[] buffer 4', 0);
+		const explicitArrayDefault = parseLine('int[] buffer 4 0', 0);
+
+		expect(isMemoryDeclarationLine(implicitScalarDefault) && implicitScalarDefault.hasExplicitMemoryDefault).toBe(
+			false
+		);
+		expect(isMemoryDeclarationLine(explicitScalarDefault) && explicitScalarDefault.hasExplicitMemoryDefault).toBe(true);
+		expect(isMemoryDeclarationLine(anonymousScalarDefault) && anonymousScalarDefault.hasExplicitMemoryDefault).toBe(
+			true
+		);
+		expect(isMemoryDeclarationLine(implicitArrayDefault) && implicitArrayDefault.hasExplicitMemoryDefault).toBe(false);
+		expect(isMemoryDeclarationLine(explicitArrayDefault) && explicitArrayDefault.hasExplicitMemoryDefault).toBe(true);
 	});
 
 	it('rejects wrong arity and raw argument shape in tokenizer', () => {
@@ -269,13 +280,13 @@ describe('compileToASTLines', () => {
 			'functionEnd int',
 		]);
 
-		expect(ast[1].isBlockPrologue).toBe(true);
-		expect(ast[2].isBlockPrologue).toBe(true);
-		expect(ast[3].isBlockPrologue).toBe(true);
-		expect(ast[4].isBlockPrologue).toBeUndefined();
-		expect(ast[7].isBlockPrologue).toBe(true);
-		expect(ast[8].isBlockPrologue).toBe(true);
-		expect(ast[9].isBlockPrologue).toBeUndefined();
+		expect(isCompilerDirectiveLine(ast[1]) && ast[1].isBlockPrologue).toBe(true);
+		expect(isCompilerDirectiveLine(ast[2]) && ast[2].isBlockPrologue).toBe(true);
+		expect(isCompilerDirectiveLine(ast[3]) && ast[3].isBlockPrologue).toBe(true);
+		expect(isCompilerDirectiveLine(ast[4])).toBe(false);
+		expect(isCompilerDirectiveLine(ast[7]) && ast[7].isBlockPrologue).toBe(true);
+		expect(isCompilerDirectiveLine(ast[8]) && ast[8].isBlockPrologue).toBe(true);
+		expect(isCompilerDirectiveLine(ast[9])).toBe(false);
 	});
 
 	it('rejects module directives after the module prologue', () => {

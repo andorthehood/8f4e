@@ -1,3 +1,5 @@
+import { isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+
 import normalizeCall from './call';
 import normalizeClampAddress from './clampAddress';
 import normalizeConst from './const';
@@ -32,7 +34,7 @@ export default function dispatchNormalization<TLine extends CompilerASTLine>(
 		return normalizer(line as never, context) as NormalizedLine<TLine>;
 	}
 
-	if (line.isMemoryDeclaration) {
+	if (isMemoryDeclarationLine(line)) {
 		return normalizeMemoryDeclaration(line as never, context) as NormalizedLine<TLine>;
 	}
 

@@ -6,7 +6,7 @@ import array from './array';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import type { ArrayDeclarationLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -19,8 +19,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('values'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -43,7 +44,7 @@ describe('array declaration compiler', () => {
 					{ type: ArgumentType.LITERAL, value: 50, isInteger: true },
 					{ type: ArgumentType.LITERAL, value: 53, isInteger: true },
 				],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -63,12 +64,13 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [
 					classifyIdentifier('values'),
 					{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
 					{ type: ArgumentType.LITERAL, value: 1.9, isInteger: false },
 				],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -87,6 +89,7 @@ describe('array declaration compiler', () => {
 					lineNumberBeforeMacroExpansion: 1,
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'int[]',
+					hasExplicitMemoryDefault: false,
 					arguments: [
 						classifyIdentifier('values'),
 						{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
@@ -94,7 +97,7 @@ describe('array declaration compiler', () => {
 						{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
 						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
 					],
-				} as CompilerASTLine,
+				} satisfies ArrayDeclarationLine,
 				context
 			);
 		} catch (error) {
@@ -112,8 +115,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int8[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('bytes'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -133,8 +137,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int8[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('bytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -154,8 +159,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int16[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('shorts'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -175,8 +181,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int16[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('shorts'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -196,8 +203,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int32[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -217,8 +225,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int8u[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('unsignedBytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -237,8 +246,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int16u[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('unsignedShorts'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -257,8 +267,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int8[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('signedBytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -274,8 +285,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -296,8 +308,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 1,
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
@@ -306,8 +319,9 @@ describe('array declaration compiler', () => {
 				lineNumberBeforeMacroExpansion: 2,
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'float64[]',
+				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 2, isInteger: true }],
-			} as CompilerASTLine,
+			} satisfies ArrayDeclarationLine,
 			context
 		);
 
