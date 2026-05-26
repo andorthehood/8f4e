@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-26
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-26
 ---
 
 # TODO: Merge instruction source argument specs into instruction specs
@@ -87,12 +87,12 @@ It is acceptable for this to be an API move. The project is not released yet, an
 
 ## Success Criteria
 
-- [ ] Source argument metadata lives in `packages/compiler-spec/src/instructionSpecs.ts`.
-- [ ] Tokenizer validation reads source argument contracts from compiler-spec.
-- [ ] The tokenizer-local `instructionArgumentSpecs` table is removed.
-- [ ] No-source-argument helper data is derived from source argument metadata or no longer needed.
-- [ ] Existing language behavior is preserved, including optional arguments such as `ensureNonZero <literal>` and `clampAddress <width>`.
-- [ ] No compatibility layer keeps old duplicated specs alive.
+- [x] Source argument metadata lives in `packages/compiler-spec/src/instructionSpecs.ts`.
+- [x] Tokenizer validation reads source argument contracts from compiler-spec.
+- [x] The tokenizer-local `instructionArgumentSpecs` table is removed.
+- [x] No-source-argument helper data is derived from source argument metadata or no longer needed.
+- [x] Existing language behavior is preserved, including optional arguments such as `ensureNonZero <literal>` and `clampAddress <width>`.
+- [x] No compatibility layer keeps old duplicated specs alive.
 
 ## Affected Components
 

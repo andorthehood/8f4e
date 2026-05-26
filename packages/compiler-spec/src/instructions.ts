@@ -1,7 +1,7 @@
 import { instructionSpecs } from './instructionSpecs';
 import { memoryDeclarationInstructions } from './memory';
 
-import type { InstructionSpecName } from './instructionSpecs';
+import type { CodegenInstructionSpecName, InstructionSpec } from './instructionSpecs';
 import type { MemoryDeclarationInstruction } from './memory';
 
 export const semanticInstructionNames = [
@@ -90,10 +90,12 @@ export const compilableBlockTypes = documentBlockInstructionPairs
 	.map(({ type }) => type)
 	.filter((type): type is CompilableBlockType => type !== 'note');
 
-export type CodegenInstructionName = Exclude<InstructionSpecName, 'memoryDeclaration'>;
+export type CodegenInstructionName = Exclude<CodegenInstructionSpecName, 'memoryDeclaration'>;
 
 export const codegenInstructionNames = Object.keys(instructionSpecs).filter(
-	(instruction): instruction is CodegenInstructionName => instruction !== 'memoryDeclaration'
+	(instruction): instruction is CodegenInstructionName =>
+		instruction !== 'memoryDeclaration' &&
+		(instructionSpecs[instruction as keyof typeof instructionSpecs] as InstructionSpec).codegen !== false
 );
 
 export type Instruction =
