@@ -29,6 +29,7 @@ export type ASTLineBase<Instruction extends string, Arguments extends Array<Argu
 	isMemoryDeclaration?: boolean;
 	isBlockPrologue?: boolean;
 	hasExplicitMemoryDefault?: boolean;
+	referencedNamespaceIds?: readonly string[];
 	ifBlock?: IfBlockMetadata;
 	ifEndBlock?: IfEndBlockMetadata;
 	blockBlock?: BlockBlockMetadata;

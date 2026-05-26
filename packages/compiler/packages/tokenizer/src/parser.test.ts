@@ -175,6 +175,7 @@ describe('compileToAST', () => {
 		}
 		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
 		expect(ast.memoryDeclarationLines[1].referencedModuleIds).toEqual(['source']);
+		expect(ast.memoryDeclarationLines[1].referencedNamespaceIds).toEqual(['source']);
 		expect(ast.referencedModuleIds).toEqual(['source']);
 	});
 
@@ -212,6 +213,12 @@ describe('compileToAST', () => {
 			id: 'sizes',
 			constantsLine: { instruction: 'constants' },
 		});
+	});
+
+	it('records namespace references from use lines while parsing lines', () => {
+		const ast = compileToAST(['module target', 'use shared', 'moduleEnd']);
+
+		expect(ast.lines[1].referencedNamespaceIds).toEqual(['shared']);
 	});
 });
 
