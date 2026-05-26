@@ -10,7 +10,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('ensureNonZero instruction compiler', () => {
 	it('ensures integer operand is non-zero', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			ensureNonZero,
@@ -32,7 +32,7 @@ describe('ensureNonZero instruction compiler', () => {
 
 	it('ensures float operand is non-zero with literal default', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			ensureNonZero,
@@ -54,7 +54,7 @@ describe('ensureNonZero instruction compiler', () => {
 
 	it('ensures float64 operand is non-zero with float64 default', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			ensureNonZero,
@@ -67,7 +67,6 @@ describe('ensureNonZero instruction compiler', () => {
 						type: ArgumentType.LITERAL,
 						value: 2.5,
 						isInteger: false,
-						isFloat64: true,
 					},
 				],
 			} as CompilerASTLine,

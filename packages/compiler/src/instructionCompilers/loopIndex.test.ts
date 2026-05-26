@@ -11,7 +11,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('loopIndex instruction compiler', () => {
 	it('reads the nearest active loop counter as a zero-based index', () => {
-		const loopCounterLocal = { isInteger: true, index: 3 };
+		const loopCounterLocal = { kind: 'value', valueType: 'int', index: 3 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
 				__loopCounter2: loopCounterLocal,
@@ -44,12 +44,12 @@ describe('loopIndex instruction compiler', () => {
 		);
 
 		expect(context.byteCode).toEqual([...localGet(3), ...i32const(1), WASM_I32_SUB]);
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: false }]);
 	});
 
 	it('uses the innermost loop when nested', () => {
-		const outerLoopCounterLocal = { isInteger: true, index: 1 };
-		const innerLoopCounterLocal = { isInteger: true, index: 2 };
+		const outerLoopCounterLocal = { kind: 'value', valueType: 'int', index: 1 };
+		const innerLoopCounterLocal = { kind: 'value', valueType: 'int', index: 2 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
 				__outer: outerLoopCounterLocal,

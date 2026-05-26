@@ -10,7 +10,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('branchIfUnchanged instruction compiler', () => {
 	it('compiles the unchanged check segment', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			branchIfUnchanged,

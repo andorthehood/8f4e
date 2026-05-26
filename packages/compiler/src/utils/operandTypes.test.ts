@@ -10,13 +10,9 @@ import {
 import type { StackItem } from '@8f4e/compiler-spec';
 
 describe('operandTypes utilities', () => {
-	const intOperand: StackItem = { isInteger: true, isNonZero: false };
-	const floatOperand: StackItem = { isInteger: false, isNonZero: false };
-	const float64Operand: StackItem = {
-		isInteger: false,
-		isFloat64: true,
-		isNonZero: false,
-	};
+	const intOperand: StackItem = { kind: 'value', valueType: 'int', isNonZero: false };
+	const floatOperand: StackItem = { kind: 'value', valueType: 'float', isNonZero: false };
+	const float64Operand: StackItem = { kind: 'value', valueType: 'float64', isNonZero: false };
 
 	describe('areAllOperandsIntegers', () => {
 		it('returns true when all operands are integers', () => {

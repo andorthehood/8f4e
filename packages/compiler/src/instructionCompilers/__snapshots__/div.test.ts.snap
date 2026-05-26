@@ -7,8 +7,9 @@ exports[`div instruction compiler > emits F32_DIV for float32 operands 1`] = `
   ],
   "stack": [
     {
-      "isInteger": false,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "float",
     },
   ],
 }
@@ -21,9 +22,9 @@ exports[`div instruction compiler > emits F64_DIV for float64 operands 1`] = `
   ],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }
@@ -36,8 +37,9 @@ exports[`div instruction compiler > emits I32_DIV_S for integer operands 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

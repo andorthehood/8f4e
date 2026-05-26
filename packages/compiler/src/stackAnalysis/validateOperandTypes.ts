@@ -20,9 +20,9 @@ export function validateOperandTypes(
 			const operand = operands[i];
 			const expectedType = rule[i];
 
-			if (expectedType === 'int' && !operand.isInteger) {
+			if (expectedType === 'int' && operand.valueType !== 'int') {
 				throw getError(errorCode, line, context);
-			} else if (expectedType === 'float' && operand.isInteger) {
+			} else if (expectedType === 'float' && operand.valueType === 'int') {
 				throw getError(errorCode, line, context);
 			}
 		}

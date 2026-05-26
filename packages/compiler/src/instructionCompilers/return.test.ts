@@ -20,7 +20,7 @@ describe('return instruction compiler', () => {
 				},
 			],
 		});
-		context.stack.push({ isInteger: false, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			_return,

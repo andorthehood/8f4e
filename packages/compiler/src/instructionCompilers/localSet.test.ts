@@ -16,7 +16,7 @@ describe('localSet instruction compiler', () => {
 				value: local,
 			},
 		});
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			_localSet,
