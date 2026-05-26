@@ -34,6 +34,7 @@ import type {
 } from './memory';
 import type { CompiledModuleBlockType, CompilerSourceBlockType } from './instructions';
 
+/** Proven byte range associated with an address expression or memory boundary. */
 export interface MemoryAddressRange {
 	source: 'memory-start' | 'memory-end' | 'module-start' | 'module-end' | 'module-nth-memory-start';
 	memoryIndex: number;
@@ -44,6 +45,7 @@ export interface MemoryAddressRange {
 	memoryId?: string;
 }
 
+/** Compiler metadata carried alongside values known to represent memory addresses. */
 export interface AddressMetadata {
 	/** Resolved WebAssembly memory index that this address points into. */
 	memoryIndex: number;
@@ -81,6 +83,7 @@ export type NormalizedArgumentLiteral = ArgumentLiteral & {
 	address?: AddressMetadata;
 };
 
+/** Resolved local variable slot and type metadata for function compilation. */
 export interface LocalBinding {
 	isInteger: boolean;
 	isFloat64?: boolean;
@@ -93,6 +96,7 @@ export interface LocalBinding {
 
 export type LocalMap = Record<string, LocalBinding>;
 
+/** Mutable namespace state available while compiling modules, constants, and functions. */
 export interface Namespace {
 	memory: MemoryMap;
 	consts: Consts;
@@ -101,6 +105,7 @@ export interface Namespace {
 	functions?: FunctionMetadataLookup;
 }
 
+/** Compiled namespace summary recorded for later imports and cross-module references. */
 export interface CollectedNamespace {
 	kind: CompiledModuleBlockType;
 	consts: Consts;
@@ -115,6 +120,7 @@ export type Namespaces = Record<string, CollectedNamespace>;
 
 export type CompilationMode = Exclude<CompilerSourceBlockType, 'constants'>;
 
+/** Shared mutable compiler state threaded through semantic analysis and code generation. */
 export interface CompilationContext {
 	namespace: Namespace;
 	locals: LocalMap;
@@ -152,12 +158,14 @@ export interface CompilationContext {
 	loopCap?: number;
 }
 
+/** Compilation context narrowed to a module body. */
 export interface ModuleCompilationContext extends CompilationContext {
 	mode: 'module';
 	currentModuleNextWordOffset: number;
 	currentModuleWordAlignedSize: number;
 }
 
+/** Compilation context used while collecting a compiled namespace block. */
 export interface NamespaceBuildContext extends CompilationContext {
 	mode: 'module';
 	codeBlockType: CompiledModuleBlockType;
@@ -165,6 +173,7 @@ export interface NamespaceBuildContext extends CompilationContext {
 	currentModuleWordAlignedSize: number;
 }
 
+/** Compilation context narrowed to a function body with function metadata resolved. */
 export interface FunctionCompilationContext extends CompilationContext {
 	mode: 'function';
 	codeBlockType: 'function';
@@ -175,6 +184,7 @@ export interface FunctionCompilationContext extends CompilationContext {
 	functionTypeRegistry: FunctionTypeRegistry;
 }
 
+/** Type and value facts known about one item on the compiler analysis stack. */
 export interface StackItem {
 	isInteger: boolean;
 	isFloat64?: boolean;
@@ -189,6 +199,7 @@ export interface StackItem {
 
 export type Stack = StackItem[];
 
+/** Before-and-after stack analysis captured for a compiled source line. */
 export interface StackAnalysisResult {
 	stackBefore: Stack;
 	stackAfter: Stack;
@@ -329,6 +340,7 @@ export const BlockType = {
 
 export type BlockTypeValue = (typeof BlockType)[keyof typeof BlockType];
 
+/** One key/value row collected from a `map` block. */
 export interface MapRow {
 	keyValue: number;
 	valueValue: number;
@@ -336,6 +348,7 @@ export interface MapRow {
 	valueIsFloat64?: boolean;
 }
 
+/** Accumulated state for validating and compiling the current `map` block. */
 export interface MapBlockState {
 	inputIsInteger: boolean;
 	inputIsFloat64: boolean;
@@ -346,37 +359,45 @@ export interface MapBlockState {
 	defaultSet: boolean;
 }
 
+/** Common result expectation tracked for every open block frame. */
 interface BlockStackFrameBase {
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
 }
 
+/** Block stack frame for an open module block. */
 export interface ModuleBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.MODULE;
 }
 
+/** Block stack frame for an open function block. */
 export interface FunctionBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.FUNCTION;
 }
 
+/** Block stack frame for an open generic `block`. */
 export interface GenericBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.BLOCK;
 }
 
+/** Block stack frame for an open conditional block. */
 export interface ConditionBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.CONDITION;
 }
 
+/** Block stack frame for an open constants block. */
 export interface ConstantsBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.CONSTANTS;
 }
 
+/** Block stack frame for an open loop, including its generated counter local. */
 export interface LoopBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.LOOP;
 	loopCounterLocalName: string;
 	loopCounterLocal: LocalBinding;
 }
 
+/** Block stack frame for an open map block and its accumulated rows. */
 export interface MapBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.MAP;
 	mapState: MapBlockState;

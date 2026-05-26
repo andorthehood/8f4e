@@ -36,12 +36,14 @@ export type PushLine = ASTLineBase<'push', [PushArgument]>;
 
 export type IfBlockResultType = 'int' | 'float' | null;
 
+/** Parser metadata linking an `if` line to its closing line and result shape. */
 export interface IfBlockMetadata {
 	matchingIfEndIndex: number;
 	resultType: IfBlockResultType;
 	hasElse: boolean;
 }
 
+/** Parser metadata linking an `ifEnd` line back to its opening `if`. */
 export interface IfEndBlockMetadata {
 	matchingIfIndex: number;
 	resultType: IfBlockResultType;
@@ -56,11 +58,13 @@ export type IfEndLine = ASTLineBase<'ifEnd', [] | [ArgumentIdentifier]> & {
 
 export type BlockBlockResultType = 'int' | 'float' | null;
 
+/** Parser metadata linking a generic `block` line to its closing line. */
 export interface BlockBlockMetadata {
 	matchingBlockEndIndex: number;
 	resultType: BlockBlockResultType;
 }
 
+/** Parser metadata linking a `blockEnd` line back to its opening `block`. */
 export interface BlockEndBlockMetadata {
 	matchingBlockIndex: number;
 	resultType: BlockBlockResultType;
@@ -243,6 +247,7 @@ export function hasReferencedNamespaceIds(
 	);
 }
 
+/** Parsed AST for a module block and its memory declarations. */
 export interface ModuleAST {
 	type: 'module';
 	id: string;
@@ -253,6 +258,7 @@ export interface ModuleAST {
 	referencedModuleIds: readonly string[];
 }
 
+/** Parsed AST for a function block and its resolved signature. */
 export interface FunctionAST {
 	type: 'function';
 	id: string;
@@ -264,6 +270,7 @@ export interface FunctionAST {
 	exportName?: string;
 }
 
+/** Parsed AST for a constants block. */
 export interface ConstantsAST {
 	type: 'constants';
 	id: string;

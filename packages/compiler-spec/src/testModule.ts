@@ -1,6 +1,7 @@
 import type { AST } from './ast';
 import type { MemoryBuffer, MemoryMap } from './memory';
 
+/** Test harness wrapper around a compiled program and its inspectable memory. */
 export interface TestModule {
 	memory: MemoryBuffer & {
 		get: (address: number | string) => number;
