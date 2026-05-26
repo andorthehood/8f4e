@@ -2,12 +2,8 @@ import {
 	ArgumentType,
 	blockEndToStartInstruction,
 	blockStartInstructions,
-	isConstantsLine,
 	isCompilerDirectiveLine,
-	isFunctionLine,
 	isMemoryDeclarationLine,
-	isModuleLine,
-	isParamLine,
 	isSemanticInstructionLine,
 } from '@8f4e/compiler-spec';
 
@@ -201,57 +197,43 @@ function addReferencedNamespaceIdsFromArgument(referencedNamespaceIds: Set<strin
 	}
 }
 
-function isRegionLine(line: CompilerASTLine): line is RegionLine {
-	return line.instruction === '#region';
-}
-
-function isExportLine(line: CompilerASTLine): line is ExportLine {
-	return line.instruction === '#export';
-}
-
-function isFunctionEndLine(line: CompilerASTLine): line is FunctionEndLine {
-	return line.instruction === 'functionEnd';
-}
-
 function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuilder | undefined {
-	if (isModuleLine(line)) {
-		return {
-			type: 'module',
-			id: line.arguments[0].value,
-			moduleLine: line,
-			memoryDeclarationLines: [],
-			referencedModuleIds: new Set<string>(),
-		};
+	switch (line.instruction) {
+		case 'module':
+			return {
+				type: 'module',
+				id: line.arguments[0].value,
+				moduleLine: line,
+				memoryDeclarationLines: [],
+				referencedModuleIds: new Set<string>(),
+			};
+		case 'function':
+			return {
+				type: 'function',
+				id: line.arguments[0].value,
+				functionLine: line,
+				parameters: [],
+			};
+		case 'constants':
+			return {
+				type: 'constants',
+				id: line.arguments[0].value,
+				constantsLine: line,
+			};
+		default:
+			return undefined;
 	}
-
-	if (isFunctionLine(line)) {
-		return {
-			type: 'function',
-			id: line.arguments[0].value,
-			functionLine: line,
-			parameters: [],
-		};
-	}
-
-	if (isConstantsLine(line)) {
-		return {
-			type: 'constants',
-			id: line.arguments[0].value,
-			constantsLine: line,
-		};
-	}
-
-	return undefined;
 }
 
 function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): void {
-	if (isRegionLine(line)) {
-		builder.regionLine = line;
-		return;
-	}
-
-	if (!isMemoryDeclarationLine(line)) {
-		return;
+	switch (line.instruction) {
+		case '#region':
+			builder.regionLine = line;
+			return;
+		default:
+			if (!isMemoryDeclarationLine(line)) {
+				return;
+			}
 	}
 
 	builder.memoryDeclarationLines.push(line);
@@ -261,19 +243,16 @@ function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): v
 }
 
 function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
-	if (isParamLine(line)) {
-		builder.parameters.push(line.arguments[0].value as FunctionSignature['parameters'][number]);
-		return;
-	}
-
-	if (isFunctionEndLine(line)) {
-		builder.functionEndLine = line;
-		return;
-	}
-
-	if (isExportLine(line)) {
-		builder.exportLine = line;
-		builder.exportName = builder.exportLine.arguments[0]?.value ?? builder.id;
+	switch (line.instruction) {
+		case 'param':
+			builder.parameters.push(line.arguments[0].value as FunctionSignature['parameters'][number]);
+			return;
+		case 'functionEnd':
+			builder.functionEndLine = line;
+			return;
+		case '#export':
+			builder.exportLine = line;
+			builder.exportName = builder.exportLine.arguments[0]?.value ?? builder.id;
 	}
 }
 
