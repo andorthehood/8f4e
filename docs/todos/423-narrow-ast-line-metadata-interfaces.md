@@ -4,7 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-05-26
 issue: null
-status: Open
+status: Done
+completed: 2026-05-26
 ---
 
 # TODO: Narrow AST line metadata interfaces
@@ -100,12 +101,12 @@ This should make the compiler interfaces say what is true rather than relying on
 
 ## Success Criteria
 
-- [ ] `ASTLineBase` only contains core line identity fields.
-- [ ] Instruction-specific metadata lives on instruction-specific line interfaces.
-- [ ] Compiler consumers use type guards or narrowed line types instead of broad optional base fields.
-- [ ] Parser assignments are typed against the specific line shape that owns each metadata field.
-- [ ] No compatibility layers, hidden metadata, or generic metadata bags are introduced.
-- [ ] Snapshot changes are updated honestly when the public AST shape changes.
+- [x] `ASTLineBase` only contains core line identity fields.
+- [x] Instruction-specific metadata lives on instruction-specific line interfaces.
+- [x] Compiler consumers use type guards or narrowed line types instead of broad optional base fields.
+- [x] Parser assignments are typed against the specific line shape that owns each metadata field.
+- [x] No compatibility layers, hidden metadata, or generic metadata bags are introduced.
+- [x] Snapshot changes are updated honestly when the public AST shape changes.
 
 ## Affected Components
 

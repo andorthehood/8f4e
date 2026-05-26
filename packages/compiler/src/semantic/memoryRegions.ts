@@ -21,16 +21,8 @@ function fallbackLine(): CompilerASTLine {
 	};
 }
 
-function isNumericRegionName(name: string): boolean {
-	return /^\d+$/.test(name);
-}
-
 export function getCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string {
 	return memoryRegions[memoryIndex - 1]!;
-}
-
-function getMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {
-	return memoryIndex === DEFAULT_MEMORY_INDEX ? undefined : getCustomMemoryRegionName(memoryRegions, memoryIndex);
 }
 
 export function getMemoryRegionFields(memoryIndex: number, memoryRegionName?: string): ResolvedMemoryRegion {
@@ -47,7 +39,7 @@ export function validateMemoryRegionOptions(
 	const seen = new Set<string>();
 
 	for (const name of options?.memoryRegions ?? []) {
-		if (RESERVED_REGION_NAMES.has(name) || isNumericRegionName(name)) {
+		if (RESERVED_REGION_NAMES.has(name) || /^\d+$/.test(name)) {
 			throw getError(ErrorCode.INVALID_MEMORY_REGION_NAME, line, undefined, { identifier: name });
 		}
 		if (seen.has(name)) {
@@ -67,7 +59,8 @@ export function resolveMemoryRegionByIndex(
 		throw getError(ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS, line, context, { identifier: String(memoryIndex) });
 	}
 
-	const memoryRegionName = getMemoryRegionName(memoryRegions, memoryIndex);
+	const memoryRegionName =
+		memoryIndex === DEFAULT_MEMORY_INDEX ? undefined : getCustomMemoryRegionName(memoryRegions, memoryIndex);
 	return {
 		memoryIndex,
 		...(memoryRegionName ? { memoryRegionName } : {}),

@@ -63,7 +63,7 @@ Active todo files are listed below.
 | 408 | Reduce tokenizer identifier classification work | 🟡 | 1-2d | 2026-05-19 | `classifyIdentifier` runs many ordered reference-shape checks for every identifier; cheap prefix/suffix dispatch could avoid most checks for plain identifiers. |
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
-| 423 | Narrow AST line metadata interfaces | 🟡 | 4-8h | 2026-05-26 | Move instruction-specific AST metadata off `ASTLineBase` and onto the concrete line interfaces that own each field. |
+| 424 | Rename layout word fields to allocation-unit terminology | 🟡 | 4-8h | 2026-05-26 | Separate typed word-size metadata from compiler allocation-grid layout by renaming the 4-byte layout constant and word-aligned fields to allocation-unit terminology. |
 
 ### 🟢 Low Priority
 
@@ -81,6 +81,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 423 | Narrow AST line metadata interfaces | 2026-05-26 | `ASTLineBase` now only carries core line identity; memory, semantic, directive, and block metadata live on concrete line interfaces, and snapshots were updated to show the narrower public AST shape. |
 | 421 | Clean up AST construction helper scans | 2026-05-26 | Tokenizer AST construction now accumulates module/function/constants metadata through source-block-specific builders during parsing; generic post-processing scans over `CompilerASTLine[]` were removed. |
 | 422 | Split namespace discovery and layout prepass | 2026-05-26 | Namespace discovery now uses an explicit internal discovery path, final layout/default resolution uses `layoutNamespace(...)`, and the old mode flag/prepass naming was removed without typed-AST compatibility wrappers. |
 | 419 | Merge instruction source argument specs into instruction specs | 2026-05-26 | Source argument arity and shape metadata now lives in compiler-spec instruction specs; tokenizer validation consumes the shared contract, and duplicated argument/no-argument tables were removed without compatibility shims. |

@@ -49,4 +49,14 @@ describe('internalResources', () => {
 		expect(Object.keys(context.internalResources)).toHaveLength(1);
 		expect(context.internalAllocator.nextByteAddress).toBe(20);
 	});
+
+	it('allocates float64 internal resources using double-word storage', () => {
+		const context = createContext();
+
+		const resource = allocateInternalResource(context, '__hidden64', 'float64');
+
+		expect(resource.elementWordSize).toBe(8);
+		expect(resource.wordAlignedSize).toBe(2);
+		expect(context.internalAllocator.nextByteAddress).toBe(24);
+	});
 });
