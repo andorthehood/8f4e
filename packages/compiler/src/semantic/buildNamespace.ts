@@ -2,9 +2,8 @@ import {
 	ArgumentType,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	compilerSourceBlockInstructionByType,
+	hasReferencedNamespaceIds,
 	isNamedScalarMemoryDeclarationLine,
-	isUseLine,
-	type Argument,
 	type ConstantsAST,
 	type CompileOptions,
 	type CompilationContext,
@@ -201,33 +200,6 @@ function getModuleRegionFromAst(
 	return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], regionLine);
 }
 
-function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): string[] {
-	if (!argument) {
-		return [];
-	}
-
-	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [...argument.intermoduleIds];
-	}
-
-	if (argument.type !== ArgumentType.IDENTIFIER) {
-		return [];
-	}
-
-	if (argument.scope !== 'intermodule' || !argument.targetModuleId) {
-		return [];
-	}
-	return [argument.targetModuleId];
-}
-
-function getDeferredNamespaceIds(line: CompilerASTLine): string[] {
-	if (isUseLine(line)) {
-		return [line.arguments[0].value];
-	}
-
-	return line.arguments.flatMap(argument => getReferencedNamespaceIdsFromArgument(argument));
-}
-
 function shouldDeferNamespaceCollection(
 	error: unknown,
 	line: CompilerASTLine | undefined,
@@ -241,8 +213,7 @@ function shouldDeferNamespaceCollection(
 		return false;
 	}
 
-	const referencedNamespaceIds = getDeferredNamespaceIds(line);
-	return referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
+	return hasReferencedNamespaceIds(line) && line.referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
 function toNamespaceDiscoveryMemoryDeclarationLine(line: CompilerASTLine): CompilerASTLine {

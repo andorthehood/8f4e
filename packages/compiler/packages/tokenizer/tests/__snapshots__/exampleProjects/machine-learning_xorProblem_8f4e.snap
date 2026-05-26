@@ -91,7 +91,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "perceptron"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "perceptron"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 25,
@@ -211,7 +217,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "perceptron2"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "perceptron2"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 38,
@@ -331,7 +343,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "perceptron3"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "perceptron3"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 51,
@@ -604,7 +622,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "switches"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "switches"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 87,
@@ -629,7 +653,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "switches"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "switches"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 88,
@@ -887,7 +917,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "switches"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "switches"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 113,
@@ -912,7 +948,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "switches"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "switches"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 114,
@@ -1170,7 +1212,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "activationFn"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "activationFn"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 139,
@@ -1195,7 +1243,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "activationFn2"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "activationFn2"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 140,
@@ -1453,7 +1507,13 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
-    "hasExplicitMemoryDefault": true
+    "referencedNamespaceIds": [
+      "activationFn3"
+    ],
+    "hasExplicitMemoryDefault": true,
+    "referencedModuleIds": [
+      "activationFn3"
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 170,
