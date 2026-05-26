@@ -99,7 +99,8 @@ describe('push instruction compiler', () => {
 		);
 
 		expect(context.stack[0]).toMatchObject({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: true,
 			address: {
 				safeRange: {
@@ -128,8 +129,8 @@ describe('push instruction compiler', () => {
 
 		// 'h'=104, 'i'=105 → two stack items
 		expect(context.stack).toHaveLength(2);
-		expect(context.stack[0]).toMatchObject({ isInteger: true });
-		expect(context.stack[1]).toMatchObject({ isInteger: true });
+		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'int' });
+		expect(context.stack[1]).toMatchObject({ kind: 'value', valueType: 'int' });
 	});
 
 	it('pushes a f64 literal value emitting f64.const', () => {
@@ -180,8 +181,7 @@ describe('push instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack[0].isFloat64).toBe(true);
-		expect(context.stack[0].isInteger).toBe(false);
+		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 	});
 
 	it('pushes a normalized f64 literal emitting f64.const', () => {
@@ -232,8 +232,7 @@ describe('push instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack[0].isFloat64).toBe(true);
-		expect(context.stack[0].isInteger).toBe(false);
+		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 	});
 
 	it('float32 literal push does not emit f64.const', () => {
@@ -250,7 +249,7 @@ describe('push instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack[0].isFloat64).toBeUndefined();
+		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float' });
 		// f32.const opcode is 67 (0x43), f64.const opcode is 68 (0x44)
 		expect(context.byteCode[0]).toBe(67);
 	});
@@ -296,8 +295,7 @@ describe('push instruction compiler', () => {
 
 			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), context);
 
-			expect(context.stack[0].isFloat64).toBe(true);
-			expect(context.stack[0].isInteger).toBe(false);
+			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 		});
 
 		it('float32 memory push does not set isFloat64', () => {
@@ -317,8 +315,7 @@ describe('push instruction compiler', () => {
 
 			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF32', context.namespace.memory.myF32), context);
 
-			expect(context.stack[0].isFloat64).toBeUndefined();
-			expect(context.stack[0].isInteger).toBe(false);
+			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float' });
 		});
 
 		it('emits f64.load (opcode 43) for float64 memory', () => {
@@ -383,10 +380,7 @@ describe('push instruction compiler', () => {
 				context
 			);
 
-			expect(context.stack[0]).toMatchObject({
-				isInteger: false,
-				isFloat64: true,
-			});
+			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 			expect(context.byteCode).toContain(43); // F64_LOAD opcode
 		});
 
@@ -411,10 +405,7 @@ describe('push instruction compiler', () => {
 				context
 			);
 
-			expect(context.stack[0]).toMatchObject({
-				isInteger: false,
-				isFloat64: true,
-			});
+			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 			expect(context.byteCode).toContain(43); // F64_LOAD opcode
 		});
 
@@ -449,7 +440,7 @@ describe('push instruction compiler', () => {
 				byteCode: [] as typeof context.byteCode,
 			};
 			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myInt', context.namespace.memory.myInt), contextInt);
-			expect(contextInt.stack[0]).toMatchObject({ isInteger: true });
+			expect(contextInt.stack[0]).toMatchObject({ kind: 'address', valueType: 'int' });
 			expect(contextInt.byteCode).not.toContain(42);
 			expect(contextInt.byteCode).not.toContain(43);
 
@@ -463,8 +454,7 @@ describe('push instruction compiler', () => {
 				resolvedMemoryPushLine('myFloat', context.namespace.memory.myFloat),
 				contextFloat
 			);
-			expect(contextFloat.stack[0]).toMatchObject({ isInteger: false });
-			expect(contextFloat.stack[0].isFloat64).toBeUndefined();
+			expect(contextFloat.stack[0]).toMatchObject({ kind: 'value', valueType: 'float' });
 			expect(contextFloat.byteCode).toContain(42); // F32_LOAD
 
 			const contextF64 = {
@@ -473,10 +463,7 @@ describe('push instruction compiler', () => {
 				byteCode: [] as typeof context.byteCode,
 			};
 			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), contextF64);
-			expect(contextF64.stack[0]).toMatchObject({
-				isInteger: false,
-				isFloat64: true,
-			});
+			expect(contextF64.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 			expect(contextF64.byteCode).toContain(43); // F64_LOAD
 		});
 	});

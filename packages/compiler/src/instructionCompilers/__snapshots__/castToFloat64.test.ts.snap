@@ -7,9 +7,9 @@ exports[`castToFloat64 instruction compiler > converts int operand to float64 1`
   ],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }
@@ -20,9 +20,9 @@ exports[`castToFloat64 instruction compiler > is a no-op for float64 operand 1`]
   "byteCode": [],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }
@@ -35,9 +35,9 @@ exports[`castToFloat64 instruction compiler > promotes float32 operand to float6
   ],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }

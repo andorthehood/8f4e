@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('sub instruction compiler', () => {
 	it('emits I32_SUB for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			sub,
@@ -30,7 +33,10 @@ describe('sub instruction compiler', () => {
 
 	it('emits F32_SUB for float32 operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'float', isNonZero: false },
+			{ kind: 'value', valueType: 'float', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			sub,
@@ -52,8 +58,8 @@ describe('sub instruction compiler', () => {
 	it('emits F64_SUB for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: false, isFloat64: true, isNonZero: false },
-			{ isInteger: false, isFloat64: true, isNonZero: false }
+			{ kind: 'value', valueType: 'float64', isNonZero: false },
+			{ kind: 'value', valueType: 'float64', isNonZero: false }
 		);
 
 		analyzeAndCompileInstruction(
@@ -77,14 +83,15 @@ describe('sub instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: false,
 				knownIntegerValue: 0,
 				address: {
 					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
-			{ isInteger: true, isNonZero: true, knownIntegerValue: -4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: -4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -100,7 +107,8 @@ describe('sub instruction compiler', () => {
 
 		expect(context.stack).toEqual([
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: true,
 				knownIntegerValue: 4,
 				address: {
@@ -116,14 +124,15 @@ describe('sub instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: false,
 				knownIntegerValue: 0,
 				address: {
 					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -139,7 +148,8 @@ describe('sub instruction compiler', () => {
 
 		expect(context.stack).toEqual([
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: true,
 				knownIntegerValue: -4,
 				address: {

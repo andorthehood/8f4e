@@ -10,7 +10,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('sqrt instruction compiler', () => {
 	it('emits F32_SQRT for float operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			sqrt,
@@ -31,7 +31,7 @@ describe('sqrt instruction compiler', () => {
 
 	it('emits F64_SQRT for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			sqrt,
@@ -44,7 +44,7 @@ describe('sqrt instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: false, isFloat64: true, isNonZero: false }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'float64', isNonZero: false }]);
 		expect(context.byteCode).toEqual([WASM_F64_SQRT]);
 	});
 });

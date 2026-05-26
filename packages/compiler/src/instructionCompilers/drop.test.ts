@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('drop instruction compiler', () => {
 	it('drops the top stack value', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: true });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'float', isNonZero: true }
+		);
 
 		analyzeAndCompileInstruction(
 			drop,

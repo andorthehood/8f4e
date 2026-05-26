@@ -5,6 +5,8 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 
+import { requireStackAddress } from '../utils/stackItem';
+
 import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
 
 /**
@@ -18,15 +20,19 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 	const accessByteWidth = operation.accessByteWidth;
 
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-	const address = line.stackAnalysis.consumedOperands[line.stackAnalysis.consumedOperands.length - 1];
+	const address = requireStackAddress(
+		line.stackAnalysis.consumedOperands[line.stackAnalysis.consumedOperands.length - 1],
+		line,
+		context
+	);
 	const addressIsSafe = isSafeMemoryAccess(address, count);
-	const memoryIndex = address.address?.memoryIndex ?? 0;
+	const memoryIndex = address.address.memoryIndex;
 
 	const tempAddrLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesAddr_${lineNumberAfterMacroExpansion}`, {
-		isInteger: true,
+		valueType: 'int',
 	});
 	const tempByteLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesByte_${lineNumberAfterMacroExpansion}`, {
-		isInteger: true,
+		valueType: 'int',
 	});
 
 	const byteCode = [...localSet(tempAddrLocal.index)];

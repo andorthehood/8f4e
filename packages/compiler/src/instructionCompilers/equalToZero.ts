@@ -11,9 +11,9 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const equalToZero: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	if (operand.isInteger) {
+	if (operand.valueType === 'int') {
 		return saveByteCode(context, [WASM_I32_EQZ]);
-	} else if (operand.isFloat64) {
+	} else if (operand.valueType === 'float64') {
 		return saveByteCode(context, [...f64const(0), WASM_F64_EQ]);
 	} else {
 		return saveByteCode(context, [...f32const(0), WASM_F32_EQ]);

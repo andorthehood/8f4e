@@ -8,8 +8,9 @@ exports[`castToInt instruction compiler > converts float operand to int 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }
@@ -23,8 +24,9 @@ exports[`castToInt instruction compiler > converts float64 operand to int 1`] = 
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

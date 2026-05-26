@@ -19,7 +19,7 @@ describe('ifEnd instruction compiler', () => {
 				},
 			],
 		});
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			ifEnd,

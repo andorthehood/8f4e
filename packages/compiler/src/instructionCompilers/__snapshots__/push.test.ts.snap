@@ -11,9 +11,9 @@ exports[`push instruction compiler > float64 memory push > pushes a float64 memo
   ],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }
@@ -34,9 +34,9 @@ exports[`push instruction compiler > pushes a f64 literal value emitting f64.con
   ],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }
@@ -50,9 +50,10 @@ exports[`push instruction compiler > pushes a literal value 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": true,
+      "kind": "value",
       "knownIntegerValue": 5,
+      "valueType": "int",
     },
   ],
 }
@@ -73,9 +74,9 @@ exports[`push instruction compiler > pushes a normalized f64 literal emitting f6
   ],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }
@@ -89,9 +90,10 @@ exports[`push instruction compiler > pushes a normalized literal value 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": true,
+      "kind": "value",
       "knownIntegerValue": 42,
+      "valueType": "int",
     },
   ],
 }

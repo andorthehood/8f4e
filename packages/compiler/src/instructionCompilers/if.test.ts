@@ -9,7 +9,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('if instruction compiler', () => {
 	it('emits a void if block when the matching ifEnd declares no result', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			_if,
@@ -31,7 +31,7 @@ describe('if instruction compiler', () => {
 
 	it('emits a void if block when given no arguments', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			_if,
@@ -53,7 +53,7 @@ describe('if instruction compiler', () => {
 
 	it('emits a float if block', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			_if,
@@ -75,7 +75,7 @@ describe('if instruction compiler', () => {
 
 	it('emits an int if block', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			_if,

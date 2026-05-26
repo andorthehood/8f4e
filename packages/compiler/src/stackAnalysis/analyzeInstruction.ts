@@ -26,13 +26,30 @@ import type {
 	Stack,
 	StackAnalysisResult,
 	StackItem,
+	StackValueType,
 	StackProducedItemSpec,
 	StackMutationSpec,
 	InstructionSpec,
 } from '@8f4e/compiler-spec';
 
+function createStackValue(
+	valueType: StackValueType,
+	metadata: Pick<StackItem, 'isNonZero' | 'knownIntegerValue'> = {}
+): StackItem {
+	return {
+		kind: 'value',
+		valueType,
+		...(metadata.isNonZero !== undefined ? { isNonZero: metadata.isNonZero } : {}),
+		...(metadata.knownIntegerValue !== undefined ? { knownIntegerValue: metadata.knownIntegerValue } : {}),
+	};
+}
+
 function cloneStack(stack: Stack): Stack {
-	return stack.map(item => ({ ...item, ...(item.address ? { address: { ...item.address } } : {}) }));
+	return stack.map(item => ({
+		...item,
+		...(item.kind === 'address' ? { address: { ...item.address } } : {}),
+		...(item.kind === 'address' && item.pointsTo ? { pointsTo: { ...item.pointsTo } } : {}),
+	}));
 }
 
 function consume(context: CompilationContext, count: number): Stack {
@@ -54,21 +71,34 @@ function numericResult(
 ): StackItem {
 	const isInteger = areAllOperandsIntegers(left, right);
 	const isFloat64 = areAllOperandsFloat64(left, right);
-	const integerMetadata: Partial<StackItem> = isInteger ? (deriveIntegerMetadata?.(left, right) ?? {}) : {};
+	const integerMetadata = isInteger ? (deriveIntegerMetadata?.(left, right) ?? {}) : {};
+	const valueType: StackValueType = isInteger ? 'int' : isFloat64 ? 'float64' : 'float';
+	if (isInteger && 'kind' in integerMetadata && integerMetadata.kind === 'address' && integerMetadata.address) {
+		return {
+			kind: 'address',
+			valueType: 'int',
+			address: integerMetadata.address,
+			...(integerMetadata.pointsTo ? { pointsTo: integerMetadata.pointsTo } : {}),
+			...(integerMetadata.knownIntegerValue !== undefined
+				? {
+						knownIntegerValue: integerMetadata.knownIntegerValue,
+						isNonZero: integerMetadata.knownIntegerValue !== 0,
+					}
+				: {}),
+		};
+	}
 
-	return {
-		isInteger,
-		...(isFloat64 ? { isFloat64: true } : {}),
+	return createStackValue(valueType, {
 		isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
-		...integerMetadata,
-	};
+		knownIntegerValue: integerMetadata.knownIntegerValue,
+	});
 }
 
 function pushLiteralStackItems(line: NormalizedPushLine): Stack {
 	const argument = line.arguments[0];
 
 	if (argument.type === ArgumentType.STRING_LITERAL) {
-		return Array.from(argument.value, ch => ({ isInteger: true, isNonZero: (ch.charCodeAt(0) & 0xff) !== 0 }));
+		return Array.from(argument.value, ch => createStackValue('int', { isNonZero: (ch.charCodeAt(0) & 0xff) !== 0 }));
 	}
 
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION || argument.type === ArgumentType.IDENTIFIER) {
@@ -98,20 +128,20 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 		case 'memory': {
 			const { memoryItem } = line.resolvedTarget;
 			const kind = resolveMemoryValueKind(memoryItem);
-			const pointeeAddress = memoryItem.pointeeBaseType
-				? getMemoryRegionFields(memoryItem.pointeeMemoryIndex ?? 0, memoryItem.pointeeMemoryRegionName)
+			const pointsTo = memoryItem.pointeeBaseType
+				? {
+						baseType: memoryItem.pointeeBaseType,
+						memoryIndex: memoryItem.pointeeMemoryIndex ?? 0,
+						...(memoryItem.pointeeMemoryRegionName ? { memoryRegionName: memoryItem.pointeeMemoryRegionName } : {}),
+						isPointer: !!memoryItem.isPointingToPointer,
+					}
 				: undefined;
 
 			return [
 				kindToStackItem(kind, {
 					isNonZero: false,
-					...(memoryItem.pointeeBaseType
-						? {
-								pointeeBaseType: memoryItem.pointeeBaseType,
-								...(memoryItem.isPointingToPointer ? { isPointingToPointer: true } : {}),
-								...(pointeeAddress ? { address: pointeeAddress } : {}),
-							}
-						: {}),
+					...(pointsTo ? { pointsTo } : {}),
+					address: getMemoryRegionFields(memoryItem.memoryIndex ?? 0, memoryItem.memoryRegionName),
 				}),
 			];
 		}
@@ -128,19 +158,26 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 		case 'local':
 		default: {
 			const { local } = line.resolvedTarget;
-			const pointeeAddress = local.pointeeBaseType
-				? getMemoryRegionFields(local.pointeeMemoryIndex ?? 0, local.pointeeMemoryRegionName)
+			const pointsTo = local.pointeeBaseType
+				? {
+						baseType: local.pointeeBaseType,
+						memoryIndex: local.pointeeMemoryIndex ?? 0,
+						...(local.pointeeMemoryRegionName ? { memoryRegionName: local.pointeeMemoryRegionName } : {}),
+						isPointer: !!local.isPointingToPointer,
+					}
 				: undefined;
 
 			return [
-				{
-					isInteger: local.isInteger,
-					...(local.isFloat64 ? { isFloat64: true } : {}),
-					...(local.pointeeBaseType ? { pointeeBaseType: local.pointeeBaseType } : {}),
-					...(local.isPointingToPointer ? { isPointingToPointer: true } : {}),
-					...(pointeeAddress ? { address: pointeeAddress } : {}),
-					isNonZero: false,
-				},
+				local.pointeeBaseType
+					? kindToStackItem('int32', {
+							isNonZero: false,
+							address: getMemoryRegionFields(local.pointeeMemoryIndex ?? 0, local.pointeeMemoryRegionName),
+							...(pointsTo ? { pointsTo } : {}),
+						})
+					: {
+							...createStackValue(local.isInteger ? 'int' : local.isFloat64 ? 'float64' : 'float'),
+							isNonZero: false,
+						},
 			];
 		}
 	}
@@ -183,20 +220,33 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	const outputType = line.arguments[0].value;
 	const outputIsInteger = outputType === 'int';
 	const outputIsFloat64 = outputType === 'float64';
-	const outputKind = resolveMapKind({ isInteger: outputIsInteger, isFloat64: outputIsFloat64 });
+	const outputKind = resolveMapKind({
+		valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float',
+	});
 	const mapState = block.mapState;
-	const inputKind = resolveMapKind({ isInteger: mapState.inputIsInteger, isFloat64: mapState.inputIsFloat64 });
+	const inputKind = resolveMapKind({
+		valueType: mapState.inputIsInteger ? 'int' : mapState.inputIsFloat64 ? 'float64' : 'float',
+	});
 	const inputOperand = context.stack[context.stack.length - 1];
 
 	validateMapValueKind(inputOperand, inputKind, line, context);
 
 	for (const row of mapState.rows) {
-		validateMapValueKind({ isInteger: row.valueIsInteger, isFloat64: row.valueIsFloat64 }, outputKind, line, context);
+		validateMapValueKind(
+			{
+				valueType: row.valueIsInteger ? 'int' : row.valueIsFloat64 ? 'float64' : 'float',
+			},
+			outputKind,
+			line,
+			context
+		);
 	}
 
 	if (mapState.defaultSet) {
 		validateMapValueKind(
-			{ isInteger: !!mapState.defaultIsInteger, isFloat64: !!mapState.defaultIsFloat64 },
+			{
+				valueType: mapState.defaultIsInteger ? 'int' : mapState.defaultIsFloat64 ? 'float64' : 'float',
+			},
 			outputKind,
 			line,
 			context
@@ -204,7 +254,7 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	}
 
 	const consumed = consume(context, 1);
-	const produced = [{ isInteger: outputIsInteger, ...(outputIsFloat64 ? { isFloat64: true } : {}) }];
+	const produced: Stack = [createStackValue(outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float')];
 	produce(context, produced);
 	return { consumed, produced };
 }
@@ -247,13 +297,15 @@ function assertTopBlock(
 function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
-	const { local } = line as LocalSetLine & { local: CompilationContext['locals'][string] };
+	const { local } = line as LocalSetLine & {
+		local: CompilationContext['locals'][string];
+	};
 
-	if (local.isInteger && !operand.isInteger) {
+	if (local.isInteger && operand.valueType !== 'int') {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
-	if (!local.isInteger && operand.isInteger) {
+	if (!local.isInteger && operand.valueType === 'int') {
 		throw getError(ErrorCode.ONLY_FLOATS, line, context);
 	}
 
@@ -267,7 +319,7 @@ function analyzeLoopIndex(line: CompilerASTLine, context: CompilationContext): {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP, line, context);
 	}
 
-	const produced = [{ isInteger: true, isNonZero: false }];
+	const produced: Stack = [createStackValue('int', { isNonZero: false })];
 	produce(context, produced);
 	return { consumed: [], produced };
 }
@@ -290,11 +342,11 @@ function analyzeExpectedBlockResult(
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
-	if (block.expectedResultIsInteger && !operand.isInteger) {
+	if (block.expectedResultIsInteger && operand.valueType !== 'int') {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
-	if (validateFloatResult && !block.expectedResultIsInteger && operand.isInteger) {
+	if (validateFloatResult && !block.expectedResultIsInteger && operand.valueType === 'int') {
 		throw getError(ErrorCode.ONLY_FLOATS, line, context);
 	}
 
@@ -342,18 +394,22 @@ function resolveStackProducedItem(consumed: Stack, spec: StackProducedItemSpec):
 
 	switch (spec.kind) {
 		case 'int':
-			return { isInteger: true, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
+			return createStackValue('int', {
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, false),
+			});
 		case 'float':
-			return { isInteger: false, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
+			return createStackValue('float', {
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, false),
+			});
 		case 'float64':
-			return { isInteger: false, isFloat64: true, isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) };
+			return createStackValue('float64', {
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, false),
+			});
 		case 'same':
 		default:
-			return {
-				isInteger: Boolean(input?.isInteger),
-				...(input?.isFloat64 ? { isFloat64: true } : {}),
+			return createStackValue(input?.valueType ?? 'float', {
 				isNonZero: resolveProducedStackItemNonZero(consumed, spec, input?.isNonZero),
-			};
+			});
 	}
 }
 
@@ -406,7 +462,10 @@ function analyzeByInstruction(
 
 	switch (line.instruction) {
 		case 'push': {
-			return { consumed: [], produced: analyzePush(line as NormalizedPushLine, context) };
+			return {
+				consumed: [],
+				produced: analyzePush(line as NormalizedPushLine, context),
+			};
 		}
 		case 'add': {
 			const consumed = consume(context, 2);
@@ -471,11 +530,10 @@ function analyzeByInstruction(
 			} as const;
 			const integerMetadata = deriveKnownIntegerValue(consumed[0], consumed[1], operations[line.instruction]);
 			const produced = [
-				{
-					isInteger: true,
+				createStackValue('int', {
 					isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
-					...integerMetadata,
-				},
+					knownIntegerValue: integerMetadata.knownIntegerValue,
+				}),
 			];
 			produce(context, produced);
 			return { consumed, produced };
@@ -489,16 +547,15 @@ function analyzeByInstruction(
 				line.instruction === 'or' ? (value1, value2) => value1 | value2 : (value1, value2) => value1 ^ value2
 			);
 			const produced = [
-				{
-					isInteger: true,
+				createStackValue('int', {
 					isNonZero:
 						integerMetadata.knownIntegerValue !== undefined
 							? integerMetadata.knownIntegerValue !== 0
 							: line.instruction === 'or'
 								? Boolean(consumed[0].isNonZero || consumed[1].isNonZero)
 								: false,
-					...integerMetadata,
-				},
+					knownIntegerValue: integerMetadata.knownIntegerValue,
+				}),
 			];
 			produce(context, produced);
 			return { consumed, produced };
@@ -519,11 +576,10 @@ function analyzeByInstruction(
 				return (dividend % divisorValue) | 0;
 			});
 			const produced = [
-				{
-					isInteger: true,
+				createStackValue('int', {
 					isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
-					...integerMetadata,
-				},
+					knownIntegerValue: integerMetadata.knownIntegerValue,
+				}),
 			];
 			produce(context, produced);
 			return { consumed, produced };
@@ -545,9 +601,12 @@ function analyzeByInstruction(
 							isNonZero: knownAbsValue !== 0,
 						};
 			const produced = [
-				operand.isInteger
-					? { isInteger: true, isNonZero: operand.isNonZero, ...knownIntegerMetadata }
-					: { isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: operand.isNonZero },
+				operand.valueType === 'int'
+					? createStackValue('int', {
+							isNonZero: operand.isNonZero,
+							knownIntegerValue: knownIntegerMetadata.knownIntegerValue,
+						})
+					: createStackValue(operand.valueType === 'float64' ? 'float64' : 'float', { isNonZero: operand.isNonZero }),
 			];
 			produce(context, produced);
 			return { consumed, produced };
@@ -559,7 +618,9 @@ function analyzeByInstruction(
 			const accessByteWidth = getClampAccessByteWidth(line);
 			const range =
 				line.instruction === 'clampAddress'
-					? (consumed[0].address?.clampRange ?? consumed[0].address?.safeRange)
+					? consumed[0].kind === 'address'
+						? (consumed[0].address.clampRange ?? consumed[0].address.safeRange)
+						: undefined
 					: line.instruction === 'clampModuleAddress'
 						? getModuleAddressRange(context)
 						: undefined;

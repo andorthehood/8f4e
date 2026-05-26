@@ -154,7 +154,7 @@ export function getError(
 					': Expected 0 elements on the stack, found ' +
 					stack.length +
 					' [' +
-					stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
+					stack.map(item => (item.kind === 'address' ? 'address' : item.valueType)).join(', ') +
 					'] (' +
 					code +
 					')',

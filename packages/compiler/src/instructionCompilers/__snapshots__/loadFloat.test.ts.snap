@@ -9,8 +9,9 @@ exports[`loadFloat instruction compiler > loads from a safe memory address 1`] =
   ],
   "stack": [
     {
-      "isInteger": false,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "float",
     },
   ],
 }
@@ -54,8 +55,9 @@ exports[`loadFloat instruction compiler > loads from an unsafe memory address wi
   ],
   "stack": [
     {
-      "isInteger": false,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "float",
     },
   ],
 }
