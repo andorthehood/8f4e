@@ -216,10 +216,9 @@ export interface ConstantsAST {
 }
 
 export type AST = ModuleAST | FunctionAST | ConstantsAST;
-export type ModuleCompilationAST = ModuleAST | ConstantsAST;
 
 export interface CompilerASTBatch {
-	modules: readonly ModuleCompilationAST[];
+	modules: readonly (ModuleAST | ConstantsAST)[];
 	functions: readonly FunctionAST[];
 	functionsById: ReadonlyMap<string, FunctionAST>;
 }
