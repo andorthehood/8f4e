@@ -13,6 +13,8 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 
+import { requireStackAddress } from '../utils/stackItem';
+
 import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/compiler-spec';
 
 type LoadLine = ASTLineBase<LoadInstructionSpecName, []>;
@@ -32,10 +34,11 @@ const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => nu
 
 const load: InstructionCompiler<LoadLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const [address] = line.stackAnalysis.consumedOperands;
+	const [rawAddress] = line.stackAnalysis.consumedOperands;
+	const address = requireStackAddress(rawAddress, line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const buildInstructions = loadVariantByteCode[operation.loadVariant];
-	const memoryIndex = address.address?.memoryIndex ?? 0;
+	const memoryIndex = address.address.memoryIndex;
 	const instructions = buildInstructions(memoryIndex);
 	const accessByteWidth = operation.accessByteWidth;
 	if (isSafeMemoryAccess(address, accessByteWidth)) {

@@ -11,7 +11,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const sqrt: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	return saveByteCode(context, [operand.isFloat64 ? WASM_F64_SQRT : WASM_F32_SQRT]);
+	return saveByteCode(context, [operand.valueType === 'float64' ? WASM_F64_SQRT : WASM_F32_SQRT]);
 };
 
 export default sqrt;

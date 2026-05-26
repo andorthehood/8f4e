@@ -27,7 +27,7 @@ describe('functionEnd instruction compiler', () => {
 				types: [],
 			} as FunctionTypeRegistry,
 		});
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			functionEnd,
@@ -70,7 +70,7 @@ describe('functionEnd instruction compiler', () => {
 				types: [],
 			} as FunctionTypeRegistry,
 		});
-		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			functionEnd,
@@ -123,8 +123,8 @@ describe('functionEnd instruction compiler', () => {
 		} as CompilerASTLine;
 		const firstContext = createFunctionContext();
 		const secondContext = createFunctionContext();
-		firstContext.stack.push({ isInteger: true, isNonZero: false });
-		secondContext.stack.push({ isInteger: true, isNonZero: false });
+		firstContext.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
+		secondContext.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(functionEnd, line, firstContext);
 		analyzeAndCompileInstruction(functionEnd, line, secondContext);
@@ -137,7 +137,7 @@ describe('functionEnd instruction compiler', () => {
 
 	it('throws when missing function block', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		expect(() => {
 			analyzeAndCompileInstruction(

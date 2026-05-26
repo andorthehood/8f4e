@@ -30,15 +30,15 @@ describe('selected line tooltip content', () => {
 				instruction: 'add',
 				stackAnalysis: {
 					stackBefore: [
-						{ isInteger: true, knownIntegerValue: 1 },
-						{ isInteger: true, knownIntegerValue: 2 },
+						{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
+						{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
 					],
 					consumedOperands: [
-						{ isInteger: true, knownIntegerValue: 1 },
-						{ isInteger: true, knownIntegerValue: 2 },
+						{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
+						{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
 					],
-					producedStackItems: [{ isInteger: true }],
-					stackAfter: [{ isInteger: true }],
+					producedStackItems: [{ kind: 'value', valueType: 'int' }],
+					stackAfter: [{ kind: 'value', valueType: 'int' }],
 				},
 			},
 			{

@@ -7,8 +7,9 @@ exports[`and instruction compiler > emits I32_AND for integer operands 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

@@ -8,7 +8,8 @@ exports[`call instruction compiler > emits call bytecode and pushes returns 1`] 
   ],
   "stack": [
     {
-      "isInteger": true,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

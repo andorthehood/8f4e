@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('remainder instruction compiler', () => {
 	it('emits I32_REM_S for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: true },
+			{ kind: 'value', valueType: 'int', isNonZero: true }
+		);
 
 		analyzeAndCompileInstruction(
 			remainder,
@@ -30,7 +33,10 @@ describe('remainder instruction compiler', () => {
 
 	it('throws on division by zero', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: true },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		expect(() => {
 			analyzeAndCompileInstruction(
@@ -49,8 +55,8 @@ describe('remainder instruction compiler', () => {
 	it('keeps known integer metadata when taking the remainder of known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 9 },
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 9 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -64,6 +70,6 @@ describe('remainder instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 1 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 }]);
 	});
 });

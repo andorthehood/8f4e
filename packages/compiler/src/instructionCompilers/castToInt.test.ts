@@ -9,7 +9,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('castToInt instruction compiler', () => {
 	it('converts float operand to int', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			castToInt,
@@ -30,7 +30,7 @@ describe('castToInt instruction compiler', () => {
 
 	it('converts float64 operand to int', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			castToInt,

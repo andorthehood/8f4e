@@ -11,8 +11,8 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('exitIfTrue instruction compiler', () => {
 	it('emits a conditional early module exit and preserves the fallthrough stack', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false });
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			exitIfTrue,
@@ -26,7 +26,7 @@ describe('exitIfTrue instruction compiler', () => {
 		);
 
 		expect(context.byteCode).toEqual([WASM_IF, WASM_TYPE_VOID, WASM_DROP, WASM_RETURN, WASM_END]);
-		expect(context.stack).toEqual([{ isInteger: false, isNonZero: false }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'float', isNonZero: false }]);
 	});
 
 	it('throws when used inside a function', () => {
@@ -40,7 +40,7 @@ describe('exitIfTrue instruction compiler', () => {
 				},
 			],
 		});
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		try {
 			analyzeAndCompileInstruction(

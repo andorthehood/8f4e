@@ -53,11 +53,26 @@ export function functionValueTypeToStackItem(type: FunctionValueType): StackItem
 }
 
 function localBindingToStackItem(binding: LocalBinding): StackItem {
+	if (binding.pointeeBaseType) {
+		return {
+			kind: 'address',
+			valueType: 'int',
+			address: {
+				memoryIndex: binding.pointeeMemoryIndex ?? 0,
+				...(binding.pointeeMemoryRegionName ? { memoryRegionName: binding.pointeeMemoryRegionName } : {}),
+			},
+			pointsTo: {
+				baseType: binding.pointeeBaseType,
+				memoryIndex: binding.pointeeMemoryIndex ?? 0,
+				...(binding.pointeeMemoryRegionName ? { memoryRegionName: binding.pointeeMemoryRegionName } : {}),
+				isPointer: !!binding.isPointingToPointer,
+			},
+		};
+	}
+
 	return {
-		isInteger: binding.isInteger,
-		...(binding.isFloat64 ? { isFloat64: true } : {}),
-		...(binding.pointeeBaseType ? { pointeeBaseType: binding.pointeeBaseType } : {}),
-		...(binding.isPointingToPointer ? { isPointingToPointer: true } : {}),
+		kind: 'value',
+		valueType: binding.isInteger ? 'int' : binding.isFloat64 ? 'float64' : 'float',
 	};
 }
 
@@ -75,30 +90,34 @@ export function functionValueTypeToWasmType(type: FunctionValueType): WasmTypeVa
 
 export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {
 	if (type === 'int') {
-		return stackItem.isInteger;
+		return stackItem.valueType === 'int';
 	}
 
 	if (type === 'float') {
-		return !stackItem.isInteger && !stackItem.isFloat64;
+		return stackItem.valueType === 'float';
 	}
 
 	if (type === 'float64') {
-		return !stackItem.isInteger && !!stackItem.isFloat64;
+		return stackItem.valueType === 'float64';
 	}
 
-	if (!stackItem.isInteger) {
+	if (stackItem.valueType !== 'int') {
 		return false;
 	}
 
 	// Generic integer addresses (e.g. literals or &buffer folded to i32) are accepted for pointer params/returns.
 	// When pointer metadata is present, preserve stricter pointee/depth compatibility.
-	if (!stackItem.pointeeBaseType) {
+	if (stackItem.kind !== 'address' || !stackItem.pointsTo) {
 		return true;
 	}
 
 	const expected = functionValueTypeToStackItem(type);
+	if (expected.kind !== 'address' || !expected.pointsTo) {
+		return true;
+	}
+
 	return (
-		stackItem.pointeeBaseType === expected.pointeeBaseType &&
-		!!stackItem.isPointingToPointer === !!expected.isPointingToPointer
+		stackItem.pointsTo.baseType === expected.pointsTo.baseType &&
+		stackItem.pointsTo.isPointer === expected.pointsTo.isPointer
 	);
 }
