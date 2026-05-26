@@ -5,7 +5,7 @@ import param from './param';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -31,7 +31,7 @@ describe('param instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'param',
 				arguments: [classifyIdentifier('int'), classifyIdentifier('value')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -62,7 +62,7 @@ describe('param instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'param',
 				arguments: [classifyIdentifier('float64'), classifyIdentifier('x')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -93,7 +93,7 @@ describe('param instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'param',
 				arguments: [classifyIdentifier('float*'), classifyIdentifier('buffer')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -127,7 +127,7 @@ describe('param instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'param',
 					arguments: [classifyIdentifier('int'), classifyIdentifier('late')],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

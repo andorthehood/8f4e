@@ -5,7 +5,7 @@ import impure from './impure';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('impure instruction compiler', () => {
 	it('sets currentFunctionIsImpure when in function context', () => {
@@ -29,7 +29,7 @@ describe('impure instruction compiler', () => {
 				instruction: '#impure',
 				arguments: [],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -47,7 +47,7 @@ describe('impure instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: '#impure',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrow();

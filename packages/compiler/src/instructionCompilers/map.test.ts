@@ -5,7 +5,7 @@ import map from './map';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST, CompilationContext, MapBlockState } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilationContext, MapBlockState } from '@8f4e/compiler-spec';
 
 function getTopMapState(context: CompilationContext): MapBlockState {
 	const block = context.blockStack[context.blockStack.length - 1];
@@ -50,7 +50,7 @@ describe('map instruction compiler', () => {
 					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 					{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -89,7 +89,7 @@ describe('map instruction compiler', () => {
 					{ type: ArgumentType.STRING_LITERAL, value: 'A' },
 					{ type: ArgumentType.STRING_LITERAL, value: 'B' },
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -136,7 +136,7 @@ describe('map instruction compiler', () => {
 						{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
 						{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
 					],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();
@@ -156,7 +156,7 @@ describe('map instruction compiler', () => {
 						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 						{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
 					],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

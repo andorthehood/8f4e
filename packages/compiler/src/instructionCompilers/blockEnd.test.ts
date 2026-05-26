@@ -5,7 +5,7 @@ import blockEnd from './blockEnd';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('blockEnd instruction compiler', () => {
 	it('restores expected result on the stack', () => {
@@ -28,7 +28,7 @@ describe('blockEnd instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'blockEnd',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

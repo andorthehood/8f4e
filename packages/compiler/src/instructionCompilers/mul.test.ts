@@ -4,7 +4,7 @@ import mul from './mul';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('mul instruction compiler', () => {
 	it('emits I32_MUL for integer operands', () => {
@@ -18,7 +18,7 @@ describe('mul instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mul',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -39,7 +39,7 @@ describe('mul instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mul',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -63,7 +63,7 @@ describe('mul instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mul',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -87,7 +87,7 @@ describe('mul instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mul',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

@@ -1,4 +1,4 @@
-import type { AST } from './ast';
+import type { CompilerASTLine } from './ast';
 import type { CodegenContext, CompilationContext } from './semantic';
 import type { CompilerSourceBlockType } from './instructions';
 
@@ -8,7 +8,7 @@ import type { CompilerSourceBlockType } from './instructions';
  */
 export interface CompilerStageError {
 	message: string;
-	line: AST[number];
+	line: CompilerASTLine;
 	context?: CodegenContext | CompilationContext;
 	code: number;
 }

@@ -2,22 +2,19 @@ import {
 	ArgumentType,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	compilerSourceBlockInstructionByType,
-	isFunctionEndLine,
-	isFunctionLine,
-	isModuleLine,
 	isNamedScalarMemoryDeclarationLine,
-	isParamLine,
 	isUseLine,
-	type AST,
 	type Argument,
+	type ConstantsAST,
 	type CompileOptions,
 	type CompilationContext,
+	type CompilerASTLine,
 	type FunctionMetadataLookup,
-	type FunctionSignature,
+	type FunctionAST,
+	type ModuleAST,
 	type Namespaces,
 	type NamespacePrepassContext,
 	type ParsedSemanticInstructionLine,
-	type RegionLine,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -37,8 +34,9 @@ import { createCompilationContext } from './createCompilationContext';
 import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
-const constantsBlock = compilerSourceBlockInstructionByType.constants;
 const moduleBlock = compilerSourceBlockInstructionByType.module;
+
+type NamespacePrepassMode = 'full' | 'namespace-discovery';
 
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
@@ -46,34 +44,21 @@ const moduleBlock = compilerSourceBlockInstructionByType.module;
  * function-body codegen to rely on the same registry before full function
  * compilation completes.
  */
-export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: number): FunctionMetadataLookup {
+export function collectFunctionMetadataFromAsts(
+	asts: readonly FunctionAST[],
+	startingWasmIndex: number
+): FunctionMetadataLookup {
 	const result: FunctionMetadataLookup = {};
 
 	for (const [index, ast] of asts.entries()) {
-		const functionLine = ast.find(isFunctionLine);
-		if (!functionLine) {
-			continue;
-		}
-
-		const id = functionLine.arguments[0].value;
+		const id = ast.id;
 		if (result[id]) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, functionLine, undefined, { identifier: id });
-		}
-		const signature: FunctionSignature = {
-			parameters: ast
-				.filter(isParamLine)
-				.map(line => line.arguments[0].value as FunctionSignature['parameters'][number]),
-			returns: [],
-		};
-
-		const functionEndLine = ast.find(isFunctionEndLine);
-		if (functionEndLine) {
-			signature.returns = functionEndLine.arguments.map(arg => arg.value as FunctionSignature['returns'][number]);
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, undefined, { identifier: id });
 		}
 
 		result[id] = {
 			id,
-			signature,
+			signature: ast.signature,
 			wasmIndex: startingWasmIndex + index,
 		};
 	}
@@ -81,24 +66,23 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 	return result;
 }
 
-export function assertUniqueModuleIds(asts: AST[]): void {
+export function assertUniqueModuleIds(asts: readonly (ModuleAST | ConstantsAST)[]): void {
 	const seenModuleIds = new Set<string>();
 
 	for (const ast of asts) {
-		const moduleLine = ast.find(isModuleLine);
-		if (!moduleLine) {
+		if (ast.type !== moduleBlock.type) {
 			continue;
 		}
 
-		const id = moduleLine.arguments[0].value;
+		const id = ast.id;
 		if (seenModuleIds.has(id)) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine, undefined, { identifier: id });
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.moduleLine, undefined, { identifier: id });
 		}
 		seenModuleIds.add(id);
 	}
 }
 
-export function applySemanticLine(line: AST[number], context: CompilationContext) {
+export function applySemanticLine(line: CompilerASTLine, context: CompilationContext) {
 	if (!line.isSemanticOnly) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
@@ -107,11 +91,12 @@ export function applySemanticLine(line: AST[number], context: CompilationContext
 }
 
 export function prepassNamespace(
-	ast: AST,
+	ast: ModuleAST | ConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	mode: NamespacePrepassMode = 'full'
 ): NamespacePrepassContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	const context = createCompilationContext<NamespacePrepassContext>({
@@ -136,20 +121,26 @@ export function prepassNamespace(
 		currentMemoryIndex: defaultRegion.memoryIndex,
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
-		codeBlockType: ast[0]?.instruction === constantsBlock.start ? constantsBlock.type : moduleBlock.type,
+		codeBlockType: ast.type,
 	});
 
-	ast.forEach(originalLine => {
+	ast.lines.forEach(originalLine => {
 		if (originalLine.isSemanticOnly) {
 			applySemanticLine(originalLine, context);
 		} else if (originalLine.isMemoryDeclaration) {
-			applyMemoryDeclarationLine(normalizeCompileTimeArguments(originalLine, context), context);
+			const declarationLine =
+				mode === 'namespace-discovery' ? toNamespaceDiscoveryMemoryDeclarationLine(originalLine) : originalLine;
+			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		}
 	});
 
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
 
-	ast.forEach(originalLine => {
+	if (mode === 'namespace-discovery') {
+		return context;
+	}
+
+	ast.lines.forEach(originalLine => {
 		if (!originalLine.isMemoryDeclaration || originalLine.instruction.endsWith('[]')) {
 			return;
 		}
@@ -167,15 +158,11 @@ export function prepassNamespace(
 	return context;
 }
 
-export function getModuleIdFromAst(ast: AST): string | undefined {
-	return ast.find(isModuleLine)?.arguments[0].value;
-}
-
 function getModuleRegionFromAst(
-	ast: AST,
+	ast: ModuleAST | ConstantsAST,
 	options: Pick<CompileOptions, 'memoryRegions'>
 ): { memoryIndex: number; memoryRegionName?: string } {
-	const regionLine = ast.find((line): line is RegionLine => line.instruction === '#region');
+	const regionLine = ast.type === moduleBlock.type ? ast.regionLine : undefined;
 
 	if (!regionLine) {
 		return getDefaultMemoryRegion();
@@ -208,7 +195,7 @@ function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): 
 	return [argument.targetModuleId];
 }
 
-function getDeferredNamespaceIds(line: AST[number]): string[] {
+function getDeferredNamespaceIds(line: CompilerASTLine): string[] {
 	if (isUseLine(line)) {
 		return [line.arguments[0].value];
 	}
@@ -218,7 +205,7 @@ function getDeferredNamespaceIds(line: AST[number]): string[] {
 
 function shouldDeferNamespaceCollection(
 	error: unknown,
-	line: AST[number] | undefined,
+	line: CompilerASTLine | undefined,
 	namespaces: Namespaces
 ): boolean {
 	if (!line || typeof error !== 'object' || error === null || !('code' in error)) {
@@ -233,29 +220,26 @@ function shouldDeferNamespaceCollection(
 	return referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
-function toNamespaceDiscoveryAst(ast: AST): AST {
-	return ast.flatMap(line => {
-		if (isNamedScalarMemoryDeclarationLine(line)) {
-			return [
-				{
-					...line,
-					arguments: [line.arguments[0]],
-				},
-			];
-		}
+function toNamespaceDiscoveryMemoryDeclarationLine(line: CompilerASTLine): CompilerASTLine {
+	if (!isNamedScalarMemoryDeclarationLine(line)) {
+		return line;
+	}
 
-		return [line];
-	});
+	const [identifier] = line.arguments;
+	return {
+		...line,
+		arguments: [identifier],
+	};
 }
 
 export function collectNamespacesFromASTs(
-	asts: AST[],
+	asts: readonly (ModuleAST | ConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
 	compiledFunctions?: FunctionMetadataLookup,
-	layoutAsts: AST[] = asts,
+	layoutAsts: readonly (ModuleAST | ConstantsAST)[] = asts,
 	options: Pick<CompileOptions, 'memoryRegions'> = {}
 ): Namespaces {
-	validateMemoryRegionOptions(options, asts[0]?.[0]);
+	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
 
 	let pendingAsts = [...asts];
@@ -263,29 +247,29 @@ export function collectNamespacesFromASTs(
 
 	while (pendingAsts.length > 0 && madeProgress) {
 		madeProgress = false;
-		const deferredAsts: AST[] = [];
+		const deferredAsts: Array<ModuleAST | ConstantsAST> = [];
 
 		for (const ast of pendingAsts) {
 			try {
 				const context = prepassNamespace(
-					toNamespaceDiscoveryAst(ast),
+					ast,
 					namespaces,
 					startingByteAddress,
 					compiledFunctions,
-					options
+					options,
+					'namespace-discovery'
 				);
 				if (!context.namespace.moduleName) {
 					continue;
 				}
-				const moduleLine = ast.find(isModuleLine);
 				const existingNamespace = namespaces[context.namespace.moduleName];
-				if (moduleLine && existingNamespace?.kind === moduleBlock.type) {
-					throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine ?? ast[0], context, {
+				if (ast.type === moduleBlock.type && existingNamespace?.kind === moduleBlock.type) {
+					throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.lines[0], context, {
 						identifier: context.namespace.moduleName,
 					});
 				}
 				namespaces[context.namespace.moduleName] = {
-					kind: moduleLine ? moduleBlock.type : constantsBlock.type,
+					kind: ast.type,
 					consts: { ...context.namespace.consts },
 					memory: context.namespace.memory,
 					...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
@@ -293,7 +277,7 @@ export function collectNamespacesFromASTs(
 				madeProgress = true;
 			} catch (error) {
 				const failingLine =
-					typeof error === 'object' && error !== null && 'line' in error ? (error.line as AST[number]) : undefined;
+					typeof error === 'object' && error !== null && 'line' in error ? (error.line as CompilerASTLine) : undefined;
 				if (shouldDeferNamespaceCollection(error, failingLine, namespaces)) {
 					deferredAsts.push(ast);
 					continue;

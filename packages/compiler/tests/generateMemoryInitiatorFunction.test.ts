@@ -14,7 +14,13 @@ function serializeSegments(segments: ReturnType<typeof createInitialMemoryDataSe
 
 describe('compiler', () => {
 	test('createInitialMemoryDataSegments', () => {
-		const astModules = modules.map(({ code }) => compileToAST(code));
+		const astModules = modules.map(({ code }) => {
+			const ast = compileToAST(code);
+			if (ast.type === 'function') {
+				throw new Error('Expected module AST.');
+			}
+			return ast;
+		});
 		const compiledModules = compileModules(astModules, {
 			startingMemoryWordAddress: 0,
 		});

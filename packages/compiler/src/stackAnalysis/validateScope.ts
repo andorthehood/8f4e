@@ -1,10 +1,15 @@
-import { type AST, type CompilationContext, type ErrorCodeValue, type ScopeRule } from '@8f4e/compiler-spec';
+import {
+	type CompilerASTLine,
+	type CompilationContext,
+	type ErrorCodeValue,
+	type ScopeRule,
+} from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
 export function validateScope(
 	scope: ScopeRule,
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext,
 	errorCode: ErrorCodeValue
 ): void {

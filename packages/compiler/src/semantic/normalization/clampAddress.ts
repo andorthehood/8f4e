@@ -5,9 +5,9 @@ import { normalizeAndValidateResolvableArgs } from './helpers';
 
 import { getError } from '../../compilerError';
 
-import type { AST, CompilationContext } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilationContext } from '@8f4e/compiler-spec';
 
-export default function normalizeClampAddress(line: AST[number], context: CompilationContext): AST[number] {
+export default function normalizeClampAddress(line: CompilerASTLine, context: CompilationContext): CompilerASTLine {
 	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
 	const argument = normalized.arguments[0];
 

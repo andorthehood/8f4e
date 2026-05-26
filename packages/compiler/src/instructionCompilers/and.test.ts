@@ -5,7 +5,7 @@ import and from './and';
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('and instruction compiler', () => {
 	it('emits I32_AND for integer operands', () => {
@@ -19,7 +19,7 @@ describe('and instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'and',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -37,7 +37,7 @@ describe('and instruction compiler', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'and',
 			arguments: [],
-		} as AST[number];
+		} as CompilerASTLine;
 
 		expect(() => {
 			validateInstruction(line, context);
@@ -58,7 +58,7 @@ describe('and instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'and',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

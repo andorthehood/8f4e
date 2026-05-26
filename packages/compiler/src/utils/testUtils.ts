@@ -5,7 +5,7 @@ import { expect } from 'vitest';
 import { createCompilationContext } from '../semantic/createCompilationContext';
 import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
 
-import type { AST, AnalyzedLine, CompilationContext, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, AnalyzedLine, CompilationContext, InstructionCompiler } from '@8f4e/compiler-spec';
 
 export default function createInstructionCompilerTestContext(
 	overrides: Partial<CompilationContext> = {}
@@ -28,7 +28,7 @@ export default function createInstructionCompilerTestContext(
 	});
 }
 
-export function analyzeAndCompileInstruction<TLine extends AST[number]>(
+export function analyzeAndCompileInstruction<TLine extends CompilerASTLine>(
 	compileInstruction: InstructionCompiler<TLine>,
 	line: TLine,
 	context: CompilationContext

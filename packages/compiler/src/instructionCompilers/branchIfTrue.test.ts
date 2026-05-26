@@ -5,7 +5,7 @@ import branchIfTrue from './branchIfTrue';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('branchIfTrue instruction compiler', () => {
 	it('emits br_if bytecode', () => {
@@ -19,7 +19,7 @@ describe('branchIfTrue instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'branchIfTrue',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

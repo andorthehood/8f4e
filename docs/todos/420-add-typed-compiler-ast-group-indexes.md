@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-26
 issue: null
-status: Open
-completed: null
+status: Done
+completed: 2026-05-26
 ---
 
 # TODO: Add typed compiler AST group indexes

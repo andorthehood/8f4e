@@ -4,7 +4,7 @@ import drop from './drop';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('drop instruction compiler', () => {
 	it('drops the top stack value', () => {
@@ -18,7 +18,7 @@ describe('drop instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'drop',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

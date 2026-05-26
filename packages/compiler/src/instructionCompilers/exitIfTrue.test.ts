@@ -6,7 +6,7 @@ import exitIfTrue from './exitIfTrue';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('exitIfTrue instruction compiler', () => {
 	it('emits a conditional early module exit and preserves the fallthrough stack', () => {
@@ -21,7 +21,7 @@ describe('exitIfTrue instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'exitIfTrue',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -50,7 +50,7 @@ describe('exitIfTrue instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'exitIfTrue',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		} catch (error) {
