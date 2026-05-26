@@ -6,7 +6,7 @@ import _return from './return';
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('return instruction compiler', () => {
 	it('emits WASM return opcode and clears the stack', () => {
@@ -29,7 +29,7 @@ describe('return instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'return',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -47,7 +47,7 @@ describe('return instruction compiler', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'return',
 			arguments: [],
-		} as AST[number];
+		} as CompilerASTLine;
 
 		expect(() => {
 			validateInstruction(line, context);

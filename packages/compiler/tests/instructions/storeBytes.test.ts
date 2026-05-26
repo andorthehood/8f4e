@@ -1,4 +1,4 @@
-import { compileToASTGroup } from '@8f4e/tokenizer';
+import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
 
 import { createSingleFunctionWASMProgram } from './testUtils';
@@ -8,7 +8,7 @@ import { compileModules } from '../../src';
 import type { CompiledModule } from '../../src/types';
 
 function compileModuleAst(sourceCode: string) {
-	const ast = compileToASTGroup(sourceCode.split('\n'));
+	const ast = compileToAST(sourceCode.split('\n'));
 	if (ast.type === 'function') {
 		throw new Error('Expected module AST.');
 	}

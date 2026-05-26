@@ -17,10 +17,10 @@ import { getMemoryRegionFields } from './semantic/memoryRegions';
 import { createCompilationContext } from './semantic/createCompilationContext';
 
 import type {
-	AST,
+	CompilerASTLine,
 	AnalyzedLine,
 	CompilationContext,
-	CompiledModuleAST,
+	ModuleCompilationAST,
 	CompiledModule,
 	CompiledFunction,
 	CompiledStackAnalysisLine,
@@ -40,14 +40,14 @@ type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
 };
 
-function withCompiledModuleLines<TAst extends CompiledModuleAST>(ast: TAst, lines: TAst['lines']): TAst {
+function withCompiledModuleLines<TAst extends ModuleCompilationAST>(ast: TAst, lines: TAst['lines']): TAst {
 	return {
 		...ast,
 		lines,
 	};
 }
 
-function getFallbackErrorLine(ast: { lines: AST }): AST[number] {
+function getFallbackErrorLine(ast: { lines: readonly CompilerASTLine[] }): CompilerASTLine {
 	return (
 		ast.lines[0] ?? {
 			lineNumberBeforeMacroExpansion: 0,
@@ -77,7 +77,7 @@ function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAnalysisL
 	};
 }
 
-export function compileLine(line: AST[number], context: CompilationContext): AnalyzedLine | undefined {
+export function compileLine(line: CompilerASTLine, context: CompilationContext): AnalyzedLine | undefined {
 	if (line.isMemoryDeclaration && context.mode === 'function') {
 		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
 	}
@@ -93,7 +93,7 @@ export function compileLine(line: AST[number], context: CompilationContext): Ana
 }
 
 export function compileModule(
-	ast: CompiledModuleAST,
+	ast: ModuleCompilationAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,

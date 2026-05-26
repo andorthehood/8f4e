@@ -5,7 +5,7 @@ import branchIfUnchanged from './branchIfUnchanged';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('branchIfUnchanged instruction compiler', () => {
 	it('compiles the unchanged check segment', () => {
@@ -19,7 +19,7 @@ describe('branchIfUnchanged instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 4,
 				instruction: 'branchIfUnchanged',
 				arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

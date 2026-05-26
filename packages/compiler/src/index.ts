@@ -1,4 +1,4 @@
-import { compileToASTGroup, createASTCache } from '@8f4e/tokenizer';
+import { compileToAST, createASTCache } from '@8f4e/tokenizer';
 import {
 	createCodeSection,
 	createFunction,
@@ -38,11 +38,11 @@ import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semant
 import type {
 	CompileOptions,
 	CompileResult,
-	CompiledModuleAST,
+	ModuleCompilationAST,
 	CompiledModule,
 	CompiledModuleLookup,
 	CompiledFunctionLookup,
-	CompilerASTGroup,
+	AST,
 	CompilerCache,
 	FunctionAST,
 	FunctionMetadataLookup,
@@ -71,7 +71,7 @@ export { createInitialMemoryDataSegments };
 export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
 
 export function compileModules(
-	modules: CompiledModuleAST[],
+	modules: ModuleCompilationAST[],
 	options: CompileOptions,
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
@@ -111,7 +111,7 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 
 function createCompilerCache(): CompilerCache {
 	return {
-		ast: createASTCache<CompilerASTGroup>(),
+		ast: createASTCache<AST>(),
 	};
 }
 
@@ -164,13 +164,13 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-function parseCompiledModuleAST(
+function parseModuleCompilationAST(
 	code: string[],
 	lineMetadata: ParsedLineMetadata | undefined,
 	cache: CompilerCache,
 	cacheKey: string
-): CompiledModuleAST {
-	const ast = compileToASTGroup(code, lineMetadata, cache.ast, cacheKey);
+): ModuleCompilationAST {
+	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
 	if (ast.type === 'function') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
 	}
@@ -183,7 +183,7 @@ function parseFunctionAST(
 	cache: CompilerCache,
 	cacheKey: string
 ): FunctionAST {
-	const ast = compileToASTGroup(code, lineMetadata, cache.ast, cacheKey);
+	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
 	if (ast.type !== 'function') {
 		throw getError(ErrorCode.MISSING_FUNCTION_ID, ast.lines[0], undefined);
 	}
@@ -220,7 +220,7 @@ export default function compile(
 
 	// Compile to AST with line metadata for error mapping.
 	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
-		parseCompiledModuleAST(code, lineMetadata, cache, `module:${index}`)
+		parseModuleCompilationAST(code, lineMetadata, cache, `module:${index}`)
 	);
 	assertUniqueModuleIds(astModules);
 	const dependencyOrderedModules = sortModules(astModules);

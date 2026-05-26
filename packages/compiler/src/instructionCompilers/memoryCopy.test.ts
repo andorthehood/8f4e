@@ -6,14 +6,14 @@ import memoryCopy from './memoryCopy';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const line = {
 	lineNumberBeforeMacroExpansion: 1,
 	lineNumberAfterMacroExpansion: 1,
 	instruction: 'memoryCopy',
 	arguments: [{ type: ArgumentType.LITERAL, value: 20, isInteger: true }],
-} as AST[number];
+} as CompilerASTLine;
 
 describe('memoryCopy instruction compiler', () => {
 	it('emits raw memory.copy when destination, source, and length are proven safe', () => {
@@ -61,7 +61,7 @@ describe('memoryCopy instruction compiler', () => {
 			{
 				...line,
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

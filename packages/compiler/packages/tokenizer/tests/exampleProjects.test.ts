@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 import { describe, expect, it } from 'vitest';
 
-import { compileToAST } from '../src/parser';
+import { compileToASTLines } from '../src/parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,7 +30,7 @@ describe('compileToAST example project integration snapshots', () => {
 	for (const relativePath of exampleProjects) {
 		it(`matches snapshot for ${relativePath}`, async () => {
 			const code = loadExampleProject(relativePath);
-			await expect(JSON.stringify(compileToAST(code), null, 2)).toMatchFileSnapshot(getSnapshotPath(relativePath));
+			await expect(JSON.stringify(compileToASTLines(code), null, 2)).toMatchFileSnapshot(getSnapshotPath(relativePath));
 		});
 	}
 });

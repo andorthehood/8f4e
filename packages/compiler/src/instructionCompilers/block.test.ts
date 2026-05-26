@@ -4,7 +4,7 @@ import block from './block';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('block instruction compiler', () => {
 	it('emits a typed block for float', () => {
@@ -18,7 +18,7 @@ describe('block instruction compiler', () => {
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultType: 'float' },
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -39,7 +39,7 @@ describe('block instruction compiler', () => {
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultType: 'int' },
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -60,7 +60,7 @@ describe('block instruction compiler', () => {
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultType: null },
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

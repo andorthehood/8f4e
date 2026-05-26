@@ -5,7 +5,7 @@ import sqrt from './sqrt';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('sqrt instruction compiler', () => {
 	it('emits F32_SQRT for float operands', () => {
@@ -19,7 +19,7 @@ describe('sqrt instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'sqrt',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -40,7 +40,7 @@ describe('sqrt instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'sqrt',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
