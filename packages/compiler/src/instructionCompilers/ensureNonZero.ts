@@ -1,5 +1,4 @@
 import { ArgumentType } from '@8f4e/compiler-spec';
-import { isStackFloat64, isStackInteger } from '@8f4e/compiler-spec';
 import {
 	f32const,
 	f64const,
@@ -27,8 +26,8 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const ensureNonZero: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	const isInteger = isStackInteger(operand);
-	const isFloat64 = isStackFloat64(operand);
+	const isInteger = operand.valueType === 'int';
+	const isFloat64 = operand.valueType === 'float64';
 	let defaultNonZeroValue = isInteger ? 1 : 1.0;
 
 	// Preserve the previous synthetic-source lowering, which rounded float defaults to one decimal place.

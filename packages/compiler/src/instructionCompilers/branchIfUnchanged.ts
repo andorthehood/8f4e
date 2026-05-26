@@ -10,7 +10,6 @@ import {
 	WASM_F32_EQ,
 	WASM_I32_EQ,
 } from '@8f4e/compiler-wasm-utils';
-import { isStackInteger } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { allocateInternalResource } from './utils/internalResources';
@@ -25,7 +24,7 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = (line, con
 	const [operand] = line.stackAnalysis.consumedOperands;
 
 	const depth = line.arguments[0].value;
-	const isInteger = isStackInteger(operand);
+	const isInteger = operand.valueType === 'int';
 	const type = isInteger ? 'int' : 'float';
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
