@@ -3,12 +3,23 @@ import { ErrorCode } from './errors';
 import { memoryDeclarationInstructions } from './memory';
 import { BlockType } from './semantic';
 
-import type { AST, StoreBytesLine } from './ast';
 import type { ErrorCodeValue } from './errors';
 import type { MemoryDeclarationInstruction } from './memory';
 import type { BlockTypeValue, CompilationContext } from './semantic';
 
 export type OperandRule = 'int' | 'float' | 'matching';
+export type SourceArgumentShapeRule =
+	| 'identifier'
+	| 'constantIdentifier'
+	| 'literal'
+	| 'nonNegativeIntegerLiteral'
+	| 'nonNegativeCompileTimeValue'
+	| 'compileTimeValue'
+	| 'mapValue'
+	| 'typeIdentifier'
+	| 'functionTypeIdentifier'
+	| 'ifResultType'
+	| 'regionReference';
 export type ScopeRule =
 	| 'module'
 	| 'moduleOnly'
@@ -19,7 +30,10 @@ export type ScopeRule =
 	| 'map'
 	| 'loop';
 
-export interface ValidationSpec<TLine extends AST[number] = AST[number]> {
+type StoreBytesSourceLine = { arguments: [{ value: number }] };
+const noSourceArguments = { maxArguments: 0 } as const satisfies SourceArgumentsSpec;
+
+export interface ValidationSpec<TLine = unknown> {
 	scope?: ScopeRule;
 	minOperands?: number;
 	operandTypes?: OperandRule[] | OperandRule;
@@ -93,7 +107,7 @@ export interface StackMutationSpec {
 	dropped?: 'consumed';
 }
 
-export interface StackEffectSpec<TLine extends AST[number] = AST[number]> extends ResolvedStackEffect {
+export interface StackEffectSpec<TLine = unknown> extends ResolvedStackEffect {
 	resolve?: (line: TLine) => ResolvedStackEffect;
 	effect?: StackMutationSpec;
 }
@@ -133,7 +147,15 @@ export interface InstructionEffectsSpec {
 	memory?: MemoryOperationEffectSpec;
 }
 
-export interface InstructionSpec<TLine extends AST[number] = AST[number]> extends ValidationSpec<TLine> {
+export interface SourceArgumentsSpec {
+	minArguments?: number;
+	maxArguments?: number;
+	argumentTypes?: SourceArgumentShapeRule[] | SourceArgumentShapeRule;
+}
+
+export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> {
+	codegen?: false;
+	sourceArguments?: SourceArgumentsSpec;
 	docs?: InstructionDocumentation;
 	stack?: StackEffectSpec<TLine>;
 	effects?: InstructionEffectsSpec;
@@ -152,7 +174,7 @@ interface StackOptions {
 	effect?: StackMutationSpec;
 }
 
-function withDocsAndStack<TSpec extends ValidationSpec>(
+function withDocsAndStack<TSpec extends Partial<InstructionSpec>>(
 	spec: TSpec,
 	{ shortDescription, inputs, outputs, effect }: DocsAndStackOptions
 ): TSpec & { docs: InstructionDocumentation; stack: StackEffectSpec } {
@@ -222,7 +244,7 @@ function blockClose(
 	return { blockClose: { blockType, restoreResult, validateFloatResult } };
 }
 
-export function resolveInstructionStackEffect<TLine extends AST[number]>(
+export function resolveInstructionStackEffect<TLine>(
 	spec: InstructionSpec<TLine>,
 	line: TLine
 ): ResolvedStackEffect | undefined {
@@ -238,35 +260,44 @@ export function formatStackSignature(instruction: string, stackEffect: ResolvedS
 }
 
 const binaryMatchingSpec = {
+	sourceArguments: noSourceArguments,
 	scope: 'moduleOrFunction',
 	minOperands: 2,
 	operandTypes: 'matching',
-} satisfies ValidationSpec;
+} satisfies InstructionSpec;
 
 const binaryIntegerSpec = {
+	sourceArguments: noSourceArguments,
 	scope: 'moduleOrFunction',
 	minOperands: 2,
 	operandTypes: 'int',
-} satisfies ValidationSpec;
+} satisfies InstructionSpec;
 
 const unaryModuleOrFunctionSpec = {
 	scope: 'moduleOrFunction',
 	minOperands: 1,
 } satisfies ValidationSpec;
 
+const unaryNoSourceModuleOrFunctionSpec = {
+	...unaryModuleOrFunctionSpec,
+	sourceArguments: noSourceArguments,
+} satisfies InstructionSpec;
+
 const loadSpec = {
+	sourceArguments: noSourceArguments,
 	scope: 'moduleOrFunction',
 	minOperands: 1,
 	operandTypes: 'int',
-} satisfies ValidationSpec;
+} satisfies InstructionSpec;
 
 const memoryDeclarationSpec = {
+	codegen: false,
 	scope: 'module',
-} satisfies ValidationSpec;
+} satisfies InstructionSpec;
 
 export const instructionSpecs = {
 	// abs (int -- int), abs (float -- float), abs (float64 -- float64)
-	abs: withDocsAndStack(unaryModuleOrFunctionSpec, {
+	abs: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Returns the absolute value of the top stack value.',
 		inputs: ['T'],
 		outputs: ['T'],
@@ -285,12 +316,14 @@ export const instructionSpecs = {
 	}),
 	// block ( -- )
 	block: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts a block that can be exited with branch instructions.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// blockEnd ( -- ), blockEnd (T -- T)
 	blockEnd: {
+		sourceArguments: { maxArguments: 1, argumentTypes: 'ifResultType' },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends a block and validates its optional result value.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
@@ -298,12 +331,14 @@ export const instructionSpecs = {
 	},
 	// branch ( -- )
 	branch: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Branches out of one or more enclosing blocks.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// branchIfTrue (int -- )
 	branchIfTrue: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
@@ -312,6 +347,7 @@ export const instructionSpecs = {
 	},
 	// branchIfUnchanged (T -- )
 	branchIfUnchanged: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Branches when the consumed value matches the previous value seen by this instruction.' },
@@ -319,6 +355,7 @@ export const instructionSpecs = {
 	},
 	// call (args... -- returns...)
 	call: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Calls a function, consuming its parameters and pushing its return values.' },
@@ -326,6 +363,7 @@ export const instructionSpecs = {
 	},
 	// castToFloat (int -- float)
 	castToFloat: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
@@ -337,7 +375,7 @@ export const instructionSpecs = {
 		}),
 	},
 	// castToFloat64 (int -- float64), castToFloat64 (float -- float64), castToFloat64 (float64 -- float64)
-	castToFloat64: withDocsAndStack(unaryModuleOrFunctionSpec, {
+	castToFloat64: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Converts a numeric stack value to float64.',
 		inputs: ['T'],
 		outputs: ['float64'],
@@ -345,6 +383,7 @@ export const instructionSpecs = {
 	}),
 	// castToInt (float -- int), castToInt (float64 -- int)
 	castToInt: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'float',
@@ -357,6 +396,7 @@ export const instructionSpecs = {
 	},
 	// clampAddress (ptr -- ptr)
 	clampAddress: {
+		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
@@ -365,6 +405,7 @@ export const instructionSpecs = {
 	},
 	// clampModuleAddress (ptr -- ptr)
 	clampModuleAddress: {
+		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		scope: 'module',
 		minOperands: 1,
 		operandTypes: 'int',
@@ -373,6 +414,7 @@ export const instructionSpecs = {
 	},
 	// clampGlobalAddress (ptr -- ptr)
 	clampGlobalAddress: {
+		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
@@ -381,12 +423,38 @@ export const instructionSpecs = {
 	},
 	// clearStack (... -- )
 	clearStack: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Removes every value from the stack.' },
 		stack: stack({ inputs: ['...'], outputs: [], effect: { consumes: 'all', produces: [], dropped: 'consumed' } }),
 	},
+	// const <NAME> <value> ( -- )
+	const: {
+		codegen: false,
+		sourceArguments: {
+			minArguments: 2,
+			maxArguments: 2,
+			argumentTypes: ['constantIdentifier', 'compileTimeValue'],
+		},
+		allowedInConstantsBlocks: true,
+		docs: { shortDescription: 'Declares a compile-time constant.' },
+	},
+	// constants <id> ( -- )
+	constants: {
+		codegen: false,
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		docs: { shortDescription: 'Starts a constants block.' },
+	},
+	// constantsEnd ( -- )
+	constantsEnd: {
+		codegen: false,
+		sourceArguments: noSourceArguments,
+		allowedInConstantsBlocks: true,
+		docs: { shortDescription: 'Ends a constants block.' },
+	},
 	// default ( -- )
 	default: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'compileTimeValue' },
 		scope: 'map',
 		allowedInMapBlocks: true,
 		docs: { shortDescription: 'Defines the fallback value for a map block.' },
@@ -399,7 +467,7 @@ export const instructionSpecs = {
 		outputs: ['T'],
 	}),
 	// drop (T -- )
-	drop: withDocsAndStack(unaryModuleOrFunctionSpec, {
+	drop: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Removes the top value from the stack.',
 		inputs: ['T'],
 		outputs: [],
@@ -407,18 +475,22 @@ export const instructionSpecs = {
 	}),
 	// else ( -- )
 	else: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts the alternate branch of the current if block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 		effects: blockClose(BlockType.CONDITION, { validateFloatResult: true }),
 	},
 	// ensureNonZero (int -- int), ensureNonZero (float -- float), ensureNonZero (float64 -- float64)
-	ensureNonZero: withDocsAndStack(unaryModuleOrFunctionSpec, {
-		shortDescription: 'Ensures the top stack value is non-zero before continuing.',
-		inputs: ['T'],
-		outputs: ['T'],
-		effect: stackMutation(1, [{ kind: 'same', isNonZero: true }]),
-	}),
+	ensureNonZero: withDocsAndStack(
+		{ ...unaryModuleOrFunctionSpec, sourceArguments: { maxArguments: 1, argumentTypes: 'literal' } },
+		{
+			shortDescription: 'Ensures the top stack value is non-zero before continuing.',
+			inputs: ['T'],
+			outputs: ['T'],
+			effect: stackMutation(1, [{ kind: 'same', isNonZero: true }]),
+		}
+	),
 	// equal (int int -- int), equal (float float -- int), equal (float64 float64 -- int)
 	equal: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Compares two values and pushes 1 when they are equal, otherwise 0.',
@@ -427,7 +499,7 @@ export const instructionSpecs = {
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// equalToZero (int -- int), equalToZero (float -- int), equalToZero (float64 -- int)
-	equalToZero: withDocsAndStack(unaryModuleOrFunctionSpec, {
+	equalToZero: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Pushes 1 when the value is zero, otherwise 0.',
 		inputs: ['T'],
 		outputs: ['int'],
@@ -435,6 +507,7 @@ export const instructionSpecs = {
 	}),
 	// exitIfTrue (int -- )
 	exitIfTrue: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE,
 		minOperands: 1,
@@ -444,13 +517,20 @@ export const instructionSpecs = {
 	},
 	// fallingEdge (int -- int), fallingEdge (float -- int)
 	fallingEdge: {
+		sourceArguments: noSourceArguments,
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from a non-zero value to zero.' },
 		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
 	},
+	// function <id> ( -- )
+	function: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		docs: { shortDescription: 'Starts a function block.' },
+	},
 	// functionEnd (returns... -- )
 	functionEnd: {
+		sourceArguments: { argumentTypes: 'functionTypeIdentifier' },
 		scope: 'function',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Ends a function and records its return signature.' },
@@ -479,6 +559,7 @@ export const instructionSpecs = {
 	}),
 	// hasChanged (int -- int), hasChanged (float -- int)
 	hasChanged: {
+		sourceArguments: noSourceArguments,
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Pushes 1 when the consumed value differs from its previous value.' },
@@ -486,6 +567,7 @@ export const instructionSpecs = {
 	},
 	// if (int -- )
 	if: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
@@ -494,6 +576,7 @@ export const instructionSpecs = {
 	},
 	// ifEnd ( -- ), ifEnd (T -- T)
 	ifEnd: {
+		sourceArguments: { maxArguments: 1, argumentTypes: 'ifResultType' },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends an if block and validates its optional result value.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
@@ -569,6 +652,11 @@ export const instructionSpecs = {
 	}),
 	// local ( -- )
 	local: {
+		sourceArguments: {
+			minArguments: 2,
+			maxArguments: 2,
+			argumentTypes: ['functionTypeIdentifier', 'identifier'],
+		},
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Declares a local variable in the current function or module block.' },
@@ -576,6 +664,7 @@ export const instructionSpecs = {
 	},
 	// localSet (T -- )
 	localSet: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 1,
@@ -584,12 +673,14 @@ export const instructionSpecs = {
 	},
 	// loop ( -- )
 	loop: {
+		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts a loop block that repeats until a branch exits it.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #loopCap ( -- )
 	'#loopCap': {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Sets the loop iteration cap for loops in the current block.' },
@@ -597,6 +688,8 @@ export const instructionSpecs = {
 	},
 	// #region <name|index> ( -- )
 	'#region': {
+		codegen: false,
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'regionReference' },
 		scope: 'module',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Selects the memory region used by subsequent module declarations.' },
@@ -604,6 +697,7 @@ export const instructionSpecs = {
 	},
 	// #export [exportName] ( -- )
 	'#export': {
+		sourceArguments: { maxArguments: 1, argumentTypes: 'identifier' },
 		scope: 'function',
 		onInvalidScope: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT,
 		docs: {
@@ -613,6 +707,7 @@ export const instructionSpecs = {
 	},
 	// #skipExecution ( -- )
 	'#skipExecution': {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Skips the current module during cycle execution.' },
@@ -620,6 +715,7 @@ export const instructionSpecs = {
 	},
 	// #initOnly ( -- )
 	'#initOnly': {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Runs the current module only during initialization.' },
@@ -627,6 +723,7 @@ export const instructionSpecs = {
 	},
 	// #impure ( -- )
 	'#impure': {
+		sourceArguments: noSourceArguments,
 		scope: 'function',
 		onInvalidScope: ErrorCode.IMPURE_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Allows the current function to perform explicit memory IO.' },
@@ -634,6 +731,7 @@ export const instructionSpecs = {
 	},
 	// loopEnd ( -- ), loopEnd (T -- T)
 	loopEnd: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends a loop block and branches back to the start of the loop.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
@@ -641,6 +739,7 @@ export const instructionSpecs = {
 	},
 	// loopIndex ( -- int)
 	loopIndex: {
+		sourceArguments: noSourceArguments,
 		scope: 'loop',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP,
 		docs: { shortDescription: 'Pushes the current zero-based loop iteration index.' },
@@ -648,6 +747,7 @@ export const instructionSpecs = {
 	},
 	// map ( -- )
 	map: {
+		sourceArguments: { minArguments: 2, maxArguments: 2, argumentTypes: ['mapValue', 'mapValue'] },
 		scope: 'map',
 		allowedInMapBlocks: true,
 		docs: { shortDescription: 'Starts a map case inside a map block.' },
@@ -655,12 +755,14 @@ export const instructionSpecs = {
 	},
 	// mapBegin ( -- )
 	mapBegin: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'typeIdentifier' },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts a map block that chooses a value from map cases.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// mapEnd (int -- T), mapEnd (float -- T), mapEnd (float64 -- T)
 	mapEnd: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'typeIdentifier' },
 		scope: 'map',
 		allowedInMapBlocks: true,
 		minOperands: 1,
@@ -669,6 +771,7 @@ export const instructionSpecs = {
 	},
 	// memoryCopy (ptr ptr -- )
 	memoryCopy: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 2,
@@ -695,6 +798,18 @@ export const instructionSpecs = {
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),
+	// module <id> ( -- )
+	module: {
+		codegen: false,
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		docs: { shortDescription: 'Starts a module block.' },
+	},
+	// moduleEnd ( -- )
+	moduleEnd: {
+		codegen: false,
+		sourceArguments: noSourceArguments,
+		docs: { shortDescription: 'Ends a module block.' },
+	},
 	// notEqual (int int -- int), notEqual (float float -- int), notEqual (float64 float64 -- int)
 	notEqual: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Compares two values and pushes 1 when they are not equal, otherwise 0.',
@@ -703,7 +818,7 @@ export const instructionSpecs = {
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// notZero (int -- int), notZero (float -- int), notZero (float64 -- int)
-	notZero: withDocsAndStack(unaryModuleOrFunctionSpec, {
+	notZero: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Pushes 1 when the value is non-zero, otherwise 0.',
 		inputs: ['T'],
 		outputs: ['int'],
@@ -717,6 +832,11 @@ export const instructionSpecs = {
 	}),
 	// param ( -- )
 	param: {
+		sourceArguments: {
+			minArguments: 2,
+			maxArguments: 2,
+			argumentTypes: ['functionTypeIdentifier', 'identifier'],
+		},
 		scope: 'function',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Declares a parameter for the current function.' },
@@ -724,6 +844,7 @@ export const instructionSpecs = {
 	},
 	// push ( -- T)
 	push: {
+		sourceArguments: { minArguments: 1, maxArguments: 1 },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Pushes a literal, memory value, local value, address, or constant onto the stack.' },
 		stack: stack({ inputs: [], outputs: ['T'] }),
@@ -736,6 +857,7 @@ export const instructionSpecs = {
 	}),
 	// return (returns... -- never)
 	return: {
+		sourceArguments: noSourceArguments,
 		scope: 'function',
 		onInvalidScope: ErrorCode.RETURN_OUTSIDE_FUNCTION,
 		docs: { shortDescription: 'Returns from the current function with the values on the stack.' },
@@ -743,6 +865,7 @@ export const instructionSpecs = {
 	},
 	// risingEdge (int -- int), risingEdge (float -- int)
 	risingEdge: {
+		sourceArguments: noSourceArguments,
 		scope: 'module',
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from zero to a non-zero value.' },
@@ -750,6 +873,7 @@ export const instructionSpecs = {
 	},
 	// round (float -- float)
 	round: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'float',
@@ -780,6 +904,7 @@ export const instructionSpecs = {
 	}),
 	// sqrt (float -- float)
 	sqrt: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'float',
@@ -792,6 +917,7 @@ export const instructionSpecs = {
 	},
 	// store (ptr int -- ), store (ptr float -- ), store (ptr float64 -- )
 	store: {
+		sourceArguments: noSourceArguments,
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 2,
@@ -802,10 +928,11 @@ export const instructionSpecs = {
 	},
 	// storeBytes (int... ptr -- )
 	storeBytes: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		validateOperands: line => {
-			const count = (line as StoreBytesLine).arguments[0].value;
+			const count = (line as StoreBytesSourceLine).arguments[0].value;
 			return {
 				minOperands: count + 1,
 				operandTypes: new Array(count + 1).fill('int'),
@@ -817,7 +944,7 @@ export const instructionSpecs = {
 			outputs: [],
 			effect: { consumes: { argumentValueIndex: 0, add: 1 }, produces: [] },
 			resolve: line => {
-				const count = (line as StoreBytesLine).arguments[0]?.value;
+				const count = (line as StoreBytesSourceLine).arguments[0]?.value;
 
 				if (!Number.isFinite(count) || count < 0) {
 					return { inputs: ['bytes...', 'ptr'], outputs: [] };
@@ -834,6 +961,12 @@ export const instructionSpecs = {
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),
+	// use <moduleId> ( -- )
+	use: {
+		codegen: false,
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		docs: { shortDescription: 'Imports declarations from another module or constants block.' },
+	},
 	// xor (int int -- int)
 	xor: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Performs a bitwise XOR on two integers.',
@@ -849,6 +982,19 @@ export const instructionSpecs = {
 } satisfies Record<string, InstructionSpec>;
 
 export type InstructionSpecName = keyof typeof instructionSpecs;
+export type CodegenInstructionSpecName = {
+	[TInstruction in InstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends { codegen: false }
+		? never
+		: TInstruction;
+}[InstructionSpecName];
+
+export type NoSourceArgumentInstructionName = {
+	[TInstruction in CodegenInstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends {
+		sourceArguments: typeof noSourceArguments;
+	}
+		? TInstruction
+		: never;
+}[CodegenInstructionSpecName];
 
 type MemoryOperationForSpec<TSpec> = TSpec extends { effects: { memory: infer TMemory } } ? TMemory : never;
 
@@ -890,7 +1036,7 @@ const getInstructionSpecImplementation = (instruction: string): InstructionSpec 
 
 export const getInstructionSpec = getInstructionSpecImplementation as GetInstructionSpec;
 
-export function getInstructionStackSignature(instruction: string, line?: AST[number]): string | undefined {
+export function getInstructionStackSignature(instruction: string, line?: unknown): string | undefined {
 	const spec = getInstructionSpec(instruction);
 
 	if (!spec?.stack) {
