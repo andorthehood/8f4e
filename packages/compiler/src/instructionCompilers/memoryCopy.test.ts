@@ -20,14 +20,16 @@ describe('memoryCopy instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				isInteger: true,
+				kind: 'value',
+				valueType: 'int',
 				isNonZero: false,
 				address: {
 					safeRange: { source: 'memory-start', byteAddress: 20, safeByteLength: 20, memoryId: 'target' },
 				},
 			},
 			{
-				isInteger: true,
+				kind: 'value',
+				valueType: 'int',
 				isNonZero: false,
 				address: {
 					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 20, memoryId: 'source' },
@@ -43,7 +45,10 @@ describe('memoryCopy instruction compiler', () => {
 
 	it('guards the copy when the length is not proven at compile time', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(memoryCopy, line, context);
 
@@ -54,7 +59,10 @@ describe('memoryCopy instruction compiler', () => {
 
 	it('compiles memoryCopy 0 as a stack-only no-op', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			memoryCopy,

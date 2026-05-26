@@ -19,7 +19,10 @@ describe('call instruction compiler', () => {
 		context.namespace.functions = {
 			foo: targetFunction,
 		} as CompilationContext['namespace']['functions'];
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'float', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			call,
@@ -49,7 +52,7 @@ describe('call instruction compiler', () => {
 		context.namespace.functions = {
 			foo64: targetFunction,
 		} as CompilationContext['namespace']['functions'];
-		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			call,
@@ -64,10 +67,7 @@ describe('call instruction compiler', () => {
 		);
 
 		expect(context.stack).toHaveLength(1);
-		expect(context.stack[0]).toMatchObject({
-			isInteger: false,
-			isFloat64: true,
-		});
+		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 	});
 
 	it('throws on float32 argument passed to float64 parameter', () => {
@@ -80,7 +80,7 @@ describe('call instruction compiler', () => {
 		context.namespace.functions = {
 			foo64: targetFunction,
 		} as CompilationContext['namespace']['functions'];
-		context.stack.push({ isInteger: false, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
 		expect(() => {
 			analyzeAndCompileInstruction(
@@ -122,8 +122,9 @@ describe('call instruction compiler', () => {
 
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0]).toMatchObject({
-			isInteger: true,
-			pointeeBaseType: 'float',
+			kind: 'address',
+			valueType: 'int',
+			pointsTo: { baseType: 'float' },
 		});
 	});
 });

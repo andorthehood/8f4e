@@ -15,24 +15,50 @@ const context = { stack: [] } as unknown as CompilationContext;
 
 describe('validateOperandTypes', () => {
 	it('accepts valid scalar rules', () => {
-		expect(() => validateOperandTypes([{ isInteger: true }, { isInteger: true }], 'int', line, context)).not.toThrow();
 		expect(() =>
-			validateOperandTypes([{ isInteger: false }, { isInteger: false }], 'float', line, context)
+			validateOperandTypes(
+				[
+					{ kind: 'value', valueType: 'int' },
+					{ kind: 'value', valueType: 'int' },
+				],
+				'int',
+				line,
+				context
+			)
+		).not.toThrow();
+		expect(() =>
+			validateOperandTypes(
+				[
+					{ kind: 'value', valueType: 'float' },
+					{ kind: 'value', valueType: 'float' },
+				],
+				'float',
+				line,
+				context
+			)
 		).not.toThrow();
 	});
 
 	it('rejects invalid scalar rules', () => {
-		expect(() => validateOperandTypes([{ isInteger: true }, { isInteger: false }], 'matching', line, context)).toThrow(
-			`${ErrorCode.UNMATCHING_OPERANDS}`
-		);
+		expect(() =>
+			validateOperandTypes(
+				[
+					{ kind: 'value', valueType: 'int' },
+					{ kind: 'value', valueType: 'float' },
+				],
+				'matching',
+				line,
+				context
+			)
+		).toThrow(`${ErrorCode.UNMATCHING_OPERANDS}`);
 	});
 
 	it('rejects mixed float widths for matching operands', () => {
 		expect(() =>
 			validateOperandTypes(
 				[
-					{ isInteger: false, isNonZero: false },
-					{ isInteger: false, isFloat64: true, isNonZero: false },
+					{ kind: 'value', valueType: 'float', isNonZero: false },
+					{ kind: 'value', valueType: 'float64', isNonZero: false },
 				],
 				'matching',
 				line,
@@ -43,10 +69,26 @@ describe('validateOperandTypes', () => {
 
 	it('validates tuple rules by position', () => {
 		expect(() =>
-			validateOperandTypes([{ isInteger: true }, { isInteger: false }], ['int', 'float'], line, context)
+			validateOperandTypes(
+				[
+					{ kind: 'value', valueType: 'int' },
+					{ kind: 'value', valueType: 'float' },
+				],
+				['int', 'float'],
+				line,
+				context
+			)
 		).not.toThrow();
 		expect(() =>
-			validateOperandTypes([{ isInteger: false }, { isInteger: false }], ['int', 'float'], line, context)
+			validateOperandTypes(
+				[
+					{ kind: 'value', valueType: 'float' },
+					{ kind: 'value', valueType: 'float' },
+				],
+				['int', 'float'],
+				line,
+				context
+			)
 		).toThrow(`${ErrorCode.TYPE_MISMATCH}`);
 	});
 });

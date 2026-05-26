@@ -7,8 +7,9 @@ exports[`drop instruction compiler > drops the top stack value 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

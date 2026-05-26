@@ -30,8 +30,9 @@ exports[`abs instruction compiler > compiles int abs via segment instructions 1`
   },
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }
@@ -44,8 +45,9 @@ exports[`abs instruction compiler > emits F32_ABS for float operands 1`] = `
   ],
   "stack": [
     {
-      "isInteger": false,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "float",
     },
   ],
 }
@@ -58,9 +60,9 @@ exports[`abs instruction compiler > emits F64_ABS for float64 operands 1`] = `
   ],
   "stack": [
     {
-      "isFloat64": true,
-      "isInteger": false,
       "isNonZero": true,
+      "kind": "value",
+      "valueType": "float64",
     },
   ],
 }

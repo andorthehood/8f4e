@@ -16,8 +16,9 @@ exports[`notZero instruction compiler > emits F64_NE against zero for float64 op
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }
@@ -32,8 +33,9 @@ exports[`notZero instruction compiler > emits I32_NE against zero for integer op
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }
@@ -51,8 +53,9 @@ exports[`notZero instruction compiler > emits float comparison segment 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

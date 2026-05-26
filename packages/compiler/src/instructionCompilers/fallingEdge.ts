@@ -9,6 +9,7 @@ import {
 	WASM_F32_LT,
 	WASM_I32_LT_S,
 } from '@8f4e/compiler-wasm-utils';
+import { isStackInteger } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { allocateInternalResource } from './utils/internalResources';
@@ -25,18 +26,19 @@ const fallingEdge: InstructionCompiler = (line, context) => {
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const currentValueName = '__fallingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
 	const previousValueName = '__fallingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
-	const memoryType = operand.isInteger ? 'int' : 'float';
+	const isInteger = isStackInteger(operand);
+	const memoryType = isInteger ? 'int' : 'float';
 	const previousValue = allocateInternalResource(context, previousValueName, memoryType);
 	const currentValueLocalIndex = Object.keys(context.locals).length;
 
 	context.locals[currentValueName] = {
-		isInteger: operand.isInteger,
+		isInteger,
 		index: currentValueLocalIndex,
 	};
 
-	const loadByteCode = operand.isInteger ? i32load() : f32load();
-	const comparisonByteCode = operand.isInteger ? WASM_I32_LT_S : WASM_F32_LT;
-	const storeByteCode = operand.isInteger ? i32store() : f32store();
+	const loadByteCode = isInteger ? i32load() : f32load();
+	const comparisonByteCode = isInteger ? WASM_I32_LT_S : WASM_F32_LT;
+	const storeByteCode = isInteger ? i32store() : f32store();
 
 	return saveByteCode(context, [
 		...localSet(currentValueLocalIndex),

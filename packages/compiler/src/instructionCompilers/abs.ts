@@ -1,3 +1,4 @@
+import { isStackFloat64, isStackInteger } from '@8f4e/compiler-spec';
 import {
 	i32const,
 	localGet,
@@ -23,7 +24,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const abs: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	if (operand.isInteger) {
+	if (isStackInteger(operand)) {
 		const valueName = '__absify_value' + line.lineNumberAfterMacroExpansion;
 		const valueLocalIndex = Object.keys(context.locals).length;
 
@@ -47,7 +48,7 @@ const abs: InstructionCompiler = (line, context) => {
 			WASM_END,
 		]);
 	} else {
-		return saveByteCode(context, [operand.isFloat64 ? WASM_F64_ABS : WASM_F32_ABS]);
+		return saveByteCode(context, [isStackFloat64(operand) ? WASM_F64_ABS : WASM_F32_ABS]);
 	}
 };
 
