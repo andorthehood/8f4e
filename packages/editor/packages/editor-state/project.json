@@ -13,18 +13,18 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/editor-state"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/editor-state"
       }
     },
     "test-update": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/editor-state"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}",
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/editor-state",
         "updateSnapshot": true
       }
     },

@@ -28,10 +28,10 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/runtime-web-worker"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/runtime-web-worker"
       }
     },
     "typecheck": {

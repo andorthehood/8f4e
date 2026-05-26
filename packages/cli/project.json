@@ -20,11 +20,11 @@
 		},
 		"test": {
 			"executor": "@nx/vitest:test",
-			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+			"outputs": ["{workspaceRoot}/coverage/@8f4e/cli"],
 			"dependsOn": ["^build", "build"],
 			"options": {
 				"config": "{projectRoot}/vitest.config.ts",
-				"reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+				"reportsDirectory": "{workspaceRoot}/coverage/@8f4e/cli"
 			}
 		},
 		"typecheck": {

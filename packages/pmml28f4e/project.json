@@ -27,19 +27,19 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/pmml28f4e"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/pmml28f4e"
       },
       "dependsOn": ["^build", "build"]
     },
     "test-update": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/pmml28f4e"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}",
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/pmml28f4e",
         "update": true
       },
       "dependsOn": ["^build", "build"]

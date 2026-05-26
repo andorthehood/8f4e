@@ -119,6 +119,24 @@ type TsdocCoverageEntry = {
 	};
 };
 
+type TestCoverageManifest = {
+	logs: TrackedLog[];
+};
+
+type TestCoverageMetric = 'statements' | 'branches' | 'functions' | 'lines';
+
+type TestCoverageBucket = {
+	covered: number;
+	total: number;
+	percentage: number;
+};
+
+type TestCoverageEntry = {
+	commit: string;
+	recordedAt: string;
+	coverage: Record<TestCoverageMetric, TestCoverageBucket>;
+};
+
 type Point = {
 	packageName: string;
 	label: string;
@@ -189,7 +207,28 @@ type TsdocCoveragePoint = {
 	percentage: number;
 };
 
-type DashboardTab = 'bundles' | 'bytecode' | 'tsdoc' | CoverageDashboardTab;
+type TestCoveragePoint = {
+	packageName: string;
+	label: string;
+	recordedAt: Date;
+	commit: string;
+	releaseKey: string;
+	releaseIndex: number;
+	releaseLabel: string;
+	coverage: Record<TestCoverageMetric, TestCoverageBucket>;
+};
+
+type TestCoverageSummaryPoint = {
+	commit: string;
+	releaseKey: string;
+	releaseIndex: number;
+	releaseLabel: string;
+	covered: number;
+	total: number;
+	percentage: number;
+};
+
+type DashboardTab = 'bundles' | 'bytecode' | 'tsdoc' | 'tests' | CoverageDashboardTab;
 
 const app = requireElement<HTMLDivElement>('#app');
 
@@ -204,6 +243,7 @@ app.innerHTML = `
 				<button type="button" class="segment is-active" data-tab="bundles">Bundles</button>
 				<button type="button" class="segment" data-tab="bytecode">Bytecode</button>
 				<button type="button" class="segment" data-tab="tsdoc">TSDoc</button>
+				<button type="button" class="segment" data-tab="tests">Tests</button>
 				<button type="button" class="segment" data-tab="ranges">Ranges</button>
 				<button type="button" class="segment" data-tab="functionEntries">Function Entries</button>
 				<button type="button" class="segment" data-tab="coveredFunctions">Covered Functions</button>
@@ -266,6 +306,23 @@ app.innerHTML = `
 				<div class="package-grid" id="tsdoc-grid"></div>
 			</section>
 		</div>
+		<div id="tests-view" hidden>
+			<section class="summary-grid" id="tests-summary-grid" aria-label="Latest test coverage summary"></section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Coverage</h2>
+					<span>Line coverage percentage</span>
+				</div>
+				<div class="chart" id="tests-overview-chart"></div>
+			</section>
+			<section class="chart-section">
+				<div class="section-heading">
+					<h2>Packages</h2>
+					<span>Covered lines</span>
+				</div>
+				<div class="package-grid" id="tests-grid"></div>
+			</section>
+		</div>
 		<div id="ranges-view" hidden>
 			<section class="summary-grid" id="ranges-summary-grid" aria-label="Latest compiler coverage summary"></section>
 			<section class="chart-section">
@@ -297,11 +354,14 @@ const state = {
 	coveragePoints: [] as CoveragePoint[],
 	tsdocLogs: [] as TrackedLog[],
 	tsdocPoints: [] as TsdocCoveragePoint[],
+	testLogs: [] as TrackedLog[],
+	testPoints: [] as TestCoveragePoint[],
 };
 
 const bundlesView = requireElement<HTMLDivElement>('#bundles-view');
 const bytecodeView = requireElement<HTMLDivElement>('#bytecode-view');
 const tsdocView = requireElement<HTMLDivElement>('#tsdoc-view');
+const testsView = requireElement<HTMLDivElement>('#tests-view');
 const rangesView = requireElement<HTMLDivElement>('#ranges-view');
 const summaryGrid = requireElement<HTMLDivElement>('#summary-grid');
 const overviewChart = requireElement<HTMLDivElement>('#overview-chart');
@@ -311,6 +371,9 @@ const bytecodeGrid = requireElement<HTMLDivElement>('#bytecode-grid');
 const tsdocSummaryGrid = requireElement<HTMLDivElement>('#tsdoc-summary-grid');
 const tsdocOverviewChart = requireElement<HTMLDivElement>('#tsdoc-overview-chart');
 const tsdocGrid = requireElement<HTMLDivElement>('#tsdoc-grid');
+const testsSummaryGrid = requireElement<HTMLDivElement>('#tests-summary-grid');
+const testsOverviewChart = requireElement<HTMLDivElement>('#tests-overview-chart');
+const testsGrid = requireElement<HTMLDivElement>('#tests-grid');
 const rangesSummaryGrid = requireElement<HTMLDivElement>('#ranges-summary-grid');
 const rangesOverviewChart = requireElement<HTMLDivElement>('#ranges-overview-chart');
 const rangesGrid = requireElement<HTMLDivElement>('#ranges-grid');
@@ -329,28 +392,6 @@ init().catch((error: unknown) => {
 });
 
 async function init() {
-	const [trackedLogs, bytecodeLogs, coverageLogs, tsdocLogs] = await Promise.all([
-		loadTrackedLogs(),
-		loadBytecodeTrackedLogs(),
-		loadCoverageTrackedLogs(),
-		loadTsdocTrackedLogs(),
-	]);
-	state.trackedLogs = trackedLogs;
-	state.bytecodeLogs = bytecodeLogs;
-	state.coverageLogs = coverageLogs;
-	state.tsdocLogs = tsdocLogs;
-	const [points, bytecodePoints, coveragePoints, tsdocPoints] = await Promise.all([
-		loadPoints(state.trackedLogs),
-		loadBytecodePoints(state.bytecodeLogs),
-		loadCoveragePoints(state.coverageLogs),
-		loadTsdocPoints(state.tsdocLogs),
-	]);
-	state.points = points;
-	state.bytecodePoints = bytecodePoints;
-	state.coveragePoints = coveragePoints;
-	state.tsdocPoints = tsdocPoints;
-	render();
-
 	for (const button of tabButtons) {
 		button.addEventListener('click', () => {
 			state.tab = button.dataset.tab as DashboardTab;
@@ -366,6 +407,32 @@ async function init() {
 	}
 
 	window.addEventListener('resize', debounce(render, 100));
+
+	const [trackedLogs, bytecodeLogs, coverageLogs, tsdocLogs, testLogs] = await Promise.all([
+		loadTrackedLogs(),
+		loadBytecodeTrackedLogs(),
+		loadCoverageTrackedLogs(),
+		loadTsdocTrackedLogs(),
+		loadTestTrackedLogs(),
+	]);
+	state.trackedLogs = trackedLogs;
+	state.bytecodeLogs = bytecodeLogs;
+	state.coverageLogs = coverageLogs;
+	state.tsdocLogs = tsdocLogs;
+	state.testLogs = testLogs;
+	const [points, bytecodePoints, coveragePoints, tsdocPoints, testPoints] = await Promise.all([
+		loadPoints(state.trackedLogs),
+		loadBytecodePoints(state.bytecodeLogs),
+		loadCoveragePoints(state.coverageLogs),
+		loadTsdocPoints(state.tsdocLogs),
+		loadTestPoints(state.testLogs),
+	]);
+	state.points = points;
+	state.bytecodePoints = bytecodePoints;
+	state.coveragePoints = coveragePoints;
+	state.tsdocPoints = tsdocPoints;
+	state.testPoints = testPoints;
+	render();
 }
 
 async function loadTrackedLogs() {
@@ -417,6 +484,19 @@ async function loadTsdocTrackedLogs() {
 	}
 
 	const manifest = (await response.json()) as TsdocCoverageManifest;
+	return manifest.logs;
+}
+
+async function loadTestTrackedLogs() {
+	const response = await fetch('test-coverage/manifest.json', {
+		cache: 'no-store',
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to load test coverage manifest: ${response.status}`);
+	}
+
+	const manifest = (await response.json()) as TestCoverageManifest;
 	return manifest.logs;
 }
 
@@ -494,6 +574,25 @@ async function loadTsdocPoints(trackedLogs: TrackedLog[]) {
 	);
 
 	return withTsdocReleaseIndexes(pointGroups.flat());
+}
+
+async function loadTestPoints(trackedLogs: TrackedLog[]) {
+	const pointGroups = await Promise.all(
+		trackedLogs.map(async log => {
+			const response = await fetch(`test-coverage/${log.path}`, {
+				cache: 'no-store',
+			});
+
+			if (!response.ok) {
+				throw new Error(`Failed to load ${log.path}: ${response.status}`);
+			}
+
+			const entries = (await response.json()) as TestCoverageEntry[];
+			return toTestPoints(log, entries);
+		})
+	);
+
+	return withTestReleaseIndexes(pointGroups.flat());
 }
 
 function toPoints(log: TrackedLog, entries: BundleSizeEntry[]) {
@@ -588,6 +687,19 @@ function toTsdocPoints(log: TrackedLog, entries: TsdocCoverageEntry[]) {
 	}));
 }
 
+function toTestPoints(log: TrackedLog, entries: TestCoverageEntry[]) {
+	return entries.map(entry => ({
+		packageName: log.packageName,
+		label: log.label,
+		recordedAt: new Date(entry.recordedAt),
+		commit: entry.commit,
+		releaseKey: entry.commit || entry.recordedAt,
+		releaseIndex: 0,
+		releaseLabel: '',
+		coverage: entry.coverage,
+	}));
+}
+
 function withReleaseIndexes(points: Point[]) {
 	const releaseDates = new Map<string, Date>();
 
@@ -673,6 +785,31 @@ function withTsdocReleaseIndexes(points: TsdocCoveragePoint[]) {
 	});
 }
 
+function withTestReleaseIndexes(points: TestCoveragePoint[]) {
+	const releases = [...new Map(points.map(point => [point.releaseKey, point])).values()]
+		.sort((left, right) => left.recordedAt.getTime() - right.recordedAt.getTime())
+		.map((point, index) => ({
+			key: point.releaseKey,
+			index,
+			label: `${index + 1} · ${shortCommit(point.commit)}`,
+		}));
+	const releaseByKey = new Map(releases.map(release => [release.key, release]));
+
+	return points.map(point => {
+		const release = releaseByKey.get(point.releaseKey);
+
+		if (!release) {
+			return point;
+		}
+
+		return {
+			...point,
+			releaseIndex: release.index,
+			releaseLabel: release.label,
+		};
+	});
+}
+
 function isCoverageDashboardTab(tab: DashboardTab): tab is CoverageDashboardTab {
 	return tab in coverageMetricConfigs;
 }
@@ -681,6 +818,7 @@ function render() {
 	bundlesView.hidden = state.tab !== 'bundles';
 	bytecodeView.hidden = state.tab !== 'bytecode';
 	tsdocView.hidden = state.tab !== 'tsdoc';
+	testsView.hidden = state.tab !== 'tests';
 	rangesView.hidden = !isCoverageDashboardTab(state.tab);
 	metricControl.hidden = state.tab !== 'bundles';
 
@@ -699,6 +837,11 @@ function render() {
 
 	if (state.tab === 'tsdoc') {
 		renderTsdoc();
+		return;
+	}
+
+	if (state.tab === 'tests') {
+		renderTests();
 		return;
 	}
 
@@ -784,6 +927,30 @@ function renderTsdoc() {
 
 	renderTsdocOverview(state.tsdocPoints);
 	renderTsdocGrid(state.tsdocPoints);
+}
+
+function renderTests() {
+	const latestReleasePoints = getLatestTestReleasePoints(state.testPoints);
+	const latestPoint = latestReleasePoints[0] ?? null;
+	const latestCoverage = summarizeTestCoverage(latestReleasePoints, 'lines');
+	const snapshotCount = new Set(state.testPoints.map(point => point.releaseKey)).size;
+
+	lastUpdated.textContent = latestPoint
+		? `Latest test coverage ${latestPoint.releaseLabel} · ${formatDateTime(latestPoint.recordedAt)}`
+		: 'No test coverage data';
+
+	testsSummaryGrid.innerHTML = [
+		renderSummaryItem(
+			'Line Coverage',
+			latestCoverage ? formatPercent(latestCoverage.percentage) : 'n/a',
+			latestCoverage ? `${formatCount(latestCoverage.covered)} / ${formatCount(latestCoverage.total)} covered` : ''
+		),
+		renderSummaryItem('Packages', String(latestReleasePoints.length), 'tracked packages'),
+		renderSummaryItem('Snapshots', String(snapshotCount), 'recorded commits'),
+	].join('');
+
+	renderTestOverview(state.testPoints);
+	renderTestGrid(state.testPoints);
 }
 
 function renderCoverage(config: CoverageMetricConfig) {
@@ -922,6 +1089,56 @@ function renderTsdocOverview(points: TsdocCoveragePoint[]) {
 					r: 4,
 					title: point =>
 						`${point.releaseLabel}\n${formatPercent(point.percentage)}\n${formatCount(point.documented)} / ${formatCount(point.total)} documented`,
+				}),
+			],
+		})
+	);
+}
+
+function renderTestOverview(points: TestCoveragePoint[]) {
+	const summaryPoints = toTestSummaryPoints(points, 'lines');
+	const releaseLabels = getReleaseLabels(summaryPoints);
+	const hasTrend = hasMultipleSnapshots(summaryPoints);
+
+	replaceChart(
+		testsOverviewChart,
+		Plot.plot({
+			width: getChartWidth(testsOverviewChart),
+			height: 340,
+			marginLeft: 56,
+			marginRight: 24,
+			marginTop: 18,
+			marginBottom: 44,
+			x: {
+				label: null,
+				grid: true,
+				tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
+			},
+			y: {
+				domain: [0, 100],
+				label: 'Line coverage',
+				grid: true,
+				tickFormat: value => `${value}%`,
+			},
+			marks: [
+				...(hasTrend
+					? [
+							Plot.lineY(summaryPoints, {
+								x: 'releaseIndex',
+								y: 'percentage',
+								stroke: '#1d4ed8',
+								strokeWidth: 2.25,
+								tip: true,
+							}),
+						]
+					: []),
+				Plot.dot(summaryPoints, {
+					x: 'releaseIndex',
+					y: 'percentage',
+					fill: '#1d4ed8',
+					r: 4,
+					title: point =>
+						`${point.releaseLabel}\n${formatPercent(point.percentage)}\n${formatCount(point.covered)} / ${formatCount(point.total)} lines covered`,
 				}),
 			],
 		})
@@ -1116,6 +1333,35 @@ function renderTsdocGrid(points: TsdocCoveragePoint[]) {
 	}
 }
 
+function renderTestGrid(points: TestCoveragePoint[]) {
+	testsGrid.replaceChildren();
+
+	for (const log of state.testLogs) {
+		const packagePoints = points.filter(point => point.packageName === log.packageName);
+		const latestPoint = packagePoints[packagePoints.length - 1] ?? null;
+		const card = document.createElement('article');
+		card.className = 'package-card';
+		card.innerHTML = `
+			<div class="package-card-header">
+				<div>
+					<h3>${escapeHtml(log.label)}</h3>
+					<p>${latestPoint ? escapeHtml(formatTestPointMeta(latestPoint)) : ''}</p>
+				</div>
+				<strong>${latestPoint ? escapeHtml(formatPercent(latestPoint.coverage.lines.percentage)) : 'n/a'}</strong>
+			</div>
+			<div class="package-card-chart"></div>
+			${renderTestTable(packagePoints)}
+		`;
+
+		testsGrid.append(card);
+		const chartContainer = card.querySelector<HTMLElement>('.package-card-chart');
+
+		if (chartContainer) {
+			replaceChart(chartContainer, createTestPackageChart(chartContainer, packagePoints));
+		}
+	}
+}
+
 function renderPackageGrid(points: Point[]) {
 	packageGrid.replaceChildren();
 
@@ -1142,6 +1388,51 @@ function renderPackageGrid(points: Point[]) {
 			replaceChart(chartContainer, createPackageChart(chartContainer, packagePoints));
 		}
 	}
+}
+
+function createTestPackageChart(container: HTMLElement, points: TestCoveragePoint[]) {
+	const releaseLabels = getReleaseLabels(points);
+	const hasTrend = hasMultipleSnapshots(points);
+
+	return Plot.plot({
+		width: getChartWidth(container),
+		height: 170,
+		marginLeft: 46,
+		marginRight: 16,
+		marginTop: 12,
+		marginBottom: 36,
+		x: {
+			label: null,
+			grid: true,
+			tickFormat: index => releaseLabels.get(Number(index)) ?? String(index),
+		},
+		y: {
+			domain: [0, 100],
+			label: 'Lines',
+			grid: true,
+			tickFormat: value => `${value}%`,
+		},
+		marks: [
+			...(hasTrend
+				? [
+						Plot.lineY(points, {
+							x: 'releaseIndex',
+							y: point => point.coverage.lines.percentage,
+							stroke: '#1d4ed8',
+							strokeWidth: 2,
+						}),
+					]
+				: []),
+			Plot.dot(points, {
+				x: 'releaseIndex',
+				y: point => point.coverage.lines.percentage,
+				fill: '#1d4ed8',
+				r: 4,
+				title: point =>
+					`${point.releaseLabel}\n${formatPercent(point.coverage.lines.percentage)}\n${formatCount(point.coverage.lines.covered)} / ${formatCount(point.coverage.lines.total)} lines covered`,
+			}),
+		],
+	});
 }
 
 function createTsdocPackageChart(container: HTMLElement, points: TsdocCoveragePoint[]) {
@@ -1430,6 +1721,43 @@ function renderTsdocTable(points: TsdocCoveragePoint[]) {
 	`;
 }
 
+function renderTestTable(points: TestCoveragePoint[]) {
+	if (points.length === 0) {
+		return '<div class="empty-table">No snapshots</div>';
+	}
+
+	return `
+		<div class="file-table-wrap">
+			<table class="file-table">
+				<thead>
+					<tr>
+						<th>Snapshot</th>
+						<th>Lines</th>
+						<th>Branches</th>
+						<th>Functions</th>
+					</tr>
+				</thead>
+				<tbody>
+					${points
+						.slice(-8)
+						.reverse()
+						.map(
+							point => `
+								<tr>
+									<td>${escapeHtml(point.releaseLabel)}</td>
+									<td>${formatPercent(point.coverage.lines.percentage)}</td>
+									<td>${formatPercent(point.coverage.branches.percentage)}</td>
+									<td>${formatPercent(point.coverage.functions.percentage)}</td>
+								</tr>
+							`
+						)
+						.join('')}
+				</tbody>
+			</table>
+		</div>
+	`;
+}
+
 function replaceChart(container: HTMLElement, chart: SVGSVGElement | HTMLElement) {
 	container.replaceChildren(chart);
 }
@@ -1453,6 +1781,12 @@ function getLatestCoverageReleasePoints<TPoint extends { releaseIndex: number }>
 }
 
 function getLatestTsdocReleasePoints(points: TsdocCoveragePoint[]) {
+	const latestReleaseIndex = Math.max(-1, ...points.map(point => point.releaseIndex));
+
+	return points.filter(point => point.releaseIndex === latestReleaseIndex);
+}
+
+function getLatestTestReleasePoints(points: TestCoveragePoint[]) {
 	const latestReleaseIndex = Math.max(-1, ...points.map(point => point.releaseIndex));
 
 	return points.filter(point => point.releaseIndex === latestReleaseIndex);
@@ -1525,6 +1859,34 @@ function toTsdocSummaryPoints(points: TsdocCoveragePoint[]) {
 	return [...byRelease.values()];
 }
 
+function toTestSummaryPoints(points: TestCoveragePoint[], metric: TestCoverageMetric): TestCoverageSummaryPoint[] {
+	const byRelease = new Map<string, TestCoverageSummaryPoint>();
+
+	for (const point of points) {
+		const existingPoint = byRelease.get(point.releaseKey);
+		const coverage = point.coverage[metric];
+
+		if (existingPoint) {
+			existingPoint.covered += coverage.covered;
+			existingPoint.total += coverage.total;
+			existingPoint.percentage = getCoveragePercentage(existingPoint.covered, existingPoint.total);
+			continue;
+		}
+
+		byRelease.set(point.releaseKey, {
+			commit: point.commit,
+			releaseKey: point.releaseKey,
+			releaseIndex: point.releaseIndex,
+			releaseLabel: point.releaseLabel,
+			covered: coverage.covered,
+			total: coverage.total,
+			percentage: getCoveragePercentage(coverage.covered, coverage.total),
+		});
+	}
+
+	return [...byRelease.values()];
+}
+
 function summarizeTsdocCoverage(points: TsdocCoveragePoint[]) {
 	if (points.length === 0) {
 		return null;
@@ -1540,12 +1902,27 @@ function summarizeTsdocCoverage(points: TsdocCoveragePoint[]) {
 	};
 }
 
-function getCoveragePercentage(documented: number, total: number) {
+function summarizeTestCoverage(points: TestCoveragePoint[], metric: TestCoverageMetric) {
+	if (points.length === 0) {
+		return null;
+	}
+
+	const covered = points.reduce((sum, point) => sum + point.coverage[metric].covered, 0);
+	const total = points.reduce((sum, point) => sum + point.coverage[metric].total, 0);
+
+	return {
+		covered,
+		total,
+		percentage: getCoveragePercentage(covered, total),
+	};
+}
+
+function getCoveragePercentage(covered: number, total: number) {
 	if (total === 0) {
 		return 100;
 	}
 
-	return Number(((documented / total) * 100).toFixed(1));
+	return Number(((covered / total) * 100).toFixed(1));
 }
 
 function getLatestDate(points: Point[]) {
@@ -1639,6 +2016,10 @@ function formatCoveragePointMeta(point: CoveragePoint | CoverageSummaryPoint) {
 
 function formatTsdocPointMeta(point: TsdocCoveragePoint) {
 	return `${point.releaseLabel} · ${formatCount(point.documented)} / ${formatCount(point.total)} documented`;
+}
+
+function formatTestPointMeta(point: TestCoveragePoint) {
+	return `${point.releaseLabel} · ${formatCount(point.coverage.lines.covered)} / ${formatCount(point.coverage.lines.total)} lines`;
 }
 
 function metricLabel(metric: SizeMetric) {
