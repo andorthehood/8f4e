@@ -176,7 +176,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('resolves push identifier arguments when the identifier is a known local', () => {
-		const local = { isInteger: true, index: 0 };
+		const local = { kind: 'value', valueType: 'int', index: 0 };
 		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
@@ -598,11 +598,7 @@ describe('normalizeCompileTimeArguments', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {
-				lut: {
-					isInteger: true,
-					pointeeBaseType: 'float',
-					index: 0,
-				},
+				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', index: 0 },
 			},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {

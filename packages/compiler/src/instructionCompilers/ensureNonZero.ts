@@ -1,4 +1,5 @@
 import { ArgumentType } from '@8f4e/compiler-spec';
+import { isStackFloat64, isStackInteger } from '@8f4e/compiler-spec';
 import {
 	f32const,
 	f64const,
@@ -26,21 +27,23 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const ensureNonZero: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	let defaultNonZeroValue = operand.isInteger ? 1 : 1.0;
+	const isInteger = isStackInteger(operand);
+	const isFloat64 = isStackFloat64(operand);
+	let defaultNonZeroValue = isInteger ? 1 : 1.0;
 
 	// Preserve the previous synthetic-source lowering, which rounded float defaults to one decimal place.
-	if (line.arguments[0] && line.arguments[0].type === ArgumentType.LITERAL && !operand.isInteger) {
+	if (line.arguments[0] && line.arguments[0].type === ArgumentType.LITERAL && !isInteger) {
 		defaultNonZeroValue = Number(line.arguments[0].value.toFixed(1));
 	}
 
-	if (line.arguments[0] && line.arguments[0].type === ArgumentType.LITERAL && operand.isInteger) {
+	if (line.arguments[0] && line.arguments[0].type === ArgumentType.LITERAL && isInteger) {
 		defaultNonZeroValue = line.arguments[0].value;
 	}
 
 	const tempVariableName = '__ensureNonZero_temp_' + line.lineNumberAfterMacroExpansion;
 	const tempLocalIndex = Object.keys(context.locals).length;
 
-	if (operand.isInteger) {
+	if (isInteger) {
 		context.locals[tempVariableName] = {
 			isInteger: true,
 			index: tempLocalIndex,
@@ -59,16 +62,16 @@ const ensureNonZero: InstructionCompiler = (line, context) => {
 	} else {
 		context.locals[tempVariableName] = {
 			isInteger: false,
-			...(operand.isFloat64 ? { isFloat64: true } : {}),
+			...(isFloat64 ? { isFloat64: true } : {}),
 			index: tempLocalIndex,
 		};
-		const zeroByteCode = operand.isFloat64 ? f64const(0) : f32const(0);
-		const fallbackByteCode = operand.isFloat64 ? f64const(defaultNonZeroValue) : f32const(defaultNonZeroValue);
+		const zeroByteCode = isFloat64 ? f64const(0) : f32const(0);
+		const fallbackByteCode = isFloat64 ? f64const(defaultNonZeroValue) : f32const(defaultNonZeroValue);
 		return saveByteCode(context, [
 			...localSet(tempLocalIndex),
 			...localGet(tempLocalIndex),
 			...zeroByteCode,
-			operand.isFloat64 ? WASM_F64_EQ : WASM_F32_EQ,
+			isFloat64 ? WASM_F64_EQ : WASM_F32_EQ,
 			WASM_IF,
 			WASM_TYPE_VOID,
 			...fallbackByteCode,

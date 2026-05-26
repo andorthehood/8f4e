@@ -68,7 +68,6 @@ describe('parseLiteralMulDivExpression', () => {
 		expect(parseLiteralMulDivExpression('3f64*2')).toEqual({
 			value: 6,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 
@@ -76,7 +75,6 @@ describe('parseLiteralMulDivExpression', () => {
 		expect(parseLiteralMulDivExpression('2*3f64')).toEqual({
 			value: 6,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 
@@ -84,7 +82,6 @@ describe('parseLiteralMulDivExpression', () => {
 		expect(parseLiteralMulDivExpression('3f64*2f64')).toEqual({
 			value: 6,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 
@@ -165,7 +162,6 @@ describe('parseLiteralMulDivExpression', () => {
 		expect(parseLiteralMulDivExpression('2f64^2')).toEqual({
 			value: 4,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 
@@ -173,7 +169,6 @@ describe('parseLiteralMulDivExpression', () => {
 		expect(parseLiteralMulDivExpression('2^2f64')).toEqual({
 			value: 4,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 

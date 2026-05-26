@@ -8,7 +8,7 @@ import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } fr
 describe('castToFloat64 instruction compiler', () => {
 	it('converts int operand to float64', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true });
 
 		analyzeAndCompileInstruction(castToFloat64, parseLine('castToFloat64', 1), context);
 
@@ -20,7 +20,7 @@ describe('castToFloat64 instruction compiler', () => {
 
 	it('promotes float32 operand to float64', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: true });
 
 		analyzeAndCompileInstruction(castToFloat64, parseLine('castToFloat64', 1), context);
 
@@ -32,7 +32,7 @@ describe('castToFloat64 instruction compiler', () => {
 
 	it('is a no-op for float64 operand', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: true });
 
 		analyzeAndCompileInstruction(castToFloat64, parseLine('castToFloat64', 1), context);
 

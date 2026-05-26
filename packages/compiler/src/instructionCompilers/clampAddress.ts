@@ -7,6 +7,8 @@ import {
 import { linearLastValidStartAddress } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
 
+import { requireStackAddress } from '../utils/stackItem';
+
 import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
 function clampToRange(
@@ -23,28 +25,26 @@ function clampToRange(
 }
 
 export const clampAddress: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
-	const range = operand.address?.clampRange ?? operand.address?.safeRange;
+	const [rawOperand] = line.stackAnalysis.consumedOperands;
+	const operand = requireStackAddress(rawOperand, line, context);
+	const range = operand.address.clampRange ?? operand.address.safeRange;
 
 	return clampToRange(line, context, operand, range!);
 };
 
 export const clampModuleAddress: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+	const [rawOperand] = line.stackAnalysis.consumedOperands;
+	const operand = requireStackAddress(rawOperand, line, context);
 	return clampToRange(line, context, operand, getModuleAddressRange(context));
 };
 
 export const clampGlobalAddress: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+	const [rawOperand] = line.stackAnalysis.consumedOperands;
+	const operand = requireStackAddress(rawOperand, line, context);
 	const accessByteWidth = getClampAccessByteWidth(line);
 
 	return saveByteCode(
 		context,
-		clampAddressByteCode(
-			context,
-			line,
-			0,
-			linearLastValidStartAddress(accessByteWidth, operand.address?.memoryIndex ?? 0)
-		)
+		clampAddressByteCode(context, line, 0, linearLastValidStartAddress(accessByteWidth, operand.address.memoryIndex))
 	);
 };

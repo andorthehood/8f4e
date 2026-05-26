@@ -10,7 +10,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('equal instruction compiler', () => {
 	it('emits I32_EQ for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			equal,
@@ -31,7 +34,10 @@ describe('equal instruction compiler', () => {
 
 	it('emits F32_EQ for float operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'float', isNonZero: false },
+			{ kind: 'value', valueType: 'float', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			equal,
@@ -53,8 +59,8 @@ describe('equal instruction compiler', () => {
 	it('emits F64_EQ for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: false, isFloat64: true, isNonZero: false },
-			{ isInteger: false, isFloat64: true, isNonZero: false }
+			{ kind: 'value', valueType: 'float64', isNonZero: false },
+			{ kind: 'value', valueType: 'float64', isNonZero: false }
 		);
 
 		analyzeAndCompileInstruction(
@@ -68,7 +74,7 @@ describe('equal instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: false }]);
 		expect(context.byteCode).toEqual([WASM_F64_EQ]);
 	});
 });

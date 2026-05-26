@@ -13,7 +13,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			consts: {
 				BAR: { value: 5, isInteger: true },
 				SIZE: { value: 16, isInteger: true },
-				PI64: { value: 3.14159, isInteger: false, isFloat64: true },
+				PI64: { value: 3.14159, isInteger: false },
 			},
 			memory: {
 				samples: {
@@ -107,7 +107,6 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64*2'))).toEqual({
 			value: 6.28318,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 
@@ -149,7 +148,8 @@ describe('tryResolveCompileTimeArgument', () => {
 			...mockContext,
 			locals: {
 				floatPtrPtr: {
-					isInteger: true,
+					kind: 'value',
+					valueType: 'int',
 					pointeeBaseType: 'float64',
 					isPointingToPointer: true,
 					index: 0,
@@ -196,7 +196,6 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64^2'))).toEqual({
 			value: Math.pow(3.14159, 2),
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 
@@ -260,7 +259,6 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64+1'))).toEqual({
 			value: 3.14159 + 1,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 
@@ -268,7 +266,6 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64-1'))).toEqual({
 			value: 3.14159 - 1,
 			isInteger: false,
-			isFloat64: true,
 		});
 	});
 

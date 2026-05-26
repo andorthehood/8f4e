@@ -58,11 +58,13 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	const outputType = line.arguments[0].value;
 	const outputIsInteger = outputType === 'int';
 	const outputIsFloat64 = outputType === 'float64';
-	const outputKind = resolveMapKind({ isInteger: outputIsInteger, isFloat64: outputIsFloat64 });
+	const outputKind = resolveMapKind({ valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float' });
 
 	const { mapState } = popMapBlock(context);
 
-	const inputKind = resolveMapKind({ isInteger: mapState.inputIsInteger, isFloat64: mapState.inputIsFloat64 });
+	const inputKind = resolveMapKind({
+		valueType: mapState.inputIsInteger ? 'int' : mapState.inputIsFloat64 ? 'float64' : 'float',
+	});
 
 	const rows = mapState.rows;
 	const hasDefault = mapState.defaultSet;

@@ -14,8 +14,9 @@ exports[`ifEnd instruction compiler > ends a conditional block with result 1`] =
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

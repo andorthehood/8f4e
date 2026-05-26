@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('notEqual instruction compiler', () => {
 	it('emits I32_NE for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			notEqual,
@@ -30,7 +33,10 @@ describe('notEqual instruction compiler', () => {
 
 	it('emits F32_NE for float operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'float', isNonZero: false },
+			{ kind: 'value', valueType: 'float', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			notEqual,
@@ -52,8 +58,8 @@ describe('notEqual instruction compiler', () => {
 	it('emits F64_NE for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: false, isFloat64: true, isNonZero: false },
-			{ isInteger: false, isFloat64: true, isNonZero: false }
+			{ kind: 'value', valueType: 'float64', isNonZero: false },
+			{ kind: 'value', valueType: 'float64', isNonZero: false }
 		);
 
 		analyzeAndCompileInstruction(

@@ -74,12 +74,12 @@ describe('compiler', () => {
 			lineNumberAfterMacroExpansion: 3,
 			instruction: 'push',
 			stackAnalysis: {
-				stackBefore: [{ isInteger: true, isNonZero: true }],
+				stackBefore: [{ kind: 'address', valueType: 'int', isNonZero: true }],
 				consumedOperands: [],
-				producedStackItems: [{ isInteger: true, isNonZero: true, knownIntegerValue: 1 }],
+				producedStackItems: [{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 }],
 				stackAfter: [
-					{ isInteger: true, isNonZero: true },
-					{ isInteger: true, isNonZero: true, knownIntegerValue: 1 },
+					{ kind: 'address', valueType: 'int', isNonZero: true },
+					{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 },
 				],
 			},
 		});
@@ -107,10 +107,10 @@ describe('compiler', () => {
 			instruction: 'add',
 			stackAnalysis: {
 				consumedOperands: [
-					{ isInteger: true, isNonZero: false },
-					{ isInteger: true, isNonZero: false },
+					{ kind: 'value', valueType: 'int', isNonZero: false },
+					{ kind: 'value', valueType: 'int', isNonZero: false },
 				],
-				producedStackItems: [{ isInteger: true, isNonZero: false }],
+				producedStackItems: [{ kind: 'value', valueType: 'int', isNonZero: false }],
 			},
 		});
 	});

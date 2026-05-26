@@ -10,7 +10,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('branchIfTrue instruction compiler', () => {
 	it('emits br_if bytecode', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			branchIfTrue,

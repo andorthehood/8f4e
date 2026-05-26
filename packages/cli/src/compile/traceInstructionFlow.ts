@@ -8,6 +8,8 @@ import compile, {
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
+	getStackValueType,
+	isStackAddress,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	type ConstantsAST,
@@ -48,11 +50,12 @@ export interface InstructionFlowTrace {
 
 function serializeStack(context: CompilationContext): string[] {
 	return context.stack.map(item => {
-		if (item.isInteger) {
-			return 'int';
+		if (isStackAddress(item)) {
+			return 'address';
 		}
 
-		return item.isFloat64 ? 'float64' : 'float32';
+		const valueType = getStackValueType(item);
+		return valueType === 'float64' ? 'float64' : valueType === 'float' ? 'float32' : 'int';
 	});
 }
 

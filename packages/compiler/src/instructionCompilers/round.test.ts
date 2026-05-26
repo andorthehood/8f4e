@@ -9,7 +9,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('round instruction compiler', () => {
 	it('rounds a float operand', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			round,

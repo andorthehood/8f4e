@@ -9,7 +9,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('castToFloat instruction compiler', () => {
 	it('converts int operand to float', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			castToFloat,

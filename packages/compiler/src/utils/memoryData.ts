@@ -2,7 +2,7 @@ import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 
 import { getEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { DataStructure, LocalBinding, MemoryMap, MemoryValueKind } from '@8f4e/compiler-spec';
+import type { DataStructure, LocalBinding, MemoryMap, MemoryValueKind, StackAddress } from '@8f4e/compiler-spec';
 
 export type PointerMetadata =
 	| Pick<
@@ -14,7 +14,13 @@ export type PointerMetadata =
 			| 'pointeeMemoryIndex'
 			| 'pointeeMemoryRegionName'
 	  >
-	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName'>;
+	| Pick<LocalBinding, 'pointeeBaseType' | 'isPointingToPointer' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName'>
+	| {
+			pointeeBaseType: NonNullable<StackAddress['pointsTo']>['baseType'];
+			isPointingToPointer: NonNullable<StackAddress['pointsTo']>['isPointer'];
+			pointeeMemoryIndex: NonNullable<StackAddress['pointsTo']>['memoryIndex'];
+			pointeeMemoryRegionName?: NonNullable<StackAddress['pointsTo']>['memoryRegionName'];
+	  };
 
 function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
 	if (memoryItem.isInteger) {

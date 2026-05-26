@@ -4,6 +4,7 @@ import {
 	WASM_MISC_I32_TRUNC_SAT_F32_S,
 	WASM_MISC_I32_TRUNC_SAT_F64_S,
 } from '@8f4e/compiler-wasm-utils';
+import { isStackFloat64 } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -19,7 +20,10 @@ const castToInt: InstructionCompiler = (line, context) => {
 	// Use the non-trapping saturating conversion so NaN and out-of-range floats do not stop the runtime.
 	return saveByteCode(
 		context,
-		prefixedInstruction(WASM_MISC, operand.isFloat64 ? WASM_MISC_I32_TRUNC_SAT_F64_S : WASM_MISC_I32_TRUNC_SAT_F32_S)
+		prefixedInstruction(
+			WASM_MISC,
+			isStackFloat64(operand) ? WASM_MISC_I32_TRUNC_SAT_F64_S : WASM_MISC_I32_TRUNC_SAT_F32_S
+		)
 	);
 };
 

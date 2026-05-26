@@ -9,7 +9,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('fallingEdge instruction compiler', () => {
 	it('compiles the falling edge segment', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			fallingEdge,

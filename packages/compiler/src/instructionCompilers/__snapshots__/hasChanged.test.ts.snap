@@ -31,8 +31,9 @@ exports[`hasChanged instruction compiler > compiles the change detector segment 
   "memory": {},
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

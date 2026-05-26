@@ -1,4 +1,5 @@
 import { WASM_F64_CONVERT_I32_S, WASM_F64_PROMOTE_F32 } from '@8f4e/compiler-wasm-utils';
+import { isStackFloat64, isStackInteger } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -12,12 +13,12 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const castToFloat64: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	if (operand.isInteger) {
+	if (isStackInteger(operand)) {
 		return saveByteCode(context, [WASM_F64_CONVERT_I32_S]);
 	}
 
 	// Float64 input needs no opcode conversion.
-	if (operand.isFloat64) {
+	if (isStackFloat64(operand)) {
 		return context;
 	}
 

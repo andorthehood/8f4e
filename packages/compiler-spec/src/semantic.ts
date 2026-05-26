@@ -184,17 +184,66 @@ export interface FunctionCompilationContext extends CompilationContext {
 	functionTypeRegistry: FunctionTypeRegistry;
 }
 
-/** Type and value facts known about one item on the compiler analysis stack. */
-export interface StackItem {
-	isInteger: boolean;
-	isFloat64?: boolean;
-	address?: AddressMetadata;
-	pointeeBaseType?: DataStructure['pointeeBaseType'];
-	isPointingToPointer?: boolean;
+export type StackValueType = 'int' | 'float' | 'float64';
+
+/** Metadata describing values reachable from an address stack item. */
+export interface PointeeMetadata {
+	baseType: DataStructure['pointeeBaseType'];
+	memoryIndex: number;
+	memoryRegionName?: string;
+	isPointer: boolean;
+}
+
+/** Type and value facts known about one ordinary value on the compiler analysis stack. */
+export interface StackValue {
+	kind: 'value';
+	valueType: StackValueType;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
 	/** Exact integer value when the compiler can still prove it at this stack position. */
 	knownIntegerValue?: number;
+}
+
+/** Type and value facts known about one value that is proven to be a memory address. */
+export interface StackAddress {
+	kind: 'address';
+	valueType: 'int';
+	address: AddressMetadata;
+	pointsTo?: PointeeMetadata;
+	/** A flag for the div operation to check if the divisor is zero. */
+	isNonZero?: boolean;
+	/** Exact integer value when the compiler can still prove it at this stack position. */
+	knownIntegerValue?: number;
+}
+
+/** Type and value facts known about one item on the compiler analysis stack. */
+export type StackItem = StackValue | StackAddress;
+
+export function isStackAddress(item: StackItem): item is StackAddress {
+	const maybeAddressItem = item as unknown as { address?: AddressMetadata };
+	return item.kind === 'address' || ('address' in maybeAddressItem && !!maybeAddressItem.address);
+}
+
+export function getStackValueType(
+	item: StackItem | { valueType?: StackValueType; isInteger?: boolean; isFloat64?: boolean }
+): StackValueType {
+	if (item.valueType) {
+		return item.valueType;
+	}
+
+	if (item.isInteger) {
+		return 'int';
+	}
+
+	return item.isFloat64 ? 'float64' : 'float';
+}
+
+export function isStackFloat64(item: StackItem): boolean {
+	return getStackValueType(item as StackItem | { isInteger?: boolean; isFloat64?: boolean }) === 'float64';
+}
+
+export function isStackInteger(item: StackItem): boolean {
+	return getStackValueType(item as StackItem | { isInteger?: boolean; isFloat64?: boolean }) === 'int';
 }
 
 export type Stack = StackItem[];
