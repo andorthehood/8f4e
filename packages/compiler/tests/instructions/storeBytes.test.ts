@@ -1,4 +1,4 @@
-import { compileToAST } from '@8f4e/tokenizer';
+import { compileToASTGroup } from '@8f4e/tokenizer';
 import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
 
 import { createSingleFunctionWASMProgram } from './testUtils';
@@ -6,6 +6,14 @@ import { createSingleFunctionWASMProgram } from './testUtils';
 import { compileModules } from '../../src';
 
 import type { CompiledModule } from '../../src/types';
+
+function compileModuleAst(sourceCode: string) {
+	const ast = compileToASTGroup(sourceCode.split('\n'));
+	if (ast.type === 'function') {
+		throw new Error('Expected module AST.');
+	}
+	return ast;
+}
 
 describe('storeBytes instruction', () => {
 	let testModule: CompiledModule;
@@ -30,7 +38,7 @@ moduleEnd
 `;
 
 	beforeAll(async () => {
-		const ast = compileToAST(sourceCode.split('\n'));
+		const ast = compileModuleAst(sourceCode);
 		testModule = compileModules([ast], {
 			startingMemoryWordAddress: 0,
 		})[0];
@@ -70,15 +78,13 @@ moduleEnd
 
 describe('storeBytes truncates values to byte', () => {
 	test('stores only the low byte of values larger than 255', async () => {
-		const ast = compileToAST(
-			`module storeBytesOverflow
+		const ast = compileModuleAst(`module storeBytesOverflow
 int8[] buf 4
 push 256
 push 257
 push &buf
 storeBytes 2
-moduleEnd`.split('\n')
-		);
+moduleEnd`);
 		const mod = compileModules([ast], { startingMemoryWordAddress: 0 })[0];
 		const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 
@@ -96,13 +102,11 @@ moduleEnd`.split('\n')
 
 describe('storeBytes with count 0 drops the address', () => {
 	test('storeBytes 0 compiles and leaves memory unchanged', async () => {
-		const ast = compileToAST(
-			`module storeBytes0
+		const ast = compileModuleAst(`module storeBytes0
 int dest 42
 push &dest
 storeBytes 0
-moduleEnd`.split('\n')
-		);
+moduleEnd`);
 		const mod = compileModules([ast], { startingMemoryWordAddress: 0 })[0];
 		const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 
