@@ -21,7 +21,6 @@ import type {
 	AST,
 	ASTCache,
 	ASTCacheEntry,
-	ASTLine,
 	Argument,
 	BlockEndLine,
 	BlockEndInstruction,
@@ -378,7 +377,7 @@ export function parseLine(
 	line: string,
 	lineNumberBeforeMacroExpansion: number,
 	lineNumberAfterMacroExpansion = lineNumberBeforeMacroExpansion
-): ASTLine {
+): CompilerASTLine {
 	let instruction: string | undefined;
 	try {
 		const tokens = tokenizeInstruction(line);
@@ -406,7 +405,7 @@ export function parseLine(
 			instruction,
 			arguments: parsedArguments,
 			...(referencedNamespaceIds.size > 0 ? { referencedNamespaceIds: [...referencedNamespaceIds] } : {}),
-		} as ASTLine;
+		} as CompilerASTLine;
 
 		if (isMemoryDeclarationLine(parsedLine)) {
 			const memoryLine: MemoryDeclarationLine = parsedLine;
