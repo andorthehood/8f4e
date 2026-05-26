@@ -65,7 +65,6 @@ Active todo files are listed below.
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
 | 421 | Clean up AST construction helper scans | 🟡 | 4-8h | 2026-05-26 | Typed AST metadata should be owned by source-block-specific construction, not by scattered post-processing helpers that re-scan `CompilerASTLine[]`. |
-| 422 | Split namespace discovery and layout prepass | 🟡 | 2-4h | 2026-05-26 | Namespace discovery and full layout/default resolution should be explicit phase-specific functions, not one prepass with a behavior mode flag. |
 
 ### 🟢 Low Priority
 
@@ -83,6 +82,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 422 | Split namespace discovery and layout prepass | 2026-05-26 | Namespace discovery now uses an explicit internal discovery path, final layout/default resolution uses `layoutNamespace(...)`, and the old mode flag/prepass naming was removed without typed-AST compatibility wrappers. |
 | 419 | Merge instruction source argument specs into instruction specs | 2026-05-26 | Source argument arity and shape metadata now lives in compiler-spec instruction specs; tokenizer validation consumes the shared contract, and duplicated argument/no-argument tables were removed without compatibility shims. |
 | 420 | Add typed compiler AST group indexes | 2026-05-26 | Compiler-owned AST inputs now use typed module/function/constants group objects with required ids and derived metadata, so compiler passes no longer rediscover those facts from raw line arrays. |
 | 417 | Tighten compiler AST union and source block types | 2026-05-25 | Compiler AST lines are now a discriminated union with source-block tuple types; tokenizer validation owns fixed arity, and namespace metadata no longer revalidates syntax-guaranteed prologue or return shapes. |
