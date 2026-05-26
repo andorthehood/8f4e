@@ -280,44 +280,12 @@ const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarat
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 const semanticInstructionSet = new Set<string>(semanticInstructionNames);
 
-export function isFunctionLine(line: CompilerASTLine | undefined): line is FunctionLine {
-	return line?.instruction === 'function';
-}
-
-export function isFunctionEndLine(line: CompilerASTLine | undefined): line is FunctionEndLine {
-	return line?.instruction === 'functionEnd';
-}
-
-export function isParamLine(line: CompilerASTLine | undefined): line is ParamLine {
-	return line?.instruction === 'param';
-}
-
-export function isModuleLine(line: CompilerASTLine | undefined): line is ModuleLine {
-	return line?.instruction === 'module';
-}
-
-export function isConstantsLine(line: CompilerASTLine | undefined): line is ConstantsLine {
-	return line?.instruction === 'constants';
-}
-
-export function isUseLine(line: CompilerASTLine | undefined): line is UseLine {
-	return line?.instruction === 'use';
-}
-
 export function isSemanticInstructionLine(line: CompilerASTLine | undefined): line is SemanticInstructionLine {
 	return line !== undefined && semanticInstructionSet.has(line.instruction as SemanticInstructionName);
 }
 
 export function isCompilerDirectiveLine(line: CompilerASTLine | undefined): line is CompilerDirectiveLine {
 	return line !== undefined && line.instruction.startsWith('#');
-}
-
-export function isIfEndLine(line: CompilerASTLine | undefined): line is IfEndLine {
-	return line?.instruction === 'ifEnd';
-}
-
-export function isBlockEndLine(line: CompilerASTLine | undefined): line is BlockEndLine {
-	return line?.instruction === 'blockEnd';
 }
 
 export function isMemoryDeclarationLine(line: CompilerASTLine | undefined): line is MemoryDeclarationLine {
