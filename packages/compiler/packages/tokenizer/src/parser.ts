@@ -1,4 +1,14 @@
-import { ArgumentType, blockEndToStartInstruction, blockStartInstructions } from '@8f4e/compiler-spec';
+import {
+	ArgumentType,
+	blockEndToStartInstruction,
+	blockStartInstructions,
+	isConstantsLine,
+	isFunctionEndLine,
+	isFunctionLine,
+	isMemoryDeclarationLine,
+	isModuleLine,
+	isParamLine,
+} from '@8f4e/compiler-spec';
 
 import instructionParser from './syntax/instructionParser';
 import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
@@ -21,9 +31,16 @@ import type {
 	BlockEndInstruction,
 	BlockStartInstruction,
 	BlockBlockResultType,
+	CompilerASTGroup,
+	CompilerASTLine,
+	ExportLine,
+	FunctionEndLine,
+	FunctionSignature,
 	IfEndLine,
 	IfBlockResultType,
+	MemoryDeclarationLine,
 	ParsedLineMetadata,
+	RegionLine,
 } from '@8f4e/compiler-spec';
 
 type OpenBlock = {
@@ -38,8 +55,8 @@ type SourceBlockPrologue = {
 	isOpen: boolean;
 };
 
-type ASTCacheLookupResult = {
-	ast?: AST;
+type ASTCacheLookupResult<TAst> = {
+	ast?: TAst;
 	hash?: number;
 };
 
@@ -94,11 +111,11 @@ function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): b
 	return args.length > 1;
 }
 
-function getASTCacheLookupResult(
-	cached: ASTCacheEntry | undefined,
+function getASTCacheLookupResult<TAst>(
+	cached: ASTCacheEntry<TAst> | undefined,
 	code: string[],
 	lineMetadata: ParsedLineMetadata | undefined
-): ASTCacheLookupResult {
+): ASTCacheLookupResult<TAst> {
 	// Optimize first compilation and obvious cache misses: only hash when an existing same-line-count entry needs validation.
 	if (!cached || cached.lineCount !== code.length) {
 		return {};
@@ -118,6 +135,123 @@ function getASTCacheLookupResult(
 		ast: cachedHash === hash ? cached.ast : undefined,
 		hash,
 	};
+}
+
+function getReferencedModuleIdsFromArgument(argument: Argument | undefined): string[] {
+	if (!argument) {
+		return [];
+	}
+
+	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		return [...argument.intermoduleIds];
+	}
+
+	if (argument.type !== ArgumentType.IDENTIFIER) {
+		return [];
+	}
+
+	if (argument.scope === 'intermodule' && argument.targetModuleId) {
+		return [argument.targetModuleId];
+	}
+
+	return [];
+}
+
+function getReferencedModuleIds(lines: readonly CompilerASTLine[]): string[] {
+	const referencedModuleIds = new Set<string>();
+
+	for (const line of lines) {
+		if (!isMemoryDeclarationLine(line)) {
+			continue;
+		}
+
+		for (const argument of line.arguments) {
+			for (const moduleId of getReferencedModuleIdsFromArgument(argument)) {
+				referencedModuleIds.add(moduleId);
+			}
+		}
+	}
+
+	return [...referencedModuleIds];
+}
+
+function getRegionLine(lines: readonly CompilerASTLine[]): RegionLine | undefined {
+	return lines.find((line): line is RegionLine => line.instruction === '#region');
+}
+
+function getMemoryDeclarationLines(lines: readonly CompilerASTLine[]): MemoryDeclarationLine[] {
+	return lines.filter(isMemoryDeclarationLine);
+}
+
+function getExportLine(lines: readonly CompilerASTLine[]): ExportLine | undefined {
+	return lines.find((line): line is ExportLine => line.instruction === '#export');
+}
+
+function getFunctionSignature(lines: readonly CompilerASTLine[], functionEndLine: FunctionEndLine): FunctionSignature {
+	return {
+		parameters: lines
+			.filter(isParamLine)
+			.map(line => line.arguments[0].value as FunctionSignature['parameters'][number]),
+		returns: functionEndLine.arguments.map(arg => arg.value as FunctionSignature['returns'][number]),
+	};
+}
+
+function toCompilerASTGroup(ast: AST): CompilerASTGroup {
+	const firstLine = ast[0];
+
+	if (isModuleLine(firstLine)) {
+		const lines = ast;
+		const regionLine = getRegionLine(lines);
+		return {
+			type: 'module',
+			id: firstLine.arguments[0].value,
+			lines,
+			moduleLine: firstLine,
+			...(regionLine ? { regionLine } : {}),
+			memoryDeclarationLines: getMemoryDeclarationLines(lines),
+			referencedModuleIds: getReferencedModuleIds(lines),
+		};
+	}
+
+	const functionLine = ast.find(isFunctionLine);
+	if (functionLine) {
+		const functionEndLine = ast.find(isFunctionEndLine);
+		if (!functionEndLine) {
+			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_BLOCK_STRUCTURE, 'Expected a matching functionEnd.', {
+				lineNumberBeforeMacroExpansion: functionLine.lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion: functionLine.lineNumberAfterMacroExpansion,
+				instruction: functionLine.instruction,
+			});
+		}
+
+		const lines = ast;
+		const id = functionLine.arguments[0].value;
+		const exportLine = getExportLine(lines);
+		return {
+			type: 'function',
+			id,
+			lines,
+			functionLine,
+			functionEndLine,
+			signature: getFunctionSignature(lines, functionEndLine),
+			...(exportLine ? { exportLine, exportName: exportLine.arguments[0]?.value ?? id } : {}),
+		};
+	}
+
+	if (isConstantsLine(firstLine)) {
+		return {
+			type: 'constants',
+			id: firstLine.arguments[0].value,
+			lines: ast,
+			constantsLine: firstLine,
+		};
+	}
+
+	throw new SyntaxRulesError(SyntaxErrorCode.INVALID_BLOCK_STRUCTURE, 'Expected a compiler source block.', {
+		lineNumberBeforeMacroExpansion: firstLine?.lineNumberBeforeMacroExpansion ?? 0,
+		lineNumberAfterMacroExpansion: firstLine?.lineNumberAfterMacroExpansion ?? 0,
+		instruction: firstLine?.instruction,
+	});
 }
 
 /**
@@ -397,6 +531,44 @@ export function compileToAST(
 	}
 
 	return ast;
+}
+
+export function compileToASTGroup(
+	code: string[],
+	lineMetadata?: ParsedLineMetadata,
+	cache?: ASTCache<CompilerASTGroup>,
+	cacheKey?: string
+): CompilerASTGroup {
+	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
+	const cachedLookup = getASTCacheLookupResult(cached, code, lineMetadata);
+	if (cachedLookup.ast) {
+		cache!.stats.hits++;
+		return cachedLookup.ast;
+	}
+	if (cache && cacheKey !== undefined) {
+		cache.stats.misses++;
+	}
+
+	const ast = compileToAST(code, lineMetadata);
+	const group = toCompilerASTGroup(ast);
+
+	if (cache && cacheKey !== undefined) {
+		const entry: ASTCacheEntry<CompilerASTGroup> = {
+			ast: group,
+			hashInput: {
+				code,
+				lineMetadata,
+			},
+			lineCount: code.length,
+		};
+		if (cachedLookup.hash !== undefined) {
+			entry.hash = cachedLookup.hash;
+			entry.hashInput = undefined;
+		}
+		cache.entries.set(cacheKey, entry);
+	}
+
+	return group;
 }
 
 export { instructionParser };
