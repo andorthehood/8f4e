@@ -52,9 +52,9 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                                 |
                                 v
                   +-----------------------------+
-                  |  6. Namespace prepass       |
+                  |  6. Namespace collection    |
                   |  collectNamespacesFromASTs()|
-                  |  prepassNamespace()         |
+                  |  discovery + layout         |
                   |                             |
                   |  resolves module memory,    |
                   |  consts, addresses, sizes   |

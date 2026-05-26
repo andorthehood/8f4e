@@ -6,7 +6,7 @@ import { type CompilationContext, type NormalizedConstLine } from '@8f4e/compile
  * This is the sole owner of all writes to `context.namespace.consts`. It is
  * invoked via applySemanticInstruction, which is reached through two paths:
  *
- * 1. Namespace prepass (prepassNamespace → applySemanticLine): runs normalize + this function
+ * 1. Namespace layout (layoutNamespace -> applySemanticLine): runs normalize + this function
  *    for every const line to populate the local namespace before codegen.
  * 2. Module/function compilation (compileLine → applySemanticLine): same path, allowing
  *    functions to declare their own const-scoped names during their compilation pass.

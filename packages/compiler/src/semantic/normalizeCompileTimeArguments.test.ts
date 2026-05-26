@@ -456,7 +456,7 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
 
-	it('does not validate intermodule references when namespaces dict is empty (prepass)', () => {
+	it('does not validate intermodule references before namespaces are collected', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
@@ -633,7 +633,7 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDEFINED_FUNCTION}`);
 	});
 
-	it('does not throw for call when functions registry is undefined (prepass context)', () => {
+	it('does not throw for call when functions registry is undefined', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},

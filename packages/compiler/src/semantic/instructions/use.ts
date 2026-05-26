@@ -7,7 +7,7 @@ import { getError } from '../../compilerError';
  * Applies a `use` instruction by importing all consts from the target namespace into
  * the current compilation context.
  *
- * `use` reads exclusively from validated namespace data produced by the namespace prepass.
+ * `use` reads exclusively from validated namespace data produced by namespace collection.
  * It does not parse or validate const values itself; those are guaranteed to be literal
  * values already by the time the namespace is registered. Declaration order matters:
  * only consts imported by a `use` that appears before a subsequent `const` reference
