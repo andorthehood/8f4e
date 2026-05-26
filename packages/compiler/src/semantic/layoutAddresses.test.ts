@@ -5,7 +5,6 @@ import {
 	getAbsoluteWordOffset,
 	getByteAddressFromWordOffset,
 	getEndByteAddress,
-	getModuleEndByteAddress,
 } from './layoutAddresses';
 
 describe('layoutAddresses', () => {
@@ -23,10 +22,6 @@ describe('layoutAddresses', () => {
 
 	it('returns byteAddress unchanged when wordAlignedSize is negative', () => {
 		expect(getEndByteAddress(24, -1)).toBe(24);
-	});
-
-	it('calculates module end byte addresses from module start', () => {
-		expect(getModuleEndByteAddress(24, 5)).toBe(40);
 	});
 
 	it('calculates absolute word offsets from module start and local offset', () => {

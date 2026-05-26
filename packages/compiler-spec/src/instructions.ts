@@ -10,18 +10,13 @@ import type {
 } from './instructionSpecs';
 import type { MemoryDeclarationInstruction } from './memory';
 
-function getInstructionSpecByName(instruction: string): InstructionSpec {
-	return instructionSpecs[instruction as InstructionSpecName] as InstructionSpec;
-}
-
-function isSourceInstructionSpec(instruction: string): boolean {
-	return getInstructionSpecByName(instruction).sourceInstruction !== false;
-}
-
 export type SemanticInstructionName = Extract<NonCodegenInstructionSpecName, SourceInstructionSpecName>;
 export const semanticInstructionNames = Object.keys(instructionSpecs).filter(
-	(instruction): instruction is SemanticInstructionName =>
-		isSourceInstructionSpec(instruction) && getInstructionSpecByName(instruction).codegen === false
+	(instruction): instruction is SemanticInstructionName => {
+		const spec = instructionSpecs[instruction as InstructionSpecName] as InstructionSpec;
+
+		return spec.sourceInstruction !== false && spec.codegen === false;
+	}
 );
 
 export const macroInstructionNames = ['defineMacro', 'defineMacroEnd', 'macro'] as const;
@@ -102,8 +97,11 @@ export const compilableBlockTypes = documentBlockInstructionPairs
 export type CodegenInstructionName = Extract<CodegenInstructionSpecName, SourceInstructionSpecName>;
 
 export const codegenInstructionNames = Object.keys(instructionSpecs).filter(
-	(instruction): instruction is CodegenInstructionName =>
-		isSourceInstructionSpec(instruction) && getInstructionSpecByName(instruction).codegen !== false
+	(instruction): instruction is CodegenInstructionName => {
+		const spec = instructionSpecs[instruction as InstructionSpecName] as InstructionSpec;
+
+		return spec.sourceInstruction !== false && spec.codegen !== false;
+	}
 );
 
 export type Instruction =
