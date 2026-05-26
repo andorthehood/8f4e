@@ -11,7 +11,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import instructions from './instructionCompilers';
 import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
-import { applySemanticLine, getModuleIdFromAst, prepassNamespace } from './semantic/buildNamespace';
+import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import { createCompilationContext } from './semantic/createCompilationContext';
@@ -20,12 +20,14 @@ import type {
 	AST,
 	AnalyzedLine,
 	CompilationContext,
+	CompiledModuleAST,
 	CompiledModule,
 	CompiledFunction,
 	CompiledStackAnalysisLine,
 	CompileOptions,
 	FunctionMetadataLookup,
 	FunctionCompilationContext,
+	FunctionAST,
 	FunctionTypeRegistry,
 	InstructionCompiler,
 	ModuleCompilationContext,
@@ -38,9 +40,16 @@ type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
 };
 
-function getFallbackErrorLine(ast: AST): AST[number] {
+function withCompiledModuleLines<TAst extends CompiledModuleAST>(ast: TAst, lines: TAst['lines']): TAst {
+	return {
+		...ast,
+		lines,
+	};
+}
+
+function getFallbackErrorLine(ast: { lines: AST }): AST[number] {
 	return (
-		ast[0] ?? {
+		ast.lines[0] ?? {
 			lineNumberBeforeMacroExpansion: 0,
 			lineNumberAfterMacroExpansion: 0,
 			instruction: 'block',
@@ -84,7 +93,7 @@ export function compileLine(line: AST[number], context: CompilationContext): Ana
 }
 
 export function compileModule(
-	ast: AST,
+	ast: CompiledModuleAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
@@ -96,8 +105,7 @@ export function compileModule(
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
 	// the compilation loop below, so consts are not copied from the prepass context.
 	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions, options);
-	const moduleId = getModuleIdFromAst(ast);
-	const namespace = moduleId ? namespaces[moduleId] : undefined;
+	const namespace = namespaces[ast.id];
 	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex;
 	const memoryRegionName = namespace?.memoryRegionName ?? prepassContext.currentMemoryRegionName;
 	const context = createCompilationContext<ModuleCompilationContext>({
@@ -124,7 +132,7 @@ export function compileModule(
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
-	const normalizedAst = ast.map(originalLine => {
+	const normalizedLines = ast.lines.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		if (line.isSemanticOnly) {
 			applySemanticLine(line, context);
@@ -136,11 +144,7 @@ export function compileModule(
 			}
 		}
 		return line;
-	});
-
-	if (!context.namespace.moduleName) {
-		throw getError(ErrorCode.MISSING_MODULE_ID, getFallbackErrorLine(ast), context);
-	}
+	}) as typeof ast.lines;
 
 	if (context.stack.length > 0) {
 		throw getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, getFallbackErrorLine(ast), context);
@@ -149,7 +153,7 @@ export function compileModule(
 	const internalResources = Object.keys(context.internalResources).length > 0 ? context.internalResources : undefined;
 
 	return {
-		id: context.namespace.moduleName,
+		id: ast.id,
 		cycleFunction: createFunction(
 			Object.values(context.locals).map(local => {
 				return createLocalDeclaration(
@@ -166,7 +170,7 @@ export function compileModule(
 		memoryMap: context.namespace.memory,
 		...(internalResources ? { internalResources } : {}),
 		wordAlignedSize: context.currentModuleWordAlignedSize,
-		ast: normalizedAst,
+		ast: withCompiledModuleLines(ast, normalizedLines),
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
@@ -175,7 +179,7 @@ export function compileModule(
 }
 
 export function compileFunction(
-	ast: AST,
+	ast: FunctionAST,
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
@@ -213,18 +217,14 @@ export function compileFunction(
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
-	const normalizedAst = ast.map(originalLine => {
+	const normalizedLines = ast.lines.map(originalLine => {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		const analyzedLine = compileLine(line, context);
 		if (options.includeStackAnalysis && analyzedLine) {
 			stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
 		}
 		return line;
-	});
-
-	if (!context.currentFunctionId) {
-		throw getError(ErrorCode.MISSING_FUNCTION_ID, getFallbackErrorLine(ast), context);
-	}
+	}) as FunctionAST['lines'];
 
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
@@ -241,7 +241,7 @@ export function compileFunction(
 	const completedContext = context as CompletedFunctionCompilationContext;
 
 	return {
-		id: completedContext.currentFunctionId,
+		id: ast.id,
 		signature: completedContext.currentFunctionSignature,
 		body: createFunction(
 			localDeclarations.map(local =>
@@ -256,7 +256,10 @@ export function compileFunction(
 		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
 		wasmIndex,
 		typeIndex: completedContext.currentFunctionTypeIndex,
-		ast: normalizedAst,
+		ast: {
+			...ast,
+			lines: normalizedLines,
+		},
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};
 }

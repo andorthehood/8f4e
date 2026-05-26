@@ -1,4 +1,4 @@
-export { compileToAST, parseLine, instructionParser } from './parser';
+export { compileToASTGroup, parseLine, instructionParser } from './parser';
 export * from './syntax';
 export {
 	BLOCK_DELIMITERS,

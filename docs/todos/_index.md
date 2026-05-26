@@ -64,7 +64,6 @@ Active todo files are listed below.
 | 408 | Reduce tokenizer identifier classification work | 🟡 | 1-2d | 2026-05-19 | `classifyIdentifier` runs many ordered reference-shape checks for every identifier; cheap prefix/suffix dispatch could avoid most checks for plain identifiers. |
 | 409 | Track block context flags during stack analysis | 🟡 | 2-4h | 2026-05-19 | Stack validation repeatedly scans block stack to detect constants/map scope; maintained context flags or counters would avoid per-instruction scans. |
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
-| 420 | Add typed compiler AST group indexes | 🟡 | 1-2d | 2026-05-26 | Compiler passes still rediscover group metadata by traversing AST line arrays; typed module/function AST objects should carry required ids and indexes directly. |
 
 ### 🟢 Low Priority
 
@@ -83,6 +82,7 @@ Active todo files are listed below.
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
 | 419 | Merge instruction source argument specs into instruction specs | 2026-05-26 | Source argument arity and shape metadata now lives in compiler-spec instruction specs; tokenizer validation consumes the shared contract, and duplicated argument/no-argument tables were removed without compatibility shims. |
+| 420 | Add typed compiler AST group indexes | 2026-05-26 | Compiler-owned AST inputs now use typed module/function/constants group objects with required ids and derived metadata, so compiler passes no longer rediscover those facts from raw line arrays. |
 | 417 | Tighten compiler AST union and source block types | 2026-05-25 | Compiler AST lines are now a discriminated union with source-block tuple types; tokenizer validation owns fixed arity, and namespace metadata no longer revalidates syntax-guaranteed prologue or return shapes. |
 | 416 | Add resolved identifier line forms | 2026-05-25 | Semantic normalization now carries resolved memory, local, pointer, function, and local-set targets through stack analysis and codegen; old push-target rediscovery was removed. |
 | 415 | Discriminate compiler block stack frames | 2026-05-25 | Block stack frames are now a discriminated union; map frames require `mapState`, loop frames require counter metadata, and codegen consumers no longer use the old block-frame non-null assertions. |
