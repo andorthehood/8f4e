@@ -220,30 +220,19 @@ export interface StackAddress {
 export type StackItem = StackValue | StackAddress;
 
 export function isStackAddress(item: StackItem): item is StackAddress {
-	const maybeAddressItem = item as unknown as { address?: AddressMetadata };
-	return item.kind === 'address' || ('address' in maybeAddressItem && !!maybeAddressItem.address);
+	return item.kind === 'address';
 }
 
-export function getStackValueType(
-	item: StackItem | { valueType?: StackValueType; isInteger?: boolean; isFloat64?: boolean }
-): StackValueType {
-	if (item.valueType) {
-		return item.valueType;
-	}
-
-	if (item.isInteger) {
-		return 'int';
-	}
-
-	return item.isFloat64 ? 'float64' : 'float';
+export function getStackValueType(item: StackItem): StackValueType {
+	return item.valueType;
 }
 
 export function isStackFloat64(item: StackItem): boolean {
-	return getStackValueType(item as StackItem | { isInteger?: boolean; isFloat64?: boolean }) === 'float64';
+	return getStackValueType(item) === 'float64';
 }
 
 export function isStackInteger(item: StackItem): boolean {
-	return getStackValueType(item as StackItem | { isInteger?: boolean; isFloat64?: boolean }) === 'int';
+	return getStackValueType(item) === 'int';
 }
 
 export type Stack = StackItem[];

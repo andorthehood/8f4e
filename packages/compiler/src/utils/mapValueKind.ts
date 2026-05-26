@@ -17,12 +17,7 @@ interface MapValueKind {
 }
 
 function normalizeMapValueKind(valueKind: MapValueKind | StackItem): MapValueKind {
-	if ('valueType' in valueKind) {
-		return { valueType: valueKind.valueType };
-	}
-
-	const legacyValueKind = valueKind as unknown as { isInteger?: boolean; isFloat64?: boolean };
-	return { valueType: legacyValueKind.isInteger ? 'int' : legacyValueKind.isFloat64 ? 'float64' : 'float' };
+	return { valueType: valueKind.valueType };
 }
 
 /**

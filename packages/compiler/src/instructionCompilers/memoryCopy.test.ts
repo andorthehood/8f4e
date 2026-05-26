@@ -20,19 +20,33 @@ describe('memoryCopy instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 20, safeByteLength: 20, memoryId: 'target' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 20,
+						safeByteLength: 20,
+						memoryId: 'target',
+					},
 				},
 			},
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 20, memoryId: 'source' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 20,
+						memoryId: 'source',
+					},
 				},
 			}
 		);
