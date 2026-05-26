@@ -20,6 +20,7 @@ export type PointerFunctionTypeIdentifier = (typeof POINTER_FUNCTION_TYPE_IDENTI
 export type FunctionTypeIdentifier = (typeof FUNCTION_TYPE_IDENTIFIERS)[number];
 export type FunctionValueType = FunctionTypeIdentifier;
 
+/** Language-level function parameter and return value types. */
 export interface FunctionSignature {
 	parameters: FunctionValueType[];
 	returns: FunctionValueType[];

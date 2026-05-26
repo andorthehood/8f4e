@@ -12,6 +12,7 @@ export type CompiledStackAnalysisLine = {
 	stackAnalysis: StackAnalysisResult;
 };
 
+/** Code generation output and metadata for a compiled module or constants block. */
 export interface CompiledModule {
 	index: number;
 	initFunctionBody: number[];
@@ -32,21 +33,25 @@ export interface CompiledModule {
 
 export type CompiledModuleLookup = Record<string, CompiledModule>;
 
+/** WebAssembly parameter and result types for a function signature. */
 export interface FunctionTypeSignature {
 	params: WasmTypeValue[];
 	results: WasmTypeValue[];
 }
 
+/** Function type signature together with its index in the emitted type section. */
 export interface RegisteredFunctionTypeSignature extends FunctionTypeSignature {
 	typeIndex: number;
 }
 
+/** Registry of WebAssembly function types used while emitting a module. */
 export interface FunctionTypeRegistry {
 	types: FunctionType[];
 	signatures: RegisteredFunctionTypeSignature[];
 	baseTypeIndex: number;
 }
 
+/** Public identity, signature, and WebAssembly index for a compiled function. */
 export interface FunctionMetadata {
 	id: string;
 	signature: FunctionSignature;
@@ -55,6 +60,7 @@ export interface FunctionMetadata {
 
 export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
 
+/** Code generation output and metadata for a compiled function. */
 export interface CompiledFunction extends FunctionMetadata {
 	body: number[];
 	locals: Array<{ isInteger: boolean; count: number }>;
@@ -66,6 +72,7 @@ export interface CompiledFunction extends FunctionMetadata {
 
 export type CompiledFunctionLookup = Record<string, CompiledFunction>;
 
+/** Reusable compiler caches returned from a compile operation. */
 export interface CompilerCache {
 	ast: ASTCache<AST>;
 }
@@ -79,6 +86,7 @@ export type CompileResult = {
 	cache: CompilerCache;
 };
 
+/** Directed connection between two module connectors in an editor graph. */
 export interface Connection {
 	fromModuleId: string;
 	fromConnectorId: string;
@@ -86,6 +94,7 @@ export interface Connection {
 	toConnectorId: string;
 }
 
+/** Source module payload consumed by the compiler. */
 export interface Module {
 	code: string[];
 }
