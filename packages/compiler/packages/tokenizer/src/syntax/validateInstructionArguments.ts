@@ -2,91 +2,21 @@ import {
 	ArgumentType,
 	FUNCTION_TYPE_IDENTIFIERS,
 	SCALAR_TYPE_IDENTIFIERS,
-	noArgumentCodegenInstructionNames,
+	getInstructionSpec,
 } from '@8f4e/compiler-spec';
 
 import isConstantName from './isConstantName';
 import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
+import isMemoryDeclarationInstruction from './isMemoryDeclarationInstruction';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
-import type { Argument } from '@8f4e/compiler-spec';
-
-type ArgumentShapeRule =
-	| 'identifier'
-	| 'constantIdentifier'
-	| 'literal'
-	| 'nonNegativeIntegerLiteral'
-	| 'nonNegativeCompileTimeValue'
-	| 'compileTimeValue'
-	| 'mapValue'
-	| 'typeIdentifier'
-	| 'functionTypeIdentifier'
-	| 'ifResultType'
-	| 'regionReference';
-
-type InstructionArgumentSpec = {
-	minArguments?: number;
-	maxArguments?: number;
-	argumentTypes?: ArgumentShapeRule[] | ArgumentShapeRule;
-};
+import type { Argument, SourceArgumentsSpec, SourceArgumentShapeRule } from '@8f4e/compiler-spec';
 
 const supportedScalarTypeIdentifiers: ReadonlySet<string> = new Set(SCALAR_TYPE_IDENTIFIERS);
 const supportedFunctionTypeIdentifiers: ReadonlySet<string> = new Set(FUNCTION_TYPE_IDENTIFIERS);
 const supportedIfResultTypeIdentifiers = new Set(['int', 'float']);
 
-const noArgumentInstructionSpecs = Object.fromEntries(
-	noArgumentCodegenInstructionNames.map(instruction => [instruction, { maxArguments: 0 }])
-) as Partial<Record<string, InstructionArgumentSpec>>;
-
-const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>> = {
-	...noArgumentInstructionSpecs,
-	push: { minArguments: 1, maxArguments: 1 },
-	branch: { minArguments: 1, maxArguments: 1, argumentTypes: ['literal'] },
-	branchIfTrue: { minArguments: 1, maxArguments: 1, argumentTypes: ['literal'] },
-	branchIfUnchanged: { minArguments: 1, maxArguments: 1, argumentTypes: ['literal'] },
-	exitIfTrue: { maxArguments: 0 },
-	ensureNonZero: { maxArguments: 1, argumentTypes: 'literal' },
-	block: { maxArguments: 0 },
-	blockEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
-	local: { minArguments: 2, maxArguments: 2, argumentTypes: ['functionTypeIdentifier', 'identifier'] },
-	param: { minArguments: 2, maxArguments: 2, argumentTypes: ['functionTypeIdentifier', 'identifier'] },
-	localSet: { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
-	function: { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
-	functionEnd: { argumentTypes: 'functionTypeIdentifier' },
-	call: { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
-	mapBegin: { minArguments: 1, maxArguments: 1, argumentTypes: ['typeIdentifier'] },
-	mapEnd: { minArguments: 1, maxArguments: 1, argumentTypes: ['typeIdentifier'] },
-	map: { minArguments: 2, maxArguments: 2, argumentTypes: ['mapValue', 'mapValue'] },
-	default: { minArguments: 1, maxArguments: 1, argumentTypes: ['compileTimeValue'] },
-	storeBytes: { minArguments: 1, maxArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
-	memoryCopy: { minArguments: 1, maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
-	clampAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
-	clampModuleAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
-	clampGlobalAddress: { maxArguments: 1, argumentTypes: ['nonNegativeCompileTimeValue'] },
-	else: { maxArguments: 0 },
-	loop: { maxArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
-	loopEnd: { maxArguments: 0 },
-	loopIndex: { maxArguments: 0 },
-	'#loopCap': { minArguments: 1, maxArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] },
-	'#region': { minArguments: 1, maxArguments: 1, argumentTypes: ['regionReference'] },
-	'#impure': { maxArguments: 0 },
-	'#export': { maxArguments: 1, argumentTypes: ['identifier'] },
-	'#skipExecution': { maxArguments: 0 },
-	'#initOnly': { maxArguments: 0 },
-	module: { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
-	constants: { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
-	use: { minArguments: 1, maxArguments: 1, argumentTypes: ['identifier'] },
-	const: {
-		minArguments: 2,
-		maxArguments: 2,
-		argumentTypes: ['constantIdentifier', 'compileTimeValue'],
-	},
-	if: { maxArguments: 0 },
-	ifEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
-	return: { maxArguments: 0 },
-};
-
-function getInstructionArgumentSpec(instruction: string): InstructionArgumentSpec | undefined {
+function getInstructionArgumentSpec(instruction: string): SourceArgumentsSpec | undefined {
 	if (isArrayDeclarationInstruction(instruction)) {
 		return {
 			minArguments: 2,
@@ -94,7 +24,11 @@ function getInstructionArgumentSpec(instruction: string): InstructionArgumentSpe
 		};
 	}
 
-	return instructionArgumentSpecs[instruction];
+	if (isMemoryDeclarationInstruction(instruction)) {
+		return undefined;
+	}
+
+	return getInstructionSpec(instruction)?.sourceArguments;
 }
 
 function isCompileTimeValue(argument: Argument): boolean {
@@ -105,7 +39,7 @@ function isCompileTimeValue(argument: Argument): boolean {
 	);
 }
 
-function validateArgumentShape(argument: Argument, rule: ArgumentShapeRule, instruction: string): void {
+function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule, instruction: string): void {
 	const invalid = (message: string) => {
 		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, message);
 	};
