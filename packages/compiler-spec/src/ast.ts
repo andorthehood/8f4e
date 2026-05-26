@@ -14,52 +14,9 @@ import type {
 	ArgumentLiteral,
 	ArgumentStringLiteral,
 } from './arguments';
+import type { NoSourceArgumentInstructionName } from './instructionSpecs';
 import type { DocumentOnlyInstructionName, MacroInstructionName } from './instructions';
 
-export const noArgumentCodegenInstructionNames = [
-	'abs',
-	'add',
-	'and',
-	'castToFloat',
-	'castToFloat64',
-	'castToInt',
-	'clearStack',
-	'div',
-	'drop',
-	'equal',
-	'equalToZero',
-	'fallingEdge',
-	'greaterOrEqual',
-	'greaterOrEqualUnsigned',
-	'greaterThan',
-	'hasChanged',
-	'lessOrEqual',
-	'lessThan',
-	'load',
-	'load8u',
-	'load16u',
-	'load8s',
-	'load16s',
-	'loadFloat',
-	'min',
-	'max',
-	'mul',
-	'notEqual',
-	'notZero',
-	'or',
-	'remainder',
-	'risingEdge',
-	'round',
-	'shiftLeft',
-	'shiftRight',
-	'shiftRightUnsigned',
-	'sqrt',
-	'store',
-	'sub',
-	'xor',
-] as const;
-
-type NoArgumentCodegenInstructionName = (typeof noArgumentCodegenInstructionNames)[number];
 type ClampAddressInstructionName = 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress';
 
 export type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> = {
@@ -114,8 +71,6 @@ export interface BlockEndBlockMetadata {
 export type BlockLine = ASTLineBase<'block', []>;
 export type BlockEndLine = ASTLineBase<'blockEnd', [] | [ArgumentIdentifier]>;
 export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
-export type LocalVariableAccessLine = LocalSetLine;
-export type TokenizedLocalVariableAccessLine = LocalVariableAccessLine;
 
 export type FunctionLine = ASTLineBase<'function', [ArgumentIdentifier]>;
 export type FunctionEndLine = ASTLineBase<'functionEnd', ArgumentIdentifier[]>;
@@ -159,7 +114,7 @@ export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLi
 export type SkipExecutionLine = ASTLineBase<'#skipExecution', []>;
 export type InitOnlyLine = ASTLineBase<'#initOnly', []>;
 export type ClampAddressLine = ASTLineBase<ClampAddressInstructionName, [] | [CompileTimeValueArgument]>;
-export type NoArgumentCodegenLine = ASTLineBase<NoArgumentCodegenInstructionName, []>;
+export type NoSourceArgumentLine = ASTLineBase<NoSourceArgumentInstructionName, []>;
 
 export type MemoryDeclarationArgument =
 	| ArgumentLiteral
@@ -220,7 +175,7 @@ type ExplicitCompilerASTLine =
 	| SkipExecutionLine
 	| InitOnlyLine
 	| ClampAddressLine
-	| NoArgumentCodegenLine
+	| NoSourceArgumentLine
 	| MemoryDeclarationLine;
 
 export type CompilerASTLine =
