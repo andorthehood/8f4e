@@ -4,7 +4,7 @@ import call from './call';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST, CompilationContext } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilationContext } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -29,7 +29,7 @@ describe('call instruction compiler', () => {
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo')],
 				targetFunction,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -59,7 +59,7 @@ describe('call instruction compiler', () => {
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo64')],
 				targetFunction,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -91,7 +91,7 @@ describe('call instruction compiler', () => {
 					instruction: 'call',
 					arguments: [classifyIdentifier('foo64')],
 					targetFunction,
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();
@@ -116,7 +116,7 @@ describe('call instruction compiler', () => {
 				instruction: 'call',
 				arguments: [classifyIdentifier('addr')],
 				targetFunction,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

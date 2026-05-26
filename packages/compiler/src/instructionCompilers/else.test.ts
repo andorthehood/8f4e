@@ -5,7 +5,7 @@ import _else from './else';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('else instruction compiler', () => {
 	it('emits else bytecode and restores block', () => {
@@ -28,7 +28,7 @@ describe('else instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'else',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -50,7 +50,7 @@ describe('else instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'else',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

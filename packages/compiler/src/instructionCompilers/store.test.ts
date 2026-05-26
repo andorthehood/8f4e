@@ -5,7 +5,7 @@ import store from './store';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('store instruction compiler', () => {
 	it('stores to a safe memory address', () => {
@@ -28,7 +28,7 @@ describe('store instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'store',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -49,7 +49,7 @@ describe('store instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'store',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -79,7 +79,7 @@ describe('store instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 3,
 				instruction: 'store',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -109,7 +109,7 @@ describe('store instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 4,
 				instruction: 'store',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -128,7 +128,7 @@ describe('store instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 5,
 				instruction: 'store',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -157,7 +157,7 @@ describe('store instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 6,
 				instruction: 'store',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

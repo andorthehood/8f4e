@@ -1,4 +1,4 @@
-import { compileToASTGroup } from '@8f4e/tokenizer';
+import { compileToAST } from '@8f4e/tokenizer';
 import { describe, test, expect } from 'vitest';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -10,7 +10,7 @@ import compile from '../src';
 describe('compiler', () => {
 	test('compileModules', () => {
 		const astModules = modules.map(({ code }) => {
-			const ast = compileToASTGroup(code);
+			const ast = compileToAST(code);
 			if (ast.type === 'function') {
 				throw new Error('Expected module AST.');
 			}

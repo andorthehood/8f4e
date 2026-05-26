@@ -4,7 +4,7 @@ import or from './or';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('or instruction compiler', () => {
 	it('emits I32_OR and tracks non-zero state', () => {
@@ -18,7 +18,7 @@ describe('or instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'or',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -42,7 +42,7 @@ describe('or instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'or',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

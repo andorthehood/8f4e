@@ -4,7 +4,7 @@ import castToFloat from './castToFloat';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('castToFloat instruction compiler', () => {
 	it('converts int operand to float', () => {
@@ -18,7 +18,7 @@ describe('castToFloat instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'castToFloat',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

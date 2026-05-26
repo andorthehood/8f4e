@@ -4,7 +4,7 @@ import shiftRightUnsigned from './shiftRightUnsigned';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('shiftRightUnsigned instruction compiler', () => {
 	it('emits I32_SHR_U for integer operands', () => {
@@ -18,7 +18,7 @@ describe('shiftRightUnsigned instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'shiftRightUnsigned',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -42,7 +42,7 @@ describe('shiftRightUnsigned instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'shiftRightUnsigned',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

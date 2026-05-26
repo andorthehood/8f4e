@@ -18,7 +18,7 @@ import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandT
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 
 import type {
-	AST,
+	CompilerASTLine,
 	AnalyzedLine,
 	CompilationContext,
 	FunctionValueType,
@@ -213,7 +213,7 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	return { consumed, produced };
 }
 
-function analyzeFunctionEnd(line: AST[number], context: CompilationContext): Stack {
+function analyzeFunctionEnd(line: CompilerASTLine, context: CompilationContext): Stack {
 	assertTopBlock(line, context, BlockType.FUNCTION);
 	const returnTypes = line.arguments.map(arg => ('value' in arg ? (arg.value as FunctionValueType) : undefined));
 
@@ -237,7 +237,7 @@ function analyzeFunctionEnd(line: AST[number], context: CompilationContext): Sta
 }
 
 function assertTopBlock(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext,
 	blockType: (typeof BlockType)[keyof typeof BlockType]
 ) {
@@ -248,7 +248,7 @@ function assertTopBlock(
 	}
 }
 
-function analyzeLocalSet(line: AST[number], context: CompilationContext): { consumed: Stack; produced: Stack } {
+function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
 	const { local } = line as LocalSetLine & { local: CompilationContext['locals'][string] };
@@ -264,7 +264,7 @@ function analyzeLocalSet(line: AST[number], context: CompilationContext): { cons
 	return { consumed, produced: [] };
 }
 
-function analyzeLoopIndex(line: AST[number], context: CompilationContext): { consumed: Stack; produced: Stack } {
+function analyzeLoopIndex(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const loopBlock = [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP);
 
 	if (!loopBlock || !context.locals[loopBlock.loopCounterLocalName]) {
@@ -277,7 +277,7 @@ function analyzeLoopIndex(line: AST[number], context: CompilationContext): { con
 }
 
 function analyzeExpectedBlockResult(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext,
 	{ restore = false, validateFloatResult = false } = {}
 ): { consumed: Stack; produced: Stack } {
@@ -311,7 +311,7 @@ function analyzeExpectedBlockResult(
 }
 
 function resolveStackConsumeCount(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext,
 	consumes: StackMutationSpec['consumes']
 ): number {
@@ -362,7 +362,7 @@ function resolveStackProducedItem(consumed: Stack, spec: StackProducedItemSpec):
 }
 
 function analyzeStackEffectFromSpec(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext,
 	stackEffect: StackMutationSpec
 ): { consumed: Stack; produced: Stack; dropped?: Stack } {
@@ -379,7 +379,7 @@ function analyzeStackEffectFromSpec(
 }
 
 function analyzeFromSpec(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext,
 	spec: InstructionSpec | undefined
 ): { consumed: Stack; produced: Stack; dropped?: Stack } | undefined {
@@ -400,7 +400,7 @@ function analyzeFromSpec(
 }
 
 function analyzeByInstruction(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext
 ): { consumed: Stack; produced: Stack; dropped?: Stack } {
 	const specResult = analyzeFromSpec(line, context, getInstructionSpec(line.instruction));
@@ -608,7 +608,7 @@ function analyzeByInstruction(
 	}
 }
 
-export function analyzeInstruction(line: AST[number], context: CompilationContext): AnalyzedLine {
+export function analyzeInstruction(line: CompilerASTLine, context: CompilationContext): AnalyzedLine {
 	validateInstruction(line, context);
 
 	const stackBefore = cloneStack(context.stack);

@@ -6,7 +6,7 @@ import loopCap from './loopCap';
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('#loopCap instruction compiler', () => {
 	it('sets loopCap on context when in module block', () => {
@@ -28,7 +28,7 @@ describe('#loopCap instruction compiler', () => {
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -54,7 +54,7 @@ describe('#loopCap instruction compiler', () => {
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2048, isInteger: true }],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -80,7 +80,7 @@ describe('#loopCap instruction compiler', () => {
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -106,7 +106,7 @@ describe('#loopCap instruction compiler', () => {
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -120,7 +120,7 @@ describe('#loopCap instruction compiler', () => {
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 100, isInteger: true }],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -136,7 +136,7 @@ describe('#loopCap instruction compiler', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: '#loopCap',
 			arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
-		} as AST[number];
+		} as CompilerASTLine;
 
 		expect(() => {
 			validateInstruction(line, context);

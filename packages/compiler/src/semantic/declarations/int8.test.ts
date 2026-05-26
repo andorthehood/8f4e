@@ -4,7 +4,7 @@ import int8 from './int8';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -18,7 +18,7 @@ describe('int8 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int8*',
 				arguments: [classifyIdentifier('ptr')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -39,7 +39,7 @@ describe('int8 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int8**',
 				arguments: [classifyIdentifier('pptr')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -60,7 +60,7 @@ describe('int8 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int8*',
 				arguments: [classifyIdentifier('p')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

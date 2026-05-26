@@ -5,7 +5,7 @@ import _default from './default';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('default instruction compiler', () => {
 	it('records a default value', () => {
@@ -37,7 +37,7 @@ describe('default instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'default',
 				arguments: [{ type: ArgumentType.LITERAL, value: 99, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -57,7 +57,7 @@ describe('default instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'default',
 					arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

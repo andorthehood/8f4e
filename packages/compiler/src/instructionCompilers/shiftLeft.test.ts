@@ -4,7 +4,7 @@ import shiftLeft from './shiftLeft';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('shiftLeft instruction compiler', () => {
 	it('emits I32_SHL for integer operands', () => {
@@ -18,7 +18,7 @@ describe('shiftLeft instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'shiftLeft',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -42,7 +42,7 @@ describe('shiftLeft instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'shiftLeft',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

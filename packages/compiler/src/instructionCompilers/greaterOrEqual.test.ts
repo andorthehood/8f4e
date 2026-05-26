@@ -5,7 +5,7 @@ import greaterOrEqual from './greaterOrEqual';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('greaterOrEqual instruction compiler', () => {
 	it('emits I32_GE_S for integer operands', () => {
@@ -19,7 +19,7 @@ describe('greaterOrEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'greaterOrEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -40,7 +40,7 @@ describe('greaterOrEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'greaterOrEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -64,7 +64,7 @@ describe('greaterOrEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'greaterOrEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
