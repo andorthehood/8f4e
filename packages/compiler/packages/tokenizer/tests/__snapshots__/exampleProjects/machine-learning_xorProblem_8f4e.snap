@@ -91,6 +91,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "perceptron"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "perceptron"
@@ -214,6 +217,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "perceptron2"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "perceptron2"
@@ -337,6 +343,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "perceptron3"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "perceptron3"
@@ -613,6 +622,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "switches"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "switches"
@@ -641,6 +653,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "switches"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "switches"
@@ -902,6 +917,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "switches"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "switches"
@@ -930,6 +948,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "switches"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "switches"
@@ -1191,6 +1212,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "activationFn"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "activationFn"
@@ -1219,6 +1243,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "activationFn2"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "activationFn2"
@@ -1480,6 +1507,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "activationFn3"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "activationFn3"

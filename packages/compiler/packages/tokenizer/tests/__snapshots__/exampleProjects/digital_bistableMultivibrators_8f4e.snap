@@ -88,6 +88,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "orGate"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "orGate"
@@ -132,6 +135,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "negate"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "negate"
@@ -393,6 +399,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "buttons"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "buttons"
@@ -591,6 +600,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "norGate2"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "norGate2"
@@ -635,6 +647,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "resetButton"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "resetButton"
@@ -841,6 +856,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "norGate"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "norGate"
@@ -885,6 +903,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "setButton"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "setButton"
@@ -1114,6 +1135,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "andGate"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "andGate"
@@ -1158,6 +1182,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "buttons"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "buttons"
@@ -1426,6 +1453,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "norGate"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "norGate"
@@ -1732,6 +1762,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "andGate"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "andGate"

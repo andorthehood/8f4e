@@ -171,10 +171,10 @@ function getASTCacheLookupResult<TAst>(
 	};
 }
 
-function addReferencedModuleIdsFromArgument(referencedModuleIds: Set<string>, argument: Argument): void {
+function addReferencedNamespaceIdsFromArgument(referencedNamespaceIds: Set<string>, argument: Argument): void {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		for (const moduleId of argument.intermoduleIds) {
-			referencedModuleIds.add(moduleId);
+			referencedNamespaceIds.add(moduleId);
 		}
 		return;
 	}
@@ -184,7 +184,7 @@ function addReferencedModuleIdsFromArgument(referencedModuleIds: Set<string>, ar
 	}
 
 	if (argument.scope === 'intermodule' && argument.targetModuleId) {
-		referencedModuleIds.add(argument.targetModuleId);
+		referencedNamespaceIds.add(argument.targetModuleId);
 	}
 }
 
@@ -394,15 +394,17 @@ export function parseLine(
 		instruction = first;
 		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
 		const parsedArguments: Argument[] = [];
-		const referencedModuleIds = isMemoryDeclaration ? new Set<string>() : undefined;
+		const referencedNamespaceIds = new Set<string>();
 		for (const arg of args) {
 			const parsedArgument = parseArgument(arg);
 			parsedArguments.push(parsedArgument);
-			if (referencedModuleIds) {
-				addReferencedModuleIdsFromArgument(referencedModuleIds, parsedArgument);
-			}
+			addReferencedNamespaceIdsFromArgument(referencedNamespaceIds, parsedArgument);
 		}
 		validateInstructionArguments(instruction, parsedArguments);
+		const [useArgument] = parsedArguments;
+		if (instruction === 'use' && useArgument?.type === ArgumentType.IDENTIFIER) {
+			referencedNamespaceIds.add(useArgument.value);
+		}
 		const parsedLine = {
 			lineNumberBeforeMacroExpansion,
 			lineNumberAfterMacroExpansion,
@@ -410,13 +412,14 @@ export function parseLine(
 			arguments: parsedArguments,
 			isSemanticOnly: isSemanticOnlyInstruction(instruction),
 			isMemoryDeclaration,
+			...(referencedNamespaceIds.size > 0 ? { referencedNamespaceIds: [...referencedNamespaceIds] } : {}),
 		} as ASTLine;
 
 		if (isMemoryDeclaration) {
 			const memoryLine = parsedLine as MemoryDeclarationLine;
 			memoryLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
-			if (referencedModuleIds && referencedModuleIds.size > 0) {
-				memoryLine.referencedModuleIds = [...referencedModuleIds];
+			if (referencedNamespaceIds.size > 0) {
+				memoryLine.referencedModuleIds = [...referencedNamespaceIds];
 			}
 		}
 
