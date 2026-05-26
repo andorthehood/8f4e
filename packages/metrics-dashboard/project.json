@@ -12,7 +12,8 @@
 				"{workspaceRoot}/bundle-size.config.json",
 				"{workspaceRoot}/logs/bundle-sizes/**/*",
 				"{workspaceRoot}/logs/bytecode-size/**/*",
-				"{workspaceRoot}/logs/compiler-coverage-counts/**/*"
+				"{workspaceRoot}/logs/compiler-coverage-counts/**/*",
+				"{workspaceRoot}/logs/tsdoc-coverage/**/*"
 			],
 			"options": {
 				"command": "vite build",

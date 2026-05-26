@@ -35,6 +35,13 @@
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
       }
     },
+    "docs-coverage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/tsdoc-coverage.mjs",
+        "cwd": "{workspaceRoot}"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
