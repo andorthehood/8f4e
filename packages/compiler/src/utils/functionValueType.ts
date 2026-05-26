@@ -94,11 +94,11 @@ export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: Fu
 	}
 
 	if (type === 'float') {
-		return stackItem.valueType !== 'int' && stackItem.valueType !== 'float64';
+		return stackItem.valueType === 'float';
 	}
 
 	if (type === 'float64') {
-		return stackItem.valueType !== 'int' && stackItem.valueType === 'float64';
+		return stackItem.valueType === 'float64';
 	}
 
 	if (stackItem.valueType !== 'int') {
