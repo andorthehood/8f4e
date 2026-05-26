@@ -1,8 +1,8 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import type { CodegenContext, CompilationContext, InternalResource } from '@8f4e/compiler-spec';
 
-type InternalResourceType = 'int' | 'float' | 'float64';
+type InternalResourceType = InternalResource['storageType'];
 
 type InternalResourceContext = CodegenContext | CompilationContext;
 
@@ -22,8 +22,8 @@ export function allocateInternalResource(
 		return existing;
 	}
 
-	const elementWordSize = type === 'float64' ? 8 : 4;
-	const wordAlignedSize = type === 'float64' ? 2 : 1;
+	const elementWordSize = BASE_TYPE_METADATA[type].wordSize;
+	const wordAlignedSize = elementWordSize / GLOBAL_ALIGNMENT_BOUNDARY;
 	const byteAddress = context.internalAllocator.nextByteAddress;
 	// Compiler-generated state is intentionally kept in default memory 0, even inside #region modules.
 	const resource: InternalResource = {

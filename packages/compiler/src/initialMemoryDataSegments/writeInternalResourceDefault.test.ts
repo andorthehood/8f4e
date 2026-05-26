@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 
 import writeInternalResourceDefault from './writeInternalResourceDefault';
 
@@ -11,7 +12,7 @@ function createResource(
 		id: 'resource',
 		wordAlignedAddress: 0,
 		wordAlignedSize: 1,
-		elementWordSize: overrides.storageType === 'float64' ? 8 : 4,
+		elementWordSize: BASE_TYPE_METADATA[overrides.storageType].wordSize,
 		...overrides,
 	};
 }
