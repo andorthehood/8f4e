@@ -1,6 +1,6 @@
 ---
 title: Agent Failure Note - Hidden metadata helper to avoid snapshot updates
-agent: Codex App
+agent: Codex App Version 26.519.41501 (3044)
 model: GPT-5.5 (high)
 date: 2026-05-25
 ---
