@@ -13,7 +13,7 @@ import {
 	type FunctionAST,
 	type ModuleAST,
 	type Namespaces,
-	type NamespacePrepassContext,
+	type NamespaceBuildContext,
 	type ParsedSemanticInstructionLine,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
@@ -35,8 +35,6 @@ import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
-
-type NamespacePrepassMode = 'full' | 'namespace-discovery';
 
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
@@ -90,16 +88,15 @@ export function applySemanticLine(line: CompilerASTLine, context: CompilationCon
 	applySemanticInstruction(normalizeCompileTimeArguments(line as ParsedSemanticInstructionLine, context), context);
 }
 
-export function prepassNamespace(
+function createNamespaceBuildContext(
 	ast: ModuleAST | ConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {},
-	mode: NamespacePrepassMode = 'full'
-): NamespacePrepassContext {
+	options: Pick<CompileOptions, 'memoryRegions'> = {}
+): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
-	const context = createCompilationContext<NamespacePrepassContext>({
+	return createCompilationContext<NamespaceBuildContext>({
 		namespace: {
 			namespaces,
 			memory: {},
@@ -123,23 +120,26 @@ export function prepassNamespace(
 		mode: moduleBlock.type,
 		codeBlockType: ast.type,
 	});
+}
 
+function applyNamespaceDeclarationLines(
+	ast: ModuleAST | ConstantsAST,
+	context: NamespaceBuildContext,
+	resolveDeclarationLine: (line: CompilerASTLine) => CompilerASTLine
+): void {
 	ast.lines.forEach(originalLine => {
 		if (originalLine.isSemanticOnly) {
 			applySemanticLine(originalLine, context);
 		} else if (originalLine.isMemoryDeclaration) {
-			const declarationLine =
-				mode === 'namespace-discovery' ? toNamespaceDiscoveryMemoryDeclarationLine(originalLine) : originalLine;
+			const declarationLine = resolveDeclarationLine(originalLine);
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		}
 	});
 
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
+}
 
-	if (mode === 'namespace-discovery') {
-		return context;
-	}
-
+function resolveScalarMemoryDefaults(ast: ModuleAST | ConstantsAST, context: NamespaceBuildContext): void {
 	ast.lines.forEach(originalLine => {
 		if (!originalLine.isMemoryDeclaration || originalLine.instruction.endsWith('[]')) {
 			return;
@@ -154,6 +154,31 @@ export function prepassNamespace(
 
 		memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
 	});
+}
+
+function discoverNamespace(
+	ast: ModuleAST | ConstantsAST,
+	namespaces: Namespaces,
+	startingByteAddress = 0,
+	functions?: FunctionMetadataLookup,
+	options: Pick<CompileOptions, 'memoryRegions'> = {}
+): NamespaceBuildContext {
+	const context = createNamespaceBuildContext(ast, namespaces, startingByteAddress, functions, options);
+	applyNamespaceDeclarationLines(ast, context, toNamespaceDiscoveryMemoryDeclarationLine);
+
+	return context;
+}
+
+export function layoutNamespace(
+	ast: ModuleAST | ConstantsAST,
+	namespaces: Namespaces,
+	startingByteAddress = 0,
+	functions?: FunctionMetadataLookup,
+	options: Pick<CompileOptions, 'memoryRegions'> = {}
+): NamespaceBuildContext {
+	const context = createNamespaceBuildContext(ast, namespaces, startingByteAddress, functions, options);
+	applyNamespaceDeclarationLines(ast, context, line => line);
+	resolveScalarMemoryDefaults(ast, context);
 
 	return context;
 }
@@ -251,14 +276,7 @@ export function collectNamespacesFromASTs(
 
 		for (const ast of pendingAsts) {
 			try {
-				const context = prepassNamespace(
-					ast,
-					namespaces,
-					startingByteAddress,
-					compiledFunctions,
-					options,
-					'namespace-discovery'
-				);
+				const context = discoverNamespace(ast, namespaces, startingByteAddress, compiledFunctions, options);
 				if (!context.namespace.moduleName) {
 					continue;
 				}
@@ -290,7 +308,7 @@ export function collectNamespacesFromASTs(
 	}
 
 	if (pendingAsts.length > 0) {
-		prepassNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options);
+		layoutNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options);
 	}
 
 	const nextStartingByteAddressByMemoryIndex: Record<number, number> = {
@@ -299,7 +317,7 @@ export function collectNamespacesFromASTs(
 	for (const ast of layoutAsts) {
 		const region = getModuleRegionFromAst(ast, options);
 		const nextStartingByteAddress = nextStartingByteAddressByMemoryIndex[region.memoryIndex] ?? startingByteAddress;
-		const context = prepassNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions, options);
+		const context = layoutNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions, options);
 		if (!context.namespace.moduleName) {
 			continue;
 		}
