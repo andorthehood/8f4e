@@ -7,7 +7,7 @@ import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAdd
 import normalizeClampAddress from '../semantic/normalization/clampAddress';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST, MemoryAddressRange } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, MemoryAddressRange } from '@8f4e/compiler-spec';
 
 const range: MemoryAddressRange = {
 	source: 'memory-start',
@@ -27,7 +27,7 @@ function createLine(
 		instruction,
 		arguments:
 			accessByteWidth === undefined ? [] : [{ type: ArgumentType.LITERAL, value: accessByteWidth, isInteger: true }],
-	} as AST[number];
+	} as CompilerASTLine;
 }
 
 describe('clamp address instruction compilers', () => {

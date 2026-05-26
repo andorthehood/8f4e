@@ -4,7 +4,7 @@ import risingEdge from './risingEdge';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('risingEdge instruction compiler', () => {
 	it('compiles the rising edge segment', () => {
@@ -18,7 +18,7 @@ describe('risingEdge instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 4,
 				instruction: 'risingEdge',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -41,7 +41,7 @@ describe('risingEdge instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 4,
 				instruction: 'risingEdge',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

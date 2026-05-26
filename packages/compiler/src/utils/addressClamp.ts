@@ -2,11 +2,17 @@ import { ArgumentType, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 
-import type { AST, CodegenContext, CompilationContext, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
+import type {
+	CompilerASTLine,
+	CodegenContext,
+	CompilationContext,
+	MemoryAddressRange,
+	StackItem,
+} from '@8f4e/compiler-spec';
 
 const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
 
-export function getClampAccessByteWidth(line: AST[number]): number {
+export function getClampAccessByteWidth(line: CompilerASTLine): number {
 	const argument = line.arguments[0];
 	return argument?.type === ArgumentType.LITERAL ? argument.value : DEFAULT_ACCESS_BYTE_WIDTH;
 }

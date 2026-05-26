@@ -4,7 +4,7 @@ import notEqual from './notEqual';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('notEqual instruction compiler', () => {
 	it('emits I32_NE for integer operands', () => {
@@ -18,7 +18,7 @@ describe('notEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'notEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -39,7 +39,7 @@ describe('notEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'notEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -63,7 +63,7 @@ describe('notEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'notEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

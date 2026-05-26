@@ -4,7 +4,7 @@ import round from './round';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('round instruction compiler', () => {
 	it('rounds a float operand', () => {
@@ -18,7 +18,7 @@ describe('round instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'round',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

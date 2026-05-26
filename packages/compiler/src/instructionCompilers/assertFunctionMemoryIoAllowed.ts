@@ -2,10 +2,10 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
-import type { AST, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
 
 export default function assertFunctionMemoryIoAllowed(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CodegenContext | CompilationContext
 ): void {
 	if (context.mode === 'function' && !context.currentFunctionIsImpure) {

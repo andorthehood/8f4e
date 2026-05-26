@@ -1,7 +1,7 @@
 import {
 	ArgumentType,
 	type ReferenceKind,
-	type AST,
+	type CompilerASTLine,
 	type Argument,
 	type ArgumentIdentifier,
 	type CompilationContext,
@@ -40,7 +40,7 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
  */
 export function validateIntermoduleAddressReference(
 	identifier: ArgumentIdentifier,
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext
 ): void {
 	// Only validate if we're post-prepass (namespaces collected)
@@ -125,7 +125,7 @@ export function normalizeArgument(
  */
 export function validateOrDeferCompileTimeExpression(
 	argument: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>,
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext
 ): boolean {
 	if (!hasCollectedNamespaces(context) && argument.intermoduleIds.length > 0) {
@@ -150,7 +150,7 @@ export function validateOrDeferCompileTimeExpression(
  */
 export function validateOrDeferUnresolvedIdentifier(
 	argument: Extract<Argument, { type: typeof ArgumentType.IDENTIFIER }>,
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext
 ): boolean {
 	if (!hasCollectedNamespaces(context) && isIntermoduleReferenceKind(argument.referenceKind)) {
@@ -168,7 +168,7 @@ export function validateOrDeferUnresolvedIdentifier(
  * are responsible for invoking validateOrDefer* helpers when that behavior
  * is required.
  */
-export function normalizeArgumentsAtIndexes<TLine extends AST[number]>(
+export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
 	line: TLine,
 	context: CompilationContext,
 	indexes: number[]
@@ -193,7 +193,7 @@ export function normalizeArgumentsAtIndexes<TLine extends AST[number]>(
  * Normalizes arguments at the given indexes, then validates any remaining unresolved
  * compile-time expressions or identifiers as either deferrable prepass references or errors.
  */
-export function normalizeAndValidateResolvableArgs<TLine extends AST[number]>(
+export function normalizeAndValidateResolvableArgs<TLine extends CompilerASTLine>(
 	line: TLine,
 	context: CompilationContext,
 	indexes: number[]

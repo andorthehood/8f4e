@@ -9,7 +9,13 @@ import compile from '../src';
 
 describe('compiler', () => {
 	test('compileModules', () => {
-		const astModules = modules.map(({ code }) => compileToAST(code));
+		const astModules = modules.map(({ code }) => {
+			const ast = compileToAST(code);
+			if (ast.type === 'function') {
+				throw new Error('Expected module AST.');
+			}
+			return ast;
+		});
 		expect(
 			compileModules(astModules, {
 				startingMemoryWordAddress: 0,
@@ -51,7 +57,7 @@ describe('compiler', () => {
 		// Verify that all compiled modules have an ast property
 		for (const [, module] of Object.entries(result.compiledModules)) {
 			expect(module.ast).toBeDefined();
-			expect(Array.isArray(module.ast)).toBe(true);
+			expect(module.ast?.lines).toBeDefined();
 		}
 	});
 

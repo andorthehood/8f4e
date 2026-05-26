@@ -7,6 +7,9 @@ import { compileModules } from '../../src';
 
 async function instantiate(sourceCode: string) {
 	const ast = compileToAST(sourceCode.split('\n'));
+	if (ast.type === 'function') {
+		throw new Error('Expected module AST.');
+	}
 	const mod = compileModules([ast], { startingMemoryWordAddress: 0 })[0];
 	const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 	const memory = new WebAssembly.Memory({ initial: 1 });

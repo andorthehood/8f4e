@@ -7,7 +7,7 @@ import storeBytes from './storeBytes';
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('storeBytes instruction compiler', () => {
 	it('throws INSUFFICIENT_OPERANDS when stack has fewer than count+1 items', () => {
@@ -19,7 +19,7 @@ describe('storeBytes instruction compiler', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'storeBytes',
 			arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-		} as AST[number];
+		} as CompilerASTLine;
 
 		expect(() => {
 			validateInstruction(line, context);
@@ -49,7 +49,7 @@ describe('storeBytes instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -78,7 +78,7 @@ describe('storeBytes instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -106,7 +106,7 @@ describe('storeBytes instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -131,7 +131,7 @@ describe('storeBytes instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

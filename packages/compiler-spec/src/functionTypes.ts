@@ -18,3 +18,9 @@ export const FUNCTION_TYPE_IDENTIFIERS = [...SCALAR_TYPE_IDENTIFIERS, ...POINTER
 export type ScalarTypeIdentifier = (typeof SCALAR_TYPE_IDENTIFIERS)[number];
 export type PointerFunctionTypeIdentifier = (typeof POINTER_FUNCTION_TYPE_IDENTIFIERS)[number];
 export type FunctionTypeIdentifier = (typeof FUNCTION_TYPE_IDENTIFIERS)[number];
+export type FunctionValueType = FunctionTypeIdentifier;
+
+export interface FunctionSignature {
+	parameters: FunctionValueType[];
+	returns: FunctionValueType[];
+}

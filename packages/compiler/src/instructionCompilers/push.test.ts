@@ -5,28 +5,28 @@ import push from './push';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST, MemoryMap } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, MemoryMap } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
-function resolvedMemoryPushLine(id: string, memoryItem: MemoryMap[string]): AST[number] {
+function resolvedMemoryPushLine(id: string, memoryItem: MemoryMap[string]): CompilerASTLine {
 	return {
 		lineNumberBeforeMacroExpansion: 1,
 		lineNumberAfterMacroExpansion: 1,
 		instruction: 'push',
 		arguments: [classifyIdentifier(id)],
 		resolvedTarget: { kind: 'memory', memoryItem },
-	} as AST[number];
+	} as CompilerASTLine;
 }
 
-function resolvedMemoryPointerPushLine(id: string, memoryItem: MemoryMap[string]): AST[number] {
+function resolvedMemoryPointerPushLine(id: string, memoryItem: MemoryMap[string]): CompilerASTLine {
 	return {
 		lineNumberBeforeMacroExpansion: 1,
 		lineNumberAfterMacroExpansion: 1,
 		instruction: 'push',
 		arguments: [classifyIdentifier(`*${id}`)],
 		resolvedTarget: { kind: 'memory-pointer', memoryItem },
-	} as AST[number];
+	} as CompilerASTLine;
 }
 
 describe('push instruction compiler', () => {
@@ -40,7 +40,7 @@ describe('push instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 5, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -60,7 +60,7 @@ describe('push instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 42, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -94,7 +94,7 @@ describe('push instruction compiler', () => {
 						},
 					},
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -122,7 +122,7 @@ describe('push instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.STRING_LITERAL, value: 'hi' }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -149,7 +149,7 @@ describe('push instruction compiler', () => {
 						isFloat64: true,
 					},
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -176,7 +176,7 @@ describe('push instruction compiler', () => {
 						isFloat64: true,
 					},
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -201,7 +201,7 @@ describe('push instruction compiler', () => {
 						isFloat64: true,
 					},
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -228,7 +228,7 @@ describe('push instruction compiler', () => {
 						isFloat64: true,
 					},
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -246,7 +246,7 @@ describe('push instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 3.14, isInteger: false }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
