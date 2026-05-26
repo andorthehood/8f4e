@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Preserving compatibility after no-compatibility instruction
-agent: Codex App
-model: GPT-5
+agent: Codex App Version 26.519.41501 (3044)
+model: GPT-5.5 (high)
 date: 2026-05-26
 ---
 
