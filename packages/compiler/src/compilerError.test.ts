@@ -25,7 +25,6 @@ describe('getError', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'use',
 			arguments: [],
-			isSemanticOnly: true,
 		} as CompilerASTLine;
 
 		const error = getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
@@ -39,7 +38,6 @@ describe('getError', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'module',
 			arguments: [classifyIdentifier('same')],
-			isSemanticOnly: true,
 		} as CompilerASTLine;
 
 		const error = getError(ErrorCode.DUPLICATE_IDENTIFIER, line, undefined, { identifier: 'same' });

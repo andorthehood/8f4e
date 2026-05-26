@@ -3,9 +3,7 @@
     "lineNumberBeforeMacroExpansion": 0,
     "lineNumberAfterMacroExpansion": 0,
     "instruction": "8f4e/v1",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 2,
@@ -18,17 +16,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 8,
     "lineNumberAfterMacroExpansion": 8,
     "instruction": "moduleEnd",
-    "arguments": [],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 10,
@@ -41,17 +35,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 18,
     "lineNumberAfterMacroExpansion": 18,
     "instruction": "moduleEnd",
-    "arguments": [],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 20,
@@ -64,9 +54,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 24,
@@ -80,8 +68,6 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false,
     "referencedNamespaceIds": [
       "env"
     ]
@@ -107,8 +93,6 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": true,
     "referencedNamespaceIds": [
       "phaseAccumulator"
     ],
@@ -135,8 +119,6 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": true,
     "hasExplicitMemoryDefault": false
   },
   {
@@ -159,8 +141,6 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": true,
     "hasExplicitMemoryDefault": true
   },
   {
@@ -174,9 +154,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 37,
@@ -190,17 +168,13 @@
         "scope": "local",
         "targetMemoryId": "in"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 38,
     "lineNumberAfterMacroExpansion": 38,
     "instruction": "store",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 43,
@@ -215,9 +189,7 @@
         "targetMemoryId": "pointer",
         "isEndAddress": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 44,
@@ -230,9 +202,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 45,
@@ -246,25 +216,19 @@
         "scope": "local",
         "targetMemoryId": "buffer"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 46,
     "lineNumberAfterMacroExpansion": 46,
     "instruction": "add",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 47,
     "lineNumberAfterMacroExpansion": 47,
     "instruction": "store",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 52,
@@ -277,9 +241,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 53,
@@ -294,25 +256,19 @@
         "targetMemoryId": "buffer",
         "isEndAddress": true
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 54,
     "lineNumberAfterMacroExpansion": 54,
     "instruction": "greaterThan",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 55,
     "lineNumberAfterMacroExpansion": 55,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifBlock": {
       "matchingIfEndIndex": 25,
       "resultType": null,
@@ -332,9 +288,7 @@
         "targetMemoryId": "pointer",
         "isEndAddress": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 57,
@@ -349,25 +303,19 @@
         "targetMemoryId": "buffer",
         "isEndAddress": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 58,
     "lineNumberAfterMacroExpansion": 58,
     "instruction": "store",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 59,
     "lineNumberAfterMacroExpansion": 59,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifEndBlock": {
       "matchingIfIndex": 21,
       "resultType": null
@@ -377,9 +325,7 @@
     "lineNumberBeforeMacroExpansion": 61,
     "lineNumberAfterMacroExpansion": 61,
     "instruction": "moduleEnd",
-    "arguments": [],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 63,
@@ -392,9 +338,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 70,
@@ -412,9 +356,7 @@
         "type": "literal",
         "isInteger": true
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 71,
@@ -432,17 +374,13 @@
         "type": "literal",
         "isInteger": true
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 73,
     "lineNumberAfterMacroExpansion": 73,
     "instruction": "constantsEnd",
-    "arguments": [],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 75,
@@ -455,9 +393,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 78,
@@ -475,9 +411,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 79,
@@ -495,9 +429,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 80,
@@ -515,9 +447,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 81,
@@ -535,9 +465,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 82,
@@ -555,9 +483,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 83,
@@ -575,9 +501,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 84,
@@ -595,9 +519,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 85,
@@ -615,9 +537,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 86,
@@ -635,9 +555,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 87,
@@ -655,9 +573,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 88,
@@ -675,9 +591,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 89,
@@ -695,9 +609,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 90,
@@ -715,9 +627,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 91,
@@ -735,9 +645,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 92,
@@ -755,9 +663,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 93,
@@ -775,17 +681,13 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 95,
     "lineNumberAfterMacroExpansion": 95,
     "instruction": "constantsEnd",
-    "arguments": [],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 97,
@@ -798,9 +700,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 99,
@@ -814,8 +714,6 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false,
     "referencedNamespaceIds": [
       "env"
     ]
@@ -837,8 +735,6 @@
         "isInteger": true
       }
     ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": true,
     "hasExplicitMemoryDefault": true
   },
   {
@@ -861,8 +757,6 @@
         "isEndAddress": false
       }
     ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": true,
     "hasExplicitMemoryDefault": true
   },
   {
@@ -877,8 +771,6 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": true,
     "hasExplicitMemoryDefault": false
   },
   {
@@ -893,8 +785,6 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": true,
     "hasExplicitMemoryDefault": false
   },
   {
@@ -909,8 +799,6 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false,
     "referencedNamespaceIds": [
       "math"
     ]
@@ -928,9 +816,7 @@
         "targetMemoryId": "phase",
         "isEndAddress": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 111,
@@ -943,9 +829,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 112,
@@ -958,9 +842,7 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 113,
@@ -974,17 +856,13 @@
         "scope": "local",
         "targetMemoryId": "frequency"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 114,
     "lineNumberAfterMacroExpansion": 114,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 115,
@@ -997,49 +875,37 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 116,
     "lineNumberAfterMacroExpansion": 116,
     "instruction": "castToFloat",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 117,
     "lineNumberAfterMacroExpansion": 117,
     "instruction": "ensureNonZero",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 118,
     "lineNumberAfterMacroExpansion": 118,
     "instruction": "div",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 119,
     "lineNumberAfterMacroExpansion": 119,
     "instruction": "add",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 120,
     "lineNumberAfterMacroExpansion": 120,
     "instruction": "store",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 123,
@@ -1052,9 +918,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 124,
@@ -1067,25 +931,19 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 125,
     "lineNumberAfterMacroExpansion": 125,
     "instruction": "greaterThan",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 126,
     "lineNumberAfterMacroExpansion": 126,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifBlock": {
       "matchingIfEndIndex": 74,
       "resultType": null,
@@ -1105,9 +963,7 @@
         "targetMemoryId": "phase",
         "isEndAddress": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 128,
@@ -1120,25 +976,19 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 129,
     "lineNumberAfterMacroExpansion": 129,
     "instruction": "store",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 130,
     "lineNumberAfterMacroExpansion": 130,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifEndBlock": {
       "matchingIfIndex": 70,
       "resultType": null
@@ -1157,9 +1007,7 @@
         "targetMemoryId": "out",
         "isEndAddress": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 133,
@@ -1172,9 +1020,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 136,
@@ -1187,25 +1033,19 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 137,
     "lineNumberAfterMacroExpansion": 137,
     "instruction": "store",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 139,
     "lineNumberAfterMacroExpansion": 139,
     "instruction": "moduleEnd",
-    "arguments": [],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 141,
@@ -1218,9 +1058,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 148,
@@ -1239,9 +1077,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 150,
@@ -1255,8 +1091,6 @@
         "scope": "local"
       }
     ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false,
     "referencedNamespaceIds": [
       "math"
     ]
@@ -1272,9 +1106,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 154,
@@ -1287,25 +1119,19 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 155,
     "lineNumberAfterMacroExpansion": 155,
     "instruction": "greaterThan",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 156,
     "lineNumberAfterMacroExpansion": 156,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifBlock": {
       "matchingIfEndIndex": 91,
       "resultType": null,
@@ -1323,9 +1149,7 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 158,
@@ -1338,17 +1162,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 159,
     "lineNumberAfterMacroExpansion": 159,
     "instruction": "sub",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 160,
@@ -1361,17 +1181,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 161,
     "lineNumberAfterMacroExpansion": 161,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifEndBlock": {
       "matchingIfIndex": 86,
       "resultType": null
@@ -1388,9 +1204,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 164,
@@ -1403,9 +1217,7 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 165,
@@ -1417,33 +1229,25 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 166,
     "lineNumberAfterMacroExpansion": 166,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 167,
     "lineNumberAfterMacroExpansion": 167,
     "instruction": "lessThan",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 168,
     "lineNumberAfterMacroExpansion": 168,
     "instruction": "if",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifBlock": {
       "matchingIfEndIndex": 104,
       "resultType": null,
@@ -1461,9 +1265,7 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 170,
@@ -1475,17 +1277,13 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 171,
     "lineNumberAfterMacroExpansion": 171,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 172,
@@ -1498,17 +1296,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 173,
     "lineNumberAfterMacroExpansion": 173,
     "instruction": "sub",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 174,
@@ -1521,17 +1315,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 175,
     "lineNumberAfterMacroExpansion": 175,
     "instruction": "ifEnd",
     "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false,
     "ifEndBlock": {
       "matchingIfIndex": 97,
       "resultType": null
@@ -1554,9 +1344,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 178,
@@ -1569,9 +1357,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 179,
@@ -1584,17 +1370,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 180,
     "lineNumberAfterMacroExpansion": 180,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 181,
@@ -1607,9 +1389,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 184,
@@ -1627,9 +1407,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 185,
@@ -1647,9 +1425,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 186,
@@ -1667,9 +1443,7 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": true,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 188,
@@ -1682,9 +1456,7 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 189,
@@ -1697,17 +1469,13 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 190,
     "lineNumberAfterMacroExpansion": 190,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 191,
@@ -1720,17 +1488,13 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 192,
     "lineNumberAfterMacroExpansion": 192,
     "instruction": "add",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 193,
@@ -1743,17 +1507,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 194,
     "lineNumberAfterMacroExpansion": 194,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 195,
@@ -1766,17 +1526,13 @@
         "referenceKind": "constant",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 196,
     "lineNumberAfterMacroExpansion": 196,
     "instruction": "add",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 197,
@@ -1789,17 +1545,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 198,
     "lineNumberAfterMacroExpansion": 198,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 199,
@@ -1811,17 +1563,13 @@
         "type": "literal",
         "isInteger": false
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 200,
     "lineNumberAfterMacroExpansion": 200,
     "instruction": "add",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 201,
@@ -1834,17 +1582,13 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   },
   {
     "lineNumberBeforeMacroExpansion": 202,
     "lineNumberAfterMacroExpansion": 202,
     "instruction": "mul",
-    "arguments": [],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 204,
@@ -1857,8 +1601,6 @@
         "referenceKind": "plain",
         "scope": "local"
       }
-    ],
-    "isSemanticOnly": false,
-    "isMemoryDeclaration": false
+    ]
   }
 ]

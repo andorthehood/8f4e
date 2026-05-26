@@ -1,4 +1,4 @@
-import { ArgumentType } from '@8f4e/compiler-spec';
+import { ArgumentType, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
 import { parseLine } from '@8f4e/tokenizer';
 
 export interface MeterDirectiveData {
@@ -13,7 +13,7 @@ function inferMeterIdFromSourceLine(sourceLine: string, lineNumber: number): str
 		const parsedLine = parseLine(sourceLine, lineNumber);
 		const [firstArg] = parsedLine.arguments;
 
-		if (!parsedLine.isMemoryDeclaration) {
+		if (!isMemoryDeclarationLine(parsedLine)) {
 			return undefined;
 		}
 
