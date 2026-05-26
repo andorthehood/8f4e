@@ -5,7 +5,7 @@ import loopEnd from './loopEnd';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('loopEnd instruction compiler', () => {
 	it('ends a loop block', () => {
@@ -29,7 +29,7 @@ describe('loopEnd instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'loopEnd',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -50,7 +50,7 @@ describe('loopEnd instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'loopEnd',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

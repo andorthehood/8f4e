@@ -10,7 +10,7 @@ import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { getEndByteAddress, getModuleEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { AST, AddressMetadata, CompilationContext } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, AddressMetadata, CompilationContext } from '@8f4e/compiler-spec';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.
@@ -42,7 +42,7 @@ function combineSplitHexBytes(bytes: number[], maxBytes: number): number {
  */
 function getMemoryItemOrThrow(
 	memoryId: string,
-	lineForError: AST[number],
+	lineForError: CompilerASTLine,
 	context: CompilationContext
 ): CompilationContext['namespace']['memory'][string] {
 	const memoryItem = context.namespace.memory[memoryId];
@@ -106,7 +106,7 @@ function resolveSplitByteTokens(
 function resolveIdFromShape(
 	firstArg: MemoryArgumentShape,
 	lineNumberAfterMacroExpansion: number,
-	lineForError: AST[number],
+	lineForError: CompilerASTLine,
 	context: CompilationContext
 ): string {
 	switch (firstArg.type) {
@@ -134,7 +134,7 @@ function resolveIdFromShape(
  */
 function resolveMemoryDefaultValue(
 	arg: MemoryArgumentShape,
-	lineForError: AST[number],
+	lineForError: CompilerASTLine,
 	context: CompilationContext
 ): number {
 	switch (arg.type) {
@@ -171,7 +171,7 @@ function resolveMemoryDefaultValue(
 }
 
 function getNormalizedAddressMetadata(
-	argument: AST[number]['arguments'][number] | undefined
+	argument: CompilerASTLine['arguments'][number] | undefined
 ): AddressMetadata | undefined {
 	if (argument?.type !== ArgumentType.LITERAL || !('address' in argument)) {
 		return undefined;
@@ -181,7 +181,7 @@ function getNormalizedAddressMetadata(
 }
 
 export default function parseMemoryInstructionArguments(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext
 ): { id: string; defaultValue: number; defaultAddress?: AddressMetadata } {
 	const { arguments: args, lineNumberAfterMacroExpansion } = line;

@@ -5,7 +5,7 @@ import initOnly from './initOnly';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('initOnly instruction compiler', () => {
 	it('sets initOnlyExecution flag when in module context', () => {
@@ -27,7 +27,7 @@ describe('initOnly instruction compiler', () => {
 				instruction: '#initOnly',
 				arguments: [],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -47,7 +47,7 @@ describe('initOnly instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: '#initOnly',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrow();
@@ -72,7 +72,7 @@ describe('initOnly instruction compiler', () => {
 				instruction: '#initOnly',
 				arguments: [],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -86,7 +86,7 @@ describe('initOnly instruction compiler', () => {
 				instruction: '#initOnly',
 				arguments: [],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

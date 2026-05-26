@@ -1,8 +1,71 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`clearStack > if the generated AST, WAT and memory map match the snapshot 1`] = `
-[
-  {
+{
+  "id": "clearStack",
+  "lines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "clearStack",
+        },
+      ],
+      "instruction": "module",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": true,
+      "lineNumberAfterMacroExpansion": 0,
+      "lineNumberBeforeMacroExpansion": 0,
+    },
+    {
+      "arguments": [
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 1,
+        },
+      ],
+      "instruction": "push",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 1,
+        },
+      ],
+      "instruction": "push",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 3,
+      "lineNumberBeforeMacroExpansion": 3,
+    },
+    {
+      "arguments": [],
+      "instruction": "clearStack",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 4,
+      "lineNumberBeforeMacroExpansion": 4,
+    },
+    {
+      "arguments": [],
+      "instruction": "moduleEnd",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": true,
+      "lineNumberAfterMacroExpansion": 6,
+      "lineNumberBeforeMacroExpansion": 6,
+    },
+  ],
+  "memoryDeclarationLines": [],
+  "moduleLine": {
     "arguments": [
       {
         "referenceKind": "plain",
@@ -17,51 +80,9 @@ exports[`clearStack > if the generated AST, WAT and memory map match the snapsho
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  {
-    "arguments": [
-      {
-        "isInteger": true,
-        "type": "literal",
-        "value": 1,
-      },
-    ],
-    "instruction": "push",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
-  },
-  {
-    "arguments": [
-      {
-        "isInteger": true,
-        "type": "literal",
-        "value": 1,
-      },
-    ],
-    "instruction": "push",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 3,
-    "lineNumberBeforeMacroExpansion": 3,
-  },
-  {
-    "arguments": [],
-    "instruction": "clearStack",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 4,
-    "lineNumberBeforeMacroExpansion": 4,
-  },
-  {
-    "arguments": [],
-    "instruction": "moduleEnd",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": true,
-    "lineNumberAfterMacroExpansion": 6,
-    "lineNumberBeforeMacroExpansion": 6,
-  },
-]
+  "referencedModuleIds": [],
+  "type": "module",
+}
 `;
 
 exports[`clearStack > if the generated AST, WAT and memory map match the snapshot 2`] = `

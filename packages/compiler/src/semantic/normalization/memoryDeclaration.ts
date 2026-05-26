@@ -2,7 +2,7 @@ import {
 	ArgumentType,
 	isArrayMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
-	type AST,
+	type CompilerASTLine,
 	type CompilationContext,
 	type MemoryDeclarationLine,
 	type ScalarMemoryDeclarationLine,
@@ -19,8 +19,8 @@ import {
 import { getError } from '../../compilerError';
 
 function requireResolvedArrayValue(
-	argument: AST[number]['arguments'][number] | undefined,
-	line: AST[number],
+	argument: CompilerASTLine['arguments'][number] | undefined,
+	line: CompilerASTLine,
 	context: CompilationContext
 ) {
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {

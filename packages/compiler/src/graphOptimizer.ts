@@ -1,58 +1,24 @@
-import { ArgumentType, compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
+import { compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
 
-import { isMemoryDeclarationInstruction } from './semantic/declarations';
+import type { ConstantsAST, ModuleAST } from '@8f4e/compiler-spec';
 
-import type { AST, Argument } from '@8f4e/compiler-spec';
-
-const constantsInstruction = compilerSourceBlockInstructionByType.constants.start;
-const moduleInstruction = compilerSourceBlockInstructionByType.module.start;
-
-function getIntermodularReferenceModules(argument: Argument | undefined): string[] {
-	if (!argument) {
-		return [];
-	}
-
-	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return [...argument.intermoduleIds];
-	}
-
-	if (argument.type !== ArgumentType.IDENTIFIER) {
-		return [];
-	}
-
-	if (argument.scope === 'intermodule' && argument.targetModuleId) {
-		return [argument.targetModuleId];
-	}
-
-	return [];
-}
-
-export function getIdentifierValue(argument: Argument | undefined): string {
-	return argument?.type === ArgumentType.IDENTIFIER ? argument.value : '';
-}
+const constantsBlockType = compilerSourceBlockInstructionByType.constants.type;
 
 interface ModuleSortMetadata {
-	ast: AST;
+	ast: ModuleAST | ConstantsAST;
 	moduleId: string;
 	isConstantsBlock: boolean;
 	referencedModuleIds: string[];
 	index: number;
 }
 
-function extractIntermodularDependencies(ast: AST): string[] {
-	return ast
-		.filter(({ instruction }) => isMemoryDeclarationInstruction(instruction))
-		.flatMap(({ arguments: args }) => args.flatMap(arg => getIntermodularReferenceModules(arg)));
+function getModuleSortMetadata(ast: ModuleAST | ConstantsAST, index: number): ModuleSortMetadata {
+	const isConstantsBlock = ast.type === constantsBlockType;
+	const referencedModuleIds = ast.type === 'module' ? [...ast.referencedModuleIds] : [];
+	return { ast, moduleId: ast.id, isConstantsBlock, referencedModuleIds, index };
 }
 
-function getModuleSortMetadata(ast: AST, index: number): ModuleSortMetadata {
-	const isConstantsBlock = ast.some(line => line.instruction === constantsInstruction);
-	const moduleId = getIdentifierValue(ast.find(line => line.instruction === moduleInstruction)?.arguments[0]);
-	const referencedModuleIds = isConstantsBlock ? [] : extractIntermodularDependencies(ast);
-	return { ast, moduleId, isConstantsBlock, referencedModuleIds, index };
-}
-
-export default function sortModules(modules: AST[]): AST[] {
+export default function sortModules(modules: Array<ModuleAST | ConstantsAST>): Array<ModuleAST | ConstantsAST> {
 	const metadata = modules.map((ast, index) => getModuleSortMetadata(ast, index));
 
 	const constantsBlocks = metadata.filter(m => m.isConstantsBlock).map(m => m.ast);

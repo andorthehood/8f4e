@@ -3,7 +3,7 @@ import {
 	getInstructionSpec,
 	getInstructionStackSignature,
 	memoryDeclarationInstructions,
-	type AST,
+	type CompilerASTLine,
 	type InstructionSpec,
 } from '@8f4e/compiler-spec';
 
@@ -52,7 +52,7 @@ export function getMemoryDeclarationIdFromSourceLine(line: string | undefined): 
 /**
  * Builds the synthetic line data needed by variadic stack signature formatters.
  */
-function getStackSignatureLineFromSourceLine(line: string, instruction: string): AST[number] | undefined {
+function getStackSignatureLineFromSourceLine(line: string, instruction: string): CompilerASTLine | undefined {
 	if (instruction !== 'storeBytes') {
 		return undefined;
 	}

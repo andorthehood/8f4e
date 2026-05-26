@@ -5,7 +5,7 @@ import mapEnd from './mapEnd';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -41,7 +41,7 @@ describe('mapEnd instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapEnd',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();
@@ -59,7 +59,7 @@ describe('mapEnd instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'mapEnd',
 					arguments: [classifyIdentifier('int')],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();
@@ -95,7 +95,7 @@ describe('mapEnd instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mapEnd',
 				arguments: [classifyIdentifier('int')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

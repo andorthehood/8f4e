@@ -4,7 +4,7 @@ import _function from './function';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -19,7 +19,7 @@ describe('function instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'function',
 				arguments: [classifyIdentifier('doThing')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -43,7 +43,7 @@ describe('function instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'function',
 					arguments: [classifyIdentifier('nested')],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

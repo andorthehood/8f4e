@@ -4,7 +4,7 @@ import notZero from './notZero';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('notZero instruction compiler', () => {
 	it('emits I32_NE against zero for integer operands', () => {
@@ -18,7 +18,7 @@ describe('notZero instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'notZero',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -39,7 +39,7 @@ describe('notZero instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'notZero',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -60,7 +60,7 @@ describe('notZero instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'notZero',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

@@ -7,6 +7,14 @@ import { compileModules } from '../../src';
 
 import type { CompiledModule } from '../../src/types';
 
+function compileModuleAst(sourceCode: string) {
+	const ast = compileToAST(sourceCode.split('\n'));
+	if (ast.type === 'function') {
+		throw new Error('Expected module AST.');
+	}
+	return ast;
+}
+
 describe('store instruction (float64)', () => {
 	let testModule: CompiledModule;
 	let dataView: DataView;
@@ -25,7 +33,7 @@ moduleEnd
 `;
 
 	beforeAll(async () => {
-		const ast = compileToAST(sourceCode.split('\n'));
+		const ast = compileModuleAst(sourceCode);
 		testModule = compileModules([ast], {
 			startingMemoryWordAddress: 0,
 			includeAST: true,
@@ -68,15 +76,13 @@ moduleEnd
 
 describe('store instruction (int32 and float32 paths unchanged)', () => {
 	test('int32 store still uses i32.store (opcode 54)', async () => {
-		const ast = compileToAST(
-			`module storeInt
+		const ast = compileModuleAst(`module storeInt
 int dest
 int src
 push &dest
 push src
 store
-moduleEnd`.split('\n')
-		);
+moduleEnd`);
 		const mod = compileModules([ast], { startingMemoryWordAddress: 0 })[0];
 		const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 
@@ -91,15 +97,13 @@ moduleEnd`.split('\n')
 	});
 
 	test('float32 store still uses f32.store (opcode 56)', async () => {
-		const ast = compileToAST(
-			`module storeFloat
+		const ast = compileModuleAst(`module storeFloat
 float dest
 float src
 push &dest
 push src
 store
-moduleEnd`.split('\n')
-		);
+moduleEnd`);
 		const mod = compileModules([ast], { startingMemoryWordAddress: 0 })[0];
 		const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 

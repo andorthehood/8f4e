@@ -4,7 +4,7 @@ import mapBegin from './mapBegin';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -19,7 +19,7 @@ describe('mapBegin instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('int')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -38,7 +38,7 @@ describe('mapBegin instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('float')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -57,7 +57,7 @@ describe('mapBegin instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('float64')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

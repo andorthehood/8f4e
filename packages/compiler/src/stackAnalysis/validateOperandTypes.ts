@@ -5,12 +5,12 @@ import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 import { getError } from '../compilerError';
 import { areAllOperandsFloats, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 
-import type { AST, CompilationContext, OperandRule, StackItem } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilationContext, OperandRule, StackItem } from '@8f4e/compiler-spec';
 
 export function validateOperandTypes(
 	operands: StackItem[],
 	rule: OperandRule | OperandRule[],
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CompilationContext
 ): void {
 	const errorCode = inferErrorCodeFromRule(rule);

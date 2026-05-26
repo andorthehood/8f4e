@@ -7,10 +7,10 @@ import {
 } from './utils/addressClamp';
 import { saveByteCode } from './utils/saveByteCode';
 
-import type { AST, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
 
 function clampToRange(
-	line: AST[number],
+	line: CompilerASTLine,
 	context: Parameters<InstructionCompiler>[1],
 	operand: StackItem,
 	range: MemoryAddressRange

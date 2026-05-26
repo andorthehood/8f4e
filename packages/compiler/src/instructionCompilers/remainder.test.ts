@@ -4,7 +4,7 @@ import remainder from './remainder';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('remainder instruction compiler', () => {
 	it('emits I32_REM_S for integer operands', () => {
@@ -18,7 +18,7 @@ describe('remainder instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'remainder',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -40,7 +40,7 @@ describe('remainder instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'remainder',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();
@@ -60,7 +60,7 @@ describe('remainder instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'remainder',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

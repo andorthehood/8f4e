@@ -36,6 +36,9 @@ moduleEnd`.split('\n');
 
 describe('moduleCompiler', () => {
 	const ast = compileToAST(fixture);
+	if (ast.type === 'function') {
+		throw new Error('Expected module AST.');
+	}
 
 	test('ast', () => {
 		expect(ast).toMatchSnapshot();

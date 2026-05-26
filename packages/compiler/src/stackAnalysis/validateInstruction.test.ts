@@ -5,16 +5,16 @@ import { validateInstruction } from './validateInstruction';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
-const pushLine: AST[number] = {
+const pushLine: CompilerASTLine = {
 	lineNumberBeforeMacroExpansion: 1,
 	lineNumberAfterMacroExpansion: 1,
 	instruction: 'push',
 	arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
 };
 
-const mapLine: AST[number] = {
+const mapLine: CompilerASTLine = {
 	lineNumberBeforeMacroExpansion: 1,
 	lineNumberAfterMacroExpansion: 1,
 	instruction: 'map',

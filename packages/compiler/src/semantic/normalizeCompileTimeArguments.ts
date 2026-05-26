@@ -1,8 +1,8 @@
 import dispatchNormalization from './normalization';
 
-import type { AST, CompilationContext, NormalizedLine } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilationContext, NormalizedLine } from '@8f4e/compiler-spec';
 
-export default function normalizeCompileTimeArguments<TLine extends AST[number]>(
+export default function normalizeCompileTimeArguments<TLine extends CompilerASTLine>(
 	line: TLine,
 	context: CompilationContext
 ): NormalizedLine<TLine> {

@@ -5,7 +5,7 @@ import loop from './loop';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('loop instruction compiler', () => {
 	it('compiles the loop segment with default cap', () => {
@@ -18,7 +18,7 @@ describe('loop instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'loop',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -40,7 +40,7 @@ describe('loop instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'loop',
 				arguments: [{ type: ArgumentType.LITERAL, value: 32, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -63,7 +63,7 @@ describe('loop instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'loop',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -86,7 +86,7 @@ describe('loop instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'loop',
 				arguments: [{ type: ArgumentType.LITERAL, value: 10, isInteger: true }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

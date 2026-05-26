@@ -5,7 +5,7 @@ import lessOrEqual from './lessOrEqual';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('lessOrEqual instruction compiler', () => {
 	it('emits I32_LE_S for integer operands', () => {
@@ -19,7 +19,7 @@ describe('lessOrEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'lessOrEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -40,7 +40,7 @@ describe('lessOrEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'lessOrEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -64,7 +64,7 @@ describe('lessOrEqual instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'lessOrEqual',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

@@ -7,7 +7,7 @@ import loopIndex from './loopIndex';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('loopIndex instruction compiler', () => {
 	it('reads the nearest active loop counter as a zero-based index', () => {
@@ -39,7 +39,7 @@ describe('loopIndex instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 10,
 				instruction: 'loopIndex',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -85,7 +85,7 @@ describe('loopIndex instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 10,
 				instruction: 'loopIndex',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -103,7 +103,7 @@ describe('loopIndex instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 10,
 					instruction: 'loopIndex',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		} catch (error) {

@@ -48,12 +48,24 @@ describe('AST optional output feature manual verification', () => {
 
 		const firstModule = Object.values(result.compiledModules)[0];
 		expect(firstModule).toHaveProperty('ast');
-		expect(firstModule.ast).toBeDefined();
-		expect(Array.isArray(firstModule.ast)).toBe(true);
-		expect(firstModule.ast!.length).toBeGreaterThan(0);
+		if (!firstModule.ast) {
+			throw new Error('Expected includeAST: true to include compiled module AST.');
+		}
+		expect(firstModule.ast.type).toBe('module');
+		expect(firstModule.ast.lines.length).toBeGreaterThan(0);
 
 		// Check that the first instruction is the module declaration
-		expect(firstModule.ast![0].instruction).toBe('module');
-		expect(firstModule.ast![0].arguments[0].value).toBe('test');
+		expect(firstModule.ast.lines[0].instruction).toBe('module');
+		expect(firstModule.ast.id).toBe('test');
+		expect(
+			firstModule.ast.lines.find(
+				line =>
+					line.instruction === 'push' &&
+					line.arguments[0]?.type === 'identifier' &&
+					line.arguments[0].value === '&out' &&
+					line.arguments[0].referenceKind === 'memory-reference' &&
+					line.arguments[0].targetMemoryId === 'out'
+			)
+		).toBeDefined();
 	});
 });

@@ -1,8 +1,150 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot 1`] = `
-[
-  {
+{
+  "id": "loadFloat",
+  "lines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "loadFloat",
+        },
+      ],
+      "instruction": "module",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": true,
+      "lineNumberAfterMacroExpansion": 0,
+      "lineNumberBeforeMacroExpansion": 0,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "input",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float",
+      "isMemoryDeclaration": true,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float",
+      "isMemoryDeclaration": true,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
+        },
+      ],
+      "instruction": "push",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 4,
+      "lineNumberBeforeMacroExpansion": 4,
+    },
+    {
+      "arguments": [
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "input",
+          "type": "identifier",
+          "value": "&input",
+        },
+      ],
+      "instruction": "push",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 5,
+      "lineNumberBeforeMacroExpansion": 5,
+    },
+    {
+      "arguments": [],
+      "instruction": "loadFloat",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 6,
+      "lineNumberBeforeMacroExpansion": 6,
+    },
+    {
+      "arguments": [],
+      "instruction": "store",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 7,
+      "lineNumberBeforeMacroExpansion": 7,
+    },
+    {
+      "arguments": [],
+      "instruction": "moduleEnd",
+      "isMemoryDeclaration": false,
+      "isSemanticOnly": true,
+      "lineNumberAfterMacroExpansion": 9,
+      "lineNumberBeforeMacroExpansion": 9,
+    },
+  ],
+  "memoryDeclarationLines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "input",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float",
+      "isMemoryDeclaration": true,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float",
+      "isMemoryDeclaration": true,
+      "isSemanticOnly": false,
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+  ],
+  "moduleLine": {
     "arguments": [
       {
         "referenceKind": "plain",
@@ -17,111 +159,9 @@ exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "input",
-      },
-    ],
-    "hasExplicitMemoryDefault": false,
-    "instruction": "float",
-    "isMemoryDeclaration": true,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
-  },
-  {
-    "arguments": [
-      {
-        "referenceKind": "plain",
-        "scope": "local",
-        "type": "identifier",
-        "value": "output",
-      },
-    ],
-    "hasExplicitMemoryDefault": false,
-    "instruction": "float",
-    "isMemoryDeclaration": true,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
-  },
-  {
-    "arguments": [
-      {
-        "address": {
-          "memoryIndex": 0,
-          "safeRange": {
-            "byteAddress": 4,
-            "memoryId": "output",
-            "memoryIndex": 0,
-            "safeByteLength": 4,
-            "source": "memory-start",
-          },
-        },
-        "isInteger": true,
-        "type": "literal",
-        "value": 4,
-      },
-    ],
-    "instruction": "push",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 4,
-    "lineNumberBeforeMacroExpansion": 4,
-  },
-  {
-    "arguments": [
-      {
-        "address": {
-          "memoryIndex": 0,
-          "safeRange": {
-            "byteAddress": 0,
-            "memoryId": "input",
-            "memoryIndex": 0,
-            "safeByteLength": 4,
-            "source": "memory-start",
-          },
-        },
-        "isInteger": true,
-        "type": "literal",
-        "value": 0,
-      },
-    ],
-    "instruction": "push",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 5,
-    "lineNumberBeforeMacroExpansion": 5,
-  },
-  {
-    "arguments": [],
-    "instruction": "loadFloat",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 6,
-    "lineNumberBeforeMacroExpansion": 6,
-  },
-  {
-    "arguments": [],
-    "instruction": "store",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": false,
-    "lineNumberAfterMacroExpansion": 7,
-    "lineNumberBeforeMacroExpansion": 7,
-  },
-  {
-    "arguments": [],
-    "instruction": "moduleEnd",
-    "isMemoryDeclaration": false,
-    "isSemanticOnly": true,
-    "lineNumberAfterMacroExpansion": 9,
-    "lineNumberBeforeMacroExpansion": 9,
-  },
-]
+  "referencedModuleIds": [],
+  "type": "module",
+}
 `;
 
 exports[`loadFloat > if the generated AST, WAT and memory map match the snapshot 2`] = `

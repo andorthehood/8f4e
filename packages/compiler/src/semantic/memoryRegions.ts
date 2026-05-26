@@ -2,7 +2,7 @@ import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
-import type { AST, CompileOptions, CompilationContext, RegionLine } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompileOptions, CompilationContext, RegionLine } from '@8f4e/compiler-spec';
 
 export const DEFAULT_MEMORY_INDEX = 0;
 const RESERVED_REGION_NAMES = new Set(['default', 'memory']);
@@ -12,7 +12,7 @@ export interface ResolvedMemoryRegion {
 	memoryRegionName?: string;
 }
 
-function fallbackLine(): AST[number] {
+function fallbackLine(): CompilerASTLine {
 	return {
 		lineNumberBeforeMacroExpansion: 0,
 		lineNumberAfterMacroExpansion: 0,
@@ -42,7 +42,7 @@ export function getMemoryRegionFields(memoryIndex: number, memoryRegionName?: st
 
 export function validateMemoryRegionOptions(
 	options?: Pick<CompileOptions, 'memoryRegions'>,
-	line: AST[number] = fallbackLine()
+	line: CompilerASTLine = fallbackLine()
 ): void {
 	const seen = new Set<string>();
 
@@ -60,7 +60,7 @@ export function validateMemoryRegionOptions(
 export function resolveMemoryRegionByIndex(
 	memoryIndex: number,
 	memoryRegions: readonly string[],
-	line: AST[number],
+	line: CompilerASTLine,
 	context?: CompilationContext
 ): ResolvedMemoryRegion {
 	if (!Number.isInteger(memoryIndex) || memoryIndex < 0 || memoryIndex > memoryRegions.length) {
@@ -77,7 +77,7 @@ export function resolveMemoryRegionByIndex(
 export function resolveMemoryRegionName(
 	memoryRegionName: string,
 	memoryRegions: readonly string[],
-	line: AST[number],
+	line: CompilerASTLine,
 	context?: CompilationContext
 ): ResolvedMemoryRegion {
 	const regionIndex = memoryRegions.indexOf(memoryRegionName);

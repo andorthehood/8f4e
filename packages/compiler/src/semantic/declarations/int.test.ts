@@ -4,7 +4,7 @@ import int from './int';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -18,7 +18,7 @@ describe('int instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'int',
 				arguments: [classifyIdentifier('counter')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

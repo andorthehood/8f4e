@@ -2,7 +2,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
-import type { AST, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
 
 export type MapKind = 'int32' | 'float32' | 'float64';
 
@@ -28,7 +28,7 @@ export function resolveMapKind(valueKind: MapValueKind): MapKind {
 export function validateMapValueKind(
 	valueKind: MapValueKind,
 	expectedKind: MapKind,
-	line: AST[number],
+	line: CompilerASTLine,
 	context: CodegenContext | CompilationContext
 ) {
 	if (expectedKind === 'float64') {

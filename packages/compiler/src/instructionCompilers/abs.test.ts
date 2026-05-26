@@ -4,7 +4,7 @@ import abs from './abs';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('abs instruction compiler', () => {
 	it('emits F32_ABS for float operands', () => {
@@ -18,7 +18,7 @@ describe('abs instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'abs',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -39,7 +39,7 @@ describe('abs instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 3,
 				instruction: 'abs',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -61,7 +61,7 @@ describe('abs instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'abs',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

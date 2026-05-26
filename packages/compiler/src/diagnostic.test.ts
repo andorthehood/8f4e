@@ -5,7 +5,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { serializeDiagnostic } from './diagnostic';
 import { getError } from './compilerError';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const stubLine = {
 	lineNumberBeforeMacroExpansion: 3,
@@ -14,7 +14,7 @@ const stubLine = {
 	arguments: [],
 	isSemanticOnly: false,
 	isMemoryDeclaration: false,
-} as AST[number];
+} as CompilerASTLine;
 
 describe('serializeDiagnostic', () => {
 	describe('syntax errors', () => {

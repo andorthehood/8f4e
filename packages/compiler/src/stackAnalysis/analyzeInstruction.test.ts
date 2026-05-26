@@ -5,7 +5,7 @@ import { analyzeInstruction } from './analyzeInstruction';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('analyzeInstruction', () => {
 	it('records stack before, consumed operands, produced items, and stack after', () => {
@@ -17,7 +17,7 @@ describe('analyzeInstruction', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'add',
 			arguments: [],
-		} as AST[number];
+		} as CompilerASTLine;
 
 		const analyzedLine = analyzeInstruction(line, context);
 
@@ -43,7 +43,7 @@ describe('analyzeInstruction', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'add',
 			arguments: [],
-		} as AST[number];
+		} as CompilerASTLine;
 
 		expect(() => analyzeInstruction(line, context)).toThrow(`${ErrorCode.INSUFFICIENT_OPERANDS}`);
 	});
@@ -55,7 +55,7 @@ describe('analyzeInstruction', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
 			arguments: [{ type: ArgumentType.LITERAL, value: 7, isInteger: true }],
-		} as AST[number];
+		} as CompilerASTLine;
 
 		const analyzedLine = analyzeInstruction(line, context);
 

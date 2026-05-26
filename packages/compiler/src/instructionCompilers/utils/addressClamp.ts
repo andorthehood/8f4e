@@ -4,11 +4,11 @@ import { getOrCreateMemoryGuardLocal, linearLastValidStartAddress } from './memo
 
 export { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../../utils/addressClamp';
 
-import type { AST, CodegenContext, CompilationContext, MemoryAddressRange } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CodegenContext, CompilationContext, MemoryAddressRange } from '@8f4e/compiler-spec';
 
 export function clampAddressByteCode(
 	context: CodegenContext | CompilationContext,
-	line: AST[number],
+	line: CompilerASTLine,
 	lowerByteAddress: number,
 	upperByteAddressCode: number[]
 ): number[] {

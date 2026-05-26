@@ -5,9 +5,9 @@ import getMemoryFlags from '../../utils/memoryFlags';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
 
-import type { AST, CompilationContext, MemoryType } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilationContext, MemoryType } from '@8f4e/compiler-spec';
 
-export type MemoryDeclarationCompiler<TLine extends AST[number] = AST[number]> = (
+export type MemoryDeclarationCompiler<TLine extends CompilerASTLine = CompilerASTLine> = (
 	line: TLine,
 	context: CompilationContext
 ) => CompilationContext;
