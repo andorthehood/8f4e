@@ -51,19 +51,12 @@ exports[`compiler > compileModules 1`] = `
               "value": "in",
             },
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 0,
-                  "memoryId": "defaultValue",
-                  "memoryIndex": 0,
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "defaultValue",
+              "type": "identifier",
+              "value": "&defaultValue",
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -139,19 +132,12 @@ exports[`compiler > compileModules 1`] = `
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 8,
-                  "memoryId": "out",
-                  "memoryIndex": 0,
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 8,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "out",
+              "type": "identifier",
+              "value": "&out",
             },
           ],
           "instruction": "push",
@@ -174,26 +160,6 @@ exports[`compiler > compileModules 1`] = `
           "isSemanticOnly": false,
           "lineNumberAfterMacroExpansion": 14,
           "lineNumberBeforeMacroExpansion": 14,
-          "resolvedTarget": {
-            "kind": "memory",
-            "memoryItem": {
-              "byteAddress": 4,
-              "default": 0,
-              "elementWordSize": 4,
-              "hasExplicitDefault": true,
-              "id": "in",
-              "isInteger": true,
-              "isPointingToPointer": false,
-              "isUnsigned": false,
-              "memoryIndex": 0,
-              "numberOfElements": 1,
-              "pointeeBaseType": "int",
-              "pointeeMemoryIndex": 0,
-              "type": "int*",
-              "wordAlignedAddress": 1,
-              "wordAlignedSize": 1,
-            },
-          },
         },
         {
           "arguments": [
@@ -209,10 +175,6 @@ exports[`compiler > compileModules 1`] = `
           "isSemanticOnly": false,
           "lineNumberAfterMacroExpansion": 15,
           "lineNumberBeforeMacroExpansion": 15,
-          "local": {
-            "index": 0,
-            "isInteger": true,
-          },
         },
         {
           "arguments": [
@@ -228,13 +190,6 @@ exports[`compiler > compileModules 1`] = `
           "isSemanticOnly": false,
           "lineNumberAfterMacroExpansion": 16,
           "lineNumberBeforeMacroExpansion": 16,
-          "resolvedTarget": {
-            "kind": "local",
-            "local": {
-              "index": 0,
-              "isInteger": true,
-            },
-          },
         },
         {
           "arguments": [
@@ -299,13 +254,6 @@ exports[`compiler > compileModules 1`] = `
           "isSemanticOnly": false,
           "lineNumberAfterMacroExpansion": 21,
           "lineNumberBeforeMacroExpansion": 21,
-          "resolvedTarget": {
-            "kind": "local",
-            "local": {
-              "index": 0,
-              "isInteger": true,
-            },
-          },
         },
         {
           "arguments": [],
@@ -337,13 +285,6 @@ exports[`compiler > compileModules 1`] = `
           "isSemanticOnly": false,
           "lineNumberAfterMacroExpansion": 24,
           "lineNumberBeforeMacroExpansion": 24,
-          "resolvedTarget": {
-            "kind": "local",
-            "local": {
-              "index": 0,
-              "isInteger": true,
-            },
-          },
         },
         {
           "arguments": [

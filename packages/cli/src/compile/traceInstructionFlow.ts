@@ -3,6 +3,7 @@ import compile, {
 	compileCodegenLine,
 	collectNamespacesFromASTs,
 	createCompilationContext,
+	normalizeCompileTimeArguments,
 } from '@8f4e/compiler';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
@@ -97,7 +98,8 @@ function traceAst(
 ): BlockTrace {
 	const entries: InstructionTraceEntry[] = [];
 
-	for (const line of ast) {
+	for (const originalLine of ast) {
+		const line = normalizeCompileTimeArguments(originalLine, context);
 		const stackBefore = serializeStack(context);
 		const byteCodeOffset = context.byteCode.length;
 

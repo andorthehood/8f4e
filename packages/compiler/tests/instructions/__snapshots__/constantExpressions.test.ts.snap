@@ -69,9 +69,22 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
           "value": "TOTAL",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "*",
+          "right": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -99,19 +112,12 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 8,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -123,9 +129,10 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "TOTAL",
         },
       ],
       "instruction": "push",
@@ -305,9 +312,20 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
           "value": "TOTAL",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 64,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "^",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 3,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -335,19 +353,12 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -359,9 +370,10 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 64,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "TOTAL",
         },
       ],
       "instruction": "push",
@@ -505,9 +517,20 @@ exports[`const: expression from another constant > if the generated AST, WAT and
           "value": "HALF",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "/",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -535,19 +558,12 @@ exports[`const: expression from another constant > if the generated AST, WAT and
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -559,9 +575,10 @@ exports[`const: expression from another constant > if the generated AST, WAT and
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "HALF",
         },
       ],
       "instruction": "push",
@@ -706,9 +723,21 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
           "value": "BYTE_SIZE",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 246,
+          "intermoduleIds": [],
+          "left": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 123,
+          },
+          "operator": "*",
+          "right": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -736,19 +765,12 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 8,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -760,9 +782,10 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 246,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "BYTE_SIZE",
         },
       ],
       "instruction": "push",
@@ -942,9 +965,20 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
           "value": "RESULT",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 256,
+          "intermoduleIds": [],
+          "left": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "operator": "^",
+          "right": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "EXP",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -972,19 +1006,12 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -996,9 +1023,10 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 256,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "RESULT",
         },
       ],
       "instruction": "push",
@@ -1142,9 +1170,10 @@ exports[`const: literal ^ literal folds to a literal value (2^16 = 65536) > if t
           "value": "output",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 65536,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "WIDTH",
         },
       ],
       "hasExplicitMemoryDefault": true,
@@ -1284,9 +1313,20 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
           "value": "BAR",
         },
         {
-          "isInteger": false,
-          "type": "literal",
-          "value": -0.125,
+          "intermoduleIds": [],
+          "left": {
+            "isInteger": true,
+            "type": "literal",
+            "value": -1,
+          },
+          "operator": "/",
+          "right": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "FOO",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -1314,19 +1354,12 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -1338,9 +1371,10 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
     {
       "arguments": [
         {
-          "isInteger": false,
-          "type": "literal",
-          "value": -0.125,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "BAR",
         },
       ],
       "instruction": "push",
@@ -1485,9 +1519,21 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
           "value": "BYTE_SIZE",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "operator": "*",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -1515,19 +1561,12 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 8,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -1539,9 +1578,10 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "BYTE_SIZE",
         },
       ],
       "instruction": "push",
@@ -1722,9 +1762,21 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
           "value": "TOTAL",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "operator": "^",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "const",
@@ -1752,19 +1804,12 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 16,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -1776,9 +1821,10 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "TOTAL",
         },
       ],
       "instruction": "push",
@@ -1958,9 +2004,20 @@ exports[`int[]: buffer size from constant division expression > if the generated
           "value": "buffer",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "/",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "hasExplicitMemoryDefault": false,
@@ -1989,19 +2046,12 @@ exports[`int[]: buffer size from constant division expression > if the generated
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 16,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -2013,9 +2063,11 @@ exports[`int[]: buffer size from constant division expression > if the generated
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "referenceKind": "element-count",
+          "scope": "local",
+          "targetMemoryId": "buffer",
+          "type": "identifier",
+          "value": "count(buffer)",
         },
       ],
       "instruction": "push",
@@ -2206,9 +2258,20 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
           "value": "buffer",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "^",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 3,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "hasExplicitMemoryDefault": false,
@@ -2237,19 +2300,12 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 32,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 32,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -2261,9 +2317,11 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "referenceKind": "element-count",
+          "scope": "local",
+          "targetMemoryId": "buffer",
+          "type": "identifier",
+          "value": "count(buffer)",
         },
       ],
       "instruction": "push",
@@ -2454,9 +2512,20 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
           "value": "buffer",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "*",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "hasExplicitMemoryDefault": false,
@@ -2485,19 +2554,12 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 64,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 64,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -2509,9 +2571,11 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "referenceKind": "element-count",
+          "scope": "local",
+          "targetMemoryId": "buffer",
+          "type": "identifier",
+          "value": "count(buffer)",
         },
       ],
       "instruction": "push",
@@ -2703,9 +2767,21 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
           "value": "dest",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "element-count",
+            "scope": "local",
+            "targetMemoryId": "source",
+            "type": "identifier",
+            "value": "count(source)",
+          },
+          "operator": "*",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "hasExplicitMemoryDefault": false,
@@ -2734,19 +2810,12 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 96,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 96,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -2758,9 +2827,11 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "referenceKind": "element-count",
+          "scope": "local",
+          "targetMemoryId": "dest",
+          "type": "identifier",
+          "value": "count(dest)",
         },
       ],
       "instruction": "push",
@@ -2989,9 +3060,21 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
           "value": "buffer",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "operator": "*",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "hasExplicitMemoryDefault": false,
@@ -3020,19 +3103,12 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 24,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 24,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -3044,9 +3120,11 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "referenceKind": "element-count",
+          "scope": "local",
+          "targetMemoryId": "buffer",
+          "type": "identifier",
+          "value": "count(buffer)",
         },
       ],
       "instruction": "push",
@@ -3274,9 +3352,20 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
           "value": "foo",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 9,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "^",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "hasExplicitMemoryDefault": true,
@@ -3305,19 +3394,12 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -3340,24 +3422,6 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 5,
       "lineNumberBeforeMacroExpansion": 5,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 9,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "foo",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [],
@@ -3542,9 +3606,20 @@ exports[`memory declaration: constant expression default > if the generated AST,
           "value": "foo",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "/",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "hasExplicitMemoryDefault": true,
@@ -3573,19 +3648,12 @@ exports[`memory declaration: constant expression default > if the generated AST,
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -3608,24 +3676,6 @@ exports[`memory declaration: constant expression default > if the generated AST,
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 5,
       "lineNumberBeforeMacroExpansion": 5,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 4,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "foo",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [],
@@ -3841,19 +3891,12 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 8,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -3865,9 +3908,22 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "*",
+          "right": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "push",
@@ -4057,19 +4113,12 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -4081,9 +4130,20 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "operator": "/",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "push",
@@ -4237,19 +4297,12 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -4261,9 +4314,20 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "intermoduleIds": [],
+          "left": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "operator": "*",
+          "right": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SIZE",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "push",
@@ -4418,19 +4482,12 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 8,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -4442,9 +4499,21 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 246,
+          "intermoduleIds": [],
+          "left": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 123,
+          },
+          "operator": "*",
+          "right": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "push",
@@ -4634,19 +4703,12 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -4658,9 +4720,20 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 16,
+          "intermoduleIds": [],
+          "left": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+          "operator": "^",
+          "right": {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "EXP",
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "push",
@@ -4815,19 +4888,12 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 8,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -4839,9 +4905,21 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "intermoduleIds": [],
+          "left": {
+            "referenceKind": "element-word-size",
+            "scope": "local",
+            "targetMemoryId": "samples",
+            "type": "identifier",
+            "value": "sizeof(samples)",
+          },
+          "operator": "*",
+          "right": {
+            "isInteger": true,
+            "type": "literal",
+            "value": 4,
+          },
+          "type": "compile_time_expression",
         },
       ],
       "instruction": "push",
