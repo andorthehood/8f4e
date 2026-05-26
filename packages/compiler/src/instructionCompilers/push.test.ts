@@ -147,6 +147,7 @@ describe('push instruction compiler', () => {
 						type: ArgumentType.LITERAL,
 						value: 3.14,
 						isInteger: false,
+						isFloat64: true,
 					},
 				],
 			} as CompilerASTLine,
@@ -453,7 +454,6 @@ describe('push instruction compiler', () => {
 				resolvedMemoryPushLine('myFloat', context.namespace.memory.myFloat),
 				contextFloat
 			);
-			expect(contextFloat.stack[0]).toMatchObject({ kind: 'value', valueType: 'float' });
 			expect(contextFloat.stack[0]).toMatchObject({ kind: 'value', valueType: 'float' });
 			expect(contextFloat.byteCode).toContain(42); // F32_LOAD
 
