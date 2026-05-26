@@ -4,7 +4,7 @@ priority: Medium
 effort: 4-8h
 created: 2026-05-26
 issue: null
-status: Done
+status: Completed
 completed: 2026-05-26
 ---
 

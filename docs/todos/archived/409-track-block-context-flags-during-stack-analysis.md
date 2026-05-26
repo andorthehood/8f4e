@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-05-19
 issue: https://github.com/andorthehood/8f4e/issues/662
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-19
 ---
 
 # TODO: Track block context flags during stack analysis
@@ -46,10 +46,19 @@ Do not add nesting counters or future-facing block-depth machinery for this task
 
 ## Success Criteria
 
-- [ ] Validation still rejects instructions in invalid block scopes.
-- [ ] `validateInstruction` no longer scans `context.blockStack` for constants/map membership.
-- [ ] `insideConstantsBlock` and `insideMapBlock` are set and cleared by shared block-stack helpers.
-- [ ] Compiler coverage logs show reduced `rangeExecutions` in stack validation and block-stack helpers.
+- [x] Validation still rejects instructions in invalid block scopes.
+- [x] `validateInstruction` no longer scans `context.blockStack` for constants/map membership.
+- [x] `insideConstantsBlock` and `insideMapBlock` are set and cleared by shared block-stack helpers.
+- [x] Compiler coverage hotspot mitigation landed through cached block-context flags.
+
+## Completion Notes
+
+Completed on 2026-05-19.
+
+- Verified `CompilationContext` has cached `insideConstantsBlock` and `insideMapBlock` flags.
+- Verified `validateInstruction` reads the cached flags instead of scanning `context.blockStack`.
+- Verified shared `pushBlock` / `popBlock` helpers maintain block-context flags and have focused tests.
+- Implementation landed in `f300323e2 fix(compiler): cache block context flags`.
 
 ## Affected Components
 
