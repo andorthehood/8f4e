@@ -1,10 +1,28 @@
 # Reviewing Compatibility Layers
 
-Use this check when a refactor is meant to replace an old interface, tighten types, remove ambiguity, or make one source of truth own a contract.
+Use this check when a user asks an AI agent to do cleanup, simplify after a refactor, remove old APIs, tighten types, remove ambiguity, or make one source of truth own a contract.
+
+This document is meant to be an agent aid. When a cleanup request is broad or underspecified, use it to look for compatibility layers that may have been left behind by previous AI-generated work.
 
 ## Goal
 
 Find and remove compatibility layers that preserve old shapes after the repository has moved to a stricter interface.
+
+## Agent Trigger
+
+Apply this check when the user says things like:
+
+- "clean this up";
+- "remove compatibility layers";
+- "we do not need backward compatibility";
+- "tighten the types";
+- "finish the refactor";
+- "remove old aliases/re-exports";
+- "why is this old path/name still here?";
+- "make this use one source of truth";
+- "remove runtime ambiguity".
+
+If the cleanup touches compiler, tokenizer, AST, instruction specs, package exports, or config schemas, assume compatibility layers are a real risk and search for them before deciding the work is done.
 
 ## Why This Matters
 
@@ -64,17 +82,21 @@ These searches are intentionally noisy. Review matches by intent, not by keyword
 
 ## Review Steps
 
-1. Identify the new intended source of truth.
+1. Restate the cleanup target in concrete terms.
+
+   Name the old interface, broad type, duplicated metadata, runtime fallback, or transitional path that should disappear.
+
+2. Identify the new intended source of truth.
 
    Examples: an instruction spec table, a discriminated union, a parsed AST line shape, an Nx project target, or a single package export.
 
-2. Trace all old names and paths.
+3. Trace all old names and paths.
 
    ```sh
    rg -n "OldName|old-path|legacyField" .
    ```
 
-3. Classify each old surface.
+4. Classify each old surface.
 
    Ask whether it is:
 
@@ -82,21 +104,21 @@ These searches are intentionally noisy. Review matches by intent, not by keyword
    - a temporary migration tool with an active removal plan;
    - a compatibility layer that only preserves the old interface.
 
-4. Prefer metadata over exception lists.
+5. Prefer metadata over exception lists.
 
    If a name is excluded because it is synthetic, internal, non-codegen, non-source, or otherwise special, add explicit metadata to the owning spec instead of keeping a hardcoded exclusion list elsewhere.
 
-5. Delete the compatibility path and update callers.
+6. Delete the compatibility path and update callers.
 
    Since the project is unreleased, prefer direct API moves over shims. Update imports, tests, snapshots, fixtures, docs, and helper types to the new interface.
 
-6. Verify old names are gone.
+7. Verify old names are gone.
 
    ```sh
    rg -n "OldName|LegacyName|compat|shim|backward" packages docs
    ```
 
-7. Run the smallest meaningful verification, then broaden if shared contracts moved.
+8. Run the smallest meaningful verification, then broaden if shared contracts moved.
 
    For compiler/type-interface changes, prefer:
 
@@ -107,6 +129,10 @@ These searches are intentionally noisy. Review matches by intent, not by keyword
    npx nx run @8f4e/tokenizer:test
    npx nx run compiler:test
    ```
+
+9. Report what was removed.
+
+   In the final answer or PR description, list the compatibility layers removed and mention any old names that intentionally remain. If an old name remains, explain the current owner and why it is not a compatibility layer.
 
 ## Keep Or Delete
 
