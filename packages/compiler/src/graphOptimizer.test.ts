@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest';
 
 import sortModules from './graphOptimizer';
 
-import type { ModuleCompilationAST } from '@8f4e/compiler-spec';
+import type { ConstantsAST, ModuleAST } from '@8f4e/compiler-spec';
 
-function compileModuleAst(code: string[]): ModuleCompilationAST {
+function compileModuleAst(code: string[]): ModuleAST | ConstantsAST {
 	const ast = compileToAST(code);
 	if (ast.type === 'function') {
 		throw new Error('Expected a module or constants AST.');
@@ -13,16 +13,16 @@ function compileModuleAst(code: string[]): ModuleCompilationAST {
 	return ast;
 }
 
-const createModuleAst = (moduleId: string, references: string[] = []): ModuleCompilationAST =>
+const createModuleAst = (moduleId: string, references: string[] = []): ModuleAST | ConstantsAST =>
 	compileModuleAst([
 		`module ${moduleId}`,
 		...references.map((reference, index) => `int value${index} ${reference}`),
 		'moduleEnd',
 	]);
 
-const createConstantsAst = (): ModuleCompilationAST => compileModuleAst(['constants shared', 'constantsEnd']);
+const createConstantsAst = (): ModuleAST | ConstantsAST => compileModuleAst(['constants shared', 'constantsEnd']);
 
-const getModuleId = (ast: ModuleCompilationAST): string => ast.id;
+const getModuleId = (ast: ModuleAST | ConstantsAST): string => ast.id;
 
 describe('sortModules', () => {
 	it('puts constants blocks first and sorts independent modules by module id', () => {

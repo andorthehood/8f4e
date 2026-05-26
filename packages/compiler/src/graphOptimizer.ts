@@ -1,24 +1,24 @@
 import { compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
 
-import type { ModuleCompilationAST } from '@8f4e/compiler-spec';
+import type { ConstantsAST, ModuleAST } from '@8f4e/compiler-spec';
 
 const constantsBlockType = compilerSourceBlockInstructionByType.constants.type;
 
 interface ModuleSortMetadata {
-	ast: ModuleCompilationAST;
+	ast: ModuleAST | ConstantsAST;
 	moduleId: string;
 	isConstantsBlock: boolean;
 	referencedModuleIds: string[];
 	index: number;
 }
 
-function getModuleSortMetadata(ast: ModuleCompilationAST, index: number): ModuleSortMetadata {
+function getModuleSortMetadata(ast: ModuleAST | ConstantsAST, index: number): ModuleSortMetadata {
 	const isConstantsBlock = ast.type === constantsBlockType;
 	const referencedModuleIds = ast.type === 'module' ? [...ast.referencedModuleIds] : [];
 	return { ast, moduleId: ast.id, isConstantsBlock, referencedModuleIds, index };
 }
 
-export default function sortModules(modules: ModuleCompilationAST[]): ModuleCompilationAST[] {
+export default function sortModules(modules: Array<ModuleAST | ConstantsAST>): Array<ModuleAST | ConstantsAST> {
 	const metadata = modules.map((ast, index) => getModuleSortMetadata(ast, index));
 
 	const constantsBlocks = metadata.filter(m => m.isConstantsBlock).map(m => m.ast);

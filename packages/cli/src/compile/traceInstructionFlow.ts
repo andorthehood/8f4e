@@ -7,12 +7,13 @@ import compile, {
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
+	type ConstantsAST,
 	type CompilerASTLine,
 	type CompilerASTLines,
 	type CompileOptions,
 	type CompilationContext,
 	type CompilerSourceBlockType,
-	type ModuleCompilationAST,
+	type ModuleAST,
 } from '@8f4e/compiler-spec';
 
 import type { ProjectInput } from '../shared/types';
@@ -147,7 +148,7 @@ export default function traceInstructionFlow(
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
 	const moduleAsts = compiledModules
 		.map(module => module.ast)
-		.filter((ast): ast is ModuleCompilationAST => ast !== undefined);
+		.filter((ast): ast is ModuleAST | ConstantsAST => ast !== undefined);
 	const namespaces = collectNamespacesFromASTs(
 		moduleAsts,
 		undefined,
