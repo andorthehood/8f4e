@@ -5,9 +5,9 @@ import getMemoryFlags from '../../utils/memoryFlags';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
 
-import type { CompilerASTLine, CompilationContext, MemoryType } from '@8f4e/compiler-spec';
+import type { CompilationContext, MemoryDeclarationLine, MemoryType } from '@8f4e/compiler-spec';
 
-export type MemoryDeclarationCompiler<TLine extends CompilerASTLine = CompilerASTLine> = (
+export type MemoryDeclarationCompiler<TLine extends MemoryDeclarationLine = MemoryDeclarationLine> = (
 	line: TLine,
 	context: CompilationContext
 ) => CompilationContext;
@@ -68,7 +68,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				byteAddress: getByteAddressFromWordOffset(context.startingByteAddress, localWordOffset),
 				id,
 				default: finalDefault,
-				hasExplicitDefault: line.hasExplicitMemoryDefault === true,
+				hasExplicitDefault: line.hasExplicitMemoryDefault,
 				type: line.instruction as unknown as MemoryType,
 				...flags,
 				...pointerPointeeRegion,
@@ -91,7 +91,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 				id,
 				default: finalDefault,
-				hasExplicitDefault: line.hasExplicitMemoryDefault === true,
+				hasExplicitDefault: line.hasExplicitMemoryDefault,
 				type: line.instruction as unknown as MemoryType,
 				...flags,
 				...pointerPointeeRegion,

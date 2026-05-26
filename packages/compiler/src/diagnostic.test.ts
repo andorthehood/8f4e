@@ -12,8 +12,6 @@ const stubLine = {
 	lineNumberAfterMacroExpansion: 5,
 	instruction: 'push',
 	arguments: [],
-	isSemanticOnly: false,
-	isMemoryDeclaration: false,
 } as CompilerASTLine;
 
 describe('serializeDiagnostic', () => {
