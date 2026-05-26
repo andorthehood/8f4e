@@ -68,6 +68,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -96,6 +99,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -124,6 +130,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -427,6 +436,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -455,6 +467,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -483,6 +498,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -786,6 +804,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -814,6 +835,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -842,6 +866,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -1145,6 +1172,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -1173,6 +1203,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -1201,6 +1234,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "sineLT"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "sineLT"
@@ -1229,6 +1265,9 @@
     ],
     "isSemanticOnly": false,
     "isMemoryDeclaration": true,
+    "referencedNamespaceIds": [
+      "dancer1"
+    ],
     "hasExplicitMemoryDefault": true,
     "referencedModuleIds": [
       "dancer1"
