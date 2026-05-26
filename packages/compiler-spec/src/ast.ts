@@ -14,9 +14,7 @@ import type {
 	ArgumentLiteral,
 	ArgumentStringLiteral,
 } from './arguments';
-
-type MacroInstructionName = 'defineMacro' | 'defineMacroEnd' | 'macro';
-type DocumentOnlyInstructionName = 'note' | 'noteEnd';
+import type { DocumentOnlyInstructionName, MacroInstructionName } from './instructions';
 
 export const noArgumentCodegenInstructionNames = [
 	'abs',
