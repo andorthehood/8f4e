@@ -186,6 +186,11 @@ interface StackOptions {
 	effect?: StackMutationSpec;
 }
 
+/**
+ * Returns a spec augmented with user-facing documentation and a fixed stack effect.
+ * This keeps the large instruction table compact while preserving both the
+ * human-readable signature and the machine-readable stack mutation metadata.
+ */
 function withDocsAndStack<TSpec extends Partial<InstructionSpec>>(
 	spec: TSpec,
 	{ shortDescription, inputs, outputs, effect }: DocsAndStackOptions
@@ -197,14 +202,21 @@ function withDocsAndStack<TSpec extends Partial<InstructionSpec>>(
 	};
 }
 
+/** Creates a fixed stack effect spec from stack labels and optional mutation metadata. */
 function stack({ inputs, outputs, effect }: StackOptions): StackEffectSpec {
 	return { inputs, outputs, ...(effect ? { effect } : {}) };
 }
 
+/** Creates mutation metadata for an instruction's analysis-stack behavior. */
 function stackMutation(consumes: StackConsumeSpec, produces: readonly StackProducedItemSpec[] = []): StackMutationSpec {
 	return { consumes, produces };
 }
 
+/**
+ * Creates the memory-effect metadata shared by load instruction specs.
+ * The semantic compiler uses this data to validate address operands, infer the
+ * loaded value type, and apply the correct access width for narrow integer loads.
+ */
 function memoryLoad<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>(
 	loadVariant: TLoadVariant,
 	accessByteWidth: number,
@@ -236,6 +248,11 @@ interface LoadInstructionOptions<TLoadVariant extends MemoryLoadVariant, TResult
 	effect: StackMutationSpec;
 }
 
+/**
+ * Builds a complete instruction spec for a memory load variant.
+ * All load instructions consume a pointer from the stack, emit one typed value,
+ * and share the same source-argument and scope rules from `loadSpec`.
+ */
 function loadInstruction<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>({
 	loadVariant,
 	accessByteWidth,
@@ -250,6 +267,11 @@ function loadInstruction<TLoadVariant extends MemoryLoadVariant, TResultType ext
 	);
 }
 
+/**
+ * Creates the block-close effect metadata for an instruction spec.
+ * Closing instructions use this metadata during semantic analysis to check the
+ * active block type and optionally restore or validate the block result value.
+ */
 function blockClose(
 	blockType: BlockTypeValue,
 	{ restoreResult = false, validateFloatResult = false } = {}
@@ -257,6 +279,11 @@ function blockClose(
 	return { blockClose: { blockType, restoreResult, validateFloatResult } };
 }
 
+/**
+ * Resolves the stack effect for an instruction spec, including line-dependent signatures.
+ * Most instructions have a fixed signature, but some derive their display or
+ * analysis shape from source arguments; those specs provide `stack.resolve`.
+ */
 export function resolveInstructionStackEffect<TLine>(
 	spec: InstructionSpec<TLine>,
 	line: TLine
@@ -266,10 +293,6 @@ export function resolveInstructionStackEffect<TLine>(
 	}
 
 	return spec.stack.resolve?.(line) ?? spec.stack;
-}
-
-export function formatStackSignature(instruction: string, stackEffect: ResolvedStackEffect): string {
-	return `${instruction} (${stackEffect.inputs.join(' ')} -- ${stackEffect.outputs.join(' ')})`;
 }
 
 const binaryMatchingSpec = {
@@ -1037,35 +1060,29 @@ export type FloatLoadInstructionSpecName = InstructionNamesByMemoryOperation<
 	Extract<MemoryOperationEffectSpec, { kind: 'load' }> & { resultType: 'float' }
 >;
 
-type GetInstructionSpec = {
-	<TInstruction extends InstructionSpecName>(instruction: TInstruction): (typeof instructionSpecs)[TInstruction];
-	(instruction: MemoryDeclarationInstruction): typeof instructionSpecs.memoryDeclaration;
-	(instruction: string): InstructionSpec | undefined;
-};
+type InstructionSpecLookup<TInstruction extends string> = TInstruction extends InstructionSpecName
+	? (typeof instructionSpecs)[TInstruction]
+	: TInstruction extends MemoryDeclarationInstruction
+		? typeof instructionSpecs.memoryDeclaration
+		: InstructionSpec | undefined;
 
-const getInstructionSpecImplementation = (instruction: string): InstructionSpec | undefined => {
+/**
+ * Returns the registered instruction spec for a language instruction or memory declaration.
+ * The conditional return type preserves precise results for known instruction names while
+ * still allowing loose string lookups for parser and tooling callers.
+ * Memory declaration instructions are represented by many source keywords, but
+ * they intentionally share the single `memoryDeclaration` spec entry.
+ */
+export function getInstructionSpec<TInstruction extends string>(
+	instruction: TInstruction
+): InstructionSpecLookup<TInstruction> {
 	if (memoryDeclarationInstructions.includes(instruction as MemoryDeclarationInstruction)) {
-		return instructionSpecs.memoryDeclaration;
+		return instructionSpecs.memoryDeclaration as InstructionSpecLookup<TInstruction>;
 	}
 
 	if (instruction in instructionSpecs) {
-		return instructionSpecs[instruction as InstructionSpecName];
+		return instructionSpecs[instruction as InstructionSpecName] as InstructionSpecLookup<TInstruction>;
 	}
 
-	return undefined;
-};
-
-export const getInstructionSpec = getInstructionSpecImplementation as GetInstructionSpec;
-
-export function getInstructionStackSignature(instruction: string, line?: unknown): string | undefined {
-	const spec = getInstructionSpec(instruction);
-
-	if (!spec?.stack) {
-		return undefined;
-	}
-
-	return formatStackSignature(
-		instruction,
-		line ? (resolveInstructionStackEffect(spec, line) ?? spec.stack) : spec.stack
-	);
+	return undefined as InstructionSpecLookup<TInstruction>;
 }

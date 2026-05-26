@@ -1,11 +1,12 @@
 import {
 	ArgumentType,
 	getInstructionSpec,
-	getInstructionStackSignature,
 	memoryDeclarationInstructions,
 	type CompilerASTLine,
 	type InstructionSpec,
 } from '@8f4e/compiler-spec';
+
+import { getInstructionStackSignature } from './stackSignature';
 
 const memoryIdentifierRegExp = /^[a-z_]\w*$/i;
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
