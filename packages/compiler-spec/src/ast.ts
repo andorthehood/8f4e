@@ -28,7 +28,6 @@ export const noArgumentCodegenInstructionNames = [
 	'clearStack',
 	'div',
 	'drop',
-	'ensureNonZero',
 	'equal',
 	'equalToZero',
 	'fallingEdge',
@@ -139,6 +138,7 @@ export type ExitIfTrueLine = ASTLineBase<'exitIfTrue', []>;
 export type StoreBytesLine = ASTLineBase<'storeBytes', [ArgumentLiteral]>;
 export type MemoryCopyLine = ASTLineBase<'memoryCopy', [CompileTimeValueArgument]>;
 export type ConstLine = ASTLineBase<'const', [ArgumentIdentifier, CompileTimeValueArgument]>;
+export type EnsureNonZeroLine = ASTLineBase<'ensureNonZero', [] | [ArgumentLiteral]>;
 
 export type MapValueArgument =
 	| ArgumentLiteral
@@ -207,6 +207,7 @@ type ExplicitCompilerASTLine =
 	| StoreBytesLine
 	| MemoryCopyLine
 	| ConstLine
+	| EnsureNonZeroLine
 	| MapLine
 	| DefaultLine
 	| LoopLine
