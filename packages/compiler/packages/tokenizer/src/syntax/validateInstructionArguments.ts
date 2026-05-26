@@ -45,6 +45,7 @@ const instructionArgumentSpecs: Partial<Record<string, InstructionArgumentSpec>>
 	branchIfTrue: { minArguments: 1, maxArguments: 1, argumentTypes: ['literal'] },
 	branchIfUnchanged: { minArguments: 1, maxArguments: 1, argumentTypes: ['literal'] },
 	exitIfTrue: { maxArguments: 0 },
+	ensureNonZero: { maxArguments: 1, argumentTypes: 'literal' },
 	block: { maxArguments: 0 },
 	blockEnd: { maxArguments: 1, argumentTypes: 'ifResultType' },
 	local: { minArguments: 2, maxArguments: 2, argumentTypes: ['functionTypeIdentifier', 'identifier'] },
