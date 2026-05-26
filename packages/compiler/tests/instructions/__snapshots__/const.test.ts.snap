@@ -120,9 +120,10 @@ exports[`const instruction > const with valid constant names > if the generated 
           "value": "output3",
         },
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 69,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "TEST3",
         },
       ],
       "hasExplicitMemoryDefault": true,
@@ -135,19 +136,12 @@ exports[`const instruction > const with valid constant names > if the generated 
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output1",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output1",
+          "type": "identifier",
+          "value": "&output1",
         },
       ],
       "instruction": "push",
@@ -159,9 +153,10 @@ exports[`const instruction > const with valid constant names > if the generated 
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 420,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "TEST1",
         },
       ],
       "instruction": "push",
@@ -181,19 +176,12 @@ exports[`const instruction > const with valid constant names > if the generated 
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output2",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output2",
+          "type": "identifier",
+          "value": "&output2",
         },
       ],
       "instruction": "push",
@@ -205,9 +193,10 @@ exports[`const instruction > const with valid constant names > if the generated 
     {
       "arguments": [
         {
-          "isInteger": false,
-          "type": "literal",
-          "value": 420.69,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "TEST2",
         },
       ],
       "instruction": "push",

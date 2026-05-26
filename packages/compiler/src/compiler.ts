@@ -41,13 +41,6 @@ type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
 };
 
-function withCompiledModuleLines<TAst extends ModuleAST | ConstantsAST>(ast: TAst, lines: TAst['lines']): TAst {
-	return {
-		...ast,
-		lines,
-	};
-}
-
 function getFallbackErrorLine(ast: { lines: readonly CompilerASTLine[] }): CompilerASTLine {
 	return (
 		ast.lines[0] ?? {
@@ -133,7 +126,7 @@ export function compileModule(
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
-	const normalizedLines = ast.lines.map(originalLine => {
+	for (const originalLine of ast.lines) {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		if (line.isSemanticOnly) {
 			applySemanticLine(line, context);
@@ -144,8 +137,7 @@ export function compileModule(
 				stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
 			}
 		}
-		return line;
-	}) as typeof ast.lines;
+	}
 
 	if (context.stack.length > 0) {
 		throw getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, getFallbackErrorLine(ast), context);
@@ -171,7 +163,7 @@ export function compileModule(
 		memoryMap: context.namespace.memory,
 		...(internalResources ? { internalResources } : {}),
 		wordAlignedSize: context.currentModuleWordAlignedSize,
-		ast: withCompiledModuleLines(ast, normalizedLines),
+		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
@@ -218,14 +210,13 @@ export function compileFunction(
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
-	const normalizedLines = ast.lines.map(originalLine => {
+	for (const originalLine of ast.lines) {
 		const line = normalizeCompileTimeArguments(originalLine, context);
 		const analyzedLine = compileLine(line, context);
 		if (options.includeStackAnalysis && analyzedLine) {
 			stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
 		}
-		return line;
-	}) as FunctionAST['lines'];
+	}
 
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
@@ -257,10 +248,7 @@ export function compileFunction(
 		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
 		wasmIndex,
 		typeIndex: completedContext.currentFunctionTypeIndex,
-		ast: {
-			...ast,
-			lines: normalizedLines,
-		},
+		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};
 }
