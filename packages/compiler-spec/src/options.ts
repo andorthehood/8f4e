@@ -1,5 +1,6 @@
 import type { DataStructure } from './memory';
 
+/** Optional settings that control compiler layout, emitted metadata, and runtime helpers. */
 export interface CompileOptions {
 	startingMemoryWordAddress?: number;
 	globalDataStructures?: DataStructure[];

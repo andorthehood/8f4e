@@ -54,6 +54,7 @@ type PointerSlotType = 'pointer';
 type BaseTypeMetadataKey = PointeeBaseType | PointerSlotType;
 export type MemoryValueKind = 'int32' | 'float32' | 'float64';
 
+/** Numeric storage metadata for a scalar or pointer slot type. */
 interface BaseTypeMetadata {
 	wordSize: number;
 	isInteger: boolean;
@@ -125,6 +126,7 @@ export const BASE_TYPE_METADATA: Record<BaseTypeMetadataKey, BaseTypeMetadata> =
 	},
 };
 
+/** Resolved memory declaration with layout, defaults, and type metadata. */
 export interface DataStructure {
 	numberOfElements: number;
 	elementWordSize: number;
@@ -160,6 +162,7 @@ export interface DataStructure {
 
 export type MemoryMap = Record<string, DataStructure>;
 
+/** Compiler-owned memory allocation used to support generated runtime behavior. */
 export interface InternalResource {
 	id: string;
 	memoryIndex: number;
@@ -174,6 +177,7 @@ export interface InternalResource {
 
 export type InternalResourceMap = Record<string, InternalResource>;
 
+/** Cursor for allocating compiler-owned internal memory resources. */
 export interface InternalAllocator {
 	nextByteAddress: number;
 }

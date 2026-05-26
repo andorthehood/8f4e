@@ -25,11 +25,13 @@ export interface CompilerDiagnosticLine {
 	arguments?: unknown[];
 }
 
+/** Source block context attached to a serialized compiler diagnostic. */
 export interface CompilerDiagnosticContext {
 	codeBlockId?: string;
 	codeBlockType?: CompilerSourceBlockType;
 }
 
+/** Serializable compiler diagnostic shared across syntax and semantic stages. */
 export interface CompilerDiagnostic {
 	/** Numeric ErrorCode for compiler errors; numeric SyntaxErrorCode for syntax errors. */
 	code: number;

@@ -33,6 +33,7 @@ export type ScopeRule =
 type StoreBytesSourceLine = { arguments: [{ value: number }] };
 const noSourceArguments = { maxArguments: 0 } as const satisfies SourceArgumentsSpec;
 
+/** Defines where and how an instruction may be used during validation. */
 export interface ValidationSpec<TLine = unknown> {
 	scope?: ScopeRule;
 	minOperands?: number;
@@ -49,6 +50,7 @@ export interface ValidationSpec<TLine = unknown> {
 	allowedInMapBlocks?: boolean;
 }
 
+/** Human-readable documentation attached to an instruction spec. */
 export interface InstructionDocumentation {
 	shortDescription: string;
 }
@@ -66,6 +68,7 @@ export type StackValueLabel =
 	| 'ptr'
 	| 'returns...';
 
+/** Fully resolved stack signature for an instruction at a specific source line. */
 export interface ResolvedStackEffect {
 	inputs: readonly StackValueLabel[];
 	outputs: readonly StackValueLabel[];
@@ -101,17 +104,20 @@ export type StackProducedItemSpec =
 			isNonZero?: boolean | 'fromInput';
 	  };
 
+/** Machine-readable description of how an instruction mutates the analysis stack. */
 export interface StackMutationSpec {
 	consumes: StackConsumeSpec;
 	produces?: readonly StackProducedItemSpec[];
 	dropped?: 'consumed';
 }
 
+/** Stack signature plus optional dynamic resolution and mutation metadata. */
 export interface StackEffectSpec<TLine = unknown> extends ResolvedStackEffect {
 	resolve?: (line: TLine) => ResolvedStackEffect;
 	effect?: StackMutationSpec;
 }
 
+/** Semantic effect applied when an instruction closes a compiler block. */
 export interface BlockCloseEffectSpec {
 	blockType: BlockTypeValue;
 	restoreResult?: boolean;
@@ -142,17 +148,20 @@ export type MemoryOperationEffectSpec =
 			addressOperandIndex: number;
 	  };
 
+/** Additional semantic effects that are not expressed by stack validation alone. */
 export interface InstructionEffectsSpec {
 	blockClose?: BlockCloseEffectSpec;
 	memory?: MemoryOperationEffectSpec;
 }
 
+/** Source-level argument constraints for parsing and validating an instruction. */
 export interface SourceArgumentsSpec {
 	minArguments?: number;
 	maxArguments?: number;
 	argumentTypes?: SourceArgumentShapeRule[] | SourceArgumentShapeRule;
 }
 
+/** Complete compiler specification for a source instruction. */
 export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> {
 	codegen?: false;
 	sourceInstruction?: false;
@@ -162,6 +171,7 @@ export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> 
 	effects?: InstructionEffectsSpec;
 }
 
+/** Options used to attach documentation and a fixed stack effect to a spec. */
 interface DocsAndStackOptions {
 	shortDescription: string;
 	inputs: readonly StackValueLabel[];
@@ -169,6 +179,7 @@ interface DocsAndStackOptions {
 	effect?: StackMutationSpec;
 }
 
+/** Options used to create a fixed stack effect spec. */
 interface StackOptions {
 	inputs: readonly StackValueLabel[];
 	outputs: readonly StackValueLabel[];
@@ -215,6 +226,7 @@ function memoryLoad<TLoadVariant extends MemoryLoadVariant, TResultType extends 
 	};
 }
 
+/** Builder options for memory load instruction specs. */
 interface LoadInstructionOptions<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'> {
 	loadVariant: TLoadVariant;
 	accessByteWidth: number;
