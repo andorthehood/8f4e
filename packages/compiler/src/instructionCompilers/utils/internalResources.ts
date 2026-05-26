@@ -4,14 +4,6 @@ import type { CodegenContext, CompilationContext, InternalResource } from '@8f4e
 
 type InternalResourceType = 'int' | 'float' | 'float64';
 
-function getElementWordSize(type: InternalResourceType): number {
-	return type === 'float64' ? 8 : 4;
-}
-
-function getWordAlignedSize(type: InternalResourceType): number {
-	return type === 'float64' ? 2 : 1;
-}
-
 type InternalResourceContext = CodegenContext | CompilationContext;
 
 export function getInternalResourceId(context: InternalResourceContext, baseId: string): string {
@@ -30,8 +22,8 @@ export function allocateInternalResource(
 		return existing;
 	}
 
-	const elementWordSize = getElementWordSize(type);
-	const wordAlignedSize = getWordAlignedSize(type);
+	const elementWordSize = type === 'float64' ? 8 : 4;
+	const wordAlignedSize = type === 'float64' ? 2 : 1;
 	const byteAddress = context.internalAllocator.nextByteAddress;
 	// Compiler-generated state is intentionally kept in default memory 0, even inside #region modules.
 	const resource: InternalResource = {
