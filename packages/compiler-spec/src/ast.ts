@@ -231,8 +231,6 @@ export type CompilerASTLine =
 	| ExplicitCompilerASTLine
 	| ASTLineBase<MacroInstructionName | DocumentOnlyInstructionName, Array<Argument>>;
 
-export type ASTLine = CompilerASTLine;
-
 export type CompilerASTLines = CompilerASTLine[];
 
 export function hasReferencedNamespaceIds(
