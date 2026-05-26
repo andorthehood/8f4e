@@ -9,7 +9,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('abs instruction compiler', () => {
 	it('emits F32_ABS for float operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			abs,
@@ -30,7 +30,7 @@ describe('abs instruction compiler', () => {
 
 	it('compiles int abs via segment instructions', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			abs,
@@ -52,7 +52,7 @@ describe('abs instruction compiler', () => {
 
 	it('emits F64_ABS for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: true });
 
 		analyzeAndCompileInstruction(
 			abs,

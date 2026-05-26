@@ -13,7 +13,10 @@ describe('storeBytes instruction compiler', () => {
 	it('throws INSUFFICIENT_OPERANDS when stack has fewer than count+1 items', () => {
 		const context = createInstructionCompilerTestContext();
 		// Only 2 items on stack but count=3 requires 4
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 		const line = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
@@ -30,14 +33,22 @@ describe('storeBytes instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		// bytes pushed first, addr pushed last (on top)
 		context.stack.push(
-			{ isInteger: true, isNonZero: false },
-			{ isInteger: true, isNonZero: false },
-			{ isInteger: true, isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 3, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 3,
+						memoryId: 'test',
+					},
 				},
 			}
 		);
@@ -60,13 +71,21 @@ describe('storeBytes instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		// bytes pushed first, addr pushed last (on top)
 		context.stack.push(
-			{ isInteger: true, isNonZero: false },
-			{ isInteger: true, isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 2,
+						memoryId: 'test',
+					},
 				},
 			}
 		);
@@ -88,13 +107,21 @@ describe('storeBytes instruction compiler', () => {
 	it('guards byte stores when address metadata is shorter than the byte count', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: false },
-			{ isInteger: true, isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 1, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 1,
+						memoryId: 'test',
+					},
 				},
 			}
 		);
@@ -117,10 +144,18 @@ describe('storeBytes instruction compiler', () => {
 	it('compiles storeBytes 0 (address-only pop) and leaves an empty stack', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: false,
 			address: {
-				safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 0, memoryId: 'test' },
+				memoryIndex: 0,
+				safeRange: {
+					source: 'memory-start',
+					memoryIndex: 0,
+					byteAddress: 0,
+					safeByteLength: 0,
+					memoryId: 'test',
+				},
 			},
 		});
 

@@ -7,8 +7,9 @@ exports[`round instruction compiler > rounds a float operand 1`] = `
   ],
   "stack": [
     {
-      "isInteger": false,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "float",
     },
   ],
 }

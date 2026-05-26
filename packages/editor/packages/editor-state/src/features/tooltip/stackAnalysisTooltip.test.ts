@@ -10,16 +10,19 @@ describe('stack analysis tooltip text', () => {
 			instruction: 'add',
 			stackAnalysis: {
 				stackBefore: [
-					{ isInteger: true, knownIntegerValue: 0 },
-					{ isInteger: true, knownIntegerValue: 1 },
-					{ isInteger: true, knownIntegerValue: 2 },
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 0 },
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
 				],
 				consumedOperands: [
-					{ isInteger: true, knownIntegerValue: 1 },
-					{ isInteger: true, knownIntegerValue: 2 },
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
 				],
-				producedStackItems: [{ isInteger: true }],
-				stackAfter: [{ isInteger: true, knownIntegerValue: 0 }, { isInteger: true }],
+				producedStackItems: [{ kind: 'value', valueType: 'int' }],
+				stackAfter: [
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 0 },
+					{ kind: 'value', valueType: 'int' },
+				],
 			},
 		} as const;
 
@@ -41,21 +44,21 @@ describe('stack analysis tooltip text', () => {
 			instruction: 'drop',
 			stackAnalysis: {
 				stackBefore: [
-					{ isInteger: true },
-					{ isInteger: true, knownIntegerValue: 1234 },
-					{ isInteger: false },
-					{ isInteger: true, pointeeBaseType: 'int' },
-					{ isInteger: true },
-					{ isInteger: true },
+					{ kind: 'value', valueType: 'int' },
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 1234 },
+					{ kind: 'value', valueType: 'float' },
+					{ kind: 'address', valueType: 'int', address: { memoryIndex: 0 } },
+					{ kind: 'value', valueType: 'int' },
+					{ kind: 'value', valueType: 'int' },
 				],
-				consumedOperands: [{ isInteger: true }],
+				consumedOperands: [{ kind: 'value', valueType: 'int' }],
 				producedStackItems: [],
 				stackAfter: [
-					{ isInteger: true, knownIntegerValue: 1234 },
-					{ isInteger: false },
-					{ isInteger: true, pointeeBaseType: 'int' },
-					{ isInteger: true },
-					{ isInteger: true },
+					{ kind: 'value', valueType: 'int', knownIntegerValue: 1234 },
+					{ kind: 'value', valueType: 'float' },
+					{ kind: 'address', valueType: 'int', address: { memoryIndex: 0 } },
+					{ kind: 'value', valueType: 'int' },
+					{ kind: 'value', valueType: 'int' },
 				],
 			},
 		} as const;

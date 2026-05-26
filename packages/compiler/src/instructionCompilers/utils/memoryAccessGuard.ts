@@ -61,16 +61,17 @@ type MemoryGuardContext = CodegenContext | CompilationContext;
 export function getOrCreateMemoryGuardLocal(
 	context: MemoryGuardContext,
 	name: string,
-	item: Pick<StackItem, 'isInteger' | 'isFloat64'>
+	item: Pick<StackItem, 'valueType'>
 ) {
 	const existing = context.locals[name];
 	if (existing) {
 		return existing;
 	}
 
+	const valueType = item.valueType;
 	const local = {
-		isInteger: item.isInteger,
-		...(item.isFloat64 ? { isFloat64: true } : {}),
+		isInteger: valueType === 'int',
+		...(valueType === 'float64' ? { isFloat64: true } : {}),
 		index: Math.max(-1, ...Object.values(context.locals).map(local => local.index)) + 1,
 	};
 	context.locals[name] = local;
@@ -78,9 +79,13 @@ export function getOrCreateMemoryGuardLocal(
 }
 
 export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number): boolean {
+	if (address.kind !== 'address') {
+		return false;
+	}
+
 	return (
-		(address.address?.safeRange?.safeByteLength ?? 0) >= accessByteWidth ||
-		(address.address?.safeAccessByteWidth ?? 0) >= accessByteWidth
+		(address.address.safeRange?.safeByteLength ?? 0) >= accessByteWidth ||
+		(address.address.safeAccessByteWidth ?? 0) >= accessByteWidth
 	);
 }
 
@@ -142,7 +147,7 @@ export function guardedAddressOperation(
 		context,
 		`__memoryGuardAddr_${options.lineNumberAfterMacroExpansion}`,
 		{
-			isInteger: true,
+			valueType: 'int',
 		}
 	);
 
@@ -162,7 +167,7 @@ export function guardedStore(context: MemoryGuardContext, options: GuardedStoreO
 		context,
 		`__memoryGuardAddr_${options.lineNumberAfterMacroExpansion}`,
 		{
-			isInteger: true,
+			valueType: 'int',
 		}
 	);
 	const valueLocal = getOrCreateMemoryGuardLocal(
@@ -192,14 +197,14 @@ export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedM
 		context,
 		`__memoryCopyDestination_${options.lineNumberAfterMacroExpansion}`,
 		{
-			isInteger: true,
+			valueType: 'int',
 		}
 	);
 	const sourceLocal = getOrCreateMemoryGuardLocal(
 		context,
 		`__memoryCopySource_${options.lineNumberAfterMacroExpansion}`,
 		{
-			isInteger: true,
+			valueType: 'int',
 		}
 	);
 

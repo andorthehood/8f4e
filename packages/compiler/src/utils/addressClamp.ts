@@ -37,6 +37,9 @@ export function getClampedAddressStackItem(
 	accessByteWidth: number
 ): StackItem {
 	const safeAccessByteWidth = Math.min(accessByteWidth, range?.safeByteLength ?? accessByteWidth);
+	const memoryIndex = range?.memoryIndex ?? (operand.kind === 'address' ? operand.address.memoryIndex : 0);
+	const memoryRegionName =
+		range?.memoryRegionName ?? (operand.kind === 'address' ? operand.address.memoryRegionName : undefined);
 	const knownIntegerValue = range
 		? clampKnownIntegerValue(
 				operand.knownIntegerValue,
@@ -46,20 +49,15 @@ export function getClampedAddressStackItem(
 		: undefined;
 
 	return {
-		isInteger: true,
+		kind: 'address',
+		valueType: 'int',
 		isNonZero: knownIntegerValue !== undefined ? knownIntegerValue !== 0 : false,
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
-		...(range || safeAccessByteWidth > 0
-			? {
-					address: {
-						...getMemoryRegionFields(
-							range?.memoryIndex ?? operand.address?.memoryIndex ?? 0,
-							range?.memoryRegionName ?? operand.address?.memoryRegionName
-						),
-						...(range ? { clampRange: range } : {}),
-						...(safeAccessByteWidth > 0 ? { safeAccessByteWidth } : {}),
-					},
-				}
-			: {}),
+		...(operand.kind === 'address' && operand.pointsTo ? { pointsTo: { ...operand.pointsTo } } : {}),
+		address: {
+			...getMemoryRegionFields(memoryIndex, memoryRegionName),
+			...(range ? { clampRange: range } : {}),
+			...(safeAccessByteWidth > 0 ? { safeAccessByteWidth } : {}),
+		},
 	};
 }
