@@ -3,11 +3,20 @@ import { ErrorCode, documentBlockInstructionByType } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
-import type { AST, ExpandedLine, Instruction, MacroDefinition, Module } from '@8f4e/compiler-spec';
+import type { AST, ExpandedLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
 
 const macroDefinitionInstruction = documentBlockInstructionByType.macro.start;
 const macroDefinitionEndInstruction = documentBlockInstructionByType.macro.end;
 const macroCallInstruction = documentBlockInstructionByType.macro.type;
+
+function createMacroErrorLine(lineIndex: number): AST[number] {
+	return {
+		lineNumberBeforeMacroExpansion: lineIndex,
+		lineNumberAfterMacroExpansion: lineIndex,
+		instruction: 'block',
+		arguments: [],
+	};
+}
 
 /**
  * Parse macro definitions from macro modules.
@@ -50,13 +59,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 
 			if (instruction === macroDefinitionInstruction) {
 				if (insideMacro) {
-					const astLine: AST[number] = {
-						lineNumberBeforeMacroExpansion: lineIndex,
-						lineNumberAfterMacroExpansion: lineIndex,
-						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
-						arguments: [],
-					};
-					throw getError(ErrorCode.NESTED_MACRO_DEFINITION, astLine);
+					throw getError(ErrorCode.NESTED_MACRO_DEFINITION, createMacroErrorLine(lineIndex));
 				}
 
 				if (macroCount > 0) {
@@ -71,13 +74,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				}
 
 				if (macroMap.has(macroName)) {
-					const astLine: AST[number] = {
-						lineNumberBeforeMacroExpansion: lineIndex,
-						lineNumberAfterMacroExpansion: lineIndex,
-						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
-						arguments: [],
-					};
-					throw getError(ErrorCode.DUPLICATE_MACRO_NAME, astLine);
+					throw getError(ErrorCode.DUPLICATE_MACRO_NAME, createMacroErrorLine(lineIndex));
 				}
 
 				currentMacro = {
@@ -89,13 +86,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				macroCount++;
 			} else if (instruction === macroDefinitionEndInstruction) {
 				if (!insideMacro || !currentMacro) {
-					const astLine: AST[number] = {
-						lineNumberBeforeMacroExpansion: lineIndex,
-						lineNumberAfterMacroExpansion: lineIndex,
-						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
-						arguments: [],
-					};
-					throw getError(ErrorCode.MISSING_MACRO_END, astLine);
+					throw getError(ErrorCode.MISSING_MACRO_END, createMacroErrorLine(lineIndex));
 				}
 
 				macroMap.set(currentMacro.name, currentMacro);
@@ -104,13 +95,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 			} else if (insideMacro) {
 				// Check for nested macro calls or definitions inside macro body
 				if (instruction === macroCallInstruction) {
-					const astLine: AST[number] = {
-						lineNumberBeforeMacroExpansion: lineIndex,
-						lineNumberAfterMacroExpansion: lineIndex,
-						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
-						arguments: [],
-					};
-					throw getError(ErrorCode.NESTED_MACRO_CALL, astLine);
+					throw getError(ErrorCode.NESTED_MACRO_CALL, createMacroErrorLine(lineIndex));
 				}
 
 				// Add line to current macro body
@@ -121,13 +106,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 		// Check if any macro was left unclosed
 		if (insideMacro) {
 			const macro = currentMacro!;
-			const astLine: AST[number] = {
-				lineNumberBeforeMacroExpansion: macro.definitionLineNumber,
-				lineNumberAfterMacroExpansion: macro.definitionLineNumber,
-				instruction: 'push' as Instruction, // Placeholder instruction for error reporting
-				arguments: [],
-			};
-			throw getError(ErrorCode.MISSING_MACRO_END, astLine);
+			throw getError(ErrorCode.MISSING_MACRO_END, createMacroErrorLine(macro.definitionLineNumber));
 		}
 	});
 
@@ -177,13 +156,7 @@ export function expandMacros(module: Module, macroDefinitions: Map<string, Macro
 
 			const macroDef = macroDefinitions.get(macroName);
 			if (!macroDef) {
-				const astLine: AST[number] = {
-					lineNumberBeforeMacroExpansion: lineIndex,
-					lineNumberAfterMacroExpansion: lineIndex,
-					instruction: 'push' as Instruction, // Placeholder instruction for error reporting
-					arguments: [],
-				};
-				throw getError(ErrorCode.UNDEFINED_MACRO, astLine);
+				throw getError(ErrorCode.UNDEFINED_MACRO, createMacroErrorLine(lineIndex));
 			}
 
 			// Expand macro body, all lines map back to the call site

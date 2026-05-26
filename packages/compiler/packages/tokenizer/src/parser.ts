@@ -16,9 +16,12 @@ import type {
 	ASTCache,
 	ASTCacheEntry,
 	ASTLine,
+	Argument,
+	BlockEndLine,
 	BlockEndInstruction,
 	BlockStartInstruction,
 	BlockBlockResultType,
+	IfEndLine,
 	IfBlockResultType,
 	ParsedLineMetadata,
 } from '@8f4e/compiler-spec';
@@ -44,29 +47,31 @@ const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstru
 const sourceBlockStartInstructionSet = new Set(['module', 'function']);
 const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd']);
 
+function isBlockStartInstruction(instruction: string): instruction is BlockStartInstruction {
+	return blockStartInstructionSet.has(instruction as BlockStartInstruction);
+}
+
+function isBlockEndInstruction(instruction: string): instruction is BlockEndInstruction {
+	return Object.prototype.hasOwnProperty.call(blockEndToStartInstruction, instruction);
+}
+
 function isCompilerDirectiveInstruction(instruction: string): boolean {
 	return instruction.startsWith('#');
 }
 
-function getResultTypeFromFirstArgument(line: ASTLine): IfBlockResultType {
-	const typeArgument = line.arguments[0];
-
-	if (!typeArgument || typeArgument.type !== ArgumentType.IDENTIFIER) {
-		return null;
-	}
-
-	return typeArgument.value === 'int' || typeArgument.value === 'float' ? typeArgument.value : null;
+function getResultTypeFromFirstArgument(line: IfEndLine | BlockEndLine): IfBlockResultType {
+	return (line.arguments[0]?.value ?? null) as IfBlockResultType;
 }
 
-function getIfResultType(line: ASTLine): IfBlockResultType {
+function getIfResultType(line: IfEndLine): IfBlockResultType {
 	return getResultTypeFromFirstArgument(line);
 }
 
-function getBlockEndResultType(line: ASTLine): BlockBlockResultType {
+function getBlockEndResultType(line: BlockEndLine): BlockBlockResultType {
 	return getResultTypeFromFirstArgument(line);
 }
 
-function hasExplicitMemoryDefault(instruction: string, args: ASTLine['arguments']): boolean | undefined {
+function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean | undefined {
 	if (!isMemoryDeclarationInstruction(instruction)) {
 		return undefined;
 	}
@@ -175,14 +180,14 @@ export function parseLine(
 		const parsedArguments = args.map(parseArgument);
 		validateInstructionArguments(instruction, parsedArguments);
 		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
-		const parsedLine: ASTLine = {
+		const parsedLine = {
 			lineNumberBeforeMacroExpansion,
 			lineNumberAfterMacroExpansion,
 			instruction,
 			arguments: parsedArguments,
 			isSemanticOnly: isSemanticOnlyInstruction(instruction),
 			isMemoryDeclaration,
-		};
+		} as ASTLine;
 
 		if (isMemoryDeclaration) {
 			parsedLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
@@ -252,9 +257,9 @@ export function compileToAST(
 
 		ast.push(parsedLine);
 
-		if (blockStartInstructionSet.has(parsedLine.instruction as BlockStartInstruction)) {
+		if (isBlockStartInstruction(parsedLine.instruction)) {
 			blockStack.push({
-				instruction: parsedLine.instruction as BlockStartInstruction,
+				instruction: parsedLine.instruction,
 				astIndex,
 				hasElse: parsedLine.instruction === 'if' ? false : undefined,
 			});
@@ -300,11 +305,11 @@ export function compileToAST(
 			continue;
 		}
 
-		if (!(parsedLine.instruction in blockEndToStartInstruction)) {
+		if (!isBlockEndInstruction(parsedLine.instruction)) {
 			continue;
 		}
 
-		const endInstruction = parsedLine.instruction as BlockEndInstruction;
+		const endInstruction = parsedLine.instruction;
 		const expectedStartInstruction = blockEndToStartInstruction[endInstruction];
 		const openBlock = blockStack.pop();
 
@@ -340,8 +345,8 @@ export function compileToAST(
 			continue;
 		}
 
-		if (endInstruction === 'ifEnd') {
-			const resultType = getIfResultType(parsedLine);
+		if (parsedLine.instruction === 'ifEnd') {
+			const resultType = getIfResultType(parsedLine as IfEndLine);
 			ast[openBlock.astIndex].ifBlock = {
 				matchingIfEndIndex: astIndex,
 				resultType,
@@ -352,7 +357,7 @@ export function compileToAST(
 				resultType,
 			};
 		} else {
-			const resultType = getBlockEndResultType(parsedLine);
+			const resultType = getBlockEndResultType(parsedLine as BlockEndLine);
 			ast[openBlock.astIndex].blockBlock = {
 				matchingBlockEndIndex: astIndex,
 				resultType,

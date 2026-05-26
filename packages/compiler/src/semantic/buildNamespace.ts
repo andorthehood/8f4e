@@ -2,6 +2,12 @@ import {
 	ArgumentType,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	compilerSourceBlockInstructionByType,
+	isFunctionEndLine,
+	isFunctionLine,
+	isModuleLine,
+	isNamedScalarMemoryDeclarationLine,
+	isParamLine,
+	isUseLine,
 	type AST,
 	type Argument,
 	type CompileOptions,
@@ -32,7 +38,6 @@ import { getError } from '../compilerError';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 const constantsBlock = compilerSourceBlockInstructionByType.constants;
-const functionBlock = compilerSourceBlockInstructionByType.function;
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
 /**
@@ -45,8 +50,8 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 	const result: FunctionMetadataLookup = {};
 
 	for (const [index, ast] of asts.entries()) {
-		const functionLine = ast.find(line => line.instruction === functionBlock.start);
-		if (!functionLine || functionLine.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
+		const functionLine = ast.find(isFunctionLine);
+		if (!functionLine) {
 			continue;
 		}
 
@@ -55,21 +60,15 @@ export function collectFunctionMetadataFromAsts(asts: AST[], startingWasmIndex: 
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, functionLine, undefined, { identifier: id });
 		}
 		const signature: FunctionSignature = {
-			parameters: ast.flatMap(line => {
-				if (line.instruction !== 'param' || line.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
-					return [];
-				}
-
-				return [line.arguments[0].value as FunctionSignature['parameters'][number]];
-			}),
+			parameters: ast
+				.filter(isParamLine)
+				.map(line => line.arguments[0].value as FunctionSignature['parameters'][number]),
 			returns: [],
 		};
 
-		const functionEndLine = ast.find(line => line.instruction === functionBlock.end);
+		const functionEndLine = ast.find(isFunctionEndLine);
 		if (functionEndLine) {
-			signature.returns = functionEndLine.arguments.map(
-				arg => (arg as { type: typeof ArgumentType.IDENTIFIER; value: FunctionSignature['returns'][number] }).value
-			);
+			signature.returns = functionEndLine.arguments.map(arg => arg.value as FunctionSignature['returns'][number]);
 		}
 
 		result[id] = {
@@ -86,8 +85,8 @@ export function assertUniqueModuleIds(asts: AST[]): void {
 	const seenModuleIds = new Set<string>();
 
 	for (const ast of asts) {
-		const moduleLine = ast.find(line => line.instruction === moduleBlock.start);
-		if (!moduleLine || moduleLine.arguments[0]?.type !== ArgumentType.IDENTIFIER) {
+		const moduleLine = ast.find(isModuleLine);
+		if (!moduleLine) {
 			continue;
 		}
 
@@ -169,9 +168,7 @@ export function prepassNamespace(
 }
 
 export function getModuleIdFromAst(ast: AST): string | undefined {
-	const moduleLine = ast.find(line => line.instruction === moduleBlock.start);
-	const moduleId = moduleLine?.arguments[0];
-	return moduleId?.type === ArgumentType.IDENTIFIER ? moduleId.value : undefined;
+	return ast.find(isModuleLine)?.arguments[0].value;
 }
 
 function getModuleRegionFromAst(
@@ -212,7 +209,7 @@ function getReferencedNamespaceIdsFromArgument(argument: Argument | undefined): 
 }
 
 function getDeferredNamespaceIds(line: AST[number]): string[] {
-	if (line.instruction === 'use' && line.arguments[0]?.type === ArgumentType.IDENTIFIER) {
+	if (isUseLine(line)) {
 		return [line.arguments[0].value];
 	}
 
@@ -238,11 +235,7 @@ function shouldDeferNamespaceCollection(
 
 function toNamespaceDiscoveryAst(ast: AST): AST {
 	return ast.flatMap(line => {
-		if (
-			line.isMemoryDeclaration &&
-			!line.instruction.endsWith('[]') &&
-			line.arguments[0]?.type === ArgumentType.IDENTIFIER
-		) {
+		if (isNamedScalarMemoryDeclarationLine(line)) {
 			return [
 				{
 					...line,
@@ -284,7 +277,7 @@ export function collectNamespacesFromASTs(
 				if (!context.namespace.moduleName) {
 					continue;
 				}
-				const moduleLine = ast.find(line => line.instruction === moduleBlock.start);
+				const moduleLine = ast.find(isModuleLine);
 				const existingNamespace = namespaces[context.namespace.moduleName];
 				if (moduleLine && existingNamespace?.kind === moduleBlock.type) {
 					throw getError(ErrorCode.DUPLICATE_IDENTIFIER, moduleLine ?? ast[0], context, {

@@ -168,11 +168,11 @@ export function validateOrDeferUnresolvedIdentifier(
  * are responsible for invoking validateOrDefer* helpers when that behavior
  * is required.
  */
-export function normalizeArgumentsAtIndexes(
-	line: AST[number],
+export function normalizeArgumentsAtIndexes<TLine extends AST[number]>(
+	line: TLine,
 	context: CompilationContext,
 	indexes: number[]
-): { line: AST[number]; changed: boolean } {
+): { line: TLine; changed: boolean } {
 	let changed = false;
 	const nextArguments = line.arguments.map((argument, index) => {
 		if (!indexes.includes(index)) {
@@ -186,7 +186,7 @@ export function normalizeArgumentsAtIndexes(
 		return normalized;
 	});
 
-	return { line: changed ? { ...line, arguments: nextArguments } : line, changed };
+	return { line: changed ? ({ ...line, arguments: nextArguments } as TLine) : line, changed };
 }
 
 /**
