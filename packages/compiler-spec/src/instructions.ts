@@ -1,19 +1,28 @@
 import { instructionSpecs } from './instructionSpecs';
 import { memoryDeclarationInstructions } from './memory';
 
-import type { CodegenInstructionSpecName, InstructionSpec } from './instructionSpecs';
+import type {
+	CodegenInstructionSpecName,
+	InstructionSpec,
+	InstructionSpecName,
+	NonCodegenInstructionSpecName,
+	SourceInstructionSpecName,
+} from './instructionSpecs';
 import type { MemoryDeclarationInstruction } from './memory';
 
-export const semanticInstructionNames = [
-	'const',
-	'use',
-	'module',
-	'moduleEnd',
-	'constants',
-	'constantsEnd',
-	'#region',
-] as const;
-export type SemanticInstructionName = (typeof semanticInstructionNames)[number];
+function getInstructionSpecByName(instruction: string): InstructionSpec {
+	return instructionSpecs[instruction as InstructionSpecName] as InstructionSpec;
+}
+
+function isSourceInstructionSpec(instruction: string): boolean {
+	return getInstructionSpecByName(instruction).sourceInstruction !== false;
+}
+
+export type SemanticInstructionName = Extract<NonCodegenInstructionSpecName, SourceInstructionSpecName>;
+export const semanticInstructionNames = Object.keys(instructionSpecs).filter(
+	(instruction): instruction is SemanticInstructionName =>
+		isSourceInstructionSpec(instruction) && getInstructionSpecByName(instruction).codegen === false
+);
 
 export const macroInstructionNames = ['defineMacro', 'defineMacroEnd', 'macro'] as const;
 export type MacroInstructionName = (typeof macroInstructionNames)[number];
@@ -90,12 +99,11 @@ export const compilableBlockTypes = documentBlockInstructionPairs
 	.map(({ type }) => type)
 	.filter((type): type is CompilableBlockType => type !== 'note');
 
-export type CodegenInstructionName = Exclude<CodegenInstructionSpecName, 'memoryDeclaration'>;
+export type CodegenInstructionName = Extract<CodegenInstructionSpecName, SourceInstructionSpecName>;
 
 export const codegenInstructionNames = Object.keys(instructionSpecs).filter(
 	(instruction): instruction is CodegenInstructionName =>
-		instruction !== 'memoryDeclaration' &&
-		(instructionSpecs[instruction as keyof typeof instructionSpecs] as InstructionSpec).codegen !== false
+		isSourceInstructionSpec(instruction) && getInstructionSpecByName(instruction).codegen !== false
 );
 
 export type Instruction =

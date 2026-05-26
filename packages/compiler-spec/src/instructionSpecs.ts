@@ -155,6 +155,7 @@ export interface SourceArgumentsSpec {
 
 export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> {
 	codegen?: false;
+	sourceInstruction?: false;
 	sourceArguments?: SourceArgumentsSpec;
 	docs?: InstructionDocumentation;
 	stack?: StackEffectSpec<TLine>;
@@ -292,6 +293,7 @@ const loadSpec = {
 
 const memoryDeclarationSpec = {
 	codegen: false,
+	sourceInstruction: false,
 	scope: 'module',
 } satisfies InstructionSpec;
 
@@ -984,6 +986,13 @@ export const instructionSpecs = {
 export type InstructionSpecName = keyof typeof instructionSpecs;
 export type CodegenInstructionSpecName = {
 	[TInstruction in InstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends { codegen: false }
+		? never
+		: TInstruction;
+}[InstructionSpecName];
+
+export type NonCodegenInstructionSpecName = Exclude<InstructionSpecName, CodegenInstructionSpecName>;
+export type SourceInstructionSpecName = {
+	[TInstruction in InstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends { sourceInstruction: false }
 		? never
 		: TInstruction;
 }[InstructionSpecName];
