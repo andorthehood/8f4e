@@ -118,20 +118,8 @@ function isBlockEndInstruction(instruction: string): instruction is BlockEndInst
 	return Object.prototype.hasOwnProperty.call(blockEndToStartInstruction, instruction);
 }
 
-function canReferenceDeferredNamespace(instruction: string, isMemoryDeclaration: boolean): boolean {
-	return isMemoryDeclaration || instruction === 'const' || instruction === 'use';
-}
-
 function getResultTypeFromFirstArgument(line: IfEndLine | BlockEndLine): IfBlockResultType {
 	return (line.arguments[0]?.value ?? null) as IfBlockResultType;
-}
-
-function getIfResultType(line: IfEndLine): IfBlockResultType {
-	return getResultTypeFromFirstArgument(line);
-}
-
-function getBlockEndResultType(line: BlockEndLine): BlockBlockResultType {
-	return getResultTypeFromFirstArgument(line);
 }
 
 function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean {
@@ -384,7 +372,7 @@ export function parseLine(
 		const [first = '', ...args] = tokens;
 		instruction = first;
 		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
-		const shouldRecordNamespaceReferences = canReferenceDeferredNamespace(instruction, isMemoryDeclaration);
+		const shouldRecordNamespaceReferences = isMemoryDeclaration || instruction === 'const' || instruction === 'use';
 		const parsedArguments: Argument[] = [];
 		const referencedNamespaceIds = new Set<string>();
 		for (const arg of args) {
@@ -587,7 +575,7 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 		}
 
 		if (parsedLine.instruction === 'ifEnd' && openBlock.instruction === 'if') {
-			const resultType = getIfResultType(parsedLine);
+			const resultType = getResultTypeFromFirstArgument(parsedLine);
 			openBlock.line.ifBlock = {
 				matchingIfEndIndex: astIndex,
 				resultType,
@@ -598,7 +586,7 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 				resultType,
 			};
 		} else if (parsedLine.instruction === 'blockEnd' && openBlock.instruction === 'block') {
-			const resultType = getBlockEndResultType(parsedLine);
+			const resultType = getResultTypeFromFirstArgument(parsedLine) as BlockBlockResultType;
 			openBlock.line.blockBlock = {
 				matchingBlockEndIndex: astIndex,
 				resultType,

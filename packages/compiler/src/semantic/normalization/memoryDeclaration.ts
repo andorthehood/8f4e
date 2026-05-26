@@ -5,7 +5,6 @@ import {
 	type CompilerASTLine,
 	type CompilationContext,
 	type MemoryDeclarationLine,
-	type ScalarMemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -38,10 +37,6 @@ function requireResolvedArrayValue(
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
 		}
 	}
-}
-
-function removeScalarDefault(line: ScalarMemoryDeclarationLine): ScalarMemoryDeclarationLine {
-	return { ...line, arguments: [line.arguments[0]] };
 }
 
 /**
@@ -82,7 +77,7 @@ export default function normalizeMemoryDeclaration(
 				(argument.referenceKind === 'intermodular-module-reference' ||
 					argument.referenceKind === 'intermodular-reference')
 			) {
-				normalized = removeScalarDefault(normalized);
+				normalized = { ...normalized, arguments: [normalized.arguments[0]] };
 			}
 		}
 	}
