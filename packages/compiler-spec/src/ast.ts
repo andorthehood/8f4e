@@ -6,6 +6,7 @@ import {
 	type ArrayDeclarationInstruction,
 	type ScalarMemoryDeclarationInstruction,
 } from './memory';
+import { semanticInstructionNames } from './instructions';
 
 import type {
 	Argument,
@@ -16,7 +17,7 @@ import type {
 } from './arguments';
 import type { FunctionSignature } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecs';
-import type { DocumentOnlyInstructionName, MacroInstructionName } from './instructions';
+import type { DocumentOnlyInstructionName, MacroInstructionName, SemanticInstructionName } from './instructions';
 
 type ClampAddressInstructionName = 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress';
 
@@ -25,14 +26,6 @@ export type ASTLineBase<Instruction extends string, Arguments extends Array<Argu
 	lineNumberAfterMacroExpansion: number;
 	instruction: Instruction;
 	arguments: Arguments;
-	isSemanticOnly?: boolean;
-	isMemoryDeclaration?: boolean;
-	isBlockPrologue?: boolean;
-	hasExplicitMemoryDefault?: boolean;
-	ifBlock?: IfBlockMetadata;
-	ifEndBlock?: IfEndBlockMetadata;
-	blockBlock?: BlockBlockMetadata;
-	blockEndBlock?: BlockEndBlockMetadata;
 };
 
 export type ParsedLineMetadata = Array<{ callSiteLineNumber: number; macroId?: string }>;
@@ -54,8 +47,12 @@ export interface IfEndBlockMetadata {
 	resultType: IfBlockResultType;
 }
 
-export type IfLine = ASTLineBase<'if', []>;
-export type IfEndLine = ASTLineBase<'ifEnd', [] | [ArgumentIdentifier]>;
+export type IfLine = ASTLineBase<'if', []> & {
+	ifBlock?: IfBlockMetadata;
+};
+export type IfEndLine = ASTLineBase<'ifEnd', [] | [ArgumentIdentifier]> & {
+	ifEndBlock?: IfEndBlockMetadata;
+};
 
 export type BlockBlockResultType = 'int' | 'float' | null;
 
@@ -69,8 +66,12 @@ export interface BlockEndBlockMetadata {
 	resultType: BlockBlockResultType;
 }
 
-export type BlockLine = ASTLineBase<'block', []>;
-export type BlockEndLine = ASTLineBase<'blockEnd', [] | [ArgumentIdentifier]>;
+export type BlockLine = ASTLineBase<'block', []> & {
+	blockBlock?: BlockBlockMetadata;
+};
+export type BlockEndLine = ASTLineBase<'blockEnd', [] | [ArgumentIdentifier]> & {
+	blockEndBlock?: BlockEndBlockMetadata;
+};
 export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
 
 export type FunctionLine = ASTLineBase<'function', [ArgumentIdentifier]>;
@@ -107,19 +108,30 @@ export type MapLine = ASTLineBase<'map', [MapValueArgument, MapValueArgument]>;
 
 export type DefaultLine = ASTLineBase<'default', [CompileTimeValueArgument]>;
 
+type CompilerDirectivePrologueMetadata = {
+	isBlockPrologue?: true;
+};
+
 export type LoopLine = ASTLineBase<'loop', [] | [ArgumentLiteral]>;
 export type LoopEndLine = ASTLineBase<'loopEnd', []>;
 export type LoopIndexLine = ASTLineBase<'loopIndex', []>;
 export type ElseLine = ASTLineBase<'else', []>;
 export type ReturnLine = ASTLineBase<'return', []>;
-export type LoopCapLine = ASTLineBase<'#loopCap', [ArgumentLiteral]>;
-export type ImpureLine = ASTLineBase<'#impure', []>;
-export type ExportLine = ASTLineBase<'#export', [] | [ArgumentIdentifier]>;
-export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLiteral]>;
-export type SkipExecutionLine = ASTLineBase<'#skipExecution', []>;
-export type InitOnlyLine = ASTLineBase<'#initOnly', []>;
+export type LoopCapLine = ASTLineBase<'#loopCap', [ArgumentLiteral]> & CompilerDirectivePrologueMetadata;
+export type ImpureLine = ASTLineBase<'#impure', []> & CompilerDirectivePrologueMetadata;
+export type ExportLine = ASTLineBase<'#export', [] | [ArgumentIdentifier]> & CompilerDirectivePrologueMetadata;
+export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLiteral]> &
+	CompilerDirectivePrologueMetadata;
+export type SkipExecutionLine = ASTLineBase<'#skipExecution', []> & CompilerDirectivePrologueMetadata;
+export type InitOnlyLine = ASTLineBase<'#initOnly', []> & CompilerDirectivePrologueMetadata;
 export type ClampAddressLine = ASTLineBase<ClampAddressInstructionName, [] | [CompileTimeValueArgument]>;
-export type NoSourceArgumentLine = ASTLineBase<NoSourceArgumentInstructionName, []>;
+export type CompilerDirectiveLine =
+	| LoopCapLine
+	| ImpureLine
+	| ExportLine
+	| RegionLine
+	| SkipExecutionLine
+	| InitOnlyLine;
 
 export type MemoryDeclarationArgument =
 	| ArgumentLiteral
@@ -131,10 +143,15 @@ type ReferencedModuleIdsMetadata = {
 	referencedModuleIds?: readonly string[];
 };
 
+type ExplicitMemoryDefaultMetadata = {
+	hasExplicitMemoryDefault: boolean;
+};
+
 export type ScalarMemoryDeclarationLine = ASTLineBase<
 	ScalarMemoryDeclarationInstruction,
 	[MemoryDeclarationArgument, ...MemoryDeclarationArgument[]]
 > &
+	ExplicitMemoryDefaultMetadata &
 	ReferencedModuleIdsMetadata &
 	ReferencedNamespaceIdsMetadata;
 export type NamedScalarMemoryDeclarationLine = Omit<ScalarMemoryDeclarationLine, 'arguments'> & {
@@ -144,11 +161,21 @@ export type ArrayMemoryDeclarationLine = ASTLineBase<
 	ArrayDeclarationInstruction,
 	[ArgumentIdentifier, CompileTimeValueArgument, ...MemoryDeclarationArgument[]]
 > &
+	ExplicitMemoryDefaultMetadata &
 	ReferencedModuleIdsMetadata &
 	ReferencedNamespaceIdsMetadata;
 export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDeclarationLine;
 
-type ExplicitCompilerASTLine =
+export type SemanticInstructionLine =
+	| ConstLine
+	| UseLine
+	| ModuleLine
+	| RegionLine
+	| ModuleEndLine
+	| ConstantsLine
+	| ConstantsEndLine;
+
+type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| PushLine
 	| IfLine
 	| IfEndLine
@@ -189,14 +216,20 @@ type ExplicitCompilerASTLine =
 	| SkipExecutionLine
 	| InitOnlyLine
 	| ClampAddressLine
-	| NoSourceArgumentLine
 	| MemoryDeclarationLine;
+
+type GenericNoSourceArgumentInstructionName = Exclude<
+	NoSourceArgumentInstructionName,
+	ExplicitCompilerASTLineWithoutGenericNoSource['instruction']
+>;
+
+export type NoSourceArgumentLine = ASTLineBase<GenericNoSourceArgumentInstructionName, []>;
+
+type ExplicitCompilerASTLine = ExplicitCompilerASTLineWithoutGenericNoSource | NoSourceArgumentLine;
 
 export type CompilerASTLine =
 	| ExplicitCompilerASTLine
 	| ASTLineBase<MacroInstructionName | DocumentOnlyInstructionName, Array<Argument>>;
-
-export type ASTLine = CompilerASTLine;
 
 export type CompilerASTLines = CompilerASTLine[];
 
@@ -243,37 +276,14 @@ export type AST = ModuleAST | FunctionAST | ConstantsAST;
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
 const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
+const semanticInstructionSet = new Set<string>(semanticInstructionNames);
 
-export function isFunctionLine(line: CompilerASTLine | undefined): line is FunctionLine {
-	return line?.instruction === 'function';
+export function isSemanticInstructionLine(line: CompilerASTLine | undefined): line is SemanticInstructionLine {
+	return line !== undefined && semanticInstructionSet.has(line.instruction as SemanticInstructionName);
 }
 
-export function isFunctionEndLine(line: CompilerASTLine | undefined): line is FunctionEndLine {
-	return line?.instruction === 'functionEnd';
-}
-
-export function isParamLine(line: CompilerASTLine | undefined): line is ParamLine {
-	return line?.instruction === 'param';
-}
-
-export function isModuleLine(line: CompilerASTLine | undefined): line is ModuleLine {
-	return line?.instruction === 'module';
-}
-
-export function isConstantsLine(line: CompilerASTLine | undefined): line is ConstantsLine {
-	return line?.instruction === 'constants';
-}
-
-export function isUseLine(line: CompilerASTLine | undefined): line is UseLine {
-	return line?.instruction === 'use';
-}
-
-export function isIfEndLine(line: CompilerASTLine | undefined): line is IfEndLine {
-	return line?.instruction === 'ifEnd';
-}
-
-export function isBlockEndLine(line: CompilerASTLine | undefined): line is BlockEndLine {
-	return line?.instruction === 'blockEnd';
+export function isCompilerDirectiveLine(line: CompilerASTLine | undefined): line is CompilerDirectiveLine {
+	return line !== undefined && line.instruction.startsWith('#');
 }
 
 export function isMemoryDeclarationLine(line: CompilerASTLine | undefined): line is MemoryDeclarationLine {

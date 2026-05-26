@@ -7,6 +7,7 @@ import type {
 	ArgumentStringLiteral,
 } from './arguments';
 import type {
+	ArrayMemoryDeclarationLine,
 	CallLine,
 	CompilerASTLine,
 	ConstLine,
@@ -224,22 +225,13 @@ export type ArrayDeclarationInitializerArgument =
 	| ArgumentIdentifier
 	| NormalizedArgumentLiteral;
 
-export type ArrayDeclarationLine = Omit<CompilerASTLine, 'instruction' | 'arguments'> & {
+export type ArrayDeclarationLine = Omit<ArrayMemoryDeclarationLine, 'instruction' | 'arguments'> & {
 	instruction: ArrayDeclarationInstruction;
 	arguments: [ArgumentIdentifier, ArgumentLiteral, ...ArrayDeclarationInitializerArgument[]];
 };
 
 export type NormalizedSemanticInstructionLine =
 	| NormalizedConstLine
-	| UseLine
-	| ModuleLine
-	| RegionLine
-	| ModuleEndLine
-	| ConstantsLine
-	| ConstantsEndLine;
-
-export type ParsedSemanticInstructionLine =
-	| ConstLine
 	| UseLine
 	| ModuleLine
 	| RegionLine

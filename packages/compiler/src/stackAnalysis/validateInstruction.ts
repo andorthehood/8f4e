@@ -1,4 +1,4 @@
-import { instructionSpecs } from '@8f4e/compiler-spec';
+import { instructionSpecs, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { peekStackOperands } from './peekStackOperands';
@@ -10,7 +10,7 @@ import { getError } from '../compilerError';
 import type { CompilerASTLine, CompilationContext, InstructionSpec, InstructionSpecName } from '@8f4e/compiler-spec';
 
 function resolveInstructionSpec(line: CompilerASTLine): InstructionSpec | undefined {
-	if (line.isMemoryDeclaration) {
+	if (isMemoryDeclarationLine(line)) {
 		return instructionSpecs.memoryDeclaration;
 	}
 
