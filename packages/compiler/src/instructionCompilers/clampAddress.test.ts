@@ -34,7 +34,8 @@ describe('clamp address instruction compilers', () => {
 	it('clamps to tracked address range metadata using the global alignment boundary by default', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: true,
 			knownIntegerValue: 1024,
 			address: { clampRange: range },
@@ -44,7 +45,8 @@ describe('clamp address instruction compilers', () => {
 
 		expect(context.stack).toEqual([
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: true,
 				knownIntegerValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
 				address: {
@@ -61,7 +63,8 @@ describe('clamp address instruction compilers', () => {
 	it('uses the optional access width when clamping to tracked address range metadata', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: true,
 			knownIntegerValue: 1024,
 			address: { clampRange: range },
@@ -71,7 +74,8 @@ describe('clamp address instruction compilers', () => {
 
 		expect(context.stack).toEqual([
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: true,
 				knownIntegerValue: 127,
 				address: {
@@ -93,7 +97,8 @@ describe('clamp address instruction compilers', () => {
 			memoryId: 'arr',
 		};
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: true,
 			knownIntegerValue: -1,
 			address: { clampRange: shiftedRange },
@@ -103,7 +108,8 @@ describe('clamp address instruction compilers', () => {
 
 		expect(context.stack).toEqual([
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: true,
 				knownIntegerValue: 64,
 				address: {
@@ -119,7 +125,7 @@ describe('clamp address instruction compilers', () => {
 
 	it('throws when clampAddress has no address range metadata', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		expect(() => analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.ADDRESS_RANGE_REQUIRED })
@@ -135,13 +141,14 @@ describe('clamp address instruction compilers', () => {
 				moduleName: 'osc',
 			},
 		});
-		context.stack.push({ isInteger: true, isNonZero: true, knownIntegerValue: 999 });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 999 });
 
 		analyzeAndCompileInstruction(clampModuleAddress, createLine('clampModuleAddress'), context);
 
 		expect(context.stack).toEqual([
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: true,
 				knownIntegerValue: 92,
 				address: {
@@ -163,13 +170,14 @@ describe('clamp address instruction compilers', () => {
 
 	it('clamps to the full global memory range', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true, knownIntegerValue: 1024 });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1024 });
 
 		analyzeAndCompileInstruction(clampGlobalAddress, createLine('clampGlobalAddress'), context);
 
 		expect(context.stack).toEqual([
 			{
-				isInteger: true,
+				kind: 'address',
+				valueType: 'int',
 				isNonZero: false,
 				address: {
 					memoryIndex: 0,
@@ -200,7 +208,8 @@ describe('clamp address instruction compilers', () => {
 	it('rejects access widths larger than the tracked range', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: false,
 			address: {
 				clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },

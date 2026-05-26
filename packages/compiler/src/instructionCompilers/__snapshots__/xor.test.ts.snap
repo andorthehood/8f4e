@@ -7,8 +7,9 @@ exports[`xor instruction compiler > emits I32_XOR for integer operands 1`] = `
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

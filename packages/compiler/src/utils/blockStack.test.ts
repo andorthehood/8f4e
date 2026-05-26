@@ -22,7 +22,7 @@ describe('blockStack utilities', () => {
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
 		loopCounterLocalName: '__loopCounter1',
-		loopCounterLocal: { isInteger: true, index: 0 },
+		loopCounterLocal: { kind: 'value', valueType: 'int', index: 0 },
 	};
 	const mockGenericBlock: BlockStack[number] = {
 		blockType: BlockType.BLOCK,

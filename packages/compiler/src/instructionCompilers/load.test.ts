@@ -11,10 +11,18 @@ describe('load instruction compiler', () => {
 	it('loads from a safe memory address', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: false,
 			address: {
-				safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+				memoryIndex: 0,
+				safeRange: {
+					source: 'memory-start',
+					memoryIndex: 0,
+					byteAddress: 0,
+					safeByteLength: 4,
+					memoryId: 'test',
+				},
 			},
 		});
 
@@ -37,10 +45,7 @@ describe('load instruction compiler', () => {
 
 	it('loads from an unsafe memory address with a bounds guard', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({
-			isInteger: true,
-			isNonZero: false,
-		});
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			load,
@@ -62,10 +67,18 @@ describe('load instruction compiler', () => {
 	it('guards when address metadata is shorter than the access width', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: false,
 			address: {
-				safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'test' },
+				memoryIndex: 0,
+				safeRange: {
+					source: 'memory-start',
+					memoryIndex: 0,
+					byteAddress: 0,
+					safeByteLength: 2,
+					memoryId: 'test',
+				},
 			},
 		});
 
@@ -86,9 +99,11 @@ describe('load instruction compiler', () => {
 	it('does not guard when an explicit clamp proves the access width is safe', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			isInteger: true,
+			kind: 'address',
+			valueType: 'int',
 			isNonZero: false,
 			address: {
+				memoryIndex: 0,
 				safeAccessByteWidth: 4,
 			},
 		});

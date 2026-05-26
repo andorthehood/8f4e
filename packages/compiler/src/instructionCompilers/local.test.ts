@@ -86,7 +86,6 @@ describe('local instruction compiler', () => {
 		);
 
 		expect(context.locals.cursor).toMatchObject({
-			isInteger: true,
 			pointeeBaseType: 'float64',
 			isPointingToPointer: true,
 			index: 0,

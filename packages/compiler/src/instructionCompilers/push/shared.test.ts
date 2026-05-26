@@ -17,13 +17,10 @@ describe('push shared helpers', () => {
 	});
 
 	it('creates stack items with expected shape', () => {
-		expect(kindToStackItem('int32', { isNonZero: true })).toEqual({
-			isInteger: true,
-			isNonZero: true,
-		});
+		expect(kindToStackItem('int32', { isNonZero: true })).toEqual({ kind: 'value', valueType: 'int', isNonZero: true });
 		expect(kindToStackItem('float64', { isNonZero: false })).toEqual({
-			isInteger: false,
-			isFloat64: true,
+			kind: 'value',
+			valueType: 'float64',
 			isNonZero: false,
 		});
 	});

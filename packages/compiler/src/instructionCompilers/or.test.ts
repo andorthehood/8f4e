@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('or instruction compiler', () => {
 	it('emits I32_OR and tracks non-zero state', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: true });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: true }
+		);
 
 		analyzeAndCompileInstruction(
 			or,
@@ -31,8 +34,8 @@ describe('or instruction compiler', () => {
 	it('keeps known integer metadata when or-ing known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 },
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 3 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 3 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -46,6 +49,6 @@ describe('or instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 7 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 }]);
 	});
 });

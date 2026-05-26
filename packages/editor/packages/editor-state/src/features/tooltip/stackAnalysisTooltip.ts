@@ -54,12 +54,10 @@ export function getStackValueHighlightRange(line: string): TooltipHighlightRange
 function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 	let label: string;
 
-	if (item.address || item.pointeeBaseType || item.isPointingToPointer) {
+	if (item.kind === 'address') {
 		label = 'ptr';
-	} else if (item.isFloat64) {
-		label = 'float64';
 	} else {
-		label = item.isInteger ? 'int' : 'float';
+		label = item.valueType;
 	}
 
 	const valueLabel = item.knownIntegerValue === undefined ? label : `${label}=${item.knownIntegerValue}`;

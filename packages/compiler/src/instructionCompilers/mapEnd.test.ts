@@ -31,7 +31,7 @@ describe('mapEnd instruction compiler', () => {
 				},
 			],
 		});
-		context.stack.push({ isInteger: true });
+		context.stack.push({ kind: 'value', valueType: 'int' });
 
 		expect(() => {
 			analyzeAndCompileInstruction(
@@ -49,7 +49,7 @@ describe('mapEnd instruction compiler', () => {
 
 	it('throws when used outside a map block', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true });
+		context.stack.push({ kind: 'value', valueType: 'int' });
 
 		expect(() => {
 			analyzeAndCompileInstruction(
@@ -86,7 +86,7 @@ describe('mapEnd instruction compiler', () => {
 				},
 			],
 		});
-		context.stack.push({ isInteger: true });
+		context.stack.push({ kind: 'value', valueType: 'int' });
 
 		analyzeAndCompileInstruction(
 			mapEnd,

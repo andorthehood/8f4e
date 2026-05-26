@@ -10,7 +10,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('and instruction compiler', () => {
 	it('emits I32_AND for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			and,
@@ -31,7 +34,10 @@ describe('and instruction compiler', () => {
 
 	it('rejects non-integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'float', isNonZero: false },
+			{ kind: 'value', valueType: 'float', isNonZero: false }
+		);
 		const line = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
@@ -47,8 +53,8 @@ describe('and instruction compiler', () => {
 	it('keeps known integer metadata when and-ing known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 6 },
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 3 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 6 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 3 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -62,6 +68,6 @@ describe('and instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 }]);
 	});
 });

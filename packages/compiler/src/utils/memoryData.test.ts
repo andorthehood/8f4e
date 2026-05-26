@@ -294,7 +294,6 @@ describe('memoryData utilities', () => {
 				val: {
 					elementWordSize: 8,
 					isInteger: false,
-					isFloat64: true,
 				} as unknown as MemoryMap[string],
 			};
 			expect(getElementMaxValue(memory, 'val')).toBe(1.7976931348623157e308);
@@ -361,7 +360,6 @@ describe('memoryData utilities', () => {
 				val: {
 					elementWordSize: 8,
 					isInteger: false,
-					isFloat64: true,
 				} as unknown as MemoryMap[string],
 			};
 			expect(getElementMinValue(memory, 'val')).toBe(-1.7976931348623157e308);

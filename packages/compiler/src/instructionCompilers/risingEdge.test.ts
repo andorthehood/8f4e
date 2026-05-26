@@ -9,7 +9,7 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('risingEdge instruction compiler', () => {
 	it('compiles the rising edge segment', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			risingEdge,
@@ -32,7 +32,7 @@ describe('risingEdge instruction compiler', () => {
 
 	it('compiles the rising edge segment for float operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			risingEdge,

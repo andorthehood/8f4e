@@ -25,18 +25,19 @@ const risingEdge: InstructionCompiler = (line, context) => {
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const currentValueName = '__risingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
 	const previousValueName = '__risingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
-	const memoryType = operand.isInteger ? 'int' : 'float';
+	const isInteger = operand.valueType === 'int';
+	const memoryType = isInteger ? 'int' : 'float';
 	const previousValue = allocateInternalResource(context, previousValueName, memoryType);
 	const currentValueLocalIndex = Object.keys(context.locals).length;
 
 	context.locals[currentValueName] = {
-		isInteger: operand.isInteger,
+		isInteger,
 		index: currentValueLocalIndex,
 	};
 
-	const loadByteCode = operand.isInteger ? i32load() : f32load();
-	const comparisonByteCode = operand.isInteger ? WASM_I32_GT_S : WASM_F32_GT;
-	const storeByteCode = operand.isInteger ? i32store() : f32store();
+	const loadByteCode = isInteger ? i32load() : f32load();
+	const comparisonByteCode = isInteger ? WASM_I32_GT_S : WASM_F32_GT;
+	const storeByteCode = isInteger ? i32store() : f32store();
 
 	return saveByteCode(context, [
 		...localSet(currentValueLocalIndex),

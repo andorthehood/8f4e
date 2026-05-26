@@ -30,8 +30,9 @@ exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`
   "memory": {},
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }
