@@ -65,6 +65,7 @@ Active todo files are listed below.
 | 410 | Consolidate release action commits | 🟡 | 2-4h | 2026-05-19 | The release workflow currently creates separate version, bundle-size, bytecode-size, and compiler-coverage commits; collapse these into one release commit or one version commit plus one metrics commit. |
 | 424 | Rename layout word fields to allocation-unit terminology | 🟡 | 4-8h | 2026-05-26 | Separate typed word-size metadata from compiler allocation-grid layout by renaming the 4-byte layout constant and word-aligned fields to allocation-unit terminology. |
 | 425 | Split StackItem into value and address variants | 🟡 | 1-2d | 2026-05-26 | Replace the broad optional-field `StackItem` shape with a discriminated `value | address` union so memory codegen can use narrowed address metadata without optional-chain fallbacks. |
+| 426 | Decide compiler broad type splitting strategy | 🟡 | 2-4h | 2026-05-26 | Decide migration boundaries for broad compiler-spec shapes such as `DataStructure`, `LocalBinding`, `CompilationContext`, `MapBlockState`, `CollectedNamespace`, and address-bearing constants before implementing more type splits. |
 
 ### 🟢 Low Priority
 
