@@ -2,9 +2,9 @@ import {
 	clampAddressByteCode,
 	getClampAccessByteWidth,
 	getModuleAddressRange,
-	linearUpperByteAddressCode,
 	rangeUpperByteAddressCode,
 } from './utils/addressClamp';
+import { linearLastValidStartAddress } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
 
 import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
@@ -44,7 +44,7 @@ export const clampGlobalAddress: InstructionCompiler = (line, context) => {
 			context,
 			line,
 			0,
-			linearUpperByteAddressCode(accessByteWidth, operand.address?.memoryIndex ?? 0)
+			linearLastValidStartAddress(accessByteWidth, operand.address?.memoryIndex ?? 0)
 		)
 	);
 };

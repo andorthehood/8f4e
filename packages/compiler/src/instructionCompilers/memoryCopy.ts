@@ -4,7 +4,6 @@ import { getInstructionSpec } from '@8f4e/compiler-spec';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedMemoryCopy, isSafeMemoryCopy } from './utils/memoryAccessGuard';
-import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
 import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compiler-spec';
 
@@ -19,8 +18,8 @@ const memoryCopy: InstructionCompiler<NormalizedMemoryCopyLine> = (line, context
 	const destination = line.stackAnalysis.consumedOperands[destinationIndex];
 	const source = line.stackAnalysis.consumedOperands[destinationIndex + 1];
 	const byteLength = line.arguments[0].value;
-	const destinationMemoryIndex = getAddressMemoryIndex(destination);
-	const sourceMemoryIndex = getAddressMemoryIndex(source);
+	const destinationMemoryIndex = destination.address?.memoryIndex ?? 0;
+	const sourceMemoryIndex = source.address?.memoryIndex ?? 0;
 	const memoryCopyByteCode = wasmMemoryCopy(destinationMemoryIndex, sourceMemoryIndex);
 
 	if (byteLength === 0) {

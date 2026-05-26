@@ -1,6 +1,6 @@
 import { i32const, localGet, localSet, WASM_I32_GT_U, WASM_I32_LT_S, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
 
-import { getOrCreateMemoryGuardLocal, linearLastValidStartAddress } from './memoryAccessGuard';
+import { getOrCreateMemoryGuardLocal } from './memoryAccessGuard';
 
 export { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../../utils/addressClamp';
 
@@ -36,8 +36,4 @@ export function clampAddressByteCode(
 
 export function rangeUpperByteAddressCode(range: MemoryAddressRange, accessByteWidth: number): number[] {
 	return i32const(range.byteAddress + Math.max(0, range.safeByteLength - accessByteWidth));
-}
-
-export function linearUpperByteAddressCode(accessByteWidth: number, memoryIndex = 0): number[] {
-	return linearLastValidStartAddress(accessByteWidth, memoryIndex);
 }
