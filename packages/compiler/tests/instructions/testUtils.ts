@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, test } from 'vitest';
 import wabt from 'wabt';
-import { compileToAST } from '@8f4e/tokenizer';
+import { compileToASTGroup } from '@8f4e/tokenizer';
 import {
 	createCodeSection,
 	createExportSection,
@@ -71,8 +71,11 @@ export function setInitialMemory(memory: DataView, module: CompiledModule): void
 }
 
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
-	const ast = compileToAST(sourceCode.split('\n'));
-	const module: CompiledModule = compileModules([ast], {
+	const parsedAst = compileToASTGroup(sourceCode.split('\n'));
+	if (parsedAst.type === 'function') {
+		throw new Error('Expected module AST.');
+	}
+	const module: CompiledModule = compileModules([parsedAst], {
 		startingMemoryWordAddress: 0,
 		includeAST: true,
 	})[0];
@@ -160,6 +163,8 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).get = memoryGet;
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).set = memorySet;
 
+	const compiledAst = module.ast ?? parsedAst;
+
 	return {
 		memory: memoryBuffer as unknown as MemoryBuffer & {
 			get: (address: number | string) => number;
@@ -172,7 +177,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		wat,
 		program,
 		memoryMap: module.memoryMap,
-		ast: module.ast || ast,
+		ast: compiledAst,
 	};
 }
 
@@ -322,6 +327,11 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).get = memoryGet;
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).set = memorySet;
 
+	const compiledAst = module.ast ?? result.compiledModules[Object.keys(result.compiledModules)[0]].ast;
+	if (!compiledAst) {
+		throw new Error('Expected includeAST: true to include compiled module AST.');
+	}
+
 	return {
 		memory: memoryBuffer as unknown as MemoryBuffer & {
 			get: (address: number | string) => number;
@@ -334,7 +344,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 		wat,
 		program,
 		memoryMap: module.memoryMap,
-		ast: module.ast || result.compiledModules[Object.keys(result.compiledModules)[0]].ast!,
+		ast: compiledAst,
 	};
 }
 

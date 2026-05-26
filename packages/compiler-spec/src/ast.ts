@@ -14,6 +14,7 @@ import type {
 	ArgumentLiteral,
 	ArgumentStringLiteral,
 } from './arguments';
+import type { FunctionSignature } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecs';
 import type { DocumentOnlyInstructionName, MacroInstructionName } from './instructions';
 
@@ -190,6 +191,43 @@ export type ModuleAst = [ModuleLine, ...CompilerASTLine[], ModuleEndLine];
 export type FunctionAst = [FunctionLine, ...CompilerASTLine[], FunctionEndLine];
 export type ConstantsAst = [ConstantsLine, ...CompilerASTLine[], ConstantsEndLine];
 export type CompilerSourceAst = ModuleAst | FunctionAst | ConstantsAst;
+
+export interface ModuleAST {
+	type: 'module';
+	id: string;
+	lines: AST;
+	moduleLine: ModuleLine;
+	regionLine?: RegionLine;
+	memoryDeclarationLines: readonly MemoryDeclarationLine[];
+	referencedModuleIds: readonly string[];
+}
+
+export interface FunctionAST {
+	type: 'function';
+	id: string;
+	lines: AST;
+	functionLine: FunctionLine;
+	functionEndLine: FunctionEndLine;
+	signature: FunctionSignature;
+	exportLine?: ExportLine;
+	exportName?: string;
+}
+
+export interface ConstantsAST {
+	type: 'constants';
+	id: string;
+	lines: AST;
+	constantsLine: ConstantsLine;
+}
+
+export type CompiledModuleAST = ModuleAST | ConstantsAST;
+export type CompilerASTGroup = CompiledModuleAST | FunctionAST;
+
+export interface CompilerASTBatch {
+	modules: readonly CompiledModuleAST[];
+	functions: readonly FunctionAST[];
+	functionsById: ReadonlyMap<string, FunctionAST>;
+}
 
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
 const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);
