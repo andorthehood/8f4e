@@ -628,5 +628,20 @@
 			"gzip": 7997,
 			"brotli": 7043
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-05-26T17:47:45.354Z",
+		"commit": "56f1e11256f9518f6d80c31e5960e13680378f36",
+		"branch": "main",
+		"releaseTag": "@8f4e/web-ui@1.1.7",
+		"packageName": "@8f4e/web-ui",
+		"projectName": "@8f4e/web-ui",
+		"version": "1.1.7",
+		"bytes": {
+			"raw": 29188,
+			"gzip": 7997,
+			"brotli": 7043
+		}
 	}
 ]
