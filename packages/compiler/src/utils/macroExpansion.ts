@@ -3,13 +3,13 @@ import { ErrorCode, documentBlockInstructionByType } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
-import type { AST, ExpandedLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, ExpandedLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
 
 const macroDefinitionInstruction = documentBlockInstructionByType.macro.start;
 const macroDefinitionEndInstruction = documentBlockInstructionByType.macro.end;
 const macroCallInstruction = documentBlockInstructionByType.macro.type;
 
-function createMacroErrorLine(lineIndex: number): AST[number] {
+function createMacroErrorLine(lineIndex: number): CompilerASTLine {
 	return {
 		lineNumberBeforeMacroExpansion: lineIndex,
 		lineNumberAfterMacroExpansion: lineIndex,

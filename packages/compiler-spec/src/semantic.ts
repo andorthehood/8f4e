@@ -7,8 +7,8 @@ import type {
 	ArgumentStringLiteral,
 } from './arguments';
 import type {
-	AST,
 	CallLine,
+	CompilerASTLine,
 	ConstLine,
 	ConstantsEndLine,
 	ConstantsLine,
@@ -196,7 +196,7 @@ export interface StackAnalysisResult {
 	droppedStackItems?: Stack;
 }
 
-export type AnalyzedLine<TLine extends AST[number] = AST[number]> = TLine & {
+export type AnalyzedLine<TLine extends CompilerASTLine = CompilerASTLine> = TLine & {
 	stackAnalysis: StackAnalysisResult;
 };
 
@@ -224,7 +224,7 @@ export type ArrayDeclarationInitializerArgument =
 	| ArgumentIdentifier
 	| NormalizedArgumentLiteral;
 
-export type ArrayDeclarationLine = Omit<AST[number], 'instruction' | 'arguments'> & {
+export type ArrayDeclarationLine = Omit<CompilerASTLine, 'instruction' | 'arguments'> & {
 	instruction: ArrayDeclarationInstruction;
 	arguments: [ArgumentIdentifier, ArgumentLiteral, ...ArrayDeclarationInitializerArgument[]];
 };
@@ -307,7 +307,7 @@ export type ResolvedCallLine = CallLine & {
 	targetFunction: FunctionMetadata;
 };
 
-export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
+export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstLine
 	? NormalizedConstLine
 	: TLine extends DefaultLine
 		? NormalizedDefaultLine | DefaultLine
@@ -402,6 +402,6 @@ export type BlockStackFrame =
 export type BlockStack = BlockStackFrame[];
 
 export type InstructionCompiler<
-	TLine extends AST[number] = AST[number],
+	TLine extends CompilerASTLine = CompilerASTLine,
 	TContext extends CodegenContext = CodegenContext,
 > = (line: AnalyzedLine<TLine>, context: TContext) => TContext;

@@ -4,7 +4,7 @@ import _if from './if';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('if instruction compiler', () => {
 	it('emits a void if block when the matching ifEnd declares no result', () => {
@@ -19,7 +19,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultType: null, hasElse: false },
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -41,7 +41,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultType: null, hasElse: false },
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -63,7 +63,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultType: 'float', hasElse: false },
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -85,7 +85,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultType: 'int', hasElse: false },
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

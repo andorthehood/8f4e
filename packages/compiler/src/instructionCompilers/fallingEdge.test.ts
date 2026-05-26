@@ -4,7 +4,7 @@ import fallingEdge from './fallingEdge';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('fallingEdge instruction compiler', () => {
 	it('compiles the falling edge segment', () => {
@@ -18,7 +18,7 @@ describe('fallingEdge instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 5,
 				instruction: 'fallingEdge',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

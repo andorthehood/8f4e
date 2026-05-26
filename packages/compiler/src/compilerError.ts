@@ -19,7 +19,13 @@
 
 import { ErrorCode, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
 
-import type { AST, CodegenContext, CompilationContext, CompilerStageError, ErrorCodeValue } from '@8f4e/compiler-spec';
+import type {
+	CompilerASTLine,
+	CodegenContext,
+	CompilationContext,
+	CompilerStageError,
+	ErrorCodeValue,
+} from '@8f4e/compiler-spec';
 
 export { ErrorCode };
 
@@ -29,7 +35,7 @@ interface ErrorDetails {
 
 export function getError(
 	code: ErrorCodeValue,
-	line: AST[number],
+	line: CompilerASTLine,
 	context?: CodegenContext | CompilationContext,
 	details?: ErrorDetails
 ): CompilerStageError {

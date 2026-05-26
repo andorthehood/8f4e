@@ -1,5 +1,5 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { CompiledModuleAST, FunctionAST } from './ast';
+import type { ModuleCompilationAST, FunctionAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionSignature } from './functionTypes';
 import type { InternalResourceMap, MemoryMap } from './memory';
@@ -24,7 +24,7 @@ export interface CompiledModule {
 	memoryMap: MemoryMap;
 	internalResources?: InternalResourceMap;
 	wordAlignedSize: number;
-	ast?: CompiledModuleAST;
+	ast?: ModuleCompilationAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
@@ -67,7 +67,7 @@ export interface CompiledFunction extends FunctionMetadata {
 export type CompiledFunctionLookup = Record<string, CompiledFunction>;
 
 export interface CompilerCache {
-	ast: ASTCache<CompiledModuleAST | FunctionAST>;
+	ast: ASTCache<ModuleCompilationAST | FunctionAST>;
 }
 
 export type CompileResult = {

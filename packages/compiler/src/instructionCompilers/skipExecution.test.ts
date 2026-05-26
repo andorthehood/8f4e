@@ -5,7 +5,7 @@ import skipExecution from './skipExecution';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('skipExecution instruction compiler', () => {
 	it('sets skipExecutionInCycle flag when in module context', () => {
@@ -27,7 +27,7 @@ describe('skipExecution instruction compiler', () => {
 				instruction: '#skipExecution',
 				arguments: [],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -47,7 +47,7 @@ describe('skipExecution instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: '#skipExecution',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrow();
@@ -72,7 +72,7 @@ describe('skipExecution instruction compiler', () => {
 				instruction: '#skipExecution',
 				arguments: [],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -86,7 +86,7 @@ describe('skipExecution instruction compiler', () => {
 				instruction: '#skipExecution',
 				arguments: [],
 				isBlockPrologue: true,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

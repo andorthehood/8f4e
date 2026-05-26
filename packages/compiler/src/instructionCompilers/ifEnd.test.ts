@@ -5,7 +5,7 @@ import ifEnd from './ifEnd';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('ifEnd instruction compiler', () => {
 	it('ends a conditional block with result', () => {
@@ -28,7 +28,7 @@ describe('ifEnd instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'ifEnd',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -50,7 +50,7 @@ describe('ifEnd instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'ifEnd',
 					arguments: [],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

@@ -1,6 +1,6 @@
 import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, it, expect } from 'vitest';
-import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-spec';
+import { ArgumentType, type CompilationContext, type CompilerASTLine } from '@8f4e/compiler-spec';
 
 import parseMemoryInstructionArguments from './memoryInstructionParser';
 
@@ -19,7 +19,11 @@ describe('parseMemoryInstructionArguments', () => {
 			mode: 'module',
 		});
 
-	const createLine = (lineNumber: number, instruction: AST[number]['instruction'], args: AST[number]['arguments']) => ({
+	const createLine = (
+		lineNumber: number,
+		instruction: CompilerASTLine['instruction'],
+		args: CompilerASTLine['arguments']
+	) => ({
 		lineNumberBeforeMacroExpansion: lineNumber,
 		lineNumberAfterMacroExpansion: lineNumber,
 		instruction,

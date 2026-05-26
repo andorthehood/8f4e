@@ -5,7 +5,7 @@ import lessThan from './lessThan';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('lessThan instruction compiler', () => {
 	it('emits I32_LT_S for integer operands', () => {
@@ -19,7 +19,7 @@ describe('lessThan instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'lessThan',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -40,7 +40,7 @@ describe('lessThan instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'lessThan',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -64,7 +64,7 @@ describe('lessThan instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'lessThan',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

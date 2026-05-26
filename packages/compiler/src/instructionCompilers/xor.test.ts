@@ -4,7 +4,7 @@ import xor from './xor';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('xor instruction compiler', () => {
 	it('emits I32_XOR for integer operands', () => {
@@ -18,7 +18,7 @@ describe('xor instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'xor',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -42,7 +42,7 @@ describe('xor instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'xor',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

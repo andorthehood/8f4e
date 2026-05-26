@@ -5,7 +5,7 @@ import int from './int';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -19,7 +19,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
 				arguments: [classifyIdentifier('value')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -35,7 +35,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
 				arguments: [classifyIdentifier('value')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -51,7 +51,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
 				arguments: [classifyIdentifier('value')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -68,7 +68,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64',
 				arguments: [classifyIdentifier('a')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -79,7 +79,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'int',
 				arguments: [classifyIdentifier('x')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 		int(
@@ -88,7 +88,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 3,
 				instruction: 'int',
 				arguments: [classifyIdentifier('y')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 		int(
@@ -97,7 +97,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 4,
 				instruction: 'int',
 				arguments: [classifyIdentifier('z')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -108,7 +108,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 5,
 				instruction: 'float64',
 				arguments: [classifyIdentifier('b')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -126,7 +126,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64*',
 				arguments: [classifyIdentifier('ptr')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -146,7 +146,7 @@ describe('float64 instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'float64**',
 				arguments: [classifyIdentifier('pptr')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

@@ -7,11 +7,12 @@ import compile, {
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
-	type AST,
+	type CompilerASTLine,
+	type CompilerASTLines,
 	type CompileOptions,
 	type CompilationContext,
 	type CompilerSourceBlockType,
-	type CompiledModuleAST,
+	type ModuleCompilationAST,
 } from '@8f4e/compiler-spec';
 
 import type { ProjectInput } from '../shared/types';
@@ -51,7 +52,7 @@ function serializeStack(context: CompilationContext): string[] {
 	});
 }
 
-function serializeArguments(line: AST[number]): InstructionTraceEntry['arguments'] {
+function serializeArguments(line: CompilerASTLine): InstructionTraceEntry['arguments'] {
 	return line.arguments.map(argument => {
 		if (argument.type === 'identifier') {
 			return {
@@ -87,7 +88,12 @@ const constantsBlockType = 'constants';
 const functionBlockType = 'function';
 const moduleBlockType = 'module';
 
-function traceAst(id: string, kind: BlockTrace['kind'], ast: AST, context: CompilationContext): BlockTrace {
+function traceAst(
+	id: string,
+	kind: BlockTrace['kind'],
+	ast: CompilerASTLines,
+	context: CompilationContext
+): BlockTrace {
 	const entries: InstructionTraceEntry[] = [];
 
 	for (const line of ast) {
@@ -141,7 +147,7 @@ export default function traceInstructionFlow(
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
 	const moduleAsts = compiledModules
 		.map(module => module.ast)
-		.filter((ast): ast is CompiledModuleAST => ast !== undefined);
+		.filter((ast): ast is ModuleCompilationAST => ast !== undefined);
 	const namespaces = collectNamespacesFromASTs(
 		moduleAsts,
 		undefined,

@@ -7,9 +7,9 @@ import { validateScope } from './validateScope';
 
 import { getError } from '../compilerError';
 
-import type { AST, CompilationContext, InstructionSpec, InstructionSpecName } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilationContext, InstructionSpec, InstructionSpecName } from '@8f4e/compiler-spec';
 
-function resolveInstructionSpec(line: AST[number]): InstructionSpec | undefined {
+function resolveInstructionSpec(line: CompilerASTLine): InstructionSpec | undefined {
 	if (line.isMemoryDeclaration) {
 		return instructionSpecs.memoryDeclaration;
 	}
@@ -17,7 +17,7 @@ function resolveInstructionSpec(line: AST[number]): InstructionSpec | undefined 
 	return instructionSpecs[line.instruction as InstructionSpecName];
 }
 
-export function validateInstruction(line: AST[number], context: CompilationContext) {
+export function validateInstruction(line: CompilerASTLine, context: CompilationContext) {
 	const spec = resolveInstructionSpec(line);
 
 	if (!spec) {

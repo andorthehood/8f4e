@@ -1,28 +1,28 @@
-import { compileToASTGroup } from '@8f4e/tokenizer';
+import { compileToAST } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 
 import sortModules from './graphOptimizer';
 
-import type { CompiledModuleAST } from '@8f4e/compiler-spec';
+import type { ModuleCompilationAST } from '@8f4e/compiler-spec';
 
-function compileModuleAst(code: string[]): CompiledModuleAST {
-	const ast = compileToASTGroup(code);
+function compileModuleAst(code: string[]): ModuleCompilationAST {
+	const ast = compileToAST(code);
 	if (ast.type === 'function') {
 		throw new Error('Expected a module or constants AST.');
 	}
 	return ast;
 }
 
-const createModuleAst = (moduleId: string, references: string[] = []): CompiledModuleAST =>
+const createModuleAst = (moduleId: string, references: string[] = []): ModuleCompilationAST =>
 	compileModuleAst([
 		`module ${moduleId}`,
 		...references.map((reference, index) => `int value${index} ${reference}`),
 		'moduleEnd',
 	]);
 
-const createConstantsAst = (): CompiledModuleAST => compileModuleAst(['constants shared', 'constantsEnd']);
+const createConstantsAst = (): ModuleCompilationAST => compileModuleAst(['constants shared', 'constantsEnd']);
 
-const getModuleId = (ast: CompiledModuleAST): string => ast.id;
+const getModuleId = (ast: ModuleCompilationAST): string => ast.id;
 
 describe('sortModules', () => {
 	it('puts constants blocks first and sorts independent modules by module id', () => {

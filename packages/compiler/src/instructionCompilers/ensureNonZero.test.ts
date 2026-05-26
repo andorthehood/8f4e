@@ -5,7 +5,7 @@ import ensureNonZero from './ensureNonZero';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('ensureNonZero instruction compiler', () => {
 	it('ensures integer operand is non-zero', () => {
@@ -19,7 +19,7 @@ describe('ensureNonZero instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'ensureNonZero',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -41,7 +41,7 @@ describe('ensureNonZero instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'ensureNonZero',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false }],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -70,7 +70,7 @@ describe('ensureNonZero instruction compiler', () => {
 						isFloat64: true,
 					},
 				],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

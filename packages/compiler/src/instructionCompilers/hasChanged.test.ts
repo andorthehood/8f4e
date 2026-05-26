@@ -4,7 +4,7 @@ import hasChanged from './hasChanged';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('hasChanged instruction compiler', () => {
 	it('compiles the change detector segment', () => {
@@ -18,7 +18,7 @@ describe('hasChanged instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 3,
 				instruction: 'hasChanged',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

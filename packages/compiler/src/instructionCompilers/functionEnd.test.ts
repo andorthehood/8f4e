@@ -5,7 +5,7 @@ import functionEnd from './functionEnd';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST, FunctionTypeRegistry } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, FunctionTypeRegistry } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -36,7 +36,7 @@ describe('functionEnd instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'functionEnd',
 				arguments: [classifyIdentifier('int')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -79,7 +79,7 @@ describe('functionEnd instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'functionEnd',
 				arguments: [classifyIdentifier('float64')],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -120,7 +120,7 @@ describe('functionEnd instruction compiler', () => {
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'functionEnd',
 			arguments: [classifyIdentifier('int')],
-		} as AST[number];
+		} as CompilerASTLine;
 		const firstContext = createFunctionContext();
 		const secondContext = createFunctionContext();
 		firstContext.stack.push({ isInteger: true, isNonZero: false });
@@ -147,7 +147,7 @@ describe('functionEnd instruction compiler', () => {
 					lineNumberAfterMacroExpansion: 1,
 					instruction: 'functionEnd',
 					arguments: [classifyIdentifier('int')],
-				} as AST[number],
+				} as CompilerASTLine,
 				context
 			);
 		}).toThrowError();

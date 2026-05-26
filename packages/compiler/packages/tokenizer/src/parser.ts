@@ -31,8 +31,8 @@ import type {
 	BlockEndInstruction,
 	BlockStartInstruction,
 	BlockBlockResultType,
-	CompilerASTGroup,
 	CompilerASTLine,
+	CompilerASTLines,
 	ExportLine,
 	FunctionEndLine,
 	FunctionSignature,
@@ -196,11 +196,10 @@ function getFunctionSignature(lines: readonly CompilerASTLine[], functionEndLine
 	};
 }
 
-function toCompilerASTGroup(ast: AST): CompilerASTGroup {
-	const firstLine = ast[0];
+function toAST(lines: CompilerASTLines): AST {
+	const firstLine = lines[0];
 
 	if (isModuleLine(firstLine)) {
-		const lines = ast;
 		const regionLine = getRegionLine(lines);
 		return {
 			type: 'module',
@@ -213,9 +212,9 @@ function toCompilerASTGroup(ast: AST): CompilerASTGroup {
 		};
 	}
 
-	const functionLine = ast.find(isFunctionLine);
+	const functionLine = lines.find(isFunctionLine);
 	if (functionLine) {
-		const functionEndLine = ast.find(isFunctionEndLine);
+		const functionEndLine = lines.find(isFunctionEndLine);
 		if (!functionEndLine) {
 			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_BLOCK_STRUCTURE, 'Expected a matching functionEnd.', {
 				lineNumberBeforeMacroExpansion: functionLine.lineNumberBeforeMacroExpansion,
@@ -224,7 +223,6 @@ function toCompilerASTGroup(ast: AST): CompilerASTGroup {
 			});
 		}
 
-		const lines = ast;
 		const id = functionLine.arguments[0].value;
 		const exportLine = getExportLine(lines);
 		return {
@@ -242,7 +240,7 @@ function toCompilerASTGroup(ast: AST): CompilerASTGroup {
 		return {
 			type: 'constants',
 			id: firstLine.arguments[0].value,
-			lines: ast,
+			lines,
 			constantsLine: firstLine,
 		};
 	}
@@ -341,12 +339,12 @@ export function parseLine(
 	}
 }
 
-export function compileToAST(
+export function compileToASTLines(
 	code: string[],
 	lineMetadata?: ParsedLineMetadata,
-	cache?: ASTCache,
+	cache?: ASTCache<CompilerASTLines>,
 	cacheKey?: string
-): AST {
+): CompilerASTLines {
 	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
 	const cachedLookup = getASTCacheLookupResult(cached, code, lineMetadata);
 	if (cachedLookup.ast) {
@@ -357,7 +355,7 @@ export function compileToAST(
 		cache.stats.misses++;
 	}
 
-	const ast: AST = [];
+	const ast: CompilerASTLines = [];
 	const blockStack: OpenBlock[] = [];
 	const sourceBlockPrologueStack: SourceBlockPrologue[] = [];
 
@@ -515,7 +513,7 @@ export function compileToAST(
 	}
 
 	if (cache && cacheKey !== undefined) {
-		const entry: ASTCacheEntry = {
+		const entry: ASTCacheEntry<CompilerASTLines> = {
 			ast,
 			hashInput: {
 				code,
@@ -533,12 +531,12 @@ export function compileToAST(
 	return ast;
 }
 
-export function compileToASTGroup(
+export function compileToAST(
 	code: string[],
 	lineMetadata?: ParsedLineMetadata,
-	cache?: ASTCache<CompilerASTGroup>,
+	cache?: ASTCache<AST>,
 	cacheKey?: string
-): CompilerASTGroup {
+): AST {
 	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
 	const cachedLookup = getASTCacheLookupResult(cached, code, lineMetadata);
 	if (cachedLookup.ast) {
@@ -549,11 +547,11 @@ export function compileToASTGroup(
 		cache.stats.misses++;
 	}
 
-	const ast = compileToAST(code, lineMetadata);
-	const group = toCompilerASTGroup(ast);
+	const ast = compileToASTLines(code, lineMetadata);
+	const group = toAST(ast);
 
 	if (cache && cacheKey !== undefined) {
-		const entry: ASTCacheEntry<CompilerASTGroup> = {
+		const entry: ASTCacheEntry<AST> = {
 			ast: group,
 			hashInput: {
 				code,

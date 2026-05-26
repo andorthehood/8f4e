@@ -4,7 +4,7 @@ import _localSet from './localSet';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -26,7 +26,7 @@ describe('localSet instruction compiler', () => {
 				instruction: 'localSet',
 				arguments: [classifyIdentifier('value')],
 				local,
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

@@ -4,7 +4,7 @@ import loadFloat from './loadFloat';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('loadFloat instruction compiler', () => {
 	it('loads from a safe memory address', () => {
@@ -24,7 +24,7 @@ describe('loadFloat instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'loadFloat',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -48,7 +48,7 @@ describe('loadFloat instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'loadFloat',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

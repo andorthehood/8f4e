@@ -185,17 +185,12 @@ export type CompilerASTLine =
 
 export type ASTLine = CompilerASTLine;
 
-export type AST = CompilerASTLine[];
-
-export type ModuleAst = [ModuleLine, ...CompilerASTLine[], ModuleEndLine];
-export type FunctionAst = [FunctionLine, ...CompilerASTLine[], FunctionEndLine];
-export type ConstantsAst = [ConstantsLine, ...CompilerASTLine[], ConstantsEndLine];
-export type CompilerSourceAst = ModuleAst | FunctionAst | ConstantsAst;
+export type CompilerASTLines = CompilerASTLine[];
 
 export interface ModuleAST {
 	type: 'module';
 	id: string;
-	lines: AST;
+	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
@@ -205,7 +200,7 @@ export interface ModuleAST {
 export interface FunctionAST {
 	type: 'function';
 	id: string;
-	lines: AST;
+	lines: CompilerASTLines;
 	functionLine: FunctionLine;
 	functionEndLine: FunctionEndLine;
 	signature: FunctionSignature;
@@ -216,15 +211,15 @@ export interface FunctionAST {
 export interface ConstantsAST {
 	type: 'constants';
 	id: string;
-	lines: AST;
+	lines: CompilerASTLines;
 	constantsLine: ConstantsLine;
 }
 
-export type CompiledModuleAST = ModuleAST | ConstantsAST;
-export type CompilerASTGroup = CompiledModuleAST | FunctionAST;
+export type AST = ModuleAST | FunctionAST | ConstantsAST;
+export type ModuleCompilationAST = ModuleAST | ConstantsAST;
 
 export interface CompilerASTBatch {
-	modules: readonly CompiledModuleAST[];
+	modules: readonly ModuleCompilationAST[];
 	functions: readonly FunctionAST[];
 	functionsById: ReadonlyMap<string, FunctionAST>;
 }

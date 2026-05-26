@@ -4,13 +4,18 @@ import { functionValueTypeToWasmType } from '../utils/functionValueType';
 import { getOrRegisterFunctionType } from '../utils/functionTypeRegistry';
 import { popBlock } from '../utils/blockStack';
 
-import type { AST, FunctionCodegenContext, FunctionSignature, InstructionCompiler } from '@8f4e/compiler-spec';
+import type {
+	CompilerASTLine,
+	FunctionCodegenContext,
+	FunctionSignature,
+	InstructionCompiler,
+} from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `functionEnd`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const functionEnd: InstructionCompiler<AST[number], FunctionCodegenContext> = (line, context) => {
+const functionEnd: InstructionCompiler<CompilerASTLine, FunctionCodegenContext> = (line, context) => {
 	popBlock(context);
 
 	// Parse return types: functionEnd [<returnType1> <returnType2> ...]

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { classifyIdentifier, parseArgument } from '@8f4e/tokenizer';
-import { ArgumentType, type AST, type CompilationContext } from '@8f4e/compiler-spec';
+import { ArgumentType, type CompilationContext, type CompilerASTLine } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 
 describe('normalizeCompileTimeArguments', () => {
 	it('folds compile-time push expressions into literals', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -30,7 +30,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('leaves identifier-definition positions unchanged when not resolvable', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
@@ -50,7 +50,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('folds compile-time map arguments into literals', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'map',
@@ -76,7 +76,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('throws when a targeted compile-time expression cannot be resolved', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -96,7 +96,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('throws UNDECLARED_IDENTIFIER when a map key argument is an unresolved identifier', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'map',
@@ -116,7 +116,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('throws UNDECLARED_IDENTIFIER when a map value argument is an unresolved identifier', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'map',
@@ -136,7 +136,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('throws UNDECLARED_IDENTIFIER when a default argument is an unresolved identifier', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'default',
@@ -156,7 +156,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('throws UNDECLARED_IDENTIFIER when a const value remains an unresolved compile-time expression', () => {
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'const',
@@ -177,7 +177,7 @@ describe('normalizeCompileTimeArguments', () => {
 
 	it('resolves push identifier arguments when the identifier is a known local', () => {
 		const local = { isInteger: true, index: 0 };
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -206,7 +206,7 @@ describe('normalizeCompileTimeArguments', () => {
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -223,7 +223,7 @@ describe('normalizeCompileTimeArguments', () => {
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -259,7 +259,7 @@ describe('normalizeCompileTimeArguments', () => {
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -293,7 +293,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'localSet',
@@ -313,7 +313,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -333,7 +333,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
@@ -365,7 +365,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
@@ -397,7 +397,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int[]',
@@ -413,7 +413,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
@@ -446,7 +446,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -461,7 +461,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -496,7 +496,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -550,7 +550,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -584,7 +584,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -605,7 +605,7 @@ describe('normalizeCompileTimeArguments', () => {
 				},
 			},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
@@ -623,7 +623,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {}, functions: {} },
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'call',
@@ -638,7 +638,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'call',
@@ -662,7 +662,7 @@ describe('normalizeCompileTimeArguments', () => {
 			},
 			locals: {},
 		} as unknown as CompilationContext;
-		const line: AST[number] = {
+		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'call',

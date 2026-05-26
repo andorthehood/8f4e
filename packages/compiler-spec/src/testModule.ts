@@ -1,4 +1,4 @@
-import type { CompilerASTGroup } from './ast';
+import type { AST } from './ast';
 import type { MemoryBuffer, MemoryMap } from './memory';
 
 export interface TestModule {
@@ -13,5 +13,5 @@ export interface TestModule {
 	wat: string;
 	program: Uint8Array;
 	memoryMap: MemoryMap;
-	ast: CompilerASTGroup;
+	ast: AST;
 }

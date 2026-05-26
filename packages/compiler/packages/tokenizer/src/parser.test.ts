@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { ArgumentType } from '@8f4e/compiler-spec';
 
-import { compileToAST, parseLine } from './parser';
+import { compileToASTLines, parseLine } from './parser';
 import { classifyIdentifier } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('parseLine', () => {
-	const fixtures: [number, string, AST[number]][] = [
+	const fixtures: [number, string, CompilerASTLine][] = [
 		[
 			1,
 			'int alpha 1',
@@ -154,7 +154,7 @@ describe('parseLine', () => {
 	});
 });
 
-describe('compileToAST', () => {
+describe('compileToASTLines', () => {
 	it('uses callSiteLineNumber from lineMetadata when provided', () => {
 		const code = ['push 10', 'push 20', 'add'];
 		const lineMetadata = [
@@ -163,7 +163,7 @@ describe('compileToAST', () => {
 			{ callSiteLineNumber: 5, macroId: 'double' },
 		];
 
-		const ast = compileToAST(code, lineMetadata);
+		const ast = compileToASTLines(code, lineMetadata);
 
 		expect(ast).toHaveLength(3);
 		expect(ast[0].lineNumberBeforeMacroExpansion).toBe(5);
@@ -175,7 +175,7 @@ describe('compileToAST', () => {
 	});
 
 	it('uses actual line numbers when lineMetadata is not provided', () => {
-		const ast = compileToAST(['push 10', 'push 20', 'add']);
+		const ast = compileToASTLines(['push 10', 'push 20', 'add']);
 
 		expect(ast).toHaveLength(3);
 		expect(ast[0].lineNumberBeforeMacroExpansion).toBe(0);
@@ -187,7 +187,7 @@ describe('compileToAST', () => {
 	});
 
 	it('marks directives in module and function prologues', () => {
-		const ast = compileToAST([
+		const ast = compileToASTLines([
 			'module test',
 			'#skipExecution',
 			'#initOnly',
@@ -211,31 +211,31 @@ describe('compileToAST', () => {
 	});
 
 	it('rejects module directives after the module prologue', () => {
-		expect(() => compileToAST(['module test', 'int counter', '#skipExecution', 'moduleEnd'])).toThrow(
+		expect(() => compileToASTLines(['module test', 'int counter', '#skipExecution', 'moduleEnd'])).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
 		);
 	});
 
 	it('rejects function directives after the function prologue', () => {
-		expect(() => compileToAST(['function readValue', 'param int address', '#impure', 'functionEnd int'])).toThrow(
+		expect(() => compileToASTLines(['function readValue', 'param int address', '#impure', 'functionEnd int'])).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
 		);
 	});
 
 	it('rejects directives nested inside non-prologue blocks', () => {
-		expect(() => compileToAST(['module test', 'if', '#loopCap 20', 'ifEnd', 'moduleEnd'])).toThrow(
+		expect(() => compileToASTLines(['module test', 'if', '#loopCap 20', 'ifEnd', 'moduleEnd'])).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
 		);
 	});
 
 	it('rejects directives before any module or function prologue', () => {
-		expect(() => compileToAST(['#skipExecution'])).toThrow(
+		expect(() => compileToASTLines(['#skipExecution'])).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
 		);
 	});
 
 	it('pairs if with ifEnd metadata without rewriting source arguments', () => {
-		const ast = compileToAST(['push 1', 'if', 'push 10', 'ifEnd int']);
+		const ast = compileToASTLines(['push 1', 'if', 'push 10', 'ifEnd int']);
 
 		expect(ast[1]).toMatchObject({
 			instruction: 'if',
@@ -256,7 +256,7 @@ describe('compileToAST', () => {
 	});
 
 	it('tracks else on the paired if metadata', () => {
-		const ast = compileToAST(['push 1', 'if', 'push 10', 'else', 'push 20', 'ifEnd']);
+		const ast = compileToASTLines(['push 1', 'if', 'push 10', 'else', 'push 20', 'ifEnd']);
 
 		expect(ast[1].ifBlock).toMatchObject({
 			matchingIfEndIndex: 5,
@@ -266,15 +266,15 @@ describe('compileToAST', () => {
 	});
 
 	it('rejects else without an open if block', () => {
-		expect(() => compileToAST(['else'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['else'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('rejects unclosed if blocks', () => {
-		expect(() => compileToAST(['push 1', 'if', 'push 10'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['push 1', 'if', 'push 10'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('pairs block with blockEnd metadata without rewriting source arguments', () => {
-		const ast = compileToAST(['block', 'push 10', 'blockEnd int']);
+		const ast = compileToASTLines(['block', 'push 10', 'blockEnd int']);
 
 		expect(ast[0]).toMatchObject({
 			instruction: 'block',
@@ -294,7 +294,7 @@ describe('compileToAST', () => {
 	});
 
 	it('pairs block with blockEnd float metadata', () => {
-		const ast = compileToAST(['block', 'push 1.0', 'blockEnd float']);
+		const ast = compileToASTLines(['block', 'push 1.0', 'blockEnd float']);
 
 		expect(ast[0].blockBlock).toMatchObject({
 			matchingBlockEndIndex: 2,
@@ -307,7 +307,7 @@ describe('compileToAST', () => {
 	});
 
 	it('pairs bare block with bare blockEnd as no-result', () => {
-		const ast = compileToAST(['block', 'push 1', 'blockEnd']);
+		const ast = compileToASTLines(['block', 'push 1', 'blockEnd']);
 
 		expect(ast[0].blockBlock).toMatchObject({
 			matchingBlockEndIndex: 2,
@@ -320,29 +320,29 @@ describe('compileToAST', () => {
 	});
 
 	it('rejects block with a type argument', () => {
-		expect(() => compileToAST(['block int'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['block int'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('rejects blockEnd with an invalid type argument', () => {
-		expect(() => compileToAST(['block', 'blockEnd void'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['block', 'blockEnd void'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('rejects unexpected blockEnd without a matching block', () => {
-		expect(() => compileToAST(['blockEnd'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['blockEnd'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('does not treat inherited object keys as block end instructions', () => {
-		expect(() => compileToAST(['block', 'constructor', 'blockEnd'])).not.toThrow();
+		expect(() => compileToASTLines(['block', 'constructor', 'blockEnd'])).not.toThrow();
 	});
 
 	it('rejects unclosed block blocks', () => {
-		expect(() => compileToAST(['block', 'push 1'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['block', 'push 1'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('exposes line location in block structure errors via the line property', () => {
 		let thrownError: SyntaxRulesError | undefined;
 		try {
-			compileToAST(['push 1', 'if', 'push 10']);
+			compileToASTLines(['push 1', 'if', 'push 10']);
 		} catch (error) {
 			thrownError = error as SyntaxRulesError;
 		}

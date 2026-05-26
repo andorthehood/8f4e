@@ -5,7 +5,7 @@ import load from './load';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 
-import type { AST } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('load instruction compiler', () => {
 	it('loads from a safe memory address', () => {
@@ -25,7 +25,7 @@ describe('load instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'load',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -49,7 +49,7 @@ describe('load instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 2,
 				instruction: 'load8u',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -76,7 +76,7 @@ describe('load instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 3,
 				instruction: 'load',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 
@@ -100,7 +100,7 @@ describe('load instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 4,
 				instruction: 'load',
 				arguments: [],
-			} as AST[number],
+			} as CompilerASTLine,
 			context
 		);
 

@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, test } from 'vitest';
 import wabt from 'wabt';
-import { compileToASTGroup } from '@8f4e/tokenizer';
+import { compileToAST } from '@8f4e/tokenizer';
 import {
 	createCodeSection,
 	createExportSection,
@@ -71,7 +71,7 @@ export function setInitialMemory(memory: DataView, module: CompiledModule): void
 }
 
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
-	const parsedAst = compileToASTGroup(sourceCode.split('\n'));
+	const parsedAst = compileToAST(sourceCode.split('\n'));
 	if (parsedAst.type === 'function') {
 		throw new Error('Expected module AST.');
 	}
