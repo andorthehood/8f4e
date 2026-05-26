@@ -79,7 +79,7 @@ describe('compiler AST cache', () => {
 
 		const second = compile(modules, options, undefined, macros, first.cache);
 		const cachedAst = second.cache.ast.entries.get('module:0')?.ast;
-		const macroExpandedLine = cachedAst?.find(line => line.instruction === 'int');
+		const macroExpandedLine = cachedAst?.lines.find(line => line.instruction === 'int');
 
 		expect(cachedAst).toBe(moduleAst);
 		expect(macroExpandedLine?.lineNumberBeforeMacroExpansion).toBe(1);

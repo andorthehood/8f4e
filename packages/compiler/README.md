@@ -29,7 +29,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                                 v
                   +-----------------------------+
                   |  3. Tokenize / parse        |
-                  |  compileToAST()             |
+                  |  compileToASTGroup()        |
                   |                             |
                   |  syntax errors live here    |
                   +-----------------------------+

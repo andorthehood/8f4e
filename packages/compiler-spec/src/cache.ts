@@ -5,8 +5,8 @@ export interface ASTCacheStats {
 	misses: number;
 }
 
-export interface ASTCacheEntry {
-	ast: AST;
+export interface ASTCacheEntry<TAst = AST> {
+	ast: TAst;
 	hash?: number;
 	hashInput?: {
 		code: string[];
@@ -15,7 +15,7 @@ export interface ASTCacheEntry {
 	lineCount: number;
 }
 
-export interface ASTCache {
-	entries: Map<string, ASTCacheEntry>;
+export interface ASTCache<TAst = AST> {
+	entries: Map<string, ASTCacheEntry<TAst>>;
 	stats: ASTCacheStats;
 }
