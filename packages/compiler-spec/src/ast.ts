@@ -217,12 +217,6 @@ export interface ConstantsAST {
 
 export type AST = ModuleAST | FunctionAST | ConstantsAST;
 
-export interface CompilerASTBatch {
-	modules: readonly (ModuleAST | ConstantsAST)[];
-	functions: readonly FunctionAST[];
-	functionsById: ReadonlyMap<string, FunctionAST>;
-}
-
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
 const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
