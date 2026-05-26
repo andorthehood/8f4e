@@ -106,6 +106,10 @@ function isBlockEndInstruction(instruction: string): instruction is BlockEndInst
 	return Object.prototype.hasOwnProperty.call(blockEndToStartInstruction, instruction);
 }
 
+function canReferenceDeferredNamespace(instruction: string, isMemoryDeclaration: boolean): boolean {
+	return isMemoryDeclaration || instruction === 'const' || instruction === 'use';
+}
+
 function isCompilerDirectiveInstruction(instruction: string): boolean {
 	return instruction.startsWith('#');
 }
@@ -393,16 +397,19 @@ export function parseLine(
 		const [first = '', ...args] = tokens;
 		instruction = first;
 		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
+		const shouldRecordNamespaceReferences = canReferenceDeferredNamespace(instruction, isMemoryDeclaration);
 		const parsedArguments: Argument[] = [];
 		const referencedNamespaceIds = new Set<string>();
 		for (const arg of args) {
 			const parsedArgument = parseArgument(arg);
 			parsedArguments.push(parsedArgument);
-			addReferencedNamespaceIdsFromArgument(referencedNamespaceIds, parsedArgument);
+			if (shouldRecordNamespaceReferences) {
+				addReferencedNamespaceIdsFromArgument(referencedNamespaceIds, parsedArgument);
+			}
 		}
 		validateInstructionArguments(instruction, parsedArguments);
 		const [useArgument] = parsedArguments;
-		if (instruction === 'use' && useArgument?.type === ArgumentType.IDENTIFIER) {
+		if (shouldRecordNamespaceReferences && instruction === 'use' && useArgument?.type === ArgumentType.IDENTIFIER) {
 			referencedNamespaceIds.add(useArgument.value);
 		}
 		const parsedLine = {
