@@ -20,7 +20,7 @@ import type {
 	CompilerASTLine,
 	AnalyzedLine,
 	CompilationContext,
-	ModuleCompilationAST,
+	ConstantsAST,
 	CompiledModule,
 	CompiledFunction,
 	CompiledStackAnalysisLine,
@@ -28,6 +28,7 @@ import type {
 	FunctionMetadataLookup,
 	FunctionCompilationContext,
 	FunctionAST,
+	ModuleAST,
 	FunctionTypeRegistry,
 	InstructionCompiler,
 	ModuleCompilationContext,
@@ -40,7 +41,7 @@ type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
 };
 
-function withCompiledModuleLines<TAst extends ModuleCompilationAST>(ast: TAst, lines: TAst['lines']): TAst {
+function withCompiledModuleLines<TAst extends ModuleAST | ConstantsAST>(ast: TAst, lines: TAst['lines']): TAst {
 	return {
 		...ast,
 		lines,
@@ -93,7 +94,7 @@ export function compileLine(line: CompilerASTLine, context: CompilationContext):
 }
 
 export function compileModule(
-	ast: ModuleCompilationAST,
+	ast: ModuleAST | ConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,

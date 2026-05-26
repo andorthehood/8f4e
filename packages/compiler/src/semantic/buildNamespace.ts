@@ -5,12 +5,13 @@ import {
 	isNamedScalarMemoryDeclarationLine,
 	isUseLine,
 	type Argument,
-	type ModuleCompilationAST,
+	type ConstantsAST,
 	type CompileOptions,
 	type CompilationContext,
 	type CompilerASTLine,
 	type FunctionMetadataLookup,
 	type FunctionAST,
+	type ModuleAST,
 	type Namespaces,
 	type NamespacePrepassContext,
 	type ParsedSemanticInstructionLine,
@@ -63,7 +64,7 @@ export function collectFunctionMetadataFromAsts(
 	return result;
 }
 
-export function assertUniqueModuleIds(asts: readonly ModuleCompilationAST[]): void {
+export function assertUniqueModuleIds(asts: readonly (ModuleAST | ConstantsAST)[]): void {
 	const seenModuleIds = new Set<string>();
 
 	for (const ast of asts) {
@@ -88,7 +89,7 @@ export function applySemanticLine(line: CompilerASTLine, context: CompilationCon
 }
 
 export function prepassNamespace(
-	ast: ModuleCompilationAST,
+	ast: ModuleAST | ConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
@@ -149,7 +150,7 @@ export function prepassNamespace(
 }
 
 function getModuleRegionFromAst(
-	ast: ModuleCompilationAST,
+	ast: ModuleAST | ConstantsAST,
 	options: Pick<CompileOptions, 'memoryRegions'>
 ): { memoryIndex: number; memoryRegionName?: string } {
 	const regionLine = ast.type === moduleBlock.type ? ast.regionLine : undefined;
@@ -210,7 +211,7 @@ function shouldDeferNamespaceCollection(
 	return referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
-function toNamespaceDiscoveryAst<TAst extends ModuleCompilationAST>(ast: TAst): TAst {
+function toNamespaceDiscoveryAst<TAst extends ModuleAST | ConstantsAST>(ast: TAst): TAst {
 	const lines = ast.lines.flatMap(line => {
 		if (isNamedScalarMemoryDeclarationLine(line)) {
 			return [
@@ -231,10 +232,10 @@ function toNamespaceDiscoveryAst<TAst extends ModuleCompilationAST>(ast: TAst): 
 }
 
 export function collectNamespacesFromASTs(
-	asts: readonly ModuleCompilationAST[],
+	asts: readonly (ModuleAST | ConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
 	compiledFunctions?: FunctionMetadataLookup,
-	layoutAsts: readonly ModuleCompilationAST[] = asts,
+	layoutAsts: readonly (ModuleAST | ConstantsAST)[] = asts,
 	options: Pick<CompileOptions, 'memoryRegions'> = {}
 ): Namespaces {
 	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
@@ -245,7 +246,7 @@ export function collectNamespacesFromASTs(
 
 	while (pendingAsts.length > 0 && madeProgress) {
 		madeProgress = false;
-		const deferredAsts: ModuleCompilationAST[] = [];
+		const deferredAsts: Array<ModuleAST | ConstantsAST> = [];
 
 		for (const ast of pendingAsts) {
 			try {
