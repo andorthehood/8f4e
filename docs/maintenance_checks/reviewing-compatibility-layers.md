@@ -8,22 +8,6 @@ This document is meant to be an agent aid. When a cleanup request is broad or un
 
 Find and remove compatibility layers that preserve old shapes after the repository has moved to a stricter interface.
 
-## Agent Trigger
-
-Apply this check when the user says things like:
-
-- "clean this up";
-- "remove compatibility layers";
-- "we do not need backward compatibility";
-- "tighten the types";
-- "finish the refactor";
-- "remove old aliases/re-exports";
-- "why is this old path/name still here?";
-- "make this use one source of truth";
-- "remove runtime ambiguity".
-
-If the cleanup touches compiler, tokenizer, AST, instruction specs, package exports, or config schemas, assume compatibility layers are a real risk and search for them before deciding the work is done.
-
 ## Why This Matters
 
 This project is not released yet and we own the whole codebase. Compatibility layers often make AI-generated refactors look smaller while leaving duplicate contracts behind. They also make future work harder because contributors must reason about both the intended interface and the legacy path that still accepts stale shapes.
