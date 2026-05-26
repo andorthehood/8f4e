@@ -38,31 +38,45 @@ Watch for these especially after AI-assisted edits:
 
 ## Search Prompts
 
-Start with explicit compatibility language:
+Do not rely on explicit compatibility language. Most leftover compatibility layers are not labeled as compatibility. Start from the contract that should now have one owner, then search for duplicate shapes around that contract.
+
+Search for duplicate metadata, registries, and derived lists near the owning spec:
 
 ```sh
-rg -n "compat|compatibility|legacy|deprecated|shim|adapter|backward|backwards|temporary|transitional|old" packages src docs -g '*.ts' -g '*.md'
+rg -n "Spec|Specs|Names|List|Map|Registry|Table|Record<|Set<|ReadonlySet" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
-Search for alias-only type layers:
+Search for alias-only type layers and renamed shapes that may only preserve an old interface:
 
 ```sh
 rg -n "export type .* = .*;|type .* = .*;" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
-Look for duplicate old/new metadata sources:
+Search for broad input types that may keep runtime code responsible for ambiguity:
 
 ```sh
-rg -n "Spec|Specs|Names|List|Map|Registry|Table" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+rg -n "unknown|any|string \\||\\| string|Partial<|Record<string|\\?:" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
-Look for fallback-style control flow:
+Search for pass-through wrappers and old-to-new conversion functions:
 
 ```sh
-rg -n "fallback|default.*old|if \\(!.*\\)|\\?\\?|as unknown|as any|Exclude<|Extract<" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+rg -n "normalize|resolve|to[A-Z]|from[A-Z]|create|build|parse" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
-These searches are intentionally noisy. Review matches by intent, not by keyword alone.
+Search for fallback-style control flow and runtime checks that might exist only because the type interface is still too loose:
+
+```sh
+rg -n "fallback|if \\(!.*\\)|\\?\\?|as unknown|as any|Exclude<|Extract<|throw getError|throw new" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+```
+
+Only after structural searches, do a low-confidence sweep for explicit labels:
+
+```sh
+rg -n "compat|compatibility|legacy|deprecated|shim|adapter|backward|backwards|temporary|transitional" packages src docs -g '*.ts' -g '*.md'
+```
+
+These searches are intentionally noisy. Review matches by intent, not by keyword alone. A clean explicit-label search does not mean the cleanup is complete.
 
 ## Review Steps
 
