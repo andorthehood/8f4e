@@ -15,6 +15,19 @@ describe('validateInstructionArguments', () => {
 		).toThrowError(SyntaxRulesError);
 	});
 
+	it('rejects extra arguments for fixed-arity instructions', () => {
+		expect(() =>
+			validateInstructionArguments('push', [
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+			])
+		).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('module', [classifyIdentifier('main'), classifyIdentifier('extra')])
+		).toThrowError(SyntaxRulesError);
+		expect(() => validateInstructionArguments('add', [classifyIdentifier('extra')])).toThrowError(SyntaxRulesError);
+	});
+
 	it('accepts compile-time values for default', () => {
 		expect(() =>
 			validateInstructionArguments('default', [
@@ -79,6 +92,22 @@ describe('validateInstructionArguments', () => {
 	it('accepts bare exitIfTrue and rejects any arguments', () => {
 		expect(() => validateInstructionArguments('exitIfTrue', [])).not.toThrow();
 		expect(() => validateInstructionArguments('exitIfTrue', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
+	});
+
+	it('accepts an optional literal fallback for ensureNonZero', () => {
+		expect(() => validateInstructionArguments('ensureNonZero', [])).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('ensureNonZero', [{ type: ArgumentType.LITERAL, value: 0.000001, isInteger: false }])
+		).not.toThrow();
+		expect(() => validateInstructionArguments('ensureNonZero', [classifyIdentifier('fallback')])).toThrowError(
+			SyntaxRulesError
+		);
+		expect(() =>
+			validateInstructionArguments('ensureNonZero', [
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+			])
+		).toThrowError(SyntaxRulesError);
 	});
 
 	it('requires a non-negative compile-time byte count for memoryCopy', () => {
