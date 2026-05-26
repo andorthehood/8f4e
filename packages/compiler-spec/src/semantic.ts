@@ -157,7 +157,7 @@ export interface ModuleCompilationContext extends CompilationContext {
 	currentModuleWordAlignedSize: number;
 }
 
-export interface NamespacePrepassContext extends CompilationContext {
+export interface NamespaceBuildContext extends CompilationContext {
 	mode: 'module';
 	codeBlockType: CompiledModuleBlockType;
 	currentModuleNextWordOffset: number;

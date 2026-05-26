@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-05-26
 issue: null
-status: Open
-completed: null
+status: Done
+completed: 2026-05-26
 ---
 
 # TODO: Split namespace discovery and layout prepass
@@ -69,10 +69,10 @@ Keep the parsed AST objects untouched. If a phase needs a simplified memory decl
 
 ## Success Criteria
 
-- [ ] Namespace discovery and full layout/default resolution are separate, clearly named internal functions.
-- [ ] `prepassNamespace(...)` no longer has a mode flag.
-- [ ] No typed AST object is rebuilt with replacement `lines`.
-- [ ] Behavior remains covered by compiler namespace, intermodule-reference, and memory declaration tests.
+- [x] Namespace discovery and full layout/default resolution are separate, clearly named internal functions.
+- [x] `prepassNamespace(...)` no longer has a mode flag.
+- [x] No typed AST object is rebuilt with replacement `lines`.
+- [x] Behavior remains covered by compiler namespace, intermodule-reference, and memory declaration tests.
 
 ## Affected Components
 

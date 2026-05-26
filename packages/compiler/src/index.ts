@@ -55,7 +55,6 @@ import type {
 
 export { default as instructions } from './instructionCompilers';
 export {
-	prepassNamespace,
 	assertUniqueModuleIds,
 	collectFunctionMetadataFromAsts,
 	collectNamespacesFromASTs,

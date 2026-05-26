@@ -6,7 +6,7 @@ import { normalizeArgumentsAtIndexes } from './helpers';
 import { getError } from '../../compilerError';
 
 // Throws UNDECLARED_IDENTIFIER when the value cannot be folded to a literal.
-// During namespace prepass, collectNamespacesFromASTs catches this to defer the AST
+// During namespace discovery, collectNamespacesFromASTs catches this to defer the AST
 // until the referenced identifiers are available.
 export default function normalizeConst(line: ConstLine, context: CompilationContext): NormalizedConstLine {
 	const { line: result } = normalizeArgumentsAtIndexes(line, context, [1]);
