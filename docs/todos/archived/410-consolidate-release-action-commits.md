@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-05-19
 issue: https://github.com/andorthehood/8f4e/issues/664
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-19
 ---
 
 # TODO: Consolidate release action commits
@@ -72,10 +72,19 @@ If Nx release cannot cleanly prepare version changes and tags without making its
 
 ## Success Criteria
 
-- [ ] A normal release produces one commit total, or two commits if the fallback is chosen.
-- [ ] Release tags still point to the intended versioned release commit.
-- [ ] Bundle size, bytecode size, and compiler coverage logs are still recorded for released versions.
-- [ ] The workflow still pushes commits and tags atomically.
+- [x] A normal release produces one commit total, or two commits if the fallback is chosen.
+- [x] Release tags still point to the intended versioned release commit.
+- [x] Bundle size, bytecode size, and compiler coverage logs are still recorded for released versions.
+- [x] The workflow still pushes commits and tags atomically.
+
+## Completion Notes
+
+Completed on 2026-05-19.
+
+- The two-commit fallback was chosen: Nx still creates `chore(release): version packages`, and release metrics are combined into one `chore(release): record release metrics` commit.
+- Verified `.github/workflows/release.yml` runs bundle size, bytecode size, compiler coverage, and docs coverage logging after `npx nx release --skip-publish`.
+- Verified the workflow stages release metric logs together and keeps the existing atomic `git push origin HEAD:main --follow-tags --no-verify --atomic`.
+- Implementation landed in `5495c4478 fix(ci): consolidate release metrics commit in workflow`.
 
 ## Affected Components
 
