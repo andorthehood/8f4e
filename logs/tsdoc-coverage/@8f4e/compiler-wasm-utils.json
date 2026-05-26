@@ -50,5 +50,31 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "a223c916641cc7c3220412676223b60e676b4821",
+		"recordedAt": "2026-05-26T23:53:04.934Z",
+		"coverage": {
+			"documented": 152,
+			"total": 177,
+			"percentage": 85.9,
+			"byKind": {
+				"function": {
+					"documented": 48,
+					"total": 49,
+					"percentage": 98
+				},
+				"variable": {
+					"documented": 104,
+					"total": 113,
+					"percentage": 92
+				},
+				"type": {
+					"documented": 0,
+					"total": 15,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]
