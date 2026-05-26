@@ -36,6 +36,8 @@ import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
+type NamespacePrepassMode = 'full' | 'namespace-discovery';
+
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
  * This allows semantic normalization (e.g. `call` target validation) and
@@ -93,7 +95,8 @@ export function prepassNamespace(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	mode: NamespacePrepassMode = 'full'
 ): NamespacePrepassContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	const context = createCompilationContext<NamespacePrepassContext>({
@@ -125,11 +128,17 @@ export function prepassNamespace(
 		if (originalLine.isSemanticOnly) {
 			applySemanticLine(originalLine, context);
 		} else if (originalLine.isMemoryDeclaration) {
-			applyMemoryDeclarationLine(normalizeCompileTimeArguments(originalLine, context), context);
+			const declarationLine =
+				mode === 'namespace-discovery' ? toNamespaceDiscoveryMemoryDeclarationLine(originalLine) : originalLine;
+			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		}
 	});
 
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
+
+	if (mode === 'namespace-discovery') {
+		return context;
+	}
 
 	ast.lines.forEach(originalLine => {
 		if (!originalLine.isMemoryDeclaration || originalLine.instruction.endsWith('[]')) {
@@ -211,23 +220,15 @@ function shouldDeferNamespaceCollection(
 	return referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
-function toNamespaceDiscoveryAst<TAst extends ModuleAST | ConstantsAST>(ast: TAst): TAst {
-	const lines = ast.lines.flatMap(line => {
-		if (isNamedScalarMemoryDeclarationLine(line)) {
-			return [
-				{
-					...line,
-					arguments: [line.arguments[0]],
-				},
-			];
-		}
+function toNamespaceDiscoveryMemoryDeclarationLine(line: CompilerASTLine): CompilerASTLine {
+	if (!isNamedScalarMemoryDeclarationLine(line)) {
+		return line;
+	}
 
-		return [line];
-	}) as TAst['lines'];
-
+	const [identifier] = line.arguments;
 	return {
-		...ast,
-		lines,
+		...line,
+		arguments: [identifier],
 	};
 }
 
@@ -251,11 +252,12 @@ export function collectNamespacesFromASTs(
 		for (const ast of pendingAsts) {
 			try {
 				const context = prepassNamespace(
-					toNamespaceDiscoveryAst(ast),
+					ast,
 					namespaces,
 					startingByteAddress,
 					compiledFunctions,
-					options
+					options,
+					'namespace-discovery'
 				);
 				if (!context.namespace.moduleName) {
 					continue;
