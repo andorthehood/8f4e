@@ -1,8 +1,4 @@
-import {
-	type CompilationContext,
-	type ParsedLocalVariableAccessLine,
-	type ResolvedLocalSetLine,
-} from '@8f4e/compiler-spec';
+import { type CompilationContext, type LocalSetLine, type ResolvedLocalSetLine } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
@@ -12,7 +8,7 @@ import { getError } from '../../compilerError';
  * This keeps local existence checks in semantic normalization instead of the dispatcher/codegen layers.
  */
 export default function normalizeLocalVariableAccess(
-	line: ParsedLocalVariableAccessLine,
+	line: LocalSetLine,
 	context: CompilationContext
 ): ResolvedLocalSetLine {
 	const nameArg = line.arguments[0];

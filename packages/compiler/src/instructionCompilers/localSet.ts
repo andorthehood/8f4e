@@ -2,13 +2,13 @@ import { localSet } from '@8f4e/compiler-wasm-utils';
 
 import { saveByteCode } from './utils/saveByteCode';
 
-import type { CodegenLocalSetLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, ResolvedLocalSetLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `localSet`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const _localSet: InstructionCompiler<CodegenLocalSetLine> = (line, context) => {
+const _localSet: InstructionCompiler<ResolvedLocalSetLine> = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 	const { local } = line;
 
