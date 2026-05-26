@@ -1,6 +1,5 @@
 import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
-import { isStackAddress, isStackFloat64, isStackInteger } from '@8f4e/compiler-spec';
 
 import getMemoryFlags from './memoryFlags';
 
@@ -91,29 +90,29 @@ export function functionValueTypeToWasmType(type: FunctionValueType): WasmTypeVa
 
 export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {
 	if (type === 'int') {
-		return isStackInteger(stackItem);
+		return stackItem.valueType === 'int';
 	}
 
 	if (type === 'float') {
-		return !isStackInteger(stackItem) && !isStackFloat64(stackItem);
+		return stackItem.valueType !== 'int' && stackItem.valueType !== 'float64';
 	}
 
 	if (type === 'float64') {
-		return !isStackInteger(stackItem) && isStackFloat64(stackItem);
+		return stackItem.valueType !== 'int' && stackItem.valueType === 'float64';
 	}
 
-	if (!isStackInteger(stackItem)) {
+	if (stackItem.valueType !== 'int') {
 		return false;
 	}
 
 	// Generic integer addresses (e.g. literals or &buffer folded to i32) are accepted for pointer params/returns.
 	// When pointer metadata is present, preserve stricter pointee/depth compatibility.
-	if (!isStackAddress(stackItem) || !stackItem.pointsTo) {
+	if (stackItem.kind !== 'address' || !stackItem.pointsTo) {
 		return true;
 	}
 
 	const expected = functionValueTypeToStackItem(type);
-	if (!isStackAddress(expected) || !expected.pointsTo) {
+	if (expected.kind !== 'address' || !expected.pointsTo) {
 		return true;
 	}
 

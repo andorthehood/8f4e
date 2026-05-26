@@ -1,4 +1,4 @@
-import { ErrorCode, isStackAddress, isStackInteger } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
@@ -9,8 +9,8 @@ export function requireStackAddress(
 	line: CompilerASTLine,
 	context: CodegenContext | CompilationContext
 ): StackAddress {
-	if (!isStackAddress(item)) {
-		if (isStackInteger(item)) {
+	if (item.kind !== 'address') {
+		if (item.valueType === 'int') {
 			return {
 				kind: 'address',
 				valueType: 'int',

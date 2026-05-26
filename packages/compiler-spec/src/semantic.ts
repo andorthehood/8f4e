@@ -219,22 +219,6 @@ export interface StackAddress {
 /** Type and value facts known about one item on the compiler analysis stack. */
 export type StackItem = StackValue | StackAddress;
 
-export function isStackAddress(item: StackItem): item is StackAddress {
-	return item.kind === 'address';
-}
-
-export function getStackValueType(item: StackItem): StackValueType {
-	return item.valueType;
-}
-
-export function isStackFloat64(item: StackItem): boolean {
-	return getStackValueType(item) === 'float64';
-}
-
-export function isStackInteger(item: StackItem): boolean {
-	return getStackValueType(item) === 'int';
-}
-
 export type Stack = StackItem[];
 
 /** Before-and-after stack analysis captured for a compiled source line. */
@@ -259,7 +243,9 @@ export type NormalizedMapLine = Omit<MapLine, 'arguments'> & {
 	arguments: [ResolvedMapValueArgument, ResolvedMapValueArgument];
 };
 
-export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & { arguments: [NormalizedArgumentLiteral] };
+export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & {
+	arguments: [NormalizedArgumentLiteral];
+};
 
 export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral];
@@ -328,7 +314,9 @@ export type ResolvedLocalPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 	resolvedTarget: {
 		kind: 'local-pointer';
-		local: LocalBinding & { pointeeBaseType: NonNullable<LocalBinding['pointeeBaseType']> };
+		local: LocalBinding & {
+			pointeeBaseType: NonNullable<LocalBinding['pointeeBaseType']>;
+		};
 	};
 };
 
@@ -341,8 +329,12 @@ export type ResolvedPushLine =
 export type CodegenPushLine = LiteralPushLine | ResolvedPushLine;
 export type NormalizedPushLine = CodegenPushLine | DeferredPushLine;
 
-export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
-export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & { arguments: [MemoryPointerIdentifier] };
+export type PushIdentifierLine = Omit<PushLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier];
+};
+export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [MemoryPointerIdentifier];
+};
 
 export type ResolvedCallLine = CallLine & {
 	targetFunction: FunctionMetadata;

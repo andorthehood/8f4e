@@ -1,13 +1,4 @@
-import {
-	ArgumentType,
-	BASE_TYPE_METADATA,
-	BlockType,
-	ErrorCode,
-	getInstructionSpec,
-	isStackAddress,
-	isStackFloat64,
-	isStackInteger,
-} from '@8f4e/compiler-spec';
+import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
 
 import { validateInstruction } from './validateInstruction';
 
@@ -56,8 +47,8 @@ function createStackValue(
 function cloneStack(stack: Stack): Stack {
 	return stack.map(item => ({
 		...item,
-		...(isStackAddress(item) ? { address: { ...item.address } } : {}),
-		...(isStackAddress(item) && item.pointsTo ? { pointsTo: { ...item.pointsTo } } : {}),
+		...(item.kind === 'address' ? { address: { ...item.address } } : {}),
+		...(item.kind === 'address' && item.pointsTo ? { pointsTo: { ...item.pointsTo } } : {}),
 	}));
 }
 
@@ -229,7 +220,9 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	const outputType = line.arguments[0].value;
 	const outputIsInteger = outputType === 'int';
 	const outputIsFloat64 = outputType === 'float64';
-	const outputKind = resolveMapKind({ valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float' });
+	const outputKind = resolveMapKind({
+		valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float',
+	});
 	const mapState = block.mapState;
 	const inputKind = resolveMapKind({
 		valueType: mapState.inputIsInteger ? 'int' : mapState.inputIsFloat64 ? 'float64' : 'float',
@@ -304,13 +297,15 @@ function assertTopBlock(
 function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
-	const { local } = line as LocalSetLine & { local: CompilationContext['locals'][string] };
+	const { local } = line as LocalSetLine & {
+		local: CompilationContext['locals'][string];
+	};
 
-	if (local.isInteger && !isStackInteger(operand)) {
+	if (local.isInteger && operand.valueType !== 'int') {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
-	if (!local.isInteger && isStackInteger(operand)) {
+	if (!local.isInteger && operand.valueType === 'int') {
 		throw getError(ErrorCode.ONLY_FLOATS, line, context);
 	}
 
@@ -347,11 +342,11 @@ function analyzeExpectedBlockResult(
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
-	if (block.expectedResultIsInteger && !isStackInteger(operand)) {
+	if (block.expectedResultIsInteger && operand.valueType !== 'int') {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
-	if (validateFloatResult && !block.expectedResultIsInteger && isStackInteger(operand)) {
+	if (validateFloatResult && !block.expectedResultIsInteger && operand.valueType === 'int') {
 		throw getError(ErrorCode.ONLY_FLOATS, line, context);
 	}
 
@@ -399,11 +394,17 @@ function resolveStackProducedItem(consumed: Stack, spec: StackProducedItemSpec):
 
 	switch (spec.kind) {
 		case 'int':
-			return createStackValue('int', { isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) });
+			return createStackValue('int', {
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, false),
+			});
 		case 'float':
-			return createStackValue('float', { isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) });
+			return createStackValue('float', {
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, false),
+			});
 		case 'float64':
-			return createStackValue('float64', { isNonZero: resolveProducedStackItemNonZero(consumed, spec, false) });
+			return createStackValue('float64', {
+				isNonZero: resolveProducedStackItemNonZero(consumed, spec, false),
+			});
 		case 'same':
 		default:
 			return createStackValue(input?.valueType ?? 'float', {
@@ -461,7 +462,10 @@ function analyzeByInstruction(
 
 	switch (line.instruction) {
 		case 'push': {
-			return { consumed: [], produced: analyzePush(line as NormalizedPushLine, context) };
+			return {
+				consumed: [],
+				produced: analyzePush(line as NormalizedPushLine, context),
+			};
 		}
 		case 'add': {
 			const consumed = consume(context, 2);
@@ -597,12 +601,12 @@ function analyzeByInstruction(
 							isNonZero: knownAbsValue !== 0,
 						};
 			const produced = [
-				isStackInteger(operand)
+				operand.valueType === 'int'
 					? createStackValue('int', {
 							isNonZero: operand.isNonZero,
 							knownIntegerValue: knownIntegerMetadata.knownIntegerValue,
 						})
-					: createStackValue(isStackFloat64(operand) ? 'float64' : 'float', { isNonZero: operand.isNonZero }),
+					: createStackValue(operand.valueType === 'float64' ? 'float64' : 'float', { isNonZero: operand.isNonZero }),
 			];
 			produce(context, produced);
 			return { consumed, produced };
@@ -614,7 +618,7 @@ function analyzeByInstruction(
 			const accessByteWidth = getClampAccessByteWidth(line);
 			const range =
 				line.instruction === 'clampAddress'
-					? isStackAddress(consumed[0])
+					? consumed[0].kind === 'address'
 						? (consumed[0].address.clampRange ?? consumed[0].address.safeRange)
 						: undefined
 					: line.instruction === 'clampModuleAddress'

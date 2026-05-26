@@ -1,4 +1,4 @@
-import { ErrorCode, isStackInteger } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 
@@ -20,9 +20,9 @@ export function validateOperandTypes(
 			const operand = operands[i];
 			const expectedType = rule[i];
 
-			if (expectedType === 'int' && !isStackInteger(operand)) {
+			if (expectedType === 'int' && operand.valueType !== 'int') {
 				throw getError(errorCode, line, context);
-			} else if (expectedType === 'float' && isStackInteger(operand)) {
+			} else if (expectedType === 'float' && operand.valueType === 'int') {
 				throw getError(errorCode, line, context);
 			}
 		}
