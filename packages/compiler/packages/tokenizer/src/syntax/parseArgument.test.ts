@@ -394,6 +394,7 @@ describe('parseArgument', () => {
 			value: 6,
 			type: ArgumentType.LITERAL,
 			isInteger: false,
+			isFloat64: true,
 		});
 	});
 
@@ -470,16 +471,19 @@ describe('parseArgument', () => {
 			value: 3.14,
 			type: ArgumentType.LITERAL,
 			isInteger: false,
+			isFloat64: true,
 		});
 		expect(parseArgument('-42.0f64')).toEqual({
 			value: -42.0,
 			type: ArgumentType.LITERAL,
 			isInteger: false,
+			isFloat64: true,
 		});
 		expect(parseArgument('0.5f64')).toEqual({
 			value: 0.5,
 			type: ArgumentType.LITERAL,
 			isInteger: false,
+			isFloat64: true,
 		});
 	});
 
@@ -488,6 +492,7 @@ describe('parseArgument', () => {
 			value: 3,
 			type: ArgumentType.LITERAL,
 			isInteger: false,
+			isFloat64: true,
 		});
 	});
 
@@ -496,11 +501,13 @@ describe('parseArgument', () => {
 			value: 1e-10,
 			type: ArgumentType.LITERAL,
 			isInteger: false,
+			isFloat64: true,
 		});
 		expect(parseArgument('1.5e10f64')).toEqual({
 			value: 1.5e10,
 			type: ArgumentType.LITERAL,
 			isInteger: false,
+			isFloat64: true,
 		});
 	});
 

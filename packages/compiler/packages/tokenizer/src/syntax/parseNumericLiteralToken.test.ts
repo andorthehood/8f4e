@@ -41,10 +41,12 @@ describe('parseNumericLiteralToken', () => {
 		expect(parseNumericLiteralToken('3f64')).toEqual({
 			value: 3,
 			isInteger: false,
+			isFloat64: true,
 		});
 		expect(parseNumericLiteralToken('1.5e10f64')).toEqual({
 			value: 1.5e10,
 			isInteger: false,
+			isFloat64: true,
 		});
 	});
 

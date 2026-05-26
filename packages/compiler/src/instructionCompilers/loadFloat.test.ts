@@ -10,11 +10,18 @@ describe('loadFloat instruction compiler', () => {
 	it('loads from a safe memory address', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			kind: 'value',
+			kind: 'address',
 			valueType: 'int',
 			isNonZero: false,
 			address: {
-				safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+				memoryIndex: 0,
+				safeRange: {
+					source: 'memory-start',
+					memoryIndex: 0,
+					byteAddress: 0,
+					safeByteLength: 4,
+					memoryId: 'test',
+				},
 			},
 		});
 

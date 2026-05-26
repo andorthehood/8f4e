@@ -12,11 +12,18 @@ describe('store instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 4,
+						memoryId: 'test',
+					},
 				},
 			},
 			{ kind: 'value', valueType: 'int', isNonZero: false }
@@ -67,11 +74,18 @@ describe('store instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 8, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 8,
+						memoryId: 'test',
+					},
 				},
 			},
 			{ kind: 'value', valueType: 'float64', isNonZero: false }
@@ -98,11 +112,18 @@ describe('store instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 4, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 4,
+						memoryId: 'test',
+					},
 				},
 			},
 			{ kind: 'value', valueType: 'float', isNonZero: false }
@@ -150,10 +171,11 @@ describe('store instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
+					memoryIndex: 0,
 					safeAccessByteWidth: 4,
 				},
 			},

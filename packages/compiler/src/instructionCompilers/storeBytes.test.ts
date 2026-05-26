@@ -37,11 +37,18 @@ describe('storeBytes instruction compiler', () => {
 			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 3, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 3,
+						memoryId: 'test',
+					},
 				},
 			}
 		);
@@ -67,11 +74,18 @@ describe('storeBytes instruction compiler', () => {
 			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 2,
+						memoryId: 'test',
+					},
 				},
 			}
 		);
@@ -96,11 +110,18 @@ describe('storeBytes instruction compiler', () => {
 			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{
-				kind: 'value',
+				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
 				address: {
-					safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 1, memoryId: 'test' },
+					memoryIndex: 0,
+					safeRange: {
+						source: 'memory-start',
+						memoryIndex: 0,
+						byteAddress: 0,
+						safeByteLength: 1,
+						memoryId: 'test',
+					},
 				},
 			}
 		);
@@ -123,11 +144,18 @@ describe('storeBytes instruction compiler', () => {
 	it('compiles storeBytes 0 (address-only pop) and leaves an empty stack', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push({
-			kind: 'value',
+			kind: 'address',
 			valueType: 'int',
 			isNonZero: false,
 			address: {
-				safeRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 0, memoryId: 'test' },
+				memoryIndex: 0,
+				safeRange: {
+					source: 'memory-start',
+					memoryIndex: 0,
+					byteAddress: 0,
+					safeByteLength: 0,
+					memoryId: 'test',
+				},
 			},
 		});
 

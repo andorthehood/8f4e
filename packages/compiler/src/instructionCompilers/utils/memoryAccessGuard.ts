@@ -69,7 +69,7 @@ export function getOrCreateMemoryGuardLocal(
 		return existing;
 	}
 
-	const valueType = getStackValueType(item as StackItem | { isInteger?: boolean; isFloat64?: boolean });
+	const valueType = getStackValueType(item as StackItem);
 	const local = {
 		isInteger: valueType === 'int',
 		...(valueType === 'float64' ? { isFloat64: true } : {}),
