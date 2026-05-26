@@ -2,6 +2,7 @@ import {
 	ArgumentType,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	compilerSourceBlockInstructionByType,
+	hasReferencedNamespaceIds,
 	isNamedScalarMemoryDeclarationLine,
 	type ConstantsAST,
 	type CompileOptions,
@@ -212,7 +213,7 @@ function shouldDeferNamespaceCollection(
 		return false;
 	}
 
-	return (line.referencedNamespaceIds ?? []).some(namespaceId => !namespaces[namespaceId]);
+	return hasReferencedNamespaceIds(line) && line.referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
 function toNamespaceDiscoveryMemoryDeclarationLine(line: CompilerASTLine): CompilerASTLine {

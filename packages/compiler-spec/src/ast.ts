@@ -29,7 +29,6 @@ export type ASTLineBase<Instruction extends string, Arguments extends Array<Argu
 	isMemoryDeclaration?: boolean;
 	isBlockPrologue?: boolean;
 	hasExplicitMemoryDefault?: boolean;
-	referencedNamespaceIds?: readonly string[];
 	ifBlock?: IfBlockMetadata;
 	ifEndBlock?: IfEndBlockMetadata;
 	blockBlock?: BlockBlockMetadata;
@@ -81,7 +80,10 @@ export type ModuleLine = ASTLineBase<'module', [ArgumentIdentifier]>;
 export type ModuleEndLine = ASTLineBase<'moduleEnd', []>;
 export type ConstantsLine = ASTLineBase<'constants', [ArgumentIdentifier]>;
 export type ConstantsEndLine = ASTLineBase<'constantsEnd', []>;
-export type UseLine = ASTLineBase<'use', [ArgumentIdentifier]>;
+export type ReferencedNamespaceIdsMetadata = {
+	referencedNamespaceIds?: readonly string[];
+};
+export type UseLine = ASTLineBase<'use', [ArgumentIdentifier]> & ReferencedNamespaceIdsMetadata;
 export type LocalDeclarationLine = ASTLineBase<'local', [ArgumentIdentifier, ArgumentIdentifier]>;
 export type ParamLine = ASTLineBase<'param', [ArgumentIdentifier, ArgumentIdentifier]>;
 export type MapBeginLine = ASTLineBase<'mapBegin', [ArgumentIdentifier]>;
@@ -92,7 +94,8 @@ export type BranchIfUnchangedLine = ASTLineBase<'branchIfUnchanged', [ArgumentLi
 export type ExitIfTrueLine = ASTLineBase<'exitIfTrue', []>;
 export type StoreBytesLine = ASTLineBase<'storeBytes', [ArgumentLiteral]>;
 export type MemoryCopyLine = ASTLineBase<'memoryCopy', [CompileTimeValueArgument]>;
-export type ConstLine = ASTLineBase<'const', [ArgumentIdentifier, CompileTimeValueArgument]>;
+export type ConstLine = ASTLineBase<'const', [ArgumentIdentifier, CompileTimeValueArgument]> &
+	ReferencedNamespaceIdsMetadata;
 export type EnsureNonZeroLine = ASTLineBase<'ensureNonZero', [] | [ArgumentLiteral]>;
 
 export type MapValueArgument =
@@ -132,7 +135,8 @@ export type ScalarMemoryDeclarationLine = ASTLineBase<
 	ScalarMemoryDeclarationInstruction,
 	[MemoryDeclarationArgument, ...MemoryDeclarationArgument[]]
 > &
-	ReferencedModuleIdsMetadata;
+	ReferencedModuleIdsMetadata &
+	ReferencedNamespaceIdsMetadata;
 export type NamedScalarMemoryDeclarationLine = Omit<ScalarMemoryDeclarationLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...MemoryDeclarationArgument[]];
 };
@@ -140,7 +144,8 @@ export type ArrayMemoryDeclarationLine = ASTLineBase<
 	ArrayDeclarationInstruction,
 	[ArgumentIdentifier, CompileTimeValueArgument, ...MemoryDeclarationArgument[]]
 > &
-	ReferencedModuleIdsMetadata;
+	ReferencedModuleIdsMetadata &
+	ReferencedNamespaceIdsMetadata;
 export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDeclarationLine;
 
 type ExplicitCompilerASTLine =
@@ -194,6 +199,16 @@ export type CompilerASTLine =
 export type ASTLine = CompilerASTLine;
 
 export type CompilerASTLines = CompilerASTLine[];
+
+export function hasReferencedNamespaceIds(
+	line: CompilerASTLine | undefined
+): line is CompilerASTLine & { referencedNamespaceIds: readonly string[] } {
+	return (
+		line !== undefined &&
+		'referencedNamespaceIds' in line &&
+		(line as ReferencedNamespaceIdsMetadata).referencedNamespaceIds !== undefined
+	);
+}
 
 export interface ModuleAST {
 	type: 'module';
