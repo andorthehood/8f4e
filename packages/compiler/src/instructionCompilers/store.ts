@@ -5,6 +5,8 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedStore, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 
+import { requireStackAddress } from '../utils/stackItem';
+
 import type { ASTLineBase, InstructionCompiler } from '@8f4e/compiler-spec';
 
 type StoreLine = ASTLineBase<'store', []>;
@@ -16,15 +18,21 @@ type StoreLine = ASTLineBase<'store', []>;
 const store: InstructionCompiler<StoreLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
-	const operand2Address = line.stackAnalysis.consumedOperands[operation.addressOperandIndex];
+	const operand2Address = requireStackAddress(
+		line.stackAnalysis.consumedOperands[operation.addressOperandIndex],
+		line,
+		context
+	);
 	const operand1Value = line.stackAnalysis.consumedOperands[operation.valueOperandIndex];
-	const memoryIndex = operand2Address.address?.memoryIndex ?? 0;
-	const instructions = operand1Value.isInteger
+	const valueIsInteger = operand1Value.valueType === 'int';
+	const valueIsFloat64 = operand1Value.valueType === 'float64';
+	const memoryIndex = operand2Address.address.memoryIndex;
+	const instructions = valueIsInteger
 		? i32store(undefined, undefined, 2, 0, memoryIndex)
-		: operand1Value.isFloat64
+		: valueIsFloat64
 			? f64store(undefined, undefined, 3, 0, memoryIndex)
 			: f32store(undefined, undefined, 2, 0, memoryIndex);
-	const accessByteWidth = operand1Value.isFloat64 ? DOUBLE_WORD_MEMORY_ACCESS_WIDTH : WORD_MEMORY_ACCESS_WIDTH;
+	const accessByteWidth = valueIsFloat64 ? DOUBLE_WORD_MEMORY_ACCESS_WIDTH : WORD_MEMORY_ACCESS_WIDTH;
 	if (isSafeMemoryAccess(operand2Address, accessByteWidth)) {
 		return saveByteCode(context, instructions);
 	}

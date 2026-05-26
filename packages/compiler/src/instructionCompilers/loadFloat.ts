@@ -5,6 +5,8 @@ import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 
+import { requireStackAddress } from '../utils/stackItem';
+
 import type { ASTLineBase, FloatLoadInstructionSpecName, InstructionCompiler } from '@8f4e/compiler-spec';
 
 type LoadFloatLine = ASTLineBase<FloatLoadInstructionSpecName, []>;
@@ -15,11 +17,12 @@ type LoadFloatLine = ASTLineBase<FloatLoadInstructionSpecName, []>;
  */
 const loadFloat: InstructionCompiler<LoadFloatLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const [address] = line.stackAnalysis.consumedOperands;
+	const [rawAddress] = line.stackAnalysis.consumedOperands;
+	const address = requireStackAddress(rawAddress, line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const accessByteWidth = operation.accessByteWidth;
 
-	const memoryIndex = address.address?.memoryIndex ?? 0;
+	const memoryIndex = address.address.memoryIndex;
 	const instructions = f32load(2, 0, memoryIndex);
 	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);

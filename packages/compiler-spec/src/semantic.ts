@@ -184,18 +184,40 @@ export interface FunctionCompilationContext extends CompilationContext {
 	functionTypeRegistry: FunctionTypeRegistry;
 }
 
-/** Type and value facts known about one item on the compiler analysis stack. */
-export interface StackItem {
-	isInteger: boolean;
-	isFloat64?: boolean;
-	address?: AddressMetadata;
-	pointeeBaseType?: DataStructure['pointeeBaseType'];
-	isPointingToPointer?: boolean;
+export type StackValueType = 'int' | 'float' | 'float64';
+
+/** Metadata describing values reachable from an address stack item. */
+export interface PointeeMetadata {
+	baseType: DataStructure['pointeeBaseType'];
+	memoryIndex: number;
+	memoryRegionName?: string;
+	isPointer: boolean;
+}
+
+/** Type and value facts known about one ordinary value on the compiler analysis stack. */
+export interface StackValue {
+	kind: 'value';
+	valueType: StackValueType;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
 	/** Exact integer value when the compiler can still prove it at this stack position. */
 	knownIntegerValue?: number;
 }
+
+/** Type and value facts known about one value that is proven to be a memory address. */
+export interface StackAddress {
+	kind: 'address';
+	valueType: 'int';
+	address: AddressMetadata;
+	pointsTo?: PointeeMetadata;
+	/** A flag for the div operation to check if the divisor is zero. */
+	isNonZero?: boolean;
+	/** Exact integer value when the compiler can still prove it at this stack position. */
+	knownIntegerValue?: number;
+}
+
+/** Type and value facts known about one item on the compiler analysis stack. */
+export type StackItem = StackValue | StackAddress;
 
 export type Stack = StackItem[];
 
@@ -221,7 +243,9 @@ export type NormalizedMapLine = Omit<MapLine, 'arguments'> & {
 	arguments: [ResolvedMapValueArgument, ResolvedMapValueArgument];
 };
 
-export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & { arguments: [NormalizedArgumentLiteral] };
+export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & {
+	arguments: [NormalizedArgumentLiteral];
+};
 
 export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral];
@@ -290,7 +314,9 @@ export type ResolvedLocalPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 	resolvedTarget: {
 		kind: 'local-pointer';
-		local: LocalBinding & { pointeeBaseType: NonNullable<LocalBinding['pointeeBaseType']> };
+		local: LocalBinding & {
+			pointeeBaseType: NonNullable<LocalBinding['pointeeBaseType']>;
+		};
 	};
 };
 
@@ -303,8 +329,12 @@ export type ResolvedPushLine =
 export type CodegenPushLine = LiteralPushLine | ResolvedPushLine;
 export type NormalizedPushLine = CodegenPushLine | DeferredPushLine;
 
-export type PushIdentifierLine = Omit<PushLine, 'arguments'> & { arguments: [ArgumentIdentifier] };
-export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & { arguments: [MemoryPointerIdentifier] };
+export type PushIdentifierLine = Omit<PushLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier];
+};
+export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
+	arguments: [MemoryPointerIdentifier];
+};
 
 export type ResolvedCallLine = CallLine & {
 	targetFunction: FunctionMetadata;

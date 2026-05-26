@@ -7,8 +7,9 @@ exports[`greaterOrEqualUnsigned instruction compiler > emits F32_GE for float op
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }
@@ -21,8 +22,9 @@ exports[`greaterOrEqualUnsigned instruction compiler > emits I32_GE_U for intege
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

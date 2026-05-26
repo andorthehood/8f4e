@@ -98,7 +98,6 @@ describe('param instruction compiler', () => {
 		);
 
 		expect(context.locals.buffer).toMatchObject({
-			isInteger: true,
 			pointeeBaseType: 'float',
 			index: 0,
 		});

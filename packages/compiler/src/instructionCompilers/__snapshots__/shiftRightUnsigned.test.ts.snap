@@ -7,8 +7,9 @@ exports[`shiftRightUnsigned instruction compiler > emits I32_SHR_U for integer o
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

@@ -10,7 +10,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('analyzeInstruction', () => {
 	it('records stack before, consumed operands, produced items, and stack after', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: true });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: true }
+		);
 
 		const line = {
 			lineNumberBeforeMacroExpansion: 1,
@@ -23,17 +26,17 @@ describe('analyzeInstruction', () => {
 
 		expect(analyzedLine.stackAnalysis).toEqual({
 			stackBefore: [
-				{ isInteger: true, isNonZero: false },
-				{ isInteger: true, isNonZero: true },
+				{ kind: 'value', valueType: 'int', isNonZero: false },
+				{ kind: 'value', valueType: 'int', isNonZero: true },
 			],
 			consumedOperands: [
-				{ isInteger: true, isNonZero: false },
-				{ isInteger: true, isNonZero: true },
+				{ kind: 'value', valueType: 'int', isNonZero: false },
+				{ kind: 'value', valueType: 'int', isNonZero: true },
 			],
-			producedStackItems: [{ isInteger: true, isNonZero: false }],
-			stackAfter: [{ isInteger: true, isNonZero: false }],
+			producedStackItems: [{ kind: 'value', valueType: 'int', isNonZero: false }],
+			stackAfter: [{ kind: 'value', valueType: 'int', isNonZero: false }],
 		});
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: false }]);
 	});
 
 	it('owns stack errors before codegen runs', () => {
@@ -60,8 +63,8 @@ describe('analyzeInstruction', () => {
 		const analyzedLine = analyzeInstruction(line, context);
 
 		expect(analyzedLine.stackAnalysis.producedStackItems).toEqual([
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 7 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 },
 		]);
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 7 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 }]);
 	});
 });
