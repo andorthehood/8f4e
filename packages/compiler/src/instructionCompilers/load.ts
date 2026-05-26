@@ -12,7 +12,6 @@ import { getInstructionSpec } from '@8f4e/compiler-spec';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
-import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
 import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/compiler-spec';
 
@@ -36,7 +35,7 @@ const load: InstructionCompiler<LoadLine> = (line, context) => {
 	const [address] = line.stackAnalysis.consumedOperands;
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const buildInstructions = loadVariantByteCode[operation.loadVariant];
-	const memoryIndex = getAddressMemoryIndex(address);
+	const memoryIndex = address.address?.memoryIndex ?? 0;
 	const instructions = buildInstructions(memoryIndex);
 	const accessByteWidth = operation.accessByteWidth;
 	if (isSafeMemoryAccess(address, accessByteWidth)) {

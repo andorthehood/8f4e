@@ -8,7 +8,7 @@ import {
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
-import { getEndByteAddress, getModuleEndByteAddress } from '../semantic/layoutAddresses';
+import { getEndByteAddress } from '../semantic/layoutAddresses';
 
 import type { CompilerASTLine, AddressMetadata, CompilationContext } from '@8f4e/compiler-spec';
 
@@ -147,7 +147,7 @@ function resolveMemoryDefaultValue(
 					return context.startingByteAddress;
 				}
 				return typeof context.currentModuleWordAlignedSize === 'number'
-					? getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
+					? getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
 					: 0;
 			}
 			const memoryItem = getMemoryItemOrThrow(arg.base, lineForError, context);

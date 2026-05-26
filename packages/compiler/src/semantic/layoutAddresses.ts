@@ -11,10 +11,6 @@ export function getEndByteAddress(byteAddress: number, wordAlignedSize: number):
 	return byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
 }
 
-export function getModuleEndByteAddress(startingByteAddress: number, wordAlignedSize: number): number {
-	return getEndByteAddress(startingByteAddress, wordAlignedSize);
-}
-
 export function getAbsoluteWordOffset(startingByteAddress: number, localWordOffset: number): number {
 	return startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset;
 }

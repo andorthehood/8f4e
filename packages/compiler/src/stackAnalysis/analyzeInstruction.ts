@@ -2,12 +2,7 @@ import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionS
 
 import { validateInstruction } from './validateInstruction';
 
-import {
-	kindToStackItem,
-	resolveArgumentValueKind,
-	resolveMemoryValueKind,
-	resolvePointerTargetValueKind,
-} from '../utils/pushValueKind';
+import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
 import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
 import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 import { validateMapValueKind, resolveMapKind } from '../utils/mapValueKind';
@@ -16,6 +11,7 @@ import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
+import { getDereferencedValueKindFromMetadata } from '../utils/memoryData';
 
 import type {
 	CompilerASTLine,
@@ -121,12 +117,12 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 		}
 		case 'memory-pointer': {
 			const { memoryItem } = line.resolvedTarget;
-			const kind = resolvePointerTargetValueKind(memoryItem);
+			const kind = getDereferencedValueKindFromMetadata(memoryItem);
 			return [kindToStackItem(kind, { isNonZero: false })];
 		}
 		case 'local-pointer': {
 			const { local } = line.resolvedTarget;
-			const kind = resolvePointerTargetValueKind(local);
+			const kind = getDereferencedValueKindFromMetadata(local);
 			return [kindToStackItem(kind, { isNonZero: false })];
 		}
 		case 'local':

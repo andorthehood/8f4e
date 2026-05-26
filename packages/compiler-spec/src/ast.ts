@@ -237,6 +237,12 @@ export type CompilerASTLine =
 
 export type CompilerASTLines = CompilerASTLine[];
 
+/**
+ * Checks whether a parsed line carries resolved namespace reference metadata.
+ * Namespace references are added by semantic normalization for instructions that
+ * may depend on other modules or constants blocks, so callers can avoid probing
+ * optional metadata by hand.
+ */
 export function hasReferencedNamespaceIds(
 	line: CompilerASTLine | undefined
 ): line is CompilerASTLine & { referencedNamespaceIds: readonly string[] } {
@@ -285,26 +291,44 @@ const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarat
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 const semanticInstructionSet = new Set<string>(semanticInstructionNames);
 
+/**
+ * Checks whether a parsed line is a semantic instruction handled before code generation.
+ * These lines affect compiler state, namespaces, or constants rather than directly
+ * producing WebAssembly instructions.
+ */
 export function isSemanticInstructionLine(line: CompilerASTLine | undefined): line is SemanticInstructionLine {
 	return line !== undefined && semanticInstructionSet.has(line.instruction as SemanticInstructionName);
 }
 
+/** Checks whether a parsed line is a compiler directive instruction. */
 export function isCompilerDirectiveLine(line: CompilerASTLine | undefined): line is CompilerDirectiveLine {
 	return line !== undefined && line.instruction.startsWith('#');
 }
 
+/**
+ * Checks whether a parsed line declares scalar or array memory.
+ * The parser keeps declarations in the same AST union as executable lines; this
+ * guard narrows them before layout and namespace collection.
+ */
 export function isMemoryDeclarationLine(line: CompilerASTLine | undefined): line is MemoryDeclarationLine {
 	return line !== undefined && memoryDeclarationInstructionSet.has(line.instruction);
 }
 
+/** Checks whether a parsed line declares scalar memory. */
 export function isScalarMemoryDeclarationLine(line: CompilerASTLine | undefined): line is ScalarMemoryDeclarationLine {
 	return line !== undefined && scalarMemoryDeclarationInstructionSet.has(line.instruction);
 }
 
+/** Checks whether a parsed line declares array memory. */
 export function isArrayMemoryDeclarationLine(line: CompilerASTLine | undefined): line is ArrayMemoryDeclarationLine {
 	return line !== undefined && arrayMemoryDeclarationInstructionSet.has(line.instruction);
 }
 
+/**
+ * Checks whether a scalar memory declaration starts with an identifier name.
+ * Scalar declarations may also be anonymous literal data, so code that needs a
+ * named memory binding must use this narrower guard.
+ */
 export function isNamedScalarMemoryDeclarationLine(
 	line: CompilerASTLine | undefined
 ): line is NamedScalarMemoryDeclarationLine {

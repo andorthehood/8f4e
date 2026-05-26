@@ -4,7 +4,6 @@ import { getInstructionSpec } from '@8f4e/compiler-spec';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
-import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
 import type { ASTLineBase, FloatLoadInstructionSpecName, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -20,7 +19,7 @@ const loadFloat: InstructionCompiler<LoadFloatLine> = (line, context) => {
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const accessByteWidth = operation.accessByteWidth;
 
-	const memoryIndex = getAddressMemoryIndex(address);
+	const memoryIndex = address.address?.memoryIndex ?? 0;
 	const instructions = f32load(2, 0, memoryIndex);
 	if (isSafeMemoryAccess(address, accessByteWidth)) {
 		return saveByteCode(context, instructions);

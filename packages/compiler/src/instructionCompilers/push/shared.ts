@@ -11,12 +11,8 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
-import {
-	getDereferencedValueWordSize,
-	resolvePointerTargetValueKind,
-	valueKindToWasmType,
-	type PushValueKind,
-} from '../../utils/pushValueKind';
+import { valueKindToWasmType, type PushValueKind } from '../../utils/pushValueKind';
+import { getDereferencedValueKindFromMetadata, getDereferencedValueWordSizeFromMetadata } from '../../utils/memoryData';
 import { guardedAddressOperation } from '../utils/memoryAccessGuard';
 
 import type { CodegenContext } from '@8f4e/compiler-spec';
@@ -25,12 +21,7 @@ import type { PointerMetadata } from '../../utils/memoryData';
 type PointerValueSource = 'pointer-slot' | 'pointer-value';
 type PointerLoadStep = { accessByteWidth: number; loadByteCode: number[]; memoryIndex: number };
 
-export {
-	kindToStackItem,
-	resolveArgumentValueKind,
-	resolveMemoryValueKind,
-	resolvePointerTargetValueKind,
-} from '../../utils/pushValueKind';
+export { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../../utils/pushValueKind';
 
 export const constOpcode: Record<PushValueKind, (value: number) => number[]> = {
 	int32: i32const,
@@ -88,8 +79,8 @@ export function buildPointerDereferenceByteCode(
 	baseAddressByteCode: number[],
 	pointerValueSource: PointerValueSource
 ): { kind: PushValueKind; byteCode: number[] } {
-	const kind = resolvePointerTargetValueKind(pointerMetadata);
-	const dereferencedValueWordSize = getDereferencedValueWordSize(pointerMetadata);
+	const kind = getDereferencedValueKindFromMetadata(pointerMetadata);
+	const dereferencedValueWordSize = getDereferencedValueWordSizeFromMetadata(pointerMetadata);
 	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;
 	const finalLoad =
 		dereferencedValueWordSize === 1
