@@ -52,7 +52,7 @@ function isBlockStartInstruction(instruction: string): instruction is BlockStart
 }
 
 function isBlockEndInstruction(instruction: string): instruction is BlockEndInstruction {
-	return instruction in blockEndToStartInstruction;
+	return Object.prototype.hasOwnProperty.call(blockEndToStartInstruction, instruction);
 }
 
 function isCompilerDirectiveInstruction(instruction: string): boolean {

@@ -331,6 +331,10 @@ describe('compileToAST', () => {
 		expect(() => compileToAST(['blockEnd'])).toThrowError(SyntaxRulesError);
 	});
 
+	it('does not treat inherited object keys as block end instructions', () => {
+		expect(() => compileToAST(['block', 'constructor', 'blockEnd'])).not.toThrow();
+	});
+
 	it('rejects unclosed block blocks', () => {
 		expect(() => compileToAST(['block', 'push 1'])).toThrowError(SyntaxRulesError);
 	});
