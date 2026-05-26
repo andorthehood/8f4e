@@ -22,7 +22,8 @@ import type {
 	RegionLine,
 	UseLine,
 } from './ast';
-import type { FunctionMetadata, FunctionMetadataLookup, FunctionSignature, FunctionTypeRegistry } from './compiled';
+import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
+import type { FunctionSignature } from './functionTypes';
 import type {
 	ArrayDeclarationInstruction,
 	DataStructure,

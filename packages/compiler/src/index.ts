@@ -1,4 +1,4 @@
-import { compileToAST, createASTCache } from '@8f4e/tokenizer';
+import { compileToASTGroup, createASTCache } from '@8f4e/tokenizer';
 import {
 	createCodeSection,
 	createFunction,
@@ -28,7 +28,6 @@ import {
 	assertUniqueModuleIds,
 	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
-	getModuleIdFromAst,
 } from './semantic/buildNamespace';
 import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
 import sortModules from './graphOptimizer';
@@ -37,17 +36,20 @@ import { getError } from './compilerError';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 
 import type {
-	AST,
 	CompileOptions,
 	CompileResult,
+	CompiledModuleAST,
 	CompiledModule,
 	CompiledModuleLookup,
 	CompiledFunctionLookup,
+	CompilerASTGroup,
 	CompilerCache,
+	FunctionAST,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	Module,
 	Namespaces,
+	ParsedLineMetadata,
 } from '@8f4e/compiler-spec';
 
 export { default as instructions } from './instructionCompilers';
@@ -69,7 +71,7 @@ export { createInitialMemoryDataSegments };
 export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
 
 export function compileModules(
-	modules: AST[],
+	modules: CompiledModuleAST[],
 	options: CompileOptions,
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
@@ -90,9 +92,8 @@ export function compileModules(
 	};
 
 	return modules.map((ast, index) => {
-		const moduleId = getModuleIdFromAst(ast);
 		const moduleStartingByteAddress =
-			moduleId && ns[moduleId]?.byteAddress !== undefined ? ns[moduleId].byteAddress : startingByteAddress;
+			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
 		const module = compileModule(ast, ns, moduleStartingByteAddress, index, compiledFunctions, allocator, options);
 		return module;
 	});
@@ -110,7 +111,7 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 
 function createCompilerCache(): CompilerCache {
 	return {
-		ast: createASTCache(),
+		ast: createASTCache<CompilerASTGroup>(),
 	};
 }
 
@@ -125,7 +126,7 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): voi
 			continue;
 		}
 
-		const exportLine = compiledFunction.ast.find(line => line.instruction === '#export') ?? compiledFunction.ast[0];
+		const exportLine = compiledFunction.ast.exportLine ?? compiledFunction.ast.lines[0];
 		if (BUILT_IN_EXPORT_NAMES.has(exportName) || seen.has(exportName)) {
 			throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, exportLine, undefined, { identifier: exportName });
 		}
@@ -163,6 +164,32 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
+function parseCompiledModuleAST(
+	code: string[],
+	lineMetadata: ParsedLineMetadata | undefined,
+	cache: CompilerCache,
+	cacheKey: string
+): CompiledModuleAST {
+	const ast = compileToASTGroup(code, lineMetadata, cache.ast, cacheKey);
+	if (ast.type === 'function') {
+		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
+	}
+	return ast;
+}
+
+function parseFunctionAST(
+	code: string[],
+	lineMetadata: ParsedLineMetadata | undefined,
+	cache: CompilerCache,
+	cacheKey: string
+): FunctionAST {
+	const ast = compileToASTGroup(code, lineMetadata, cache.ast, cacheKey);
+	if (ast.type !== 'function') {
+		throw getError(ErrorCode.MISSING_FUNCTION_ID, ast.lines[0], undefined);
+	}
+	return ast;
+}
+
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
@@ -193,7 +220,7 @@ export default function compile(
 
 	// Compile to AST with line metadata for error mapping.
 	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
-		compileToAST(code, lineMetadata, cache.ast, `module:${index}`)
+		parseCompiledModuleAST(code, lineMetadata, cache, `module:${index}`)
 	);
 	assertUniqueModuleIds(astModules);
 	const dependencyOrderedModules = sortModules(astModules);
@@ -208,7 +235,7 @@ export default function compile(
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
-		compileToAST(code, lineMetadata, cache.ast, `function:${index}`)
+		parseFunctionAST(code, lineMetadata, cache, `function:${index}`)
 	);
 
 	// Collect pre-codegen function metadata so `call` target validation and
