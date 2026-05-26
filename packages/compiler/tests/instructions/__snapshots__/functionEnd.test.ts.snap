@@ -46,19 +46,12 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -81,136 +74,6 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 5,
       "lineNumberBeforeMacroExpansion": 5,
-      "targetFunction": {
-        "ast": {
-          "functionEndLine": {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "int",
-              },
-            ],
-            "instruction": "functionEnd",
-            "isMemoryDeclaration": false,
-            "isSemanticOnly": false,
-            "lineNumberAfterMacroExpansion": 4,
-            "lineNumberBeforeMacroExpansion": 4,
-          },
-          "functionLine": {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "addTwo",
-              },
-            ],
-            "instruction": "function",
-            "isMemoryDeclaration": false,
-            "isSemanticOnly": false,
-            "lineNumberAfterMacroExpansion": 0,
-            "lineNumberBeforeMacroExpansion": 0,
-          },
-          "id": "addTwo",
-          "lines": [
-            {
-              "arguments": [
-                {
-                  "referenceKind": "plain",
-                  "scope": "local",
-                  "type": "identifier",
-                  "value": "addTwo",
-                },
-              ],
-              "instruction": "function",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 0,
-              "lineNumberBeforeMacroExpansion": 0,
-            },
-            {
-              "arguments": [
-                {
-                  "isInteger": true,
-                  "type": "literal",
-                  "value": 5,
-                },
-              ],
-              "instruction": "push",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 1,
-              "lineNumberBeforeMacroExpansion": 1,
-            },
-            {
-              "arguments": [
-                {
-                  "isInteger": true,
-                  "type": "literal",
-                  "value": 3,
-                },
-              ],
-              "instruction": "push",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 2,
-              "lineNumberBeforeMacroExpansion": 2,
-            },
-            {
-              "arguments": [],
-              "instruction": "add",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 3,
-              "lineNumberBeforeMacroExpansion": 3,
-            },
-            {
-              "arguments": [
-                {
-                  "referenceKind": "plain",
-                  "scope": "local",
-                  "type": "identifier",
-                  "value": "int",
-                },
-              ],
-              "instruction": "functionEnd",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 4,
-              "lineNumberBeforeMacroExpansion": 4,
-            },
-          ],
-          "signature": {
-            "parameters": [],
-            "returns": [
-              "int",
-            ],
-          },
-          "type": "function",
-        },
-        "body": [
-          7,
-          0,
-          65,
-          5,
-          65,
-          3,
-          106,
-          11,
-        ],
-        "id": "addTwo",
-        "locals": [],
-        "signature": {
-          "parameters": [],
-          "returns": [
-            "int",
-          ],
-        },
-        "typeIndex": 3,
-        "wasmIndex": 4,
-      },
     },
     {
       "arguments": [],
@@ -402,19 +265,12 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -437,114 +293,6 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 5,
       "lineNumberBeforeMacroExpansion": 5,
-      "targetFunction": {
-        "ast": {
-          "functionEndLine": {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "float",
-              },
-            ],
-            "instruction": "functionEnd",
-            "isMemoryDeclaration": false,
-            "isSemanticOnly": false,
-            "lineNumberAfterMacroExpansion": 2,
-            "lineNumberBeforeMacroExpansion": 2,
-          },
-          "functionLine": {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "getPi",
-              },
-            ],
-            "instruction": "function",
-            "isMemoryDeclaration": false,
-            "isSemanticOnly": false,
-            "lineNumberAfterMacroExpansion": 0,
-            "lineNumberBeforeMacroExpansion": 0,
-          },
-          "id": "getPi",
-          "lines": [
-            {
-              "arguments": [
-                {
-                  "referenceKind": "plain",
-                  "scope": "local",
-                  "type": "identifier",
-                  "value": "getPi",
-                },
-              ],
-              "instruction": "function",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 0,
-              "lineNumberBeforeMacroExpansion": 0,
-            },
-            {
-              "arguments": [
-                {
-                  "isInteger": false,
-                  "type": "literal",
-                  "value": 3.14,
-                },
-              ],
-              "instruction": "push",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 1,
-              "lineNumberBeforeMacroExpansion": 1,
-            },
-            {
-              "arguments": [
-                {
-                  "referenceKind": "plain",
-                  "scope": "local",
-                  "type": "identifier",
-                  "value": "float",
-                },
-              ],
-              "instruction": "functionEnd",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 2,
-              "lineNumberBeforeMacroExpansion": 2,
-            },
-          ],
-          "signature": {
-            "parameters": [],
-            "returns": [
-              "float",
-            ],
-          },
-          "type": "function",
-        },
-        "body": [
-          7,
-          0,
-          67,
-          195,
-          245,
-          72,
-          64,
-          11,
-        ],
-        "id": "getPi",
-        "locals": [],
-        "signature": {
-          "parameters": [],
-          "returns": [
-            "float",
-          ],
-        },
-        "typeIndex": 3,
-        "wasmIndex": 4,
-      },
     },
     {
       "arguments": [],
@@ -734,19 +482,12 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -769,111 +510,6 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 5,
       "lineNumberBeforeMacroExpansion": 5,
-      "targetFunction": {
-        "ast": {
-          "functionEndLine": {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "int",
-              },
-            ],
-            "instruction": "functionEnd",
-            "isMemoryDeclaration": false,
-            "isSemanticOnly": false,
-            "lineNumberAfterMacroExpansion": 2,
-            "lineNumberBeforeMacroExpansion": 2,
-          },
-          "functionLine": {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "getFortyTwo",
-              },
-            ],
-            "instruction": "function",
-            "isMemoryDeclaration": false,
-            "isSemanticOnly": false,
-            "lineNumberAfterMacroExpansion": 0,
-            "lineNumberBeforeMacroExpansion": 0,
-          },
-          "id": "getFortyTwo",
-          "lines": [
-            {
-              "arguments": [
-                {
-                  "referenceKind": "plain",
-                  "scope": "local",
-                  "type": "identifier",
-                  "value": "getFortyTwo",
-                },
-              ],
-              "instruction": "function",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 0,
-              "lineNumberBeforeMacroExpansion": 0,
-            },
-            {
-              "arguments": [
-                {
-                  "isInteger": true,
-                  "type": "literal",
-                  "value": 42,
-                },
-              ],
-              "instruction": "push",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 1,
-              "lineNumberBeforeMacroExpansion": 1,
-            },
-            {
-              "arguments": [
-                {
-                  "referenceKind": "plain",
-                  "scope": "local",
-                  "type": "identifier",
-                  "value": "int",
-                },
-              ],
-              "instruction": "functionEnd",
-              "isMemoryDeclaration": false,
-              "isSemanticOnly": false,
-              "lineNumberAfterMacroExpansion": 2,
-              "lineNumberBeforeMacroExpansion": 2,
-            },
-          ],
-          "signature": {
-            "parameters": [],
-            "returns": [
-              "int",
-            ],
-          },
-          "type": "function",
-        },
-        "body": [
-          4,
-          0,
-          65,
-          42,
-          11,
-        ],
-        "id": "getFortyTwo",
-        "locals": [],
-        "signature": {
-          "parameters": [],
-          "returns": [
-            "int",
-          ],
-        },
-        "typeIndex": 3,
-        "wasmIndex": 4,
-      },
     },
     {
       "arguments": [],

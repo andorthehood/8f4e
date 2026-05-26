@@ -70,19 +70,12 @@ exports[`add (int) > if the generated AST, WAT and memory map match the snapshot
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 8,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -105,24 +98,6 @@ exports[`add (int) > if the generated AST, WAT and memory map match the snapshot
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 7,
       "lineNumberBeforeMacroExpansion": 7,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": false,
-          "id": "input1",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [
@@ -138,24 +113,6 @@ exports[`add (int) > if the generated AST, WAT and memory map match the snapshot
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 8,
       "lineNumberBeforeMacroExpansion": 8,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 4,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": false,
-          "id": "input2",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [],

@@ -69,6 +69,7 @@ export { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from 
 export { getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
 export { createInitialMemoryDataSegments };
+export { default as normalizeCompileTimeArguments } from './semantic/normalizeCompileTimeArguments';
 export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
 
 export function compileModules(

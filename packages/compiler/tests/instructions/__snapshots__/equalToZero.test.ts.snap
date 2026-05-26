@@ -54,19 +54,12 @@ exports[`equalToZero > if the generated AST, WAT and memory map match the snapsh
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -89,24 +82,6 @@ exports[`equalToZero > if the generated AST, WAT and memory map match the snapsh
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 6,
       "lineNumberBeforeMacroExpansion": 6,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": false,
-          "id": "input",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [],

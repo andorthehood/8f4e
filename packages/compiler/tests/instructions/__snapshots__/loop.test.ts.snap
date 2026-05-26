@@ -46,19 +46,12 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "counter",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "counter",
+          "type": "identifier",
+          "value": "&counter",
         },
       ],
       "instruction": "push",
@@ -81,24 +74,6 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 5,
       "lineNumberBeforeMacroExpansion": 5,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": false,
-          "id": "counter",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [
@@ -295,24 +270,6 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 4,
       "lineNumberBeforeMacroExpansion": 4,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": false,
-          "id": "counter",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [
@@ -353,19 +310,12 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "counter",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "counter",
+          "type": "identifier",
+          "value": "&counter",
         },
       ],
       "instruction": "push",
@@ -388,24 +338,6 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 10,
       "lineNumberBeforeMacroExpansion": 10,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": false,
-          "id": "counter",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [

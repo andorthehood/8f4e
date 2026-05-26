@@ -58,19 +58,12 @@ exports[`const: literal-only division expression with integer result > if the ge
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -82,9 +75,10 @@ exports[`const: literal-only division expression with integer result > if the ge
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "RESULT",
         },
       ],
       "instruction": "push",
@@ -238,19 +232,12 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -262,9 +249,10 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 32,
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "RESULT",
         },
       ],
       "instruction": "push",
@@ -419,19 +407,12 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 32,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 32,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -443,9 +424,11 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
     {
       "arguments": [
         {
-          "isInteger": true,
-          "type": "literal",
-          "value": 8,
+          "referenceKind": "element-count",
+          "scope": "local",
+          "targetMemoryId": "buffer",
+          "type": "identifier",
+          "value": "count(buffer)",
         },
       ],
       "instruction": "push",
@@ -636,19 +619,12 @@ exports[`memory declaration: literal-only multiplication expression default > if
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 4,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 4,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -671,24 +647,6 @@ exports[`memory declaration: literal-only multiplication expression default > if
       "isSemanticOnly": false,
       "lineNumberAfterMacroExpansion": 6,
       "lineNumberBeforeMacroExpansion": 6,
-      "resolvedTarget": {
-        "kind": "memory",
-        "memoryItem": {
-          "byteAddress": 0,
-          "default": 12,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "foo",
-          "isInteger": true,
-          "isPointingToPointer": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "type": "int",
-          "wordAlignedAddress": 0,
-          "wordAlignedSize": 1,
-        },
-      },
     },
     {
       "arguments": [],
@@ -852,19 +810,12 @@ exports[`push: float literal multiplication with float-typed result > if the gen
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -1012,19 +963,12 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -1172,19 +1116,12 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -1332,19 +1269,12 @@ exports[`push: literal-only division expression with float result > if the gener
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
@@ -1492,19 +1422,12 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
     {
       "arguments": [
         {
-          "address": {
-            "memoryIndex": 0,
-            "safeRange": {
-              "byteAddress": 0,
-              "memoryId": "output",
-              "memoryIndex": 0,
-              "safeByteLength": 4,
-              "source": "memory-start",
-            },
-          },
-          "isInteger": true,
-          "type": "literal",
-          "value": 0,
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
         },
       ],
       "instruction": "push",
