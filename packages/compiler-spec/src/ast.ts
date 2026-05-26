@@ -122,17 +122,24 @@ export type MemoryDeclarationArgument =
 	| ArgumentIdentifier
 	| ArgumentCompileTimeExpression
 	| ArgumentStringLiteral;
+
+type ReferencedModuleIdsMetadata = {
+	referencedModuleIds?: readonly string[];
+};
+
 export type ScalarMemoryDeclarationLine = ASTLineBase<
 	ScalarMemoryDeclarationInstruction,
 	[MemoryDeclarationArgument, ...MemoryDeclarationArgument[]]
->;
+> &
+	ReferencedModuleIdsMetadata;
 export type NamedScalarMemoryDeclarationLine = Omit<ScalarMemoryDeclarationLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...MemoryDeclarationArgument[]];
 };
 export type ArrayMemoryDeclarationLine = ASTLineBase<
 	ArrayDeclarationInstruction,
 	[ArgumentIdentifier, CompileTimeValueArgument, ...MemoryDeclarationArgument[]]
->;
+> &
+	ReferencedModuleIdsMetadata;
 export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDeclarationLine;
 
 type ExplicitCompilerASTLine =

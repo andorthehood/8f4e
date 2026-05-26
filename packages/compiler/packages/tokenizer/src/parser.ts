@@ -171,11 +171,7 @@ function getASTCacheLookupResult<TAst>(
 	};
 }
 
-function addReferencedModuleIdsFromArgument(referencedModuleIds: Set<string>, argument: Argument | undefined): void {
-	if (!argument) {
-		return;
-	}
-
+function addReferencedModuleIdsFromArgument(referencedModuleIds: Set<string>, argument: Argument): void {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		for (const moduleId of argument.intermoduleIds) {
 			referencedModuleIds.add(moduleId);
@@ -202,12 +198,6 @@ function isExportLine(line: CompilerASTLine): line is ExportLine {
 
 function isFunctionEndLine(line: CompilerASTLine): line is FunctionEndLine {
 	return line.instruction === 'functionEnd';
-}
-
-function addReferencedModuleIds(builder: ModuleASTBuilder, line: MemoryDeclarationLine): void {
-	for (const argument of line.arguments) {
-		addReferencedModuleIdsFromArgument(builder.referencedModuleIds, argument);
-	}
 }
 
 function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuilder | undefined {
@@ -252,7 +242,9 @@ function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): v
 	}
 
 	builder.memoryDeclarationLines.push(line);
-	addReferencedModuleIds(builder, line);
+	for (const moduleId of line.referencedModuleIds ?? []) {
+		builder.referencedModuleIds.add(moduleId);
+	}
 }
 
 function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
@@ -400,9 +392,17 @@ export function parseLine(
 		const tokens = tokenizeInstruction(line);
 		const [first = '', ...args] = tokens;
 		instruction = first;
-		const parsedArguments = args.map(parseArgument);
-		validateInstructionArguments(instruction, parsedArguments);
 		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
+		const parsedArguments: Argument[] = [];
+		const referencedModuleIds = isMemoryDeclaration ? new Set<string>() : undefined;
+		for (const arg of args) {
+			const parsedArgument = parseArgument(arg);
+			parsedArguments.push(parsedArgument);
+			if (referencedModuleIds) {
+				addReferencedModuleIdsFromArgument(referencedModuleIds, parsedArgument);
+			}
+		}
+		validateInstructionArguments(instruction, parsedArguments);
 		const parsedLine = {
 			lineNumberBeforeMacroExpansion,
 			lineNumberAfterMacroExpansion,
@@ -413,7 +413,11 @@ export function parseLine(
 		} as ASTLine;
 
 		if (isMemoryDeclaration) {
-			parsedLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
+			const memoryLine = parsedLine as MemoryDeclarationLine;
+			memoryLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
+			if (referencedModuleIds && referencedModuleIds.size > 0) {
+				memoryLine.referencedModuleIds = [...referencedModuleIds];
+			}
 		}
 
 		return parsedLine;
