@@ -4,7 +4,6 @@ import { DOUBLE_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH, getInstructi
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
 import { guardedStore, isSafeMemoryAccess } from './utils/memoryAccessGuard';
-import { getAddressMemoryIndex } from './utils/memoryAccessTarget';
 
 import type { ASTLineBase, InstructionCompiler } from '@8f4e/compiler-spec';
 
@@ -19,7 +18,7 @@ const store: InstructionCompiler<StoreLine> = (line, context) => {
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const operand2Address = line.stackAnalysis.consumedOperands[operation.addressOperandIndex];
 	const operand1Value = line.stackAnalysis.consumedOperands[operation.valueOperandIndex];
-	const memoryIndex = getAddressMemoryIndex(operand2Address);
+	const memoryIndex = operand2Address.address?.memoryIndex ?? 0;
 	const instructions = operand1Value.isInteger
 		? i32store(undefined, undefined, 2, 0, memoryIndex)
 		: operand1Value.isFloat64
