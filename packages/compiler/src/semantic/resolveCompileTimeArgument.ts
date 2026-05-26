@@ -1,6 +1,6 @@
 import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
-import { getEndByteAddress, getModuleEndByteAddress } from './layoutAddresses';
+import { getEndByteAddress } from './layoutAddresses';
 import { getMemoryRegionFields } from './memoryRegions';
 
 import {
@@ -285,7 +285,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 			typeof targetNamespace.wordAlignedSize === 'number'
 		) {
 			const value = operand.isEndAddress
-				? getModuleEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
+				? getEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
 				: targetNamespace.byteAddress;
 			return moduleAddressConst(
 				operand.isEndAddress ? 'module-end' : 'module-start',
@@ -366,7 +366,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 				);
 			}
 			if (typeof context.currentModuleWordAlignedSize === 'number') {
-				const byteAddress = getModuleEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
+				const byteAddress = getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
 				return {
 					...moduleAddressConst(
 						'module-end',
