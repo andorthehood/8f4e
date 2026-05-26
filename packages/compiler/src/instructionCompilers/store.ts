@@ -1,6 +1,5 @@
 import { f32store, f64store, i32store } from '@8f4e/compiler-wasm-utils';
 import { DOUBLE_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH, getInstructionSpec } from '@8f4e/compiler-spec';
-import { isStackFloat64, isStackInteger } from '@8f4e/compiler-spec';
 
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { saveByteCode } from './utils/saveByteCode';
@@ -25,8 +24,8 @@ const store: InstructionCompiler<StoreLine> = (line, context) => {
 		context
 	);
 	const operand1Value = line.stackAnalysis.consumedOperands[operation.valueOperandIndex];
-	const valueIsInteger = isStackInteger(operand1Value);
-	const valueIsFloat64 = isStackFloat64(operand1Value);
+	const valueIsInteger = operand1Value.valueType === 'int';
+	const valueIsFloat64 = operand1Value.valueType === 'float64';
 	const memoryIndex = operand2Address.address.memoryIndex;
 	const instructions = valueIsInteger
 		? i32store(undefined, undefined, 2, 0, memoryIndex)

@@ -10,7 +10,6 @@ import {
 	WASM_I32_EQ,
 	WASM_I32_EQZ,
 } from '@8f4e/compiler-wasm-utils';
-import { isStackInteger } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { allocateInternalResource } from './utils/internalResources';
@@ -27,7 +26,7 @@ const hasChanged: InstructionCompiler = (line, context) => {
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
 	const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
-	const isInteger = isStackInteger(operand);
+	const isInteger = operand.valueType === 'int';
 	const memoryType = isInteger ? 'int' : 'float';
 	const previousValue = allocateInternalResource(context, previousValueName, memoryType);
 	const currentValueLocalIndex = Object.keys(context.locals).length;

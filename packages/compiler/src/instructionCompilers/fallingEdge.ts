@@ -9,7 +9,6 @@ import {
 	WASM_F32_LT,
 	WASM_I32_LT_S,
 } from '@8f4e/compiler-wasm-utils';
-import { isStackInteger } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { allocateInternalResource } from './utils/internalResources';
@@ -26,7 +25,7 @@ const fallingEdge: InstructionCompiler = (line, context) => {
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const currentValueName = '__fallingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
 	const previousValueName = '__fallingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
-	const isInteger = isStackInteger(operand);
+	const isInteger = operand.valueType === 'int';
 	const memoryType = isInteger ? 'int' : 'float';
 	const previousValue = allocateInternalResource(context, previousValueName, memoryType);
 	const currentValueLocalIndex = Object.keys(context.locals).length;

@@ -1,4 +1,4 @@
-import { ArgumentType, WORD_MEMORY_ACCESS_WIDTH, isStackAddress } from '@8f4e/compiler-spec';
+import { ArgumentType, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 
@@ -37,9 +37,9 @@ export function getClampedAddressStackItem(
 	accessByteWidth: number
 ): StackItem {
 	const safeAccessByteWidth = Math.min(accessByteWidth, range?.safeByteLength ?? accessByteWidth);
-	const memoryIndex = range?.memoryIndex ?? (isStackAddress(operand) ? operand.address.memoryIndex : 0);
+	const memoryIndex = range?.memoryIndex ?? (operand.kind === 'address' ? operand.address.memoryIndex : 0);
 	const memoryRegionName =
-		range?.memoryRegionName ?? (isStackAddress(operand) ? operand.address.memoryRegionName : undefined);
+		range?.memoryRegionName ?? (operand.kind === 'address' ? operand.address.memoryRegionName : undefined);
 	const knownIntegerValue = range
 		? clampKnownIntegerValue(
 				operand.knownIntegerValue,
@@ -53,7 +53,7 @@ export function getClampedAddressStackItem(
 		valueType: 'int',
 		isNonZero: knownIntegerValue !== undefined ? knownIntegerValue !== 0 : false,
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
-		...(isStackAddress(operand) && operand.pointsTo ? { pointsTo: { ...operand.pointsTo } } : {}),
+		...(operand.kind === 'address' && operand.pointsTo ? { pointsTo: { ...operand.pointsTo } } : {}),
 		address: {
 			...getMemoryRegionFields(memoryIndex, memoryRegionName),
 			...(range ? { clampRange: range } : {}),

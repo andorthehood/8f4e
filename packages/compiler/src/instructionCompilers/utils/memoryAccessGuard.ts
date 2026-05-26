@@ -18,7 +18,6 @@ import {
 	WASM_TYPE_I32,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
-import { getStackValueType, isStackAddress } from '@8f4e/compiler-spec';
 
 import type { CodegenContext, CompilationContext, StackItem } from '@8f4e/compiler-spec';
 
@@ -69,7 +68,7 @@ export function getOrCreateMemoryGuardLocal(
 		return existing;
 	}
 
-	const valueType = getStackValueType(item as StackItem);
+	const valueType = item.valueType;
 	const local = {
 		isInteger: valueType === 'int',
 		...(valueType === 'float64' ? { isFloat64: true } : {}),
@@ -80,7 +79,7 @@ export function getOrCreateMemoryGuardLocal(
 }
 
 export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number): boolean {
-	if (!isStackAddress(address)) {
+	if (address.kind !== 'address') {
 		return false;
 	}
 

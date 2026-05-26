@@ -1,5 +1,3 @@
-import { isStackAddress } from '@8f4e/compiler-spec';
-
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 
 import type { MemoryAddressRange, StackAddress, StackItem } from '@8f4e/compiler-spec';
@@ -22,14 +20,14 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 			? operand1.knownIntegerValue + operand2.knownIntegerValue
 			: undefined;
 	const safeRange =
-		isStackAddress(operand1) && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
+		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
 			? shiftSafeRange(operand1.address.safeRange, operand2.knownIntegerValue)
-			: isStackAddress(operand2) && operand2.address.safeRange && operand1.knownIntegerValue !== undefined
+			: operand2.kind === 'address' && operand2.address.safeRange && operand1.knownIntegerValue !== undefined
 				? shiftSafeRange(operand2.address.safeRange, operand1.knownIntegerValue)
 				: undefined;
 	const clampRange =
-		(isStackAddress(operand1) ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined) ??
-		(isStackAddress(operand2) ? (operand2.address.clampRange ?? operand2.address.safeRange) : undefined);
+		(operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined) ??
+		(operand2.kind === 'address' ? (operand2.address.clampRange ?? operand2.address.safeRange) : undefined);
 
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
@@ -56,10 +54,11 @@ export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem)
 			? operand1.knownIntegerValue - operand2.knownIntegerValue
 			: undefined;
 	const safeRange =
-		isStackAddress(operand1) && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
+		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
 			? shiftSafeRange(operand1.address.safeRange, -operand2.knownIntegerValue)
 			: undefined;
-	const clampRange = isStackAddress(operand1) ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined;
+	const clampRange =
+		operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined;
 
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
