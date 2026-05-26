@@ -337,8 +337,8 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
-			isMemoryDeclaration: true,
 			arguments: [classifyIdentifier('buffer'), classifyIdentifier('&source:missingBuffer')],
+			hasExplicitMemoryDefault: true,
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -369,8 +369,8 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
-			isMemoryDeclaration: true,
 			arguments: [classifyIdentifier('ptr'), classifyIdentifier('&source:buffer')],
+			hasExplicitMemoryDefault: true,
 		};
 
 		const result = normalizeCompileTimeArguments(line, context);
@@ -401,8 +401,8 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int[]',
-			isMemoryDeclaration: true,
 			arguments: [classifyIdentifier('buffer'), classifyIdentifier('&source:buffer')],
+			hasExplicitMemoryDefault: false,
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -417,8 +417,8 @@ describe('normalizeCompileTimeArguments', () => {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'int',
-			isMemoryDeclaration: true,
 			arguments: [classifyIdentifier('buffer'), parseArgument('2*MISSING')],
+			hasExplicitMemoryDefault: true,
 		};
 
 		expect(() => normalizeCompileTimeArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);

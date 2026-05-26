@@ -3,17 +3,18 @@ import {
 	blockEndToStartInstruction,
 	blockStartInstructions,
 	isConstantsLine,
+	isCompilerDirectiveLine,
 	isFunctionLine,
 	isMemoryDeclarationLine,
 	isModuleLine,
 	isParamLine,
+	isSemanticInstructionLine,
 } from '@8f4e/compiler-spec';
 
 import instructionParser from './syntax/instructionParser';
 import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
 import isComment from './syntax/isComment';
 import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
-import isSemanticOnlyInstruction from './syntax/isSemanticOnlyInstruction';
 import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
@@ -28,6 +29,7 @@ import type {
 	Argument,
 	BlockEndLine,
 	BlockEndInstruction,
+	BlockLine,
 	BlockStartInstruction,
 	BlockBlockResultType,
 	CompilerASTLine,
@@ -39,17 +41,32 @@ import type {
 	FunctionSignature,
 	IfEndLine,
 	IfBlockResultType,
+	IfLine,
 	MemoryDeclarationLine,
 	ModuleLine,
 	ParsedLineMetadata,
 	RegionLine,
 } from '@8f4e/compiler-spec';
 
-type OpenBlock = {
-	instruction: BlockStartInstruction;
+type IfOpenBlock = {
+	instruction: 'if';
 	astIndex: number;
-	hasElse?: boolean;
+	line: IfLine;
+	hasElse: boolean;
 };
+
+type GenericOpenBlock = {
+	instruction: 'block';
+	astIndex: number;
+	line: BlockLine;
+};
+
+type OtherOpenBlock = {
+	instruction: Exclude<BlockStartInstruction, 'if' | 'block'>;
+	astIndex: number;
+};
+
+type OpenBlock = IfOpenBlock | GenericOpenBlock | OtherOpenBlock;
 
 type SourceBlockPrologue = {
 	instruction: 'module' | 'function';
@@ -110,10 +127,6 @@ function canReferenceDeferredNamespace(instruction: string, isMemoryDeclaration:
 	return isMemoryDeclaration || instruction === 'const' || instruction === 'use';
 }
 
-function isCompilerDirectiveInstruction(instruction: string): boolean {
-	return instruction.startsWith('#');
-}
-
 function getResultTypeFromFirstArgument(line: IfEndLine | BlockEndLine): IfBlockResultType {
 	return (line.arguments[0]?.value ?? null) as IfBlockResultType;
 }
@@ -126,11 +139,7 @@ function getBlockEndResultType(line: BlockEndLine): BlockBlockResultType {
 	return getResultTypeFromFirstArgument(line);
 }
 
-function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean | undefined {
-	if (!isMemoryDeclarationInstruction(instruction)) {
-		return undefined;
-	}
-
+function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean {
 	if (isArrayDeclarationInstruction(instruction)) {
 		return args.length > 2;
 	}
@@ -417,13 +426,11 @@ export function parseLine(
 			lineNumberAfterMacroExpansion,
 			instruction,
 			arguments: parsedArguments,
-			isSemanticOnly: isSemanticOnlyInstruction(instruction),
-			isMemoryDeclaration,
 			...(referencedNamespaceIds.size > 0 ? { referencedNamespaceIds: [...referencedNamespaceIds] } : {}),
 		} as ASTLine;
 
-		if (isMemoryDeclaration) {
-			const memoryLine = parsedLine as MemoryDeclarationLine;
+		if (isMemoryDeclarationLine(parsedLine)) {
+			const memoryLine: MemoryDeclarationLine = parsedLine;
 			memoryLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
 			if (referencedNamespaceIds.size > 0) {
 				memoryLine.referencedModuleIds = [...referencedNamespaceIds];
@@ -462,7 +469,7 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 		const astIndex = ast.length;
 		const isFirstASTLine = ast.length === 0;
 		const currentSourceBlockPrologue = sourceBlockPrologueStack[sourceBlockPrologueStack.length - 1];
-		const isCompilerDirective = isCompilerDirectiveInstruction(parsedLine.instruction);
+		const isCompilerDirective = isCompilerDirectiveLine(parsedLine);
 		const isInOpenSourceBlockPrologue =
 			currentSourceBlockPrologue?.isOpen && currentSourceBlockPrologue.blockDepth === blockStack.length;
 
@@ -492,16 +499,33 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 		}
 		if (astBuilder) {
 			applySourceBlockASTLine(astBuilder, parsedLine);
-		} else if (!parsedLine.isSemanticOnly) {
+		} else if (!isSemanticInstructionLine(parsedLine)) {
 			onlySemanticLinesBeforeSourceBlock = false;
 		}
 
 		if (isBlockStartInstruction(parsedLine.instruction)) {
-			blockStack.push({
-				instruction: parsedLine.instruction,
-				astIndex,
-				hasElse: parsedLine.instruction === 'if' ? false : undefined,
-			});
+			switch (parsedLine.instruction) {
+				case 'if':
+					blockStack.push({
+						instruction: 'if',
+						astIndex,
+						line: parsedLine,
+						hasElse: false,
+					});
+					break;
+				case 'block':
+					blockStack.push({
+						instruction: 'block',
+						astIndex,
+						line: parsedLine,
+					});
+					break;
+				default:
+					blockStack.push({
+						instruction: parsedLine.instruction,
+						astIndex,
+					});
+			}
 
 			if (sourceBlockStartInstructionSet.has(parsedLine.instruction)) {
 				sourceBlockPrologueStack.push({
@@ -584,9 +608,9 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 			continue;
 		}
 
-		if (parsedLine.instruction === 'ifEnd') {
-			const resultType = getIfResultType(parsedLine as IfEndLine);
-			ast[openBlock.astIndex].ifBlock = {
+		if (parsedLine.instruction === 'ifEnd' && openBlock.instruction === 'if') {
+			const resultType = getIfResultType(parsedLine);
+			openBlock.line.ifBlock = {
 				matchingIfEndIndex: astIndex,
 				resultType,
 				hasElse: Boolean(openBlock.hasElse),
@@ -595,9 +619,9 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 				matchingIfIndex: openBlock.astIndex,
 				resultType,
 			};
-		} else {
-			const resultType = getBlockEndResultType(parsedLine as BlockEndLine);
-			ast[openBlock.astIndex].blockBlock = {
+		} else if (parsedLine.instruction === 'blockEnd' && openBlock.instruction === 'block') {
+			const resultType = getBlockEndResultType(parsedLine);
+			openBlock.line.blockBlock = {
 				matchingBlockEndIndex: astIndex,
 				resultType,
 			};

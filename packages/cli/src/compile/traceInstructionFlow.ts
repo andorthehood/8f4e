@@ -8,6 +8,8 @@ import compile, {
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
+	isMemoryDeclarationLine,
+	isSemanticInstructionLine,
 	type ConstantsAST,
 	type CompilerASTLine,
 	type CompilerASTLines,
@@ -103,7 +105,7 @@ function traceAst(
 		const stackBefore = serializeStack(context);
 		const byteCodeOffset = context.byteCode.length;
 
-		if (!line.isSemanticOnly && !line.isMemoryDeclaration) {
+		if (!isSemanticInstructionLine(line) && !isMemoryDeclarationLine(line)) {
 			compileCodegenLine(analyzeInstruction(line, context), context);
 		}
 

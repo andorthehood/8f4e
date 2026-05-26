@@ -4,16 +4,19 @@ import {
 	compilerSourceBlockInstructionByType,
 	hasReferencedNamespaceIds,
 	isNamedScalarMemoryDeclarationLine,
+	isMemoryDeclarationLine,
+	isSemanticInstructionLine,
 	type ConstantsAST,
 	type CompileOptions,
 	type CompilationContext,
 	type CompilerASTLine,
 	type FunctionMetadataLookup,
 	type FunctionAST,
+	type MemoryDeclarationLine,
 	type ModuleAST,
 	type Namespaces,
 	type NamespaceBuildContext,
-	type ParsedSemanticInstructionLine,
+	type SemanticInstructionLine,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 
@@ -79,12 +82,8 @@ export function assertUniqueModuleIds(asts: readonly (ModuleAST | ConstantsAST)[
 	}
 }
 
-export function applySemanticLine(line: CompilerASTLine, context: CompilationContext) {
-	if (!line.isSemanticOnly) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-	}
-
-	applySemanticInstruction(normalizeCompileTimeArguments(line as ParsedSemanticInstructionLine, context), context);
+export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
+	applySemanticInstruction(normalizeCompileTimeArguments(line, context), context);
 }
 
 function createNamespaceBuildContext(
@@ -124,12 +123,12 @@ function createNamespaceBuildContext(
 function applyNamespaceDeclarationLines(
 	ast: ModuleAST | ConstantsAST,
 	context: NamespaceBuildContext,
-	resolveDeclarationLine: (line: CompilerASTLine) => CompilerASTLine
+	resolveDeclarationLine: (line: MemoryDeclarationLine) => MemoryDeclarationLine
 ): void {
 	ast.lines.forEach(originalLine => {
-		if (originalLine.isSemanticOnly) {
+		if (isSemanticInstructionLine(originalLine)) {
 			applySemanticLine(originalLine, context);
-		} else if (originalLine.isMemoryDeclaration) {
+		} else if (isMemoryDeclarationLine(originalLine)) {
 			const declarationLine = resolveDeclarationLine(originalLine);
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		}
@@ -140,7 +139,7 @@ function applyNamespaceDeclarationLines(
 
 function resolveScalarMemoryDefaults(ast: ModuleAST | ConstantsAST, context: NamespaceBuildContext): void {
 	ast.lines.forEach(originalLine => {
-		if (!originalLine.isMemoryDeclaration || originalLine.instruction.endsWith('[]')) {
+		if (!isMemoryDeclarationLine(originalLine) || originalLine.instruction.endsWith('[]')) {
 			return;
 		}
 
@@ -216,7 +215,7 @@ function shouldDeferNamespaceCollection(
 	return hasReferencedNamespaceIds(line) && line.referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
-function toNamespaceDiscoveryMemoryDeclarationLine(line: CompilerASTLine): CompilerASTLine {
+function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine): MemoryDeclarationLine {
 	if (!isNamedScalarMemoryDeclarationLine(line)) {
 		return line;
 	}

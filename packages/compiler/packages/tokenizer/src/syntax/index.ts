@@ -3,7 +3,6 @@ export { default as instructionParser } from './instructionParser';
 export { default as isComment } from './isComment';
 export { default as isSkipExecutionDirective } from './isSkipExecutionDirective';
 export { default as isValidInstruction } from './isValidInstruction';
-export { default as isSemanticOnlyInstruction } from './isSemanticOnlyInstruction';
 export { default as isArrayDeclarationInstruction } from './isArrayDeclarationInstruction';
 export { default as isMemoryDeclarationInstruction } from './isMemoryDeclarationInstruction';
 export { parseArgument, classifyIdentifier, parseCompileTimeOperand, decodeStringLiteral } from './parseArgument';

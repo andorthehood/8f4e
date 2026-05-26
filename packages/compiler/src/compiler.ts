@@ -7,6 +7,7 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
+import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
 
 import instructions from './instructionCompilers';
 import { getError } from './compilerError';
@@ -72,11 +73,11 @@ function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAnalysisL
 }
 
 export function compileLine(line: CompilerASTLine, context: CompilationContext): AnalyzedLine | undefined {
-	if (line.isMemoryDeclaration && context.mode === 'function') {
+	if (isMemoryDeclarationLine(line) && context.mode === 'function') {
 		throw getError(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION, line, context);
 	}
 
-	if (line.isSemanticOnly) {
+	if (isSemanticInstructionLine(line)) {
 		applySemanticLine(line, context);
 		return;
 	}
@@ -128,9 +129,9 @@ export function compileModule(
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 	for (const originalLine of ast.lines) {
 		const line = normalizeCompileTimeArguments(originalLine, context);
-		if (line.isSemanticOnly) {
+		if (isSemanticInstructionLine(line)) {
 			applySemanticLine(line, context);
-		} else if (!line.isMemoryDeclaration) {
+		} else if (!isMemoryDeclarationLine(line)) {
 			const analyzedLine = analyzeInstruction(line, context);
 			compileCodegenLine(analyzedLine, context);
 			if (options.includeStackAnalysis) {
