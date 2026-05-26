@@ -35,7 +35,7 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
 /**
  * Validates that intermodule address references, including metadata-query forms,
  * target existing modules and memory once namespace collection is complete.
- * It does not evaluate the query value itself during prepass; numeric resolution
+ * It does not evaluate the query value itself during namespace discovery; numeric resolution
  * of sizeof/count/max/min forms is handled by tryResolveCompileTimeArgument.
  */
 export function validateIntermoduleAddressReference(
@@ -43,7 +43,7 @@ export function validateIntermoduleAddressReference(
 	line: CompilerASTLine,
 	context: CompilationContext
 ): void {
-	// Only validate if we're post-prepass (namespaces collected)
+	// Only validate once namespace collection has established target modules.
 	if (!hasCollectedNamespaces(context)) {
 		return;
 	}
@@ -119,9 +119,9 @@ export function normalizeArgument(
 }
 
 /**
- * Validates an unresolved compile-time expression argument, deferring for prepass intermodule refs.
+ * Validates an unresolved compile-time expression argument, deferring namespace references during discovery.
  * Throws UNDECLARED_IDENTIFIER if the expression cannot be deferred and cannot be resolved.
- * Returns true if the argument was deferred (prepass intermodule), false if it should continue processing.
+ * Returns true if the argument was deferred, false if it should continue processing.
  */
 export function validateOrDeferCompileTimeExpression(
 	argument: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>,
@@ -145,8 +145,8 @@ export function validateOrDeferCompileTimeExpression(
 /**
  * Validates an unresolved identifier argument for instructions that require full resolution
  * (e.g. map, default). Throws UNDECLARED_IDENTIFIER unless the identifier is deferred
- * as a prepass intermodule reference.
- * Returns true if the argument was deferred (prepass intermodule), false if processing should continue.
+ * as a namespace reference during discovery.
+ * Returns true if the argument was deferred, false if processing should continue.
  */
 export function validateOrDeferUnresolvedIdentifier(
 	argument: Extract<Argument, { type: typeof ArgumentType.IDENTIFIER }>,
@@ -191,7 +191,7 @@ export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
 
 /**
  * Normalizes arguments at the given indexes, then validates any remaining unresolved
- * compile-time expressions or identifiers as either deferrable prepass references or errors.
+ * compile-time expressions or identifiers as either deferrable namespace references or errors.
  */
 export function normalizeAndValidateResolvableArgs<TLine extends CompilerASTLine>(
 	line: TLine,

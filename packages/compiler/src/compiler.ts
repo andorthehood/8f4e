@@ -11,7 +11,7 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import instructions from './instructionCompilers';
 import { getError } from './compilerError';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
-import { applySemanticLine, prepassNamespace } from './semantic/buildNamespace';
+import { applySemanticLine, layoutNamespace } from './semantic/buildNamespace';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import { createCompilationContext } from './semantic/createCompilationContext';
@@ -95,17 +95,17 @@ export function compileModule(
 	internalAllocator = { nextByteAddress: 0 },
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {}
 ): CompiledModule {
-	// Prepass establishes the memory layout (byte addresses, sizes) for this module.
+	// Namespace layout establishes memory byte addresses and sizes for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
-	// the compilation loop below, so consts are not copied from the prepass context.
-	const prepassContext = prepassNamespace(ast, namespaces, startingByteAddress, functions, options);
+	// the compilation loop below, so consts are not copied from the layout context.
+	const layoutContext = layoutNamespace(ast, namespaces, startingByteAddress, functions, options);
 	const namespace = namespaces[ast.id];
-	const memoryIndex = namespace?.memoryIndex ?? prepassContext.currentMemoryIndex;
-	const memoryRegionName = namespace?.memoryRegionName ?? prepassContext.currentMemoryRegionName;
+	const memoryIndex = namespace?.memoryIndex ?? layoutContext.currentMemoryIndex;
+	const memoryRegionName = namespace?.memoryRegionName ?? layoutContext.currentMemoryRegionName;
 	const context = createCompilationContext<ModuleCompilationContext>({
 		namespace: {
 			namespaces,
-			memory: prepassContext.namespace.memory,
+			memory: layoutContext.namespace.memory,
 			consts: {},
 			moduleName: undefined,
 			functions,
@@ -117,8 +117,8 @@ export function compileModule(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		currentModuleNextWordOffset: prepassContext.currentModuleNextWordOffset,
-		currentModuleWordAlignedSize: prepassContext.currentModuleWordAlignedSize,
+		currentModuleNextWordOffset: layoutContext.currentModuleNextWordOffset,
+		currentModuleWordAlignedSize: layoutContext.currentModuleWordAlignedSize,
 		currentMemoryIndex: memoryIndex,
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryRegions: options.memoryRegions ?? [],
