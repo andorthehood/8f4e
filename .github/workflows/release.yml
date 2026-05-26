@@ -65,9 +65,11 @@ jobs:
           npx nx run @8f4e/examples:log-bytecode-size
           npx nx run @8f4e/examples:log-compiler-coverage-counts
           npx nx run @8f4e/compiler:docs-coverage
+          npx nx run-many --target=test --all --exclude=app,glugglug --parallel=1 --skip-nx-cache -- --coverage
+          node scripts/log-test-coverage.mjs
 
-          if [[ -n "$(git status --porcelain -- logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage)" ]]; then
-            git add logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage
+          if [[ -n "$(git status --porcelain -- logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage)" ]]; then
+            git add logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage
             git commit -m "chore(release): record release metrics" --no-verify
           fi
 
