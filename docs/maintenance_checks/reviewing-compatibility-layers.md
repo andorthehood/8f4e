@@ -99,8 +99,9 @@ These searches are intentionally noisy. Review matches by intent, not by keyword
    Ask whether it is:
 
    - a real independent concept;
-   - a temporary migration tool with an active removal plan;
    - a compatibility layer that only preserves the old interface.
+
+   If it is a compatibility layer, remove it. Do not keep migration shims, aliases, fallbacks, or alternate names for future cleanup.
 
 5. Prefer metadata over exception lists.
 
@@ -132,16 +133,11 @@ These searches are intentionally noisy. Review matches by intent, not by keyword
 
    In the final answer or PR description, list the compatibility layers removed and mention any old names that intentionally remain. If an old name remains, explain the current owner and why it is not a compatibility layer.
 
-## Keep Or Delete
+## Removal Rule
 
-Keep a compatibility layer only when:
+Never keep a compatibility layer. This project is unreleased, and the repository owns its callers, tests, fixtures, package exports, and docs. When a compatibility layer is found, delete it and update every caller to the intended interface in the same change.
 
-- it is required by a released public API or external file format;
-- external consumers cannot be updated in the same change;
-- there is a dated removal plan and tests specifically cover the transition;
-- the compatibility path is explicitly part of the product behavior.
-
-Delete it when:
+Compatibility layers must be removed when:
 
 - all callers live in this repository;
 - the old name only exists to avoid updating imports, tests, snapshots, or fixtures;
