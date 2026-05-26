@@ -13,7 +13,7 @@ export function clampAddressByteCode(
 	upperByteAddressCode: number[]
 ): number[] {
 	const addressLocal = getOrCreateMemoryGuardLocal(context, `__clampAddress_${line.lineNumberAfterMacroExpansion}`, {
-		isInteger: true,
+		valueType: 'int',
 	});
 
 	return [

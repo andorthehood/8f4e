@@ -10,6 +10,7 @@ import {
 	WASM_F32_EQ,
 	WASM_I32_EQ,
 } from '@8f4e/compiler-wasm-utils';
+import { isStackInteger } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 import { allocateInternalResource } from './utils/internalResources';
@@ -24,7 +25,8 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = (line, con
 	const [operand] = line.stackAnalysis.consumedOperands;
 
 	const depth = line.arguments[0].value;
-	const type = operand.isInteger ? 'int' : 'float';
+	const isInteger = isStackInteger(operand);
+	const type = isInteger ? 'int' : 'float';
 	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
 	const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
 	const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumberAfterMacroExpansion;
@@ -32,13 +34,13 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = (line, con
 	const currentValueLocalIndex = Object.keys(context.locals).length;
 
 	context.locals[currentValueMemoryName] = {
-		isInteger: operand.isInteger,
+		isInteger,
 		index: currentValueLocalIndex,
 	};
 
-	const loadByteCode = operand.isInteger ? i32load() : f32load();
-	const equalityByteCode = operand.isInteger ? WASM_I32_EQ : WASM_F32_EQ;
-	const storeByteCode = operand.isInteger ? i32store() : f32store();
+	const loadByteCode = isInteger ? i32load() : f32load();
+	const equalityByteCode = isInteger ? WASM_I32_EQ : WASM_F32_EQ;
+	const storeByteCode = isInteger ? i32store() : f32store();
 
 	return saveByteCode(context, [
 		...localSet(currentValueLocalIndex),

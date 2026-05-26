@@ -30,8 +30,9 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] 
   "memory": {},
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }
@@ -67,8 +68,9 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment for 
   "memory": {},
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

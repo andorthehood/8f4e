@@ -7,8 +7,9 @@ exports[`remainder instruction compiler > emits I32_REM_S for integer operands 1
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

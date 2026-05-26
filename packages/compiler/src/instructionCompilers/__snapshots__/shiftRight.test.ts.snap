@@ -7,8 +7,9 @@ exports[`shiftRight instruction compiler > emits I32_SHR_S for integer operands 
   ],
   "stack": [
     {
-      "isInteger": true,
       "isNonZero": false,
+      "kind": "value",
+      "valueType": "int",
     },
   ],
 }

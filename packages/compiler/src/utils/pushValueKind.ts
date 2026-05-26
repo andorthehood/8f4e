@@ -25,10 +25,25 @@ export function valueKindToWasmType(
 	return kind === 'float32' ? WASM_TYPE_F32 : WASM_TYPE_I32;
 }
 
-export function kindToStackItem(kind: PushValueKind, extras?: Partial<StackItem>): StackItem {
+type StackItemExtras = Pick<StackItem, 'isNonZero' | 'knownIntegerValue'> &
+	Partial<Pick<Extract<StackItem, { kind: 'address' }>, 'address' | 'pointsTo'>>;
+
+export function kindToStackItem(kind: PushValueKind, extras?: StackItemExtras): StackItem {
+	if (kind === 'int32' && extras?.address) {
+		return {
+			kind: 'address',
+			valueType: 'int',
+			address: extras.address,
+			...(extras.pointsTo ? { pointsTo: extras.pointsTo } : {}),
+			...(extras.isNonZero !== undefined ? { isNonZero: extras.isNonZero } : {}),
+			...(extras.knownIntegerValue !== undefined ? { knownIntegerValue: extras.knownIntegerValue } : {}),
+		};
+	}
+
 	return {
-		isInteger: kind === 'int32',
-		...(kind === 'float64' ? { isFloat64: true } : {}),
-		...extras,
+		kind: 'value',
+		valueType: kind === 'int32' ? 'int' : kind === 'float64' ? 'float64' : 'float',
+		...(extras?.isNonZero !== undefined ? { isNonZero: extras.isNonZero } : {}),
+		...(extras?.knownIntegerValue !== undefined ? { knownIntegerValue: extras.knownIntegerValue } : {}),
 	};
 }

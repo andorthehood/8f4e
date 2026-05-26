@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('shiftRightUnsigned instruction compiler', () => {
 	it('emits I32_SHR_U for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			shiftRightUnsigned,
@@ -31,8 +34,8 @@ describe('shiftRightUnsigned instruction compiler', () => {
 	it('keeps known integer metadata when shifting known integer operands right as unsigned', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: true, knownIntegerValue: -8 },
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 1 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: -8 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -46,6 +49,8 @@ describe('shiftRightUnsigned instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 2147483644 }]);
+		expect(context.stack).toEqual([
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2147483644 },
+		]);
 	});
 });

@@ -1,4 +1,5 @@
 import { f32const, f64const, i32const, WASM_F32_NE, WASM_F64_NE, WASM_I32_NE } from '@8f4e/compiler-wasm-utils';
+import { isStackFloat64, isStackInteger } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 
@@ -11,9 +12,9 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 const notZero: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	if (operand.isInteger) {
+	if (isStackInteger(operand)) {
 		return saveByteCode(context, [...i32const(0), WASM_I32_NE]);
-	} else if (operand.isFloat64) {
+	} else if (isStackFloat64(operand)) {
 		return saveByteCode(context, [...f64const(0), WASM_F64_NE]);
 	} else {
 		return saveByteCode(context, [...f32const(0), WASM_F32_NE]);

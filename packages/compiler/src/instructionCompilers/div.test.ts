@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('div instruction compiler', () => {
 	it('emits I32_DIV_S for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: true },
+			{ kind: 'value', valueType: 'int', isNonZero: true }
+		);
 
 		analyzeAndCompileInstruction(
 			div,
@@ -30,7 +33,10 @@ describe('div instruction compiler', () => {
 
 	it('emits F32_DIV for float32 operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isNonZero: true });
+		context.stack.push(
+			{ kind: 'value', valueType: 'float', isNonZero: true },
+			{ kind: 'value', valueType: 'float', isNonZero: true }
+		);
 
 		analyzeAndCompileInstruction(
 			div,
@@ -52,8 +58,8 @@ describe('div instruction compiler', () => {
 	it('emits F64_DIV for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: false, isFloat64: true, isNonZero: true },
-			{ isInteger: false, isFloat64: true, isNonZero: true }
+			{ kind: 'value', valueType: 'float64', isNonZero: true },
+			{ kind: 'value', valueType: 'float64', isNonZero: true }
 		);
 
 		analyzeAndCompileInstruction(
@@ -75,7 +81,10 @@ describe('div instruction compiler', () => {
 
 	it('throws on division by zero', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: true },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		expect(() => {
 			analyzeAndCompileInstruction(
@@ -94,8 +103,8 @@ describe('div instruction compiler', () => {
 	it('keeps known integer metadata when dividing known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 8 },
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 8 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -109,14 +118,14 @@ describe('div instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 }]);
 	});
 
 	it('marks known zero integer division results as zero', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 1 },
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 2 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -130,6 +139,6 @@ describe('div instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: false, knownIntegerValue: 0 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: false, knownIntegerValue: 0 }]);
 	});
 });

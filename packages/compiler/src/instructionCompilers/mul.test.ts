@@ -9,7 +9,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 describe('mul instruction compiler', () => {
 	it('emits I32_MUL for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'int', isNonZero: false },
+			{ kind: 'value', valueType: 'int', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			mul,
@@ -30,7 +33,10 @@ describe('mul instruction compiler', () => {
 
 	it('emits F32_MUL for float32 operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+		context.stack.push(
+			{ kind: 'value', valueType: 'float', isNonZero: false },
+			{ kind: 'value', valueType: 'float', isNonZero: false }
+		);
 
 		analyzeAndCompileInstruction(
 			mul,
@@ -52,8 +58,8 @@ describe('mul instruction compiler', () => {
 	it('emits F64_MUL for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: false, isFloat64: true, isNonZero: false },
-			{ isInteger: false, isFloat64: true, isNonZero: false }
+			{ kind: 'value', valueType: 'float64', isNonZero: false },
+			{ kind: 'value', valueType: 'float64', isNonZero: false }
 		);
 
 		analyzeAndCompileInstruction(
@@ -76,8 +82,8 @@ describe('mul instruction compiler', () => {
 	it('keeps known integer metadata when multiplying known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 2 },
-			{ isInteger: true, isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -91,6 +97,6 @@ describe('mul instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ isInteger: true, isNonZero: true, knownIntegerValue: 8 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 8 }]);
 	});
 });
