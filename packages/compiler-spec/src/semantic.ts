@@ -20,7 +20,6 @@ import type {
 	ModuleLine,
 	PushLine,
 	RegionLine,
-	TokenizedLocalVariableAccessLine,
 	UseLine,
 } from './ast';
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionSignature, FunctionTypeRegistry } from './compiled';
@@ -247,15 +246,12 @@ export type ParsedSemanticInstructionLine =
 	| ConstantsLine
 	| ConstantsEndLine;
 
-export type ParsedLocalVariableAccessLine = TokenizedLocalVariableAccessLine;
 export type ResolvedLocalSetLine = LocalSetLine & {
 	local: LocalBinding;
 };
-export type CodegenLocalSetLine = ResolvedLocalSetLine;
-export type CodegenArgumentLiteral = NormalizedArgumentLiteral;
 
 export type LiteralPushLine = Omit<PushLine, 'arguments'> & {
-	arguments: [CodegenArgumentLiteral | ArgumentStringLiteral];
+	arguments: [NormalizedArgumentLiteral | ArgumentStringLiteral];
 };
 
 export type DeferredPushLine = Omit<PushLine, 'arguments'> & {
@@ -319,7 +315,7 @@ export type NormalizedLine<TLine extends AST[number]> = TLine extends ConstLine
 			: TLine extends MapLine
 				? NormalizedMapLine | MapLine
 				: TLine extends LocalSetLine
-					? CodegenLocalSetLine
+					? ResolvedLocalSetLine
 					: TLine extends PushLine
 						? NormalizedPushLine
 						: TLine extends MemoryCopyLine

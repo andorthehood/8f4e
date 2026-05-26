@@ -71,8 +71,6 @@ export interface BlockEndBlockMetadata {
 export type BlockLine = ASTLineBase<'block', []>;
 export type BlockEndLine = ASTLineBase<'blockEnd', [] | [ArgumentIdentifier]>;
 export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
-export type LocalVariableAccessLine = LocalSetLine;
-export type TokenizedLocalVariableAccessLine = LocalVariableAccessLine;
 
 export type FunctionLine = ASTLineBase<'function', [ArgumentIdentifier]>;
 export type FunctionEndLine = ASTLineBase<'functionEnd', ArgumentIdentifier[]>;
