@@ -163,7 +163,9 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).get = memoryGet;
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).set = memorySet;
 
-	const compiledAst = module.ast ?? parsedAst;
+	if (!module.ast) {
+		throw new Error('Expected compileModules to include compiled module AST.');
+	}
 
 	return {
 		memory: memoryBuffer as unknown as MemoryBuffer & {
@@ -177,7 +179,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		wat,
 		program,
 		memoryMap: module.memoryMap,
-		ast: compiledAst,
+		ast: module.ast,
 	};
 }
 
@@ -327,8 +329,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).get = memoryGet;
 	(memoryBuffer as unknown as ExtendedMemoryBuffer).set = memorySet;
 
-	const compiledAst = module.ast ?? result.compiledModules[Object.keys(result.compiledModules)[0]].ast;
-	if (!compiledAst) {
+	if (!module.ast) {
 		throw new Error('Expected includeAST: true to include compiled module AST.');
 	}
 
@@ -344,7 +345,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 		wat,
 		program,
 		memoryMap: module.memoryMap,
-		ast: compiledAst,
+		ast: module.ast,
 	};
 }
 
