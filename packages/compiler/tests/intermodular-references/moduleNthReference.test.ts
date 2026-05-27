@@ -86,17 +86,12 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['scalar'].byteAddress);
 	});
 
-	test('dependency ordering: source module defined after target module', () => {
+	test('input ordering: source module must be defined before target module', () => {
 		const modules = [
 			{ code: ['module targetModule', 'int* ptr &sourceModule:1', 'moduleEnd'] },
 			{ code: ['module sourceModule', 'int a 0', 'int b 0', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, { startingMemoryWordAddress: 0 });
-
-		const sourceModule = result.compiledModules['sourceModule'];
-		const targetModule = result.compiledModules['targetModule'];
-
-		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['b'].byteAddress);
+		expect(() => compile(modules, { startingMemoryWordAddress: 0 })).toThrow('Undeclared identifier: &sourceModule:1.');
 	});
 });

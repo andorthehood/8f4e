@@ -152,38 +152,96 @@ describe('creationIndex', () => {
 	});
 
 	describe('compiler ordering', () => {
-		it('should sort code blocks by creationIndex for compilation', () => {
-			// This test verifies that flattenProjectForCompiler correctly sorts by creationIndex
-			// We create code blocks with out-of-order creationIndex and verify the actual function
+		it('should sort module code blocks by grid position for compilation', () => {
+			const block1 = createMockCodeBlock({
+				id: 'a',
+				creationIndex: 0,
+				code: ['module a', 'moduleEnd'],
+				blockType: 'module',
+				gridX: 20,
+				gridY: 0,
+			});
+			const block2 = createMockCodeBlock({
+				id: 'b',
+				creationIndex: 1,
+				code: ['module b', 'moduleEnd'],
+				blockType: 'module',
+				gridX: 0,
+				gridY: 10,
+			});
+			const block3 = createMockCodeBlock({
+				id: 'c',
+				creationIndex: 2,
+				code: ['module c', 'moduleEnd'],
+				blockType: 'module',
+				gridX: 0,
+				gridY: 0,
+			});
 
+			const codeBlocksArray = [block1, block2, block3];
+
+			const { modules } = flattenProjectForCompiler(codeBlocksArray);
+
+			expect(modules[0].code).toEqual(['module c', 'moduleEnd']); // left, top
+			expect(modules[1].code).toEqual(['module b', 'moduleEnd']); // left, lower
+			expect(modules[2].code).toEqual(['module a', 'moduleEnd']); // right
+		});
+
+		it('should use creationIndex as the tie-breaker when module grid positions match', () => {
 			const block1 = createMockCodeBlock({
 				id: 'a',
 				creationIndex: 2,
 				code: ['module a', 'moduleEnd'],
 				blockType: 'module',
+				gridX: 0,
+				gridY: 0,
 			});
 			const block2 = createMockCodeBlock({
 				id: 'b',
 				creationIndex: 0,
 				code: ['module b', 'moduleEnd'],
 				blockType: 'module',
+				gridX: 0,
+				gridY: 0,
 			});
 			const block3 = createMockCodeBlock({
 				id: 'c',
 				creationIndex: 1,
 				code: ['module c', 'moduleEnd'],
 				blockType: 'module',
+				gridX: 0,
+				gridY: 0,
 			});
 
-			const codeBlocksArray = [block1, block2, block3];
+			const { modules } = flattenProjectForCompiler([block1, block2, block3]);
 
-			// Use the actual flattenProjectForCompiler function
-			const { modules } = flattenProjectForCompiler(codeBlocksArray);
+			expect(modules[0].code).toEqual(['module b', 'moduleEnd']);
+			expect(modules[1].code).toEqual(['module c', 'moduleEnd']);
+			expect(modules[2].code).toEqual(['module a', 'moduleEnd']);
+		});
 
-			// Verify blocks are sorted by creationIndex
-			expect(modules[0].code).toEqual(['module b', 'moduleEnd']); // creationIndex 0
-			expect(modules[1].code).toEqual(['module c', 'moduleEnd']); // creationIndex 1
-			expect(modules[2].code).toEqual(['module a', 'moduleEnd']); // creationIndex 2
+		it('should use grid position even when a referenced module is visually later', () => {
+			const dependentBlock = createMockCodeBlock({
+				id: 'dependent',
+				creationIndex: 0,
+				code: ['module dependent', 'int* ptr &source:0', 'moduleEnd'],
+				blockType: 'module',
+				gridX: 0,
+				gridY: 0,
+			});
+			const sourceBlock = createMockCodeBlock({
+				id: 'source',
+				creationIndex: 1,
+				code: ['module source', 'int value 0', 'moduleEnd'],
+				blockType: 'module',
+				gridX: 20,
+				gridY: 0,
+			});
+
+			const { modules } = flattenProjectForCompiler([dependentBlock, sourceBlock]);
+
+			expect(modules[0].code).toEqual(['module dependent', 'int* ptr &source:0', 'moduleEnd']);
+			expect(modules[1].code).toEqual(['module source', 'int value 0', 'moduleEnd']);
 		});
 
 		it('should separate modules and functions for compilation', () => {
