@@ -119,7 +119,8 @@ int8* ptr &samples
 push *ptr        ; loads a signed 8-bit value, sign-extended to i32
 
 int8** pptr &ptr
-push *pptr       ; fully dereferences the double pointer
+push *pptr       ; pushes the address stored in ptr
+push **pptr      ; loads a signed 8-bit value through the double pointer
 
 push sizeof(*ptr) ; 1 — pointee element word size
 ```
@@ -143,7 +144,8 @@ int16* ptr &samples
 push *ptr        ; loads a signed 16-bit value, sign-extended to i32
 
 int16** pptr &ptr
-push *pptr       ; fully dereferences the double pointer
+push *pptr       ; pushes the address stored in ptr
+push **pptr      ; loads a signed 16-bit value through the double pointer
 
 push sizeof(*ptr) ; 2 — pointee element word size
 ```
