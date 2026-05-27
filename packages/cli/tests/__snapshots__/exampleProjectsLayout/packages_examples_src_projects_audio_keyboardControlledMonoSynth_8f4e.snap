@@ -1,17 +1,17 @@
 {
   "sourceModuleOrder": [
+    "projectConfig",
     "env",
     "math",
     "midiCodes",
-    "arEnv",
-    "audioout",
-    "janko",
     "keyboard",
+    "janko",
     "midiLUT",
     "midiNote2Freq",
+    "arEnv",
     "phaseAccumulator",
-    "projectConfig",
-    "vca"
+    "vca",
+    "audioout"
   ],
   "compiledModuleLayout": [
     {
