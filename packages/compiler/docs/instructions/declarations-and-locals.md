@@ -109,7 +109,7 @@ The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allo
 Dereferencing with `push *name` emits a signed 8-bit load (`i32.load8_s`), which sign-extends the 8-bit value to a 32-bit integer on the stack.
 
 Pointer-aware metadata reflects the 1-byte pointee width:
-- `%*name` returns `1` for `int8*` (pointee element word size)
+- `sizeof(*name)` returns `1` for `int8*` (pointee element word size)
 
 #### Examples
 
@@ -121,7 +121,7 @@ push *ptr        ; loads a signed 8-bit value, sign-extended to i32
 int8** pptr &ptr
 push *pptr       ; fully dereferences the double pointer
 
-push %*ptr       ; 1 — pointee element word size
+push sizeof(*ptr) ; 1 — pointee element word size
 ```
 
 ### int16*
@@ -133,7 +133,7 @@ The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allo
 Dereferencing with `push *name` emits a signed 16-bit load (`i32.load16_s`), which sign-extends the 16-bit value to a 32-bit integer on the stack.
 
 Pointer-aware metadata reflects the 2-byte pointee width:
-- `%*name` returns `2` for `int16*` (pointee element word size)
+- `sizeof(*name)` returns `2` for `int16*` (pointee element word size)
 
 #### Examples
 
@@ -145,7 +145,7 @@ push *ptr        ; loads a signed 16-bit value, sign-extended to i32
 int16** pptr &ptr
 push *pptr       ; fully dereferences the double pointer
 
-push %*ptr       ; 2 — pointee element word size
+push sizeof(*ptr) ; 2 — pointee element word size
 ```
 
 ### float
