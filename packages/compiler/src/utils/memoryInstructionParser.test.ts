@@ -41,6 +41,22 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(result.defaultValue).toBe(123);
 	});
 
+	it('parses zero arguments as anonymous zero-initialized memory', () => {
+		const result = parseMemoryInstructionArguments(
+			{
+				lineNumberBeforeMacroExpansion: 9,
+				lineNumberAfterMacroExpansion: 9,
+				instruction: 'int',
+				arguments: [],
+			},
+			mockContext
+		);
+		expect(result).toEqual({
+			id: '__anonymous__9',
+			defaultValue: 0,
+		});
+	});
+
 	it('parses string literal argument as anonymous byte default', () => {
 		const args: Argument[] = [{ type: ArgumentType.STRING_LITERAL, value: 'e' }];
 		const result = parseMemoryInstructionArguments(
@@ -186,6 +202,21 @@ describe('parseMemoryInstructionArguments', () => {
 				{
 					lineNumberBeforeMacroExpansion: 55,
 					lineNumberAfterMacroExpansion: 55,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			)
+		).toThrow();
+	});
+
+	it('rejects special references as memory declaration names', () => {
+		const args: Argument[] = [classifyIdentifier('&myVar')];
+		expect(() =>
+			parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 56,
+					lineNumberAfterMacroExpansion: 56,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -384,6 +415,57 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(result.id).toBe('ptr');
 		// myVar has byteAddress 100
 		expect(result.defaultValue).toBe(100);
+	});
+
+	it('resolves current-module memory-reference defaults', () => {
+		const context = {
+			...mockContext,
+			startingByteAddress: 20,
+			currentModuleWordAlignedSize: 3,
+		} as unknown as CompilationContext;
+
+		expect(
+			parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 161,
+					lineNumberAfterMacroExpansion: 161,
+					instruction: 'int*',
+					arguments: [classifyIdentifier('ptr'), classifyIdentifier('&this')],
+				},
+				context
+			).defaultValue
+		).toBe(20);
+		expect(
+			parseMemoryInstructionArguments(
+				{
+					lineNumberBeforeMacroExpansion: 162,
+					lineNumberAfterMacroExpansion: 162,
+					instruction: 'int*',
+					arguments: [classifyIdentifier('ptr'), classifyIdentifier('this&')],
+				},
+				context
+			).defaultValue
+		).toBe(28);
+	});
+
+	it('falls back to zero for current-module end-address default before module size is known', () => {
+		const context = {
+			...mockContext,
+			startingByteAddress: 20,
+			currentModuleWordAlignedSize: undefined,
+		} as unknown as CompilationContext;
+
+		const result = parseMemoryInstructionArguments(
+			{
+				lineNumberBeforeMacroExpansion: 163,
+				lineNumberAfterMacroExpansion: 163,
+				instruction: 'int*',
+				arguments: [classifyIdentifier('ptr'), classifyIdentifier('this&')],
+			},
+			context
+		);
+
+		expect(result.defaultValue).toBe(0);
 	});
 
 	it('resolves memory-reference end-address default (myVar&) to last byte address', () => {
