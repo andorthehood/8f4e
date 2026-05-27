@@ -1,5 +1,27 @@
 8f4e/v1
 
+module assets
+; @pos -107 -70
+; @defAsset amen https://static.llllllllllll.com/8f4e/assets/we_need_jungle_8s_44100.pcm
+
+moduleEnd
+
+constants math
+; @pos -53 -84
+
+const PI 3.141592653589793
+const E  2.718281828459045
+
+constantsEnd
+
+module projectConfig
+; @pos -53 -63
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 44100
+; @config export.fileName cyclicTimestretch
+
+moduleEnd
+
 constants env
 ; @pos 28 -62
 ; @favorite
@@ -15,13 +37,13 @@ const ASSET_AMEN_SIZE 87256
 
 constantsEnd
 
-constants math
-; @pos -53 -84
-
-const PI 3.141592653589793
-const E  2.718281828459045
-
-constantsEnd
+module notes
+; @pos 28 -46
+; Fixed-cycle time-stretch experiment inspired by
+; old sampler CYCLIC stretch modes. It copies each
+; source cycle at normal pitch and advances the
+; source start by the non-overlapped cycle length.
+moduleEnd
 
 function clamp
 ; @pos 29 -130
@@ -47,60 +69,6 @@ ifEnd int
 
 functionEnd int
 
-function crossfadeAmount
-; @pos 99 -106
-param int cyclePosition
-param int cycleLength
-param int fadeLength
-
-push cyclePosition
-push cycleLength
-push fadeLength
-sub
-sub
-push 1
-add
-castToFloat
-push fadeLength
-castToFloat
-ensureNonZero
-div
-call smoothstep
-
-functionEnd float
-
-function effectiveCrossfade
-; @pos 63 -120
-param int cycleLength
-param int crossfadeLength
-
-push crossfadeLength
-push 0
-push cycleLength
-push 1
-sub
-call clamp
-
-functionEnd int
-
-function lerp
-; @pos 133 -106
-param float current
-param float next
-param float fade
-
-push current
-push 1.0
-push fade
-sub
-mul
-push next
-push fade
-mul
-add
-
-functionEnd float
-
 function read8Normalized
 ; @pos 29 -106
 #impure
@@ -123,21 +91,19 @@ div
 
 functionEnd float
 
-function smoothstep
-; @pos 99 -122
-param float amount
+function effectiveCrossfade
+; @pos 63 -120
+param int cycleLength
+param int crossfadeLength
 
-push amount
-push amount
-mul
-push 3.0
-push 2.0
-push amount
-mul
+push crossfadeLength
+push 0
+push cycleLength
+push 1
 sub
-mul
+call clamp
 
-functionEnd float
+functionEnd int
 
 function sourceStep
 ; @pos 63 -106
@@ -154,93 +120,6 @@ ensureNonZero
 div
 
 functionEnd float
-
-module assets
-; @pos -107 -70
-; @defAsset amen https://static.llllllllllll.com/8f4e/assets/we_need_jungle_8s_44100.pcm
-
-moduleEnd
-
-module audioout
-; @pos 191 -63
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
-use env
-
-float* in &lowpass:out
-
-float[] buffer AUDIO_BUFFER_SIZE
-float* pointer &buffer
-
-; @plot &buffer count(buffer)
-
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer
-; pointer by the word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-
-module lowpass
-; @pos 142 -63
-float* in &pcmTimestretch8bit:out
-float state 0.0 ; @w
-float out ; @w
-
-use math
-use env
-
-const FREQ 4400
-const MINUS_2_PI -2*PI
-const CUTOFF_TERM MINUS_2_PI*FREQ
-const EXPONENT CUTOFF_TERM/SAMPLE_RATE
-const DECAY E^EXPONENT
-const COEFFICIENT 1-DECAY
-
-push &out
-push state
-push *in
-push state
-sub
-push COEFFICIENT
-mul
-add
-store
-
-push &state
-push out
-store
-
-moduleEnd
-
-module notes
-; @pos 28 -46
-; Fixed-cycle time-stretch experiment inspired by
-; old sampler CYCLIC stretch modes. It copies each
-; source cycle at normal pitch and advances the
-; source start by the non-overlapped cycle length.
-moduleEnd
 
 module pcmTimestretch8bit
 ; @pos 91 -63
@@ -376,10 +255,131 @@ ifEnd
 
 moduleEnd
 
-module projectConfig
-; @pos -53 -63
-; @config runtime AudioWorkletRuntime
-; ~sampleRate 44100
-; @config export.fileName cyclicTimestretch
+function smoothstep
+; @pos 99 -122
+param float amount
+
+push amount
+push amount
+mul
+push 3.0
+push 2.0
+push amount
+mul
+sub
+mul
+
+functionEnd float
+
+function crossfadeAmount
+; @pos 99 -106
+param int cyclePosition
+param int cycleLength
+param int fadeLength
+
+push cyclePosition
+push cycleLength
+push fadeLength
+sub
+sub
+push 1
+add
+castToFloat
+push fadeLength
+castToFloat
+ensureNonZero
+div
+call smoothstep
+
+functionEnd float
+
+function lerp
+; @pos 133 -106
+param float current
+param float next
+param float fade
+
+push current
+push 1.0
+push fade
+sub
+mul
+push next
+push fade
+mul
+add
+
+functionEnd float
+
+module lowpass
+; @pos 142 -63
+float* in &pcmTimestretch8bit:out
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const FREQ 4400
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*FREQ
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+
+module audioout
+; @pos 191 -63
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
+use env
+
+float* in &lowpass:out
+
+float[] buffer AUDIO_BUFFER_SIZE
+float* pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer
+; pointer by the word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
 
 moduleEnd

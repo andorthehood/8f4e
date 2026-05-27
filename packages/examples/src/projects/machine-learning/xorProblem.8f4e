@@ -1,70 +1,10 @@
 8f4e/v1
 
-module notes
-; @pos 66 -75
-; This is a compact, pre-trained 
-; neural network that solves the 
-; XOR problem by combining two
-; input switches through hidden 
-; perceptrons with sigmoid 
-; activations and outputting a 
-; binary classification result.
-moduleEnd
-
 module projectConfig
 ; @pos -9 -73
 ; @config runtime WebWorkerRuntime
 ; ~sampleRate 10
 ; @config export.fileName xorProblem
-
-moduleEnd
-
-module activationFn
-; @pos 152 -82
-
-float* in &perceptron:out
-float out
-
-push &out
-push *in
-call sigmoid
-store
-
-moduleEnd
-
-module activationFn2
-; @pos 152 -55
-
-float* in &perceptron2:out
-float out
-
-push &out
-push *in
-call sigmoid
-store
-
-moduleEnd
-
-module activationFn3
-; @pos 231 -65
-
-float* in &perceptron3:out
-int out
-
-push &out
-
-push *in
-call sigmoid
-
-push 0.5
-greaterThan
-if
-push 1
-else
-push 0
-ifEnd int
-
-store
 
 moduleEnd
 
@@ -79,6 +19,40 @@ const SAMPLE_RATE 10
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
+
+module result
+; @pos 50 -53
+
+; 1 means the the two input numbers are different
+; 0 means the two input numbers are the same
+
+; @watch *out
+
+int* out &activationFn3:out
+
+moduleEnd
+
+module notes
+; @pos 66 -75
+; This is a compact, pre-trained 
+; neural network that solves the 
+; XOR problem by combining two
+; input switches through hidden 
+; perceptrons with sigmoid 
+; activations and outputting a 
+; binary classification result.
+moduleEnd
+
+module switches
+; @pos 74 -64
+; @home
+
+; You can change the 
+; input values here:
+float in1 1.0
+float in2 0.0
+
+moduleEnd
 
 module perceptron
 ; @pos 118 -82
@@ -132,6 +106,48 @@ add
 store
 moduleEnd
 
+module activationFn
+; @pos 152 -82
+
+float* in &perceptron:out
+float out
+
+push &out
+push *in
+call sigmoid
+store
+
+moduleEnd
+
+module activationFn2
+; @pos 152 -55
+
+float* in &perceptron2:out
+float out
+
+push &out
+push *in
+call sigmoid
+store
+
+moduleEnd
+
+function sigmoid
+; @pos 152 -38
+param float x
+; Polynomial sigmoid
+; func. approximation
+
+push x
+push x
+abs
+push 1.0
+add
+ensureNonZero
+div
+
+functionEnd float
+
 module perceptron3
 ; @pos 193 -65
 ; Pre-trained perceptron
@@ -158,41 +174,25 @@ add
 store
 moduleEnd
 
-module result
-; @pos 50 -53
+module activationFn3
+; @pos 231 -65
 
-; 1 means the the two input numbers are different
-; 0 means the two input numbers are the same
+float* in &perceptron3:out
+int out
 
-; @watch *out
+push &out
 
-int* out &activationFn3:out
+push *in
+call sigmoid
 
-moduleEnd
+push 0.5
+greaterThan
+if
+push 1
+else
+push 0
+ifEnd int
 
-function sigmoid
-; @pos 152 -38
-param float x
-; Polynomial sigmoid
-; func. approximation
-
-push x
-push x
-abs
-push 1.0
-add
-ensureNonZero
-div
-
-functionEnd float
-
-module switches
-; @pos 74 -64
-; @home
-
-; You can change the 
-; input values here:
-float in1 1.0
-float in2 0.0
+store
 
 moduleEnd
