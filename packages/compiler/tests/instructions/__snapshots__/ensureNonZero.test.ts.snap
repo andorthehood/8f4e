@@ -135,7 +135,6 @@ exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -333,7 +332,6 @@ exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match th
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

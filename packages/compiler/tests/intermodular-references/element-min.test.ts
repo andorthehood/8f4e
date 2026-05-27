@@ -203,7 +203,7 @@ describe('inter-module references - element min', () => {
 		}).toThrow();
 	});
 
-	test('module dependency sorting works with element min references', () => {
+	test('resolves out-of-order element min references', () => {
 		const modules = [
 			{ code: ['module dependentModule', 'int minValue min(baseModule:buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },

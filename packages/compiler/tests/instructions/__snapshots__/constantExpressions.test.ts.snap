@@ -188,7 +188,6 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -388,7 +387,6 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -573,7 +571,6 @@ exports[`const: expression from another constant > if the generated AST, WAT and
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -779,7 +776,6 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -979,7 +975,6 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1113,7 +1108,6 @@ exports[`const: literal ^ literal folds to a literal value (2^16 = 65536) > if t
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1295,7 +1289,6 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1501,7 +1494,6 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1722,7 +1714,6 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1954,7 +1945,6 @@ exports[`int[]: buffer size from constant division expression > if the generated
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2186,7 +2176,6 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2418,7 +2407,6 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2672,7 +2660,6 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2941,7 +2928,6 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3187,7 +3173,6 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3419,7 +3404,6 @@ exports[`memory declaration: constant expression default > if the generated AST,
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3641,7 +3625,6 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3822,7 +3805,6 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4044,7 +4026,6 @@ exports[`push: count(*end pointer) falls back to scalar pointee count > if the g
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4298,7 +4279,6 @@ exports[`push: count(*pointer) resolves known pointee element count > if the gen
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4497,7 +4477,6 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4684,7 +4663,6 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4865,7 +4843,6 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -5087,7 +5064,6 @@ exports[`push: min(*pointer) resolves pointee min value > if the generated AST, 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -5307,7 +5283,6 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

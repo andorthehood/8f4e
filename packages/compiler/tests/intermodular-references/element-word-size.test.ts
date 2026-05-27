@@ -120,7 +120,7 @@ describe('inter-module references - element word size', () => {
 		}).toThrow();
 	});
 
-	test('module dependency sorting works with element word size references', () => {
+	test('resolves out-of-order element word size references', () => {
 		const modules = [
 			{ code: ['module dependentModule', 'int size sizeof(baseModule:buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },

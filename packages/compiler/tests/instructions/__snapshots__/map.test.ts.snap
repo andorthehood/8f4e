@@ -189,7 +189,6 @@ exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT a
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -470,7 +469,6 @@ exports[`map: float→float mapping > if the generated AST, WAT and memory map m
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -734,7 +732,6 @@ exports[`map: implicit default zero for int output > if the generated AST, WAT a
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -999,7 +996,6 @@ exports[`map: int→float mapping > if the generated AST, WAT and memory map mat
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1297,7 +1293,6 @@ exports[`map: int→int basic mapping > if the generated AST, WAT and memory map
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1589,7 +1584,6 @@ exports[`map: int→int with explicit default > if the generated AST, WAT and me
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1835,7 +1829,6 @@ exports[`map: int→int with single-character literals as ASCII > if the generat
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2066,7 +2059,6 @@ exports[`map: zero-row map returns default > if the generated AST, WAT and memor
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2288,7 +2280,6 @@ exports[`map: zero-row map with explicit default > if the generated AST, WAT and
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

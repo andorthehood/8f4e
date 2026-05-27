@@ -143,10 +143,6 @@ export type MemoryDeclarationArgument =
 	| ArgumentCompileTimeExpression
 	| ArgumentStringLiteral;
 
-type ReferencedModuleIdsMetadata = {
-	referencedModuleIds?: readonly string[];
-};
-
 type ExplicitMemoryDefaultMetadata = {
 	hasExplicitMemoryDefault: boolean;
 };
@@ -156,7 +152,6 @@ export type ScalarMemoryDeclarationLine = ASTLineBase<
 	[MemoryDeclarationArgument, ...MemoryDeclarationArgument[]]
 > &
 	ExplicitMemoryDefaultMetadata &
-	ReferencedModuleIdsMetadata &
 	ReferencedNamespaceIdsMetadata;
 export type NamedScalarMemoryDeclarationLine = Omit<ScalarMemoryDeclarationLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...MemoryDeclarationArgument[]];
@@ -166,7 +161,6 @@ export type ArrayMemoryDeclarationLine = ASTLineBase<
 	[ArgumentIdentifier, CompileTimeValueArgument, ...MemoryDeclarationArgument[]]
 > &
 	ExplicitMemoryDefaultMetadata &
-	ReferencedModuleIdsMetadata &
 	ReferencedNamespaceIdsMetadata;
 export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDeclarationLine;
 
@@ -261,7 +255,6 @@ export interface ModuleAST {
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
-	referencedModuleIds: readonly string[];
 }
 
 /** Parsed AST for a function block and its resolved signature. */

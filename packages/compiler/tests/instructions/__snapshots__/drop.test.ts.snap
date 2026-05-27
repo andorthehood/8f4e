@@ -56,7 +56,6 @@ exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
