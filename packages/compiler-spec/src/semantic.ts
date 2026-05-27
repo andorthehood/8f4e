@@ -88,7 +88,7 @@ export interface LocalBinding {
 	isInteger: boolean;
 	isFloat64?: boolean;
 	pointeeBaseType?: DataStructure['pointeeBaseType'];
-	isPointingToPointer?: boolean;
+	pointerDepth?: number;
 	pointeeMemoryIndex?: number;
 	pointeeMemoryRegionName?: string;
 	index: number;
@@ -191,7 +191,7 @@ export interface PointeeMetadata {
 	baseType: DataStructure['pointeeBaseType'];
 	memoryIndex: number;
 	memoryRegionName?: string;
-	isPointer: boolean;
+	pointerDepth: number;
 }
 
 /** Type and value facts known about one ordinary value on the compiler analysis stack. */

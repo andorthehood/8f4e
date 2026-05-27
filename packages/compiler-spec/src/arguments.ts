@@ -49,6 +49,7 @@ type PlainIdentifier = IdentifierBase<'plain', 'local'>;
 type ConstantIdentifier = IdentifierBase<'constant', 'local'>;
 export type MemoryPointerIdentifier = IdentifierBase<'memory-pointer', 'local'> & {
 	targetMemoryId: string;
+	dereferenceDepth: number;
 };
 type MemoryReferenceIdentifier = IdentifierBase<'memory-reference', 'local'> & {
 	targetMemoryId: string;

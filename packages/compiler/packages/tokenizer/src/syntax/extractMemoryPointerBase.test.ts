@@ -7,6 +7,10 @@ describe('extractMemoryPointerBase', () => {
 		expect(extractMemoryPointerBase('*value')).toBe('value');
 	});
 
+	it('removes double-dereference pointer prefix', () => {
+		expect(extractMemoryPointerBase('**value')).toBe('value');
+	});
+
 	it('leaves plain identifiers unchanged', () => {
 		expect(extractMemoryPointerBase('value')).toBe('value');
 	});

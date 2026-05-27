@@ -11,9 +11,9 @@ describe('push shared helpers', () => {
 		expect(resolveArgumentValueKind({ isInteger: false, isFloat64: true })).toBe('float64');
 		expect(getDereferencedValueKindFromMetadata({ pointeeBaseType: 'int' } as never)).toBe('int32');
 		expect(getDereferencedValueKindFromMetadata({ pointeeBaseType: 'float64' } as never)).toBe('float64');
-		expect(
-			getDereferencedValueKindFromMetadata({ pointeeBaseType: 'float64', isPointingToPointer: true } as never)
-		).toBe('float64');
+		expect(getDereferencedValueKindFromMetadata({ pointeeBaseType: 'float64', pointerDepth: 2 } as never)).toBe(
+			'float64'
+		);
 	});
 
 	it('creates stack items with expected shape', () => {

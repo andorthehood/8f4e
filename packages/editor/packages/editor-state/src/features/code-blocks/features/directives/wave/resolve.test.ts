@@ -46,7 +46,7 @@ describe('wave directive widget resolution', () => {
 								default: 0,
 								isInteger: true,
 								id: 'buffer1',
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 							bufferAddress: {
 								wordAlignedAddress: 5,
@@ -59,7 +59,7 @@ describe('wave directive widget resolution', () => {
 								isInteger: true,
 								id: 'bufferAddress',
 								pointeeBaseType: 'int8',
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 							pointer1: {
 								wordAlignedAddress: 10,
@@ -71,7 +71,7 @@ describe('wave directive widget resolution', () => {
 								default: 0,
 								isInteger: true,
 								id: 'pointer1',
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 						},
 					},
@@ -166,7 +166,7 @@ describe('wave directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'buffer2',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2Address'] = {
 			wordAlignedAddress: 2,
@@ -179,7 +179,7 @@ describe('wave directive widget resolution', () => {
 			isInteger: true,
 			id: 'buffer2Address',
 			pointeeBaseType: 'int8',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['len2'] = {
 			wordAlignedAddress: 15,
@@ -191,7 +191,7 @@ describe('wave directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'len2',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['pointer2'] = {
 			wordAlignedAddress: 20,
@@ -203,7 +203,7 @@ describe('wave directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'pointer2',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		setMockCodeBlockCode(mockGraphicData, ['; @wave &buffer1 16 pointer1', '; @wave buffer2Address len2 pointer2']);
@@ -242,7 +242,7 @@ describe('wave directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'plainInt',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 		setMockCodeBlockCode(mockGraphicData, ['; @wave plainInt 16 pointer1']);
 

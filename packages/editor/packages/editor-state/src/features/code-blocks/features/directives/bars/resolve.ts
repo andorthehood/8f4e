@@ -50,7 +50,7 @@ function resolveBarsDirectiveWidget(
 	const minValue = bars.minValueOverride ?? valueSpec.minValue;
 	const maxValue = bars.maxValueOverride ?? valueSpec.maxValue;
 	const staticBaseValueIndex =
-		startAddress.showAddress || (!startAddress.memory.pointeeBaseType && !startAddress.memory.isPointingToPointer)
+		startAddress.showAddress || !startAddress.memory.pointerDepth
 			? (startAddress.memory.byteAddress >> valueSpec.baseSampleShift) + startAddress.bufferPointer
 			: undefined;
 

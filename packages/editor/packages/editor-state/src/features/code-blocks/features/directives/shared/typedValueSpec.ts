@@ -51,7 +51,7 @@ function getSampleSpecFromPointerMemory(startAddress: MemoryIdentifier): TypedVa
 		return undefined;
 	}
 
-	if (memory.isPointingToPointer) {
+	if (memory.pointerDepth > 1) {
 		return {
 			elementByteSize: 4,
 			baseSampleShift: 2,
