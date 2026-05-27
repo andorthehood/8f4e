@@ -26,7 +26,7 @@ function getMeterValueIndex(
 		return (memory.memory.byteAddress >> baseSampleShift) + memory.bufferPointer;
 	}
 
-	if (memory.memory.pointeeBaseType || memory.memory.isPointingToPointer) {
+	if (memory.memory.pointerDepth > 0) {
 		return memoryViews.int32[memory.memory.wordAlignedAddress + memory.bufferPointer] >> baseSampleShift;
 	}
 

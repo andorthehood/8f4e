@@ -20,6 +20,7 @@ describe('function value type helpers', () => {
 			{
 				isInteger: true,
 				pointeeBaseType: 'int',
+				pointerDepth: 1,
 				index: 2,
 			},
 		],
@@ -28,7 +29,7 @@ describe('function value type helpers', () => {
 			{
 				isInteger: true,
 				pointeeBaseType: 'float64',
-				isPointingToPointer: true,
+				pointerDepth: 2,
 				index: 2,
 			},
 		],
@@ -47,7 +48,7 @@ describe('function value type helpers', () => {
 				kind: 'address',
 				valueType: 'int',
 				address: { memoryIndex: 0 },
-				pointsTo: { baseType: 'int', memoryIndex: 0, isPointer: false },
+				pointsTo: { baseType: 'int', memoryIndex: 0, pointerDepth: 1 },
 			},
 		],
 		[
@@ -56,7 +57,7 @@ describe('function value type helpers', () => {
 				kind: 'address',
 				valueType: 'int',
 				address: { memoryIndex: 0 },
-				pointsTo: { baseType: 'float', memoryIndex: 0, isPointer: true },
+				pointsTo: { baseType: 'float', memoryIndex: 0, pointerDepth: 2 },
 			},
 		],
 	])('converts %s to a stack item', (type, expected) => {

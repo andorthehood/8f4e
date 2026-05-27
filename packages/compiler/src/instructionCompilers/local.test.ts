@@ -44,7 +44,7 @@ describe('local instruction compiler', () => {
 						type: 0,
 						default: 0,
 						isInteger: true,
-						isPointingToPointer: false,
+						pointerDepth: 0,
 						isUnsigned: false,
 					},
 				},
@@ -87,7 +87,7 @@ describe('local instruction compiler', () => {
 
 		expect(context.locals.cursor).toMatchObject({
 			pointeeBaseType: 'float64',
-			isPointingToPointer: true,
+			pointerDepth: 2,
 			index: 0,
 		});
 	});

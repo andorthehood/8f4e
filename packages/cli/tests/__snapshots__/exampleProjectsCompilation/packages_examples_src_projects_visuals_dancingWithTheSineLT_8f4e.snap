@@ -41,7 +41,7 @@
           "default": 0,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -56,7 +56,7 @@
           "default": 0.0246,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -71,7 +71,7 @@
           "default": 0.0493,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -86,7 +86,7 @@
           "default": 0.0739,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -101,7 +101,7 @@
           "default": 0.0984,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -116,7 +116,7 @@
           "default": 0.1229,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -131,7 +131,7 @@
           "default": 0.1473,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -146,7 +146,7 @@
           "default": 0.1716,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -161,7 +161,7 @@
           "default": 0.1958,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -176,7 +176,7 @@
           "default": 0.2199,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -191,7 +191,7 @@
           "default": 0.2439,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -206,7 +206,7 @@
           "default": 0.2677,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -221,7 +221,7 @@
           "default": 0.2914,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -236,7 +236,7 @@
           "default": 0.3149,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -251,7 +251,7 @@
           "default": 0.3382,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -266,7 +266,7 @@
           "default": 0.3612,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -281,7 +281,7 @@
           "default": 0.3841,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -296,7 +296,7 @@
           "default": 0.4067,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -311,7 +311,7 @@
           "default": 0.4291,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -326,7 +326,7 @@
           "default": 0.4512,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -341,7 +341,7 @@
           "default": 0.4731,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -356,7 +356,7 @@
           "default": 0.4947,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -371,7 +371,7 @@
           "default": 0.5159,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -386,7 +386,7 @@
           "default": 0.5369,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -401,7 +401,7 @@
           "default": 0.5575,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -416,7 +416,7 @@
           "default": 0.5778,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -431,7 +431,7 @@
           "default": 0.5977,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -446,7 +446,7 @@
           "default": 0.6173,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -461,7 +461,7 @@
           "default": 0.6365,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -476,7 +476,7 @@
           "default": 0.6553,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -491,7 +491,7 @@
           "default": 0.6737,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -506,7 +506,7 @@
           "default": 0.6917,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -521,7 +521,7 @@
           "default": 0.7093,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -536,7 +536,7 @@
           "default": 0.7264,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -551,7 +551,7 @@
           "default": 0.7431,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -566,7 +566,7 @@
           "default": 0.7594,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -581,7 +581,7 @@
           "default": 0.7752,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -596,7 +596,7 @@
           "default": 0.7905,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -611,7 +611,7 @@
           "default": 0.8054,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -626,7 +626,7 @@
           "default": 0.8197,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -641,7 +641,7 @@
           "default": 0.8336,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -656,7 +656,7 @@
           "default": 0.847,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -671,7 +671,7 @@
           "default": 0.8598,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -686,7 +686,7 @@
           "default": 0.8721,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -701,7 +701,7 @@
           "default": 0.8839,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -716,7 +716,7 @@
           "default": 0.8952,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -731,7 +731,7 @@
           "default": 0.9059,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -746,7 +746,7 @@
           "default": 0.916,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -761,7 +761,7 @@
           "default": 0.9256,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -776,7 +776,7 @@
           "default": 0.9347,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -791,7 +791,7 @@
           "default": 0.9432,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -806,7 +806,7 @@
           "default": 0.9511,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -821,7 +821,7 @@
           "default": 0.9584,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -836,7 +836,7 @@
           "default": 0.9651,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -851,7 +851,7 @@
           "default": 0.9713,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -866,7 +866,7 @@
           "default": 0.9768,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -881,7 +881,7 @@
           "default": 0.9818,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -896,7 +896,7 @@
           "default": 0.9862,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -911,7 +911,7 @@
           "default": 0.99,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -926,7 +926,7 @@
           "default": 0.9932,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -941,7 +941,7 @@
           "default": 0.9957,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -956,7 +956,7 @@
           "default": 0.9977,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -971,7 +971,7 @@
           "default": 0.9991,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -986,7 +986,7 @@
           "default": 0.9998,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1001,7 +1001,7 @@
           "default": 1,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1016,7 +1016,7 @@
           "default": 0.9995,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1031,7 +1031,7 @@
           "default": 0.9985,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1046,7 +1046,7 @@
           "default": 0.9968,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1061,7 +1061,7 @@
           "default": 0.9945,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1076,7 +1076,7 @@
           "default": 0.9916,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1091,7 +1091,7 @@
           "default": 0.9882,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1106,7 +1106,7 @@
           "default": 0.9841,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1121,7 +1121,7 @@
           "default": 0.9794,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1136,7 +1136,7 @@
           "default": 0.9741,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1151,7 +1151,7 @@
           "default": 0.9683,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1166,7 +1166,7 @@
           "default": 0.9618,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1181,7 +1181,7 @@
           "default": 0.9548,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1196,7 +1196,7 @@
           "default": 0.9472,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1211,7 +1211,7 @@
           "default": 0.939,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1226,7 +1226,7 @@
           "default": 0.9302,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1241,7 +1241,7 @@
           "default": 0.9209,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1256,7 +1256,7 @@
           "default": 0.911,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1271,7 +1271,7 @@
           "default": 0.9006,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1286,7 +1286,7 @@
           "default": 0.8896,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1301,7 +1301,7 @@
           "default": 0.8781,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1316,7 +1316,7 @@
           "default": 0.866,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1331,7 +1331,7 @@
           "default": 0.8534,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1346,7 +1346,7 @@
           "default": 0.8403,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1361,7 +1361,7 @@
           "default": 0.8267,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1376,7 +1376,7 @@
           "default": 0.8126,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1391,7 +1391,7 @@
           "default": 0.798,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1406,7 +1406,7 @@
           "default": 0.7829,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1421,7 +1421,7 @@
           "default": 0.7674,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1436,7 +1436,7 @@
           "default": 0.7513,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1451,7 +1451,7 @@
           "default": 0.7348,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1466,7 +1466,7 @@
           "default": 0.7179,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1481,7 +1481,7 @@
           "default": 0.7005,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1496,7 +1496,7 @@
           "default": 0.6827,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1511,7 +1511,7 @@
           "default": 0.6645,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1526,7 +1526,7 @@
           "default": 0.6459,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1541,7 +1541,7 @@
           "default": 0.6269,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1556,7 +1556,7 @@
           "default": 0.6075,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1571,7 +1571,7 @@
           "default": 0.5878,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1586,7 +1586,7 @@
           "default": 0.5677,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1601,7 +1601,7 @@
           "default": 0.5472,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1616,7 +1616,7 @@
           "default": 0.5264,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1631,7 +1631,7 @@
           "default": 0.5053,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1646,7 +1646,7 @@
           "default": 0.4839,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1661,7 +1661,7 @@
           "default": 0.4622,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1676,7 +1676,7 @@
           "default": 0.4402,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1691,7 +1691,7 @@
           "default": 0.418,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1706,7 +1706,7 @@
           "default": 0.3955,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1721,7 +1721,7 @@
           "default": 0.3727,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1736,7 +1736,7 @@
           "default": 0.3497,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1751,7 +1751,7 @@
           "default": 0.3265,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1766,7 +1766,7 @@
           "default": 0.3032,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1781,7 +1781,7 @@
           "default": 0.2796,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1796,7 +1796,7 @@
           "default": 0.2558,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1811,7 +1811,7 @@
           "default": 0.2319,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1826,7 +1826,7 @@
           "default": 0.2079,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1841,7 +1841,7 @@
           "default": 0.1837,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1856,7 +1856,7 @@
           "default": 0.1595,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1871,7 +1871,7 @@
           "default": 0.1351,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1886,7 +1886,7 @@
           "default": 0.1107,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1901,7 +1901,7 @@
           "default": 0.0861,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1916,7 +1916,7 @@
           "default": 0.0616,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1931,7 +1931,7 @@
           "default": 0.037,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1946,7 +1946,7 @@
           "default": 0.0123,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1961,7 +1961,7 @@
           "default": -0.0123,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1976,7 +1976,7 @@
           "default": -0.037,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -1991,7 +1991,7 @@
           "default": -0.0616,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2006,7 +2006,7 @@
           "default": -0.0861,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2021,7 +2021,7 @@
           "default": -0.1107,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2036,7 +2036,7 @@
           "default": -0.1351,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2051,7 +2051,7 @@
           "default": -0.1595,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2066,7 +2066,7 @@
           "default": -0.1837,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2081,7 +2081,7 @@
           "default": -0.2079,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2096,7 +2096,7 @@
           "default": -0.2319,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2111,7 +2111,7 @@
           "default": -0.2558,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2126,7 +2126,7 @@
           "default": -0.2796,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2141,7 +2141,7 @@
           "default": -0.3032,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2156,7 +2156,7 @@
           "default": -0.3265,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2171,7 +2171,7 @@
           "default": -0.3497,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2186,7 +2186,7 @@
           "default": -0.3727,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2201,7 +2201,7 @@
           "default": -0.3955,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2216,7 +2216,7 @@
           "default": -0.418,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2231,7 +2231,7 @@
           "default": -0.4402,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2246,7 +2246,7 @@
           "default": -0.4622,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2261,7 +2261,7 @@
           "default": -0.4839,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2276,7 +2276,7 @@
           "default": -0.5053,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2291,7 +2291,7 @@
           "default": -0.5264,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2306,7 +2306,7 @@
           "default": -0.5472,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2321,7 +2321,7 @@
           "default": -0.5677,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2336,7 +2336,7 @@
           "default": -0.5878,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2351,7 +2351,7 @@
           "default": -0.6075,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2366,7 +2366,7 @@
           "default": -0.6269,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2381,7 +2381,7 @@
           "default": -0.6459,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2396,7 +2396,7 @@
           "default": -0.6645,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2411,7 +2411,7 @@
           "default": -0.6827,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2426,7 +2426,7 @@
           "default": -0.7005,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2441,7 +2441,7 @@
           "default": -0.7179,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2456,7 +2456,7 @@
           "default": -0.7348,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2471,7 +2471,7 @@
           "default": -0.7513,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2486,7 +2486,7 @@
           "default": -0.7674,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2501,7 +2501,7 @@
           "default": -0.7829,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2516,7 +2516,7 @@
           "default": -0.798,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2531,7 +2531,7 @@
           "default": -0.8126,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2546,7 +2546,7 @@
           "default": -0.8267,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2561,7 +2561,7 @@
           "default": -0.8403,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2576,7 +2576,7 @@
           "default": -0.8534,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2591,7 +2591,7 @@
           "default": -0.866,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2606,7 +2606,7 @@
           "default": -0.8781,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2621,7 +2621,7 @@
           "default": -0.8896,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2636,7 +2636,7 @@
           "default": -0.9006,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2651,7 +2651,7 @@
           "default": -0.911,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2666,7 +2666,7 @@
           "default": -0.9209,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2681,7 +2681,7 @@
           "default": -0.9302,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2696,7 +2696,7 @@
           "default": -0.939,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2711,7 +2711,7 @@
           "default": -0.9472,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2726,7 +2726,7 @@
           "default": -0.9548,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2741,7 +2741,7 @@
           "default": -0.9618,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2756,7 +2756,7 @@
           "default": -0.9683,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2771,7 +2771,7 @@
           "default": -0.9741,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2786,7 +2786,7 @@
           "default": -0.9794,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2801,7 +2801,7 @@
           "default": -0.9841,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2816,7 +2816,7 @@
           "default": -0.9882,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2831,7 +2831,7 @@
           "default": -0.9916,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2846,7 +2846,7 @@
           "default": -0.9945,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2861,7 +2861,7 @@
           "default": -0.9968,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2876,7 +2876,7 @@
           "default": -0.9985,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2891,7 +2891,7 @@
           "default": -0.9995,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2906,7 +2906,7 @@
           "default": -1,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2921,7 +2921,7 @@
           "default": -0.9998,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2936,7 +2936,7 @@
           "default": -0.9991,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2951,7 +2951,7 @@
           "default": -0.9977,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2966,7 +2966,7 @@
           "default": -0.9957,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2981,7 +2981,7 @@
           "default": -0.9932,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -2996,7 +2996,7 @@
           "default": -0.99,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3011,7 +3011,7 @@
           "default": -0.9862,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3026,7 +3026,7 @@
           "default": -0.9818,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3041,7 +3041,7 @@
           "default": -0.9768,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3056,7 +3056,7 @@
           "default": -0.9713,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3071,7 +3071,7 @@
           "default": -0.9651,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3086,7 +3086,7 @@
           "default": -0.9584,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3101,7 +3101,7 @@
           "default": -0.9511,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3116,7 +3116,7 @@
           "default": -0.9432,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3131,7 +3131,7 @@
           "default": -0.9347,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3146,7 +3146,7 @@
           "default": -0.9256,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3161,7 +3161,7 @@
           "default": -0.916,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3176,7 +3176,7 @@
           "default": -0.9059,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3191,7 +3191,7 @@
           "default": -0.8952,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3206,7 +3206,7 @@
           "default": -0.8839,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3221,7 +3221,7 @@
           "default": -0.8721,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3236,7 +3236,7 @@
           "default": -0.8598,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3251,7 +3251,7 @@
           "default": -0.847,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3266,7 +3266,7 @@
           "default": -0.8336,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3281,7 +3281,7 @@
           "default": -0.8197,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3296,7 +3296,7 @@
           "default": -0.8054,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3311,7 +3311,7 @@
           "default": -0.7905,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3326,7 +3326,7 @@
           "default": -0.7752,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3341,7 +3341,7 @@
           "default": -0.7594,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3356,7 +3356,7 @@
           "default": -0.7431,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3371,7 +3371,7 @@
           "default": -0.7264,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3386,7 +3386,7 @@
           "default": -0.7093,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3401,7 +3401,7 @@
           "default": -0.6917,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3416,7 +3416,7 @@
           "default": -0.6737,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3431,7 +3431,7 @@
           "default": -0.6553,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3446,7 +3446,7 @@
           "default": -0.6365,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3461,7 +3461,7 @@
           "default": -0.6173,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3476,7 +3476,7 @@
           "default": -0.5977,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3491,7 +3491,7 @@
           "default": -0.5778,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3506,7 +3506,7 @@
           "default": -0.5575,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3521,7 +3521,7 @@
           "default": -0.5369,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3536,7 +3536,7 @@
           "default": -0.5159,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3551,7 +3551,7 @@
           "default": -0.4947,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3566,7 +3566,7 @@
           "default": -0.4731,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3581,7 +3581,7 @@
           "default": -0.4512,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3596,7 +3596,7 @@
           "default": -0.4291,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3611,7 +3611,7 @@
           "default": -0.4067,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3626,7 +3626,7 @@
           "default": -0.3841,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3641,7 +3641,7 @@
           "default": -0.3612,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3656,7 +3656,7 @@
           "default": -0.3382,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3671,7 +3671,7 @@
           "default": -0.3149,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3686,7 +3686,7 @@
           "default": -0.2914,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3701,7 +3701,7 @@
           "default": -0.2677,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3716,7 +3716,7 @@
           "default": -0.2439,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3731,7 +3731,7 @@
           "default": -0.2199,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3746,7 +3746,7 @@
           "default": -0.1958,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3761,7 +3761,7 @@
           "default": -0.1716,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3776,7 +3776,7 @@
           "default": -0.1473,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3791,7 +3791,7 @@
           "default": -0.1229,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3806,7 +3806,7 @@
           "default": -0.0984,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3821,7 +3821,7 @@
           "default": -0.0739,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3836,7 +3836,7 @@
           "default": -0.0493,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3851,7 +3851,7 @@
           "default": -0.0246,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         },
@@ -3866,7 +3866,7 @@
           "default": 0,
           "hasExplicitDefault": true,
           "type": "float",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": false,
           "isUnsigned": false
         }
@@ -3963,7 +3963,7 @@
           "default": 4,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -3980,7 +3980,7 @@
           "default": 1024,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -3997,7 +3997,7 @@
           "default": 4,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4014,7 +4014,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -4111,7 +4111,7 @@
           "default": 132,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4128,7 +4128,7 @@
           "default": 1024,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4145,7 +4145,7 @@
           "default": 4,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4162,7 +4162,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -4259,7 +4259,7 @@
           "default": 260,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4276,7 +4276,7 @@
           "default": 1024,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4293,7 +4293,7 @@
           "default": 4,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4310,7 +4310,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -4407,7 +4407,7 @@
           "default": 260,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4424,7 +4424,7 @@
           "default": 1024,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4441,7 +4441,7 @@
           "default": 4,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4458,7 +4458,7 @@
           "default": 1040,
           "hasExplicitDefault": true,
           "type": "float*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
@@ -4475,7 +4475,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
