@@ -132,7 +132,6 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

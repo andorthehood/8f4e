@@ -203,7 +203,7 @@ describe('inter-module references - element max', () => {
 		}).toThrow();
 	});
 
-	test('module dependency sorting works with element max references', () => {
+	test('resolves out-of-order element max references', () => {
 		const modules = [
 			{ code: ['module dependentModule', 'int maxValue max(baseModule:buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },

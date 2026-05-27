@@ -183,10 +183,7 @@
     "referencedNamespaceIds": [
       "norGate"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "norGate"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 56,
@@ -226,10 +223,7 @@
     "referencedNamespaceIds": [
       "setButton"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "setButton"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 61,
@@ -407,10 +401,7 @@
     "referencedNamespaceIds": [
       "norGate2"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "norGate2"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 81,
@@ -450,10 +441,7 @@
     "referencedNamespaceIds": [
       "resetButton"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "resetButton"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 86,
@@ -631,10 +619,7 @@
     "referencedNamespaceIds": [
       "norGate"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "norGate"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 105,
@@ -946,10 +931,7 @@
     "referencedNamespaceIds": [
       "buttons"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "buttons"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 151,
@@ -1120,10 +1102,7 @@
     "referencedNamespaceIds": [
       "andGate"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "andGate"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 171,
@@ -1163,10 +1142,7 @@
     "referencedNamespaceIds": [
       "buttons"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "buttons"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 175,
@@ -1344,10 +1320,7 @@
     "referencedNamespaceIds": [
       "orGate"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "orGate"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 195,
@@ -1387,10 +1360,7 @@
     "referencedNamespaceIds": [
       "negate"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "negate"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 199,
@@ -1568,10 +1538,7 @@
     "referencedNamespaceIds": [
       "andGate"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "andGate"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 218,

@@ -119,7 +119,6 @@ exports[`const: literal-only division expression with integer result > if the ge
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -275,7 +274,6 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -452,7 +450,6 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -643,7 +640,6 @@ exports[`memory declaration: literal-only multiplication expression default > if
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -796,7 +792,6 @@ exports[`push: float literal multiplication with float-typed result > if the gen
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -933,7 +928,6 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1070,7 +1064,6 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1207,7 +1200,6 @@ exports[`push: literal-only division expression with float result > if the gener
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1344,7 +1336,6 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

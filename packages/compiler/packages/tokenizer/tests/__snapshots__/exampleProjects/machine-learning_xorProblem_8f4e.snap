@@ -116,10 +116,7 @@
     "referencedNamespaceIds": [
       "activationFn3"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "activationFn3"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 32,
@@ -240,10 +237,7 @@
     "referencedNamespaceIds": [
       "switches"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "switches"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 61,
@@ -269,10 +263,7 @@
     "referencedNamespaceIds": [
       "switches"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "switches"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 62,
@@ -499,10 +490,7 @@
     "referencedNamespaceIds": [
       "switches"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "switches"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 87,
@@ -528,10 +516,7 @@
     "referencedNamespaceIds": [
       "switches"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "switches"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 88,
@@ -758,10 +743,7 @@
     "referencedNamespaceIds": [
       "perceptron"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "perceptron"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 112,
@@ -869,10 +851,7 @@
     "referencedNamespaceIds": [
       "perceptron2"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "perceptron2"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 125,
@@ -1087,10 +1066,7 @@
     "referencedNamespaceIds": [
       "activationFn"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "activationFn"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 155,
@@ -1116,10 +1092,7 @@
     "referencedNamespaceIds": [
       "activationFn2"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "activationFn2"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 156,
@@ -1346,10 +1319,7 @@
     "referencedNamespaceIds": [
       "perceptron3"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "perceptron3"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 180,

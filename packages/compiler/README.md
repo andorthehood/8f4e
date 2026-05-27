@@ -42,12 +42,12 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                                 |
                                 v
                   +-----------------------------+
-                  |  5. Execution ordering      |
-                  |  sortModules()              |
+                  |  5. Input-order contract    |
+                  |  caller-provided order      |
                   |                             |
-                  |  constants first, then      |
-                  |  output providers before    |
-                  |  modules using their inputs |
+                  |  module execution and       |
+                  |  memory layout preserve     |
+                  |  the incoming order         |
                   +-----------------------------+
                                 |
                                 v
@@ -118,7 +118,7 @@ Short version:
 source
   -> macros
   -> AST
-  -> execution order for module data flow
+  -> caller-provided module order
   -> namespace + memory layout
   -> semantic normalization + validation
   -> instruction codegen

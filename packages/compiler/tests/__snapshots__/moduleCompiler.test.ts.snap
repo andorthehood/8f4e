@@ -392,7 +392,6 @@ exports[`moduleCompiler > ast 1`] = `
     "lineNumberAfterMacroExpansion": 1,
     "lineNumberBeforeMacroExpansion": 1,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

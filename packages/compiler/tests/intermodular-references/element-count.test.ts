@@ -99,7 +99,7 @@ describe('inter-module references - element count', () => {
 		}).toThrow();
 	});
 
-	test('module dependency sorting works with element count references', () => {
+	test('resolves out-of-order element count references', () => {
 		const modules = [
 			{ code: ['module dependentModule', 'int size count(baseModule:buffer)', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },

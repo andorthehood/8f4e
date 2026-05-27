@@ -113,7 +113,6 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -312,7 +311,6 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -509,7 +507,6 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
