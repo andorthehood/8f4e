@@ -594,6 +594,9 @@ export const WASM_F64_PROMOTE_F32 = 0xbb;
  */
 export const WASM_MISC = 0xfc;
 
+/**
+ * Numeric opcode for a core WebAssembly instruction supported by this package.
+ */
 export type WASMInstructionCode =
 	| typeof WASM_UNREACHABLE
 	| typeof WASM_NOP

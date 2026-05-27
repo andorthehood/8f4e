@@ -37,6 +37,9 @@ export const WASM_MISC_MEMORY_COPY = 0x0a;
  */
 export const WASM_MISC_MEMORY_FILL = 0x0b;
 
+/**
+ * Numeric sub-opcode for a miscellaneous WebAssembly instruction following the 0xfc prefix.
+ */
 export type WASMMiscInstructionCode =
 	| typeof WASM_MISC_I32_TRUNC_SAT_F32_S
 	| typeof WASM_MISC_I32_TRUNC_SAT_F64_S
