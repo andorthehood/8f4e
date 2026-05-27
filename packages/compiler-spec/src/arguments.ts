@@ -20,8 +20,10 @@ export type ReferenceKind =
 	| 'element-word-size'
 	| 'element-max'
 	| 'element-min'
+	| 'pointee-element-count'
 	| 'pointee-element-word-size'
 	| 'pointee-element-max'
+	| 'pointee-element-min'
 	| 'intermodular-reference'
 	| 'intermodular-module-reference'
 	| 'intermodular-module-nth-reference'
@@ -65,11 +67,19 @@ type ElementMaxIdentifier = IdentifierBase<'element-max', 'local'> & {
 type ElementMinIdentifier = IdentifierBase<'element-min', 'local'> & {
 	targetMemoryId: string;
 };
+type PointeeElementCountIdentifier = IdentifierBase<'pointee-element-count', 'local'> & {
+	targetMemoryId: string;
+	isPointee: true;
+};
 type PointeeElementWordSizeIdentifier = IdentifierBase<'pointee-element-word-size', 'local'> & {
 	targetMemoryId: string;
 	isPointee: true;
 };
 type PointeeElementMaxIdentifier = IdentifierBase<'pointee-element-max', 'local'> & {
+	targetMemoryId: string;
+	isPointee: true;
+};
+type PointeeElementMinIdentifier = IdentifierBase<'pointee-element-min', 'local'> & {
 	targetMemoryId: string;
 	isPointee: true;
 };
@@ -112,8 +122,10 @@ export type ArgumentIdentifier =
 	| ElementWordSizeIdentifier
 	| ElementMaxIdentifier
 	| ElementMinIdentifier
+	| PointeeElementCountIdentifier
 	| PointeeElementWordSizeIdentifier
 	| PointeeElementMaxIdentifier
+	| PointeeElementMinIdentifier
 	| IntermodularReferenceIdentifier
 	| IntermodularModuleReferenceIdentifier
 	| IntermodularModuleNthReferenceIdentifier

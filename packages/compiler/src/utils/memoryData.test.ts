@@ -11,8 +11,10 @@ import {
 	getElementMinValue,
 	getElementWordSize,
 	getMemoryStringLastByteAddress,
+	getPointeeElementCount,
 	getPointeeElementIsIntegerFromMetadata,
 	getPointeeElementMaxValue,
+	getPointeeElementMinValue,
 	getPointeeElementWordSize,
 	getPointeeValueKindFromMetadata,
 } from './memoryData';
@@ -77,6 +79,39 @@ describe('memoryData utilities', () => {
 
 		it('returns 0 for non-existing identifier', () => {
 			expect(getElementCount(mockMemory, 'nonExisting')).toBe(0);
+		});
+	});
+
+	describe('getPointeeElementCount', () => {
+		it('returns known pointee count for pointer metadata with count provenance', () => {
+			const memory: MemoryMap = {
+				ptr: {
+					pointeeBaseType: 'float',
+					pointerDepth: 1,
+					pointeeElementCount: 16,
+				} as unknown as MemoryMap[string],
+			};
+
+			expect(getPointeeElementCount(memory, 'ptr')).toBe(16);
+		});
+
+		it('returns 1 for pointer metadata without count provenance', () => {
+			const memory: MemoryMap = {
+				ptr: {
+					pointeeBaseType: 'float',
+					pointerDepth: 1,
+				} as unknown as MemoryMap[string],
+			};
+
+			expect(getPointeeElementCount(memory, 'ptr')).toBe(1);
+		});
+
+		it('returns 0 for non-pointer identifiers', () => {
+			const memory: MemoryMap = {
+				value: {} as unknown as MemoryMap[string],
+			};
+
+			expect(getPointeeElementCount(memory, 'value')).toBe(0);
 		});
 	});
 
@@ -549,6 +584,49 @@ describe('memoryData utilities', () => {
 
 		it('returns 0 for non-existing identifier', () => {
 			expect(getPointeeElementMaxValue(mockMemory, 'nonExisting')).toBe(0);
+		});
+	});
+
+	describe('getPointeeElementMinValue', () => {
+		it('returns min int8 value for int8* pointer', () => {
+			const memory: MemoryMap = {
+				ptr: {
+					pointeeBaseType: 'int8',
+					pointerDepth: 1,
+				} as unknown as MemoryMap[string],
+			};
+
+			expect(getPointeeElementMinValue(memory, 'ptr')).toBe(-128);
+		});
+
+		it('returns min value 0 for unsigned integer pointers', () => {
+			const memory: MemoryMap = {
+				ptr: {
+					pointeeBaseType: 'int16u',
+					pointerDepth: 1,
+				} as unknown as MemoryMap[string],
+			};
+
+			expect(getPointeeElementMinValue(memory, 'ptr')).toBe(0);
+		});
+
+		it('returns pointer-slot min value for double pointers', () => {
+			const memory: MemoryMap = {
+				ptr: {
+					pointeeBaseType: 'float64',
+					pointerDepth: 2,
+				} as unknown as MemoryMap[string],
+			};
+
+			expect(getPointeeElementMinValue(memory, 'ptr')).toBe(-2147483648);
+		});
+
+		it('returns 0 for non-pointer identifiers', () => {
+			const memory: MemoryMap = {
+				value: {} as unknown as MemoryMap[string],
+			};
+
+			expect(getPointeeElementMinValue(memory, 'value')).toBe(0);
 		});
 	});
 });

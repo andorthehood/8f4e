@@ -91,7 +91,7 @@ Follow-up work can add richer pointer-to-buffer metadata later if the language n
 
 - **Related**: `docs/todos/archived/319-add-pointee-element-word-size-prefix-for-pointers.md`
 - **Related**: `docs/todos/archived/322-add-pointee-max-value-prefix-for-pointers.md`
-- **Related**: `docs/todos/323-add-pointee-min-value-prefix-for-pointers.md`
+- **Related**: `docs/todos/archived/323-add-pointee-min-value-prefix-for-pointers.md`
 
 ## Notes
 
