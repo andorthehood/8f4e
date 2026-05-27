@@ -83,16 +83,28 @@ export type NormalizedArgumentLiteral = ArgumentLiteral & {
 	address?: AddressMetadata;
 };
 
-/** Resolved local variable slot and type metadata for function compilation. */
-export interface LocalBinding {
+/** Resolved scalar local variable slot and type metadata for function compilation. */
+export interface ScalarLocalBinding {
 	isInteger: boolean;
 	isFloat64?: boolean;
-	pointeeBaseType?: DataStructure['pointeeBaseType'];
-	pointerDepth?: number;
+	pointeeBaseType?: undefined;
 	pointeeMemoryIndex?: number;
 	pointeeMemoryRegionName?: string;
 	index: number;
 }
+
+/** Resolved pointer local variable slot and type metadata for function compilation. */
+export interface PointerLocalBinding {
+	isInteger: true;
+	isFloat64?: false;
+	pointeeBaseType: NonNullable<DataStructure['pointeeBaseType']>;
+	pointerDepth: number;
+	pointeeMemoryIndex?: number;
+	pointeeMemoryRegionName?: string;
+	index: number;
+}
+
+export type LocalBinding = ScalarLocalBinding | PointerLocalBinding;
 
 export type LocalMap = Record<string, LocalBinding>;
 
@@ -314,9 +326,7 @@ export type ResolvedLocalPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 	resolvedTarget: {
 		kind: 'local-pointer';
-		local: LocalBinding & {
-			pointeeBaseType: NonNullable<LocalBinding['pointeeBaseType']>;
-		};
+		local: PointerLocalBinding;
 	};
 };
 

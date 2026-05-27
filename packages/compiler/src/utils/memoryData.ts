@@ -2,7 +2,7 @@ import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 
 import { getEndByteAddress } from '../semantic/layoutAddresses';
 
-import type { DataStructure, LocalBinding, MemoryMap, MemoryValueKind, StackAddress } from '@8f4e/compiler-spec';
+import type { DataStructure, MemoryMap, MemoryValueKind, PointerLocalBinding, StackAddress } from '@8f4e/compiler-spec';
 
 export type PointerMetadata =
 	| Pick<
@@ -14,7 +14,7 @@ export type PointerMetadata =
 			| 'pointeeMemoryIndex'
 			| 'pointeeMemoryRegionName'
 	  >
-	| Pick<LocalBinding, 'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName'>
+	| Pick<PointerLocalBinding, 'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName'>
 	| {
 			pointeeBaseType: NonNullable<StackAddress['pointsTo']>['baseType'];
 			pointerDepth: NonNullable<StackAddress['pointsTo']>['pointerDepth'];
@@ -44,7 +44,7 @@ function getPointeeBaseTypeMetadata(pointeeBaseType: NonNullable<PointerMetadata
 
 export function getPointerDepthFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
 	if (!pointerMetadata?.pointeeBaseType) return 0;
-	return pointerMetadata.pointerDepth ?? 1;
+	return pointerMetadata.pointerDepth;
 }
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
