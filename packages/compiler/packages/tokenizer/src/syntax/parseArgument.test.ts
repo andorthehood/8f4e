@@ -78,8 +78,10 @@ describe('classifyIdentifier – check ordering regression', () => {
 			classifyIdentifier('*buffer&'),
 			classifyIdentifier('*buffer'),
 			classifyIdentifier('**buffer'),
+			classifyIdentifier('count(*buffer)'),
 			classifyIdentifier('sizeof(*buffer)'),
 			classifyIdentifier('max(*buffer)'),
+			classifyIdentifier('min(*buffer)'),
 			classifyIdentifier('count(buffer)'),
 			classifyIdentifier('sizeof(buffer)'),
 			classifyIdentifier('max(buffer)'),
@@ -153,6 +155,14 @@ describe('classifyIdentifier – check ordering regression', () => {
 			},
 			{
 				type: ArgumentType.IDENTIFIER,
+				value: 'count(*buffer)',
+				referenceKind: 'pointee-element-count',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+				isPointee: true,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
 				value: 'sizeof(*buffer)',
 				referenceKind: 'pointee-element-word-size',
 				scope: 'local',
@@ -163,6 +173,14 @@ describe('classifyIdentifier – check ordering regression', () => {
 				type: ArgumentType.IDENTIFIER,
 				value: 'max(*buffer)',
 				referenceKind: 'pointee-element-max',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+				isPointee: true,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: 'min(*buffer)',
+				referenceKind: 'pointee-element-min',
 				scope: 'local',
 				targetMemoryId: 'buffer',
 				isPointee: true,
@@ -320,6 +338,8 @@ describe('parseArgument', () => {
 	it('rejects empty pointee metadata query targets', () => {
 		expect(() => parseArgument('sizeof(*)')).toThrow('Pointee metadata query target is missing');
 		expect(() => parseArgument('max(*)')).toThrow('Pointee metadata query target is missing');
+		expect(() => parseArgument('min(*)')).toThrow('Pointee metadata query target is missing');
+		expect(() => parseArgument('count(*)')).toThrow('Pointee metadata query target is missing');
 	});
 
 	it('rejects identifiers that start with numbers', () => {
