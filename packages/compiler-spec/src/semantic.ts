@@ -101,6 +101,7 @@ export interface PointerLocalBinding {
 	pointerDepth: number;
 	pointeeMemoryIndex?: number;
 	pointeeMemoryRegionName?: string;
+	pointeeElementCount?: number;
 	index: number;
 }
 
@@ -204,6 +205,7 @@ export interface PointeeMetadata {
 	memoryIndex: number;
 	memoryRegionName?: string;
 	pointerDepth: number;
+	elementCount?: number;
 }
 
 /** Type and value facts known about one ordinary value on the compiler analysis stack. */

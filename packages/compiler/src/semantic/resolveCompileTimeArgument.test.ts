@@ -35,6 +35,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					isInteger: true,
 					pointeeBaseType: 'float',
 					pointerDepth: 1,
+					pointeeElementCount: 4,
 				},
 			},
 			namespaces: {},
@@ -115,12 +116,20 @@ describe('tryResolveCompileTimeArgument', () => {
 	});
 
 	it('resolves local memory metadata queries', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(*floatPtr)'))).toEqual({
+			value: 4,
+			isInteger: true,
+		});
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(*floatPtr)'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(*floatPtr)'))).toEqual({
 			value: 3.4028234663852886e38,
+			isInteger: false,
+		});
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(*floatPtr)'))).toEqual({
+			value: -3.4028234663852886e38,
 			isInteger: false,
 		});
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(samples)'))).toEqual({
@@ -140,6 +149,8 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(missing)'))).toBeUndefined();
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(*missing)'))).toBeUndefined();
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(*missing)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(*missing)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(*missing)'))).toBeUndefined();
 	});
 
 	it('keeps float64 width for expression results', () => {
@@ -200,28 +211,41 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 2147483647,
 			isInteger: true,
 		});
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('min(*floatPtrPtr)'))).toEqual({
+			value: -2147483648,
+			isInteger: true,
+		});
 	});
 
 	it('resolves pointee metadata from local pointer bindings', () => {
 		const localPointerContext = {
 			...mockContext,
 			locals: {
-				floatPtr: {
+				localFloatPtr: {
 					kind: 'value',
 					valueType: 'int',
 					pointeeBaseType: 'float',
 					pointerDepth: 1,
+					pointeeElementCount: 7,
 					index: 0,
 				},
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*floatPtr)'))).toEqual({
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toEqual({
+			value: 7,
+			isInteger: true,
+		});
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*localFloatPtr)'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*floatPtr)'))).toEqual({
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*localFloatPtr)'))).toEqual({
 			value: 3.4028234663852886e38,
+			isInteger: false,
+		});
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('min(*localFloatPtr)'))).toEqual({
+			value: -3.4028234663852886e38,
 			isInteger: false,
 		});
 	});

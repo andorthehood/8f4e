@@ -100,8 +100,8 @@ Expected semantics:
 
 ## Related Items
 
-- **Related**: `docs/todos/323-add-pointee-min-value-prefix-for-pointers.md`
-- **Related**: `docs/todos/428-add-pointer-aware-count-and-min-metadata-queries.md`
+- **Related**: `docs/todos/archived/323-add-pointee-min-value-prefix-for-pointers.md`
+- **Related**: `docs/todos/archived/428-add-pointer-aware-count-and-min-metadata-queries.md`
 
 ## Notes
 
