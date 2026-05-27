@@ -99,6 +99,7 @@ describe('param instruction compiler', () => {
 
 		expect(context.locals.buffer).toMatchObject({
 			pointeeBaseType: 'float',
+			pointerDepth: 1,
 			index: 0,
 		});
 		expect(context.currentFunctionSignature?.parameters).toEqual(['float*']);

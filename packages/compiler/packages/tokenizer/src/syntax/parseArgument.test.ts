@@ -77,6 +77,7 @@ describe('classifyIdentifier – check ordering regression', () => {
 			classifyIdentifier('count(source:buffer)&'),
 			classifyIdentifier('*buffer&'),
 			classifyIdentifier('*buffer'),
+			classifyIdentifier('**buffer'),
 			classifyIdentifier('sizeof(*buffer)'),
 			classifyIdentifier('max(*buffer)'),
 			classifyIdentifier('count(buffer)'),
@@ -140,6 +141,15 @@ describe('classifyIdentifier – check ordering regression', () => {
 				referenceKind: 'memory-pointer',
 				scope: 'local',
 				targetMemoryId: 'buffer',
+				dereferenceDepth: 1,
+			},
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: '**buffer',
+				referenceKind: 'memory-pointer',
+				scope: 'local',
+				targetMemoryId: 'buffer',
+				dereferenceDepth: 2,
 			},
 			{
 				type: ArgumentType.IDENTIFIER,
@@ -198,6 +208,10 @@ describe('classifyIdentifier – check ordering regression', () => {
 				scope: 'local',
 			},
 		]);
+	});
+
+	it('rejects pointer identifiers deeper than the supported double-dereference syntax', () => {
+		expect(() => classifyIdentifier('***buffer')).toThrow('Invalid pointer depth.');
 	});
 });
 
