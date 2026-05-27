@@ -338,7 +338,7 @@ describe('watch directive widget resolution', () => {
 			isInteger: true,
 			id: '__anonymous__0',
 			pointeeBaseType: 'int',
-			pointerDepth: 0,
+			pointerDepth: 1,
 		};
 
 		runDirectiveResolution();

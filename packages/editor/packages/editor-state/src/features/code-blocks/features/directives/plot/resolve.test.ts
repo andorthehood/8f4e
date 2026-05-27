@@ -183,7 +183,7 @@ describe('plot directive widget resolution', () => {
 			isInteger: true,
 			id: 'bufferPtr',
 			pointeeBaseType: 'int8',
-			pointerDepth: 0,
+			pointerDepth: 1,
 		};
 		setMockCodeBlockCode(mockGraphicData, ['; @plot bufferPtr count(buffer1)']);
 
