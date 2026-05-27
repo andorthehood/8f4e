@@ -29,6 +29,23 @@ function isResolvedPointerLocal(
 	return !!local?.pointeeBaseType;
 }
 
+function getDeclaredPointerDepth(pointerMetadata: { pointerDepth: number; pointeeBaseType?: unknown }): number {
+	return pointerMetadata.pointeeBaseType ? pointerMetadata.pointerDepth : 0;
+}
+
+function validateDereferenceDepth(
+	pointerArgument: MemoryPointerIdentifier,
+	pointerMetadata: { pointerDepth: number; pointeeBaseType?: unknown },
+	line: PushLine,
+	context: CompilationContext
+): void {
+	if (pointerArgument.dereferenceDepth > getDeclaredPointerDepth(pointerMetadata)) {
+		throw getError(ErrorCode.POINTER_DEREFERENCE_DEPTH_EXCEEDED, line, context, {
+			identifier: pointerArgument.value,
+		});
+	}
+}
+
 /**
  * Normalizes compile-time arguments for the `push` instruction.
  * The value argument (index 0) is normalized.
@@ -82,6 +99,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 			const pointerArgument = argument as MemoryPointerIdentifier;
 			const memoryItem = getDataStructure(memory, pointerArgument.targetMemoryId);
 			if (memoryItem) {
+				validateDereferenceDepth(pointerArgument, memoryItem, line, context);
 				const resolvedLine: Omit<ResolvedMemoryPointerPushLine, 'resolvedTarget'> = {
 					...normalizedPushLine,
 					arguments: [pointerArgument],
@@ -91,6 +109,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 
 			const local = context.locals[pointerArgument.targetMemoryId];
 			if (isResolvedPointerLocal(local)) {
+				validateDereferenceDepth(pointerArgument, local, line, context);
 				const resolvedLine: Omit<ResolvedLocalPointerPushLine, 'resolvedTarget'> = {
 					...normalizedPushLine,
 					arguments: [pointerArgument],

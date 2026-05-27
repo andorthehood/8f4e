@@ -10,7 +10,7 @@ exports[`init instruction compiler > sets memory default value 1`] = `
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "isPointingToPointer": false,
+    "pointerDepth": 0,
     "isUnsigned": false,
     "numberOfElements": 1,
     "type": "int",

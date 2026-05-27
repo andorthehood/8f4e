@@ -45,7 +45,7 @@ describe('piano directive widget resolution', () => {
 								elementWordSize: 1,
 								type: MemoryTypes.int,
 								default: 0,
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 							numKeys: {
 								id: 'numKeys',
@@ -57,7 +57,7 @@ describe('piano directive widget resolution', () => {
 								elementWordSize: 1,
 								type: MemoryTypes.int,
 								default: 0,
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 						},
 					},

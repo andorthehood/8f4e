@@ -105,7 +105,7 @@ describe('updateInputsGraphicData', () => {
 			default: 0,
 			isInteger: false,
 			id: 'input2',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		updateInputsGraphicData(mockGraphicData, mockState);
@@ -132,7 +132,7 @@ describe('updateInputsGraphicData', () => {
 			default: 0,
 			isInteger: true,
 			id: 'input1',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		updateInputsGraphicData(mockGraphicData, mockState);
