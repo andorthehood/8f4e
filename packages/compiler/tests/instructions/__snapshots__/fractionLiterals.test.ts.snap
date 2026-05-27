@@ -119,7 +119,6 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -295,7 +294,6 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -487,7 +485,6 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -679,7 +676,6 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -871,7 +867,6 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1034,7 +1029,6 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

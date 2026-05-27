@@ -57,7 +57,7 @@ describe('inter-module references - start address', () => {
 		}).toThrow();
 	});
 
-	test('module dependency sorting works with start-address references', () => {
+	test('resolves out-of-order start-address references', () => {
 		const modules = [
 			{ code: ['module dependentModule', 'int* ptr &baseModule:buffer', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },

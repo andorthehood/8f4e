@@ -115,7 +115,6 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -297,7 +296,6 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -509,7 +507,6 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -739,7 +736,6 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -929,7 +925,6 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1123,7 +1118,6 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1291,7 +1285,6 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1573,7 +1566,6 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1813,7 +1805,6 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2083,7 +2074,6 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2361,7 +2351,6 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2585,7 +2574,6 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -2787,7 +2775,6 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3009,7 +2996,6 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3215,7 +3201,6 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3445,7 +3430,6 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3635,7 +3619,6 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3815,7 +3798,6 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -3993,7 +3975,6 @@ exports[`int: with anonymous single-character string default > if the generated 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4193,7 +4174,6 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4373,7 +4353,6 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4565,7 +4544,6 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -4755,7 +4733,6 @@ exports[`int: with named single-character string default > if the generated AST,
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

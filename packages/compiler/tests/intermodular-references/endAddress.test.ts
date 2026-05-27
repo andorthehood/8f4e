@@ -69,7 +69,7 @@ describe('inter-module references - end address', () => {
 		expect(targetModule.memoryMap['ptr'].default).toBe(expectedEndAddress);
 	});
 
-	test('module dependency sorting works with end-address references', () => {
+	test('resolves out-of-order end-address references', () => {
 		const modules = [
 			{ code: ['module dependentModule', 'int* ptr baseModule:buffer&', 'moduleEnd'] },
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
