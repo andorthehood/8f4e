@@ -23,7 +23,8 @@ interface SelectedLineTooltipTextContent {
 export function getSelectedLineTooltipTextContent(
 	line: string | undefined,
 	maxLength = TOOLTIP_WRAP_WIDTH,
-	stackAnalysisLine?: CompiledStackAnalysisLine
+	stackAnalysisLine?: CompiledStackAnalysisLine,
+	moduleExecutionOrder?: number
 ): SelectedLineTooltipTextContent {
 	if (!line) {
 		return { text: [], highlightTargets: [] };
@@ -41,6 +42,10 @@ export function getSelectedLineTooltipTextContent(
 
 	if (shortDescription) {
 		tooltipText.push(...wrapTooltipText(shortDescription, maxLength));
+	}
+
+	if (moduleExecutionOrder !== undefined) {
+		tooltipText.push(`execution order: ${moduleExecutionOrder}`);
 	}
 
 	const stackAnalysisContent = getStackAnalysisTooltipContent(stackAnalysisLine);
@@ -65,9 +70,10 @@ export function getSelectedLineTooltipTextContent(
 export function getSelectedLineTooltipText(
 	line: string | undefined,
 	maxLength = TOOLTIP_WRAP_WIDTH,
-	stackAnalysisLine?: CompiledStackAnalysisLine
+	stackAnalysisLine?: CompiledStackAnalysisLine,
+	moduleExecutionOrder?: number
 ): string[] {
-	return getSelectedLineTooltipTextContent(line, maxLength, stackAnalysisLine).text;
+	return getSelectedLineTooltipTextContent(line, maxLength, stackAnalysisLine, moduleExecutionOrder).text;
 }
 
 /**
@@ -79,9 +85,10 @@ export function getSelectedLineTooltipContent(
 	stackAnalysisLine?: CompiledStackAnalysisLine,
 	spriteLookups?: SpriteLookups,
 	moduleId?: string,
-	memory?: DataStructure
+	memory?: DataStructure,
+	moduleExecutionOrder?: number
 ): SelectedLineTooltipContent {
-	const textContent = getSelectedLineTooltipTextContent(line, maxLength, stackAnalysisLine);
+	const textContent = getSelectedLineTooltipTextContent(line, maxLength, stackAnalysisLine, moduleExecutionOrder);
 	const text = textContent.text;
 	const memoryId = getMemoryDeclarationIdFromSourceLine(line);
 	const colors = getSelectedLineTooltipColors(line, text, spriteLookups);

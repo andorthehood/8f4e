@@ -105,19 +105,6 @@ These modifiers can be combined when they make sense. For example:
 ; @watch buffer[3]
 ```
 
-### `@nth`
-
-Show the module's 1-based compile order number.
-
-```txt
-; @nth
-```
-
-Notes:
-
-- This reflects compile/layout order.
-- The first module shows `1`, the sixteenth shows `16`.
-
 ### `@plot`
 
 Draw a plot over a typed absolute pointer range or direct buffer memory. The first argument provides the start pointer and element type metadata. The second argument is always the element count. You can optionally provide an explicit min/max range override.
