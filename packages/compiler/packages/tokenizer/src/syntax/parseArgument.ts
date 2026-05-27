@@ -204,6 +204,18 @@ function classifyCountQuery(value: string): ArgumentIdentifier | null {
 		};
 	}
 
+	if (targetMemoryId.startsWith('*')) {
+		const pointeeTargetMemoryId = getPointeeQueryTarget(value, targetMemoryId);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'pointee-element-count',
+			scope: 'local',
+			targetMemoryId: pointeeTargetMemoryId,
+			isPointee: true,
+		};
+	}
+
 	return {
 		type: ArgumentType.IDENTIFIER,
 		value,
@@ -306,6 +318,18 @@ function classifyMinQuery(value: string): ArgumentIdentifier | null {
 			scope: 'intermodule',
 			targetModuleId: intermodule.targetModuleId,
 			targetMemoryId: intermodule.targetMemoryId,
+		};
+	}
+
+	if (targetMemoryId.startsWith('*')) {
+		const pointeeTargetMemoryId = getPointeeQueryTarget(value, targetMemoryId);
+		return {
+			type: ArgumentType.IDENTIFIER,
+			value,
+			referenceKind: 'pointee-element-min',
+			scope: 'local',
+			targetMemoryId: pointeeTargetMemoryId,
+			isPointee: true,
 		};
 	}
 

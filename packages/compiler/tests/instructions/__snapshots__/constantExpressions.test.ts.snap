@@ -3859,6 +3859,515 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
 }
 `;
 
+exports[`push: count(*end pointer) falls back to scalar pointee count > if the generated AST, WAT and memory map match the snapshot 1`] = `
+{
+  "id": "test",
+  "lines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "test",
+        },
+      ],
+      "instruction": "module",
+      "lineNumberAfterMacroExpansion": 0,
+      "lineNumberBeforeMacroExpansion": 0,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "samples",
+        },
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 8,
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float[]",
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "ptr",
+        },
+        {
+          "isEndAddress": true,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "samples",
+          "type": "identifier",
+          "value": "samples&",
+        },
+      ],
+      "hasExplicitMemoryDefault": true,
+      "instruction": "float*",
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int",
+      "lineNumberAfterMacroExpansion": 3,
+      "lineNumberBeforeMacroExpansion": 3,
+    },
+    {
+      "arguments": [
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
+        },
+      ],
+      "instruction": "push",
+      "lineNumberAfterMacroExpansion": 4,
+      "lineNumberBeforeMacroExpansion": 4,
+    },
+    {
+      "arguments": [
+        {
+          "isPointee": true,
+          "referenceKind": "pointee-element-count",
+          "scope": "local",
+          "targetMemoryId": "ptr",
+          "type": "identifier",
+          "value": "count(*ptr)",
+        },
+      ],
+      "instruction": "push",
+      "lineNumberAfterMacroExpansion": 5,
+      "lineNumberBeforeMacroExpansion": 5,
+    },
+    {
+      "arguments": [],
+      "instruction": "store",
+      "lineNumberAfterMacroExpansion": 6,
+      "lineNumberBeforeMacroExpansion": 6,
+    },
+    {
+      "arguments": [],
+      "instruction": "moduleEnd",
+      "lineNumberAfterMacroExpansion": 7,
+      "lineNumberBeforeMacroExpansion": 7,
+    },
+  ],
+  "memoryDeclarationLines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "samples",
+        },
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 8,
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float[]",
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "ptr",
+        },
+        {
+          "isEndAddress": true,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "samples",
+          "type": "identifier",
+          "value": "samples&",
+        },
+      ],
+      "hasExplicitMemoryDefault": true,
+      "instruction": "float*",
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int",
+      "lineNumberAfterMacroExpansion": 3,
+      "lineNumberBeforeMacroExpansion": 3,
+    },
+  ],
+  "moduleLine": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  "referencedModuleIds": [],
+  "type": "module",
+}
+`;
+
+exports[`push: count(*end pointer) falls back to scalar pointee count > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 36
+    i32.const 1
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: count(*end pointer) falls back to scalar pointee count > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 36,
+    "default": 0,
+    "elementWordSize": 4,
+    "hasExplicitDefault": false,
+    "id": "output",
+    "isInteger": true,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 1,
+    "pointerDepth": 0,
+    "type": "int",
+    "wordAlignedAddress": 9,
+    "wordAlignedSize": 1,
+  },
+  "ptr": {
+    "byteAddress": 32,
+    "default": 28,
+    "elementWordSize": 4,
+    "hasExplicitDefault": true,
+    "id": "ptr",
+    "isInteger": true,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 1,
+    "pointeeBaseType": "float",
+    "pointeeMemoryIndex": 0,
+    "pointerDepth": 1,
+    "type": "float*",
+    "wordAlignedAddress": 8,
+    "wordAlignedSize": 1,
+  },
+  "samples": {
+    "byteAddress": 0,
+    "default": {},
+    "elementWordSize": 4,
+    "hasExplicitDefault": false,
+    "id": "samples",
+    "isInteger": false,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 8,
+    "pointerDepth": 0,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 8,
+  },
+}
+`;
+
+exports[`push: count(*pointer) resolves known pointee element count > if the generated AST, WAT and memory map match the snapshot 1`] = `
+{
+  "id": "test",
+  "lines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "test",
+        },
+      ],
+      "instruction": "module",
+      "lineNumberAfterMacroExpansion": 0,
+      "lineNumberBeforeMacroExpansion": 0,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "samples",
+        },
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 8,
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float[]",
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "ptr",
+        },
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "samples",
+          "type": "identifier",
+          "value": "&samples",
+        },
+      ],
+      "hasExplicitMemoryDefault": true,
+      "instruction": "float*",
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int",
+      "lineNumberAfterMacroExpansion": 3,
+      "lineNumberBeforeMacroExpansion": 3,
+    },
+    {
+      "arguments": [
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
+        },
+      ],
+      "instruction": "push",
+      "lineNumberAfterMacroExpansion": 4,
+      "lineNumberBeforeMacroExpansion": 4,
+    },
+    {
+      "arguments": [
+        {
+          "isPointee": true,
+          "referenceKind": "pointee-element-count",
+          "scope": "local",
+          "targetMemoryId": "ptr",
+          "type": "identifier",
+          "value": "count(*ptr)",
+        },
+      ],
+      "instruction": "push",
+      "lineNumberAfterMacroExpansion": 5,
+      "lineNumberBeforeMacroExpansion": 5,
+    },
+    {
+      "arguments": [],
+      "instruction": "store",
+      "lineNumberAfterMacroExpansion": 6,
+      "lineNumberBeforeMacroExpansion": 6,
+    },
+    {
+      "arguments": [],
+      "instruction": "moduleEnd",
+      "lineNumberAfterMacroExpansion": 7,
+      "lineNumberBeforeMacroExpansion": 7,
+    },
+  ],
+  "memoryDeclarationLines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "samples",
+        },
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 8,
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "float[]",
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "ptr",
+        },
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "samples",
+          "type": "identifier",
+          "value": "&samples",
+        },
+      ],
+      "hasExplicitMemoryDefault": true,
+      "instruction": "float*",
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int",
+      "lineNumberAfterMacroExpansion": 3,
+      "lineNumberBeforeMacroExpansion": 3,
+    },
+  ],
+  "moduleLine": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  "referencedModuleIds": [],
+  "type": "module",
+}
+`;
+
+exports[`push: count(*pointer) resolves known pointee element count > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 36
+    i32.const 8
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: count(*pointer) resolves known pointee element count > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 36,
+    "default": 0,
+    "elementWordSize": 4,
+    "hasExplicitDefault": false,
+    "id": "output",
+    "isInteger": true,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 1,
+    "pointerDepth": 0,
+    "type": "int",
+    "wordAlignedAddress": 9,
+    "wordAlignedSize": 1,
+  },
+  "ptr": {
+    "byteAddress": 32,
+    "default": 0,
+    "elementWordSize": 4,
+    "hasExplicitDefault": true,
+    "id": "ptr",
+    "isInteger": true,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 1,
+    "pointeeBaseType": "float",
+    "pointeeElementCount": 8,
+    "pointeeMemoryIndex": 0,
+    "pointerDepth": 1,
+    "type": "float*",
+    "wordAlignedAddress": 8,
+    "wordAlignedSize": 1,
+  },
+  "samples": {
+    "byteAddress": 0,
+    "default": {},
+    "elementWordSize": 4,
+    "hasExplicitDefault": false,
+    "id": "samples",
+    "isInteger": false,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 8,
+    "pointerDepth": 0,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 8,
+  },
+}
+`;
+
 exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 {
   "id": "test",
@@ -4387,6 +4896,261 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`push: min(*pointer) resolves pointee min value > if the generated AST, WAT and memory map match the snapshot 1`] = `
+{
+  "id": "test",
+  "lines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "test",
+        },
+      ],
+      "instruction": "module",
+      "lineNumberAfterMacroExpansion": 0,
+      "lineNumberBeforeMacroExpansion": 0,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "samples",
+        },
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 4,
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int8[]",
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "ptr",
+        },
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "samples",
+          "type": "identifier",
+          "value": "&samples",
+        },
+      ],
+      "hasExplicitMemoryDefault": true,
+      "instruction": "int8*",
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int",
+      "lineNumberAfterMacroExpansion": 3,
+      "lineNumberBeforeMacroExpansion": 3,
+    },
+    {
+      "arguments": [
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "output",
+          "type": "identifier",
+          "value": "&output",
+        },
+      ],
+      "instruction": "push",
+      "lineNumberAfterMacroExpansion": 4,
+      "lineNumberBeforeMacroExpansion": 4,
+    },
+    {
+      "arguments": [
+        {
+          "isPointee": true,
+          "referenceKind": "pointee-element-min",
+          "scope": "local",
+          "targetMemoryId": "ptr",
+          "type": "identifier",
+          "value": "min(*ptr)",
+        },
+      ],
+      "instruction": "push",
+      "lineNumberAfterMacroExpansion": 5,
+      "lineNumberBeforeMacroExpansion": 5,
+    },
+    {
+      "arguments": [],
+      "instruction": "store",
+      "lineNumberAfterMacroExpansion": 6,
+      "lineNumberBeforeMacroExpansion": 6,
+    },
+    {
+      "arguments": [],
+      "instruction": "moduleEnd",
+      "lineNumberAfterMacroExpansion": 7,
+      "lineNumberBeforeMacroExpansion": 7,
+    },
+  ],
+  "memoryDeclarationLines": [
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "samples",
+        },
+        {
+          "isInteger": true,
+          "type": "literal",
+          "value": 4,
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int8[]",
+      "lineNumberAfterMacroExpansion": 1,
+      "lineNumberBeforeMacroExpansion": 1,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "ptr",
+        },
+        {
+          "isEndAddress": false,
+          "referenceKind": "memory-reference",
+          "scope": "local",
+          "targetMemoryId": "samples",
+          "type": "identifier",
+          "value": "&samples",
+        },
+      ],
+      "hasExplicitMemoryDefault": true,
+      "instruction": "int8*",
+      "lineNumberAfterMacroExpansion": 2,
+      "lineNumberBeforeMacroExpansion": 2,
+    },
+    {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "output",
+        },
+      ],
+      "hasExplicitMemoryDefault": false,
+      "instruction": "int",
+      "lineNumberAfterMacroExpansion": 3,
+      "lineNumberBeforeMacroExpansion": 3,
+    },
+  ],
+  "moduleLine": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  "referencedModuleIds": [],
+  "type": "module",
+}
+`;
+
+exports[`push: min(*pointer) resolves pointee min value > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 8
+    i32.const -128
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: min(*pointer) resolves pointee min value > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 8,
+    "default": 0,
+    "elementWordSize": 4,
+    "hasExplicitDefault": false,
+    "id": "output",
+    "isInteger": true,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 1,
+    "pointerDepth": 0,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+  "ptr": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "hasExplicitDefault": true,
+    "id": "ptr",
+    "isInteger": true,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 1,
+    "pointeeBaseType": "int8",
+    "pointeeElementCount": 4,
+    "pointeeMemoryIndex": 0,
+    "pointerDepth": 1,
+    "type": "int8*",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+  "samples": {
+    "byteAddress": 0,
+    "default": {},
+    "elementWordSize": 1,
+    "hasExplicitDefault": false,
+    "id": "samples",
+    "isInteger": true,
+    "isUnsigned": false,
+    "memoryIndex": 0,
+    "numberOfElements": 4,
+    "pointerDepth": 0,
+    "type": "int8",
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },

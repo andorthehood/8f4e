@@ -13,13 +13,18 @@ export type PointerMetadata =
 			| 'pointerDepth'
 			| 'pointeeMemoryIndex'
 			| 'pointeeMemoryRegionName'
+			| 'pointeeElementCount'
 	  >
-	| Pick<PointerLocalBinding, 'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName'>
+	| Pick<
+			PointerLocalBinding,
+			'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName' | 'pointeeElementCount'
+	  >
 	| {
 			pointeeBaseType: NonNullable<StackAddress['pointsTo']>['baseType'];
 			pointerDepth: NonNullable<StackAddress['pointsTo']>['pointerDepth'];
 			pointeeMemoryIndex: NonNullable<StackAddress['pointsTo']>['memoryIndex'];
 			pointeeMemoryRegionName?: NonNullable<StackAddress['pointsTo']>['memoryRegionName'];
+			pointeeElementCount?: NonNullable<StackAddress['pointsTo']>['elementCount'];
 	  };
 
 function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
@@ -64,6 +69,15 @@ export function getMemoryStringLastByteAddress(memoryMap: MemoryMap, id: string)
 export function getElementCount(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.numberOfElements : 0;
+}
+
+export function getPointeeElementCountFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
+	if (!pointerMetadata?.pointeeBaseType) return 0;
+	return pointerMetadata.pointeeElementCount ?? 1;
+}
+
+export function getPointeeElementCount(memoryMap: MemoryMap, id: string): number {
+	return getPointeeElementCountFromMetadata(getDataStructure(memoryMap, id));
 }
 
 export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
@@ -136,4 +150,15 @@ export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
 
 	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
 	return memoryItem.isUnsigned ? (metadata.unsignedMin ?? metadata.min) : metadata.min;
+}
+
+export function getPointeeElementMinValueFromMetadata(pointerMetadata: PointerMetadata | undefined): number {
+	if (!pointerMetadata?.pointeeBaseType) return 0;
+
+	if (getPointerDepthFromMetadata(pointerMetadata) > 1) return BASE_TYPE_METADATA.pointer.min;
+	return getPointeeBaseTypeMetadata(pointerMetadata.pointeeBaseType).min;
+}
+
+export function getPointeeElementMinValue(memoryMap: MemoryMap, id: string): number {
+	return getPointeeElementMinValueFromMetadata(getDataStructure(memoryMap, id));
 }

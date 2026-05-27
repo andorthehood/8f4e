@@ -108,8 +108,10 @@ The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allo
 
 Dereferencing with `push *name` emits a signed 8-bit load (`i32.load8_s`), which sign-extends the 8-bit value to a 32-bit integer on the stack.
 
-Pointer-aware metadata reflects the 1-byte pointee width:
+Pointer-aware metadata reflects the 1-byte pointee type and tracked pointee count:
 - `sizeof(*name)` returns `1` for `int8*` (pointee element word size)
+- `min(*name)` returns `-128` for `int8*` (pointee minimum value)
+- `count(*name)` returns the target element count when the pointer is initialized from a known memory start address, or `1` without tracked count metadata
 
 #### Examples
 
@@ -123,6 +125,8 @@ push *pptr       ; pushes the address stored in ptr
 push **pptr      ; loads a signed 8-bit value through the double pointer
 
 push sizeof(*ptr) ; 1 — pointee element word size
+push min(*ptr)    ; -128 — pointee minimum value
+push count(*ptr)  ; 64 — tracked pointee element count
 ```
 
 ### int16*
@@ -133,8 +137,10 @@ The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allo
 
 Dereferencing with `push *name` emits a signed 16-bit load (`i32.load16_s`), which sign-extends the 16-bit value to a 32-bit integer on the stack.
 
-Pointer-aware metadata reflects the 2-byte pointee width:
+Pointer-aware metadata reflects the 2-byte pointee type and tracked pointee count:
 - `sizeof(*name)` returns `2` for `int16*` (pointee element word size)
+- `min(*name)` returns `-32768` for `int16*` (pointee minimum value)
+- `count(*name)` returns the target element count when the pointer is initialized from a known memory start address, or `1` without tracked count metadata
 
 #### Examples
 
@@ -148,6 +154,8 @@ push *pptr       ; pushes the address stored in ptr
 push **pptr      ; loads a signed 16-bit value through the double pointer
 
 push sizeof(*ptr) ; 2 — pointee element word size
+push min(*ptr)    ; -32768 — pointee minimum value
+push count(*ptr)  ; 64 — tracked pointee element count
 ```
 
 ### float

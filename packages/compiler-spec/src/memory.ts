@@ -155,6 +155,8 @@ export interface DataStructure {
 	pointeeMemoryIndex?: number;
 	/** Configured logical region name for this pointer's pointee memory. */
 	pointeeMemoryRegionName?: string;
+	/** Element count of the known pointee memory item, when initialized from a tracked memory address. */
+	pointeeElementCount?: number;
 	id: string;
 	/** Number of pointer layers in the declaration. Non-pointers have depth 0. */
 	pointerDepth: number;

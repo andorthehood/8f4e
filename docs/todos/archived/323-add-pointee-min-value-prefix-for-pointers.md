@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-03-26
 issue: https://github.com/andorthehood/8f4e/issues/449
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-27
 ---
 
 # TODO: Add `min(*name)` pointee min value prefix for pointers
@@ -100,3 +100,4 @@ Expected semantics with current type system:
 
 - This TODO assumes pointee numeric-range metadata can be derived entirely from the declared pointer type.
 - If typed narrow pointers are added later, `min(*name)` should follow the narrowed pointee type.
+- Completed on 2026-05-27 as part of TODO 428. `min(*name)` now has explicit parser, semantic, helper, docs, and public compiler coverage.
