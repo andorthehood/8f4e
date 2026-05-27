@@ -12,7 +12,11 @@ import {
 import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 
 import { valueKindToWasmType, type PushValueKind } from '../../utils/pushValueKind';
-import { getDereferencedValueKindFromMetadata, getDereferencedValueWordSizeFromMetadata } from '../../utils/memoryData';
+import {
+	getDereferencedValueKindFromMetadata,
+	getDereferencedValueWordSizeFromMetadata,
+	getPointerDepthFromMetadata,
+} from '../../utils/memoryData';
 import { guardedAddressOperation } from '../utils/memoryAccessGuard';
 
 import type { CodegenContext } from '@8f4e/compiler-spec';
@@ -56,14 +60,6 @@ function buildGuardedPointerLoadChain(
 	);
 }
 
-function getPointerLoadCount(pointerMetadata: PointerMetadata, pointerValueSource: PointerValueSource): number {
-	if (pointerValueSource === 'pointer-slot') {
-		return pointerMetadata.isPointingToPointer ? 2 : 1;
-	}
-
-	return pointerMetadata.isPointingToPointer ? 1 : 0;
-}
-
 function createPointerLoadStep(memoryIndex: number): PointerLoadStep {
 	return {
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
@@ -77,10 +73,13 @@ export function buildPointerDereferenceByteCode(
 	lineNumberAfterMacroExpansion: number,
 	pointerMetadata: PointerMetadata,
 	baseAddressByteCode: number[],
-	pointerValueSource: PointerValueSource
+	pointerValueSource: PointerValueSource,
+	dereferenceDepth: number
 ): { kind: PushValueKind; byteCode: number[] } {
-	const kind = getDereferencedValueKindFromMetadata(pointerMetadata);
-	const dereferencedValueWordSize = getDereferencedValueWordSizeFromMetadata(pointerMetadata);
+	const declaredPointerDepth = getPointerDepthFromMetadata(pointerMetadata);
+	const isFinalDereference = dereferenceDepth === declaredPointerDepth;
+	const kind = getDereferencedValueKindFromMetadata(pointerMetadata, dereferenceDepth);
+	const dereferencedValueWordSize = getDereferencedValueWordSizeFromMetadata(pointerMetadata, dereferenceDepth);
 	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;
 	const finalLoad =
 		dereferencedValueWordSize === 1
@@ -91,21 +90,26 @@ export function buildPointerDereferenceByteCode(
 
 	if (pointerValueSource === 'pointer-slot') {
 		const slotMemoryIndex = 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
-		const pointerLoads = Array.from({ length: getPointerLoadCount(pointerMetadata, pointerValueSource) }, (_, index) =>
-			i32load(2, 0, index === 0 ? slotMemoryIndex : pointeeMemoryIndex)
-		).flat();
+		const pointerLoads = [
+			...i32load(2, 0, slotMemoryIndex),
+			...Array.from({ length: isFinalDereference ? dereferenceDepth - 1 : dereferenceDepth }, () =>
+				i32load(2, 0, pointeeMemoryIndex)
+			).flat(),
+		];
 
-		return { kind, byteCode: [...baseAddressByteCode, ...pointerLoads, ...finalLoad] };
+		return { kind, byteCode: [...baseAddressByteCode, ...pointerLoads, ...(isFinalDereference ? finalLoad : [])] };
 	}
 
-	const guardedLoadSteps = Array.from({ length: getPointerLoadCount(pointerMetadata, pointerValueSource) }, () =>
+	const guardedLoadSteps = Array.from({ length: isFinalDereference ? dereferenceDepth - 1 : dereferenceDepth }, () =>
 		createPointerLoadStep(pointeeMemoryIndex)
 	);
-	guardedLoadSteps.push({
-		accessByteWidth: dereferencedValueWordSize,
-		loadByteCode: finalLoad,
-		memoryIndex: pointeeMemoryIndex,
-	});
+	if (isFinalDereference) {
+		guardedLoadSteps.push({
+			accessByteWidth: dereferencedValueWordSize,
+			loadByteCode: finalLoad,
+			memoryIndex: pointeeMemoryIndex,
+		});
+	}
 
 	return {
 		kind,

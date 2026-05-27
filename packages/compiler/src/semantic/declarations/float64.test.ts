@@ -164,6 +164,6 @@ describe('float64 instruction compiler', () => {
 		expect(entry.elementWordSize).toBe(4);
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.pointeeBaseType).toBe('float64');
-		expect(entry.isPointingToPointer).toBe(true);
+		expect(entry.pointerDepth).toBe(2);
 	});
 });
