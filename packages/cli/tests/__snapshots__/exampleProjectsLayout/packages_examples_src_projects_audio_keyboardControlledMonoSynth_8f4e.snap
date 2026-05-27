@@ -15,7 +15,7 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "env",
+      "id": "projectConfig",
       "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
@@ -24,7 +24,7 @@
       "initOnlyExecution": false
     },
     {
-      "id": "math",
+      "id": "env",
       "index": 1,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
@@ -33,7 +33,7 @@
       "initOnlyExecution": false
     },
     {
-      "id": "midiCodes",
+      "id": "math",
       "index": 2,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
@@ -42,8 +42,17 @@
       "initOnlyExecution": false
     },
     {
-      "id": "keyboard",
+      "id": "midiCodes",
       "index": 3,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "keyboard",
+      "index": 4,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 2,
@@ -51,19 +60,10 @@
       "initOnlyExecution": false
     },
     {
-      "id": "arEnv",
-      "index": 4,
-      "byteAddress": 12,
-      "wordAlignedAddress": 3,
-      "wordAlignedSize": 7,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
       "id": "janko",
       "index": 5,
-      "byteAddress": 40,
-      "wordAlignedAddress": 10,
+      "byteAddress": 12,
+      "wordAlignedAddress": 3,
       "wordAlignedSize": 2,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -71,8 +71,8 @@
     {
       "id": "midiLUT",
       "index": 6,
-      "byteAddress": 48,
-      "wordAlignedAddress": 12,
+      "byteAddress": 20,
+      "wordAlignedAddress": 5,
       "wordAlignedSize": 128,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
@@ -80,15 +80,24 @@
     {
       "id": "midiNote2Freq",
       "index": 7,
-      "byteAddress": 560,
-      "wordAlignedAddress": 140,
+      "byteAddress": 532,
+      "wordAlignedAddress": 133,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
-      "id": "phaseAccumulator",
+      "id": "arEnv",
       "index": 8,
+      "byteAddress": 544,
+      "wordAlignedAddress": 136,
+      "wordAlignedSize": 7,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "phaseAccumulator",
+      "index": 9,
       "byteAddress": 572,
       "wordAlignedAddress": 143,
       "wordAlignedSize": 4,
@@ -97,7 +106,7 @@
     },
     {
       "id": "vca",
-      "index": 9,
+      "index": 10,
       "byteAddress": 588,
       "wordAlignedAddress": 147,
       "wordAlignedSize": 3,
@@ -106,19 +115,10 @@
     },
     {
       "id": "audioout",
-      "index": 10,
+      "index": 11,
       "byteAddress": 600,
       "wordAlignedAddress": 150,
       "wordAlignedSize": 130,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "projectConfig",
-      "index": 11,
-      "byteAddress": 1120,
-      "wordAlignedAddress": 280,
-      "wordAlignedSize": 0,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     }
