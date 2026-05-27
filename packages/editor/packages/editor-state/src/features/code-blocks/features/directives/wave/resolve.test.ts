@@ -59,7 +59,7 @@ describe('wave directive widget resolution', () => {
 								isInteger: true,
 								id: 'bufferAddress',
 								pointeeBaseType: 'int8',
-								pointerDepth: 0,
+								pointerDepth: 1,
 							},
 							pointer1: {
 								wordAlignedAddress: 10,
@@ -179,7 +179,7 @@ describe('wave directive widget resolution', () => {
 			isInteger: true,
 			id: 'buffer2Address',
 			pointeeBaseType: 'int8',
-			pointerDepth: 0,
+			pointerDepth: 1,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['len2'] = {
 			wordAlignedAddress: 15,
