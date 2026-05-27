@@ -223,15 +223,8 @@ export default function compile(
 		parseModuleOrConstantsAST(code, lineMetadata, cache, `module:${index}`)
 	);
 	assertUniqueModuleIds(astModules);
-	const inputOrderedModules = astModules;
 
-	const namespaces = collectNamespacesFromASTs(
-		inputOrderedModules,
-		GLOBAL_ALIGNMENT_BOUNDARY,
-		undefined,
-		inputOrderedModules,
-		options
-	);
+	const namespaces = collectNamespacesFromASTs(astModules, GLOBAL_ALIGNMENT_BOUNDARY, undefined, astModules, options);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
@@ -265,7 +258,7 @@ export default function compile(
 
 	// Compile all modules in input order so editor layout can drive execution order.
 	const compiledModules = compileModules(
-		inputOrderedModules,
+		astModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
