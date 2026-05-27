@@ -187,7 +187,6 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -432,7 +431,6 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -691,7 +689,6 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

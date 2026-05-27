@@ -127,7 +127,6 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -295,7 +294,6 @@ exports[`float: bare anonymous zero-initialized allocation > if the generated AS
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -495,7 +493,6 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -675,7 +672,6 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

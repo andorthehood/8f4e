@@ -257,7 +257,6 @@ exports[`const instruction > const with valid constant names > if the generated 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

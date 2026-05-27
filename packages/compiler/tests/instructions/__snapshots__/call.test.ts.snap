@@ -113,7 +113,6 @@ exports[`call constant function > if the generated AST, WAT and memory map match
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -310,7 +309,6 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -529,7 +527,6 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -771,7 +768,6 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -987,7 +983,6 @@ exports[`function can call another function with its signature and wasm index av
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
