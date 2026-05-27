@@ -41,7 +41,7 @@ function createMockMemory(overrides: Partial<DataStructure> = {}): DataStructure
 		wordAlignedAddress: 0,
 		default: 0,
 		isInteger: true,
-		isPointingToPointer: false,
+		pointerDepth: 0,
 		isUnsigned: false,
 		...overrides,
 	};

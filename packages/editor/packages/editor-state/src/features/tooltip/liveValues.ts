@@ -24,14 +24,14 @@ export interface LiveTooltipContent {
  * Returns true when memory tooltip content should include a dereferenced value.
  */
 function isPointerMemory(memory: DataStructure): boolean {
-	return Boolean(memory.pointeeBaseType || memory.isPointingToPointer);
+	return memory.pointerDepth > 0;
 }
 
 /**
  * Describes how the drawer should read a pointer's dereferenced live value.
  */
 function getDereferencedMemoryFormat(memory: DataStructure) {
-	const pointeeType = memory.isPointingToPointer ? 'pointer' : memory.pointeeBaseType!;
+	const pointeeType = memory.pointerDepth > 1 ? 'pointer' : memory.pointeeBaseType!;
 	const metadata = BASE_TYPE_METADATA[pointeeType];
 
 	return {

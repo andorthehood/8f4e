@@ -50,7 +50,7 @@ describe('meter directive widget resolution', () => {
 								default: 0,
 								isInteger: false,
 								id: 'level',
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 						},
 					},
@@ -139,7 +139,7 @@ describe('meter directive widget resolution', () => {
 			default: 0,
 			isInteger: false,
 			id: 'out',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();

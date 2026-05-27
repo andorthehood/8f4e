@@ -302,7 +302,8 @@
         "value": "*sin",
         "referenceKind": "memory-pointer",
         "scope": "local",
-        "targetMemoryId": "sin"
+        "targetMemoryId": "sin",
+        "dereferenceDepth": 1
       }
     ]
   },
@@ -620,7 +621,8 @@
         "value": "*sin",
         "referenceKind": "memory-pointer",
         "scope": "local",
-        "targetMemoryId": "sin"
+        "targetMemoryId": "sin",
+        "dereferenceDepth": 1
       }
     ]
   },
@@ -938,7 +940,8 @@
         "value": "*sin",
         "referenceKind": "memory-pointer",
         "scope": "local",
-        "targetMemoryId": "sin"
+        "targetMemoryId": "sin",
+        "dereferenceDepth": 1
       }
     ]
   },
@@ -1285,7 +1288,8 @@
         "value": "*sin",
         "referenceKind": "memory-pointer",
         "scope": "local",
-        "targetMemoryId": "sin"
+        "targetMemoryId": "sin",
+        "dereferenceDepth": 1
       }
     ]
   },

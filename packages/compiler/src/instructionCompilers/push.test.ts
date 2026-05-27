@@ -368,7 +368,7 @@ describe('push instruction compiler', () => {
 							byteAddress: 0,
 							type: 'float64*',
 							pointeeBaseType: 'float64',
-							isPointingToPointer: false,
+							pointerDepth: 1,
 						} as unknown as MemoryMap[string],
 					},
 				},
@@ -384,7 +384,7 @@ describe('push instruction compiler', () => {
 			expect(context.byteCode).toContain(43); // F64_LOAD opcode
 		});
 
-		it('dereferencing float64** still resolves to a float64 value', () => {
+		it('dereferencing float64** once resolves to a pointer value', () => {
 			const context = createInstructionCompilerTestContext({
 				namespace: {
 					...createInstructionCompilerTestContext().namespace,
@@ -393,7 +393,7 @@ describe('push instruction compiler', () => {
 							byteAddress: 0,
 							type: 'float64**',
 							pointeeBaseType: 'float64',
-							isPointingToPointer: true,
+							pointerDepth: 2,
 						} as unknown as MemoryMap[string],
 					},
 				},
@@ -405,8 +405,8 @@ describe('push instruction compiler', () => {
 				context
 			);
 
-			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
-			expect(context.byteCode).toContain(43); // F64_LOAD opcode
+			expect(context.stack[0]).toMatchObject({ kind: 'address', valueType: 'int' });
+			expect(context.byteCode).not.toContain(43); // no F64_LOAD opcode for one-level dereference
 		});
 
 		it('handles mixed int32/float32/float64 memory layout', () => {

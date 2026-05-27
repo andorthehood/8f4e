@@ -28,7 +28,7 @@ describe('int16 instruction compiler', () => {
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.isInteger).toBe(true);
 		expect(entry.pointeeBaseType).toBe('int16');
-		expect(entry.isPointingToPointer).toBe(false);
+		expect(entry.pointerDepth).toBe(1);
 	});
 
 	it('creates an int16** memory entry with pointer-width allocation', () => {
@@ -50,7 +50,7 @@ describe('int16 instruction compiler', () => {
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.isInteger).toBe(true);
 		expect(entry.pointeeBaseType).toBe('int16');
-		expect(entry.isPointingToPointer).toBe(true);
+		expect(entry.pointerDepth).toBe(2);
 	});
 
 	it('stores 4 bytes (pointer slot) regardless of int16 pointee width', () => {

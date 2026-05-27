@@ -189,7 +189,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					kind: 'value',
 					valueType: 'int',
 					pointeeBaseType: 'float64',
-					isPointingToPointer: true,
+					pointerDepth: 2,
 					index: 0,
 				},
 			},

@@ -43,7 +43,7 @@ export function functionValueTypeToLocalBinding(type: FunctionValueType, index: 
 		isInteger: flags.isInteger,
 		...(flags.isFloat64 ? { isFloat64: true } : {}),
 		...(flags.pointeeBaseType ? { pointeeBaseType: flags.pointeeBaseType } : {}),
-		...(flags.isPointingToPointer ? { isPointingToPointer: true } : {}),
+		...(flags.pointerDepth > 0 ? { pointerDepth: flags.pointerDepth } : {}),
 		index,
 	};
 }
@@ -65,7 +65,7 @@ function localBindingToStackItem(binding: LocalBinding): StackItem {
 				baseType: binding.pointeeBaseType,
 				memoryIndex: binding.pointeeMemoryIndex ?? 0,
 				...(binding.pointeeMemoryRegionName ? { memoryRegionName: binding.pointeeMemoryRegionName } : {}),
-				isPointer: !!binding.isPointingToPointer,
+				pointerDepth: binding.pointerDepth ?? 1,
 			},
 		};
 	}
@@ -118,6 +118,6 @@ export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: Fu
 
 	return (
 		stackItem.pointsTo.baseType === expected.pointsTo.baseType &&
-		stackItem.pointsTo.isPointer === expected.pointsTo.isPointer
+		stackItem.pointsTo.pointerDepth === expected.pointsTo.pointerDepth
 	);
 }

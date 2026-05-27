@@ -28,7 +28,7 @@ describe('int8 instruction compiler', () => {
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.isInteger).toBe(true);
 		expect(entry.pointeeBaseType).toBe('int8');
-		expect(entry.isPointingToPointer).toBe(false);
+		expect(entry.pointerDepth).toBe(1);
 	});
 
 	it('creates an int8** memory entry with pointer-width allocation', () => {
@@ -50,7 +50,7 @@ describe('int8 instruction compiler', () => {
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.isInteger).toBe(true);
 		expect(entry.pointeeBaseType).toBe('int8');
-		expect(entry.isPointingToPointer).toBe(true);
+		expect(entry.pointerDepth).toBe(2);
 	});
 
 	it('stores 4 bytes (pointer slot) regardless of int8 pointee width', () => {

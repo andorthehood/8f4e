@@ -102,7 +102,7 @@ describe('updateOutputsGraphicData', () => {
 			default: 0,
 			isInteger: true,
 			id: '_privateOutput',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
@@ -123,7 +123,7 @@ describe('updateOutputsGraphicData', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__1',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
@@ -165,7 +165,7 @@ describe('updateOutputsGraphicData', () => {
 			default: 0,
 			isInteger: false,
 			id: 'output2',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
@@ -194,7 +194,7 @@ describe('updateOutputsGraphicData', () => {
 			default: 0,
 			isInteger: true,
 			id: 'output1',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
