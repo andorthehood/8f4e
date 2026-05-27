@@ -1,5 +1,19 @@
 8f4e/v1
 
+module assets
+; @pos -107 -70
+; @defAsset amen https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
+
+moduleEnd
+
+module projectConfig
+; @pos -53 -63
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 44100
+; @config export.fileName samplePlayerVariableSpeed
+
+moduleEnd
+
 constants env
 ; @pos 32 -63
 ; @favorite
@@ -14,53 +28,6 @@ const AUDIO_BUFFER_SIZE 128
 const ASSET_AMEN_SIZE 62258
 
 constantsEnd
-
-module assets
-; @pos -107 -70
-; @defAsset amen https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
-
-moduleEnd
-
-module audioout
-; @pos 140 -63
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
-use env
-
-float* in &pcmPlayer8bit:out
-
-float[] buffer AUDIO_BUFFER_SIZE
-float* pointer &buffer
-
-; @plot &buffer count(buffer)
-
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer 
-; pointer by the word size
-push &pointer
-push pointer
-push sizeof(buffer) 
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan 
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
 
 module notes
 ; @pos 33 -45
@@ -129,10 +96,43 @@ ifEnd
 
 moduleEnd
 
-module projectConfig
-; @pos -53 -63
-; @config runtime AudioWorkletRuntime
-; ~sampleRate 44100
-; @config export.fileName samplePlayerVariableSpeed
+module audioout
+; @pos 140 -63
+; ~audioOutput buffer 0 0
+; ~audioOutput buffer 0 1
+use env
+
+float* in &pcmPlayer8bit:out
+
+float[] buffer AUDIO_BUFFER_SIZE
+float* pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the word size
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
 
 moduleEnd

@@ -8,59 +8,6 @@ module projectConfig
 
 moduleEnd
 
-module notes
-; @pos 131 7
-; A minimal audio synthesis example 
-; that generates a sine wave 
-; (phaseAccumulator + sine)
-; and writes each sample into a 
-; fixed-size circular audio buffer
-; (audioout)
-moduleEnd
-
-module audioout
-; @pos 88 1
-; @home
-; ~audioOutput buffer 0 0
-use env
-
-float* in &phaseAccumulator:out
-
-; Audio buffer
-float[] buffer AUDIO_BUFFER_SIZE
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer 
-; pointer by the
-; buffer word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-
 constants env
 ; @pos -49 1
 ; @favorite
@@ -94,50 +41,6 @@ const LOG10E  0.434294481903251
 const E       2.718281828459045
 
 constantsEnd
-
-module phaseAccumulator
-; @pos 46 1
-use env
-
-float defaultFreq 440
-float* frequency &defaultFreq
-float phase
-float out
-
-use math
-
-; Advance phase by
-; TAU * frequency / SAMPLE_RATE
-push &phase
-push phase
-push TAU
-push *frequency
-mul
-push SAMPLE_RATE
-castToFloat
-ensureNonZero
-div
-add
-store 
-
-; Wrap phase when it exceeds PI
-push phase
-push PI
-greaterThan
-if
-push &phase
-push NEG_PI
-store
-ifEnd
-
-push &out
-push phase
-; You can swap this call 
-; with any periodic function
-call sine
-store
-
-moduleEnd
 
 function sine
 ; @pos 7 1
@@ -203,3 +106,100 @@ push x
 mul
 
 functionEnd float
+
+module phaseAccumulator
+; @pos 46 1
+use env
+
+float defaultFreq 440
+float* frequency &defaultFreq
+float phase
+float out
+
+use math
+
+; Advance phase by
+; TAU * frequency / SAMPLE_RATE
+push &phase
+push phase
+push TAU
+push *frequency
+mul
+push SAMPLE_RATE
+castToFloat
+ensureNonZero
+div
+add
+store 
+
+; Wrap phase when it exceeds PI
+push phase
+push PI
+greaterThan
+if
+push &phase
+push NEG_PI
+store
+ifEnd
+
+push &out
+push phase
+; You can swap this call 
+; with any periodic function
+call sine
+store
+
+moduleEnd
+
+module audioout
+; @pos 88 1
+; @home
+; ~audioOutput buffer 0 0
+use env
+
+float* in &phaseAccumulator:out
+
+; Audio buffer
+float[] buffer AUDIO_BUFFER_SIZE
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the
+; buffer word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+
+module notes
+; @pos 131 7
+; A minimal audio synthesis example 
+; that generates a sine wave 
+; (phaseAccumulator + sine)
+; and writes each sample into a 
+; fixed-size circular audio buffer
+; (audioout)
+moduleEnd

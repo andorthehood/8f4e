@@ -1,15 +1,15 @@
 {
   "sourceModuleOrder": [
     "projectConfig",
-    "notes",
-    "audioout",
     "env",
     "math",
-    "phaseAccumulator"
+    "phaseAccumulator",
+    "audioout",
+    "notes"
   ],
   "compiledModuleLayout": [
     {
-      "id": "env",
+      "id": "projectConfig",
       "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
@@ -18,7 +18,7 @@
       "initOnlyExecution": false
     },
     {
-      "id": "math",
+      "id": "env",
       "index": 1,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
@@ -27,8 +27,17 @@
       "initOnlyExecution": false
     },
     {
-      "id": "phaseAccumulator",
+      "id": "math",
       "index": 2,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "phaseAccumulator",
+      "index": 3,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 4,
@@ -37,7 +46,7 @@
     },
     {
       "id": "audioout",
-      "index": 3,
+      "index": 4,
       "byteAddress": 20,
       "wordAlignedAddress": 5,
       "wordAlignedSize": 130,
@@ -46,15 +55,6 @@
     },
     {
       "id": "notes",
-      "index": 4,
-      "byteAddress": 540,
-      "wordAlignedAddress": 135,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "projectConfig",
       "index": 5,
       "byteAddress": 540,
       "wordAlignedAddress": 135,

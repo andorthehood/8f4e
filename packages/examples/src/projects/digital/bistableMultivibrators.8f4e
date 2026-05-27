@@ -1,5 +1,13 @@
 8f4e/v1
 
+module projectConfig
+; @pos -67 16
+; @config runtime WebWorkerRuntime
+; ~sampleRate 50
+; @config export.fileName bistableMultivibrators
+
+moduleEnd
+
 constants env
 ; @pos -30 16
 ; @favorite
@@ -10,26 +18,113 @@ const SAMPLE_RATE 50
 
 constantsEnd
 
-module andGate
-; @pos 244 32
+module notes
+; @pos 45 5
+; Demonstrates a bistable SR latch
+; (multivibrator) built from feedback
+; logic gates, with set/reset button
+; inputs and scope buffers that
+; visualize both latch state and
+; derived gate output over time.
+moduleEnd
 
-                     ;   .---.
-int* in1 &orGate:out ; --+    '
-int out              ;   | AND |---
-int* in2 &negate:out ; --+    .
-                     ;   '---'
+module setButton
+; @pos 45 16
+; @home
+
+int out
+               ; Push this button
+               ; to set the state
+; @button out 0 1 ; of the SR latch -->
+
+moduleEnd
+
+module resetButton
+; @pos 45 27
+
+int out
+               ; Push this button
+               ; to reset the state
+; @button out 0 1 ; of the SR latch -->
+
+moduleEnd
+
+module norGate2
+; @pos 95 8
+
+                        ;   .---.
+int* in1 &norGate:out   ; --+    '
+int out                 ;   ) NOR |O---
+int* in2 &setButton:out ; --+    .
+                        ;   '---'
+; @watch out
 
 push &out
 push *in1
 push *in2
-mul
-push 1
-greaterOrEqual
+add
+push 0
+equal
 if
 push 1
 else
 push 0
 ifEnd int
+store
+
+moduleEnd
+
+module norGate
+; @pos 95 34
+
+                          ;   .---.
+int* in1 &norGate2:out    ; --+    '
+int out                   ;   ) NOR |O---
+int* in2 &resetButton:out ; --+    .
+                          ;   '---'
+; @watch out
+
+push &out
+push *in1
+push *in2
+add
+push 0
+equal
+if
+push 1
+else
+push 0
+ifEnd int
+store
+
+moduleEnd
+
+module scope
+; @pos 150 21
+
+int* in &norGate:out
+int[] buffer 64
+int bufferPointer &buffer
+
+; @plot &buffer count(buffer) -1 2
+
+push &bufferPointer
+push bufferPointer
+push sizeof(buffer)
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
 store
 
 moduleEnd
@@ -69,66 +164,6 @@ store
 
 moduleEnd
 
-module norGate
-; @pos 95 34
-
-                          ;   .---.
-int* in1 &norGate2:out    ; --+    '
-int out                   ;   ) NOR |O---
-int* in2 &resetButton:out ; --+    .
-                          ;   '---'
-; @watch out
-
-push &out
-push *in1
-push *in2
-add
-push 0
-equal
-if
-push 1
-else
-push 0
-ifEnd int
-store
-
-moduleEnd
-
-module norGate2
-; @pos 95 8
-
-                        ;   .---.
-int* in1 &norGate:out   ; --+    '
-int out                 ;   ) NOR |O---
-int* in2 &setButton:out ; --+    .
-                        ;   '---'
-; @watch out
-
-push &out
-push *in1
-push *in2
-add
-push 0
-equal
-if
-push 1
-else
-push 0
-ifEnd int
-store
-
-moduleEnd
-
-module notes
-; @pos 45 5
-; Demonstrates a bistable SR latch
-; (multivibrator) built from feedback
-; logic gates, with set/reset button
-; inputs and scope buffers that
-; visualize both latch state and
-; derived gate output over time.
-moduleEnd
-
 module orGate
 ; @pos 243 6
 
@@ -153,50 +188,26 @@ store
 
 moduleEnd
 
-module projectConfig
-; @pos -67 16
-; @config runtime WebWorkerRuntime
-; ~sampleRate 50
-; @config export.fileName bistableMultivibrators
+module andGate
+; @pos 244 32
 
-moduleEnd
+                     ;   .---.
+int* in1 &orGate:out ; --+    '
+int out              ;   | AND |---
+int* in2 &negate:out ; --+    .
+                     ;   '---'
 
-module resetButton
-; @pos 45 27
-
-int out
-               ; Push this button
-               ; to reset the state
-; @button out 0 1 ; of the SR latch -->
-
-moduleEnd
-
-module scope
-; @pos 150 21
-
-int* in &norGate:out
-int[] buffer 64
-int bufferPointer &buffer
-
-; @plot &buffer count(buffer) -1 2
-
-push &bufferPointer
-push bufferPointer
-push sizeof(buffer)
-add
-store
-
-push bufferPointer
-push buffer&
-greaterThan
+push &out
+push *in1
+push *in2
+mul
+push 1
+greaterOrEqual
 if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-push bufferPointer
-push *in
+push 1
+else
+push 0
+ifEnd int
 store
 
 moduleEnd
@@ -228,16 +239,5 @@ ifEnd
 push bufferPointer
 push *in
 store
-
-moduleEnd
-
-module setButton
-; @pos 45 16
-; @home
-
-int out
-               ; Push this button
-               ; to set the state
-; @button out 0 1 ; of the SR latch -->
 
 moduleEnd
