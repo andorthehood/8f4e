@@ -18,6 +18,13 @@ describe('selected line tooltip content', () => {
 		]);
 	});
 
+	it('adds module execution order when provided', () => {
+		expect(getSelectedLineTooltipText('module synth', TOOLTIP_WRAP_WIDTH, undefined, 3)).toEqual([
+			'Starts a module block.',
+			'execution order: 3',
+		]);
+	});
+
 	it('generates tooltip color transitions for instructions and stack values', () => {
 		const fontTooltipText = {};
 		const fontTooltipHighlight = {};
