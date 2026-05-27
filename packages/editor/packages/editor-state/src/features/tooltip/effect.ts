@@ -1,7 +1,7 @@
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getSelectedLineTooltipContent } from './content';
 import { createEmptyTooltipState, getTooltipState } from './layout';
-import { getMemoryDeclarationIdFromSourceLine } from './sourceLine';
+import { getInstructionNameFromSourceLine, getMemoryDeclarationIdFromSourceLine } from './sourceLine';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
@@ -56,6 +56,19 @@ function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined
 	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
 }
 
+function getSelectedModuleExecutionOrder(
+	state: State,
+	selectedCodeBlock: CodeBlockGraphicData,
+	line: string | undefined
+): number | undefined {
+	if (!line || getInstructionNameFromSourceLine(line) !== 'module' || !selectedCodeBlock.moduleId) {
+		return undefined;
+	}
+
+	const moduleIndex = Object.keys(state.compiler.compiledModules).indexOf(selectedCodeBlock.moduleId);
+	return moduleIndex === -1 ? undefined : moduleIndex + 1;
+}
+
 /**
  * Keeps central tooltip state synchronized with the selected code line.
  */
@@ -78,7 +91,8 @@ export default function tooltip(store: StateManager<State>): void {
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
 			state.graphicHelper.spriteLookups,
 			selectedCodeBlock.moduleId,
-			getSelectedMemoryDeclaration(state, selectedCodeBlock.moduleId, memoryId)
+			getSelectedMemoryDeclaration(state, selectedCodeBlock.moduleId, memoryId),
+			getSelectedModuleExecutionOrder(state, selectedCodeBlock, line)
 		);
 		store.set('tooltip', getTooltipState(content, state, selectedCodeBlock));
 	}
