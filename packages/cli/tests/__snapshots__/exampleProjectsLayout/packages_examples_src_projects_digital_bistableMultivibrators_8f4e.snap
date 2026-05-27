@@ -16,7 +16,7 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "env",
+      "id": "projectConfig",
       "index": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
@@ -25,17 +25,44 @@
       "initOnlyExecution": false
     },
     {
-      "id": "buttons",
+      "id": "env",
       "index": 1,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "wordAlignedSize": 2,
+      "wordAlignedSize": 0,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
-      "id": "orGate",
+      "id": "notes",
       "index": 2,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 0,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "setButton",
+      "index": 3,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
+      "wordAlignedSize": 1,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "resetButton",
+      "index": 4,
+      "byteAddress": 8,
+      "wordAlignedAddress": 2,
+      "wordAlignedSize": 1,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "norGate2",
+      "index": 5,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "wordAlignedSize": 3,
@@ -43,83 +70,56 @@
       "initOnlyExecution": false
     },
     {
-      "id": "negate",
-      "index": 3,
+      "id": "norGate",
+      "index": 6,
       "byteAddress": 24,
       "wordAlignedAddress": 6,
-      "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "andGate",
-      "index": 4,
-      "byteAddress": 32,
-      "wordAlignedAddress": 8,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "setButton",
-      "index": 5,
-      "byteAddress": 44,
-      "wordAlignedAddress": 11,
-      "wordAlignedSize": 1,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "norGate2",
-      "index": 6,
-      "byteAddress": 48,
-      "wordAlignedAddress": 12,
-      "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "resetButton",
-      "index": 7,
-      "byteAddress": 60,
-      "wordAlignedAddress": 15,
-      "wordAlignedSize": 1,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "norGate",
-      "index": 8,
-      "byteAddress": 64,
-      "wordAlignedAddress": 16,
-      "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "notes",
-      "index": 9,
-      "byteAddress": 76,
-      "wordAlignedAddress": 19,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
-      "id": "projectConfig",
-      "index": 10,
-      "byteAddress": 76,
-      "wordAlignedAddress": 19,
-      "wordAlignedSize": 0,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },
     {
       "id": "scope",
-      "index": 11,
-      "byteAddress": 76,
-      "wordAlignedAddress": 19,
+      "index": 7,
+      "byteAddress": 36,
+      "wordAlignedAddress": 9,
       "wordAlignedSize": 66,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "buttons",
+      "index": 8,
+      "byteAddress": 300,
+      "wordAlignedAddress": 75,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "negate",
+      "index": 9,
+      "byteAddress": 308,
+      "wordAlignedAddress": 77,
+      "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "orGate",
+      "index": 10,
+      "byteAddress": 316,
+      "wordAlignedAddress": 79,
+      "wordAlignedSize": 3,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "andGate",
+      "index": 11,
+      "byteAddress": 328,
+      "wordAlignedAddress": 82,
+      "wordAlignedSize": 3,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     },

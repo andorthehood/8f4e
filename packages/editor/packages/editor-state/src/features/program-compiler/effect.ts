@@ -6,6 +6,7 @@ import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorC
 
 import { log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
+import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 
 import type { CompilerDiagnostic } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
@@ -15,10 +16,11 @@ const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
 
 /**
- * Converts code blocks into separate arrays for modules, functions, and macros, sorted by creationIndex.
+ * Converts code blocks into separate arrays for modules, functions, and macros.
  *
  * @param codeBlocks - List of code blocks to filter and sort
- * @returns Object containing modules, functions, and macros arrays, each sorted by creationIndex.
+ * @returns Object containing modules sorted by grid position,
+ *          and functions/macros sorted by creationIndex.
  *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
  *          Constants blocks are included in modules array.
  */
@@ -27,9 +29,9 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	functions: { code: string[] }[];
 	macros: { code: string[] }[];
 } {
-	const modules: { code: string[] }[] = [];
-	const functions: { code: string[] }[] = [];
-	const macros: { code: string[] }[] = [];
+	const modules: CodeBlockGraphicData[] = [];
+	const functions: CodeBlockGraphicData[] = [];
+	const macros: CodeBlockGraphicData[] = [];
 
 	const sortedEnabled = [...codeBlocks]
 		.filter(block => !block.disabled)
@@ -45,7 +47,9 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 		}
 	}
 
-	return { modules, functions, macros };
+	const sortedModules = sortCodeBlocksByGridPosition(modules);
+
+	return { modules: sortedModules, functions, macros };
 }
 
 export default function compiler(store: StateManager<State>) {
