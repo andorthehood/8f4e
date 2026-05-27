@@ -1,4 +1,5 @@
 import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
+import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 
 import type { CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
@@ -6,6 +7,7 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.
+ * Code block order is derived from graphic data grid coordinates.
  * Position is stored in @pos directive within code, not in separate gridCoordinates field.
  * Disabled state is stored in @disabled directive within code, not in separate disabled field.
  * Excludes browser-local notes from the exported project.
@@ -13,36 +15,27 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
  * @returns Array of simplified code blocks suitable for file format
  */
 export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
-	const codeBlocksCopy = [...codeBlocks];
-
-	return codeBlocksCopy
-		.filter(codeBlock => !isBrowserLocalNoteBlock(codeBlock))
-		.sort((codeBlockA, codeBlockB) => {
-			if (codeBlockA.id > codeBlockB.id) {
-				return 1;
-			} else if (codeBlockA.id < codeBlockB.id) {
-				return -1;
-			}
-			return 0;
-		})
-		.map(codeBlock => ({
+	return sortCodeBlocksByGridPosition(codeBlocks.filter(codeBlock => !isBrowserLocalNoteBlock(codeBlock))).map(
+		codeBlock => ({
 			code: codeBlock.code,
-		}));
+		})
+	);
 }
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('convertGraphicDataToProjectStructure', () => {
-		it('sorts code blocks by id before mapping', () => {
+		it('sorts code blocks by grid position before mapping', () => {
 			const blocks: CodeBlockGraphicData[] = [
-				createMockCodeBlock({ id: 'b', code: ['line 1'], gridX: 1, gridY: 2 }),
-				createMockCodeBlock({ id: 'a', code: ['line 2'], gridX: 3, gridY: 4 }),
+				createMockCodeBlock({ id: 'a', code: ['line 1'], gridX: 20, gridY: 0 }),
+				createMockCodeBlock({ id: 'b', code: ['line 2'], gridX: 0, gridY: 10 }),
+				createMockCodeBlock({ id: 'c', code: ['line 3'], gridX: 0, gridY: 0 }),
 			];
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result.map(block => block.code[0])).toEqual(['line 2', 'line 1']);
+			expect(result.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
 		});
 
 		it('exports code without gridCoordinates field', () => {
@@ -77,16 +70,19 @@ if (import.meta.vitest) {
 			const blocks: CodeBlockGraphicData[] = [
 				createMockCodeBlock({
 					id: 'local',
+					creationIndex: 0,
 					blockType: 'note',
 					code: ['note local.editorConfig', '; @config font ibmvga8x16', 'noteEnd'],
 				}),
 				createMockCodeBlock({
 					id: 'project-note',
+					creationIndex: 1,
 					blockType: 'note',
 					code: ['note', 'project note', 'noteEnd'],
 				}),
 				createMockCodeBlock({
 					id: 'shader-note',
+					creationIndex: 2,
 					blockType: 'note',
 					code: ['note fragmentShaderPostprocess', 'void main() {}', 'noteEnd'],
 				}),

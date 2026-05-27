@@ -30,7 +30,6 @@ import {
 	collectFunctionMetadataFromAsts,
 } from './semantic/buildNamespace';
 import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
-import sortModules from './graphOptimizer';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 import { getError } from './compilerError';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
@@ -224,13 +223,13 @@ export default function compile(
 		parseModuleOrConstantsAST(code, lineMetadata, cache, `module:${index}`)
 	);
 	assertUniqueModuleIds(astModules);
-	const dependencyOrderedModules = sortModules(astModules);
+	const inputOrderedModules = astModules;
 
 	const namespaces = collectNamespacesFromASTs(
-		dependencyOrderedModules,
+		inputOrderedModules,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
-		dependencyOrderedModules,
+		inputOrderedModules,
 		options
 	);
 
@@ -264,9 +263,9 @@ export default function compile(
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex);
 
-	// Compile all modules in dependency order to preserve the established physical layout.
+	// Compile all modules in input order so editor layout can drive execution order.
 	const compiledModules = compileModules(
-		dependencyOrderedModules,
+		inputOrderedModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
