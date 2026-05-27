@@ -123,7 +123,7 @@ Active todo files are listed below.
 | 332 | Extract syntax and AST parsing into a separate compiler package | 2026-03-27 | `source -> AST` now lives in `packages/tokenizer`. |
 | 334 | Move locals out of namespace and into codegen state | 2026-03-27 | Locals now live in `CompilationContext.locals` instead of `namespace.locals`. |
 | 340 | Move compiler-generated hidden resources into a separate internal address space | 2026-03-27 | Hidden resources now allocate separately from user/module memory and no longer affect module layout. |
-| 319 | Add `%*name` pointee element word size prefix for pointers | 2026-03-30 | Pointer metadata now supports `%*name` for pointee element word size. |
+| 319 | Add `sizeof(*name)` pointee element word size prefix for pointers | 2026-03-30 | Pointer metadata now supports `sizeof(*name)` for pointee element word size. |
 | 322 | Add `^*name` pointee max value prefix for pointers | 2026-03-30 | Pointer metadata now supports `^*name` for pointee max value. |
 | 324 | Add `int16*` pointer types to compiler and runtime | 2026-03-30 | Compiler, runtime metadata, and docs now support `int16*` pointer types. |
 | 325 | Add literal-only `*` and `/` folding at argument parse time | 2026-03-30 | Tokenizer now folds literal-only mul/div expressions to literals during argument parsing, with parser and compiler integration coverage. |

@@ -6,15 +6,62 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from './compilerError';
 
 describe('getError', () => {
+	const line = {
+		lineNumberBeforeMacroExpansion: 1,
+		lineNumberAfterMacroExpansion: 1,
+		instruction: 'push',
+		arguments: [],
+	} as CompilerASTLine;
+
+	it('returns a diagnostic for every compiler error code', () => {
+		for (const code of Object.values(ErrorCode)) {
+			const error = getError(code, line);
+
+			expect(error.code).toBe(code);
+			expect(error.line).toBe(line);
+			expect(error.message).toContain(`(${code})`);
+		}
+	});
+
+	it('formats stack mismatch diagnostics with stack item types', () => {
+		const context = {
+			stack: [
+				{ kind: 'value', valueType: 'int' },
+				{ kind: 'address', valueType: 'int' },
+			],
+		};
+
+		const error = getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, line, context);
+
+		expect(error.message).toBe(
+			`1: Expected 0 elements on the stack, found 2 [int, address] (${ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS})`
+		);
+	});
+
+	it('includes optional identifiers in memory metadata errors', () => {
+		expect(getError(ErrorCode.RESERVED_MEMORY_IDENTIFIER, line, undefined, { identifier: 'this' }).message).toBe(
+			`Reserved identifier cannot be used as a memory allocation name: this. (${ErrorCode.RESERVED_MEMORY_IDENTIFIER})`
+		);
+		expect(
+			getError(ErrorCode.POINTEE_WORD_SIZE_ON_NON_POINTER, line, undefined, { identifier: 'count' }).message
+		).toContain('"count" is not a pointer');
+		expect(
+			getError(ErrorCode.POINTEE_ELEMENT_MAX_ON_NON_POINTER, line, undefined, { identifier: 'peak' }).message
+		).toContain('"peak" is not a pointer');
+		expect(
+			getError(ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS, line, undefined, { identifier: 'region9' }).message
+		).toBe(`Memory region index is out of bounds: region9. (${ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS})`);
+	});
+
 	it('includes the undeclared identifier when provided', () => {
-		const line = {
+		const localLine = {
 			lineNumberBeforeMacroExpansion: 1,
 			lineNumberAfterMacroExpansion: 1,
 			instruction: 'push',
 			arguments: [classifyIdentifier('missingLocal')],
 		} as CompilerASTLine;
 
-		const error = getError(ErrorCode.UNDECLARED_IDENTIFIER, line, undefined, { identifier: 'missingLocal' });
+		const error = getError(ErrorCode.UNDECLARED_IDENTIFIER, localLine, undefined, { identifier: 'missingLocal' });
 
 		expect(error.message).toBe(`Undeclared identifier: missingLocal. (${ErrorCode.UNDECLARED_IDENTIFIER})`);
 	});

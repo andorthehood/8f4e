@@ -56,7 +56,7 @@ Expected semantics with current type system:
 ### Step 3: Add compiler tests
 - Cover `int*`, `float*`, and `float64*`
 - Cover rejection or error behavior for non-pointer identifiers
-- Cover `push %*name` and declaration initializer cases if supported
+- Cover `push sizeof(*name)` and declaration initializer cases if supported
 
 ### Step 4: Update docs
 - Document `sizeof(*name)` alongside `sizeof(name)` in compiler prefix docs

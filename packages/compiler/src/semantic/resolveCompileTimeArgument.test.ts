@@ -17,8 +17,11 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 			memory: {
 				samples: {
+					id: 'samples',
+					byteAddress: 32,
 					numberOfElements: 8,
 					elementWordSize: 2,
+					wordAlignedSize: 4,
 					isInteger: true,
 				},
 				floatBuf: {
@@ -26,11 +29,18 @@ describe('tryResolveCompileTimeArgument', () => {
 					elementWordSize: 4,
 					isInteger: false,
 				},
+				floatPtr: {
+					numberOfElements: 1,
+					elementWordSize: 1,
+					isInteger: true,
+					pointeeBaseType: 'float',
+				},
 			},
 			namespaces: {},
 		},
 		startingByteAddress: 24,
 		currentModuleWordAlignedSize: 5,
+		locals: {},
 	} as unknown as CompilationContext;
 
 	it('resolves direct constants', () => {
@@ -103,6 +113,34 @@ describe('tryResolveCompileTimeArgument', () => {
 		});
 	});
 
+	it('resolves local memory metadata queries', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(*floatPtr)'))).toEqual({
+			value: 4,
+			isInteger: true,
+		});
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(*floatPtr)'))).toEqual({
+			value: 3.4028234663852886e38,
+			isInteger: false,
+		});
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(samples)'))).toEqual({
+			value: 32767,
+			isInteger: true,
+		});
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(samples)'))).toEqual({
+			value: -32768,
+			isInteger: true,
+		});
+	});
+
+	it('returns undefined for unresolved local memory metadata queries', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(missing)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(missing)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(missing)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(missing)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(*missing)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(*missing)'))).toBeUndefined();
+	});
+
 	it('keeps float64 width for expression results', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64*2'))).toEqual({
 			value: 6.28318,
@@ -159,6 +197,68 @@ describe('tryResolveCompileTimeArgument', () => {
 
 		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*floatPtrPtr)'))).toEqual({
 			value: 2147483647,
+			isInteger: true,
+		});
+	});
+
+	it('resolves pointee metadata from local pointer bindings', () => {
+		const localPointerContext = {
+			...mockContext,
+			locals: {
+				floatPtr: {
+					kind: 'value',
+					valueType: 'int',
+					pointeeBaseType: 'float',
+					index: 0,
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*floatPtr)'))).toEqual({
+			value: 4,
+			isInteger: true,
+		});
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*floatPtr)'))).toEqual({
+			value: 3.4028234663852886e38,
+			isInteger: false,
+		});
+	});
+
+	it('resolves non-word-sized pointee widths from local pointer bindings', () => {
+		const localPointerContext = {
+			...mockContext,
+			locals: {
+				int8Ptr: {
+					kind: 'value',
+					valueType: 'int',
+					pointeeBaseType: 'int8',
+					index: 0,
+				},
+				int16Ptr: {
+					kind: 'value',
+					valueType: 'int',
+					pointeeBaseType: 'int16',
+					index: 1,
+				},
+				float64Ptr: {
+					kind: 'value',
+					valueType: 'int',
+					pointeeBaseType: 'float64',
+					index: 2,
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*int8Ptr)'))).toEqual({
+			value: 1,
+			isInteger: true,
+		});
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*int16Ptr)'))).toEqual({
+			value: 2,
+			isInteger: true,
+		});
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*float64Ptr)'))).toEqual({
+			value: 8,
 			isInteger: true,
 		});
 	});
@@ -447,6 +547,27 @@ describe('tryResolveCompileTimeArgument', () => {
 		expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
 	});
 
+	it('returns undefined for unresolved intermodule nth references', () => {
+		const laidOutNamespace = {
+			...mockContext,
+			namespace: {
+				...mockContext.namespace,
+				namespaces: {
+					source: {
+						kind: 'module',
+						consts: {},
+						byteAddress: 8,
+						wordAlignedSize: 4,
+						memory: {},
+					},
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:99'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&source:99'))).toBeUndefined();
+	});
+
 	it('resolves current-module shorthands from compilation context', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&this'))).toEqual({
 			value: 24,
@@ -474,6 +595,15 @@ describe('tryResolveCompileTimeArgument', () => {
 				},
 			},
 		});
+	});
+
+	it('returns undefined for current-module end address before module size is known', () => {
+		const contextWithoutModuleSize = {
+			...mockContext,
+			currentModuleWordAlignedSize: undefined,
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(contextWithoutModuleSize, classifyIdentifier('this&'))).toBeUndefined();
 	});
 
 	it('keeps address metadata when adding an in-range integer offset to an address expression', () => {
@@ -572,5 +702,10 @@ describe('tryResolveCompileTimeArgument', () => {
 			value: 12,
 			isInteger: true,
 		});
+	});
+
+	it('returns undefined for division by zero and non-identifier arguments', () => {
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE/0'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('123'))).toBeUndefined();
 	});
 });
