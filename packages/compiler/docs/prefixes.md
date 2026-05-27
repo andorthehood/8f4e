@@ -27,8 +27,10 @@ int* moduleEnd this&
 
 ## Pointer dereference
 
-- `*name` dereferences a pointer memory item and loads the value it points to (via `push`).
+- `*name` dereferences a pointer memory item once (via `push`).
+- `**name` dereferences a pointer memory item twice (via `push`).
 - The pointer depth comes from the declared type (`int*`, `float*`, `int**`, `float**`).
+- The number of leading `*` characters in the `push` argument is the requested dereference depth. It must not exceed the declared pointer depth.
 
 Example:
 
@@ -36,11 +38,16 @@ Example:
 int target 123
 int* ptr &target
 push *ptr
+
+int** pptr &ptr
+push *pptr    ; pushes the address stored in ptr
+push **pptr   ; loads target
 ```
 
 ## Element count
 
 - `count(name)` pushes the element count for a buffer (or 1 for scalars).
+- `count(*name)` is not supported currently.
 
 Example:
 
@@ -64,7 +71,8 @@ push sizeof(samples)
 
 - `sizeof(*name)` pushes the element word size (in bytes) of the value pointed to by a pointer-typed memory item.
 - Only valid for pointer identifiers (`int*`, `int8*`, `int16*`, `float*`, `float64*`, etc.).
-- Using `sizeof(*name)` on a non-pointer identifier produces a compiler error.
+- On a non-pointer memory identifier, current compiler behavior resolves `sizeof(*name)` to `0`.
+- Metadata queries currently support one leading `*`. For double pointers, `sizeof(*name)` describes the intermediate pointer slot. `sizeof(**name)` is not supported yet.
 
 Examples:
 
@@ -76,6 +84,7 @@ Examples:
 | `float* ptr`        | 4              | 4               |
 | `float64* ptr`      | 4              | 8               |
 | `int** ptr`         | 4              | 4               |
+| `float64** ptr`     | 4              | 4               |
 
 ```
 int* ptr &someInt
@@ -117,8 +126,9 @@ push max(unsignedBuffer)
 
 - `max(*name)` pushes the maximum finite value for the type pointed to by a pointer-typed memory item.
 - Only valid for pointer identifiers (`int*`, `int8*`, `int16*`, `float*`, `float64*`, etc.).
-- Using `max(*name)` on a non-pointer identifier produces a compiler error.
+- On a non-pointer memory identifier, current compiler behavior resolves `max(*name)` to `0`.
 - `max(name)` keeps its existing meaning (max of the memory item's own element type).
+- Metadata queries currently support one leading `*`. For double pointers, `max(*name)` describes the intermediate pointer slot. `max(**name)` is not supported yet.
 
 Examples:
 
@@ -129,6 +139,7 @@ Examples:
 | `int16* ptr`        | 2,147,483,647       | 32,767                             |
 | `float* ptr`        | 2,147,483,647       | 3.4028234663852886e+38             |
 | `float64* ptr`      | 2,147,483,647       | 1.7976931348623157e+308            |
+| `float64** ptr`     | 2,147,483,647       | 2,147,483,647                      |
 
 ```
 int* ptr &someInt
@@ -143,6 +154,7 @@ push max(*fptr)  ; 1.7976931348623157e+308  — max of the float64 it points to
 ## Element min value
 
 - `min(name)` pushes the lowest finite value (most negative) for the element type of a memory item.
+- `min(*name)` is not supported yet; it is tracked separately from the current `min(name)` form.
 
 For signed integers:
 - `int32` / `int` / `int[]`: -2,147,483,648
@@ -181,7 +193,7 @@ Supported operators:
 | `/`      | Division       | `SIZE/2`      |
 | `^`      | Exponentiation | `2^16`        |
 
-Each side can be a numeric literal, a constant name, or a metadata query such as `sizeof(name)` or `count(name)`.
+Each side can be a numeric literal, a constant name, or a supported metadata query such as `sizeof(name)`, `sizeof(*name)`, `count(name)`, `max(name)`, `max(*name)`, or `min(name)`.
 Exactly one operator is allowed; chained forms like `2^3^4` or `SIZE*2/4` are not valid.
 
 **Note**: `^` means exponentiation in compile-time expressions, not bitwise XOR (which is the runtime `xor` instruction).
