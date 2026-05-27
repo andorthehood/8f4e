@@ -39,7 +39,7 @@ function resolveMeterDirectiveWidget(
 	const yellowEndX = Math.floor(width * RED_THRESHOLD);
 	const overloadMarkerWidth = Math.min(state.viewport.vGrid, width);
 	const staticValueIndex =
-		memory.showAddress || (!memory.memory.pointeeBaseType && !memory.memory.isPointingToPointer)
+		memory.showAddress || !memory.memory.pointerDepth
 			? (memory.memory.byteAddress >> valueSpec.baseSampleShift) + memory.bufferPointer
 			: undefined;
 

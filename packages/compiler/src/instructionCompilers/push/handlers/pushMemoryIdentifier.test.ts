@@ -24,7 +24,7 @@ describe('pushMemoryIdentifier', () => {
 						byteAddress: 8,
 						default: 0,
 						isInteger: true,
-						isPointingToPointer: false,
+						pointerDepth: 0,
 						isUnsigned: false,
 						type: 'int',
 					} as never,

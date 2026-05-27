@@ -156,7 +156,8 @@ export interface DataStructure {
 	/** Configured logical region name for this pointer's pointee memory. */
 	pointeeMemoryRegionName?: string;
 	id: string;
-	isPointingToPointer: boolean;
+	/** Number of pointer layers in the declaration. Non-pointers have depth 0. */
+	pointerDepth: number;
 	isUnsigned: boolean;
 }
 

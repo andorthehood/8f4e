@@ -489,6 +489,18 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.POINTER_DEREFERENCE_DEPTH_EXCEEDED:
+			return {
+				code,
+				message:
+					'Pointer dereference depth exceeds the declared pointer depth' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
 			return {
 				code,

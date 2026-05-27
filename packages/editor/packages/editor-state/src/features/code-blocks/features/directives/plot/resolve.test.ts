@@ -47,7 +47,7 @@ describe('plot directive widget resolution', () => {
 								isInteger: true,
 								isUnsigned: false,
 								id: 'buffer1',
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 						},
 					},
@@ -114,7 +114,7 @@ describe('plot directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'buffer2',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -133,7 +133,7 @@ describe('plot directive widget resolution', () => {
 			default: 0,
 			isInteger: false,
 			id: 'floatBuffer',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 		setMockCodeBlockCode(mockGraphicData, ['; @plot &floatBuffer count(floatBuffer)']);
 
@@ -183,7 +183,7 @@ describe('plot directive widget resolution', () => {
 			isInteger: true,
 			id: 'bufferPtr',
 			pointeeBaseType: 'int8',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 		setMockCodeBlockCode(mockGraphicData, ['; @plot bufferPtr count(buffer1)']);
 
