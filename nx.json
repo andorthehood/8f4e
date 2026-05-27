@@ -52,7 +52,10 @@
     }
   },
   "release": {
-    "projects": ["*", "!glugglug"],
+    "projects": [
+      "*",
+      "!glugglug"
+    ],
     "projectsRelationship": "independent",
     "releaseTag": {
       "pattern": "{projectName}@{version}"
@@ -62,7 +65,9 @@
       "currentVersionResolver": "git-tag",
       "fallbackCurrentVersionResolver": "disk",
       "updateDependents": "always",
-      "manifestRootsToUpdate": ["{projectRoot}"]
+      "manifestRootsToUpdate": [
+        "{projectRoot}"
+      ]
     },
     "changelog": {
       "workspaceChangelog": false,
@@ -76,5 +81,6 @@
     }
   },
   "defaultBase": "HEAD~1",
-  "analytics": false
+  "analytics": false,
+  "nxCloudId": "6a172ab3f11a1d95830c5447"
 }
