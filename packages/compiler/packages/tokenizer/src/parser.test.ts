@@ -185,9 +185,7 @@ describe('compileToAST', () => {
 			throw new Error('Expected module AST');
 		}
 		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
-		expect(ast.memoryDeclarationLines[1].referencedModuleIds).toEqual(['source']);
 		expect(ast.memoryDeclarationLines[1].referencedNamespaceIds).toEqual(['source']);
-		expect(ast.referencedModuleIds).toEqual(['source']);
 	});
 
 	it('constructs function metadata from the source-block parse path', () => {

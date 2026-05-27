@@ -80,7 +80,6 @@ type ModuleASTBuilder = {
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
 	memoryDeclarationLines: MemoryDeclarationLine[];
-	referencedModuleIds: Set<string>;
 };
 
 type FunctionASTBuilder = {
@@ -192,7 +191,6 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 				id: line.arguments[0].value,
 				moduleLine: line,
 				memoryDeclarationLines: [],
-				referencedModuleIds: new Set<string>(),
 			};
 		case 'function':
 			return {
@@ -224,9 +222,6 @@ function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): v
 	}
 
 	builder.memoryDeclarationLines.push(line);
-	for (const moduleId of line.referencedModuleIds ?? []) {
-		builder.referencedModuleIds.add(moduleId);
-	}
 }
 
 function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
@@ -266,7 +261,6 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 				moduleLine: builder.moduleLine,
 				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
 				memoryDeclarationLines: builder.memoryDeclarationLines,
-				referencedModuleIds: [...builder.referencedModuleIds],
 			};
 		case 'function':
 			if (!builder.functionEndLine) {
@@ -398,9 +392,6 @@ export function parseLine(
 		if (isMemoryDeclarationLine(parsedLine)) {
 			const memoryLine: MemoryDeclarationLine = parsedLine;
 			memoryLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
-			if (referencedNamespaceIds.size > 0) {
-				memoryLine.referencedModuleIds = [...referencedNamespaceIds];
-			}
 		}
 
 		return parsedLine;

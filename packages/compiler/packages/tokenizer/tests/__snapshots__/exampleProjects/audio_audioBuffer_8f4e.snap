@@ -1354,10 +1354,7 @@
     "referencedNamespaceIds": [
       "phaseAccumulator"
     ],
-    "hasExplicitMemoryDefault": true,
-    "referencedModuleIds": [
-      "phaseAccumulator"
-    ]
+    "hasExplicitMemoryDefault": true
   },
   {
     "lineNumberBeforeMacroExpansion": 162,

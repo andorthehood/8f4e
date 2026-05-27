@@ -144,7 +144,6 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -339,7 +338,6 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -547,7 +545,6 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -742,7 +739,6 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1035,7 +1031,6 @@ exports[`nested loops resolve their own caps independently > if the generated AS
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -1262,7 +1257,6 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;

@@ -1,7 +1,7 @@
 /**
  * Tests if a string matches the intermodular reference pattern.
  * This regex is used for detecting inter-module references in AST arguments
- * during compilation and dependency sorting.
+ * during compilation.
  *
  * Valid patterns:
  * - &module:memory (start address reference)

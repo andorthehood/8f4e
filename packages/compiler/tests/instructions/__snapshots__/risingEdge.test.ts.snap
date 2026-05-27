@@ -193,7 +193,6 @@ exports[`risingEdge (float) > if the generated AST, WAT and memory map match the
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -453,7 +452,6 @@ exports[`risingEdge > if the generated AST, WAT and memory map match the snapsho
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
