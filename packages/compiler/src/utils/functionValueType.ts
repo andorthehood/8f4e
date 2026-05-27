@@ -1,8 +1,6 @@
 import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 
-import getMemoryFlags from './memoryFlags';
-
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-spec';
 
@@ -38,12 +36,10 @@ export function functionValueTypeToLocalBinding(type: FunctionValueType, index: 
 	}
 
 	const { baseType, pointerDepth } = getPointerParts(type);
-	const flags = getMemoryFlags(baseType, pointerDepth);
 	return {
-		isInteger: flags.isInteger,
-		...(flags.isFloat64 ? { isFloat64: true } : {}),
-		...(flags.pointeeBaseType ? { pointeeBaseType: flags.pointeeBaseType } : {}),
-		...(flags.pointerDepth > 0 ? { pointerDepth: flags.pointerDepth } : {}),
+		isInteger: true,
+		pointeeBaseType: baseType,
+		pointerDepth,
 		index,
 	};
 }
@@ -65,7 +61,7 @@ function localBindingToStackItem(binding: LocalBinding): StackItem {
 				baseType: binding.pointeeBaseType,
 				memoryIndex: binding.pointeeMemoryIndex ?? 0,
 				...(binding.pointeeMemoryRegionName ? { memoryRegionName: binding.pointeeMemoryRegionName } : {}),
-				pointerDepth: binding.pointerDepth ?? 1,
+				pointerDepth: binding.pointerDepth,
 			},
 		};
 	}

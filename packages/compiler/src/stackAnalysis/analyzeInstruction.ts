@@ -35,11 +35,6 @@ import type {
 	PointeeMetadata,
 } from '@8f4e/compiler-spec';
 
-type PointerStackMetadata = Pick<
-	DataStructure | LocalBinding,
-	'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName'
->;
-
 function createStackValue(
 	valueType: StackValueType,
 	metadata: Pick<StackItem, 'isNonZero' | 'knownIntegerValue'> = {}
@@ -131,7 +126,7 @@ function pushLiteralStackItems(line: NormalizedPushLine): Stack {
 	];
 }
 
-function getPointeeMetadata(pointerMetadata: PointerStackMetadata): PointeeMetadata | undefined {
+function getPointeeMetadata(pointerMetadata: DataStructure | LocalBinding): PointeeMetadata | undefined {
 	return pointerMetadata.pointeeBaseType
 		? {
 				baseType: pointerMetadata.pointeeBaseType,

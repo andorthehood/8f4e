@@ -598,7 +598,7 @@ describe('normalizeCompileTimeArguments', () => {
 		const context = {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {
-				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', index: 0 },
+				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1, index: 0 },
 			},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
