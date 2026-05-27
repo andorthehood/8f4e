@@ -1,5 +1,13 @@
 8f4e/v1
 
+module projectConfig
+; @pos -84 2
+; @config runtime WebWorkerRuntime
+; ~sampleRate 50
+; @config export.fileName randomGenerators
+
+moduleEnd
+
 constants env
 ; @pos -84 26
 ; @favorite
@@ -9,40 +17,6 @@ constants env
 const SAMPLE_RATE 50
 
 constantsEnd
-
-module XORShift
-; @pos 106 1
-
-int seed 69420
-float out
-
-push &seed
-push seed
-push seed
-push 13
-shiftLeft
-xor
-
-push seed
-push 17
-shiftRight
-xor
-
-push seed
-push 5
-shiftLeft
-xor
-store
-
-push &out
-push seed
-castToFloat
-push max(seed)
-castToFloat
-div
-store
-
-moduleEnd
 
 module lcg
 ; @pos -11 1
@@ -76,26 +50,6 @@ store
 
 moduleEnd
 
-module notes
-; @pos 66 17
-; @home
-; Two different approaches
-; for pseudorandom generation:
-; a Linear Congruential
-; Generator (LCG)
-; and
-; an XORShift algorithm
-; implemented in 8f4e.
-moduleEnd
-
-module projectConfig
-; @pos -84 2
-; @config runtime WebWorkerRuntime
-; ~sampleRate 50
-; @config export.fileName randomGenerators
-
-moduleEnd
-
 module scope
 ; @pos 27 1
 
@@ -122,6 +76,52 @@ ifEnd
 
 push bufferPointer
 push *in
+store
+
+moduleEnd
+
+module notes
+; @pos 66 17
+; @home
+; Two different approaches
+; for pseudorandom generation:
+; a Linear Congruential
+; Generator (LCG)
+; and
+; an XORShift algorithm
+; implemented in 8f4e.
+moduleEnd
+
+module XORShift
+; @pos 106 1
+
+int seed 69420
+float out
+
+push &seed
+push seed
+push seed
+push 13
+shiftLeft
+xor
+
+push seed
+push 17
+shiftRight
+xor
+
+push seed
+push 5
+shiftLeft
+xor
+store
+
+push &out
+push seed
+castToFloat
+push max(seed)
+castToFloat
+div
 store
 
 moduleEnd

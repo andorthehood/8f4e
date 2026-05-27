@@ -1,18 +1,18 @@
 {
   "sourceModuleOrder": [
+    "projectConfig",
     "env",
-    "andGate",
+    "notes",
+    "setButton",
+    "resetButton",
+    "norGate2",
+    "norGate",
+    "scope",
     "buttons",
     "negate",
-    "norGate",
-    "norGate2",
-    "notes",
     "orGate",
-    "projectConfig",
-    "resetButton",
-    "scope",
-    "scope2",
-    "setButton"
+    "andGate",
+    "scope2"
   ],
   "compiledModuleLayout": [
     {

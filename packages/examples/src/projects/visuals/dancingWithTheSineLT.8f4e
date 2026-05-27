@@ -7,146 +7,6 @@ module projectConfig
 
 moduleEnd
 
-module dancer1
-; @pos -34 -9
-
-; Can yor IDE do this?
-
-float* sin &sineLT:sin0
-float* last &sineLT:sin255
-float* first &sineLT:sin0
-int offset 
-
-; @offset y offset
-
-push &sin
-push sin
-push 4
-add
-store
-
-push sin
-push last
-equal
-if
-push &sin
-push first
-store
-ifEnd
-
-push &offset
-push *sin
-push 100.0
-mul
-castToInt
-store
-
-moduleEnd
-
-module dancer2
-; @pos 1 -9
-float* sin &sineLT:sin32
-float* last &sineLT:sin255
-float* first &sineLT:sin0
-int offset 
-
-; @offset y offset
-
-push &sin
-push sin
-push 4
-add
-store
-
-push sin
-push last
-equal
-if
-push &sin
-push first
-store
-ifEnd
-
-push &offset
-push *sin
-push 100.0
-mul
-castToInt
-store
-
-moduleEnd
-
-module dancer3
-; @pos 36 -9
-
-float* sin &sineLT:sin64
-float* last &sineLT:sin255
-float* first &sineLT:sin0
-int offset 
-
-; @offset y offset
-
-push &sin
-push sin
-push 4
-add
-store
-
-push sin
-push last
-equal
-if
-push &sin
-push first
-store
-ifEnd
-
-push &offset
-push *sin
-push 100.0
-mul
-castToInt
-store
-
-moduleEnd
-
-module dancer4
-; @pos 89 -12
-
-float* sin &sineLT:sin64
-float* last &sineLT:sin255
-float* first &sineLT:sin0
-float* offsetX &dancer1:offset
-
-int offsetY
-
-; @offset y offsetY
-; @offset x *offsetX
-
-push &sin
-push sin
-push 4
-add
-store
-
-push sin
-push last
-equal
-if
-push &sin
-push first
-store
-ifEnd
-
-push &offsetY
-push *sin
-push 100.0
-mul
-castToInt
-store
-
-moduleEnd
-
 constants env
 ; @pos -122 15
 ; Auto-generated environment constants
@@ -417,5 +277,145 @@ float sin252 -0.0739
 float sin253 -0.0493
 float sin254 -0.0246
 float sin255 -0.0000
+
+moduleEnd
+
+module dancer1
+; @pos -34 -9
+
+; Can yor IDE do this?
+
+float* sin &sineLT:sin0
+float* last &sineLT:sin255
+float* first &sineLT:sin0
+int offset 
+
+; @offset y offset
+
+push &sin
+push sin
+push 4
+add
+store
+
+push sin
+push last
+equal
+if
+push &sin
+push first
+store
+ifEnd
+
+push &offset
+push *sin
+push 100.0
+mul
+castToInt
+store
+
+moduleEnd
+
+module dancer2
+; @pos 1 -9
+float* sin &sineLT:sin32
+float* last &sineLT:sin255
+float* first &sineLT:sin0
+int offset 
+
+; @offset y offset
+
+push &sin
+push sin
+push 4
+add
+store
+
+push sin
+push last
+equal
+if
+push &sin
+push first
+store
+ifEnd
+
+push &offset
+push *sin
+push 100.0
+mul
+castToInt
+store
+
+moduleEnd
+
+module dancer3
+; @pos 36 -9
+
+float* sin &sineLT:sin64
+float* last &sineLT:sin255
+float* first &sineLT:sin0
+int offset 
+
+; @offset y offset
+
+push &sin
+push sin
+push 4
+add
+store
+
+push sin
+push last
+equal
+if
+push &sin
+push first
+store
+ifEnd
+
+push &offset
+push *sin
+push 100.0
+mul
+castToInt
+store
+
+moduleEnd
+
+module dancer4
+; @pos 89 -12
+
+float* sin &sineLT:sin64
+float* last &sineLT:sin255
+float* first &sineLT:sin0
+float* offsetX &dancer1:offset
+
+int offsetY
+
+; @offset y offsetY
+; @offset x *offsetX
+
+push &sin
+push sin
+push 4
+add
+store
+
+push sin
+push last
+equal
+if
+push &sin
+push first
+store
+ifEnd
+
+push &offsetY
+push *sin
+push 100.0
+mul
+castToInt
+store
 
 moduleEnd

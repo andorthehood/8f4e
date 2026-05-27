@@ -7,6 +7,17 @@ module projectConfig
 
 moduleEnd
 
+constants env
+; @pos 34 3
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 1/19/2026, 10:01:14 PM
+
+const SAMPLE_RATE 10
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
 module counter
 ; @pos 82 3
 
@@ -21,14 +32,3 @@ add
 store
 
 moduleEnd
-
-constants env
-; @pos 34 3
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 1/19/2026, 10:01:14 PM
-
-const SAMPLE_RATE 10
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
