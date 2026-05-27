@@ -113,7 +113,6 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -351,7 +350,6 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
@@ -649,7 +647,6 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
     "lineNumberAfterMacroExpansion": 0,
     "lineNumberBeforeMacroExpansion": 0,
   },
-  "referencedModuleIds": [],
   "type": "module",
 }
 `;
