@@ -166,7 +166,8 @@
         "value": "*in",
         "referenceKind": "memory-pointer",
         "scope": "local",
-        "targetMemoryId": "in"
+        "targetMemoryId": "in",
+        "dereferenceDepth": 1
       }
     ]
   },
@@ -854,7 +855,8 @@
         "value": "*frequency",
         "referenceKind": "memory-pointer",
         "scope": "local",
-        "targetMemoryId": "frequency"
+        "targetMemoryId": "frequency",
+        "dereferenceDepth": 1
       }
     ]
   },

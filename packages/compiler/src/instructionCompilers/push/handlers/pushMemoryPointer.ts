@@ -11,13 +11,15 @@ export default function pushMemoryPointer(
 	context: CodegenContext
 ): CodegenContext {
 	const { memoryItem } = line.resolvedTarget;
+	const { dereferenceDepth } = line.arguments[0];
 	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,
 		line.lineNumberAfterMacroExpansion,
 		memoryItem,
 		i32const(memoryItem.byteAddress),
-		'pointer-slot'
+		'pointer-slot',
+		dereferenceDepth
 	);
 
 	return saveByteCode(context, dereference.byteCode);

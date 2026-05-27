@@ -96,7 +96,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'int',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					type: 'int*',
 				} as unknown as MemoryMap[string],
 			};
@@ -108,7 +108,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'float',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					type: 'float*',
 				} as unknown as MemoryMap[string],
 			};
@@ -119,7 +119,7 @@ describe('memoryData utilities', () => {
 			const memory: MemoryMap = {
 				ptr: {
 					elementWordSize: 4,
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					pointeeBaseType: 'float64',
 					type: 'float64*',
 				} as unknown as MemoryMap[string],
@@ -131,7 +131,7 @@ describe('memoryData utilities', () => {
 			const memory: MemoryMap = {
 				ptr: {
 					elementWordSize: 4,
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					pointeeBaseType: 'int8',
 					type: 'int8*',
 				} as unknown as MemoryMap[string],
@@ -143,7 +143,7 @@ describe('memoryData utilities', () => {
 			const memory: MemoryMap = {
 				ptr: {
 					elementWordSize: 4,
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					pointeeBaseType: 'int16',
 					type: 'int16*',
 				} as unknown as MemoryMap[string],
@@ -156,7 +156,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'int',
-					isPointingToPointer: true,
+					pointerDepth: 2,
 					type: 'int**',
 				} as unknown as MemoryMap[string],
 			};
@@ -168,7 +168,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'float64',
-					isPointingToPointer: true,
+					pointerDepth: 2,
 					type: 'float64**',
 				} as unknown as MemoryMap[string],
 			};
@@ -191,7 +191,7 @@ describe('memoryData utilities', () => {
 		it('classifies float64** pointees as integer pointer-slot values', () => {
 			const pointerMetadata = {
 				pointeeBaseType: 'float64',
-				isPointingToPointer: true,
+				pointerDepth: 2,
 			} as const;
 
 			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(true);
@@ -201,7 +201,7 @@ describe('memoryData utilities', () => {
 		it('classifies float64* pointees as float64 values', () => {
 			const pointerMetadata = {
 				pointeeBaseType: 'float64',
-				isPointingToPointer: false,
+				pointerDepth: 1,
 			} as const;
 
 			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(false);
@@ -211,7 +211,7 @@ describe('memoryData utilities', () => {
 		it('classifies float64** dereference results as float64 values', () => {
 			const pointerMetadata = {
 				pointeeBaseType: 'float64',
-				isPointingToPointer: true,
+				pointerDepth: 2,
 			} as const;
 
 			expect(getDereferencedValueKindFromMetadata(pointerMetadata)).toBe('float64');
@@ -221,7 +221,7 @@ describe('memoryData utilities', () => {
 		it('classifies int16* pointees as int32 stack values', () => {
 			const pointerMetadata = {
 				pointeeBaseType: 'int16',
-				isPointingToPointer: false,
+				pointerDepth: 1,
 			} as const;
 
 			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(true);
@@ -233,11 +233,11 @@ describe('memoryData utilities', () => {
 		it('classifies unsigned narrow pointees from metadata', () => {
 			const int8uPointerMetadata = {
 				pointeeBaseType: 'int8u',
-				isPointingToPointer: false,
+				pointerDepth: 1,
 			} as const;
 			const int16uPointerMetadata = {
 				pointeeBaseType: 'int16u',
-				isPointingToPointer: false,
+				pointerDepth: 1,
 			} as const;
 
 			expect(getPointeeElementIsIntegerFromMetadata(int8uPointerMetadata)).toBe(true);
@@ -456,7 +456,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'int',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					type: 'int*',
 				} as unknown as MemoryMap[string],
 			};
@@ -468,7 +468,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'int8',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					type: 'int8*',
 				} as unknown as MemoryMap[string],
 			};
@@ -480,7 +480,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'int16',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					type: 'int16*',
 				} as unknown as MemoryMap[string],
 			};
@@ -492,12 +492,12 @@ describe('memoryData utilities', () => {
 				int8uPtr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'int8u',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 				} as unknown as MemoryMap[string],
 				int16uPtr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'int16u',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 				} as unknown as MemoryMap[string],
 			};
 			expect(getPointeeElementMaxValue(memory, 'int8uPtr')).toBe(255);
@@ -509,7 +509,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'float',
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					type: 'float*',
 				} as unknown as MemoryMap[string],
 			};
@@ -520,7 +520,7 @@ describe('memoryData utilities', () => {
 			const memory: MemoryMap = {
 				ptr: {
 					elementWordSize: 4,
-					isPointingToPointer: false,
+					pointerDepth: 1,
 					pointeeBaseType: 'float64',
 					type: 'float64*',
 				} as unknown as MemoryMap[string],
@@ -533,7 +533,7 @@ describe('memoryData utilities', () => {
 				ptr: {
 					elementWordSize: 4,
 					pointeeBaseType: 'float64',
-					isPointingToPointer: true,
+					pointerDepth: 2,
 					type: 'float64**',
 				} as unknown as MemoryMap[string],
 			};

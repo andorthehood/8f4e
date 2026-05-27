@@ -4,7 +4,6 @@ import type { BaseMemoryType } from '@8f4e/compiler-spec';
 
 export default function getMemoryFlags(baseType: BaseMemoryType, pointerDepth: number) {
 	const isPointer = pointerDepth > 0;
-	const isPointingToPointer = pointerDepth === 2;
 	const isInteger = BASE_TYPE_METADATA[baseType].isInteger || isPointer;
 	const isFloat64 = baseType === 'float64' && !isPointer;
 	let pointeeBaseType: BaseMemoryType | undefined;
@@ -13,7 +12,7 @@ export default function getMemoryFlags(baseType: BaseMemoryType, pointerDepth: n
 	}
 
 	return {
-		isPointingToPointer,
+		pointerDepth,
 		isInteger,
 		...(isFloat64 ? { isFloat64 } : {}),
 		...(pointeeBaseType !== undefined ? { pointeeBaseType } : {}),

@@ -148,3 +148,49 @@ describe('push local-vs-memory identifier resolution', () => {
 		expect(() => compile(modules, defaultOptions, functions)).toThrow();
 	});
 });
+
+describe('push pointer dereference depth', () => {
+	const createPointerModule = (declaration: string, initializer: string, dereference: string): Module[] => [
+		{
+			code: [
+				'module test',
+				'float value 1.5',
+				'float* ptr &value',
+				`${declaration} pptr ${initializer}`,
+				'loop',
+				`push ${dereference}`,
+				'drop',
+				'loopEnd',
+				'moduleEnd',
+			],
+		},
+	];
+
+	test('rejects dereference depth greater than the declared pointer depth', () => {
+		const modules: Module[] = [
+			{
+				code: [
+					'module test',
+					'float value 1.5',
+					'float* ptr &value',
+					'loop',
+					'push **ptr',
+					'drop',
+					'loopEnd',
+					'moduleEnd',
+				],
+			},
+		];
+
+		expect(() => compile(modules, defaultOptions)).toThrow(/Pointer dereference depth exceeds/);
+	});
+
+	test('dereferences only as many levels as the push argument requests', () => {
+		const oneLevel = compile(createPointerModule('float**', '&ptr', '*pptr'), defaultOptions);
+		const twoLevels = compile(createPointerModule('float**', '&ptr', '**pptr'), defaultOptions);
+
+		const F32_LOAD = 0x2a;
+		expect(oneLevel.compiledModules.test.cycleFunction).not.toContain(F32_LOAD);
+		expect(twoLevels.compiledModules.test.cycleFunction).toContain(F32_LOAD);
+	});
+});

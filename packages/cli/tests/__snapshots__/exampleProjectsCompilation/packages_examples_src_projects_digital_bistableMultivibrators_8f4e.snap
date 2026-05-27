@@ -41,7 +41,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         },
@@ -56,7 +56,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -120,7 +120,7 @@
           "default": 36,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -137,7 +137,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         },
@@ -152,7 +152,7 @@
           "default": 4,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -209,7 +209,7 @@
           "default": 8,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -226,7 +226,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -290,7 +290,7 @@
           "default": 16,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -307,7 +307,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         },
@@ -322,7 +322,7 @@
           "default": 28,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -355,7 +355,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -419,7 +419,7 @@
           "default": 68,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -436,7 +436,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         },
@@ -451,7 +451,7 @@
           "default": 44,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -484,7 +484,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -551,7 +551,7 @@
           "default": 52,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -568,7 +568,7 @@
           "default": 0,
           "hasExplicitDefault": false,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         },
@@ -583,7 +583,7 @@
           "default": 60,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -733,7 +733,7 @@
           "default": 68,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -750,7 +750,7 @@
           "default": {},
           "hasExplicitDefault": false,
           "isInteger": true,
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "type": "int",
           "isUnsigned": false
         },
@@ -765,7 +765,7 @@
           "default": 80,
           "hasExplicitDefault": true,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }
@@ -883,7 +883,7 @@
           "default": 36,
           "hasExplicitDefault": true,
           "type": "int*",
-          "isPointingToPointer": false,
+          "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
           "isUnsigned": false,
@@ -900,7 +900,7 @@
           "default": {},
           "hasExplicitDefault": false,
           "isInteger": true,
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "type": "int",
           "isUnsigned": false
         },
@@ -915,7 +915,7 @@
           "default": 344,
           "hasExplicitDefault": true,
           "type": "int",
-          "isPointingToPointer": false,
+          "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
         }

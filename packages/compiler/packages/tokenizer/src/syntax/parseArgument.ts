@@ -343,6 +343,28 @@ function getPointeeQueryTarget(value: string, targetMemoryId: string): string {
 	return pointeeTargetMemoryId;
 }
 
+function getLeadingPointerDepth(value: string): number {
+	let pointerDepth = 0;
+	while (value[pointerDepth] === '*') {
+		pointerDepth++;
+	}
+	return pointerDepth;
+}
+
+function getMemoryPointerTarget(value: string): { targetMemoryId: string; dereferenceDepth: number } {
+	const dereferenceDepth = getLeadingPointerDepth(value);
+	if (dereferenceDepth > 2) {
+		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_POINTER_DEPTH);
+	}
+
+	const targetMemoryId = value.slice(dereferenceDepth);
+	if (targetMemoryId.trim().length === 0) {
+		throw new SyntaxRulesError(SyntaxErrorCode.INVALID_IDENTIFIER, `Memory pointer target is missing: ${value}`);
+	}
+
+	return { targetMemoryId, dereferenceDepth };
+}
+
 function parseIntermodularElementQuery(value: string): { targetModuleId: string; targetMemoryId: string } | null {
 	const colonIndex = value.indexOf(':');
 	if (colonIndex === -1 || value.indexOf(':', colonIndex + 1) !== -1) {
@@ -494,12 +516,14 @@ export function classifyIdentifier(value: string): ArgumentIdentifier {
 
 	// Memory pointer: *name
 	if (hasPointerPrefix) {
+		const { targetMemoryId, dereferenceDepth } = getMemoryPointerTarget(value);
 		return {
 			type: ArgumentType.IDENTIFIER,
 			value,
 			referenceKind: 'memory-pointer',
 			scope: 'local',
-			targetMemoryId: value.substring(1),
+			targetMemoryId,
+			dereferenceDepth,
 		};
 	}
 
