@@ -184,6 +184,48 @@ moduleEnd
 );
 
 moduleTester(
+	'push: count(*pointer) resolves known pointee element count',
+	`module test
+float[] samples 8
+float* ptr &samples
+int output
+push &output
+push count(*ptr)
+store
+moduleEnd
+`,
+	[[{}, { output: 8 }]]
+);
+
+moduleTester(
+	'push: count(*end pointer) falls back to scalar pointee count',
+	`module test
+float[] samples 8
+float* ptr samples&
+int output
+push &output
+push count(*ptr)
+store
+moduleEnd
+`,
+	[[{}, { output: 1 }]]
+);
+
+moduleTester(
+	'push: min(*pointer) resolves pointee min value',
+	`module test
+int8[] samples 4
+int8* ptr &samples
+int output
+push &output
+push min(*ptr)
+store
+moduleEnd
+`,
+	[[{}, { output: -128 }]]
+);
+
+moduleTester(
 	'int[]: buffer size from sizeof expression',
 	`module test
 int16[] samples 4

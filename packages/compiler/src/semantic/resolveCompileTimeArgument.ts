@@ -8,9 +8,13 @@ import {
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
+	getPointeeElementCount,
+	getPointeeElementCountFromMetadata,
 	getPointeeElementIsIntegerFromMetadata,
 	getPointeeElementMaxValue,
 	getPointeeElementMaxValueFromMetadata,
+	getPointeeElementMinValue,
+	getPointeeElementMinValueFromMetadata,
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
 } from '../utils/memoryData';
@@ -194,6 +198,19 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		return undefined;
 	}
 
+	// count(*name) — known pointee element count, or 1 for pointer values without count provenance
+	if (operand.referenceKind === 'pointee-element-count') {
+		const base = operand.targetMemoryId;
+		if (Object.hasOwn(memory, base)) {
+			return { value: getPointeeElementCount(memory, base), isInteger: true };
+		}
+		const local = context.locals[base];
+		if (local?.pointeeBaseType) {
+			return { value: getPointeeElementCountFromMetadata(local), isInteger: true };
+		}
+		return undefined;
+	}
+
 	// sizeof(*name) — pointee element word size
 	if (operand.referenceKind === 'pointee-element-word-size') {
 		const base = operand.targetMemoryId;
@@ -256,6 +273,26 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 			return {
 				value: getElementMaxValue(memory, base),
 				isInteger: !!memoryItem?.isInteger,
+			};
+		}
+		return undefined;
+	}
+
+	// min(*name) — pointee element min value
+	if (operand.referenceKind === 'pointee-element-min') {
+		const base = operand.targetMemoryId;
+		if (Object.hasOwn(memory, base)) {
+			const memoryItem = memory[base];
+			return {
+				value: getPointeeElementMinValue(memory, base),
+				isInteger: getPointeeElementIsIntegerFromMetadata(memoryItem),
+			};
+		}
+		const local = context.locals[base];
+		if (local?.pointeeBaseType) {
+			return {
+				value: getPointeeElementMinValueFromMetadata(local),
+				isInteger: getPointeeElementIsIntegerFromMetadata(local),
 			};
 		}
 		return undefined;
