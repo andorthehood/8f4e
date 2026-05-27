@@ -29,13 +29,13 @@ function isResolvedPointerLocal(
 	return !!local?.pointeeBaseType;
 }
 
-function getDeclaredPointerDepth(pointerMetadata: { pointerDepth?: number; pointeeBaseType?: unknown }): number {
-	return pointerMetadata.pointeeBaseType ? (pointerMetadata.pointerDepth ?? 1) : 0;
+function getDeclaredPointerDepth(pointerMetadata: { pointerDepth: number; pointeeBaseType?: unknown }): number {
+	return pointerMetadata.pointeeBaseType ? pointerMetadata.pointerDepth : 0;
 }
 
 function validateDereferenceDepth(
 	pointerArgument: MemoryPointerIdentifier,
-	pointerMetadata: { pointerDepth?: number; pointeeBaseType?: unknown },
+	pointerMetadata: { pointerDepth: number; pointeeBaseType?: unknown },
 	line: PushLine,
 	context: CompilationContext
 ): void {
