@@ -1,0 +1,53 @@
+8f4e/v1
+
+module allpassDiffuser
+; Delay-based allpass stage
+; for reverb diffusion. 
+; It smears transients by 
+; feeding a delayed sample 
+; back into the buffer.
+
+float* in
+float out
+float[] buffer 128
+float* pointer &buffer 
+
+const ALLPASS_GAIN 0.8
+
+local float writeValue 
+
+push *in
+push *pointer
+push ALLPASS_GAIN
+mul
+add
+localSet writeValue
+
+push &out
+push *pointer
+push writeValue
+push ALLPASS_GAIN
+mul
+sub
+store
+
+push pointer
+push writeValue
+store 
+
+push &pointer
+push pointer
+push sizeof(pointer)
+add
+store
+
+push pointer
+push buffer&
+greaterThan
+if 
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
