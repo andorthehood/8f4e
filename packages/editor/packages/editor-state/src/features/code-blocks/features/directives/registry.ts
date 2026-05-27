@@ -5,7 +5,6 @@ import groupDirective from './group/plugin';
 import hideDirective from './hide/plugin';
 import hiddenDirective from './hidden/plugin';
 import homeDirective from './home/plugin';
-import nthDirective from './nth/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
 import meterDirective from './meter/plugin';
@@ -53,7 +52,6 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	switchDirective,
 	watchDirective,
 	infoDirective,
-	nthDirective,
 	disabledDirective,
 	homeDirective,
 	favoriteDirective,

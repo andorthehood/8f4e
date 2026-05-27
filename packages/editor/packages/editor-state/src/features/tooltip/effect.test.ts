@@ -258,6 +258,43 @@ describe('tooltip effect', () => {
 		expect(state.tooltip.text).toEqual(['drop (T -- )', 'Removes the top value from the', 'stack.']);
 	});
 
+	it('writes module execution order for selected module instructions', () => {
+		const selectedBlock = createMockCodeBlock({
+			id: 'module-b',
+			moduleId: 'module-b',
+			code: ['module module-b', 'push 1'],
+			cursor: {
+				row: 0,
+				col: 0,
+				x: 0,
+				y: 0,
+			},
+		});
+		const state = createMockState({
+			compiler: {
+				compiledModules: {
+					'module-a': {} as never,
+					'module-b': {} as never,
+				},
+			},
+			graphicHelper: {
+				selectedCodeBlock: selectedBlock,
+			},
+			tooltip: {
+				text: [],
+			},
+		});
+		const store = createStateManager(state);
+
+		tooltip(store);
+
+		expect(state.tooltip.text).toEqual(['Starts a module block.', 'execution order: 2']);
+
+		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
+
+		expect(state.tooltip.text).not.toContain('execution order: 2');
+	});
+
 	it('updates documentation tooltip text when the selected line text changes', () => {
 		const selectedBlock = createMockCodeBlock({
 			code: ['add'],
