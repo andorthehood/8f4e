@@ -15,10 +15,6 @@ const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
 const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
 
-function compareCodeBlocksByCreationIndex(a: CodeBlockGraphicData, b: CodeBlockGraphicData): number {
-	return a.creationIndex - b.creationIndex;
-}
-
 /**
  * Converts code blocks into separate arrays for modules, functions, and macros.
  *
@@ -37,7 +33,9 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	const functions: CodeBlockGraphicData[] = [];
 	const macros: CodeBlockGraphicData[] = [];
 
-	const sortedEnabled = [...codeBlocks].filter(block => !block.disabled).sort(compareCodeBlocksByCreationIndex);
+	const sortedEnabled = [...codeBlocks]
+		.filter(block => !block.disabled)
+		.sort((a, b) => a.creationIndex - b.creationIndex);
 
 	for (const block of sortedEnabled) {
 		if (compiledModuleBlockTypeSet.has(block.blockType)) {
