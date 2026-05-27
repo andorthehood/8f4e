@@ -1,12 +1,12 @@
 {
   "sourceModuleOrder": [
     "projectConfig",
+    "env",
+    "sineLT",
     "dancer1",
     "dancer2",
     "dancer3",
-    "dancer4",
-    "env",
-    "sineLT"
+    "dancer4"
   ],
   "compiledModuleLayout": [
     {

@@ -1,9 +1,29 @@
 8f4e/v1
 
+constants env
+; @pos -59 0
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 1/19/2026, 10:03:27 PM
+
+const SAMPLE_RATE 50
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
 module projectConfig
 ; @pos -59 12
 ; @config runtime WebWorkerRuntime
 ; ~sampleRate 50
+
+moduleEnd
+
+module main
+; @pos 25 10
+
+; This project demonstrates a radial ripple
+; post-process effect using GLSL shader
+; code blocks.
 
 moduleEnd
 
@@ -18,26 +38,6 @@ push count
 push 1
 add
 store
-
-moduleEnd
-
-constants env
-; @pos -59 0
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 1/19/2026, 10:03:27 PM
-
-const SAMPLE_RATE 50
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
-
-module main
-; @pos 25 10
-
-; This project demonstrates a radial ripple
-; post-process effect using GLSL shader
-; code blocks.
 
 moduleEnd
 

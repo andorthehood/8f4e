@@ -1,16 +1,16 @@
 {
   "sourceModuleOrder": [
-    "notes",
     "projectConfig",
-    "activationFn",
-    "activationFn2",
-    "activationFn3",
     "env",
+    "result",
+    "notes",
+    "switches",
     "perceptron",
     "perceptron2",
+    "activationFn",
+    "activationFn2",
     "perceptron3",
-    "result",
-    "switches"
+    "activationFn3"
   ],
   "compiledModuleLayout": [
     {

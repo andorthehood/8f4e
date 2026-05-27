@@ -1,13 +1,12 @@
 8f4e/v1
 
-note
-; @pos -83 19
+module projectConfig
+; @pos -202 -14
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @config export.fileName midiIn
 
-; @midiIn 0 onMidiEvent
-
-; @info midi
-
-noteEnd
+moduleEnd
 
 constants env
 ; @pos -202 -6
@@ -68,10 +67,11 @@ int data2   ; @w
 
 moduleEnd
 
-module projectConfig
-; @pos -202 -14
-; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
-; @config export.fileName midiIn
+note
+; @pos -83 19
 
-moduleEnd
+; @midiIn 0 onMidiEvent
+
+; @info midi
+
+noteEnd

@@ -8,15 +8,17 @@ module projectConfig
 
 moduleEnd
 
-module notes
-; @pos 130 12
-; This is a stereo loopback example
-; that reads input audio from a 
-; shared buffer and writes the same 
-; signal into left and right output 
-; buffers using circular-buffer
-; pointer logic.
-moduleEnd
+constants env
+; @pos -52 1
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 2/19/2026, 1:30:23 PM
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
 
 module audioin
 ; @pos 5 1
@@ -138,14 +140,12 @@ ifEnd
 
 moduleEnd
 
-constants env
-; @pos -52 1
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 2/19/2026, 1:30:23 PM
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
+module notes
+; @pos 130 12
+; This is a stereo loopback example
+; that reads input audio from a 
+; shared buffer and writes the same 
+; signal into left and right output 
+; buffers using circular-buffer
+; pointer logic.
+moduleEnd
