@@ -111,7 +111,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'var1',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['var2'] = {
 			wordAlignedAddress: 6,
@@ -123,7 +123,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'var2',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -144,7 +144,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -165,7 +165,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -185,7 +185,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -207,7 +207,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -227,7 +227,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -255,7 +255,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -275,7 +275,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -297,7 +297,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -317,7 +317,7 @@ describe('watch directive widget resolution', () => {
 			default: 0,
 			isInteger: false,
 			id: '__anonymous__0',
-			isPointingToPointer: false,
+			pointerDepth: 0,
 		};
 
 		runDirectiveResolution();
@@ -338,7 +338,7 @@ describe('watch directive widget resolution', () => {
 			isInteger: true,
 			id: '__anonymous__0',
 			pointeeBaseType: 'int',
-			isPointingToPointer: false,
+			pointerDepth: 1,
 		};
 
 		runDirectiveResolution();

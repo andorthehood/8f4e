@@ -8,13 +8,15 @@ import type { CodegenContext, ResolvedLocalPointerPushLine } from '@8f4e/compile
 
 export default function pushLocalPointer(line: ResolvedLocalPointerPushLine, context: CodegenContext): CodegenContext {
 	const { local } = line.resolvedTarget;
+	const { dereferenceDepth } = line.arguments[0];
 	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,
 		line.lineNumberAfterMacroExpansion,
 		local,
 		localGet(local.index),
-		'pointer-value'
+		'pointer-value',
+		dereferenceDepth
 	);
 
 	return saveByteCode(context, dereference.byteCode);

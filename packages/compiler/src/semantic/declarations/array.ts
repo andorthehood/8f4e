@@ -80,7 +80,7 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 		default: createArrayDefaultValues(line, context, numberOfElements, isInteger),
 		hasExplicitDefault: line.hasExplicitMemoryDefault,
 		isInteger,
-		isPointingToPointer: line.instruction.includes('**'),
+		pointerDepth: line.instruction.includes('**') ? 2 : line.instruction.includes('*') ? 1 : 0,
 		...(line.instruction.includes('*')
 			? {
 					pointeeBaseType: line.instruction.startsWith('float64')

@@ -56,6 +56,7 @@ export const ErrorCode = {
 	DUPLICATE_MEMORY_REGION_NAME: 54,
 	UNKNOWN_MEMORY_REGION: 55,
 	MEMORY_REGION_INDEX_OUT_OF_BOUNDS: 56,
+	POINTER_DEREFERENCE_DEPTH_EXCEEDED: 57,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];

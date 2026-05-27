@@ -11,7 +11,7 @@ import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
-import { getDereferencedValueKindFromMetadata } from '../utils/memoryData';
+import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../utils/memoryData';
 
 import type {
 	CompilerASTLine,
@@ -30,6 +30,9 @@ import type {
 	StackProducedItemSpec,
 	StackMutationSpec,
 	InstructionSpec,
+	DataStructure,
+	LocalBinding,
+	PointeeMetadata,
 } from '@8f4e/compiler-spec';
 
 function createStackValue(
@@ -123,19 +126,64 @@ function pushLiteralStackItems(line: NormalizedPushLine): Stack {
 	];
 }
 
+function getPointeeMetadata(pointerMetadata: DataStructure | LocalBinding): PointeeMetadata | undefined {
+	return pointerMetadata.pointeeBaseType
+		? {
+				baseType: pointerMetadata.pointeeBaseType,
+				memoryIndex: pointerMetadata.pointeeMemoryIndex ?? 0,
+				...(pointerMetadata.pointeeMemoryRegionName
+					? { memoryRegionName: pointerMetadata.pointeeMemoryRegionName }
+					: {}),
+				pointerDepth: getPointerDepthFromMetadata(pointerMetadata),
+			}
+		: undefined;
+}
+
+function pushDereferencedPointerStackItems(
+	line: Extract<ResolvedPushLine, { resolvedTarget: { kind: 'memory-pointer' | 'local-pointer' } }>
+): Stack {
+	const pointerMetadata =
+		line.resolvedTarget.kind === 'memory-pointer'
+			? line.resolvedTarget.memoryItem
+			: line.resolvedTarget.kind === 'local-pointer'
+				? line.resolvedTarget.local
+				: undefined;
+	if (!pointerMetadata) {
+		return [];
+	}
+
+	const dereferenceDepth = line.arguments[0].dereferenceDepth;
+	const remainingPointerDepth = getPointerDepthFromMetadata(pointerMetadata) - dereferenceDepth;
+	if (remainingPointerDepth > 0) {
+		return [
+			kindToStackItem('int32', {
+				isNonZero: false,
+				address: getMemoryRegionFields(
+					pointerMetadata.pointeeMemoryIndex ?? 0,
+					pointerMetadata.pointeeMemoryRegionName
+				),
+				pointsTo: {
+					baseType: pointerMetadata.pointeeBaseType,
+					memoryIndex: pointerMetadata.pointeeMemoryIndex ?? 0,
+					...(pointerMetadata.pointeeMemoryRegionName
+						? { memoryRegionName: pointerMetadata.pointeeMemoryRegionName }
+						: {}),
+					pointerDepth: remainingPointerDepth,
+				},
+			}),
+		];
+	}
+
+	const kind = getDereferencedValueKindFromMetadata(pointerMetadata, dereferenceDepth);
+	return [kindToStackItem(kind, { isNonZero: false })];
+}
+
 function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 	switch (line.resolvedTarget.kind) {
 		case 'memory': {
 			const { memoryItem } = line.resolvedTarget;
 			const kind = resolveMemoryValueKind(memoryItem);
-			const pointsTo = memoryItem.pointeeBaseType
-				? {
-						baseType: memoryItem.pointeeBaseType,
-						memoryIndex: memoryItem.pointeeMemoryIndex ?? 0,
-						...(memoryItem.pointeeMemoryRegionName ? { memoryRegionName: memoryItem.pointeeMemoryRegionName } : {}),
-						isPointer: !!memoryItem.isPointingToPointer,
-					}
-				: undefined;
+			const pointsTo = getPointeeMetadata(memoryItem);
 
 			return [
 				kindToStackItem(kind, {
@@ -146,26 +194,19 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 			];
 		}
 		case 'memory-pointer': {
-			const { memoryItem } = line.resolvedTarget;
-			const kind = getDereferencedValueKindFromMetadata(memoryItem);
-			return [kindToStackItem(kind, { isNonZero: false })];
+			return pushDereferencedPointerStackItems(
+				line as Extract<ResolvedPushLine, { resolvedTarget: { kind: 'memory-pointer' } }>
+			);
 		}
 		case 'local-pointer': {
-			const { local } = line.resolvedTarget;
-			const kind = getDereferencedValueKindFromMetadata(local);
-			return [kindToStackItem(kind, { isNonZero: false })];
+			return pushDereferencedPointerStackItems(
+				line as Extract<ResolvedPushLine, { resolvedTarget: { kind: 'local-pointer' } }>
+			);
 		}
 		case 'local':
 		default: {
 			const { local } = line.resolvedTarget;
-			const pointsTo = local.pointeeBaseType
-				? {
-						baseType: local.pointeeBaseType,
-						memoryIndex: local.pointeeMemoryIndex ?? 0,
-						...(local.pointeeMemoryRegionName ? { memoryRegionName: local.pointeeMemoryRegionName } : {}),
-						isPointer: !!local.isPointingToPointer,
-					}
-				: undefined;
+			const pointsTo = getPointeeMetadata(local);
 
 			return [
 				local.pointeeBaseType

@@ -11,7 +11,7 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('pushLocalPointer', () => {
 	it('dereferences a local pointer via a guarded load', () => {
-		const local = { kind: 'value', valueType: 'int', pointeeBaseType: 'float' as const, index: 1 };
+		const local = { kind: 'value', valueType: 'int', pointeeBaseType: 'float' as const, pointerDepth: 1, index: 1 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
 				lut: local,

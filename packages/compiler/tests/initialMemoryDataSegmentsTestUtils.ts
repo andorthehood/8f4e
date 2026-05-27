@@ -15,7 +15,7 @@ export function createMemory(
 		default: 0,
 		hasExplicitDefault: false,
 		isInteger: true,
-		isPointingToPointer: false,
+		pointerDepth: 0,
 		isUnsigned: false,
 		...overrides,
 	};

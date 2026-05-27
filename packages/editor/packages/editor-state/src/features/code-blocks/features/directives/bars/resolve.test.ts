@@ -46,7 +46,7 @@ describe('bars directive widget resolution', () => {
 								default: 0,
 								isInteger: false,
 								id: 'bins',
-								isPointingToPointer: false,
+								pointerDepth: 0,
 							},
 						},
 					},
