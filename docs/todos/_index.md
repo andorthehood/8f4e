@@ -43,7 +43,6 @@ Active todo files are listed below.
 | 315 | Optimize global editor directive recomputation | 🟡 | 3-6h | 2026-03-16 | The global editor directives effect currently rescans every code block whenever: |
 | 320 | Add `&*name` pointee start address prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e already supports `&name` to push the start byte address of a memory item and `*name` to dereference a pointer. However, there is no compile-time identifier form for "start... |
 | 321 | Add `*name&` pointee end address suffix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e supports `name&` to push the start byte address of the last word-aligned chunk covering a memory item. That gives users an address-oriented way to reference the end of an a... |
-| 323 | Add `min(*name)` pointee min value prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e already supports `min(name)` to push the minimum finite value for the element type of a memory item. For pointer-typed memory items, that currently reflects the pointer sto... |
 | 376 | Add ASCII scene renderer for editor snapshot tests | 🟡 | 1-2d | 2026-04-08 | The editor currently has strong unit coverage for directive parsing, layout derivation, and individual widget geometry, but it does not have a cheap whole-scene regression layer... |
 | 377 | Batch-parse modules and validate shared ids | 🟡 | 4-8h | 2026-04-08 | The compiler currently parses each module independently by mapping `compileToAST(...)` over the module list in `packages/compiler/src/index.ts`. |
 | 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The tokenizer/parser already owns some cross-line structural syntax concerns such as `if` pairing and block-closure validation, but that statefulness is still too narrow in two... |
@@ -64,7 +63,10 @@ Active todo files are listed below.
 | 425 | Split StackItem into value and address variants | 🟡 | 1-2d | 2026-05-26 | Replace the broad optional-field `StackItem` shape with a discriminated `value | address` union so memory codegen can use narrowed address metadata without optional-chain fallbacks. |
 | 426 | Decide compiler broad type splitting strategy | 🟡 | 2-4h | 2026-05-26 | Decide migration boundaries for broad compiler-spec shapes such as `DataStructure`, `LocalBinding`, `CompilationContext`, `MapBlockState`, `CollectedNamespace`, and address-bearing constants before implementing more type splits. |
 | 427 | Add depth-aware pointer metadata query dereferencing | 🟡 | 2-4h | 2026-05-27 | `sizeof(**ptr)` and `max(**ptr)` should carry explicit dereference depth and resolve against double-pointer metadata instead of targeting a literal `*ptr` identifier. |
-| 428 | Add pointer-aware count and min metadata queries | 🟡 | 2-4h | 2026-05-27 | `min(*ptr)` and `count(*ptr)` currently classify as plain metadata queries against target `*ptr`; define and implement explicit pointer-aware behavior. |
+| 429 | Unify metadata query argument shape | 🟡 | 2-4h | 2026-05-27 | Replace per-helper metadata query reference kinds with one structured query shape carrying query kind, target scope, and dereference depth. |
+| 430 | Nest pointer metadata shape | 🟡 | 4-8h | 2026-05-27 | Move scattered pointer fields into a shared nested pointer metadata shape used consistently by memory, locals, and stack address metadata. |
+| 431 | Separate pointer type and provenance facts | 🟡 | 2-4h | 2026-05-27 | Model declared pointer type facts separately from value provenance facts so helpers like `count(*ptr)` only use explicit count provenance. |
+| 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 
 ### 🟢 Low Priority
 
@@ -82,6 +84,8 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 428 | Add pointer-aware count and min metadata queries | 2026-05-27 | `min(*ptr)` and `count(*ptr)` now classify explicitly and resolve from pointer metadata; pointer count uses tracked memory-start pointee element counts when available and falls back to `1`. |
+| 323 | Add `min(*name)` pointee min value prefix for pointers | 2026-05-27 | Completed as part of pointer-aware metadata query work; `min(*name)` now has parser, semantic, helper, docs, and public compiler coverage. |
 | 423 | Narrow AST line metadata interfaces | 2026-05-26 | `ASTLineBase` now only carries core line identity; memory, semantic, directive, and block metadata live on concrete line interfaces, and snapshots were updated to show the narrower public AST shape. |
 | 410 | Consolidate release action commits | 2026-05-19 | Release workflow now uses the two-commit fallback: Nx keeps the version commit, and bundle-size, bytecode-size, compiler-coverage, and docs-coverage logs are committed together as release metrics before the atomic tag push. |
 | 409 | Track block context flags during stack analysis | 2026-05-19 | Stack analysis now carries cached block-context flags, `validateInstruction` reads them directly, and shared block-stack helpers maintain the flags with focused test coverage. |

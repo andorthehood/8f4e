@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-05-27
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-27
 ---
 
 # TODO: Add pointer-aware count and min metadata queries
@@ -94,10 +94,11 @@ For `count(*name)`, choose one of these behaviors and document it:
 
 ## Related Items
 
-- **Related**: `docs/todos/323-add-pointee-min-value-prefix-for-pointers.md`
+- **Related**: `docs/todos/archived/323-add-pointee-min-value-prefix-for-pointers.md`
 - **Related**: `docs/todos/427-add-depth-aware-pointer-metadata-query-dereferencing.md`
 
 ## Notes
 
-- Created after reviewing helper behavior on 2026-05-27. `min(*ptr)` and `count(*ptr)` currently classify
-  as plain metadata queries against target `*ptr`, which is almost certainly not the intended long-term UX.
+- Created after reviewing helper behavior on 2026-05-27. At creation time, `min(*ptr)` and `count(*ptr)` classified
+  as plain metadata queries against target `*ptr`, which was almost certainly not the intended long-term UX.
+- Completed on 2026-05-27. Single-dereference `min(*ptr)` and `count(*ptr)` now classify explicitly and resolve from pointer metadata; `count(*ptr)` uses tracked memory-start pointee element counts when available and falls back to `1` for pointer values without count provenance.

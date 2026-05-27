@@ -135,6 +135,9 @@ function getPointeeMetadata(pointerMetadata: DataStructure | LocalBinding): Poin
 					? { memoryRegionName: pointerMetadata.pointeeMemoryRegionName }
 					: {}),
 				pointerDepth: getPointerDepthFromMetadata(pointerMetadata),
+				...(pointerMetadata.pointeeElementCount !== undefined
+					? { elementCount: pointerMetadata.pointeeElementCount }
+					: {}),
 			}
 		: undefined;
 }
@@ -169,6 +172,9 @@ function pushDereferencedPointerStackItems(
 						? { memoryRegionName: pointerMetadata.pointeeMemoryRegionName }
 						: {}),
 					pointerDepth: remainingPointerDepth,
+					...(pointerMetadata.pointeeElementCount !== undefined
+						? { elementCount: pointerMetadata.pointeeElementCount }
+						: {}),
 				},
 			}),
 		];

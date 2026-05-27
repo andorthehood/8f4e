@@ -47,13 +47,18 @@ push **pptr   ; loads target
 ## Element count
 
 - `count(name)` pushes the element count for a buffer (or 1 for scalars).
-- `count(*name)` is not supported currently.
+- `count(*name)` pushes the known element count of the value pointed to by a pointer-typed memory item when the pointer is initialized from a tracked memory start address.
+- If the pointer has no tracked pointee element count, `count(*name)` resolves to `1`. On a non-pointer memory identifier, current compiler behavior resolves `count(*name)` to `0`.
+- Metadata queries currently support one leading `*`. For double pointers, `count(*name)` describes the intermediate pointer slot. `count(**name)` is not supported yet.
 
 Example:
 
 ```
 int[] buffer 4
 push count(buffer)
+
+int* ptr &buffer
+push count(*ptr) ; 4
 ```
 
 ## Element word size
@@ -154,7 +159,10 @@ push max(*fptr)  ; 1.7976931348623157e+308  — max of the float64 it points to
 ## Element min value
 
 - `min(name)` pushes the lowest finite value (most negative) for the element type of a memory item.
-- `min(*name)` is not supported yet; it is tracked separately from the current `min(name)` form.
+- `min(*name)` pushes the lowest finite value for the type pointed to by a pointer-typed memory item.
+- On a non-pointer memory identifier, current compiler behavior resolves `min(*name)` to `0`.
+- `min(name)` keeps its existing meaning (min of the memory item's own element type).
+- Metadata queries currently support one leading `*`. For double pointers, `min(*name)` describes the intermediate pointer slot. `min(**name)` is not supported yet.
 
 For signed integers:
 - `int32` / `int` / `int[]`: -2,147,483,648
@@ -176,6 +184,10 @@ push min(buffer)
 
 int8u[] unsignedBuffer 10 0
 push min(unsignedBuffer)
+
+int8* ptr &buffer
+push min(ptr)    ; -2,147,483,648  — min of the pointer slot type (i32)
+push min(*ptr)   ; -128            — min of the int8 it points to
 ```
 
 ---
@@ -193,7 +205,7 @@ Supported operators:
 | `/`      | Division       | `SIZE/2`      |
 | `^`      | Exponentiation | `2^16`        |
 
-Each side can be a numeric literal, a constant name, or a supported metadata query such as `sizeof(name)`, `sizeof(*name)`, `count(name)`, `max(name)`, `max(*name)`, or `min(name)`.
+Each side can be a numeric literal, a constant name, or a supported metadata query such as `sizeof(name)`, `sizeof(*name)`, `count(name)`, `count(*name)`, `max(name)`, `max(*name)`, `min(name)`, or `min(*name)`.
 Exactly one operator is allowed; chained forms like `2^3^4` or `SIZE*2/4` are not valid.
 
 **Note**: `^` means exponentiation in compile-time expressions, not bitwise XOR (which is the runtime `xor` instruction).
