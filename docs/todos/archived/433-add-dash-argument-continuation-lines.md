@@ -15,7 +15,7 @@ completed: 2026-05-28
 Long source argument lists are hard to read when they must stay on one line. This is especially noticeable for memory declarations with pointer defaults or intermodule references, such as:
 
 ```8f4e
-float* buffer &allpassDiffuser:buffer
+float* readHead &source:samples
 ```
 
 The language currently has no syntax-level way to wrap those arguments across multiple lines while preserving the existing instruction semantics.
@@ -26,14 +26,14 @@ Add parser sugar for dash-prefixed argument continuation lines:
 
 ```8f4e
 float*
-- buffer
-- &allpassDiffuser:buffer
+- readHead
+- &source:samples
 ```
 
 The tokenizer/parser should fold this into the same AST shape as:
 
 ```8f4e
-float* buffer &allpassDiffuser:buffer
+float* readHead &source:samples
 ```
 
 This should happen before source argument validation, semantic normalization, namespace layout, stack analysis, or codegen. The compiler should not need a new semantic instruction for this behavior.
