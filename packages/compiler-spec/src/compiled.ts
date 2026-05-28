@@ -21,10 +21,10 @@ export interface CompiledModule {
 	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;
-	wordAlignedAddress: number;
+	allocationUnitAddress: number;
 	memoryMap: MemoryMap;
 	internalResources?: InternalResourceMap;
-	wordAlignedSize: number;
+	allocationUnitCount: number;
 	ast?: ModuleAST | ConstantsAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;

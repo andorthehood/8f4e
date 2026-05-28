@@ -138,6 +138,8 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
 exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -149,8 +151,6 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -314,6 +314,8 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
 exports[`float: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "bar": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0.0625,
     "elementWordSize": 4,
@@ -325,10 +327,10 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -340,8 +342,6 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -505,6 +505,8 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
 exports[`float: with negative fraction literal (-1/2) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "bar": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": -0.5,
     "elementWordSize": 4,
@@ -516,10 +518,10 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -531,8 +533,6 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -696,6 +696,8 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
 exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -707,10 +709,10 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -722,8 +724,6 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -887,6 +887,8 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
 exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 4,
     "elementWordSize": 4,
@@ -898,10 +900,10 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -913,8 +915,6 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1048,6 +1048,8 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
 exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -1059,8 +1061,6 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;

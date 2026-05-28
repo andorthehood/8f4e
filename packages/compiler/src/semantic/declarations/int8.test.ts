@@ -25,7 +25,7 @@ describe('int8 instruction compiler', () => {
 
 		const entry = context.namespace.memory['ptr'];
 		expect(entry.elementWordSize).toBe(4);
-		expect(entry.wordAlignedSize).toBe(1);
+		expect(entry.allocationUnitCount).toBe(1);
 		expect(entry.isInteger).toBe(true);
 		expect(entry.pointeeBaseType).toBe('int8');
 		expect(entry.pointerDepth).toBe(1);
@@ -47,7 +47,7 @@ describe('int8 instruction compiler', () => {
 
 		const entry = context.namespace.memory['pptr'];
 		expect(entry.elementWordSize).toBe(4);
-		expect(entry.wordAlignedSize).toBe(1);
+		expect(entry.allocationUnitCount).toBe(1);
 		expect(entry.isInteger).toBe(true);
 		expect(entry.pointeeBaseType).toBe('int8');
 		expect(entry.pointerDepth).toBe(2);
@@ -68,7 +68,7 @@ describe('int8 instruction compiler', () => {
 		);
 
 		// Pointer slot always occupies 1 word (4 bytes)
-		expect(context.namespace.memory['p'].wordAlignedSize).toBe(1);
+		expect(context.namespace.memory['p'].allocationUnitCount).toBe(1);
 		expect(context.namespace.memory['p'].elementWordSize).toBe(4);
 	});
 });

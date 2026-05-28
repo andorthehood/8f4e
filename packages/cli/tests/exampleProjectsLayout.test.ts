@@ -55,8 +55,8 @@ describe('compileProject (example project layout)', () => {
 				id: module.id,
 				index: module.index,
 				byteAddress: module.byteAddress,
-				wordAlignedAddress: module.wordAlignedAddress,
-				wordAlignedSize: module.wordAlignedSize,
+				allocationUnitAddress: module.allocationUnitAddress,
+				allocationUnitCount: module.allocationUnitCount,
 				skipExecutionInCycle: module.skipExecutionInCycle ?? false,
 				initOnlyExecution: module.initOnlyExecution ?? false,
 			}));

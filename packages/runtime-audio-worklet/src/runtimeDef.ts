@@ -62,7 +62,7 @@ export function audioWorkletRuntimeFactory(
 		const audioOutputBuffers = audioRoutes.audioOutputs
 			.map(({ moduleId, memoryId, output, channel }) => {
 				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
+				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.allocationUnitAddress;
 				return {
 					audioBufferWordAddress,
 					output,
@@ -77,7 +77,7 @@ export function audioWorkletRuntimeFactory(
 		const audioInputBuffers = audioRoutes.audioInputs
 			.map(({ moduleId, memoryId, input, channel }) => {
 				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
+				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.allocationUnitAddress;
 				return {
 					audioBufferWordAddress,
 					input,

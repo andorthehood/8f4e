@@ -42,7 +42,7 @@ export default function drawConnectors(
 		if (showAddress) {
 			drawBracketedValue(engine, state, x, y, String(memory.byteAddress + bufferPointer * 4));
 		} else if (showEndAddress) {
-			drawBracketedValue(engine, state, x, y, String((memory.wordAlignedSize - 1) * 4 + memory.byteAddress));
+			drawBracketedValue(engine, state, x, y, String((memory.allocationUnitCount - 1) * 4 + memory.byteAddress));
 		} else {
 			const value = formatDebuggerValue(memoryViews, memory, bufferPointer, displayFormat);
 			drawBracketedValue(engine, state, x, y, value);

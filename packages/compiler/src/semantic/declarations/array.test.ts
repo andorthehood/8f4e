@@ -107,7 +107,7 @@ describe('array declaration compiler', () => {
 		expect(thrownError).toMatchObject({ code: ErrorCode.ARRAY_INITIALIZER_TOO_LONG });
 	});
 
-	it('creates an int8[] array with correct wordAlignedSize', () => {
+	it('creates an int8[] array with correct allocationUnitCount', () => {
 		const context = createInstructionCompilerTestContext();
 
 		array(
@@ -126,7 +126,7 @@ describe('array declaration compiler', () => {
 		expect(memory.numberOfElements).toBe(3);
 		// 3 bytes * 1 byte per element = 3 bytes total
 		// ceil(3 / 4) = 1 word
-		expect(memory.wordAlignedSize).toBe(1);
+		expect(memory.allocationUnitCount).toBe(1);
 	});
 
 	it('creates an int8[] array requiring alignment padding', () => {
@@ -148,10 +148,10 @@ describe('array declaration compiler', () => {
 		expect(memory.numberOfElements).toBe(5);
 		// 5 bytes * 1 byte per element = 5 bytes total
 		// ceil(5 / 4) = 2 words
-		expect(memory.wordAlignedSize).toBe(2);
+		expect(memory.allocationUnitCount).toBe(2);
 	});
 
-	it('creates an int16[] array with correct wordAlignedSize', () => {
+	it('creates an int16[] array with correct allocationUnitCount', () => {
 		const context = createInstructionCompilerTestContext();
 
 		array(
@@ -170,7 +170,7 @@ describe('array declaration compiler', () => {
 		expect(memory.numberOfElements).toBe(3);
 		// 3 elements * 2 bytes per element = 6 bytes total
 		// ceil(6 / 4) = 2 words
-		expect(memory.wordAlignedSize).toBe(2);
+		expect(memory.allocationUnitCount).toBe(2);
 	});
 
 	it('creates an int16[] array requiring alignment padding', () => {
@@ -192,10 +192,10 @@ describe('array declaration compiler', () => {
 		expect(memory.numberOfElements).toBe(5);
 		// 5 elements * 2 bytes per element = 10 bytes total
 		// ceil(10 / 4) = 3 words
-		expect(memory.wordAlignedSize).toBe(3);
+		expect(memory.allocationUnitCount).toBe(3);
 	});
 
-	it('creates an int32[] array with correct wordAlignedSize', () => {
+	it('creates an int32[] array with correct allocationUnitCount', () => {
 		const context = createInstructionCompilerTestContext();
 
 		array(
@@ -214,7 +214,7 @@ describe('array declaration compiler', () => {
 		expect(memory.numberOfElements).toBe(3);
 		// 3 elements * 4 bytes per element = 12 bytes total
 		// ceil(12 / 4) = 3 words
-		expect(memory.wordAlignedSize).toBe(3);
+		expect(memory.allocationUnitCount).toBe(3);
 	});
 
 	it('creates an int8u[] array with unsigned flag', () => {
@@ -295,7 +295,7 @@ describe('array declaration compiler', () => {
 		expect(memory.elementWordSize).toBe(8);
 		expect(memory.numberOfElements).toBe(3);
 		// 3 elements * 8 bytes each = 24 bytes = 6 words
-		expect(memory.wordAlignedSize).toBe(6);
+		expect(memory.allocationUnitCount).toBe(6);
 		expect(memory.byteAddress % 8).toBe(0);
 	});
 
@@ -327,6 +327,6 @@ describe('array declaration compiler', () => {
 
 		const memory = context.namespace.memory['doubles'];
 		expect(memory.byteAddress % 8).toBe(0);
-		expect(memory.wordAlignedAddress % 2).toBe(0);
+		expect(memory.allocationUnitAddress % 2).toBe(0);
 	});
 });

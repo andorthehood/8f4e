@@ -13,13 +13,13 @@ export default function drawer(
 		return;
 	}
 
-	for (const { x, y, width, height, wordAlignedAddress, byteAddress, isInteger, isFloat64, min, max } of codeBlock
+	for (const { x, y, width, height, allocationUnitAddress, byteAddress, isInteger, isFloat64, min, max } of codeBlock
 		.widgets.sliders) {
 		const value = isInteger
-			? memoryViews.int32[wordAlignedAddress]
+			? memoryViews.int32[allocationUnitAddress]
 			: isFloat64
 				? memoryViews.float64[byteAddress / 8]
-				: memoryViews.float32[wordAlignedAddress];
+				: memoryViews.float32[allocationUnitAddress];
 
 		// Handle edge case where min equals max
 		if (min === max) {

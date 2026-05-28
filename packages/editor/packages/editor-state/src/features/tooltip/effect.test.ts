@@ -175,7 +175,7 @@ describe('tooltip effect', () => {
 								id: 'value',
 								numberOfElements: 1,
 								byteAddress: 4,
-								wordAlignedAddress: 1,
+								allocationUnitAddress: 1,
 							},
 						},
 					} as never,

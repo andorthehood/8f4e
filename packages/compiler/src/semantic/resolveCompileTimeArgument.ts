@@ -1,4 +1,4 @@
-import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ArgumentType, ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 
 import { getEndByteAddress } from './layoutAddresses';
 import { getMemoryRegionFields } from './memoryRegions';
@@ -28,12 +28,12 @@ import type {
 	MemoryAddressRange,
 } from '@8f4e/compiler-spec';
 
-function getWordAlignedByteLength(wordAlignedSize: number): number {
-	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
+function getWordAlignedByteLength(allocationUnitCount: number): number {
+	return Math.max(0, allocationUnitCount) * ALLOCATION_UNIT_BYTE_SIZE;
 }
 
-function getEndAddressSafeByteLength(wordAlignedSize: number): number {
-	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
+function getEndAddressSafeByteLength(allocationUnitCount: number): number {
+	return allocationUnitCount > 0 ? ALLOCATION_UNIT_BYTE_SIZE : 0;
 }
 
 function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
@@ -47,7 +47,7 @@ function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): 
 				source: 'memory-start',
 				...memoryRegionFields,
 				byteAddress: memoryItem.byteAddress,
-				safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
+				safeByteLength: getWordAlignedByteLength(memoryItem.allocationUnitCount),
 				...(moduleId ? { moduleId } : {}),
 				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
 			},
@@ -56,7 +56,7 @@ function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): 
 }
 
 function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
-	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
+	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.allocationUnitCount);
 	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: byteAddress,
@@ -67,7 +67,7 @@ function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Co
 				source: 'memory-end',
 				...memoryRegionFields,
 				byteAddress,
-				safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
+				safeByteLength: getEndAddressSafeByteLength(memoryItem.allocationUnitCount),
 				...(moduleId ? { moduleId } : {}),
 				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
 			},
@@ -78,7 +78,7 @@ function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Co
 function moduleAddressConst(
 	source: 'module-start' | 'module-end',
 	byteAddress: number,
-	wordAlignedSize: number,
+	allocationUnitCount: number,
 	moduleId?: string,
 	memoryIndex = 0,
 	memoryRegionName?: string
@@ -95,8 +95,8 @@ function moduleAddressConst(
 				byteAddress,
 				safeByteLength:
 					source === 'module-start'
-						? getWordAlignedByteLength(wordAlignedSize)
-						: getEndAddressSafeByteLength(wordAlignedSize),
+						? getWordAlignedByteLength(allocationUnitCount)
+						: getEndAddressSafeByteLength(allocationUnitCount),
 				...(moduleId ? { moduleId } : {}),
 			},
 		},
@@ -319,15 +319,15 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		if (
 			targetNamespace?.kind === 'module' &&
 			typeof targetNamespace.byteAddress === 'number' &&
-			typeof targetNamespace.wordAlignedSize === 'number'
+			typeof targetNamespace.allocationUnitCount === 'number'
 		) {
 			const value = operand.isEndAddress
-				? getEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
+				? getEndByteAddress(targetNamespace.byteAddress, targetNamespace.allocationUnitCount)
 				: targetNamespace.byteAddress;
 			return moduleAddressConst(
 				operand.isEndAddress ? 'module-end' : 'module-start',
 				value,
-				targetNamespace.wordAlignedSize,
+				targetNamespace.allocationUnitCount,
 				targetModuleId,
 				targetNamespace.memoryIndex,
 				targetNamespace.memoryRegionName
@@ -359,7 +359,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 						source: 'module-nth-memory-start',
 						...memoryRegionFields,
 						byteAddress: item.byteAddress,
-						safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
+						safeByteLength: getWordAlignedByteLength(item.allocationUnitCount),
 						moduleId: targetModuleId,
 						...(item.id ? { memoryId: item.id } : {}),
 					},
@@ -396,19 +396,19 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 				return moduleAddressConst(
 					'module-start',
 					context.startingByteAddress,
-					context.currentModuleWordAlignedSize,
+					context.currentModuleAllocationUnitCount,
 					context.namespace.moduleName,
 					context.currentMemoryIndex,
 					context.currentMemoryRegionName
 				);
 			}
-			if (typeof context.currentModuleWordAlignedSize === 'number') {
-				const byteAddress = getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
+			if (typeof context.currentModuleAllocationUnitCount === 'number') {
+				const byteAddress = getEndByteAddress(context.startingByteAddress, context.currentModuleAllocationUnitCount);
 				return {
 					...moduleAddressConst(
 						'module-end',
 						byteAddress,
-						context.currentModuleWordAlignedSize,
+						context.currentModuleAllocationUnitCount,
 						context.namespace.moduleName,
 						context.currentMemoryIndex,
 						context.currentMemoryRegionName

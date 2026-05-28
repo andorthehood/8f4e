@@ -146,19 +146,19 @@ function resolveMemoryDefaultValue(
 				if (!arg.isEndAddress) {
 					return context.startingByteAddress;
 				}
-				return typeof context.currentModuleWordAlignedSize === 'number'
-					? getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
+				return typeof context.currentModuleAllocationUnitCount === 'number'
+					? getEndByteAddress(context.startingByteAddress, context.currentModuleAllocationUnitCount)
 					: 0;
 			}
 			const memoryItem = getMemoryItemOrThrow(arg.base, lineForError, context);
 			return arg.isEndAddress
-				? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize)
+				? getEndByteAddress(memoryItem.byteAddress, memoryItem.allocationUnitCount)
 				: memoryItem.byteAddress;
 		}
 
 		case 'element-count': {
 			const memoryItem = getMemoryItemOrThrow(arg.base, lineForError, context);
-			return memoryItem.wordAlignedSize;
+			return memoryItem.allocationUnitCount;
 		}
 
 		default:

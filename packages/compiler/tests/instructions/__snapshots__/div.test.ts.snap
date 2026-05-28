@@ -215,6 +215,8 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
 exports[`div (float) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -226,10 +228,10 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "input2": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -241,10 +243,10 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -256,8 +258,6 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -476,6 +476,8 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
 exports[`div (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -487,10 +489,10 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "input2": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -502,10 +504,10 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -517,8 +519,6 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
 }
 `;

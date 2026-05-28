@@ -29,7 +29,7 @@ function formatHexBytes(memoryViews: MemoryViews, byteAddress: number, elementWo
 export function formatDebuggerValueAtAddress(
 	memoryViews: MemoryViews,
 	byteAddress: number,
-	wordAlignedAddress: number,
+	allocationUnitAddress: number,
 	format: DebuggerValueFormat,
 	displayFormat: 'decimal' | 'binary' | 'hex'
 ): string {
@@ -55,8 +55,8 @@ export function formatDebuggerValueAtAddress(
 	}
 
 	return format.isInteger
-		? memoryViews.int32[wordAlignedAddress].toString(radix)
-		: memoryViews.float32[wordAlignedAddress].toFixed(4);
+		? memoryViews.int32[allocationUnitAddress].toString(radix)
+		: memoryViews.float32[allocationUnitAddress].toFixed(4);
 }
 
 export default function formatDebuggerValue(
@@ -68,7 +68,7 @@ export default function formatDebuggerValue(
 	return formatDebuggerValueAtAddress(
 		memoryViews,
 		memory.byteAddress + bufferPointer * memory.elementWordSize,
-		memory.wordAlignedAddress + bufferPointer,
+		memory.allocationUnitAddress + bufferPointer,
 		memory,
 		displayFormat
 	);

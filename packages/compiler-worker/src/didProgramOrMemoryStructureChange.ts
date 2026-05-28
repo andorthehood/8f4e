@@ -21,8 +21,8 @@ function didInternalResourcesChange(
 
 		if (
 			resource.byteAddress !== previousResource.byteAddress ||
-			resource.wordAlignedAddress !== previousResource.wordAlignedAddress ||
-			resource.wordAlignedSize !== previousResource.wordAlignedSize ||
+			resource.allocationUnitAddress !== previousResource.allocationUnitAddress ||
+			resource.allocationUnitCount !== previousResource.allocationUnitCount ||
 			resource.elementWordSize !== previousResource.elementWordSize ||
 			resource.default !== previousResource.default ||
 			resource.storageType !== previousResource.storageType
@@ -63,7 +63,7 @@ export default function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
-		if (compiledModule.wordAlignedSize !== previousModule.wordAlignedSize) {
+		if (compiledModule.allocationUnitCount !== previousModule.allocationUnitCount) {
 			return true;
 		}
 

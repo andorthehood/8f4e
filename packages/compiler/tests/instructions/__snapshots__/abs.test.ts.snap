@@ -156,6 +156,8 @@ exports[`abs (float) > if the generated AST, WAT and memory map match the snapsh
 exports[`abs (float) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -167,10 +169,10 @@ exports[`abs (float) > if the generated AST, WAT and memory map match the snapsh
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -182,8 +184,6 @@ exports[`abs (float) > if the generated AST, WAT and memory map match the snapsh
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -355,6 +355,8 @@ exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot
 exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -366,10 +368,10 @@ exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -381,8 +383,6 @@ exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -574,6 +574,8 @@ exports[`abs as non-zero divisor > if the generated AST, WAT and memory map matc
 exports[`abs as non-zero divisor > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -585,10 +587,10 @@ exports[`abs as non-zero divisor > if the generated AST, WAT and memory map matc
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -600,8 +602,6 @@ exports[`abs as non-zero divisor > if the generated AST, WAT and memory map matc
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;

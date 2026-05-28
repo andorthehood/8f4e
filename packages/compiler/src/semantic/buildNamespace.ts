@@ -1,6 +1,6 @@
 import {
 	ArgumentType,
-	GLOBAL_ALIGNMENT_BOUNDARY,
+	ALLOCATION_UNIT_BYTE_SIZE,
 	compilerSourceBlockInstructionByType,
 	hasReferencedNamespaceIds,
 	isNamedScalarMemoryDeclarationLine,
@@ -111,8 +111,8 @@ function createNamespaceBuildContext(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
+		currentModuleNextAllocationUnitOffset: 0,
+		currentModuleAllocationUnitCount: 0,
 		currentMemoryIndex: defaultRegion.memoryIndex,
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
@@ -134,7 +134,7 @@ function applyNamespaceDeclarationLines(
 		}
 	});
 
-	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
+	context.currentModuleAllocationUnitCount = context.currentModuleNextAllocationUnitOffset;
 }
 
 function resolveScalarMemoryDefaults(ast: ModuleAST | ConstantsAST, context: NamespaceBuildContext): void {
@@ -229,7 +229,7 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 
 export function collectNamespacesFromASTs(
 	asts: readonly (ModuleAST | ConstantsAST)[],
-	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
+	startingByteAddress = ALLOCATION_UNIT_BYTE_SIZE,
 	compiledFunctions?: FunctionMetadataLookup,
 	layoutAsts: readonly (ModuleAST | ConstantsAST)[] = asts,
 	options: Pick<CompileOptions, 'memoryRegions'> = {}
@@ -298,11 +298,11 @@ export function collectNamespacesFromASTs(
 			memory: context.namespace.memory,
 			...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
 			byteAddress: nextStartingByteAddress,
-			wordAlignedSize: context.currentModuleWordAlignedSize,
+			allocationUnitCount: context.currentModuleAllocationUnitCount,
 		};
 
 		nextStartingByteAddressByMemoryIndex[region.memoryIndex] =
-			nextStartingByteAddress + context.currentModuleWordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+			nextStartingByteAddress + context.currentModuleAllocationUnitCount * ALLOCATION_UNIT_BYTE_SIZE;
 	}
 
 	return namespaces;

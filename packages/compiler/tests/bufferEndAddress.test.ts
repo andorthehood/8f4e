@@ -22,7 +22,7 @@ describe('buffer& end address in declaration initializers', () => {
 
 		// buffer should be at byteAddress 4, size 5 words (startingMemoryWordAddress = 1)
 		expect(memoryMap.buffer.byteAddress).toBe(4);
-		expect(memoryMap.buffer.wordAlignedSize).toBe(5);
+		expect(memoryMap.buffer.allocationUnitCount).toBe(5);
 
 		// startPtr should have default value = buffer start = 4
 		expect(memoryMap.startPtr.default).toBe(4);
@@ -40,7 +40,7 @@ describe('buffer& end address in declaration initializers', () => {
 
 		// buffer should be at byteAddress 4, size 5 words (20 bytes total)
 		expect(memoryMap.buffer.byteAddress).toBe(4);
-		expect(memoryMap.buffer.wordAlignedSize).toBe(5);
+		expect(memoryMap.buffer.allocationUnitCount).toBe(5);
 
 		// endPtr should have default value = buffer end = 4 + (5-1) * 4 = 20
 		expect(memoryMap.endPtr.default).toBe(20);
@@ -58,7 +58,7 @@ describe('buffer& end address in declaration initializers', () => {
 
 		// buffer should be at byteAddress 4, size 5 words (20 bytes total)
 		expect(memoryMap.buffer.byteAddress).toBe(4);
-		expect(memoryMap.buffer.wordAlignedSize).toBe(5);
+		expect(memoryMap.buffer.allocationUnitCount).toBe(5);
 
 		// startPtr should point to buffer start = 4
 		expect(memoryMap.startPtr.default).toBe(4);

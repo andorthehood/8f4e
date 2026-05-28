@@ -207,6 +207,8 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
 exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -218,10 +220,10 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 2,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 2,
@@ -233,8 +235,6 @@ exports[`const: constant * sizeof(name) > if the generated AST, WAT and memory m
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int16",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 2,
   },
 }
 `;
@@ -406,6 +406,8 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
 exports[`const: constant ^ literal expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -417,8 +419,6 @@ exports[`const: constant ^ literal expression > if the generated AST, WAT and me
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -590,6 +590,8 @@ exports[`const: expression from another constant > if the generated AST, WAT and
 exports[`const: expression from another constant > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -601,8 +603,6 @@ exports[`const: expression from another constant > if the generated AST, WAT and
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -795,6 +795,8 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
 exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -806,10 +808,10 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 2,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 2,
@@ -821,8 +823,6 @@ exports[`const: literal * sizeof(name) > if the generated AST, WAT and memory ma
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int16",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 2,
   },
 }
 `;
@@ -994,6 +994,8 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
 exports[`const: literal ^ constant expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -1005,8 +1007,6 @@ exports[`const: literal ^ constant expression > if the generated AST, WAT and me
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1124,6 +1124,8 @@ exports[`const: literal ^ literal folds to a literal value (2^16 = 65536) > if t
 exports[`const: literal ^ literal folds to a literal value (2^16 = 65536) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 65536,
     "elementWordSize": 4,
@@ -1135,8 +1137,6 @@ exports[`const: literal ^ literal folds to a literal value (2^16 = 65536) > if t
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1308,6 +1308,8 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
 exports[`const: signed literal / constant > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -1319,8 +1321,6 @@ exports[`const: signed literal / constant > if the generated AST, WAT and memory
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1513,6 +1513,8 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
 exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -1524,10 +1526,10 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 2,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 2,
@@ -1539,8 +1541,6 @@ exports[`const: sizeof(name) * literal > if the generated AST, WAT and memory ma
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int16",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 2,
   },
 }
 `;
@@ -1733,6 +1733,8 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
 exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 4,
+    "allocationUnitCount": 1,
     "byteAddress": 16,
     "default": 0,
     "elementWordSize": 4,
@@ -1744,10 +1746,10 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 4,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 4,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -1759,8 +1761,6 @@ exports[`const: sizeof(name)^literal > if the generated AST, WAT and memory map 
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int32",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 4,
   },
 }
 `;
@@ -1964,6 +1964,8 @@ exports[`int[]: buffer size from constant division expression > if the generated
 exports[`int[]: buffer size from constant division expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "buffer": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 4,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -1975,10 +1977,10 @@ exports[`int[]: buffer size from constant division expression > if the generated
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 4,
   },
   "output": {
+    "allocationUnitAddress": 4,
+    "allocationUnitCount": 1,
     "byteAddress": 16,
     "default": 0,
     "elementWordSize": 4,
@@ -1990,8 +1992,6 @@ exports[`int[]: buffer size from constant division expression > if the generated
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 4,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -2195,6 +2195,8 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
 exports[`int[]: buffer size from constant exponentiation expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "buffer": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 8,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -2206,10 +2208,10 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
     "numberOfElements": 8,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 8,
   },
   "output": {
+    "allocationUnitAddress": 8,
+    "allocationUnitCount": 1,
     "byteAddress": 32,
     "default": 0,
     "elementWordSize": 4,
@@ -2221,8 +2223,6 @@ exports[`int[]: buffer size from constant exponentiation expression > if the gen
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 8,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -2426,6 +2426,8 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
 exports[`int[]: buffer size from constant multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "buffer": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 16,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -2437,10 +2439,10 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
     "numberOfElements": 16,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 16,
   },
   "output": {
+    "allocationUnitAddress": 16,
+    "allocationUnitCount": 1,
     "byteAddress": 64,
     "default": 0,
     "elementWordSize": 4,
@@ -2452,8 +2454,6 @@ exports[`int[]: buffer size from constant multiplication expression > if the gen
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 16,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -2679,6 +2679,8 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
 exports[`int[]: buffer size from count expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "dest": {
+    "allocationUnitAddress": 8,
+    "allocationUnitCount": 16,
     "byteAddress": 32,
     "default": {},
     "elementWordSize": 4,
@@ -2690,10 +2692,10 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
     "numberOfElements": 16,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 8,
-    "wordAlignedSize": 16,
   },
   "output": {
+    "allocationUnitAddress": 24,
+    "allocationUnitCount": 1,
     "byteAddress": 96,
     "default": 0,
     "elementWordSize": 4,
@@ -2705,10 +2707,10 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 24,
-    "wordAlignedSize": 1,
   },
   "source": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 8,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -2720,8 +2722,6 @@ exports[`int[]: buffer size from count expression > if the generated AST, WAT an
     "numberOfElements": 8,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 8,
   },
 }
 `;
@@ -2947,6 +2947,8 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
 exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "buffer": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 4,
     "byteAddress": 8,
     "default": {},
     "elementWordSize": 4,
@@ -2958,10 +2960,10 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 4,
   },
   "output": {
+    "allocationUnitAddress": 6,
+    "allocationUnitCount": 1,
     "byteAddress": 24,
     "default": 0,
     "elementWordSize": 4,
@@ -2973,10 +2975,10 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 6,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 2,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 2,
@@ -2988,8 +2990,6 @@ exports[`int[]: buffer size from sizeof expression > if the generated AST, WAT a
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int16",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 2,
   },
 }
 `;
@@ -3193,6 +3193,8 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
 exports[`memory declaration: constant ^ literal expression default > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 9,
     "elementWordSize": 4,
@@ -3204,10 +3206,10 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -3219,8 +3221,6 @@ exports[`memory declaration: constant ^ literal expression default > if the gene
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3424,6 +3424,8 @@ exports[`memory declaration: constant expression default > if the generated AST,
 exports[`memory declaration: constant expression default > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 4,
     "elementWordSize": 4,
@@ -3435,10 +3437,10 @@ exports[`memory declaration: constant expression default > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -3450,8 +3452,6 @@ exports[`memory declaration: constant expression default > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3644,6 +3644,8 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
 exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -3655,10 +3657,10 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 2,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 2,
@@ -3670,8 +3672,6 @@ exports[`push: constant * sizeof(name) > if the generated AST, WAT and memory ma
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int16",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 2,
   },
 }
 `;
@@ -3824,6 +3824,8 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
 exports[`push: constant expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -3835,8 +3837,6 @@ exports[`push: constant expression > if the generated AST, WAT and memory map ma
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -4045,6 +4045,8 @@ exports[`push: count(*end pointer) falls back to scalar pointee count > if the g
 exports[`push: count(*end pointer) falls back to scalar pointee count > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 9,
+    "allocationUnitCount": 1,
     "byteAddress": 36,
     "default": 0,
     "elementWordSize": 4,
@@ -4056,10 +4058,10 @@ exports[`push: count(*end pointer) falls back to scalar pointee count > if the g
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 9,
-    "wordAlignedSize": 1,
   },
   "ptr": {
+    "allocationUnitAddress": 8,
+    "allocationUnitCount": 1,
     "byteAddress": 32,
     "default": 28,
     "elementWordSize": 4,
@@ -4073,10 +4075,10 @@ exports[`push: count(*end pointer) falls back to scalar pointee count > if the g
     "pointeeMemoryIndex": 0,
     "pointerDepth": 1,
     "type": "float*",
-    "wordAlignedAddress": 8,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 8,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -4088,8 +4090,6 @@ exports[`push: count(*end pointer) falls back to scalar pointee count > if the g
     "numberOfElements": 8,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 8,
   },
 }
 `;
@@ -4298,6 +4298,8 @@ exports[`push: count(*pointer) resolves known pointee element count > if the gen
 exports[`push: count(*pointer) resolves known pointee element count > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 9,
+    "allocationUnitCount": 1,
     "byteAddress": 36,
     "default": 0,
     "elementWordSize": 4,
@@ -4309,10 +4311,10 @@ exports[`push: count(*pointer) resolves known pointee element count > if the gen
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 9,
-    "wordAlignedSize": 1,
   },
   "ptr": {
+    "allocationUnitAddress": 8,
+    "allocationUnitCount": 1,
     "byteAddress": 32,
     "default": 0,
     "elementWordSize": 4,
@@ -4327,10 +4329,10 @@ exports[`push: count(*pointer) resolves known pointee element count > if the gen
     "pointeeMemoryIndex": 0,
     "pointerDepth": 1,
     "type": "float*",
-    "wordAlignedAddress": 8,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 8,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -4342,8 +4344,6 @@ exports[`push: count(*pointer) resolves known pointee element count > if the gen
     "numberOfElements": 8,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 8,
   },
 }
 `;
@@ -4496,6 +4496,8 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
 exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -4507,8 +4509,6 @@ exports[`push: literal * constant (literal on lhs) > if the generated AST, WAT a
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -4682,6 +4682,8 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
 exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -4693,10 +4695,10 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 2,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 2,
@@ -4708,8 +4710,6 @@ exports[`push: literal * sizeof(name) > if the generated AST, WAT and memory map
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int16",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 2,
   },
 }
 `;
@@ -4862,6 +4862,8 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
 exports[`push: literal ^ constant expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -4873,8 +4875,6 @@ exports[`push: literal ^ constant expression > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -5083,6 +5083,8 @@ exports[`push: min(*pointer) resolves pointee min value > if the generated AST, 
 exports[`push: min(*pointer) resolves pointee min value > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -5094,10 +5096,10 @@ exports[`push: min(*pointer) resolves pointee min value > if the generated AST, 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "ptr": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -5112,10 +5114,10 @@ exports[`push: min(*pointer) resolves pointee min value > if the generated AST, 
     "pointeeMemoryIndex": 0,
     "pointerDepth": 1,
     "type": "int8*",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 1,
@@ -5127,8 +5129,6 @@ exports[`push: min(*pointer) resolves pointee min value > if the generated AST, 
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int8",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -5302,6 +5302,8 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
 exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -5313,10 +5315,10 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "samples": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 2,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 2,
@@ -5328,8 +5330,6 @@ exports[`push: sizeof(name) * literal > if the generated AST, WAT and memory map
     "numberOfElements": 4,
     "pointerDepth": 0,
     "type": "int16",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 2,
   },
 }
 `;

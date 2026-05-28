@@ -10,8 +10,8 @@ export function createMemory(
 		elementWordSize: 4,
 		type: MemoryTypes.int,
 		memoryIndex: 0,
-		wordAlignedSize: 1,
-		wordAlignedAddress: overrides.byteAddress / 4,
+		allocationUnitCount: 1,
+		allocationUnitAddress: overrides.byteAddress / 4,
 		default: 0,
 		hasExplicitDefault: false,
 		isInteger: true,
@@ -26,8 +26,8 @@ export function createInternalResource(
 ): InternalResource {
 	return {
 		memoryIndex: 0,
-		wordAlignedAddress: overrides.byteAddress / 4,
-		wordAlignedSize: 1,
+		allocationUnitAddress: overrides.byteAddress / 4,
+		allocationUnitCount: 1,
 		elementWordSize: 4,
 		default: 0,
 		storageType: 'int',
@@ -45,9 +45,9 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 		id: 'test',
 		memoryIndex: 0,
 		byteAddress,
-		wordAlignedAddress: byteAddress / 4,
+		allocationUnitAddress: byteAddress / 4,
 		memoryMap: {},
-		wordAlignedSize: 0,
+		allocationUnitCount: 0,
 		...overrides,
 	};
 }

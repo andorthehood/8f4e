@@ -213,7 +213,7 @@ describe('inter-module references - element word size', () => {
 		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['buffer'].byteAddress);
 
 		// Verify count holds element count
-		expect(targetModule.memoryMap['count'].default).toBe(sourceModule.memoryMap['buffer'].wordAlignedSize);
+		expect(targetModule.memoryMap['count'].default).toBe(sourceModule.memoryMap['buffer'].allocationUnitCount);
 		expect(targetModule.memoryMap['count'].default).toBe(12);
 
 		// Verify elemSize holds element word size

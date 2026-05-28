@@ -1,4 +1,4 @@
-import { BASE_TYPE_METADATA, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA, ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 
 import type { CodegenContext, CompilationContext, InternalResource } from '@8f4e/compiler-spec';
 
@@ -23,21 +23,21 @@ export function allocateInternalResource(
 	}
 
 	const elementWordSize = BASE_TYPE_METADATA[type].wordSize;
-	const wordAlignedSize = elementWordSize / GLOBAL_ALIGNMENT_BOUNDARY;
+	const allocationUnitCount = elementWordSize / ALLOCATION_UNIT_BYTE_SIZE;
 	const byteAddress = context.internalAllocator.nextByteAddress;
 	// Compiler-generated state is intentionally kept in default memory 0, even inside #region modules.
 	const resource: InternalResource = {
 		id,
 		memoryIndex: 0,
 		byteAddress,
-		wordAlignedAddress: byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
-		wordAlignedSize,
+		allocationUnitAddress: byteAddress / ALLOCATION_UNIT_BYTE_SIZE,
+		allocationUnitCount,
 		elementWordSize,
 		default: defaultValue,
 		storageType: type,
 	};
 
 	context.internalResources[id] = resource;
-	context.internalAllocator.nextByteAddress += wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+	context.internalAllocator.nextByteAddress += allocationUnitCount * ALLOCATION_UNIT_BYTE_SIZE;
 	return resource;
 }

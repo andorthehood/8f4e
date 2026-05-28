@@ -91,13 +91,13 @@ export default async function compileAndUpdateMemory(
 			if (change.isInteger) {
 				if (typeof change.value === 'object') {
 					Object.entries(change.value).forEach(([index, item]) => {
-						memoryBufferInt[change.wordAlignedAddress + parseInt(index, 10)] = item;
+						memoryBufferInt[change.allocationUnitAddress + parseInt(index, 10)] = item;
 					});
 				} else {
-					memoryBufferInt[change.wordAlignedAddress] = change.value;
+					memoryBufferInt[change.allocationUnitAddress] = change.value;
 				}
 			} else if (change.elementWordSize === 8 && !change.isInteger) {
-				const float64Index = change.wordAlignedAddress / 2;
+				const float64Index = change.allocationUnitAddress / 2;
 				if (typeof change.value === 'object') {
 					Object.entries(change.value).forEach(([index, item]) => {
 						memoryBufferFloat64[float64Index + parseInt(index, 10)] = item;
@@ -108,10 +108,10 @@ export default async function compileAndUpdateMemory(
 			} else {
 				if (typeof change.value === 'object') {
 					Object.entries(change.value).forEach(([index, item]) => {
-						memoryBufferFloat[change.wordAlignedAddress + parseInt(index, 10)] = item;
+						memoryBufferFloat[change.allocationUnitAddress + parseInt(index, 10)] = item;
 					});
 				} else {
-					memoryBufferFloat[change.wordAlignedAddress] = change.value;
+					memoryBufferFloat[change.allocationUnitAddress] = change.value;
 				}
 			}
 		});

@@ -37,12 +37,12 @@ describe('plot directive widget resolution', () => {
 					'test-block': {
 						memoryMap: {
 							buffer1: {
-								wordAlignedAddress: 0,
+								allocationUnitAddress: 0,
 								byteAddress: 0,
 								numberOfElements: 16,
 								elementWordSize: 1,
 								type: MemoryTypes.int,
-								wordAlignedSize: 16,
+								allocationUnitCount: 16,
 								default: 0,
 								isInteger: true,
 								isUnsigned: false,
@@ -86,7 +86,7 @@ describe('plot directive widget resolution', () => {
 			minValue: -8,
 			maxValue: 8,
 			startAddress: {
-				memory: { wordAlignedAddress: 0 } as DataStructure,
+				memory: { allocationUnitAddress: 0 } as DataStructure,
 				showAddress: true,
 				showEndAddress: false,
 				bufferPointer: 0,
@@ -105,12 +105,12 @@ describe('plot directive widget resolution', () => {
 	it('handles multiple plot directives', () => {
 		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1 count(buffer1)', '; @plot &buffer2 count(buffer2)']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
-			wordAlignedAddress: 1,
+			allocationUnitAddress: 1,
 			byteAddress: 4,
 			numberOfElements: 100,
 			elementWordSize: 1,
 			type: MemoryTypes['int*'],
-			wordAlignedSize: 100,
+			allocationUnitCount: 100,
 			default: 0,
 			isInteger: true,
 			id: 'buffer2',
@@ -124,12 +124,12 @@ describe('plot directive widget resolution', () => {
 
 	it('derives float plot ranges as -1..1', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['floatBuffer'] = {
-			wordAlignedAddress: 4,
+			allocationUnitAddress: 4,
 			byteAddress: 16,
 			numberOfElements: 16,
 			elementWordSize: 4,
 			type: MemoryTypes.float,
-			wordAlignedSize: 16,
+			allocationUnitCount: 16,
 			default: 0,
 			isInteger: false,
 			id: 'floatBuffer',
@@ -173,12 +173,12 @@ describe('plot directive widget resolution', () => {
 
 	it('supports pointer starts with count() lengths', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['bufferPtr'] = {
-			wordAlignedAddress: 8,
+			allocationUnitAddress: 8,
 			byteAddress: 32,
 			numberOfElements: 1,
 			elementWordSize: 4,
 			type: MemoryTypes['int*'],
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'bufferPtr',

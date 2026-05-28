@@ -16,11 +16,11 @@ describe('layoutAddresses', () => {
 		expect(getEndByteAddress(24, 5)).toBe(40);
 	});
 
-	it('returns byteAddress unchanged when wordAlignedSize is 0', () => {
+	it('returns byteAddress unchanged when allocationUnitCount is 0', () => {
 		expect(getEndByteAddress(24, 0)).toBe(24);
 	});
 
-	it('returns byteAddress unchanged when wordAlignedSize is negative', () => {
+	it('returns byteAddress unchanged when allocationUnitCount is negative', () => {
 		expect(getEndByteAddress(24, -1)).toBe(24);
 	});
 

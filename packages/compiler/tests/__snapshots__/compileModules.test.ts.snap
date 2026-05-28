@@ -3,6 +3,8 @@
 exports[`compiler > compileModules 1`] = `
 [
   {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 4,
     "ast": {
       "id": "abs",
       "lines": [
@@ -419,6 +421,8 @@ exports[`compiler > compileModules 1`] = `
     "memoryIndex": 0,
     "memoryMap": {
       "defaultValue": {
+        "allocationUnitAddress": 0,
+        "allocationUnitCount": 1,
         "byteAddress": 0,
         "default": 0,
         "elementWordSize": 4,
@@ -430,10 +434,10 @@ exports[`compiler > compileModules 1`] = `
         "numberOfElements": 1,
         "pointerDepth": 0,
         "type": "int",
-        "wordAlignedAddress": 0,
-        "wordAlignedSize": 1,
       },
       "in": {
+        "allocationUnitAddress": 1,
+        "allocationUnitCount": 1,
         "byteAddress": 4,
         "default": 0,
         "elementWordSize": 4,
@@ -447,10 +451,10 @@ exports[`compiler > compileModules 1`] = `
         "pointeeMemoryIndex": 0,
         "pointerDepth": 1,
         "type": "int*",
-        "wordAlignedAddress": 1,
-        "wordAlignedSize": 1,
       },
       "out": {
+        "allocationUnitAddress": 2,
+        "allocationUnitCount": 1,
         "byteAddress": 8,
         "default": 0,
         "elementWordSize": 4,
@@ -462,10 +466,10 @@ exports[`compiler > compileModules 1`] = `
         "numberOfElements": 1,
         "pointerDepth": 0,
         "type": "int",
-        "wordAlignedAddress": 2,
-        "wordAlignedSize": 1,
       },
       "test": {
+        "allocationUnitAddress": 3,
+        "allocationUnitCount": 1,
         "byteAddress": 12,
         "default": 1,
         "elementWordSize": 4,
@@ -477,13 +481,9 @@ exports[`compiler > compileModules 1`] = `
         "numberOfElements": 1,
         "pointerDepth": 0,
         "type": "int",
-        "wordAlignedAddress": 3,
-        "wordAlignedSize": 1,
       },
     },
     "skipExecutionInCycle": undefined,
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 4,
   },
 ]
 `;

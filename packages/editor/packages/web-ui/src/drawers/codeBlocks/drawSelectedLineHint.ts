@@ -23,7 +23,7 @@ function getLiveValueText(state: State, memoryViews: MemoryViews, liveValue: Too
 		case 'memoryValue':
 			return formatDebuggerValue(memoryViews, memory, liveValue.source.elementIndex ?? 0, 'decimal');
 		case 'memoryDereference': {
-			const pointerByteAddress = memoryViews.int32[memory.wordAlignedAddress];
+			const pointerByteAddress = memoryViews.int32[memory.allocationUnitAddress];
 			return formatDebuggerValueAtAddress(
 				memoryViews,
 				pointerByteAddress,

@@ -19,7 +19,7 @@ import {
 	WASM_MEMORY_PAGE_SIZE,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ErrorCode, ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
@@ -77,7 +77,7 @@ export function compileModules(
 	compiledFunctions?: FunctionMetadataLookup,
 	internalAllocator?: { nextByteAddress: number }
 ): CompiledModule[] {
-	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
+	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * ALLOCATION_UNIT_BYTE_SIZE;
 	const ns: Namespaces =
 		namespaces ?? collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options);
 	const allocator = internalAllocator ?? {
@@ -86,8 +86,8 @@ export function compileModules(
 				return max;
 			}
 			const byteAddress = namespace.byteAddress ?? 0;
-			const wordAlignedSize = namespace.wordAlignedSize ?? 0;
-			return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
+			const allocationUnitCount = namespace.allocationUnitCount ?? 0;
+			return Math.max(max, byteAddress + allocationUnitCount * ALLOCATION_UNIT_BYTE_SIZE);
 		}, 0),
 	};
 
@@ -136,11 +136,11 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): voi
 }
 
 function getRequiredMemoryBytesByIndex(
-	items: Array<{ memoryIndex: number; byteAddress?: number; wordAlignedSize?: number }>
+	items: Array<{ memoryIndex: number; byteAddress?: number; allocationUnitCount?: number }>
 ): Record<number, number> {
 	return items.reduce<Record<number, number>>((result, item) => {
 		const memoryIndex = item.memoryIndex;
-		const requiredBytes = (item.byteAddress ?? 0) + (item.wordAlignedSize ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
+		const requiredBytes = (item.byteAddress ?? 0) + (item.allocationUnitCount ?? 0) * ALLOCATION_UNIT_BYTE_SIZE;
 		result[memoryIndex] = Math.max(result[memoryIndex] ?? 0, requiredBytes);
 		return result;
 	}, {});
@@ -224,7 +224,7 @@ export default function compile(
 	);
 	assertUniqueModuleIds(astModules);
 
-	const namespaces = collectNamespacesFromASTs(astModules, GLOBAL_ALIGNMENT_BOUNDARY, undefined, astModules, options);
+	const namespaces = collectNamespacesFromASTs(astModules, ALLOCATION_UNIT_BYTE_SIZE, undefined, astModules, options);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>

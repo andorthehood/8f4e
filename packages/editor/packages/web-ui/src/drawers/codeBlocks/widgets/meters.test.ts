@@ -51,8 +51,8 @@ function createMeterWidget(overrides: Partial<ArrayMeter> = {}): ArrayMeter {
 			displayFormat: 'decimal',
 			memory: {
 				byteAddress: 0,
-				wordAlignedAddress: 0,
-				wordAlignedSize: 1,
+				allocationUnitAddress: 0,
+				allocationUnitCount: 1,
 			},
 		} as never,
 		baseSampleShift: 2,

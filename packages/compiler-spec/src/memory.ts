@@ -136,8 +136,8 @@ export interface DataStructure {
 	/** Configured logical region name for non-default memories. */
 	memoryRegionName?: string;
 	byteAddress: number;
-	wordAlignedSize: number;
-	wordAlignedAddress: number;
+	allocationUnitCount: number;
+	allocationUnitAddress: number;
 	default: number | Record<string, number>;
 	hasExplicitDefault?: boolean;
 	// lineNumber: number;
@@ -171,8 +171,8 @@ export interface InternalResource {
 	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;
-	wordAlignedAddress: number;
-	wordAlignedSize: number;
+	allocationUnitAddress: number;
+	allocationUnitCount: number;
 	elementWordSize: number;
 	default: number;
 	storageType: 'int' | 'float' | 'float64';
@@ -190,8 +190,8 @@ export type MemoryBuffer = Int32Array;
 export type MemoryValueChange = {
 	memoryIndex: number;
 	memoryRegionName?: string;
-	wordAlignedSize: number;
-	wordAlignedAddress: number;
+	allocationUnitCount: number;
+	allocationUnitAddress: number;
 	value: number | Record<string, number>;
 	isInteger: boolean;
 	isFloat64?: boolean;

@@ -20,9 +20,9 @@ describe('inter-module references - end address', () => {
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['ptr']).toBeDefined();
 		// ptr should point to the end address of buffer (last word-aligned address)
-		// End address = byteAddress + (wordAlignedSize - 1) * 4
+		// End address = byteAddress + (allocationUnitCount - 1) * 4
 		const expectedEndAddress =
-			sourceModule.memoryMap['buffer'].byteAddress + (sourceModule.memoryMap['buffer'].wordAlignedSize - 1) * 4;
+			sourceModule.memoryMap['buffer'].byteAddress + (sourceModule.memoryMap['buffer'].allocationUnitCount - 1) * 4;
 		expect(targetModule.memoryMap['ptr'].default).toBe(expectedEndAddress);
 	});
 
@@ -42,7 +42,7 @@ describe('inter-module references - end address', () => {
 		expect(sourceModule).toBeDefined();
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['ptr']).toBeDefined();
-		// For scalar (wordAlignedSize === 1), end address equals start address
+		// For scalar (allocationUnitCount === 1), end address equals start address
 		// End address = byteAddress + (1 - 1) * 4 = byteAddress
 		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['scalar'].byteAddress);
 	});
@@ -63,9 +63,9 @@ describe('inter-module references - end address', () => {
 		expect(sourceModule).toBeDefined();
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['ptr']).toBeDefined();
-		// End address = byteAddress + (wordAlignedSize - 1) * 4
+		// End address = byteAddress + (allocationUnitCount - 1) * 4
 		const expectedEndAddress =
-			sourceModule.memoryMap['buffer'].byteAddress + (sourceModule.memoryMap['buffer'].wordAlignedSize - 1) * 4;
+			sourceModule.memoryMap['buffer'].byteAddress + (sourceModule.memoryMap['buffer'].allocationUnitCount - 1) * 4;
 		expect(targetModule.memoryMap['ptr'].default).toBe(expectedEndAddress);
 	});
 
@@ -88,7 +88,7 @@ describe('inter-module references - end address', () => {
 
 		// Verify the reference is resolved correctly
 		const expectedEndAddress =
-			baseModule.memoryMap['buffer'].byteAddress + (baseModule.memoryMap['buffer'].wordAlignedSize - 1) * 4;
+			baseModule.memoryMap['buffer'].byteAddress + (baseModule.memoryMap['buffer'].allocationUnitCount - 1) * 4;
 		expect(dependentModule.memoryMap['ptr'].default).toBe(expectedEndAddress);
 	});
 
@@ -120,7 +120,7 @@ describe('inter-module references - end address', () => {
 		const targetModule = result.compiledModules['targetModule'];
 
 		expect(targetModule.memoryMap['ptr'].default).toBe(
-			sourceModule.byteAddress + (sourceModule.wordAlignedSize - 1) * 4
+			sourceModule.byteAddress + (sourceModule.allocationUnitCount - 1) * 4
 		);
 	});
 });

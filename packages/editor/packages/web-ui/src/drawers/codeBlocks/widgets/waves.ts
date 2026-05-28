@@ -84,7 +84,9 @@ export default function drawer(
 		engine.startGroup(x, y);
 
 		const arrayLength =
-			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
+			typeof length === 'number'
+				? length
+				: memoryViews.int32[length.memory.allocationUnitAddress + length.bufferPointer];
 		if (arrayLength <= 0 || inverseElementByteSize <= 0) {
 			engine.endGroup();
 			continue;
@@ -92,7 +94,7 @@ export default function drawer(
 
 		const startPointerValue = startAddress.showAddress
 			? startAddress.memory.byteAddress
-			: memoryViews.int32[startAddress.memory.wordAlignedAddress + startAddress.bufferPointer];
+			: memoryViews.int32[startAddress.memory.allocationUnitAddress + startAddress.bufferPointer];
 		const baseValueIndex = getBaseValueIndex(startAddress, memoryViews, baseSampleShift);
 		const values = getTypedValueView(memoryViews, valueType);
 		const waveformColumnWidth = Math.max(1, Math.floor(state.viewport.vGrid / 2));
@@ -115,7 +117,7 @@ export default function drawer(
 		if (pointer) {
 			const pointerValue = pointer.showAddress
 				? pointer.memory.byteAddress
-				: memoryViews.int32[pointer.memory.wordAlignedAddress + pointer.bufferPointer];
+				: memoryViews.int32[pointer.memory.allocationUnitAddress + pointer.bufferPointer];
 			const pointerIndex = Math.floor((pointerValue - startPointerValue) * inverseElementByteSize);
 			const clampedIndex = Math.max(0, Math.min(pointerIndex, arrayLength - 1));
 			const scanlineWidth = state.viewport.vGrid / 2;

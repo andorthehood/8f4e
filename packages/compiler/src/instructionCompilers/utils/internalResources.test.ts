@@ -20,8 +20,8 @@ const createContext = () =>
 		stack: [],
 		blockStack: [],
 		startingByteAddress: 0,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
+		currentModuleNextAllocationUnitOffset: 0,
+		currentModuleAllocationUnitCount: 0,
 		byteCode: [],
 		mode: 'module',
 		codeBlockId: 'testBlock',
@@ -35,7 +35,7 @@ describe('internalResources', () => {
 		const resource = allocateInternalResource(context, '__hidden', 'int');
 
 		expect(resource.byteAddress).toBe(16);
-		expect(resource.wordAlignedAddress).toBe(4);
+		expect(resource.allocationUnitAddress).toBe(4);
 		expect(context.internalAllocator.nextByteAddress).toBe(20);
 	});
 
@@ -56,7 +56,7 @@ describe('internalResources', () => {
 		const resource = allocateInternalResource(context, '__hidden64', 'float64');
 
 		expect(resource.elementWordSize).toBe(8);
-		expect(resource.wordAlignedSize).toBe(2);
+		expect(resource.allocationUnitCount).toBe(2);
 		expect(context.internalAllocator.nextByteAddress).toBe(24);
 	});
 });

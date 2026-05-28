@@ -1,4 +1,4 @@
-import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ErrorCode, ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 import { describe, expect, test } from 'vitest';
 
 import compile from '../src';
@@ -140,7 +140,7 @@ describe('logical memory regions', () => {
 		const resources = Object.values(signalModule.internalResources ?? {});
 		const declarationBytes = Math.max(
 			...Object.values(signalModule.memoryMap).map(
-				data => data.byteAddress + data.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY
+				data => data.byteAddress + data.allocationUnitCount * ALLOCATION_UNIT_BYTE_SIZE
 			)
 		);
 
@@ -148,7 +148,7 @@ describe('logical memory regions', () => {
 		expect(resources[0].memoryIndex).toBe(0);
 		expect(resources[0].memoryRegionName).toBeUndefined();
 		expect(result.requiredMemoryBytes).toBeGreaterThanOrEqual(
-			resources[0].byteAddress + resources[0].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY
+			resources[0].byteAddress + resources[0].allocationUnitCount * ALLOCATION_UNIT_BYTE_SIZE
 		);
 		expect(result.requiredMemoryBytesByRegion).toEqual({ sampleMemory: declarationBytes });
 	});

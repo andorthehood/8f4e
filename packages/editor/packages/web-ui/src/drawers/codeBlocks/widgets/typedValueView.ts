@@ -8,7 +8,7 @@ export function getBaseValueIndex(
 ): number {
 	const startPointerValue = startAddress.showAddress
 		? startAddress.memory.byteAddress
-		: memoryViews.int32[startAddress.memory.wordAlignedAddress + startAddress.bufferPointer];
+		: memoryViews.int32[startAddress.memory.allocationUnitAddress + startAddress.bufferPointer];
 
 	return startPointerValue >> baseSampleShift;
 }

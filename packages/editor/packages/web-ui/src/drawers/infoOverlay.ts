@@ -1,4 +1,4 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 import { Engine } from 'glugglug';
 
 import type { State } from '@8f4e/editor-state-types';
@@ -48,7 +48,7 @@ export default function drawInfoOverlay(
 
 	if (selectedModule) {
 		debugText.push('Selected module: ' + selectedModule.id);
-		debugText.push('Memory footprint: ' + formatBytes(selectedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
+		debugText.push('Memory footprint: ' + formatBytes(selectedModule.allocationUnitCount * ALLOCATION_UNIT_BYTE_SIZE));
 		debugText.push('Memory address: ' + selectedModule.byteAddress + ' (nth byte)');
 		debugText.push('Index: ' + selectedModule.index);
 	}

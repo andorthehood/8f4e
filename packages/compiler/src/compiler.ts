@@ -5,7 +5,7 @@ import {
 	WASM_TYPE_F64,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
 
@@ -118,8 +118,8 @@ export function compileModule(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		currentModuleNextWordOffset: layoutContext.currentModuleNextWordOffset,
-		currentModuleWordAlignedSize: layoutContext.currentModuleWordAlignedSize,
+		currentModuleNextAllocationUnitOffset: layoutContext.currentModuleNextAllocationUnitOffset,
+		currentModuleAllocationUnitCount: layoutContext.currentModuleAllocationUnitCount,
 		currentMemoryIndex: memoryIndex,
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryRegions: options.memoryRegions ?? [],
@@ -160,10 +160,10 @@ export function compileModule(
 		initFunctionBody: [],
 		...getMemoryRegionFields(memoryIndex, memoryRegionName),
 		byteAddress: startingByteAddress,
-		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
+		allocationUnitAddress: startingByteAddress / ALLOCATION_UNIT_BYTE_SIZE,
 		memoryMap: context.namespace.memory,
 		...(internalResources ? { internalResources } : {}),
-		wordAlignedSize: context.currentModuleWordAlignedSize,
+		allocationUnitCount: context.currentModuleAllocationUnitCount,
 		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
@@ -197,8 +197,8 @@ export function compileFunction(
 		stack: [],
 		blockStack: [],
 		startingByteAddress: 0,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
+		currentModuleNextAllocationUnitOffset: 0,
+		currentModuleAllocationUnitCount: 0,
 		currentMemoryIndex: 0,
 		memoryRegions: [],
 		mode: 'function',

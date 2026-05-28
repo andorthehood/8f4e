@@ -204,7 +204,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 			startingByteAddress: 16,
-			currentModuleWordAlignedSize: 3,
+			currentModuleAllocationUnitCount: 3,
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
@@ -221,7 +221,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 			startingByteAddress: 16,
-			currentModuleWordAlignedSize: 3,
+			currentModuleAllocationUnitCount: 3,
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
@@ -257,7 +257,7 @@ describe('normalizeCompileTimeArguments', () => {
 			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {} },
 			locals: {},
 			startingByteAddress: 16,
-			currentModuleWordAlignedSize: 3,
+			currentModuleAllocationUnitCount: 3,
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
 			lineNumberBeforeMacroExpansion: 1,
@@ -480,8 +480,8 @@ describe('normalizeCompileTimeArguments', () => {
 						numberOfElements: 4,
 						elementWordSize: 4,
 						memoryIndex: 0,
-						wordAlignedAddress: 3,
-						wordAlignedSize: 4,
+						allocationUnitAddress: 3,
+						allocationUnitCount: 4,
 						byteAddress: 12,
 						default: 0,
 						isInteger: true,
@@ -534,8 +534,8 @@ describe('normalizeCompileTimeArguments', () => {
 						numberOfElements: 4,
 						elementWordSize: 4,
 						memoryIndex: 0,
-						wordAlignedAddress: 3,
-						wordAlignedSize: 4,
+						allocationUnitAddress: 3,
+						allocationUnitCount: 4,
 						byteAddress: 12,
 						default: 0,
 						isInteger: true,

@@ -43,7 +43,7 @@ function resolveSliderDirectiveWidget(
 		x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 		y: (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid,
 		id: memory.memory.id,
-		wordAlignedAddress: memory.memory.wordAlignedAddress,
+		allocationUnitAddress: memory.memory.allocationUnitAddress,
 		byteAddress: memory.memory.byteAddress,
 		isInteger: memory.memory.isInteger ?? true,
 		isFloat64: memory.memory.isFloat64,

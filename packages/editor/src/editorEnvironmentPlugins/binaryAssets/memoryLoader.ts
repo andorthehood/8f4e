@@ -21,7 +21,7 @@ function resolveBinaryAssetTarget(
 	return {
 		memoryId,
 		byteAddress: memory.byteAddress,
-		memoryByteLength: memory.wordAlignedSize * 4,
+		memoryByteLength: memory.allocationUnitCount * 4,
 	};
 }
 

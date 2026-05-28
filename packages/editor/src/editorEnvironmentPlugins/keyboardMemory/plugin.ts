@@ -16,14 +16,14 @@ function resolveWordAlignedAddress(state: State, memoryId?: string): number | un
 	const moduleId = memoryId.slice(0, separatorIndex);
 	const memoryName = memoryId.slice(separatorIndex + 1);
 	const compiledModule = state.compiler.compiledModules[moduleId];
-	return compiledModule?.memoryMap[memoryName]?.wordAlignedAddress;
+	return compiledModule?.memoryMap[memoryName]?.allocationUnitAddress;
 }
 
-function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefined, value: number): void {
-	if (wordAlignedAddress === undefined) {
+function writeIntegerToMemory(state: State, allocationUnitAddress: number | undefined, value: number): void {
+	if (allocationUnitAddress === undefined) {
 		return;
 	}
-	state.callbacks.setWordInMemory?.(wordAlignedAddress, value, true);
+	state.callbacks.setWordInMemory?.(allocationUnitAddress, value, true);
 }
 
 export default function keyboardMemoryPlugin({

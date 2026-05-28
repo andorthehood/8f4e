@@ -49,7 +49,7 @@ function createBarsWidget(overrides: Partial<ArrayBars> = {}): ArrayBars {
 			showEndAddress: false,
 			bufferPointer: 0,
 			displayFormat: 'decimal',
-			memory: { byteAddress: 0, wordAlignedAddress: 0, wordAlignedSize: 4 },
+			memory: { byteAddress: 0, allocationUnitAddress: 0, allocationUnitCount: 4 },
 		} as never,
 		baseSampleShift: 2,
 		length: 4,

@@ -43,11 +43,11 @@ function drawRuntimePressedKeys(
 	memoryViews: MemoryViews
 ): void {
 	const memoryBuffer = pressedKeysListMemory.isInteger ? memoryViews.int32 : memoryViews.float32;
-	const numberOfKeys = Math.max(0, memoryViews.int32[pressedNumberOfKeysMemory.wordAlignedAddress] || 0);
-	const readableKeys = Math.min(numberOfKeys, pressedKeysListMemory.wordAlignedSize);
+	const numberOfKeys = Math.max(0, memoryViews.int32[pressedNumberOfKeysMemory.allocationUnitAddress] || 0);
+	const readableKeys = Math.min(numberOfKeys, pressedKeysListMemory.allocationUnitCount);
 
 	for (let i = 0; i < readableKeys; i++) {
-		const keyValue = memoryBuffer[pressedKeysListMemory.wordAlignedAddress + i];
+		const keyValue = memoryBuffer[pressedKeysListMemory.allocationUnitAddress + i];
 		const keyOffset = Math.trunc(keyValue - startingNumber);
 
 		if (keyOffset >= 0 && keyOffset < keys.length) {

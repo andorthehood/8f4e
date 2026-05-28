@@ -10,8 +10,8 @@ function createResource(
 ): InternalResource {
 	return {
 		id: 'resource',
-		wordAlignedAddress: 0,
-		wordAlignedSize: 1,
+		allocationUnitAddress: 0,
+		allocationUnitCount: 1,
 		elementWordSize: BASE_TYPE_METADATA[overrides.storageType].wordSize,
 		...overrides,
 	};

@@ -37,12 +37,12 @@ describe('bars directive widget resolution', () => {
 					'test-block': {
 						memoryMap: {
 							bins: {
-								wordAlignedAddress: 0,
+								allocationUnitAddress: 0,
 								byteAddress: 0,
 								numberOfElements: 16,
 								elementWordSize: 4,
 								type: MemoryTypes.float,
-								wordAlignedSize: 16,
+								allocationUnitCount: 16,
 								default: 0,
 								isInteger: false,
 								id: 'bins',
@@ -93,7 +93,7 @@ describe('bars directive widget resolution', () => {
 			staticBaseValueIndex: 0,
 			staticColumnLayout: [],
 			startAddress: {
-				memory: { wordAlignedAddress: 0 } as DataStructure,
+				memory: { allocationUnitAddress: 0 } as DataStructure,
 				showAddress: true,
 				showEndAddress: false,
 				bufferPointer: 0,
