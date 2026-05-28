@@ -67,7 +67,6 @@ Active todo files are listed below.
 | 430 | Nest pointer metadata shape | 🟡 | 4-8h | 2026-05-27 | Move scattered pointer fields into a shared nested pointer metadata shape used consistently by memory, locals, and stack address metadata. |
 | 431 | Separate pointer type and provenance facts | 🟡 | 2-4h | 2026-05-27 | Model declared pointer type facts separately from value provenance facts so helpers like `count(*ptr)` only use explicit count provenance. |
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
-| 433 | Add dash argument continuation lines | 🟡 | 2-4h | 2026-05-28 | Add parser sugar so `- <arg>` lines append one argument to the previous source instruction before validation and semantic compilation. |
 
 ### 🟢 Low Priority
 
@@ -85,6 +84,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 433 | Add dash argument continuation lines | 2026-05-28 | Parser now folds `- <arg>` continuation lines into the previous source instruction before validation; docs and tokenizer coverage describe valid and invalid forms. |
 | 428 | Add pointer-aware count and min metadata queries | 2026-05-27 | `min(*ptr)` and `count(*ptr)` now classify explicitly and resolve from pointer metadata; pointer count uses tracked memory-start pointee element counts when available and falls back to `1`. |
 | 323 | Add `min(*name)` pointee min value prefix for pointers | 2026-05-27 | Completed as part of pointer-aware metadata query work; `min(*name)` now has parser, semantic, helper, docs, and public compiler coverage. |
 | 423 | Narrow AST line metadata interfaces | 2026-05-26 | `ASTLineBase` now only carries core line identity; memory, semantic, directive, and block metadata live on concrete line interfaces, and snapshots were updated to show the narrower public AST shape. |

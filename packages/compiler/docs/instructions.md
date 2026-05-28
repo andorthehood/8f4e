@@ -1,6 +1,7 @@
 # Instructions
 
 - [Comments](comments.md)
+- [Source syntax](source-syntax.md)
 - [Identifier prefixes](prefixes.md)
 - [Best practices](best-practices.md)
 - [Compiler design](compiler-design.md)

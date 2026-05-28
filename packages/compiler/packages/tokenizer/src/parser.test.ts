@@ -232,6 +232,47 @@ describe('compileToAST', () => {
 });
 
 describe('compileToASTLines', () => {
+	it('folds dash argument continuation lines into the previous instruction', () => {
+		const split = compileToASTLines(['float*', '- buffer', '- &allpassDiffuser:buffer']);
+		const singleLine = compileToASTLines(['float* buffer &allpassDiffuser:buffer']);
+
+		expect(split).toEqual(singleLine);
+		expect(split).toHaveLength(1);
+		expect(split[0]).toMatchObject({
+			instruction: 'float*',
+			arguments: [
+				{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
+				{ type: ArgumentType.IDENTIFIER, value: '&allpassDiffuser:buffer' },
+			],
+			referencedNamespaceIds: ['allpassDiffuser'],
+			hasExplicitMemoryDefault: true,
+		});
+	});
+
+	it('allows dash argument continuation after any source instruction', () => {
+		const ast = compileToASTLines(['push', '- 1']);
+
+		expect(ast).toEqual(compileToASTLines(['push 1']));
+	});
+
+	it('rejects bare dash argument continuation lines', () => {
+		expect(() => compileToASTLines(['push 1', '-'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.MISSING_ARGUMENT })
+		);
+	});
+
+	it('rejects dash argument continuation lines with multiple arguments', () => {
+		expect(() => compileToASTLines(['push', '- 1 2'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.INVALID_ARGUMENT })
+		);
+	});
+
+	it('rejects dash argument continuation lines without a previous instruction', () => {
+		expect(() => compileToASTLines(['- 1'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.INVALID_ARGUMENT })
+		);
+	});
+
 	it('uses callSiteLineNumber from lineMetadata when provided', () => {
 		const code = ['push 10', 'push 20', 'add'];
 		const lineMetadata = [

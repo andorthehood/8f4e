@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-05-28
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-28
 ---
 
 # TODO: Add dash argument continuation lines
