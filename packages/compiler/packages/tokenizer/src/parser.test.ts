@@ -233,18 +233,18 @@ describe('compileToAST', () => {
 
 describe('compileToASTLines', () => {
 	it('folds dash argument continuation lines into the previous instruction', () => {
-		const split = compileToASTLines(['float*', '- buffer', '- &allpassDiffuser:buffer']);
-		const singleLine = compileToASTLines(['float* buffer &allpassDiffuser:buffer']);
+		const split = compileToASTLines(['float*', '- readHead', '- &source:samples']);
+		const singleLine = compileToASTLines(['float* readHead &source:samples']);
 
 		expect(split).toEqual(singleLine);
 		expect(split).toHaveLength(1);
 		expect(split[0]).toMatchObject({
 			instruction: 'float*',
 			arguments: [
-				{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
-				{ type: ArgumentType.IDENTIFIER, value: '&allpassDiffuser:buffer' },
+				{ type: ArgumentType.IDENTIFIER, value: 'readHead' },
+				{ type: ArgumentType.IDENTIFIER, value: '&source:samples' },
 			],
-			referencedNamespaceIds: ['allpassDiffuser'],
+			referencedNamespaceIds: ['source'],
 			hasExplicitMemoryDefault: true,
 		});
 	});
@@ -253,6 +253,31 @@ describe('compileToASTLines', () => {
 		const ast = compileToASTLines(['push', '- 1']);
 
 		expect(ast).toEqual(compileToASTLines(['push 1']));
+	});
+
+	it.each([
+		{
+			name: 'negative numeric literal',
+			split: ['push', '- -1'],
+			singleLine: ['push -1'],
+		},
+		{
+			name: 'quoted string literal with spaces',
+			split: ['push', '- "hello world"'],
+			singleLine: ['push "hello world"'],
+		},
+		{
+			name: 'compile-time expression',
+			split: ['const SIZE', '- 2*4'],
+			singleLine: ['const SIZE 2*4'],
+		},
+		{
+			name: 'array declaration with hex and negative initializer values',
+			split: ['int[]', '- values', '- 4', '- 0xA8', '- -1'],
+			singleLine: ['int[] values 4 0xA8 -1'],
+		},
+	])('preserves $name continuation arguments', ({ split, singleLine }) => {
+		expect(compileToASTLines(split)).toEqual(compileToASTLines(singleLine));
 	});
 
 	it('rejects bare dash argument continuation lines', () => {
