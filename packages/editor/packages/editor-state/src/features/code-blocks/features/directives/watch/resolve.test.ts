@@ -40,7 +40,7 @@ describe('watch directive widget resolution', () => {
 					'test-block': {
 						memoryMap: {
 							myVar: {
-								wordAlignedAddress: 5,
+								allocationUnitAddress: 5,
 								byteAddress: 20,
 							},
 						},
@@ -89,7 +89,7 @@ describe('watch directive widget resolution', () => {
 			x: 0,
 			y: 0,
 			id: 'oldDebugger',
-			memory: { wordAlignedAddress: 0 } as DataStructure,
+			memory: { allocationUnitAddress: 0 } as DataStructure,
 			bufferPointer: 0,
 			displayFormat: 'decimal',
 		});
@@ -102,24 +102,24 @@ describe('watch directive widget resolution', () => {
 	it('should handle multiple debuggers', () => {
 		setMockCodeBlockCode(mockGraphicData, ['; @watch var1', '; @watch var2']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['var1'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'var1',
 			pointerDepth: 0,
 		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['var2'] = {
-			wordAlignedAddress: 6,
+			allocationUnitAddress: 6,
 			byteAddress: 24,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'var2',
@@ -135,12 +135,12 @@ describe('watch directive widget resolution', () => {
 	it('should position debuggers at correct y coordinate based on line number', () => {
 		mockGraphicData.code = ['nop', 'nop', '; @watch myVar'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
@@ -156,12 +156,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve inline watch directives by inferring the same-line declaration id', () => {
 		mockGraphicData.code = ['int myVar 1 ; @watch'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
@@ -176,12 +176,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve inline hex watch directives by templating the same-line declaration id', () => {
 		mockGraphicData.code = ['int myVar 1 ; @watch 0x'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
@@ -198,12 +198,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve shorthand watch directives', () => {
 		mockGraphicData.code = ['; @w myVar'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
@@ -218,12 +218,12 @@ describe('watch directive widget resolution', () => {
 	it('should position watch widgets using visual line width when tabs are present', () => {
 		mockGraphicData.code = ['; @tab 8 16', 'push\t1 ; @watch myVar'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'myVar',
@@ -246,12 +246,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve inline watch directives for anonymous declarations', () => {
 		mockGraphicData.code = ['int 0 ; @watch'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__0'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
@@ -266,12 +266,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve inline hex watch directives for anonymous declarations', () => {
 		mockGraphicData.code = ['int 0 ; @watch 0x'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__0'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
@@ -288,12 +288,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve inline watch directives for bare anonymous int declaration (no arguments)', () => {
 		mockGraphicData.code = ['int ; @watch'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__0'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',
@@ -308,12 +308,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve inline watch directives for bare anonymous float declaration (no arguments)', () => {
 		mockGraphicData.code = ['float ; @watch'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__0'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.float,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: false,
 			id: '__anonymous__0',
@@ -328,12 +328,12 @@ describe('watch directive widget resolution', () => {
 	it('should resolve inline watch directives for bare anonymous int* declaration (no arguments)', () => {
 		mockGraphicData.code = ['int* ; @watch'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__0'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes['int*'],
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__0',

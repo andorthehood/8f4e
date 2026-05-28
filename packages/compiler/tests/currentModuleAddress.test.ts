@@ -25,7 +25,7 @@ describe('current-module address shorthands', () => {
 		const sourceModule = result.compiledModules['sourceModule'];
 
 		expect(sourceModule.memoryMap['ptr'].default).toBe(
-			sourceModule.byteAddress + (sourceModule.wordAlignedSize - 1) * 4
+			sourceModule.byteAddress + (sourceModule.allocationUnitCount - 1) * 4
 		);
 	});
 });

@@ -279,6 +279,8 @@ exports[`const instruction > const with valid constant names > if the generated 
 exports[`const instruction > const with valid constant names > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -290,10 +292,10 @@ exports[`const instruction > const with valid constant names > if the generated 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output2": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -305,10 +307,10 @@ exports[`const instruction > const with valid constant names > if the generated 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
   "output3": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 69,
     "elementWordSize": 4,
@@ -320,8 +322,6 @@ exports[`const instruction > const with valid constant names > if the generated 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
 }
 `;

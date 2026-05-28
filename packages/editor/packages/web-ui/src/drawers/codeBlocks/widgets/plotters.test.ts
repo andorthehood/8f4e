@@ -57,7 +57,7 @@ describe('drawPlotters', () => {
 						startAddress: {
 							showAddress: true,
 							bufferPointer: 0,
-							memory: { byteAddress: 0, wordAlignedAddress: 0, wordAlignedSize: 4 },
+							memory: { byteAddress: 0, allocationUnitAddress: 0, allocationUnitCount: 4 },
 						},
 						baseSampleShift: 0,
 						length: 4,
@@ -104,7 +104,7 @@ describe('drawPlotters', () => {
 						startAddress: {
 							showAddress: true,
 							bufferPointer: 0,
-							memory: { byteAddress: 0, wordAlignedAddress: 0, wordAlignedSize: 4 },
+							memory: { byteAddress: 0, allocationUnitAddress: 0, allocationUnitCount: 4 },
 						},
 						baseSampleShift: 0,
 						length: 4,
@@ -148,7 +148,7 @@ describe('drawPlotters', () => {
 						startAddress: {
 							showAddress: true,
 							bufferPointer: 0,
-							memory: { byteAddress: 0, wordAlignedAddress: 0, wordAlignedSize: 24 },
+							memory: { byteAddress: 0, allocationUnitAddress: 0, allocationUnitCount: 24 },
 						},
 						baseSampleShift: 0,
 						length: 24,

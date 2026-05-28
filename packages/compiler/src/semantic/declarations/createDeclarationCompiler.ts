@@ -81,7 +81,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 	const { baseType, truncate, nonPointerElementWordSize } = options;
 
 	return (line, context) => {
-		const localWordOffset = context.currentModuleNextWordOffset;
+		const localWordOffset = context.currentModuleNextAllocationUnitOffset;
 		const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
 		const pointerDepth = getPointerDepth(line.instruction);
 		const flags = getMemoryFlags(baseType, pointerDepth);
@@ -102,13 +102,13 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 
 		if (pointerDepth > 0 || nonPointerElementWordSize === 4) {
 			// Pointer variants and 32-bit scalars always occupy one 4-byte word.
-			const wordAlignedSize = 1;
+			const allocationUnitCount = 1;
 			context.namespace.memory[id] = {
 				numberOfElements: 1,
 				elementWordSize: 4,
 				...memoryRegionFields,
-				wordAlignedAddress: getAbsoluteWordOffset(context.startingByteAddress, localWordOffset),
-				wordAlignedSize,
+				allocationUnitAddress: getAbsoluteWordOffset(context.startingByteAddress, localWordOffset),
+				allocationUnitCount,
 				byteAddress: getByteAddressFromWordOffset(context.startingByteAddress, localWordOffset),
 				id,
 				default: finalDefault,
@@ -117,21 +117,21 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				...flags,
 				...pointerPointeeRegion,
 			};
-			context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;
+			context.currentModuleNextAllocationUnitOffset = localWordOffset + allocationUnitCount;
 		} else {
 			// 64-bit scalar (nonPointerElementWordSize === 8): requires 8-byte (2-word) start
-			// alignment so that byteAddress = wordAlignedAddress * 4 is always divisible by 8.
+			// alignment so that byteAddress = allocationUnitAddress * 4 is always divisible by 8.
 			const absoluteWordOffset = getAbsoluteWordOffset(context.startingByteAddress, localWordOffset);
 			const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, nonPointerElementWordSize);
 			const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
-			const wordAlignedSize = alignmentPadding + 2;
+			const allocationUnitCount = alignmentPadding + 2;
 
 			context.namespace.memory[id] = {
 				numberOfElements: 1,
 				elementWordSize: nonPointerElementWordSize,
 				...memoryRegionFields,
-				wordAlignedAddress: alignedAbsoluteWordOffset,
-				wordAlignedSize,
+				allocationUnitAddress: alignedAbsoluteWordOffset,
+				allocationUnitCount,
 				byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 				id,
 				default: finalDefault,
@@ -140,7 +140,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				...flags,
 				...pointerPointeeRegion,
 			};
-			context.currentModuleNextWordOffset = localWordOffset + wordAlignedSize;
+			context.currentModuleNextAllocationUnitOffset = localWordOffset + allocationUnitCount;
 		}
 
 		return context;

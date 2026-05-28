@@ -135,6 +135,8 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
 exports[`int*: bare anonymous zero-initialized pointer allocation > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -148,10 +150,10 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "pointeeMemoryIndex": 0,
     "pointerDepth": 1,
     "type": "int*",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -163,8 +165,6 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -316,6 +316,8 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
 exports[`int: anonymous allocation with negative literal > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": -42,
     "elementWordSize": 4,
@@ -327,10 +329,10 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -342,8 +344,6 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -527,6 +527,8 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
 exports[`int: anonymous byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__2": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 2822766592,
     "elementWordSize": 4,
@@ -538,10 +540,10 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -553,8 +555,6 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -756,6 +756,8 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
 exports[`int: anonymous constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__3": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 541065216,
     "elementWordSize": 4,
@@ -767,10 +769,10 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -782,8 +784,6 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -945,6 +945,8 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
 exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 541065216,
     "elementWordSize": 4,
@@ -956,10 +958,10 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -971,8 +973,6 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1138,6 +1138,8 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
 exports[`int: anonymous split hex default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 2835283968,
     "elementWordSize": 4,
@@ -1149,10 +1151,10 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -1164,8 +1166,6 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1305,6 +1305,8 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
 exports[`int: bare anonymous zero-initialized allocation > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -1316,10 +1318,10 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -1331,8 +1333,6 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1592,6 +1592,8 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
 exports[`int: mix of anonymous and named allocations > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 5,
     "elementWordSize": 4,
@@ -1603,10 +1605,10 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "__anonymous__3": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 15,
     "elementWordSize": 4,
@@ -1618,10 +1620,10 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "named": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 10,
     "elementWordSize": 4,
@@ -1633,10 +1635,10 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 3,
+    "allocationUnitCount": 1,
     "byteAddress": 12,
     "default": 0,
     "elementWordSize": 4,
@@ -1648,8 +1650,6 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 3,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1825,6 +1825,8 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
 exports[`int: mixed hex and decimal bytes in split-byte default > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 2835283968,
     "elementWordSize": 4,
@@ -1836,10 +1838,10 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -1851,8 +1853,6 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -2100,6 +2100,8 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
 exports[`int: multiple anonymous allocations > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 10,
     "elementWordSize": 4,
@@ -2111,10 +2113,10 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "__anonymous__2": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 20,
     "elementWordSize": 4,
@@ -2126,10 +2128,10 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
   "__anonymous__3": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 30,
     "elementWordSize": 4,
@@ -2141,10 +2143,10 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 3,
+    "allocationUnitCount": 1,
     "byteAddress": 12,
     "default": 0,
     "elementWordSize": 4,
@@ -2156,8 +2158,6 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 3,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -2371,6 +2371,8 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
 exports[`int: named constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 541065216,
     "elementWordSize": 4,
@@ -2382,10 +2384,10 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -2397,8 +2399,6 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -2594,6 +2594,8 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
 exports[`int: named mixed byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 2822766592,
     "elementWordSize": 4,
@@ -2605,10 +2607,10 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -2620,8 +2622,6 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -2795,6 +2795,8 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
 exports[`int: named split decimal default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 541065216,
     "elementWordSize": 4,
@@ -2806,10 +2808,10 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -2821,8 +2823,6 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3016,6 +3016,8 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
 exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 541065216,
     "elementWordSize": 4,
@@ -3027,10 +3029,10 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -3042,8 +3044,6 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3221,6 +3221,8 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
 exports[`int: named split hex default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 2835283968,
     "elementWordSize": 4,
@@ -3232,10 +3234,10 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -3247,8 +3249,6 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3450,6 +3450,8 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
 exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 2835283968,
     "elementWordSize": 4,
@@ -3461,10 +3463,10 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -3476,8 +3478,6 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3639,6 +3639,8 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
 exports[`int: named string split-byte default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 1094844416,
     "elementWordSize": 4,
@@ -3650,10 +3652,10 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -3665,8 +3667,6 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3818,6 +3818,8 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
 exports[`int: single decimal literal remains anonymous int with that value > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 32,
     "elementWordSize": 4,
@@ -3829,10 +3831,10 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -3844,8 +3846,6 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -3995,6 +3995,8 @@ exports[`int: with anonymous single-character string default > if the generated 
 exports[`int: with anonymous single-character string default > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 101,
     "elementWordSize": 4,
@@ -4006,10 +4008,10 @@ exports[`int: with anonymous single-character string default > if the generated 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -4021,8 +4023,6 @@ exports[`int: with anonymous single-character string default > if the generated 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -4194,6 +4194,8 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
 exports[`int: with constant identifier (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__2": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 100,
     "elementWordSize": 4,
@@ -4205,10 +4207,10 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -4220,8 +4222,6 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -4373,6 +4373,8 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
 exports[`int: with literal (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__anonymous__1": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 42,
     "elementWordSize": 4,
@@ -4384,10 +4386,10 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -4399,8 +4401,6 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -4564,6 +4564,8 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
 exports[`int: with named identifier > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 42,
     "elementWordSize": 4,
@@ -4575,10 +4577,10 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -4590,8 +4592,6 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -4753,6 +4753,8 @@ exports[`int: with named single-character string default > if the generated AST,
 exports[`int: with named single-character string default > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 101,
     "elementWordSize": 4,
@@ -4764,10 +4766,10 @@ exports[`int: with named single-character string default > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -4779,8 +4781,6 @@ exports[`int: with named single-character string default > if the generated AST,
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;

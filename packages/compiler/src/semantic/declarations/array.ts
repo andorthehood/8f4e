@@ -1,6 +1,6 @@
 import {
 	ArgumentType,
-	GLOBAL_ALIGNMENT_BOUNDARY,
+	ALLOCATION_UNIT_BYTE_SIZE,
 	type ArrayDeclarationLine,
 	type CompilationContext,
 	type MemoryType,
@@ -47,7 +47,7 @@ function createArrayDefaultValues(
 const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDeclarationLine, context) => {
 	const memoryId = line.arguments[0].value;
 	const elementCountArg = line.arguments[1];
-	const wordAlignedAddress = context.currentModuleNextWordOffset;
+	const allocationUnitAddress = context.currentModuleNextAllocationUnitOffset;
 
 	const elementWordSize = getElementWordSize(line.instruction);
 	const isUnsigned = line.instruction.endsWith('u[]');
@@ -59,11 +59,11 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 
 	// Apply 8-byte alignment for float64[] arrays: round up absolute word offset to even
 	// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.
-	const absoluteWordOffset = getAbsoluteWordOffset(context.startingByteAddress, wordAlignedAddress);
+	const absoluteWordOffset = getAbsoluteWordOffset(context.startingByteAddress, allocationUnitAddress);
 	const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, elementWordSize);
 	const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
-	const wordAlignedSize =
-		alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY);
+	const allocationUnitCount =
+		alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / ALLOCATION_UNIT_BYTE_SIZE);
 
 	context.namespace.memory[memoryId] = {
 		numberOfElements,
@@ -71,9 +71,9 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 		...memoryRegionFields,
 		// Round up to the 4-byte allocation grid so all data structures stay word-addressable.
 		// alignmentPadding reserves any gap needed before float64[] to guarantee 8-byte byte-address alignment.
-		wordAlignedSize,
+		allocationUnitCount,
 		// Store address in 4-byte words because pointer math/view indexing is word-based.
-		wordAlignedAddress: alignedAbsoluteWordOffset,
+		allocationUnitAddress: alignedAbsoluteWordOffset,
 		id: memoryId,
 		// Convert the word-grid offset back to a byte address for wasm load/store instructions.
 		byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
@@ -93,7 +93,7 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 		type: line.instruction.slice(0, -2) as unknown as MemoryType,
 		isUnsigned,
 	};
-	context.currentModuleNextWordOffset = wordAlignedAddress + wordAlignedSize;
+	context.currentModuleNextAllocationUnitOffset = allocationUnitAddress + allocationUnitCount;
 
 	return context;
 };

@@ -8,7 +8,7 @@ describe('getOrCreateMemory', () => {
 		module1: {
 			cycleFunction: 'function loop() {}',
 			initFunctionBody: 'init body',
-			wordAlignedSize: 100,
+			allocationUnitCount: 100,
 			memoryMap: {},
 		},
 	});
@@ -55,7 +55,7 @@ describe('getOrCreateMemory', () => {
 				module2: {
 					cycleFunction: 'function loop2() {}',
 					initFunctionBody: 'init body 2',
-					wordAlignedSize: 200,
+					allocationUnitCount: 200,
 					memoryMap: {},
 				},
 			};
@@ -78,8 +78,8 @@ describe('getOrCreateMemory', () => {
 						__hidden: {
 							id: '__hidden',
 							byteAddress: 400,
-							wordAlignedAddress: 100,
-							wordAlignedSize: 1,
+							allocationUnitAddress: 100,
+							allocationUnitCount: 1,
 							elementWordSize: 4,
 							default: -1,
 							storageType: 'int',
@@ -120,7 +120,7 @@ describe('getOrCreateMemory', () => {
 				module2: {
 					cycleFunction: 'function loop2() {}',
 					initFunctionBody: 'init body 2',
-					wordAlignedSize: 200,
+					allocationUnitCount: 200,
 					memoryMap: {},
 				},
 			};

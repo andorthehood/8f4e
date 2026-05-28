@@ -23,7 +23,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 		}
 
 		for (const input of codeBlock.widgets.inputs) {
-			const outputAddress = memoryViews.int32[input.wordAlignedAddress];
+			const outputAddress = memoryViews.int32[input.allocationUnitAddress];
 
 			if (outputAddress === 0) {
 				continue;

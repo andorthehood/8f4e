@@ -56,7 +56,9 @@ export default function drawer(
 		const baseValueIndex = getBaseValueIndex(bars, memoryViews);
 		const values = getTypedValueView(memoryViews, valueType);
 		const arrayLength =
-			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
+			typeof length === 'number'
+				? length
+				: memoryViews.int32[length.memory.allocationUnitAddress + length.bufferPointer];
 
 		engine.drawSprite(0, 0, 'plotterBackground', width, height);
 

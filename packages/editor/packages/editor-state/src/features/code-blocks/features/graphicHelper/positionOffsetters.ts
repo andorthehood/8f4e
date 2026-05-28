@@ -30,10 +30,10 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 		}
 
 		if (offsetter.axis === 'x') {
-			graphicData.positionOffsetterXWordAddress = memory.memory.wordAlignedAddress;
+			graphicData.positionOffsetterXWordAddress = memory.memory.allocationUnitAddress;
 		}
 		if (offsetter.axis === 'y') {
-			graphicData.positionOffsetterYWordAddress = memory.memory.wordAlignedAddress;
+			graphicData.positionOffsetterYWordAddress = memory.memory.allocationUnitAddress;
 		}
 	});
 }

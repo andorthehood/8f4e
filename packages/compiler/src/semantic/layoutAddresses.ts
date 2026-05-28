@@ -1,18 +1,18 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 
 export function getByteAddressFromWordOffset(startingByteAddress: number, wordOffset: number): number {
-	return startingByteAddress + wordOffset * GLOBAL_ALIGNMENT_BOUNDARY;
+	return startingByteAddress + wordOffset * ALLOCATION_UNIT_BYTE_SIZE;
 }
 
-export function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
-	if (wordAlignedSize <= 0) {
+export function getEndByteAddress(byteAddress: number, allocationUnitCount: number): number {
+	if (allocationUnitCount <= 0) {
 		return byteAddress;
 	}
-	return byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
+	return byteAddress + (allocationUnitCount - 1) * ALLOCATION_UNIT_BYTE_SIZE;
 }
 
 export function getAbsoluteWordOffset(startingByteAddress: number, localWordOffset: number): number {
-	return startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + localWordOffset;
+	return startingByteAddress / ALLOCATION_UNIT_BYTE_SIZE + localWordOffset;
 }
 
 export function alignAbsoluteWordOffset(absoluteWordOffset: number, elementWordSize: number): number {

@@ -9,8 +9,8 @@ import type { EventDispatcher } from '@8f4e/editor-state-types';
 interface ActiveCrossfade {
 	crossfade: Crossfade;
 	codeBlock: CodeBlockGraphicData;
-	leftMemory: Pick<DataStructure, 'wordAlignedAddress'>;
-	rightMemory: Pick<DataStructure, 'wordAlignedAddress'>;
+	leftMemory: Pick<DataStructure, 'allocationUnitAddress'>;
+	rightMemory: Pick<DataStructure, 'allocationUnitAddress'>;
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -33,8 +33,8 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		const leftValue = (1 - position) / 2;
 		const rightValue = (1 + position) / 2;
 
-		state.callbacks?.setWordInMemory?.(leftMemory.wordAlignedAddress, leftValue, false);
-		state.callbacks?.setWordInMemory?.(rightMemory.wordAlignedAddress, rightValue, false);
+		state.callbacks?.setWordInMemory?.(leftMemory.allocationUnitAddress, leftValue, false);
+		state.callbacks?.setWordInMemory?.(rightMemory.allocationUnitAddress, rightValue, false);
 	};
 
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {

@@ -41,7 +41,7 @@ function createState({
 					memoryMap: {
 						buffer: {
 							byteAddress,
-							wordAlignedSize: 4,
+							allocationUnitCount: 4,
 						},
 					},
 				},
@@ -182,7 +182,7 @@ describe('binary assets plugin', () => {
 				memoryMap: {
 					buffer: {
 						byteAddress: 16,
-						wordAlignedSize: 4,
+						allocationUnitCount: 4,
 					},
 				},
 			},

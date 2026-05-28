@@ -11,17 +11,17 @@ describe('switch interaction', () => {
 	let mockEvents: EventDispatcher;
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let memoryStore: Map<number, number>;
-	let setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
-	let getWordFromMemory: (wordAlignedAddress: number) => number;
+	let setWordInMemory: (allocationUnitAddress: number, value: number, isInteger: boolean) => void;
+	let getWordFromMemory: (allocationUnitAddress: number) => number;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		memoryStore = new Map();
-		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
+		setWordInMemory = vi.fn((allocationUnitAddress: number, value: number, isInteger: boolean) => {
 			void isInteger;
-			memoryStore.set(wordAlignedAddress, value);
+			memoryStore.set(allocationUnitAddress, value);
 		});
-		getWordFromMemory = vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0);
+		getWordFromMemory = vi.fn((allocationUnitAddress: number) => memoryStore.get(allocationUnitAddress) ?? 0);
 
 		mockState = createMockState({
 			graphicHelper: {
@@ -35,7 +35,7 @@ describe('switch interaction', () => {
 					'test-block': {
 						memoryMap: {
 							testSwitch: {
-								wordAlignedAddress: 5,
+								allocationUnitAddress: 5,
 							},
 						},
 					},
@@ -82,7 +82,7 @@ describe('switch interaction', () => {
 				y: 50,
 				width: 40,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				isInteger: true,
 				offValue: 0,
 				onValue: 1,
@@ -112,7 +112,7 @@ describe('switch interaction', () => {
 				y: 50,
 				width: 40,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				isInteger: true,
 				offValue: 0,
 				onValue: 1,
@@ -142,7 +142,7 @@ describe('switch interaction', () => {
 				y: 50,
 				width: 40,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				isInteger: true,
 				offValue: 0,
 				onValue: 1,

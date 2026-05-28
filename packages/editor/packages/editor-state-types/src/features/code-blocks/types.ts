@@ -38,7 +38,7 @@ export interface Input {
 	wireX: number;
 	wireY: number;
 	id: string;
-	wordAlignedAddress: number;
+	allocationUnitAddress: number;
 }
 
 export interface Output {
@@ -147,7 +147,7 @@ export interface Switch {
 	x: number;
 	y: number;
 	id: string;
-	wordAlignedAddress: number;
+	allocationUnitAddress: number;
 	isInteger: boolean;
 	offValue: number;
 	onValue: number;
@@ -227,7 +227,7 @@ export interface Slider {
 	x: number;
 	y: number;
 	id: string;
-	wordAlignedAddress: number;
+	allocationUnitAddress: number;
 	byteAddress: number;
 	isInteger: boolean;
 	isFloat64?: boolean;

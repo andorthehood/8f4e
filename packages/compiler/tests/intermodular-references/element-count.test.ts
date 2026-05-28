@@ -19,8 +19,8 @@ describe('inter-module references - element count', () => {
 		expect(sourceModule).toBeDefined();
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['size']).toBeDefined();
-		// size should be set to the element count (wordAlignedSize) of buffer
-		expect(targetModule.memoryMap['size'].default).toBe(sourceModule.memoryMap['buffer'].wordAlignedSize);
+		// size should be set to the element count (allocationUnitCount) of buffer
+		expect(targetModule.memoryMap['size'].default).toBe(sourceModule.memoryMap['buffer'].allocationUnitCount);
 		expect(targetModule.memoryMap['size'].default).toBe(10);
 	});
 
@@ -40,8 +40,8 @@ describe('inter-module references - element count', () => {
 		expect(sourceModule).toBeDefined();
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['count']).toBeDefined();
-		// count should be set to the element count (wordAlignedSize) of data
-		expect(targetModule.memoryMap['count'].default).toBe(sourceModule.memoryMap['data'].wordAlignedSize);
+		// count should be set to the element count (allocationUnitCount) of data
+		expect(targetModule.memoryMap['count'].default).toBe(sourceModule.memoryMap['data'].allocationUnitCount);
 		expect(targetModule.memoryMap['count'].default).toBe(7);
 	});
 
@@ -117,7 +117,7 @@ describe('inter-module references - element count', () => {
 		expect(dependentModule).toBeDefined();
 
 		// Verify the reference is resolved correctly
-		expect(dependentModule.memoryMap['size'].default).toBe(baseModule.memoryMap['buffer'].wordAlignedSize);
+		expect(dependentModule.memoryMap['size'].default).toBe(baseModule.memoryMap['buffer'].allocationUnitCount);
 		expect(dependentModule.memoryMap['size'].default).toBe(8);
 	});
 
@@ -142,10 +142,10 @@ describe('inter-module references - element count', () => {
 		expect(moduleB).toBeDefined();
 		expect(moduleC).toBeDefined();
 
-		expect(moduleC.memoryMap['sizeA'].default).toBe(moduleA.memoryMap['bufferA'].wordAlignedSize);
+		expect(moduleC.memoryMap['sizeA'].default).toBe(moduleA.memoryMap['bufferA'].allocationUnitCount);
 		expect(moduleC.memoryMap['sizeA'].default).toBe(10);
 
-		expect(moduleC.memoryMap['sizeB'].default).toBe(moduleB.memoryMap['bufferB'].wordAlignedSize);
+		expect(moduleC.memoryMap['sizeB'].default).toBe(moduleB.memoryMap['bufferB'].allocationUnitCount);
 		expect(moduleC.memoryMap['sizeB'].default).toBe(5);
 	});
 
@@ -176,7 +176,7 @@ describe('inter-module references - element count', () => {
 		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['buffer'].byteAddress);
 
 		// Verify size holds element count
-		expect(targetModule.memoryMap['size'].default).toBe(sourceModule.memoryMap['buffer'].wordAlignedSize);
+		expect(targetModule.memoryMap['size'].default).toBe(sourceModule.memoryMap['buffer'].allocationUnitCount);
 		expect(targetModule.memoryMap['size'].default).toBe(12);
 	});
 });

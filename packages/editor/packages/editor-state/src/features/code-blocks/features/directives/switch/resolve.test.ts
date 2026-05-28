@@ -38,12 +38,12 @@ describe('switch directive widget resolution', () => {
 						memoryMap: {
 							sw1: {
 								id: 'sw1',
-								wordAlignedAddress: 5,
+								allocationUnitAddress: 5,
 								isInteger: true,
 							},
 							sw2: {
 								id: 'sw2',
-								wordAlignedAddress: 6,
+								allocationUnitAddress: 6,
 								isInteger: true,
 							},
 						},
@@ -80,7 +80,7 @@ describe('switch directive widget resolution', () => {
 			x: 0,
 			y: 0,
 			id: 'oldSwitch',
-			wordAlignedAddress: 0,
+			allocationUnitAddress: 0,
 			isInteger: true,
 			onValue: 1,
 			offValue: 0,

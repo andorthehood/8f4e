@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ArgumentType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ArgumentType, ErrorCode, ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
 
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
@@ -48,11 +48,11 @@ describe('clamp address instruction compilers', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: true,
-				knownIntegerValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
+				knownIntegerValue: 128 - ALLOCATION_UNIT_BYTE_SIZE,
 				address: {
 					memoryIndex: 0,
 					clampRange: range,
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+					safeAccessByteWidth: ALLOCATION_UNIT_BYTE_SIZE,
 				},
 			},
 		]);
@@ -115,7 +115,7 @@ describe('clamp address instruction compilers', () => {
 				address: {
 					memoryIndex: 0,
 					clampRange: shiftedRange,
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+					safeAccessByteWidth: ALLOCATION_UNIT_BYTE_SIZE,
 				},
 			},
 		]);
@@ -135,7 +135,7 @@ describe('clamp address instruction compilers', () => {
 	it('clamps to the current module range', () => {
 		const context = createInstructionCompilerTestContext({
 			startingByteAddress: 64,
-			currentModuleWordAlignedSize: 8,
+			currentModuleAllocationUnitCount: 8,
 			namespace: {
 				...createInstructionCompilerTestContext().namespace,
 				moduleName: 'osc',
@@ -160,7 +160,7 @@ describe('clamp address instruction compilers', () => {
 						safeByteLength: 32,
 						moduleId: 'osc',
 					},
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+					safeAccessByteWidth: ALLOCATION_UNIT_BYTE_SIZE,
 				},
 			},
 		]);
@@ -181,7 +181,7 @@ describe('clamp address instruction compilers', () => {
 				isNonZero: false,
 				address: {
 					memoryIndex: 0,
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+					safeAccessByteWidth: ALLOCATION_UNIT_BYTE_SIZE,
 				},
 			},
 		]);

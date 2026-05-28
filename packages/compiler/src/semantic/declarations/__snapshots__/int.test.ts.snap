@@ -3,6 +3,8 @@
 exports[`int instruction compiler > creates an int memory entry 1`] = `
 {
   "counter": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -14,8 +16,6 @@ exports[`int instruction compiler > creates an int memory entry 1`] = `
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;

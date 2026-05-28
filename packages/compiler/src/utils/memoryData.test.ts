@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ALLOCATION_UNIT_BYTE_SIZE } from '@8f4e/compiler-spec';
 
 import {
 	getDataStructure,
@@ -25,13 +25,13 @@ describe('memoryData utilities', () => {
 	const mockMemory: MemoryMap = {
 		myVar: {
 			byteAddress: 100,
-			wordAlignedSize: 5,
+			allocationUnitCount: 5,
 			numberOfElements: 10,
 			elementWordSize: 4,
 		} as unknown as MemoryMap[string],
 		myVar2: {
 			byteAddress: 0,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			numberOfElements: 1,
 			elementWordSize: 4,
 		} as unknown as MemoryMap[string],
@@ -63,7 +63,7 @@ describe('memoryData utilities', () => {
 
 	describe('getMemoryStringLastByteAddress', () => {
 		it('calculates last byte address correctly', () => {
-			const expected = 100 + (5 - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
+			const expected = 100 + (5 - 1) * ALLOCATION_UNIT_BYTE_SIZE;
 			expect(getMemoryStringLastByteAddress(mockMemory, 'myVar')).toBe(expected);
 		});
 

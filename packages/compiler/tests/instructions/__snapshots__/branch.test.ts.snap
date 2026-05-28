@@ -154,6 +154,8 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
 exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -165,8 +167,6 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;

@@ -16,7 +16,7 @@ describe('array declaration inline initializers', () => {
 		);
 		const { init, memory } = await createWasmInstance(result.codeBuffer);
 		const notes = result.compiledModules.test.memoryMap.notes;
-		const start = notes.wordAlignedAddress;
+		const start = notes.allocationUnitAddress;
 
 		init();
 
@@ -37,7 +37,7 @@ describe('array declaration inline initializers', () => {
 		);
 		const { init, memory } = await createWasmInstance(result.codeBuffer);
 		const notes = result.compiledModules.test.memoryMap.notes;
-		const start = notes.wordAlignedAddress;
+		const start = notes.allocationUnitAddress;
 
 		init();
 
@@ -57,7 +57,7 @@ describe('array declaration inline initializers', () => {
 		);
 		const { init, memory } = await createWasmInstance(result.codeBuffer);
 		const foo = result.compiledModules.test.memoryMap.foo;
-		const start = foo.wordAlignedAddress;
+		const start = foo.allocationUnitAddress;
 
 		init();
 
@@ -101,7 +101,7 @@ describe('array declaration inline initializers', () => {
 			memorySizePages: Math.ceil(result.requiredMemoryBytes / (64 * 1024)),
 		});
 		const huge = result.compiledModules.test.memoryMap.huge;
-		const start = huge.wordAlignedAddress;
+		const start = huge.allocationUnitAddress;
 
 		init();
 
@@ -138,15 +138,15 @@ describe('array declaration inline initializers', () => {
 		const marker = result.compiledModules.test.memoryMap.marker;
 
 		init();
-		expect(memory[scratch.wordAlignedAddress]).toBe(0);
-		expect(memory[marker.wordAlignedAddress]).toBe(123);
+		expect(memory[scratch.allocationUnitAddress]).toBe(0);
+		expect(memory[marker.allocationUnitAddress]).toBe(123);
 
 		cycle();
-		expect(memory[scratch.wordAlignedAddress]).toBe(99);
-		expect(memory[marker.wordAlignedAddress]).toBe(456);
+		expect(memory[scratch.allocationUnitAddress]).toBe(99);
+		expect(memory[marker.allocationUnitAddress]).toBe(456);
 
 		init();
-		expect(memory[scratch.wordAlignedAddress]).toBe(0);
-		expect(memory[marker.wordAlignedAddress]).toBe(123);
+		expect(memory[scratch.allocationUnitAddress]).toBe(0);
+		expect(memory[marker.allocationUnitAddress]).toBe(123);
 	});
 });

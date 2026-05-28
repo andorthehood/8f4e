@@ -77,11 +77,11 @@ function readRuntimePressedKeys(state: State, keyboard: PianoKeyboard): Set<numb
 		return pressedKeys;
 	}
 
-	const numberOfKeys = Math.max(0, getWordFromMemory(keyboard.pressedNumberOfKeysMemory.wordAlignedAddress) || 0);
+	const numberOfKeys = Math.max(0, getWordFromMemory(keyboard.pressedNumberOfKeysMemory.allocationUnitAddress) || 0);
 	const readableKeys = Math.min(numberOfKeys, keyboard.pressedKeysListMemory.numberOfElements);
 
 	for (let i = 0; i < readableKeys; i++) {
-		const keyValue = getWordFromMemory(keyboard.pressedKeysListMemory.wordAlignedAddress + i);
+		const keyValue = getWordFromMemory(keyboard.pressedKeysListMemory.allocationUnitAddress + i);
 		const keyOffset = Math.trunc(keyValue - keyboard.startingNumber);
 
 		if (keyOffset >= 0 && keyOffset < keyboard.keys.length) {

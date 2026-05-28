@@ -20,7 +20,7 @@ describe('parseMemoryInstructionArguments', () => {
 			memory: {
 				myVar: {
 					byteAddress: 100,
-					wordAlignedSize: 5,
+					allocationUnitCount: 5,
 				} as unknown as CompilationContext['namespace']['memory'][string],
 			},
 		},
@@ -421,7 +421,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const context = {
 			...mockContext,
 			startingByteAddress: 20,
-			currentModuleWordAlignedSize: 3,
+			currentModuleAllocationUnitCount: 3,
 		} as unknown as CompilationContext;
 
 		expect(
@@ -452,7 +452,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const context = {
 			...mockContext,
 			startingByteAddress: 20,
-			currentModuleWordAlignedSize: undefined,
+			currentModuleAllocationUnitCount: undefined,
 		} as unknown as CompilationContext;
 
 		const result = parseMemoryInstructionArguments(
@@ -480,11 +480,11 @@ describe('parseMemoryInstructionArguments', () => {
 			mockContext
 		);
 		expect(result.id).toBe('ptr');
-		// byteAddress + (wordAlignedSize - 1) * 4 = 100 + (5 - 1) * 4 = 116
+		// byteAddress + (allocationUnitCount - 1) * 4 = 100 + (5 - 1) * 4 = 116
 		expect(result.defaultValue).toBe(116);
 	});
 
-	it('resolves element-count default (count(myVar)) to wordAlignedSize', () => {
+	it('resolves element-count default (count(myVar)) to allocationUnitCount', () => {
 		const args: Argument[] = [classifyIdentifier('n'), classifyIdentifier('count(myVar)')];
 		const result = parseMemoryInstructionArguments(
 			{
@@ -496,7 +496,7 @@ describe('parseMemoryInstructionArguments', () => {
 			mockContext
 		);
 		expect(result.id).toBe('n');
-		// myVar has wordAlignedSize 5
+		// myVar has allocationUnitCount 5
 		expect(result.defaultValue).toBe(5);
 	});
 

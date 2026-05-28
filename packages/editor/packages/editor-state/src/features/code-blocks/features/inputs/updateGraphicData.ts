@@ -33,7 +33,7 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 			wireX: Math.round(x + width / 2),
 			wireY: Math.round(y + height / 2),
 			id: input.id,
-			wordAlignedAddress: memory.wordAlignedAddress,
+			allocationUnitAddress: memory.allocationUnitAddress,
 			codeBlock: graphicData,
 		});
 	});

@@ -13,15 +13,15 @@ describe('slider interaction', () => {
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let offCallbacks: Map<string, (...args: unknown[]) => void>;
 	let memoryStore: Map<number, number>;
-	let setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
+	let setWordInMemory: (allocationUnitAddress: number, value: number, isInteger: boolean) => void;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		offCallbacks = new Map();
 		memoryStore = new Map();
-		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
+		setWordInMemory = vi.fn((allocationUnitAddress: number, value: number, isInteger: boolean) => {
 			void isInteger;
-			memoryStore.set(wordAlignedAddress, value);
+			memoryStore.set(allocationUnitAddress, value);
 		});
 
 		mockState = createMockState({
@@ -36,7 +36,7 @@ describe('slider interaction', () => {
 					'test-block': {
 						memoryMap: {
 							testSlider: {
-								wordAlignedAddress: 5,
+								allocationUnitAddress: 5,
 								isInteger: true,
 							},
 						},
@@ -103,7 +103,7 @@ describe('slider interaction', () => {
 				y: 50,
 				width: 100,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: true,
 				min: 0,
@@ -141,7 +141,7 @@ describe('slider interaction', () => {
 				y: 50,
 				width: 100,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: true,
 				min: 10,
@@ -178,7 +178,7 @@ describe('slider interaction', () => {
 				y: 50,
 				width: 100,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: true,
 				min: 0,
@@ -215,7 +215,7 @@ describe('slider interaction', () => {
 				y: 50,
 				width: 100,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: true,
 				min: 0,
@@ -254,7 +254,7 @@ describe('slider interaction', () => {
 				y: 50,
 				width: 100,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: true,
 				min: 0,
@@ -298,7 +298,7 @@ describe('slider interaction', () => {
 				y: 50,
 				width: 100,
 				height: 20,
-				wordAlignedAddress: 5,
+				allocationUnitAddress: 5,
 				byteAddress: 20,
 				isInteger: true,
 				min: 0,

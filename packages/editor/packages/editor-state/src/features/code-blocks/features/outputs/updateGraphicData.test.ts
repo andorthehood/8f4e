@@ -33,7 +33,7 @@ describe('updateOutputsGraphicData', () => {
 					'test-block': {
 						memoryMap: {
 							output1: {
-								wordAlignedAddress: 5,
+								allocationUnitAddress: 5,
 								byteAddress: 20,
 							},
 						},
@@ -93,12 +93,12 @@ describe('updateOutputsGraphicData', () => {
 	it('should not render outputs for private entities', () => {
 		mockGraphicData.code = ['module test-block', 'int _privateOutput'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['_privateOutput'] = {
-			wordAlignedAddress: 7,
+			allocationUnitAddress: 7,
 			byteAddress: 28,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: '_privateOutput',
@@ -114,12 +114,12 @@ describe('updateOutputsGraphicData', () => {
 	it('should render bare anonymous scalar allocations', () => {
 		mockGraphicData.code = ['module test-block', 'int'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__1'] = {
-			wordAlignedAddress: 8,
+			allocationUnitAddress: 8,
 			byteAddress: 32,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: '__anonymous__1',
@@ -145,7 +145,7 @@ describe('updateOutputsGraphicData', () => {
 			id: 'oldOutput',
 			calibratedMax: 1,
 			calibratedMin: 0,
-			memory: { wordAlignedAddress: 0 } as DataStructure,
+			memory: { allocationUnitAddress: 0 } as DataStructure,
 		});
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
@@ -156,12 +156,12 @@ describe('updateOutputsGraphicData', () => {
 	it('should handle multiple outputs', () => {
 		mockGraphicData.code = ['module test-block', 'int output1', 'float output2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['output2'] = {
-			wordAlignedAddress: 6,
+			allocationUnitAddress: 6,
 			byteAddress: 24,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.float,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: false,
 			id: 'output2',
@@ -185,12 +185,12 @@ describe('updateOutputsGraphicData', () => {
 	it('should position outputs at correct y coordinate based on line number', () => {
 		mockGraphicData.code = ['nop', 'nop', 'int output1'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'output1',

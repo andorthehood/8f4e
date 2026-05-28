@@ -11,14 +11,14 @@ export default function _switch(state: State, events: EventDispatcher): () => vo
 			return;
 		}
 
-		const value = state.callbacks?.getWordFromMemory?.(_switch.wordAlignedAddress);
+		const value = state.callbacks?.getWordFromMemory?.(_switch.allocationUnitAddress);
 
 		if (value === _switch.offValue) {
-			state.callbacks?.setWordInMemory?.(_switch.wordAlignedAddress, _switch.onValue, _switch.isInteger);
+			state.callbacks?.setWordInMemory?.(_switch.allocationUnitAddress, _switch.onValue, _switch.isInteger);
 		} else if (value === _switch.onValue) {
-			state.callbacks?.setWordInMemory?.(_switch.wordAlignedAddress, _switch.offValue, _switch.isInteger);
+			state.callbacks?.setWordInMemory?.(_switch.allocationUnitAddress, _switch.offValue, _switch.isInteger);
 		} else {
-			state.callbacks?.setWordInMemory?.(_switch.wordAlignedAddress, _switch.offValue, _switch.isInteger);
+			state.callbacks?.setWordInMemory?.(_switch.allocationUnitAddress, _switch.offValue, _switch.isInteger);
 		}
 	};
 

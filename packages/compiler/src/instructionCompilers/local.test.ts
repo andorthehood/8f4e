@@ -37,8 +37,8 @@ describe('local instruction compiler', () => {
 					count: {
 						id: 'count',
 						byteAddress: 0,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
+						allocationUnitAddress: 0,
+						allocationUnitCount: 1,
 						numberOfElements: 1,
 						elementWordSize: 4,
 						type: 0,

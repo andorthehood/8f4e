@@ -126,7 +126,7 @@ export interface CollectedNamespace {
 	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress?: number;
-	wordAlignedSize?: number;
+	allocationUnitCount?: number;
 }
 
 export type Namespaces = Record<string, CollectedNamespace>;
@@ -149,8 +149,8 @@ export interface CompilationContext {
 	insideConstantsBlock: boolean;
 	insideMapBlock: boolean;
 	startingByteAddress: number;
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
+	currentModuleNextAllocationUnitOffset: number;
+	currentModuleAllocationUnitCount: number;
 	currentMemoryIndex: number;
 	currentMemoryRegionName?: string;
 	memoryRegions: string[];
@@ -174,24 +174,24 @@ export interface CompilationContext {
 /** Compilation context narrowed to a module body. */
 export interface ModuleCompilationContext extends CompilationContext {
 	mode: 'module';
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
+	currentModuleNextAllocationUnitOffset: number;
+	currentModuleAllocationUnitCount: number;
 }
 
 /** Compilation context used while collecting a compiled namespace block. */
 export interface NamespaceBuildContext extends CompilationContext {
 	mode: 'module';
 	codeBlockType: CompiledModuleBlockType;
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
+	currentModuleNextAllocationUnitOffset: number;
+	currentModuleAllocationUnitCount: number;
 }
 
 /** Compilation context narrowed to a function body with function metadata resolved. */
 export interface FunctionCompilationContext extends CompilationContext {
 	mode: 'function';
 	codeBlockType: 'function';
-	currentModuleNextWordOffset: number;
-	currentModuleWordAlignedSize: number;
+	currentModuleNextAllocationUnitOffset: number;
+	currentModuleAllocationUnitCount: number;
 	currentFunctionSignature: FunctionSignature;
 	currentFunctionTypeIndex?: number;
 	functionTypeRegistry: FunctionTypeRegistry;

@@ -138,6 +138,8 @@ exports[`const: literal-only division expression with integer result > if the ge
 exports[`const: literal-only division expression with integer result > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -149,8 +151,6 @@ exports[`const: literal-only division expression with integer result > if the ge
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -293,6 +293,8 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
 exports[`const: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -304,8 +306,6 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -469,6 +469,8 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
 exports[`int[]: buffer size from literal multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "buffer": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 8,
     "byteAddress": 0,
     "default": {},
     "elementWordSize": 4,
@@ -480,10 +482,10 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
     "numberOfElements": 8,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 8,
   },
   "output": {
+    "allocationUnitAddress": 8,
+    "allocationUnitCount": 1,
     "byteAddress": 32,
     "default": 0,
     "elementWordSize": 4,
@@ -495,8 +497,6 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 8,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -660,6 +660,8 @@ exports[`memory declaration: literal-only multiplication expression default > if
 exports[`memory declaration: literal-only multiplication expression default > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "foo": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 12,
     "elementWordSize": 4,
@@ -671,10 +673,10 @@ exports[`memory declaration: literal-only multiplication expression default > if
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -686,8 +688,6 @@ exports[`memory declaration: literal-only multiplication expression default > if
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -811,6 +811,8 @@ exports[`push: float literal multiplication with float-typed result > if the gen
 exports[`push: float literal multiplication with float-typed result > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -822,8 +824,6 @@ exports[`push: float literal multiplication with float-typed result > if the gen
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -947,6 +947,8 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
 exports[`push: hex literal in division expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -958,8 +960,6 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1083,6 +1083,8 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
 exports[`push: hex literal in multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -1094,8 +1096,6 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1219,6 +1219,8 @@ exports[`push: literal-only division expression with float result > if the gener
 exports[`push: literal-only division expression with float result > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -1230,8 +1232,6 @@ exports[`push: literal-only division expression with float result > if the gener
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1355,6 +1355,8 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
 exports[`push: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -1366,8 +1368,6 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
 }
 `;

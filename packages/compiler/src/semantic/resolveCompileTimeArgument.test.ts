@@ -21,7 +21,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					byteAddress: 32,
 					numberOfElements: 8,
 					elementWordSize: 2,
-					wordAlignedSize: 4,
+					allocationUnitCount: 4,
 					isInteger: true,
 				},
 				floatBuf: {
@@ -41,7 +41,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			namespaces: {},
 		},
 		startingByteAddress: 24,
-		currentModuleWordAlignedSize: 5,
+		currentModuleAllocationUnitCount: 5,
 		locals: {},
 	} as unknown as CompilationContext;
 
@@ -408,11 +408,11 @@ describe('tryResolveCompileTimeArgument', () => {
 						kind: 'module',
 						consts: {},
 						byteAddress: 8,
-						wordAlignedSize: 4,
+						allocationUnitCount: 4,
 						memory: {
 							buffer: {
 								byteAddress: 8,
-								wordAlignedSize: 4,
+								allocationUnitCount: 4,
 								numberOfElements: 4,
 								elementWordSize: 4,
 								memoryIndex: 0,
@@ -450,11 +450,11 @@ describe('tryResolveCompileTimeArgument', () => {
 						kind: 'module',
 						consts: {},
 						byteAddress: 8,
-						wordAlignedSize: 4,
+						allocationUnitCount: 4,
 						memory: {
 							buffer: {
 								byteAddress: 8,
-								wordAlignedSize: 4,
+								allocationUnitCount: 4,
 								numberOfElements: 4,
 								elementWordSize: 4,
 								memoryIndex: 0,
@@ -466,7 +466,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
+		// End address = byteAddress + (allocationUnitCount - 1) * 4 = 8 + 3 * 4 = 20
 		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
 			value: 20,
 			isInteger: true,
@@ -493,7 +493,7 @@ describe('tryResolveCompileTimeArgument', () => {
 						kind: 'module',
 						consts: {},
 						byteAddress: 12,
-						wordAlignedSize: 3,
+						allocationUnitCount: 3,
 						memory: {},
 					},
 				},
@@ -526,7 +526,7 @@ describe('tryResolveCompileTimeArgument', () => {
 						kind: 'module',
 						consts: {},
 						byteAddress: 12,
-						wordAlignedSize: 3,
+						allocationUnitCount: 3,
 						memory: {},
 					},
 				},
@@ -586,7 +586,7 @@ describe('tryResolveCompileTimeArgument', () => {
 						kind: 'module',
 						consts: {},
 						byteAddress: 8,
-						wordAlignedSize: 4,
+						allocationUnitCount: 4,
 						memory: {},
 					},
 				},
@@ -629,7 +629,7 @@ describe('tryResolveCompileTimeArgument', () => {
 	it('returns undefined for current-module end address before module size is known', () => {
 		const contextWithoutModuleSize = {
 			...mockContext,
-			currentModuleWordAlignedSize: undefined,
+			currentModuleAllocationUnitCount: undefined,
 		} as unknown as CompilationContext;
 
 		expect(tryResolveCompileTimeArgument(contextWithoutModuleSize, classifyIdentifier('this&'))).toBeUndefined();
@@ -644,7 +644,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					arr: {
 						id: 'arr',
 						byteAddress: 16,
-						wordAlignedSize: 4,
+						allocationUnitCount: 4,
 						numberOfElements: 4,
 						elementWordSize: 4,
 						memoryIndex: 0,
@@ -679,7 +679,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					arr: {
 						id: 'arr',
 						byteAddress: 16,
-						wordAlignedSize: 4,
+						allocationUnitCount: 4,
 						numberOfElements: 4,
 						elementWordSize: 4,
 						memoryIndex: 0,
@@ -714,7 +714,7 @@ describe('tryResolveCompileTimeArgument', () => {
 					arr: {
 						id: 'arr',
 						byteAddress: 16,
-						wordAlignedSize: 4,
+						allocationUnitCount: 4,
 						numberOfElements: 4,
 						elementWordSize: 4,
 						isInteger: true,

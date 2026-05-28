@@ -60,7 +60,7 @@ export default function resolveMemoryIdentifier(
 
 	if (operator === '*' && memory.pointeeBaseType) {
 		memory = state.graphicHelper.outputsByWordAddress.get(
-			state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress) || 0
+			state.callbacks?.getWordFromMemory?.(memory.allocationUnitAddress) || 0
 		)?.memory;
 	}
 

@@ -53,7 +53,7 @@ describe('drawConnections', () => {
 			wireX: 15,
 			wireY: 45,
 			id: 'in',
-			wordAlignedAddress: 2,
+			allocationUnitAddress: 2,
 		};
 		const output: Output = {
 			codeBlock: outputBlock,
@@ -68,8 +68,8 @@ describe('drawConnections', () => {
 			calibratedMin: 0,
 			memory: {
 				byteAddress: 80,
-				wordAlignedAddress: 20,
-				wordAlignedSize: 1,
+				allocationUnitAddress: 20,
+				allocationUnitCount: 1,
 			} as never,
 		};
 		inputBlock.widgets.inputs = [input];
@@ -87,8 +87,8 @@ describe('drawConnections', () => {
 						memoryMap: {
 							in: {
 								byteAddress: 8,
-								wordAlignedAddress: 2,
-								wordAlignedSize: 1,
+								allocationUnitAddress: 2,
+								allocationUnitCount: 1,
 							},
 						},
 					},

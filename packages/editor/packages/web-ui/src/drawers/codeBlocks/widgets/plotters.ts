@@ -100,8 +100,10 @@ export default function drawer(
 		const baseValueIndex = getBaseValueIndex(startAddress, memoryViews, baseSampleShift);
 		const values = getTypedValueView(memoryViews, valueType);
 		const arrayLength =
-			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
-		const sampleCount = Math.min(arrayLength || startAddress.memory.wordAlignedSize, maxPlotterWidth);
+			typeof length === 'number'
+				? length
+				: memoryViews.int32[length.memory.allocationUnitAddress + length.bufferPointer];
+		const sampleCount = Math.min(arrayLength || startAddress.memory.allocationUnitCount, maxPlotterWidth);
 		const valueRange = maxValue - minValue;
 		const columnWidth = Math.max(1, Math.floor(maxPlotterWidth / Math.max(sampleCount, 1)));
 		const isDense = arrayLength > maxPlotterWidth;

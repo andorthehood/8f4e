@@ -22,7 +22,7 @@ export function getModuleAddressRange(context: CodegenContext | CompilationConte
 		source: 'module-start',
 		...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
 		byteAddress: context.startingByteAddress,
-		safeByteLength: Math.max(0, context.currentModuleWordAlignedSize * WORD_MEMORY_ACCESS_WIDTH),
+		safeByteLength: Math.max(0, context.currentModuleAllocationUnitCount * WORD_MEMORY_ACCESS_WIDTH),
 		...(context.namespace.moduleName ? { moduleId: context.namespace.moduleName } : {}),
 	};
 }

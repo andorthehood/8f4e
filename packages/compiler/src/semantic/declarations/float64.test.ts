@@ -122,7 +122,7 @@ describe('float64 instruction compiler', () => {
 
 		const entry = context.namespace.memory['b'];
 		expect(entry.byteAddress % 8).toBe(0);
-		expect(entry.wordAlignedAddress % 2).toBe(0);
+		expect(entry.allocationUnitAddress % 2).toBe(0);
 	});
 
 	it('creates a float64* memory entry with pointer-width allocation', () => {
@@ -141,7 +141,7 @@ describe('float64 instruction compiler', () => {
 
 		const entry = context.namespace.memory['ptr'];
 		expect(entry.elementWordSize).toBe(4);
-		expect(entry.wordAlignedSize).toBe(1);
+		expect(entry.allocationUnitCount).toBe(1);
 		expect(entry.pointeeBaseType).toBe('float64');
 		expect(entry.isInteger).toBe(true);
 	});
@@ -162,7 +162,7 @@ describe('float64 instruction compiler', () => {
 
 		const entry = context.namespace.memory['pptr'];
 		expect(entry.elementWordSize).toBe(4);
-		expect(entry.wordAlignedSize).toBe(1);
+		expect(entry.allocationUnitCount).toBe(1);
 		expect(entry.pointeeBaseType).toBe('float64');
 		expect(entry.pointerDepth).toBe(2);
 	});

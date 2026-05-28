@@ -179,6 +179,8 @@ exports[`call constant function > if the generated AST, WAT and memory map match
 exports[`call constant function > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -190,8 +192,6 @@ exports[`call constant function > if the generated AST, WAT and memory map match
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -377,6 +377,8 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
 exports[`call float64-returning function > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 3,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 8,
@@ -389,8 +391,6 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float64",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 3,
   },
 }
 `;
@@ -597,6 +597,8 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
 exports[`call function multiple times > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -608,8 +610,6 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -838,6 +838,8 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
 exports[`call function with parameter > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -849,10 +851,10 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 2,
+    "allocationUnitCount": 1,
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -864,8 +866,6 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 2,
-    "wordAlignedSize": 1,
   },
 }
 `;
@@ -1055,6 +1055,8 @@ exports[`function can call another function with its signature and wasm index av
 exports[`function can call another function with its signature and wasm index available during compilation > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -1066,8 +1068,6 @@ exports[`function can call another function with its signature and wasm index av
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;

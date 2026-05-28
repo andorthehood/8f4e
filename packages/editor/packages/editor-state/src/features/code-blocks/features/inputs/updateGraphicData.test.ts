@@ -30,7 +30,7 @@ describe('updateInputsGraphicData', () => {
 					'test-block': {
 						memoryMap: {
 							input1: {
-								wordAlignedAddress: 5,
+								allocationUnitAddress: 5,
 								byteAddress: 20,
 							},
 						},
@@ -85,7 +85,7 @@ describe('updateInputsGraphicData', () => {
 			wireX: 0,
 			wireY: 0,
 			id: 'oldInput',
-			wordAlignedAddress: 0,
+			allocationUnitAddress: 0,
 		});
 
 		updateInputsGraphicData(mockGraphicData, mockState);
@@ -96,12 +96,12 @@ describe('updateInputsGraphicData', () => {
 	it('should handle multiple inputs', () => {
 		mockGraphicData.code = ['module test-block', 'int* input1', 'float* input2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['input2'] = {
-			wordAlignedAddress: 6,
+			allocationUnitAddress: 6,
 			byteAddress: 24,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.float,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: false,
 			id: 'input2',
@@ -123,12 +123,12 @@ describe('updateInputsGraphicData', () => {
 	it('should position inputs at correct y coordinate based on line number', () => {
 		mockGraphicData.code = ['nop', 'nop', 'int* input1'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['input1'] = {
-			wordAlignedAddress: 5,
+			allocationUnitAddress: 5,
 			byteAddress: 20,
 			numberOfElements: 1,
 			elementWordSize: 1,
 			type: MemoryTypes.int,
-			wordAlignedSize: 1,
+			allocationUnitCount: 1,
 			default: 0,
 			isInteger: true,
 			id: 'input1',

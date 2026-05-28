@@ -23,8 +23,8 @@ function createMemory(overrides: Partial<DataStructure>): DataStructure {
 		id: 'value',
 		type: 'int',
 		byteAddress: 0,
-		wordAlignedAddress: 0,
-		wordAlignedSize: 1,
+		allocationUnitAddress: 0,
+		allocationUnitCount: 1,
 		elementWordSize: 4,
 		isInteger: true,
 		isUnsigned: false,
@@ -45,9 +45,9 @@ describe('formatDebuggerValue', () => {
 		const memoryViews = createMemoryViews();
 		memoryViews.uint8.set([0x0f, 0x00]);
 
-		expect(formatDebuggerValue(memoryViews, createMemory({ elementWordSize: 2, wordAlignedSize: 0.5 }), 0, 'hex')).toBe(
-			'00 0f'
-		);
+		expect(
+			formatDebuggerValue(memoryViews, createMemory({ elementWordSize: 2, allocationUnitCount: 0.5 }), 0, 'hex')
+		).toBe('00 0f');
 	});
 
 	it('formats single-byte hex values as a padded byte', () => {
@@ -55,7 +55,7 @@ describe('formatDebuggerValue', () => {
 		memoryViews.uint8[0] = 0x0a;
 
 		expect(
-			formatDebuggerValue(memoryViews, createMemory({ elementWordSize: 1, wordAlignedSize: 0.25 }), 0, 'hex')
+			formatDebuggerValue(memoryViews, createMemory({ elementWordSize: 1, allocationUnitCount: 0.25 }), 0, 'hex')
 		).toBe('0a');
 	});
 });

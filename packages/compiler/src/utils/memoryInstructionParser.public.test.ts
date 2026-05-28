@@ -85,7 +85,7 @@ describe('parseMemoryInstructionArguments', () => {
 	describe('second argument handling - memory references', () => {
 		it('should resolve memory reference with & prefix', () => {
 			const memory = {
-				out1: { byteAddress: 100, wordAlignedSize: 1, isInteger: false, isPointer: false },
+				out1: { byteAddress: 100, allocationUnitCount: 1, isInteger: false, isPointer: false },
 			};
 			const args = [classifyIdentifier('myPtr'), classifyIdentifier('&out1')];
 			const result = parseMemoryInstructionArguments(createLine(7, 'float*', args), createMockContext(memory));
@@ -94,11 +94,11 @@ describe('parseMemoryInstructionArguments', () => {
 
 		it('should resolve memory reference with & suffix to end address', () => {
 			const memory = {
-				buffer: { byteAddress: 100, wordAlignedSize: 5, isInteger: true, isPointer: false },
+				buffer: { byteAddress: 100, allocationUnitCount: 5, isInteger: true, isPointer: false },
 			};
 			const args = [classifyIdentifier('myPtr'), classifyIdentifier('buffer&')];
 			const result = parseMemoryInstructionArguments(createLine(7, 'int*', args), createMockContext(memory));
-			// End address should be: byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY
+			// End address should be: byteAddress + (allocationUnitCount - 1) * ALLOCATION_UNIT_BYTE_SIZE
 			// = 100 + (5 - 1) * 4 = 100 + 16 = 116
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 116 });
 		});
@@ -114,7 +114,7 @@ describe('parseMemoryInstructionArguments', () => {
 	describe('second argument handling - element count', () => {
 		it('should resolve element count with count() syntax', () => {
 			const memory = {
-				buffer: { byteAddress: 200, wordAlignedSize: 10, isInteger: true, isPointer: false },
+				buffer: { byteAddress: 200, allocationUnitCount: 10, isInteger: true, isPointer: false },
 			};
 			const args = [classifyIdentifier('count'), classifyIdentifier('count(buffer)')];
 			const result = parseMemoryInstructionArguments(createLine(9, 'int', args), createMockContext(memory));
@@ -446,7 +446,7 @@ describe('parseMemoryInstructionArguments', () => {
 			// Intermodule references must be stripped by normalizeMemoryDeclaration; they must not
 			// fall through to the memory-reference branch regardless of local memory contents.
 			const memory = {
-				'module:identifier': { byteAddress: 123, wordAlignedSize: 1, isInteger: false, isPointer: false },
+				'module:identifier': { byteAddress: 123, allocationUnitCount: 1, isInteger: false, isPointer: false },
 			};
 			const args = [classifyIdentifier('test'), classifyIdentifier('&module:identifier')];
 			expect(() =>

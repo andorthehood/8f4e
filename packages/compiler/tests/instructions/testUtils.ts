@@ -32,7 +32,7 @@ const VERSION = [0x01, 0x00, 0x00, 0x00];
 export function getInitialMemory(module: CompiledModule): number[] {
 	return Object.values(module.memoryMap).reduce((accumulator, current) => {
 		if (typeof current.default === 'object') {
-			const defaultBuffer = new Array(current.wordAlignedSize);
+			const defaultBuffer = new Array(current.allocationUnitCount);
 			defaultBuffer.fill(0);
 
 			Object.entries(current.default).forEach(([relativeWordAddress, value]) => {

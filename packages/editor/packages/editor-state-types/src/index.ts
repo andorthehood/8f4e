@@ -311,9 +311,9 @@ export interface Callbacks {
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
 	// Memory manipulation callback
-	setWordInMemory?: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
+	setWordInMemory?: (allocationUnitAddress: number, value: number, isInteger: boolean) => void;
 
-	getWordFromMemory?: (wordAlignedAddress: number) => number;
+	getWordFromMemory?: (allocationUnitAddress: number) => number;
 
 	// Clipboard callbacks
 	/**

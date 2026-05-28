@@ -118,15 +118,15 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 						return result;
 					}
 				: undefined,
-			getWordFromMemory: (wordAlignedAddress: number) => {
-				return memoryViews.int32[wordAlignedAddress] || 0;
+			getWordFromMemory: (allocationUnitAddress: number) => {
+				return memoryViews.int32[allocationUnitAddress] || 0;
 			},
-			setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => {
+			setWordInMemory: (allocationUnitAddress: number, value: number, isInteger: boolean) => {
 				if (isInteger) {
-					memoryViews.int32[wordAlignedAddress] = value;
+					memoryViews.int32[allocationUnitAddress] = value;
 					return;
 				}
-				memoryViews.float32[wordAlignedAddress] = value;
+				memoryViews.float32[allocationUnitAddress] = value;
 			},
 			readClipboardText: async () => {
 				return await navigator.clipboard.readText();

@@ -38,12 +38,12 @@ describe('button directive widget resolution', () => {
 						memoryMap: {
 							btn1: {
 								id: 'btn1',
-								wordAlignedAddress: 5,
+								allocationUnitAddress: 5,
 								isInteger: true,
 							},
 							btn2: {
 								id: 'btn2',
-								wordAlignedAddress: 6,
+								allocationUnitAddress: 6,
 								isInteger: true,
 							},
 						},
@@ -80,7 +80,7 @@ describe('button directive widget resolution', () => {
 			x: 0,
 			y: 0,
 			id: 'oldButton',
-			wordAlignedAddress: 0,
+			allocationUnitAddress: 0,
 			isInteger: true,
 			onValue: 1,
 			offValue: 0,

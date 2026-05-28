@@ -277,7 +277,7 @@ describe('inter-module references - element max', () => {
 		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['buffer'].byteAddress);
 
 		// Verify size holds element count
-		expect(targetModule.memoryMap['size'].default).toBe(sourceModule.memoryMap['buffer'].wordAlignedSize);
+		expect(targetModule.memoryMap['size'].default).toBe(sourceModule.memoryMap['buffer'].allocationUnitCount);
 		expect(targetModule.memoryMap['size'].default).toBe(12);
 
 		// Verify maxValue holds element max

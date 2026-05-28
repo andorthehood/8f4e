@@ -156,6 +156,8 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 2`]
 exports[`round > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
+    "allocationUnitAddress": 0,
+    "allocationUnitCount": 1,
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -167,10 +169,10 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 3`]
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
   },
   "output": {
+    "allocationUnitAddress": 1,
+    "allocationUnitCount": 1,
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -182,8 +184,6 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 3`]
     "numberOfElements": 1,
     "pointerDepth": 0,
     "type": "float",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
   },
 }
 `;
