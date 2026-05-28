@@ -67,6 +67,7 @@ Active todo files are listed below.
 | 430 | Nest pointer metadata shape | 🟡 | 4-8h | 2026-05-27 | Move scattered pointer fields into a shared nested pointer metadata shape used consistently by memory, locals, and stack address metadata. |
 | 431 | Separate pointer type and provenance facts | 🟡 | 2-4h | 2026-05-27 | Model declared pointer type facts separately from value provenance facts so helpers like `count(*ptr)` only use explicit count provenance. |
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
+| 433 | Add dash argument continuation lines | 🟡 | 2-4h | 2026-05-28 | Add parser sugar so `- <arg>` lines append one argument to the previous source instruction before validation and semantic compilation. |
 
 ### 🟢 Low Priority
 
