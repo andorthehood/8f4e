@@ -105,6 +105,12 @@ type ParsedCompilerSource = {
 	astBuilder?: SourceBlockASTBuilder;
 };
 
+type SourceLine = {
+	line: string;
+	lineNumberBeforeMacroExpansion: number;
+	lineNumberAfterMacroExpansion: number;
+};
+
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
 const sourceBlockStartInstructionSet = new Set(['module', 'function']);
 const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd']);
@@ -355,6 +361,93 @@ function tokenizeInstruction(line: string): string[] {
 	return tokens;
 }
 
+function withSyntaxLine(
+	error: SyntaxRulesError,
+	lineNumberBeforeMacroExpansion: number,
+	lineNumberAfterMacroExpansion: number,
+	instruction?: string
+): SyntaxRulesError {
+	return new SyntaxRulesError(error.code, error.message, {
+		lineNumberBeforeMacroExpansion,
+		lineNumberAfterMacroExpansion,
+		instruction,
+	});
+}
+
+function parseInstructionTokens(
+	line: string,
+	lineNumberBeforeMacroExpansion: number,
+	lineNumberAfterMacroExpansion: number
+): string[] {
+	try {
+		return tokenizeInstruction(line);
+	} catch (error) {
+		if (error instanceof SyntaxRulesError) {
+			throw withSyntaxLine(error, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
+		}
+		throw error;
+	}
+}
+
+function foldArgumentContinuationLines(code: string[], lineMetadata?: ParsedLineMetadata): SourceLine[] {
+	const sourceLines: SourceLine[] = [];
+	let previousSourceLine: SourceLine | undefined;
+
+	for (const [lineNumberAfterMacroExpansion, line] of code.map((sourceLine, index) => [index, sourceLine] as const)) {
+		if (isComment(line) || !isValidInstruction(line)) {
+			continue;
+		}
+
+		const lineNumberBeforeMacroExpansion =
+			lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
+		const tokens = parseInstructionTokens(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
+		const [instruction] = tokens;
+
+		if (instruction !== '-') {
+			const sourceLine = {
+				line,
+				lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion,
+			};
+			sourceLines.push(sourceLine);
+			previousSourceLine = sourceLine;
+			continue;
+		}
+
+		if (!previousSourceLine) {
+			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, 'Argument continuation has no instruction.', {
+				lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion,
+				instruction,
+			});
+		}
+
+		if (tokens.length < 2) {
+			throw new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT, 'Missing argument for continuation.', {
+				lineNumberBeforeMacroExpansion,
+				lineNumberAfterMacroExpansion,
+				instruction,
+			});
+		}
+
+		if (tokens.length > 2) {
+			throw new SyntaxRulesError(
+				SyntaxErrorCode.INVALID_ARGUMENT,
+				'Argument continuation accepts exactly one argument.',
+				{
+					lineNumberBeforeMacroExpansion,
+					lineNumberAfterMacroExpansion,
+					instruction,
+				}
+			);
+		}
+
+		previousSourceLine.line = `${previousSourceLine.line} ${tokens[1]}`;
+	}
+
+	return sourceLines;
+}
+
 export function parseLine(
 	line: string,
 	lineNumberBeforeMacroExpansion: number,
@@ -397,12 +490,13 @@ export function parseLine(
 		return parsedLine;
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
-			throw new SyntaxRulesError(error.code, error.message, {
+			throw withSyntaxLine(
+				error,
 				lineNumberBeforeMacroExpansion,
 				lineNumberAfterMacroExpansion,
 				// instruction is undefined only if tokenizeInstruction threw before assignment
-				instruction: instruction ?? undefined,
-			});
+				instruction ?? undefined
+			);
 		}
 		throw error;
 	}
@@ -414,14 +508,9 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 	let onlySemanticLinesBeforeSourceBlock = true;
 	const blockStack: OpenBlock[] = [];
 	const sourceBlockPrologueStack: SourceBlockPrologue[] = [];
+	const sourceLines = foldArgumentContinuationLines(code, lineMetadata);
 
-	for (const [lineNumberAfterMacroExpansion, line] of code.map((sourceLine, index) => [index, sourceLine] as const)) {
-		if (isComment(line) || !isValidInstruction(line)) {
-			continue;
-		}
-
-		const lineNumberBeforeMacroExpansion =
-			lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
+	for (const { line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion } of sourceLines) {
 		const parsedLine = parseLine(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
 		const astIndex = ast.length;
 		const isFirstASTLine = ast.length === 0;
