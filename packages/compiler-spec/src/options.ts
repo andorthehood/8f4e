@@ -1,6 +1,6 @@
 import type { DataStructure } from './memory';
 
-/** Optional settings that control compiler layout, emitted metadata, and runtime helpers. */
+/** Optional settings that control compiler layout and emitted metadata. */
 export interface CompileOptions {
 	startingMemoryWordAddress?: number;
 	globalDataStructures?: DataStructure[];
@@ -16,8 +16,4 @@ export interface CompileOptions {
 	includeStackAnalysis?: boolean;
 	/** Disable shared memory for tests (wabt doesn't support shared memory). Default is false (shared enabled). */
 	disableSharedMemory?: boolean;
-	/** Buffer size for the buffer function. Default is 128. */
-	bufferSize?: number;
-	/** Buffer generation strategy: 'loop' (default, smaller code size) or 'unrolled' (potentially faster). */
-	bufferStrategy?: 'loop' | 'unrolled';
 }

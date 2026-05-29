@@ -2015,7 +2015,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 note
 ; @pos 9 -126
 ; Project Config
@@ -2104,6 +2103,16 @@ const ASSET_SAMPLE16_SIZE 48020
 const ASSET_SAMPLE17_SIZE 35098
 
 constantsEnd
+
+function buffer
+; @pos 126 -180
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
 
 constants math
 ; @pos 180 -168

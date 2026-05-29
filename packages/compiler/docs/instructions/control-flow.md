@@ -131,7 +131,7 @@ ifEnd int
 
 The loop instruction begins a loop block. The loop body repeats until a branch exits the loop.
 
-An optional non-negative integer argument sets the cap for this loop's infinite-loop guard. When omitted, the effective cap is determined by the ambient prologue `#loopCap` directive in the current block, or the built-in default of `1000` if no directive is active.
+An optional non-negative integer compile-time value sets the cap for this loop's infinite-loop guard. The cap can be a literal, constant, or constant expression. When omitted, the effective cap is determined by the ambient prologue `#loopCap` directive in the current block, or the built-in default of `1000` if no directive is active.
 
 **Precedence:** explicit `loop <int>` > ambient `#loopCap` > built-in default `1000`
 
@@ -162,6 +162,16 @@ loop 32
  push 1
  add
  store
+loopEnd
+```
+
+Loop with a constant cap:
+
+```
+use env
+
+loop AUDIO_BUFFER_SIZE
+ call main
 loopEnd
 ```
 

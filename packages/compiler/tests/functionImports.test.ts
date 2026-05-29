@@ -81,7 +81,7 @@ describe('function imports', () => {
 		);
 
 		expect(result.compiledFunctions!.hostValue.wasmIndex).toBe(0);
-		expect(result.compiledFunctions!.localValue.wasmIndex).toBe(4);
+		expect(result.compiledFunctions!.localValue.wasmIndex).toBe(3);
 		expect(result.compiledFunctions!.hostValue.body).toEqual([]);
 		expect(result.compiledFunctions!.localValue.body.length).toBeGreaterThan(0);
 	});

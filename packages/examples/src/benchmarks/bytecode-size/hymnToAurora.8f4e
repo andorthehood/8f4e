@@ -362,6 +362,16 @@ const ASSET_SAMPLE12_SIZE 9000
 
 constantsEnd
 
+function buffer
+; @pos 91 -128
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
 constants math
 ; @pos 145 -124
 

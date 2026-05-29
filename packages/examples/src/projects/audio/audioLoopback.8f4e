@@ -135,7 +135,6 @@ module notes
 ; pointer logic.
 moduleEnd
 entryEnd
-
 constants env
 ; @pos -52 1
 ; @favorite
@@ -147,3 +146,13 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
+
+function buffer
+; @pos -52 13
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
