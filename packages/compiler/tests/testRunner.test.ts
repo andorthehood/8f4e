@@ -1,7 +1,10 @@
 import { describe, expect, test } from 'vitest';
 import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
+import { ErrorCode } from '@8f4e/compiler-spec';
+import { compileToAST } from '@8f4e/tokenizer';
 
 import compile from '../src/index';
+import { compileModules } from '../src';
 
 import type { Module } from '@8f4e/compiler-spec';
 
@@ -106,5 +109,22 @@ describe('#test modules and assert runner', () => {
 		exports.runTests();
 
 		expect(failureCalls).toEqual([]);
+	});
+
+	test('rejects non-integer expected values before codegen', () => {
+		expect(() =>
+			compile([{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }], defaultOptions)
+		).toThrow(expect.objectContaining({ code: ErrorCode.TYPE_MISMATCH }));
+	});
+
+	test('reports a dedicated error when assert is compiled without the failure handler context', () => {
+		const ast = compileToAST(['module directAssert', 'push 1', 'assert 1', 'moduleEnd']);
+		if (ast.type === 'function') {
+			throw new Error('Expected module AST.');
+		}
+
+		expect(() => compileModules([ast], defaultOptions)).toThrow(
+			expect.objectContaining({ code: ErrorCode.MISSING_ASSERT_FAILURE_HANDLER })
+		);
 	});
 });

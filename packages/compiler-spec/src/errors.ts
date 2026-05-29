@@ -57,6 +57,7 @@ export const ErrorCode = {
 	UNKNOWN_MEMORY_REGION: 55,
 	MEMORY_REGION_INDEX_OUT_OF_BOUNDS: 56,
 	POINTER_DEREFERENCE_DEPTH_EXCEEDED: 57,
+	MISSING_ASSERT_FAILURE_HANDLER: 58,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];

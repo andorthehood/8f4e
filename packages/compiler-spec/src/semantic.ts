@@ -84,6 +84,11 @@ export type NormalizedArgumentLiteral = ArgumentLiteral & {
 	address?: AddressMetadata;
 };
 
+export type NormalizedIntegerArgumentLiteral = NormalizedArgumentLiteral & {
+	isInteger: true;
+	isFloat64?: false;
+};
+
 /** Resolved scalar local variable slot and type metadata for function compilation. */
 export interface ScalarLocalBinding {
 	isInteger: boolean;
@@ -274,7 +279,7 @@ export type NormalizedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
 };
 
 export type NormalizedAssertLine = Omit<AssertLine, 'arguments'> & {
-	arguments: [NormalizedArgumentLiteral];
+	arguments: [NormalizedIntegerArgumentLiteral];
 };
 
 export type ArrayDeclarationInitializerArgument =
