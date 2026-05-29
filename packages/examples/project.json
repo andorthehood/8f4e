@@ -29,7 +29,12 @@
 				}
 			],
 			"options": {
-				"command": "node ../cli/bin/cli.js test \"src/modules/**/*.8f4em\"",
+				"commands": [
+					{
+						"command": "node ../cli/bin/cli.js test \"src/modules/**/*.8f4em\"",
+						"forwardAllArgs": false
+					}
+				],
 				"cwd": "{projectRoot}"
 			}
 		},
