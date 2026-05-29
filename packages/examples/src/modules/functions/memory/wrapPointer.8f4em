@@ -24,3 +24,48 @@ remainder
 add
 
 functionEnd float*
+
+module wrapPointerKeepsInRangeAddress
+#test
+float[] buffer 4
+const BYTE_LENGTH count(buffer)*sizeof(buffer)
+
+push &buffer
+push sizeof(buffer)*2
+add
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+assert &buffer+8
+
+moduleEnd
+
+module wrapPointerWrapsForwardAddress
+#test
+float[] buffer 4
+const BYTE_LENGTH count(buffer)*sizeof(buffer)
+
+push &buffer
+push BYTE_LENGTH
+add
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+assert &buffer
+
+moduleEnd
+
+module wrapPointerWrapsBackwardAddress
+#test
+float[] buffer 4
+const BYTE_LENGTH count(buffer)*sizeof(buffer)
+
+push &buffer
+push sizeof(buffer)
+sub
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+assert buffer&
+
+moduleEnd
