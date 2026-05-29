@@ -6,7 +6,7 @@ async function instantiate(codeBuffer: Uint8Array, requiredMemoryBytes: number) 
 	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / 65536));
 	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages, shared: false });
 	const { instance } = await WebAssembly.instantiate(codeBuffer, {
-		js: { memory },
+		host: { memory },
 	});
 	return { instance, memory };
 }

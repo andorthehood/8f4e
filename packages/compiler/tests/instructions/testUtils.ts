@@ -52,7 +52,7 @@ export function createSingleFunctionWASMProgram(functionBody: FunctionBody): Uin
 		...HEADER,
 		...VERSION,
 		...createTypeSection([createFunctionType([], [])]),
-		...createImportSection([createMemoryImport('js', 'memory')]),
+		...createImportSection([createMemoryImport('host', 'memory')]),
 		...createFunctionSection([0x00]),
 		...createExportSection([createFunctionExport('test', 0x00)]),
 		...createCodeSection([functionBody]),
@@ -88,7 +88,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 	try {
 		const webAssemblyInstantiatedSource = (await WebAssembly.instantiate(program, {
-			js: {
+			host: {
 				memory: memoryRef,
 			},
 		})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
@@ -246,7 +246,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 
 	try {
 		const webAssemblyInstantiatedSource = (await WebAssembly.instantiate(program, {
-			js: {
+			host: {
 				memory: memoryRef,
 			},
 		})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
@@ -412,7 +412,7 @@ export async function createWasmInstance(
 	const buffer = new Int32Array(memory.buffer);
 
 	const { instance } = await WebAssembly.instantiate(codeBuffer, {
-		js: { memory },
+		host: { memory },
 	});
 
 	return {

@@ -31,7 +31,7 @@ Imported functions use the normal function block shape, with a `#import` directi
 
 ```8f4e
 function hostLog
-#import env log
+#import log
 param int value
 functionEnd
 ```
@@ -49,12 +49,12 @@ At instantiation time, the host must provide the matching WebAssembly import:
 
 ```ts
 await WebAssembly.instantiate(codeBuffer, {
-	env: {
+	host: {
+		memory,
 		log(value: number) {
 			console.log(value);
 		},
 	},
-	js: { memory },
 });
 ```
 
@@ -62,7 +62,7 @@ Imported functions can return values:
 
 ```8f4e
 function addOne
-#import "host-api" "add.one"
+#import "add.one"
 param int value
 functionEnd int
 

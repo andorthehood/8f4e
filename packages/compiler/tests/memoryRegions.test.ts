@@ -9,7 +9,7 @@ async function instantiateWithRegions(result: ReturnType<typeof compile>, region
 		regionNames.map(regionName => [regionName, new WebAssembly.Memory({ initial: 1, maximum: 1 })])
 	);
 	const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-		js: {
+		host: {
 			memory,
 			...regionMemories,
 		},

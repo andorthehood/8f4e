@@ -1,5 +1,6 @@
 import {
 	ArgumentType,
+	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	blockEndToStartInstruction,
 	blockStartInstructions,
 	isCompilerDirectiveLine,
@@ -251,8 +252,8 @@ function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine
 		case '#import':
 			builder.importLine = line;
 			builder.import = {
-				moduleName: line.arguments[0].value,
-				fieldName: line.arguments[1].value,
+				moduleName: DEFAULT_HOST_IMPORT_MODULE_NAME,
+				fieldName: line.arguments[0].value,
 			};
 	}
 }

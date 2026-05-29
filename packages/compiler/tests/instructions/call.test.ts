@@ -144,7 +144,7 @@ describe('call instruction (float64)', () => {
 		const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: false });
 		const dataView = new DataView(memoryRef.buffer);
 		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			js: { memory: memoryRef },
+			host: { memory: memoryRef },
 		});
 
 		const initDefaults = instance.exports.initDefaults as CallableFunction;

@@ -102,29 +102,17 @@ describe('validateInstructionArguments', () => {
 		).toThrowError(SyntaxRulesError);
 	});
 
-	it('accepts identifier or string literal module and field arguments for #import', () => {
+	it('accepts one identifier or string literal field argument for #import', () => {
+		expect(() => validateInstructionArguments('#import', [classifyIdentifier('log')])).not.toThrow();
 		expect(() =>
-			validateInstructionArguments('#import', [classifyIdentifier('env'), classifyIdentifier('log')])
+			validateInstructionArguments('#import', [{ type: ArgumentType.STRING_LITERAL, value: 'log.value' }])
 		).not.toThrow();
+		expect(() => validateInstructionArguments('#import', [])).toThrowError(SyntaxRulesError);
 		expect(() =>
-			validateInstructionArguments('#import', [
-				{ type: ArgumentType.STRING_LITERAL, value: 'host-api' },
-				{ type: ArgumentType.STRING_LITERAL, value: 'log.value' },
-			])
-		).not.toThrow();
-		expect(() => validateInstructionArguments('#import', [classifyIdentifier('env')])).toThrowError(SyntaxRulesError);
-		expect(() =>
-			validateInstructionArguments('#import', [
-				classifyIdentifier('env'),
-				classifyIdentifier('log'),
-				classifyIdentifier('extra'),
-			])
+			validateInstructionArguments('#import', [classifyIdentifier('log'), classifyIdentifier('extra')])
 		).toThrowError(SyntaxRulesError);
 		expect(() =>
-			validateInstructionArguments('#import', [
-				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
-				classifyIdentifier('log'),
-			])
+			validateInstructionArguments('#import', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])
 		).toThrowError(SyntaxRulesError);
 	});
 

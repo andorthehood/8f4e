@@ -20,23 +20,25 @@ describe('function imports', () => {
 				groups: {
 					main: [{ code: ['module test', 'push 41', 'call hostRecord', 'moduleEnd'] }],
 				},
-				functions: [{ code: ['function hostRecord', '#import env record', 'param int value', 'functionEnd'] }],
+				functions: [{ code: ['function hostRecord', '#import record', 'param int value', 'functionEnd'] }],
 			},
 			defaultOptions
 		);
 
 		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			env: { record: (value: number) => calls.push(value) },
-			js: { memory: new WebAssembly.Memory({ initial: 1, maximum: 1 }) },
+			host: {
+				memory: new WebAssembly.Memory({ initial: 1, maximum: 1 }),
+				record: (value: number) => calls.push(value),
+			},
 		});
 
 		(instance.exports.main as CallableFunction)();
 
 		expect(calls).toEqual([41]);
-		expect(result.compiledFunctions!.hostRecord.import).toEqual({ moduleName: 'env', fieldName: 'record' });
+		expect(result.compiledFunctions!.hostRecord.import).toEqual({ moduleName: 'host', fieldName: 'record' });
 	});
 
-	test('calls an imported function with a return value and string import names', async () => {
+	test('calls an imported function with a return value and string field name', async () => {
 		const result = compile(
 			{
 				groups: {
@@ -48,7 +50,7 @@ describe('function imports', () => {
 				},
 				functions: [
 					{
-						code: ['function addOne', '#import "host-api" "add.one"', 'param int value', 'functionEnd int'],
+						code: ['function addOne', '#import "add.one"', 'param int value', 'functionEnd int'],
 					},
 				],
 			},
@@ -56,8 +58,7 @@ describe('function imports', () => {
 		);
 		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			'host-api': { 'add.one': (value: number) => value + 1 },
-			js: { memory },
+			host: { memory, 'add.one': (value: number) => value + 1 },
 		});
 
 		(instance.exports.initDefaults as CallableFunction)();
@@ -72,7 +73,7 @@ describe('function imports', () => {
 			{
 				groups: { main: [{ code: ['module test', 'call localValue', 'drop', 'moduleEnd'] }] },
 				functions: [
-					{ code: ['function hostValue', '#import env value', 'functionEnd int'] },
+					{ code: ['function hostValue', '#import value', 'functionEnd int'] },
 					{ code: ['function localValue', 'call hostValue', 'functionEnd int'] },
 				],
 			},
@@ -91,7 +92,7 @@ describe('function imports', () => {
 				groups: {
 					main: [{ code: ['module test', 'push 1', 'assert 1', 'push 2', 'call hostRecord', 'moduleEnd'] }],
 				},
-				functions: [{ code: ['function hostRecord', '#import env record', 'param int value', 'functionEnd'] }],
+				functions: [{ code: ['function hostRecord', '#import record', 'param int value', 'functionEnd'] }],
 			},
 			defaultOptions
 		);
@@ -104,7 +105,7 @@ describe('function imports', () => {
 			compile(
 				{
 					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
-					functions: [{ code: ['function bad', '#import env bad', 'push 1', 'functionEnd int'] }],
+					functions: [{ code: ['function bad', '#import bad', 'push 1', 'functionEnd int'] }],
 				},
 				defaultOptions
 			)
@@ -116,7 +117,7 @@ describe('function imports', () => {
 			compile(
 				{
 					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
-					functions: [{ code: ['function bad', '#import env bad', '#export bad', 'functionEnd'] }],
+					functions: [{ code: ['function bad', '#import bad', '#export bad', 'functionEnd'] }],
 				},
 				defaultOptions
 			)
@@ -128,7 +129,7 @@ describe('function imports', () => {
 			compile(
 				{
 					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
-					functions: [{ code: ['function bad', '#import env one', '#import env two', 'functionEnd'] }],
+					functions: [{ code: ['function bad', '#import one', '#import two', 'functionEnd'] }],
 				},
 				defaultOptions
 			)
@@ -137,7 +138,7 @@ describe('function imports', () => {
 
 	test('rejects #import outside a function block', () => {
 		expect(() =>
-			compile({ groups: { main: [{ code: ['module test', '#import env record', 'moduleEnd'] }] } }, defaultOptions)
+			compile({ groups: { main: [{ code: ['module test', '#import record', 'moduleEnd'] }] } }, defaultOptions)
 		).toThrow(expect.objectContaining({ code: ErrorCode.IMPORT_DIRECTIVE_INVALID_CONTEXT }));
 	});
 });

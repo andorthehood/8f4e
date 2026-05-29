@@ -20,7 +20,7 @@ async function instantiate(groups: Record<string, Module[]>, functions?: Module[
 	const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
 	const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-		js: { memory },
+		host: { memory },
 		test: {
 			assertFailed(assertIndex: number, expected: number, received: number) {
 				failureCalls.push({ assertIndex, expected, received });

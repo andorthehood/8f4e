@@ -17,7 +17,7 @@ async function instantiateWasmExports(
 	codeBuffer: Uint8Array
 ): Promise<WebAssembly.Exports> {
 	const { instance } = (await WebAssembly.instantiate(codeBuffer, {
-		js: {
+		host: {
 			memory,
 		},
 	})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
