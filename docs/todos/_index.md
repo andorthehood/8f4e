@@ -28,7 +28,6 @@ Active todo files are listed below.
 | 058 | Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support | 🟡 | 4-6 days | 2025-09-11 | The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the proj... |
 | 062 | Editor Command Queue Refactor | 🟡 | 3-4 days | 2025-10-09 | The editor state currently stores host callbacks directly (`state.callbacks`). This makes the state non-serializable, complicates testing, and tightly couples effects to host-pr... |
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5 days | 2025-09-10 | The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the... |
-| 150 | Add Test Module Type | 🟡 | 2-4d | 2025-12-28 | The current 8f4e workflow only supports runtime modules intended for execution, not for structured testing. Validation is largely manual or relies on ad-hoc harnesses, which mak... |
 | 155 | Add Framebuffer Memory Accounting in glugglug | 🟡 | 2-4h | 2025-12-30 | glugglug allocates render-to-texture and cache framebuffers, but there is no structured accounting for their estimated memory impact. This makes it difficult to reason about GPU... |
 | 170 | Toggle post-process effects via function key | 🟡 | 1-2h | 2026-01-13 | Post-process effects can take over the entire editor surface. If a fragment shader goes wrong, it can make the editor unreadable. We need a fast toggle to disable effects withou... |
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Fragment shader compile failures in glugglug currently throw or log without a structured path back to the editor. |
@@ -69,7 +68,7 @@ Active todo files are listed below.
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
 | 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
-| 436 | Add #test directive and assert runner | 🟡 | 2-4d | 2026-05-29 | Add module-level `#test` classification, an integer `assert` instruction, and a `runTests` export that reports failures through a host import. |
+| 436 | Add test execution support and assert runner | 🟡 | 2-4d | 2026-05-29 | Use `group test` plus a CLI-provided imported `assert` utility function for executable language-level tests. |
 | 437 | Add execution groups | 🟡 | 2-4d | 2026-05-29 | Add `group` / `groupEnd` execution partitions, export every group by name, and rename memory default initialization to `initDefaults`. |
 | 438 | Add generic function imports | 🟡 | 1-2d | 2026-05-29 | Add `#import` for host-provided functions, keeping them callable through normal function resolution while emitting correct WebAssembly import indexes. |
 
@@ -89,6 +88,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 150 | Add Test Module Type | 2026-05-29 | Completed by the `group test` CLI test runner flow and superseded by execution groups plus generic function imports. |
 | 433 | Add dash argument continuation lines | 2026-05-28 | Parser now folds `- <arg>` continuation lines into the previous source instruction before validation; docs and tokenizer coverage describe valid and invalid forms. |
 | 428 | Add pointer-aware count and min metadata queries | 2026-05-27 | `min(*ptr)` and `count(*ptr)` now classify explicitly and resolve from pointer metadata; pointer count uses tracked memory-start pointee element counts when available and falls back to `1`. |
 | 323 | Add `min(*name)` pointee min value prefix for pointers | 2026-05-27 | Completed as part of pointer-aware metadata query work; `min(*name)` now has parser, semantic, helper, docs, and public compiler coverage. |
