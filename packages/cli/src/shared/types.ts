@@ -1,8 +1,8 @@
 import type {
+	AssertionMetadata,
 	CompileOptions,
 	CompiledFunctionLookup,
 	CompiledModuleLookup,
-	TestAssertionMetadata,
 } from '@8f4e/compiler-spec';
 import type { ProjectBlockType, ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
 
@@ -10,6 +10,7 @@ export type { ProjectCodeBlock, ProjectInput };
 
 export interface CompileProjectOptions {
 	compilerOptions?: Partial<CompileOptions>;
+	includeMocks?: boolean;
 	includeModules?: boolean;
 	includeWasm?: boolean;
 	includeFunctions?: boolean;
@@ -23,8 +24,7 @@ export interface CompileProjectResult {
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
-	testModuleIds?: string[];
-	testAssertions?: TestAssertionMetadata[];
+	assertions?: AssertionMetadata[];
 }
 
 export type BlockTypeValue = ProjectBlockType;

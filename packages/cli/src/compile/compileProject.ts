@@ -10,7 +10,6 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
 		includeAST: options.compilerOptions?.includeAST,
-		includeTestRunner: options.compilerOptions?.includeTestRunner,
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 		bufferSize: options.compilerOptions?.bufferSize,
 		bufferStrategy: options.compilerOptions?.bufferStrategy,
@@ -18,6 +17,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 
 	const moduleResult = compileProjectModules(project.codeBlocks, {
 		compilerOptions,
+		includeMocks: options.includeMocks,
 		includeModules,
 		includeWasm,
 	});
@@ -38,7 +38,6 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: moduleResult.requiredMemoryBytesByRegion,
-		testModuleIds: moduleResult.testModuleIds,
-		testAssertions: moduleResult.testAssertions,
+		assertions: moduleResult.assertions,
 	};
 }
