@@ -33,7 +33,7 @@ const assert: InstructionCompiler<NormalizedAssertLine> = (line, context) => {
 	context.testAssertions.push({
 		assertIndex,
 		moduleId,
-		lineNumber: line.lineNumberBeforeMacroExpansion,
+		lineNumber: line.lineNumberBeforeMacroExpansion + 1,
 		expected,
 	});
 

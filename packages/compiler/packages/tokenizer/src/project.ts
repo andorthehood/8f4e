@@ -5,6 +5,8 @@ import {
 	documentBlockInstructionPairs,
 } from '@8f4e/compiler-spec';
 
+import instructionParser from './syntax/instructionParser';
+
 import type { CompilableBlockType, DocumentBlockType, Module } from '@8f4e/compiler-spec';
 
 export const FORMAT_HEADER = '8f4e/v1';
@@ -101,7 +103,7 @@ export function isProjectTestModule(block: ProjectCodeBlock): boolean {
 		return false;
 	}
 
-	return block.code.some(line => line.trim() === '#test');
+	return block.code.some(line => instructionParser.exec(line)?.[1] === '#test');
 }
 
 export function hasProjectTestModule(blocks: ProjectCodeBlock[]): boolean {

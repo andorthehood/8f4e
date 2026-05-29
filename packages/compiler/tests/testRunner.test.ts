@@ -63,7 +63,7 @@ describe('#test modules and assert runner', () => {
 			{
 				assertIndex: 0,
 				moduleId: 'addWorks',
-				lineNumber: 5,
+				lineNumber: 6,
 				expected: 4,
 			},
 		]);

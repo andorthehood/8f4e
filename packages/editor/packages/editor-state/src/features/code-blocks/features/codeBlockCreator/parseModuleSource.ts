@@ -34,7 +34,7 @@ if (import.meta.vitest) {
 				'functionEnd',
 				'',
 				'module helperTest',
-				'#test',
+				'#test ; inline comment',
 				'push 1',
 				'assert 1',
 				'moduleEnd',
