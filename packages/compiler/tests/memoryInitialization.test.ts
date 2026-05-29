@@ -10,7 +10,7 @@ async function compileToWat(codeBuffer: Uint8Array): Promise<string> {
 }
 
 describe('memory initialization', () => {
-	test('init clears program memory once before loading passive data segments', async () => {
+	test('initDefaults clears program memory once before loading passive data segments', async () => {
 		const result = compile(
 			[
 				{

@@ -53,15 +53,15 @@ High-level behavior:
 
 ### Step 3: Preserve initialization semantics
 
-- Keep `init()` doing one full zero-fill before passive data loads.
+- Keep `initDefaults()` doing one full zero-fill before passive data loads.
 - Load source-declared default segments first.
 - Load external array payload segments afterward so caller-provided data wins when the same bytes overlap.
 - Document the overlay order in the compiler design notes.
 
 ### Step 4: Add tests
 
-- Compile a module with an array and an external payload, then verify memory after `init()`.
-- Verify a second `init()` restores the external payload after memory was dirtied.
+- Compile a module with an array and an external payload, then verify memory after `initDefaults()`.
+- Verify a second `initDefaults()` restores the external payload after memory was dirtied.
 - Verify oversized payloads fail with a compiler error.
 - Verify payloads cannot target scalar memory items.
 - Verify payloads can coexist with source-declared defaults and use the documented overlay order.
@@ -77,7 +77,7 @@ High-level behavior:
 - [ ] Compiler callers can pass passive data payloads without changing 8f4e source syntax.
 - [ ] Payloads can initialize specific declared arrays.
 - [ ] Payload bytes participate in passive data segment emission.
-- [ ] Re-running exported `init()` restores both source defaults and external array payloads.
+- [ ] Re-running exported `initDefaults()` restores both source defaults and external array payloads.
 - [ ] Invalid targets and oversized payloads are covered by tests.
 - [ ] Compiler design docs explain the API and initialization order.
 

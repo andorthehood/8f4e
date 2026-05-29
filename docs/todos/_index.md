@@ -70,6 +70,7 @@ Active todo files are listed below.
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
 | 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
 | 436 | Add #test directive and assert runner | 🟡 | 2-4d | 2026-05-29 | Add module-level `#test` classification, an integer `assert` instruction, and a `runTests` export that reports failures through a host import. |
+| 437 | Add execution groups | 🟡 | 2-4d | 2026-05-29 | Add `group` / `groupEnd` execution partitions, export every group by name, and rename memory default initialization to `initDefaults`. |
 
 ### 🟢 Low Priority
 

@@ -263,15 +263,15 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 		console.log(error);
 	}
 
-	// Call init to initialize memory
-	const init = (instance?.exports.init ||
+	// Call initDefaults to initialize memory
+	const initDefaults = (instance?.exports.initDefaults ||
 		function () {
 			return;
 		}) as CallableFunction;
 
 	const reset = () => {
 		setInitialMemory(dataView, module);
-		init();
+		initDefaults();
 	};
 
 	reset();
@@ -402,7 +402,7 @@ export function expectModuleToThrow(description: string, moduleCode: string, err
  * Creates a WebAssembly instance from compiled code with typed exports
  * @param codeBuffer - Compiled WebAssembly code buffer
  * @param options - Options for memory configuration
- * @returns Object with instance exports (init, cycle, initOnly, buffer) and memory buffer
+ * @returns Object with instance exports (initDefaults, cycle, initOnly, buffer) and memory buffer
  */
 export async function createWasmInstance(
 	codeBuffer: Uint8Array,
@@ -417,7 +417,7 @@ export async function createWasmInstance(
 	});
 
 	return {
-		init: instance.exports.init as () => void,
+		initDefaults: instance.exports.initDefaults as () => void,
 		cycle: instance.exports.cycle as () => void,
 		initOnly: instance.exports.initOnly as () => void,
 		buffer: instance.exports.buffer as () => void,

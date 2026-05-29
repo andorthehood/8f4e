@@ -169,7 +169,7 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
         br 0 (;@2;)
       end
     end)
-  (export "init" (func 0))
+  (export "initDefaults" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3)))
@@ -410,7 +410,7 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
         br 0 (;@2;)
       end
     end)
-  (export "init" (func 0))
+  (export "initDefaults" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3)))
@@ -709,7 +709,7 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
         br 0 (;@2;)
       end
     end)
-  (export "init" (func 0))
+  (export "initDefaults" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3)))
