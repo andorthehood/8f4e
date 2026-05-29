@@ -4,7 +4,7 @@ export default async function createModule(
 ): Promise<{
 	memoryBuffer: Float32Array;
 	cycle: CallableFunction;
-	init: CallableFunction;
+	initDefaults: CallableFunction;
 	buffer: CallableFunction;
 }> {
 	const memoryBuffer = new Float32Array(memoryRef.buffer);
@@ -17,7 +17,7 @@ export default async function createModule(
 
 	const cycle = instance.exports.cycle as CallableFunction;
 	const buffer = instance.exports.buffer as CallableFunction;
-	const init = instance.exports.init as CallableFunction;
+	const initDefaults = instance.exports.initDefaults as CallableFunction;
 
-	return { memoryBuffer, cycle, buffer, init };
+	return { memoryBuffer, cycle, buffer, initDefaults };
 }

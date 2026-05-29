@@ -14,11 +14,11 @@ describe('array declaration inline initializers', () => {
 			],
 			{ disableSharedMemory: true }
 		);
-		const { init, memory } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
 		const notes = result.compiledModules.test.memoryMap.notes;
 		const start = notes.wordAlignedAddress;
 
-		init();
+		initDefaults();
 
 		expect(memory[start]).toBe(48);
 		expect(memory[start + 1]).toBe(50);
@@ -35,11 +35,11 @@ describe('array declaration inline initializers', () => {
 			],
 			{ disableSharedMemory: true }
 		);
-		const { init, memory } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
 		const notes = result.compiledModules.test.memoryMap.notes;
 		const start = notes.wordAlignedAddress;
 
-		init();
+		initDefaults();
 
 		expect(memory[start]).toBe(48);
 		expect(memory[start + 1]).toBe(50);
@@ -55,11 +55,11 @@ describe('array declaration inline initializers', () => {
 			],
 			{ disableSharedMemory: true }
 		);
-		const { init, memory } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
 		const foo = result.compiledModules.test.memoryMap.foo;
 		const start = foo.wordAlignedAddress;
 
-		init();
+		initDefaults();
 
 		expect(memory[start]).toBe(1);
 		expect(memory[start + 1]).toBe(2);
@@ -74,13 +74,13 @@ describe('array declaration inline initializers', () => {
 			],
 			{ disableSharedMemory: true }
 		);
-		const { init, memory } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
 		const bytes = result.compiledModules.test.memoryMap.bytes;
 		const shorts = result.compiledModules.test.memoryMap.shorts;
 		const byteView = new Uint8Array(memory.buffer);
 		const dataView = new DataView(memory.buffer);
 
-		init();
+		initDefaults();
 
 		expect([...byteView.slice(bytes.byteAddress, bytes.byteAddress + 4)]).toEqual([1, 2, 3, 4]);
 		expect(dataView.getInt16(shorts.byteAddress, true)).toBe(1000);
@@ -97,13 +97,13 @@ describe('array declaration inline initializers', () => {
 			],
 			{ disableSharedMemory: true }
 		);
-		const { init, memory } = await createWasmInstance(result.codeBuffer, {
+		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer, {
 			memorySizePages: Math.ceil(result.requiredMemoryBytes / (64 * 1024)),
 		});
 		const huge = result.compiledModules.test.memoryMap.huge;
 		const start = huge.wordAlignedAddress;
 
-		init();
+		initDefaults();
 
 		expect(result.codeBuffer.byteLength).toBeLessThan(10_000);
 		expect(memory[start]).toBe(1);
@@ -111,7 +111,7 @@ describe('array declaration inline initializers', () => {
 		expect(memory[start + 999_999]).toBe(0);
 	});
 
-	test('init clears implicit arrays before restoring passive data defaults', async () => {
+	test('initDefaults clears implicit arrays before restoring passive data defaults', async () => {
 		const result = compile(
 			[
 				{
@@ -133,11 +133,11 @@ describe('array declaration inline initializers', () => {
 			],
 			{ disableSharedMemory: true }
 		);
-		const { init, cycle, memory } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, cycle, memory } = await createWasmInstance(result.codeBuffer);
 		const scratch = result.compiledModules.test.memoryMap.scratch;
 		const marker = result.compiledModules.test.memoryMap.marker;
 
-		init();
+		initDefaults();
 		expect(memory[scratch.wordAlignedAddress]).toBe(0);
 		expect(memory[marker.wordAlignedAddress]).toBe(123);
 
@@ -145,7 +145,7 @@ describe('array declaration inline initializers', () => {
 		expect(memory[scratch.wordAlignedAddress]).toBe(99);
 		expect(memory[marker.wordAlignedAddress]).toBe(456);
 
-		init();
+		initDefaults();
 		expect(memory[scratch.wordAlignedAddress]).toBe(0);
 		expect(memory[marker.wordAlignedAddress]).toBe(123);
 	});

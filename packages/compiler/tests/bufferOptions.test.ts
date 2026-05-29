@@ -181,12 +181,12 @@ describe('buffer options integration tests', () => {
 			});
 
 			// Verify all expected exports exist
-			expect(instance.instance.exports.init).toBeDefined();
+			expect(instance.instance.exports.initDefaults).toBeDefined();
 			expect(instance.instance.exports.cycle).toBeDefined();
 			expect(instance.instance.exports.buffer).toBeDefined();
 
 			// Verify exports are functions
-			expect(typeof instance.instance.exports.init).toBe('function');
+			expect(typeof instance.instance.exports.initDefaults).toBe('function');
 			expect(typeof instance.instance.exports.cycle).toBe('function');
 			expect(typeof instance.instance.exports.buffer).toBe('function');
 		});
@@ -204,7 +204,7 @@ describe('buffer options integration tests', () => {
 			});
 
 			// Verify all expected exports exist
-			expect(instance.instance.exports.init).toBeDefined();
+			expect(instance.instance.exports.initDefaults).toBeDefined();
 			expect(instance.instance.exports.cycle).toBeDefined();
 			expect(instance.instance.exports.buffer).toBeDefined();
 		});
@@ -224,7 +224,7 @@ describe('buffer options integration tests', () => {
 			});
 
 			// Initialize memory
-			(instance.instance.exports.init as CallableFunction)();
+			(instance.instance.exports.initDefaults as CallableFunction)();
 
 			// Get counter address from the first compiled module
 			const firstModule = Object.values(result.compiledModules)[0];
@@ -261,7 +261,7 @@ describe('buffer options integration tests', () => {
 			});
 
 			// Initialize memory
-			(instance.instance.exports.init as CallableFunction)();
+			(instance.instance.exports.initDefaults as CallableFunction)();
 
 			// Get counter address from the first compiled module
 			const firstModule = Object.values(result.compiledModules)[0];
@@ -299,7 +299,7 @@ describe('buffer options integration tests', () => {
 					js: { memory: memoryRef },
 				});
 
-				(instance.instance.exports.init as CallableFunction)();
+				(instance.instance.exports.initDefaults as CallableFunction)();
 
 				// Get counter address from the first compiled module
 				const firstModule = Object.values(result.compiledModules)[0];

@@ -64,7 +64,7 @@ export default async function compileAndUpdateMemory(
 		// TODO: add code change detection to this as well, until then we force reset
 		memoryWasRecreated || true
 	);
-	const init = wasmInstanceRef.exports.init as CallableFunction;
+	const initDefaults = wasmInstanceRef.exports.initDefaults as CallableFunction;
 	const runInitOnly = wasmInstanceRef.exports.initOnly as CallableFunction | undefined;
 	const hasInitOnlyModules = Object.values(compiledModules).some(
 		module => module.initOnlyExecution && !module.skipExecutionInCycle
@@ -78,7 +78,7 @@ export default async function compileAndUpdateMemory(
 	const needsInitialization = !previousCompiledModules || memoryWasRecreated;
 
 	if (needsInitialization) {
-		init();
+		initDefaults();
 		initOnlyReran = false;
 	} else {
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);

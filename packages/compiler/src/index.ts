@@ -124,7 +124,7 @@ function createCompilerCache(): CompilerCache {
 	};
 }
 
-const BUILT_IN_EXPORT_NAMES = new Set(['init', 'cycle', 'initOnly', 'buffer', 'runTests']);
+const BUILT_IN_EXPORT_NAMES = new Set(['initDefaults', 'cycle', 'initOnly', 'buffer', 'runTests']);
 
 function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): void {
 	const seen = new Set<string>();
@@ -396,7 +396,7 @@ export default function compile(
 		...(testRunnerFunction ? [testRunnerFunction] : []),
 	];
 	const builtInExports = [
-		createFunctionExport('init', importedFunctionCount),
+		createFunctionExport('initDefaults', importedFunctionCount),
 		createFunctionExport('cycle', importedFunctionCount + 1),
 		createFunctionExport('initOnly', importedFunctionCount + 2),
 		createFunctionExport('buffer', importedFunctionCount + 3),

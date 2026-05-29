@@ -74,7 +74,7 @@ Argument mapping:
 - `float` maps to Wasm `f32` and a JavaScript `number`
 - `float64` maps to Wasm `f64` and a JavaScript `number`
 
-Export names must be unique and must not reuse built-in exports such as `init`, `cycle`, `initOnly`, or `buffer`.
+Export names must be unique and must not reuse built-in exports such as `initDefaults`, `cycle`, `initOnly`, `buffer`, or `runTests`.
 Functions that read from or write to memory still need `#impure`.
 
 Function compiler directives are prologue metadata: place `#impure`, `#export`, and `#loopCap` directly after the `function` line and before params, locals, or executable instructions.

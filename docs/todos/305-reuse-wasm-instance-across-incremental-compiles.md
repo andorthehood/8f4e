@@ -62,7 +62,7 @@ Likely implementation shape:
 - Ensure `hasWasmInstanceBeenReset` remains accurate
 
 ### Step 3: Verify initialization and patching behavior
-- Confirm `init()` still runs when memory is recreated or first created
+- Confirm `initDefaults()` still runs when memory is recreated or first created
 - Confirm incremental default changes still patch memory and optionally rerun `initOnly`
 - Confirm stable compiles do not force a full instance reset
 
