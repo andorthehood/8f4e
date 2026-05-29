@@ -12,7 +12,7 @@ export type CompiledStackAnalysisLine = {
 	stackAnalysis: StackAnalysisResult;
 };
 
-/** Code generation output and metadata for a compiled module or constants block. */
+/** Code generation output and metadata for a compiled executable module. */
 export interface CompiledModule {
 	index: number;
 	initFunctionBody: number[];
