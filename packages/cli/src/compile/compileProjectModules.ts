@@ -1,12 +1,11 @@
 import compile from '@8f4e/compiler';
-import { compileToAST, getProjectBlockType, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
+import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
 import type { AssertionMetadata, CompileOptions, CompiledModuleLookup } from '@8f4e/compiler-spec';
 import type { ProjectCodeBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
-	includeMocks?: boolean;
 	includeModules?: boolean;
 	includeWasm?: boolean;
 }
@@ -19,15 +18,6 @@ interface CompileProjectModulesResult {
 	assertions?: AssertionMetadata[];
 }
 
-function isMockBlock(block: ProjectCodeBlock): boolean {
-	const blockType = getProjectBlockType(block.code);
-	if (blockType !== 'module' && blockType !== 'function' && blockType !== 'constants') {
-		return false;
-	}
-
-	return compileToAST(block.code).lines.some(line => line.instruction === '#mock');
-}
-
 function hasModuleBlocks(groups: Record<string, unknown[]>): boolean {
 	return Object.values(groups).some(group => group.length > 0);
 }
@@ -38,9 +28,7 @@ export default function compileProjectModules(
 ): CompileProjectModulesResult {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-	const includeMocks = options.includeMocks ?? false;
-	const compilerBlocks = includeMocks ? blocks : blocks.filter(block => block.disabled || !isMockBlock(block));
-	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(compilerBlocks);
+	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(blocks);
 
 	if (!hasModuleBlocks(groups) && constantsBlocks.length === 0) {
 		return {

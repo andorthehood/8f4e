@@ -2,6 +2,7 @@
 
 group main
 module pcmLooper
+; @public
 ; Variable Speed and
 ; Retriggerable PCM Looper
 

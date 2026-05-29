@@ -2,6 +2,7 @@
 
 group main
 module sequencer
+; @public
 
 float step0
 float step1

@@ -2,6 +2,7 @@
 
 group main
 module sequencer
+; @public
 
 int step0
 int step1

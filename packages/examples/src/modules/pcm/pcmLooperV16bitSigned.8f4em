@@ -2,6 +2,7 @@
 
 group main
 module pcmLooper
+; @public
 ; Variable speed PCM Looper
 
 int16[] buffer 128890

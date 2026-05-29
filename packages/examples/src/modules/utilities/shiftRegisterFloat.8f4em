@@ -2,6 +2,7 @@
 
 group main
 module shiftReg
+; @public
 
 float* in
 int* trigger

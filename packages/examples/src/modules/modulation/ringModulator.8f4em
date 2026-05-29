@@ -2,6 +2,7 @@
 
 group main
 module ringModulator
+; @public
 
 float defaultFreq 10
 float* in &osc:out
@@ -42,26 +43,22 @@ store
 
 moduleEnd
 module osc
-#mock
 float out 0.0
 moduleEnd
 groupEnd
 
 constants math
-#mock
 const PI 3.141592653589793
 const NEG_PI -3.141592653589793
 const TAU 6.283185307179586
 constantsEnd
 
 constants env
-#mock
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 constantsEnd
 
 function sine
-#mock
 param float x
 push x
 functionEnd float

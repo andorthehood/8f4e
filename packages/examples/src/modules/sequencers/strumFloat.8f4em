@@ -2,6 +2,7 @@
 
 group main
 module strum
+; @public
 
 float* bufferIn
 int* lengthIn

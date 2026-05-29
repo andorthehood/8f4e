@@ -2,6 +2,7 @@
 
 group main
 module pcmPlayer8bit
+; @public
 
 int8[] buffer 62258
 int playhead &buffer

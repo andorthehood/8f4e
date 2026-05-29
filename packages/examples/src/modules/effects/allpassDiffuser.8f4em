@@ -2,6 +2,7 @@
 
 group main
 module allpassDiffuser
+; @public
 ; Delay-based allpass stage
 ; for reverb diffusion.
 ; It smears transients by

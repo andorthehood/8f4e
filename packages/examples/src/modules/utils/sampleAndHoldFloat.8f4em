@@ -2,6 +2,7 @@
 
 group main
 module sh
+; @public
 
 float* in
 int* trigger

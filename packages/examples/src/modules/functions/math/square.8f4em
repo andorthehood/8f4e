@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function square
+; @public
 ; Square function for
 ; the input range [-PI, PI]
 ; Output range: [-1, 1]

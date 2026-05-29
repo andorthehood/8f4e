@@ -2,6 +2,7 @@
 
 group main
 module templeOS
+; @public
 ; @pos -41 76
 ; @tab 46
 ; @config color.fill.moduleBackground	#ffffff

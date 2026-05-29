@@ -2,6 +2,7 @@
 
 group main
 module lcg
+; @public
 ; Linear congruential
 ; generator
 

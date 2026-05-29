@@ -2,6 +2,7 @@
 
 group main
 module sineLUT
+; @public
 ; @tab 8
 float	0.0000
 float	0.0246

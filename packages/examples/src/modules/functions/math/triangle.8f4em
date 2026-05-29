@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function triangle
+; @public
 ; Triangle function for
 ; the input range [-PI, PI]
 ; Output range: [-1, 1]

@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants editorDirectives
+; @public
 ; Editor directives cheat sheet.
 ; Literal examples below use "@ name" so they stay visible as text.
 ; @tab 82
@@ -29,6 +30,7 @@ constants editorDirectives
 ; @ opacity <0..1>	Set the block opacity.
 ; @ piano <pressedKeysListMemoryId> <pressedKeyCountMemoryId> [startingMidiNote]	Render a piano keyboard widget.
 ; @ plot <arrayMemoryId> [minValue] [maxValue] [arrayLengthMemoryId]	Plot an array memory.
+; @ public	Mark the block exported by a module file.
 ; @ wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>	Draw a waveform over a typed absolute pointer range.
 ; @ slider <memoryId> [min] [max] [step]	Add a slider widget.
 ; @ switch <memoryId> [offValue] [onValue]	Add a toggle switch widget.
