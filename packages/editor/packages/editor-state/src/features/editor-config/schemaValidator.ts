@@ -1,3 +1,5 @@
+import resolveMemoryIdentifier from '../../pureHelpers/resolveMemoryIdentifier';
+
 import type {
 	EditorConfig,
 	EditorConfigEntry,
@@ -6,6 +8,7 @@ import type {
 	EditorConfigSchemaContribution,
 	EditorConfigValidator,
 	JSONSchemaLike,
+	State,
 } from '@8f4e/editor-state-types';
 
 export interface SchemaEditorConfigValidatorOptions {
@@ -52,15 +55,56 @@ function getEditorConfigRoot(config: EditorConfig, root: string): EditorConfigOb
 	return isRecord(value) ? (value as EditorConfigObject) : undefined;
 }
 
-export function resolveSchemaConfigRoot(
-	contribution: EditorConfigSchemaContribution,
-	editorConfig: EditorConfig
-): Record<string, unknown> {
-	return deepMergeConfigRoot(contribution.defaults ?? {}, getEditorConfigRoot(editorConfig, contribution.root));
-}
-
 function getSchemaOptions(schema: JSONSchemaLike): JSONSchemaLike[] {
 	return [schema, ...(schema.oneOf ?? []), ...(schema.anyOf ?? [])];
+}
+
+function resolveMemoryAddressConfigValue(state: State, value: unknown): number | undefined {
+	if (typeof value === 'number') {
+		return Number.isInteger(value) && value >= 0 ? value : undefined;
+	}
+
+	const trimmedValue = typeof value === 'string' ? value.trim() : '';
+	if (!trimmedValue) {
+		return undefined;
+	}
+
+	const numericAddress = Number(trimmedValue);
+	if (Number.isInteger(numericAddress) && numericAddress >= 0) {
+		return numericAddress;
+	}
+
+	return resolveMemoryIdentifier(state, '', trimmedValue)?.memory.wordAlignedAddress;
+}
+
+function resolveFormattedConfigValues(value: unknown, schema: JSONSchemaLike, state: State | undefined): unknown {
+	if (state && schema.format === 'memory-address') {
+		return resolveMemoryAddressConfigValue(state, value);
+	}
+
+	if (!isRecord(value)) {
+		return value;
+	}
+
+	const resolved: Record<string, unknown> = { ...value };
+	for (const option of getSchemaOptions(schema)) {
+		for (const [key, childSchema] of Object.entries(option.properties ?? {})) {
+			if (key in resolved) {
+				resolved[key] = resolveFormattedConfigValues(resolved[key], childSchema, state);
+			}
+		}
+	}
+
+	return resolved;
+}
+
+export function resolveSchemaConfigRoot(
+	contribution: EditorConfigSchemaContribution,
+	editorConfig: EditorConfig,
+	state?: State
+): Record<string, unknown> {
+	const config = deepMergeConfigRoot(contribution.defaults ?? {}, getEditorConfigRoot(editorConfig, contribution.root));
+	return resolveFormattedConfigValues(config, contribution.schema, state) as Record<string, unknown>;
 }
 
 export function collectSchemaConfigPaths(root: string, schema: JSONSchemaLike): string[] {

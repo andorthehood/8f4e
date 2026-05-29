@@ -1,5 +1,6 @@
 export interface JSONSchemaLike {
 	type?: 'object' | 'array' | 'string' | 'number' | 'integer' | 'boolean' | 'null';
+	format?: string;
 	properties?: Record<string, JSONSchemaLike>;
 	required?: readonly string[];
 	items?: JSONSchemaLike;
