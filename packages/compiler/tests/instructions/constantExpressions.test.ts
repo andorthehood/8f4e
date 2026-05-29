@@ -255,14 +255,20 @@ moduleEnd
 
 test('constants block expressions are available through use', () => {
 	const result = compile(
-		[
-			{
-				code: ['constants env', 'const SIZE 8', 'const HALF SIZE/2', 'constantsEnd'],
+		{
+			groups: {
+				main: [
+					{
+						code: ['module test', 'use env', 'int output HALF', 'moduleEnd'],
+					},
+				],
 			},
-			{
-				code: ['module test', 'use env', 'int output HALF', 'moduleEnd'],
-			},
-		],
+			constants: [
+				{
+					code: ['constants env', 'const SIZE 8', 'const HALF SIZE/2', 'constantsEnd'],
+				},
+			],
+		},
 		{ startingMemoryWordAddress: 0 }
 	);
 

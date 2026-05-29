@@ -6,9 +6,12 @@ describe('current-module address shorthands', () => {
 	test('resolves current-module start-address shorthand (&this)', () => {
 		const modules = [{ code: ['module sourceModule', 'int* ptr &this', 'moduleEnd'] }];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 
@@ -18,9 +21,12 @@ describe('current-module address shorthands', () => {
 	test('resolves current-module end-address shorthand (this&)', () => {
 		const modules = [{ code: ['module sourceModule', 'int[] buffer 10 0', 'int* ptr this&', 'moduleEnd'] }];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 

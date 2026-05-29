@@ -4,7 +4,7 @@
  * and re-exporting them for backward compatibility and public API stability.
  */
 
-import type { CompileOptions, MemoryAction as CompilerMemoryAction, Module } from '@8f4e/compiler-spec';
+import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-spec';
 import type { FillSpriteColorName } from '@8f4e/sprite-generator';
 import type { SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
@@ -290,12 +290,7 @@ export interface Callbacks {
 	getProject?: (url: string) => Promise<string>;
 
 	// Compilation callback
-	compileCode?: (
-		modules: Module[],
-		compilerOptions: CompileOptions,
-		functions: Module[],
-		macros?: Module[]
-	) => Promise<CompilationResult>;
+	compileCode?: (input: CompileInput, compilerOptions: CompileOptions) => Promise<CompilationResult>;
 
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;

@@ -2,9 +2,9 @@ import { serializeDiagnostic } from '@8f4e/compiler';
 
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
-import type { CompileOptions, Module } from '@8f4e/compiler-spec';
+import type { CompileInput, CompileOptions } from '@8f4e/compiler-spec';
 
-async function compile(modules: Module[], compilerOptions: CompileOptions, functions?: Module[], macros?: Module[]) {
+async function compile(input: CompileInput, compilerOptions: CompileOptions) {
 	try {
 		const {
 			codeBuffer,
@@ -17,7 +17,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 			hasWasmInstanceBeenReset,
 			memoryAction,
 			initOnlyReran,
-		} = await compileAndUpdateMemory(modules, compilerOptions, functions, macros);
+		} = await compileAndUpdateMemory(input, compilerOptions);
 		self.postMessage({
 			type: 'success',
 			payload: {
@@ -44,12 +44,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 self.onmessage = function (event) {
 	switch (event.data.type) {
 		case 'compile':
-			compile(
-				event.data.payload.modules,
-				event.data.payload.compilerOptions,
-				event.data.payload.functions,
-				event.data.payload.macros
-			);
+			compile(event.data.payload.input, event.data.payload.compilerOptions);
 			break;
 	}
 };

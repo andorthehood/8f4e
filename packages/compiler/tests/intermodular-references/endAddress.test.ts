@@ -9,9 +9,12 @@ describe('inter-module references - end address', () => {
 			{ code: ['module targetModule', 'int* ptr sourceModule:buffer&', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -32,9 +35,12 @@ describe('inter-module references - end address', () => {
 			{ code: ['module targetModule', 'int* ptr sourceModule:scalar&', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -53,9 +59,12 @@ describe('inter-module references - end address', () => {
 			{ code: ['module targetModule', 'float* ptr sourceModule:buffer&', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -75,9 +84,12 @@ describe('inter-module references - end address', () => {
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const baseModule = result.compiledModules['baseModule'];
 		const dependentModule = result.compiledModules['dependentModule'];
@@ -100,9 +112,12 @@ describe('inter-module references - end address', () => {
 
 		// Should throw because old syntax is no longer supported
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -112,9 +127,12 @@ describe('inter-module references - end address', () => {
 			{ code: ['module targetModule', 'int* ptr sourceModule:&', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];

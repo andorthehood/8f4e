@@ -7,11 +7,15 @@ import compile from '../src';
 describe('array declaration inline initializers', () => {
 	test('initializes int[] elements from trailing declaration values', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module test', 'int[] notes 10 48 50 53', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module test', 'int[] notes 10 48 50 53', 'moduleEnd'],
+						},
+					],
 				},
-			],
+			},
 			{ disableSharedMemory: true }
 		);
 		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
@@ -28,11 +32,15 @@ describe('array declaration inline initializers', () => {
 
 	test('resolves constants and compile-time expressions in initializer values', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module test', 'const ROOT 48', 'int[] notes 4 ROOT ROOT+2 ROOT+5', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module test', 'const ROOT 48', 'int[] notes 4 ROOT ROOT+2 ROOT+5', 'moduleEnd'],
+						},
+					],
 				},
-			],
+			},
 			{ disableSharedMemory: true }
 		);
 		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
@@ -48,11 +56,15 @@ describe('array declaration inline initializers', () => {
 
 	test('supports hexadecimal initializer values', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module test', 'int[] foo 2 0x01 0x02', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module test', 'int[] foo 2 0x01 0x02', 'moduleEnd'],
+						},
+					],
 				},
-			],
+			},
 			{ disableSharedMemory: true }
 		);
 		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
@@ -67,11 +79,15 @@ describe('array declaration inline initializers', () => {
 
 	test('uses narrow stores for int8[] and int16[] initializer values', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module test', 'int8[] bytes 4 1 2 3 4', 'int16[] shorts 3 1000 2000 3000', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module test', 'int8[] bytes 4 1 2 3 4', 'int16[] shorts 3 1000 2000 3000', 'moduleEnd'],
+						},
+					],
 				},
-			],
+			},
 			{ disableSharedMemory: true }
 		);
 		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer);
@@ -90,11 +106,15 @@ describe('array declaration inline initializers', () => {
 
 	test('does not emit full passive data images for large sparse array initializers', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module test', 'int[] huge 1000000 1', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module test', 'int[] huge 1000000 1', 'moduleEnd'],
+						},
+					],
 				},
-			],
+			},
 			{ disableSharedMemory: true }
 		);
 		const { initDefaults, memory } = await createWasmInstance(result.codeBuffer, {
@@ -113,24 +133,28 @@ describe('array declaration inline initializers', () => {
 
 	test('initDefaults clears implicit arrays before restoring passive data defaults', async () => {
 		const result = compile(
-			[
-				{
-					code: [
-						'module test',
-						'int[] scratch 4',
-						'int marker 123',
-						'loop',
-						'push &scratch',
-						'push 99',
-						'store',
-						'push &marker',
-						'push 456',
-						'store',
-						'loopEnd',
-						'moduleEnd',
+			{
+				groups: {
+					main: [
+						{
+							code: [
+								'module test',
+								'int[] scratch 4',
+								'int marker 123',
+								'loop',
+								'push &scratch',
+								'push 99',
+								'store',
+								'push &marker',
+								'push 456',
+								'store',
+								'loopEnd',
+								'moduleEnd',
+							],
+						},
 					],
 				},
-			],
+			},
 			{ disableSharedMemory: true }
 		);
 		const { initDefaults, cycle, memory } = await createWasmInstance(result.codeBuffer);

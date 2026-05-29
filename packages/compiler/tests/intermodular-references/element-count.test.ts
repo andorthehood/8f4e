@@ -9,9 +9,12 @@ describe('inter-module references - element count', () => {
 			{ code: ['module targetModule', 'int size count(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -30,9 +33,12 @@ describe('inter-module references - element count', () => {
 			{ code: ['module targetModule', 'int count count(sourceModule:data)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -53,9 +59,12 @@ describe('inter-module references - element count', () => {
 
 		// Should throw because multi-dot references are rejected
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -67,9 +76,12 @@ describe('inter-module references - element count', () => {
 
 		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -80,9 +92,12 @@ describe('inter-module references - element count', () => {
 		];
 
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -93,9 +108,12 @@ describe('inter-module references - element count', () => {
 		];
 
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -105,9 +123,12 @@ describe('inter-module references - element count', () => {
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const baseModule = result.compiledModules['baseModule'];
 		const dependentModule = result.compiledModules['dependentModule'];
@@ -130,9 +151,12 @@ describe('inter-module references - element count', () => {
 			},
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const moduleA = result.compiledModules['moduleA'];
 		const moduleB = result.compiledModules['moduleB'];
@@ -162,9 +186,12 @@ describe('inter-module references - element count', () => {
 			},
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];

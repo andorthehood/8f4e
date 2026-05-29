@@ -26,6 +26,7 @@ moduleEnd
 				.split('\n'),
 		},
 	];
+	const createInput = (modules: Module[]) => ({ groups: { main: modules } });
 
 	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
 		base: compiledModules.setup.memoryMap.base.byteAddress / 4,
@@ -38,7 +39,7 @@ moduleEnd
 	});
 
 	it('re-runs init-only modules when memory defaults change', async () => {
-		const firstResult = await compileAndUpdateMemory(createModules(1), compilerOptions);
+		const firstResult = await compileAndUpdateMemory(createInput(createModules(1)), compilerOptions);
 		const addresses = getAddresses(firstResult.compiledModules);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
 
@@ -57,7 +58,7 @@ moduleEnd
 		expect(memoryView[addresses.base]).toBe(1);
 		expect(memoryView[addresses.derived]).toBe(2);
 
-		const secondResult = await compileAndUpdateMemory(createModules(10), compilerOptions);
+		const secondResult = await compileAndUpdateMemory(createInput(createModules(10)), compilerOptions);
 		const updatedMemory = new Int32Array(secondResult.memoryRef.buffer);
 
 		expect(secondResult.initOnlyReran).toBe(true);
@@ -67,7 +68,7 @@ moduleEnd
 	});
 
 	it('does not rerun init-only modules when defaults are unchanged', async () => {
-		const firstResult = await compileAndUpdateMemory(createModules(3), compilerOptions);
+		const firstResult = await compileAndUpdateMemory(createInput(createModules(3)), compilerOptions);
 		const addresses = getAddresses(firstResult.compiledModules);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
 
@@ -77,7 +78,7 @@ moduleEnd
 
 		memoryView[addresses.base] = 5;
 
-		const secondResult = await compileAndUpdateMemory(createModules(3), compilerOptions);
+		const secondResult = await compileAndUpdateMemory(createInput(createModules(3)), compilerOptions);
 		const secondMemory = new Int32Array(secondResult.memoryRef.buffer);
 
 		expect(secondResult.initOnlyReran).toBe(false);
@@ -90,6 +91,7 @@ moduleEnd
 describe('compileAndUpdateMemory float64 incremental patching', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
+	const createInput = (modules: Module[]) => ({ groups: { main: modules } });
 
 	beforeEach(async () => {
 		vi.resetModules();
@@ -101,14 +103,14 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 			{ code: `module mymod\nfloat64 value ${val}\nmoduleEnd`.split('\n') },
 		];
 
-		const firstResult = await compileAndUpdateMemory(createModules(1.5), compilerOptions);
+		const firstResult = await compileAndUpdateMemory(createInput(createModules(1.5)), compilerOptions);
 		const memEntry = firstResult.compiledModules.mymod.memoryMap.value;
 		const float64Index = memEntry.byteAddress / 8;
 		const firstView = new Float64Array(firstResult.memoryRef.buffer);
 
 		expect(firstView[float64Index]).toBeCloseTo(1.5);
 
-		const secondResult = await compileAndUpdateMemory(createModules(2.5), compilerOptions);
+		const secondResult = await compileAndUpdateMemory(createInput(createModules(2.5)), compilerOptions);
 		const secondView = new Float64Array(secondResult.memoryRef.buffer);
 
 		expect(secondView[float64Index]).toBeCloseTo(2.5);
@@ -119,7 +121,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 			{ code: `module mymod\nfloat64 value ${val}\nmoduleEnd`.split('\n') },
 		];
 
-		const firstResult = await compileAndUpdateMemory(createModules(3.14), compilerOptions);
+		const firstResult = await compileAndUpdateMemory(createInput(createModules(3.14)), compilerOptions);
 		const memEntry = firstResult.compiledModules.mymod.memoryMap.value;
 		const float64Index = memEntry.byteAddress / 8;
 
@@ -129,7 +131,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 		// Manually overwrite the value in memory
 		firstView[float64Index] = 9.99;
 
-		const secondResult = await compileAndUpdateMemory(createModules(3.14), compilerOptions);
+		const secondResult = await compileAndUpdateMemory(createInput(createModules(3.14)), compilerOptions);
 		const secondView = new Float64Array(secondResult.memoryRef.buffer);
 
 		// Should NOT have been reset to 3.14 since the default didn't change

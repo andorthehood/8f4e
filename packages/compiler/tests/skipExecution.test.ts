@@ -34,7 +34,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, {});
+		const result = compile({ groups: { main: modules } }, {});
 
 		// Verify both modules are compiled
 		expect(result.compiledModules.normalModule).toBeDefined();
@@ -77,14 +77,14 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, {});
+		const result = compile({ groups: { main: modules } }, {});
 
 		expect(result.compiledModules.testModule).toBeDefined();
 		expect(result.compiledModules.testModule.skipExecutionInCycle).toBe(true);
 	});
 
 	test('#skipExecution in constants block throws error', () => {
-		const modules = [
+		const constants = [
 			{
 				code: `
 constants env
@@ -96,7 +96,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile(modules, {});
+			compile({ groups: { main: [] }, constants }, {});
 		}).toThrow();
 	});
 
@@ -124,7 +124,7 @@ functionEnd
 		];
 
 		expect(() => {
-			compile(modules, { startingMemoryWordAddress: 1 }, functions);
+			compile({ groups: { main: modules }, functions: functions }, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
@@ -147,7 +147,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, {});
+		const result = compile({ groups: { main: modules } }, {});
 
 		// Both modules should have memory initialized with defaults
 		expect(result.compiledModules.normalModule.memoryMap.normalCounter.default).toBe(5);
@@ -173,7 +173,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { startingMemoryWordAddress: 1 });
+		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 });
 
 		// Verify both modules are compiled with separate memory maps
 		expect(result.compiledModules.normalModule).toBeDefined();
