@@ -17,11 +17,10 @@ export default function parseModuleSource(source: string): string[] {
 		startIndex++;
 	}
 
-	const bodyLines = lines.slice(startIndex);
 	const project = parse8f4eProject(source);
 	const [firstNonTestBlock] = project.codeBlocks.filter(block => !isTestModule(block.code));
 
-	return firstNonTestBlock?.code ?? bodyLines;
+	return firstNonTestBlock?.code ?? [];
 }
 
 if (import.meta.vitest) {
@@ -51,6 +50,12 @@ if (import.meta.vitest) {
 			].join('\n');
 
 			expect(parseModuleSource(text)).toEqual(['function helper', 'functionEnd']);
+		});
+
+		it('filters out module files that only contain #test modules', () => {
+			const text = ['8f4e/v1', '', 'module helperTest', '#test', 'push 1', 'assert 1', 'moduleEnd'].join('\n');
+
+			expect(parseModuleSource(text)).toEqual([]);
 		});
 	});
 }
