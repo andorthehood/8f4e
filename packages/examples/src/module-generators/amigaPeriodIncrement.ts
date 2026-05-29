@@ -48,13 +48,21 @@ const amigaPeriodIncrement = `constants amigaPeriodIncrement
 ; @tab 12
 use env
 
-const AMIGA_CLOCK ${AMIGA_CLOCK}
 ${periods
 	.map(([name, period]) => {
-		return `const ${name}_DEN\tSAMPLE_RATE*${period}\nconst ${name}\tAMIGA_CLOCK/${name}_DEN`;
+		const freq = (AMIGA_CLOCK / period).toFixed(4);
+		return `const ${name}\t${freq}/SAMPLE_RATE`;
 	})
 	.join('\n')}
 
 constantsEnd`;
 
-export default amigaPeriodIncrement;
+const testMocks = `constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd`;
+
+export default `${amigaPeriodIncrement}
+
+${testMocks}`;

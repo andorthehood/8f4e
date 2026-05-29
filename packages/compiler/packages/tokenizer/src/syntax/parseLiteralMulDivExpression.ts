@@ -49,7 +49,7 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 	}
 
 	if (!lhs || !rhs) {
-		if (isNumericLikeInvalidToken(lhsStr) || isNumericLikeInvalidToken(rhsStr)) {
+		if ((!lhs && isNumericLikeInvalidToken(lhsStr)) || (!rhs && isNumericLikeInvalidToken(rhsStr))) {
 			throw new SyntaxRulesError(
 				SyntaxErrorCode.INVALID_NUMERIC_LITERAL,
 				`Invalid numeric literal or expression: ${argument}`
