@@ -16,7 +16,8 @@
       "wordAlignedAddress": 1,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 0
+      "index": 0,
+      "executionGroupName": "main"
     },
     "result": {
       "id": "result",
@@ -49,7 +50,8 @@
         }
       },
       "wordAlignedSize": 1,
-      "index": 1
+      "index": 1,
+      "executionGroupName": "main"
     },
     "notes": {
       "id": "notes",
@@ -64,7 +66,8 @@
       "wordAlignedAddress": 2,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 2
+      "index": 2,
+      "executionGroupName": "main"
     },
     "switches": {
       "id": "switches",
@@ -110,7 +113,8 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 3
+      "index": 3,
+      "executionGroupName": "main"
     },
     "perceptron": {
       "id": "perceptron",
@@ -215,7 +219,8 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 4
+      "index": 4,
+      "executionGroupName": "main"
     },
     "perceptron2": {
       "id": "perceptron2",
@@ -320,7 +325,8 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 5
+      "index": 5,
+      "executionGroupName": "main"
     },
     "activationFn": {
       "id": "activationFn",
@@ -338,7 +344,7 @@
         2,
         0,
         16,
-        4,
+        3,
         56,
         2,
         0,
@@ -383,7 +389,8 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 6
+      "index": 6,
+      "executionGroupName": "main"
     },
     "activationFn2": {
       "id": "activationFn2",
@@ -401,7 +408,7 @@
         2,
         0,
         16,
-        4,
+        3,
         56,
         2,
         0,
@@ -446,7 +453,8 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 7
+      "index": 7,
+      "executionGroupName": "main"
     },
     "perceptron3": {
       "id": "perceptron3",
@@ -552,7 +560,8 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 8
+      "index": 8,
+      "executionGroupName": "main"
     },
     "activationFn3": {
       "id": "activationFn3",
@@ -572,7 +581,7 @@
         2,
         0,
         16,
-        4,
+        3,
         67,
         0,
         0,
@@ -631,9 +640,10 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 9
+      "index": 9,
+      "executionGroupName": "main"
     }
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDEA8AAAAAAwAAAAAAAAAAAAAHLAQMaW5pdERlZmF1bHRzAAAFY3ljbGUAAQhpbml0T25seQACBmJ1ZmZlcgADDAEBCsgCDxcAQQBBAEHMAPwLAEEEQQBBxAD8CAAACxYAEAUQBhAHEAgQCRAKEAsQDBANEA4LAgALGQEBf0GAASEAA0AQASAAQQFrIQAgAA0ACwsmAQF9IAAgAItDAACAP5IhASABQwAAAABbBEBDAACAPyEBCyABlQsCAAsCAAsCAAsCAAsqAEEYQRAoAgAqAgBDVuYgQZRBFCgCACoCAEPGJSrClJJDgCt7wJI4AgALKgBBJEEcKAIAKgIAQ6qgjMKUQSAoAgAqAgBDaBzGQZSSQ9s9DMGSOAIACxEAQSxBKCgCACoCABAEOAIACxEAQTRBMCgCACoCABAEOAIACysAQcAAQTgoAgAqAgBDrkfeQJRBPCgCACoCAEOwrNRAlJJDqdnBQJI4AgALIQBByABBxAAoAgAqAgAQBEMAAAA/XgR/QQEFQQALNgIACwtHAQFESAAAAAAAgD8AAAAACAAAAAwAAAAAAAAACAAAAAwAAAAAAAAAGAAAAAAAAAAkAAAAAAAAACwAAAA0AAAAAAAAAEAAAAA=",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDw4AAAADAAAAAAAAAAAAAAcgAwxpbml0RGVmYXVsdHMAAAZidWZmZXIAAQRtYWluAAIMAQEKxQIOFwBBAEEAQcwA/AsAQQRBAEHEAPwIAAALGQEBf0GAASEAA0AQAiAAQQFrIQAgAA0ACwsWABAEEAUQBhAHEAgQCRAKEAsQDBANCyYBAX0gACAAi0MAAIA/kiEBIAFDAAAAAFsEQEMAAIA/IQELIAGVCwIACwIACwIACwIACyoAQRhBECgCACoCAENW5iBBlEEUKAIAKgIAQ8YlKsKUkkOAK3vAkjgCAAsqAEEkQRwoAgAqAgBDqqCMwpRBICgCACoCAENoHMZBlJJD2z0MwZI4AgALEQBBLEEoKAIAKgIAEAM4AgALEQBBNEEwKAIAKgIAEAM4AgALKwBBwABBOCgCACoCAEOuR95AlEE8KAIAKgIAQ7Cs1ECUkkOp2cFAkjgCAAshAEHIAEHEACgCACoCABADQwAAAD9eBH9BAQVBAAs2AgALC0cBAURIAAAAAACAPwAAAAAIAAAADAAAAAAAAAAIAAAADAAAAAAAAAAYAAAAAAAAACQAAAAAAAAALAAAADQAAAAAAAAAQAAAAA==",
   "requiredMemoryBytes": 76
 }

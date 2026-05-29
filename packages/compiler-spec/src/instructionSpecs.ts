@@ -756,7 +756,7 @@ export const instructionSpecs = {
 		sourceArguments: noSourceArguments,
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
-		docs: { shortDescription: 'Skips the current module during cycle execution.' },
+		docs: { shortDescription: 'Skips the current module during main execution.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #initOnly ( -- )

@@ -34,14 +34,14 @@ async function instantiate(modules: Module[], functions?: Module[]) {
 		failureCalls,
 		exports: instance.exports as WebAssembly.Exports & {
 			initDefaults: CallableFunction;
-			cycle: CallableFunction;
-			runTests: CallableFunction;
+			main: CallableFunction;
+			test: CallableFunction;
 		},
 	};
 }
 
 describe('#test modules and assert runner', () => {
-	test('excludes #test modules from cycle and executes them from runTests', async () => {
+	test('maps #test modules to the test group', async () => {
 		const { exports, failureCalls, result } = await instantiate([
 			{
 				code: ['module production', 'moduleEnd'],
@@ -52,11 +52,11 @@ describe('#test modules and assert runner', () => {
 		]);
 
 		exports.initDefaults();
-		exports.cycle();
+		exports.main();
 
 		expect(failureCalls).toEqual([]);
 
-		exports.runTests();
+		exports.test();
 
 		expect(failureCalls).toEqual([{ assertIndex: 0, expected: 4, received: 3 }]);
 		expect(result.testAssertions).toEqual([
@@ -100,7 +100,7 @@ describe('#test modules and assert runner', () => {
 		]);
 
 		exports.initDefaults();
-		exports.runTests();
+		exports.test();
 
 		expect(failureCalls).toEqual([]);
 	});
@@ -128,7 +128,7 @@ describe('#test modules and assert runner', () => {
 		);
 
 		exports.initDefaults();
-		exports.runTests();
+		exports.test();
 
 		expect(failureCalls).toEqual([]);
 	});
@@ -162,7 +162,7 @@ describe('#test modules and assert runner', () => {
 		expect(result.compiledModules.addWorks).toBeUndefined();
 		expect(result.testModuleIds).toEqual(['addWorks']);
 		expect(result.testAssertions).toBeUndefined();
-		expect(instance.exports.runTests).toBeUndefined();
+		expect(instance.exports.test).toBeUndefined();
 	});
 
 	test('rejects assert in normal modules when test support is not enabled', () => {

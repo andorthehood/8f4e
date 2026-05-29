@@ -18,6 +18,7 @@ export interface CompiledModule {
 	initFunctionBody: number[];
 	cycleFunction: number[];
 	id: string;
+	executionGroupName?: string;
 	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;

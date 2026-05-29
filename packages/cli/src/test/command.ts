@@ -243,7 +243,7 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	});
 
 	(instance.exports.initDefaults as CallableFunction)();
-	(instance.exports.runTests as CallableFunction)();
+	(instance.exports.test as CallableFunction)();
 
 	const assertions = compileResult.testAssertions ?? [];
 	if (failures.length > 0) {

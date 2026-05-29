@@ -5,7 +5,7 @@ import { createWasmInstance } from './instructions/testUtils';
 import compile from '../src/index';
 
 describe('#initOnly directive', () => {
-	test.skip('module with #initOnly runs once during init and not during cycle', async () => {
+	test.skip('module with #initOnly runs once during init and not during main', async () => {
 		const modules = [
 			{
 				code: `
@@ -47,7 +47,7 @@ moduleEnd
 		expect(result.compiledModules.normalModule.initOnlyExecution).toBeFalsy();
 
 		// Instantiate WASM and test runtime behavior
-		const { initDefaults, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, main, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const initOnlyModuleAddr = result.compiledModules.initOnlyModule.memoryMap.counter.byteAddress / 4;
 		const normalModuleAddr = result.compiledModules.normalModule.memoryMap.counter.byteAddress / 4;
@@ -61,18 +61,18 @@ moduleEnd
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(0);
 
-		// After first cycle, initOnlyModule counter stays 1, normalModule becomes 1
-		cycle();
+		// After first main call, initOnlyModule counter stays 1, normalModule becomes 1
+		main();
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(1);
 
-		// After second cycle, initOnlyModule counter stays 1, normalModule becomes 2
-		cycle();
+		// After second main call, initOnlyModule counter stays 1, normalModule becomes 2
+		main();
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(2);
 
-		// After third cycle, initOnlyModule counter stays 1, normalModule becomes 3
-		cycle();
+		// After third main call, initOnlyModule counter stays 1, normalModule becomes 3
+		main();
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(3);
 	});
@@ -199,7 +199,7 @@ moduleEnd
 		expect(result.compiledModules.bothDirectivesModule.initOnlyExecution).toBe(true);
 
 		// Instantiate WASM and test runtime behavior - skipExecution should win
-		const { initDefaults, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, main, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const moduleAddr = result.compiledModules.bothDirectivesModule.memoryMap.counter.byteAddress / 4;
 
@@ -210,12 +210,12 @@ moduleEnd
 		initDefaults();
 		expect(buffer[moduleAddr]).toBe(0);
 
-		// After cycle, counter should still be 0
-		cycle();
+		// After main, counter should still be 0
+		main();
 		expect(buffer[moduleAddr]).toBe(0);
 
-		// After another cycle, counter should still be 0
-		cycle();
+		// After another main call, counter should still be 0
+		main();
 		expect(buffer[moduleAddr]).toBe(0);
 	});
 
@@ -252,7 +252,7 @@ moduleEnd
 		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Instantiate WASM and test runtime behavior
-		const { initDefaults, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, main, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const sharedValueAddr = result.compiledModules.dataModule.memoryMap.sharedValue.byteAddress / 4;
 		const resultAddr = result.compiledModules.initOnlyModule.memoryMap.result.byteAddress / 4;
@@ -266,8 +266,8 @@ moduleEnd
 		expect(buffer[sharedValueAddr]).toBe(42);
 		expect(buffer[resultAddr]).toBe(42);
 
-		// After cycle, both should remain unchanged
-		cycle();
+		// After main, both should remain unchanged
+		main();
 		expect(buffer[sharedValueAddr]).toBe(42);
 		expect(buffer[resultAddr]).toBe(42);
 	});
@@ -321,7 +321,7 @@ moduleEnd
 		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Instantiate WASM and test runtime behavior
-		const { initDefaults, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, main, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const addr1 = result.compiledModules.initOnly1.memoryMap.counter.byteAddress / 4;
 		const addr2 = result.compiledModules.initOnly2.memoryMap.counter.byteAddress / 4;
@@ -338,8 +338,8 @@ moduleEnd
 		expect(buffer[addr2]).toBe(22);
 		expect(buffer[addr3]).toBe(33);
 
-		// After cycle, all should remain unchanged
-		cycle();
+		// After main, all should remain unchanged
+		main();
 		expect(buffer[addr1]).toBe(11);
 		expect(buffer[addr2]).toBe(22);
 		expect(buffer[addr3]).toBe(33);

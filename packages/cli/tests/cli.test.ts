@@ -205,7 +205,7 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 3 assertions in 1 file.\n');
 	});
 
-	it('captures raw buffer bytes across repeated cycle windows', async () => {
+	it('captures raw buffer bytes across repeated main windows', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 		await execCli([
 			'capture',

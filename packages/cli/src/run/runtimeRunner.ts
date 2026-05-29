@@ -146,7 +146,7 @@ export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): 
 	const view = new DataView(memory.buffer);
 
 	const initDefaults = instance.exports.initDefaults as () => void;
-	const cycle = instance.exports.cycle as () => void;
+	const main = instance.exports.main as () => void;
 
 	return {
 		initialize(): void {
@@ -154,7 +154,7 @@ export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): 
 		},
 		runCycles(count: number): void {
 			for (let i = 0; i < count; i += 1) {
-				cycle();
+				main();
 			}
 		},
 		read(id: string): number | number[] {

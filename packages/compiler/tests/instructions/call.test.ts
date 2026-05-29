@@ -148,7 +148,7 @@ describe('call instruction (float64)', () => {
 		});
 
 		const initDefaults = instance.exports.initDefaults as CallableFunction;
-		const cycle = instance.exports.cycle as CallableFunction;
+		const main = instance.exports.main as CallableFunction;
 
 		initDefaults();
 
@@ -157,7 +157,7 @@ describe('call instruction (float64)', () => {
 		const value = Math.PI;
 
 		dataView.setFloat64(inputAddress, value, true);
-		cycle();
+		main();
 
 		expect(dataView.getFloat64(outputAddress, true)).toBeCloseTo(value, 12);
 	});

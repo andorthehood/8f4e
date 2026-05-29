@@ -2,7 +2,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `#skipExecution` compiler directive.
- * Marks a module to skip execution in the cycle dispatcher while preserving
+ * Marks a module to skip execution in the group dispatcher while preserving
  * normal compilation and memory initialization behavior.
  */
 const skipExecution: InstructionCompiler = function (line, context) {
