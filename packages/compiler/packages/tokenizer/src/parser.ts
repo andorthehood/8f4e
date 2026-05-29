@@ -41,6 +41,7 @@ import type {
 	ModuleLine,
 	ParsedLineMetadata,
 	RegionLine,
+	TestLine,
 } from '@8f4e/compiler-spec';
 
 type IfOpenBlock = {
@@ -64,7 +65,7 @@ type OtherOpenBlock = {
 type OpenBlock = IfOpenBlock | GenericOpenBlock | OtherOpenBlock;
 
 type SourceBlockPrologue = {
-	instruction: 'module' | 'function';
+	instruction: 'module' | 'function' | 'constants';
 	blockDepth: number;
 	isOpen: boolean;
 };
@@ -79,6 +80,7 @@ type ModuleASTBuilder = {
 	id: string;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
+	testLine?: TestLine;
 	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
@@ -112,8 +114,8 @@ type SourceLine = {
 };
 
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
-const sourceBlockStartInstructionSet = new Set(['module', 'function']);
-const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd']);
+const sourceBlockStartInstructionSet = new Set(['module', 'function', 'constants']);
+const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd', 'constantsEnd']);
 
 function isBlockStartInstruction(instruction: string): instruction is BlockStartInstruction {
 	return blockStartInstructionSet.has(instruction as BlockStartInstruction);
@@ -221,6 +223,9 @@ function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): v
 		case '#region':
 			builder.regionLine = line;
 			return;
+		case '#test':
+			builder.testLine = line;
+			return;
 		default:
 			if (!isMemoryDeclarationLine(line)) {
 				return;
@@ -266,6 +271,7 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 				lines,
 				moduleLine: builder.moduleLine,
 				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
+				...(builder.testLine ? { testLine: builder.testLine } : {}),
 				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 		case 'function':
@@ -575,7 +581,7 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 
 			if (sourceBlockStartInstructionSet.has(parsedLine.instruction)) {
 				sourceBlockPrologueStack.push({
-					instruction: parsedLine.instruction as 'module' | 'function',
+					instruction: parsedLine.instruction as 'module' | 'function' | 'constants',
 					blockDepth: blockStack.length,
 					isOpen: true,
 				});

@@ -1,2 +1,9 @@
-export const moduleCompilerDirectives = ['#skipExecution', '#initOnly', '#loopCap', '#region'] as const;
-export const functionCompilerDirectives = ['#impure', '#export', '#loopCap'] as const;
+export const moduleCompilerDirectives = [
+	'#skipExecution',
+	'#initOnly',
+	'#test',
+	'#mock',
+	'#loopCap',
+	'#region',
+] as const;
+export const functionCompilerDirectives = ['#impure', '#export', '#mock', '#loopCap'] as const;
