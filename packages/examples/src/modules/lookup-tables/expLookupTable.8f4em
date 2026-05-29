@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module expLUT
 
 float 0.3679
@@ -516,3 +517,4 @@ float 0.9961
 float 0.9980
 
 moduleEnd
+groupEnd

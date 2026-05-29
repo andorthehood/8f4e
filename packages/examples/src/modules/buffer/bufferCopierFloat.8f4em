@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module copyBuffer
 
 float* bufferIn
@@ -21,8 +22,8 @@ loop
 push pointer
 push length
 greaterOrEqual
-branchIfTrue 1 
- 
+branchIfTrue 1
+
 ; Calculate destination
 ; address
 push &buffer
@@ -38,9 +39,9 @@ push pointer
 push sizeof(bufferIn)
 mul
 add
- 
+
 load ; value from src
- 
+
 ; =-=-=-=-=-=-=-=-=-=-=
 ; You can add code here
 ; that manipulates
@@ -48,7 +49,7 @@ load ; value from src
 ; =-=-=-=-=-=-=-=-=-=-=
 
 store ; value to dst
- 
+
 ; Increment buffer pointer
 push &pointer
 push pointer
@@ -58,3 +59,4 @@ store
 loopEnd
 
 moduleEnd
+groupEnd

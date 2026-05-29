@@ -321,6 +321,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				lineNumberColumnWidth: 1,
 				creationIndex,
 				blockType,
+				executionGroupName: codeBlock.executionGroupName,
 				disabled: directiveState.blockState.disabled,
 				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,

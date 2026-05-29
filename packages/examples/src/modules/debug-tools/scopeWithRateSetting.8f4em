@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module scope
 use env
 float* in
@@ -9,7 +10,7 @@ const RATE SAMPLE_RATE/4410
 int _counter
 
 ; @plot &buffer count(buffer)
-push _counter 
+push _counter
 castToFloat
 push SAMPLE_RATE
 castToFloat
@@ -55,6 +56,7 @@ add
 store
 
 moduleEnd
+groupEnd
 
 constants env
 #mock

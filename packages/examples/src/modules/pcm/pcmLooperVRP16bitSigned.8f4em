@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module pcmLooper
 ; Retriggerable PCM Looper
 ; with Vairable Speed
@@ -28,7 +29,7 @@ ifEnd
 
 ; Playhead increments
 push &playhead
-push playhead 
+push playhead
 push *speed
 add
 store
@@ -63,3 +64,4 @@ div
 store
 
 moduleEnd
+groupEnd

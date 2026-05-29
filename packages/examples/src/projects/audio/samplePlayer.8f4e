@@ -1,11 +1,11 @@
 8f4e/v1
 
+group main
 module assets
 ; @pos -107 -70
 ; @defAsset amen https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
 
 moduleEnd
-
 module projectConfig
 ; @pos -53 -63
 ; @config runtime AudioWorkletRuntime
@@ -13,31 +13,14 @@ module projectConfig
 ; @config export.fileName samplePlayer
 
 moduleEnd
-
-constants env
-; @pos 32 -63
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 44100
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'amen-170bpm-8s.pcm'
-const ASSET_AMEN_SIZE 62258
-
-constantsEnd
-
 module notes
 ; @pos 33 -45
-; Loads an external 8-bit PCM asset into memory, 
-; continuously plays it with a looping playhead, 
-; and routes the normalized output into a single 
-; audioout buffer that is read by both left and 
+; Loads an external 8-bit PCM asset into memory,
+; continuously plays it with a looping playhead,
+; and routes the normalized output into a single
+; audioout buffer that is read by both left and
 ; right audio channels.
 moduleEnd
-
 module pcmPlayer8bit
 ; @pos 91 -63
 ; @home
@@ -79,7 +62,6 @@ store
 ifEnd
 
 moduleEnd
-
 module audioout
 ; @pos 140 -63
 ; ~audioOutput buffer 0 0
@@ -99,11 +81,11 @@ push pointer
 push *in
 store
 
-; Increment the buffer 
+; Increment the buffer
 ; pointer by the word size
 push &pointer
 push pointer
-push sizeof(buffer) 
+push sizeof(buffer)
 add
 store
 
@@ -111,8 +93,8 @@ store
 ; when it reaches the end
 ; of the buffer
 push pointer
-push buffer& 
-greaterThan 
+push buffer&
+greaterThan
 if
 push &pointer
 push &buffer
@@ -120,3 +102,19 @@ store
 ifEnd
 
 moduleEnd
+groupEnd
+
+constants env
+; @pos 32 -63
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 44100
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'amen-170bpm-8s.pcm'
+const ASSET_AMEN_SIZE 62258
+
+constantsEnd

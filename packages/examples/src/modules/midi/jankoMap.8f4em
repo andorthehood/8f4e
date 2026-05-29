@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 function jankoMap
 param int keycode
 use midiCodes
@@ -12,12 +15,12 @@ map 32 D#3 ; numbers
 map 47 E3  ; based on
 map 33 F3  ; the Janko
 map 48 F#3 ; piano layout
-map 34 G3  ; 
-map 49 G#3 ; These key 
+map 34 G3  ;
+map 49 G#3 ; These key
 map 35 A3  ; positions
 map 50 A#3 ; are based on
-map 36 B3  ; my Apple 
-map 51 C4  ; Magic 
+map 36 B3  ; my Apple
+map 51 C4  ; Magic
 map 37 C#4 ; Keyboard's
 map 52 D4  ; layout, feel
 map 38 D#4 ; free to

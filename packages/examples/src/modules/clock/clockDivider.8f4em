@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module clockDiv
 
 int default 16
@@ -15,7 +16,7 @@ push &counter
 push counter
 push 1
 add
-store 
+store
 ifEnd
 
 push counter
@@ -35,3 +36,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

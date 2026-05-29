@@ -1,8 +1,10 @@
 8f4e/v1
 
+group main
 module main
 int output
 push &output
 push 1
 store
 moduleEnd
+groupEnd

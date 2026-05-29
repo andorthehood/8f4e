@@ -11,13 +11,13 @@ const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
+group main
 module projectConfig
 ; @pos -59 12
 ; @config runtime WebWorkerRuntime
 ; ~sampleRate 50
 
 moduleEnd
-
 module main
 ; @pos 25 10
 
@@ -26,7 +26,6 @@ module main
 ; code blocks.
 
 moduleEnd
-
 module counter
 ; @pos 25 19
 
@@ -40,6 +39,7 @@ add
 store
 
 moduleEnd
+groupEnd
 
 note fragmentShaderPostprocess
 ; @pos 87 10

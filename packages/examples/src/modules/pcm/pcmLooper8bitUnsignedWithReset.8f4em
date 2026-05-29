@@ -1,11 +1,12 @@
 8f4e/v1
 
+group main
 module pcmPlayer8bit
 
 int8[] buffer 62258
 int playhead &buffer
 float out
-int startPos 
+int startPos
 int* reset
 
 ; Read sample at playhead
@@ -48,3 +49,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

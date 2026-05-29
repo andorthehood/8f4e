@@ -25,7 +25,7 @@ const macroBlockType = documentBlockInstructionByType.macro.type;
  *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
  */
 export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): CompileInput {
-	const modules: CodeBlockGraphicData[] = [];
+	const moduleGroups: Record<string, CodeBlockGraphicData[]> = {};
 	const constants: Module[] = [];
 	const functions: CodeBlockGraphicData[] = [];
 	const macros: CodeBlockGraphicData[] = [];
@@ -36,7 +36,9 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 
 	for (const block of sortedEnabled) {
 		if (block.blockType === moduleBlockType) {
-			modules.push(block);
+			const groupName = block.executionGroupName ?? 'main';
+			moduleGroups[groupName] ??= [];
+			moduleGroups[groupName].push(block);
 		} else if (block.blockType === constantsBlockType) {
 			constants.push({ code: block.code });
 		} else if (block.blockType === functionBlockType) {
@@ -46,7 +48,12 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 		}
 	}
 
-	return { groups: { main: sortCodeBlocksByGridPosition(modules) }, constants, functions, macros };
+	const groups = Object.fromEntries(
+		Object.entries(moduleGroups).map(([groupName, modules]) => [groupName, sortCodeBlocksByGridPosition(modules)])
+	);
+	groups.main ??= [];
+
+	return { groups, constants, functions, macros };
 }
 
 export default function compiler(store: StateManager<State>) {

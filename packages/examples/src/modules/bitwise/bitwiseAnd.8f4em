@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module bitwiseAnd
          ;   .----.
 int* in1 ; --+     '
@@ -14,3 +15,4 @@ and
 store
 
 moduleEnd
+groupEnd

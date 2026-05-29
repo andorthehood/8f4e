@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module binaryGateSeq
 
 int step1  0b10100000
@@ -24,12 +25,12 @@ int* trigger
 
 int out1
 int out2
-int out3 
+int out3
 int out4
-int out5 
+int out5
 int out6
-int out7 
-int out8 
+int out7
+int out8
 
 int bitPointer 0
 
@@ -69,7 +70,7 @@ push bitPointer
 push 7
 greaterThan
 branchIfTrue 1
- 
+
 ; Calculate output address
 push &out1
 push bitPointer
@@ -100,3 +101,4 @@ store
 loopEnd
 
 moduleEnd
+groupEnd

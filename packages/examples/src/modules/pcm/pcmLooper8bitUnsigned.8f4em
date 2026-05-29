@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module pcmPlayer8bit
 
 int8[] buffer 62258
@@ -40,3 +41,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

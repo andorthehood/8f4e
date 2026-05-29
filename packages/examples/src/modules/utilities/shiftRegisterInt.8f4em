@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module shiftReg
 
 int* in
@@ -30,10 +31,10 @@ push pointer
 push &out0
 equal
 branchIfTrue 1
-  
+
   ; Copy value from prev
   ; register to the curr
-push pointer 
+push pointer
 push pointer
 push sizeof(out0)
 sub
@@ -48,13 +49,14 @@ sub
 store
 
 loopEnd
- 
+
  ; Copy the input value
  ; to the first register
 push &out0
 push *in
 store
- 
+
 ifEnd
 
 moduleEnd
+groupEnd

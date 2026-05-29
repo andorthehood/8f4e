@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module strum
 
 float* bufferIn
@@ -27,24 +28,24 @@ push *lengthIn
 lessThan
 if
 push &out
-  
+
   ; Calculate address
 push bufferIn
 push counter
 push sizeof(bufferIn)
 mul
 add
-  
+
 loadFloat
 store
 
   ; Increment counter
 push &counter
 push counter
-push 1 
+push 1
 add
 store
-  
+
 push &trigOut
 push 1
 store
@@ -56,3 +57,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

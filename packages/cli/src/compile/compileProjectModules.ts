@@ -28,6 +28,10 @@ function isMockBlock(block: ProjectCodeBlock): boolean {
 	return compileToAST(block.code).lines.some(line => line.instruction === '#mock');
 }
 
+function hasModuleBlocks(groups: Record<string, unknown[]>): boolean {
+	return Object.values(groups).some(group => group.length > 0);
+}
+
 export default function compileProjectModules(
 	blocks: ProjectCodeBlock[],
 	options: CompileProjectModulesOptions
@@ -38,7 +42,7 @@ export default function compileProjectModules(
 	const compilerBlocks = includeMocks ? blocks : blocks.filter(block => block.disabled || !isMockBlock(block));
 	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(compilerBlocks);
 
-	if (groups.main.length === 0 && constantsBlocks.length === 0) {
+	if (!hasModuleBlocks(groups) && constantsBlocks.length === 0) {
 		return {
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
