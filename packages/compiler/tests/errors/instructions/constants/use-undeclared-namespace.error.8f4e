@@ -1,0 +1,9 @@
+8f4e/v1
+
+entry main
+module useUndeclaredNamespace
+; use should reject missing namespaces.
+use missingNamespace
+int x 0
+moduleEnd
+entryEnd

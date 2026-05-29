@@ -1,0 +1,10 @@
+8f4e/v1
+
+entry main
+module loopCapAfterDeclarations
+; #loopCap should be part of the directive prologue.
+int counter 0
+#loopCap 500
+int counter2 0
+moduleEnd
+entryEnd

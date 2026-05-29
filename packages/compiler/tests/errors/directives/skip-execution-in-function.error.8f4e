@@ -1,0 +1,10 @@
+8f4e/v1
+
+entry main
+module skipExecutionInFunctionHost
+moduleEnd
+entryEnd
+
+function bad
+#skipExecution
+functionEnd

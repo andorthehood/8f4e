@@ -1,0 +1,27 @@
+{
+  "code": 5,
+  "context": {
+    "codeBlockId": "moduleB",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "result",
+      },
+      {
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "SECRET",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Undeclared identifier: SECRET. (5)",
+}

@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import createInternalResourceDataSegmentCandidate from './createInternalResourceDataSegmentCandidate';
-
-import { createInternalResource } from '../../tests/initialMemoryDataSegmentsTestUtils';
+import { createInternalResource } from './testUtils';
 
 describe('createInternalResourceDataSegmentCandidate', () => {
 	test('creates internal resource candidates using relative payload offsets', () => {

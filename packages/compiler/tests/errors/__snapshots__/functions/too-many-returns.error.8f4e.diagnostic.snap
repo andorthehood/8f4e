@@ -1,0 +1,69 @@
+{
+  "code": 17,
+  "context": {
+    "codeBlockId": "tooManyReturns",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "functionEnd",
+    "lineNumberAfterMacroExpansion": 11,
+    "lineNumberBeforeMacroExpansion": 11,
+  },
+  "message": "Function signature overflow. Maximum 8 parameters and 8 return values. (17)",
+}

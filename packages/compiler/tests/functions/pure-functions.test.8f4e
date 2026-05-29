@@ -1,0 +1,192 @@
+8f4e/v1
+
+; Pure functions should compile, expose stable signatures in snapshots, and run through normal calls.
+entry test
+module zeroValueFunctionAssertions
+; Functions with no parameters and no returns can be called without affecting the stack.
+call noop
+call getZero
+push 0
+call assert
+moduleEnd
+
+module intParameterFunctionAssertions
+; Integer parameters are passed in declaration order.
+push 3
+push 4
+call addInts
+push 7
+call assert
+
+push 5
+call square
+push 25
+call assert
+moduleEnd
+
+module floatParameterFunctionAssertions
+; Float parameters and returns should stay on the float path.
+push 3.0
+push 2.0
+call multiplyFloats
+push 6.0
+call assertf
+moduleEnd
+
+module mixedParameterFunctionAssertions
+; Mixed parameters can be converted and combined inside a function.
+push 4
+push 2.5
+call multiplyMixed
+push 10.0
+call assertf
+moduleEnd
+
+module multipleReturnFunctionAssertions
+; Multiple returns should leave both returned values on the caller stack.
+push 9
+call duplicateInt
+push 9
+call assert
+push 9
+call assert
+moduleEnd
+
+module localFunctionAssertions
+; Functions can use locals to stage computed values.
+push 2
+push 5
+call addWithLocal
+push 7
+call assert
+moduleEnd
+
+module functionConstantAssertions
+; Constants declared near a function can be used by that function.
+call getPi
+push 3.14159
+call assertf
+moduleEnd
+
+module impureFunctionAssertions
+; Impure functions are allowed to perform memory IO through pointer arguments.
+int source 42
+int dest
+
+push &source
+call readValue
+push 42
+call assert
+
+push &dest
+push 77
+call writeValue
+push dest
+push 77
+call assert
+moduleEnd
+
+module functionControlFlowAssertions
+; Functions can use block control flow and return the resulting stack value.
+push -12
+call absInt
+push 12
+call assert
+
+push 12
+call absInt
+push 12
+call assert
+moduleEnd
+entryEnd
+
+function noop
+functionEnd
+
+function getZero
+push 0
+functionEnd int
+
+function addInts
+param int x
+param int y
+push x
+push y
+add
+functionEnd int
+
+function square
+param int x
+push x
+push x
+mul
+functionEnd int
+
+function multiplyFloats
+param float x
+param float y
+push x
+push y
+mul
+functionEnd float
+
+function multiplyMixed
+param int x
+param float y
+push x
+castToFloat
+push y
+mul
+functionEnd float
+
+function duplicateInt
+param int x
+push x
+push x
+functionEnd int int
+
+function addWithLocal
+param int x
+param int y
+local int temp
+push x
+push y
+add
+localSet temp
+push temp
+functionEnd int
+
+function getPi
+const PI 3.14159
+push PI
+functionEnd float
+
+function readValue
+#impure
+param int* address
+push address
+load
+functionEnd int
+
+function writeValue
+#impure
+param int* address
+param int value
+push address
+push value
+store
+functionEnd
+
+function absInt
+param int x
+push x
+push 0
+lessThan
+if
+push 0
+push x
+sub
+else
+push x
+ifEnd int
+functionEnd int

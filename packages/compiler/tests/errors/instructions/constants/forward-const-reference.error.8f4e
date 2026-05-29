@@ -1,0 +1,10 @@
+8f4e/v1
+
+entry main
+module forwardConstReference
+; Const declarations can only reference earlier visible constants.
+const B A
+const A 10
+int x B
+moduleEnd
+entryEnd

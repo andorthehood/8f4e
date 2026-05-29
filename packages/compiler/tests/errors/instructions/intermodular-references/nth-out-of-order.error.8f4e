@@ -1,0 +1,13 @@
+8f4e/v1
+
+entry main
+module nthOutOfOrderTarget
+; Nth module references require the source module to be declared first.
+int* ptr &nthOutOfOrderSource:1
+moduleEnd
+
+module nthOutOfOrderSource
+int a 0
+int b 0
+moduleEnd
+entryEnd

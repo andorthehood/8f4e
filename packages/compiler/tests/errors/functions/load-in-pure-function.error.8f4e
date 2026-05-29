@@ -1,0 +1,13 @@
+8f4e/v1
+
+entry main
+module invalidFunctionHost
+moduleEnd
+entryEnd
+
+function invalid
+; Pure functions should reject memory reads.
+param int* x
+push x
+load
+functionEnd int

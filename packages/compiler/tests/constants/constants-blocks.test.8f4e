@@ -1,0 +1,142 @@
+8f4e/v1
+
+constants math
+const PI 3.14159
+const TAU 6.28318
+constantsEnd
+
+constants physics
+const GRAVITY 9.81
+constantsEnd
+
+constants first
+const VALUE 10
+constantsEnd
+
+constants second
+const VALUE 20
+constantsEnd
+
+constants derived
+use env
+const SIZE SAMPLE_RATE/1000
+constantsEnd
+
+constants env
+const SAMPLE_RATE 48000
+const HALF SAMPLE_RATE/12000
+constantsEnd
+
+constants sameNameAsModule
+const UNUSED_VALUE 77
+constantsEnd
+
+; Constants blocks should import into modules through use without becoming executable modules themselves.
+entry test
+module constantsBlockAssertions
+; Values from top-level constants blocks should resolve in defaults and pushes.
+use math
+use physics
+float pi PI
+float tau TAU
+float gravity GRAVITY
+
+push pi
+push 3.14159
+call assertf
+
+push tau
+push 6.28318
+call assertf
+
+push gravity
+push 9.81
+call assertf
+moduleEnd
+
+module constantLastWinsAssertions
+; Later use statements should override earlier imported constants with the same name.
+use first
+use second
+int result VALUE
+
+push result
+push 20
+call assert
+moduleEnd
+
+module moduleConstImportAssertions
+; Module-local constants should become visible to later modules through use.
+const SECRET 99
+moduleEnd
+
+module moduleConstConsumerAssertions
+use moduleConstImportAssertions
+int result SECRET
+
+push result
+push 99
+call assert
+moduleEnd
+
+module sameModuleDerivedConstAssertions
+; A const can reference an earlier const in the same module.
+const BASE 10
+const DOUBLE BASE
+int result DOUBLE
+
+push result
+push 10
+call assert
+moduleEnd
+
+module importedConstDerivedConstAssertions
+; A const can reference imported values after a preceding use.
+use moduleConstImportAssertions
+const BAR SECRET
+int result BAR
+
+push result
+push 99
+call assert
+moduleEnd
+
+module constantsCanUseConstantsAssertions
+; Constants blocks can use values from other constants blocks.
+use derived
+use env
+int size SIZE
+int half HALF
+
+push size
+push 48
+call assert
+
+push half
+push 4
+call assert
+moduleEnd
+
+module sameNameAsModule
+; A constants block and module may share a name without allocating constants-block memory.
+int result 1
+
+push result
+push 1
+call assert
+moduleEnd
+
+module validConstNameAssertions
+; Constant names can include underscores and numbers after the first letter.
+const MY_CONSTANT 100
+const CONST123 123
+
+push MY_CONSTANT
+push 100
+call assert
+
+push CONST123
+push 123
+call assert
+moduleEnd
+entryEnd

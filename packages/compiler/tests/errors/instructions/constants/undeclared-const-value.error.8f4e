@@ -1,0 +1,9 @@
+8f4e/v1
+
+entry main
+module undeclaredConstValue
+; const should reject unknown identifier values.
+const RESULT UNDEFINED_CONST
+int x RESULT
+moduleEnd
+entryEnd

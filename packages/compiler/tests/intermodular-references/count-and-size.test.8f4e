@@ -1,0 +1,94 @@
+8f4e/v1
+
+; Intermodule count(...) and sizeof(...) references should resolve in declaration defaults.
+entry test
+module countSizeSource
+int[] buffer 10 0
+float[] data 7 0.0
+moduleEnd
+
+module pointerSizeSource
+int* ptr
+moduleEnd
+
+module shortSizeSource
+int16[] buffer 12 0
+moduleEnd
+
+module countSizeAssertions
+; count(...) returns the word-aligned element count for arrays.
+int bufferCount count(countSizeSource:buffer)
+int dataCount count(countSizeSource:data)
+
+push bufferCount
+push 10
+call assert
+
+push dataCount
+push 7
+call assert
+
+; sizeof(...) returns the element byte width.
+int intElementSize sizeof(countSizeSource:buffer)
+int floatElementSize sizeof(countSizeSource:data)
+int pointerElementSize sizeof(pointerSizeSource:ptr)
+int doubledShortSize 2*sizeof(shortSizeSource:buffer)
+
+push intElementSize
+push 4
+call assert
+
+push floatElementSize
+push 4
+call assert
+
+push pointerElementSize
+push 4
+call assert
+
+push doubledShortSize
+push 4
+call assert
+moduleEnd
+
+module outOfOrderCountSizeAssertions
+; Intermodule count and sizeof references can resolve to modules declared later.
+int laterCount count(lateCountSizeSource:buffer)
+int laterSize sizeof(lateCountSizeSource:buffer)
+
+push laterCount
+push 8
+call assert
+
+push laterSize
+push 4
+call assert
+moduleEnd
+
+module lateCountSizeSource
+int[] buffer 8 0
+moduleEnd
+
+module combinedCountSizeAssertions
+; Count, sizeof, and address references can be used together in one module.
+int* ptr &combinedCountSizeSource:buffer
+int size count(combinedCountSizeSource:buffer)
+int elemSize sizeof(combinedCountSizeSource:buffer)
+
+push *ptr
+push 12
+call assert
+
+push size
+push 12
+call assert
+
+push elemSize
+push 4
+call assert
+moduleEnd
+
+module combinedCountSizeSource
+int[] buffer 12 12
+moduleEnd
+entryEnd

@@ -1,0 +1,17 @@
+{
+  "code": 34,
+  "context": {},
+  "line": {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 500,
+      },
+    ],
+    "instruction": "#loopCap",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "This instruction is not allowed inside this block type. (34)",
+}

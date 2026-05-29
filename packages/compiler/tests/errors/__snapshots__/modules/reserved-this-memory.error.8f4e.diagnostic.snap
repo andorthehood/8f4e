@@ -1,0 +1,21 @@
+{
+  "code": 38,
+  "context": {
+    "codeBlockId": "reservedThisMemory",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "this",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
+  },
+  "message": "Reserved identifier cannot be used as a memory allocation name: this. (38)",
+}

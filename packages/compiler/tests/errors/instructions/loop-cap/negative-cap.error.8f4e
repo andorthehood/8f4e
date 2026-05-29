@@ -1,0 +1,10 @@
+8f4e/v1
+
+entry main
+module negativeLoopCap
+; Resolved loop counts should reject negative values.
+const LOOP_COUNT -1
+loop LOOP_COUNT
+loopEnd
+moduleEnd
+entryEnd

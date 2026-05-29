@@ -1,0 +1,14 @@
+8f4e/v1
+
+entry main
+module duplicateExportNameHost
+moduleEnd
+entryEnd
+
+function first
+#export same
+functionEnd
+
+function second
+#export same
+functionEnd

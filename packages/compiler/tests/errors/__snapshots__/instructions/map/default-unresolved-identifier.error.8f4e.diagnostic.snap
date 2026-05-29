@@ -1,0 +1,21 @@
+{
+  "code": 5,
+  "context": {
+    "codeBlockId": "mapDefaultUnresolvedIdentifier",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "MISSING_CONST",
+      },
+    ],
+    "instruction": "default",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  "message": "Undeclared identifier: MISSING_CONST. (5)",
+}

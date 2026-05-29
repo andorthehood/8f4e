@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module countMultiDotSource
+int[] buffer 5 0
+moduleEnd
+
+module countMultiDotTarget
+; count(...) should reject references with extra path segments.
+int size count(countMultiDotSource:buffer.extra)
+moduleEnd
+entryEnd

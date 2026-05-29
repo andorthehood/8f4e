@@ -1,0 +1,21 @@
+{
+  "code": 18,
+  "context": {
+    "codeBlockId": "mismatch",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "functionEnd",
+    "lineNumberAfterMacroExpansion": 4,
+    "lineNumberBeforeMacroExpansion": 4,
+  },
+  "message": "Stack elements do not match function return signature. (18)",
+}

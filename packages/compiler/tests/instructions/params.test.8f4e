@@ -1,0 +1,141 @@
+8f4e/v1
+
+; Param instructions should expose callable function signatures and preserve argument behavior.
+entry test
+module paramOrderAssertions
+; Parameters can be read in declaration order.
+push 2
+push 3
+call addParams
+push 5
+call assert
+moduleEnd
+
+module paramDifferentOrderAssertions
+; Parameters can be read in a different order from declaration.
+push 10
+push 3
+call subtractReverse
+push -7
+call assert
+moduleEnd
+
+module paramPartialUseAssertions
+; Functions may use only some of their parameters.
+push 6
+push 99
+call useFirst
+push 12
+call assert
+moduleEnd
+
+module paramRepeatedUseAssertions
+; A single parameter can be read multiple times.
+push 7
+call squareParam
+push 49
+call assert
+moduleEnd
+
+module namedParamAssertions
+; Descriptive parameter names should work like any other identifiers.
+push 4
+push 5
+call calculateArea
+push 20
+call assert
+moduleEnd
+
+module localAfterParamAssertions
+; Locals declared after params should work with localSet and push.
+push 8
+push 9
+call addParamsWithLocal
+push 17
+call assert
+moduleEnd
+
+module mixedWidthParamAssertions
+; Int, float, and float64 params can appear together.
+push 3
+push 2.0
+push 1.5f64
+call mixedAll
+push 9.0f64
+call assertf64
+moduleEnd
+
+module noParamFunctionAssertions
+; Functions with no params still have a callable signature.
+call noParams
+push 42
+call assert
+moduleEnd
+entryEnd
+
+function addParams
+param int x
+param int y
+push x
+push y
+add
+functionEnd int
+
+function subtractReverse
+param int x
+param int y
+push y
+push x
+sub
+functionEnd int
+
+function useFirst
+param int x
+param int unused
+push x
+push 2
+mul
+functionEnd int
+
+function squareParam
+param int x
+push x
+push x
+mul
+functionEnd int
+
+function calculateArea
+param int width
+param int height
+push width
+push height
+mul
+functionEnd int
+
+function addParamsWithLocal
+param int x
+param int y
+local int temp
+push x
+push y
+add
+localSet temp
+push temp
+functionEnd int
+
+function mixedAll
+param int intVal
+param float floatVal
+param float64 doubleVal
+push intVal
+castToFloat64
+push floatVal
+castToFloat64
+mul
+push doubleVal
+mul
+functionEnd float64
+
+function noParams
+push 42
+functionEnd int

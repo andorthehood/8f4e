@@ -1,0 +1,10 @@
+{
+  "code": 2,
+  "context": {},
+  "line": {
+    "instruction": "const",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Invalid argument for const: expected constant identifier.",
+}

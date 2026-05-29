@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module invalidFunctionHost
+moduleEnd
+entryEnd
+
+function mismatch
+; functionEnd should reject extra stack values.
+push 1
+push 2
+functionEnd int

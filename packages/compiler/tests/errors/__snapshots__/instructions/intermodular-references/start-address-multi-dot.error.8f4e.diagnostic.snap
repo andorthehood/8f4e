@@ -1,0 +1,29 @@
+{
+  "code": 5,
+  "context": {
+    "codeBlockId": "startAddressMultiDotTarget",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "ptr",
+      },
+      {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "startAddressMultiDotSource:buffer:extra",
+        "type": "identifier",
+        "value": "&startAddressMultiDotSource:buffer:extra",
+      },
+    ],
+    "instruction": "int*",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Undeclared identifier: startAddressMultiDotSource:buffer:extra. (5)",
+}

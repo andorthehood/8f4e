@@ -1,0 +1,29 @@
+{
+  "code": 5,
+  "context": {
+    "codeBlockId": "countMultiDotTarget",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "size",
+      },
+      {
+        "referenceKind": "intermodular-element-count",
+        "scope": "intermodule",
+        "targetMemoryId": "buffer.extra",
+        "targetModuleId": "countMultiDotSource",
+        "type": "identifier",
+        "value": "count(countMultiDotSource:buffer.extra)",
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Undeclared identifier: buffer.extra. (5)",
+}

@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module maxUnknownModuleSource
+int[] buffer 5 0
+moduleEnd
+
+module maxUnknownModuleTarget
+; max(...) should reject unknown modules.
+int maxValue max(missingModule:buffer)
+moduleEnd
+entryEnd

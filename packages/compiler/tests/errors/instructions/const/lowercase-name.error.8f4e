@@ -1,0 +1,8 @@
+8f4e/v1
+
+entry main
+module lowercaseConstName
+; Const identifiers should reject lowercase letters.
+const myConst 100
+moduleEnd
+entryEnd

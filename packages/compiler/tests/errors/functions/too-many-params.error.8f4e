@@ -1,0 +1,19 @@
+8f4e/v1
+
+entry main
+module invalidFunctionHost
+moduleEnd
+entryEnd
+
+function tooManyParams
+; Functions should reject more than eight parameters.
+param int p1
+param int p2
+param int p3
+param int p4
+param int p5
+param int p6
+param int p7
+param int p8
+param int p9
+functionEnd

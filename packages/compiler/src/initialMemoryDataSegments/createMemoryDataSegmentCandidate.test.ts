@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import createMemoryDataSegmentCandidate from './createMemoryDataSegmentCandidate';
-
-import { createMemory } from '../../tests/initialMemoryDataSegmentsTestUtils';
+import { createMemory } from './testUtils';
 
 describe('createMemoryDataSegmentCandidate', () => {
 	test('creates scalar candidates with encoded default bytes', () => {

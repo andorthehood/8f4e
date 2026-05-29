@@ -1,0 +1,14 @@
+{
+  "code": 34,
+  "context": {
+    "codeBlockId": "instructionInsideMapBlock",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [],
+    "instruction": "add",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  "message": "This instruction is not allowed inside this block type. (34)",
+}

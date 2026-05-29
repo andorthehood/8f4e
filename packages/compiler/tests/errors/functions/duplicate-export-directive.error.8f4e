@@ -1,0 +1,11 @@
+8f4e/v1
+
+entry main
+module duplicateExportDirectiveHost
+moduleEnd
+entryEnd
+
+function bad
+#export first
+#export second
+functionEnd

@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module maxMultiDotSource
+int[] buffer 5 0
+moduleEnd
+
+module maxMultiDotTarget
+; max(...) should reject references with extra path segments.
+int maxValue max(maxMultiDotSource:buffer.extra)
+moduleEnd
+entryEnd

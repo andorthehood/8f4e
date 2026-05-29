@@ -1,0 +1,14 @@
+{
+  "code": 31,
+  "context": {
+    "codeBlockId": "bad",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [],
+    "instruction": "#skipExecution",
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
+  },
+  "message": "This compiler directive can only be used within a module block. (31)",
+}

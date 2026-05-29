@@ -1,0 +1,2128 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "anonymousFloatDeclarationsCompile": {
+      "id": "anonymousFloatDeclarationsCompile",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "anonymousFloatDeclarationsCompile",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [],
+          "hasExplicitMemoryDefault": false,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 0,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:0",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 1,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:1",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "PI",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14159,
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "PI",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 2,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:2",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14159,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -2.5,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 3,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:3",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -2.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "intConstantSplitByteDeclarationAssertions": {
+      "id": "intConstantSplitByteDeclarationAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intConstantSplitByteDeclarationAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "HI",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "LO",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "foo",
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "HI",
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "LO",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "foo",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 541065216,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "HI",
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "LO",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 1,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:1",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 541065216,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixed",
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 168,
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "LO",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixed",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1472200704,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 168,
+            },
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "LO",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 3,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:3",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1472200704,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "intDeclarationAssertions": {
+      "id": "intDeclarationAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intDeclarationAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [],
+          "hasExplicitMemoryDefault": false,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 0,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:0",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 42,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 1,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:1",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 42,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "foo",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 42,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "foo",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 42,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "charValue",
+            },
+            {
+              "type": "string_literal",
+              "value": "e",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "charValue",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 101,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "type": "string_literal",
+              "value": "e",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 4,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:4",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 101,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "MY_VALUE",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 100,
+            },
+          ],
+          "instruction": "const",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "MY_VALUE",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 5,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:5",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 100,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -42,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 6,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:6",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -42,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "intPointerDeclarationsCompile": {
+      "id": "intPointerDeclarationsCompile",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intPointerDeclarationsCompile",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [],
+          "hasExplicitMemoryDefault": false,
+          "instruction": "int*",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 0,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:0",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "intSplitByteDeclarationAssertions": {
+      "id": "intSplitByteDeclarationAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intSplitByteDeclarationAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitHex",
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 168,
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitHex",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1459683328,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitHexFull",
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 168,
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitHexFull",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1459683328,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 168,
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 2,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:2",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1459683328,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitDecimal",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitDecimal",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 541065216,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitString",
+            },
+            {
+              "type": "string_literal",
+              "value": "AB",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitString",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1094844416,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitDecimalFull",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitDecimalFull",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 541065216,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 6,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:6",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 541065216,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "intermodular-module-nth-reference",
+              "scope": "intermodule",
+              "targetMemoryIndex": 7,
+              "targetModuleId": "this",
+              "type": "identifier",
+              "value": "&this:7",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixedBytes",
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 168,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixedBytes",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1459683328,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "loadFloatAssertions": {
+      "id": "loadFloatAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "loadFloatAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "firstInput",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 69.1,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "firstInput",
+              "type": "identifier",
+              "value": "&firstInput",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 69.1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "secondInput",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0.1,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "secondInput",
+              "type": "identifier",
+              "value": "&secondInput",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0.1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "thirdInput",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -420.1,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "thirdInput",
+              "type": "identifier",
+              "value": "&thirdInput",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -420.1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "anonymousFloatDeclarationsCompile": {
+      "internalResources": {},
+      "memoryMap": {
+        "__anonymous__15": {
+          "byteAddress": 24,
+          "default": 3.14159,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__15",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 6,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__2": {
+          "byteAddress": 16,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "__anonymous__2",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__21": {
+          "byteAddress": 28,
+          "default": -2.5,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__21",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 7,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__8": {
+          "byteAddress": 20,
+          "default": 3.14,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__8",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "intConstantSplitByteDeclarationAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "__anonymous__20": {
+          "byteAddress": 108,
+          "default": 2822766592,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__20",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 27,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__9": {
+          "byteAddress": 100,
+          "default": 541065216,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__9",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 25,
+          "wordAlignedSize": 1,
+        },
+        "foo": {
+          "byteAddress": 96,
+          "default": 541065216,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "foo",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 24,
+          "wordAlignedSize": 1,
+        },
+        "mixed": {
+          "byteAddress": 104,
+          "default": 2822766592,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "mixed",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 26,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "intDeclarationAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "__anonymous__2": {
+          "byteAddress": 32,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "__anonymous__2",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 8,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__24": {
+          "byteAddress": 48,
+          "default": 101,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__24",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 12,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__31": {
+          "byteAddress": 52,
+          "default": 100,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__31",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 13,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__37": {
+          "byteAddress": 56,
+          "default": -42,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__37",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 14,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__8": {
+          "byteAddress": 36,
+          "default": 42,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__8",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 9,
+          "wordAlignedSize": 1,
+        },
+        "charValue": {
+          "byteAddress": 44,
+          "default": 101,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "charValue",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 11,
+          "wordAlignedSize": 1,
+        },
+        "foo": {
+          "byteAddress": 40,
+          "default": 42,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "foo",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 10,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "intPointerDeclarationsCompile": {
+      "internalResources": {},
+      "memoryMap": {
+        "__anonymous__2": {
+          "byteAddress": 112,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "__anonymous__2",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int",
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 28,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "intSplitByteDeclarationAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "__anonymous__12": {
+          "byteAddress": 68,
+          "default": 2835283968,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__12",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 17,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__33": {
+          "byteAddress": 84,
+          "default": 541065216,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__33",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 21,
+          "wordAlignedSize": 1,
+        },
+        "__anonymous__39": {
+          "byteAddress": 88,
+          "default": 32,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "__anonymous__39",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 22,
+          "wordAlignedSize": 1,
+        },
+        "mixedBytes": {
+          "byteAddress": 92,
+          "default": 2835283968,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "mixedBytes",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 23,
+          "wordAlignedSize": 1,
+        },
+        "splitDecimal": {
+          "byteAddress": 72,
+          "default": 541065216,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "splitDecimal",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 18,
+          "wordAlignedSize": 1,
+        },
+        "splitDecimalFull": {
+          "byteAddress": 80,
+          "default": 541065216,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "splitDecimalFull",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 20,
+          "wordAlignedSize": 1,
+        },
+        "splitHex": {
+          "byteAddress": 60,
+          "default": 2835283968,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "splitHex",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 15,
+          "wordAlignedSize": 1,
+        },
+        "splitHexFull": {
+          "byteAddress": 64,
+          "default": 2835283968,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "splitHexFull",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 16,
+          "wordAlignedSize": 1,
+        },
+        "splitString": {
+          "byteAddress": 76,
+          "default": 1094844416,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "splitString",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 19,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "loadFloatAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "firstInput": {
+          "byteAddress": 4,
+          "default": 69.1,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "firstInput",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+        "secondInput": {
+          "byteAddress": 8,
+          "default": 0.1,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "secondInput",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+        },
+        "thirdInput": {
+          "byteAddress": 12,
+          "default": -420.1,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "thirdInput",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 3,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "anonymousFloatDeclarationsCompile",
+      "intConstantSplitByteDeclarationAssertions",
+      "intDeclarationAssertions",
+      "intPointerDeclarationsCompile",
+      "intSplitByteDeclarationAssertions",
+      "loadFloatAssertions",
+    ],
+    "requiredMemoryBytes": 116,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

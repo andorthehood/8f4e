@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module minMultiDotSource
+int[] buffer 5 0
+moduleEnd
+
+module minMultiDotTarget
+; min(...) should reject references with extra path segments.
+int minValue min(minMultiDotSource:buffer.extra)
+moduleEnd
+entryEnd

@@ -1,0 +1,37 @@
+{
+  "code": 5,
+  "context": {
+    "codeBlockId": "undeclaredExpressionOperand",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "RESULT",
+      },
+      {
+        "intermoduleIds": [],
+        "left": {
+          "referenceKind": "constant",
+          "scope": "local",
+          "type": "identifier",
+          "value": "UNDEFINED_CONST",
+        },
+        "operator": "/",
+        "right": {
+          "isInteger": true,
+          "type": "literal",
+          "value": 2,
+        },
+        "type": "compile_time_expression",
+      },
+    ],
+    "instruction": "const",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Undeclared identifier: UNDEFINED_CONST/2. (5)",
+}

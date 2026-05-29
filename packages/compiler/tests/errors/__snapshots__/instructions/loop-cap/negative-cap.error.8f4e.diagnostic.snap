@@ -1,0 +1,21 @@
+{
+  "code": 8,
+  "context": {
+    "codeBlockId": "negativeLoopCap",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "LOOP_COUNT",
+      },
+    ],
+    "instruction": "loop",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  "message": "Expected value, got an identifier. (8)",
+}

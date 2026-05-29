@@ -1,0 +1,11 @@
+8f4e/v1
+
+entry main
+module invalidFunctionHost
+moduleEnd
+entryEnd
+
+function invalid
+; Array declarations are memory declarations and should be rejected in functions.
+int[] buffer 10
+functionEnd

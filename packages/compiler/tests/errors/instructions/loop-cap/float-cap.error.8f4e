@@ -1,0 +1,10 @@
+8f4e/v1
+
+entry main
+module floatLoopCap
+; Resolved loop counts should reject float values.
+const LOOP_COUNT 1.5
+loop LOOP_COUNT
+loopEnd
+moduleEnd
+entryEnd

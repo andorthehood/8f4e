@@ -1,0 +1,17 @@
+8f4e/v1
+
+entry main
+module insufficientArguments
+; Calls should reject missing arguments.
+push 1
+call addInts
+moduleEnd
+entryEnd
+
+function addInts
+param int x
+param int y
+push x
+push y
+add
+functionEnd int

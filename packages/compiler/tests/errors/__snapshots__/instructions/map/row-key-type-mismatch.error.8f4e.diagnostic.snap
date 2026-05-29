@@ -1,0 +1,25 @@
+{
+  "code": 2,
+  "context": {
+    "codeBlockId": "mapRowKeyTypeMismatch",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 1.5,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 10,
+      },
+    ],
+    "instruction": "map",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  "message": "The operation only accepts integer values as operands. (2)",
+}

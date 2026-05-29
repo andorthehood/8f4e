@@ -1,0 +1,10 @@
+{
+  "code": 2,
+  "context": {},
+  "line": {
+    "instruction": "param",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Invalid argument for param: expected function type identifier.",
+}

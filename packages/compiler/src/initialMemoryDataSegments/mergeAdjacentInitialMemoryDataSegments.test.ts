@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import mergeAdjacentInitialMemoryDataSegments from './mergeAdjacentInitialMemoryDataSegments';
-
-import { serializeSegments } from '../../tests/initialMemoryDataSegmentsTestUtils';
+import { serializeSegments } from './testUtils';
 
 describe('mergeAdjacentInitialMemoryDataSegments', () => {
 	test('sorts segments and merges adjacent ranges with small zero gaps', () => {

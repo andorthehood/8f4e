@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module countUnknownModuleSource
+int[] buffer 5 0
+moduleEnd
+
+module countUnknownModuleTarget
+; count(...) should reject unknown modules.
+int size count(missingModule:buffer)
+moduleEnd
+entryEnd

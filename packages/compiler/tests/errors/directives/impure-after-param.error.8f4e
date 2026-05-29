@@ -1,0 +1,13 @@
+8f4e/v1
+
+entry main
+module impureAfterParamHost
+moduleEnd
+entryEnd
+
+function lateImpure
+param int address
+#impure
+push address
+load
+functionEnd int

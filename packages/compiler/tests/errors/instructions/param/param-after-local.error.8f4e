@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module invalidParamHost
+moduleEnd
+entryEnd
+
+function invalid
+; param declarations should come before local declarations.
+local int temp
+param int x
+functionEnd

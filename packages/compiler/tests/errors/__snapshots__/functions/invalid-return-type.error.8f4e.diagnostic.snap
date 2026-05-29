@@ -1,0 +1,10 @@
+{
+  "code": 2,
+  "context": {},
+  "line": {
+    "instruction": "functionEnd",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  "message": "Invalid argument for functionEnd: expected function type identifier.",
+}

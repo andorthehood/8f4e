@@ -1,0 +1,20 @@
+{
+  "code": 56,
+  "context": {
+    "codeBlockId": "regionIndexOutOfBounds",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 2,
+      },
+    ],
+    "instruction": "#region",
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
+  },
+  "message": "Memory region index is out of bounds: 2. (56)",
+}

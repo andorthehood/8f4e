@@ -1,0 +1,7 @@
+8f4e/v1
+; @memoryRegions sampleMemory sampleMemory
+
+entry main
+module duplicateRegionNameHost
+moduleEnd
+entryEnd

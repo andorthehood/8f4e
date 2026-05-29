@@ -1,0 +1,21 @@
+{
+  "code": 19,
+  "context": {
+    "codeBlockId": "floatLoopCap",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "constant",
+        "scope": "local",
+        "type": "identifier",
+        "value": "LOOP_COUNT",
+      },
+    ],
+    "instruction": "loop",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  "message": "Type mismatch. (19)",
+}

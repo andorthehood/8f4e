@@ -1,0 +1,141 @@
+8f4e/v1
+
+; Intermodule min(...) and max(...) references should resolve element bounds.
+entry test
+module intBoundsSource
+int[] ints 10 0
+int32[] int32s 5 0
+int16[] signed16 10 0
+int16u[] unsigned16 10 0
+int8[] signed8 10 0
+int8u[] unsigned8 10 0
+moduleEnd
+
+module floatBoundsSource
+float[] floats 7 0.0
+moduleEnd
+
+module integerBoundAssertions
+; Integer min/max references should reflect the source element type.
+int minInt min(intBoundsSource:ints)
+int maxInt max(intBoundsSource:ints)
+int minInt32 min(intBoundsSource:int32s)
+int maxInt32 max(intBoundsSource:int32s)
+int minSigned16 min(intBoundsSource:signed16)
+int maxSigned16 max(intBoundsSource:signed16)
+int minUnsigned16 min(intBoundsSource:unsigned16)
+int maxUnsigned16 max(intBoundsSource:unsigned16)
+int minSigned8 min(intBoundsSource:signed8)
+int maxSigned8 max(intBoundsSource:signed8)
+int minUnsigned8 min(intBoundsSource:unsigned8)
+int maxUnsigned8 max(intBoundsSource:unsigned8)
+
+push minInt
+push -2147483648
+call assert
+
+push maxInt
+push 2147483647
+call assert
+
+push minInt32
+push -2147483648
+call assert
+
+push maxInt32
+push 2147483647
+call assert
+
+push minSigned16
+push -32768
+call assert
+
+push maxSigned16
+push 32767
+call assert
+
+push minUnsigned16
+push 0
+call assert
+
+push maxUnsigned16
+push 65535
+call assert
+
+push minSigned8
+push -128
+call assert
+
+push maxSigned8
+push 127
+call assert
+
+push minUnsigned8
+push 0
+call assert
+
+push maxUnsigned8
+push 255
+call assert
+moduleEnd
+
+module floatBoundAssertions
+; Float min/max references should use the finite float32 bounds.
+float minFloat min(floatBoundsSource:floats)
+float maxFloat max(floatBoundsSource:floats)
+
+push minFloat
+push -3.4028234663852886e38
+call assertf
+
+push maxFloat
+push 3.4028234663852886e38
+call assertf
+moduleEnd
+
+module outOfOrderBoundsAssertions
+; Bounds references can resolve to modules declared later.
+int minValue min(lateBoundsSource:buffer)
+int maxValue max(lateBoundsSource:buffer)
+
+push minValue
+push -2147483648
+call assert
+
+push maxValue
+push 2147483647
+call assert
+moduleEnd
+
+module lateBoundsSource
+int[] buffer 8 0
+moduleEnd
+
+module combinedBoundsAssertions
+; Bounds, count, and address references can be used together in one module.
+int* ptr &combinedBoundsSource:buffer
+int size count(combinedBoundsSource:buffer)
+int minValue min(combinedBoundsSource:buffer)
+int maxValue max(combinedBoundsSource:buffer)
+
+push *ptr
+push 12
+call assert
+
+push size
+push 12
+call assert
+
+push minValue
+push -2147483648
+call assert
+
+push maxValue
+push 2147483647
+call assert
+moduleEnd
+
+module combinedBoundsSource
+int[] buffer 12 12
+moduleEnd
+entryEnd

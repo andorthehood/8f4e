@@ -1,0 +1,43 @@
+8f4e/v1
+
+; #skipExecution keeps a module compiled and initialized, but leaves it out of its entry dispatcher.
+entry main
+module activeEntryModule
+int counter 0
+
+push &counter
+push counter
+push 1
+add
+store
+moduleEnd
+
+module skippedEntryModule
+#skipExecution
+int counter 0
+
+push &counter
+push counter
+push 1
+add
+store
+moduleEnd
+entryEnd
+
+function test
+#export
+#impure
+loop 3
+call main
+loopEnd
+
+push &activeEntryModule:counter
+load
+push 3
+call assert
+
+push &skippedEntryModule:counter
+load
+push 0
+call assert
+functionEnd

@@ -1,0 +1,11 @@
+8f4e/v1
+
+entry main
+module invalidParamHost
+moduleEnd
+entryEnd
+
+function invalid
+; param should reject unknown value types.
+param invalidType x
+functionEnd

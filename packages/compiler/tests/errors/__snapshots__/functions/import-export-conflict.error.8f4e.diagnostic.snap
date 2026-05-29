@@ -1,0 +1,21 @@
+{
+  "code": 61,
+  "context": {
+    "codeBlockId": "bad",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "bad",
+      },
+    ],
+    "instruction": "#export",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Imported functions cannot also be exported. (61)",
+}

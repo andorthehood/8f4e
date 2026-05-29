@@ -1,0 +1,7 @@
+8f4e/v1
+; @memoryRegions memory
+
+entry main
+module invalidMemoryRegionNameHost
+moduleEnd
+entryEnd

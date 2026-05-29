@@ -1,0 +1,10 @@
+8f4e/v1
+
+entry main
+module exportBuiltInNameHost
+moduleEnd
+entryEnd
+
+function bad
+#export initDefaults
+functionEnd

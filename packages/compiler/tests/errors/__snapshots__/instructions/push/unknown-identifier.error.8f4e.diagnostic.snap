@@ -1,0 +1,21 @@
+{
+  "code": 5,
+  "context": {
+    "codeBlockId": "bad",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "undeclared",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Undeclared identifier: undeclared. (5)",
+}
