@@ -18,7 +18,7 @@ export interface CompiledModule {
 	initFunctionBody: number[];
 	cycleFunction: number[];
 	id: string;
-	executionGroupName?: string;
+	executionEntryName?: string;
 	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;
@@ -100,12 +100,12 @@ export interface Module {
 	code: string[];
 }
 
-/** Executable modules partitioned by host-callable execution group. */
-export type ModuleGroups = Record<string, Module[]>;
+/** Executable modules partitioned by host-callable execution entry. */
+export type ModuleEntries = Record<string, Module[]>;
 
 /** Top-level source payload consumed by the compiler. */
 export interface CompileInput {
-	groups: ModuleGroups;
+	entries: ModuleEntries;
 	functions?: Module[];
 	constants?: Module[];
 	macros?: Module[];

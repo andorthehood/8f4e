@@ -25,7 +25,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 1 });
 
 		// Module should compile successfully
 		expect(result.compiledModules.test).toBeDefined();
@@ -54,7 +54,7 @@ functionEnd
 
 		// Should compile without error
 		expect(() => {
-			compile({ groups: { main: modules }, functions: functions }, { startingMemoryWordAddress: 1 });
+			compile({ entries: { main: modules }, functions: functions }, { startingMemoryWordAddress: 1 });
 		}).not.toThrow();
 	});
 
@@ -71,7 +71,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile({ groups: { main: [] }, constants }, { startingMemoryWordAddress: 1 });
+			compile({ entries: { main: [] }, constants }, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
@@ -88,7 +88,7 @@ moduleEnd
 		];
 
 		expect(() => {
-			compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 });
+			compile({ entries: { main: modules } }, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
@@ -112,7 +112,7 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 })).toThrow(
+		expect(() => compile({ entries: { main: modules } }, { startingMemoryWordAddress: 1 })).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
 		);
 	});

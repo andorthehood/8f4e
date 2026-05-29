@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module midiccout
 ; @public
 
@@ -9,4 +9,4 @@ int channel 1
 int* in
 
 moduleEnd
-groupEnd
+entryEnd

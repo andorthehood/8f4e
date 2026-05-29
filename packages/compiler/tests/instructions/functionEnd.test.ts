@@ -88,7 +88,7 @@ describe('functionEnd float64 return type', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.getDouble).toBeDefined();
 		expect(result.compiledFunctions!.getDouble.signature.returns).toEqual(['float64']);
@@ -107,7 +107,7 @@ describe('functionEnd float64 return type', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject a float64 stack item when float is the declared return type', () => {
@@ -123,6 +123,6 @@ describe('functionEnd float64 return type', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 });

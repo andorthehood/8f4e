@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module expLUT
 ; @public
 
@@ -518,4 +518,4 @@ float 0.9961
 float 0.9980
 
 moduleEnd
-groupEnd
+entryEnd

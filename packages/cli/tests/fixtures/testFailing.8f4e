@@ -1,6 +1,6 @@
 8f4e/v1
 
-group test
+entry test
 module addFails
 push 1
 push 2
@@ -8,4 +8,4 @@ add
 push 4
 call assert
 moduleEnd
-groupEnd
+entryEnd

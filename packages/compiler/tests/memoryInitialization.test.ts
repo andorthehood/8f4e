@@ -13,7 +13,7 @@ describe('memory initialization', () => {
 	test('initDefaults clears program memory once before loading passive data segments', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module test', 'int implicitZero', 'int explicitValue 5', 'int[] implicitArray 4', 'moduleEnd'],

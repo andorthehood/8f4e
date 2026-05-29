@@ -15,8 +15,8 @@ const assertFunction: Module = {
 	code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
 };
 
-async function instantiate(groups: Record<string, Module[]>, functions: Module[] = []) {
-	const result = compile({ groups, functions: [...functions, assertFunction] }, defaultOptions);
+async function instantiate(entries: Record<string, Module[]>, functions: Module[] = []) {
+	const result = compile({ entries, functions: [...functions, assertFunction] }, defaultOptions);
 	const assertCalls: Array<{ received: number; expected: number }> = [];
 	const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
@@ -40,7 +40,7 @@ async function instantiate(groups: Record<string, Module[]>, functions: Module[]
 	};
 }
 
-describe('execution groups and imported assert utility', () => {
+describe('execution entries and imported assert utility', () => {
 	test('executes test group modules from the test export', async () => {
 		const { exports, assertCalls, result } = await instantiate({
 			main: [
@@ -63,7 +63,7 @@ describe('execution groups and imported assert utility', () => {
 		exports.test();
 
 		expect(assertCalls).toEqual([{ received: 3, expected: 4 }]);
-		expect(result.compiledModules.addWorks.executionGroupName).toBe('test');
+		expect(result.compiledModules.addWorks.executionEntryName).toBe('test');
 	});
 
 	test('supports memory declarations and pointer arguments in test modules', async () => {

@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module sineLUT
 ; @public
 ; @tab 8
@@ -262,4 +262,4 @@ float	-0.0246
 float	-0.0000
 
 moduleEnd
-groupEnd
+entryEnd

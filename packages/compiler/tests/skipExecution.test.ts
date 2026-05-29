@@ -34,13 +34,13 @@ moduleEnd
 			},
 		];
 
-		const result = compile({ groups: { main: modules } }, {});
+		const result = compile({ entries: { main: modules } }, {});
 
 		// Verify both modules are compiled
 		expect(result.compiledModules.normalModule).toBeDefined();
 		expect(result.compiledModules.skippedModule).toBeDefined();
 
-		// Verify both modules have main groups
+		// Verify both modules have main entries
 		expect(result.compiledModules.normalModule.cycleFunction).toBeDefined();
 		expect(result.compiledModules.skippedModule.cycleFunction).toBeDefined();
 
@@ -77,7 +77,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile({ groups: { main: modules } }, {});
+		const result = compile({ entries: { main: modules } }, {});
 
 		expect(result.compiledModules.testModule).toBeDefined();
 		expect(result.compiledModules.testModule.skipExecutionInCycle).toBe(true);
@@ -96,7 +96,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile({ groups: { main: [] }, constants }, {});
+			compile({ entries: { main: [] }, constants }, {});
 		}).toThrow();
 	});
 
@@ -124,7 +124,7 @@ functionEnd
 		];
 
 		expect(() => {
-			compile({ groups: { main: modules }, functions: functions }, { startingMemoryWordAddress: 1 });
+			compile({ entries: { main: modules }, functions: functions }, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
@@ -147,7 +147,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile({ groups: { main: modules } }, {});
+		const result = compile({ entries: { main: modules } }, {});
 
 		// Both modules should have memory initialized with defaults
 		expect(result.compiledModules.normalModule.memoryMap.normalCounter.default).toBe(5);
@@ -173,7 +173,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 1 });
 
 		// Verify both modules are compiled with separate memory maps
 		expect(result.compiledModules.normalModule).toBeDefined();

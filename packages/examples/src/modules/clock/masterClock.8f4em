@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module clock
 ; @public
 
@@ -21,4 +21,4 @@ ifEnd int
 store
 
 moduleEnd
-groupEnd
+entryEnd

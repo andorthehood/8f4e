@@ -17,15 +17,15 @@ const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
 
 /**
- * Converts code blocks into compiler input groups plus shared functions, constants, and macros.
+ * Converts code blocks into compiler input entries plus shared functions, constants, and macros.
  *
  * @param codeBlocks - List of code blocks to filter and sort
- * @returns Compiler input with main-group modules sorted by grid position,
+ * @returns Compiler input with main-entry modules sorted by grid position,
  *          and constants/functions/macros sorted by creationIndex.
  *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
  */
 export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): CompileInput {
-	const moduleGroups: Record<string, CodeBlockGraphicData[]> = {};
+	const moduleEntries: Record<string, CodeBlockGraphicData[]> = {};
 	const constants: Module[] = [];
 	const functions: CodeBlockGraphicData[] = [];
 	const macros: CodeBlockGraphicData[] = [];
@@ -36,9 +36,9 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 
 	for (const block of sortedEnabled) {
 		if (block.blockType === moduleBlockType) {
-			const groupName = block.executionGroupName ?? 'main';
-			moduleGroups[groupName] ??= [];
-			moduleGroups[groupName].push(block);
+			const entryName = block.executionEntryName ?? 'main';
+			moduleEntries[entryName] ??= [];
+			moduleEntries[entryName].push(block);
 		} else if (block.blockType === constantsBlockType) {
 			constants.push({ code: block.code });
 		} else if (block.blockType === functionBlockType) {
@@ -48,12 +48,12 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 		}
 	}
 
-	const groups = Object.fromEntries(
-		Object.entries(moduleGroups).map(([groupName, modules]) => [groupName, sortCodeBlocksByGridPosition(modules)])
+	const entries = Object.fromEntries(
+		Object.entries(moduleEntries).map(([entryName, modules]) => [entryName, sortCodeBlocksByGridPosition(modules)])
 	);
-	groups.main ??= [];
+	entries.main ??= [];
 
-	return { groups, constants, functions, macros };
+	return { entries, constants, functions, macros };
 }
 
 export default function compiler(store: StateManager<State>) {
