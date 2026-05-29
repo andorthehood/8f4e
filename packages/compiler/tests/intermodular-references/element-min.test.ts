@@ -9,9 +9,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -29,9 +32,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -47,9 +53,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'float minValue min(sourceModule:data)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -65,9 +74,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -83,9 +95,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -101,9 +116,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -119,9 +137,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -137,9 +158,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module targetModule', 'int minValue min(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -157,9 +181,12 @@ describe('inter-module references - element min', () => {
 
 		// Should throw because multi-dot references are rejected
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -171,9 +198,12 @@ describe('inter-module references - element min', () => {
 
 		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -184,9 +214,12 @@ describe('inter-module references - element min', () => {
 		];
 
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -197,9 +230,12 @@ describe('inter-module references - element min', () => {
 		];
 
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -209,9 +245,12 @@ describe('inter-module references - element min', () => {
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const baseModule = result.compiledModules['baseModule'];
 		const dependentModule = result.compiledModules['dependentModule'];
@@ -233,9 +272,12 @@ describe('inter-module references - element min', () => {
 			},
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const moduleA = result.compiledModules['moduleA'];
 		const moduleB = result.compiledModules['moduleB'];
@@ -264,9 +306,12 @@ describe('inter-module references - element min', () => {
 			},
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];

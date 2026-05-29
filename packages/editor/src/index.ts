@@ -111,8 +111,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		callbacks: {
 			...options.callbacks,
 			compileCode: compileCode
-				? async (modules, compilerOptions, functions, macros) => {
-						const result = await compileCode(modules, compilerOptions, functions, macros);
+				? async (input, compilerOptions) => {
+						const result = await compileCode(input, compilerOptions);
 						currentCodeBuffer = new Uint8Array(result.codeBuffer);
 						pluginServices.invalidateWasmExports();
 						return result;

@@ -1,7 +1,7 @@
 import { Editor, type CompilationResult } from '@8f4e/editor';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 
-import type { CompileOptions, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
+import type { CompileInput, CompileOptions, CompilerDiagnostic } from '@8f4e/compiler-spec';
 
 // Create worker once at module scope
 // it will live for the entire application lifecycle
@@ -11,11 +11,9 @@ let memoryRef: WebAssembly.Memory | null = null;
 let codeBuffer: Uint8Array = new Uint8Array();
 
 export async function compileCode(
-	modules: Module[],
+	input: CompileInput,
 	compilerOptions: CompileOptions,
-	functions: Module[],
-	editor: Editor,
-	macros?: Module[]
+	editor: Editor
 ): Promise<CompilationResult> {
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
@@ -50,10 +48,8 @@ export async function compileCode(
 		compilerWorker.postMessage({
 			type: 'compile',
 			payload: {
-				modules,
+				input,
 				compilerOptions,
-				functions,
-				macros,
 			},
 		});
 	});

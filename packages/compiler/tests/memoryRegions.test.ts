@@ -32,22 +32,26 @@ async function instantiateWithRegions(result: ReturnType<typeof compile>, region
 describe('logical memory regions', () => {
 	test('allocates #region declarations in the configured memory and dereferences pointers through provenance', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module samples', '#region sampleMemory', 'int8[] values 4 11', 'moduleEnd'],
-				},
-				{
-					code: [
-						'module reader',
-						'int result',
-						'int8* ptr &samples:values',
-						'push &result',
-						'push *ptr',
-						'store',
-						'moduleEnd',
+			{
+				groups: {
+					main: [
+						{
+							code: ['module samples', '#region sampleMemory', 'int8[] values 4 11', 'moduleEnd'],
+						},
+						{
+							code: [
+								'module reader',
+								'int result',
+								'int8* ptr &samples:values',
+								'push &result',
+								'push *ptr',
+								'store',
+								'moduleEnd',
+							],
+						},
 					],
 				},
-			],
+			},
 			{ disableSharedMemory: true, memoryRegions: ['sampleMemory'] }
 		);
 		const { instance, defaultView, regionViews } = await instantiateWithRegions(result, ['sampleMemory']);
@@ -67,10 +71,14 @@ describe('logical memory regions', () => {
 
 	test('supports numeric #region indices and #region 0 default memory', () => {
 		const result = compile(
-			[
-				{ code: ['module defaulted', '#region 0', 'int value', 'moduleEnd'] },
-				{ code: ['module display', '#region 1', 'int pixel', 'moduleEnd'] },
-			],
+			{
+				groups: {
+					main: [
+						{ code: ['module defaulted', '#region 0', 'int value', 'moduleEnd'] },
+						{ code: ['module display', '#region 1', 'int pixel', 'moduleEnd'] },
+					],
+				},
+			},
 			{ disableSharedMemory: true, memoryRegions: ['displayMemory'] }
 		);
 
@@ -83,23 +91,27 @@ describe('logical memory regions', () => {
 
 	test('raw addresses still target default memory', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module samples', '#region sampleMemory', 'int source 99', 'moduleEnd'],
-				},
-				{
-					code: [
-						'module defaults',
-						'int source 42',
-						'int result',
-						'push &result',
-						'push 4',
-						'load',
-						'store',
-						'moduleEnd',
+			{
+				groups: {
+					main: [
+						{
+							code: ['module samples', '#region sampleMemory', 'int source 99', 'moduleEnd'],
+						},
+						{
+							code: [
+								'module defaults',
+								'int source 42',
+								'int result',
+								'push &result',
+								'push 4',
+								'load',
+								'store',
+								'moduleEnd',
+							],
+						},
 					],
 				},
-			],
+			},
 			{ disableSharedMemory: true, memoryRegions: ['sampleMemory'] }
 		);
 		const { instance, defaultView } = await instantiateWithRegions(result, ['sampleMemory']);
@@ -113,26 +125,30 @@ describe('logical memory regions', () => {
 
 	test('keeps compiler-generated internal resources in default memory', () => {
 		const result = compile(
-			[
-				{
-					code: [
-						'module signal',
-						'#region sampleMemory',
-						'int input',
-						'int output',
-						'push &output',
-						'push input',
-						'hasChanged',
-						'if',
-						'push 1',
-						'else',
-						'push 0',
-						'ifEnd int',
-						'store',
-						'moduleEnd',
+			{
+				groups: {
+					main: [
+						{
+							code: [
+								'module signal',
+								'#region sampleMemory',
+								'int input',
+								'int output',
+								'push &output',
+								'push input',
+								'hasChanged',
+								'if',
+								'push 1',
+								'else',
+								'push 0',
+								'ifEnd int',
+								'store',
+								'moduleEnd',
+							],
+						},
 					],
 				},
-			],
+			},
 			{ disableSharedMemory: true, memoryRegions: ['sampleMemory'] }
 		);
 
@@ -155,14 +171,25 @@ describe('logical memory regions', () => {
 
 	test('infers destination and source memories for cross-region memoryCopy', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module samples', '#region sampleMemory', 'int8[] values 4 1 2 3 4', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module samples', '#region sampleMemory', 'int8[] values 4 1 2 3 4', 'moduleEnd'],
+						},
+						{
+							code: [
+								'module defaults',
+								'int8[] copy 4',
+								'push &copy',
+								'push &samples:values',
+								'memoryCopy 4',
+								'moduleEnd',
+							],
+						},
+					],
 				},
-				{
-					code: ['module defaults', 'int8[] copy 4', 'push &copy', 'push &samples:values', 'memoryCopy 4', 'moduleEnd'],
-				},
-			],
+			},
 			{ disableSharedMemory: true, memoryRegions: ['sampleMemory'] }
 		);
 		const { instance, memory } = await instantiateWithRegions(result, ['sampleMemory']);
@@ -176,45 +203,63 @@ describe('logical memory regions', () => {
 
 	test('rejects invalid region configuration and directive references', () => {
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], {
-				disableSharedMemory: true,
-				memoryRegions: ['default'],
-			})
+			compile(
+				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{
+					disableSharedMemory: true,
+					memoryRegions: ['default'],
+				}
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.INVALID_MEMORY_REGION_NAME }));
 
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], {
-				disableSharedMemory: true,
-				memoryRegions: ['sampleMemory', 'sampleMemory'],
-			})
+			compile(
+				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{
+					disableSharedMemory: true,
+					memoryRegions: ['sampleMemory', 'sampleMemory'],
+				}
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.DUPLICATE_MEMORY_REGION_NAME }));
 
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], {
-				disableSharedMemory: true,
-				memoryRegions: ['memory'],
-			})
+			compile(
+				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{
+					disableSharedMemory: true,
+					memoryRegions: ['memory'],
+				}
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.INVALID_MEMORY_REGION_NAME }));
 
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], {
-				disableSharedMemory: true,
-				memoryRegions: ['1'],
-			})
+			compile(
+				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{
+					disableSharedMemory: true,
+					memoryRegions: ['1'],
+				}
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.INVALID_MEMORY_REGION_NAME }));
 
 		expect(() =>
-			compile([{ code: ['module test', '#region missingMemory', 'moduleEnd'] }], {
-				disableSharedMemory: true,
-				memoryRegions: ['sampleMemory'],
-			})
+			compile(
+				{ groups: { main: [{ code: ['module test', '#region missingMemory', 'moduleEnd'] }] } },
+				{
+					disableSharedMemory: true,
+					memoryRegions: ['sampleMemory'],
+				}
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.UNKNOWN_MEMORY_REGION }));
 
 		expect(() =>
-			compile([{ code: ['module test', '#region 2', 'moduleEnd'] }], {
-				disableSharedMemory: true,
-				memoryRegions: ['sampleMemory'],
-			})
+			compile(
+				{ groups: { main: [{ code: ['module test', '#region 2', 'moduleEnd'] }] } },
+				{
+					disableSharedMemory: true,
+					memoryRegions: ['sampleMemory'],
+				}
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS }));
 	});
 });

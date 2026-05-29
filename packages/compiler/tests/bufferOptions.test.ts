@@ -12,37 +12,46 @@ describe('buffer options integration tests', () => {
 
 	describe('bufferSize option', () => {
 		test('compiles successfully with default bufferSize (128)', () => {
-			const result = compile(modules, baseOptions);
+			const result = compile({ groups: { main: modules } }, baseOptions);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
 		});
 
 		test('compiles successfully with custom bufferSize', () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize: 64,
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 64,
+				}
+			);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
 		});
 
 		test('compiles successfully with large bufferSize', () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize: 512,
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 512,
+				}
+			);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
 		});
 
 		test('compiles successfully with small bufferSize', () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize: 1,
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 1,
+				}
+			);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
@@ -51,27 +60,33 @@ describe('buffer options integration tests', () => {
 
 	describe('bufferStrategy option', () => {
 		test('compiles successfully with default strategy (loop)', () => {
-			const result = compile(modules, baseOptions);
+			const result = compile({ groups: { main: modules } }, baseOptions);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
 		});
 
 		test('compiles successfully with explicit loop strategy', () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferStrategy: 'loop',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferStrategy: 'loop',
+				}
+			);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
 		});
 
 		test('compiles successfully with unrolled strategy', () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferStrategy: 'unrolled',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferStrategy: 'unrolled',
+				}
+			);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
@@ -80,22 +95,28 @@ describe('buffer options integration tests', () => {
 
 	describe('bufferSize and bufferStrategy combination', () => {
 		test('compiles with loop strategy and custom bufferSize', () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize: 256,
-				bufferStrategy: 'loop',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 256,
+					bufferStrategy: 'loop',
+				}
+			);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
 		});
 
 		test('compiles with unrolled strategy and custom bufferSize', () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize: 16,
-				bufferStrategy: 'unrolled',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 16,
+					bufferStrategy: 'unrolled',
+				}
+			);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
@@ -104,17 +125,23 @@ describe('buffer options integration tests', () => {
 
 	describe('bytecode size comparison', () => {
 		test('loop strategy produces smaller bytecode than unrolled for same bufferSize', () => {
-			const loopResult = compile(modules, {
-				...baseOptions,
-				bufferSize: 128,
-				bufferStrategy: 'loop',
-			});
+			const loopResult = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 128,
+					bufferStrategy: 'loop',
+				}
+			);
 
-			const unrolledResult = compile(modules, {
-				...baseOptions,
-				bufferSize: 128,
-				bufferStrategy: 'unrolled',
-			});
+			const unrolledResult = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 128,
+					bufferStrategy: 'unrolled',
+				}
+			);
 
 			// Loop strategy should produce significantly smaller bytecode
 			expect(loopResult.codeBuffer.length).toBeLessThan(unrolledResult.codeBuffer.length);
@@ -125,17 +152,23 @@ describe('buffer options integration tests', () => {
 		});
 
 		test('larger bufferSize with unrolled strategy increases bytecode size linearly', () => {
-			const small = compile(modules, {
-				...baseOptions,
-				bufferSize: 4,
-				bufferStrategy: 'unrolled',
-			});
+			const small = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 4,
+					bufferStrategy: 'unrolled',
+				}
+			);
 
-			const large = compile(modules, {
-				...baseOptions,
-				bufferSize: 8,
-				bufferStrategy: 'unrolled',
-			});
+			const large = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 8,
+					bufferStrategy: 'unrolled',
+				}
+			);
 
 			// Doubling buffer size should roughly double the size increase
 			const smallSize = small.codeBuffer.length;
@@ -148,17 +181,23 @@ describe('buffer options integration tests', () => {
 		});
 
 		test('larger bufferSize with loop strategy has minimal impact on bytecode size', () => {
-			const small = compile(modules, {
-				...baseOptions,
-				bufferSize: 128,
-				bufferStrategy: 'loop',
-			});
+			const small = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 128,
+					bufferStrategy: 'loop',
+				}
+			);
 
-			const large = compile(modules, {
-				...baseOptions,
-				bufferSize: 512,
-				bufferStrategy: 'loop',
-			});
+			const large = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 512,
+					bufferStrategy: 'loop',
+				}
+			);
 
 			// Loop strategy size should not increase much with larger buffer size
 			// The difference should just be in encoding the constant (LEB128)
@@ -169,11 +208,14 @@ describe('buffer options integration tests', () => {
 
 	describe('buffer function execution', () => {
 		test('buffer function can be instantiated and exports are available', async () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize: 16,
-				bufferStrategy: 'loop',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 16,
+					bufferStrategy: 'loop',
+				}
+			);
 
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const instance = await WebAssembly.instantiate(result.codeBuffer, {
@@ -192,11 +234,14 @@ describe('buffer options integration tests', () => {
 		});
 
 		test('buffer function with unrolled strategy can be instantiated', async () => {
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize: 16,
-				bufferStrategy: 'unrolled',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize: 16,
+					bufferStrategy: 'unrolled',
+				}
+			);
 
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const instance = await WebAssembly.instantiate(result.codeBuffer, {
@@ -211,11 +256,14 @@ describe('buffer options integration tests', () => {
 
 		test('buffer function executes cycle function the expected number of times (loop strategy)', async () => {
 			const bufferSize = 10;
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize,
-				bufferStrategy: 'loop',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize,
+					bufferStrategy: 'loop',
+				}
+			);
 
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const dataView = new DataView(memoryRef.buffer);
@@ -248,11 +296,14 @@ describe('buffer options integration tests', () => {
 
 		test('buffer function executes cycle function the expected number of times (unrolled strategy)', async () => {
 			const bufferSize = 10;
-			const result = compile(modules, {
-				...baseOptions,
-				bufferSize,
-				bufferStrategy: 'unrolled',
-			});
+			const result = compile(
+				{ groups: { main: modules } },
+				{
+					...baseOptions,
+					bufferSize,
+					bufferStrategy: 'unrolled',
+				}
+			);
 
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const dataView = new DataView(memoryRef.buffer);
@@ -287,11 +338,14 @@ describe('buffer options integration tests', () => {
 			const sizes = [1, 5, 32, 128];
 
 			for (const bufferSize of sizes) {
-				const result = compile(modules, {
-					...baseOptions,
-					bufferSize,
-					bufferStrategy: 'loop',
-				});
+				const result = compile(
+					{ groups: { main: modules } },
+					{
+						...baseOptions,
+						bufferSize,
+						bufferStrategy: 'loop',
+					}
+				);
 
 				const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 				const dataView = new DataView(memoryRef.buffer);

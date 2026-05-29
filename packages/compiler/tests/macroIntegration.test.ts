@@ -49,7 +49,7 @@ describe('Macro expansion integration', () => {
 		];
 
 		// Should not throw
-		const result = compile(modules, options, functions, macros);
+		const result = compile({ groups: { main: modules }, functions: functions, macros: macros }, options);
 
 		expect(result).toBeDefined();
 		expect(result.compiledFunctions).toBeDefined();
@@ -69,7 +69,9 @@ describe('Macro expansion integration', () => {
 			},
 		];
 
-		expect(() => compile(modules, options, functions, [])).toThrow(/Undefined macro/);
+		expect(() => compile({ groups: { main: modules }, functions: functions, macros: [] }, options)).toThrow(
+			/Undefined macro/
+		);
 	});
 
 	test('should compile modules with macro expansion', () => {
@@ -86,7 +88,7 @@ describe('Macro expansion integration', () => {
 		];
 
 		// Should not throw
-		const result = compile(modules, options, undefined, macros);
+		const result = compile({ groups: { main: modules }, macros: macros }, options);
 
 		expect(result).toBeDefined();
 		expect(result.compiledModules).toBeDefined();
@@ -100,7 +102,7 @@ describe('Macro expansion integration', () => {
 			},
 		];
 
-		expect(() => compile(modules, options, undefined, [])).toThrow(/Undefined macro/);
+		expect(() => compile({ groups: { main: modules }, macros: [] }, options)).toThrow(/Undefined macro/);
 	});
 
 	test('should compile without macros (backward compatibility)', () => {
@@ -128,7 +130,7 @@ describe('Macro expansion integration', () => {
 		];
 
 		// Should not throw when no macros provided
-		const result = compile(modules, options, functions);
+		const result = compile({ groups: { main: modules }, functions: functions }, options);
 
 		expect(result).toBeDefined();
 		expect(result.compiledModules).toBeDefined();
@@ -179,10 +181,10 @@ describe('Macro expansion integration', () => {
 			},
 		];
 
-		const inlineResult = compile(inlineModules, options);
+		const inlineResult = compile({ groups: { main: inlineModules } }, options);
 		await expect(instantiate(inlineResult.codeBuffer)).resolves.toBeDefined();
 
-		const macroResult = compile(macroModules, options, undefined, macros);
+		const macroResult = compile({ groups: { main: macroModules }, macros: macros }, options);
 		await expect(instantiate(macroResult.codeBuffer)).resolves.toBeDefined();
 	});
 });

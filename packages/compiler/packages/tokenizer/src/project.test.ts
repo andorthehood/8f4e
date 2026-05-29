@@ -63,7 +63,8 @@ describe('project block classification', () => {
 		];
 
 		expect(pickProjectCompilerBlocks(blocks)).toEqual({
-			moduleBlocks: [{ code: validModuleBlock }],
+			groups: { main: [{ code: validModuleBlock }] },
+			constantsBlocks: [],
 			functionBlocks: [{ code: validFunctionBlock }],
 			macroBlocks: [{ code: validMacroBlock }],
 		});

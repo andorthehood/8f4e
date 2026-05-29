@@ -109,31 +109,35 @@ describe('call instruction (float64)', () => {
 		// Use direct DataView float64 access here instead of moduleTesterWithFunctions:
 		// its shared test memory helpers currently coerce non-integer values through float32.
 		const result = compile(
-			[
-				{
-					code: [
-						'module test',
-						'float64 input',
-						'float64 output',
-						'loop',
-						'  push &output',
-						'  push input',
-						'  call axion',
-						'  store',
-						'loopEnd',
-						'moduleEnd',
+			{
+				groups: {
+					main: [
+						{
+							code: [
+								'module test',
+								'float64 input',
+								'float64 output',
+								'loop',
+								'  push &output',
+								'  push input',
+								'  call axion',
+								'  store',
+								'loopEnd',
+								'moduleEnd',
+							],
+						},
 					],
 				},
-			],
+				functions: [
+					{
+						code: ['function axion', 'param float64 x', 'push x', 'functionEnd float64'],
+					},
+				],
+			},
 			{
 				startingMemoryWordAddress: 0,
 				disableSharedMemory: true,
-			},
-			[
-				{
-					code: ['function axion', 'param float64 x', 'push x', 'functionEnd float64'],
-				},
-			]
+			}
 		);
 
 		const module = result.compiledModules[Object.keys(result.compiledModules)[0]];

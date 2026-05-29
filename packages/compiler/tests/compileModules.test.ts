@@ -25,9 +25,12 @@ describe('compiler', () => {
 	});
 
 	test('compile function excludes AST by default', () => {
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		// Verify that none of the compiled modules have an ast property
 		for (const [, module] of Object.entries(result.compiledModules)) {
@@ -37,11 +40,13 @@ describe('compiler', () => {
 
 	test('compile function excludes stack analysis by default', () => {
 		const result = compile(
-			[{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }],
+			{
+				groups: { main: [{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }] },
+				functions: [{ code: ['function noop', 'functionEnd'] }],
+			},
 			{
 				startingMemoryWordAddress: 0,
-			},
-			[{ code: ['function noop', 'functionEnd'] }]
+			}
 		);
 
 		expect(result.compiledModules.test.stackAnalysis).toBeUndefined();
@@ -49,10 +54,13 @@ describe('compiler', () => {
 	});
 
 	test('compile function includes AST when includeAST is true', () => {
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-			includeAST: true,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+				includeAST: true,
+			}
+		);
 
 		// Verify that all compiled modules have an ast property
 		for (const [, module] of Object.entries(result.compiledModules)) {
@@ -61,11 +69,28 @@ describe('compiler', () => {
 		}
 	});
 
+	test('compile function accepts executable modules grouped by name', () => {
+		const result = compile(
+			{
+				groups: {
+					main: [{ code: ['module first', 'int value', 'moduleEnd'] }],
+					aux: [{ code: ['module second', 'int value', 'moduleEnd'] }],
+				},
+			},
+			{ startingMemoryWordAddress: 0 }
+		);
+
+		expect(Object.keys(result.compiledModules)).toEqual(['first', 'second']);
+	});
+
 	test('compile function includes module stack analysis when includeStackAnalysis is true', () => {
-		const result = compile([{ code: ['module test', 'int output', 'push &output', 'push 1', 'store', 'moduleEnd'] }], {
-			startingMemoryWordAddress: 0,
-			includeStackAnalysis: true,
-		});
+		const result = compile(
+			{ groups: { main: [{ code: ['module test', 'int output', 'push &output', 'push 1', 'store', 'moduleEnd'] }] } },
+			{
+				startingMemoryWordAddress: 0,
+				includeStackAnalysis: true,
+			}
+		);
 
 		expect(result.compiledModules.test.ast).toBeUndefined();
 		expect(result.compiledModules.test.stackAnalysis?.map(line => line.instruction)).toEqual(['push', 'push', 'store']);
@@ -87,12 +112,16 @@ describe('compiler', () => {
 
 	test('compile function includes function stack analysis when includeStackAnalysis is true', () => {
 		const result = compile(
-			[{ code: ['module test', 'moduleEnd'] }],
+			{
+				groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+				functions: [
+					{ code: ['function double', 'param int value', 'push value', 'push value', 'add', 'functionEnd int'] },
+				],
+			},
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: true,
-			},
-			[{ code: ['function double', 'param int value', 'push value', 'push value', 'add', 'functionEnd int'] }]
+			}
 		);
 
 		expect(result.compiledFunctions!.double.stackAnalysis?.map(line => line.instruction)).toEqual([
@@ -116,11 +145,14 @@ describe('compiler', () => {
 	});
 
 	test('includeAST and includeStackAnalysis can be enabled together', () => {
-		const result = compile([{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }], {
-			startingMemoryWordAddress: 0,
-			includeAST: true,
-			includeStackAnalysis: true,
-		});
+		const result = compile(
+			{ groups: { main: [{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }] } },
+			{
+				startingMemoryWordAddress: 0,
+				includeAST: true,
+				includeStackAnalysis: true,
+			}
+		);
 
 		expect(result.compiledModules.test.ast).toBeDefined();
 		expect(result.compiledModules.test.stackAnalysis?.map(line => line.instruction)).toEqual(['push', 'drop']);
@@ -128,9 +160,19 @@ describe('compiler', () => {
 
 	test('rejects duplicate module ids', () => {
 		expect(() =>
-			compile([{ code: ['module same', 'int a 1', 'moduleEnd'] }, { code: ['module same', 'int b 2', 'moduleEnd'] }], {
-				startingMemoryWordAddress: 0,
-			})
+			compile(
+				{
+					groups: {
+						main: [
+							{ code: ['module same', 'int a 1', 'moduleEnd'] },
+							{ code: ['module same', 'int b 2', 'moduleEnd'] },
+						],
+					},
+				},
+				{
+					startingMemoryWordAddress: 0,
+				}
+			)
 		).toThrow(`${ErrorCode.DUPLICATE_IDENTIFIER}`);
 	});
 });
