@@ -15,7 +15,7 @@ const runtimeRegistry = {
 	WebWorkerRuntime: {
 		id: 'WebWorkerRuntime',
 		editorConfigSchema: {
-			root: 'mainRuntime',
+			root: 'workerRuntime',
 			defaults: { sampleRate: 60 },
 			schema: { type: 'object', properties: { sampleRate: { type: 'number', minimum: 1 } } },
 		},

@@ -21,7 +21,7 @@ moduleEnd
 module projectConfig
 ; @pos -114 36
 ; @config runtime WebWorkerRuntime
-; @config mainRuntime.sampleRate 50
+; @config workerRuntime.sampleRate 50
 
 moduleEnd
 entryEnd

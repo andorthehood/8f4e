@@ -7,7 +7,7 @@ const ericSaiteGenerator: Project = {
 				'config',
 				'; @pos -241 -15',
 				'; @config runtime WebWorkerMIDIRuntime',
-				'; @config mainRuntime.sampleRate 50',
+				'; @config workerRuntime.sampleRate 50',
 				'',
 				'',
 				'configEnd',

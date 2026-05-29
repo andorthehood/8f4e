@@ -4,7 +4,7 @@ entry main
 module projectConfig
 ; @pos -14 8
 ; @config runtime WebWorkerRuntime
-; @config mainRuntime.sampleRate 1
+; @config workerRuntime.sampleRate 1
 
 moduleEnd
 module counter

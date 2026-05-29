@@ -245,7 +245,7 @@ export function createMockEventDispatcher(): EventDispatcher {
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const mockRuntimeFactory = () => () => {};
-	const mainRuntimeDefaults = { sampleRate: 50 } as const;
+	const workerRuntimeDefaults = { sampleRate: 50 } as const;
 
 	const defaults: State = {
 		compiler: {
@@ -259,8 +259,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			WebWorkerRuntime: {
 				id: 'WebWorkerRuntime',
 				editorConfigSchema: {
-					root: 'mainRuntime',
-					defaults: mainRuntimeDefaults,
+					root: 'workerRuntime',
+					defaults: workerRuntimeDefaults,
 					schema: { type: 'object', properties: {} },
 				},
 				factory: mockRuntimeFactory,

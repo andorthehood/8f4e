@@ -12,7 +12,7 @@ import type {
 } from '@8f4e/editor';
 
 const WEB_WORKER_EDITOR_CONFIG: EditorConfigSchemaContribution = {
-	root: 'mainRuntime',
+	root: 'workerRuntime',
 	defaults: {
 		sampleRate: 50,
 	},
@@ -85,11 +85,11 @@ export function webWorkerRuntimeFactory(
 	syncCodeAndSettingsWithRuntime();
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
-	store.subscribe('editorConfig.mainRuntime', syncCodeAndSettingsWithRuntime);
+	store.subscribe('editorConfig.workerRuntime', syncCodeAndSettingsWithRuntime);
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		store.unsubscribe('editorConfig.mainRuntime', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('editorConfig.workerRuntime', syncCodeAndSettingsWithRuntime);
 		if (worker) {
 			worker.removeEventListener('message', onWorkerMessage);
 			worker.terminate();
