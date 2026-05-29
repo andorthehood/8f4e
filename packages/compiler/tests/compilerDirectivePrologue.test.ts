@@ -20,14 +20,7 @@ describe('compiler directive prologue validation', () => {
 					groups: {
 						main: [
 							{
-								code: [
-									'module metadataOnly',
-									'#skipExecution',
-									'#initOnly',
-									'#loopCap 64',
-									'int counter 0',
-									'moduleEnd',
-								],
+								code: ['module metadataOnly', '#skipExecution', '#loopCap 64', 'int counter 0', 'moduleEnd'],
 							},
 						],
 					},
