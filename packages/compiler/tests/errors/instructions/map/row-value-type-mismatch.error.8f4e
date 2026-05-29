@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module mapRowValueTypeMismatch
+; map row values should match the map output type.
+int x
+push x
+mapBegin int
+map 1 1.5
+mapEnd int
+moduleEnd
+entryEnd

@@ -1,0 +1,11 @@
+8f4e/v1
+
+entry main
+module functionEndMismatchHost
+moduleEnd
+entryEnd
+
+function functionEndFloat64ReturnedAsFloat
+; functionEnd float should reject a float64 stack value.
+push 3.14f64
+functionEnd float
