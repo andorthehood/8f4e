@@ -3,7 +3,7 @@ title: 'TODO: Rename layout word fields to allocation-unit terminology'
 priority: Medium
 effort: 4-8h
 created: 2026-05-26
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/712
 status: Open
 completed: null
 ---

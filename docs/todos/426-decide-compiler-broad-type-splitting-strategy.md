@@ -3,7 +3,7 @@ title: 'TODO: Decide compiler broad type splitting strategy'
 priority: Medium
 effort: 2-4h
 created: 2026-05-26
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/714
 status: Open
 completed: null
 ---

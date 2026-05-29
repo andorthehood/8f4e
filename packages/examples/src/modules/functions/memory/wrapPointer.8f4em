@@ -1,0 +1,26 @@
+8f4e/v1
+
+function wrapPointer
+; Bidirectionally wraps
+; a byte address into a
+; circular buffer
+
+param float* pointer
+param float* buffer
+param int length
+
+push buffer
+push pointer
+push buffer
+sub
+push length
+ensureNonZero
+remainder
+push length
+add
+push length
+ensureNonZero
+remainder
+add
+
+functionEnd float*
