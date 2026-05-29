@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module projectConfig
 ; @pos -67 16
 ; @config runtime WebWorkerRuntime
@@ -7,17 +8,6 @@ module projectConfig
 ; @config export.fileName bistableMultivibrators
 
 moduleEnd
-
-constants env
-; @pos -30 16
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 50
-
-constantsEnd
-
 module notes
 ; @pos 45 5
 ; Demonstrates a bistable SR latch
@@ -27,7 +17,6 @@ module notes
 ; visualize both latch state and
 ; derived gate output over time.
 moduleEnd
-
 module setButton
 ; @pos 45 16
 ; @home
@@ -38,7 +27,6 @@ int out
 ; @button out 0 1 ; of the SR latch -->
 
 moduleEnd
-
 module resetButton
 ; @pos 45 27
 
@@ -48,7 +36,6 @@ int out
 ; @button out 0 1 ; of the SR latch -->
 
 moduleEnd
-
 module norGate2
 ; @pos 95 8
 
@@ -73,7 +60,6 @@ ifEnd int
 store
 
 moduleEnd
-
 module norGate
 ; @pos 95 34
 
@@ -98,7 +84,6 @@ ifEnd int
 store
 
 moduleEnd
-
 module scope
 ; @pos 150 21
 
@@ -128,7 +113,6 @@ push *in
 store
 
 moduleEnd
-
 module buttons
 ; @pos 193 17
 
@@ -144,7 +128,6 @@ int reset
 ; @button reset 0 1 ; to reset   --->
 
 moduleEnd
-
 module negate
 ; @pos 207 33
 
@@ -163,7 +146,6 @@ ifEnd int
 store
 
 moduleEnd
-
 module orGate
 ; @pos 243 6
 
@@ -187,7 +169,6 @@ ifEnd int
 store
 
 moduleEnd
-
 module andGate
 ; @pos 244 32
 
@@ -211,7 +192,6 @@ ifEnd int
 store
 
 moduleEnd
-
 module scope2
 ; @pos 292 17
 
@@ -241,3 +221,14 @@ push *in
 store
 
 moduleEnd
+groupEnd
+
+constants env
+; @pos -30 16
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 50
+
+constantsEnd

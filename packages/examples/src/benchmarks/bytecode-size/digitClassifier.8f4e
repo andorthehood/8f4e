@@ -27,8 +27,8 @@ note
 ; This project runs a feedforward neural network
 ; in inference mode to classify hand-drawn digits.
 
-; A 3x5 binary drawinggrid is mapped into 15 inputs, 
-; then processed through sigmoid-based layers 
+; A 3x5 binary drawinggrid is mapped into 15 inputs,
+; then processed through sigmoid-based layers
 ; where each neuron has a fan-in of 4.
 
 ; Instead of tensor-style layer operations,
@@ -50,7 +50,7 @@ note
 ;            :::::::;;;;.
 ;            :::::::;;:'
 ;                   ;'
-;              
+;
 noteEnd
 
 note
@@ -67,9 +67,10 @@ note
 ;                   :'
 noteEnd
 
+group main
 module grid
 ; @pos -274 11
-; @home 
+; @home
 ; @config color.text.binaryOne #f00
 ; @config color.text.basePrefix #333
 ; @config color.text.binaryZero #666
@@ -81,7 +82,6 @@ int row3 0b101
 int row4 0b111
 
 moduleEnd
-
 module outputs
 ; @pos -274 28
 
@@ -97,7 +97,7 @@ module outputs
 ; @w *confidence8
 ; @w *confidence9
 
-; Routing the values of the output 
+; Routing the values of the output
 ; neurons here into this module
 float64* confidence0 &neuron108:out
 float64* confidence1 &neuron109:out
@@ -111,7 +111,6 @@ float64* confidence8 &neuron116:out
 float64* confidence9 &neuron117:out
 
 moduleEnd
-
 module mask00
 ; @pos -223 -1
 ; @group mask
@@ -126,7 +125,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask10
 ; @pos -223 16
 ; @group mask
@@ -141,7 +139,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask20
 ; @pos -223 33
 ; @group mask
@@ -156,7 +153,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask30
 ; @pos -223 50
 ; @group mask
@@ -171,7 +167,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask40
 ; @pos -223 67
 ; @group mask
@@ -186,7 +181,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module notes1
 ; @pos -185 -13
 
@@ -196,7 +190,6 @@ module notes1
 ; layer
 
 moduleEnd
-
 module mask01
 ; @pos -185 -1
 ; @group mask
@@ -213,7 +206,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask11
 ; @pos -185 16
 ; @group mask
@@ -230,7 +222,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask21
 ; @pos -185 33
 ; @group mask
@@ -247,7 +238,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask31
 ; @pos -185 50
 ; @group mask
@@ -264,7 +254,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask41
 ; @pos -185 67
 ; @group mask
@@ -281,7 +270,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask02
 ; @pos -147 -1
 ; @group mask
@@ -296,7 +284,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask12
 ; @pos -147 16
 ; @group mask
@@ -311,7 +298,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask22
 ; @pos -147 33
 ; @group mask
@@ -326,7 +312,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask32
 ; @pos -147 50
 ; @group mask
@@ -341,7 +326,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module mask42
 ; @pos -147 67
 ; @group mask
@@ -356,7 +340,6 @@ castToFloat64
 store
 
 moduleEnd
-
 module inputs
 ; @pos -86 28
 ; @group inputLayer
@@ -378,7 +361,6 @@ float64 input13
 float64 input14
 
 moduleEnd
-
 module neuron20
 ; @pos 0 -81
 ; @group hiddenLayer1
@@ -417,7 +399,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron19
 ; @pos 0 -41
 ; @group hiddenLayer1
@@ -456,7 +437,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron18
 ; @pos 0 -1
 ; @group hiddenLayer1
@@ -495,17 +475,6 @@ call	sigmoid
 store
 
 moduleEnd
-
-constants env
-; @pos 0 0
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 50
-
-constantsEnd
-
 module neuron17
 ; @pos 0 39
 ; @group hiddenLayer1
@@ -544,7 +513,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron16
 ; @pos 0 79
 ; @group hiddenLayer1
@@ -583,7 +551,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron15
 ; @pos 0 119
 ; @group hiddenLayer1
@@ -622,7 +589,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron26
 ; @pos 40 -81
 ; @group hiddenLayer1
@@ -661,7 +627,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron25
 ; @pos 40 -41
 ; @group hiddenLayer1
@@ -700,7 +665,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron24
 ; @pos 40 -1
 ; @group hiddenLayer1
@@ -739,7 +703,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron23
 ; @pos 40 39
 ; @group hiddenLayer1
@@ -778,7 +741,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron22
 ; @pos 40 79
 ; @group hiddenLayer1
@@ -817,7 +779,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron21
 ; @pos 40 119
 ; @group hiddenLayer1
@@ -856,7 +817,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron32
 ; @pos 82 -81
 ; @group hiddenLayer1
@@ -895,7 +855,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron31
 ; @pos 82 -41
 ; @group hiddenLayer1
@@ -934,7 +893,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron30
 ; @pos 82 -1
 ; @group hiddenLayer1
@@ -973,7 +931,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron29
 ; @pos 82 39
 ; @group hiddenLayer1
@@ -1012,7 +969,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron28
 ; @pos 82 79
 ; @group hiddenLayer1
@@ -1051,7 +1007,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron27
 ; @pos 82 119
 ; @group hiddenLayer1
@@ -1090,7 +1045,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron38
 ; @pos 123 -81
 ; @group hiddenLayer1
@@ -1129,7 +1083,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron37
 ; @pos 123 -41
 ; @group hiddenLayer1
@@ -1168,7 +1121,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron36
 ; @pos 123 -1
 ; @group hiddenLayer1
@@ -1207,7 +1159,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron35
 ; @pos 123 39
 ; @group hiddenLayer1
@@ -1246,7 +1197,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron34
 ; @pos 123 79
 ; @group hiddenLayer1
@@ -1285,7 +1235,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron33
 ; @pos 123 119
 ; @group hiddenLayer1
@@ -1324,7 +1273,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron44
 ; @pos 165 -81
 ; @group hiddenLayer1
@@ -1363,7 +1311,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron43
 ; @pos 165 -41
 ; @group hiddenLayer1
@@ -1402,7 +1349,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron42
 ; @pos 165 -1
 ; @group hiddenLayer1
@@ -1441,7 +1387,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron41
 ; @pos 165 39
 ; @group hiddenLayer1
@@ -1480,7 +1425,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron40
 ; @pos 165 79
 ; @group hiddenLayer1
@@ -1519,7 +1463,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron39
 ; @pos 165 119
 ; @group hiddenLayer1
@@ -1558,7 +1501,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron50
 ; @pos 208 -81
 ; @group hiddenLayer1
@@ -1597,7 +1539,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron49
 ; @pos 208 -41
 ; @group hiddenLayer1
@@ -1636,7 +1577,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron48
 ; @pos 208 -1
 ; @group hiddenLayer1
@@ -1675,7 +1615,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron47
 ; @pos 208 39
 ; @group hiddenLayer1
@@ -1714,7 +1653,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron46
 ; @pos 208 79
 ; @group hiddenLayer1
@@ -1753,7 +1691,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron45
 ; @pos 208 119
 ; @group hiddenLayer1
@@ -1792,7 +1729,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron56
 ; @pos 280 -81
 ; @group hiddenLayer2
@@ -1831,7 +1767,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron55
 ; @pos 280 -41
 ; @group hiddenLayer2
@@ -1870,7 +1805,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron54
 ; @pos 280 -1
 ; @group hiddenLayer2
@@ -1909,7 +1843,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron53
 ; @pos 280 39
 ; @group hiddenLayer2
@@ -1948,7 +1881,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron52
 ; @pos 280 79
 ; @group hiddenLayer2
@@ -1987,7 +1919,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron51
 ; @pos 280 119
 ; @group hiddenLayer2
@@ -2026,7 +1957,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron62
 ; @pos 322 -81
 ; @group hiddenLayer2
@@ -2065,7 +1995,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron61
 ; @pos 322 -41
 ; @group hiddenLayer2
@@ -2104,7 +2033,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron60
 ; @pos 322 -1
 ; @group hiddenLayer2
@@ -2143,7 +2071,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron59
 ; @pos 322 39
 ; @group hiddenLayer2
@@ -2182,7 +2109,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron58
 ; @pos 322 79
 ; @group hiddenLayer2
@@ -2221,7 +2147,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron57
 ; @pos 322 119
 ; @group hiddenLayer2
@@ -2260,7 +2185,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron68
 ; @pos 363 -81
 ; @group hiddenLayer2
@@ -2299,7 +2223,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron67
 ; @pos 363 -41
 ; @group hiddenLayer2
@@ -2338,7 +2261,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron66
 ; @pos 363 -1
 ; @group hiddenLayer2
@@ -2377,7 +2299,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron65
 ; @pos 363 39
 ; @group hiddenLayer2
@@ -2416,7 +2337,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron64
 ; @pos 363 79
 ; @group hiddenLayer2
@@ -2455,7 +2375,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron63
 ; @pos 363 119
 ; @group hiddenLayer2
@@ -2494,7 +2413,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron74
 ; @pos 404 -81
 ; @group hiddenLayer2
@@ -2533,7 +2451,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron73
 ; @pos 404 -41
 ; @group hiddenLayer2
@@ -2572,7 +2489,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron72
 ; @pos 404 -1
 ; @group hiddenLayer2
@@ -2611,7 +2527,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron71
 ; @pos 404 39
 ; @group hiddenLayer2
@@ -2650,7 +2565,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron70
 ; @pos 404 79
 ; @group hiddenLayer2
@@ -2689,7 +2603,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron69
 ; @pos 404 119
 ; @group hiddenLayer2
@@ -2728,7 +2641,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron80
 ; @pos 446 -81
 ; @group hiddenLayer2
@@ -2767,7 +2679,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron79
 ; @pos 446 -41
 ; @group hiddenLayer2
@@ -2806,7 +2717,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron78
 ; @pos 446 -1
 ; @group hiddenLayer2
@@ -2845,7 +2755,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron77
 ; @pos 446 39
 ; @group hiddenLayer2
@@ -2884,7 +2793,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron76
 ; @pos 446 79
 ; @group hiddenLayer2
@@ -2923,7 +2831,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron75
 ; @pos 446 119
 ; @group hiddenLayer2
@@ -2962,7 +2869,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron81
 ; @pos 488 19
 ; @group hiddenLayer2
@@ -3001,7 +2907,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron87
 ; @pos 560 -81
 ; @group hiddenLayer3
@@ -3040,7 +2945,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron86
 ; @pos 560 -41
 ; @group hiddenLayer3
@@ -3079,7 +2983,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron85
 ; @pos 560 -1
 ; @group hiddenLayer3
@@ -3118,7 +3021,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron84
 ; @pos 560 39
 ; @group hiddenLayer3
@@ -3157,7 +3059,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron83
 ; @pos 560 79
 ; @group hiddenLayer3
@@ -3196,7 +3097,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron82
 ; @pos 560 119
 ; @group hiddenLayer3
@@ -3235,7 +3135,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron93
 ; @pos 602 -81
 ; @group hiddenLayer3
@@ -3274,7 +3173,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron92
 ; @pos 602 -41
 ; @group hiddenLayer3
@@ -3313,7 +3211,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron91
 ; @pos 602 -1
 ; @group hiddenLayer3
@@ -3352,7 +3249,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron90
 ; @pos 602 39
 ; @group hiddenLayer3
@@ -3391,7 +3287,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron89
 ; @pos 602 79
 ; @group hiddenLayer3
@@ -3430,7 +3325,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron88
 ; @pos 602 119
 ; @group hiddenLayer3
@@ -3469,7 +3363,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron99
 ; @pos 645 -81
 ; @group hiddenLayer3
@@ -3508,7 +3401,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron98
 ; @pos 645 -41
 ; @group hiddenLayer3
@@ -3547,7 +3439,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron97
 ; @pos 645 -1
 ; @group hiddenLayer3
@@ -3586,7 +3477,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron96
 ; @pos 645 39
 ; @group hiddenLayer3
@@ -3625,7 +3515,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron95
 ; @pos 645 79
 ; @group hiddenLayer3
@@ -3664,7 +3553,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron94
 ; @pos 645 119
 ; @group hiddenLayer3
@@ -3703,7 +3591,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron105
 ; @pos 687 -81
 ; @group hiddenLayer3
@@ -3742,7 +3629,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron104
 ; @pos 687 -41
 ; @group hiddenLayer3
@@ -3781,7 +3667,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron103
 ; @pos 687 -1
 ; @group hiddenLayer3
@@ -3820,7 +3705,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron102
 ; @pos 687 39
 ; @group hiddenLayer3
@@ -3859,7 +3743,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron101
 ; @pos 687 79
 ; @group hiddenLayer3
@@ -3898,7 +3781,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron100
 ; @pos 687 119
 ; @group hiddenLayer3
@@ -3937,7 +3819,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron107
 ; @pos 729 -1
 ; @group hiddenLayer3
@@ -3976,7 +3857,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron106
 ; @pos 729 39
 ; @group hiddenLayer3
@@ -4015,7 +3895,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron113
 ; @pos 800 -81
 ; @group outputLayer
@@ -4054,7 +3933,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron112
 ; @pos 800 -41
 ; @group outputLayer
@@ -4093,7 +3971,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron111
 ; @pos 800 -1
 ; @group outputLayer
@@ -4132,7 +4009,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron110
 ; @pos 800 39
 ; @group outputLayer
@@ -4171,7 +4047,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron109
 ; @pos 800 79
 ; @group outputLayer
@@ -4210,7 +4085,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron108
 ; @pos 800 119
 ; @group outputLayer
@@ -4249,7 +4123,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron117
 ; @pos 841 -41
 ; @group outputLayer
@@ -4288,7 +4161,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron116
 ; @pos 841 -1
 ; @group outputLayer
@@ -4327,7 +4199,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron115
 ; @pos 841 39
 ; @group outputLayer
@@ -4366,7 +4237,6 @@ call	sigmoid
 store
 
 moduleEnd
-
 module neuron114
 ; @pos 841 79
 ; @group outputLayer
@@ -4405,3 +4275,14 @@ call	sigmoid
 store
 
 moduleEnd
+groupEnd
+
+constants env
+; @pos 0 0
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 50
+
+constantsEnd

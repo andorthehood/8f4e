@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module pcmLooper
 ; Variable speed PCM Looper
 
@@ -13,7 +14,7 @@ float* speed &defSpeed
 
 ; Playhead increments
 push &playhead
-push playhead 
+push playhead
 push *speed
 add
 store
@@ -47,3 +48,4 @@ div
 store
 
 moduleEnd
+groupEnd

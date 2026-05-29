@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 constants editorDirectives
 ; Editor directives cheat sheet.
 ; Literal examples below use "@ name" so they stay visible as text.

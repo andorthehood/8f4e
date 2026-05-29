@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module linearToExponential
 
 const LUT_MAX_INDEX 511.0
@@ -53,8 +54,8 @@ div
 store
 
 moduleEnd
-
 module expLUT
 #mock
 float[] values 512
 moduleEnd
+groupEnd

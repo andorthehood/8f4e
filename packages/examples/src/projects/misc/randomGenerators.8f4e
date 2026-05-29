@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module projectConfig
 ; @pos -84 2
 ; @config runtime WebWorkerRuntime
@@ -7,24 +8,13 @@ module projectConfig
 ; @config export.fileName randomGenerators
 
 moduleEnd
-
-constants env
-; @pos -84 26
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 50
-
-constantsEnd
-
 module lcg
 ; @pos -11 1
-; Linear congruential 
+; Linear congruential
 ; generator
 
 const MULTIPLIER 1664525
-const INCREMENT 1013904223 
+const INCREMENT 1013904223
 const MODULUS 2^16
 int seed 69420
 
@@ -45,11 +35,10 @@ push seed
 castToFloat
 push MODULUS
 castToFloat
-div 
+div
 store
 
 moduleEnd
-
 module scope
 ; @pos 27 1
 
@@ -79,7 +68,6 @@ push *in
 store
 
 moduleEnd
-
 module notes
 ; @pos 66 17
 ; @home
@@ -91,7 +79,6 @@ module notes
 ; an XORShift algorithm
 ; implemented in 8f4e.
 moduleEnd
-
 module XORShift
 ; @pos 106 1
 
@@ -125,7 +112,6 @@ div
 store
 
 moduleEnd
-
 module scope2
 ; @pos 142 1
 
@@ -155,3 +141,14 @@ push *in
 store
 
 moduleEnd
+groupEnd
+
+constants env
+; @pos -84 26
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 50
+
+constantsEnd

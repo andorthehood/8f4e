@@ -19,14 +19,14 @@ if (import.meta.vitest) {
 
 	describe('parse8f4eToProject', () => {
 		it('parses a valid .8f4e text with one block', () => {
-			const text = '8f4e/v1\n\n' + validBlock.join('\n');
+			const text = '8f4e/v1\n\ngroup main\n' + validBlock.join('\n') + '\ngroupEnd';
 			const project = parse8f4eToProject(text);
 			expect(project.codeBlocks).toHaveLength(1);
-			expect(project.codeBlocks[0].code).toEqual(validBlock);
+			expect(project.codeBlocks[0]).toEqual({ code: validBlock, executionGroupName: 'main' });
 		});
 
 		it('parses multiple blocks', () => {
-			const text = '8f4e/v1\n\n' + validBlock.join('\n') + '\n\n' + validFunctionBlock.join('\n');
+			const text = '8f4e/v1\n\ngroup main\n' + validBlock.join('\n') + '\ngroupEnd\n\n' + validFunctionBlock.join('\n');
 			const project = parse8f4eToProject(text);
 			expect(project.codeBlocks).toHaveLength(2);
 		});
@@ -48,11 +48,13 @@ if (import.meta.vitest) {
 		});
 
 		it('throws on unclosed block', () => {
-			expect(() => parse8f4eToProject('8f4e/v1\n\nmodule foo\nsome code')).toThrow('unclosed block');
+			expect(() => parse8f4eToProject('8f4e/v1\n\ngroup main\nmodule foo\nsome code')).toThrow('unclosed block');
 		});
 
 		it('throws on mismatched closer', () => {
-			expect(() => parse8f4eToProject('8f4e/v1\n\nmodule foo\nfunctionEnd')).toThrow('does not match opener');
+			expect(() => parse8f4eToProject('8f4e/v1\n\ngroup main\nmodule foo\nfunctionEnd')).toThrow(
+				'does not match opener'
+			);
 		});
 
 		it('throws on non-opener content outside block', () => {
@@ -60,9 +62,9 @@ if (import.meta.vitest) {
 		});
 
 		it('throws on mixed openers inside block', () => {
-			expect(() => parse8f4eToProject('8f4e/v1\n\nmodule foo\nfunction bar\nfunctionEnd\nmoduleEnd')).toThrow(
-				'mixed block type markers'
-			);
+			expect(() =>
+				parse8f4eToProject('8f4e/v1\n\ngroup main\nmodule foo\nfunction bar\nfunctionEnd\nmoduleEnd\ngroupEnd')
+			).toThrow('mixed block type markers');
 		});
 
 		it('round-trips through serialize then parse', async () => {
@@ -73,7 +75,7 @@ if (import.meta.vitest) {
 			const text = serializeProjectTo8f4e(project);
 			const parsed = parse8f4eToProject(text);
 			expect(parsed.codeBlocks).toHaveLength(3);
-			expect(parsed.codeBlocks[0].code).toEqual(validBlock);
+			expect(parsed.codeBlocks[0]).toEqual({ code: validBlock, executionGroupName: 'main' });
 			expect(parsed.codeBlocks[1].code).toEqual(validFunctionBlock);
 			expect(parsed.codeBlocks[2].code).toEqual(validNoteBlock);
 		});

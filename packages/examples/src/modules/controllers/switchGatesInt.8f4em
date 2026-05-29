@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module switchGates
 
 int* in0
@@ -43,7 +44,7 @@ loop
 push pointer
 push 7
 greaterThan
-branchIfTrue 1 
+branchIfTrue 1
 
  ; Read switch
 push &gate0
@@ -79,7 +80,7 @@ push pointer
 push sizeof(out0)
 mul
 add
-  
+
   ; Set out to 0
 push 0
 store
@@ -87,3 +88,4 @@ ifEnd
 loopEnd
 
 moduleEnd
+groupEnd

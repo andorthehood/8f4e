@@ -466,6 +466,7 @@ mul
 
 functionEnd float
 
+group main
 module adrEnv
 ; @pos 453 -92
 ; @tab 8
@@ -615,7 +616,6 @@ store
 ifEnd
 
 moduleEnd
-
 module adsrEnv1
 ; @pos 418 13
 ; @tab 8
@@ -638,7 +638,6 @@ int sustainEnabled 0
 macro adsrEnv
 
 moduleEnd
-
 module adsrEnv2
 ; @pos 317 13
 ; @tab 8
@@ -661,7 +660,6 @@ int	sustainEnabled 0
 macro adsrEnv
 
 moduleEnd
-
 module adsrEnv3
 ; @pos 418 41
 ; @tab 8
@@ -684,7 +682,6 @@ int sustainEnabled 0
 macro adsrEnv
 
 moduleEnd
-
 module adsrEnv4
 ; @pos 316 41
 ; @tab 8
@@ -705,7 +702,6 @@ int sustainEnabled 0
 macro adsrEnv
 
 moduleEnd
-
 module adsrEnv5
 ; @pos 418 69
 ; @tab 8
@@ -728,7 +724,6 @@ int sustainEnabled 0
 macro adsrEnv
 
 moduleEnd
-
 module adsrEnv6
 ; @pos 317 69
 ; @tab 8
@@ -750,7 +745,6 @@ int sustainEnabled 0
 macro adsrEnv
 
 moduleEnd
-
 module audioout
 ; @pos 675 39
 ; ~audioOutput buffer 0 0
@@ -793,7 +787,6 @@ store
 ifEnd
 
 moduleEnd
-
 module bpmClock
 ; @pos 414 -92
 use env
@@ -832,7 +825,6 @@ add
 store
 
 moduleEnd
-
 module carrier1
 ; @pos 465 13
 use env
@@ -888,7 +880,6 @@ mul
 store
 
 moduleEnd
-
 module carrier3
 ; @pos 465 41
 use env
@@ -944,7 +935,6 @@ mul
 store
 
 moduleEnd
-
 module carrier5
 ; @pos 465 69
 use env
@@ -1000,7 +990,6 @@ mul
 store
 
 moduleEnd
-
 module dx7colors
 ; @pos 2 51
 ; @config color.text.instruction #33ffcc
@@ -1008,7 +997,6 @@ module dx7colors
 ; @config color.icons.outputConnector #9999cc
 
 moduleEnd
-
 module janko
 ; @pos 153 22
 ; @home
@@ -1031,7 +1019,6 @@ call jankoMap
 ; @watch out
 store
 moduleEnd
-
 module keyboard
 ; @pos 113 46
 ; @keyPressedMemory keyPressed
@@ -1044,7 +1031,6 @@ int keyCode
 ; @watch keyCode
 
 moduleEnd
-
 module limiter
 ; @pos 597 43
 float* in &mixer:out
@@ -1069,7 +1055,6 @@ ifEnd float
 store
 
 moduleEnd
-
 module midiLUT
 ; @pos 252 64
 ; @tab 8
@@ -1203,7 +1188,6 @@ float	11839.8215
 float	12543.8540
 
 moduleEnd
-
 module midiNote2Freq
 ; @pos 251 43
 
@@ -1223,7 +1207,6 @@ load
 store
 
 moduleEnd
-
 module mixer
 ; @pos 548 44
 
@@ -1249,7 +1232,6 @@ mul
 store
 
 moduleEnd
-
 module modulator2
 ; @pos 366 13
 ; @group operator2
@@ -1301,7 +1283,6 @@ mul
 store
 
 moduleEnd
-
 module modulator4
 ; @pos 364 41
 ; @group operator4
@@ -1353,7 +1334,6 @@ mul
 store
 
 moduleEnd
-
 module modulator6
 ; @pos 365 69
 ; @group operator5
@@ -1405,7 +1385,6 @@ mul
 store
 
 moduleEnd
-
 module projectConfig
 ; @pos -94 1
 ; @config runtime AudioWorkletRuntime
@@ -1413,7 +1392,6 @@ module projectConfig
 ; @config export.fileName jankoSynth
 
 moduleEnd
-
 module reverb
 ; @pos 637 50
 
@@ -1462,3 +1440,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

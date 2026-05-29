@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module bufferF2I
 
 float* bufferIn
@@ -16,7 +17,7 @@ push &pointer
 push 0
 store
 
-loop 
+loop
 ; Calculate destination
 ; address
 push &buffer
@@ -32,13 +33,13 @@ push pointer
 push sizeof(bufferIn)
 mul
 add
- 
+
 loadFloat ; value from src
 round
 castToInt
 
 store ; value to dst
- 
+
 ; Guard
 push pointer
 push length
@@ -56,3 +57,4 @@ store
 loopEnd
 
 moduleEnd
+groupEnd

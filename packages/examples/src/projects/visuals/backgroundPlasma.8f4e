@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module colors
 ; @pos -166 22
 ; @config color.text.lineNumber rgba(0,0,0,0.3)
@@ -17,6 +18,13 @@ module colors
 ; @config color.fill.menuItemBackground rgba(255,255,255,0.2)
 ; @config color.fill.menuItemBackgroundHighlighted rgba(255,255,255,0.5)
 moduleEnd
+module projectConfig
+; @pos -114 36
+; @config runtime WebWorkerRuntime
+; ~sampleRate 50
+
+moduleEnd
+groupEnd
 
 constants env
 ; @pos -114 22
@@ -29,13 +37,6 @@ const SAMPLE_RATE 50
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
-
-module projectConfig
-; @pos -114 36
-; @config runtime WebWorkerRuntime
-; ~sampleRate 50
-
-moduleEnd
 
 note fragmentShaderBackground
 ; @pos 98 78

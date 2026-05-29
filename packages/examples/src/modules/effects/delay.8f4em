@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module delay
 
 float[] buffer 48000
@@ -37,3 +38,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module reverb
 
 float* in
@@ -21,7 +22,7 @@ push *in
 add
 store
 
-; Store the new sample 
+; Store the new sample
 ; in the buffer
 push bufferPointer
 push &out
@@ -47,3 +48,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

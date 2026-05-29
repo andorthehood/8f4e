@@ -2,7 +2,8 @@ const exp = new Array(512).fill(0).map((value, index) => {
 	return Math.exp(index / 512 - 1);
 });
 
-const expLookupTable = `module expLUT
+const expLookupTable = `group main
+module expLUT
 
 ${exp
 	.map(value => {
@@ -10,6 +11,7 @@ ${exp
 	})
 	.join('\n')}
 
-moduleEnd`;
+moduleEnd
+groupEnd`;
 
 export default expLookupTable;

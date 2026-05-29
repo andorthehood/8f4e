@@ -1,12 +1,12 @@
 8f4e/v1
 
+group main
 module projectConfig
 ; @pos -14 8
 ; @config runtime WebWorkerRuntime
 ; ~sampleRate 1
 
 moduleEnd
-
 module counter
 ; @pos 25 8
 
@@ -20,3 +20,4 @@ add
 store
 
 moduleEnd
+groupEnd

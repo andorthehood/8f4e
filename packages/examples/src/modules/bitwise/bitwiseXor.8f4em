@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module bitwiseXor
          ;  \\\\----.
 int* in1 ; --+     '
@@ -14,3 +15,4 @@ xor
 store
 
 moduleEnd
+groupEnd

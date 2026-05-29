@@ -225,12 +225,14 @@ function generateApproximatePt2MinBlepData(options: Partial<MinBLEPApproximation
 
 const minBLEPData = generateApproximatePt2MinBlepData();
 
-const minBLEPLUT = `module minBLEPLUT
+const minBLEPLUT = `group main
+module minBLEPLUT
 ; @tab 7
 ; PT2-style minBLEP correction table
 ; generated from the approximate JS minBLEP pipeline
 ${minBLEPData.map(value => `float\t${value.toFixed(18)}`).join('\n')}
 
-moduleEnd`;
+moduleEnd
+groupEnd`;
 
 export default minBLEPLUT;

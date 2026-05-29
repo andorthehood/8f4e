@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 function saw
 ; Sawtooth function for
 ; the input range [-PI, PI]

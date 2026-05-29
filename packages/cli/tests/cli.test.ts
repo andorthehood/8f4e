@@ -146,7 +146,17 @@ describe('cli', () => {
 		const commentedTestPath = path.join(tmpDir, 'commentedTest.8f4e');
 		await fs.writeFile(
 			commentedTestPath,
-			['8f4e/v1', '', 'module commentedTest', '#test ; inline comment', 'push 1', 'assert 1', 'moduleEnd'].join('\n')
+			[
+				'8f4e/v1',
+				'',
+				'group main',
+				'module commentedTest',
+				'#test ; inline comment',
+				'push 1',
+				'assert 1',
+				'moduleEnd',
+				'groupEnd',
+			].join('\n')
 		);
 
 		const { stdout } = await execCli(['test', commentedTestPath]);
@@ -168,6 +178,7 @@ describe('cli', () => {
 			[
 				'8f4e/v1',
 				'',
+				'group main',
 				'module target',
 				'#test',
 				'int* ptr &dependency:value',
@@ -179,6 +190,7 @@ describe('cli', () => {
 				'#mock ; test-only dependency',
 				'int value 42',
 				'moduleEnd',
+				'groupEnd',
 			].join('\n')
 		);
 

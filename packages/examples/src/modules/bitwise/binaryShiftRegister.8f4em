@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module binShiftReg
 
 int* in
@@ -20,3 +21,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

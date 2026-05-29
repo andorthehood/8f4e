@@ -1,23 +1,12 @@
 8f4e/v1
 
+group main
 module projectConfig
 ; @pos -122 -9
 ; @config runtime WebWorkerRuntime
 ; ~sampleRate 50
 
 moduleEnd
-
-constants env
-; @pos -122 15
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 1/19/2026, 9:56:17 PM
-
-const SAMPLE_RATE 50
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
-
 module sineLT
 ; @pos -68 -9
 
@@ -279,7 +268,6 @@ float sin254 -0.0246
 float sin255 -0.0000
 
 moduleEnd
-
 module dancer1
 ; @pos -34 -9
 
@@ -288,7 +276,7 @@ module dancer1
 float* sin &sineLT:sin0
 float* last &sineLT:sin255
 float* first &sineLT:sin0
-int offset 
+int offset
 
 ; @offset y offset
 
@@ -315,13 +303,12 @@ castToInt
 store
 
 moduleEnd
-
 module dancer2
 ; @pos 1 -9
 float* sin &sineLT:sin32
 float* last &sineLT:sin255
 float* first &sineLT:sin0
-int offset 
+int offset
 
 ; @offset y offset
 
@@ -348,14 +335,13 @@ castToInt
 store
 
 moduleEnd
-
 module dancer3
 ; @pos 36 -9
 
 float* sin &sineLT:sin64
 float* last &sineLT:sin255
 float* first &sineLT:sin0
-int offset 
+int offset
 
 ; @offset y offset
 
@@ -382,7 +368,6 @@ castToInt
 store
 
 moduleEnd
-
 module dancer4
 ; @pos 89 -12
 
@@ -419,3 +404,15 @@ castToInt
 store
 
 moduleEnd
+groupEnd
+
+constants env
+; @pos -122 15
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 1/19/2026, 9:56:17 PM
+
+const SAMPLE_RATE 50
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd

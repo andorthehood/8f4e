@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module mapToRange
 
 const IN_RANGE_MIN -1.0
@@ -30,3 +31,4 @@ add
 store
 
 moduleEnd
+groupEnd

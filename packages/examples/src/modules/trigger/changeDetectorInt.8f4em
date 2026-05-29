@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module change2Trig
 
 const HIGH 1
@@ -28,8 +29,8 @@ push *in
 store
 
 moduleEnd
-
 module sh
 #mock
 int out 0
 moduleEnd
+groupEnd

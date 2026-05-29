@@ -1,11 +1,12 @@
 8f4e/v1
 
+group main
 module bpmClock
 use env
 
 int bpm 120
 int out
-int counter 
+int counter
 
 ; @watch counter
 
@@ -37,6 +38,7 @@ add
 store
 
 moduleEnd
+groupEnd
 
 constants env
 #mock

@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module midiLUT
 ; @tab 7 18
 float	8.1758	; 0
@@ -132,3 +133,4 @@ float	11839.8215	; 126
 float	12543.8540	; 127
 
 moduleEnd
+groupEnd

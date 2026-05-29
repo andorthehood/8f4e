@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module projectConfig
 ; @pos -9 -73
 ; @config runtime WebWorkerRuntime
@@ -7,19 +8,6 @@ module projectConfig
 ; @config export.fileName xorProblem
 
 moduleEnd
-
-constants env
-; @pos -9 -50
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 2/19/2026, 2:34:30 PM
-
-const SAMPLE_RATE 10
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
-
 module result
 ; @pos 50 -53
 
@@ -31,29 +19,26 @@ module result
 int* out &activationFn3:out
 
 moduleEnd
-
 module notes
 ; @pos 66 -75
-; This is a compact, pre-trained 
-; neural network that solves the 
+; This is a compact, pre-trained
+; neural network that solves the
 ; XOR problem by combining two
-; input switches through hidden 
-; perceptrons with sigmoid 
-; activations and outputting a 
+; input switches through hidden
+; perceptrons with sigmoid
+; activations and outputting a
 ; binary classification result.
 moduleEnd
-
 module switches
 ; @pos 74 -64
 ; @home
 
-; You can change the 
+; You can change the
 ; input values here:
 float in1 1.0
 float in2 0.0
 
 moduleEnd
-
 module perceptron
 ; @pos 118 -82
 ; Pre-trained perceptron
@@ -79,7 +64,6 @@ push BIAS
 add
 store
 moduleEnd
-
 module perceptron2
 ; @pos 118 -55
 ; Pre-trained perceptron
@@ -105,7 +89,6 @@ push BIAS
 add
 store
 moduleEnd
-
 module activationFn
 ; @pos 152 -82
 
@@ -118,7 +101,6 @@ call sigmoid
 store
 
 moduleEnd
-
 module activationFn2
 ; @pos 152 -55
 
@@ -131,30 +113,13 @@ call sigmoid
 store
 
 moduleEnd
-
-function sigmoid
-; @pos 152 -38
-param float x
-; Polynomial sigmoid
-; func. approximation
-
-push x
-push x
-abs
-push 1.0
-add
-ensureNonZero
-div
-
-functionEnd float
-
 module perceptron3
 ; @pos 193 -65
 ; Pre-trained perceptron
 
 float* in1 &activationFn:out
 float* in2 &activationFn2:out
-float out 
+float out
 
 ; Weights
 const W1 6.94625
@@ -173,7 +138,6 @@ push BIAS
 add
 store
 moduleEnd
-
 module activationFn3
 ; @pos 231 -65
 
@@ -196,3 +160,32 @@ ifEnd int
 store
 
 moduleEnd
+groupEnd
+
+constants env
+; @pos -9 -50
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 2/19/2026, 2:34:30 PM
+
+const SAMPLE_RATE 10
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+function sigmoid
+; @pos 152 -38
+param float x
+; Polynomial sigmoid
+; func. approximation
+
+push x
+push x
+abs
+push 1.0
+add
+ensureNonZero
+div
+
+functionEnd float
