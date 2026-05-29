@@ -124,10 +124,7 @@ export type ReturnLine = ASTLineBase<'return', []>;
 export type LoopCapLine = ASTLineBase<'#loopCap', [ArgumentLiteral]> & CompilerDirectivePrologueMetadata;
 export type ImpureLine = ASTLineBase<'#impure', []> & CompilerDirectivePrologueMetadata;
 export type ExportLine = ASTLineBase<'#export', [] | [ArgumentIdentifier]> & CompilerDirectivePrologueMetadata;
-export type ImportLine = ASTLineBase<
-	'#import',
-	[ArgumentIdentifier | ArgumentStringLiteral, ArgumentIdentifier | ArgumentStringLiteral]
-> &
+export type ImportLine = ASTLineBase<'#import', [ArgumentIdentifier | ArgumentStringLiteral]> &
 	CompilerDirectivePrologueMetadata;
 export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLiteral]> &
 	CompilerDirectivePrologueMetadata;

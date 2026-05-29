@@ -752,12 +752,12 @@ export const instructionSpecs = {
 		},
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #import <module> <name> ( -- )
+	// #import <name> ( -- )
 	'#import': {
 		sourceArguments: {
-			minArguments: 2,
-			maxArguments: 2,
-			argumentTypes: ['identifierOrStringLiteral', 'identifierOrStringLiteral'],
+			minArguments: 1,
+			maxArguments: 1,
+			argumentTypes: 'identifierOrStringLiteral',
 		},
 		scope: 'function',
 		onInvalidScope: ErrorCode.IMPORT_DIRECTIVE_INVALID_CONTEXT,

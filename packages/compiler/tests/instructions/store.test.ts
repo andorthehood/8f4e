@@ -44,7 +44,7 @@ moduleEnd
 		dataView = new DataView(memoryRef.buffer);
 
 		const result = (await WebAssembly.instantiate(program, {
-			js: { memory: memoryRef },
+			host: { memory: memoryRef },
 		})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
 		instance = result.instance;
 	});
@@ -88,7 +88,7 @@ moduleEnd`);
 
 		const memory = new WebAssembly.Memory({ initial: 1 });
 		const dv = new DataView(memory.buffer);
-		const { instance } = await WebAssembly.instantiate(program, { js: { memory } });
+		const { instance } = await WebAssembly.instantiate(program, { host: { memory } });
 		const test = instance.exports.test as CallableFunction;
 
 		dv.setInt32(mod.memoryMap['src'].byteAddress, 42, true);
@@ -109,7 +109,7 @@ moduleEnd`);
 
 		const memory = new WebAssembly.Memory({ initial: 1 });
 		const dv = new DataView(memory.buffer);
-		const { instance } = await WebAssembly.instantiate(program, { js: { memory } });
+		const { instance } = await WebAssembly.instantiate(program, { host: { memory } });
 		const test = instance.exports.test as CallableFunction;
 
 		dv.setFloat32(mod.memoryMap['src'].byteAddress, 3.14, true);

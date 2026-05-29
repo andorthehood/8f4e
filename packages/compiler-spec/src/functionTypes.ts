@@ -20,6 +20,9 @@ export type PointerFunctionTypeIdentifier = (typeof POINTER_FUNCTION_TYPE_IDENTI
 export type FunctionTypeIdentifier = (typeof FUNCTION_TYPE_IDENTIFIERS)[number];
 export type FunctionValueType = FunctionTypeIdentifier;
 
+/** Default WebAssembly import module namespace for 8f4e host-provided imports. */
+export const DEFAULT_HOST_IMPORT_MODULE_NAME = 'host';
+
 /** Language-level function parameter and return value types. */
 export interface FunctionSignature {
 	parameters: FunctionValueType[];

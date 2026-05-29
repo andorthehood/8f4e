@@ -48,7 +48,7 @@ moduleEnd
 		dataView = new DataView(memoryRef.buffer);
 
 		const result = (await WebAssembly.instantiate(program, {
-			js: { memory: memoryRef },
+			host: { memory: memoryRef },
 		})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
 		instance = result.instance;
 	});
@@ -90,7 +90,7 @@ moduleEnd`);
 
 		const memory = new WebAssembly.Memory({ initial: 1 });
 		const dv = new DataView(memory.buffer);
-		const { instance } = await WebAssembly.instantiate(program, { js: { memory } });
+		const { instance } = await WebAssembly.instantiate(program, { host: { memory } });
 		(instance.exports.test as CallableFunction)();
 
 		const base = mod.memoryMap['buf'].byteAddress;
@@ -116,7 +116,7 @@ moduleEnd`);
 		// Pre-write dest value to check it remains unchanged after storeBytes 0
 		dv.setInt32(mod.memoryMap['dest'].byteAddress, 42, true);
 
-		const { instance } = await WebAssembly.instantiate(program, { js: { memory } });
+		const { instance } = await WebAssembly.instantiate(program, { host: { memory } });
 		(instance.exports.test as CallableFunction)();
 
 		// storeBytes 0 should not modify dest

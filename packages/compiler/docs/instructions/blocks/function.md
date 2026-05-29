@@ -25,7 +25,7 @@ Functions are reusable code blocks that:
 - Are pure by default
 - Can opt into explicit address-driven memory IO with `#impure`
 - Can be exported to the host WebAssembly ABI with `#export` or `#export <exportedName>`
-- Can be declared as host-provided WebAssembly imports with `#import <moduleName> <fieldName>`
+- Can be declared as host-provided WebAssembly imports with `#import <fieldName>`
 - Do not have direct access to module memory identifiers by name
 - Cannot declare their own memory
 
@@ -80,11 +80,11 @@ Functions that read from or write to memory still need `#impure`.
 
 ### `#import`
 
-Use `#import <moduleName> <fieldName>` inside a function to declare that the function is provided by the WebAssembly host.
+Use `#import <fieldName>` inside a function to declare that the function is provided by the WebAssembly host.
 
 ```
 function hostLog
-#import env log
+#import log
 param int value
 functionEnd
 ```
@@ -100,20 +100,20 @@ The host must provide a matching import when instantiating the module:
 
 ```ts
 await WebAssembly.instantiate(codeBuffer, {
-	env: {
+	host: {
+		memory,
 		log(value: number) {
 			console.log(value);
 		},
 	},
-	js: { memory },
 });
 ```
 
-Use string literals when the WebAssembly import module or field name is not a plain 8f4e identifier:
+Use string literals when the WebAssembly import field name is not a plain 8f4e identifier:
 
 ```
 function addOne
-#import "host-api" "add.one"
+#import "add.one"
 param int value
 functionEnd int
 ```

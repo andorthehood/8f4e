@@ -155,22 +155,22 @@ Declares that the current function is provided by the WebAssembly host instead o
 
 **Scope:** Function blocks only
 
-**Syntax:** `#import <module-name> <field-name>`
+**Syntax:** `#import <field-name>`
 
-The module and field names can be identifiers or string literals. Use string literals when the host import name contains characters that are not valid 8f4e identifiers.
+The field name can be an identifier or a string literal. Use a string literal when the host import field name contains characters that are not valid 8f4e identifiers. Imported functions use the WebAssembly import module namespace `host`.
 
 **Usage:**
 ```8f4e
 function hostLog
-#import env log
+#import log
 param int value
 functionEnd
 ```
 
-String-literal host names:
+String-literal field name:
 ```8f4e
 function addOne
-#import "host-api" "add.one"
+#import "add.one"
 param int value
 functionEnd int
 ```
@@ -186,7 +186,7 @@ functionEnd int
 **Valid imported function body shape:**
 ```8f4e
 function hostRead
-#import env read
+#import read
 param int address
 functionEnd int
 ```
@@ -196,12 +196,12 @@ Only function prologue directives, `param` declarations, and `functionEnd` are a
 **Host imports:**
 ```ts
 const { instance } = await WebAssembly.instantiate(codeBuffer, {
-	env: {
+	host: {
+		memory,
 		log(value: number) {
 			console.log(value);
 		},
 	},
-	js: { memory },
 });
 ```
 
