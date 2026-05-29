@@ -11,6 +11,9 @@ concurrency:
   group: release
   cancel-in-progress: false
 
+env:
+  NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD || 'true' }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
