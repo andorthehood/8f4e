@@ -12,7 +12,7 @@ describe('Macro expansion integration', () => {
 
 	async function instantiate(codeBuffer: Uint8Array) {
 		return WebAssembly.instantiate(codeBuffer, {
-			js: {
+			host: {
 				memory: new WebAssembly.Memory({ initial: 1, maximum: 1 }),
 			},
 		});

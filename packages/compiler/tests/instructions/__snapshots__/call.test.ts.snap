@@ -123,7 +123,7 @@ exports[`call constant function > if the generated AST, WAT and memory map match
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (result i32)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
@@ -317,7 +317,7 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (result f64)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
@@ -533,7 +533,7 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (result i32)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
@@ -772,7 +772,7 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (param i32) (result i32)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
@@ -986,7 +986,7 @@ exports[`function can call another function with its signature and wasm index av
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (param i32) (result i32)))
   (type (;4;) (func (result i32)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
