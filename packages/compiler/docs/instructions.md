@@ -106,3 +106,6 @@
   - [risingEdge](instructions/signal-helpers.md#risingedge)
   - [fallingEdge](instructions/signal-helpers.md#fallingedge)
   - [hasChanged](instructions/signal-helpers.md#haschanged)
+
+- [Testing](instructions/testing.md)
+  - [assert](instructions/testing.md#assert)
