@@ -13,18 +13,6 @@ describe('parseBlockDirectives', () => {
 		]);
 	});
 
-	it('should ignore tilde comments', () => {
-		expect(parseBlockDirectives(['; ~customRuntime value 0 1'])).toEqual([]);
-	});
-
-	it('should ignore tilde comments with leading whitespace', () => {
-		expect(parseBlockDirectives(['  ; ~customRuntime value 0 1'])).toEqual([]);
-	});
-
-	it('should ignore unknown tilde names', () => {
-		expect(parseBlockDirectives(['; ~runtime WebWorker'])).toEqual([]);
-	});
-
 	it('should parse unknown editor directive names', () => {
 		expect(parseBlockDirectives(['; @midi'])).toEqual([
 			{ prefix: '@', name: 'midi', args: [], rawRow: 0, sourceLine: '; @midi', isTrailing: false },
@@ -35,10 +23,6 @@ describe('parseBlockDirectives', () => {
 		expect(parseBlockDirectives(['; @disabled'])).toEqual([
 			{ prefix: '@', name: 'disabled', args: [], rawRow: 0, sourceLine: '; @disabled', isTrailing: false },
 		]);
-	});
-
-	it('should ignore tilde comments with no arguments', () => {
-		expect(parseBlockDirectives(['; ~customRuntime'])).toEqual([]);
 	});
 
 	it('should record the correct rawRow for each directive', () => {

@@ -16,6 +16,7 @@ import type {
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
 const AUDIO_BUFFER_SIZE = 128;
 const AUDIO_BUFFER_ADDRESS_SCHEMA = {
+	format: 'memory-address',
 	anyOf: [
 		{ type: 'integer' as const, minimum: 0 },
 		{ type: 'string' as const, pattern: '^[^:\\s]+:[^:\\s]+$' },
@@ -41,9 +42,9 @@ const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 
 interface AudioWorkletRuntimeConfig {
 	sampleRate: number;
-	audioOutBufferLAddress?: number | string;
-	audioOutBufferRAddress?: number | string;
-	audioInBufferLAddress?: number | string;
+	audioOutBufferLAddress?: number;
+	audioOutBufferRAddress?: number;
+	audioInBufferLAddress?: number;
 }
 
 type AudioBufferConfigKey = 'audioOutBufferLAddress' | 'audioOutBufferRAddress' | 'audioInBufferLAddress';
@@ -60,8 +61,11 @@ interface AudioInputBufferRoute {
 	channel: number;
 }
 
-function getAudioWorkletRuntimeConfig(editorConfig: EditorConfig): AudioWorkletRuntimeConfig {
-	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig) as Record<string, unknown>;
+function getAudioWorkletRuntimeConfig(state: State): AudioWorkletRuntimeConfig {
+	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, state.editorConfig, state) as Record<
+		string,
+		unknown
+	>;
 
 	return {
 		sampleRate: typeof config.sampleRate === 'number' ? config.sampleRate : 48000,
@@ -71,45 +75,20 @@ function getAudioWorkletRuntimeConfig(editorConfig: EditorConfig): AudioWorkletR
 	};
 }
 
-function getAudioBufferConfigValue(
-	config: Record<string, unknown>,
-	key: AudioBufferConfigKey
-): number | string | undefined {
+function getAudioBufferConfigValue(config: Record<string, unknown>, key: AudioBufferConfigKey): number | undefined {
 	const value = config[key];
-	return typeof value === 'number' || typeof value === 'string' ? value : undefined;
+	return typeof value === 'number' ? value : undefined;
 }
 
 function getSampleRate(editorConfig: EditorConfig): number {
-	return getAudioWorkletRuntimeConfig(editorConfig).sampleRate;
-}
-
-export function resolveAudioBufferWordAddress(state: State, value: number | string | undefined): number | undefined {
-	if (typeof value === 'number') {
-		return Number.isInteger(value) && value >= 0 ? value : undefined;
-	}
-
-	const trimmedValue = value?.trim();
-	if (!trimmedValue) {
-		return undefined;
-	}
-
-	const numericAddress = Number(trimmedValue);
-	if (Number.isInteger(numericAddress) && numericAddress >= 0) {
-		return numericAddress;
-	}
-
-	const [moduleId, memoryId, ...extraSegments] = trimmedValue.split(':');
-	if (!moduleId || !memoryId || extraSegments.length > 0) {
-		return undefined;
-	}
-
-	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId]?.wordAlignedAddress;
+	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig);
+	return typeof config.sampleRate === 'number' ? config.sampleRate : 48000;
 }
 
 export function getAudioOutputBuffers(state: State): AudioOutputBufferRoute[] {
-	const config = getAudioWorkletRuntimeConfig(state.editorConfig);
-	const leftAddress = resolveAudioBufferWordAddress(state, config.audioOutBufferLAddress);
-	const rightAddress = resolveAudioBufferWordAddress(state, config.audioOutBufferRAddress);
+	const config = getAudioWorkletRuntimeConfig(state);
+	const leftAddress = config.audioOutBufferLAddress;
+	const rightAddress = config.audioOutBufferRAddress;
 	const buffers: AudioOutputBufferRoute[] = [];
 
 	if (leftAddress !== undefined) {
@@ -124,14 +103,14 @@ export function getAudioOutputBuffers(state: State): AudioOutputBufferRoute[] {
 }
 
 export function getAudioInputBuffers(state: State): AudioInputBufferRoute[] {
-	const config = getAudioWorkletRuntimeConfig(state.editorConfig);
-	const leftAddress = resolveAudioBufferWordAddress(state, config.audioInBufferLAddress);
+	const config = getAudioWorkletRuntimeConfig(state);
+	const leftAddress = config.audioInBufferLAddress;
 
 	return leftAddress === undefined ? [] : [{ audioBufferWordAddress: leftAddress, input: 0, channel: 0 }];
 }
 
 function hasAudioInputBufferConfig(editorConfig: EditorConfig): boolean {
-	return getAudioWorkletRuntimeConfig(editorConfig).audioInBufferLAddress !== undefined;
+	return resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig).audioInBufferLAddress !== undefined;
 }
 
 // AudioWorklet Runtime Factory

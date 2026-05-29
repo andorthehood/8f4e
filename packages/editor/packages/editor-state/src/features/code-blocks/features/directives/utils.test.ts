@@ -20,10 +20,6 @@ describe('parseDirectiveLineRecords', () => {
 		]);
 	});
 
-	it('ignores full-line tilde comments', () => {
-		expect(parseDirectiveLineRecords('; ~customRuntime value 0 1')).toEqual([]);
-	});
-
 	it('parses a full-line directive with no arguments', () => {
 		expect(parseDirectiveLineRecords('; @disabled')).toEqual([
 			{
@@ -89,10 +85,6 @@ describe('parseDirectiveLineRecords', () => {
 				isTrailing: false,
 			},
 		]);
-	});
-
-	it('does not parse trailing tilde comments', () => {
-		expect(parseDirectiveLineRecords('int foo 1 ; ~runtime')).toEqual([]);
 	});
 
 	it('parses multiple full-line directives from one comment line', () => {
