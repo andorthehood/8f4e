@@ -39,12 +39,21 @@ import groupUngroupper from './features/code-blocks/features/group/ungroupper/ef
 import groupDeleter from './features/code-blocks/features/group/deleter/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
-import runtimeDirectiveErrorsEffect from './features/runtime/directiveErrorsEffect';
 import editorMode from './features/editor-mode/effect';
 import presentation from './features/presentation/effect';
 import tooltip from './features/tooltip/effect';
+import { registerEditorConfigSchemaContributionsValidator } from './features/editor-config/schemaContributions';
 
 import type { Options, State, EventDispatcher } from '@8f4e/editor-state-types';
+
+export {
+	collectSchemaConfigPaths,
+	createSchemaEditorConfigValidator,
+	getSchemaForConfigPath,
+	parseSchemaConfigValue,
+	resolveSchemaConfigRoot,
+	validateSchemaConfigValue,
+} from './features/editor-config/schemaValidator';
 
 // Function to create default state
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
@@ -61,6 +70,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
 		defaultRuntimeId: options.defaultRuntimeId,
+		editorConfigSchemaContributions: options.editorConfigSchemaContributions ?? {},
 	};
 
 	const store = createStateManager<State>(baseState);
@@ -69,6 +79,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	font(store);
 	color(store);
+	registerEditorConfigSchemaContributionsValidator(store);
 	projectExport(store, events);
 	canvasScreenshot(store, events);
 	dialog(store, events);
@@ -101,7 +112,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	globalEditorDirectivesEffect(store);
-	runtimeDirectiveErrorsEffect(store);
 	compiler(store);
 	graphicHelper(store, events);
 	viewportDirectiveEffect(store, events);

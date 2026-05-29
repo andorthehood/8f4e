@@ -47,12 +47,12 @@ export function resolveAudioWorkletRouting(codeBlocks: CodeBlockGraphicData[]): 
 	const errors: CodeError[] = [];
 
 	for (const block of codeBlocks) {
-		const runtimeDirectives = block.parsedDirectives.filter(
+		const audioRoutingDirectives = block.parsedDirectives.filter(
 			directive => directive.prefix === '~' && (directive.name === 'audioInput' || directive.name === 'audioOutput')
 		);
 		const codeBlockId = block.id;
 
-		for (const directive of runtimeDirectives) {
+		for (const directive of audioRoutingDirectives) {
 			if (block.blockType !== 'module' || !block.moduleId) {
 				errors.push({
 					lineNumber: directive.rawRow,

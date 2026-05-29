@@ -2019,7 +2019,7 @@ note
 ; @pos 9 -126
 ; Project Config
 ; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
+; @config audioRuntime.sampleRate 48000
 ; @config export.fileName lowerIntentions
 
 noteEnd

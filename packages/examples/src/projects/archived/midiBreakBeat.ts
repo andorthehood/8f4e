@@ -7,7 +7,7 @@ const project: Project = {
 				'config',
 				'; @pos 37 -25',
 				'; @config runtime WebWorkerMIDIRuntime',
-				'; ~sampleRate 50',
+				'; @config mainRuntime.sampleRate 50',
 				'',
 				'',
 				'configEnd',

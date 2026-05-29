@@ -5,7 +5,6 @@
 import type { CodeError } from '../../shared/types';
 import type { EditorConfigEntry } from '../editor-config/types';
 import type { CodeBlockType } from '../code-blocks/types';
-import type { RuntimeRegistry } from '../runtime/types';
 
 export interface ParsedGlobalEditorDirective {
 	name: string;
@@ -26,7 +25,6 @@ export interface GlobalEditorDirectiveContext {
 	codeBlockId: string | number;
 	moduleId?: string;
 	blockType?: CodeBlockType;
-	runtimeRegistry: RuntimeRegistry;
 }
 
 export interface GlobalEditorDirectivePlugin {

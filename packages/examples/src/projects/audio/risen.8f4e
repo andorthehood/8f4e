@@ -101,7 +101,7 @@ note
 ; Project config
 
 ; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
+; @config audioRuntime.sampleRate 48000
 ; @config export.fileName risen
 ; @config font templeos8x8
 noteEnd

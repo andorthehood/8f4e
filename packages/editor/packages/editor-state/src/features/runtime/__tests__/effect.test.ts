@@ -19,14 +19,10 @@ describe('Runtime System', () => {
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
 						id: 'AudioWorkletRuntime',
-						defaults: { sampleRate: 44100 },
-						schema: { type: 'object', properties: {} },
 						factory: audioRuntimeFactory,
 					},
 					MainThreadRuntime: {
 						id: 'MainThreadRuntime',
-						defaults: { sampleRate: 60 },
-						schema: { type: 'object', properties: {} },
 						factory: mainRuntimeFactory,
 					},
 				},
@@ -72,14 +68,10 @@ describe('Runtime System', () => {
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
 						id: 'AudioWorkletRuntime',
-						defaults: { sampleRate: 44100 },
-						schema: { type: 'object', properties: {} },
 						factory: audioRuntimeFactory,
 					},
 					WebWorkerRuntime: {
 						id: 'WebWorkerRuntime',
-						defaults: { sampleRate: 50 },
-						schema: { type: 'object', properties: {} },
 						factory: webWorkerRuntimeFactory,
 					},
 				},
@@ -104,6 +96,47 @@ describe('Runtime System', () => {
 
 			expect(audioDestroyer).toHaveBeenCalledTimes(1);
 			expect(webWorkerRuntimeFactory).toHaveBeenCalledTimes(1);
+		});
+
+		it('should mirror runtime schema contributions into the generic editor config contribution registry', async () => {
+			const state = createMockState({
+				editorConfigSchemaContributions: {
+					host: {
+						root: 'hostSettings',
+						schema: { type: 'object', properties: { enabled: { type: 'boolean' } } },
+					},
+				},
+				runtimeRegistry: {
+					AudioWorkletRuntime: {
+						id: 'AudioWorkletRuntime',
+						editorConfigSchema: {
+							root: 'audioRuntime',
+							schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
+						},
+						factory: () => () => {},
+					},
+					WebWorkerRuntime: {
+						id: 'WebWorkerRuntime',
+						editorConfigSchema: {
+							root: 'mainRuntime',
+							schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
+						},
+						factory: () => () => {},
+					},
+				},
+				defaultRuntimeId: 'WebWorkerRuntime',
+			});
+
+			const store = createStateManager(state);
+			const events = createMockEventDispatcherWithVitest();
+
+			await runtimeEffect(store, events);
+
+			expect(Object.keys(state.editorConfigSchemaContributions)).toEqual([
+				'host',
+				'runtime:WebWorkerRuntime',
+				'runtime:AudioWorkletRuntime',
+			]);
 		});
 	});
 });
