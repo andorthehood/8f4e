@@ -12,16 +12,16 @@ import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultPro
 const AUTO_ENV_BLOCK_ID = 'constants_env';
 const PROJECT_WITH_CODE_BLOCK: Project = {
 	...EMPTY_DEFAULT_PROJECT,
-	codeBlocks: [{ code: ['module rate', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+	codeBlocks: [{ code: ['module demo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
 };
 
-function getSampleRateEnvConstants(editorConfig: EditorConfig) {
-	const mainRuntime = editorConfig.mainRuntime;
-	const sampleRate =
-		mainRuntime && typeof mainRuntime === 'object' && typeof mainRuntime.sampleRate === 'number'
-			? mainRuntime.sampleRate
+function getTestRuntimeEnvConstants(editorConfig: EditorConfig) {
+	const testRuntime = editorConfig.testRuntime;
+	const magicNumber =
+		testRuntime && typeof testRuntime === 'object' && typeof testRuntime.magicNumber === 'number'
+			? testRuntime.magicNumber
 			: 50;
-	return [`const SAMPLE_RATE ${sampleRate}`];
+	return [`const RUNTIME_MAGIC ${magicNumber}`];
 }
 
 function createGraphicEnvBlock(code: string[], overrides: Partial<CodeBlockGraphicData> = {}): CodeBlockGraphicData {
@@ -50,11 +50,11 @@ describe('autoEnvConstants', () => {
 				WebWorkerRuntime: {
 					id: 'WebWorkerRuntime',
 					editorConfigSchema: {
-						root: 'mainRuntime',
-						defaults: { sampleRate: 50 },
-						schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
+						root: 'testRuntime',
+						defaults: { magicNumber: 50 },
+						schema: { type: 'object', properties: { magicNumber: { type: 'number' } } },
 					},
-					getEnvConstants: editorConfig => getSampleRateEnvConstants(editorConfig),
+					getEnvConstants: editorConfig => getTestRuntimeEnvConstants(editorConfig),
 					factory: () => () => {},
 				},
 			},
@@ -94,45 +94,45 @@ describe('autoEnvConstants', () => {
 		expect(state.initialProjectState?.codeBlocks[1].code[0]).toBe('module test');
 	});
 
-	test('should include SAMPLE_RATE from runtime-owned editor config', () => {
+	test('should include constants returned by the selected runtime contribution', () => {
 		autoEnvConstants(store);
-		store.set('editorConfig.mainRuntime', { sampleRate: 48000 });
+		store.set('editorConfig.testRuntime', { magicNumber: 123 });
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
-		expect(sampleRateLine).toBe('const SAMPLE_RATE 48000');
-		const invSampleRateLine = envBlock?.code.find(line => line.includes('INV_SAMPLE_RATE'));
-		expect(invSampleRateLine).toBeUndefined();
+		const magicNumberLine = envBlock?.code.find(line => line.includes('RUNTIME_MAGIC'));
+		expect(magicNumberLine).toBe('const RUNTIME_MAGIC 123');
+		const unusedRuntimeLine = envBlock?.code.find(line => line.includes('UNUSED_RUNTIME_MAGIC'));
+		expect(unusedRuntimeLine).toBeUndefined();
 	});
 
-	test('should only include AUDIO_BUFFER_SIZE when the selected runtime contributes it', () => {
+	test('should only include an extra constant when the selected runtime contributes it', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-		expect(envBlock?.code).not.toContain('const AUDIO_BUFFER_SIZE 128');
+		expect(envBlock?.code).not.toContain('const RUNTIME_EXTRA 128');
 
 		store.set('runtimeRegistry', {
-			AudioWorkletRuntime: {
-				id: 'AudioWorkletRuntime',
+			SecondaryRuntime: {
+				id: 'SecondaryRuntime',
 				editorConfigSchema: {
-					root: 'audioRuntime',
-					defaults: { sampleRate: 44100 },
-					schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
+					root: 'secondaryRuntime',
+					defaults: { magicNumber: 77 },
+					schema: { type: 'object', properties: { magicNumber: { type: 'number' } } },
 				},
-				getEnvConstants: editorConfig => [...getSampleRateEnvConstants(editorConfig), 'const AUDIO_BUFFER_SIZE 128'],
+				getEnvConstants: editorConfig => [...getTestRuntimeEnvConstants(editorConfig), 'const RUNTIME_EXTRA 128'],
 				factory: () => () => {},
 			},
 		});
-		store.set('defaultRuntimeId', 'AudioWorkletRuntime');
-		store.set('editorConfig.runtime', 'AudioWorkletRuntime');
+		store.set('defaultRuntimeId', 'SecondaryRuntime');
+		store.set('editorConfig.runtime', 'SecondaryRuntime');
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
-		const audioWorkletEnvBlock = state.initialProjectState?.codeBlocks.find(block =>
+		const secondaryRuntimeEnvBlock = state.initialProjectState?.codeBlocks.find(block =>
 			block.code[0]?.includes('constants env')
 		);
-		expect(audioWorkletEnvBlock?.code).toContain('const AUDIO_BUFFER_SIZE 128');
+		expect(secondaryRuntimeEnvBlock?.code).toContain('const RUNTIME_EXTRA 128');
 	});
 
 	test('should include warning comment', () => {
@@ -144,7 +144,7 @@ describe('autoEnvConstants', () => {
 		expect(warningLine).toBeDefined();
 	});
 
-	test('should update when runtime-owned editor config changes', () => {
+	test('should update when runtime-contributed constants change', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
@@ -155,13 +155,13 @@ describe('autoEnvConstants', () => {
 		}
 
 		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock?.code ?? [])]);
-		store.set('editorConfig.mainRuntime', { sampleRate: 44100 });
+		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
-		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
-		expect(sampleRateLine).toBe('const SAMPLE_RATE 44100');
-		const invSampleRateLine = envBlock?.code.find(line => line.includes('INV_SAMPLE_RATE'));
-		expect(invSampleRateLine).toBeUndefined();
+		const magicNumberLine = envBlock?.code.find(line => line.includes('RUNTIME_MAGIC'));
+		expect(magicNumberLine).toBe('const RUNTIME_MAGIC 77');
+		const unusedRuntimeLine = envBlock?.code.find(line => line.includes('UNUSED_RUNTIME_MAGIC'));
+		expect(unusedRuntimeLine).toBeUndefined();
 	});
 
 	test('should include binary asset sizes when available', () => {
@@ -172,7 +172,7 @@ describe('autoEnvConstants', () => {
 			{
 				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				assetByteLength: 44100,
+				assetByteLength: 12345,
 				loadedIntoMemory: false,
 			},
 		]);
@@ -181,7 +181,7 @@ describe('autoEnvConstants', () => {
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
-		expect(assetSizeLine).toBe('const ASSET_0_SIZE 44100');
+		expect(assetSizeLine).toBe('const ASSET_0_SIZE 12345');
 	});
 
 	test('should use binary asset id in generated size constants when present', () => {
@@ -242,7 +242,7 @@ describe('autoEnvConstants', () => {
 		}
 
 		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
-		store.set('editorConfig.mainRuntime', { sampleRate: 44100 });
+		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
@@ -260,7 +260,7 @@ describe('autoEnvConstants', () => {
 		}
 
 		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
-		store.set('editorConfig.mainRuntime', { sampleRate: 44100 });
+		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');
@@ -271,7 +271,7 @@ describe('autoEnvConstants', () => {
 			...EMPTY_DEFAULT_PROJECT,
 			codeBlocks: [
 				{
-					code: ['constants env', 'const SAMPLE_RATE 48000', 'constantsEnd'],
+					code: ['constants env', 'const RUNTIME_MAGIC 123', 'constantsEnd'],
 					gridCoordinates: { x: 0, y: 0 },
 				},
 			],
