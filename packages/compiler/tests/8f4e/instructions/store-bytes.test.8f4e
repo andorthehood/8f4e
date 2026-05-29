@@ -1,0 +1,103 @@
+8f4e/v1
+
+; storeBytes writes integer stack values into byte-addressed memory.
+entry test
+module storeBytesPopOrderAssertions
+; Values are popped from the top of the stack into consecutive destination bytes.
+int8[] dest 8
+
+push 72
+push 101
+push 108
+push 108
+push 111
+push &dest
+storeBytes 5
+
+push &dest
+load8u
+push 111
+call assert
+
+push &dest
+push 1
+push sizeof(dest)
+mul
+add
+load8u
+push 108
+call assert
+
+push &dest
+push 2
+push sizeof(dest)
+mul
+add
+load8u
+push 108
+call assert
+
+push &dest
+push 3
+push sizeof(dest)
+mul
+add
+load8u
+push 101
+call assert
+
+push &dest
+push 4
+push sizeof(dest)
+mul
+add
+load8u
+push 72
+call assert
+
+push &dest
+push 5
+push sizeof(dest)
+mul
+add
+load8u
+push 0
+call assert
+moduleEnd
+
+module storeBytesTruncationAssertions
+; Values larger than a byte should be truncated to their low byte.
+int8[] buf 4
+
+push 256
+push 257
+push &buf
+storeBytes 2
+
+push &buf
+load8u
+push 1
+call assert
+
+push &buf
+push 1
+push sizeof(buf)
+mul
+add
+load8u
+push 0
+call assert
+moduleEnd
+
+module storeBytesZeroCountAssertions
+; A zero byte count should only drop the address and leave memory unchanged.
+int dest 42
+
+push &dest
+storeBytes 0
+
+push dest
+push 42
+call assert
+moduleEnd
+entryEnd

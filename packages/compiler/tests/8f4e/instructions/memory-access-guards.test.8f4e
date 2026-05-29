@@ -1,0 +1,65 @@
+8f4e/v1
+
+; Guarded memory access should return zero instead of trapping for unsafe addresses.
+entry test
+module guardedIntLoadAssertions
+; Unsafe integer loads should return zero instead of trapping.
+push -1
+load
+push 0
+call assert
+
+push 65533
+load
+push 0
+call assert
+
+push 2147483647
+load
+push 0
+call assert
+moduleEnd
+
+module guardedFloatLoadAssertions
+; Unsafe float loads should return zero instead of trapping.
+push -1
+loadFloat
+push 0.0
+call assertf
+
+push 65533
+loadFloat
+push 0.0
+call assertf
+
+push 2147483647
+loadFloat
+push 0.0
+call assertf
+moduleEnd
+
+module guardedLocalPointerDereferenceAssertions
+; Unsafe pointer dereferences inside impure functions should return zero.
+push -1
+call readGuardedPointer
+push 0
+call assert
+
+push 65533
+call readGuardedPointer
+push 0
+call assert
+
+push 2147483647
+call readGuardedPointer
+push 0
+call assert
+moduleEnd
+entryEnd
+
+function readGuardedPointer
+#impure
+param int* ptr
+
+push *ptr
+functionEnd int

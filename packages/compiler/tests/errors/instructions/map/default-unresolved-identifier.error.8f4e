@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module mapDefaultUnresolvedIdentifier
+; default should reject unresolved identifiers.
+int x
+push x
+mapBegin int
+default MISSING_CONST
+mapEnd int
+moduleEnd
+entryEnd

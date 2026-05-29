@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module mapValueUnresolvedIdentifier
+; map values should reject unresolved identifiers.
+int x
+push x
+mapBegin int
+map 1 MISSING_CONST
+mapEnd int
+moduleEnd
+entryEnd

@@ -1,0 +1,60 @@
+8f4e/v1
+
+; Store writes integer and floating values through memory addresses.
+entry test
+module intStoreAssertions
+; int stores should write the source value into the destination address.
+int dest
+int src 42
+
+push &dest
+push src
+store
+
+push dest
+push 42
+call assert
+moduleEnd
+
+module floatStoreAssertions
+; float stores should keep the float32 path working.
+float dest
+float src 3.14
+
+push &dest
+push src
+store
+
+push dest
+push 3.14
+call assertf
+moduleEnd
+
+module float64StoreAssertions
+; float64 stores should write 64-bit values and keep float64 memory aligned.
+float64 dest
+float64 src 1.5
+
+push &dest
+push src
+store
+
+push dest
+push 1.5f64
+call assertf64
+
+push &dest
+push 8
+ensureNonZero
+remainder
+push 0
+call assert
+
+push &src
+push 8
+ensureNonZero
+remainder
+push 0
+call assert
+moduleEnd
+entryEnd

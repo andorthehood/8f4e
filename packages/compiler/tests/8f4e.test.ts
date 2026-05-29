@@ -25,6 +25,18 @@ const assertFunctionBlock: ProjectCodeBlock = {
 const assertFloatFunctionBlock: ProjectCodeBlock = {
 	code: ['function assertf', '#import assertf', 'param float received', 'param float expected', 'functionEnd'],
 };
+const assertFloat64FunctionBlock: ProjectCodeBlock = {
+	code: ['function assertf64', '#import assertf64', 'param float64 received', 'param float64 expected', 'functionEnd'],
+};
+const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
+
+function getTestMemoryRegions(source: string): string[] {
+	return source
+		.split('\n')
+		.map(line => line.trim().match(memoryRegionsDirective)?.[1])
+		.filter((regions): regions is string => regions !== undefined)
+		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
+}
 
 function hasTestExportDeclaration(project: ProjectInput): boolean {
 	return project.codeBlocks.some(block => {
@@ -99,7 +111,9 @@ function formatCompileError(relativePath: string, error: unknown): Error {
 
 async function run8f4eTestFile(filePath: string): Promise<number> {
 	const relativePath = path.relative(testRoot, filePath);
-	const project = parse8f4eProject(await fs.readFile(filePath, 'utf8'));
+	const source = await fs.readFile(filePath, 'utf8');
+	const project = parse8f4eProject(source);
+	const memoryRegions = getTestMemoryRegions(source);
 
 	if (!hasTestExportDeclaration(project)) {
 		throw new Error(`${relativePath}: expected an entry test block or exported function test`);
@@ -109,6 +123,7 @@ async function run8f4eTestFile(filePath: string): Promise<number> {
 		...project.codeBlocks,
 		assertFunctionBlock,
 		assertFloatFunctionBlock,
+		assertFloat64FunctionBlock,
 	]);
 	let compileResult: ReturnType<typeof compile>;
 	try {
@@ -121,6 +136,7 @@ async function run8f4eTestFile(filePath: string): Promise<number> {
 			},
 			{
 				disableSharedMemory: true,
+				memoryRegions,
 			}
 		);
 	} catch (error) {
@@ -145,6 +161,14 @@ async function run8f4eTestFile(filePath: string): Promise<number> {
 
 				if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
 					failures.push({ assertIndex, assertName: 'assertf', expected, received });
+				}
+			},
+			assertf64(received: number, expected: number) {
+				const assertIndex = assertionCount;
+				assertionCount += 1;
+
+				if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
+					failures.push({ assertIndex, assertName: 'assertf64', expected, received });
 				}
 			},
 		},

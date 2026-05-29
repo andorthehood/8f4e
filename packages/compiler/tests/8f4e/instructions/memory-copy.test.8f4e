@@ -1,0 +1,81 @@
+8f4e/v1
+
+; memoryCopy copies byte ranges between declared memory addresses.
+entry test
+module memoryCopyAssertions
+; A safe memoryCopy should copy the requested byte range from source to target.
+int[] source 5 10 20 30 40 50
+int[] target 5
+
+push &target
+push &source
+memoryCopy 20
+
+push &target
+load
+push 10
+call assert
+
+push &target
+push 1
+push sizeof(target)
+mul
+add
+load
+push 20
+call assert
+
+push &target
+push 2
+push sizeof(target)
+mul
+add
+load
+push 30
+call assert
+
+push &target
+push 3
+push sizeof(target)
+mul
+add
+load
+push 40
+call assert
+
+push &target
+push 4
+push sizeof(target)
+mul
+add
+load
+push 50
+call assert
+moduleEnd
+
+module guardedMemoryCopyAssertions
+; An out-of-bounds source range should skip the copy and preserve the target values.
+int[] source 2
+int[] target 2 1 2
+
+push &target
+push &source
+push 999999
+add
+memoryCopy 8
+
+push &target
+load
+push 1
+call assert
+
+push &target
+push 1
+push sizeof(target)
+mul
+add
+load
+push 2
+call assert
+moduleEnd
+entryEnd

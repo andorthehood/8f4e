@@ -1,0 +1,178 @@
+8f4e/v1
+
+; Array initializer values should be visible after initDefaults runs.
+entry test
+module intArrayInitializerAssertions
+; int[] trailing values initialize elements from index 0 and leave omitted elements zeroed.
+int[] notes 10 48 50 53
+
+push &notes
+load
+push 48
+call assert
+
+push &notes
+push 1
+push sizeof(notes)
+mul
+add
+load
+push 50
+call assert
+
+push &notes
+push 2
+push sizeof(notes)
+mul
+add
+load
+push 53
+call assert
+
+push &notes
+push 3
+push sizeof(notes)
+mul
+add
+load
+push 0
+call assert
+moduleEnd
+
+module expressionInitializerAssertions
+; Constants and compile-time expressions can provide initializer values.
+const ROOT 48
+int[] notes 4 ROOT ROOT+2 ROOT+5
+
+push &notes
+load
+push 48
+call assert
+
+push &notes
+push 1
+push sizeof(notes)
+mul
+add
+load
+push 50
+call assert
+
+push &notes
+push 2
+push sizeof(notes)
+mul
+add
+load
+push 53
+call assert
+moduleEnd
+
+module hexadecimalInitializerAssertions
+; Hexadecimal initializer values should resolve as ordinary integers.
+int[] foo 2 0x01 0x02
+
+push &foo
+load
+push 1
+call assert
+
+push &foo
+push 1
+push sizeof(foo)
+mul
+add
+load
+push 2
+call assert
+moduleEnd
+
+module narrowInitializerAssertions
+; Narrow integer arrays should store initializer values at their element byte width.
+int8[] bytes 4 1 2 3 4
+int16[] shorts 3 1000 2000 3000
+
+push &bytes
+load8u
+push 1
+call assert
+
+push &bytes
+push 1
+push sizeof(bytes)
+mul
+add
+load8u
+push 2
+call assert
+
+push &bytes
+push 2
+push sizeof(bytes)
+mul
+add
+load8u
+push 3
+call assert
+
+push &bytes
+push 3
+push sizeof(bytes)
+mul
+add
+load8u
+push 4
+call assert
+
+push &shorts
+load16s
+push 1000
+call assert
+
+push &shorts
+push 1
+push sizeof(shorts)
+mul
+add
+load16s
+push 2000
+call assert
+
+push &shorts
+push 2
+push sizeof(shorts)
+mul
+add
+load16s
+push 3000
+call assert
+moduleEnd
+
+module sparseInitializerAssertions
+; Large sparse arrays should initialize specified values and leave omitted values zeroed.
+int[] huge 1000000 1
+
+push &huge
+load
+push 1
+call assert
+
+push &huge
+push 1
+push sizeof(huge)
+mul
+add
+load
+push 0
+call assert
+
+push &huge
+push 999999
+push sizeof(huge)
+mul
+add
+load
+push 0
+call assert
+moduleEnd
+entryEnd
