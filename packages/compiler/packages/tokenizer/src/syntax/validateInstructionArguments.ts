@@ -50,6 +50,11 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 				invalid(`Invalid argument for ${instruction}: expected identifier.`);
 			}
 			return;
+		case 'identifierOrStringLiteral':
+			if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.STRING_LITERAL) {
+				invalid(`Invalid argument for ${instruction}: expected identifier or string literal.`);
+			}
+			return;
 		case 'constantIdentifier':
 			if (argument.type !== ArgumentType.IDENTIFIER || !isConstantName(argument.value)) {
 				invalid(`Invalid argument for ${instruction}: expected constant identifier.`);

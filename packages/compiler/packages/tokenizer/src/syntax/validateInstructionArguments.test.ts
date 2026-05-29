@@ -102,6 +102,32 @@ describe('validateInstructionArguments', () => {
 		).toThrowError(SyntaxRulesError);
 	});
 
+	it('accepts identifier or string literal module and field arguments for #import', () => {
+		expect(() =>
+			validateInstructionArguments('#import', [classifyIdentifier('env'), classifyIdentifier('log')])
+		).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('#import', [
+				{ type: ArgumentType.STRING_LITERAL, value: 'host-api' },
+				{ type: ArgumentType.STRING_LITERAL, value: 'log.value' },
+			])
+		).not.toThrow();
+		expect(() => validateInstructionArguments('#import', [classifyIdentifier('env')])).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('#import', [
+				classifyIdentifier('env'),
+				classifyIdentifier('log'),
+				classifyIdentifier('extra'),
+			])
+		).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('#import', [
+				{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+				classifyIdentifier('log'),
+			])
+		).toThrowError(SyntaxRulesError);
+	});
+
 	it('accepts bare exitIfTrue and rejects any arguments', () => {
 		expect(() => validateInstructionArguments('exitIfTrue', [])).not.toThrow();
 		expect(() => validateInstructionArguments('exitIfTrue', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);

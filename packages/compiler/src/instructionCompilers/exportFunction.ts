@@ -11,6 +11,10 @@ import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-spec';
 const exportFunction: InstructionCompiler<ExportLine> = function (line, context) {
 	const exportName = line.arguments[0]?.value ?? context.currentFunctionId!;
 
+	if (context.currentFunctionImport !== undefined) {
+		throw getError(ErrorCode.IMPORT_EXPORT_CONFLICT, line, context);
+	}
+
 	if (context.currentFunctionExportName !== undefined) {
 		throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, line, context, {
 			identifier: exportName,

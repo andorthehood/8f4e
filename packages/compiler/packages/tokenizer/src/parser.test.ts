@@ -214,6 +214,24 @@ describe('compileToAST', () => {
 		expect(ast.lines[0].instruction).toBe('const');
 	});
 
+	it('constructs imported function metadata from the source-block parse path', () => {
+		const ast = compileToAST(['function hostLog', '#import "host-api" "log.value"', 'param int value', 'functionEnd']);
+
+		expect(ast).toMatchObject({
+			type: 'function',
+			id: 'hostLog',
+			importLine: { instruction: '#import' },
+			import: {
+				moduleName: 'host-api',
+				fieldName: 'log.value',
+			},
+			signature: {
+				parameters: ['int'],
+				returns: [],
+			},
+		});
+	});
+
 	it('constructs constants metadata from the source-block parse path', () => {
 		const ast = compileToAST(['constants sizes', 'const COUNT 4', 'constantsEnd']);
 

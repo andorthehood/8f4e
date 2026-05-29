@@ -89,6 +89,7 @@
   - [param](instructions/program-structure-and-functions.md#param)
   - [functionEnd](instructions/program-structure-and-functions.md#functionend)
   - [call](instructions/program-structure-and-functions.md#call)
+  - [Imported functions](instructions/program-structure-and-functions.md#imported-functions)
   - [use](instructions/program-structure-and-functions.md#use)
 
 - [Macros](instructions/blocks/macros.md)

@@ -296,11 +296,9 @@ export default function compile(
 	const moduleGroupNames = astModuleEntries.map(({ groupName }) => groupName);
 	assertUniqueModuleIds(astModules);
 	const hasAssertInstruction = astModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
-	const importedFunctionCount = hasAssertInstruction ? 1 : 0;
+	const assertFailureImportCount = hasAssertInstruction ? 1 : 0;
 	const assertFailureFunctionIndex = hasAssertInstruction ? 0 : undefined;
 	const assertFailureTypeIndex = 3;
-	const builtInFunctionCount = 2 + groupNames.length;
-	const userFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 	const assertions: AssertionMetadata[] = [];
 
 	const namespaceAsts = [...astModules, ...astConstants];
@@ -316,22 +314,39 @@ export default function compile(
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata, cacheKey }) =>
 		parseFunctionAST(code, lineMetadata, cache, cacheKey)
 	);
+	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
+	const importedFunctionCount = assertFailureImportCount + importedUserFunctionCount;
+	const builtInFunctionCount = 2 + groupNames.length;
+	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	// Collect pre-codegen function metadata so `call` target validation and
 	// function-body codegen can rely on the same registry before compilation finishes.
-	const functionMetadata = collectFunctionMetadataFromAsts(astFunctions, userFunctionBaseIndex);
+	const functionMetadata = collectFunctionMetadataFromAsts(
+		astFunctions,
+		assertFailureImportCount,
+		userDefinedFunctionBaseIndex
+	);
 
 	// Create a shared type registry for all functions
 	// Base type index is after the built-in function types and optional assert failure import type.
 	const functionTypeRegistry: FunctionTypeRegistry = {
 		types: [],
 		signatures: [],
-		baseTypeIndex: 3 + (hasAssertInstruction ? 1 : 0),
+		baseTypeIndex: 3 + assertFailureImportCount,
 	};
 
-	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, namespaces, userFunctionBaseIndex + index, functionTypeRegistry, functionMetadata, options)
+	const compiledFunctions = astFunctions.map(ast =>
+		compileFunction(
+			ast,
+			namespaces,
+			functionMetadata[ast.id].wasmIndex,
+			functionTypeRegistry,
+			functionMetadata,
+			options
+		)
 	);
+	const importedUserFunctions = compiledFunctions.filter(func => func.import);
+	const definedFunctions = compiledFunctions.filter(func => !func.import);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 	assertUniqueFunctionExportNames(compiledFunctionsMap, groupNames);
 	const requiredMemoryBytesByIndexFromNamespaces = getRequiredMemoryBytesByIndex(Object.values(namespaces));
@@ -340,7 +355,7 @@ export default function compile(
 
 	// Extract the unique function types and type indices from the registry
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
-	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex);
+	const userFunctionSignatureIndices = definedFunctions.map(func => func.typeIndex);
 
 	// Compile all modules in input order so editor layout can drive execution order.
 	const compiledModules = compileModules(
@@ -380,7 +395,7 @@ export default function compile(
 	const maxUsedMemoryIndex = Math.max(0, ...Object.keys(requiredMemoryBytesByIndex).map(Number));
 
 	// Offset for user functions and module functions
-	const userFunctionCount = compiledFunctions.length;
+	const userFunctionCount = definedFunctions.length;
 	const getCompiledModuleFunctionIndex = (module: CompiledModule) =>
 		importedFunctionCount + builtInFunctionCount + userFunctionCount + module.index;
 	const groupDispatcherFunctions = groupNames.map(groupName =>
@@ -435,9 +450,12 @@ export default function compile(
 			memoryIndex === 0 ? 'memory' : getCustomMemoryRegionName(options.memoryRegions ?? [], memoryIndex);
 		return createMemoryImport('js', importName, memorySizePages, memorySizePages, !options.disableSharedMemory);
 	});
-	const functionImports = hasAssertInstruction
-		? [createFunctionImport('test', 'assertFailed', assertFailureTypeIndex)]
-		: [];
+	const functionImports = [
+		...(hasAssertInstruction ? [createFunctionImport('test', 'assertFailed', assertFailureTypeIndex)] : []),
+		...importedUserFunctions.map(func =>
+			createFunctionImport(func.import!.moduleName, func.import!.fieldName, func.typeIndex)
+		),
+	];
 
 	const builtInFunctionSignatures = [0x00, 0x00, ...groupNames.map(() => 0x00)];
 	const builtInFunctionBodies = [
@@ -471,7 +489,7 @@ export default function compile(
 					.map(func => createFunctionExport(func.exportName, func.wasmIndex)),
 			]),
 			...(initialMemoryDataSegments.length > 0 ? createDataCountSection(initialMemoryDataSegments.length) : []),
-			...createCodeSection([...builtInFunctionBodies, ...compiledFunctions.map(func => func.body), ...cycleFunctions]),
+			...createCodeSection([...builtInFunctionBodies, ...definedFunctions.map(func => func.body), ...cycleFunctions]),
 			...(initialMemoryDataSegments.length > 0
 				? createDataSection(initialMemoryDataSegments.map(segment => createPassiveDataSegment(segment.bytes)))
 				: []),

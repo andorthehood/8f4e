@@ -25,6 +25,7 @@ Functions are reusable code blocks that:
 - Are pure by default
 - Can opt into explicit address-driven memory IO with `#impure`
 - Can be exported to the host WebAssembly ABI with `#export` or `#export <exportedName>`
+- Can be declared as host-provided WebAssembly imports with `#import <moduleName> <fieldName>`
 - Do not have direct access to module memory identifiers by name
 - Cannot declare their own memory
 
@@ -77,7 +78,49 @@ Argument mapping:
 Export names must be unique and must not reuse built-in exports such as `initDefaults`, `buffer`, or an execution group name.
 Functions that read from or write to memory still need `#impure`.
 
-Function compiler directives are prologue metadata: place `#impure`, `#export`, and `#loopCap` directly after the `function` line and before params, locals, or executable instructions.
+### `#import`
+
+Use `#import <moduleName> <fieldName>` inside a function to declare that the function is provided by the WebAssembly host.
+
+```
+function hostLog
+#import env log
+param int value
+functionEnd
+```
+
+Imported functions still declare their signature with `param` and `functionEnd`, and callers use the normal `call` instruction:
+
+```
+push 42
+call hostLog
+```
+
+The host must provide a matching import when instantiating the module:
+
+```ts
+await WebAssembly.instantiate(codeBuffer, {
+	env: {
+		log(value: number) {
+			console.log(value);
+		},
+	},
+	js: { memory },
+});
+```
+
+Use string literals when the WebAssembly import module or field name is not a plain 8f4e identifier:
+
+```
+function addOne
+#import "host-api" "add.one"
+param int value
+functionEnd int
+```
+
+Imported functions cannot contain executable 8f4e body instructions, cannot also use `#export`, and are treated as impure.
+
+Function compiler directives are prologue metadata: place `#impure`, `#export`, `#import`, and `#loopCap` directly after the `function` line and before params, locals, or executable instructions.
 
 ### Example Function
 

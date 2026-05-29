@@ -25,7 +25,7 @@ import type {
 	UseLine,
 } from './ast';
 import type { AssertionMetadata, FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
-import type { FunctionSignature } from './functionTypes';
+import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
 import type {
 	ArrayDeclarationInstruction,
 	DataStructure,
@@ -169,6 +169,7 @@ export interface CompilationContext {
 	currentFunctionTypeIndex?: number;
 	currentFunctionIsImpure?: boolean;
 	currentFunctionExportName?: string;
+	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
