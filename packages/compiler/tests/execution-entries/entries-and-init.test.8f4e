@@ -1,0 +1,64 @@
+8f4e/v1
+
+; Entries compile into independent exported dispatchers, and functions can call them explicitly.
+entry main
+module mainEntryCounter
+int value 0
+
+push &value
+push value
+push 1
+add
+store
+moduleEnd
+entryEnd
+
+entry aux
+module auxEntryCounter
+int value 0
+
+push &value
+push value
+push 2
+add
+store
+moduleEnd
+entryEnd
+
+entry init
+module userInitEntryCounter
+int value 0
+
+push &value
+push 7
+store
+moduleEnd
+entryEnd
+
+function test
+#export
+#impure
+; initDefaults runs before this function, but it should not execute the user-authored init entry.
+push &userInitEntryCounter:value
+load
+push 0
+call assert
+
+call main
+push &mainEntryCounter:value
+load
+push 1
+call assert
+
+call aux
+push &auxEntryCounter:value
+load
+push 2
+call assert
+
+call init
+push &userInitEntryCounter:value
+load
+push 7
+call assert
+functionEnd

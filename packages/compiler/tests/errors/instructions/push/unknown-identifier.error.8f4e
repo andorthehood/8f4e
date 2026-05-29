@@ -1,0 +1,11 @@
+8f4e/v1
+
+entry main
+module invalidPushHost
+moduleEnd
+entryEnd
+
+function bad
+; push should reject identifiers that are neither locals nor memory.
+push undeclared
+functionEnd int

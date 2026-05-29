@@ -1,0 +1,346 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "continuationPointerSource": {
+      "id": "continuationPointerSource",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "continuationPointerSource",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "samples",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "continuedNegativeLiteralAssertions": {
+      "id": "continuedNegativeLiteralAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "continuedNegativeLiteralAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "splitByteDefaultAssertions": {
+      "id": "splitByteDefaultAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitByteDefaultAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "color",
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 168,
+            },
+            {
+              "isHex": true,
+              "isInteger": true,
+              "type": "literal",
+              "value": 255,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "color",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1459683328,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "splitPointerDeclarationAssertions": {
+      "id": "splitPointerDeclarationAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "splitPointerDeclarationAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readHead",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "samples",
+              "targetModuleId": "continuationPointerSource",
+              "type": "identifier",
+              "value": "&continuationPointerSource:samples",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float*",
+          "referencedNamespaceIds": [
+            "continuationPointerSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readHead",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "samples",
+              "targetModuleId": "continuationPointerSource",
+              "type": "identifier",
+              "value": "&continuationPointerSource:samples",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "continuationPointerSource": {
+      "internalResources": {},
+      "memoryMap": {
+        "samples": {
+          "byteAddress": 4,
+          "default": {
+            "0": 0,
+          },
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "samples",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 8,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 8,
+        },
+      },
+    },
+    "continuedNegativeLiteralAssertions": {
+      "internalResources": {},
+      "memoryMap": {},
+    },
+    "splitByteDefaultAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "color": {
+          "byteAddress": 40,
+          "default": 2835283968,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "color",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 10,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "splitPointerDeclarationAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "readHead": {
+          "byteAddress": 36,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "readHead",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointeeBaseType": "float",
+          "pointeeElementCount": 8,
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "float*",
+          "wordAlignedAddress": 9,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "continuationPointerSource",
+      "continuedNegativeLiteralAssertions",
+      "splitByteDefaultAssertions",
+      "splitPointerDeclarationAssertions",
+    ],
+    "requiredMemoryBytes": 44,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

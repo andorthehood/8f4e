@@ -1,0 +1,23 @@
+{
+  "code": 21,
+  "context": {
+    "codeBlockId": "invalid",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "dereferenceDepth": 1,
+        "referenceKind": "memory-pointer",
+        "scope": "local",
+        "targetMemoryId": "x",
+        "type": "identifier",
+        "value": "*x",
+      },
+    ],
+    "instruction": "push",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  "message": "Memory IO in functions requires #impure. (21)",
+}

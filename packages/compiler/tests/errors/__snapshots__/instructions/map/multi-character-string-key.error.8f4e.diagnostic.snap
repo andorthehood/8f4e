@@ -1,0 +1,10 @@
+{
+  "code": 2,
+  "context": {},
+  "line": {
+    "instruction": "map",
+    "lineNumberAfterMacroExpansion": 5,
+    "lineNumberBeforeMacroExpansion": 5,
+  },
+  "message": "Invalid argument for map: string literals must contain exactly one character.",
+}

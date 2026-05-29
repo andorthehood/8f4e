@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module startAddressMultiDotSource
+int buffer 42
+moduleEnd
+
+module startAddressMultiDotTarget
+; Start-address references should reject extra path segments.
+int* ptr &startAddressMultiDotSource:buffer:extra
+moduleEnd
+entryEnd

@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module invalidParamHost
+moduleEnd
+entryEnd
+
+function invalid
+; param should be part of the function prologue.
+push 1
+param int x
+functionEnd int

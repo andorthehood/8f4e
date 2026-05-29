@@ -1,0 +1,1247 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "combinedCountSizeAssertions": {
+      "id": "combinedCountSizeAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "combinedCountSizeAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "ptr",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "buffer",
+              "targetModuleId": "combinedCountSizeSource",
+              "type": "identifier",
+              "value": "&combinedCountSizeSource:buffer",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int*",
+          "referencedNamespaceIds": [
+            "combinedCountSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "size",
+            },
+            {
+              "referenceKind": "intermodular-element-count",
+              "scope": "intermodule",
+              "targetMemoryId": "buffer",
+              "targetModuleId": "combinedCountSizeSource",
+              "type": "identifier",
+              "value": "count(combinedCountSizeSource:buffer)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "combinedCountSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "elemSize",
+            },
+            {
+              "referenceKind": "intermodular-element-word-size",
+              "scope": "intermodule",
+              "targetMemoryId": "buffer",
+              "targetModuleId": "combinedCountSizeSource",
+              "type": "identifier",
+              "value": "sizeof(combinedCountSizeSource:buffer)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "combinedCountSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "ptr",
+              "type": "identifier",
+              "value": "*ptr",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "size",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "elemSize",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "combinedCountSizeSource": {
+      "id": "combinedCountSizeSource",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "combinedCountSizeSource",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int[]",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "countSizeAssertions": {
+      "id": "countSizeAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "countSizeAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bufferCount",
+            },
+            {
+              "referenceKind": "intermodular-element-count",
+              "scope": "intermodule",
+              "targetMemoryId": "buffer",
+              "targetModuleId": "countSizeSource",
+              "type": "identifier",
+              "value": "count(countSizeSource:buffer)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "countSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "dataCount",
+            },
+            {
+              "referenceKind": "intermodular-element-count",
+              "scope": "intermodule",
+              "targetMemoryId": "data",
+              "targetModuleId": "countSizeSource",
+              "type": "identifier",
+              "value": "count(countSizeSource:data)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "countSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bufferCount",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "dataCount",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intElementSize",
+            },
+            {
+              "referenceKind": "intermodular-element-word-size",
+              "scope": "intermodule",
+              "targetMemoryId": "buffer",
+              "targetModuleId": "countSizeSource",
+              "type": "identifier",
+              "value": "sizeof(countSizeSource:buffer)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "countSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatElementSize",
+            },
+            {
+              "referenceKind": "intermodular-element-word-size",
+              "scope": "intermodule",
+              "targetMemoryId": "data",
+              "targetModuleId": "countSizeSource",
+              "type": "identifier",
+              "value": "sizeof(countSizeSource:data)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "countSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointerElementSize",
+            },
+            {
+              "referenceKind": "intermodular-element-word-size",
+              "scope": "intermodule",
+              "targetMemoryId": "ptr",
+              "targetModuleId": "pointerSizeSource",
+              "type": "identifier",
+              "value": "sizeof(pointerSizeSource:ptr)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "pointerSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doubledShortSize",
+            },
+            {
+              "intermoduleIds": [
+                "shortSizeSource",
+              ],
+              "left": {
+                "isInteger": true,
+                "type": "literal",
+                "value": 2,
+              },
+              "operator": "*",
+              "right": {
+                "referenceKind": "intermodular-element-word-size",
+                "scope": "intermodule",
+                "targetMemoryId": "buffer",
+                "targetModuleId": "shortSizeSource",
+                "type": "identifier",
+                "value": "sizeof(shortSizeSource:buffer)",
+              },
+              "type": "compile_time_expression",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "shortSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "intElementSize",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "floatElementSize",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointerElementSize",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "doubledShortSize",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "countSizeSource": {
+      "id": "countSizeSource",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "countSizeSource",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "data",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 7,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float[]",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "lateCountSizeSource": {
+      "id": "lateCountSizeSource",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "lateCountSizeSource",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int[]",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "outOfOrderCountSizeAssertions": {
+      "id": "outOfOrderCountSizeAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "outOfOrderCountSizeAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "laterCount",
+            },
+            {
+              "referenceKind": "intermodular-element-count",
+              "scope": "intermodule",
+              "targetMemoryId": "buffer",
+              "targetModuleId": "lateCountSizeSource",
+              "type": "identifier",
+              "value": "count(lateCountSizeSource:buffer)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "lateCountSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "laterSize",
+            },
+            {
+              "referenceKind": "intermodular-element-word-size",
+              "scope": "intermodule",
+              "targetMemoryId": "buffer",
+              "targetModuleId": "lateCountSizeSource",
+              "type": "identifier",
+              "value": "sizeof(lateCountSizeSource:buffer)",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+          "referencedNamespaceIds": [
+            "lateCountSizeSource",
+          ],
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "laterCount",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "laterSize",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "pointerSizeSource": {
+      "id": "pointerSizeSource",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointerSizeSource",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "ptr",
+            },
+          ],
+          "hasExplicitMemoryDefault": false,
+          "instruction": "int*",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "shortSizeSource": {
+      "id": "shortSizeSource",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "shortSizeSource",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int16[]",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "combinedCountSizeAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "elemSize": {
+          "byteAddress": 172,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "elemSize",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 43,
+          "wordAlignedSize": 1,
+        },
+        "ptr": {
+          "byteAddress": 164,
+          "default": 176,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "ptr",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int",
+          "pointeeElementCount": 12,
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 41,
+          "wordAlignedSize": 1,
+        },
+        "size": {
+          "byteAddress": 168,
+          "default": 12,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "size",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 42,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "combinedCountSizeSource": {
+      "internalResources": {},
+      "memoryMap": {
+        "buffer": {
+          "byteAddress": 176,
+          "default": {
+            "0": 12,
+          },
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "buffer",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 12,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 44,
+          "wordAlignedSize": 12,
+        },
+      },
+    },
+    "countSizeAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "bufferCount": {
+          "byteAddress": 100,
+          "default": 10,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "bufferCount",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 25,
+          "wordAlignedSize": 1,
+        },
+        "dataCount": {
+          "byteAddress": 104,
+          "default": 7,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "dataCount",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 26,
+          "wordAlignedSize": 1,
+        },
+        "doubledShortSize": {
+          "byteAddress": 120,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "doubledShortSize",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 30,
+          "wordAlignedSize": 1,
+        },
+        "floatElementSize": {
+          "byteAddress": 112,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "floatElementSize",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 28,
+          "wordAlignedSize": 1,
+        },
+        "intElementSize": {
+          "byteAddress": 108,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "intElementSize",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 27,
+          "wordAlignedSize": 1,
+        },
+        "pointerElementSize": {
+          "byteAddress": 116,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "pointerElementSize",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 29,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "countSizeSource": {
+      "internalResources": {},
+      "memoryMap": {
+        "buffer": {
+          "byteAddress": 4,
+          "default": {
+            "0": 0,
+          },
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "buffer",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 10,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 10,
+        },
+        "data": {
+          "byteAddress": 44,
+          "default": {
+            "0": 0,
+          },
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "data",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 7,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 11,
+          "wordAlignedSize": 7,
+        },
+      },
+    },
+    "lateCountSizeSource": {
+      "internalResources": {},
+      "memoryMap": {
+        "buffer": {
+          "byteAddress": 132,
+          "default": {
+            "0": 0,
+          },
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "buffer",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 8,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 33,
+          "wordAlignedSize": 8,
+        },
+      },
+    },
+    "outOfOrderCountSizeAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "laterCount": {
+          "byteAddress": 124,
+          "default": 8,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "laterCount",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 31,
+          "wordAlignedSize": 1,
+        },
+        "laterSize": {
+          "byteAddress": 128,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "laterSize",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 32,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "pointerSizeSource": {
+      "internalResources": {},
+      "memoryMap": {
+        "ptr": {
+          "byteAddress": 72,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "ptr",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int",
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 18,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "shortSizeSource": {
+      "internalResources": {},
+      "memoryMap": {
+        "buffer": {
+          "byteAddress": 76,
+          "default": {
+            "0": 0,
+          },
+          "elementWordSize": 2,
+          "hasExplicitDefault": true,
+          "id": "buffer",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 12,
+          "pointerDepth": 0,
+          "type": "int16",
+          "wordAlignedAddress": 19,
+          "wordAlignedSize": 6,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "combinedCountSizeAssertions",
+      "combinedCountSizeSource",
+      "countSizeAssertions",
+      "countSizeSource",
+      "lateCountSizeSource",
+      "outOfOrderCountSizeAssertions",
+      "pointerSizeSource",
+      "shortSizeSource",
+    ],
+    "requiredMemoryBytes": 224,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

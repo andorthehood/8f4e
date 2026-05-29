@@ -1,0 +1,23 @@
+{
+  "code": 34,
+  "context": {},
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "x",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 5,
+      },
+    ],
+    "instruction": "int",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  "message": "This instruction is not allowed inside this block type. (34)",
+}

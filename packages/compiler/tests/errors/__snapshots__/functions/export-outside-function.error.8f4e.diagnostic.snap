@@ -1,0 +1,21 @@
+{
+  "code": 51,
+  "context": {
+    "codeBlockId": "exportOutsideFunction",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "outside",
+      },
+    ],
+    "instruction": "#export",
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
+  },
+  "message": "#export can only be used within a function block. (51)",
+}

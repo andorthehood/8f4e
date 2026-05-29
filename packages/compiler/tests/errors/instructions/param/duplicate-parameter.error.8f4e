@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module invalidParamHost
+moduleEnd
+entryEnd
+
+function invalid
+; Parameter names should be unique inside a function.
+param int x
+param int x
+functionEnd

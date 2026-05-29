@@ -1,0 +1,18 @@
+8f4e/v1
+
+entry main
+module wrongArgumentTypes
+; Calls should reject stack operands that do not match the function signature.
+push 1.5
+push 2.5
+call addInts
+moduleEnd
+entryEnd
+
+function addInts
+param int x
+param int y
+push x
+push y
+add
+functionEnd int

@@ -1,0 +1,18 @@
+{
+  "code": 45,
+  "context": {},
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "same",
+      },
+    ],
+    "instruction": "module",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  "message": "Duplicate identifier: same. Module and function IDs must be unique. (45)",
+}

@@ -1,0 +1,20 @@
+{
+  "code": 13,
+  "context": {
+    "codeBlockId": "mapDefaultOutsideBlock",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 10,
+      },
+    ],
+    "instruction": "default",
+    "lineNumberAfterMacroExpansion": 3,
+    "lineNumberBeforeMacroExpansion": 3,
+  },
+  "message": "This instruction can only be used within a block or a module. (13)",
+}

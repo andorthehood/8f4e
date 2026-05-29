@@ -8,6 +8,15 @@ import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import compile, { serializeDiagnostic } from '../src';
 
 const errorRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), 'errors');
+const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
+
+function getTestMemoryRegions(source: string): string[] {
+	return source
+		.split('\n')
+		.map(line => line.trim().match(memoryRegionsDirective)?.[1])
+		.filter((regions): regions is string => regions !== undefined)
+		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
+}
 
 async function collectErrorFiles(directory: string): Promise<string[]> {
 	const entries = await fs.readdir(directory, { withFileTypes: true });
@@ -30,7 +39,8 @@ async function collectErrorFiles(directory: string): Promise<string[]> {
 }
 
 async function compileErrorFixture(filePath: string) {
-	const project = parse8f4eProject(await fs.readFile(filePath, 'utf8'));
+	const source = await fs.readFile(filePath, 'utf8');
+	const project = parse8f4eProject(source);
 	const { entries, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
 
 	return compile(
@@ -42,8 +52,15 @@ async function compileErrorFixture(filePath: string) {
 		},
 		{
 			disableSharedMemory: true,
+			memoryRegions: getTestMemoryRegions(source),
 		}
 	);
+}
+
+function getErrorSnapshotPath(filePath: string): string {
+	const relativePath = path.relative(errorRoot, filePath);
+
+	return path.join(errorRoot, '__snapshots__', `${relativePath}.diagnostic.snap`);
 }
 
 const errorFiles = await collectErrorFiles(errorRoot);
@@ -65,7 +82,10 @@ describe('8f4e compiler error fixtures', () => {
 			}
 
 			expect(thrownError).toBeDefined();
-			expect(serializeDiagnostic(thrownError)).toMatchSnapshot();
+			const snapshotPath = getErrorSnapshotPath(filePath);
+
+			await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
+			await expect(serializeDiagnostic(thrownError)).toMatchFileSnapshot(snapshotPath);
 		}
 	);
 });

@@ -1,0 +1,21 @@
+{
+  "code": 2,
+  "context": {
+    "codeBlockId": "mapDefaultValueTypeMismatch",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumberAfterMacroExpansion": 6,
+    "lineNumberBeforeMacroExpansion": 6,
+  },
+  "message": "The operation only accepts integer values as operands. (2)",
+}

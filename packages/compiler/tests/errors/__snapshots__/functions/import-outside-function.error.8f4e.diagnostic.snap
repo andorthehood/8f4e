@@ -1,0 +1,21 @@
+{
+  "code": 59,
+  "context": {
+    "codeBlockId": "importOutsideFunction",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "record",
+      },
+    ],
+    "instruction": "#import",
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
+  },
+  "message": "#import can only be used within a function block. (59)",
+}

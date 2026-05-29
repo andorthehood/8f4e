@@ -1,0 +1,8 @@
+8f4e/v1
+
+entry main
+module underscoreConstName
+; Const identifiers should reject names that start with an underscore.
+const _CONST 100
+moduleEnd
+entryEnd

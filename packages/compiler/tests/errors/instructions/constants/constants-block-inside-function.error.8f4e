@@ -1,0 +1,13 @@
+8f4e/v1
+
+entry main
+module constantsBlockHost
+moduleEnd
+entryEnd
+
+function constantsBlockInsideFunction
+; constants blocks should not be nested in functions.
+constants nested
+const X 1
+constantsEnd
+functionEnd

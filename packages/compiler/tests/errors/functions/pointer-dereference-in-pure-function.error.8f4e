@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module invalidFunctionHost
+moduleEnd
+entryEnd
+
+function invalid
+; Pointer dereference is memory IO and requires #impure.
+param float* x
+push *x
+functionEnd float
