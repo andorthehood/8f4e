@@ -38,6 +38,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: moduleResult.requiredMemoryBytesByRegion,
+		testModuleIds: moduleResult.testModuleIds,
 		testAssertions: moduleResult.testAssertions,
 	};
 }

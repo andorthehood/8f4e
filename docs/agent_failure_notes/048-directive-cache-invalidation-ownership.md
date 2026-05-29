@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Directive cache invalidation ownership
 agent: Codex
-model: GPT-5
+model: GPT-5.5 (high)
 date: 2026-05-06
 ---
 

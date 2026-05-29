@@ -8,8 +8,6 @@ export {
 	getProjectBlockType,
 	getProjectCloserKeyword,
 	getProjectOpenerKeyword,
-	hasProjectTestModule,
-	isProjectTestModule,
 	parse8f4eProject,
 	pickProjectCompilerBlocks,
 } from './project';

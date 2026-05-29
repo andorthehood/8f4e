@@ -90,6 +90,8 @@ export type CompileResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
+	/** Source module ids marked with #test during AST construction. */
+	testModuleIds?: string[];
 	testAssertions?: TestAssertionMetadata[];
 	requiredMemoryBytes: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;

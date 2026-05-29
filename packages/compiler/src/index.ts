@@ -235,6 +235,7 @@ export default function compile(
 	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
 		parseModuleOrConstantsAST(code, lineMetadata, cache, `module:${index}`)
 	);
+	const testModuleIds = astModules.filter(isTestModuleAST).map(ast => ast.id);
 	const activeAstModules = options.includeTestRunner ? astModules : astModules.filter(ast => !isTestModuleAST(ast));
 	assertUniqueModuleIds(activeAstModules);
 	const hasAssertInstruction =
@@ -429,6 +430,7 @@ export default function compile(
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
+		...(testModuleIds.length > 0 ? { testModuleIds } : {}),
 		...(testAssertions.length > 0 ? { testAssertions } : {}),
 		requiredMemoryBytes,
 		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
