@@ -463,6 +463,18 @@ describe('parseArgument', () => {
 			},
 			intermoduleIds: [],
 		});
+		expect(parseArgument('4143.5689/SAMPLE_RATE')).toEqual({
+			type: ArgumentType.COMPILE_TIME_EXPRESSION,
+			left: { type: ArgumentType.LITERAL, value: 4143.5689, isInteger: false },
+			operator: '/',
+			right: {
+				type: ArgumentType.IDENTIFIER,
+				value: 'SAMPLE_RATE',
+				referenceKind: 'constant',
+				scope: 'local',
+			},
+			intermoduleIds: [],
+		});
 		expect(parseArgument('SIZE*sizeof(name)')).toEqual({
 			type: ArgumentType.COMPILE_TIME_EXPRESSION,
 			left: {

@@ -2,6 +2,8 @@
 
 module saw
 
+use env
+
 float default 0.5 ;Hz 
 float* frequency &default
 float out
@@ -11,6 +13,7 @@ push out
 push *frequency
 push SAMPLE_RATE
 castToFloat
+ensureNonZero
 div
 add
 store
@@ -25,3 +28,9 @@ store
 ifEnd
 
 moduleEnd
+
+constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd

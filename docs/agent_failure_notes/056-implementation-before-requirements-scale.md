@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Implementation before requirements scale
 agent: Codex
-model: GPT-5
+model: GPT-5.5 (high)
 date: 2026-05-27
 ---
 

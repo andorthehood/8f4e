@@ -1,3 +1,5 @@
+8f4e/v1
+
 module scope
 use env
 float* in
@@ -8,8 +10,11 @@ int _counter
 
 ; @plot &buffer count(buffer)
 push _counter 
+castToFloat
 push SAMPLE_RATE
+castToFloat
 push RATE
+ensureNonZero
 div
 greaterThan
 if
@@ -50,3 +55,9 @@ add
 store
 
 moduleEnd
+
+constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd

@@ -27,6 +27,7 @@ export { default as signedLEB128 } from './encoding/signedLEB128';
 export { default as unsignedLEB128 } from './encoding/unsignedLEB128';
 export { default as createExportSection } from './export/createExportSection';
 export { default as createFunctionExport } from './export/createFunctionExport';
+export { default as createFunctionImport } from './import/createFunctionImport';
 export { default as createImportSection } from './import/createImportSection';
 export { default as createMemoryImport } from './import/createMemoryImport';
 export { default as f32load } from './load/f32load';

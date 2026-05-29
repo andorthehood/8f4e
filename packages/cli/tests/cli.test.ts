@@ -12,6 +12,18 @@ const testDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDir, '..');
 const fixturePath = path.join(testDir, 'fixtures', 'minimal.8f4e');
 const runtimeFixturePath = path.join(testDir, 'fixtures', 'runtimeInspect.8f4e');
+const testPassingFixturePath = path.join(testDir, 'fixtures', 'testPassing.8f4e');
+const testFailingFixturePath = path.join(testDir, 'fixtures', 'testFailing.8f4e');
+const wrapPointerModulePath = path.resolve(
+	packageRoot,
+	'..',
+	'examples',
+	'src',
+	'modules',
+	'functions',
+	'memory',
+	'wrapPointer.8f4em'
+);
 const runtimeBytesPath = path.join(testDir, 'fixtures', 'runtimeBytes.bin');
 const tmpDir = path.join(testDir, '.tmp');
 const tracePath = path.join(tmpDir, 'audioBuffer.trace.json');
@@ -115,6 +127,70 @@ describe('cli', () => {
 
 	it('fails when run is called without any --dump', async () => {
 		await expect(execCli(['run', runtimeFixturePath, '--cycles', '2'])).rejects.toThrow('Command failed');
+	});
+
+	it('runs tests declared in a project file', async () => {
+		const { stdout } = await execCli(['test', testPassingFixturePath]);
+
+		expect(stdout).toBe('Ran 1 assertion.\n');
+	});
+
+	it('reports assertion failures from project tests', async () => {
+		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
+			stderr: expect.stringContaining('addFails:6 expected 4, received 3'),
+		});
+	});
+
+	it('detects test directives with trailing semicolon comments', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const commentedTestPath = path.join(tmpDir, 'commentedTest.8f4e');
+		await fs.writeFile(
+			commentedTestPath,
+			['8f4e/v1', '', 'module commentedTest', '#test ; inline comment', 'push 1', 'assert 1', 'moduleEnd'].join('\n')
+		);
+
+		const { stdout } = await execCli(['test', commentedTestPath]);
+
+		expect(stdout).toBe('Ran 1 assertion.\n');
+	});
+
+	it('runs embedded tests declared in an example module file', async () => {
+		const { stdout } = await execCli(['test', wrapPointerModulePath]);
+
+		expect(stdout).toBe('Ran 3 assertions.\n');
+	});
+
+	it('uses mock blocks only when running tests', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const mockTestPath = path.join(tmpDir, 'mockDependency.8f4e');
+		await fs.writeFile(
+			mockTestPath,
+			[
+				'8f4e/v1',
+				'',
+				'module target',
+				'#test',
+				'int* ptr &dependency:value',
+				'push *ptr',
+				'assert 42',
+				'moduleEnd',
+				'',
+				'module dependency',
+				'#mock ; test-only dependency',
+				'int value 42',
+				'moduleEnd',
+			].join('\n')
+		);
+
+		const { stdout } = await execCli(['test', mockTestPath]);
+
+		expect(stdout).toBe('Ran 1 assertion.\n');
+	});
+
+	it('runs test files matched by a glob and skips files without #test modules', async () => {
+		const { stdout } = await execCli(['test', '../examples/src/modules/functions/memory/*.8f4em']);
+
+		expect(stdout).toBe('Ran 3 assertions in 1 file.\n');
 	});
 
 	it('captures raw buffer bytes across repeated cycle windows', async () => {

@@ -1,4 +1,9 @@
-import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-spec';
+import type {
+	CompileOptions,
+	CompiledFunctionLookup,
+	CompiledModuleLookup,
+	TestAssertionMetadata,
+} from '@8f4e/compiler-spec';
 import type { ProjectBlockType, ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
 
 export type { ProjectCodeBlock, ProjectInput };
@@ -17,6 +22,9 @@ export interface CompileProjectResult {
 	compiledFunctions?: CompiledFunctionLookup;
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
+	requiredMemoryBytesByRegion?: Record<string, number>;
+	testModuleIds?: string[];
+	testAssertions?: TestAssertionMetadata[];
 }
 
 export type BlockTypeValue = ProjectBlockType;

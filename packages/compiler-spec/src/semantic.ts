@@ -8,6 +8,7 @@ import type {
 } from './arguments';
 import type {
 	ArrayMemoryDeclarationLine,
+	AssertLine,
 	CallLine,
 	CompilerASTLine,
 	ConstLine,
@@ -23,7 +24,7 @@ import type {
 	RegionLine,
 	UseLine,
 } from './ast';
-import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
+import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry, TestAssertionMetadata } from './compiled';
 import type { FunctionSignature } from './functionTypes';
 import type {
 	ArrayDeclarationInstruction,
@@ -81,6 +82,11 @@ export type Consts = Record<string, Const>;
 export type NormalizedArgumentLiteral = ArgumentLiteral & {
 	/** Address metadata when semantic normalization resolves this literal from an address expression. */
 	address?: AddressMetadata;
+};
+
+export type NormalizedIntegerArgumentLiteral = NormalizedArgumentLiteral & {
+	isInteger: true;
+	isFloat64?: false;
 };
 
 /** Resolved scalar local variable slot and type metadata for function compilation. */
@@ -167,6 +173,9 @@ export interface CompilationContext {
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
+	testExecution?: boolean;
+	testAssertions?: TestAssertionMetadata[];
+	assertFailureFunctionIndex?: number;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;
 }
@@ -269,6 +278,10 @@ export type NormalizedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
 	arguments: [NormalizedArgumentLiteral];
 };
 
+export type NormalizedAssertLine = Omit<AssertLine, 'arguments'> & {
+	arguments: [NormalizedIntegerArgumentLiteral];
+};
+
 export type ArrayDeclarationInitializerArgument =
 	| ArgumentCompileTimeExpression
 	| ArgumentIdentifier
@@ -356,19 +369,21 @@ export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstL
 	? NormalizedConstLine
 	: TLine extends DefaultLine
 		? NormalizedDefaultLine | DefaultLine
-		: TLine extends CallLine
-			? ResolvedCallLine | CallLine
-			: TLine extends MapLine
-				? NormalizedMapLine | MapLine
-				: TLine extends LocalSetLine
-					? ResolvedLocalSetLine
-					: TLine extends PushLine
-						? NormalizedPushLine
-						: TLine extends MemoryCopyLine
-							? NormalizedMemoryCopyLine | MemoryCopyLine
-							: TLine extends ArrayDeclarationLine
-								? ArrayDeclarationLine
-								: TLine;
+		: TLine extends AssertLine
+			? NormalizedAssertLine | AssertLine
+			: TLine extends CallLine
+				? ResolvedCallLine | CallLine
+				: TLine extends MapLine
+					? NormalizedMapLine | MapLine
+					: TLine extends LocalSetLine
+						? ResolvedLocalSetLine
+						: TLine extends PushLine
+							? NormalizedPushLine
+							: TLine extends MemoryCopyLine
+								? NormalizedMemoryCopyLine | MemoryCopyLine
+								: TLine extends ArrayDeclarationLine
+									? ArrayDeclarationLine
+									: TLine;
 
 export const BlockType = {
 	MODULE: 0,

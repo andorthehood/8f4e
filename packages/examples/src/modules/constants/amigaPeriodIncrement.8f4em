@@ -42,3 +42,9 @@ const A#3	29557.4583/SAMPLE_RATE
 const B3	31388.4513/SAMPLE_RATE
 
 constantsEnd
+
+constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd
