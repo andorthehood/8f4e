@@ -36,6 +36,7 @@ import { getError } from './compilerError';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 
 import type {
+	AssertionMetadata,
 	CompileOptions,
 	CompileInput,
 	CompileResult,
@@ -51,7 +52,6 @@ import type {
 	ModuleAST,
 	Namespaces,
 	ParsedLineMetadata,
-	TestAssertionMetadata,
 } from '@8f4e/compiler-spec';
 
 type ExpandedCompilerSource = {
@@ -88,8 +88,8 @@ export function compileModules(
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
 	internalAllocator?: { nextByteAddress: number },
-	testOptions: {
-		testAssertions?: TestAssertionMetadata[];
+	assertOptions: {
+		assertions?: AssertionMetadata[];
 		assertFailureFunctionIndex?: number;
 	} = {}
 ): CompiledModule[] {
@@ -112,7 +112,7 @@ export function compileModules(
 			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
 		const module = compileModule(ast, ns, moduleStartingByteAddress, index, compiledFunctions, allocator, {
 			...options,
-			...testOptions,
+			...assertOptions,
 		});
 		return module;
 	});
@@ -233,10 +233,6 @@ function parseFunctionAST(
 	return ast;
 }
 
-function createGroupNameList(inputGroupNames: string[], includeTestRunner: boolean): string[] {
-	return inputGroupNames.filter(groupName => groupName !== 'test' || includeTestRunner);
-}
-
 export default function compile(
 	input: CompileInput,
 	options: CompileOptions,
@@ -295,28 +291,24 @@ export default function compile(
 	const astConstants = expandedConstants.map(({ code, lineMetadata, cacheKey }) =>
 		parseConstantsAST(code, lineMetadata, cache, cacheKey)
 	);
-	const testModuleIds = astModuleEntries.filter(({ groupName }) => groupName === 'test').map(({ ast }) => ast.id);
-	const activeModuleEntries = astModuleEntries.filter(entry => options.includeTestRunner || entry.groupName !== 'test');
-	const groupNames = createGroupNameList(inputGroupNames, options.includeTestRunner === true);
-	const activeAstModules = activeModuleEntries.map(({ ast }) => ast);
-	const activeModuleGroupNames = activeModuleEntries.map(({ groupName }) => groupName);
-	assertUniqueModuleIds(activeAstModules);
-	const hasAssertInstruction =
-		options.includeTestRunner === true &&
-		activeAstModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
+	const groupNames = inputGroupNames;
+	const astModules = astModuleEntries.map(({ ast }) => ast);
+	const moduleGroupNames = astModuleEntries.map(({ groupName }) => groupName);
+	assertUniqueModuleIds(astModules);
+	const hasAssertInstruction = astModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
 	const importedFunctionCount = hasAssertInstruction ? 1 : 0;
 	const assertFailureFunctionIndex = hasAssertInstruction ? 0 : undefined;
 	const assertFailureTypeIndex = 3;
 	const builtInFunctionCount = 2 + groupNames.length;
 	const userFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
-	const testAssertions: TestAssertionMetadata[] = [];
+	const assertions: AssertionMetadata[] = [];
 
-	const namespaceAsts = [...activeAstModules, ...astConstants];
+	const namespaceAsts = [...astModules, ...astConstants];
 	const namespaces = collectNamespacesFromASTs(
 		namespaceAsts,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
-		activeAstModules,
+		astModules,
 		options
 	);
 
@@ -352,7 +344,7 @@ export default function compile(
 
 	// Compile all modules in input order so editor layout can drive execution order.
 	const compiledModules = compileModules(
-		activeAstModules,
+		astModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -361,11 +353,11 @@ export default function compile(
 		compiledFunctionsMap,
 		internalAllocator,
 		{
-			...(hasAssertInstruction ? { testAssertions, assertFailureFunctionIndex } : {}),
+			...(hasAssertInstruction ? { assertions, assertFailureFunctionIndex } : {}),
 		}
 	).map((module, index) => ({
 		...module,
-		executionGroupName: activeModuleGroupNames[index],
+		executionGroupName: moduleGroupNames[index],
 	}));
 
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
@@ -486,8 +478,7 @@ export default function compile(
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
-		...(testModuleIds.length > 0 ? { testModuleIds } : {}),
-		...(testAssertions.length > 0 ? { testAssertions } : {}),
+		...(assertions.length > 0 ? { assertions } : {}),
 		requiredMemoryBytes,
 		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
 		cache,

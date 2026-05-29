@@ -58,7 +58,6 @@ import param from './param';
 import call from './call';
 import skipExecution from './skipExecution';
 import initOnly from './initOnly';
-import test from './test';
 import mock from './mock';
 import impure from './impure';
 import exportFunction from './exportFunction';
@@ -139,7 +138,6 @@ const instructions = {
 	call,
 	'#skipExecution': skipExecution,
 	'#initOnly': initOnly,
-	'#test': test,
 	'#mock': mock,
 	'#impure': impure,
 	'#export': exportFunction,

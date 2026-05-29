@@ -78,11 +78,6 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('#impure', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
 	});
 
-	it('accepts bare #test and rejects any arguments', () => {
-		expect(() => validateInstructionArguments('#test', [])).not.toThrow();
-		expect(() => validateInstructionArguments('#test', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
-	});
-
 	it('accepts bare #mock and rejects any arguments', () => {
 		expect(() => validateInstructionArguments('#mock', [])).not.toThrow();
 		expect(() => validateInstructionArguments('#mock', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);

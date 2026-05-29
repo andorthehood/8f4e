@@ -37,7 +37,6 @@ describe('execution groups', () => {
 
 		expect(instance.exports.cycle).toBeUndefined();
 		expect(instance.exports.initOnly).toBeUndefined();
-		expect(instance.exports.runTests).toBeUndefined();
 		expect(instance.exports.main).toEqual(expect.any(Function));
 		expect(instance.exports.aux).toEqual(expect.any(Function));
 

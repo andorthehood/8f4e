@@ -34,7 +34,7 @@ import type {
 	InstructionCompiler,
 	ModuleCompilationContext,
 	Namespaces,
-	TestAssertionMetadata,
+	AssertionMetadata,
 } from '@8f4e/compiler-spec';
 import type { Instruction } from './instructionCompilers';
 
@@ -96,7 +96,7 @@ export function compileModule(
 	functions?: FunctionMetadataLookup,
 	internalAllocator = { nextByteAddress: 0 },
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> & {
-		testAssertions?: TestAssertionMetadata[];
+		assertions?: AssertionMetadata[];
 		assertFailureFunctionIndex?: number;
 	} = {}
 ): CompiledModule {
@@ -128,7 +128,7 @@ export function compileModule(
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
-		testAssertions: options.testAssertions,
+		assertions: options.assertions,
 		assertFailureFunctionIndex: options.assertFailureFunctionIndex,
 	});
 
@@ -175,7 +175,6 @@ export function compileModule(
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
 		initOnlyExecution: context.initOnlyExecution,
-		...(context.testExecution ? { testExecution: true } : {}),
 	};
 }
 

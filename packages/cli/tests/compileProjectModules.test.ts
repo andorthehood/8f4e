@@ -49,7 +49,7 @@ describe('compileProjectModules', () => {
 		);
 	});
 
-	it('returns test module ids reported by parsed compiler metadata', () => {
+	it('preserves explicit execution groups on compiled modules', () => {
 		const result = compileProjectModules(
 			[
 				{
@@ -58,12 +58,11 @@ describe('compileProjectModules', () => {
 				},
 			],
 			{
-				compilerOptions: { includeTestRunner: true, startingMemoryWordAddress: 0 },
+				compilerOptions: { startingMemoryWordAddress: 0 },
 				includeWasm: false,
 			}
 		);
 
-		expect(result.testModuleIds).toEqual(['addWorks']);
 		expect(result.compiledModules?.addWorks.executionGroupName).toBe('test');
 	});
 
@@ -101,12 +100,13 @@ describe('compileProjectModules', () => {
 				},
 			],
 			{
-				compilerOptions: { includeTestRunner: true, startingMemoryWordAddress: 0 },
+				compilerOptions: { startingMemoryWordAddress: 0 },
+				includeMocks: true,
 				includeWasm: false,
 			}
 		);
 
-		expect(result.testAssertions).toEqual([
+		expect(result.assertions).toEqual([
 			expect.objectContaining({
 				moduleId: 'target',
 				expected: 42,

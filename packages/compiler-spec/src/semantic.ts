@@ -24,7 +24,7 @@ import type {
 	RegionLine,
 	UseLine,
 } from './ast';
-import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry, TestAssertionMetadata } from './compiled';
+import type { AssertionMetadata, FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
 import type { FunctionSignature } from './functionTypes';
 import type {
 	ArrayDeclarationInstruction,
@@ -173,8 +173,7 @@ export interface CompilationContext {
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
-	testExecution?: boolean;
-	testAssertions?: TestAssertionMetadata[];
+	assertions?: AssertionMetadata[];
 	assertFailureFunctionIndex?: number;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;
