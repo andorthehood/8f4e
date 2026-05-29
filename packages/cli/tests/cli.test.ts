@@ -12,6 +12,18 @@ const testDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDir, '..');
 const fixturePath = path.join(testDir, 'fixtures', 'minimal.8f4e');
 const runtimeFixturePath = path.join(testDir, 'fixtures', 'runtimeInspect.8f4e');
+const testPassingFixturePath = path.join(testDir, 'fixtures', 'testPassing.8f4e');
+const testFailingFixturePath = path.join(testDir, 'fixtures', 'testFailing.8f4e');
+const wrapPointerModulePath = path.resolve(
+	packageRoot,
+	'..',
+	'examples',
+	'src',
+	'modules',
+	'functions',
+	'memory',
+	'wrapPointer.8f4em'
+);
 const runtimeBytesPath = path.join(testDir, 'fixtures', 'runtimeBytes.bin');
 const tmpDir = path.join(testDir, '.tmp');
 const tracePath = path.join(tmpDir, 'audioBuffer.trace.json');
@@ -115,6 +127,24 @@ describe('cli', () => {
 
 	it('fails when run is called without any --dump', async () => {
 		await expect(execCli(['run', runtimeFixturePath, '--cycles', '2'])).rejects.toThrow('Command failed');
+	});
+
+	it('runs tests declared in a project file', async () => {
+		const { stdout } = await execCli(['test', testPassingFixturePath]);
+
+		expect(stdout).toBe('Ran 1 assertion.\n');
+	});
+
+	it('reports assertion failures from project tests', async () => {
+		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
+			stderr: expect.stringContaining('addFails:5 expected 4, received 3'),
+		});
+	});
+
+	it('runs embedded tests declared in an example module file', async () => {
+		const { stdout } = await execCli(['test', wrapPointerModulePath]);
+
+		expect(stdout).toBe('Ran 3 assertions.\n');
 	});
 
 	it('captures raw buffer bytes across repeated cycle windows', async () => {

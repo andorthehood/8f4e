@@ -1,7 +1,7 @@
 import compile from '@8f4e/compiler';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
-import type { CompileOptions, CompiledModuleLookup } from '@8f4e/compiler-spec';
+import type { CompileOptions, CompiledModuleLookup, TestAssertionMetadata } from '@8f4e/compiler-spec';
 import type { ProjectCodeBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
@@ -14,6 +14,8 @@ interface CompileProjectModulesResult {
 	compiledModules?: CompiledModuleLookup;
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
+	requiredMemoryBytesByRegion?: Record<string, number>;
+	testAssertions?: TestAssertionMetadata[];
 }
 
 export default function compileProjectModules(
@@ -29,6 +31,7 @@ export default function compileProjectModules(
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
 			requiredMemoryBytes: 0,
+			testAssertions: [],
 		};
 	}
 
@@ -43,5 +46,7 @@ export default function compileProjectModules(
 		compiledModules: includeModules ? result.compiledModules : undefined,
 		compiledWasm: includeWasm ? Buffer.from(result.codeBuffer).toString('base64') : undefined,
 		requiredMemoryBytes: result.requiredMemoryBytes,
+		requiredMemoryBytesByRegion: result.requiredMemoryBytesByRegion,
+		testAssertions: result.testAssertions ?? [],
 	};
 }
