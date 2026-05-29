@@ -29,7 +29,7 @@
 				}
 			],
 			"options": {
-				"command": "node ./scripts/run-module-tests.mjs",
+				"command": "node ../cli/bin/cli.js test \"src/modules/**/*.8f4em\"",
 				"cwd": "{projectRoot}"
 			}
 		},
