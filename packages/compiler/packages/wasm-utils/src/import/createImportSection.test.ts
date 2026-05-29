@@ -6,7 +6,7 @@ import createImportSection from './createImportSection';
 import { Section } from '../section';
 
 test('createImportSection wraps imports correctly', () => {
-	const imports = [createMemoryImport('js', 'memory')];
+	const imports = [createMemoryImport('host', 'memory')];
 	const section = createImportSection(imports);
 	expect(section[0]).toBe(Section.IMPORT);
 });

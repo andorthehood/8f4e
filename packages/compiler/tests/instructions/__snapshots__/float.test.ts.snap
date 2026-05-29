@@ -134,7 +134,7 @@ exports[`float: anonymous float with negative literal > if the generated AST, WA
 exports[`float: anonymous float with negative literal > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -301,7 +301,7 @@ exports[`float: bare anonymous zero-initialized allocation > if the generated AS
 exports[`float: bare anonymous zero-initialized allocation > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -500,7 +500,7 @@ exports[`float: with constant identifier (anonymous allocation) > if the generat
 exports[`float: with constant identifier (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -679,7 +679,7 @@ exports[`float: with literal (anonymous allocation) > if the generated AST, WAT 
 exports[`float: with literal (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0

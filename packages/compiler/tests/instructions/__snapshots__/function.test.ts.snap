@@ -123,7 +123,7 @@ exports[`function returns constant > if the generated AST, WAT and memory map ma
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (result i32)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
@@ -358,7 +358,7 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (param i32) (result i32)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0
@@ -653,7 +653,7 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (param i32 i32) (result i32)))
-  (import "js" "memory" (memory (;0;) 1 1))
+  (import "host" "memory" (memory (;0;) 1 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 0

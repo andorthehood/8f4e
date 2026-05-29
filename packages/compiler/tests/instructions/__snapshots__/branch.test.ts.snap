@@ -139,7 +139,7 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
 exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     block  ;; label = @1
       br 1 (;@0;)

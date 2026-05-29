@@ -215,14 +215,14 @@ describe('compileToAST', () => {
 	});
 
 	it('constructs imported function metadata from the source-block parse path', () => {
-		const ast = compileToAST(['function hostLog', '#import "host-api" "log.value"', 'param int value', 'functionEnd']);
+		const ast = compileToAST(['function hostLog', '#import "log.value"', 'param int value', 'functionEnd']);
 
 		expect(ast).toMatchObject({
 			type: 'function',
 			id: 'hostLog',
 			importLine: { instruction: '#import' },
 			import: {
-				moduleName: 'host-api',
+				moduleName: 'host',
 				fieldName: 'log.value',
 			},
 			signature: {

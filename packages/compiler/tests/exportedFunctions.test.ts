@@ -20,7 +20,7 @@ async function instantiate(functions: Module[]) {
 		defaultOptions
 	);
 	const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-		js: { memory: new WebAssembly.Memory({ initial: 1, maximum: 1 }) },
+		host: { memory: new WebAssembly.Memory({ initial: 1, maximum: 1 }) },
 	});
 	return { result, exports: instance.exports };
 }

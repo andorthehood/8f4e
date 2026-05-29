@@ -45,7 +45,7 @@ moduleEnd
 		const exportKeys = Object.keys(
 			(
 				await WebAssembly.instantiate(firstResult.codeBuffer, {
-					js: { memory: new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }) },
+					host: { memory: new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }) },
 				})
 			).instance.exports as Record<string, unknown>
 		);

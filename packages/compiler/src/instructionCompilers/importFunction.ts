@@ -1,4 +1,4 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME, ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 
@@ -18,8 +18,8 @@ const importFunction: InstructionCompiler<ImportLine> = function (line, context)
 	}
 
 	context.currentFunctionImport = {
-		moduleName: line.arguments[0].value,
-		fieldName: line.arguments[1].value,
+		moduleName: DEFAULT_HOST_IMPORT_MODULE_NAME,
+		fieldName: line.arguments[0].value,
 	};
 	context.currentFunctionIsImpure = true;
 

@@ -10,7 +10,7 @@ export default async function createModule(
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
 	const { instance } = (await WebAssembly.instantiate(codeBuffer, {
-		js: {
+		host: {
 			memory: memoryRef,
 		},
 	})) as unknown as { instance: WebAssembly.Instance; module: WebAssembly.Module };

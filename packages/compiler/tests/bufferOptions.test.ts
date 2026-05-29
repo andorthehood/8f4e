@@ -219,7 +219,7 @@ describe('buffer options integration tests', () => {
 
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const instance = await WebAssembly.instantiate(result.codeBuffer, {
-				js: { memory: memoryRef },
+				host: { memory: memoryRef },
 			});
 
 			// Verify all expected exports exist
@@ -245,7 +245,7 @@ describe('buffer options integration tests', () => {
 
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const instance = await WebAssembly.instantiate(result.codeBuffer, {
-				js: { memory: memoryRef },
+				host: { memory: memoryRef },
 			});
 
 			// Verify all expected exports exist
@@ -268,7 +268,7 @@ describe('buffer options integration tests', () => {
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const dataView = new DataView(memoryRef.buffer);
 			const instance = await WebAssembly.instantiate(result.codeBuffer, {
-				js: { memory: memoryRef },
+				host: { memory: memoryRef },
 			});
 
 			// Initialize memory
@@ -308,7 +308,7 @@ describe('buffer options integration tests', () => {
 			const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 			const dataView = new DataView(memoryRef.buffer);
 			const instance = await WebAssembly.instantiate(result.codeBuffer, {
-				js: { memory: memoryRef },
+				host: { memory: memoryRef },
 			});
 
 			// Initialize memory
@@ -350,7 +350,7 @@ describe('buffer options integration tests', () => {
 				const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 				const dataView = new DataView(memoryRef.buffer);
 				const instance = await WebAssembly.instantiate(result.codeBuffer, {
-					js: { memory: memoryRef },
+					host: { memory: memoryRef },
 				});
 
 				(instance.instance.exports.initDefaults as CallableFunction)();

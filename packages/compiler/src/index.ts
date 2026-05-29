@@ -20,7 +20,12 @@ import {
 	WASM_MEMORY_PAGE_SIZE,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { ErrorCode, getInstructionSpec, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import {
+	DEFAULT_HOST_IMPORT_MODULE_NAME,
+	ErrorCode,
+	getInstructionSpec,
+	GLOBAL_ALIGNMENT_BOUNDARY,
+} from '@8f4e/compiler-spec';
 
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
@@ -448,7 +453,13 @@ export default function compile(
 		const memorySizePages = Math.max(1, Math.ceil(requiredBytes / WASM_MEMORY_PAGE_SIZE));
 		const importName =
 			memoryIndex === 0 ? 'memory' : getCustomMemoryRegionName(options.memoryRegions ?? [], memoryIndex);
-		return createMemoryImport('js', importName, memorySizePages, memorySizePages, !options.disableSharedMemory);
+		return createMemoryImport(
+			DEFAULT_HOST_IMPORT_MODULE_NAME,
+			importName,
+			memorySizePages,
+			memorySizePages,
+			!options.disableSharedMemory
+		);
 	});
 	const functionImports = [
 		...(hasAssertInstruction ? [createFunctionImport('test', 'assertFailed', assertFailureTypeIndex)] : []),

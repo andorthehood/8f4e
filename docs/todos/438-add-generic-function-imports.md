@@ -22,7 +22,7 @@ Allow a function block to declare that it is implemented by the host:
 
 ```8f4e
 function hostLog
-#import env log
+#import log
 param int value
 functionEnd
 ```
@@ -31,12 +31,13 @@ Imported functions should be normal callable function symbols from the compiler'
 
 ## Design Decisions
 
-- `#import <module> <name>` is a function-level compiler directive.
+- `#import <name>` is a function-level compiler directive.
 - Imported functions use the existing `function` / `param` / `functionEnd` shape to define their signature.
 - Imported functions are callable through the existing `call` instruction.
 - Imported functions are implicitly impure.
 - Imported functions do not emit entries in the WebAssembly function section or code section.
 - Imported functions are emitted in the WebAssembly import section before defined functions.
+- Imported functions use the default WebAssembly host import module namespace `host`.
 - Defined function indexes must be offset by the number of imported functions.
 - `#import` and `#export` are mutually exclusive for now.
 - Imported function bodies are invalid. The block may contain only function directives, `param` lines, and `functionEnd`.
@@ -55,7 +56,7 @@ Imported functions should be normal callable function symbols from the compiler'
 - Add `#import` to function compiler directives.
 - Add a typed AST line for the import directive.
 - Validate the directive argument shape.
-- Decide whether import module/name arguments accept identifiers only or identifiers plus string literals.
+- Accept identifier or string-literal import field names.
 
 ### Step 2: Extend function metadata
 

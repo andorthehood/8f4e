@@ -36,7 +36,7 @@ type WebAssemblyApiLike = {
 	Memory: new (descriptor: { initial: number; maximum: number }) => WebAssemblyMemoryLike;
 	instantiate: (
 		bytes: Buffer,
-		imports: { js: Record<string, WebAssemblyMemoryLike>; test: { assertFailed: CallableFunction } }
+		imports: { host: Record<string, WebAssemblyMemoryLike>; test: { assertFailed: CallableFunction } }
 	) => Promise<{ instance: WebAssemblyInstanceLike }>;
 };
 
@@ -245,7 +245,7 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 		compileResult.requiredMemoryBytesByRegion
 	);
 	const { instance } = await getWebAssemblyApi().instantiate(Buffer.from(compileResult.compiledWasm, 'base64'), {
-		js: memoryImports,
+		host: memoryImports,
 		test: {
 			assertFailed(assertIndex: number, expected: number, received: number) {
 				failures.push({ assertIndex, expected, received });
