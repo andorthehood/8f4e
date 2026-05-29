@@ -3,7 +3,6 @@
 import { StateManager } from '@8f4e/state-manager';
 import { resolveSchemaConfigRoot } from '@8f4e/editor';
 
-import { resolveAudioWorkletRouting } from './audioRouting';
 import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runtimeValues';
 
 import type {
@@ -16,6 +15,12 @@ import type {
 
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
 const AUDIO_BUFFER_SIZE = 128;
+const AUDIO_BUFFER_ADDRESS_SCHEMA = {
+	anyOf: [
+		{ type: 'integer' as const, minimum: 0 },
+		{ type: 'string' as const, pattern: '^[^:\\s]+:[^:\\s]+$' },
+	],
+};
 
 const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	root: 'audioRuntime',
@@ -26,15 +31,107 @@ const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 		type: 'object',
 		properties: {
 			sampleRate: { type: 'number' },
+			audioOutBufferLAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
+			audioOutBufferRAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
+			audioInBufferLAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
 		},
 		additionalProperties: false,
 	},
 };
 
-function getSampleRate(editorConfig: EditorConfig): number {
-	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig);
+interface AudioWorkletRuntimeConfig {
+	sampleRate: number;
+	audioOutBufferLAddress?: number | string;
+	audioOutBufferRAddress?: number | string;
+	audioInBufferLAddress?: number | string;
+}
 
-	return typeof config.sampleRate === 'number' ? config.sampleRate : 48000;
+type AudioBufferConfigKey = 'audioOutBufferLAddress' | 'audioOutBufferRAddress' | 'audioInBufferLAddress';
+
+interface AudioOutputBufferRoute {
+	audioBufferWordAddress: number;
+	output: number;
+	channel: number;
+}
+
+interface AudioInputBufferRoute {
+	audioBufferWordAddress: number;
+	input: number;
+	channel: number;
+}
+
+function getAudioWorkletRuntimeConfig(editorConfig: EditorConfig): AudioWorkletRuntimeConfig {
+	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig) as Record<string, unknown>;
+
+	return {
+		sampleRate: typeof config.sampleRate === 'number' ? config.sampleRate : 48000,
+		audioOutBufferLAddress: getAudioBufferConfigValue(config, 'audioOutBufferLAddress'),
+		audioOutBufferRAddress: getAudioBufferConfigValue(config, 'audioOutBufferRAddress'),
+		audioInBufferLAddress: getAudioBufferConfigValue(config, 'audioInBufferLAddress'),
+	};
+}
+
+function getAudioBufferConfigValue(
+	config: Record<string, unknown>,
+	key: AudioBufferConfigKey
+): number | string | undefined {
+	const value = config[key];
+	return typeof value === 'number' || typeof value === 'string' ? value : undefined;
+}
+
+function getSampleRate(editorConfig: EditorConfig): number {
+	return getAudioWorkletRuntimeConfig(editorConfig).sampleRate;
+}
+
+export function resolveAudioBufferWordAddress(state: State, value: number | string | undefined): number | undefined {
+	if (typeof value === 'number') {
+		return Number.isInteger(value) && value >= 0 ? value : undefined;
+	}
+
+	const trimmedValue = value?.trim();
+	if (!trimmedValue) {
+		return undefined;
+	}
+
+	const numericAddress = Number(trimmedValue);
+	if (Number.isInteger(numericAddress) && numericAddress >= 0) {
+		return numericAddress;
+	}
+
+	const [moduleId, memoryId, ...extraSegments] = trimmedValue.split(':');
+	if (!moduleId || !memoryId || extraSegments.length > 0) {
+		return undefined;
+	}
+
+	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId]?.wordAlignedAddress;
+}
+
+export function getAudioOutputBuffers(state: State): AudioOutputBufferRoute[] {
+	const config = getAudioWorkletRuntimeConfig(state.editorConfig);
+	const leftAddress = resolveAudioBufferWordAddress(state, config.audioOutBufferLAddress);
+	const rightAddress = resolveAudioBufferWordAddress(state, config.audioOutBufferRAddress);
+	const buffers: AudioOutputBufferRoute[] = [];
+
+	if (leftAddress !== undefined) {
+		buffers.push({ audioBufferWordAddress: leftAddress, output: 0, channel: 0 });
+	}
+
+	if (rightAddress !== undefined) {
+		buffers.push({ audioBufferWordAddress: rightAddress, output: 0, channel: 1 });
+	}
+
+	return buffers;
+}
+
+export function getAudioInputBuffers(state: State): AudioInputBufferRoute[] {
+	const config = getAudioWorkletRuntimeConfig(state.editorConfig);
+	const leftAddress = resolveAudioBufferWordAddress(state, config.audioInBufferLAddress);
+
+	return leftAddress === undefined ? [] : [{ audioBufferWordAddress: leftAddress, input: 0, channel: 0 }];
+}
+
+function hasAudioInputBufferConfig(editorConfig: EditorConfig): boolean {
+	return getAudioWorkletRuntimeConfig(editorConfig).audioInBufferLAddress !== undefined;
 }
 
 // AudioWorklet Runtime Factory
@@ -70,8 +167,6 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	function syncCodeAndSettingsWithRuntime() {
-		const audioRoutes = resolveAudioWorkletRouting(state.graphicHelper.codeBlocks);
-
 		if (!audioWorklet || !audioContext) {
 			return;
 		}
@@ -82,44 +177,47 @@ export function audioWorkletRuntimeFactory(
 			return;
 		}
 
-		const audioOutputBuffers = audioRoutes.audioOutputs
-			.map(({ moduleId, memoryId, output, channel }) => {
-				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
-				return {
-					audioBufferWordAddress,
-					output,
-					channel,
-				};
-			})
-			.filter(
-				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
-					typeof audioBufferWordAddress !== 'undefined'
-			);
-
-		const audioInputBuffers = audioRoutes.audioInputs
-			.map(({ moduleId, memoryId, input, channel }) => {
-				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
-				return {
-					audioBufferWordAddress,
-					input,
-					channel,
-				};
-			})
-			.filter(
-				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
-					typeof audioBufferWordAddress !== 'undefined'
-			);
-
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
 				type: 'init',
 				memoryRef: memory,
 				codeBuffer: getCodeBuffer(),
-				audioOutputBuffers,
-				audioInputBuffers,
+				audioOutputBuffers: getAudioOutputBuffers(state),
+				audioInputBuffers: getAudioInputBuffers(state),
 			});
+		}
+	}
+
+	async function syncAudioInputSource() {
+		if (!audioContext || !audioWorklet) {
+			return;
+		}
+
+		if (!hasAudioInputBufferConfig(state.editorConfig)) {
+			if (mediaStreamSource) {
+				mediaStreamSource.disconnect();
+				mediaStreamSource = null;
+			}
+
+			if (mediaStream) {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				mediaStream.getTracks().forEach((track: any) => track.stop());
+				mediaStream = null;
+			}
+			return;
+		}
+
+		if (mediaStreamSource) {
+			return;
+		}
+
+		try {
+			// @ts-expect-error - navigator.mediaDevices not available in worker context during build
+			mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
+			mediaStreamSource.connect(audioWorklet);
+		} catch (error) {
+			console.error('Error accessing the microphone:', error);
 		}
 	}
 
@@ -159,16 +257,7 @@ export function audioWorkletRuntimeFactory(
 			}
 		};
 
-		if (resolveAudioWorkletRouting(state.graphicHelper.codeBlocks).audioInputs.length > 0) {
-			try {
-				// @ts-expect-error - navigator.mediaDevices not available in worker context during build
-				mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-				mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
-				mediaStreamSource.connect(audioWorklet);
-			} catch (error) {
-				console.error('Error accessing the microphone:', error);
-			}
-		}
+		await syncAudioInputSource();
 
 		audioWorklet.connect(audioContext.destination);
 
@@ -176,7 +265,7 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
-	store.subscribe('editorConfig.audioRuntime', onEditorConfigOrRoutingChanged);
+	store.subscribe('editorConfig.audioRuntime', onEditorConfigChanged);
 	events.on('mousedown', initAudioContext);
 
 	function tearDownAudioContext() {
@@ -202,7 +291,7 @@ export function audioWorkletRuntimeFactory(
 		}
 	}
 
-	function onEditorConfigOrRoutingChanged() {
+	function onEditorConfigChanged() {
 		if (!audioContext) {
 			return;
 		}
@@ -215,10 +304,9 @@ export function audioWorkletRuntimeFactory(
 			return;
 		}
 
+		void syncAudioInputSource();
 		syncCodeAndSettingsWithRuntime();
 	}
-
-	store.subscribe('graphicHelper.codeBlocks', onEditorConfigOrRoutingChanged);
 
 	if (!audioContext) {
 		showAudioPermissionDialog(
@@ -228,8 +316,7 @@ export function audioWorkletRuntimeFactory(
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		store.unsubscribe('editorConfig.audioRuntime', onEditorConfigOrRoutingChanged);
-		store.unsubscribe('graphicHelper.codeBlocks', onEditorConfigOrRoutingChanged);
+		store.unsubscribe('editorConfig.audioRuntime', onEditorConfigChanged);
 		events.off('mousedown', initAudioContext);
 
 		tearDownAudioContext();

@@ -8,6 +8,7 @@ export interface JSONSchemaLike {
 	oneOf?: readonly JSONSchemaLike[];
 	anyOf?: readonly JSONSchemaLike[];
 	minimum?: number;
+	pattern?: string;
 }
 
 export type EditorConfigPrimitiveValue = string | number | boolean;

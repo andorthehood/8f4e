@@ -797,6 +797,7 @@ paths such as:
 
 ```txt
 ; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config mainRuntime.sampleRate 50
 ```
 

@@ -14,26 +14,26 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse a runtime directive (~)', () => {
-		expect(parseBlockDirectives(['; ~audioOutput buffer 0 1'])).toEqual([
+		expect(parseBlockDirectives(['; ~customRuntime value 0 1'])).toEqual([
 			{
 				prefix: '~',
-				name: 'audioOutput',
-				args: ['buffer', '0', '1'],
+				name: 'customRuntime',
+				args: ['value', '0', '1'],
 				rawRow: 0,
-				sourceLine: '; ~audioOutput buffer 0 1',
+				sourceLine: '; ~customRuntime value 0 1',
 				isTrailing: false,
 			},
 		]);
 	});
 
 	it('should parse runtime directives with leading whitespace', () => {
-		expect(parseBlockDirectives(['  ; ~audioOutput buffer 0 1'])).toEqual([
+		expect(parseBlockDirectives(['  ; ~customRuntime value 0 1'])).toEqual([
 			{
 				prefix: '~',
-				name: 'audioOutput',
-				args: ['buffer', '0', '1'],
+				name: 'customRuntime',
+				args: ['value', '0', '1'],
 				rawRow: 0,
-				sourceLine: '  ; ~audioOutput buffer 0 1',
+				sourceLine: '  ; ~customRuntime value 0 1',
 				isTrailing: false,
 			},
 		]);
@@ -65,21 +65,21 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse runtime directives with no arguments', () => {
-		expect(parseBlockDirectives(['; ~audioOutput'])).toEqual([
-			{ prefix: '~', name: 'audioOutput', args: [], rawRow: 0, sourceLine: '; ~audioOutput', isTrailing: false },
+		expect(parseBlockDirectives(['; ~customRuntime'])).toEqual([
+			{ prefix: '~', name: 'customRuntime', args: [], rawRow: 0, sourceLine: '; ~customRuntime', isTrailing: false },
 		]);
 	});
 
 	it('should record the correct rawRow for each directive', () => {
-		const code = ['module test', '; @pos 5 10', 'push 1', '; ~audioOutput buffer 0 1', 'moduleEnd'];
+		const code = ['module test', '; @pos 5 10', 'push 1', '; ~customRuntime value 0 1', 'moduleEnd'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['5', '10'], rawRow: 1, sourceLine: '; @pos 5 10', isTrailing: false },
 			{
 				prefix: '~',
-				name: 'audioOutput',
-				args: ['buffer', '0', '1'],
+				name: 'customRuntime',
+				args: ['value', '0', '1'],
 				rawRow: 3,
-				sourceLine: '; ~audioOutput buffer 0 1',
+				sourceLine: '; ~customRuntime value 0 1',
 				isTrailing: false,
 			},
 		]);
@@ -107,16 +107,16 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse multiple directives from a block', () => {
-		const code = ['; @pos 0 0', '; @disabled', '; ~audioOutput buffer 0 1'];
+		const code = ['; @pos 0 0', '; @disabled', '; ~customRuntime value 0 1'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['0', '0'], rawRow: 0, sourceLine: '; @pos 0 0', isTrailing: false },
 			{ prefix: '@', name: 'disabled', args: [], rawRow: 1, sourceLine: '; @disabled', isTrailing: false },
 			{
 				prefix: '~',
-				name: 'audioOutput',
-				args: ['buffer', '0', '1'],
+				name: 'customRuntime',
+				args: ['value', '0', '1'],
 				rawRow: 2,
-				sourceLine: '; ~audioOutput buffer 0 1',
+				sourceLine: '; ~customRuntime value 0 1',
 				isTrailing: false,
 			},
 		]);

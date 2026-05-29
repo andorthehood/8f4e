@@ -130,6 +130,14 @@ function parseBoolean(value: string): boolean | undefined {
 }
 
 export function parseSchemaConfigValue(value: string, schema: JSONSchemaLike): EditorConfigPrimitiveValue {
+	const options = [...(schema.oneOf ?? []), ...(schema.anyOf ?? [])];
+	if (!schema.type && options.length > 0) {
+		const matchingOption = options.find(
+			option => validateSchemaConfigValue({ path: '', value, rawRow: 0, codeBlockId: '' }, option) === undefined
+		);
+		return matchingOption ? parseSchemaConfigValue(value, matchingOption) : value;
+	}
+
 	if (schema.type === 'integer' || schema.type === 'number') {
 		return Number(value);
 	}
@@ -142,6 +150,16 @@ export function parseSchemaConfigValue(value: string, schema: JSONSchemaLike): E
 }
 
 export function validateSchemaConfigValue(entry: EditorConfigEntry, schema: JSONSchemaLike): string | undefined {
+	const options = [...(schema.oneOf ?? []), ...(schema.anyOf ?? [])];
+	if (!schema.type && options.length > 0) {
+		const optionErrors = options.map(option => validateSchemaConfigValue(entry, option));
+		if (optionErrors.some(error => error === undefined)) {
+			return undefined;
+		}
+
+		return `@config ${entry.path}: invalid value '${entry.value}'`;
+	}
+
 	const parsedValue = parseSchemaConfigValue(entry.value, schema);
 
 	if (schema.enum && !schema.enum.includes(parsedValue)) {
@@ -165,6 +183,10 @@ export function validateSchemaConfigValue(entry: EditorConfigEntry, schema: JSON
 	}
 
 	if (schema.type === 'string' && typeof parsedValue !== 'string') {
+		return `@config ${entry.path}: invalid string value '${entry.value}'`;
+	}
+
+	if (schema.type === 'string' && schema.pattern && !new RegExp(schema.pattern).test(String(parsedValue))) {
 		return `@config ${entry.path}: invalid string value '${entry.value}'`;
 	}
 

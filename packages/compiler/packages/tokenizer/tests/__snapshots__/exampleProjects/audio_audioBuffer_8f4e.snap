@@ -32,14 +32,14 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 9,
-    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 10,
+    "lineNumberAfterMacroExpansion": 10,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 10,
-    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 11,
+    "lineNumberAfterMacroExpansion": 11,
     "instruction": "module",
     "arguments": [
       {
@@ -51,8 +51,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 12,
-    "lineNumberAfterMacroExpansion": 12,
+    "lineNumberBeforeMacroExpansion": 13,
+    "lineNumberAfterMacroExpansion": 13,
     "instruction": "use",
     "arguments": [
       {
@@ -67,8 +67,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 14,
-    "lineNumberAfterMacroExpansion": 14,
+    "lineNumberBeforeMacroExpansion": 15,
+    "lineNumberAfterMacroExpansion": 15,
     "instruction": "float",
     "arguments": [
       {
@@ -86,8 +86,8 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 15,
-    "lineNumberAfterMacroExpansion": 15,
+    "lineNumberBeforeMacroExpansion": 16,
+    "lineNumberAfterMacroExpansion": 16,
     "instruction": "float*",
     "arguments": [
       {
@@ -108,8 +108,8 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 16,
-    "lineNumberAfterMacroExpansion": 16,
+    "lineNumberBeforeMacroExpansion": 17,
+    "lineNumberAfterMacroExpansion": 17,
     "instruction": "float",
     "arguments": [
       {
@@ -122,8 +122,8 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 17,
-    "lineNumberAfterMacroExpansion": 17,
+    "lineNumberBeforeMacroExpansion": 18,
+    "lineNumberAfterMacroExpansion": 18,
     "instruction": "float",
     "arguments": [
       {
@@ -136,8 +136,8 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 19,
-    "lineNumberAfterMacroExpansion": 19,
+    "lineNumberBeforeMacroExpansion": 20,
+    "lineNumberAfterMacroExpansion": 20,
     "instruction": "use",
     "arguments": [
       {
@@ -152,8 +152,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 23,
-    "lineNumberAfterMacroExpansion": 23,
+    "lineNumberBeforeMacroExpansion": 24,
+    "lineNumberAfterMacroExpansion": 24,
     "instruction": "push",
     "arguments": [
       {
@@ -167,8 +167,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 24,
-    "lineNumberAfterMacroExpansion": 24,
+    "lineNumberBeforeMacroExpansion": 25,
+    "lineNumberAfterMacroExpansion": 25,
     "instruction": "push",
     "arguments": [
       {
@@ -180,8 +180,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 25,
-    "lineNumberAfterMacroExpansion": 25,
+    "lineNumberBeforeMacroExpansion": 26,
+    "lineNumberAfterMacroExpansion": 26,
     "instruction": "push",
     "arguments": [
       {
@@ -193,8 +193,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 26,
-    "lineNumberAfterMacroExpansion": 26,
+    "lineNumberBeforeMacroExpansion": 27,
+    "lineNumberAfterMacroExpansion": 27,
     "instruction": "push",
     "arguments": [
       {
@@ -208,14 +208,14 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 27,
-    "lineNumberAfterMacroExpansion": 27,
+    "lineNumberBeforeMacroExpansion": 28,
+    "lineNumberAfterMacroExpansion": 28,
     "instruction": "mul",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 28,
-    "lineNumberAfterMacroExpansion": 28,
+    "lineNumberBeforeMacroExpansion": 29,
+    "lineNumberAfterMacroExpansion": 29,
     "instruction": "push",
     "arguments": [
       {
@@ -227,38 +227,38 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 29,
-    "lineNumberAfterMacroExpansion": 29,
-    "instruction": "castToFloat",
-    "arguments": []
-  },
-  {
     "lineNumberBeforeMacroExpansion": 30,
     "lineNumberAfterMacroExpansion": 30,
-    "instruction": "ensureNonZero",
+    "instruction": "castToFloat",
     "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 31,
     "lineNumberAfterMacroExpansion": 31,
-    "instruction": "div",
+    "instruction": "ensureNonZero",
     "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 32,
     "lineNumberAfterMacroExpansion": 32,
-    "instruction": "add",
+    "instruction": "div",
     "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 33,
     "lineNumberAfterMacroExpansion": 33,
+    "instruction": "add",
+    "arguments": []
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 34,
+    "lineNumberAfterMacroExpansion": 34,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 36,
-    "lineNumberAfterMacroExpansion": 36,
+    "lineNumberBeforeMacroExpansion": 37,
+    "lineNumberAfterMacroExpansion": 37,
     "instruction": "push",
     "arguments": [
       {
@@ -270,8 +270,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 37,
-    "lineNumberAfterMacroExpansion": 37,
+    "lineNumberBeforeMacroExpansion": 38,
+    "lineNumberAfterMacroExpansion": 38,
     "instruction": "push",
     "arguments": [
       {
@@ -283,14 +283,14 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 38,
-    "lineNumberAfterMacroExpansion": 38,
+    "lineNumberBeforeMacroExpansion": 39,
+    "lineNumberAfterMacroExpansion": 39,
     "instruction": "greaterThan",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 39,
-    "lineNumberAfterMacroExpansion": 39,
+    "lineNumberBeforeMacroExpansion": 40,
+    "lineNumberAfterMacroExpansion": 40,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -300,8 +300,8 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 40,
-    "lineNumberAfterMacroExpansion": 40,
+    "lineNumberBeforeMacroExpansion": 41,
+    "lineNumberAfterMacroExpansion": 41,
     "instruction": "push",
     "arguments": [
       {
@@ -315,8 +315,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 41,
-    "lineNumberAfterMacroExpansion": 41,
+    "lineNumberBeforeMacroExpansion": 42,
+    "lineNumberAfterMacroExpansion": 42,
     "instruction": "push",
     "arguments": [
       {
@@ -328,14 +328,14 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 42,
-    "lineNumberAfterMacroExpansion": 42,
+    "lineNumberBeforeMacroExpansion": 43,
+    "lineNumberAfterMacroExpansion": 43,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 43,
-    "lineNumberAfterMacroExpansion": 43,
+    "lineNumberBeforeMacroExpansion": 44,
+    "lineNumberAfterMacroExpansion": 44,
     "instruction": "ifEnd",
     "arguments": [],
     "ifEndBlock": {
@@ -344,8 +344,8 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 45,
-    "lineNumberAfterMacroExpansion": 45,
+    "lineNumberBeforeMacroExpansion": 46,
+    "lineNumberAfterMacroExpansion": 46,
     "instruction": "push",
     "arguments": [
       {
@@ -359,8 +359,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 46,
-    "lineNumberAfterMacroExpansion": 46,
+    "lineNumberBeforeMacroExpansion": 47,
+    "lineNumberAfterMacroExpansion": 47,
     "instruction": "push",
     "arguments": [
       {
@@ -372,8 +372,8 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 49,
-    "lineNumberAfterMacroExpansion": 49,
+    "lineNumberBeforeMacroExpansion": 50,
+    "lineNumberAfterMacroExpansion": 50,
     "instruction": "call",
     "arguments": [
       {
@@ -385,20 +385,20 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 50,
-    "lineNumberAfterMacroExpansion": 50,
+    "lineNumberBeforeMacroExpansion": 51,
+    "lineNumberAfterMacroExpansion": 51,
     "instruction": "store",
-    "arguments": []
-  },
-  {
-    "lineNumberBeforeMacroExpansion": 52,
-    "lineNumberAfterMacroExpansion": 52,
-    "instruction": "moduleEnd",
     "arguments": []
   },
   {
     "lineNumberBeforeMacroExpansion": 53,
     "lineNumberAfterMacroExpansion": 53,
+    "instruction": "moduleEnd",
+    "arguments": []
+  },
+  {
+    "lineNumberBeforeMacroExpansion": 54,
+    "lineNumberAfterMacroExpansion": 54,
     "instruction": "module",
     "arguments": [
       {
