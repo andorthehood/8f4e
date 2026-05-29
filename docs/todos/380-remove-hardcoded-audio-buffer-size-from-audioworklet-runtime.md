@@ -97,3 +97,7 @@ Likely directions to evaluate:
 - [MDN: AudioWorkletProcessor.process()](https://developer.mozilla.org/en-US/docs/Web/API/AudioWorkletProcessor/process)
 - [MDN: Using AudioWorklet](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_AudioWorklet)
 
+## Progress Notes
+
+- 2026-05-29: Buffer execution was moved out of compiler-generated code and into user-authored `function buffer` exports for AudioWorklet examples. The AudioWorklet runtime now also reports the observed `audioBufferSize` and tolerates projects without a `buffer` export by using a no-op placeholder.
+- This TODO remains open because `packages/runtime-audio-worklet/src/runtimeDirectives.ts` still injects `const AUDIO_BUFFER_SIZE 128`, and examples still size audio buffers from `AUDIO_BUFFER_SIZE`.
