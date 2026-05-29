@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CompiledModuleLookup, Module } from '@8f4e/compiler-spec';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
-describe('compileAndUpdateMemory init-only reruns', () => {
+describe('compileAndUpdateMemory execution groups', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 
@@ -11,7 +11,6 @@ describe('compileAndUpdateMemory init-only reruns', () => {
 		{
 			code: `
 module setup
-#initOnly
 int base ${baseDefault}
 int derived 0
 push &derived
@@ -26,7 +25,7 @@ moduleEnd
 				.split('\n'),
 		},
 	];
-	const createInput = (modules: Module[]) => ({ groups: { main: modules } });
+	const createInput = (modules: Module[]) => ({ groups: { init: modules } });
 
 	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
 		base: compiledModules.setup.memoryMap.base.byteAddress / 4,
@@ -38,7 +37,7 @@ moduleEnd
 		({ default: compileAndUpdateMemory } = await import('../compileAndUpdateMemory'));
 	});
 
-	it('re-runs init-only modules when memory defaults change', async () => {
+	it('initializes defaults without running execution groups', async () => {
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(1)), compilerOptions);
 		const addresses = getAddresses(firstResult.compiledModules);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
@@ -51,30 +50,30 @@ moduleEnd
 			).instance.exports as Record<string, unknown>
 		);
 
-		expect(exportKeys).toContain('initOnly');
-		expect(firstResult.compiledModules.setup.initOnlyExecution).toBe(true);
+		expect(exportKeys).toContain('init');
+		expect(firstResult.compiledModules.setup.executionGroupName).toBe('init');
 		expect(firstResult.initOnlyReran).toBe(false);
 		expect(firstResult.astCacheStats).toEqual({ hits: 0, misses: 1 });
 		expect(memoryView[addresses.base]).toBe(1);
-		expect(memoryView[addresses.derived]).toBe(2);
+		expect(memoryView[addresses.derived]).toBe(0);
 
 		const secondResult = await compileAndUpdateMemory(createInput(createModules(10)), compilerOptions);
 		const updatedMemory = new Int32Array(secondResult.memoryRef.buffer);
 
-		expect(secondResult.initOnlyReran).toBe(true);
+		expect(secondResult.initOnlyReran).toBe(false);
 		expect(secondResult.astCacheStats).toEqual({ hits: 0, misses: 2 });
 		expect(updatedMemory[addresses.base]).toBe(10);
-		expect(updatedMemory[addresses.derived]).toBe(11);
+		expect(updatedMemory[addresses.derived]).toBe(0);
 	});
 
-	it('does not rerun init-only modules when defaults are unchanged', async () => {
+	it('does not run execution groups when defaults are unchanged', async () => {
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(3)), compilerOptions);
 		const addresses = getAddresses(firstResult.compiledModules);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
 
 		expect(firstResult.initOnlyReran).toBe(false);
 		expect(memoryView[addresses.base]).toBe(3);
-		expect(memoryView[addresses.derived]).toBe(4);
+		expect(memoryView[addresses.derived]).toBe(0);
 
 		memoryView[addresses.base] = 5;
 
@@ -84,7 +83,7 @@ moduleEnd
 		expect(secondResult.initOnlyReran).toBe(false);
 		expect(secondResult.astCacheStats).toEqual({ hits: 1, misses: 1 });
 		expect(secondMemory[addresses.base]).toBe(5);
-		expect(secondMemory[addresses.derived]).toBe(4);
+		expect(secondMemory[addresses.derived]).toBe(0);
 	});
 });
 

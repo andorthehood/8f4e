@@ -3,7 +3,7 @@ import { describe, test, expect } from 'vitest';
 import compile from '../src/index';
 
 describe('#skipExecution directive', () => {
-	test('module with #skipExecution is excluded from cycle dispatcher', () => {
+	test('module with #skipExecution is excluded from group dispatcher', () => {
 		const modules = [
 			{
 				code: `
@@ -40,7 +40,7 @@ moduleEnd
 		expect(result.compiledModules.normalModule).toBeDefined();
 		expect(result.compiledModules.skippedModule).toBeDefined();
 
-		// Verify both modules have cycle functions
+		// Verify both modules have main groups
 		expect(result.compiledModules.normalModule.cycleFunction).toBeDefined();
 		expect(result.compiledModules.skippedModule.cycleFunction).toBeDefined();
 
@@ -52,8 +52,8 @@ moduleEnd
 		expect(result.compiledModules.normalModule.skipExecutionInCycle).toBeFalsy();
 		expect(result.compiledModules.skippedModule.skipExecutionInCycle).toBe(true);
 
-		// The cycle function should only call normalModule
-		// We can verify this by checking the length of the cycle function
+		// The main group should only call normalModule
+		// We can verify this by checking the length of the main group
 		// A single call is 3 bytes (0x10 + 2-byte function index)
 		expect(result.codeBuffer).toBeDefined();
 	});

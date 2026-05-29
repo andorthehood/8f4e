@@ -18,19 +18,19 @@ import type { InstructionCompiler, NormalizedAssertLine } from '@8f4e/compiler-s
 
 /**
  * Instruction compiler for `assert`.
- * Calls the test failure import when the consumed integer does not equal the expected value.
+ * Calls the assertion failure import when the consumed integer does not equal the expected value.
  */
 const assert: InstructionCompiler<NormalizedAssertLine> = (line, context) => {
 	const expectedArg = line.arguments[0];
 
-	if (context.assertFailureFunctionIndex === undefined || context.testAssertions === undefined) {
+	if (context.assertFailureFunctionIndex === undefined || context.assertions === undefined) {
 		throw getError(ErrorCode.MISSING_ASSERT_FAILURE_HANDLER, line, context);
 	}
 
 	const expected = expectedArg.value;
-	const assertIndex = context.testAssertions.length;
+	const assertIndex = context.assertions.length;
 	const moduleId = context.namespace.moduleName ?? context.codeBlockId ?? '';
-	context.testAssertions.push({
+	context.assertions.push({
 		assertIndex,
 		moduleId,
 		lineNumber: line.lineNumberBeforeMacroExpansion + 1,

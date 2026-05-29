@@ -12,11 +12,10 @@ const defaultOptions = {
 	startingMemoryWordAddress: 1,
 	disableSharedMemory: true,
 	includeAST: true,
-	includeTestRunner: true,
 };
 
-async function instantiate(modules: Module[], functions?: Module[]) {
-	const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+async function instantiate(groups: Record<string, Module[]>, functions?: Module[]) {
+	const result = compile({ groups, functions: functions }, defaultOptions);
 	const failureCalls: Array<{ assertIndex: number; expected: number; received: number }> = [];
 	const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
@@ -34,44 +33,47 @@ async function instantiate(modules: Module[], functions?: Module[]) {
 		failureCalls,
 		exports: instance.exports as WebAssembly.Exports & {
 			initDefaults: CallableFunction;
-			cycle: CallableFunction;
-			runTests: CallableFunction;
+			main: CallableFunction;
+			test: CallableFunction;
 		},
 	};
 }
 
-describe('#test modules and assert runner', () => {
-	test('excludes #test modules from cycle and executes them from runTests', async () => {
-		const { exports, failureCalls, result } = await instantiate([
-			{
-				code: ['module production', 'moduleEnd'],
-			},
-			{
-				code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 4', 'moduleEnd'],
-			},
-		]);
+describe('execution groups and assert', () => {
+	test('executes test group modules from the test export', async () => {
+		const { exports, failureCalls, result } = await instantiate({
+			main: [
+				{
+					code: ['module production', 'moduleEnd'],
+				},
+			],
+			test: [
+				{
+					code: ['module addWorks', 'push 1', 'push 2', 'add', 'assert 4', 'moduleEnd'],
+				},
+			],
+		});
 
 		exports.initDefaults();
-		exports.cycle();
+		exports.main();
 
 		expect(failureCalls).toEqual([]);
 
-		exports.runTests();
+		exports.test();
 
 		expect(failureCalls).toEqual([{ assertIndex: 0, expected: 4, received: 3 }]);
-		expect(result.testAssertions).toEqual([
+		expect(result.assertions).toEqual([
 			{
 				assertIndex: 0,
 				moduleId: 'addWorks',
-				lineNumber: 6,
+				lineNumber: 5,
 				expected: 4,
 			},
 		]);
-		expect(result.testModuleIds).toEqual(['addWorks']);
-		expect(result.compiledModules.addWorks.testExecution).toBe(true);
+		expect(result.compiledModules.addWorks.executionGroupName).toBe('test');
 	});
 
-	test('reports #test modules from parsed AST metadata', () => {
+	test('exports test groups like any other execution group', () => {
 		const result = compile(
 			{
 				groups: {
@@ -79,8 +81,10 @@ describe('#test modules and assert runner', () => {
 						{
 							code: ['module production', 'moduleEnd'],
 						},
+					],
+					test: [
 						{
-							code: ['module emptyTest', '#test ; inline comment', 'moduleEnd'],
+							code: ['module emptyTest', 'moduleEnd'],
 						},
 					],
 				},
@@ -88,38 +92,40 @@ describe('#test modules and assert runner', () => {
 			defaultOptions
 		);
 
-		expect(result.testModuleIds).toEqual(['emptyTest']);
-		expect(result.compiledModules.emptyTest.testExecution).toBe(true);
+		expect(result.compiledModules.emptyTest.executionGroupName).toBe('test');
 	});
 
 	test('does not report passing assertions', async () => {
-		const { exports, failureCalls } = await instantiate([
-			{
-				code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 3', 'moduleEnd'],
-			},
-		]);
+		const { exports, failureCalls } = await instantiate({
+			test: [
+				{
+					code: ['module addWorks', 'push 1', 'push 2', 'add', 'assert 3', 'moduleEnd'],
+				},
+			],
+		});
 
 		exports.initDefaults();
-		exports.runTests();
+		exports.test();
 
 		expect(failureCalls).toEqual([]);
 	});
 
-	test('supports memory declarations and pointer arguments in #test modules', async () => {
+	test('supports memory declarations and pointer arguments in test modules', async () => {
 		const { exports, failureCalls } = await instantiate(
-			[
-				{
-					code: [
-						'module readFirstWorks',
-						'#test',
-						'int[] values 2 7 8',
-						'push &values',
-						'call readFirst',
-						'assert 7',
-						'moduleEnd',
-					],
-				},
-			],
+			{
+				test: [
+					{
+						code: [
+							'module readFirstWorks',
+							'int[] values 2 7 8',
+							'push &values',
+							'call readFirst',
+							'assert 7',
+							'moduleEnd',
+						],
+					},
+				],
+			},
 			[
 				{
 					code: ['function readFirst', '#impure', 'param int* ptr', 'push *ptr', 'functionEnd int'],
@@ -128,68 +134,38 @@ describe('#test modules and assert runner', () => {
 		);
 
 		exports.initDefaults();
-		exports.runTests();
+		exports.test();
 
 		expect(failureCalls).toEqual([]);
 	});
 
-	test('omits #test modules and test imports from normal builds', async () => {
-		const result = compile(
-			{
-				groups: {
-					main: [
-						{
-							code: ['module production', 'moduleEnd'],
-						},
-						{
-							code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'],
-						},
-					],
+	test('allows assert in any execution group', async () => {
+		const { exports, failureCalls, result } = await instantiate({
+			main: [
+				{
+					code: ['module production', 'push 1', 'assert 2', 'moduleEnd'],
 				},
-			},
-			{
-				startingMemoryWordAddress: 1,
-				disableSharedMemory: true,
-				includeAST: true,
-			}
-		);
-		const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
-		const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
-		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			js: { memory },
+			],
 		});
 
-		expect(result.compiledModules.addWorks).toBeUndefined();
-		expect(result.testModuleIds).toEqual(['addWorks']);
-		expect(result.testAssertions).toBeUndefined();
-		expect(instance.exports.runTests).toBeUndefined();
-	});
+		exports.initDefaults();
+		exports.main();
 
-	test('rejects assert in normal modules when test support is not enabled', () => {
-		expect(() =>
-			compile(
-				{
-					groups: {
-						main: [
-							{
-								code: ['module production', 'push 1', 'assert 1', 'moduleEnd'],
-							},
-						],
-					},
-				},
-				{
-					startingMemoryWordAddress: 1,
-					disableSharedMemory: true,
-					includeAST: true,
-				}
-			)
-		).toThrow(expect.objectContaining({ code: ErrorCode.MISSING_ASSERT_FAILURE_HANDLER }));
+		expect(failureCalls).toEqual([{ assertIndex: 0, expected: 2, received: 1 }]);
+		expect(result.assertions).toEqual([
+			{
+				assertIndex: 0,
+				moduleId: 'production',
+				lineNumber: 3,
+				expected: 2,
+			},
+		]);
 	});
 
 	test('rejects non-integer expected values before codegen', () => {
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }] } },
+				{ groups: { test: [{ code: ['module badAssert', 'push 1', 'assert 1.5', 'moduleEnd'] }] } },
 				defaultOptions
 			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.TYPE_MISMATCH }));

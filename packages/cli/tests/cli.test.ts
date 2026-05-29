@@ -137,29 +137,19 @@ describe('cli', () => {
 
 	it('reports assertion failures from project tests', async () => {
 		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
-			stderr: expect.stringContaining('addFails:6 expected 4, received 3'),
+			stderr: expect.stringContaining('addFails:5 expected 4, received 3'),
 		});
 	});
 
-	it('detects test directives with trailing semicolon comments', async () => {
+	it('runs tests from an explicit test group', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
-		const commentedTestPath = path.join(tmpDir, 'commentedTest.8f4e');
+		const groupedTestPath = path.join(tmpDir, 'groupedTest.8f4e');
 		await fs.writeFile(
-			commentedTestPath,
-			[
-				'8f4e/v1',
-				'',
-				'group main',
-				'module commentedTest',
-				'#test ; inline comment',
-				'push 1',
-				'assert 1',
-				'moduleEnd',
-				'groupEnd',
-			].join('\n')
+			groupedTestPath,
+			['8f4e/v1', '', 'group test', 'module groupedTest', 'push 1', 'assert 1', 'moduleEnd', 'groupEnd'].join('\n')
 		);
 
-		const { stdout } = await execCli(['test', commentedTestPath]);
+		const { stdout } = await execCli(['test', groupedTestPath]);
 
 		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
@@ -178,9 +168,8 @@ describe('cli', () => {
 			[
 				'8f4e/v1',
 				'',
-				'group main',
+				'group test',
 				'module target',
-				'#test',
 				'int* ptr &dependency:value',
 				'push *ptr',
 				'assert 42',
@@ -199,13 +188,13 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
-	it('runs test files matched by a glob and skips files without #test modules', async () => {
+	it('runs test files matched by a glob and skips files without test groups', async () => {
 		const { stdout } = await execCli(['test', '../examples/src/modules/functions/memory/*.8f4em']);
 
 		expect(stdout).toBe('Ran 3 assertions in 1 file.\n');
 	});
 
-	it('captures raw buffer bytes across repeated cycle windows', async () => {
+	it('captures raw buffer bytes across repeated main windows', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 		await execCli([
 			'capture',

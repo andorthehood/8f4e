@@ -40,7 +40,6 @@ The exported `initDefaults` function is responsible for restoring the full decla
 
 1. Clear the declared memory range with one `memory.fill(0, 0, requiredMemoryBytes)`.
 2. Copy passive data segments into memory with `memory.init`.
-3. Run `initOnly` module calls.
 
 The initial `memory.fill` is part of the contract. It makes implicit defaults cheap and gives repeated `initDefaults()` calls the same reset semantics as a fresh memory instance for declared program memory.
 

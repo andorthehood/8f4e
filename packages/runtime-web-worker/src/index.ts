@@ -20,7 +20,7 @@ async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffe
 			const startTime = performance.now();
 			timerDriftMs = startTime - lastIntervalTime - intervalTime;
 			lastIntervalTime = startTime;
-			wasmApp.cycle();
+			wasmApp.main();
 			const endTime = performance.now();
 			timeToExecuteLoopMs = endTime - startTime;
 		}, intervalTime);

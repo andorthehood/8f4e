@@ -16,20 +16,20 @@ import {
 import type { FunctionBody } from '@8f4e/compiler-wasm-utils';
 
 /**
- * Creates the complete buffer function, which repeatedly calls the cycle function.
+ * Creates the complete buffer function, which repeatedly calls the main group.
  *
- * @param bufferSize - Number of times to call the cycle function (default: 128)
+ * @param bufferSize - Number of times to call the main group (default: 128)
  * @param bufferStrategy - Strategy to use: 'loop' (default, smaller code) or 'unrolled' (potentially faster)
- * @param cycleFunctionIndex - The WASM function index of the cycle function
+ * @param mainFunctionIndex - The WASM function index of the main group
  * @returns Complete function body with locals and END instruction
  */
 export default function createBufferFunctionBody(
 	bufferSize: number = 128,
 	bufferStrategy: 'loop' | 'unrolled' = 'loop',
-	cycleFunctionIndex: number = 1
+	mainFunctionIndex: number = 1
 ): FunctionBody {
 	if (bufferStrategy === 'unrolled') {
-		const body = new Array(bufferSize).fill(call(cycleFunctionIndex)).flat();
+		const body = new Array(bufferSize).fill(call(mainFunctionIndex)).flat();
 		return createFunction([], body);
 	}
 
@@ -37,7 +37,7 @@ export default function createBufferFunctionBody(
 	// The loop pattern for counting down from N to 0:
 	//   local.set $i (i32.const bufferSize)
 	//   loop
-	//     call $cycle
+	//     call $main
 	//     local.set $i (i32.sub (local.get $i) (i32.const 1))
 	//     br_if 0 (local.get $i)  ; branch back to loop start if non-zero
 	//   end
@@ -51,8 +51,8 @@ export default function createBufferFunctionBody(
 		// loop $L0
 		WASM_LOOP,
 		WASM_TYPE_VOID,
-		// call $cycle
-		...call(cycleFunctionIndex),
+		// call $main
+		...call(mainFunctionIndex),
 		// Decrement counter and check: (local.get $i) - 1 -> local.set $i
 		...localGet(counterLocalIndex),
 		...i32const(1),
