@@ -12,7 +12,18 @@ const store = {
 				audio: {
 					root: 'audioRuntime',
 					defaults: { sampleRate: 44100 },
-					schema: { type: 'object', properties: { sampleRate: { type: 'number', minimum: 1 } } },
+					schema: {
+						type: 'object',
+						properties: {
+							sampleRate: { type: 'number', minimum: 1 },
+							audioOutBufferLAddress: {
+								anyOf: [
+									{ type: 'integer', minimum: 0 },
+									{ type: 'string', pattern: '^[^:\\s]+:[^:\\s]+$' },
+								],
+							},
+						},
+					},
 				},
 			},
 		}) as State,
@@ -34,6 +45,30 @@ describe('editor config schema contributions', () => {
 		expect(
 			validator.parse?.({ path: 'audioRuntime.sampleRate', value: '48000', rawRow: 1, codeBlockId: 'config' })
 		).toBe(48000);
+		expect(
+			validator.parse?.({
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: '24',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBe(24);
+		expect(
+			validator.parse?.({
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: 'audioout:buffer',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBe('audioout:buffer');
+		expect(
+			validator.validate({
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: 'audioout',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBe("@config audioRuntime.audioOutBufferLAddress: invalid value 'audioout'");
 
 		expect(
 			validator.validate({
