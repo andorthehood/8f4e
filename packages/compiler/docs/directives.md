@@ -203,35 +203,6 @@ moduleEnd
 
 The `#skipExecution` directive takes precedence, and the module code does not execute during either init or cycle. This allows you to temporarily disable a module that was previously marked as init-only without removing the `#initOnly` directive.
 
-### `#test`
-
-Marks a module for execution by the `runTests` export instead of the normal `cycle` dispatcher.
-
-**Scope:** Module blocks only
-
-**Usage:**
-```8f4e
-module addWorks
-#test
-push 1
-push 2
-add
-assert 3
-moduleEnd
-```
-
-**Behavior:**
-- The module is compiled like any other module: declarations, memory layout, address references, function calls, and compiler-generated internal resources all use normal module behavior
-- The module's cycle function is not called by the global `cycle` dispatcher
-- When `includeTestRunner` is enabled, the global `runTests` export calls all modules marked with `#test` in module order
-- Failed `assert` instructions call the imported host function `test.assertFailed(assertIndex, expected, received)`
-- If no `test.assertFailed` calls occur during `runTests`, the test run passed
-- `runTests` does not reset memory between test modules; test isolation comes from each module's own namespace and memory declarations
-
-**Errors:**
-- Using `#test` outside of a module block will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
-- Placing `#test` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
-
 ### `#mock`
 
 Marks a block as test-only support for modules that need external dependencies.
@@ -240,12 +211,13 @@ Marks a block as test-only support for modules that need external dependencies.
 
 **Usage:**
 ```8f4e
+group test
 module filterTest
-#test
 float* input &source:out
 push *input
 assert 7
 moduleEnd
+groupEnd
 
 module source
 #mock
@@ -271,13 +243,14 @@ param int* ptr
 push *ptr
 functionEnd int
 
+group test
 module readFirstWorks
-#test
 int[] values 2 7 8
 push &values
 call readFirst
 assert 7
 moduleEnd
+groupEnd
 ```
 
 ## Module- and Function-Scoped Directives

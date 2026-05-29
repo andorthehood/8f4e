@@ -1,11 +1,12 @@
 import compile from '@8f4e/compiler';
 import { compileToAST, getProjectBlockType, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
-import type { CompileOptions, CompiledModuleLookup, TestAssertionMetadata } from '@8f4e/compiler-spec';
+import type { AssertionMetadata, CompileOptions, CompiledModuleLookup } from '@8f4e/compiler-spec';
 import type { ProjectCodeBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
+	includeMocks?: boolean;
 	includeModules?: boolean;
 	includeWasm?: boolean;
 }
@@ -15,8 +16,7 @@ interface CompileProjectModulesResult {
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
-	testModuleIds?: string[];
-	testAssertions?: TestAssertionMetadata[];
+	assertions?: AssertionMetadata[];
 }
 
 function isMockBlock(block: ProjectCodeBlock): boolean {
@@ -38,7 +38,7 @@ export default function compileProjectModules(
 ): CompileProjectModulesResult {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-	const includeMocks = options.compilerOptions.includeTestRunner === true;
+	const includeMocks = options.includeMocks ?? false;
 	const compilerBlocks = includeMocks ? blocks : blocks.filter(block => block.disabled || !isMockBlock(block));
 	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(compilerBlocks);
 
@@ -47,8 +47,7 @@ export default function compileProjectModules(
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
 			requiredMemoryBytes: 0,
-			testModuleIds: [],
-			testAssertions: [],
+			assertions: [],
 		};
 	}
 
@@ -67,7 +66,6 @@ export default function compileProjectModules(
 		compiledWasm: includeWasm ? Buffer.from(result.codeBuffer).toString('base64') : undefined,
 		requiredMemoryBytes: result.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: result.requiredMemoryBytesByRegion,
-		testModuleIds: result.testModuleIds ?? [],
-		testAssertions: result.testAssertions ?? [],
+		assertions: result.assertions ?? [],
 	};
 }

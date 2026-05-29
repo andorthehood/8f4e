@@ -115,15 +115,10 @@ describe('project block classification', () => {
 		expect(
 			pickProjectCompilerBlocks([
 				{ code: ['module regular', 'moduleEnd'], executionGroupName: 'main' },
-				{ code: ['module oldTest', '#test', 'moduleEnd'], executionGroupName: 'main' },
 				{ code: ['module oldInit', '#initOnly', 'moduleEnd'], executionGroupName: 'main' },
 			]).groups
 		).toEqual({
-			main: [
-				{ code: ['module regular', 'moduleEnd'] },
-				{ code: ['module oldTest', '#test', 'moduleEnd'] },
-				{ code: ['module oldInit', '#initOnly', 'moduleEnd'] },
-			],
+			main: [{ code: ['module regular', 'moduleEnd'] }, { code: ['module oldInit', '#initOnly', 'moduleEnd'] }],
 		});
 	});
 });
