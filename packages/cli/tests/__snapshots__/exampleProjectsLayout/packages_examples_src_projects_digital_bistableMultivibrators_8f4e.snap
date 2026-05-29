@@ -1,7 +1,6 @@
 {
   "sourceModuleOrder": [
     "projectConfig",
-    "env",
     "notes",
     "setButton",
     "resetButton",
@@ -12,7 +11,8 @@
     "negate",
     "orGate",
     "andGate",
-    "scope2"
+    "scope2",
+    "env"
   ],
   "compiledModuleLayout": [
     {

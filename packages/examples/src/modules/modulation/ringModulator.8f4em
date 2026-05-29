@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module ringModulator
 
 float defaultFreq 10
@@ -40,11 +41,11 @@ mul
 store
 
 moduleEnd
-
 module osc
 #mock
 float out 0.0
 moduleEnd
+groupEnd
 
 constants math
 #mock

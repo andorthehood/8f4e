@@ -1,24 +1,25 @@
 8f4e/v1
 
+group main
 module square
 
 use env
 
-float default 1 ;Hz 
+float default 1 ;Hz
 float* frequency &default
 float out
 float counter
-float direction 1 
+float direction 1
 
-push &counter 
+push &counter
 push counter
-push *frequency 
+push *frequency
 push 2.0
-mul 
-push SAMPLE_RATE 
+mul
+push SAMPLE_RATE
 castToFloat
 ensureNonZero
-div 
+div
 push direction
 mul
 add
@@ -56,6 +57,7 @@ store
 ifEnd
 
 moduleEnd
+groupEnd
 
 constants env
 #mock

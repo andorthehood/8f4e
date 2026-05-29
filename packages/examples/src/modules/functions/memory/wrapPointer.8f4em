@@ -25,6 +25,7 @@ add
 
 functionEnd float*
 
+group main
 module wrapPointerKeepsInRangeAddress
 #test
 float[] buffer 4
@@ -39,7 +40,6 @@ call wrapPointer
 assert &buffer+8
 
 moduleEnd
-
 module wrapPointerWrapsForwardAddress
 #test
 float[] buffer 4
@@ -54,7 +54,6 @@ call wrapPointer
 assert &buffer
 
 moduleEnd
-
 module wrapPointerWrapsBackwardAddress
 #test
 float[] buffer 4
@@ -69,3 +68,4 @@ call wrapPointer
 assert buffer&
 
 moduleEnd
+groupEnd

@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 function loadAtInt
 #impure
 ; Loads an int from buffer[index].

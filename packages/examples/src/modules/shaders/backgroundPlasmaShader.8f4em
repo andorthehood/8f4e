@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 note fragmentShaderBackground
 #version 300 es
 

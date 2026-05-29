@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module quantizer
 
 float* in
@@ -20,7 +21,7 @@ push buffer
 store
 
 loop
- ; Calculate difference 
+ ; Calculate difference
  ; between the input and
  ; the current level.
 push &_difference
@@ -36,7 +37,7 @@ lessOrEqual
 if
   ; If it's actually smaller
   ; than the smallest difference,
-  ; then update the smallest 
+  ; then update the smallest
   ; difference.
 push &_smallestDiff
 push _difference
@@ -57,7 +58,7 @@ push sizeof(buffer)
 mul
 add
 greaterOrEqual
-branchIfTrue 1 
+branchIfTrue 1
 
  ; Increment level pointer
 push &_levelPointer
@@ -68,3 +69,4 @@ store
 loopEnd
 
 moduleEnd
+groupEnd

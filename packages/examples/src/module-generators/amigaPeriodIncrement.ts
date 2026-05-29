@@ -63,6 +63,9 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 constantsEnd`;
 
-export default `${amigaPeriodIncrement}
+export default `group main
+groupEnd
+
+${amigaPeriodIncrement}
 
 ${testMocks}`;
