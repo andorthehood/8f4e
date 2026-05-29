@@ -12,7 +12,7 @@ import type {
 } from '@8f4e/editor';
 
 const MAIN_THREAD_EDITOR_CONFIG: EditorConfigSchemaContribution = {
-	root: 'mainRuntime',
+	root: 'mainThreadRuntime',
 	defaults: {
 		sampleRate: 50,
 	},
@@ -78,11 +78,11 @@ export function mainThreadRuntimeFactory(
 	syncCodeAndSettingsWithRuntime();
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
-	store.subscribe('editorConfig.mainRuntime', syncCodeAndSettingsWithRuntime);
+	store.subscribe('editorConfig.mainThreadRuntime', syncCodeAndSettingsWithRuntime);
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		store.unsubscribe('editorConfig.mainRuntime', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('editorConfig.mainThreadRuntime', syncCodeAndSettingsWithRuntime);
 		if (runtime) {
 			runtime.stop();
 			runtime = undefined;
