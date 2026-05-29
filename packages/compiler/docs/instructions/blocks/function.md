@@ -21,7 +21,8 @@ functionEnd int
 Functions are reusable code blocks that:
 - Can accept parameters using the `param` instruction
 - Can return values (specified in `functionEnd`)
-- Can be called from modules using the `call` instruction
+- Can be called from modules or other functions using the `call` instruction
+- Can call execution entries using the `call` instruction
 - Are pure by default
 - Can opt into explicit address-driven memory IO with `#impure`
 - Can be exported to the host WebAssembly ABI with `#export` or `#export <exportedName>`
@@ -75,7 +76,7 @@ Argument mapping:
 - `float` maps to Wasm `f32` and a JavaScript `number`
 - `float64` maps to Wasm `f64` and a JavaScript `number`
 
-Export names must be unique and must not reuse built-in exports such as `initDefaults`, `buffer`, or an execution entry name.
+Export names must be unique and must not reuse built-in exports such as `initDefaults` or an execution entry name.
 Functions that read from or write to memory still need `#impure`.
 
 ### `#import`

@@ -975,7 +975,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 defineMacro adsrEnv
 ; @pos -75 74
 ; @hide
@@ -1230,6 +1229,25 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
+
+function buffer
+; @pos 2 72
+#export buffer
+local int i
+use env
+
+loop
+push i
+push AUDIO_BUFFER_SIZE
+greaterOrEqual
+branchIfTrue 1
+call main
+push i
+push 1
+add
+localSet i
+loopEnd
+functionEnd
 
 constants math
 ; @pos 2 74
