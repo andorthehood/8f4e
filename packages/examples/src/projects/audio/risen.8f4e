@@ -102,8 +102,6 @@ note
 
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioOutBufferLAddress shofar:buffer
-; @config audioRuntime.audioOutBufferRAddress shofar:buffer
 ; @config export.fileName risen
 ; @config font templeos8x8
 noteEnd
@@ -980,6 +978,8 @@ moduleEnd
 module shofar
 ; @pos 243 -19
 ; @home
+; @config audioRuntime.audioOutBufferLAddress shofar:buffer
+; @config audioRuntime.audioOutBufferRAddress shofar:buffer
 use env
 
 float* in &churchReverb:out

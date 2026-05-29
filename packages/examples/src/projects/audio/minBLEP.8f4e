@@ -56,8 +56,6 @@ module projectConfig
 ; @pos -58 -63
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioOutBufferLAddress audioout:buffer
-; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName minBLEP
 
 moduleEnd
@@ -277,6 +275,8 @@ ifEnd
 moduleEnd
 module audioout
 ; @pos 165 -100
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
+; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 use env
 
 float* in &mixer:out

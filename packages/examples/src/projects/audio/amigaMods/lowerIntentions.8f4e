@@ -1942,6 +1942,7 @@ module colors
 moduleEnd
 module audiooutL
 ; @pos 794 -6
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 use env
 
 float* in &lowpassL:out
@@ -1978,6 +1979,7 @@ ifEnd
 moduleEnd
 module audiooutR
 ; @pos 835 -6
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 use env
 
 float* in &lowpassR:out
@@ -2018,8 +2020,6 @@ note
 ; Project Config
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName lowerIntentions
 
 noteEnd
