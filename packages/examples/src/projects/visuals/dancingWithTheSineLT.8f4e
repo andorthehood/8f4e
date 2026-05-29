@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module projectConfig
 ; @pos -122 -9
 ; @config runtime WebWorkerRuntime
@@ -404,7 +404,7 @@ castToInt
 store
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 ; @pos -122 15

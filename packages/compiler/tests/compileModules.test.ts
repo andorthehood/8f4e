@@ -26,7 +26,7 @@ describe('compiler', () => {
 
 	test('compile function excludes AST by default', () => {
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -41,7 +41,7 @@ describe('compiler', () => {
 	test('compile function excludes stack analysis by default', () => {
 		const result = compile(
 			{
-				groups: { main: [{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }] },
+				entries: { main: [{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }] },
 				functions: [{ code: ['function noop', 'functionEnd'] }],
 			},
 			{
@@ -55,7 +55,7 @@ describe('compiler', () => {
 
 	test('compile function includes AST when includeAST is true', () => {
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 				includeAST: true,
@@ -72,7 +72,7 @@ describe('compiler', () => {
 	test('compile function accepts executable modules grouped by name', () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [{ code: ['module first', 'int value', 'moduleEnd'] }],
 					aux: [{ code: ['module second', 'int value', 'moduleEnd'] }],
 				},
@@ -85,7 +85,7 @@ describe('compiler', () => {
 
 	test('compile function includes module stack analysis when includeStackAnalysis is true', () => {
 		const result = compile(
-			{ groups: { main: [{ code: ['module test', 'int output', 'push &output', 'push 1', 'store', 'moduleEnd'] }] } },
+			{ entries: { main: [{ code: ['module test', 'int output', 'push &output', 'push 1', 'store', 'moduleEnd'] }] } },
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: true,
@@ -113,7 +113,7 @@ describe('compiler', () => {
 	test('compile function includes function stack analysis when includeStackAnalysis is true', () => {
 		const result = compile(
 			{
-				groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+				entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 				functions: [
 					{ code: ['function double', 'param int value', 'push value', 'push value', 'add', 'functionEnd int'] },
 				],
@@ -146,7 +146,7 @@ describe('compiler', () => {
 
 	test('includeAST and includeStackAnalysis can be enabled together', () => {
 		const result = compile(
-			{ groups: { main: [{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }] } },
+			{ entries: { main: [{ code: ['module test', 'push 1', 'drop', 'moduleEnd'] }] } },
 			{
 				startingMemoryWordAddress: 0,
 				includeAST: true,
@@ -162,7 +162,7 @@ describe('compiler', () => {
 		expect(() =>
 			compile(
 				{
-					groups: {
+					entries: {
 						main: [
 							{ code: ['module same', 'int a 1', 'moduleEnd'] },
 							{ code: ['module same', 'int b 2', 'moduleEnd'] },

@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module minBLEPLUT
 ; @public
 ; @tab 7
@@ -266,4 +266,4 @@ float	0.000000000000000000
 float	0.000000000000000000
 
 moduleEnd
-groupEnd
+entryEnd

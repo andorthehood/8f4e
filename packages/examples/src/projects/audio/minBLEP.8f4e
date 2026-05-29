@@ -41,7 +41,7 @@ const E       2.718281828459045
 
 constantsEnd
 
-group main
+entry main
 module projectConfig
 ; @pos -58 -63
 ; @config runtime AudioWorkletRuntime
@@ -682,7 +682,7 @@ float	0.000000000000000000
 float	0.000000000000000000
 
 moduleEnd
-groupEnd
+entryEnd
 
 function wrapAdd32
 ; @pos 98 -136

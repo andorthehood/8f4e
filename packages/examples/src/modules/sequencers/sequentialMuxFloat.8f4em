@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module seqMux
 ; @public
 
@@ -56,4 +56,4 @@ load
 store
 
 moduleEnd
-groupEnd
+entryEnd

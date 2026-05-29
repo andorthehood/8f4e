@@ -1,7 +1,7 @@
 8f4e/v1
 
-group main
-groupEnd
+entry main
+entryEnd
 
 constants midiCodes
 ; @public

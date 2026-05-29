@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module highPassFilter
 ; @public
 
@@ -27,4 +27,4 @@ moduleEnd
 module vca
 float out 0.0
 moduleEnd
-groupEnd
+entryEnd

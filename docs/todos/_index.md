@@ -68,8 +68,8 @@ Active todo files are listed below.
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
 | 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
-| 436 | Add test execution support and assert runner | 🟡 | 2-4d | 2026-05-29 | Use `group test` plus a CLI-provided imported `assert` utility function for executable language-level tests. |
-| 437 | Add execution groups | 🟡 | 2-4d | 2026-05-29 | Add `group` / `groupEnd` execution partitions, export every group by name, and rename memory default initialization to `initDefaults`. |
+| 436 | Add test execution support and assert runner | 🟡 | 2-4d | 2026-05-29 | Use `entry test` plus a CLI-provided imported `assert` utility function for executable language-level tests. |
+| 437 | Add execution entries | 🟡 | 2-4d | 2026-05-29 | Add `entry` / `entryEnd` execution partitions, export every entry by name, and rename memory default initialization to `initDefaults`. |
 | 438 | Add generic function imports | 🟡 | 1-2d | 2026-05-29 | Add `#import` for host-provided functions, keeping them callable through normal function resolution while emitting correct WebAssembly import indexes. |
 
 ### 🟢 Low Priority
@@ -88,7 +88,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
-| 150 | Add Test Module Type | 2026-05-29 | Completed by the `group test` CLI test runner flow and superseded by execution groups plus generic function imports. |
+| 150 | Add Test Module Type | 2026-05-29 | Completed by the `entry test` CLI test runner flow and superseded by execution entries plus generic function imports. |
 | 433 | Add dash argument continuation lines | 2026-05-28 | Parser now folds `- <arg>` continuation lines into the previous source instruction before validation; docs and tokenizer coverage describe valid and invalid forms. |
 | 428 | Add pointer-aware count and min metadata queries | 2026-05-27 | `min(*ptr)` and `count(*ptr)` now classify explicitly and resolve from pointer metadata; pointer count uses tracked memory-start pointee element counts when available and falls back to `1`. |
 | 323 | Add `min(*name)` pointee min value prefix for pointers | 2026-05-27 | Completed as part of pointer-aware metadata query work; `min(*name)` now has parser, semantic, helper, docs, and public compiler coverage. |
@@ -99,7 +99,7 @@ Active todo files are listed below.
 | 421 | Clean up AST construction helper scans | 2026-05-26 | Tokenizer AST construction now accumulates module/function/constants metadata through source-block-specific builders during parsing; generic post-processing scans over `CompilerASTLine[]` were removed. |
 | 422 | Split namespace discovery and layout prepass | 2026-05-26 | Namespace discovery now uses an explicit internal discovery path, final layout/default resolution uses `layoutNamespace(...)`, and the old mode flag/prepass naming was removed without typed-AST compatibility wrappers. |
 | 419 | Merge instruction source argument specs into instruction specs | 2026-05-26 | Source argument arity and shape metadata now lives in compiler-spec instruction specs; tokenizer validation consumes the shared contract, and duplicated argument/no-argument tables were removed without compatibility shims. |
-| 420 | Add typed compiler AST group indexes | 2026-05-26 | Compiler-owned AST inputs now use typed module/function/constants group objects with required ids and derived metadata, so compiler passes no longer rediscover those facts from raw line arrays. |
+| 420 | Add typed compiler AST entry indexes | 2026-05-26 | Compiler-owned AST inputs now use typed module/function/constants entry objects with required ids and derived metadata, so compiler passes no longer rediscover those facts from raw line arrays. |
 | 417 | Tighten compiler AST union and source block types | 2026-05-25 | Compiler AST lines are now a discriminated union with source-block tuple types; tokenizer validation owns fixed arity, and namespace metadata no longer revalidates syntax-guaranteed prologue or return shapes. |
 | 416 | Add resolved identifier line forms | 2026-05-25 | Semantic normalization now carries resolved memory, local, pointer, function, and local-set targets through stack analysis and codegen; old push-target rediscovery was removed. |
 | 415 | Discriminate compiler block stack frames | 2026-05-25 | Block stack frames are now a discriminated union; map frames require `mapState`, loop frames require counter metadata, and codegen consumers no longer use the old block-frame non-null assertions. |

@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module projectConfig
 ; @pos -14 8
 ; @config runtime WebWorkerRuntime
@@ -20,4 +20,4 @@ add
 store
 
 moduleEnd
-groupEnd
+entryEnd

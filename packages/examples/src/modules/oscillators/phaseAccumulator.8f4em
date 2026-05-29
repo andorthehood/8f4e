@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module phaseAccumulator
 ; @public
 
@@ -43,7 +43,7 @@ call sine
 store
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants math
 const PI 3.141592653589793

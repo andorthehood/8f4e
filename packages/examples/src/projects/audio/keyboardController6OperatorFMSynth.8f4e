@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module projectConfig
 ; @pos -94 1
 ; @config runtime AudioWorkletRuntime
@@ -974,7 +974,7 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd
 
 defineMacro adsrEnv
 ; @pos -75 74

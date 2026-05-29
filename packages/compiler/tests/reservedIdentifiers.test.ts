@@ -8,7 +8,7 @@ describe('reserved identifiers', () => {
 
 		expect(() =>
 			compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					startingMemoryWordAddress: 0,
 				}

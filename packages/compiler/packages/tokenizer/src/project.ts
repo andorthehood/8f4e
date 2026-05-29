@@ -7,7 +7,7 @@ import {
 import type { CompilableBlockType, DocumentBlockType, Module } from '@8f4e/compiler-spec';
 
 export const FORMAT_HEADER = '8f4e/v1';
-export const GROUP_BLOCK_DELIMITER = { type: 'group', opener: 'group', closer: 'groupEnd' } as const;
+export const ENTRY_BLOCK_DELIMITER = { type: 'entry', opener: 'entry', closer: 'entryEnd' } as const;
 export const BLOCK_DELIMITERS = documentBlockInstructionPairs.map(({ type, start, end }) => ({
 	type,
 	opener: start,
@@ -17,7 +17,7 @@ export const BLOCK_DELIMITERS = documentBlockInstructionPairs.map(({ type, start
 const blockDelimiters = compilableBlockTypes.map(type => documentBlockInstructionByType[type]);
 const projectBlockDelimiters = [
 	...documentBlockInstructionPairs.map(({ start, end }) => ({ opener: start, closer: end })),
-	{ opener: GROUP_BLOCK_DELIMITER.opener, closer: GROUP_BLOCK_DELIMITER.closer },
+	{ opener: ENTRY_BLOCK_DELIMITER.opener, closer: ENTRY_BLOCK_DELIMITER.closer },
 ];
 const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
@@ -28,7 +28,7 @@ const openerByCloser = new Map<string, string>(projectBlockDelimiters.map(({ ope
 export interface ProjectCodeBlock {
 	code: string[];
 	disabled?: boolean;
-	executionGroupName?: string;
+	executionEntryName?: string;
 }
 
 export interface ProjectInput {
@@ -37,7 +37,7 @@ export interface ProjectInput {
 }
 
 export interface ProjectCompilerBlocks {
-	groups: Record<string, Module[]>;
+	entries: Record<string, Module[]>;
 	constantsBlocks: Module[];
 	functionBlocks: Module[];
 	macroBlocks: Module[];
@@ -72,13 +72,13 @@ export function getExpectedProjectCloserPrefix(opener: string): string {
 	return closerByOpener.get(opener) ?? opener + 'End';
 }
 
-function getGroupName(line: string, lineNumber: number): string {
+function getEntryName(line: string, lineNumber: number): string {
 	const [, ...args] = line.trim().split(/\s+/);
-	const [groupName] = args;
-	if (!groupName || args.length !== 1) {
-		throw new Error(`Parse error at line ${lineNumber}: group requires exactly one name`);
+	const [entryName] = args;
+	if (!entryName || args.length !== 1) {
+		throw new Error(`Parse error at line ${lineNumber}: entry requires exactly one name`);
 	}
-	return groupName;
+	return entryName;
 }
 
 export function getProjectBlockType(code: string[]): ProjectBlockType {
@@ -119,12 +119,12 @@ export function parse8f4eProject(text: string): ProjectInput {
 	}
 
 	const codeBlocks: ProjectCodeBlock[] = [];
-	const seenGroupNames = new Set<string>();
+	const seenEntryNames = new Set<string>();
 
-	function readDocumentBlock(startIndex: number, executionGroupName?: string): number {
+	function readDocumentBlock(startIndex: number, executionEntryName?: string): number {
 		const openerLine = lines[startIndex];
 		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
-		if (!openerKeyword || openerKeyword === GROUP_BLOCK_DELIMITER.opener) {
+		if (!openerKeyword || openerKeyword === ENTRY_BLOCK_DELIMITER.opener) {
 			throw new Error(`Parse error at line ${startIndex + 1}: expected document block opener`);
 		}
 
@@ -142,7 +142,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
 
-				codeBlocks.push({ code: currentBlockLines, ...(executionGroupName ? { executionGroupName } : {}) });
+				codeBlocks.push({ code: currentBlockLines, ...(executionEntryName ? { executionEntryName } : {}) });
 				return i + 1;
 			}
 
@@ -172,53 +172,53 @@ export function parse8f4eProject(text: string): ProjectInput {
 			throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
 		}
 
-		if (opener !== GROUP_BLOCK_DELIMITER.opener) {
+		if (opener !== ENTRY_BLOCK_DELIMITER.opener) {
 			if (opener === documentBlockInstructionByType.module.start) {
-				throw new Error(`Parse error at line ${i + 1}: module blocks must be inside a group block`);
+				throw new Error(`Parse error at line ${i + 1}: module blocks must be inside an entry block`);
 			}
 			i = readDocumentBlock(i);
 			continue;
 		}
 
-		const groupName = getGroupName(trimmed, i + 1);
-		if (seenGroupNames.has(groupName)) {
-			throw new Error(`Parse error at line ${i + 1}: duplicate group "${groupName}"`);
+		const entryName = getEntryName(trimmed, i + 1);
+		if (seenEntryNames.has(entryName)) {
+			throw new Error(`Parse error at line ${i + 1}: duplicate entry "${entryName}"`);
 		}
-		seenGroupNames.add(groupName);
+		seenEntryNames.add(entryName);
 		i += 1;
 
-		let groupClosed = false;
+		let entryClosed = false;
 		while (i < lines.length) {
-			const groupLine = lines[i];
-			const groupTrimmed = groupLine.trim();
+			const entryLine = lines[i];
+			const entryTrimmed = entryLine.trim();
 
-			if (groupTrimmed === '') {
+			if (entryTrimmed === '') {
 				i += 1;
 				continue;
 			}
 
-			const closer = getProjectCloserKeyword(groupTrimmed);
-			if (closer === GROUP_BLOCK_DELIMITER.closer) {
-				groupClosed = true;
+			const closer = getProjectCloserKeyword(entryTrimmed);
+			if (closer === ENTRY_BLOCK_DELIMITER.closer) {
+				entryClosed = true;
 				i += 1;
 				break;
 			}
 			if (closer) {
-				throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "group"`);
+				throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "entry"`);
 			}
 
-			const innerOpener = getProjectOpenerKeyword(groupTrimmed);
+			const innerOpener = getProjectOpenerKeyword(entryTrimmed);
 			if (innerOpener !== documentBlockInstructionByType.module.start) {
 				throw new Error(
-					`Parse error at line ${i + 1}: group "${groupName}" can only contain module blocks, got "${groupTrimmed}"`
+					`Parse error at line ${i + 1}: entry "${entryName}" can only contain module blocks, got "${entryTrimmed}"`
 				);
 			}
 
-			i = readDocumentBlock(i, groupName);
+			i = readDocumentBlock(i, entryName);
 		}
 
-		if (!groupClosed) {
-			throw new Error(`Parse error: unclosed block with opener "group"`);
+		if (!entryClosed) {
+			throw new Error(`Parse error: unclosed block with opener "entry"`);
 		}
 	}
 
@@ -226,7 +226,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 }
 
 export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCompilerBlocks {
-	const groups: Record<string, Module[]> = { main: [] };
+	const entries: Record<string, Module[]> = { main: [] };
 	const constantsBlocks: Module[] = [];
 	const functionBlocks: Module[] = [];
 	const macroBlocks: Module[] = [];
@@ -238,9 +238,9 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 
 		const blockType = getProjectBlockType(block.code);
 		if (blockType === moduleBlockType) {
-			const groupName = block.executionGroupName ?? 'main';
-			groups[groupName] ??= [];
-			groups[groupName].push({ code: block.code });
+			const entryName = block.executionEntryName ?? 'main';
+			entries[entryName] ??= [];
+			entries[entryName].push({ code: block.code });
 			continue;
 		}
 		if (blockType === documentBlockInstructionByType.constants.type) {
@@ -256,5 +256,5 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 		}
 	}
 
-	return { groups, constantsBlocks, functionBlocks, macroBlocks };
+	return { entries, constantsBlocks, functionBlocks, macroBlocks };
 }

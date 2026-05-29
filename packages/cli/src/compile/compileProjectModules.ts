@@ -17,8 +17,8 @@ interface CompileProjectModulesResult {
 	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 
-function hasModuleBlocks(groups: Record<string, unknown[]>): boolean {
-	return Object.values(groups).some(group => group.length > 0);
+function hasModuleBlocks(entries: Record<string, unknown[]>): boolean {
+	return Object.values(entries).some(entry => entry.length > 0);
 }
 
 export default function compileProjectModules(
@@ -27,9 +27,9 @@ export default function compileProjectModules(
 ): CompileProjectModulesResult {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(blocks);
+	const { entries, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(blocks);
 
-	if (!hasModuleBlocks(groups) && constantsBlocks.length === 0) {
+	if (!hasModuleBlocks(entries) && constantsBlocks.length === 0) {
 		return {
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
@@ -39,7 +39,7 @@ export default function compileProjectModules(
 
 	const result = compile(
 		{
-			groups,
+			entries,
 			constants: constantsBlocks,
 			functions: functionBlocks,
 			macros: macroBlocks,

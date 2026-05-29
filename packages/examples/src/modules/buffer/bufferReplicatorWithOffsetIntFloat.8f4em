@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module replicator2
 ; @public
 
@@ -79,4 +79,4 @@ store
 loopEnd
 
 moduleEnd
-groupEnd
+entryEnd

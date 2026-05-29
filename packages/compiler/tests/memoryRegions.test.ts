@@ -33,7 +33,7 @@ describe('logical memory regions', () => {
 	test('allocates #region declarations in the configured memory and dereferences pointers through provenance', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module samples', '#region sampleMemory', 'int8[] values 4 11', 'moduleEnd'],
@@ -72,7 +72,7 @@ describe('logical memory regions', () => {
 	test('supports numeric #region indices and #region 0 default memory', () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{ code: ['module defaulted', '#region 0', 'int value', 'moduleEnd'] },
 						{ code: ['module display', '#region 1', 'int pixel', 'moduleEnd'] },
@@ -92,7 +92,7 @@ describe('logical memory regions', () => {
 	test('raw addresses still target default memory', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module samples', '#region sampleMemory', 'int source 99', 'moduleEnd'],
@@ -126,7 +126,7 @@ describe('logical memory regions', () => {
 	test('keeps compiler-generated internal resources in default memory', () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: [
@@ -172,7 +172,7 @@ describe('logical memory regions', () => {
 	test('infers destination and source memories for cross-region memoryCopy', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module samples', '#region sampleMemory', 'int8[] values 4 1 2 3 4', 'moduleEnd'],
@@ -204,7 +204,7 @@ describe('logical memory regions', () => {
 	test('rejects invalid region configuration and directive references', () => {
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{ entries: { main: [{ code: ['module test', 'moduleEnd'] }] } },
 				{
 					disableSharedMemory: true,
 					memoryRegions: ['default'],
@@ -214,7 +214,7 @@ describe('logical memory regions', () => {
 
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{ entries: { main: [{ code: ['module test', 'moduleEnd'] }] } },
 				{
 					disableSharedMemory: true,
 					memoryRegions: ['sampleMemory', 'sampleMemory'],
@@ -224,7 +224,7 @@ describe('logical memory regions', () => {
 
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{ entries: { main: [{ code: ['module test', 'moduleEnd'] }] } },
 				{
 					disableSharedMemory: true,
 					memoryRegions: ['memory'],
@@ -234,7 +234,7 @@ describe('logical memory regions', () => {
 
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] } },
+				{ entries: { main: [{ code: ['module test', 'moduleEnd'] }] } },
 				{
 					disableSharedMemory: true,
 					memoryRegions: ['1'],
@@ -244,7 +244,7 @@ describe('logical memory regions', () => {
 
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module test', '#region missingMemory', 'moduleEnd'] }] } },
+				{ entries: { main: [{ code: ['module test', '#region missingMemory', 'moduleEnd'] }] } },
 				{
 					disableSharedMemory: true,
 					memoryRegions: ['sampleMemory'],
@@ -254,7 +254,7 @@ describe('logical memory regions', () => {
 
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module test', '#region 2', 'moduleEnd'] }] } },
+				{ entries: { main: [{ code: ['module test', '#region 2', 'moduleEnd'] }] } },
 				{
 					disableSharedMemory: true,
 					memoryRegions: ['sampleMemory'],

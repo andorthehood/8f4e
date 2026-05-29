@@ -17,7 +17,7 @@ describe('compiler directive prologue validation', () => {
 		expect(() =>
 			compile(
 				{
-					groups: {
+					entries: {
 						main: [
 							{
 								code: ['module metadataOnly', '#skipExecution', '#loopCap 64', 'int counter 0', 'moduleEnd'],
@@ -34,7 +34,7 @@ describe('compiler directive prologue validation', () => {
 		expect(() =>
 			compile(
 				{
-					groups: {
+					entries: {
 						main: [
 							{
 								code: ['module lateDirective', 'int counter 0', '#skipExecution', 'moduleEnd'],
@@ -51,7 +51,7 @@ describe('compiler directive prologue validation', () => {
 		expect(() =>
 			compile(
 				{
-					groups: {
+					entries: {
 						main: [
 							{
 								code: ['module lateLoopCap', 'loop', 'loopEnd', '#loopCap 64', 'moduleEnd'],
@@ -68,7 +68,7 @@ describe('compiler directive prologue validation', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [
 						{
 							code: [
@@ -95,7 +95,7 @@ describe('compiler directive prologue validation', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [
 						{
 							code: ['function lateImpure', 'param int address', '#impure', 'push address', 'load', 'functionEnd int'],
@@ -111,7 +111,7 @@ describe('compiler directive prologue validation', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [
 						{
 							code: ['function lateExport', 'push 1', '#export lateExport', 'functionEnd int'],
