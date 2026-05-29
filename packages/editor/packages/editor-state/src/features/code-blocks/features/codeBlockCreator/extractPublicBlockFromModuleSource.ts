@@ -7,11 +7,11 @@ import type { ProjectCodeBlock } from '@8f4e/tokenizer';
 
 import { FORMAT_HEADER } from '~/features/project-format';
 
-const PUBLIC_MODULE_DIRECTIVE = 'public';
+const PUBLIC_BLOCK_DIRECTIVE = 'public';
 
 function hasPublicDirective(block: ProjectCodeBlock): boolean {
 	return parseBlockDirectives(block.code).some(
-		directive => directive.prefix === '@' && directive.name === PUBLIC_MODULE_DIRECTIVE
+		directive => directive.prefix === '@' && directive.name === PUBLIC_BLOCK_DIRECTIVE
 	);
 }
 
@@ -26,7 +26,7 @@ export default function extractPublicBlockFromModuleSource(source: string): stri
 		block => block.executionGroupName !== 'test' && hasPublicDirective(block)
 	);
 
-	return publicBlock ? removeDirective(publicBlock.code, PUBLIC_MODULE_DIRECTIVE) : [];
+	return publicBlock ? removeDirective(publicBlock.code, PUBLIC_BLOCK_DIRECTIVE) : [];
 }
 
 if (import.meta.vitest) {
