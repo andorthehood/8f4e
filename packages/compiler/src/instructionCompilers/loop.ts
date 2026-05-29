@@ -11,13 +11,14 @@ import {
 	WASM_LOOP,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
-import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
+import { ArgumentType, BlockType, ErrorCode } from '@8f4e/compiler-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
 
 import { pushBlock } from '../utils/blockStack';
+import { getError } from '../compilerError';
 
-import type { InstructionCompiler, LoopBlockStackFrame, LoopLine } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, LoopBlockStackFrame, LoopLine, NormalizedLoopLine } from '@8f4e/compiler-spec';
 
 const DEFAULT_LOOP_CAP = 1000;
 
@@ -25,12 +26,12 @@ const DEFAULT_LOOP_CAP = 1000;
  * Instruction compiler for `loop`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const loop: InstructionCompiler<LoopLine> = (line, context) => {
+const loop: InstructionCompiler<NormalizedLoopLine | LoopLine> = (line, context) => {
 	const capArg = line.arguments[0];
-	const effectiveCap =
-		capArg !== undefined && capArg.type === ArgumentType.LITERAL
-			? (capArg.value as number)
-			: (context.loopCap ?? DEFAULT_LOOP_CAP);
+	if (capArg !== undefined && capArg.type !== ArgumentType.LITERAL) {
+		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+	}
+	const effectiveCap = capArg !== undefined ? (capArg.value as number) : (context.loopCap ?? DEFAULT_LOOP_CAP);
 
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumberAfterMacroExpansion;
 	const counterLocalIndex = Object.keys(context.locals).length;

@@ -5,6 +5,7 @@ import normalizeClampAddress from './clampAddress';
 import normalizeConst from './const';
 import normalizeDefault from './default';
 import normalizeLocalVariableAccess from './localVariable';
+import normalizeLoop from './loop';
 import normalizeMap from './map';
 import normalizeMemoryCopy from './memoryCopy';
 import normalizeMemoryDeclaration from './memoryDeclaration';
@@ -20,6 +21,7 @@ const instructionNormalizers = {
 	const: normalizeConst,
 	default: normalizeDefault,
 	localSet: normalizeLocalVariableAccess,
+	loop: normalizeLoop,
 	map: normalizeMap,
 	memoryCopy: normalizeMemoryCopy,
 	push: normalizePush,
