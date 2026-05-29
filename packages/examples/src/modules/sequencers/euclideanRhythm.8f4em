@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module euclideanRhythm
 
 int[] rhythm 16
@@ -66,3 +67,4 @@ store
 loopEnd
 
 moduleEnd
+groupEnd

@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module replicator2
 
 const TIMES 4
@@ -27,7 +28,7 @@ push 0
 equal
 branchIfTrue 0
 
-loop 
+loop
 ; Calculate destination
 ; address
 push &buffer
@@ -46,7 +47,7 @@ remainder
 push sizeof(bufferIn)
 mul
 add
- 
+
 loadFloat
 
 push _pointer
@@ -67,7 +68,7 @@ push 1
 sub
 greaterOrEqual
 branchIfTrue 1
- 
+
 ; Increment buffer pointer
 push &_pointer
 push _pointer
@@ -77,3 +78,4 @@ store
 loopEnd
 
 moduleEnd
+groupEnd

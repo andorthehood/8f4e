@@ -1,10 +1,11 @@
 8f4e/v1
 
+group main
 module saw
 
 use env
 
-float default 1 ;Hz 
+float default 1 ;Hz
 float* frequency &default
 int out
 int8[] range8 1
@@ -40,6 +41,7 @@ store
 ifEnd
 
 moduleEnd
+groupEnd
 
 constants env
 #mock

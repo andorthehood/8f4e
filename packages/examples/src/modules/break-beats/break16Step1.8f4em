@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module break
 
 ; MSb 0 kick
@@ -25,3 +26,4 @@ int step15 0b00100000
 int last   0b00000000
 
 moduleEnd
+groupEnd

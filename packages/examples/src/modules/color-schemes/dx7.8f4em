@@ -1,8 +1,10 @@
 8f4e/v1
 
+group main
 module dx7colors
 ; @pos 2 51
 ; @config color.text.instruction #33ffcc
 ; @config color.icons.inputConnector #ff9999
 ; @config color.icons.outputConnector #9999cc
 moduleEnd
+groupEnd

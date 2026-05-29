@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module minBLEPLUT
 ; @tab 7
 ; PT2-style minBLEP correction table
@@ -264,3 +265,4 @@ float	0.000000000000000000
 float	0.000000000000000000
 
 moduleEnd
+groupEnd

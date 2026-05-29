@@ -747,6 +747,7 @@ map 12	S12_VOLUME
 mapEnd int
 functionEnd int
 
+group main
 module amigaTick
 ; @pos -157 -28
 use mod
@@ -783,7 +784,6 @@ add
 store
 
 moduleEnd
-
 module amp1
 ; @pos 542 -21
 float* in &modSamplePlayer1:out
@@ -800,7 +800,6 @@ mul
 store
 
 moduleEnd
-
 module amp2
 ; @pos 542 -3
 float* in &modSamplePlayer2:out
@@ -817,7 +816,6 @@ mul
 store
 
 moduleEnd
-
 module amp3
 ; @pos 542 15
 float* in &modSamplePlayer3:out
@@ -834,7 +832,6 @@ mul
 store
 
 moduleEnd
-
 module amp4
 ; @pos 542 33
 float* in &modSamplePlayer4:out
@@ -851,7 +848,6 @@ mul
 store
 
 moduleEnd
-
 module assets
 ; @pos -13 -116
 ; @tab 22
@@ -873,7 +869,6 @@ module assets
 ; @defAsset ch4	https://static.8f4e.com/assets/mods/hymn_to_aurora/patterns_ch4.bin
 
 moduleEnd
-
 module audiooutL
 ; @pos 689 -10
 use env
@@ -911,7 +906,6 @@ store
 ifEnd
 
 moduleEnd
-
 module audiooutR
 ; @pos 730 -10
 use env
@@ -949,7 +943,6 @@ store
 ifEnd
 
 moduleEnd
-
 module lowpassL
 ; @pos 638 -12
 float* in &mixer:outL
@@ -980,7 +973,6 @@ push out
 store
 
 moduleEnd
-
 module lowpassR
 ; @pos 638 19
 float* in &mixer:outR
@@ -1011,7 +1003,6 @@ push out
 store
 
 moduleEnd
-
 module mixer
 ; @pos 594 3
 float* in1 &amp1:out
@@ -1052,7 +1043,6 @@ add
 store
 
 moduleEnd
-
 module modRowCounter
 ; @pos -84 -28
 use env
@@ -1109,7 +1099,6 @@ store
 ifEnd
 
 moduleEnd
-
 module modSamplePlayer1
 ; @pos 422 -7
 ; @tab 6 20
@@ -1209,7 +1198,6 @@ store
 ifEnd
 
 moduleEnd
-
 module modSamplePlayer2
 ; @pos 422 13
 ; @tab 6 20
@@ -1309,7 +1297,6 @@ store
 ifEnd
 
 moduleEnd
-
 module modSamplePlayer3
 ; @pos 473 -7
 ; @tab 6 20
@@ -1409,7 +1396,6 @@ store
 ifEnd
 
 moduleEnd
-
 module modSamplePlayer4
 ; @pos 473 13
 ; @tab 6 20
@@ -1509,7 +1495,6 @@ store
 ifEnd
 
 moduleEnd
-
 module patternOrder
 ; @pos -119 -28
 ; @tab 6
@@ -1548,7 +1533,6 @@ int	0x12
 int	0x0f
 
 moduleEnd
-
 module period1
 ; @pos 247 -64
 ; @group ch0
@@ -1569,7 +1553,6 @@ store
 ifEnd
 
 moduleEnd
-
 module period2
 ; @pos 246 -26
 ; @group ch1
@@ -1590,7 +1573,6 @@ store
 ifEnd
 
 moduleEnd
-
 module period3
 ; @pos 246 11
 ; @group ch2
@@ -1611,7 +1593,6 @@ store
 ifEnd
 
 moduleEnd
-
 module period4
 ; @pos 246 49
 ; @group ch3
@@ -1632,7 +1613,6 @@ store
 ifEnd
 
 moduleEnd
-
 module projectConfig
 ; @pos 51 -124
 ; @config runtime AudioWorkletRuntime
@@ -1640,7 +1620,6 @@ module projectConfig
 ; @config export.fileName hymn_to_aurora
 
 moduleEnd
-
 module rowBuffer1
 ; @pos 28 -1
 int ; @w 0x
@@ -1683,7 +1662,6 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
 module rowBuffer2
 ; @pos 64 -1
 int ; @w 0x
@@ -1727,7 +1705,6 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
 module rowBuffer3
 ; @pos 100 -1
 int ; @w 0x
@@ -1771,7 +1748,6 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
 module rowBuffer4
 ; @pos 136 -1
 int ; @w 0x
@@ -1815,7 +1791,6 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
 module rowCount1
 ; @pos 2 20
 int* in &modRowCounter:out
@@ -1827,7 +1802,6 @@ push &out
 push *in
 store
 moduleEnd
-
 module rowCount2
 ; @pos 169 -34
 int* in &modRowCounter:out
@@ -1838,7 +1812,6 @@ push *in
 store
 
 moduleEnd
-
 module sampleNumber1
 ; @pos 213 -64
 ; @group ch0
@@ -1860,7 +1833,6 @@ store
 ifEnd
 
 moduleEnd
-
 module sampleNumber2
 ; @pos 212 -26
 ; @group ch1
@@ -1882,7 +1854,6 @@ store
 ifEnd
 
 moduleEnd
-
 module sampleNumber3
 ; @pos 212 11
 ; @group ch2
@@ -1904,7 +1875,6 @@ store
 ifEnd
 
 moduleEnd
-
 module sampleNumber4
 ; @pos 212 49
 ; @group ch3
@@ -1926,7 +1896,6 @@ store
 ifEnd
 
 moduleEnd
-
 module samplePack
 ; @pos 370 -6
 use env
@@ -1968,7 +1937,6 @@ int8[] sample12 ASSET_SAMPLE12_SIZE
 ; @loadAsset sample12 &sample12
 ; @wave &sample12 count(sample12)
 moduleEnd
-
 module scope1
 ; @pos 28 -17
 float* in &amp1:out
@@ -1997,7 +1965,6 @@ push *in
 store
 
 moduleEnd
-
 module scope2
 ; @pos 64 -17
 float* in &amp2:out
@@ -2026,7 +1993,6 @@ push *in
 store
 
 moduleEnd
-
 module scope3
 ; @pos 100 -17
 float* in &amp3:out
@@ -2055,7 +2021,6 @@ push *in
 store
 
 moduleEnd
-
 module scope4
 ; @pos 136 -17
 float* in &amp4:out
@@ -2084,7 +2049,6 @@ push *in
 store
 
 moduleEnd
-
 module trigger1
 ; @pos 281 -64
 ; @group ch0
@@ -2110,7 +2074,6 @@ store
 ifEnd
 
 moduleEnd
-
 module trigger2
 ; @pos 280 -26
 ; @group ch1
@@ -2136,7 +2099,6 @@ store
 ifEnd
 
 moduleEnd
-
 module trigger3
 ; @pos 280 11
 ; @group ch2
@@ -2162,7 +2124,6 @@ store
 ifEnd
 
 moduleEnd
-
 module trigger4
 ; @pos 280 49
 ; @group ch3
@@ -2186,7 +2147,6 @@ store
 ifEnd
 
 moduleEnd
-
 module ultimateSoundtrackerColors
 ; @pos 555 -151
 ; @tab 46
@@ -2222,7 +2182,6 @@ module ultimateSoundtrackerColors
 ; @config color.icons.inputConnector	#000
 ; @config color.text.arrow	#fff
 moduleEnd
-
 module volume1
 ; @pos 320 -64
 ; @group ch0
@@ -2257,7 +2216,6 @@ store
 ifEnd
 
 moduleEnd
-
 module volume2
 ; @pos 319 -26
 ; @group ch1
@@ -2292,7 +2250,6 @@ store
 ifEnd
 
 moduleEnd
-
 module volume3
 ; @pos 319 11
 ; @group ch2
@@ -2327,7 +2284,6 @@ store
 ifEnd
 
 moduleEnd
-
 module volume4
 ; @pos 319 49
 ; @group ch3
@@ -2362,3 +2318,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

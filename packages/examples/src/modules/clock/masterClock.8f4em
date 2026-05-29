@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module clock
 
 const HIGH 1
@@ -19,3 +20,4 @@ ifEnd int
 store
 
 moduleEnd
+groupEnd

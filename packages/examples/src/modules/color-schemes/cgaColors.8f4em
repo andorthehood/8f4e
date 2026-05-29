@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module cgaColors
 ; @config color.fill.moduleBackground #0000aa
 ; @config color.fill.background #00aaaa
@@ -31,3 +32,4 @@ module cgaColors
 ; @config color.icons.inputConnectorBackground #0000aa
 ; @config color.icons.inputConnector #55ffff
 moduleEnd
+groupEnd

@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module highPassFilter
 
 float* in &vca:out
@@ -22,8 +23,8 @@ sub
 store
 
 moduleEnd
-
 module vca
 #mock
 float out 0.0
 moduleEnd
+groupEnd

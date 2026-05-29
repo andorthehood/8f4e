@@ -223,6 +223,7 @@ push sum
 
 functionEnd int
 
+group main
 module audioout
 ; @pos 165 -100
 ; ~audioOutput buffer 0 0
@@ -263,7 +264,6 @@ store
 ifEnd
 
 moduleEnd
-
 module blepLowpass
 ; @pos 263 -73
 float* in &blepSmoother:out
@@ -294,7 +294,6 @@ push out
 store
 
 moduleEnd
-
 module blepSmoother
 ; @pos 213 -73
 float* raw &pcmPlayer:out
@@ -361,7 +360,6 @@ call wrapAdd32
 store
 
 moduleEnd
-
 module minBLEPLUT
 ; @pos 390 -1
 ; @tab 7
@@ -627,7 +625,6 @@ float	0.000000000000000000
 float	0.000000000000000000
 
 moduleEnd
-
 module mixer
 ; @pos 115 -103
 
@@ -648,7 +645,6 @@ add
 store
 
 moduleEnd
-
 module notes
 ; @pos 15 -89
 ; Plays a hardcoded one-cycle pulse
@@ -663,7 +659,6 @@ module notes
 ; then low-pass filters the result before
 ; routing it to audioout.
 moduleEnd
-
 module packedPulseSample
 ; @pos 429 19
 ; One-cycle pulse sample packed
@@ -705,7 +700,6 @@ int	0xE0 0xE0 0xE0 0xE0
 int	0xE0 0xE0 0xE0 0xE0
 int	0xE0 0xE0 0xE0 0xE0
 moduleEnd
-
 module params
 ; @pos 66 -93
 float increment 1.0 ; @w
@@ -720,7 +714,6 @@ float volSmoothed 1.0; @w
 ; @crossfade &volOriginal &volSmoothed
 
 moduleEnd
-
 module pcmPlayer
 ; @pos 122 -73
 use env
@@ -777,7 +770,6 @@ store
 ifEnd
 
 moduleEnd
-
 module projectConfig
 ; @pos -58 -63
 ; @config runtime AudioWorkletRuntime
@@ -785,7 +777,6 @@ module projectConfig
 ; @config export.fileName minBLEP
 
 moduleEnd
-
 module sampleDelta
 ; @pos 177 -73
 float* in &pcmPlayer:out
@@ -803,7 +794,6 @@ push *in
 store
 
 moduleEnd
-
 module scopeOriginal
 ; @pos 44 -73
 
@@ -839,7 +829,6 @@ store
 ifEnd
 
 moduleEnd
-
 module scopeSmooth
 ; @pos 82 -73
 
@@ -875,3 +864,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd
