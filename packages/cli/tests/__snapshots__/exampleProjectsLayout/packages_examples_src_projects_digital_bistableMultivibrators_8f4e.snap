@@ -21,8 +21,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "notes",
@@ -30,8 +29,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "setButton",
@@ -39,8 +37,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 1,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "resetButton",
@@ -48,8 +45,7 @@
       "byteAddress": 8,
       "wordAlignedAddress": 2,
       "wordAlignedSize": 1,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "norGate2",
@@ -57,8 +53,7 @@
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "norGate",
@@ -66,8 +61,7 @@
       "byteAddress": 24,
       "wordAlignedAddress": 6,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "scope",
@@ -75,8 +69,7 @@
       "byteAddress": 36,
       "wordAlignedAddress": 9,
       "wordAlignedSize": 66,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "buttons",
@@ -84,8 +77,7 @@
       "byteAddress": 300,
       "wordAlignedAddress": 75,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "negate",
@@ -93,8 +85,7 @@
       "byteAddress": 308,
       "wordAlignedAddress": 77,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "orGate",
@@ -102,8 +93,7 @@
       "byteAddress": 316,
       "wordAlignedAddress": 79,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "andGate",
@@ -111,8 +101,7 @@
       "byteAddress": 328,
       "wordAlignedAddress": 82,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "scope2",
@@ -120,8 +109,7 @@
       "byteAddress": 340,
       "wordAlignedAddress": 85,
       "wordAlignedSize": 66,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     }
   ]
 }

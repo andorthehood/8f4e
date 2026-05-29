@@ -22,7 +22,7 @@ export default function createMainThreadRuntime(
 	let timeToExecuteLoopMs = 0;
 	let lastIntervalTime = 0;
 	let timerDriftMs = 0;
-	let wasmApp: { cycle: CallableFunction } | null = null;
+	let wasmApp: { main: CallableFunction } | null = null;
 	let isRunning = false;
 
 	async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
@@ -40,7 +40,7 @@ export default function createMainThreadRuntime(
 				const startTime = performance.now();
 				timerDriftMs = startTime - lastIntervalTime - intervalTime;
 				lastIntervalTime = startTime;
-				wasmApp.cycle();
+				wasmApp.main();
 				const endTime = performance.now();
 				timeToExecuteLoopMs = endTime - startTime;
 			}, intervalTime);

@@ -16,7 +16,8 @@
       "wordAlignedAddress": 1,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 0
+      "index": 0,
+      "executionGroupName": "main"
     },
     "notes": {
       "id": "notes",
@@ -31,7 +32,8 @@
       "wordAlignedAddress": 1,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 1
+      "index": 1,
+      "executionGroupName": "main"
     },
     "setButton": {
       "id": "setButton",
@@ -62,7 +64,8 @@
         }
       },
       "wordAlignedSize": 1,
-      "index": 2
+      "index": 2,
+      "executionGroupName": "main"
     },
     "resetButton": {
       "id": "resetButton",
@@ -93,7 +96,8 @@
         }
       },
       "wordAlignedSize": 1,
-      "index": 3
+      "index": 3,
+      "executionGroupName": "main"
     },
     "norGate2": {
       "id": "norGate2",
@@ -191,7 +195,8 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 4
+      "index": 4,
+      "executionGroupName": "main"
     },
     "norGate": {
       "id": "norGate",
@@ -289,7 +294,8 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 5
+      "index": 5,
+      "executionGroupName": "main"
     },
     "scope": {
       "id": "scope",
@@ -437,7 +443,8 @@
         }
       },
       "wordAlignedSize": 66,
-      "index": 6
+      "index": 6,
+      "executionGroupName": "main"
     },
     "buttons": {
       "id": "buttons",
@@ -483,7 +490,8 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 7
+      "index": 7,
+      "executionGroupName": "main"
     },
     "negate": {
       "id": "negate",
@@ -557,7 +565,8 @@
         }
       },
       "wordAlignedSize": 2,
-      "index": 8
+      "index": 8,
+      "executionGroupName": "main"
     },
     "orGate": {
       "id": "orGate",
@@ -658,7 +667,8 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 9
+      "index": 9,
+      "executionGroupName": "main"
     },
     "andGate": {
       "id": "andGate",
@@ -759,7 +769,8 @@
         }
       },
       "wordAlignedSize": 3,
-      "index": 10
+      "index": 10,
+      "executionGroupName": "main"
     },
     "scope2": {
       "id": "scope2",
@@ -909,9 +920,10 @@
         }
       },
       "wordAlignedSize": 66,
-      "index": 11
+      "index": 11,
+      "executionGroupName": "main"
     }
   },
-  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIPAQJqcwZtZW1vcnkCAwEBAxEQAAAAAAAAAAAAAAAAAAAAAAcsBAxpbml0RGVmYXVsdHMAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMMAQMK2gMQLABBAEEAQdwE/AsAQQxBAEEc/AgAAEGoAkEAQTD8CAEAQdgEQQBBBPwIAgALGgAQBBAFEAYQBxAIEAkQChALEAwQDRAOEA8LAgALGQEBf0GAASEAA0AQASAAQQFrIQAgAA0ACwsCAAsCAAsCAAsCAAsjAEEQQQwoAgAoAgBBFCgCACgCAGpBAEYEf0EBBUEACzYCAAsjAEEcQRgoAgAoAgBBICgCACgCAGpBAEYEf0EBBUEACzYCAAtXAgF/AX9BqAJBqAIoAgBBBGo2AgBBqAIoAgBBpAJKBEBBqAJBKDYCAAtBqAIoAgBBJCgCACgCACEBIQAgAD8AQQFrQRB0Qfz/A2pNBEAgACABNgIABQsLAgALHABBuAJBtAIoAgAoAgBBAEYEf0EBBUEACzYCAAsmAEHAAkG8AigCACgCAEHEAigCACgCAGpBAU4Ef0EBBUEACzYCAAsmAEHMAkHIAigCACgCAEHQAigCACgCAGxBAU4Ef0EBBUEACzYCAAtZAgF/AX9B2ARB2AQoAgBBBGo2AgBB2AQoAgBB1ARKBEBB2ARB2AI2AgALQdgEKAIAQdQCKAIAKAIAIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE2AgAFCwsLVwMBHBwAAAAAAAAABAAAABAAAAAAAAAACAAAABwAAAABMCgAAAAAAAAAAAAAADABAAAAAAAATAEAAAAAAAAsAQAAQAEAAAAAAAA4AQAATAEAAAEEWAEAAA==",
+  "compiledWasm": "AGFzbQEAAAABDwNgAABgAX8Bf2ACf38BfwIPAQJqcwZtZW1vcnkCAwEBAxAPAAAAAAAAAAAAAAAAAAAAByADDGluaXREZWZhdWx0cwAABmJ1ZmZlcgABBG1haW4AAgwBAwrXAw8sAEEAQQBB3AT8CwBBDEEAQRz8CAAAQagCQQBBMPwIAQBB2ARBAEEE/AgCAAsZAQF/QYABIQADQBACIABBAWshACAADQALCxoAEAMQBBAFEAYQBxAIEAkQChALEAwQDRAOCwIACwIACwIACwIACyMAQRBBDCgCACgCAEEUKAIAKAIAakEARgR/QQEFQQALNgIACyMAQRxBGCgCACgCAEEgKAIAKAIAakEARgR/QQEFQQALNgIAC1cCAX8Bf0GoAkGoAigCAEEEajYCAEGoAigCAEGkAkoEQEGoAkEoNgIAC0GoAigCAEEkKAIAKAIAIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE2AgAFCwsCAAscAEG4AkG0AigCACgCAEEARgR/QQEFQQALNgIACyYAQcACQbwCKAIAKAIAQcQCKAIAKAIAakEBTgR/QQEFQQALNgIACyYAQcwCQcgCKAIAKAIAQdACKAIAKAIAbEEBTgR/QQEFQQALNgIAC1kCAX8Bf0HYBEHYBCgCAEEEajYCAEHYBCgCAEHUBEoEQEHYBEHYAjYCAAtB2AQoAgBB1AIoAgAoAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATYCAAULCwtXAwEcHAAAAAAAAAAEAAAAEAAAAAAAAAAIAAAAHAAAAAEwKAAAAAAAAAAAAAAAMAEAAAAAAABMAQAAAAAAACwBAABAAQAAAAAAADgBAABMAQAAAQRYAQAA",
   "requiredMemoryBytes": 604
 }

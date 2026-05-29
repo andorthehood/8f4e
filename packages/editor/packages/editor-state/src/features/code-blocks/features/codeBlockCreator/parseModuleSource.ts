@@ -4,15 +4,6 @@ import type { ProjectCodeBlock } from '@8f4e/tokenizer';
 
 import { FORMAT_HEADER } from '~/features/project-format';
 
-function isParsedTestModule(block: ProjectCodeBlock): boolean {
-	if (getProjectBlockType(block.code) !== 'module') {
-		return false;
-	}
-
-	const ast = compileToAST(block.code);
-	return ast.type === 'module' && ast.testLine !== undefined;
-}
-
 function isParsedMockBlock(block: ProjectCodeBlock): boolean {
 	const blockType = getProjectBlockType(block.code);
 	if (blockType !== 'module' && blockType !== 'function' && blockType !== 'constants') {
@@ -30,7 +21,7 @@ export default function parseModuleSource(source: string): string[] {
 
 	const project = parse8f4eProject(source);
 	const [firstNonTestBlock] = project.codeBlocks.filter(
-		block => !isParsedTestModule(block) && !isParsedMockBlock(block)
+		block => block.executionGroupName !== 'test' && !isParsedMockBlock(block)
 	);
 
 	return firstNonTestBlock?.code ?? [];
@@ -51,16 +42,15 @@ if (import.meta.vitest) {
 			]);
 		});
 
-		it('returns the first non-test block from module files that include #test modules', () => {
+		it('returns the first non-test block from module files that include test groups', () => {
 			const text = [
 				'8f4e/v1',
 				'',
 				'function helper',
 				'functionEnd',
 				'',
-				'group main',
+				'group test',
 				'module helperTest',
-				'#test ; inline comment',
 				'push 1',
 				'assert 1',
 				'moduleEnd',
@@ -70,13 +60,12 @@ if (import.meta.vitest) {
 			expect(parseModuleSource(text)).toEqual(['function helper', 'functionEnd']);
 		});
 
-		it('filters out module files that only contain #test modules', () => {
+		it('filters out module files that only contain test groups', () => {
 			const text = [
 				'8f4e/v1',
 				'',
-				'group main',
+				'group test',
 				'module helperTest',
-				'#test',
 				'push 1',
 				'assert 1',
 				'moduleEnd',

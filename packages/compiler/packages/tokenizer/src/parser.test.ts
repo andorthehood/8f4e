@@ -333,7 +333,6 @@ describe('compileToASTLines', () => {
 		const ast = compileToASTLines([
 			'module test',
 			'#skipExecution',
-			'#initOnly',
 			'#region sampleMemory',
 			'int counter',
 			'moduleEnd',
@@ -346,11 +345,10 @@ describe('compileToASTLines', () => {
 
 		expect(isCompilerDirectiveLine(ast[1]) && ast[1].isBlockPrologue).toBe(true);
 		expect(isCompilerDirectiveLine(ast[2]) && ast[2].isBlockPrologue).toBe(true);
-		expect(isCompilerDirectiveLine(ast[3]) && ast[3].isBlockPrologue).toBe(true);
-		expect(isCompilerDirectiveLine(ast[4])).toBe(false);
+		expect(isCompilerDirectiveLine(ast[3])).toBe(false);
+		expect(isCompilerDirectiveLine(ast[6]) && ast[6].isBlockPrologue).toBe(true);
 		expect(isCompilerDirectiveLine(ast[7]) && ast[7].isBlockPrologue).toBe(true);
-		expect(isCompilerDirectiveLine(ast[8]) && ast[8].isBlockPrologue).toBe(true);
-		expect(isCompilerDirectiveLine(ast[9])).toBe(false);
+		expect(isCompilerDirectiveLine(ast[8])).toBe(false);
 	});
 
 	it('marks mock directives in constants prologues', () => {

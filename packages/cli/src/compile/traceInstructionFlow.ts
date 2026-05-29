@@ -203,7 +203,6 @@ export default function traceInstructionFlow(
 			codeBlockId: module.id,
 			codeBlockType: kind,
 			skipExecutionInCycle: module.skipExecutionInCycle,
-			initOnlyExecution: module.initOnlyExecution,
 		});
 
 		blocks.push(traceAst(module.id, kind, module.ast.lines, context));

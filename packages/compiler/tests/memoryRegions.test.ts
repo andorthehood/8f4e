@@ -57,7 +57,7 @@ describe('logical memory regions', () => {
 		const { instance, defaultView, regionViews } = await instantiateWithRegions(result, ['sampleMemory']);
 
 		(instance.exports.initDefaults as CallableFunction)();
-		(instance.exports.cycle as CallableFunction)();
+		(instance.exports.main as CallableFunction)();
 
 		const values = result.compiledModules.samples.memoryMap.values;
 		const resultMemory = result.compiledModules.reader.memoryMap.result;
@@ -117,7 +117,7 @@ describe('logical memory regions', () => {
 		const { instance, defaultView } = await instantiateWithRegions(result, ['sampleMemory']);
 
 		(instance.exports.initDefaults as CallableFunction)();
-		(instance.exports.cycle as CallableFunction)();
+		(instance.exports.main as CallableFunction)();
 
 		const resultMemory = result.compiledModules.defaults.memoryMap.result;
 		expect(defaultView.getInt32(resultMemory.byteAddress, true)).toBe(42);
@@ -195,7 +195,7 @@ describe('logical memory regions', () => {
 		const { instance, memory } = await instantiateWithRegions(result, ['sampleMemory']);
 
 		(instance.exports.initDefaults as CallableFunction)();
-		(instance.exports.cycle as CallableFunction)();
+		(instance.exports.main as CallableFunction)();
 
 		const copy = result.compiledModules.defaults.memoryMap.copy;
 		expect([...new Uint8Array(memory.buffer).slice(copy.byteAddress, copy.byteAddress + 4)]).toEqual([1, 2, 3, 4]);

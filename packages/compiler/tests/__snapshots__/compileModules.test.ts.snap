@@ -415,7 +415,6 @@ exports[`compiler > compileModules 1`] = `
     "id": "abs",
     "index": 0,
     "initFunctionBody": [],
-    "initOnlyExecution": undefined,
     "memoryIndex": 0,
     "memoryMap": {
       "defaultValue": {

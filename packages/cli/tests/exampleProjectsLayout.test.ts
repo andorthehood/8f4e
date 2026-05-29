@@ -58,7 +58,6 @@ describe('compileProject (example project layout)', () => {
 				wordAlignedAddress: module.wordAlignedAddress,
 				wordAlignedSize: module.wordAlignedSize,
 				skipExecutionInCycle: module.skipExecutionInCycle ?? false,
-				initOnlyExecution: module.initOnlyExecution ?? false,
 			}));
 
 		const snapshotPayload = {

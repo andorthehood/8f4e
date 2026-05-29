@@ -30,12 +30,13 @@ import {
 	collectNamespacesFromASTs,
 	collectFunctionMetadataFromAsts,
 } from './semantic/buildNamespace';
-import { EXPORTED_FUNCTION_COUNT, HEADER, VERSION } from './consts';
+import { HEADER, VERSION } from './consts';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 import { getError } from './compilerError';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 
 import type {
+	AssertionMetadata,
 	CompileOptions,
 	CompileInput,
 	CompileResult,
@@ -51,13 +52,16 @@ import type {
 	ModuleAST,
 	Namespaces,
 	ParsedLineMetadata,
-	TestAssertionMetadata,
 } from '@8f4e/compiler-spec';
 
 type ExpandedCompilerSource = {
 	code: string[];
 	lineMetadata: ParsedLineMetadata | undefined;
 	cacheKey: string;
+};
+
+type ModuleCompilerSource = ExpandedCompilerSource & {
+	groupName: string;
 };
 
 export { default as instructions } from './instructionCompilers';
@@ -84,8 +88,8 @@ export function compileModules(
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
 	internalAllocator?: { nextByteAddress: number },
-	testOptions: {
-		testAssertions?: TestAssertionMetadata[];
+	assertOptions: {
+		assertions?: AssertionMetadata[];
 		assertFailureFunctionIndex?: number;
 	} = {}
 ): CompiledModule[] {
@@ -108,7 +112,7 @@ export function compileModules(
 			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
 		const module = compileModule(ast, ns, moduleStartingByteAddress, index, compiledFunctions, allocator, {
 			...options,
-			...testOptions,
+			...assertOptions,
 		});
 		return module;
 	});
@@ -130,10 +134,11 @@ function createCompilerCache(): CompilerCache {
 	};
 }
 
-const BUILT_IN_EXPORT_NAMES = new Set(['initDefaults', 'cycle', 'initOnly', 'buffer', 'runTests']);
+const RESERVED_EXPORT_NAMES = new Set(['initDefaults', 'buffer']);
 
-function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): void {
+function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, groupNames: readonly string[]): void {
 	const seen = new Set<string>();
+	const builtInExportNames = new Set([...RESERVED_EXPORT_NAMES, ...groupNames]);
 
 	for (const compiledFunction of Object.values(functions)) {
 		const exportName = compiledFunction.exportName;
@@ -142,7 +147,7 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup): voi
 		}
 
 		const exportLine = compiledFunction.ast.exportLine ?? compiledFunction.ast.lines[0];
-		if (BUILT_IN_EXPORT_NAMES.has(exportName) || seen.has(exportName)) {
+		if (builtInExportNames.has(exportName) || seen.has(exportName)) {
 			throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, exportLine, undefined, { identifier: exportName });
 		}
 
@@ -228,16 +233,13 @@ function parseFunctionAST(
 	return ast;
 }
 
-function isTestModuleAST(ast: ModuleAST | ConstantsAST): boolean {
-	return ast.type === 'module' && ast.testLine !== undefined;
-}
-
 export default function compile(
 	input: CompileInput,
 	options: CompileOptions,
 	cache = createCompilerCache()
 ): CompileResult {
 	validateMemoryRegionOptions(options);
+	const inputGroupNames = Object.keys(input.groups);
 	const groupedModules = Object.entries(input.groups).flatMap(([groupName, modules]) =>
 		modules.map((module, index) => ({ groupName, module, index }))
 	);
@@ -256,8 +258,9 @@ export default function compile(
 		return {
 			...expanded,
 			cacheKey: `group:${groupName}:module:${index}`,
+			groupName,
 		};
-	}) satisfies ExpandedCompilerSource[];
+	}) satisfies ModuleCompilerSource[];
 
 	const expandedConstants = constants.map((constantsBlock, index) => {
 		const expanded = shouldExpandMacros
@@ -281,31 +284,31 @@ export default function compile(
 	}) satisfies ExpandedCompilerSource[];
 
 	// Compile to AST with line metadata for error mapping.
-	const astModules = expandedModules.map(({ code, lineMetadata, cacheKey }) =>
-		parseModuleAST(code, lineMetadata, cache, cacheKey)
-	);
+	const astModuleEntries = expandedModules.map(({ groupName, code, lineMetadata, cacheKey }) => ({
+		groupName,
+		ast: parseModuleAST(code, lineMetadata, cache, cacheKey),
+	}));
 	const astConstants = expandedConstants.map(({ code, lineMetadata, cacheKey }) =>
 		parseConstantsAST(code, lineMetadata, cache, cacheKey)
 	);
-	const testModuleIds = astModules.filter(isTestModuleAST).map(ast => ast.id);
-	const activeAstModules = options.includeTestRunner ? astModules : astModules.filter(ast => !isTestModuleAST(ast));
-	assertUniqueModuleIds(activeAstModules);
-	const hasAssertInstruction =
-		options.includeTestRunner === true &&
-		activeAstModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
+	const groupNames = inputGroupNames;
+	const astModules = astModuleEntries.map(({ ast }) => ast);
+	const moduleGroupNames = astModuleEntries.map(({ groupName }) => groupName);
+	assertUniqueModuleIds(astModules);
+	const hasAssertInstruction = astModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
 	const importedFunctionCount = hasAssertInstruction ? 1 : 0;
 	const assertFailureFunctionIndex = hasAssertInstruction ? 0 : undefined;
 	const assertFailureTypeIndex = 3;
-	const builtInFunctionCount = EXPORTED_FUNCTION_COUNT + (options.includeTestRunner ? 1 : 0);
+	const builtInFunctionCount = 2 + groupNames.length;
 	const userFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
-	const testAssertions: TestAssertionMetadata[] = [];
+	const assertions: AssertionMetadata[] = [];
 
-	const namespaceAsts = [...activeAstModules, ...astConstants];
+	const namespaceAsts = [...astModules, ...astConstants];
 	const namespaces = collectNamespacesFromASTs(
 		namespaceAsts,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
-		activeAstModules,
+		astModules,
 		options
 	);
 
@@ -330,7 +333,7 @@ export default function compile(
 		compileFunction(ast, namespaces, userFunctionBaseIndex + index, functionTypeRegistry, functionMetadata, options)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
-	assertUniqueFunctionExportNames(compiledFunctionsMap);
+	assertUniqueFunctionExportNames(compiledFunctionsMap, groupNames);
 	const requiredMemoryBytesByIndexFromNamespaces = getRequiredMemoryBytesByIndex(Object.values(namespaces));
 	const totalModuleBytes = requiredMemoryBytesByIndexFromNamespaces[0] ?? 0;
 	const internalAllocator = { nextByteAddress: totalModuleBytes };
@@ -341,7 +344,7 @@ export default function compile(
 
 	// Compile all modules in input order so editor layout can drive execution order.
 	const compiledModules = compileModules(
-		activeAstModules,
+		astModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -350,9 +353,12 @@ export default function compile(
 		compiledFunctionsMap,
 		internalAllocator,
 		{
-			...(hasAssertInstruction ? { testAssertions, assertFailureFunctionIndex } : {}),
+			...(hasAssertInstruction ? { assertions, assertFailureFunctionIndex } : {}),
 		}
-	);
+	).map((module, index) => ({
+		...module,
+		executionGroupName: moduleGroupNames[index],
+	}));
 
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
@@ -377,27 +383,16 @@ export default function compile(
 	const userFunctionCount = compiledFunctions.length;
 	const getCompiledModuleFunctionIndex = (module: CompiledModule) =>
 		importedFunctionCount + builtInFunctionCount + userFunctionCount + module.index;
-	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle or initOnlyExecution flags
-	const cycleFunction = compiledModules.flatMap(module =>
-		module.skipExecutionInCycle || module.initOnlyExecution || module.testExecution
-			? []
-			: call(getCompiledModuleFunctionIndex(module))
-	);
-
-	// Generate init-only module calls (run after memory initialization)
-	// Skip if skipExecutionInCycle is true (precedence rule)
-	const initOnlyModuleCalls = compiledModules.flatMap(module =>
-		module.initOnlyExecution && !module.skipExecutionInCycle && !module.testExecution
-			? call(getCompiledModuleFunctionIndex(module))
-			: []
-	);
-	const initOnlyFunction = createFunction([], initOnlyModuleCalls);
-	const testRunnerFunction = options.includeTestRunner
-		? createFunction(
-				[],
-				compiledModules.flatMap(module => (module.testExecution ? call(getCompiledModuleFunctionIndex(module)) : []))
+	const groupDispatcherFunctions = groupNames.map(groupName =>
+		createFunction(
+			[],
+			compiledModules.flatMap(module =>
+				module.executionGroupName === groupName && !module.skipExecutionInCycle
+					? call(getCompiledModuleFunctionIndex(module))
+					: []
 			)
-		: undefined;
+		)
+	);
 
 	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules);
 	const memoryInitiatorFunction = [
@@ -413,7 +408,6 @@ export default function compile(
 			...i32const(segment.bytes.length),
 			...memoryInit(index, segment.memoryIndex),
 		]),
-		...initOnlyModuleCalls,
 	];
 
 	// Apply defaults for buffer options
@@ -421,7 +415,12 @@ export default function compile(
 	const bufferStrategy = options.bufferStrategy ?? 'loop';
 
 	// Create buffer function (includes locals and body)
-	const bufferFunction = createBufferFunctionBody(bufferSize, bufferStrategy, importedFunctionCount + 1);
+	const mainGroupIndex = groupNames.indexOf('main');
+	const mainGroupFunctionIndex = mainGroupIndex >= 0 ? importedFunctionCount + 2 + mainGroupIndex : undefined;
+	const bufferFunction =
+		mainGroupFunctionIndex === undefined
+			? createFunction([], [])
+			: createBufferFunctionBody(bufferSize, bufferStrategy, mainGroupFunctionIndex);
 
 	// Strip AST from final result if not requested
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
@@ -440,20 +439,16 @@ export default function compile(
 		? [createFunctionImport('test', 'assertFailed', assertFailureTypeIndex)]
 		: [];
 
-	const builtInFunctionSignatures = [0x00, 0x00, 0x00, 0x00, ...(options.includeTestRunner ? [0x00] : [])];
+	const builtInFunctionSignatures = [0x00, 0x00, ...groupNames.map(() => 0x00)];
 	const builtInFunctionBodies = [
 		createFunction([], memoryInitiatorFunction),
-		createFunction([], cycleFunction),
-		initOnlyFunction,
 		bufferFunction,
-		...(testRunnerFunction ? [testRunnerFunction] : []),
+		...groupDispatcherFunctions,
 	];
 	const builtInExports = [
 		createFunctionExport('initDefaults', importedFunctionCount),
-		createFunctionExport('cycle', importedFunctionCount + 1),
-		createFunctionExport('initOnly', importedFunctionCount + 2),
-		createFunctionExport('buffer', importedFunctionCount + 3),
-		...(options.includeTestRunner ? [createFunctionExport('runTests', importedFunctionCount + 4)] : []),
+		createFunctionExport('buffer', importedFunctionCount + 1),
+		...groupNames.map((groupName, index) => createFunctionExport(groupName, importedFunctionCount + 2 + index)),
 	];
 
 	return {
@@ -483,8 +478,7 @@ export default function compile(
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
-		...(testModuleIds.length > 0 ? { testModuleIds } : {}),
-		...(testAssertions.length > 0 ? { testAssertions } : {}),
+		...(assertions.length > 0 ? { assertions } : {}),
 		requiredMemoryBytes,
 		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
 		cache,

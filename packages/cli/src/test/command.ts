@@ -5,7 +5,7 @@ import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
 import type { ProjectInput } from '../shared/types';
-import type { TestAssertionMetadata } from '@8f4e/compiler-spec';
+import type { AssertionMetadata, CompiledModuleLookup } from '@8f4e/compiler-spec';
 
 const WASM_MEMORY_PAGE_SIZE = 65536;
 
@@ -190,10 +190,22 @@ function createMemoryImports(
 	};
 }
 
-function formatFailure(failure: AssertionFailure, metadata: TestAssertionMetadata | undefined): string {
+function formatFailure(failure: AssertionFailure, metadata: AssertionMetadata | undefined): string {
 	const location = metadata ? `${metadata.moduleId}:${metadata.lineNumber}` : `assert #${failure.assertIndex}`;
 
 	return `${location} expected ${failure.expected}, received ${failure.received}`;
+}
+
+function hasTestGroup(project: ProjectInput): boolean {
+	return project.codeBlocks.some(block => !block.disabled && block.executionGroupName === 'test');
+}
+
+function filterGroupAssertions(
+	assertions: AssertionMetadata[],
+	compiledModules: CompiledModuleLookup | undefined,
+	groupName: string
+): AssertionMetadata[] {
+	return assertions.filter(assertion => compiledModules?.[assertion.moduleId]?.executionGroupName === groupName);
 }
 
 function getErrorMessage(error: unknown): string {
@@ -213,16 +225,16 @@ export function getTestUsage(): string {
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
 	const project = parse8f4eToProject(inputRaw) as ProjectInput;
-	const compileResult = compileProject(project, {
-		compilerOptions: {
-			disableSharedMemory: true,
-			includeTestRunner: true,
-		},
-	});
-
-	if ((compileResult.testModuleIds?.length ?? 0) === 0) {
+	if (!hasTestGroup(project)) {
 		return { assertions: 0, skipped: true };
 	}
+
+	const compileResult = compileProject(project, {
+		includeMocks: true,
+		compilerOptions: {
+			disableSharedMemory: true,
+		},
+	});
 
 	if (!compileResult.compiledWasm) {
 		throw new Error('Unable to run tests: compilation did not produce runnable output');
@@ -243,11 +255,13 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	});
 
 	(instance.exports.initDefaults as CallableFunction)();
-	(instance.exports.runTests as CallableFunction)();
+	(instance.exports.test as CallableFunction)();
 
-	const assertions = compileResult.testAssertions ?? [];
+	const assertions = filterGroupAssertions(compileResult.assertions ?? [], compileResult.compiledModules, 'test');
 	if (failures.length > 0) {
-		const metadataByIndex = new Map(assertions.map(assertion => [assertion.assertIndex, assertion]));
+		const metadataByIndex = new Map(
+			(compileResult.assertions ?? []).map(assertion => [assertion.assertIndex, assertion])
+		);
 		throw new Error(
 			[
 				`${failures.length} assertion${failures.length === 1 ? '' : 's'} failed:`,

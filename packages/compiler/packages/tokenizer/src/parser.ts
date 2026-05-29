@@ -41,7 +41,6 @@ import type {
 	ModuleLine,
 	ParsedLineMetadata,
 	RegionLine,
-	TestLine,
 } from '@8f4e/compiler-spec';
 
 type IfOpenBlock = {
@@ -80,7 +79,6 @@ type ModuleASTBuilder = {
 	id: string;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
-	testLine?: TestLine;
 	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
@@ -223,9 +221,6 @@ function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): v
 		case '#region':
 			builder.regionLine = line;
 			return;
-		case '#test':
-			builder.testLine = line;
-			return;
 		default:
 			if (!isMemoryDeclarationLine(line)) {
 				return;
@@ -271,7 +266,6 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 				lines,
 				moduleLine: builder.moduleLine,
 				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
-				...(builder.testLine ? { testLine: builder.testLine } : {}),
 				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 		case 'function':
