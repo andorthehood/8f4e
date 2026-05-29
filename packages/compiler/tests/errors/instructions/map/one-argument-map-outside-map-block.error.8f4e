@@ -1,0 +1,10 @@
+8f4e/v1
+
+entry main
+module oneArgumentMapOutsideMapBlock
+; one-argument map should only be valid inside mapBegin/mapEnd.
+int x
+push x
+map 10
+moduleEnd
+entryEnd

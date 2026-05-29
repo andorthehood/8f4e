@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module instructionInsideMapBlock
+; map blocks should reject ordinary instructions in their row list.
+int x
+push x
+mapBegin int
+add
+mapEnd int
+moduleEnd
+entryEnd

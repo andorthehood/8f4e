@@ -1,0 +1,9 @@
+8f4e/v1
+
+entry main
+module mapDefaultOutsideBlock
+; default should only be valid inside mapBegin/mapEnd.
+int x
+default 10
+moduleEnd
+entryEnd

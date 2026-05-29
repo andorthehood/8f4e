@@ -1,0 +1,51 @@
+8f4e/v1
+
+; Float64 arithmetic and comparison behavior should execute without falling back to float32.
+entry test
+module float64ComparisonAssertions
+; Float64 comparisons should produce integer booleans for matching operand widths.
+push 1.5f64
+push 1.5f64
+equal
+push 1
+call assert
+
+push 1.25f64
+push 2.5f64
+lessThan
+push 1
+call assert
+
+push 2.5f64
+push 1.25f64
+greaterThan
+push 1
+call assert
+
+push 1.25f64
+push 1.25f64
+lessOrEqual
+push 1
+call assert
+
+push 2.5f64
+push 1.25f64
+greaterOrEqual
+push 1
+call assert
+
+push 2.5f64
+push 1.25f64
+greaterOrEqualUnsigned
+push 1
+call assert
+moduleEnd
+
+module float64SqrtAssertions
+; sqrt should operate on float64 values when given a float64 operand.
+push 2.0f64
+sqrt
+push 1.4142135623730951f64
+call assertf64
+moduleEnd
+entryEnd

@@ -1,0 +1,164 @@
+8f4e/v1
+
+; Function calls are checked through executable source fixtures instead of the old module tester.
+entry test
+module callConstantFunction
+; Calling a zero-parameter function should push its return value.
+call getFortyTwo
+push 42
+call assert
+moduleEnd
+
+module callFunctionWithParameter
+; Function parameters should receive stack arguments in declaration order.
+push 5
+call double
+push 10
+call assert
+
+push 10
+call double
+push 20
+call assert
+moduleEnd
+
+module callMultipleFunctions
+; Multiple calls can contribute values to the same expression.
+call getTwo
+call getThree
+add
+push 5
+call assert
+moduleEnd
+
+module callNestedFunction
+; Functions can call other functions after signatures and indexes are collected.
+call compute
+push 42
+call assert
+moduleEnd
+
+module callFloat64RoundTrip
+; Float64 parameters and returns should preserve double precision through calls.
+push 3.141592653589793f64
+call identityFloat64
+push 3.141592653589793f64
+call assertf64
+moduleEnd
+
+module callFloat64ReturningFunction
+; Float64-returning functions should keep float64 arithmetic in the callee.
+call getDoublePI
+push 6.28318530717958f64
+call assertf64
+moduleEnd
+
+module callPointerParamsWithLocalDereference
+; Impure functions can dereference pointer parameters and use pointee metadata.
+float[] lut 32
+float delta 0.5
+
+push &lut
+push 1.0
+store
+
+push &lut
+push 0
+push delta
+call readScaledBlep
+push 0.5
+call assertf
+moduleEnd
+
+module callImpureFunctionWithExplicitLoadAndStore
+; Impure functions can explicitly load and store through pointer parameters.
+float input 3.5
+float output
+float gain 0.5
+
+push &output
+push &input
+push gain
+call scaleInto
+
+push output
+push 1.75
+call assertf
+moduleEnd
+entryEnd
+
+function getFortyTwo
+push 42
+functionEnd int
+
+function double
+param int x
+push x
+push 2
+mul
+functionEnd int
+
+function getTwo
+push 2
+functionEnd int
+
+function getThree
+push 3
+functionEnd int
+
+function increment
+param int x
+push x
+push 1
+add
+functionEnd int
+
+function compute
+push 41
+call increment
+functionEnd int
+
+function identityFloat64
+param float64 x
+push x
+functionEnd float64
+
+function getDoublePI
+push 3.14159265358979f64
+push 2.0f64
+mul
+functionEnd float64
+
+function readScaledBlep
+#impure
+param float* lut
+param int phaseIndex
+param float delta
+
+local float* lutPtr
+
+push lut
+push phaseIndex
+push sizeof(*lut)
+mul
+add
+localSet lutPtr
+
+push *lutPtr
+push delta
+mul
+functionEnd float
+
+function scaleInto
+#impure
+param float* dst
+param float* src
+param float gain
+
+push dst
+push src
+loadFloat
+push gain
+mul
+store
+functionEnd
