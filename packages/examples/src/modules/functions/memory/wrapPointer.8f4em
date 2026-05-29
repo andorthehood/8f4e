@@ -25,9 +25,8 @@ add
 
 functionEnd float*
 
-group main
+group test
 module wrapPointerKeepsInRangeAddress
-#test
 float[] buffer 4
 const BYTE_LENGTH count(buffer)*sizeof(buffer)
 
@@ -41,7 +40,6 @@ assert &buffer+8
 
 moduleEnd
 module wrapPointerWrapsForwardAddress
-#test
 float[] buffer 4
 const BYTE_LENGTH count(buffer)*sizeof(buffer)
 
@@ -55,7 +53,6 @@ assert &buffer
 
 moduleEnd
 module wrapPointerWrapsBackwardAddress
-#test
 float[] buffer 4
 const BYTE_LENGTH count(buffer)*sizeof(buffer)
 

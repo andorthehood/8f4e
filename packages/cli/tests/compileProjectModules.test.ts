@@ -53,8 +53,8 @@ describe('compileProjectModules', () => {
 		const result = compileProjectModules(
 			[
 				{
-					code: ['module addWorks', '#test ; inline comment', 'push 1', 'assert 1', 'moduleEnd'],
-					executionGroupName: 'main',
+					code: ['module addWorks', 'push 1', 'assert 1', 'moduleEnd'],
+					executionGroupName: 'test',
 				},
 			],
 			{
@@ -92,8 +92,8 @@ describe('compileProjectModules', () => {
 		const result = compileProjectModules(
 			[
 				{
-					code: ['module target', '#test', 'int* ptr &dependency:value', 'push *ptr', 'assert 42', 'moduleEnd'],
-					executionGroupName: 'main',
+					code: ['module target', 'int* ptr &dependency:value', 'push *ptr', 'assert 42', 'moduleEnd'],
+					executionGroupName: 'test',
 				},
 				{
 					code: ['module dependency', '#mock', 'int value 42', 'moduleEnd'],

@@ -40,8 +40,8 @@ async function instantiate(groups: Record<string, Module[]>, functions?: Module[
 	};
 }
 
-describe('#test modules and assert runner', () => {
-	test('maps #test modules to the test group', async () => {
+describe('test group and assert runner', () => {
+	test('executes test group modules from the test export', async () => {
 		const { exports, failureCalls, result } = await instantiate({
 			main: [
 				{
@@ -50,7 +50,7 @@ describe('#test modules and assert runner', () => {
 			],
 			test: [
 				{
-					code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 4', 'moduleEnd'],
+					code: ['module addWorks', 'push 1', 'push 2', 'add', 'assert 4', 'moduleEnd'],
 				},
 			],
 		});
@@ -67,15 +67,15 @@ describe('#test modules and assert runner', () => {
 			{
 				assertIndex: 0,
 				moduleId: 'addWorks',
-				lineNumber: 6,
+				lineNumber: 5,
 				expected: 4,
 			},
 		]);
 		expect(result.testModuleIds).toEqual(['addWorks']);
-		expect(result.compiledModules.addWorks.testExecution).toBe(true);
+		expect(result.compiledModules.addWorks.executionGroupName).toBe('test');
 	});
 
-	test('reports #test modules from parsed AST metadata', () => {
+	test('reports test group module ids', () => {
 		const result = compile(
 			{
 				groups: {
@@ -86,7 +86,7 @@ describe('#test modules and assert runner', () => {
 					],
 					test: [
 						{
-							code: ['module emptyTest', '#test ; inline comment', 'moduleEnd'],
+							code: ['module emptyTest', 'moduleEnd'],
 						},
 					],
 				},
@@ -95,14 +95,14 @@ describe('#test modules and assert runner', () => {
 		);
 
 		expect(result.testModuleIds).toEqual(['emptyTest']);
-		expect(result.compiledModules.emptyTest.testExecution).toBe(true);
+		expect(result.compiledModules.emptyTest.executionGroupName).toBe('test');
 	});
 
 	test('does not report passing assertions', async () => {
 		const { exports, failureCalls } = await instantiate({
 			test: [
 				{
-					code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 3', 'moduleEnd'],
+					code: ['module addWorks', 'push 1', 'push 2', 'add', 'assert 3', 'moduleEnd'],
 				},
 			],
 		});
@@ -113,14 +113,13 @@ describe('#test modules and assert runner', () => {
 		expect(failureCalls).toEqual([]);
 	});
 
-	test('supports memory declarations and pointer arguments in #test modules', async () => {
+	test('supports memory declarations and pointer arguments in test modules', async () => {
 		const { exports, failureCalls } = await instantiate(
 			{
 				test: [
 					{
 						code: [
 							'module readFirstWorks',
-							'#test',
 							'int[] values 2 7 8',
 							'push &values',
 							'call readFirst',
@@ -143,7 +142,7 @@ describe('#test modules and assert runner', () => {
 		expect(failureCalls).toEqual([]);
 	});
 
-	test('omits #test modules and test imports from normal builds', async () => {
+	test('omits test group modules and test imports from normal builds', async () => {
 		const result = compile(
 			{
 				groups: {
@@ -154,7 +153,7 @@ describe('#test modules and assert runner', () => {
 					],
 					test: [
 						{
-							code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'],
+							code: ['module addWorks', 'push 1', 'assert 1', 'moduleEnd'],
 						},
 					],
 				},
@@ -201,7 +200,7 @@ describe('#test modules and assert runner', () => {
 	test('rejects non-integer expected values before codegen', () => {
 		expect(() =>
 			compile(
-				{ groups: { test: [{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }] } },
+				{ groups: { test: [{ code: ['module badAssert', 'push 1', 'assert 1.5', 'moduleEnd'] }] } },
 				defaultOptions
 			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.TYPE_MISMATCH }));
