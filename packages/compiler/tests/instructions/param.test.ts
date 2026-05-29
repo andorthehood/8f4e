@@ -26,7 +26,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.add).toBeDefined();
 		expect(result.compiledFunctions!.add.signature.parameters).toEqual(['int', 'int']);
@@ -46,7 +46,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.subtract).toBeDefined();
 		expect(result.compiledFunctions!.subtract.signature.parameters).toEqual(['int', 'int']);
@@ -65,7 +65,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.useFirst).toBeDefined();
 		expect(result.compiledFunctions!.useFirst.signature.parameters).toEqual(['int', 'int']);
@@ -84,7 +84,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.square).toBeDefined();
 		expect(result.compiledFunctions!.square.signature.parameters).toEqual(['int']);
@@ -111,7 +111,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.calculateArea).toBeDefined();
 		expect(result.compiledFunctions!.calculateArea.signature.parameters).toEqual(['int', 'int']);
@@ -141,7 +141,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.addWithLocal).toBeDefined();
 		expect(result.compiledFunctions!.addWithLocal.signature.parameters).toEqual(['int', 'int']);
@@ -169,7 +169,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.mixedParams).toBeDefined();
 		expect(result.compiledFunctions!.mixedParams.signature.parameters).toEqual(['int', 'float']);
@@ -188,7 +188,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.getDouble).toBeDefined();
 		expect(result.compiledFunctions!.getDouble.signature.parameters).toEqual(['float64']);
@@ -215,7 +215,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.mixedAll).toBeDefined();
 		expect(result.compiledFunctions!.mixedAll.signature.parameters).toEqual(['int', 'float', 'float64']);
@@ -229,7 +229,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('should reject param instruction after other function body instructions', () => {
@@ -245,7 +245,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject param instruction with invalid type', () => {
@@ -261,7 +261,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject param instruction with missing arguments', () => {
@@ -277,7 +277,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject more than 8 parameters', () => {
@@ -305,7 +305,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should work with function that has no parameters', () => {
@@ -321,7 +321,7 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.noParams).toBeDefined();
 		expect(result.compiledFunctions!.noParams.signature.parameters).toEqual([]);
@@ -342,7 +342,7 @@ describe('Param Instruction', () => {
 		];
 
 		// This should fail because param must come before local
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject duplicate parameter names', () => {
@@ -358,6 +358,6 @@ describe('Param Instruction', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 });

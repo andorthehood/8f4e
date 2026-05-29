@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module bpmClock
 ; @public
 use env
@@ -39,7 +39,7 @@ add
 store
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 const SAMPLE_RATE 48000

@@ -181,7 +181,7 @@ describe('creationIndex', () => {
 			const codeBlocksArray = [block1, block2, block3];
 
 			const {
-				groups: { main: modules },
+				entries: { main: modules },
 			} = flattenProjectForCompiler(codeBlocksArray);
 
 			expect(modules[0].code).toEqual(['module c', 'moduleEnd']); // left, top
@@ -216,7 +216,7 @@ describe('creationIndex', () => {
 			});
 
 			const {
-				groups: { main: modules },
+				entries: { main: modules },
 			} = flattenProjectForCompiler([block1, block2, block3]);
 
 			expect(modules[0].code).toEqual(['module b', 'moduleEnd']);
@@ -243,7 +243,7 @@ describe('creationIndex', () => {
 			});
 
 			const {
-				groups: { main: modules },
+				entries: { main: modules },
 			} = flattenProjectForCompiler([dependentBlock, sourceBlock]);
 
 			expect(modules[0].code).toEqual(['module dependent', 'int* ptr &source:0', 'moduleEnd']);
@@ -273,7 +273,7 @@ describe('creationIndex', () => {
 			const codeBlocksArray = [moduleBlock, functionBlock, secondModuleBlock];
 
 			const {
-				groups: { main: modules },
+				entries: { main: modules },
 				functions,
 			} = flattenProjectForCompiler(codeBlocksArray);
 

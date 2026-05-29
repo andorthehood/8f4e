@@ -2,7 +2,7 @@ const sine = new Array(256).fill(0).map((value, index) => {
 	return Math.sin((index / 255) * (2 * Math.PI));
 });
 
-const sineLookupTable = `group main
+const sineLookupTable = `entry main
 module sineLUT
 ; @tab 8
 ${sine
@@ -12,6 +12,6 @@ ${sine
 	.join('\n')}
 
 moduleEnd
-groupEnd`;
+entryEnd`;
 
 export default sineLookupTable;

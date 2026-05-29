@@ -466,7 +466,7 @@ mul
 
 functionEnd float
 
-group main
+entry main
 module adrEnv
 ; @pos 453 -92
 ; @tab 8
@@ -1440,4 +1440,4 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd

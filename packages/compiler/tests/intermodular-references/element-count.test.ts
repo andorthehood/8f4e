@@ -10,7 +10,7 @@ describe('inter-module references - element count', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -34,7 +34,7 @@ describe('inter-module references - element count', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -60,7 +60,7 @@ describe('inter-module references - element count', () => {
 		// Should throw because multi-dot references are rejected
 		expect(() => {
 			compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					startingMemoryWordAddress: 0,
 				}
@@ -77,7 +77,7 @@ describe('inter-module references - element count', () => {
 		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
 			compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					startingMemoryWordAddress: 0,
 				}
@@ -93,7 +93,7 @@ describe('inter-module references - element count', () => {
 
 		expect(() => {
 			compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					startingMemoryWordAddress: 0,
 				}
@@ -109,7 +109,7 @@ describe('inter-module references - element count', () => {
 
 		expect(() => {
 			compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					startingMemoryWordAddress: 0,
 				}
@@ -124,7 +124,7 @@ describe('inter-module references - element count', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -152,7 +152,7 @@ describe('inter-module references - element count', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -187,7 +187,7 @@ describe('inter-module references - element count', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}

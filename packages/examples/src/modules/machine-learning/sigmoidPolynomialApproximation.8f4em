@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module sigmoid
 ; @public
 ; Polynomial sigmoid
@@ -20,4 +20,4 @@ div
 store
 
 moduleEnd
-groupEnd
+entryEnd

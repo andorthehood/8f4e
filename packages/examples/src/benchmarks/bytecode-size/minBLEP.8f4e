@@ -223,7 +223,7 @@ push sum
 
 functionEnd int
 
-group main
+entry main
 module audioout
 ; @pos 165 -100
 ; ~audioOutput buffer 0 0
@@ -864,4 +864,4 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd

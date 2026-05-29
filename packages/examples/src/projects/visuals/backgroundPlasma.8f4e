@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module colors
 ; @pos -166 22
 ; @config color.text.lineNumber rgba(0,0,0,0.3)
@@ -24,7 +24,7 @@ module projectConfig
 ; ~sampleRate 50
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 ; @pos -114 22

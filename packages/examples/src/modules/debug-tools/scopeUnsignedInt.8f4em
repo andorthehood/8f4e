@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module scope
 ; @public
 
@@ -30,4 +30,4 @@ push *in
 store
 
 moduleEnd
-groupEnd
+entryEnd

@@ -4,7 +4,7 @@ const midiFrequencies = new Array(128).fill(0).map((value, note) => {
 	return (A / 32) * 2 ** ((note - 9) / 12);
 });
 
-const midiFrequenciesLookupTable = `group main
+const midiFrequenciesLookupTable = `entry main
 module midiLUT
 ; @tab 7 18
 ${midiFrequencies
@@ -14,6 +14,6 @@ ${midiFrequencies
 	.join('\n')}
 
 moduleEnd
-groupEnd`;
+entryEnd`;
 
 export default midiFrequenciesLookupTable;

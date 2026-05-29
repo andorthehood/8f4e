@@ -26,8 +26,8 @@ describe('flattenProjectForCompiler', () => {
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
-		expect(result.groups.main).toHaveLength(1);
-		expect(result.groups.main[0].code).toEqual(['module test', 'moduleEnd']);
+		expect(result.entries.main).toHaveLength(1);
+		expect(result.entries.main[0].code).toEqual(['module test', 'moduleEnd']);
 		expect(result.functions).toHaveLength(1);
 		expect(result.functions[0].code).toEqual(['function helper', 'functionEnd']);
 	});
@@ -48,8 +48,8 @@ describe('flattenProjectForCompiler', () => {
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
-		expect(result.groups.main).toHaveLength(1);
-		expect(result.groups.main[0].code).toEqual(['module test', 'moduleEnd']);
+		expect(result.entries.main).toHaveLength(1);
+		expect(result.entries.main[0].code).toEqual(['module test', 'moduleEnd']);
 		expect(result.functions).toHaveLength(0);
 		expect(result.macros).toHaveLength(0);
 	});
@@ -70,7 +70,7 @@ describe('flattenProjectForCompiler', () => {
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
-		expect(result.groups.main).toHaveLength(0);
+		expect(result.entries.main).toHaveLength(0);
 		expect(result.constants).toHaveLength(1);
 		expect(result.constants?.[0].code).toEqual(['constants', 'constantsEnd']);
 		expect(result.functions).toHaveLength(0);
@@ -92,7 +92,7 @@ describe('flattenProjectForCompiler', () => {
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
-		expect(result.groups.main).toHaveLength(0);
+		expect(result.entries.main).toHaveLength(0);
 		expect(result.functions).toHaveLength(0);
 	});
 
@@ -114,8 +114,8 @@ describe('flattenProjectForCompiler', () => {
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
-		expect(result.groups.main).toHaveLength(1);
-		expect(result.groups.main[0].code).toEqual(['module enabled', 'moduleEnd']);
+		expect(result.entries.main).toHaveLength(1);
+		expect(result.entries.main[0].code).toEqual(['module enabled', 'moduleEnd']);
 	});
 
 	it('should exclude disabled functions from compilation', () => {
@@ -158,7 +158,7 @@ describe('flattenProjectForCompiler', () => {
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
-		expect(result.groups.main).toHaveLength(0);
+		expect(result.entries.main).toHaveLength(0);
 		expect(result.constants).toHaveLength(1);
 		expect(result.constants?.[0].code).toEqual(['constants enabled', 'constantsEnd']);
 	});
@@ -184,7 +184,7 @@ describe('flattenProjectForCompiler', () => {
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
-		expect(result.groups.main[0].code).toEqual(['module first', 'moduleEnd']);
+		expect(result.entries.main[0].code).toEqual(['module first', 'moduleEnd']);
 		expect(result.functions[0].code).toEqual(['function second', 'functionEnd']);
 		expect(result.macros[0].code).toEqual(['macro third', 'macroEnd']);
 	});

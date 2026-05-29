@@ -17,7 +17,7 @@
       "memoryMap": {},
       "wordAlignedSize": 0,
       "index": 0,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "phaseAccumulator": {
       "id": "phaseAccumulator",
@@ -187,7 +187,7 @@
       },
       "wordAlignedSize": 4,
       "index": 1,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "audioout": {
       "id": "audioout",
@@ -336,7 +336,7 @@
       },
       "wordAlignedSize": 130,
       "index": 2,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "notes": {
       "id": "notes",
@@ -352,7 +352,7 @@
       "memoryMap": {},
       "wordAlignedSize": 0,
       "index": 3,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     }
   },
   "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMJCAAAAAMAAAAAByADDGluaXREZWZhdWx0cwAABmJ1ZmZlcgABBG1haW4AAgwBAgrpAgghAEEAQQBBnAT8CwBBBEEAQRT8CAAAQZgEQQBBBPwIAQALGQEBf0GAASEAA0AQAiAAQQFrIQAgAA0ACwsKABAEEAUQBhAHC2QBAX0gAEPbD8k/XgRAQ9sPSUAgAJMhAAsgAEPbD8k/QwAAgL+UXQRAQ9sPSUBDAACAv5QgAJMhAAsgACAAlCEBIAFD0QxQuZRDiIgIPJIgAZRDq6oqvpIgAZRDAACAP5IgAJQLAgALXQEBfUEMQQwqAgBD2w/JQEEIKAIAKgIAlEGA9wKyIQAgAEMAAAAAWwRAQwAAgD8hAAsgAJWSOAIAQQwqAgBD2w9JQF4EQEEMQ9sPScA4AgALQRBBDCoCABADOAIAC1cCAX8BfUGYBCgCAEEUKAIAKgIAIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE4AgAFC0GYBEGYBCgCAEEEajYCAEGYBCgCAEGUBEoEQEGYBEEYNgIACwsCAAsLHQIBFAAA3EMEAAAAAAAAAAAAAAAQAAAAAQQYAAAA",

@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module audioOut
 ; @public
 
@@ -40,7 +40,7 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 const SAMPLE_RATE 48000

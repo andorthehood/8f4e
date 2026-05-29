@@ -6,7 +6,7 @@ describe('argument continuation lines', () => {
 	test('compile resolves a split intermodule pointer declaration like the single-line form', () => {
 		const split = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{ code: ['module source', 'float[] samples 8 0.0', 'moduleEnd'] },
 						{ code: ['module target', 'float*', '- readHead', '- &source:samples', 'moduleEnd'] },
@@ -17,7 +17,7 @@ describe('argument continuation lines', () => {
 		);
 		const singleLine = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{ code: ['module source', 'float[] samples 8 0.0', 'moduleEnd'] },
 						{ code: ['module target', 'float* readHead &source:samples', 'moduleEnd'] },
@@ -37,13 +37,13 @@ describe('argument continuation lines', () => {
 
 	test('compile resolves split-byte hex defaults from continuation lines', () => {
 		const split = compile(
-			{ groups: { main: [{ code: ['module target', 'int color', '- 0xA8', '- 0xFF', 'moduleEnd'] }] } },
+			{ entries: { main: [{ code: ['module target', 'int color', '- 0xA8', '- 0xFF', 'moduleEnd'] }] } },
 			{
 				startingMemoryWordAddress: 0,
 			}
 		);
 		const singleLine = compile(
-			{ groups: { main: [{ code: ['module target', 'int color 0xA8 0xFF', 'moduleEnd'] }] } },
+			{ entries: { main: [{ code: ['module target', 'int color 0xA8 0xFF', 'moduleEnd'] }] } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -56,7 +56,7 @@ describe('argument continuation lines', () => {
 	test('compile accepts negative literals from continuation lines after stack instructions', () => {
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module target', 'push', '- -1', 'drop', 'moduleEnd'] }] } },
+				{ entries: { main: [{ code: ['module target', 'push', '- -1', 'drop', 'moduleEnd'] }] } },
 				{
 					startingMemoryWordAddress: 0,
 				}

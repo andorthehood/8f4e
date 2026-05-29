@@ -141,7 +141,7 @@ describe('cli', () => {
 		});
 	});
 
-	it('runs tests from an explicit test group', async () => {
+	it('runs tests from an explicit test entry', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 		const groupedTestPath = path.join(tmpDir, 'groupedTest.8f4e');
 		await fs.writeFile(
@@ -149,13 +149,13 @@ describe('cli', () => {
 			[
 				'8f4e/v1',
 				'',
-				'group test',
+				'entry test',
 				'module groupedTest',
 				'push 1',
 				'push 1',
 				'call assert',
 				'moduleEnd',
-				'groupEnd',
+				'entryEnd',
 			].join('\n')
 		);
 
@@ -178,7 +178,7 @@ describe('cli', () => {
 			[
 				'8f4e/v1',
 				'',
-				'group test',
+				'entry test',
 				'module target',
 				'int* ptr &dependency:value',
 				'push *ptr',
@@ -189,7 +189,7 @@ describe('cli', () => {
 				'module dependency',
 				'int value 42',
 				'moduleEnd',
-				'groupEnd',
+				'entryEnd',
 			].join('\n')
 		);
 
@@ -198,7 +198,7 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
-	it('runs test files matched by a glob and skips files without test groups', async () => {
+	it('runs test files matched by a glob and skips files without test entries', async () => {
 		const { stdout } = await execCli(['test', '../examples/src/modules/functions/memory/*.8f4em']);
 
 		expect(stdout).toBe('Ran 3 assertions in 1 file.\n');

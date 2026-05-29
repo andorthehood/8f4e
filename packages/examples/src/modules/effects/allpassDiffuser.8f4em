@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module allpassDiffuser
 ; @public
 ; Delay-based allpass stage
@@ -53,4 +53,4 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd

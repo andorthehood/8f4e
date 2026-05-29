@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module projectConfig
 ; @pos -5 3
 ; @config runtime MainThreadRuntime
@@ -21,7 +21,7 @@ add
 store
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 ; @pos 34 3

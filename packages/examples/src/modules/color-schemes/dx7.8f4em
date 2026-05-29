@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module dx7colors
 ; @public
 ; @pos 2 51
@@ -8,4 +8,4 @@ module dx7colors
 ; @config color.icons.inputConnector #ff9999
 ; @config color.icons.outputConnector #9999cc
 moduleEnd
-groupEnd
+entryEnd

@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module assets
 ; @pos -107 -70
 ; @defAsset amen https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
@@ -102,7 +102,7 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 ; @pos 32 -63

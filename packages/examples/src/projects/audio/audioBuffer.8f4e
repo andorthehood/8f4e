@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module projectConfig
 ; @pos -94 1
 ; @config runtime AudioWorkletRuntime
@@ -102,7 +102,7 @@ module notes
 ; fixed-size circular audio buffer
 ; (audioout)
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 ; @pos -49 1

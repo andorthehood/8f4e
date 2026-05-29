@@ -75,7 +75,7 @@ Argument mapping:
 - `float` maps to Wasm `f32` and a JavaScript `number`
 - `float64` maps to Wasm `f64` and a JavaScript `number`
 
-Export names must be unique and must not reuse built-in exports such as `initDefaults`, `buffer`, or an execution group name.
+Export names must be unique and must not reuse built-in exports such as `initDefaults`, `buffer`, or an execution entry name.
 Functions that read from or write to memory still need `#impure`.
 
 ### `#import`

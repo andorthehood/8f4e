@@ -209,7 +209,7 @@ describe('projectImport', () => {
 
 	describe('loadProjectByUrl', () => {
 		it('should load project by url using callback', async () => {
-			const mock8f4eText = '8f4e/v1\n\ngroup main\nmodule counter\n\nmoduleEnd\ngroupEnd';
+			const mock8f4eText = '8f4e/v1\n\nentry main\nmodule counter\n\nmoduleEnd\nentryEnd';
 
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mock8f4eText);
 			projectImport(store, mockEvents);

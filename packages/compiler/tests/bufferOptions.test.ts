@@ -12,7 +12,7 @@ describe('buffer options integration tests', () => {
 
 	describe('bufferSize option', () => {
 		test('compiles successfully with default bufferSize (128)', () => {
-			const result = compile({ groups: { main: modules } }, baseOptions);
+			const result = compile({ entries: { main: modules } }, baseOptions);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
@@ -20,7 +20,7 @@ describe('buffer options integration tests', () => {
 
 		test('compiles successfully with custom bufferSize', () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 64,
@@ -33,7 +33,7 @@ describe('buffer options integration tests', () => {
 
 		test('compiles successfully with large bufferSize', () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 512,
@@ -46,7 +46,7 @@ describe('buffer options integration tests', () => {
 
 		test('compiles successfully with small bufferSize', () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 1,
@@ -60,7 +60,7 @@ describe('buffer options integration tests', () => {
 
 	describe('bufferStrategy option', () => {
 		test('compiles successfully with default strategy (loop)', () => {
-			const result = compile({ groups: { main: modules } }, baseOptions);
+			const result = compile({ entries: { main: modules } }, baseOptions);
 
 			expect(result.codeBuffer).toBeDefined();
 			expect(result.codeBuffer.length).toBeGreaterThan(0);
@@ -68,7 +68,7 @@ describe('buffer options integration tests', () => {
 
 		test('compiles successfully with explicit loop strategy', () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferStrategy: 'loop',
@@ -81,7 +81,7 @@ describe('buffer options integration tests', () => {
 
 		test('compiles successfully with unrolled strategy', () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferStrategy: 'unrolled',
@@ -96,7 +96,7 @@ describe('buffer options integration tests', () => {
 	describe('bufferSize and bufferStrategy combination', () => {
 		test('compiles with loop strategy and custom bufferSize', () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 256,
@@ -110,7 +110,7 @@ describe('buffer options integration tests', () => {
 
 		test('compiles with unrolled strategy and custom bufferSize', () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 16,
@@ -126,7 +126,7 @@ describe('buffer options integration tests', () => {
 	describe('bytecode size comparison', () => {
 		test('loop strategy produces smaller bytecode than unrolled for same bufferSize', () => {
 			const loopResult = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 128,
@@ -135,7 +135,7 @@ describe('buffer options integration tests', () => {
 			);
 
 			const unrolledResult = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 128,
@@ -153,7 +153,7 @@ describe('buffer options integration tests', () => {
 
 		test('larger bufferSize with unrolled strategy increases bytecode size linearly', () => {
 			const small = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 4,
@@ -162,7 +162,7 @@ describe('buffer options integration tests', () => {
 			);
 
 			const large = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 8,
@@ -182,7 +182,7 @@ describe('buffer options integration tests', () => {
 
 		test('larger bufferSize with loop strategy has minimal impact on bytecode size', () => {
 			const small = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 128,
@@ -191,7 +191,7 @@ describe('buffer options integration tests', () => {
 			);
 
 			const large = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 512,
@@ -209,7 +209,7 @@ describe('buffer options integration tests', () => {
 	describe('buffer function execution', () => {
 		test('buffer function can be instantiated and exports are available', async () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 16,
@@ -235,7 +235,7 @@ describe('buffer options integration tests', () => {
 
 		test('buffer function with unrolled strategy can be instantiated', async () => {
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize: 16,
@@ -257,7 +257,7 @@ describe('buffer options integration tests', () => {
 		test('buffer function executes main group the expected number of times (loop strategy)', async () => {
 			const bufferSize = 10;
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize,
@@ -297,7 +297,7 @@ describe('buffer options integration tests', () => {
 		test('buffer function executes main group the expected number of times (unrolled strategy)', async () => {
 			const bufferSize = 10;
 			const result = compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					...baseOptions,
 					bufferSize,
@@ -339,7 +339,7 @@ describe('buffer options integration tests', () => {
 
 			for (const bufferSize of sizes) {
 				const result = compile(
-					{ groups: { main: modules } },
+					{ entries: { main: modules } },
 					{
 						...baseOptions,
 						bufferSize,

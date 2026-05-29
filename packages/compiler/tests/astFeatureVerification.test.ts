@@ -21,7 +21,7 @@ const testModule = {
 describe('AST optional output feature manual verification', () => {
 	test('Default behavior excludes AST', () => {
 		const result = compile(
-			{ groups: { main: [testModule] } },
+			{ entries: { main: [testModule] } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -34,7 +34,7 @@ describe('AST optional output feature manual verification', () => {
 
 	test('Explicit includeAST: false excludes AST', () => {
 		const result = compile(
-			{ groups: { main: [testModule] } },
+			{ entries: { main: [testModule] } },
 			{
 				startingMemoryWordAddress: 0,
 				includeAST: false,
@@ -48,7 +48,7 @@ describe('AST optional output feature manual verification', () => {
 
 	test('includeAST: true includes AST', () => {
 		const result = compile(
-			{ groups: { main: [testModule] } },
+			{ entries: { main: [testModule] } },
 			{
 				startingMemoryWordAddress: 0,
 				includeAST: true,

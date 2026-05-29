@@ -7,7 +7,7 @@ describe('current-module address shorthands', () => {
 		const modules = [{ code: ['module sourceModule', 'int* ptr &this', 'moduleEnd'] }];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -22,7 +22,7 @@ describe('current-module address shorthands', () => {
 		const modules = [{ code: ['module sourceModule', 'int[] buffer 10 0', 'int* ptr this&', 'moduleEnd'] }];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}

@@ -16,7 +16,7 @@ const defaultOptions = {
 
 async function instantiate(functions: Module[]) {
 	const result = compile(
-		{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] }, functions: functions },
+		{ entries: { main: [{ code: ['module test', 'moduleEnd'] }] }, functions: functions },
 		defaultOptions
 	);
 	const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
@@ -104,7 +104,7 @@ describe('exported 8f4e functions', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [{ code: ['function bad', '#export first', '#export second', 'functionEnd'] }],
 				},
 				defaultOptions
@@ -116,7 +116,7 @@ describe('exported 8f4e functions', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [
 						{ code: ['function a', '#export same', 'functionEnd'] },
 						{ code: ['function b', '#export same', 'functionEnd'] },
@@ -131,7 +131,7 @@ describe('exported 8f4e functions', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [{ code: ['function bad', '#export initDefaults', 'functionEnd'] }],
 				},
 				defaultOptions
@@ -141,7 +141,7 @@ describe('exported 8f4e functions', () => {
 
 	test('rejects #export outside a function block', () => {
 		expect(() =>
-			compile({ groups: { main: [{ code: ['module test', '#export outside', 'moduleEnd'] }] } }, defaultOptions)
+			compile({ entries: { main: [{ code: ['module test', '#export outside', 'moduleEnd'] }] } }, defaultOptions)
 		).toThrow(expect.objectContaining({ code: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT }));
 	});
 });

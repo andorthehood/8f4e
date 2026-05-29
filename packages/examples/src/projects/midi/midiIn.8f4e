@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module projectConfig
 ; @pos -202 -14
 ; @config runtime AudioWorkletRuntime
@@ -17,7 +17,7 @@ int data1   ; @w
 int data2   ; @w
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 ; @pos -202 -6
