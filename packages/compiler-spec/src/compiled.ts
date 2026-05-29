@@ -1,7 +1,7 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import type { AST, ConstantsAST, FunctionAST, ModuleAST } from './ast';
 import type { ASTCache } from './cache';
-import type { FunctionSignature } from './functionTypes';
+import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
 import type { InternalResourceMap, MemoryMap } from './memory';
 import type { StackAnalysisResult } from './semantic';
 
@@ -56,6 +56,7 @@ export interface FunctionMetadata {
 	id: string;
 	signature: FunctionSignature;
 	wasmIndex: number;
+	import?: FunctionImportMetadata;
 }
 
 export type FunctionMetadataLookup = Record<string, FunctionMetadata>;

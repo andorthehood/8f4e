@@ -194,7 +194,7 @@ exports[`if (float) > if the generated AST, WAT and memory map match the snapsho
 exports[`if (float) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -438,7 +438,7 @@ exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 
 exports[`if (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -696,7 +696,7 @@ exports[`if (void) > if the generated AST, WAT and memory map match the snapshot
 exports[`if (void) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.load

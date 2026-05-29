@@ -151,7 +151,7 @@ exports[`#loopCap changes the default cap for subsequent loops > if the generate
 exports[`#loopCap changes the default cap for subsequent loops > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 0
@@ -345,7 +345,7 @@ exports[`loop cap of 0 causes loop to exit immediately on first guard check > if
 exports[`loop cap of 0 causes loop to exit immediately on first guard check > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 0
@@ -552,7 +552,7 @@ exports[`loop with explicit cap argument overrides #loopCap > if the generated A
 exports[`loop with explicit cap argument overrides #loopCap > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 0
@@ -746,7 +746,7 @@ exports[`loop with explicit cap argument overrides default cap > if the generate
 exports[`loop with explicit cap argument overrides default cap > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 0
@@ -1038,7 +1038,7 @@ exports[`nested loops resolve their own caps independently > if the generated AS
 exports[`nested loops resolve their own caps independently > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32 i32)
     i32.const 0
@@ -1264,7 +1264,7 @@ exports[`plain loop still stops at default cap of 1000 > if the generated AST, W
 exports[`plain loop still stops at default cap of 1000 > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 0

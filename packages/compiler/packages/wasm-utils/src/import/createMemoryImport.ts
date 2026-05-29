@@ -7,7 +7,7 @@ import type { Import } from '../section';
 /**
  * Creates a memory import entry to import linear memory from the host environment.
  *
- * @param moduleName - The module to import from (e.g., 'js')
+ * @param moduleName - The module to import from (e.g., 'host')
  * @param fieldName - The field name to import (e.g., 'memory')
  * @param initial - Initial memory size in 64KB pages (defaults to 1)
  * @param max - Optional maximum memory size in pages

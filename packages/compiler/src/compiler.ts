@@ -43,6 +43,15 @@ type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
 };
 
+const importedFunctionAllowedInstructions = new Set([
+	'function',
+	'#import',
+	'#impure',
+	'#loopCap',
+	'param',
+	'functionEnd',
+]);
+
 function getFallbackErrorLine(ast: { lines: readonly CompilerASTLine[] }): CompilerASTLine {
 	return (
 		ast.lines[0] ?? {
@@ -218,6 +227,19 @@ export function compileFunction(
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 	for (const originalLine of ast.lines) {
 		const line = normalizeCompileTimeArguments(originalLine, context);
+		if (ast.importLine && !importedFunctionAllowedInstructions.has(line.instruction)) {
+			throw getError(
+				line.instruction === '#export' ? ErrorCode.IMPORT_EXPORT_CONFLICT : ErrorCode.IMPORTED_FUNCTION_BODY,
+				line,
+				context
+			);
+		}
+
+		if (ast.importLine && line.instruction === 'functionEnd') {
+			instructions.functionEnd(line as AnalyzedLine, context);
+			continue;
+		}
+
 		const analyzedLine = compileLine(line, context);
 		if (options.includeStackAnalysis && analyzedLine) {
 			stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
@@ -241,17 +263,20 @@ export function compileFunction(
 	return {
 		id: ast.id,
 		signature: completedContext.currentFunctionSignature,
-		body: createFunction(
-			localDeclarations.map(local =>
-				createLocalDeclaration(
-					local.isInteger ? WASM_TYPE_I32 : local.isFloat64 ? WASM_TYPE_F64 : WASM_TYPE_F32,
-					local.count
-				)
-			),
-			context.byteCode
-		),
-		locals: localDeclarations,
+		body: completedContext.currentFunctionImport
+			? []
+			: createFunction(
+					localDeclarations.map(local =>
+						createLocalDeclaration(
+							local.isInteger ? WASM_TYPE_I32 : local.isFloat64 ? WASM_TYPE_F64 : WASM_TYPE_F32,
+							local.count
+						)
+					),
+					context.byteCode
+				),
+		locals: completedContext.currentFunctionImport ? [] : localDeclarations,
 		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
+		...(completedContext.currentFunctionImport ? { import: completedContext.currentFunctionImport } : {}),
 		wasmIndex,
 		typeIndex: completedContext.currentFunctionTypeIndex,
 		ast,

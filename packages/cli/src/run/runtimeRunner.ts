@@ -15,7 +15,7 @@ type WebAssemblyApiLike = {
 	Memory: new (descriptor: { initial: number; maximum: number; shared: boolean }) => WebAssemblyMemoryLike;
 	instantiate: (
 		bytes: Buffer,
-		imports: { js: { memory: WebAssemblyMemoryLike } }
+		imports: { host: { memory: WebAssemblyMemoryLike } }
 	) => Promise<{ instance: WebAssemblyInstanceLike }>;
 };
 
@@ -141,7 +141,7 @@ export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): 
 	const memory = createWebAssemblyMemory(options.requiredMemoryBytes);
 	const program = Buffer.from(options.compiledWasmBase64, 'base64');
 	const { instance } = await getWebAssemblyApi().instantiate(program, {
-		js: { memory },
+		host: { memory },
 	});
 	const view = new DataView(memory.buffer);
 

@@ -15,7 +15,7 @@ import type {
 	ArgumentLiteral,
 	ArgumentStringLiteral,
 } from './arguments';
-import type { FunctionSignature } from './functionTypes';
+import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecs';
 import type { DocumentOnlyInstructionName, MacroInstructionName, SemanticInstructionName } from './instructions';
 
@@ -124,12 +124,14 @@ export type ReturnLine = ASTLineBase<'return', []>;
 export type LoopCapLine = ASTLineBase<'#loopCap', [ArgumentLiteral]> & CompilerDirectivePrologueMetadata;
 export type ImpureLine = ASTLineBase<'#impure', []> & CompilerDirectivePrologueMetadata;
 export type ExportLine = ASTLineBase<'#export', [] | [ArgumentIdentifier]> & CompilerDirectivePrologueMetadata;
+export type ImportLine = ASTLineBase<'#import', [ArgumentIdentifier | ArgumentStringLiteral]> &
+	CompilerDirectivePrologueMetadata;
 export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLiteral]> &
 	CompilerDirectivePrologueMetadata;
 export type SkipExecutionLine = ASTLineBase<'#skipExecution', []> & CompilerDirectivePrologueMetadata;
 export type AssertLine = ASTLineBase<'assert', [CompileTimeValueArgument]>;
 export type ClampAddressLine = ASTLineBase<ClampAddressInstructionName, [] | [CompileTimeValueArgument]>;
-export type CompilerDirectiveLine = LoopCapLine | ImpureLine | ExportLine | RegionLine | SkipExecutionLine;
+export type CompilerDirectiveLine = LoopCapLine | ImpureLine | ExportLine | ImportLine | RegionLine | SkipExecutionLine;
 
 export type MemoryDeclarationArgument =
 	| ArgumentLiteral
@@ -204,6 +206,7 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| LoopCapLine
 	| ImpureLine
 	| ExportLine
+	| ImportLine
 	| RegionLine
 	| SkipExecutionLine
 	| AssertLine
@@ -261,6 +264,8 @@ export interface FunctionAST {
 	signature: FunctionSignature;
 	exportLine?: ExportLine;
 	exportName?: string;
+	importLine?: ImportLine;
+	import?: FunctionImportMetadata;
 }
 
 /** Parsed AST for a constants block. */

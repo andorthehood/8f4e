@@ -14,7 +14,7 @@ async function instantiate(sourceCode: string) {
 	const program = createSingleFunctionWASMProgram(mod.cycleFunction);
 	const memory = new WebAssembly.Memory({ initial: 1 });
 	const dataView = new DataView(memory.buffer);
-	const { instance } = await WebAssembly.instantiate(program, { js: { memory } });
+	const { instance } = await WebAssembly.instantiate(program, { host: { memory } });
 
 	return { mod, dataView, instance };
 }

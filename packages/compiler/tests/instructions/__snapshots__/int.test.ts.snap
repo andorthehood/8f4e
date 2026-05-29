@@ -122,7 +122,7 @@ exports[`int*: bare anonymous zero-initialized pointer allocation > if the gener
 exports[`int*: bare anonymous zero-initialized pointer allocation > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -303,7 +303,7 @@ exports[`int: anonymous allocation with negative literal > if the generated AST,
 exports[`int: anonymous allocation with negative literal > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -514,7 +514,7 @@ exports[`int: anonymous byte literal and constant split-byte > if the generated 
 exports[`int: anonymous byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -743,7 +743,7 @@ exports[`int: anonymous constant split-byte default (2 constants) > if the gener
 exports[`int: anonymous constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -932,7 +932,7 @@ exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the g
 exports[`int: anonymous split decimal default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -1125,7 +1125,7 @@ exports[`int: anonymous split hex default (2 bytes, right-padded) > if the gener
 exports[`int: anonymous split hex default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -1292,7 +1292,7 @@ exports[`int: bare anonymous zero-initialized allocation > if the generated AST,
 exports[`int: bare anonymous zero-initialized allocation > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -1573,7 +1573,7 @@ exports[`int: mix of anonymous and named allocations > if the generated AST, WAT
 exports[`int: mix of anonymous and named allocations > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 12
     i32.const 0
@@ -1812,7 +1812,7 @@ exports[`int: mixed hex and decimal bytes in split-byte default > if the generat
 exports[`int: mixed hex and decimal bytes in split-byte default > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -2081,7 +2081,7 @@ exports[`int: multiple anonymous allocations > if the generated AST, WAT and mem
 exports[`int: multiple anonymous allocations > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 12
     i32.const 0
@@ -2358,7 +2358,7 @@ exports[`int: named constant split-byte default (2 constants) > if the generated
 exports[`int: named constant split-byte default (2 constants) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -2581,7 +2581,7 @@ exports[`int: named mixed byte literal and constant split-byte > if the generate
 exports[`int: named mixed byte literal and constant split-byte > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -2782,7 +2782,7 @@ exports[`int: named split decimal default (2 bytes, right-padded) > if the gener
 exports[`int: named split decimal default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -3003,7 +3003,7 @@ exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT 
 exports[`int: named split decimal default (4 bytes) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -3208,7 +3208,7 @@ exports[`int: named split hex default (2 bytes, right-padded) > if the generated
 exports[`int: named split hex default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -3437,7 +3437,7 @@ exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and 
 exports[`int: named split hex default (4 bytes) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -3626,7 +3626,7 @@ exports[`int: named string split-byte default (2 bytes, right-padded) > if the g
 exports[`int: named string split-byte default (2 bytes, right-padded) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -3805,7 +3805,7 @@ exports[`int: single decimal literal remains anonymous int with that value > if 
 exports[`int: single decimal literal remains anonymous int with that value > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -3982,7 +3982,7 @@ exports[`int: with anonymous single-character string default > if the generated 
 exports[`int: with anonymous single-character string default > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -4181,7 +4181,7 @@ exports[`int: with constant identifier (anonymous allocation) > if the generated
 exports[`int: with constant identifier (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -4360,7 +4360,7 @@ exports[`int: with literal (anonymous allocation) > if the generated AST, WAT an
 exports[`int: with literal (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -4551,7 +4551,7 @@ exports[`int: with named identifier > if the generated AST, WAT and memory map m
 exports[`int: with named identifier > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -4740,7 +4740,7 @@ exports[`int: with named single-character string default > if the generated AST,
 exports[`int: with named single-character string default > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0

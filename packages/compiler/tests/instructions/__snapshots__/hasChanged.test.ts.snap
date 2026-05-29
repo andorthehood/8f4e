@@ -200,7 +200,7 @@ exports[`hasChanged with float > if the generated AST, WAT and memory map match 
 exports[`hasChanged with float > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local f32)
     i32.const 4
@@ -460,7 +460,7 @@ exports[`hasChanged with int > if the generated AST, WAT and memory map match th
 exports[`hasChanged with int > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 4

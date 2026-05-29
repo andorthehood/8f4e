@@ -126,7 +126,7 @@ exports[`const: literal-only division expression with integer result > if the ge
 exports[`const: literal-only division expression with integer result > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 4
@@ -281,7 +281,7 @@ exports[`const: literal-only multiplication expression > if the generated AST, W
 exports[`const: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 32
@@ -457,7 +457,7 @@ exports[`int[]: buffer size from literal multiplication expression > if the gene
 exports[`int[]: buffer size from literal multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 32
     i32.const 8
@@ -647,7 +647,7 @@ exports[`memory declaration: literal-only multiplication expression default > if
 exports[`memory declaration: literal-only multiplication expression default > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 4
     i32.const 0
@@ -799,7 +799,7 @@ exports[`push: float literal multiplication with float-typed result > if the gen
 exports[`push: float literal multiplication with float-typed result > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     f32.const 0x1.cp+3 (;=14;)
@@ -935,7 +935,7 @@ exports[`push: hex literal in division expression > if the generated AST, WAT an
 exports[`push: hex literal in division expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 8
@@ -1071,7 +1071,7 @@ exports[`push: hex literal in multiplication expression > if the generated AST, 
 exports[`push: hex literal in multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 32
@@ -1207,7 +1207,7 @@ exports[`push: literal-only division expression with float result > if the gener
 exports[`push: literal-only division expression with float result > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     f32.const 0x1p-1 (;=0.5;)
@@ -1343,7 +1343,7 @@ exports[`push: literal-only multiplication expression > if the generated AST, WA
 exports[`push: literal-only multiplication expression > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
+  (import "host" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 32
