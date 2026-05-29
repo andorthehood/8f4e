@@ -1,5 +1,4 @@
 import load from './load';
-import assert from './assert';
 import localSet from './localSet';
 import _else from './else';
 import store from './store';
@@ -71,7 +70,6 @@ import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAdd
 
 const instructions = {
 	and,
-	assert,
 	or,
 	load: load,
 	load8u: load,

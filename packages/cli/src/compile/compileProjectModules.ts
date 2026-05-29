@@ -1,7 +1,7 @@
 import compile from '@8f4e/compiler';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
-import type { AssertionMetadata, CompileOptions, CompiledModuleLookup } from '@8f4e/compiler-spec';
+import type { CompileOptions, CompiledModuleLookup } from '@8f4e/compiler-spec';
 import type { ProjectCodeBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
@@ -15,7 +15,6 @@ interface CompileProjectModulesResult {
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
-	assertions?: AssertionMetadata[];
 }
 
 function hasModuleBlocks(groups: Record<string, unknown[]>): boolean {
@@ -35,7 +34,6 @@ export default function compileProjectModules(
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
 			requiredMemoryBytes: 0,
-			assertions: [],
 		};
 	}
 
@@ -54,6 +52,5 @@ export default function compileProjectModules(
 		compiledWasm: includeWasm ? Buffer.from(result.codeBuffer).toString('base64') : undefined,
 		requiredMemoryBytes: result.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: result.requiredMemoryBytesByRegion,
-		assertions: result.assertions ?? [],
 	};
 }

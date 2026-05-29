@@ -34,7 +34,6 @@ import type {
 	InstructionCompiler,
 	ModuleCompilationContext,
 	Namespaces,
-	AssertionMetadata,
 } from '@8f4e/compiler-spec';
 import type { Instruction } from './instructionCompilers';
 
@@ -104,10 +103,7 @@ export function compileModule(
 	index: number,
 	functions?: FunctionMetadataLookup,
 	internalAllocator = { nextByteAddress: 0 },
-	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> & {
-		assertions?: AssertionMetadata[];
-		assertFailureFunctionIndex?: number;
-	} = {}
+	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {}
 ): CompiledModule {
 	// Namespace layout establishes memory byte addresses and sizes for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
@@ -137,8 +133,6 @@ export function compileModule(
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
-		assertions: options.assertions,
-		assertFailureFunctionIndex: options.assertFailureFunctionIndex,
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];

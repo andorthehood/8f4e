@@ -53,7 +53,7 @@ describe('compileProjectModules', () => {
 		const result = compileProjectModules(
 			[
 				{
-					code: ['module addWorks', 'push 1', 'assert 1', 'moduleEnd'],
+					code: ['module addWorks', 'push 1', 'drop', 'moduleEnd'],
 					executionGroupName: 'test',
 				},
 			],
@@ -70,7 +70,7 @@ describe('compileProjectModules', () => {
 		const result = compileProjectModules(
 			[
 				{
-					code: ['module target', 'int* ptr &dependency:value', 'push *ptr', 'assert 42', 'moduleEnd'],
+					code: ['module target', 'int* ptr &dependency:value', 'push *ptr', 'drop', 'moduleEnd'],
 					executionGroupName: 'test',
 				},
 				{
@@ -84,11 +84,7 @@ describe('compileProjectModules', () => {
 			}
 		);
 
-		expect(result.assertions).toEqual([
-			expect.objectContaining({
-				moduleId: 'target',
-				expected: 42,
-			}),
-		]);
+		expect(result.compiledModules?.target.executionGroupName).toBe('test');
+		expect(result.compiledModules?.dependency.executionGroupName).toBe('main');
 	});
 });

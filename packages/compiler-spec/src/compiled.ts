@@ -73,14 +73,6 @@ export interface CompiledFunction extends FunctionMetadata {
 
 export type CompiledFunctionLookup = Record<string, CompiledFunction>;
 
-/** Source metadata for one compiled 8f4e assertion. */
-export interface AssertionMetadata {
-	assertIndex: number;
-	moduleId: string;
-	lineNumber: number;
-	expected: number;
-}
-
 /** Reusable compiler caches returned from a compile operation. */
 export interface CompilerCache {
 	ast: ASTCache<AST>;
@@ -90,7 +82,6 @@ export type CompileResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
-	assertions?: AssertionMetadata[];
 	requiredMemoryBytes: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
 	cache: CompilerCache;

@@ -137,7 +137,7 @@ describe('cli', () => {
 
 	it('reports assertion failures from project tests', async () => {
 		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
-			stderr: expect.stringContaining('addFails:5 expected 4, received 3'),
+			stderr: expect.stringContaining('assert #0 expected 4, received 3'),
 		});
 	});
 
@@ -146,7 +146,17 @@ describe('cli', () => {
 		const groupedTestPath = path.join(tmpDir, 'groupedTest.8f4e');
 		await fs.writeFile(
 			groupedTestPath,
-			['8f4e/v1', '', 'group test', 'module groupedTest', 'push 1', 'assert 1', 'moduleEnd', 'groupEnd'].join('\n')
+			[
+				'8f4e/v1',
+				'',
+				'group test',
+				'module groupedTest',
+				'push 1',
+				'push 1',
+				'call assert',
+				'moduleEnd',
+				'groupEnd',
+			].join('\n')
 		);
 
 		const { stdout } = await execCli(['test', groupedTestPath]);
@@ -172,7 +182,8 @@ describe('cli', () => {
 				'module target',
 				'int* ptr &dependency:value',
 				'push *ptr',
-				'assert 42',
+				'push 42',
+				'call assert',
 				'moduleEnd',
 				'',
 				'module dependency',
