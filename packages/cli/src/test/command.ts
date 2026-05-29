@@ -4,8 +4,7 @@ import path from 'path';
 import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
-import type { ProjectInput } from '../shared/types';
-import type { AssertionMetadata, CompiledModuleLookup } from '@8f4e/compiler-spec';
+import type { ProjectCodeBlock, ProjectInput } from '../shared/types';
 
 const WASM_MEMORY_PAGE_SIZE = 65536;
 
@@ -36,8 +35,12 @@ type WebAssemblyApiLike = {
 	Memory: new (descriptor: { initial: number; maximum: number }) => WebAssemblyMemoryLike;
 	instantiate: (
 		bytes: Buffer,
-		imports: { host: Record<string, WebAssemblyMemoryLike>; test: { assertFailed: CallableFunction } }
+		imports: { host: Record<string, WebAssemblyMemoryLike | CallableFunction> }
 	) => Promise<{ instance: WebAssemblyInstanceLike }>;
+};
+
+const assertFunctionBlock: ProjectCodeBlock = {
+	code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
 };
 
 function getWebAssemblyApi(): WebAssemblyApiLike {
@@ -190,22 +193,12 @@ function createMemoryImports(
 	};
 }
 
-function formatFailure(failure: AssertionFailure, metadata: AssertionMetadata | undefined): string {
-	const location = metadata ? `${metadata.moduleId}:${metadata.lineNumber}` : `assert #${failure.assertIndex}`;
-
-	return `${location} expected ${failure.expected}, received ${failure.received}`;
+function formatFailure(failure: AssertionFailure): string {
+	return `assert #${failure.assertIndex} expected ${failure.expected}, received ${failure.received}`;
 }
 
 function hasTestGroup(project: ProjectInput): boolean {
 	return project.codeBlocks.some(block => !block.disabled && block.executionGroupName === 'test');
-}
-
-function filterGroupAssertions(
-	assertions: AssertionMetadata[],
-	compiledModules: CompiledModuleLookup | undefined,
-	groupName: string
-): AssertionMetadata[] {
-	return assertions.filter(assertion => compiledModules?.[assertion.moduleId]?.executionGroupName === groupName);
 }
 
 function getErrorMessage(error: unknown): string {
@@ -229,25 +222,37 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 		return { assertions: 0, skipped: true };
 	}
 
-	const compileResult = compileProject(project, {
-		compilerOptions: {
-			disableSharedMemory: true,
+	const compileResult = compileProject(
+		{
+			...project,
+			codeBlocks: [...project.codeBlocks, assertFunctionBlock],
 		},
-	});
+		{
+			compilerOptions: {
+				disableSharedMemory: true,
+			},
+		}
+	);
 
 	if (!compileResult.compiledWasm) {
 		throw new Error('Unable to run tests: compilation did not produce runnable output');
 	}
 
 	const failures: AssertionFailure[] = [];
+	let assertionCount = 0;
 	const memoryImports = createMemoryImports(
 		compileResult.requiredMemoryBytes ?? 0,
 		compileResult.requiredMemoryBytesByRegion
 	);
 	const { instance } = await getWebAssemblyApi().instantiate(Buffer.from(compileResult.compiledWasm, 'base64'), {
-		host: memoryImports,
-		test: {
-			assertFailed(assertIndex: number, expected: number, received: number) {
+		host: {
+			...memoryImports,
+			assert(received: number, expected: number) {
+				const assertIndex = assertionCount;
+				assertionCount += 1;
+				if (received === expected) {
+					return;
+				}
 				failures.push({ assertIndex, expected, received });
 			},
 		},
@@ -256,20 +261,16 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	(instance.exports.initDefaults as CallableFunction)();
 	(instance.exports.test as CallableFunction)();
 
-	const assertions = filterGroupAssertions(compileResult.assertions ?? [], compileResult.compiledModules, 'test');
 	if (failures.length > 0) {
-		const metadataByIndex = new Map(
-			(compileResult.assertions ?? []).map(assertion => [assertion.assertIndex, assertion])
-		);
 		throw new Error(
 			[
 				`${failures.length} assertion${failures.length === 1 ? '' : 's'} failed:`,
-				...failures.map(failure => `  ${formatFailure(failure, metadataByIndex.get(failure.assertIndex))}`),
+				...failures.map(failure => `  ${formatFailure(failure)}`),
 			].join('\n')
 		);
 	}
 
-	return { assertions: assertions.length, skipped: false };
+	return { assertions: assertionCount, skipped: false };
 }
 
 export async function runTestCommand(args: string[]): Promise<void> {

@@ -78,19 +78,6 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('#impure', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
 	});
 
-	it('accepts one compile-time value for assert', () => {
-		expect(() =>
-			validateInstructionArguments('assert', [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }])
-		).not.toThrow();
-		expect(() => validateInstructionArguments('assert', [])).toThrowError(SyntaxRulesError);
-		expect(() =>
-			validateInstructionArguments('assert', [
-				{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
-				{ type: ArgumentType.LITERAL, value: 4, isInteger: true },
-			])
-		).toThrowError(SyntaxRulesError);
-	});
-
 	it('accepts an optional identifier argument for #export', () => {
 		expect(() => validateInstructionArguments('#export', [classifyIdentifier('onMidiCC')])).not.toThrow();
 		expect(() => validateInstructionArguments('#export', [])).not.toThrow();

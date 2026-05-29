@@ -1,9 +1,4 @@
-import type {
-	AssertionMetadata,
-	CompileOptions,
-	CompiledFunctionLookup,
-	CompiledModuleLookup,
-} from '@8f4e/compiler-spec';
+import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-spec';
 import type { ProjectBlockType, ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
 
 export type { ProjectCodeBlock, ProjectInput };
@@ -23,7 +18,6 @@ export interface CompileProjectResult {
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
-	assertions?: AssertionMetadata[];
 }
 
 export type BlockTypeValue = ProjectBlockType;

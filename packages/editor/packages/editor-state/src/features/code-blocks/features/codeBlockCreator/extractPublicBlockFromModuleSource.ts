@@ -54,7 +54,8 @@ if (import.meta.vitest) {
 				'group test',
 				'module helperTest',
 				'push 1',
-				'assert 1',
+				'push 1',
+				'call assert',
 				'moduleEnd',
 				'groupEnd',
 			].join('\n');
@@ -70,7 +71,8 @@ if (import.meta.vitest) {
 				'module helperTest',
 				'; @public',
 				'push 1',
-				'assert 1',
+				'push 1',
+				'call assert',
 				'moduleEnd',
 				'groupEnd',
 			].join('\n');

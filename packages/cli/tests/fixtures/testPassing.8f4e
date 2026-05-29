@@ -5,6 +5,7 @@ module addWorks
 push 1
 push 2
 add
-assert 3
+push 3
+call assert
 moduleEnd
 groupEnd

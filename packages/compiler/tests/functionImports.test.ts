@@ -86,20 +86,6 @@ describe('function imports', () => {
 		expect(result.compiledFunctions!.localValue.body.length).toBeGreaterThan(0);
 	});
 
-	test('keeps the assertion failure import before user imports', () => {
-		const result = compile(
-			{
-				groups: {
-					main: [{ code: ['module test', 'push 1', 'assert 1', 'push 2', 'call hostRecord', 'moduleEnd'] }],
-				},
-				functions: [{ code: ['function hostRecord', '#import record', 'param int value', 'functionEnd'] }],
-			},
-			defaultOptions
-		);
-
-		expect(result.compiledFunctions!.hostRecord.wasmIndex).toBe(1);
-	});
-
 	test('rejects executable imported function bodies', () => {
 		expect(() =>
 			compile(

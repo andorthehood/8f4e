@@ -41,7 +41,6 @@ import { getError } from './compilerError';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 
 import type {
-	AssertionMetadata,
 	CompileOptions,
 	CompileInput,
 	CompileResult,
@@ -92,11 +91,7 @@ export function compileModules(
 	options: CompileOptions,
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
-	internalAllocator?: { nextByteAddress: number },
-	assertOptions: {
-		assertions?: AssertionMetadata[];
-		assertFailureFunctionIndex?: number;
-	} = {}
+	internalAllocator?: { nextByteAddress: number }
 ): CompiledModule[] {
 	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	const ns: Namespaces =
@@ -115,10 +110,7 @@ export function compileModules(
 	return modules.map((ast, index) => {
 		const moduleStartingByteAddress =
 			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
-		const module = compileModule(ast, ns, moduleStartingByteAddress, index, compiledFunctions, allocator, {
-			...options,
-			...assertOptions,
-		});
+		const module = compileModule(ast, ns, moduleStartingByteAddress, index, compiledFunctions, allocator, options);
 		return module;
 	});
 }
@@ -300,11 +292,6 @@ export default function compile(
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleGroupNames = astModuleEntries.map(({ groupName }) => groupName);
 	assertUniqueModuleIds(astModules);
-	const hasAssertInstruction = astModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
-	const assertFailureImportCount = hasAssertInstruction ? 1 : 0;
-	const assertFailureFunctionIndex = hasAssertInstruction ? 0 : undefined;
-	const assertFailureTypeIndex = 3;
-	const assertions: AssertionMetadata[] = [];
 
 	const namespaceAsts = [...astModules, ...astConstants];
 	const namespaces = collectNamespacesFromASTs(
@@ -320,24 +307,19 @@ export default function compile(
 		parseFunctionAST(code, lineMetadata, cache, cacheKey)
 	);
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
-	const importedFunctionCount = assertFailureImportCount + importedUserFunctionCount;
+	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 2 + groupNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	// Collect pre-codegen function metadata so `call` target validation and
 	// function-body codegen can rely on the same registry before compilation finishes.
-	const functionMetadata = collectFunctionMetadataFromAsts(
-		astFunctions,
-		assertFailureImportCount,
-		userDefinedFunctionBaseIndex
-	);
+	const functionMetadata = collectFunctionMetadataFromAsts(astFunctions, 0, userDefinedFunctionBaseIndex);
 
 	// Create a shared type registry for all functions
-	// Base type index is after the built-in function types and optional assert failure import type.
 	const functionTypeRegistry: FunctionTypeRegistry = {
 		types: [],
 		signatures: [],
-		baseTypeIndex: 3 + assertFailureImportCount,
+		baseTypeIndex: 3,
 	};
 
 	const compiledFunctions = astFunctions.map(ast =>
@@ -371,10 +353,7 @@ export default function compile(
 		},
 		namespaces,
 		compiledFunctionsMap,
-		internalAllocator,
-		{
-			...(hasAssertInstruction ? { assertions, assertFailureFunctionIndex } : {}),
-		}
+		internalAllocator
 	).map((module, index) => ({
 		...module,
 		executionGroupName: moduleGroupNames[index],
@@ -462,7 +441,6 @@ export default function compile(
 		);
 	});
 	const functionImports = [
-		...(hasAssertInstruction ? [createFunctionImport('test', 'assertFailed', assertFailureTypeIndex)] : []),
 		...importedUserFunctions.map(func =>
 			createFunctionImport(func.import!.moduleName, func.import!.fieldName, func.typeIndex)
 		),
@@ -488,7 +466,6 @@ export default function compile(
 				createFunctionType([], []),
 				createFunctionType([WASM_TYPE_I32], [WASM_TYPE_I32]),
 				createFunctionType([WASM_TYPE_I32, WASM_TYPE_I32], [WASM_TYPE_I32]),
-				...(hasAssertInstruction ? [createFunctionType([WASM_TYPE_I32, WASM_TYPE_I32, WASM_TYPE_I32], [])] : []),
 				...uniqueUserFunctionTypes,
 			]),
 			...createImportSection([...functionImports, ...memoryImports]),
@@ -507,7 +484,6 @@ export default function compile(
 		]),
 		compiledModules: finalCompiledModules,
 		compiledFunctions: compiledFunctionsMap,
-		...(assertions.length > 0 ? { assertions } : {}),
 		requiredMemoryBytes,
 		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
 		cache,

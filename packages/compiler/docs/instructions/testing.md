@@ -1,12 +1,12 @@
 # Testing
 
-## assert
+## Assert Utility
 
-Compares the top stack value with an expected integer value and reports a failure through the test host import when they differ.
+The CLI test command provides an imported utility function named `assert`.
 
-**Stack effect:** `int --`
+**Stack effect:** `int int --`
 
-**Syntax:** `assert <expected-int>`
+**Syntax:** `call assert`
 
 **Usage:**
 
@@ -16,27 +16,26 @@ module addWorks
 push 1
 push 2
 add
-assert 3
+push 3
+call assert
 moduleEnd
 groupEnd
 ```
 
 **Behavior:**
-- `assert` consumes the top stack value
-- The expected value must resolve to an integer compile-time value
-- Passing assertions do not call the host
-- Failed assertions call `test.assertFailed(assertIndex, expected, received)` and execution continues
-- The compiler returns assertion metadata mapping each `assertIndex` to its module id, source line, and expected value
+- Push the received value first, then the expected value.
+- `call assert` consumes both integer values.
+- The CLI test runner injects `function assert` as a host import before compiling tests.
+- The CLI host implementation counts each call and reports calls where the received value differs from the expected value.
 
 **Host import ABI:**
 
 ```ts
-test.assertFailed(assertIndex: number, expected: number, received: number): void
+host.assert(received: number, expected: number): void
 ```
 
-The host function does not need to throw. A runner can collect calls during execution and report all failures afterward.
-The CLI test runner executes the `test` execution group, but `assert` is valid in any module.
+The compiler does not treat `assert` as a built-in instruction. It is just an imported function supplied by the CLI test runner.
 
 **Limitations:**
 - Float assertions and approximate comparisons are not supported yet
-- Assertion execution tracking is not supported yet
+- Source-location tracking for assertion failures is not supported yet
