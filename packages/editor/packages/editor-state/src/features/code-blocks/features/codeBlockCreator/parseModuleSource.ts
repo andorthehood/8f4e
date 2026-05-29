@@ -1,4 +1,10 @@
+import { getProjectBlockType, parse8f4eProject } from '@8f4e/tokenizer';
+
 import { FORMAT_HEADER } from '~/features/project-format';
+
+function isTestModule(code: string[]): boolean {
+	return getProjectBlockType(code) === 'module' && code.some(line => line.trim() === '#test');
+}
 
 export default function parseModuleSource(source: string): string[] {
 	const lines = source.split('\n');
@@ -11,7 +17,11 @@ export default function parseModuleSource(source: string): string[] {
 		startIndex++;
 	}
 
-	return lines.slice(startIndex);
+	const bodyLines = lines.slice(startIndex);
+	const project = parse8f4eProject(source);
+	const [firstNonTestBlock] = project.codeBlocks.filter(block => !isTestModule(block.code));
+
+	return firstNonTestBlock?.code ?? bodyLines;
 }
 
 if (import.meta.vitest) {
@@ -24,6 +34,23 @@ if (import.meta.vitest) {
 
 		it('removes 8f4e/v1 header and following blank lines', () => {
 			expect(parseModuleSource('8f4e/v1\n\nmodule foo\nmoduleEnd')).toEqual(['module foo', 'moduleEnd']);
+		});
+
+		it('returns the first non-test block from module files that include #test modules', () => {
+			const text = [
+				'8f4e/v1',
+				'',
+				'function helper',
+				'functionEnd',
+				'',
+				'module helperTest',
+				'#test',
+				'push 1',
+				'assert 1',
+				'moduleEnd',
+			].join('\n');
+
+			expect(parseModuleSource(text)).toEqual(['function helper', 'functionEnd']);
 		});
 	});
 }
