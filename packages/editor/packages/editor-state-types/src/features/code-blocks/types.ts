@@ -15,7 +15,7 @@ import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
  */
 export interface CodeBlock {
 	code: string[];
-	executionGroupName?: string;
+	executionEntryName?: string;
 }
 
 /**
@@ -364,10 +364,10 @@ export interface CodeBlockGraphicData {
 	 */
 	blockType: CodeBlockType;
 	/**
-	 * Optional execution group name used by the compiler export pipeline.
+	 * Optional execution entry name used by the compiler export pipeline.
 	 * This is separate from the visual `; @group` directive.
 	 */
-	executionGroupName?: string;
+	executionEntryName?: string;
 	/**
 	 * When true, the block is excluded from compilation and rendered with a transparent background.
 	 * Defaults to false.

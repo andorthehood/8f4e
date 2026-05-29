@@ -254,7 +254,7 @@ const G9	127
 
 constantsEnd
 
-group main
+entry main
 module godClock
 ; @pos -110 -8
 use env
@@ -1009,7 +1009,7 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd
 
 function sin
 ; @pos 119 31

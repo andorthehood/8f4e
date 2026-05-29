@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module triggerPatternSequencer
 ; @public
 
@@ -52,4 +52,4 @@ ifEnd
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd

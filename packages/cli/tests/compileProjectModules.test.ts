@@ -9,11 +9,11 @@ describe('compileProjectModules', () => {
 				[
 					{
 						code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
-						executionGroupName: 'main',
+						executionEntryName: 'main',
 					},
 					{
 						code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
-						executionGroupName: 'main',
+						executionEntryName: 'main',
 					},
 				],
 				{
@@ -29,11 +29,11 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
-					executionGroupName: 'main',
+					executionEntryName: 'main',
 				},
 				{
 					code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
-					executionGroupName: 'main',
+					executionEntryName: 'main',
 				},
 			],
 			{
@@ -49,12 +49,12 @@ describe('compileProjectModules', () => {
 		);
 	});
 
-	it('preserves explicit execution groups on compiled modules', () => {
+	it('preserves explicit execution entries on compiled modules', () => {
 		const result = compileProjectModules(
 			[
 				{
 					code: ['module addWorks', 'push 1', 'drop', 'moduleEnd'],
-					executionGroupName: 'test',
+					executionEntryName: 'test',
 				},
 			],
 			{
@@ -63,7 +63,7 @@ describe('compileProjectModules', () => {
 			}
 		);
 
-		expect(result.compiledModules?.addWorks.executionGroupName).toBe('test');
+		expect(result.compiledModules?.addWorks.executionEntryName).toBe('test');
 	});
 
 	it('compiles test dependencies as ordinary blocks', () => {
@@ -71,11 +71,11 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module target', 'int* ptr &dependency:value', 'push *ptr', 'drop', 'moduleEnd'],
-					executionGroupName: 'test',
+					executionEntryName: 'test',
 				},
 				{
 					code: ['module dependency', 'int value 42', 'moduleEnd'],
-					executionGroupName: 'main',
+					executionEntryName: 'main',
 				},
 			],
 			{
@@ -84,7 +84,7 @@ describe('compileProjectModules', () => {
 			}
 		);
 
-		expect(result.compiledModules?.target.executionGroupName).toBe('test');
-		expect(result.compiledModules?.dependency.executionGroupName).toBe('main');
+		expect(result.compiledModules?.target.executionEntryName).toBe('test');
+		expect(result.compiledModules?.dependency.executionEntryName).toBe('main');
 	});
 });

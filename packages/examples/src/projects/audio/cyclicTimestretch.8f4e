@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module assets
 ; @pos -107 -70
 ; @defAsset amen https://static.llllllllllll.com/8f4e/assets/we_need_jungle_8s_44100.pcm
@@ -224,7 +224,7 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants math
 ; @pos -53 -84

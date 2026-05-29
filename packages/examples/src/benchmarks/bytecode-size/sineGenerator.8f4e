@@ -98,7 +98,7 @@ mul
 
 functionEnd float
 
-group main
+entry main
 module audioout
 ; @pos 88 1
 ; @home right
@@ -189,4 +189,4 @@ module projectConfig
 ; @config export.fileName audioBuffer
 
 moduleEnd
-groupEnd
+entryEnd

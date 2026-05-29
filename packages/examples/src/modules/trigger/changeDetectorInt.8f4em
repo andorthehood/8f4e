@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module change2Trig
 ; @public
 
@@ -33,4 +33,4 @@ moduleEnd
 module sh
 int out 0
 moduleEnd
-groupEnd
+entryEnd

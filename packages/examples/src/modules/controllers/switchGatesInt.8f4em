@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module switchGates
 ; @public
 
@@ -89,4 +89,4 @@ ifEnd
 loopEnd
 
 moduleEnd
-groupEnd
+entryEnd

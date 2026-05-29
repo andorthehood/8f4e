@@ -8,7 +8,7 @@
   {
     "lineNumberBeforeMacroExpansion": 2,
     "lineNumberAfterMacroExpansion": 2,
-    "instruction": "group",
+    "instruction": "entry",
     "arguments": [
       {
         "type": "identifier",
@@ -1745,7 +1745,7 @@
   {
     "lineNumberBeforeMacroExpansion": 223,
     "lineNumberAfterMacroExpansion": 223,
-    "instruction": "groupEnd",
+    "instruction": "entryEnd",
     "arguments": []
   },
   {

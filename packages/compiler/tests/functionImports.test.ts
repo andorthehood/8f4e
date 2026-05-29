@@ -17,7 +17,7 @@ describe('function imports', () => {
 		const calls: number[] = [];
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [{ code: ['module test', 'push 41', 'call hostRecord', 'moduleEnd'] }],
 				},
 				functions: [{ code: ['function hostRecord', '#import record', 'param int value', 'functionEnd'] }],
@@ -41,7 +41,7 @@ describe('function imports', () => {
 	test('calls an imported function with a return value and string field name', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module test', 'int output', 'push &output', 'push 41', 'call addOne', 'store', 'moduleEnd'],
@@ -71,7 +71,7 @@ describe('function imports', () => {
 	test('assigns imported function indexes before built-ins and defined functions', () => {
 		const result = compile(
 			{
-				groups: { main: [{ code: ['module test', 'call localValue', 'drop', 'moduleEnd'] }] },
+				entries: { main: [{ code: ['module test', 'call localValue', 'drop', 'moduleEnd'] }] },
 				functions: [
 					{ code: ['function hostValue', '#import value', 'functionEnd int'] },
 					{ code: ['function localValue', 'call hostValue', 'functionEnd int'] },
@@ -90,7 +90,7 @@ describe('function imports', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [{ code: ['function bad', '#import bad', 'push 1', 'functionEnd int'] }],
 				},
 				defaultOptions
@@ -102,7 +102,7 @@ describe('function imports', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [{ code: ['function bad', '#import bad', '#export bad', 'functionEnd'] }],
 				},
 				defaultOptions
@@ -114,7 +114,7 @@ describe('function imports', () => {
 		expect(() =>
 			compile(
 				{
-					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module test', 'moduleEnd'] }] },
 					functions: [{ code: ['function bad', '#import one', '#import two', 'functionEnd'] }],
 				},
 				defaultOptions
@@ -124,7 +124,7 @@ describe('function imports', () => {
 
 	test('rejects #import outside a function block', () => {
 		expect(() =>
-			compile({ groups: { main: [{ code: ['module test', '#import record', 'moduleEnd'] }] } }, defaultOptions)
+			compile({ entries: { main: [{ code: ['module test', '#import record', 'moduleEnd'] }] } }, defaultOptions)
 		).toThrow(expect.objectContaining({ code: ErrorCode.IMPORT_DIRECTIVE_INVALID_CONTEXT }));
 	});
 });

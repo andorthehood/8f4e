@@ -46,7 +46,7 @@ moduleEnd
 		];
 
 		try {
-			compile({ groups: { main: modules } }, defaultOptions);
+			compile({ entries: { main: modules } }, defaultOptions);
 			throw new Error('Expected compile to throw');
 		} catch (error) {
 			expect(error).toBeInstanceOf(SyntaxRulesError);
@@ -62,7 +62,7 @@ moduleEnd
 		];
 
 		try {
-			compile({ groups: { main: modules } }, defaultOptions);
+			compile({ entries: { main: modules } }, defaultOptions);
 			throw new Error('Expected compile to throw');
 		} catch (error) {
 			expect(error).toBeInstanceOf(SyntaxRulesError);
@@ -78,7 +78,7 @@ moduleEnd
 		];
 
 		try {
-			compile({ groups: { main: modules } }, defaultOptions);
+			compile({ entries: { main: modules } }, defaultOptions);
 			throw new Error('Expected compile to throw');
 		} catch (error) {
 			expect(error).toBeInstanceOf(SyntaxRulesError);
@@ -101,7 +101,7 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules } }, defaultOptions)).not.toThrow();
+		expect(() => compile({ entries: { main: modules } }, defaultOptions)).not.toThrow();
 	});
 
 	it('should accept constant names with numbers after the first letter', () => {
@@ -119,6 +119,6 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules } }, defaultOptions)).not.toThrow();
+		expect(() => compile({ entries: { main: modules } }, defaultOptions)).not.toThrow();
 	});
 });

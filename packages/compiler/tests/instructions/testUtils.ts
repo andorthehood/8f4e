@@ -228,7 +228,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 	const functions: Module[] | undefined = functionCodes?.map(code => ({ code: code.split('\n') }));
 
 	const result = compile(
-		{ groups: { main: modules }, functions: functions },
+		{ entries: { main: modules }, functions: functions },
 		{
 			startingMemoryWordAddress: 0,
 			includeAST: true,

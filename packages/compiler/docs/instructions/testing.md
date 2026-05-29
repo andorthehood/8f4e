@@ -11,7 +11,7 @@ The CLI test command provides an imported utility function named `assert`.
 **Usage:**
 
 ```8f4e
-group test
+entry test
 module addWorks
 push 1
 push 2
@@ -19,8 +19,7 @@ add
 push 3
 call assert
 moduleEnd
-groupEnd
-```
+entryEnd```
 
 **Behavior:**
 - Push the received value first, then the expected value.

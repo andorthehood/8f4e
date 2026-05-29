@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module strum
 ; @public
 
@@ -58,4 +58,4 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd

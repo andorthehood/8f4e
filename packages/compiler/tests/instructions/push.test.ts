@@ -30,7 +30,7 @@ describe('push <local>', () => {
 
 		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.readInt.signature.parameters).toEqual(['int']);
 		expect(result.compiledFunctions!.readInt.signature.returns).toEqual(['int']);
@@ -46,7 +46,7 @@ describe('push <local>', () => {
 
 		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.floatRead.signature.returns).toEqual(['float']);
 		expect(result.compiledFunctions!.floatRead.body.length).toBeGreaterThan(0);
@@ -61,7 +61,7 @@ describe('push <local>', () => {
 
 		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.double64Read.signature.parameters).toEqual(['float64']);
 		expect(result.compiledFunctions!.double64Read.signature.returns).toEqual(['float64']);
@@ -76,7 +76,7 @@ describe('push <local>', () => {
 
 		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.getF64.signature.returns).toEqual(['float64']);
 		expect(result.compiledFunctions!.getF64.body.length).toBeGreaterThan(0);
@@ -92,7 +92,7 @@ describe('push local-vs-memory identifier resolution', () => {
 		];
 
 		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.localOnly.signature.parameters).toEqual(['int']);
 		expect(result.compiledFunctions!.localOnly.signature.returns).toEqual(['int']);
@@ -119,7 +119,7 @@ describe('push local-vs-memory identifier resolution', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		// local.get opcode (0x20 = 32) must be present; i32.load opcode (0x28 = 40) must not be
 		const LOCAL_GET = 0x20;
@@ -134,7 +134,7 @@ describe('push local-vs-memory identifier resolution', () => {
 			},
 		];
 		const resultNoMemory = compile(
-			{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] }, functions: functionsNoMemory },
+			{ entries: { main: [{ code: ['module test', 'moduleEnd'] }] }, functions: functionsNoMemory },
 			defaultOptions
 		);
 		expect(result.compiledFunctions!.shadowTest.body).toEqual(resultNoMemory.compiledFunctions!.localOnly.body);
@@ -148,7 +148,7 @@ describe('push local-vs-memory identifier resolution', () => {
 		];
 
 		const modules: Module[] = [{ code: ['module test', 'moduleEnd'] }];
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 });
 
@@ -185,12 +185,12 @@ describe('push pointer dereference depth', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow(/Pointer dereference depth exceeds/);
+		expect(() => compile({ entries: { main: modules } }, defaultOptions)).toThrow(/Pointer dereference depth exceeds/);
 	});
 
 	test('dereferences only as many levels as the push argument requests', () => {
-		const oneLevel = compile({ groups: { main: createPointerModule('float**', '&ptr', '*pptr') } }, defaultOptions);
-		const twoLevels = compile({ groups: { main: createPointerModule('float**', '&ptr', '**pptr') } }, defaultOptions);
+		const oneLevel = compile({ entries: { main: createPointerModule('float**', '&ptr', '*pptr') } }, defaultOptions);
+		const twoLevels = compile({ entries: { main: createPointerModule('float**', '&ptr', '**pptr') } }, defaultOptions);
 
 		const F32_LOAD = 0x2a;
 		expect(oneLevel.compiledModules.test.cycleFunction).not.toContain(F32_LOAD);

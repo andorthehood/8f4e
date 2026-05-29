@@ -131,9 +131,9 @@ export default function traceInstructionFlow(
 	project: ProjectInput,
 	compilerOptions: CompileOptions
 ): InstructionFlowTrace {
-	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
+	const { entries, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
 
-	const hasModuleBlocks = Object.values(groups).some(group => group.length > 0);
+	const hasModuleBlocks = Object.values(entries).some(entry => entry.length > 0);
 	if (!hasModuleBlocks && constantsBlocks.length === 0) {
 		return {
 			requiredMemoryBytes: 0,
@@ -143,7 +143,7 @@ export default function traceInstructionFlow(
 
 	const compileResult = compile(
 		{
-			groups,
+			entries,
 			constants: constantsBlocks,
 			functions: functionBlocks,
 			macros: macroBlocks,

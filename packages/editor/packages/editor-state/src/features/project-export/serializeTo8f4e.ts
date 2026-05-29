@@ -70,19 +70,19 @@ export function serializeProjectTo8f4e(project: Project): string {
 		validateCodeBlock(codeBlocks[i].code, i);
 	}
 
-	const emittedGroups = new Set<string>();
+	const emittedEntries = new Set<string>();
 	const blockStrings: string[] = [];
-	const modulesByGroup = new Map<string, CodeBlock[]>();
+	const modulesByEntry = new Map<string, CodeBlock[]>();
 
 	for (const block of codeBlocks) {
 		if (getDocumentProjectBlockType(block.code) !== 'module') {
 			continue;
 		}
 
-		const groupName = block.executionGroupName ?? 'main';
-		const groupModules = modulesByGroup.get(groupName) ?? [];
-		groupModules.push(block);
-		modulesByGroup.set(groupName, groupModules);
+		const entryName = block.executionEntryName ?? 'main';
+		const entryModules = modulesByEntry.get(entryName) ?? [];
+		entryModules.push(block);
+		modulesByEntry.set(entryName, entryModules);
 	}
 
 	for (const block of codeBlocks) {
@@ -91,16 +91,16 @@ export function serializeProjectTo8f4e(project: Project): string {
 			continue;
 		}
 
-		const groupName = block.executionGroupName ?? 'main';
-		if (emittedGroups.has(groupName)) {
+		const entryName = block.executionEntryName ?? 'main';
+		if (emittedEntries.has(entryName)) {
 			continue;
 		}
 
-		const groupModules = modulesByGroup.get(groupName) ?? [];
+		const entryModules = modulesByEntry.get(entryName) ?? [];
 		blockStrings.push(
-			['group ' + groupName, ...groupModules.flatMap(moduleBlock => moduleBlock.code), 'groupEnd'].join('\n')
+			['entry ' + entryName, ...entryModules.flatMap(moduleBlock => moduleBlock.code), 'entryEnd'].join('\n')
 		);
-		emittedGroups.add(groupName);
+		emittedEntries.add(entryName);
 	}
 
 	return FORMAT_HEADER + '\n\n' + blockStrings.join('\n\n');
@@ -126,17 +126,17 @@ if (import.meta.vitest) {
 			};
 			const result = serializeProjectTo8f4e(project);
 			expect(result).toContain('\n\n');
-			expect(result).toContain('group main\nmodule counter');
-			expect(result).toContain('moduleEnd\ngroupEnd');
+			expect(result).toContain('entry main\nmodule counter');
+			expect(result).toContain('moduleEnd\nentryEnd');
 		});
 
-		it('serializes execution groups by first module position', () => {
+		it('serializes execution entries by first module position', () => {
 			const project = {
 				codeBlocks: [
-					{ code: ['module a', 'moduleEnd'], executionGroupName: 'main' },
+					{ code: ['module a', 'moduleEnd'], executionEntryName: 'main' },
 					{ code: validFunctionBlock },
-					{ code: ['module b', 'moduleEnd'], executionGroupName: 'test' },
-					{ code: ['module c', 'moduleEnd'], executionGroupName: 'main' },
+					{ code: ['module b', 'moduleEnd'], executionEntryName: 'test' },
+					{ code: ['module c', 'moduleEnd'], executionEntryName: 'main' },
 				],
 			};
 
@@ -144,19 +144,19 @@ if (import.meta.vitest) {
 				[
 					'8f4e/v1',
 					'',
-					'group main',
+					'entry main',
 					'module a',
 					'moduleEnd',
 					'module c',
 					'moduleEnd',
-					'groupEnd',
+					'entryEnd',
 					'',
 					...validFunctionBlock,
 					'',
-					'group test',
+					'entry test',
 					'module b',
 					'moduleEnd',
-					'groupEnd',
+					'entryEnd',
 				].join('\n')
 			);
 		});

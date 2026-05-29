@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module bitwiseOr
 ; @public
          ;   -----.
@@ -16,4 +16,4 @@ or
 store
 
 moduleEnd
-groupEnd
+entryEnd

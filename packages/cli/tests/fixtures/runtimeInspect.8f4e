@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module main
 int counter
 float gain 0.5
@@ -13,4 +13,4 @@ add
 store
 
 moduleEnd
-groupEnd
+entryEnd

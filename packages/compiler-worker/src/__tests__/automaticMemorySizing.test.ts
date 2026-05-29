@@ -18,7 +18,7 @@ describe('automatic memory sizing', () => {
 		];
 
 		const result = await compileAndUpdateMemory(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -43,7 +43,7 @@ describe('automatic memory sizing', () => {
 		];
 
 		const result = await compileAndUpdateMemory(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}

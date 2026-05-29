@@ -110,7 +110,7 @@ describe('call instruction (float64)', () => {
 		// its shared test memory helpers currently coerce non-integer values through float32.
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: [

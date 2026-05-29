@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module projectConfig
 ; @pos -84 2
 ; @config runtime WebWorkerRuntime
@@ -141,7 +141,7 @@ push *in
 store
 
 moduleEnd
-groupEnd
+entryEnd
 
 constants env
 ; @pos -84 26

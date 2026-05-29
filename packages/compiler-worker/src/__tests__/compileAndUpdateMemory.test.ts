@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CompiledModuleLookup, Module } from '@8f4e/compiler-spec';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
-describe('compileAndUpdateMemory execution groups', () => {
+describe('compileAndUpdateMemory execution entries', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 
@@ -25,7 +25,7 @@ moduleEnd
 				.split('\n'),
 		},
 	];
-	const createInput = (modules: Module[]) => ({ groups: { init: modules } });
+	const createInput = (modules: Module[]) => ({ entries: { init: modules } });
 
 	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
 		base: compiledModules.setup.memoryMap.base.byteAddress / 4,
@@ -37,7 +37,7 @@ moduleEnd
 		({ default: compileAndUpdateMemory } = await import('../compileAndUpdateMemory'));
 	});
 
-	it('initializes defaults without running execution groups', async () => {
+	it('initializes defaults without running execution entries', async () => {
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(1)), compilerOptions);
 		const addresses = getAddresses(firstResult.compiledModules);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
@@ -51,7 +51,7 @@ moduleEnd
 		);
 
 		expect(exportKeys).toContain('init');
-		expect(firstResult.compiledModules.setup.executionGroupName).toBe('init');
+		expect(firstResult.compiledModules.setup.executionEntryName).toBe('init');
 		expect(firstResult.initOnlyReran).toBe(false);
 		expect(firstResult.astCacheStats).toEqual({ hits: 0, misses: 1 });
 		expect(memoryView[addresses.base]).toBe(1);
@@ -66,7 +66,7 @@ moduleEnd
 		expect(updatedMemory[addresses.derived]).toBe(0);
 	});
 
-	it('does not run execution groups when defaults are unchanged', async () => {
+	it('does not run execution entries when defaults are unchanged', async () => {
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(3)), compilerOptions);
 		const addresses = getAddresses(firstResult.compiledModules);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
@@ -90,7 +90,7 @@ moduleEnd
 describe('compileAndUpdateMemory float64 incremental patching', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
-	const createInput = (modules: Module[]) => ({ groups: { main: modules } });
+	const createInput = (modules: Module[]) => ({ entries: { main: modules } });
 
 	beforeEach(async () => {
 		vi.resetModules();

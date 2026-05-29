@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module tickClock
 ; @pos -175 -28
 use mod
@@ -2014,7 +2014,7 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd
 
 note
 ; @pos 9 -126

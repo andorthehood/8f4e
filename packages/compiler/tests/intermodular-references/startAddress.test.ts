@@ -10,7 +10,7 @@ describe('inter-module references - start address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -33,7 +33,7 @@ describe('inter-module references - start address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -58,7 +58,7 @@ describe('inter-module references - start address', () => {
 		// Should throw because multi-dot references are now rejected
 		expect(() => {
 			compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					startingMemoryWordAddress: 0,
 				}
@@ -73,7 +73,7 @@ describe('inter-module references - start address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -97,7 +97,7 @@ describe('inter-module references - start address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
