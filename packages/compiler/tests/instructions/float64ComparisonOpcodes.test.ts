@@ -45,22 +45,26 @@ moduleEnd
 	it.each(comparisonCases)('rejects mixed float widths for $instruction', ({ instruction }) => {
 		expect(() => {
 			compile(
-				[
-					{
-						code: [
-							`module ${instruction}MixedFloatWidth`,
-							'float left',
-							'float64 right',
-							'int output',
-							'push &output',
-							'push left',
-							'push right',
-							instruction,
-							'store',
-							'moduleEnd',
+				{
+					groups: {
+						main: [
+							{
+								code: [
+									`module ${instruction}MixedFloatWidth`,
+									'float left',
+									'float64 right',
+									'int output',
+									'push &output',
+									'push left',
+									'push right',
+									instruction,
+									'store',
+									'moduleEnd',
+								],
+							},
 						],
 					},
-				],
+				},
 				{
 					disableSharedMemory: true,
 					includeAST: true,

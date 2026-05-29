@@ -36,9 +36,9 @@ export default function compileProjectModules(
 	const includeWasm = options.includeWasm ?? true;
 	const includeMocks = options.compilerOptions.includeTestRunner === true;
 	const compilerBlocks = includeMocks ? blocks : blocks.filter(block => block.disabled || !isMockBlock(block));
-	const { moduleBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(compilerBlocks);
+	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(compilerBlocks);
 
-	if (moduleBlocks.length === 0) {
+	if (groups.main.length === 0 && constantsBlocks.length === 0) {
 		return {
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
@@ -49,10 +49,13 @@ export default function compileProjectModules(
 	}
 
 	const result = compile(
-		moduleBlocks,
-		options.compilerOptions,
-		functionBlocks.length > 0 ? functionBlocks : undefined,
-		macroBlocks.length > 0 ? macroBlocks : undefined
+		{
+			groups,
+			constants: constantsBlocks,
+			functions: functionBlocks,
+			macros: macroBlocks,
+		},
+		options.compilerOptions
 	);
 
 	return {

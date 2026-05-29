@@ -9,9 +9,12 @@ describe('inter-module references - element word size', () => {
 			{ code: ['module targetModule', 'int wordSize sizeof(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -30,9 +33,12 @@ describe('inter-module references - element word size', () => {
 			{ code: ['module targetModule', 'int size sizeof(sourceModule:data)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -51,9 +57,12 @@ describe('inter-module references - element word size', () => {
 			{ code: ['module targetModule', 'int elemSize sizeof(sourceModule:buffer)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -74,9 +83,12 @@ describe('inter-module references - element word size', () => {
 
 		// Should throw because multi-dot references are rejected
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -88,9 +100,12 @@ describe('inter-module references - element word size', () => {
 
 		// Should throw because multi-dot references are rejected in declaration defaults as well
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -101,9 +116,12 @@ describe('inter-module references - element word size', () => {
 		];
 
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -114,9 +132,12 @@ describe('inter-module references - element word size', () => {
 		];
 
 		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			});
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			);
 		}).toThrow();
 	});
 
@@ -126,9 +147,12 @@ describe('inter-module references - element word size', () => {
 			{ code: ['module baseModule', 'int[] buffer 8 0', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const baseModule = result.compiledModules['baseModule'];
 		const dependentModule = result.compiledModules['dependentModule'];
@@ -151,9 +175,12 @@ describe('inter-module references - element word size', () => {
 			},
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const moduleA = result.compiledModules['moduleA'];
 		const moduleB = result.compiledModules['moduleB'];
@@ -178,9 +205,12 @@ describe('inter-module references - element word size', () => {
 			},
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		expect(result.compiledModules.targetModule.memoryMap.size.default).toBe(4);
 	});
@@ -199,9 +229,12 @@ describe('inter-module references - element word size', () => {
 			},
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -227,9 +260,12 @@ describe('inter-module references - element word size', () => {
 			{ code: ['module targetModule', 'int size sizeof(sourceModule:ptr)', 'moduleEnd'] },
 		];
 
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];

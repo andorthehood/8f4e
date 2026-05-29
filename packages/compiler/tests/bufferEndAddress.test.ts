@@ -17,7 +17,7 @@ describe('buffer& end address in declaration initializers', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		const memoryMap = result.compiledModules.test.memoryMap;
 
 		// buffer should be at byteAddress 4, size 5 words (startingMemoryWordAddress = 1)
@@ -35,7 +35,7 @@ describe('buffer& end address in declaration initializers', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		const memoryMap = result.compiledModules.test.memoryMap;
 
 		// buffer should be at byteAddress 4, size 5 words (20 bytes total)
@@ -53,7 +53,7 @@ describe('buffer& end address in declaration initializers', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		const memoryMap = result.compiledModules.test.memoryMap;
 
 		// buffer should be at byteAddress 4, size 5 words (20 bytes total)

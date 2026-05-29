@@ -7,9 +7,12 @@ describe('reserved identifiers', () => {
 		const modules = [{ code: ['module sourceModule', 'int this', 'moduleEnd'] }];
 
 		expect(() =>
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-			})
+			compile(
+				{ groups: { main: modules } },
+				{
+					startingMemoryWordAddress: 0,
+				}
+			)
 		).toThrow(/this/);
 	});
 });

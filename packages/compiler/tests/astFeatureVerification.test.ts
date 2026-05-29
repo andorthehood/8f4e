@@ -20,9 +20,12 @@ const testModule = {
 
 describe('AST optional output feature manual verification', () => {
 	test('Default behavior excludes AST', () => {
-		const result = compile([testModule], {
-			startingMemoryWordAddress: 0,
-		});
+		const result = compile(
+			{ groups: { main: [testModule] } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		const firstModule = Object.values(result.compiledModules)[0];
 		expect(firstModule).not.toHaveProperty('ast');
@@ -30,10 +33,13 @@ describe('AST optional output feature manual verification', () => {
 	});
 
 	test('Explicit includeAST: false excludes AST', () => {
-		const result = compile([testModule], {
-			startingMemoryWordAddress: 0,
-			includeAST: false,
-		});
+		const result = compile(
+			{ groups: { main: [testModule] } },
+			{
+				startingMemoryWordAddress: 0,
+				includeAST: false,
+			}
+		);
 
 		const firstModule = Object.values(result.compiledModules)[0];
 		expect(firstModule).not.toHaveProperty('ast');
@@ -41,10 +47,13 @@ describe('AST optional output feature manual verification', () => {
 	});
 
 	test('includeAST: true includes AST', () => {
-		const result = compile([testModule], {
-			startingMemoryWordAddress: 0,
-			includeAST: true,
-		});
+		const result = compile(
+			{ groups: { main: [testModule] } },
+			{
+				startingMemoryWordAddress: 0,
+				includeAST: true,
+			}
+		);
 
 		const firstModule = Object.values(result.compiledModules)[0];
 		expect(firstModule).toHaveProperty('ast');

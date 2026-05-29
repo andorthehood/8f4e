@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
-import { compiledModuleBlockTypes, documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
+import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
@@ -8,28 +8,25 @@ import { log } from '../logger/logger';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 
-import type { CompilerDiagnostic } from '@8f4e/compiler-spec';
+import type { CompileInput, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
 
-const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
+const moduleBlockType = documentBlockInstructionByType.module.type;
+const constantsBlockType = documentBlockInstructionByType.constants.type;
 const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
 
 /**
- * Converts code blocks into separate arrays for modules, functions, and macros.
+ * Converts code blocks into compiler input groups plus shared functions, constants, and macros.
  *
  * @param codeBlocks - List of code blocks to filter and sort
- * @returns Object containing modules sorted by grid position,
- *          and functions/macros sorted by creationIndex.
+ * @returns Compiler input with main-group modules sorted by grid position,
+ *          and constants/functions/macros sorted by creationIndex.
  *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
- *          Constants blocks are included in modules array.
  */
-export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
-	modules: { code: string[] }[];
-	functions: { code: string[] }[];
-	macros: { code: string[] }[];
-} {
+export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): CompileInput {
 	const modules: CodeBlockGraphicData[] = [];
+	const constants: Module[] = [];
 	const functions: CodeBlockGraphicData[] = [];
 	const macros: CodeBlockGraphicData[] = [];
 
@@ -38,8 +35,10 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 		.sort((a, b) => a.creationIndex - b.creationIndex);
 
 	for (const block of sortedEnabled) {
-		if (compiledModuleBlockTypeSet.has(block.blockType)) {
+		if (block.blockType === moduleBlockType) {
 			modules.push(block);
+		} else if (block.blockType === constantsBlockType) {
+			constants.push({ code: block.code });
 		} else if (block.blockType === functionBlockType) {
 			functions.push(block);
 		} else if (block.blockType === macroBlockType) {
@@ -47,9 +46,7 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 		}
 	}
 
-	const sortedModules = sortCodeBlocksByGridPosition(modules);
-
-	return { modules: sortedModules, functions, macros };
+	return { groups: { main: sortCodeBlocksByGridPosition(modules) }, constants, functions, macros };
 }
 
 export default function compiler(store: StateManager<State>) {
@@ -71,7 +68,7 @@ export default function compiler(store: StateManager<State>) {
 	async function onForceCompile() {
 		scheduleRecompile.cancel();
 
-		const { modules, functions, macros } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
+		const compilerInput = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 		const compilationStart = performance.now();
 
 		store.set('compiler.isCompiling', true);
@@ -89,7 +86,7 @@ export default function compiler(store: StateManager<State>) {
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
 
-			const result = await state.callbacks.compileCode(modules, compilerOptions, functions, macros);
+			const result = await state.callbacks.compileCode(compilerInput, compilerOptions);
 			const compilationTimeMs = performance.now() - compilationStart;
 			const memoryUsagePercent =
 				result.allocatedMemoryBytes === 0

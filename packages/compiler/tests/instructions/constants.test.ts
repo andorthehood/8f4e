@@ -19,7 +19,7 @@ describe('constants instruction', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 		expect(result.compiledModules).toBeDefined();
 	});
@@ -37,7 +37,7 @@ describe('constants instruction', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 	});
 
@@ -52,7 +52,7 @@ describe('constants instruction', () => {
 		];
 
 		// Name conflicts are allowed - namespaces are merged with last-wins
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 	});
 
@@ -66,7 +66,7 @@ describe('constants instruction', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 	});
 
@@ -83,7 +83,7 @@ describe('constants instruction', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 		// The VALUE should be 20 (from second namespace) due to last-wins
 	});
@@ -97,7 +97,7 @@ describe('constantsEnd instruction', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 });
 
@@ -112,7 +112,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('const declared in module A becomes visible in module B after use', () => {
@@ -125,7 +125,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 		expect(result.compiledModules.moduleB.memoryMap.result.default).toBe(99);
 	});
@@ -137,7 +137,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.compiledModules.testModule.memoryMap.result.default).toBe(10);
 	});
 
@@ -148,7 +148,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('const with undeclared identifier as value throws', () => {
@@ -158,7 +158,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('const with undeclared expression operand throws', () => {
@@ -168,7 +168,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('forward const reference within a module throws', () => {
@@ -180,7 +180,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('use before const allows subsequent const to reference imported value', () => {
@@ -193,7 +193,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.compiledModules.moduleB.memoryMap.x.default).toBe(42);
 	});
 
@@ -208,7 +208,7 @@ describe('const scoping and import rules', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 });
 
@@ -224,7 +224,7 @@ describe('constants block validation', () => {
 		];
 
 		// int instruction should be rejected inside constants block
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('should reject constants block inside module', () => {
@@ -234,7 +234,7 @@ describe('constants block validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('should reject constants block inside function', () => {
@@ -250,7 +250,7 @@ describe('constants block validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
+		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should allow only const declarations inside constants block', () => {
@@ -263,7 +263,7 @@ describe('constants block validation', () => {
 			},
 		];
 
-		const result = compile(modules, defaultOptions);
+		const result = compile({ groups: { main: modules } }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 	});
 
@@ -277,6 +277,6 @@ describe('constants block validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions)).toThrow();
+		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
 	});
 });
