@@ -2,6 +2,7 @@
 
 group main
 module bitwiseXor
+; @public
          ;  \\\\----.
 int* in1 ; --+     '
 int out  ;   )) xor |---

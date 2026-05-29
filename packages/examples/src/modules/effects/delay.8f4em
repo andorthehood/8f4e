@@ -2,6 +2,7 @@
 
 group main
 module delay
+; @public
 
 float[] buffer 48000
 int length 4400

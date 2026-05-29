@@ -2,6 +2,7 @@
 
 group main
 module quantizer
+; @public
 
 float* in
 float* buffer

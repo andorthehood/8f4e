@@ -2,6 +2,7 @@
 
 group main
 module mulInt
+; @public
 
 int* in
 int out0

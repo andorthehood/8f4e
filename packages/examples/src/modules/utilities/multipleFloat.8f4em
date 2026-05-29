@@ -2,6 +2,7 @@
 
 group main
 module mulFloat
+; @public
 
 float* in
 float out0

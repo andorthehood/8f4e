@@ -2,6 +2,7 @@
 
 group main
 module sigmoid
+; @public
 ; Polynomial sigmoid
 ; function approximation
 

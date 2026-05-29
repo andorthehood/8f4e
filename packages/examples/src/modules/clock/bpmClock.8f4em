@@ -2,6 +2,7 @@
 
 group main
 module bpmClock
+; @public
 use env
 
 int bpm 120
@@ -41,7 +42,6 @@ moduleEnd
 groupEnd
 
 constants env
-#mock
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 constantsEnd

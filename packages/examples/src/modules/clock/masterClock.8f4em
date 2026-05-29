@@ -2,6 +2,7 @@
 
 group main
 module clock
+; @public
 
 const HIGH 1
 const LOW 0

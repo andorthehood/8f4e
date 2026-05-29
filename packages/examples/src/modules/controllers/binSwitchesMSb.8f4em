@@ -2,6 +2,7 @@
 
 group main
 module binSwitchesMSb
+; @public
 
 int bit0
 int bit1

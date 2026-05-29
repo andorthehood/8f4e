@@ -2,6 +2,7 @@
 
 group main
 module cgaColors
+; @public
 ; @config color.fill.moduleBackground #0000aa
 ; @config color.fill.background #00aaaa
 ; @config color.fill.backgroundDots #aa00aa

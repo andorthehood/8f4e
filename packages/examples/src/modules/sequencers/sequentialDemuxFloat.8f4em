@@ -2,6 +2,7 @@
 
 group main
 module seqDemux
+; @public
 
 int _length 8
 

@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function sine
+; @public
 ; Polynomial approximation
 ; of the sine function with
 ; Taylor series (7th order)
