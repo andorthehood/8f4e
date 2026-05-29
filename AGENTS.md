@@ -18,6 +18,7 @@
 - `npx nx run app:build`: Vite production build to `dist/` for the root app.
 - `npx nx run-many --target=build --all`: Build all packages/libs.
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
+- `npx nx run @8f4e/examples:test`: Run embedded `#test` modules in example `.8f4em` files through the CLI test runner.
 - `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.
 - `npx nx run app:lint`: ESLint for the root app. Use `run-many --target=lint --all` to lint all projects if needed.
 - `npx nx graph`: Open Nx project dependency graph.
